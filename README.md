@@ -8,11 +8,11 @@ Item A
 
 ### QRCode -> web view for provide install link -> iOS & APP store app for show app from item B
 
-* QRCode link
-1. eg. http://store.benq.com/Apps/Store/index.html
-* index.html include following
-1. eg. [link]http://store.benq.com/Apps/Store/android/icon.png
-2. eg. http://store.benq.com/Apps/Store/android/Store.ver1.apk
+1. QRCode link
+   - `http://store.benq.com/Apps/Store/index.html`
+2. index.html include following
+   - `http://store.benq.com/Apps/Store/android/icon.png`
+   - `http://store.benq.com/Apps/Store/android/Store.ver1.apk`
 
 Item B
 -----------------------
@@ -23,7 +23,11 @@ Item B
 2. http://[domain]/Apps/[Name]/[ios|android]/icon.png
 3. http://[domain]/Apps/[Name]/[ios|android]/descript.json
 
-eg. http://store.benq.com/Apps/YellowPage/android/YellowPage.ver1.apk
+eg.
+
+1. `http://store.benq.com/Apps/YellowPage/android/YellowPage.ver1.apk`
+2. `http://store.benq.com/Apps/YellowPage/android/icon.png`
+3. `http://store.benq.com/Apps/YellowPage/android/descript.json`
 
 Item C
 -----------------------
