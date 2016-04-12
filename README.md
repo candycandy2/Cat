@@ -9,10 +9,10 @@ Item A
 ### QRCode -> web view for provide install link -> iOS & APP store app for show app from item B
 
 1. QRCode link
-   - `http://store.benq.com/Apps/Store/index.html`
+   - [x] `http://store.benq.com/Apps/Store/index.html`
 2. index.html include following
-   - `http://store.benq.com/Apps/Store/android/icon.png`
-   - `http://store.benq.com/Apps/Store/android/Store.ver1.apk`
+   - [ ] `http://store.benq.com/Apps/Store/android/icon.png`
+   - [x] `http://store.benq.com/Apps/Store/android/Store.ver1.apk`
 
 Item B
 -----------------------
