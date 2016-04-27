@@ -4,6 +4,10 @@ TemplateCordovaAPP/platforms/android/local.properties
 TemplateCordovaAPP/platforms/android/gradlew
 TemplateCordovaAPP/platforms/android/gradlew.bat
 TemplateCordovaAPP/platforms/android/.gradle
+TemplateCordovaAPP/platforms/android/.idea
+TemplateCordovaAPP/platforms/android/*/*.iml
+TemplateCordovaAPP/platforms/android/*.iml
+TemplateCordovaAPP/platforms/android/gradle.properties
 # Ant builds
 TemplateCordovaAPP/platforms/android/ant-build
 TemplateCordovaAPP/platforms/android/ant-gen
