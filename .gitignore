@@ -12,3 +12,7 @@ TemplateCordovaAPP/platforms/android/gen
 TemplateCordovaAPP/platforms/android/out
 # Gradle builds
 TemplateCordovaAPP/platforms/android/*/build
+#ios
+TemplateCordovaAPP/platforms/ios/*/xcuserdata
+TemplateCordovaAPP/platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/
+TemplateCordovaAPP/platforms/ios/*/project.xcworkspace
