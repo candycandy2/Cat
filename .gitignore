@@ -1,0 +1,14 @@
+# Non-project-specific build files:
+TemplateCordovaAPP/platforms/android/build.xml
+TemplateCordovaAPP/platforms/android/local.properties
+TemplateCordovaAPP/platforms/android/gradlew
+TemplateCordovaAPP/platforms/android/gradlew.bat
+TemplateCordovaAPP/platforms/android/.gradle
+# Ant builds
+TemplateCordovaAPP/platforms/android/ant-build
+TemplateCordovaAPP/platforms/android/ant-gen
+# Eclipse builds
+TemplateCordovaAPP/platforms/android/gen
+TemplateCordovaAPP/platforms/android/out
+# Gradle builds
+TemplateCordovaAPP/platforms/android/*/build
