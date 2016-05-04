@@ -3,6 +3,13 @@
 A platform for enterprise app store, it include a web site, store app, and sample apps, both iOS and android
 The MRS include Item A, B, C
 
+Domain knowledge
+ - http://demos.jquerymobile.com/1.4.5/
+ - http://www.owlcarousel.owlgraphic.com
+ - http://cordova.apache.org
+ - http://huangxuan.me/js-module-7day/#/
+ - http://blog.csdn.net/enlyhua/article/category/5022771
+
 Item A
 -----------------------
 
