@@ -43,19 +43,20 @@
         <title>Hello World</title>
     </head>
     <body>
-      <div data-role="page" id="pageone">
+
+      <!-- Start of login page -->
+      <div data-role="page" id="loginpage">
         <div data-role="header">
           <h1></h1>
         </div>
 
         <div data-role="main" class="ui-content">
-          <form action="index.html#pagetwo">
+          <form action="index.html#qplaypage">
             <label>Login</label>
             <input type="text" data-clear-btn="true" name="loginname" id="loginname" value="">
             <label>Passworld</label>
             <input type="password" data-clear-btn="true" name="loginpassword" id="loginpassword" value="">
-            <label><input type="checkbox" name="rememberme" id="rememberme">Remember me</input></label>
-            <label><a href="#pagetwo">Submit</a></label>
+            <label><a href="#qplaypage">Submit</a></label>
             <a href="#popupDialog" data-rel="popupDialog" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Delete page...</a>
           </form>
         </div>
@@ -66,26 +67,43 @@
         </div>
       </div>
 
-      <!-- Start of second page -->
-      <div data-role="page" id="pagetwo">
-          <div data-role="header">
-            <h1></h1>
+      <!-- Start of qplay-main page -->
+      <div data-role="page" id="qplaypage">
+          <div data-role="header" style="overflow:hidden;">
+            <h1>QPlay</h1>
+            <a href="#loginpage" data-icon="user" class="ui-btn-icon-left ui-btn-right">Logout</a>
           </div>
 
           <div data-role="main" class="ui-content">
-            <div class="owl-carousel owl-theme">
-              <div> Your Content1 </div>
-              <div> Your Content2 </div>
-              <div> Your Content3 </div>
-              <div> Your Content4 </div>
-              <div> Your Content5 </div>
-              <div> Your Content6 </div>
-              <div> Your Content7 </div>
+            <div class="owl-carousel owl-theme" id="applist1">
+                  <div>  Content1 </div>
+                  <div>  Content2 </div>
+                  <div>  Content3 </div>
+                  <div>  Content4 </div>
+                  <div>  Content5 </div>
+                  <div>  Content6 </div>
+                  <div>  Content7 </div>
             </div>
-          </div>
+            <br>
+            <h4>New arrival...</h4>
+            <div class="owl-carousel owl-theme" id="applist2">
 
+                  <div class="owl-item"><h4>1</h4></div>
+                  <div class="owl-item"><h4>2</h4></div>
+                  <div class="owl-item"><h4>3</h4></div>
+                  <div class="owl-item"><h4>4</h4></div>
+                  <div class="owl-item"><h4>5</h4></div>
+                  <div class="owl-item"><h4>6</h4></div>
+                  <div class="owl-item"><h4>7</h4></div>
+                  <div class="owl-item"><h4>8</h4></div>
+                  <div class="owl-item"><h4>9</h4></div>
+                  <div class="owl-item"><h4>10</h4></div>
+                  <div class="owl-item"><h4>11</h4></div>
+                  <div class="owl-item"><h4>12</h4></div>
+            </div>
         </div>
 
+        <!-- Start of popupDialog page -->
         <div data-role="page" data-dialog="true" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="top: 50%;left: 50%;margin: -100px 0 0 -200px;position: absolute;height: 200px;width: 400px;">
             <div data-role="header" data-theme="a">
               <h1>Delete Page?</h1>
