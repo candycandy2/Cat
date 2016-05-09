@@ -10,7 +10,7 @@ Domain knowledge
  - http://huangxuan.me/js-module-7day/#/
  - http://blog.csdn.net/enlyhua/article/category/5022771
 
-![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15108758/4fb9fb8e-160a-11e6-89ea-b35aaaca99e9.png)
+![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
 
 Item A
 -----------------------
