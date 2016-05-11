@@ -57,6 +57,11 @@
 @property (nonatomic, readonly) NSString* userAgent;
 
 /**
+ The complete user agent that Cordova will use when sending web requests.
+ */
+@property (nonatomic, readonly) NSString* session;
+
+/**
  The base user agent data that Cordova will use to build its user agent.  If this
  property isn't set, Cordova will use the standard web view user agent as its
  base.

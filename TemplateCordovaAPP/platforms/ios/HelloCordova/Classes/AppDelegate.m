@@ -28,22 +28,58 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 
+@interface AppDelegate ()
+@property (nonatomic, strong) NSURL *launchedURL;
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+    self.launchedURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+
     self.viewController = [[MainViewController alloc] init];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    NSLog(@"url recieved: %@", url);
-    NSLog(@"query string: %@", [url query]);
-    NSLog(@"host: %@", [url host]);
-    NSLog(@"url path: %@", [url path]);
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    if (self.launchedURL) {
+        [self openLink:self.launchedURL];
+        self.launchedURL = nil;
+    }
+}
+
+- (BOOL)  application:(UIApplication *)application
+                openURL:(NSURL *)url
+                sourceApplication:(NSString *)sourceApplication//@"io.cordova.hellocordova"
+                annotation:(id)annotation
+{
+    //NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    //if([bundleIdentifier isEqualToString:sourceApplication] == 1)
+    //    return false;
+    
+    NSLog(@"url recieved: %@", url);//qplay://isLogin?scheme=benqfacebook
+    NSLog(@"query string: %@", [url query]);//scheme=benqfacebook
+    NSLog(@"host: %@", [url host]);//host: isLogin
+    NSLog(@"url path: %@", [url path]);//url path:
     NSDictionary *dict = [self parseQueryString:[url query]];
     NSLog(@"query dict: %@", dict);
-    return YES;
+
+    //NSString *appscheme = self.viewController.appURLScheme;//qplay:
+    NSString *session = self.viewController.session;
+    if ([[url host] isEqualToString:@"isLogin"] == 1 && session != nil) {
+        NSString *urlString = [NSString stringWithFormat: @"%@://session=%@", dict[@"scheme"],session];
+        NSURL *callbackUrl = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        //check has session
+        return [self openLink:callbackUrl];
+    }
+    return false;
+}
+
+- (BOOL)openLink:(NSURL *)urlLink
+{
+    return [[UIApplication sharedApplication] openURL:urlLink];
 }
 
 - (NSDictionary *)parseQueryString:(NSString *)query {
@@ -54,6 +90,8 @@
         NSArray *elements = [pair componentsSeparatedByString:@"="];
         NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"elements: %@", elements);
+        NSLog(@"%@ & %@", key, val);
 
         [dict setObject:val forKey:key];
     }
