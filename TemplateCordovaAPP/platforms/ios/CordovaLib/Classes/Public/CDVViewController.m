@@ -430,9 +430,10 @@
 - (NSString*)session
 {
     NSString* jsString = [NSString stringWithFormat:@"myJSFunction(\"%@\");", @"isLogin"];
-    //[self.webView stringByEvaluatingJavaScriptFromString:jsString];
 
-    return jsString;
+    NSString* result = [(UIWebView*)self.webViewEngine.engineWebView stringByEvaluatingJavaScriptFromString:jsString];
+
+    return result;
 }
 
 - (NSString*)userAgent

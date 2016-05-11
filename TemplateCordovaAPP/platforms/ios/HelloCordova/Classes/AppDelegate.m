@@ -68,7 +68,7 @@
 
     //NSString *appscheme = self.viewController.appURLScheme;//qplay:
     NSString *session = self.viewController.session;
-    if ([[url host] isEqualToString:@"isLogin"] == 1 && session != nil) {
+    if ([[url host] isEqualToString:@"isLogin"] == 1 && session != nil && [session length] > 5) {
         NSString *urlString = [NSString stringWithFormat: @"%@://session=%@", dict[@"scheme"],session];
         NSURL *callbackUrl = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         //check has session
