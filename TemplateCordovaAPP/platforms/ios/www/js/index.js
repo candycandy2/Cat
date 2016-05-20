@@ -17,23 +17,14 @@
  * under the License.
  */
 
-function myJSFunction(para) {
-    return session;
-}
-
  $(document).ready(function () {
     var owl = $('#applist1');
 
     $('#applist1').owlCarousel({
         items:4,
         loop:false,
-        onDragged: callback,
         margin:10
     });
-
-    owl.on('changed.owl.carousel', function(event) {
-        session = "1234567";
-    })
 
     $('#applist2').owlCarousel({
         stagePadding: 50,
@@ -94,7 +85,6 @@ function myJSFunction(para) {
     }
 
     owl.on('mousewheel', '.owl-stage', function (e) {
-
         if (e.deltaY>0) {
             owl.trigger('next.owl');
         } else {
@@ -104,8 +94,6 @@ function myJSFunction(para) {
     });
 
  });
-
-var session = "";
 
 var app = {
     // Application Constructor

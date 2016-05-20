@@ -67,12 +67,15 @@
     NSLog(@"query dict: %@", dict);
 
     //NSString *appscheme = self.viewController.appURLScheme;//qplay:
-    NSString *session = self.viewController.session;
-    if ([[url host] isEqualToString:@"isLogin"] == 1 && session != nil && [session length] > 5) {
-        NSString *urlString = [NSString stringWithFormat: @"%@://session=%@", dict[@"scheme"],session];
-        NSURL *callbackUrl = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+    if ([[url host] isEqualToString:@"isLogin"] == 1 ) {
         //check has session
-        return [self openLink:callbackUrl];
+        NSString *session = self.viewController.session;
+        if (session != nil && [session length] > 5) {
+            NSString *urlString = [NSString stringWithFormat: @"%@://session=%@", dict[@"scheme"],session];
+            NSURL *callbackUrl = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            return [self openLink:callbackUrl];
+        }
     }
     return false;
 }

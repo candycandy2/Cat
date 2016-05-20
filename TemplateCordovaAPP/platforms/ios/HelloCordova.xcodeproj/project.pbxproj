@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
@@ -18,6 +17,9 @@
 		3047A5141AB8059700498E2A /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5111AB8059700498E2A /* build.xcconfig */; };
 		7AB9F4FECBBB46FCB50D7092 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = B1194354EEFE433195EC4470 /* CDVSplashScreen.m */; };
 		8683548E84714A8B93BE82BF /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 1473405F94814802BF842B45 /* CDVViewController+SplashScreen.m */; };
+		A532065CEFAE4AE9A88D421F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349D379D825B4DDBBDD99552 /* SystemConfiguration.framework */; };
+		9708F491B66B4342AE38A16A /* CDVAppFeelReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C69BD7D0C54D1BB37E665D /* CDVAppFeelReachability.m */; };
+		874BC800782C419DB6EAD754 /* AppFeelReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 80AD4722F9074230A31A9619 /* AppFeelReachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,11 @@
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = HelloCordova/config.xml; sourceTree = "<group>"; };
 		FD9D7D7F7A784BF0B7C190E6 /* CDVViewController+SplashScreen.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "CDVViewController+SplashScreen.h"; path = "cordova-plugin-splashscreen/CDVViewController+SplashScreen.h"; sourceTree = "<group>"; };
+		349D379D825B4DDBBDD99552 /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		56C69BD7D0C54D1BB37E665D /* CDVAppFeelReachability.m */ = {isa = PBXFileReference; name = "CDVAppFeelReachability.m"; path = "cordova-connectivity-monitor/CDVAppFeelReachability.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		80AD4722F9074230A31A9619 /* AppFeelReachability.m */ = {isa = PBXFileReference; name = "AppFeelReachability.m"; path = "cordova-connectivity-monitor/AppFeelReachability.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		6C45DB51461A4959BEA3EDA4 /* CDVAppFeelReachability.h */ = {isa = PBXFileReference; name = "CDVAppFeelReachability.h"; path = "cordova-connectivity-monitor/CDVAppFeelReachability.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		E1DD958778864848BE9B9FC1 /* AppFeelReachability.h */ = {isa = PBXFileReference; name = "AppFeelReachability.h"; path = "cordova-connectivity-monitor/AppFeelReachability.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
+				A532065CEFAE4AE9A88D421F /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +146,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				349D379D825B4DDBBDD99552 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -167,6 +176,10 @@
 				1473405F94814802BF842B45 /* CDVViewController+SplashScreen.m */,
 				5A9AAF1146DF4DAEAD833A31 /* CDVSplashScreen.h */,
 				FD9D7D7F7A784BF0B7C190E6 /* CDVViewController+SplashScreen.h */,
+				56C69BD7D0C54D1BB37E665D /* CDVAppFeelReachability.m */,
+				80AD4722F9074230A31A9619 /* AppFeelReachability.m */,
+				6C45DB51461A4959BEA3EDA4 /* CDVAppFeelReachability.h */,
+				E1DD958778864848BE9B9FC1 /* AppFeelReachability.h */,
 			);
 			name = Plugins;
 			path = HelloCordova/Plugins;
@@ -295,6 +308,8 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				7AB9F4FECBBB46FCB50D7092 /* CDVSplashScreen.m in Sources */,
 				8683548E84714A8B93BE82BF /* CDVViewController+SplashScreen.m in Sources */,
+				9708F491B66B4342AE38A16A /* CDVAppFeelReachability.m in Sources */,
+				874BC800782C419DB6EAD754 /* AppFeelReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

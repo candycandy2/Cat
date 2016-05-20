@@ -22,5 +22,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-connectivity-monitor": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-connectivity-monitor"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -11,6 +11,10 @@
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"connectivity\"><param name=\"ios-package\" value=\"CDVAppFeelReachability\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -23,6 +27,9 @@
         },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "cordova-connectivity-monitor": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
         }
     },
     "dependent_plugins": {},
@@ -34,10 +41,19 @@
             "clobbers": [
                 "navigator.splashscreen"
             ]
+        },
+        {
+            "file": "plugins/cordova-connectivity-monitor/www/connectivity.js",
+            "id": "cordova-connectivity-monitor.connectivity",
+            "pluginId": "cordova-connectivity-monitor",
+            "clobbers": [
+                "window.connectivity"
+            ]
         }
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.2",
-        "cordova-plugin-splashscreen": "3.2.2"
+        "cordova-plugin-splashscreen": "3.2.2",
+        "cordova-connectivity-monitor": "1.2.2"
     }
 }
