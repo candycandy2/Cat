@@ -41,8 +41,32 @@
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/owl.carousel.min.js"></script>
         <title>Hello World</title>
+        <style>
+            img {/*讓img在div中居中*/　
+            }
+            .center {
+                vertical-align : middle;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        </style>
     </head>
     <body>
+
+      <!-- Start of init page -->
+      <div data-role="page" id="initpage">
+        <div data-role="header">
+          <h1></h1>
+        </div>
+
+        <div class="center" data-role="main" class="ui-content">
+          <img src="img/logo.png" />
+          <h1>Welcome page</h1>
+        </div>
+      </div>
+      <!-- end of init page -->
 
       <!-- Start of login page -->
       <div data-role="page" id="loginpage">
@@ -80,6 +104,7 @@
             <p class="event received">Device is Ready</p>
         </div>
       </div>
+      <!-- end of login page -->
 
       <!-- Start of qplay-main page -->
       <div data-role="page" id="qplaypage">
