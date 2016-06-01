@@ -20,3 +20,7 @@ TemplateCordovaAPP/platforms/android/*/build
 TemplateCordovaAPP/platforms/ios/*/xcuserdata
 TemplateCordovaAPP/platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/
 TemplateCordovaAPP/platforms/ios/*/project.xcworkspace
+
+APP/*/hooks/
+APP/*/platforms/
+APP/*/plugins/
