@@ -93,6 +93,27 @@
         e.preventDefault();
     });
 
+    var parentElement = document.getElementById("testBattery");
+    if (Modernizr.batteryapi) {
+      // supported
+      parentElement.setAttribute('style', 'display:block;');
+      parentElement.textContent = 'supported battery';//background-color:#333333;
+    } else {
+      // not-supported
+      parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
+      parentElement.textContent = 'not-supported battery';
+    }
+    parentElement = document.getElementById("testApplicationCache");
+    if (Modernizr.applicationcache) {
+      // supported
+      parentElement.setAttribute('style', 'display:block;');
+      parentElement.textContent = 'supported applicationcache';
+    } else {
+      // not-supported
+      parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
+      parentElement.textContent = 'not-supported applicationcache';
+    }
+
  });
 
  $( document ).on( "click", ".show-page-loading-msg", function() {
@@ -113,7 +134,7 @@
  .on( "click", ".hide-page-loading-msg", function() {
      $.mobile.loading( "hide" );
  });
- 
+
 var app = {
     // Application Constructor
     initialize: function() {
