@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html>
+<html draggable="false" dir="ltr">
     <head>
         <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
@@ -40,7 +40,9 @@
         <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/owl.carousel.min.js"></script>
-        <title>Hello World</title>
+        <script type="text/javascript" src="js/modernizr-custom.js"></script>
+
+        <title>QPlay APP</title>
         <style>
             img {/*讓img在div中居中*/　
             }
@@ -51,6 +53,8 @@
                 text-align: center;
                 margin-bottom: 10px;
             }
+            .no-batteryapi .box { color: red; }
+            .batteryapi .box { color: green; }
         </style>
     </head>
     <body>
@@ -62,8 +66,10 @@
         </div>
 
         <div class="center" data-role="main" class="ui-content">
-          <img src="img/logo.png" />
-          <h1>Welcome page</h1>
+          <img src="img/logo.png" draggable="true"/>
+          <h1 id="welcome" >Welcome page</h1>
+          <h1 id="testBattery" class="event received" >Welcome page</h1>
+          <h1 id="testApplicationCache" class="event received" >Welcome page</h1>
         </div>
       </div>
       <!-- end of init page -->
