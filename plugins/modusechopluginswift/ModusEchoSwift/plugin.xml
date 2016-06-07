@@ -4,4 +4,12 @@
     <js-module name="ModusEchoSwift" src="www/ModusEchoSwift.js">
         <clobbers target="cordova.plugins.ModusEchoSwift" />
     </js-module>
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="ModusEchoSwift">
+                <param name="ios-package" value="ModusEchoSwift" />
+            </feature>
+        </config-file>
+        <source-file src="src/ios/ModusEchoSwift.swift" />
+    </platform>
 </plugin>
