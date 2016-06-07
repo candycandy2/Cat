@@ -28,84 +28,12 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 
-@interface AppDelegate ()
-@property (nonatomic, strong) NSURL *launchedURL;
-@end
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-    self.launchedURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-
     self.viewController = [[MainViewController alloc] init];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    if (self.launchedURL) {
-        [self openLink:self.launchedURL];
-        self.launchedURL = nil;
-    }
-}
-
-- (BOOL)  application:(UIApplication *)application
-                openURL:(NSURL *)url
-                sourceApplication:(NSString *)sourceApplication//@"io.cordova.hellocordova"
-                annotation:(id)annotation
-{
-    //NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    //if([bundleIdentifier isEqualToString:sourceApplication] == 1)
-    //    return false;
-    
-    NSLog(@"url recieved: %@", url);//qplay://isLogin?scheme=benqfacebook
-    NSLog(@"query string: %@", [url query]);//scheme=benqfacebook
-    NSLog(@"host: %@", [url host]);//host: isLogin
-    NSLog(@"url path: %@", [url path]);//url path:
-    NSDictionary *dict = [self parseQueryString:[url query]];
-    NSLog(@"query dict: %@", dict);
-
-    //NSString *appscheme = self.viewController.appURLScheme;//qplay:
-
-    if ([[url host] isEqualToString:@"isLogin"] == 1 ) {
-        //check has session
-        NSString *session = self.viewController.session;
-        if (session != nil && [session length] > 5) {
-            NSString *urlString = [NSString stringWithFormat: @"%@://session=%@", dict[@"scheme"],session];
-            NSURL *callbackUrl = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            return [self openLink:callbackUrl];
-        }
-    }
-    return false;
-}
-
-- (BOOL)openLink:(NSURL *)urlLink
-{
-    return [[UIApplication sharedApplication] openURL:urlLink];
-}
-
-- (NSDictionary *)parseQueryString:(NSString *)query {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:6] ;
-    NSArray *pairs = [query componentsSeparatedByString:@"&"];
-
-    for (NSString *pair in pairs) {
-        NSArray *elements = [pair componentsSeparatedByString:@"="];
-        NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"elements: %@", elements);
-        NSLog(@"%@ & %@", key, val);
-
-        [dict setObject:val forKey:key];
-    }
-    return dict;
-}
-
-- (IBAction)getTest:(id)sender {
-    //for test only...scheme://host/path?query
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"qplay://isLogin?scheme=qplaytest"]];
-    //qplay://isLogin?scheme=qplaytest
-    //qplaytest://session=qplaytestsession
 }
 
 @end
