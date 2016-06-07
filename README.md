@@ -10,6 +10,17 @@ Domain knowledge
  - http://huangxuan.me/js-module-7day/#/
  - http://blog.csdn.net/enlyhua/article/category/5022771
 
+Requirements check results for android:
+ - Java JDK: installed .
+ - Android SDK: installed 
+ - Android target: installed android-23
+ - Gradle: installed 
+
+Requirements check results for ios:
+ - Apple OS X: installed darwin
+ - Xcode: installed 7.3
+ - ios-deploy: installed 2.0.0
+
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
 
 Item A
