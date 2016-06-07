@@ -17,7 +17,7 @@ http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
 2. plugin 使用自己建立的plugin
 3. plugin 支援 iOS swift 的方法
 
-目錄結構稍
+目錄結構
 - /componentapp  …未來component Team主要開發測試用的APP
 - /plugins              …放置plugins的地方
 - /APP                  …放置APP的地方
