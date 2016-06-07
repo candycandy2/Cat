@@ -18,9 +18,9 @@ http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
 3. plugin 支援 iOS swift 的方法
 
 目錄結構
-- /componentapp  …未來component Team主要開發測試用的APP
-- /plugins              …放置plugins的地方
-- /APP                  …放置APP的地方
+- /componentapp  …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
+- /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
+- /APP                  …放置APP的地方,包括使用www+css+js的UI功能
 - /TemplateCordovaAPP …之後會廢除, 改由componentapp取代
 
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
