@@ -15,25 +15,31 @@
    specific language governing permissions and limitations
    under the License.
 */
+
+
+
 buildscript {
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:1.5.0'
     }
 
 }
+
 apply plugin: 'android-library'
+
 ext {
     apply from: 'cordova.gradle'
     cdvCompileSdkVersion = privateHelpers.getProjectTarget()
     cdvBuildToolsVersion = privateHelpers.findLatestInstalledBuildTools()
 }
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion cdvCompileSdkVersion
+    buildToolsVersion cdvBuildToolsVersion
     publishNonDefault true
 
     compileOptions {
@@ -52,7 +58,4 @@ android {
             assets.srcDirs = ['assets']
         }
     }
-}
-
-dependencies {
 }

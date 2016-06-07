@@ -52,7 +52,6 @@
 @synthesize pluginObjects, pluginsMap, startupPluginNames;
 @synthesize configParser, settings;
 @synthesize wwwFolderName, startPage, initialized, openURL, baseUserAgent;
-@synthesize session;
 @synthesize commandDelegate = _commandDelegate;
 @synthesize commandQueue = _commandQueue;
 @synthesize webViewEngine = _webViewEngine;
@@ -425,15 +424,6 @@
     }
 
     return self.webViewEngine.engineWebView;
-}
-
-- (NSString*)session
-{
-    NSString* jsString = [NSString stringWithFormat:@"myJSFunction(\"%@\");", @"isLogin"];
-
-    NSString* result = [(UIWebView*)self.webViewEngine.engineWebView stringByEvaluatingJavaScriptFromString:jsString];
-
-    return result;
 }
 
 - (NSString*)userAgent
