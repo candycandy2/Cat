@@ -12,6 +12,9 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.benq.componentapp"
+        },
+        "com-moduscreate-plugins-echoswift": {
+            "PACKAGE_NAME": "com.benq.componentapp"
         }
     },
     "dependent_plugins": {}

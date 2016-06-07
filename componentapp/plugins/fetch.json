@@ -14,5 +14,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com-moduscreate-plugins-echoswift": {
+        "source": {
+            "type": "local",
+            "path": "../plugins/modusechopluginswift/ModusEchoSwift"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
