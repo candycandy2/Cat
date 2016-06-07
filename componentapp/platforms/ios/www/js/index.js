@@ -16,6 +16,85 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+ $(document).ready(function () {
+    var owl = $('#applist1');
+
+    $('#applist1').owlCarousel({
+        items:4,
+        loop:false,
+        margin:10
+    });
+
+    $('#applist2').owlCarousel({
+        stagePadding: 50,
+        loop:false,
+        margin:10,
+        nav:false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
+    });
+
+    $( "#dialog" ).dialog({ autoOpen: false });
+
+    function callback(event) {
+
+        $( "#dialog" ).dialog( "open" );
+
+        // Provided by the core
+        var element   = event.target;         // DOM element, in this example .owl-carousel
+        var name      = event.type;           // Name of the event, in this example dragged
+        var namespace = event.namespace;      // Namespace of the event, in this example owl.carousel
+        var items     = event.item.count;     // Number of items
+        var item      = event.item.index;     // Position of the current item
+        // Provided by the navigation plugin
+        var pages     = event.page.count;     // Number of pages
+        var page      = event.page.index;     // Position of the current page
+        var size      = event.page.size;      // Number of items per page
+
+        jQuery("#TicketTC")
+          .on("dialogopen", function (event, ui) {
+            setupCheckBox('chk-img');
+          })
+          .html('<div class="support-msg"></div>')
+          .dialog({
+            modal: true,
+            width: 200,
+            height: 'auto',
+            autoOpen: true,
+            buttons: {
+              CONTINUE: function () {
+                jQuery(this).dialog("close");
+                return true;
+              },
+              CANCEL: function () {
+                jQuery(this).dialog("close");
+                return false;
+              }
+            }
+          });
+    }
+
+    owl.on('mousewheel', '.owl-stage', function (e) {
+        if (e.deltaY>0) {
+            owl.trigger('next.owl');
+        } else {
+            owl.trigger('prev.owl');
+        }
+        e.preventDefault();
+    });
+
+ });
+
 var app = {
     // Application Constructor
     initialize: function() {
