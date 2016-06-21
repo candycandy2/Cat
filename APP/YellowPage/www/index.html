@@ -28,7 +28,7 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"; charset="UTF-8">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -81,6 +81,69 @@
         </div>
       </div>
 
+      <div data-role="page" id="mainquerypage">
+        <div data-role="header" style="overflow:hidden;background-color:#4B0082;color:white">
+          <h1>YellowPage</h1>
+        </div>
+        <div data-role="main" class="ui-content">
+          <div>
+            <div style="width: 120px; position: absolute;">
+              <h4>公司</h4>
+            </div>
+            <div style="margin-left: 150px;">
+              <select id="gk-68rRo9">
+                <option value="optionCompany">All Company</option>
+              </select>
+            </div>
+          </div>        
+          <div>
+            <div style="width: 120px; position: absolute;">
+              <h4>中文姓名</h4>
+            </div>
+            <div style="margin-left: 150px;">
+              <input type="text" style="width: 100%;" />
+            </div>
+          </div>        
+          <div>
+            <div style="width: 120px; position: absolute;">
+              <h4>英文姓名</h4>
+            </div>
+            <div style="margin-left: 150px;">
+              <input type="text" style="width: 100%;" />
+            </div>
+          </div>        
+          <div>
+            <div style="width: 120px; position: absolute;">
+              <h4>部門</h4>
+            </div>
+            <div style="margin-left: 150px;">
+              <input type="text" style="width: 100%;" />
+            </div>
+          </div>        
+          <div>
+            <div style="width: 120px; position: absolute;">
+              <h4>分機</h4>
+            </div>
+            <div style="margin-left: 150px;">
+              <input type="text" style="width: 100%;" />
+            </div>
+          </div>        
+        </div>
+        <div data-role="footer" style="overflow:hidden;background-color:#4B0082;">
+          <!--
+          <div class="ui-grid-b ui-responsive">
+            <div class="ui-block-a"><input type="button" data-icon="delete" value="">Delete</div>
+            <div class="ui-block-b"><input type="button" data-icon="search" value="">開始查詢</div>
+            <div class="ui-block-c"><input type="button" data-icon="star" value="">我的電話簿</div>
+          </div>
+          -->
+          <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" id="tttt">
+            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-icon-delete ui-btn-icon-top" style="background-color:#4B0082;color:white">清除查詢</a>
+            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-icon-search ui-btn-icon-top" style="background-color:#4B0082;color:white">開始查詢</a>
+            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-icon-star ui-btn-icon-top" style="background-color:#4B0082;color:white">我的電話簿</a>
+          </fieldset>
+        </div>
+      </div>
       <!-- Start of qplay-main page -->
       <div data-role="page" id="qplaypage">
           <div data-role="header" style="overflow:hidden;">
@@ -90,32 +153,41 @@
 
           <div data-role="main" class="ui-content">
             <div class="owl-carousel owl-theme" id="applist1">
-                  <div>  Content1 </div>
-                  <div>  Content2 </div>
-                  <div>  Content3 </div>
-                  <div>  Content4 </div>
-                  <div>  Content5 </div>
-                  <div>  Content6 </div>
-                  <div>  Content7 </div>
+                <div>  Content1 </div>
+                <div>  Content2 </div>
+                <div>  Content3 </div>
+                <div>  Content4 </div>
+                <div>  Content5 </div>
+                <div>  Content6 </div>
+                <div>  Content7 </div>
             </div>
             <br>
             <h4>New arrival...</h4>
             <div class="owl-carousel owl-theme" id="applist2">
-
-                  <div class="owl-item"><h4>1</h4></div>
-                  <div class="owl-item"><h4>2</h4></div>
-                  <div class="owl-item"><h4>3</h4></div>
-                  <div class="owl-item"><h4>4</h4></div>
-                  <div class="owl-item"><h4>5</h4></div>
-                  <div class="owl-item"><h4>6</h4></div>
-                  <div class="owl-item"><h4>7</h4></div>
-                  <div class="owl-item"><h4>8</h4></div>
-                  <div class="owl-item"><h4>9</h4></div>
-                  <div class="owl-item"><h4>10</h4></div>
-                  <div class="owl-item"><h4>11</h4></div>
-                  <div class="owl-item"><h4>12</h4></div>
+                <div class="owl-item"><h4>1</h4></div>
+                <div class="owl-item"><h4>2</h4></div>
+                <div class="owl-item"><h4>3</h4></div>
+                <div class="owl-item"><h4>4</h4></div>
+                <div class="owl-item"><h4>5</h4></div>
+                <div class="owl-item"><h4>6</h4></div>
+                <div class="owl-item"><h4>7</h4></div>
+                <div class="owl-item"><h4>8</h4></div>
+                <div class="owl-item"><h4>9</h4></div>
+                <div class="owl-item"><h4>10</h4></div>
+                <div class="owl-item"><h4>11</h4></div>
+                <div class="owl-item"><h4>12</h4></div>
+            </div>
+            <br>
+            <div class="owl-carousel owl-theme" id="applist3">
+            <!--    
+                <div class="owl-item"><button type="button"><img src="img/0026.gif"></img></button></div>
+                <div class="owl-item"><button type="button" onclick="window.location.href='#popupDialog'"><img src="img/0026.gif"></img></button></div>
+                <div class="owl-item"><form action="index.html#loginpage"><button type="submit"><img src="img/0026.gif"></img></button></form></div> 
+            -->
+                <a href="#mainquerypage" data-icon="user" class="owl-item"><img src="img/0026.gif"></img></a>
             </div>
         </div>
+
 
         <!-- Start of popupDialog page -->
         <div data-role="page" data-dialog="true" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="top: 50%;left: 50%;margin: -100px 0 0 -200px;position: absolute;height: 200px;width: 400px;">
