@@ -113,3 +113,12 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+button_style {
+    background-color:#4B0082;
+    color:white;
+}
+label_style {
+    width: 120px;
+    position: absolute;
+}
+
