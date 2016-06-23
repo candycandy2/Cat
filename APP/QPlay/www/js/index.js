@@ -113,7 +113,6 @@
       parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
       parentElement.textContent = 'not-supported applicationcache';
     }
-
  });
 
  $( document ).on( "click", ".show-page-loading-msg", function() {
@@ -153,6 +152,11 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        if (cordova.platformId == 'android') {
+            //StatusBar.backgroundColorByName("purple");
+            StatusBar.hide();
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
