@@ -21,12 +21,42 @@
     var owl = $('#applist1');
 
     $('#applist1').owlCarousel({
-        items:4,
+        stagePadding: 50,
         loop:false,
-        margin:10
+        margin:10,
+        nav:false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
     });
 
     $('#applist2').owlCarousel({
+        stagePadding: 50,
+        loop:false,
+        margin:10,
+        nav:false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
+    });
+
+    $('#applist3').owlCarousel({
         stagePadding: 50,
         loop:false,
         margin:10,
@@ -153,6 +183,7 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
+        StatusBar.show();
         if (cordova.platformId == 'android') {
             //StatusBar.backgroundColorByName("purple");
             StatusBar.hide();
