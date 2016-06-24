@@ -45,7 +45,7 @@
     <body>
       <!-- Start of mainquerypage -->
       <div data-role="page" id="mainquerypage">
-        <div data-role="header" style="overflow:hidden;background-color:#4B0082;color:white">
+        <div data-role="header" style="overflow:hidden;background-color:#4B0082;color:white;border-style:none;">
           <h1>YellowPage</h1>
         </div>
         <div data-role="main" class="ui-content">
@@ -82,22 +82,22 @@
             </div>
           </div>     
         </div>
-        <div data-role="footer" style="overflow:hidden;background-color:#4B0082;">
-          <!--
-          <div class="ui-grid-b ui-responsive">
-            <div class="ui-block-a"><input type="button" data-icon="delete" value="">Delete</div>
-            <div class="ui-block-b"><input type="button" data-icon="search" value="">開始查詢</div>
-            <div class="ui-block-c"><input type="button" data-icon="star" value="">我的電話簿</div>
+        <div data-position="fixed" data-role="footer">
+          <div data-role="navbar">
+            <ul>
+              <li>
+                <a data-icon="delete" style="background-color:#4B0082;color:white;border-style:none;">清除查詢</a>
+              </li>
+              <li>
+                <a data-icon="search" style="background-color:#4B0082;color:white;border-style:none;">開始查詢</a>
+              </li>
+              <li>
+                <a data-icon="star" style="background-color:#4B0082;color:white;border-style:none;">我的電話簿</a>
+              </li>
+            </ul>
           </div>
-          -->
-          <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" id="footerbutton">
-            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-icon-delete ui-btn-icon-top" style="background-color:#4B0082;color:white">清除查詢</a>
-            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-icon-search ui-btn-icon-top" style="background-color:#4B0082;color:white">開始查詢</a>
-            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-icon-star ui-btn-icon-top" style="background-color:#4B0082;color:white">我的電話簿</a>
-          </fieldset>
-        </div>
       </div>
-      
+    </div>
       <script type="text/javascript" src="cordova.js"></script>
       <script type="text/javascript" src="js/index.js"></script>
     </body>
