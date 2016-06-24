@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -45,58 +45,69 @@
     <body>
       <!-- Start of mainquerypage -->
       <div data-role="page" id="mainquerypage">
-        <div data-role="header" style="overflow:hidden;background-color:#4B0082;color:white;border-style:none;">
-          <h1>YellowPage</h1>
+        <div data-role="header">
+          <div class="header_style">
+            <h1>YellowPage</h1>
+          </div>
         </div>
+        <br>
         <div data-role="main" class="ui-content">
           <div>
-            <label_style><h4>公司</h4></label_style>
-            <div style="margin-left: 150px;">
+            <div class="label_style">
+              <h4>公司</h4>
+            </div>
+            <div class="dropbox_style">
               <select id="gk-68rRo9">
                 <option value="optionCompany">All Company</option>
               </select>
             </div>
-          </div>        
+          </div>
+          <br>
           <div>
-            <label_style><h4>中文姓名</h4></label_style>
-            <div style="margin-left: 150px;">
-              <input type="text" style="width: 100%;" />
+            <div class="label_style">
+              <h4>中文姓名</h4>
+             </div>
+            <div class="editbox_style">
+              <input type="text" />
             </div>
-          </div>        
+          </div>
+          <br>
           <div>
-            <label_style><h4>英文姓名</h4></label_style>
-            <div style="margin-left: 150px;">
-              <input type="text" style="width: 100%;" />
+            <div class="label_style">
+              <h4>英文姓名</h4>
             </div>
-          </div>        
+            <div class="editbox_style">
+              <input type="text" />
+            </div>
+          </div>
+          <br>
           <div>
-            <label_style><h4>部門</h4></label_style>
-            <div style="margin-left: 150px;">
-              <input type="text" style="width: 100%;" />
+            <div class="label_style">
+              <h4>部門</h4>
             </div>
-          </div>        
+            <div class="editbox_style">
+              <input type="text" />
+            </div>
+          </div>
+          <br>
           <div>
-            <label_style><h4>分機</h4></label_style>
-            <div style="margin-left: 150px;">
-              <input type="text" style="width: 100%;" />
+            <div class="label_style">
+              <h4>分機</h4>
             </div>
-          </div>     
+            <div class="editbox_style">
+              <input type="text" />
+            </div>
+          </div>
         </div>
-        <div data-position="fixed" data-role="footer">
-          <div data-role="navbar">
+        <div data-role="footer" data-position="fixed" data-theme="b">
+          <div data-role="navbar" data-iconpos="top" class="custom_navbar">
             <ul>
-              <li>
-                <a data-icon="delete" style="background-color:#4B0082;color:white;border-style:none;">清除查詢</a>
-              </li>
-              <li>
-                <a data-icon="search" style="background-color:#4B0082;color:white;border-style:none;">開始查詢</a>
-              </li>
-              <li>
-                <a data-icon="star" style="background-color:#4B0082;color:white;border-style:none;">我的電話簿</a>
-              </li>
+              <li><a href="#" data-icon="delete">清除查詢</a></li>
+              <li><a href="#" data-icon="search">開始查詢</a></li>
+              <li><a href="#" data-icon="star">我的電話簿</a></li>
             </ul>
           </div>
-      </div>
+        </div>
     </div>
       <script type="text/javascript" src="cordova.js"></script>
       <script type="text/javascript" src="js/index.js"></script>

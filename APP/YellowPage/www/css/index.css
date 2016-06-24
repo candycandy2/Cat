@@ -113,12 +113,33 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
-button_style {
+
+.header_style {
+    overflow:hidden;
     background-color:#4B0082;
     color:white;
-}
-label_style {
-    width: 120px;
-    position: absolute;
+    border-style:none;
 }
 
+.label_style {
+    width:120px;
+    position:absolute;
+    text-align:left;
+}
+
+.dropbox_style {
+    margin-left:120px;
+    width:180px;
+}
+
+.editbox_style {
+    margin-left:120px;
+    width:150px;
+}
+
+.custom_navbar ul li a {
+    background:#4B0082 !important; 
+    color:white !important;
+    border-style:none;
+    font-size:large !important;
+}
