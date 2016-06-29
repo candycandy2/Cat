@@ -44,20 +44,6 @@
     </head>
     <body>
     
-      <!-- Start of query_result_page -->
-      <div data-role="page" id="query_result_page">
-        <div data-role="header">
-            <a href="index.html" class="ui-btn-left">Back</a>
-            <h1>查詢結果</h1>
-            <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
-        </div>
-
-        <div data-role="main" class="ui-content">
-
-        </div>
-        
-      </div>
-      
       <!-- Start of main_query_page -->
       <div data-role="page" id="main_query_page">
         <div data-role="header">
@@ -118,13 +104,52 @@
           <div data-role="navbar" data-iconpos="top" class="custom_navbar">
             <ul>
               <li><a href="#" data-icon="delete">清除查詢</a></li>
-              <li><a href="#" data-icon="search">開始查詢</a></li>
+              <li><a href="#query_result_page" data-icon="search">開始查詢</a></li>
               <li><a href="#" data-icon="star">我的電話簿</a></li>
             </ul>
           </div>
         </div>
       </div>
       
+      <!-- Start of query_result_page -->
+      <div data-role="page" id="query_result_page">
+        <div data-role="header" style="background-color:#4B0082;color:white;">
+          <a href="index.html" class="ui-btn-left">Back</a>
+          <h1>查詢結果</h1>
+          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
+        </div>
+        <div data-role="main" class="ui-content">
+          <ul data-role="listview">
+            <div class="ui-grid-c" style="background-color:#E0E0FF;line-height:2.7;">
+              <li data-role="list-divider" class="ui-block-a" style="margin-left:10px;margin-right:-10px">Company</li>
+              <li data-role="list-divider" class="ui-block-b" style="margin-left:10px;margin-right:-10px">E.Name</li>
+              <li data-role="list-divider" class="ui-block-c" style="margin-left:40px;margin-right:-40px">C.Name</li>
+              <li data-role="list-divider" class="ui-block-d" style="margin-left:30px;margin-right:-30px">Detail</li>
+            </div>
+            <div class="ui-grid-c" style="line-height:3.0;">
+              <li class="ui-block-a" style="margin-left:10px;margin-right:-10px;">Qisda</li>
+              <li class="ui-block-b" style="margin-left:10px;margin-right:-10px;">Gia.Lee</li>
+              <li class="ui-block-c" style="margin-left:40px;margin-right:-40px;">李小佳</li>
+              <li class="ui-block-d"><a href="#" style="margin-left:50px;">></a></li>
+            </div>
+              <div class="ui-grid-c" style="line-height:3.0;">
+              <li class="ui-block-a" style="margin-left:10px;margin-right:-10px">BenQ</li>
+              <li class="ui-block-b" style="margin-left:10px;margin-right:-10px">Ming.Wang</li>
+              <li class="ui-block-c" style="margin-left:40px;margin-right:-40px">王大明</li>
+              <li class="ui-block-d"><a href="#" style="margin-left:50px;">></a></li>
+            </div>
+              <div class="ui-grid-c" style="line-height:3.0;">
+              <li class="ui-block-a" style="margin-left:10px;margin-right:-10px">AUO</li>
+              <li class="ui-block-b" style="margin-left:10px;margin-right:-10px">YoYo.Ma</li>
+              <li class="ui-block-c" style="margin-left:40px;margin-right:-40px">馬友友</li>
+              <li class="ui-block-d"><a href="#" style="margin-left:50px;">></a></li>
+            </div>
+          </ul>
+        </div> 
+        
+      </div>
+      
+
       <script type="text/javascript" src="cordova.js"></script>
       <script type="text/javascript" src="js/index.js"></script>
     </body>
