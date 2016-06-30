@@ -23,5 +23,14 @@ abstract class ResultCode
     const _999009_ipInBlacklist = '999009';  //禁止存取API (IP為黑名單)
     const _999999_unknownError = '999999';  //其他未知錯誤
 
+    const _000901_userNotExistError = '000901';  //用户不存在
+    const _000902_passwordError = '000902';  //密码错误
+    const _000903_deviceHasRegistered = "000903"; //设备已经注册
+    const _000904_loginUserNotMathRegistered = "000904"; //登录用户与设备认证时的用户不同
+    const _000905_deviceNotRegistered = "000905"; //设备未认证
+    const _000914_userWithoutRight = '000914';  //用户停权
+
+
+
     //TODO 以下为各系统扩展
 }
