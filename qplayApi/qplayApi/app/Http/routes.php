@@ -16,16 +16,12 @@
 //});
 
 Route::any('/v101/qplay/getSecturityList', 'qplayController@getSecturityList');
+Route::any('/v101/qplay/register', 'qplayController@register');
+Route::any('/v101/qplay/isRegister', 'qplayController@isRegister');
+Route::any('/v101/qplay/login', 'qplayController@login');
+Route::any('/v101/qplay/logout', 'qplayController@logout');
 
 //for Test
 Route::any('/test', function() {
-//    $csrf_token = csrf_token();
-//    $form = <<<FORM
-//        <form action="v101/qplay/getSecturityList" method="POST">
-//            <input type="hidden" name="_token" value="{$csrf_token}">
-//            <input type="submit" value="Test">
-//        </form>
-//FORM;
-//    return $form;
     return view("test");
 });
