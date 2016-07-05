@@ -49,7 +49,16 @@
                
           </info>
     </platform>
-	
 
+	<platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="QSecurityPlugin">
+                <param name="ios-package" value="QSecurityPlugin"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/QSecurityPlugin.h" />
+        <source-file src="src/ios/QSecurityPlugin.m" />
+    </platform>
 
 </plugin>
