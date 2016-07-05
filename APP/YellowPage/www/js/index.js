@@ -165,7 +165,20 @@ $(function() {
 
     function onSuccess(data)
     {
-      $("#resultLog").html("Result: " + data);
+      var rawdata = data['d'];
+      var jsonobj = jQuery.parseJSON(rawdata);
+
+      var resultcode = jsonobj['ResultCode'];
+      
+      if (resultcode == 1) {
+        var dataContent = jsonobj['Content'];
+        for (var i=0; i<dataContent.length; i++){
+          var company = dataContent[i].Companny;
+          var ename = dataContent[i].Name_EN;
+          var cname = dataContent[i].Name_CH;
+          var extnum = dataContent[i].Ext_No;
+        }
+      }
     }
 });
  
