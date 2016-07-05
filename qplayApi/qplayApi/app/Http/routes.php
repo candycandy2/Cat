@@ -20,6 +20,9 @@ Route::any('/v101/qplay/register', 'qplayController@register');
 Route::any('/v101/qplay/isRegister', 'qplayController@isRegister');
 Route::any('/v101/qplay/login', 'qplayController@login');
 Route::any('/v101/qplay/logout', 'qplayController@logout');
+Route::any('/v101/qplay/checkAppVersion', 'qplayController@checkAppVersion');
+Route::any('/v101/qplay/getAppList', 'qplayController@getAppList');
+Route::any('/v101/qplay/getMessageList', 'qplayController@getMessageList');
 
 //for Test
 Route::any('/test', function() {

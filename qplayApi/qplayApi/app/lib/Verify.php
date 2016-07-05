@@ -41,13 +41,13 @@ class Verify
                     return ResultCode::_999001_requestParameterLostOrIncorrect;
                 } else {
                     //TODO marked for test
-//                    if (!self::chkSignature($request->header('Signature'), $request->header('Signature-Time'))) {
-//                        return ResultCode::_999008_signatureIsInvalid;
-//                    } else {
-//                        if (!SystemList::isSystemVersionCorrect($request->header('App-Key'), $RequestPathArr[$RequestCount - 3])) {
-//                            return ResultCode::_999002_parameterVersionLostOrIncorrect;
-//                        }
-//                    }
+                    if (!self::chkSignature($request->header('Signature'), $request->header('Signature-Time'))) {
+                        return ResultCode::_999008_signatureIsInvalid;
+                    } else {
+                        if (!SystemList::isSystemVersionCorrect($request->header('App-Key'), $RequestPathArr[$RequestCount - 3])) {
+                            return ResultCode::_999002_parameterVersionLostOrIncorrect;
+                        }
+                    }
                 }
             }
         }
@@ -69,7 +69,7 @@ class Verify
 
     public static function getSignature($SignatureTime)
     {
-        $ServerSignature = base64_encode(hash_hmac('sha1', 'omkbdne3R88VmJcJK920dOg96TIP21jY', $SignatureTime, true));
+        $ServerSignature = base64_encode(hash_hmac('sha256', 'swexuc453refebraXecujeruBraqAc4e', $SignatureTime, true));
         return $ServerSignature;
 
     }
