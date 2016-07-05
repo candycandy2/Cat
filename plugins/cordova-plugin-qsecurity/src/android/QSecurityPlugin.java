@@ -122,13 +122,9 @@ public class QSecurityPlugin extends CordovaPlugin {
             SecurityList.getInstance().setRequestList(reqList);
             SecurityList.getInstance().setIntentList(intList);
 
-            JSONArray jsonResult = new JSONArray();
-            jsonResult.put(0, "Set SecurityList");
-            jsonResult.put(1, level);
-
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,jsonResult));
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
         }catch (JSONException e){
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR,"Set SecurityList"));
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
         }
 
 
@@ -140,13 +136,9 @@ public class QSecurityPlugin extends CordovaPlugin {
             String level = option.getString("level");
             SecurityList.getInstance().setLevel(Integer.parseInt(level));
 
-            JSONArray jsonResult = new JSONArray();
-            jsonResult.put(0, "Set Level ");
-            jsonResult.put(1, level);
-
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,jsonResult));
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
         }catch (JSONException e){
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR,"Set Level "));
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
         }
     }
 

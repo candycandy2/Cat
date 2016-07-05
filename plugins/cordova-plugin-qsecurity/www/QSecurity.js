@@ -1,4 +1,3 @@
-cordova.define("cordova-plugin-qsecurity.QSecurity", function(require, exports, module) {
 
 var exec = require('cordova/exec');
 var qsecurity = function() {}
@@ -26,7 +25,7 @@ qsecurity.prototype.setWhiteList = function(options, callback, error_callback) {
         }
     };
 
-    exec(_callback,_error_callback, "QSecurity", "setWhitelist", [config]);
+    exec(_callback,_error_callback, "QSecurityPlugin", "setWhitelist", [config]);
 }
 
 qsecurity.prototype.changeLevel = function(options, callback, error_callback) {
@@ -49,7 +48,7 @@ qsecurity.prototype.changeLevel = function(options, callback, error_callback) {
         }
     };
 
-    exec(_callback,_error_callback, "QSecurity", "changeLevel", [config]);
+    exec(_callback,_error_callback, "QSecurityPlugin", "changeLevel", [config]);
 }
 
 qsecurity.prototype.resumeCheckLevel = function(callback, error_callback) {
@@ -68,9 +67,9 @@ qsecurity.prototype.resumeCheckLevel = function(callback, error_callback) {
         }
     };
 
-    exec(_callback,_error_callback, "QSecurity", "resumeCheckLevel", []);
+    exec(_callback,_error_callback, "QSecurityPlugin", "resumeCheckLevel", []);
 }
 
 
 module.exports = new qsecurity();
-});
+

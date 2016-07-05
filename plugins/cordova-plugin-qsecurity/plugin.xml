@@ -21,7 +21,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
            id="cordova-plugin-qsecurity"
       version="1.0.0">
-    <name>QSecurity</name>
+    <name>QSecurityPlugin</name>
     <description>QPlay QSecurity Plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova,qsecurity,policy</keywords>
@@ -30,13 +30,13 @@
       <engine name="cordova-android" version=">=4.0.0" />
     </engines>
 	
-	<js-module src="www/QSecurity.js" name="QSecurity">
+	<js-module src="www/QSecurity.js" name="QSecurityPlugin">
     <clobbers target="window.plugins.qsecurity" />
   </js-module>
 
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="QSecurity" >
+            <feature name="QSecurityPlugin" >
                 <param name="android-package" value="org.apache.cordova.qsecurity.QSecurityPlugin"/>
                 <param name="onload" value="true" />
             </feature>
