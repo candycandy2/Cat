@@ -132,9 +132,8 @@ public class QSecurityPlugin extends CordovaPlugin {
 
     public void changeLevel(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
         try{
-            final JSONObject option = data.getJSONObject(0);
-            String level = option.getString("level");
-            SecurityList.getInstance().setLevel(Integer.parseInt(level));
+            int level = data.getInt(0);
+            SecurityList.getInstance().setLevel(level);
 
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
         }catch (JSONException e){
