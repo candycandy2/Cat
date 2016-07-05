@@ -29,7 +29,7 @@ qsecurity.prototype.setWhiteList = function(options, callback, error_callback) {
 }
 
 qsecurity.prototype.changeLevel = function(level, callback, error_callback) {
-
+	var scope = [];
     var config = level || 3;
 
     var _callback = function() {
