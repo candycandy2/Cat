@@ -23,6 +23,10 @@ Route::any('/v101/qplay/logout', 'qplayController@logout');
 Route::any('/v101/qplay/checkAppVersion', 'qplayController@checkAppVersion');
 Route::any('/v101/qplay/getAppList', 'qplayController@getAppList');
 Route::any('/v101/qplay/getMessageList', 'qplayController@getMessageList');
+Route::any('/v101/qplay/getMessageDetail', 'qplayController@getMessageDetail');
+Route::any('/v101/qplay/updateMessage', 'qplayController@updateMessage');
+Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
+Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
 
 //for Test
 Route::any('/test', function() {
