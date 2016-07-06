@@ -173,15 +173,21 @@ $(function() {
       if (resultcode == 1) {
         var dataContent = jsonobj['Content'];
         for (var i=0; i<dataContent.length; i++){
+          $('#employee-data').append('<div class="ui-grid-c grid_style">');
           var company = dataContent[i].Companny;
+          $('#employee-data').append('<li class="ui-block-a">' + company + '</li>');
           var ename = dataContent[i].Name_EN;
+          $('#employee-data').append('<li class="ui-block-b">' + ename + '</li>');
           var cname = dataContent[i].Name_CH;
+          $('#employee-data').append('<li class="ui-block-c">' + cname + '</li>');
           var extnum = dataContent[i].Ext_No;
+          $('#employee-data').append('<li class="ui-block-d" style="float:right;margin-top:10px"><a href="#"></a></li>');
         }
+        $('#employee-data').listview('refresh'); 
       }
     }
 });
- 
+
 var app = {
     // Application Constructor
     initialize: function() {
