@@ -15,92 +15,90 @@ class qplayController extends Controller
 {
     static $TOKEN_VALIDATE_TIME = 2 * 86400;
 
-    public function getSecturityList()
+    public function isRegister()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $verifyResult = $Verify->verify();
 
-        $request = Request::instance();
-        $appKey = $request->header('App-Key');
-        if ($status_code == ResultCode::_1_reponseSuccessful) {
-            $app_row_id = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                -> where('qp_project.app_key', "=", $appKey)
-                ->select('qp_app_head.row_id')->lists('qp_app_head.row_id');
+        $input = Input::get();
 
-//            select * from qp_white_list where app_row_id = (
-//                select row_id from qp_app_head where project_row_id = (
-//                    select row_id from qp_project where app_key = 'qplay'
-//            ))
-            $whitelist = \DB::table("qp_white_list")
-                -> whereNull('deleted_at')
-                -> where('app_row_id', "=", $app_row_id)
-                -> select('allow_url')->get();
-
-//            select security_level from qp_app_head where project_row_id = (
-//                select row_id from qp_project where app_key = 'qplay')
-            $level = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                -> where('qp_project.app_key', "=", $appKey)
-                ->select('security_level')->lists('security_level');
-
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Call Service Successed',
-                'content'=>json_encode($whitelist),
-                'security_level'=>$level[0],
-            ]);
-//            ->header("version", "1.0.1")
-//            ->header("name", "qplay")
-//            ->header("action", "getSecturityList");
-        } else {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
         }
+        $uuid = $input["uuid"];
 
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            $uuidList = \DB::table("qp_register")
+                -> where('uuid', '=', $uuid)
+                -> where('status', '=', 'A')
+                -> select('uuid')->get();
+            if(count($uuidList) > 0)
+            {
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Device Has Registered',
+                    'content'=>array("is_register"=>1)]);
+            }
+            else
+            {
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Device Has not Registered',
+                    'content'=>array("is_register"=>0)]);
+            }
+        }
+        else
+        {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
+        }
     }
 
     public function register()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $verifyResult = $Verify->verify();
+
         $request = Request::instance();
-        $redirect_uri = $request->header('redirect-uri');
         $input = Input::get();
+
+        $redirect_uri = $request->header('redirect-uri');
+        $domain = $request->header('domain');
+        $loginid = $request->header('loginid');
+        $password = $request->header('password');
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || !array_key_exists('device_type', $input) || $redirect_uri == null || $domain == null || $loginid == null || $password == null)
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>array("redirect_uri"=>$redirect_uri)]);
+        }
+
         $uuid = $input["uuid"];
         $device_type = $input["device_type"];
-        if($status_code == ResultCode::_1_reponseSuccessful) {
 
-            $domain = $request->header('domain');
-            $loginid = $request->header('loginid');
-            $password = $request->header('password');
-
-            $status_code = ResultCode::_1_reponseSuccessful;
-            if($uuid == null || $redirect_uri == null || $domain == null || $loginid == null || $password == null)
-            {
-                $status_code = ResultCode::_999001_requestParameterLostOrIncorrect;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Parameter Error',
-                    'content'=>array("redirect_uri"=>$redirect_uri)]);
-            }
-
-
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
             //Check user
             $userList = \DB::table("qp_user")
                 -> where('login_id', "=", $loginid)
                 -> select('row_id', 'login_id', 'emp_no', 'emp_name', 'email', 'user_domain', 'company'
-                , 'department', 'status', 'resign')->get();
+                    , 'department', 'status', 'resign')->get();
             if(count($userList) == 0)
             {
-                $status_code = ResultCode::_000901_userNotExistError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
                     'message'=>'User Not Exist',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
             $user = $userList[0];
             if($user->status != "Y" || $user->resign != "N")
             {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
                     'message'=>'Access Forbidden',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
@@ -112,28 +110,22 @@ class qplayController extends Controller
             $bind= true;//TODO for test: @ldap_bind($ldapConnect, $loginid, $password);
             if(!$bind)
             {
-                $status_code = ResultCode::_000902_passwordError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000902_passwordError,
                     'message'=>'Password Error',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
 
             //Check uuid exist
-            //Check user
             $uuidList = \DB::table("qp_register")
                 -> where('uuid', "=", $uuid)
                 -> select('uuid')->get();
             if(count($uuidList) > 0)
             {
-                $status_code = ResultCode::_000903_deviceHasRegistered;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
                     'message'=>'Device Has Registered',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
 
-
-            $token = uniqid();  //生成token
-            $token_valid = time();
             try
             {
                 \DB::table("qp_register")->insert([
@@ -141,8 +133,12 @@ class qplayController extends Controller
                     'uuid'=>$uuid,
                     'device_type'=>$device_type,
                     'register_date'=>date('Y-m-d H:i:s',time()),
-                    'status'=>'A',
-                    'remember_token'=>$token]);
+                    'status'=>'A'
+                    //, 'remember_token'=>$token
+                ]);
+
+                $token = uniqid();  //生成token
+                $token_valid = time();
                 $sessionList = \DB::table("qp_session")
                     -> where('uuid', "=", $uuid, 'user_row_id', '=', $user->row_id)
                     -> select('uuid')->get();
@@ -166,85 +162,53 @@ class qplayController extends Controller
             }
             catch (Exception $e)
             {
-                $status_code = ResultCode::_999999_unknownError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>'Call Service Error',
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid, "redirect_uri"=>$redirect_uri, "token"=>$token)
                 ]);
             }
 
-            return response()->json(['result_code'=>$status_code,
+            return response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>'Call Service Successed',
                 'token_valid'=>$token_valid,
                 'content'=>array("uuid" => $uuid, "redirect_uri"=>$redirect_uri, "token"=>$token)
             ]);
-        }
-        else
-        {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
-                'content'=>array("redirect_uri"=>$redirect_uri)]);
-        }
-    }
 
-    public function isRegister()
-    {
-        $Verify = new Verify();
-        $status_code = $Verify->json();
-        $input = Input::get();
-        $uuid = $input["uuid"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
-        {
-            $uuidList = \DB::table("qp_register")
-                -> where('uuid', "=", $uuid)
-                -> select('uuid')->get();
-            if(count($uuidList) > 0)
-            {
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Device Has Registered',
-                    'content'=>array("is_register"=>1)]);
-            }
-            else
-            {
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Device Has not Registered',
-                    'content'=>array("is_register"=>0)]);
-            }
         }
         else
         {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
-                'content'=>'']);
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>array("redirect_uri"=>$redirect_uri)]);
         }
     }
 
     public function login()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $verifyResult = $Verify->verify();
+
         $request = Request::instance();
-        $redirect_uri = $request->header('redirect-uri');
-        $appKey = $request->header('App-Key');
         $input = Input::get();
+
+        $redirect_uri = $request->header('redirect-uri');
+        $domain = $request->header('domain');
+        $loginid = $request->header('loginid');
+        $password = $request->header('password');
+        $appKey = $request->header('App-Key');
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || $redirect_uri == null
+            || $domain == null || $loginid == null || $password == null)
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>array("redirect_uri"=>$redirect_uri)]);
+        }
         $uuid = $input["uuid"];
-        if($status_code == ResultCode::_1_reponseSuccessful) {
 
-            $domain = $request->header('domain');
-            $loginid = $request->header('loginid');
-            $password = $request->header('password');
-
-            $status_code = ResultCode::_1_reponseSuccessful;
-            if($uuid == null || $redirect_uri == null || $domain == null || $loginid == null || $password == null)
-            {
-                $status_code = ResultCode::_999001_requestParameterLostOrIncorrect;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Parameter Error',
-                    'content'=>array("redirect_uri"=>$redirect_uri)]);
-            }
-
-
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             //Check user
             $userList = \DB::table("qp_user")
                 -> where('login_id', "=", $loginid)
@@ -252,16 +216,14 @@ class qplayController extends Controller
                     , 'department', 'status', 'resign')->get();
             if(count($userList) == 0)
             {
-                $status_code = ResultCode::_000901_userNotExistError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
                     'message'=>'User Not Exist',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
             $user = $userList[0];
             if($user->status != "Y" || $user->resign != "N")
             {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
                     'message'=>'Access Forbidden',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
@@ -273,8 +235,7 @@ class qplayController extends Controller
             $bind= true;//TODO for test: @ldap_bind($ldapConnect, $loginid, $password);
             if(!$bind)
             {
-                $status_code = ResultCode::_000902_passwordError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000902_passwordError,
                     'message'=>'Password Error',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
@@ -287,8 +248,7 @@ class qplayController extends Controller
             $uuidInDB = null;
             if(count($uuidList) < 1)
             {
-                $status_code = ResultCode::_000905_deviceNotRegistered;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
                     'message'=>'Device Not Registered',
                     'content'=>array("redirect_uri"=>$redirect_uri)]);
             }
@@ -297,8 +257,7 @@ class qplayController extends Controller
                 $uuidInDB = $uuidList[0];
                 if($user->row_id != $uuidInDB->user_row_id)
                 {
-                    $status_code = ResultCode::_000904_loginUserNotMathRegistered;
-                    return response()->json(['result_code'=>$status_code,
+                    return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                         'message'=>'User Not Match Device',
                         'content'=>array("redirect_uri"=>$redirect_uri)]);
                 }
@@ -308,14 +267,15 @@ class qplayController extends Controller
             $token_valid = time();
             try
             {
-//                \DB::table("qp_register")->where('row_id','=', $uuidInDB->row_id)->update([
-//                    'remember_token'=>$token]);
                 $sessionList = \DB::table("qp_session")
-                    -> where('uuid', "=", $uuid) ->where('user_row_id', '=', $user->row_id)
+                    -> where('uuid', "=", $uuid)
+                    ->where('user_row_id', '=', $user->row_id)
                     -> select('uuid')->get();
                 if(count($sessionList) > 0)
                 {
-                    \DB::table("qp_session")->where('user_row_id', '=', $user->row_id)->where('uuid', '=', $uuid)->update([
+                    \DB::table("qp_session")->where('user_row_id', '=', $user->row_id)
+                        ->where('uuid', '=', $uuid)
+                        ->update([
                         'token'=>$token,
                         'token_valid_date'=>date('Y-m-d H:i:s',time()),
                     ]);
@@ -340,11 +300,12 @@ class qplayController extends Controller
                 ]);
             }
 
-            $appHeader = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                -> where('qp_project.app_key', "=", $appKey)
+            $appHeader = \DB::table("qp_app_head")
+                ->join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                ->where('qp_project.app_key', "=", $appKey)
                 ->select('qp_app_head.updated_at','security_level')->get();
             $security_updated_at = $appHeader[0]->updated_at;
-            return response()->json(['result_code'=>$status_code,
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>'Login Successed',
                 'token_valid'=>$token_valid,
                 'content'=>array("uuid" => $uuid, "redirect_uri"=>$redirect_uri, "token"=>$token,
@@ -353,8 +314,8 @@ class qplayController extends Controller
         }
         else
         {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
                 'content'=>array("redirect_uri"=>$redirect_uri)]);
         }
     }
@@ -362,54 +323,39 @@ class qplayController extends Controller
     public function logout()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
-        $request = Request::instance();
-        $appKey = $request->header('App-Key');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || !array_key_exists('domain', $input) || !array_key_exists('loginid', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
         $uuid = $input["uuid"];
         $domain = $input['domain'];
         $loginid = $input['loginid'];
-        if($status_code == ResultCode::_1_reponseSuccessful) {
-            $status_code = ResultCode::_1_reponseSuccessful;
-            if($uuid == null || $domain == null || $loginid == null )
-            {
-                $status_code = ResultCode::_999001_requestParameterLostOrIncorrect;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Parameter Error',
-                    'content'=>'']);
-            }
 
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             //Check user
             $userList = \DB::table("qp_user")
                 -> where('login_id', "=", $loginid)
+                -> where('user_domain', '=', $domain)
                 -> select('row_id', 'login_id', 'emp_no', 'emp_name', 'email', 'user_domain', 'company'
                     , 'department', 'status', 'resign')->get();
             if(count($userList) == 0)
             {
-                $status_code = ResultCode::_000901_userNotExistError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
                     'message'=>'User Not Exist',
                     'content'=>'']);
             }
             $user = $userList[0];
             if($user->status != "Y" || $user->resign != "N")
             {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
                     'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-
-            //Check user password with LDAP
-            $LDAP_SERVER_IP = "";
-            $LDAP_SERVER_PORT = "";
-            //TODO for test: $ldapConnect = ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind= true;//TODO for test: @ldap_bind($ldapConnect, $loginid, $password);
-            if(!$bind)
-            {
-                $status_code = ResultCode::_000902_passwordError;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Password Error',
                     'content'=>'']);
             }
 
@@ -421,8 +367,7 @@ class qplayController extends Controller
             $uuidInDB = null;
             if(count($uuidList) < 1)
             {
-                $status_code = ResultCode::_000905_deviceNotRegistered;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
                     'message'=>'Device Not Registered',
                     'content'=>'']);
             }
@@ -431,8 +376,7 @@ class qplayController extends Controller
                 $uuidInDB = $uuidList[0];
                 if($user->row_id != $uuidInDB->user_row_id)
                 {
-                    $status_code = ResultCode::_000904_loginUserNotMathRegistered;
-                    return response()->json(['result_code'=>$status_code,
+                    return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                         'message'=>'User Not Match Device',
                         'content'=>'']);
                 }
@@ -444,22 +388,21 @@ class qplayController extends Controller
             }
             catch (Exception $e)
             {
-                $status_code = ResultCode::_999999_unknownError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>'Call Service Error',
                     'content'=>''
                 ]);
             }
 
-            return response()->json(['result_code'=>$status_code,
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>'Logout Successed',
                 'content'=>array("uuid" => $uuid)
             ]);
         }
         else
         {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
                 'content'=>'']);
         }
     }
@@ -467,7 +410,7 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $appKey = $request->header('App-Key');
         $input = Input::get();
@@ -520,7 +463,7 @@ class qplayController extends Controller
     public function getAppList()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $appKey = $request->header('App-Key');
         $token = $request->header('token');
@@ -673,10 +616,54 @@ SQL;
         }
     }
 
+    public function getSecturityList()
+    {
+        $Verify = new Verify();
+        $status_code = $Verify->verify();
+
+        $request = Request::instance();
+        $appKey = $request->header('App-Key');
+        if ($status_code == ResultCode::_1_reponseSuccessful) {
+            $app_row_id = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                -> where('qp_project.app_key', "=", $appKey)
+                ->select('qp_app_head.row_id')->lists('qp_app_head.row_id');
+
+//            select * from qp_white_list where app_row_id = (
+//                select row_id from qp_app_head where project_row_id = (
+//                    select row_id from qp_project where app_key = 'qplay'
+//            ))
+            $whitelist = \DB::table("qp_white_list")
+                -> whereNull('deleted_at')
+                -> where('app_row_id', "=", $app_row_id)
+                -> select('allow_url')->get();
+
+//            select security_level from qp_app_head where project_row_id = (
+//                select row_id from qp_project where app_key = 'qplay')
+            $level = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                -> where('qp_project.app_key', "=", $appKey)
+                ->select('security_level')->lists('security_level');
+
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                'message'=>'Call Service Successed',
+                'content'=>json_encode($whitelist),
+                'security_level'=>$level[0],
+            ]);
+//            ->header("version", "1.0.1")
+//            ->header("name", "qplay")
+//            ->header("action", "getSecturityList");
+        } else {
+            return response()->json(['result_code'=>$status_code,
+                'message'=>'Call Service Failed',
+                'content'=>'']);
+        }
+
+    }
+
     public function getMessageList()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $appKey = $request->header('App-Key');
         $token = $request->header('token');
@@ -743,7 +730,7 @@ SQL;
     public function getMessageDetail()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $token = $request->header('token');
         $input = Input::get();
@@ -796,7 +783,7 @@ SQL;
     public function updateMessage()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $token = $request->header('token');
         $input = Input::get();
@@ -853,7 +840,7 @@ SQL;
     public function sendPushToken()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $token = $request->header('token');
         $pushToken = $request->header('push-token');
@@ -945,7 +932,7 @@ SQL;
     public function renewToken()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $token = $request->header('token');
         $input = Input::get();
@@ -1001,7 +988,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $status_code = $Verify->json();
+        $status_code = $Verify->verify();
         $request = Request::instance();
         $token = $request->header('token');
         $input = Input::get();

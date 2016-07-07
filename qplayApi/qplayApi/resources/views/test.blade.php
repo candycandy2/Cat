@@ -26,55 +26,60 @@ FORM;
     {{--<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>--}}
     <form action="v101/qplay/getSecturityList" method="POST">
         <input type="hidden" name="_token" value="{{$csrf_token}}">
-        <input type="button" value="getSecturityList" onclick="getSecturityList()">
-        <input type="button" value="register" onclick="register()">
+
         <input type="button" value="isRegister" onclick="isRegister()">
+        <input type="button" value="register" onclick="register()">
+        <br/><br/>
+
         <input type="button" value="login" onclick="login()">
         <input type="button" value="logout" onclick="logout()">
+        <input type="button" value="getSecturityList" onclick="getSecturityList()">
         <br/><br/>
+
         <input type="button" value="checkAppVersion" onclick="checkAppVersion()">
         <input type="button" value="getAppList" onclick="getAppList()">
         <br/><br/>
+
         <input type="button" value="getMessageList" onclick="getMessageList()">
         <input type="button" value="getMessageDetail" onclick="getMessageDetail()">
         <input type="button" value="updateMessage" onclick="updateMessage()">
         <br/><br/>
+
         <input type="button" value="sendPushToken" onclick="sendPushToken()">
         <input type="button" value="renewToken" onclick="renewToken()">
-
         <input type="submit" value="Test">
 
-        <div id="result_content"></div>
+        {{--<div id="result_content"></div>--}}
     </form>
     <script>
         var sectoryKey = 'swexuc453refebraXecujeruBraqAc4e';
+        var registerUUID = "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20";
 
-        var getSecturityList = function() {
+        var isRegister = function () {
             $.ajax({
-                url: "v101/qplay/getSecturityList",
+                url: "v101/qplay/isRegister?lang=en-us&uuid=" + registerUUID,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");Moses824
+                    request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("security_level:" +  d.security_level + "<br/>"
-                            + "content: " + d.content);
+                    $("#result_content").html("is_register: " + d.content.is_register);
                 },
                 error: function (e) {
                     alert(e);
                 }
             });
-        };
+        }
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?device_type=android&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + registerUUID,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -100,32 +105,10 @@ FORM;
                 }
             });
         }
-        
-        var isRegister = function () {
-            $.ajax({
-                url: "v101/qplay/isRegister?uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data:{},
-                beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
-                },
-                success: function (d, status, xhr) {
-                    alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("is_register: " + d.content.is_register);
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        }
 
         var login = function () {
             $.ajax({
-                url: "v101/qplay/login?uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/login?lang=en-us&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -155,7 +138,7 @@ FORM;
         
         var logout = function () {
             $.ajax({
-                url: "v101/qplay/logout?loginid=Moses.Zhu&domain=Qisda&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/logout?lang=en-us&loginid=Moses.Zhu&domain=QCS&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -174,6 +157,29 @@ FORM;
                 }
             });
         }
+
+        var getSecturityList = function() {
+            $.ajax({
+                url: "v101/qplay/getSecturityList",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");Moses824
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("security_level:" +  d.security_level + "<br/>"
+                            + "content: " + d.content);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        };
         
         var checkAppVersion = function () {
             //var t = Math.round(new Date().getTime()/1000);

@@ -8,58 +8,80 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
-use App\lib\ResultCode;
 use Request;
-use App\lib\SystemList;
+use Illuminate\Support\Facades\Input;
 
 class Verify
 {
     /**
-     * 確認傳送資料是否為json
-     *    Accept: application/json
-     * Content-Type: application/json
+     * 1. 確認傳送資料是否為json
+     *     Accept: application/json
+     *     Content-Type: application/json
      *
-     * 這三種方法是用來檢查 request 的 header。
-     * 1. Request::isJson() 用來檢查 HTTP_CONTENT_TYPE是否存在 application/json
-     * 2. Request::wantsJson用來檢查 HTTP_ACCEPT 是否存在 application/json
-     * 3. Request::format 用來檢查 request 要求的回傳格式
+     *     這三種方法是用來檢查 request 的 header。
+     *     a. Request::isJson() 用來檢查 HTTP_CONTENT_TYPE是否存在 application/json
+     *     b. Request::wantsJson用來檢查 HTTP_ACCEPT 是否存在 application/json
+     *     c. Request::format 用來檢查 request 要求的回傳格式
+     *
+     * 2. 確認以下必要參數是否傳遞
+     *     a. app-key
+     *     b. signature-time
+     *     c. signature
+     *     d. content-type已于第1點檢查
+     *
+     *
      */
-    public static function json()
+    public static function verify()
     {
         $request = Request::instance();
-        $RequestPathArr = explode('/', \Request::path());
+        $input = Input::get();
+        $headerContentType = $request->header('Content-Type');
+        $headerAppKey = $request->header('App-Key');
+        $headerSignature = $request->header('Signature');
+        $headerSignatureTime = $request->header('Signature-Time');
 
-        $RequestCount = count($RequestPathArr);
-        if ($request->header('Content-Type') != 'application/json') {
-            return ResultCode::_999006_contentTypeParameterInvalid;
-        } else {
-            if (!SystemList::isSystemAllowed($request->header('App-Key'))) {
-                return ResultCode::_999002_parameterVersionLostOrIncorrect;
 
-            } else {
-                if (strlen($request->header('Signature-Time')) != 10) {
-                    return ResultCode::_999001_requestParameterLostOrIncorrect;
-                } else {
-                    //TODO marked for test
-                    if (!self::chkSignature($request->header('Signature'), $request->header('Signature-Time'))) {
-                        return ResultCode::_999008_signatureIsInvalid;
-                    } else {
-                        if (!SystemList::isSystemVersionCorrect($request->header('App-Key'), $RequestPathArr[$RequestCount - 3])) {
-                            return ResultCode::_999002_parameterVersionLostOrIncorrect;
-                        }
-                    }
-                }
-            }
+
+        //verify parameter count
+        if($headerContentType == null || $headerAppKey == null
+            || $headerSignature == null || $headerSignatureTime == null) {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
-        return ResultCode::_1_reponseSuccessful;
+
+        //verify language input
+        if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
+            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
+                "message"=>"lang參數錯誤 or 不存在");
+        }
+        
+        //verify content-type
+        if ($headerContentType != 'application/json') {
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                "message"=>"Content-Type錯誤");
+        }
+
+        //TODO for test
+        if($headerSignature == "Moses824")
+        {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
+                "message"=>"");
+        }
+
+        if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
+            return array("code"=>ResultCode::_999008_signatureIsInvalid,
+                "message"=>"Signature驗證碼不正確");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
     }
 
-    public static function chkSignature($signature, $SignatureTime)
+    public static function chkSignature($signature, $signatureTime)
     {
         $nowTime = time();
-        $SignatureTime = Request::header('Signature-Time');
-        $ServerSignature = self::getSignature($SignatureTime);
-        if (strcmp($ServerSignature, $signature) == 0 and abs($nowTime - $SignatureTime) < 900) {
+        $serverSignature = self::getSignature($signatureTime);
+        if (strcmp($serverSignature, $signature) == 0 and abs($nowTime - $signatureTime) < 900) {
             //15*60 15分鐘
             return true;
         } else {
@@ -67,65 +89,10 @@ class Verify
         }
     }
 
-    public static function getSignature($SignatureTime)
+    public static function getSignature($signatureTime)
     {
-        $ServerSignature = base64_encode(hash_hmac('sha256', 'swexuc453refebraXecujeruBraqAc4e', $SignatureTime, true));
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
         return $ServerSignature;
 
-    }
-
-    public static function node($node, $data)
-    {
-        foreach ($node as $f_k => $f_v) {
-            if (!isset($data[$f_v])) {
-                return ResultCode::_99004_awsS3TokenExpired;
-            }
-        }
-        return 1;
-    }
-
-    /**
-     * check the header without checking time over 15 mins
-     *
-     * @return String resultCode
-     */
-    public static function jsonWithoutTime()
-    {
-        $request = Request::instance();
-        $RequestPathArr = explode('/', \Request::path());
-        $RequestCount = count($RequestPathArr);
-        if ($request->header('Content-Type') != 'application/json') {
-            return ResultCode::_999006_contentTypeParameterInvalid;
-        } else {
-            if (!SystemList::isSystemAllowed($request->header('App-Key'))) {
-                return ResultCode::_999002_parameterVersionLostOrIncorrect;
-
-            } else {
-                if (strlen($request->header('Signature-Time')) != 10) {
-                    return ResultCode::_999001_requestParameterLostOrIncorrect;
-                } else {
-                    if (!self::chkSignatureWithoutTime($request->header('Signature'), $request->header('Signature-Time'))) {
-                        return ResultCode::_999008_signatureIsInvalid;
-                    } else {
-                        if (!SystemList::isSystemVersionCorrect($request->header('App-Key'), $RequestPathArr[$RequestCount - 3])) {
-                            return ResultCode::_999002_parameterVersionLostOrIncorrect;
-                        }
-                    }
-                }
-            }
-        }
-        return ResultCode::_1_reponseSuccessful;
-    }
-
-    public static function chkSignatureWithoutTime($signature, $SignatureTime)
-    {
-        $nowTime = time();
-        $SignatureTime = Request::header('Signature-Time');
-        $ServerSignature = self::getSignature($SignatureTime);
-        if (strcmp($ServerSignature, $signature) == 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
