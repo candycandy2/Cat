@@ -24,6 +24,14 @@ http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
 - /TemplateCordovaAPP …之後會廢除, 改由componentapp取代
 - /qplayApi             …放置PHP API
 
+## Android BUILD
+1. 手動 sign apk，讓 build 出來的 apk 可以使用 adb install 安裝
+2. https://developer.android.com/studio/publish/app-signing.html#signing-manually
+3. adb  tool  C:\Users\user\AppData\Local\Android\sdk\platform-tools
+4. keytool and jarsigner tool C:\Program Files\Java\jdk1.7.0_79\bin
+ 
+
+
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
 
 Item A
