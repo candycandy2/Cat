@@ -49,7 +49,7 @@ FORM;
         <input type="button" value="renewToken" onclick="renewToken()">
         <input type="submit" value="Test">
 
-        {{--<div id="result_content"></div>--}}
+        <div id="result_content"></div>
     </form>
     <script>
         var sectoryKey = 'swexuc453refebraXecujeruBraqAc4e';
@@ -158,6 +158,71 @@ FORM;
             });
         }
 
+        var checkAppVersion = function () {
+            $.ajax({
+                url: "v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=101",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
+                    request.setRequestHeader("signature-time", "1467699291");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
+                            + "download_url" + d.content.download_url);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
+        var getAppList = function () {
+            $.ajax({
+                url: "v101/qplay/getAppList?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "5783536f4016a"); //
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    var htmlStr = "app_category_list:<br/>";
+                    $.each(d.content.app_category_list, function(i, c) {
+                        htmlStr += "category_id:[" + c.category_id + "], ";
+                        htmlStr += "app_category:[" + c.app_category + "], ";
+                        htmlStr += "sequence:[" + c.sequence + "]<br/>";
+                    });
+                    htmlStr += "app_list:<br/>";
+                    $.each(d.content.app_list, function(i, a) {
+                        htmlStr += "app_code:[" + a.app_code + "], ";
+                        htmlStr += "package_name:[" + a.package_name + "], ";
+                        htmlStr += "version:[" + a.version + "]<br/>";
+                    });
+                    htmlStr += "multi_lang:<br/>";
+                    $.each(d.content.multi_lang, function(i, m) {
+                        htmlStr += "lang:[" + m.lang + "], ";
+                        htmlStr += "app_name:[" + m.app_name + "], ";
+                        htmlStr += "pic_list:[" + m.pic_list + "], ";
+                        htmlStr += "version:[" + m.version + "]<br/>";
+                    });
+                    $("#result_content").html(htmlStr);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
         var getSecturityList = function() {
             $.ajax({
                 url: "v101/qplay/getSecturityList",
@@ -166,7 +231,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");Moses824
+                    request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
@@ -180,56 +245,6 @@ FORM;
                 }
             });
         };
-        
-        var checkAppVersion = function () {
-            //var t = Math.round(new Date().getTime()/1000);
-            //var hash = CryptoJS.HmacSHA256(t, "swexuc453refebraXecujeruBraqAc4e");
-            //var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-            $.ajax({
-                url: "v101/qplay/checkAppVersion?package_name=benq.qplay&device_type=android&version_code=101",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data:{},
-                beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "Moses824");//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
-                    request.setRequestHeader("signature-time", "1467699291");
-                },
-                success: function (d, status, xhr) {
-                    alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
-                                            + "download_url" + d.content.download_url);
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        }
-        
-        var getAppList = function () {
-            $.ajax({
-                url: "v101/qplay/getAppList?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data:{},
-                beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "5779f5cc97cf9");
-                },
-                success: function (d, status, xhr) {
-                    alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
-                            + "download_url" + d.content.download_url);
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        }
 
         var getMessageList = function () {
             $.ajax({

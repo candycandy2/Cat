@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\lib\CommonUtil;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 use Request;
@@ -13,8 +14,6 @@ use DB;
 
 class qplayController extends Controller
 {
-    static $TOKEN_VALIDATE_TIME = 2 * 86400;
-
     public function isRegister()
     {
         $Verify = new Verify();
@@ -410,27 +409,36 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $appKey = $request->header('App-Key');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
+
+        //通用api參數判斷
+        if(!array_key_exists('package_name', $input) || !array_key_exists('device_type', $input) || !array_key_exists('version_code', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
         $package_name = $input["package_name"];
         $device_type = $input['device_type'];
         $version_code = $input['version_code'];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $app_row_id = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                -> where('qp_project.app_key', "=", $appKey)
-                ->select('qp_app_head.row_id')->lists('qp_app_head.row_id');
+            $app_row_id = \DB::table("qp_app_head")
+                -> where('package_name', "=", $package_name)
+                -> select('row_id')
+                -> lists('row_id');
             $versionList = \DB::table("qp_app_version")
                 -> where('app_row_id', "=", $app_row_id)
-                ->where('device_type', '=', $device_type)
-                ->where('status', '=', 'ready')
+                -> where('device_type', '=', $device_type)
+                -> where('status', '=', 'ready')
                 -> select('version_code', 'url')->get();
             if(count($versionList) != 1)
             {
-                $status_code = ResultCode::_999999_unknownError;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>'Call Service Failed',
                     'content'=>'']);
             }
@@ -438,15 +446,13 @@ class qplayController extends Controller
             $versionLine = $versionList[0];
             if($versionLine->version_code == $version_code)
             {
-                $status_code = ResultCode::_000913_NotNeedUpdate;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>'App version is Nearest',
                     'content'=>'']);
             }
             else
             {
-                $status_code = ResultCode::_1_reponseSuccessful;
-                return response()->json(['result_code'=>$status_code,
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Need to update',
                     'content'=>array("version_code"=>$versionLine->version_code,
                         'download_url'=>$versionLine->url)]);
@@ -454,8 +460,8 @@ class qplayController extends Controller
         }
         else
         {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
                 'content'=>'']);
         }
     }
@@ -463,51 +469,36 @@ class qplayController extends Controller
     public function getAppList()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $appKey = $request->header('App-Key');
-        $token = $request->header('token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
-        $uuid = $input["uuid"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+        $request = Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input))
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $token = $request->header('token');
+        $uuid = $input["uuid"];
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
-                    'content'=>'']);
-            }
 
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
-            }
+                $registerInfo = \DB::table("qp_register")
+                    -> where('uuid', "=", $uuid)
+                    -> select('uuid', 'device_type')->get();
+                $device_type = $registerInfo[0]->device_type;
 
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
-            {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
+                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
 
-            $registerInfo = \DB::table("qp_register")
-                -> where('uuid', "=", $uuid)
-                -> select('uuid', 'device_type')->get();
-            $device_type = $registerInfo[0]->device_type;
-
-            $sql = <<<SQL
+                $sql = <<<SQL
 select h.row_id as app_id, p.app_key as app_code,
 h.package_name, c.row_id as category_id, c.app_category,
 v.version_code as version, v.version_name,
@@ -529,90 +520,102 @@ select row_id from qp_app_head where row_id in (
 and version_code is not null
 SQL;
 
-            $appDataList = DB::select($sql, [':id1'=>$userList[0]->row_id,
-                    ':id2'=>$userList[0]->row_id,
-                    ':device_type'=>$device_type,
-                    ':id3'=>$userList[0]->row_id]
+                $appDataList = DB::select($sql, [':id1'=>$userInfo->row_id,
+                        ':id2'=>$userInfo->row_id,
+                        ':device_type'=>$device_type,
+                        ':id3'=>$userInfo->row_id]
                 );
 
-            $app_list = array();
-            $categoryIdListStr = "";
-            $appIdListStr = "";
-            foreach ($appDataList as $appData)
-            {
-                $app = array('app_id'=>$appData->app_id,
-                    'app_code'=>$appData->app_code,
-                    'package_name'=>$appData->package_name,
-                    'app_category'=>$appData->app_category,
-                    'version'=>$appData->version,
-                    'version_name'=>$appData->version_name,
-                    'security_level'=>$appData->security_level,
-                    'avg_score'=>$appData->avg_score,
-                    'user_score'=>$appData->user_score,
-                    'sequence'=>$appData->sequence,
-                    'url'=>$appData->url,
-                    'icon_url'=>$appData->icon_url
+                $app_list = array();
+                $categoryIdListStr = "";
+                $appIdListStr = "";
+                foreach ($appDataList as $appData)
+                {
+                    $app = array('app_id'=>$appData->app_id,
+                        'app_code'=>$appData->app_code,
+                        'package_name'=>$appData->package_name,
+                        'app_category'=>$appData->app_category,
+                        'version'=>$appData->version,
+                        'version_name'=>$appData->version_name,
+                        'security_level'=>$appData->security_level,
+                        'avg_score'=>$appData->avg_score,
+                        'user_score'=>$appData->user_score,
+                        'sequence'=>$appData->sequence,
+                        'url'=>$appData->url,
+                        'icon_url'=>$appData->icon_url
                     );
-                $categoryIdListStr = $categoryIdListStr.$appData->category_id.",";
-                $appIdListStr = $appIdListStr.$appData->app_id.",";
-                array_push($app_list, $app);
-            }
+                    $categoryIdListStr = $categoryIdListStr.$appData->category_id.",";
+                    $appIdListStr = $appIdListStr.$appData->app_id.",";
+                    array_push($app_list, $app);
+                }
 
-            $app_category_list = array();
-            $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
-            $sql = <<<SQL
+                $app_category_list = array();
+                $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
+                $sql = <<<SQL
 select row_id as category_id, app_category, sequence from qp_app_category
 where row_id in (:idList)
 SQL;
-            $categoryDataList = DB::select($sql, [':idList'=>$categoryIdListStr]);
-            foreach ($categoryDataList as $categoryData)
-            {
-                $category = array('category_id'=>$categoryData->category_id,
-                    'app_category'=>$categoryData->app_category,
-                    'sequence'=>$categoryData->sequence
-                );
-                array_push($app_category_list, $category);
-            }
+                $categoryDataList = DB::select($sql, [':idList'=>$categoryIdListStr]);
+                foreach ($categoryDataList as $categoryData)
+                {
+                    $category = array('category_id'=>$categoryData->category_id,
+                        'app_category'=>$categoryData->app_category,
+                        'sequence'=>$categoryData->sequence
+                    );
+                    array_push($app_category_list, $category);
+                }
 
-            $multi_lang = array();
-            $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-            $sql = <<<SQL
+                $multi_lang = array();
+                $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
+                $sql = <<<SQL
 select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, 
 line.app_summary, line.app_description 
 from qp_app_line line, qp_language lang
 where line.lang_row_id = lang.row_id
 and line.app_row_id in (:idList)
 SQL;
-            $langDataList = DB::select($sql, [':idList'=>$appIdListStr]);
-            foreach ($langDataList as $langData)
-            {
+                $langDataList = DB::select($sql, [':idList'=>$appIdListStr]);
+                foreach ($langDataList as $langData)
+                {
 
-                $appId = $langData->app_row_id;
-                $langId = $langData->lang_id;
+                    $appId = $langData->app_row_id;
+                    $langId = $langData->lang_id;
 
-                $picList = \DB::table("qp_app_pic")->where('app_row_id', '=', $appId)
-                    ->where('lang_row_id', '=', $langId)->select('pic_type', 'pic_url', 'sequence_by_type')->get();
+                    $picList = \DB::table("qp_app_pic")->where('app_row_id', '=', $appId)
+                        ->where('lang_row_id', '=', $langId)->select('pic_type', 'pic_url', 'sequence_by_type')->get();
 
-                $lang = array('lang'=>$langData->lang,
-                    'app_name'=>$langData->app_name,
-                    'app_summary'=>$langData->app_summary,
-                    'app_description'=>$langData->app_description,
-                    'pic_list'=>$picList
-                );
+                    $lang = array('lang'=>$langData->lang,
+                        'app_name'=>$langData->app_name,
+                        'app_summary'=>$langData->app_summary,
+                        'app_description'=>$langData->app_description,
+                        'pic_list'=>$picList
+                    );
 
-                array_push($multi_lang, $lang);
+                    array_push($multi_lang, $lang);
+                }
+
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Call Service Successed',
+                    'token_valid'=>$verifyResult["token_valid_date"],
+                    'content'=>array(
+                        'app_category_list'=>$app_category_list,
+                        'app_list'=>$app_list,
+                        'multi_lang'=>$multi_lang)  //TODO
+                ]);
             }
-
-
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Successed',
-                'token_valid'=>$token_valid_date,
-                'content'=>array(
-                    'app_category_list'=>$app_category_list,
-                    'app_list'=>$app_list,
-                    'multi_lang'=>$multi_lang)  //TODO
-            ]);
-
+            else
+            {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
+                    'content'=>'']);
+            }
+        }
+        else
+        {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 

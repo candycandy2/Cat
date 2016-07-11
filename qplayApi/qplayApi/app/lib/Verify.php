@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Input;
 
 class Verify
 {
+    static $TOKEN_VALIDATE_TIME = 2 * 86400;  //TODO 未来从DB取
+
     /**
      * 1. 確認傳送資料是否為json
      *     Accept: application/json
@@ -74,6 +76,42 @@ class Verify
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
+    public static function verifyToken($uuid, $token) {
+        if($token == null) {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=> "傳入參數不足或傳入參數格式錯誤");
+        }
+
+        $sessionList = \DB::table("qp_session")
+            -> where('uuid', "=", $uuid)
+            -> where('token', '=', $token)
+            -> select('token_valid_date')->get();
+        if(count($sessionList) < 1)
+        {
+            return array("code"=>ResultCode::_000908_tokenInvalid,
+                "message"=> "token已经失效");
+        }
+
+        $token_valid_date = $sessionList[0]->token_valid_date;
+        $ts = time() - $token_valid_date; //strtotime($token_valid_date);
+        if($ts > Verify::$TOKEN_VALIDATE_TIME)
+        {
+            return array("code"=>ResultCode::_000907_tokenOverdue,
+                "message"=> "token过期");
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "token_valid_date"=>$token_valid_date,
             "message"=>"");
     }
 
