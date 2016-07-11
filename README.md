@@ -30,6 +30,16 @@ http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
 3. adb  tool  C:\Users\user\AppData\Local\Android\sdk\platform-tools
 4. keytool and jarsigner tool C:\Program Files\Java\jdk1.7.0_79\bin
  
+## iOS BUILD
+1. 登記該裝置的UUID - AD_HOC 才需要
+2. 刪除舊的, 新增iOS AD_HOC Distribution Profile - 綁定裝置UUID和APP ID
+4. xCode\Preferences\Accounts\...account\View Details... - 下載2.
+5. 到下面目錄找到4. ~/Library/MobileDevice/Provisioning\ Profiles/
+ - ex: /Users/faulfish/Library/MobileDevice/Provisioning\ Profiles/c9e92498-4bb1-4f60-8dd0-379eb7cb5c50.mobileprovision
+6. 指定--codeSignIdentity	 --provisioningProfile https://cordova.apache.org/docs/en/latest/guide/platforms/ios/
+ - $ cordova build ios --release --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="c9e92498-4bb1-4f60-8dd0-379eb7cb5c50"
+ - 或 $ cordova build ios --release --device --buildConfig=build.json
+7. 附上2. 
 
 
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
