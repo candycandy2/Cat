@@ -40,6 +40,11 @@ http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
  - $ cordova build ios --release --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="c9e92498-4bb1-4f60-8dd0-379eb7cb5c50"
  - 或 $ cordova build ios --release --device --buildConfig=build.json
 7. 附上2. 
+![screen shot 2016-07-11 at 6 16 11 pm](https://cloud.githubusercontent.com/assets/1924451/16727899/f491260c-4795-11e6-91e1-db88dbc34fe8.png)
+![screen shot 2016-07-11 at 6 18 27 pm](https://cloud.githubusercontent.com/assets/1924451/16727903/f7d0644a-4795-11e6-820d-9183f5910574.png)
+![screen shot 2016-07-11 at 6 25 12 pm](https://cloud.githubusercontent.com/assets/1924451/16727917/051f7050-4796-11e6-9ef2-f1ccbf02d49f.png)
+![screen shot 2016-07-11 at 6 24 36 pm](https://cloud.githubusercontent.com/assets/1924451/16727908/fcbbd534-4795-11e6-9641-a3a15c3667a0.png)
+![screen shot 2016-07-11 at 6 24 48 pm](https://cloud.githubusercontent.com/assets/1924451/16727912/ffc915c0-4795-11e6-8e20-7e285c334fd5.png)
 
 
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
