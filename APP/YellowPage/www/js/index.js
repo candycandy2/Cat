@@ -186,6 +186,13 @@ $(function() {
         $('#employee-data').listview('refresh'); 
       }
     }
+    
+    $("#cleanquery").click(function() {
+      $('#CName').val("");
+      $('#EName').val("");
+      $('#Department').val("");
+      $('#ExtNum').val("");
+    });
 });
 
 var app = {
