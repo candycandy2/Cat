@@ -152,7 +152,7 @@ $(function() {
         //  'Signature':'WsnMjPaCnVTJmUk0tIkeT9bEIng='
         //},
         url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData",
-        data: '{"strXml":"<LayoutHeader><Companny>Qisda</Companny><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
+        data: '{"strXml":"<LayoutHeader><Companny>' + jsCompany + '</Companny><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
         dataType: "json",
         cache: false,
         success: onSuccess
@@ -170,7 +170,7 @@ $(function() {
 
       var resultcode = jsonobj['ResultCode'];
       
-      if (resultcode == 1) {
+      if (resultcode == 1 || resultcode == 1906) {
         var dataContent = jsonobj['Content'];
         for (var i=0; i<dataContent.length; i++){
           $('#employee-data').append('<div class="ui-grid-c grid_style">');
