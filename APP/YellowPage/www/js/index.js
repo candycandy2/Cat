@@ -152,7 +152,7 @@ $(function() {
         //  'Signature':'WsnMjPaCnVTJmUk0tIkeT9bEIng='
         //},
         url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData",
-        data: '{"strXml":"<LayoutHeader><Companny>Qisda</Companny><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
+        data: '{"strXml":"<LayoutHeader><Companny>' + jsCompany + '</Companny><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
         dataType: "json",
         cache: false,
         success: onSuccess
@@ -165,10 +165,36 @@ $(function() {
 
     function onSuccess(data)
     {
-      $("#resultLog").html("Result: " + data);
+      var rawdata = data['d'];
+      var jsonobj = jQuery.parseJSON(rawdata);
+
+      var resultcode = jsonobj['ResultCode'];
+      
+      if (resultcode == 1 || resultcode == 1906) {
+        var dataContent = jsonobj['Content'];
+        for (var i=0; i<dataContent.length; i++){
+          $('#employee-data').append('<div class="ui-grid-c grid_style">');
+          var company = dataContent[i].Companny;
+          $('#employee-data').append('<li class="ui-block-a">' + company + '</li>');
+          var ename = dataContent[i].Name_EN;
+          $('#employee-data').append('<li class="ui-block-b">' + ename + '</li>');
+          var cname = dataContent[i].Name_CH;
+          $('#employee-data').append('<li class="ui-block-c">' + cname + '</li>');
+          var extnum = dataContent[i].Ext_No;
+          $('#employee-data').append('<li class="ui-block-d" style="float:right;margin-top:10px"><a href="#"></a></li>');
+        }
+        $('#employee-data').listview('refresh'); 
+      }
     }
+    
+    $("#cleanquery").click(function() {
+      $('#CName').val("");
+      $('#EName').val("");
+      $('#Department').val("");
+      $('#ExtNum').val("");
+    });
 });
- 
+
 var app = {
     // Application Constructor
     initialize: function() {

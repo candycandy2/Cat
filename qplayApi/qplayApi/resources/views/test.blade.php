@@ -26,53 +26,67 @@ FORM;
     {{--<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>--}}
     <form action="v101/qplay/getSecturityList" method="POST">
         <input type="hidden" name="_token" value="{{$csrf_token}}">
-        <input type="button" value="getSecturityList" onclick="getSecturityList()">
-        <input type="button" value="register" onclick="register()">
+
         <input type="button" value="isRegister" onclick="isRegister()">
+        <input type="button" value="register" onclick="register()">
+        <br/><br/>
+
         <input type="button" value="login" onclick="login()">
         <input type="button" value="logout" onclick="logout()">
+        <input type="button" value="getSecturityList" onclick="getSecturityList()">
+        <br/><br/>
+
         <input type="button" value="checkAppVersion" onclick="checkAppVersion()">
         <input type="button" value="getAppList" onclick="getAppList()">
+        <br/><br/>
+
         <input type="button" value="getMessageList" onclick="getMessageList()">
+        <input type="button" value="getMessageDetail" onclick="getMessageDetail()">
+        <input type="button" value="updateMessage" onclick="updateMessage()">
+        <br/><br/>
+
+        <input type="button" value="sendPushToken" onclick="sendPushToken()">
+        <input type="button" value="renewToken" onclick="renewToken()">
         <input type="submit" value="Test">
 
         <div id="result_content"></div>
     </form>
     <script>
         var sectoryKey = 'swexuc453refebraXecujeruBraqAc4e';
+        var registerUUID = "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20";
 
-        var getSecturityList = function() {
+        var isRegister = function () {
             $.ajax({
-                url: "v101/qplay/getSecturityList",
+                url: "v101/qplay/isRegister?lang=en-us&uuid=" + registerUUID,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("security_level:" +  d.security_level + "<br/>"
-                            + "content: " + d.content);
+                    $("#result_content").html("is_register: " + d.content.is_register);
                 },
                 error: function (e) {
                     alert(e);
                 }
             });
-        };
+        }
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?device_type=android&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + registerUUID,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "99999");
+                    request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "Qisda");
@@ -91,39 +105,17 @@ FORM;
                 }
             });
         }
-        
-        var isRegister = function () {
-            $.ajax({
-                url: "v101/qplay/isRegister?uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data:{},
-                beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "9999999");
-                    request.setRequestHeader("signature-time", "1000000000");
-                },
-                success: function (d, status, xhr) {
-                    alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("is_register: " + d.content.is_register);
-                },
-                error: function (e) {
-                    alert(e);
-                }
-            });
-        }
 
         var login = function () {
             $.ajax({
-                url: "v101/qplay/login?uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/login?lang=en-us&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "99999");
+                    request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "Qisda");
@@ -146,14 +138,14 @@ FORM;
         
         var logout = function () {
             $.ajax({
-                url: "v101/qplay/logout?loginid=Moses.Zhu&domain=Qisda&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/logout?lang=en-us&loginid=Moses.Zhu&domain=QCS&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "99999");
+                    request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
                 success: function (d, status, xhr) {
@@ -165,43 +157,105 @@ FORM;
                 }
             });
         }
-        
+
         var checkAppVersion = function () {
-            var t = Math.round(new Date().getTime()/1000);
-            var hash = CryptoJS.HmacSHA256(t, "swexuc453refebraXecujeruBraqAc4e");
-            var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
             $.ajax({
-                url: "v101/qplay/checkAppVersion?package_name=benq.qplay&device_type=android&vension_code=101",
+                url: "v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=101",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", hashInBase64);
-                    request.setRequestHeader("signature-time", t);
+                    request.setRequestHeader("signature", "Moses824");//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
+                    request.setRequestHeader("signature-time", "1467699291");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
                     $("#result_content").html("version_code:" + d.content.version_code + "</br>"
-                                            + "download_url" + d.content.download_url);
+                            + "download_url" + d.content.download_url);
                 },
                 error: function (e) {
                     alert(e);
                 }
             });
         }
-        
+
         var getAppList = function () {
             $.ajax({
-                url: "v101/qplay/getAppList?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                url: "v101/qplay/getAppList?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "99999");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "5783536f4016a"); //
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    var htmlStr = "app_category_list:<br/>";
+                    $.each(d.content.app_category_list, function(i, c) {
+                        htmlStr += "category_id:[" + c.category_id + "], ";
+                        htmlStr += "app_category:[" + c.app_category + "], ";
+                        htmlStr += "sequence:[" + c.sequence + "]<br/>";
+                    });
+                    htmlStr += "app_list:<br/>";
+                    $.each(d.content.app_list, function(i, a) {
+                        htmlStr += "app_code:[" + a.app_code + "], ";
+                        htmlStr += "package_name:[" + a.package_name + "], ";
+                        htmlStr += "version:[" + a.version + "]<br/>";
+                    });
+                    htmlStr += "multi_lang:<br/>";
+                    $.each(d.content.multi_lang, function(i, m) {
+                        htmlStr += "lang:[" + m.lang + "], ";
+                        htmlStr += "app_name:[" + m.app_name + "], ";
+                        htmlStr += "pic_list:[" + m.pic_list + "], ";
+                        htmlStr += "version:[" + m.version + "]<br/>";
+                    });
+                    $("#result_content").html(htmlStr);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
+        var getSecturityList = function() {
+            $.ajax({
+                url: "v101/qplay/getSecturityList",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("security_level:" +  d.security_level + "<br/>"
+                            + "content: " + d.content);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        };
+
+        var getMessageList = function () {
+            $.ajax({
+                url: "v101/qplay/getMessageList?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "5779f5cc97cf9");
                 },
@@ -216,16 +270,16 @@ FORM;
             });
         }
 
-        var getMessageList = function () {
+        var getMessageDetail = function () {
             $.ajax({
-                url: "v101/qplay/getMessageList?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                url: "v101/qplay/getMessageDetail?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&message_row_id=1",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
-                    request.setRequestHeader("signature", "99999");
+                    request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "5779f5cc97cf9");
                 },
@@ -239,6 +293,80 @@ FORM;
                 }
             });
         }
+
+        var updateMessage = function () {
+            $.ajax({
+                url: "v101/qplay/updateMessage?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&message_row_id=1&message_type=news&status=read",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "5779f5cc97cf9");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
+                            + "download_url" + d.content.download_url);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
+        var sendPushToken = function () {
+            $.ajax({
+                url: "v101/qplay/sendPushToken?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&app_key=qplay&device_type=android",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "5779f5cc97cf9");
+                    request.setRequestHeader("push-token", "test_token");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
+                            + "download_url" + d.content.download_url);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
+        var renewToken = function () {
+            $.ajax({
+                url: "v101/qplay/renewToken?uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "577ca0d79cf67");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
+                            + "download_url" + d.content.download_url);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
     </script>
 @endsection
 

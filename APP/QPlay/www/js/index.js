@@ -130,14 +130,14 @@
       parentElement.textContent = 'supported battery';//background-color:#333333;
     } else {
       // not-supported
-      parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
-      parentElement.textContent = 'not-supported battery';
+      //parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
+      //parentElement.textContent = 'not-supported battery';
     }
     parentElement = document.getElementById("testApplicationCache");
     if (Modernizr.applicationcache) {
       // supported
-      parentElement.setAttribute('style', 'display:block;');
-      parentElement.textContent = 'supported applicationcache';
+      //parentElement.setAttribute('style', 'display:block;');
+      //parentElement.textContent = 'supported applicationcache';
     } else {
       // not-supported
       parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
@@ -188,17 +188,59 @@ var app = {
             //StatusBar.backgroundColorByName("purple");
             StatusBar.hide();
         }
+
+        app.changeLevel(1);
+        document.addEventListener("resume", app.resumeCheckLevel);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+        //var listeningElement = parentElement.querySelector('.listening');
+        //var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        //listeningElement.setAttribute('style', 'display:none;');
+        //receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+    //setSecurity
+    setSecurity: function(){
+        var securityList = {
+            level: 2,
+            Navigations: [
+                "*://*.baidu.com/*",
+                "*://*.qq.com/*"
+            ],
+            Intents: [
+                "tel:*",
+                "sms:*",
+                "mailto:*",
+                "geo:*"
+            ],
+            Requests: [
+                "*://*.baidu.com/*"
+            ]
+        };
+        window.plugins.qsecurity.setWhiteList(securityList,app.success,app.error);
+    },
+    changeLevel: function(level){
+        window.plugins.qsecurity.changeLevel(level,app.success,app.error);
+    },
+    resumeCheckLevel: function(){
+        window.plugins.qsecurity.resumeCheckLevel(app.securityLevel,app.error);
+    },
+    securityLevel: function(rs){
+        if(rs==1){
+            alert("Level: " + rs + "check login: need implement");
+        }else{
+            alert("Level: " + rs);
+        }
+    },
+    success: function(){
+        alert("success!");
+    },
+    error: function(){
+        alert("error!");
     }
 };
 
