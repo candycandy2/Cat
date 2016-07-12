@@ -17,6 +17,14 @@ http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
 2. plugin 使用自己建立的plugin
 3. plugin 支援 iOS swift 的方法
 
+目前運行版本, 更新的版本為驗證過, 請確認所有功能正常再更新
+- $ cordova --version
+- 6.1.1
+- $ cordova platform
+- Installed platforms:
+  - android 5.2.0
+  - ios 4.1.1
+
 目錄結構
 - /componentapp  …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
 - /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
