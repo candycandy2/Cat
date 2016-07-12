@@ -10,13 +10,6 @@ Domain knowledge
  - http://huangxuan.me/js-module-7day/#/
  - http://blog.csdn.net/enlyhua/article/category/5022771
 
-http://moduscreate.com/writing-a-cordova-plugin-in-swift-for-ios/
-這個網站提供
-
-1. plugin 建立的方法
-2. plugin 使用自己建立的plugin
-3. plugin 支援 iOS swift 的方法
-
 目前運行版本, 更新的版本為驗證過, 請確認所有功能正常再更新
 - $ cordova --version
 - 6.1.1
