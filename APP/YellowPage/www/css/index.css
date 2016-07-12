@@ -41,7 +41,7 @@ body {
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
+    text-transform:capitalize;
     width:100%;
 }
 
@@ -112,4 +112,64 @@ h1 {
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
+}
+
+.header_style {
+    overflow:hidden;
+    background-color:#4B0082;
+    color:white;
+    border-style:none;
+    line-height:2.0;
+}
+
+.label_style {
+    width:120px;
+    position:absolute;
+    text-align:left;
+}
+
+.dropbox_style {
+    margin-left:120px;
+    width:190px;
+}
+
+.editbox_style {
+    margin-left:120px;
+    width:185px;
+}
+
+.custom_navbar ul li a {
+    background:#4B0082 !important; 
+    color:white !important;
+    border-style:none;
+    font-size:large !important;
+}
+
+.list_divider_style {
+    background-color:#E0E0FF;
+    line-height:2.7;
+}
+
+.grid_style {
+    line-height:3.0;
+}
+
+.ui-grid-c>.ui-block-a {
+    margin-left:10px;
+    margin-right:-10px;
+}
+
+.ui-grid-c>.ui-block-b {
+    margin-left:10px;
+    margin-right:-10px;
+}
+
+.ui-grid-c>.ui-block-c {
+    margin-left:40px;
+    margin-right:-40px;
+}
+
+.ui-grid-c>.ui-block-d {
+    margin-left:40px;
+    margin-right:-40px;
 }

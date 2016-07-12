@@ -21,12 +21,42 @@
     var owl = $('#applist1');
 
     $('#applist1').owlCarousel({
-        items:4,
+        stagePadding: 50,
         loop:false,
-        margin:10
+        margin:10,
+        nav:false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
     });
 
     $('#applist2').owlCarousel({
+        stagePadding: 50,
+        loop:false,
+        margin:10,
+        nav:false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
+    });
+
+    $('#applist3').owlCarousel({
         stagePadding: 50,
         loop:false,
         margin:10,
@@ -113,7 +143,6 @@
       parentElement.setAttribute('style', 'display:block;background-color:#FF3333;');
       parentElement.textContent = 'not-supported applicationcache';
     }
-
  });
 
  $( document ).on( "click", ".show-page-loading-msg", function() {
@@ -153,6 +182,12 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        StatusBar.show();
+        if (cordova.platformId == 'android') {
+            //StatusBar.backgroundColorByName("purple");
+            StatusBar.hide();
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

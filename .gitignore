@@ -21,6 +21,29 @@ TemplateCordovaAPP/platforms/ios/*/xcuserdata
 TemplateCordovaAPP/platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/
 TemplateCordovaAPP/platforms/ios/*/project.xcworkspace
 
+# Non-project-specific build files:
+componentapp/platforms/android/build.xml
+componentapp/platforms/android/local.properties
+componentapp/platforms/android/gradlew
+componentapp/platforms/android/gradlew.bat
+componentapp/platforms/android/.gradle
+componentapp/platforms/android/.idea
+componentapp/platforms/android/*/*.iml
+componentapp/platforms/android/*.iml
+componentapp/platforms/android/gradle.properties
+# Ant builds
+componentapp/platforms/android/ant-build
+componentapp/platforms/android/ant-gen
+# Eclipse builds
+componentapp/platforms/android/gen
+componentapp/platforms/android/out
+# Gradle builds
+componentapp/platforms/android/*/build
+#ios
+componentapp/platforms/ios/*/xcuserdata
+componentapp/platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/
+componentapp/platforms/ios/*/project.xcworkspace
+
 APP/*/hooks/
 APP/*/platforms/
 APP/*/plugins/

@@ -25,16 +25,12 @@ qsecurity.prototype.setWhiteList = function(options, callback, error_callback) {
         }
     };
 
-    exec(_callback,_error_callback, "QSecurityPlugin", "setWhitelist", [config]);
+    Cordova.exec(_callback,_error_callback, "QSecurityPlugin", "setWhitelist", [config]);
 }
 
-qsecurity.prototype.changeLevel = function(options, callback, error_callback) {
-    options || (options = {});
-    var scope = options.scope || null;
-
-    var config = {
-        level: options.level || '3',
-    };
+qsecurity.prototype.changeLevel = function(level, callback, error_callback) {
+	var scope = [];
+    var config = level || 3;
 
     var _callback = function() {
         if(typeof callback == 'function') {
@@ -48,7 +44,7 @@ qsecurity.prototype.changeLevel = function(options, callback, error_callback) {
         }
     };
 
-    exec(_callback,_error_callback, "QSecurityPlugin", "changeLevel", [config]);
+    Cordova.exec(_callback,_error_callback, "QSecurityPlugin", "changeLevel", [config]);
 }
 
 qsecurity.prototype.resumeCheckLevel = function(callback, error_callback) {
@@ -67,7 +63,7 @@ qsecurity.prototype.resumeCheckLevel = function(callback, error_callback) {
         }
     };
 
-    exec(_callback,_error_callback, "QSecurityPlugin", "resumeCheckLevel", []);
+    Cordova.exec(_callback,_error_callback, "QSecurityPlugin", "resumeCheckLevel", []);
 }
 
 

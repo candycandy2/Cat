@@ -131,6 +131,43 @@
  .on( "click", ".hide-page-loading-msg", function() {
      $.mobile.loading( "hide" );
  });
+
+$(function() {
+    $("#callAjax").click(function() {
+      var jsCompany = document.getElementById("Company").value;
+      var jsCName = document.getElementById("CName").value;
+      var jsEName = document.getElementById("EName").value;
+      var jsDepartment = document.getElementById("Department").value;
+      var jsExtNum = document.getElementById("ExtNum").value;
+      //var jsurl = "http://mproject_api.benq.com/v101/yellowpage/QueryEmployeeData?lang=en-us&Company=" + jsCompany + "&Name_CH=" + jsCName + "&Name_EN=" + jsEName + "&Department=" + jsDepartment + "&Ext_No=" + jsExtNum;
+      $.ajax({
+        //type: "GET",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: jsurl,
+        //headers: {
+        //  'Content-Type': 'json',
+        //  'App-Key':'yellowpage',
+        //  'Signature-Time':'1458900578',
+        //  'Signature':'WsnMjPaCnVTJmUk0tIkeT9bEIng='
+        //},
+        url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData",
+        data: '{"strXml":"<LayoutHeader><Companny>Qisda</Companny><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
+        dataType: "json",
+        cache: false,
+        success: onSuccess
+      });
+    });
+    
+    $("#resultLog").ajaxError(function(event, request, settings, exception) {
+      $("#resultLog").html("Error Calling: " + settings.url + "<br />HTTP Code: " + request.status);
+    });
+
+    function onSuccess(data)
+    {
+      $("#resultLog").html("Result: " + data);
+    }
+});
  
 var app = {
     // Application Constructor
