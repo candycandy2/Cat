@@ -25,7 +25,7 @@ qsecurity.prototype.setWhiteList = function(options, callback, error_callback) {
         }
     };
 
-    Cordova.exec(_callback,_error_callback, "QSecurityPlugin", "setWhitelist", [config]);
+    Cordova.exec(_callback,_error_callback, "QSecurityPlugin", "setWhiteList", [config]);
 }
 
 qsecurity.prototype.changeLevel = function(level, callback, error_callback) {
