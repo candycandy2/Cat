@@ -1,14 +1,13 @@
-# EnterpriseAPPPlatform
-=======================
-A platform for enterprise app store, it include a web site, store app, and sample apps, both iOS and android
-The MRS include Item A, B, C
+# 企業運作平台
+## 讓開發安全可靠好用的APP變得很容易
 
-Domain knowledge
- - http://demos.jquerymobile.com/1.4.5/
- - http://www.owlcarousel.owlgraphic.com
- - http://cordova.apache.org
- - http://huangxuan.me/js-module-7day/#/
- - http://blog.csdn.net/enlyhua/article/category/5022771
+使用WEB為主要開發環境, 只要你會寫網頁, 就可以開發APP
+
+### 開發完成的Plugin
+1. [qsecurity-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qsecurity-plugin)
+
+### 開發中Plugin
+1. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
 
 目前運行版本, 更新的版本為驗證過, 請確認所有功能正常再更新
 - $ cordova --version
