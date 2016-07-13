@@ -67,7 +67,6 @@
     function callback(event) {
 
         $( "#dialog" ).dialog( "open" );
-
         // Provided by the core
         var element   = event.target;         // DOM element, in this example .owl-carousel
         var name      = event.type;           // Name of the event, in this example dragged
@@ -141,6 +140,13 @@ $(function() {
       var jsExtNum = document.getElementById("ExtNum").value;
       //var jsurl = "http://mproject_api.benq.com/v101/yellowpage/QueryEmployeeData?lang=en-us&Company=" + jsCompany + "&Name_CH=" + jsCName + "&Name_EN=" + jsEName + "&Department=" + jsDepartment + "&Ext_No=" + jsExtNum;
 
+      $('#employee-data').empty();
+      $('#employee-data').append('<div class="ui-grid-c grid_style">');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-a">Company</li>');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-b">E.Name</li>');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-c">C.Name</li>');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-d">Detail</li>');
+      
       $.ajax({
         //type: "GET",
         type: "POST",
