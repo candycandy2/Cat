@@ -403,14 +403,23 @@ FORM;
         }
 
         var sendPushMessage = function () {
-            var mydata = {message_title:"System Announcement",message_type:"event",message_text:"system is down",message_html:"",message_url:"",message_source:"Oracle ERP",source_user_id:"benq\\steven.yan",destination_user_id:{user_id:"benq\\steven.yan",user_id:"qisda\\eee.tsai"}};
-            //mydata = {name:"moses",age:"31"};
+            var mydata = '{"message_title":"System Announcement",' +
+                    '"message_type":"event",' +
+                    '"message_text":"system is down",' +
+                    '"message_html":"",' +
+                    '"message_url":"",' +
+                    '"message_source":"Oracle ERP",' +
+                    '"source_user_id":"QGROUP\\\\Moses.Zhu",' +
+                    '"destination_user_id":["QGROUP\\\\Moses.Zhu","QGROUP\\\\Tim.Zhang"]' +
+                    '}';
+//            mydata = '{"first name":"moseszhu",' +
+//                    '"age":"31"}';
 
             $.ajax({
                 url: "v101/qplay/sendPushMessage?lang=en-us&app_key=qplay&need_push=Y",
                 dataType: "json",
                 type: "POST",
-                contentType: "application/json;charset=utf-8",
+                contentType: "application/json",
                 data: mydata,
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
