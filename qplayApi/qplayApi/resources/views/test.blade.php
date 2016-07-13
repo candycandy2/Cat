@@ -52,6 +52,8 @@ FORM;
         <input type="button" value="sendPushMessage" onclick="sendPushMessage()">
         <br/><br/>
 
+        <a href="qplayauth_register" >Login</a>
+
         <form action="v101/qplay/sendPushMessage?lang=en-us&app_key=qplay&need_push=Y" method="POST">
             <input type="text" name="name" id="name" />
             <input type="submit" value="Test">
@@ -403,15 +405,24 @@ FORM;
         }
 
         var sendPushMessage = function () {
-            var mydata = '{"message_title":"System Announcement",' +
-                    '"message_type":"event",' +
-                    '"message_text":"system is down",' +
-                    '"message_html":"",' +
-                    '"message_url":"",' +
-                    '"message_source":"Oracle ERP",' +
-                    '"source_user_id":"QGROUP\\\\Moses.Zhu",' +
-                    '"destination_user_id":["QGROUP\\\\Moses.Zhu","QGROUP\\\\Tim.Zhang"]' +
-                    '}';
+//            var mydata = '{"message_title":"System Announcement",' +
+//                    '"message_type":"event",' +
+//                    '"message_text":"system is down",' +
+//                    '"message_html":"",' +
+//                    '"message_url":"",' +
+//                    '"message_source":"Oracle ERP",' +
+//                    '"source_user_id":"QGROUP\\\\Moses.Zhu",' +
+//                    '"destination_user_id":["QGROUP\\\\Moses.Zhu","QGROUP\\\\Tim.Zhang"]' +
+//                    '}';
+            var mydata = {message_title: "System Announcement",
+                        message_type: "event",
+                message_text: "system is down",
+                message_html: "",
+                message_url:"",
+                message_source:"Oracle ERP",
+                source_user_id:"Moses.Zhu",
+                destination_user_id:["Moses.Zhu","Tim.Zhang"]};
+            var mydataStr = $.toJSON(mydata);
 //            mydata = '{"first name":"moseszhu",' +
 //                    '"age":"31"}';
 
@@ -420,7 +431,7 @@ FORM;
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
-                data: mydata,
+                data: mydataStr,
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
