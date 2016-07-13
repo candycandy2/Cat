@@ -140,6 +140,7 @@ $(function() {
       var jsDepartment = document.getElementById("Department").value;
       var jsExtNum = document.getElementById("ExtNum").value;
       //var jsurl = "http://mproject_api.benq.com/v101/yellowpage/QueryEmployeeData?lang=en-us&Company=" + jsCompany + "&Name_CH=" + jsCName + "&Name_EN=" + jsEName + "&Department=" + jsDepartment + "&Ext_No=" + jsExtNum;
+
       $.ajax({
         //type: "GET",
         type: "POST",
@@ -152,7 +153,7 @@ $(function() {
         //  'Signature':'WsnMjPaCnVTJmUk0tIkeT9bEIng='
         //},
         url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData",
-        data: '{"strXml":"<LayoutHeader><Companny>' + jsCompany + '</Companny><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
+        data: '{"strXml":"<LayoutHeader><Company>' + jsCompany + '</Company><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
         dataType: "json",
         cache: false,
         success: onSuccess
@@ -174,7 +175,7 @@ $(function() {
         var dataContent = jsonobj['Content'];
         for (var i=0; i<dataContent.length; i++){
           $('#employee-data').append('<div class="ui-grid-c grid_style">');
-          var company = dataContent[i].Companny;
+          var company = dataContent[i].Company;
           $('#employee-data').append('<li class="ui-block-a">' + company + '</li>');
           var ename = dataContent[i].Name_EN;
           $('#employee-data').append('<li class="ui-block-b">' + ename + '</li>');
