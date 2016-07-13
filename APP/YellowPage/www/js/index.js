@@ -185,7 +185,7 @@ $(function() {
         }
         $('#employee-data').listview('refresh'); 
       }
-    }
+    };
     
     $("#cleanquery").click(function() {
       $('#CName').val("");
@@ -193,12 +193,15 @@ $(function() {
       $('#Department').val("");
       $('#ExtNum').val("");
     });
+    
+    
 });
 
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+        app.addCompanySelect();
     },
     // Bind Event Listeners
     //
@@ -224,7 +227,35 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-    }
+    },
+    // add compony option in dropbox
+    addCompanySelect: function()
+    {
+        $.ajax({
+          type: "POST",
+          contentType: "application/json; charset=utf-8",
+          url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData",
+          dataType: "json",
+          cache: false,
+          success: app.onSuccess
+      });
+    },    
+    onSuccess: function(data)
+    {
+      var rawdata = data['d'];
+      var jsonobj = jQuery.parseJSON(rawdata);
+      var companySelect = document.getElementById('Company');
+      
+      var resultcode = jsonobj['ResultCode'];
+      
+      if (resultcode == 1 || resultcode == 1906) {
+        var dataContent = jsonobj['Content'];
+        for (var i=2; i<dataContent.length; i++){ // ignore 0 and 1, 0: "All Company", 1: ""
+          var companyname = dataContent[i].CompanyName;
+          companySelect.options[companySelect.options.length] = new Option(companyname, companyname);
+        }
+      }
+    },
 };
 
 app.initialize();
