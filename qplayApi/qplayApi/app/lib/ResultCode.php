@@ -28,7 +28,13 @@ abstract class ResultCode
     const _000903_deviceHasRegistered = "000903"; //设备已经注册
     const _000904_loginUserNotMathRegistered = "000904"; //登录用户与设备认证时的用户不同
     const _000905_deviceNotRegistered = "000905"; //设备未认证
+    const _000907_tokenOverdue = "000907"; //Token过期
+    const _000908_tokenInvalid = "000908"; //Token失效
+    const _000909_appKeyNotExist = "000909"; //app key不存在
+    const _000912_userReceivePushMessageNotExist = "000912"; //接收推播用户不存在
+    const _000913_NotNeedUpdate = "000913"; //app无需更新
     const _000914_userWithoutRight = '000914';  //用户停权
+
 
 
 

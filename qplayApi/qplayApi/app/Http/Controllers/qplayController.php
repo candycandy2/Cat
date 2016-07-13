@@ -228,10 +228,9 @@ class qplayController extends Controller
             }
 
             //Check user password with LDAP
-            $LDAP_SERVER_IP = "";
-            $LDAP_SERVER_PORT = "";
-            //TODO for test: $ldapConnect = ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind= true;//TODO for test: @ldap_bind($ldapConnect, $loginid, $password);
+            $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+            $bind= @ldap_bind($ldapConnect, $loginid, $password);
             if(!$bind)
             {
                 return response()->json(['result_code'=>ResultCode::_000902_passwordError,
@@ -276,7 +275,7 @@ class qplayController extends Controller
                         ->where('uuid', '=', $uuid)
                         ->update([
                         'token'=>$token,
-                        'token_valid_date'=>date('Y-m-d H:i:s',time()),
+                        'token_valid_date'=>time(),
                     ]);
                 }
                 else
@@ -499,7 +498,7 @@ class qplayController extends Controller
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
 
                 $sql = <<<SQL
-select h.row_id as app_id, p.app_key as app_code,
+select distinct h.row_id as app_id, p.app_key as app_code,
 h.package_name, c.row_id as category_id, c.app_category,
 v.version_code as version, v.version_name,
 h.security_level,h.avg_score, us.score as user_score,
@@ -622,42 +621,60 @@ SQL;
     public function getSecturityList()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
+        $verifyResult = $Verify->verify();
 
+        $input = Input::get();
         $request = Request::instance();
-        $appKey = $request->header('App-Key');
-        if ($status_code == ResultCode::_1_reponseSuccessful) {
-            $app_row_id = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                -> where('qp_project.app_key', "=", $appKey)
-                ->select('qp_app_head.row_id')->lists('qp_app_head.row_id');
 
-//            select * from qp_white_list where app_row_id = (
-//                select row_id from qp_app_head where project_row_id = (
-//                    select row_id from qp_project where app_key = 'qplay'
-//            ))
-            $whitelist = \DB::table("qp_white_list")
-                -> whereNull('deleted_at')
-                -> where('app_row_id', "=", $app_row_id)
-                -> select('allow_url')->get();
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || !array_key_exists('app_key', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
 
-//            select security_level from qp_app_head where project_row_id = (
-//                select row_id from qp_project where app_key = 'qplay')
-            $level = \DB::table("qp_app_head")->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                -> where('qp_project.app_key', "=", $appKey)
-                ->select('security_level')->lists('security_level');
+        $token = $request->header('token');
+        $uuid = $input['uuid'];
+        $appKey = $input['app_key'];
+
+        if ($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+            {
+                $app_row_id = \DB::table("qp_app_head")
+                    -> join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                    -> where('qp_project.app_key', "=", $appKey)
+                    -> select('qp_app_head.row_id')
+                    -> lists('qp_app_head.row_id');
+
+                $whitelist = \DB::table("qp_white_list")
+                    -> whereNull('deleted_at')
+                    -> where('app_row_id', "=", $app_row_id)
+                    -> select('allow_url')
+                    -> get();
+
+                $level = \DB::table("qp_app_head")
+                    -> join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                    -> where('qp_project.app_key', "=", $appKey)
+                    -> select('security_level')
+                    -> lists('security_level');
 
 
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Call Service Successed',
-                'content'=>json_encode($whitelist),
-                'security_level'=>$level[0],
-            ]);
-//            ->header("version", "1.0.1")
-//            ->header("name", "qplay")
-//            ->header("action", "getSecturityList");
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Call Service Successed',
+                    'content'=>json_encode($whitelist),
+                    'security_level'=>$level[0],
+                ]);
+            } else {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
+                    'content'=>'']);
+            }
         } else {
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Failed',
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
                 'content'=>'']);
         }
 
@@ -666,222 +683,255 @@ SQL;
     public function getMessageList()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $appKey = $request->header('App-Key');
-        $token = $request->header('token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
-        $uuid = $input["uuid"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+        $request = Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input))
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
-            {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
-                    'content'=>'']);
-            }
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
 
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
-            }
+        $token = $request->header('token');
+        $uuid = $input["uuid"];
 
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-            $project_id = \DB::table("qp_project")
-                -> where('app_key', "=", $appKey)
-                ->select('row_id')->lists('row_id');
+                $date_from = $verifyResult["last_message_time"];
+                if($date_from == null) {
+                    $date_from = 0;
+                }
+                $date_to = time();
+                $useUserDate = false;
 
-            $userId = $userList[0]->row_id;
-            $sql = <<<SQL
-select message_row_id, need_push, push_flag,
-			 read_time,deleted_at
-from qp_user_message where project_row_id = :pId1 and user_row_id = :uId1 and deleted_at != '0'
-union
-select message_row_id, need_push, push_flag,
-			 read_time,deleted_at
-from qp_role_message where project_row_id = :pId2 and role_row_id in (
-	select role_row_id from qp_user_role where user_row_id = :uId2
-) and deleted_at != '0'
+                $count_from = -1;
+                $count_to = -1;
+                if(array_key_exists('date_from', $input) && trim($input['date_from']) != "") {
+                    if(!array_key_exists('date_to', $input) || trim($input['date_to']) == "") {
+                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                            'message'=>'傳入參數不足或傳入參數格式錯誤',
+                            'content'=>'']);
+                    }
+                    $useUserDate = true;
+                    $date_from = $input['date_from'];
+                    $date_to = $input['date_to'];
+                    if($date_to < $date_from) {
+                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                            'message'=>'傳入參數不足或傳入參數格式錯誤',
+                            'content'=>'']);
+                    }
+
+                    if(array_key_exists('count_from', $input) && trim($input['count_from']) != "") {
+                        if(!array_key_exists('count_to', $input) || trim($input['count_to']) == "") {
+                            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                                'content'=>'']);
+                        }
+
+                        $count_from = $input['count_from'];
+                        $count_to = $input['count_to'];
+                        if($count_from < 1 || $count_to < 1 || $count_to > $count_from) {
+                            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                                'content'=>'']);
+                        }
+                    }
+                }
+
+
+                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+                $userId = $userInfo->row_id;
+
+                $sql = <<<SQL
+select distinct tt.message_row_id, 
+	m.message_type, m.message_text,
+  m.message_html, m.message_url,
+	if(tt.read_time > 0, 'Y', 'N') as 'read',
+  m.source_user_row_id as message_source, tt.read_time,
+  m.created_user as create_user, m.created_at as create_time
+from qp_message m 
+join
+(
+	select message_row_id, need_push, push_flag,
+			   read_time,deleted_at
+    from qp_user_message 
+   where user_row_id = 1 
+     and deleted_at = '0000-00-00 00:00:00'
+   union
+  select message_row_id, need_push, push_flag,
+			   read_time,deleted_at
+    from qp_role_message 
+   where role_row_id in (select role_row_id 
+                           from qp_user_role 
+                          where user_row_id = 1) 
+     and deleted_at = '0000-00-00 00:00:00'
+) as tt on tt.message_row_id = m.row_id
+and UNIX_TIMESTAMP(m.created_at) >= $date_from
+and UNIX_TIMESTAMP(m.created_at) <= $date_to
+order by m.created_at
 SQL;
-            $r = DB::select($sql, [':pId1'=>$project_id, ':pId2'=>$project_id,
-                        ':uId1'=>$userId, ':uId2'=>$userId,]);
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Successed',
-                'content'=>$r
-            ]);
+                $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId,]);
 
+                if($count_from >= 1) {
+                    array_slice($r, $count_from - 1, $count_to - $count_from + 1);
+                }
+
+                if(!$useUserDate) {
+                    \DB::table("qp_session")
+                        -> where('user_row_id', '=', $userId)
+                        -> where('uuid', '=', $uuid)
+                        -> update(['last_message_time'=>time()]);
+                }
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Call Service Successed',
+                    'token_valid'=>$verifyResult["token_valid_date"],
+                    'content'=>array('message_count'=> count($r),
+                        'message_list'=>$r)
+                ]);
+            } else {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
+                    'content'=>'']);
+            }
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 
     public function getMessageDetail()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $token = $request->header('token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
+        $request = Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || !array_key_exists('message_row_id', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $token = $request->header('token');
         $uuid = $input["uuid"];
         $message_row_id = $input["message_row_id"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
-            {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+                $msgDetail = \DB::table("qp_message")
+                    -> where('row_id', "=", $message_row_id)
+                    -> select('row_id', 'message_type', 'message_text', 'message_html', 'message_url', 'message_source', 'source_user_row_id')->get();
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Call Service Successed',
+                    'content'=>$msgDetail
+                ]);
+            } else {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
                     'content'=>'']);
             }
-
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
-            }
-
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
-            {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-
-            $msgDetail = \DB::table("qp_message")
-                -> where('row_id', "=", $message_row_id)
-                ->select('row_id', 'message_type', 'message_text', 'message_html', 'message_url', 'message_source', 'source_user_row_id')->get();
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Successed',
-                'content'=>$msgDetail
-            ]);
-
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 
     public function updateMessage()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $token = $request->header('token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
+        $request = Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || !array_key_exists('message_row_id', $input)
+            || !array_key_exists('message_type', $input) || !array_key_exists('status', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $token = $request->header('token');
         $uuid = $input["uuid"];
         $message_row_id = $input["message_row_id"];
         $message_type = $input["message_type"];
         $status = $input["status"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
-            {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
-                    'content'=>'']);
-            }
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+                if($status == 'read' && $message_type == "event") {
+                    \DB::table("qp_user_message")
+                        -> where('user_row_id', '=', $userInfo->row_id)
+                        -> where('message_row_id', '=', $message_row_id)
+                        -> update(['read_time'=>time()]);
+                }
 
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Call Service Successed',
+                    'content'=>''
+                ]);
+            } else {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
+                    'content'=>array('message_row_id' => $message_row_id)]);
             }
-
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
-            {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-
-            if($status == 'read') {
-                \DB::table("qp_user_message")->where('user_row_id', '=', $userList[0]->row_id)
-                    ->where('message_row_id', '=', $message_row_id)->update([
-                        'read_time'=>time()]);
-            }
-
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Call Service Successed',
-                'content'=>''
-            ]);
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 
     public function sendPushToken()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $token = $request->header('token');
-        $pushToken = $request->header('push-token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
+        $request = Request::instance();
+
+        $pushToken = $request->header('push-token');
+
+        //通用api參數判斷
+        if($pushToken == null || !array_key_exists('uuid', $input) || !array_key_exists('app_key', $input)
+            || !array_key_exists('device_type', $input))
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
         $uuid = $input["uuid"];
         $appKey = $input["app_key"];
         $deviceType = $input["device_type"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
+            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+            if($userInfo == null)
             {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
-                    'content'=>'']);
-            }
-
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
-            }
-
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
-            {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
+                return array("code"=>ResultCode::_000914_userWithoutRight,
+                    "message"=> "账号已被停权");
             }
 
             $uuidList = \DB::table("qp_register")
@@ -890,9 +940,8 @@ SQL;
                 -> select('uuid', 'row_id')->get();
             if(count($uuidList) < 1)
             {
-                $status_code = ResultCode::_000903_deviceHasRegistered;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Device not Registered',
+                return response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
+                    'message'=>'设备未注册',
                     'content'=>'']);
             }
 
@@ -900,7 +949,7 @@ SQL;
 
             $projectId = \DB::table("qp_project")
                 -> where('app_key', "=", $appKey)
-                ->select('row_id')->lists('row_id')[0];
+                -> select('row_id')->lists('row_id')[0];
 
             $existPushToken =  \DB::table("qp_push_token")
                     -> where('register_row_id', "=", $registerId)
@@ -925,122 +974,157 @@ SQL;
                     'device_type'=>$deviceType]);
             }
 
-            return response()->json(['result_code'=>$status_code,
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>'Call Service Successed',
-                'content'=>''
+                'content'=>array('uuid'=>$uuid)
             ]);
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 
     public function renewToken()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $token = $request->header('token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
-        $uuid = $input["uuid"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+        $request = Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input))
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
-            {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $token = $request->header('token');
+        $uuid = $input["uuid"];
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+                $token = uniqid();
+                $token_valid = time();
+                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+                \DB::table("qp_session")
+                    -> where('user_row_id', "=", $userInfo->row_id)
+                    -> where('uuid', "=", $uuid)
+                    -> update(['token'=>$token, 'token_valid_date'=>$token_valid]);
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Renew Successed',
+                    'token_valid'=>$token_valid,
+                    'content'=>array("uuid" => $uuid, "token"=>$token)
+                ]);
+            } else {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
                     'content'=>'']);
             }
-
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
-            }
-
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
-            {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-
-            $token = uniqid();
-            $token_valid = time();
-            \DB::table("qp_session")
-                -> where('user_row_id', "=", $userList[0]->row_id)
-                -> where('uuid', "=", $uuid)
-                ->update(['token'=>$token, 'token_valid_date'=>$token_valid]);
-
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Renew Successed',
-                'token_valid'=>$token_valid,
-                'content'=>array("uuid" => $uuid, "token"=>$token)
-            ]);
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $status_code = $Verify->verify();
-        $request = Request::instance();
-        $token = $request->header('token');
+        $verifyResult = $Verify->verify();
+
         $input = Input::get();
-        $uuid = $input["uuid"];
-        if($status_code == ResultCode::_1_reponseSuccessful)
+        $request = \Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('app_key', $input) || !array_key_exists('need_push', $input))
         {
-            $sessionList = \DB::table("qp_session")
-                -> where('uuid', "=", $uuid)
-                -> where('token', '=', $token)
-                -> select('token_valid_date')->get();
-            if(count($sessionList) < 1)
-            {
-                $status_code = ResultCode::_000908_tokenInvalid;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Invalid',
-                    'content'=>'']);
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $app_key = $input["app_key"];
+        $need_push = $input["need_push"];
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            //$message = file_get_contents('php://input');
+
+            $content = file_get_contents('php://input');//html_entity_decode($request->getContent());
+            //$content = iconv('GBK//IGNORE', 'UTF-8', $content);
+            $content = CommonUtil::prepareJSON($content);
+            if (\Request::isJson($content)) {
+                $jsonContent = json_decode($content, true);
+                $sourceUseId = $jsonContent['source_user_id'];
+                $userInfo = CommonUtil::getUserInfoByUserID($sourceUseId);
+                if($userInfo == null) {
+                    return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
+                        'message'=>"账号已被停权",
+                        'content'=>'']);
+                }
+
+                $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
+                if($projectInfo == null) {
+                    return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+                        'message'=>"app key不存在",
+                        'content'=>'']);
+                }
+
+                $destinationUserIdList = $jsonContent['destination_user_id'];
+                $destinationUserInfoList = array();
+                foreach ($destinationUserIdList as $destinationUserId)
+                {
+                    $destinationUserInfo = CommonUtil::getUserInfoByUserID($destinationUserId);
+                    if($destinationUserInfo == null) {
+                        return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
+                            'message'=>"接收推播用户不存在",
+                            'content'=>'']);
+                    }
+                    array_push($destinationUserInfoList, $destinationUserInfo);
+                }
+
+                $message_type = $jsonContent['message_type'];
+                $message_title = $jsonContent['message_title'];
+                $message_text = $jsonContent['message_text'];
+                $message_html = $jsonContent['message_html'];
+                $message_url = $jsonContent['message_url'];
+                $message_source = $jsonContent['message_source'];
+                $newMessageId = \DB::table("qp_message")
+                    -> insertGetId([
+                            'message_type'=>$message_type, 'message_title'=>$message_title,
+                            'message_text'=>$message_text, 'message_html'=>$message_html,
+                            'message_url'=>$message_url, 'message_source'=>$message_source,
+                            'source_user_row_id'=>$userInfo->row_id,'created_at'=>date('Y-m-d H:i:s',time())
+                        ]);
+
+                foreach ($destinationUserInfoList as $destinationUserInfo) {
+                    \DB::table("qp_user_message")
+                        -> insertGetId([
+                            'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
+                            'message_row_id'=>$newMessageId, 'need_push'=>$need_push,
+                            'push_flag'=>'0', 'created_at'=>date('Y-m-d H:i:s',time())
+                        ]);
+                }
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Send Push Message Successed',
+                    'content'=>array('jsonContent'=>count($destinationUserIdList),
+                        'content'=>$content)//json_encode($jsonContent)
+                ]);
+            } else {
+                return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                    "message"=>"Content-Type錯誤");
             }
-
-            $token_valid_date = $sessionList[0]->token_valid_date;
-            $ts = time() - strtotime($token_valid_date);
-            if($ts > qplayController::$TOKEN_VALIDATE_TIME)
-            {
-                $status_code = ResultCode::_000907_tokenOverdue;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Token Overdue',
-                    'content'=>'']);
-            }
-
-            $userList = DB::select('select * from qp_user where row_id = (select user_row_id from qp_register where uuid = :uuid)', [':uuid'=>$uuid]);
-            if(count($userList) < 1 || $userList[0]->status != "Y" || $userList[0]->resign != "N")
-            {
-                $status_code = ResultCode::_000914_userWithoutRight;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-
-            $token = uniqid();
-            $token_valid = time();
-            \DB::table("qp_session")
-                -> where('user_row_id', "=", $userList[0]->row_id)
-                -> where('uuid', "=", $uuid)
-                ->update(['token'=>$token, 'token_valid_date'=>$token_valid]);
-
-            return response()->json(['result_code'=>$status_code,
-                'message'=>'Renew Successed',
-                'token_valid'=>$token_valid,
-                'content'=>array("uuid" => $uuid, "token"=>$token)
-            ]);
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
         }
     }
 }

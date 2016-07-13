@@ -64,7 +64,7 @@ public class QSecurityPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if(action.equals("setWhitelist")){
+        if(action.equals("setWhiteList")){
             this.setSecurityList(args,callbackContext);
             return true;
         }else if (action.equals("resumeCheckLevel")){
