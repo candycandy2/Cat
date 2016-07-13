@@ -27,6 +27,7 @@ Route::any('/v101/qplay/getMessageDetail', 'qplayController@getMessageDetail');
 Route::any('/v101/qplay/updateMessage', 'qplayController@updateMessage');
 Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
 Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
+Route::post('/v101/qplay/sendPushMessage', 'qplayController@sendPushMessage');
 
 //for Test
 Route::any('/test', function() {
