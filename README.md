@@ -10,12 +10,22 @@
 1. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
 
 目前運行版本, 更新的版本為驗證過, 請確認所有功能正常再更新
-- $ cordova --version
-- 6.1.1
-- $ cordova platform
-- Installed platforms:
-  - android 5.2.0
-  - ios 4.1.1
+
+```
+$ cordova --version
+6.1.1
+FISH-Air:QPlay faulfish$ cordova platform
+Installed platforms:
+  android 5.2.0
+  ios 4.2.0
+FISH-Air:QPlay faulfish$ cordova plugins
+cordova-connectivity-monitor 1.2.2 "Connectivity Monitoring"
+cordova-plugin-dialogs 1.2.1 "Notification"
+cordova-plugin-network-information 1.2.1 "Network Information"
+cordova-plugin-qsecurity 1.0.0 "QSecurityPlugin"
+cordova-plugin-splashscreen 3.2.2 "Splashscreen"
+cordova-plugin-statusbar 2.1.3 "StatusBar"
+```
 
 目錄結構
 - /componentapp  …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
