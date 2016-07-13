@@ -103,10 +103,10 @@ class qplayController extends Controller
             }
 
             //Check user password with LDAP
-            $LDAP_SERVER_IP = "";
-            $LDAP_SERVER_PORT = "";
-            //TODO for test: $ldapConnect = ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind= true;//TODO for test: @ldap_bind($ldapConnect, $loginid, $password);
+            $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+            $userId = $domain . "\\" . $loginid;
+            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+            $bind = @ldap_bind($ldapConnect, $userId, $password);
             if(!$bind)
             {
                 return response()->json(['result_code'=>ResultCode::_000902_passwordError,
@@ -229,8 +229,9 @@ class qplayController extends Controller
 
             //Check user password with LDAP
             $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+            $userId = $domain . "\\" . $loginid;
             $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind= @ldap_bind($ldapConnect, $loginid, $password);
+            $bind = @ldap_bind($ldapConnect, $userId, $password);
             if(!$bind)
             {
                 return response()->json(['result_code'=>ResultCode::_000902_passwordError,
