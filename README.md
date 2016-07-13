@@ -18,6 +18,13 @@ FISH-Air:QPlay faulfish$ cordova platform
 Installed platforms:
   android 5.2.0
   ios 4.2.0
+FISH-Air:QPlay faulfish$ cordova plugins
+cordova-connectivity-monitor 1.2.2 "Connectivity Monitoring"
+cordova-plugin-dialogs 1.2.1 "Notification"
+cordova-plugin-network-information 1.2.1 "Network Information"
+cordova-plugin-qsecurity 1.0.0 "QSecurityPlugin"
+cordova-plugin-splashscreen 3.2.2 "Splashscreen"
+cordova-plugin-statusbar 2.1.3 "StatusBar"
 ```
 
 目錄結構
