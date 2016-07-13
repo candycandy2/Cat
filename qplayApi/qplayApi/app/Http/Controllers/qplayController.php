@@ -1054,12 +1054,67 @@ SQL;
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $content = html_entity_decode($request->getContent());
+            //$message = file_get_contents('php://input');
+
+            $content = file_get_contents('php://input');//html_entity_decode($request->getContent());
+            //$content = iconv('GBK//IGNORE', 'UTF-8', $content);
+            $content = CommonUtil::prepareJSON($content);
             if (\Request::isJson($content)) {
-                $jsonContent = var_dump(json_decode($content, true));
+                $jsonContent = json_decode($content, true);
+                $sourceUseId = $jsonContent['source_user_id'];
+                $userInfo = CommonUtil::getUserInfoByUserID($sourceUseId);
+                if($userInfo == null) {
+                    return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
+                        'message'=>"账号已被停权",
+                        'content'=>'']);
+                }
+
+                $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
+                if($projectInfo == null) {
+                    return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+                        'message'=>"app key不存在",
+                        'content'=>'']);
+                }
+
+                $destinationUserIdList = $jsonContent['destination_user_id'];
+                $destinationUserInfoList = array();
+                foreach ($destinationUserIdList as $destinationUserId)
+                {
+                    $destinationUserInfo = CommonUtil::getUserInfoByUserID($destinationUserId);
+                    if($destinationUserInfo == null) {
+                        return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
+                            'message'=>"接收推播用户不存在",
+                            'content'=>'']);
+                    }
+                    array_push($destinationUserInfoList, $destinationUserInfo);
+                }
+
+                $message_type = $jsonContent['message_type'];
+                $message_title = $jsonContent['message_title'];
+                $message_text = $jsonContent['message_text'];
+                $message_html = $jsonContent['message_html'];
+                $message_url = $jsonContent['message_url'];
+                $message_source = $jsonContent['message_source'];
+                $newMessageId = \DB::table("qp_message")
+                    -> insertGetId([
+                            'message_type'=>$message_type, 'message_title'=>$message_title,
+                            'message_text'=>$message_text, 'message_html'=>$message_html,
+                            'message_url'=>$message_url, 'message_source'=>$message_source,
+                            'source_user_row_id'=>$userInfo->row_id,'created_at'=>date('Y-m-d H:i:s',time())
+                        ]);
+
+                foreach ($destinationUserInfoList as $destinationUserInfo) {
+                    \DB::table("qp_user_message")
+                        -> insertGetId([
+                            'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
+                            'message_row_id'=>$newMessageId, 'need_push'=>$need_push,
+                            'push_flag'=>'0', 'created_at'=>date('Y-m-d H:i:s',time())
+                        ]);
+                }
+
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Send Push Message Successed',
-                    'content'=>array('jsonContent'=>$jsonContent['message_title'],
+                    'content'=>array('jsonContent'=>count($destinationUserIdList),
                         'content'=>$content)//json_encode($jsonContent)
                 ]);
             } else {
