@@ -131,8 +131,22 @@
      $.mobile.loading( "hide" );
  });
 
+ $(document).keypress(function(event){
+    if (event.keyCode == 13) // Enter == 13
+    {
+        //alert('You pressed a "enter" key in somewhere');
+        location.href = "#query_result_page";
+        window.callQueryEmployeeData();
+    }
+});
+
 $(function() {
     $("#callAjax").click(function() {
+        callQueryEmployeeData();
+    });
+    
+    window.callQueryEmployeeData = function()
+    {
       var jsCompany = document.getElementById("Company").value;
       var jsCName = document.getElementById("CName").value;
       var jsEName = document.getElementById("EName").value;
@@ -164,7 +178,7 @@ $(function() {
         cache: false,
         success: onSuccess
       });
-    });
+    };
     
     $("#resultLog").ajaxError(function(event, request, settings, exception) {
       $("#resultLog").html("Error Calling: " + settings.url + "<br />HTTP Code: " + request.status);
