@@ -127,18 +127,19 @@
              html: html
      });
  })
+ 
  .on( "click", ".hide-page-loading-msg", function() {
      $.mobile.loading( "hide" );
  });
 
- $(document).keypress(function(event){
-    if (event.keyCode == 13) // Enter == 13
+ $('#main_query_page').keypress(function(event){
+    if (event.keyCode == 13) // keyCode of 'Enter' key is 13
     {
         //alert('You pressed a "enter" key in somewhere');
         location.href = "#query_result_page";
         window.callQueryEmployeeData();
     }
-});
+ });
 
 $(function() {
     $("#callAjax").click(function() {
