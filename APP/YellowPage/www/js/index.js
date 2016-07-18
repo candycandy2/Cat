@@ -156,12 +156,12 @@ $(function() {
       //var jsurl = "http://mproject_api.benq.com/v101/yellowpage/QueryEmployeeData?lang=en-us&Company=" + jsCompany + "&Name_CH=" + jsCName + "&Name_EN=" + jsEName + "&Department=" + jsDepartment + "&Ext_No=" + jsExtNum;
 
       $('#employee-data').empty();
-      $('#employee-data').append('<div class="ui-grid-c grid_style">');
-      $('#employee-data').append('<li data-role="list-divider" class="ui-block-a">Company</li>');
-      $('#employee-data').append('<li data-role="list-divider" class="ui-block-b">E.Name</li>');
-      $('#employee-data').append('<li data-role="list-divider" class="ui-block-c">C.Name</li>');
-      $('#employee-data').append('<li data-role="list-divider" class="ui-block-d">Detail</li>');
-      
+      $('#employee-data').append('<div class="ui-grid-c">');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-a grid-style-a">Company</li>');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-b grid-style-b">E.Name</li>');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-c grid-style-c">C.Name</li>');
+      $('#employee-data').append('<li data-role="list-divider" class="ui-block-d grid-style-d">Detail</li>');
+
       $.ajax({
         //type: "GET",
         type: "POST",
@@ -197,13 +197,13 @@ $(function() {
         for (var i=0; i<dataContent.length; i++){
           $('#employee-data').append('<div class="ui-grid-c grid_style">');
           var company = dataContent[i].Company;
-          $('#employee-data').append('<li class="ui-block-a">' + company + '</li>');
+          $('#employee-data').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
           var ename = dataContent[i].Name_EN;
-          $('#employee-data').append('<li class="ui-block-b">' + ename + '</li>');
+          $('#employee-data').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
           var cname = dataContent[i].Name_CH;
-          $('#employee-data').append('<li class="ui-block-c">' + cname + '</li>');
+          $('#employee-data').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
           var extnum = dataContent[i].Ext_No;
-          $('#employee-data').append('<li class="ui-block-d" style="float:right;margin-top:10px"><a href="#"></a></li>');
+          $('#employee-data').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.jpg"></a></li>');
         }
         $('#employee-data').listview('refresh'); 
       }
