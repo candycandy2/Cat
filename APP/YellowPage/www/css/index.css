@@ -150,26 +150,62 @@ h1 {
     line-height:2.7;
 }
 
-.grid_style {
-    line-height:3.0;
+.grid-style-a {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 27% !important;
 }
 
-.ui-grid-c>.ui-block-a {
-    margin-left:10px;
-    margin-right:-10px;
+.grid-style-b {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 37% !important;
 }
 
-.ui-grid-c>.ui-block-b {
-    margin-left:10px;
-    margin-right:-10px;
+.grid-style-c {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 19% !important;
+    overflow:visible !important;
 }
 
-.ui-grid-c>.ui-block-c {
-    margin-left:40px;
-    margin-right:-40px;
+.grid-style-d {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 17% !important;
+    overflow:visible !important;
+    border-bottom-width: 0px!important;
 }
 
-.ui-grid-c>.ui-block-d {
-    margin-left:40px;
-    margin-right:-40px;
+.grid-style-data-a {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 27% !important;
+}
+
+.grid-style-data-b {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 37% !important;
+}
+
+.grid-style-data-c {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 28% !important;
+}
+
+.grid-style-data-d {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    width: 8% !important;
+    overflow:visible !important;
+    margin-top:20px !important;
 }
