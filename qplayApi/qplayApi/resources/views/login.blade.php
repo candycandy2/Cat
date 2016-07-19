@@ -5,7 +5,7 @@
     $csrf_token = csrf_token();
 
     ?>
-    <div data-role="page">
+    <div data-role="page" id="pageLogin">
         <div role="main" class="ui-content" style="text-align: center;">
             <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
             <h1>BenQ Qplay Login</h1>
@@ -30,6 +30,20 @@
             </div>
             <div role="main" class="ui-content">
                 <p id="messageContainer"></p>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="pageRegister">
+        <div role="main" class="ui-content" style="text-align: center;">
+            <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
+            <h3>Your device has been verified</h3>
+            <div style="width:60%; margin: 0 auto; margin-top:40px;">
+                <img src="{{asset('/css/images/icon_ok.png')}}" style="200px; margin:20px;" />
+                <h4>The cancellation of the device,
+                    please contact with BenQ ITS</h4>
+                <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
+                        onclick="start()">OK, I Know</button>
             </div>
         </div>
     </div>
@@ -111,11 +125,12 @@
                 },
                 success: function (d, status, xhr) {
                     showMessage(d.result_code + ": " + d.message);
-                    $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
-                            + "content: <br/> uuid: " + d.content.uuid + "<br/>"
-                            + "redirect-uri: " + d.content.redirect_uri + "<br/>"
-                            + "token: " + d.content.token + "<br/>"
-                            + "security_updated_at: " + d.content.security_updated_at);
+                    LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
+                            + '"uuid" : "' + d.content.uuid + '", '
+                            + '"redirect-uri" : "' + d.content.redirect_uri + '", '
+                            + '"token" : "' + d.content.token + '", '
+                            + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
+                    callPlugin();
                 },
                 error: function (e) {
                     showMessage(e);
@@ -140,16 +155,46 @@
                     request.setRequestHeader("password", password);
                 },
                 success: function (d, status, xhr) {
-                    showMessage(d.result_code + ": " + d.message);
-                    $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
-                            + "content: <br/> uuid: " + d.content.uuid + "<br/>"
-                            + "redirect-uri: " + d.content.redirect_uri + "<br/>"
-                            + "token: " + d.content.token);
+                    LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
+                            + '"uuid" : "' + d.content.uuid + '", '
+                            + '"redirect-uri" : "' + d.content.redirect_uri + '", '
+                            + '"token" : "' + d.content.token + '", '
+                            + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
+                    $.mobile.changePage("#pageRegister");
                 },
                 error: function (e) {
                     showMessage(e);
                 }
             });
+        }
+
+        var start = function( ) {
+            callPlugin();
+        }
+
+        var LoginMsg = null;
+        var callPlugin = function () {
+            if(LoginMsg) {
+                if (browser.versions.iPhone || browser.versions.iPad || browser.versions.ios) {
+                    window.webkit.messageHandlers.saveLoginResult.postMessage(LoginMsg);
+                }else if (browser.versions.android) {
+                    LoginWebview.loginResult(LoginMsg);
+                } else {
+                    showMessage(LoginMsg);
+                }
+            }
+        };
+
+        var browser = {
+            versions: function () {
+                var u = navigator.userAgent, app = navigator.appVersion;
+                return { //移动终端浏览器版本信息
+                    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+                    iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                    iPad: u.indexOf('iPad') > -1, //是否iPad
+                };
+            }(),
         }
     </script>
 @endsection
