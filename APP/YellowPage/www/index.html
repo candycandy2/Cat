@@ -118,10 +118,11 @@
         <div data-role="header"> 
           <a href="index.html" class="ui-btn-left">Back</a>
           <div class="header_style"><h1>查詢結果</h1></div>
-          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
+          <!-- <a href="index.html" data-icon="home" class="ui-btn-right">Home</a> -->
+          <a href="#detail_info_page" data-icon="home" class="ui-btn-right" id="testdetail">Home</a>
         </div>
         <div data-role="main" class="ui-content">
-          <div data-role="listview" id="employee-data" >
+          <div data-role="listview" id="employee-data">
 <!--             <div data-role="list-divider" >
               <li style="float:left;">Company</li>
               <li style="float:left;">E.Name</li>
@@ -148,6 +149,21 @@
             </div> -->
           </div>
         </div> 
+      </div>
+      
+      <!-- Start of detail_info_page -->
+      <div data-role="page" id="detail_info_page">
+        <div data-role="header">
+          <a href="#query_result_page" class="ui-btn-left">Back</a>
+          <div class="header_style"><h1>詳細資料</h1></div>
+          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
+        </div>
+        <div data-role="main" class="ui-content">
+          <div data-role="listview" id="detail-data">
+            <div class="ui-grid-b grid_style">
+            </div>
+          </div>
+        </div>
       </div>
       <script type="text/javascript" src="cordova.js"></script>
       <script type="text/javascript" src="js/index.js"></script>

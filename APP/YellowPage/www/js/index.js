@@ -161,7 +161,7 @@ $(function() {
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-b grid-style-b">E.Name</li>');
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-c grid-style-c">C.Name</li>');
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-d grid-style-d">Detail</li>');
-
+      
       $.ajax({
         //type: "GET",
         type: "POST",
@@ -203,7 +203,7 @@ $(function() {
           var cname = dataContent[i].Name_CH;
           $('#employee-data').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
           var extnum = dataContent[i].Ext_No;
-          $('#employee-data').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.jpg"></a></li>');
+          $('#employee-data').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
         }
         $('#employee-data').listview('refresh'); 
       }
@@ -216,7 +216,63 @@ $(function() {
       $('#ExtNum').val("");
     });
     
+    $("#employee-data").listview({
+      autodividers: true,
+      autodividersSelector: function ( li ) {
+      var out = li.attr('time');
+      return out;
+      }
+    });
     
+    $('#employee-data').listview('refresh');
+    
+    $("#testdetail").click(function() {
+      $('#detail-data').append('<div class="ui-grid-b grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">公司</li>');
+      var company = "Qisda"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b-1">' + company + '</li>');
+      $('#detail-data').append('<li class="ui-block-d grid-style-detail-c"><a href="#" style="min-height:2em;min-width:0em;"><img src="img/star.png"></a></li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">英文姓名</li>');
+      var ename = "Ming.Wang"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + ename + '</li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">中文姓名</li>');
+      var cname = "王小明"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + cname + '</li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">工號</li>');
+      var enumber = "1601001"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + enumber + '</li>');
+      
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">事業區</li>');
+      var barea = "QTT"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + barea + '</li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門</li>');
+      var department = "AI31"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + department + '</li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門名稱</li>');
+      var departmentname = "資訊技術服務 資訊技術服務三處 資訊技術服務一部"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + departmentname + '</li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">分機</li>');
+      var extnum = "8800-1234"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + extnum + '</li>');
+
+      $('#detail-data').append('<div class="ui-grid-a grid_style">');
+      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">Email</li>');
+      var email = "Ming.Wang@Qisda.com"
+      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + email + '</li>');
+    });
 });
 
 var app = {
