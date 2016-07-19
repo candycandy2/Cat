@@ -139,7 +139,8 @@ class qplayController extends Controller
                 $token = uniqid();  //生成token
                 $token_valid = time();
                 $sessionList = \DB::table("qp_session")
-                    -> where('uuid', "=", $uuid, 'user_row_id', '=', $user->row_id)
+                    -> where('uuid', "=", $uuid)
+                    -> where('user_row_id', '=', $user->row_id)
                     -> select('uuid')->get();
                 if(count($sessionList) > 0)
                 {
@@ -601,7 +602,7 @@ SQL;
                     'content'=>array(
                         'app_category_list'=>$app_category_list,
                         'app_list'=>$app_list,
-                        'multi_lang'=>$multi_lang)  //TODO
+                        'multi_lang'=>$multi_lang)
                 ]);
             }
             else
