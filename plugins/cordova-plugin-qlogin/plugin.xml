@@ -23,6 +23,16 @@
           </info>
     </platform>
 	
+	<platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="QLoginPlugin">
+                <param name="ios-package" value="QLoginPlugin"/>
+				<param name="onload" value="true"/>
+            </feature>
+        </config-file>
 
+        <header-file src="src/ios/QLoginPlugin.h" />
+        <source-file src="src/ios/QLoginPlugin.m" />
+    </platform>
 
 </plugin>
