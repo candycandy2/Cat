@@ -7,7 +7,11 @@
     <description>QPlay QLogin Plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova,qlogin,policy</keywords>
-
+	
+	<js-module src="www/QLogin.js" name="QLoginPlugin">
+		<clobbers target="window.plugins.qlogin" />
+	</js-module>
+	
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="QLoginPlugin" >
@@ -15,6 +19,7 @@
             </feature>
         </config-file>
 
+		<source-file src="src/android/QLoginPlugin.java" target-dir="src/org/apache/cordova/qlogin" />
 		<source-file src="src/android/LoginInfo.java" target-dir="src/org/apache/cordova/qlogin" />
 		<source-file src="src/android/LoginActivity.java" target-dir="src/org/apache/cordova/qlogin" />
 		<source-file src="src/android/login_activity.xml" target-dir="res/layout" />
