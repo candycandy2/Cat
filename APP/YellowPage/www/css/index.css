@@ -238,5 +238,40 @@ h1 {
     font-weight:bold !important;
     line-height:2.0 !important;
     width: 10% !important;
-    
+}
+
+.popup-dialog-style {
+    width:250px !important;
+    height:130px !important;
+    color:white !important;
+    background-color:#4B0082 !important;
+    text-align:center !important;
+}
+
+.cancle-button-style {
+    width:50px !important;
+    height:15px !important;
+    text-align:center !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+}
+
+.ok-button-style {
+    width:50px !important;
+    height:15px !important;
+    text-align:center !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+}
+
+.close-button-style {
+    width:70px !important;
+    height:15px !important;
+    text-align:center !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+    margin:0 auto !important;
 }
