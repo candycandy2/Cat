@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParser;
 public class LoginActivity extends Activity {
     private WebView webview;
     private String serverUrl;
+    private String tSchema;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -23,6 +24,13 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_activity);
         ActionBar actionBar = getActionBar();
         actionBar.hide();
+
+        //取得URL所帶進來的Intent物件
+        Intent tIntent = this.getIntent();
+        Uri myURI = tIntent.getData();
+        if(myURI!=null){
+            tSchema = myURI.getQueryParameter("Name");
+        }
 
         webview = (WebView) findViewById(R.id.WebViewDetail);
         webview.getSettings().setJavaScriptEnabled(true);
@@ -37,9 +45,13 @@ public class LoginActivity extends Activity {
         @JavascriptInterface
         public void loginResult(String data){
             LoginInfo.getInstance().setloginData(data);
-            Uri uri = Uri.parse("yellowapp://Order?LoginInfo="+data);
-            Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-            startActivity(intent);
+            if(tSchema==null){
+                finish();
+            }else{
+                Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data);
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
+            }
         }
     }
 
