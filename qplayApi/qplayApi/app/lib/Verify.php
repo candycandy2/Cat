@@ -46,7 +46,7 @@ class Verify
 
         //verify parameter count
         if($headerContentType == null || $headerAppKey == null
-            || $headerSignature == null || $headerSignatureTime == null) {
+            || $headerSignature == null || $headerSignatureTime == null || $headerAppKey != "qplay") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
@@ -58,7 +58,7 @@ class Verify
         }
         
         //verify content-type
-        if ($headerContentType != 'application/json') {
+        if (!stristr($headerContentType,'application/json')) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
                 "message"=>"Content-Type錯誤");
         }
@@ -88,7 +88,7 @@ class Verify
         $sessionList = \DB::table("qp_session")
             -> where('uuid', "=", $uuid)
             -> where('token', '=', $token)
-            -> select('token_valid_date')->get();
+            -> select('token_valid_date', 'last_message_time')->get();
         if(count($sessionList) < 1)
         {
             return array("code"=>ResultCode::_000908_tokenInvalid,
@@ -96,6 +96,7 @@ class Verify
         }
 
         $token_valid_date = $sessionList[0]->token_valid_date;
+        $last_message_time = $sessionList[0]->last_message_time;
         $ts = time() - $token_valid_date; //strtotime($token_valid_date);
         if($ts > Verify::$TOKEN_VALIDATE_TIME)
         {
@@ -112,6 +113,7 @@ class Verify
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
             "token_valid_date"=>$token_valid_date,
+            "last_message_time"=>$last_message_time,
             "message"=>"");
     }
 
