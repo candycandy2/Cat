@@ -227,6 +227,8 @@ $(function() {
     $('#employee-data').listview('refresh');
     
     $("#testdetail").click(function() {
+      $('#detail-data').empty();
+      
       $('#detail-data').append('<div class="ui-grid-b grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">公司</li>');
       var company = "Qisda"
