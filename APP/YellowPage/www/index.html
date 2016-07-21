@@ -101,6 +101,11 @@
               <input id="ExtNum" type="text" />
             </div>
           </div>
+          <br><br><br>
+          <div>
+            <a href="#ask_add_phone_book" data-rel="popup" data-role="button" data-inline="true">加到電話簿</a>
+            <a href="#no_query_condition" data-rel="popup" data-role="button" data-inline="true">輸入查詢條件</a>
+          </div>
         </div>
         <div data-role="footer" data-position="fixed" data-theme="b">
           <div data-role="navbar" data-iconpos="top" class="custom_navbar">
@@ -111,6 +116,18 @@
             </ul>
           </div>
         </div>
+        
+        <div data-role="popup" id="ask_add_phone_book" class="popup-dialog-style">
+          <p><br>確定要加到我的電話簿 ?<br></p>
+          <a data-rel="back" data-role="button" data-inline="true" class="cancle-button-style">取消</a>
+          <a data-rel="back" data-role="button" data-inline="true" class="ok-button-style">確定</a>
+        </div>
+      
+        <div data-role="popup" id="no_query_condition" class="popup-dialog-style">
+          <p><br>請輸入查詢條件<br><br></p>
+          <a data-rel="back" data-role="button" class="close-button-style">關閉</a>
+        </div>
+
       </div>
       
       <!-- Start of query_result_page -->
@@ -165,6 +182,7 @@
           </div>
         </div>
       </div>
+      
       <script type="text/javascript" src="cordova.js"></script>
       <script type="text/javascript" src="js/index.js"></script>
     </body>

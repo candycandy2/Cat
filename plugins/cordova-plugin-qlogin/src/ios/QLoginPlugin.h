@@ -17,9 +17,9 @@
 @property (nonatomic, weak) NSString* CertificationPageUrl;//认证页地址
 @property (nonatomic, weak) NSString* CertificationResult;//认证结果
 @property (atomic, strong) WKWebView* wkView;//认证页容器
+@property (nonatomic, weak) NSString* SourceAPP;//跳转来源APP
 
 - (void) openCertificationPage:(CDVInvokedUrlCommand *)command;//打开认证页
-- (void) saveLoginResult:(WKScriptMessage *)message;//保存登录认证结果
-- (void) hideCertificateContainer:(WKScriptMessage *)message;//隐藏认证页容器
+- (void) saveLoginResult:(WKScriptMessage *)message;//保存登录认证结果->关闭认证页->跳转回原APP
 
 @end
