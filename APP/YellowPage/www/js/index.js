@@ -161,6 +161,7 @@ $(function() {
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-b grid-style-b">E.Name</li>');
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-c grid-style-c">C.Name</li>');
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-d grid-style-d">Detail</li>');
+      $('#employee-data').append('</div>');
       
       $.ajax({
         //type: "GET",
@@ -195,7 +196,7 @@ $(function() {
       if (resultcode == 1 || resultcode == 1906) {
         var dataContent = jsonobj['Content'];
         for (var i=0; i<dataContent.length; i++){
-          $('#employee-data').append('<div class="ui-grid-c grid_style">');
+          $('#employee-data').append('<div class="ui-grid-c">');
           var company = dataContent[i].Company;
           $('#employee-data').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
           var ename = dataContent[i].Name_EN;
@@ -204,8 +205,9 @@ $(function() {
           $('#employee-data').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
           var extnum = dataContent[i].Ext_No;
           $('#employee-data').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
+          $('#employee-data').append('</div>');
         }
-        $('#employee-data').listview('refresh'); 
+        //  $('#employee-data').listview('refresh');
       }
     };
     
@@ -224,7 +226,7 @@ $(function() {
       }
     });
     
-    $('#employee-data').listview('refresh');
+  //  $('#employee-data').listview('refresh');
     
     $("#testdetail").click(function() {
       $('#detail-data').empty();
@@ -233,48 +235,124 @@ $(function() {
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">公司</li>');
       var company = "Qisda"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b-1">' + company + '</li>');
-      $('#detail-data').append('<li class="ui-block-d grid-style-detail-c"><a href="#" style="min-height:2em;min-width:0em;"><img src="img/star.png"></a></li>');
+      $('#detail-data').append('<li class="ui-block-c grid-style-detail-c"><a href="#" style="min-height:2em;min-width:0em;"><img src="img/star.png"></a></li>');
+      $('#detail-data').append('</div>');
 
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">英文姓名</li>');
       var ename = "Ming.Wang"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + ename + '</li>');
-
+      $('#detail-data').append('</div>');
+      
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">中文姓名</li>');
       var cname = "王小明"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + cname + '</li>');
-
+      $('#detail-data').append('</div>');
+      
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">工號</li>');
       var enumber = "1601001"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + enumber + '</li>');
+      $('#detail-data').append('</div>');
       
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">事業區</li>');
       var barea = "QTT"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + barea + '</li>');
-
+      $('#detail-data').append('</div>');
+      
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門</li>');
       var department = "AI31"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + department + '</li>');
-
+      $('#detail-data').append('</div>');
+      
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門名稱</li>');
       var departmentname = "資訊技術服務 資訊技術服務三處 資訊技術服務一部"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + departmentname + '</li>');
-
+      $('#detail-data').append('</div>');
+      
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">分機</li>');
       var extnum = "8800-1234"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + extnum + '</li>');
-
+      $('#detail-data').append('</div>');
+      
       $('#detail-data').append('<div class="ui-grid-a grid_style">');
       $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">Email</li>');
       var email = "Ming.Wang@Qisda.com"
       $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + email + '</li>');
+      $('#detail-data').append('</div>');
     });
+    
+    $("#myphonebook").click(function() {
+      $('#my_phonebook_list').empty();
+      
+      $('#my_phonebook_list').append('<div class="ui-grid-c">');
+      $('#my_phonebook_list').append('<li data-role="list-divider" class="ui-block-a grid-style-a">Company</li>');
+      $('#my_phonebook_list').append('<li data-role="list-divider" class="ui-block-b grid-style-b">E.Name</li>');
+      $('#my_phonebook_list').append('<li data-role="list-divider" class="ui-block-c grid-style-c">C.Name</li>');
+      $('#my_phonebook_list').append('<li data-role="list-divider" class="ui-block-d grid-style-d">Detail</li>');
+      $('#my_phonebook_list').append('</div>');
+
+      $('#my_phonebook_list').append('<div class="ui-grid-c">');
+      var company = "Qisda";
+      $('#my_phonebook_list').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
+      var ename = "Gia.Lee";
+      $('#my_phonebook_list').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
+      var cname = "李小佳";
+      $('#my_phonebook_list').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
+      var extnum = "8800-1234";
+      $('#my_phonebook_list').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
+      $('#my_phonebook_list').append('</div>');
+
+      $('#my_phonebook_list').append('<div class="ui-grid-c">');
+      var company = "BenQ";
+      $('#my_phonebook_list').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
+      var ename = "Ming.Wang";
+      $('#my_phonebook_list').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
+      var cname = "王大明";
+      $('#my_phonebook_list').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
+      var extnum = "8800-5678";
+      $('#my_phonebook_list').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
+      $('#my_phonebook_list').append('</div>');
+    });
+    
+    $("#edit-button").click(function() {
+      $('#edit_my_phonebook_list').empty();
+      
+      $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
+      $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-a grid-style-editphone-a">Edit</li>');
+      $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-b grid-style-editphone-b">Company</li>');
+      $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-c grid-style-editphone-c">E.Name</li>');
+      $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-d grid-style-editphone-d">C.Name</li>');
+      $('#edit_my_phonebook_list').append('</div>');
+      
+      $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
+      $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom"></input></li>');
+      var company = "Qisda";
+      $('#edit_my_phonebook_list').append('<li class="ui-block-b grid-style-editphone-data-b">' + company + '</li>');
+      var ename = "Gia.Lee";
+      $('#edit_my_phonebook_list').append('<li class="ui-block-c grid-style-editphone-data-c">' + ename + '</li>');
+      var cname = "李小佳";
+      $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + cname + '</li>');
+      var extnum = "8800-1234";
+      $('#edit_my_phonebook_list').append('</div>');
+
+      $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
+      $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox-2" id="checkbox-2" class="custom"</input></li>');
+      company = "BenQ";
+      $('#edit_my_phonebook_list').append('<li class="ui-block-b grid-style-editphone-data-b">' + company + '</li>');
+      ename = "Ming.Wang";
+      $('#edit_my_phonebook_list').append('<li class="ui-block-c grid-style-editphone-data-c">' + ename + '</li>');
+      cname = "王大明";
+      $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + cname + '</li>');
+      extnum = "8800-5678";
+      $('#edit_my_phonebook_list').append('</div>');
+    });
+
 });
 
 var app = {
