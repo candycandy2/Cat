@@ -230,16 +230,30 @@
  $('#main_query_page').keypress(function(event){
     if (event.keyCode == 13) // keyCode of 'Enter' key is 13
     {
-        //alert('You pressed a "enter" key in somewhere');
-        location.href = "#query_result_page";
-        window.callQueryEmployeeData();
+      getEmployeeData();
     }
  });
 
 $(function() {
     $("#callAjax").click(function() {
-        callQueryEmployeeData();
+      getEmployeeData();
     });
+    
+    window.getEmployeeData = function()
+    {
+      var jsCName = document.getElementById("CName").value;
+      var jsEName = document.getElementById("EName").value;
+      var jsDepartment = document.getElementById("Department").value;
+      var jsExtNum = document.getElementById("ExtNum").value;
+
+      if ((jsCName == "") && (jsEName == "") && (jsDepartment == "") && (jsExtNum == "")) {
+        $("#no_query_condition").popup( "open" )
+        return;
+      }
+      
+      callQueryEmployeeData();
+      $.mobile.changePage('#query_result_page', { transition: "flip"} );
+    };
     
     window.callQueryEmployeeData = function()
     {
@@ -401,7 +415,6 @@ $(function() {
       extnum = "8800-5678";
       $('#edit_my_phonebook_list').append('</div>');
     });
-
 });
 
 var app = {
