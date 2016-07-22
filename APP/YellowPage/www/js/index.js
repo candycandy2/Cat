@@ -112,6 +112,101 @@
 
  });
 
+ $(document).on('pagebeforeshow', '#detail_info_page', function(){
+    //alert('employee : ' + employeedata.index + ' ' + employeedata.company[employeedata.index]+ ' ' + employeedata.ename[employeedata.index]+ ' ' + employeedata.cname[employeedata.index]);
+    
+    if ((employeedata.total == 9999) ||(employeedata.index >= employeedata.total))
+      return;
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail",
+      data: '{"strXml":"<LayoutHeader><Company>' + employeedata.company[employeedata.index] + '</Company><Name_EN>' + employeedata.ename[employeedata.index] + '</Name_EN></LayoutHeader>"}',
+      dataType: "json",
+      cache: false,
+      success: onSuccess,
+      error: onFail,
+    });
+
+    function onSuccess(data)
+    {
+      var rawdata = data['d'];
+      var jsonobj = jQuery.parseJSON(rawdata);
+      var companySelect = document.getElementById('Company');
+      
+      var resultcode = jsonobj['ResultCode'];
+      
+      if (resultcode == 1) {
+        var dataContent = jsonobj['Content'];
+        var company = dataContent[0].Company;
+        var ename = dataContent[0].Name_EN;
+        var cname = dataContent[0].Name_CH;
+        var eid = dataContent[0].EmployeeID;
+        var sidecode = dataContent[0].SiteCode;
+        var dcode = dataContent[0].DeptCode;
+        var dept = dataContent[0].Dept;
+        var extno = dataContent[0].Ext_No;
+        var email = dataContent[0].EMail;
+        
+        $('#detail-data').empty();
+
+        $('#detail-data').append('<div class="ui-grid-b grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">公司</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b-1">' + company + '</li>');
+        $('#detail-data').append('<li class="ui-block-c grid-style-detail-c"><a href="#" style="min-height:2em;min-width:0em;"><img src="img/star.png"></a></li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">英文姓名</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + ename + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">中文姓名</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + cname + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">工號</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + eid + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">事業區</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + sidecode + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + dcode + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門名稱</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + dept + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">分機</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + extno + '</li>');
+        $('#detail-data').append('</div>');
+
+        $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">Email</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + email + '</li>');
+        $('#detail-data').append('</div>');
+
+      }
+    };
+    
+    function onFail(data)
+    {
+      var reault = data;
+    }
+    
+ });
+ 
  $( document ).on( "click", ".show-page-loading-msg", function() {
      var $this = $( this ),
          theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
@@ -192,22 +287,35 @@ $(function() {
       var jsonobj = jQuery.parseJSON(rawdata);
 
       var resultcode = jsonobj['ResultCode'];
-      
+
       if (resultcode == 1 || resultcode == 1906) {
         var dataContent = jsonobj['Content'];
+        employeedata.total = dataContent.length;
         for (var i=0; i<dataContent.length; i++){
           $('#employee-data').append('<div class="ui-grid-c">');
           var company = dataContent[i].Company;
+          employeedata.company[i] = company;
           $('#employee-data').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
           var ename = dataContent[i].Name_EN;
+          employeedata.ename[i] = ename;
           $('#employee-data').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
           var cname = dataContent[i].Name_CH;
+          employeedata.cname[i] = cname;
           $('#employee-data').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
           var extnum = dataContent[i].Ext_No;
-          $('#employee-data').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
+          $('#employee-data').append('<li class="ui-block-d grid-style-data-d"><a value="' + i.toString() + '" id="detailindex' + i.toString() + '" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
           $('#employee-data').append('</div>');
         }
         //  $('#employee-data').listview('refresh');
+        
+        $('a[id^="detailindex"]').click(function(e) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          //Do important stuff....
+          employeedata.index = this.getAttribute('value');
+          //alert("detailindexaaa" + i.toString());
+          $.mobile.changePage('#detail_info_page', { transition: "flip"} );
+        });
       }
     };
     
@@ -227,65 +335,6 @@ $(function() {
     });
     
   //  $('#employee-data').listview('refresh');
-    
-    $("#testdetail").click(function() {
-      $('#detail-data').empty();
-      
-      $('#detail-data').append('<div class="ui-grid-b grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">公司</li>');
-      var company = "Qisda"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b-1">' + company + '</li>');
-      $('#detail-data').append('<li class="ui-block-c grid-style-detail-c"><a href="#" style="min-height:2em;min-width:0em;"><img src="img/star.png"></a></li>');
-      $('#detail-data').append('</div>');
-
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">英文姓名</li>');
-      var ename = "Ming.Wang"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + ename + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">中文姓名</li>');
-      var cname = "王小明"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + cname + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">工號</li>');
-      var enumber = "1601001"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + enumber + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">事業區</li>');
-      var barea = "QTT"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + barea + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門</li>');
-      var department = "AI31"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + department + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">部門名稱</li>');
-      var departmentname = "資訊技術服務 資訊技術服務三處 資訊技術服務一部"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + departmentname + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">分機</li>');
-      var extnum = "8800-1234"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + extnum + '</li>');
-      $('#detail-data').append('</div>');
-      
-      $('#detail-data').append('<div class="ui-grid-a grid_style">');
-      $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">Email</li>');
-      var email = "Ming.Wang@Qisda.com"
-      $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + email + '</li>');
-      $('#detail-data').append('</div>');
-    });
     
     $("#myphonebook").click(function() {
       $('#my_phonebook_list').empty();
@@ -378,11 +427,11 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+        //var listeningElement = parentElement.querySelector('.listening');
+        //var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        //listeningElement.setAttribute('style', 'display:none;');
+        //receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
     },
@@ -397,7 +446,7 @@ var app = {
           cache: false,
           success: app.onSuccess
       });
-    },    
+    },
     onSuccess: function(data)
     {
       var rawdata = data['d'];
@@ -417,3 +466,13 @@ var app = {
 };
 
 app.initialize();
+
+// Store object
+var employeedata = {
+  total: 9999,
+  index: 9999,
+  name : 'hello',
+  company: [], // array
+  ename: [],
+  cname: []
+};
