@@ -47,3 +47,5 @@ componentapp/platforms/ios/*/project.xcworkspace
 APP/*/hooks/
 APP/*/platforms/
 APP/*/plugins/
+
+APP/QPlay/npm-debug.log
