@@ -125,11 +125,11 @@
       data: '{"strXml":"<LayoutHeader><Company>' + employeedata.company[employeedata.index] + '</Company><Name_EN>' + employeedata.ename[employeedata.index] + '</Name_EN></LayoutHeader>"}',
       dataType: "json",
       cache: false,
-      success: onSuccess,
-      error: onFail,
+      success: onDetailSuccess,
+      error: onDetailFail,
     });
 
-    function onSuccess(data)
+    function onDetailSuccess(data)
     {
       var rawdata = data['d'];
       var jsonobj = jQuery.parseJSON(rawdata);
@@ -142,7 +142,7 @@
         var company = dataContent[0].Company;
         var ename = dataContent[0].Name_EN;
         var cname = dataContent[0].Name_CH;
-        var eid = dataContent[0].EmployeeID;
+        employeedata.addemployeeid = dataContent[0].EmployeeID;
         var sidecode = dataContent[0].SiteCode;
         var dcode = dataContent[0].DeptCode;
         var dept = dataContent[0].Dept;
@@ -154,22 +154,23 @@
         $('#detail-data').append('<div class="ui-grid-b grid_style">');
         $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">公司</li>');
         $('#detail-data').append('<li class="ui-block-b grid-style-detail-b-1">' + company + '</li>');
-        $('#detail-data').append('<li class="ui-block-c grid-style-detail-c"><a href="#" style="min-height:2em;min-width:0em;"><img src="img/star.png"></a></li>');
+        $('#detail-data').append('<li class="ui-block-c grid-style-detail-c"><a style="min-height:2em;min-width:0em;" value="' + employeedata.index.toString() + '" id="add-phonebook' + employeedata.index.toString() + '"><img src="img/star.png"></a></li>');
         $('#detail-data').append('</div>');
-
+        
         $('#detail-data').append('<div class="ui-grid-a grid_style">');
         $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">英文姓名</li>');
         $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + ename + '</li>');
         $('#detail-data').append('</div>');
 
         $('#detail-data').append('<div class="ui-grid-a grid_style">');
+        
         $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">中文姓名</li>');
         $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + cname + '</li>');
         $('#detail-data').append('</div>');
 
         $('#detail-data').append('<div class="ui-grid-a grid_style">');
         $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">工號</li>');
-        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + eid + '</li>');
+        $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + employeedata.addemployeeid + '</li>');
         $('#detail-data').append('</div>');
 
         $('#detail-data').append('<div class="ui-grid-a grid_style">');
@@ -196,15 +197,52 @@
         $('#detail-data').append('<li class="ui-block-a grid-style-detail-a">Email</li>');
         $('#detail-data').append('<li class="ui-block-b grid-style-detail-b">' + email + '</li>');
         $('#detail-data').append('</div>');
-
       }
-    };
+      
+      $('a[id^="add-phonebook"]').click(function(e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        var myemployeeid = "0208042"; // fix me !!!!!
+        
+        $.ajax({
+          type: "POST",
+          contentType: "application/json; charset=utf-8",
+          url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/AddMyPhoneBook",
+          data: '{"strXml":"<LayoutHeader><User_EmpID>' + myemployeeid + '</User_EmpID><Add_EmpID>' + employeedata.addemployeeid + '</Add_EmpID><Add_Company>' + employeedata.company[employeedata.index] +'</Add_Company></LayoutHeader>"}',
+          dataType: "json",
+          cache: false,
+          success: onAddMyPhoneBookSuccess,
+          error: onAddMyPhoneBookFail,
+        });
+      });
+    }
     
-    function onFail(data)
+    function onDetailFail(data)
     {
       var reault = data;
     }
     
+    function onAddMyPhoneBookSuccess(data)
+    {
+      var rawdata = data['d'];
+      var jsonobj = jQuery.parseJSON(rawdata);
+
+      var resultcode = jsonobj['ResultCode'];
+      
+      if (resultcode == 001902)
+      {
+        alert('add success');
+      }
+      else
+      {
+        alert('add fail');
+      }
+    }
+    
+    function onAddMyPhoneBookFail(data)
+    {
+      
+    }
  });
  
  $( document ).on( "click", ".show-page-loading-msg", function() {
@@ -359,29 +397,50 @@ $(function() {
       $('#my_phonebook_list').append('<li data-role="list-divider" class="ui-block-c grid-style-c">C.Name</li>');
       $('#my_phonebook_list').append('<li data-role="list-divider" class="ui-block-d grid-style-d">Detail</li>');
       $('#my_phonebook_list').append('</div>');
-
-      $('#my_phonebook_list').append('<div class="ui-grid-c">');
-      var company = "Qisda";
-      $('#my_phonebook_list').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
-      var ename = "Gia.Lee";
-      $('#my_phonebook_list').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
-      var cname = "李小佳";
-      $('#my_phonebook_list').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
-      var extnum = "8800-1234";
-      $('#my_phonebook_list').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
-      $('#my_phonebook_list').append('</div>');
-
-      $('#my_phonebook_list').append('<div class="ui-grid-c">');
-      var company = "BenQ";
-      $('#my_phonebook_list').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
-      var ename = "Ming.Wang";
-      $('#my_phonebook_list').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
-      var cname = "王大明";
-      $('#my_phonebook_list').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
-      var extnum = "8800-5678";
-      $('#my_phonebook_list').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
-      $('#my_phonebook_list').append('</div>');
+      
+      var myemployeeid = "0208042"; // fix me !!!!!
+      
+      $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryMyPhoneBook",
+        data: '{"strXml":"<LayoutHeader><User_EmpID>' + myemployeeid + '</User_EmpID></LayoutHeader>"}',
+        dataType: "json",
+        cache: false,
+        success: onQueryMyPhoneBookSuccess,
+        error: onQueryMyPhoneBookFail,
+      });
     });
+    
+    function onQueryMyPhoneBookSuccess(data)
+    {
+      var rawdata = data['d'];
+      var jsonobj = jQuery.parseJSON(rawdata);
+      var companySelect = document.getElementById('Company');
+      
+      var resultcode = jsonobj['ResultCode'];
+      
+      if (resultcode == 1) {
+        var dataContent = jsonobj['Content'];
+        for (var i=0; i<dataContent.length; i++){
+          $('#my_phonebook_list').append('<div class="ui-grid-c">');
+          var company = dataContent[i].Company;
+          $('#my_phonebook_list').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
+          var ename = dataContent[i].Name_EN;
+          $('#my_phonebook_list').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
+          var cname = dataContent[i].Name_CH;
+          $('#my_phonebook_list').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
+          var extnum = dataContent[i].Ext_No;
+          $('#my_phonebook_list').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
+          $('#my_phonebook_list').append('</div>');
+        }
+      }
+    }
+    
+    function onQueryMyPhoneBookFail(data)
+    {
+      
+    }
     
     $("#edit-button").click(function() {
       $('#edit_my_phonebook_list').empty();
@@ -414,6 +473,10 @@ $(function() {
       $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + cname + '</li>');
       extnum = "8800-5678";
       $('#edit_my_phonebook_list').append('</div>');
+    });
+    
+    $("#select-all").click(function() {
+      var test = 2;
     });
 });
 
@@ -487,5 +550,6 @@ var employeedata = {
   name : 'hello',
   company: [], // array
   ename: [],
-  cname: []
+  cname: [],
+  addemployeeid : '9999999',
 };
