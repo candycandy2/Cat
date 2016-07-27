@@ -204,6 +204,8 @@
         e.preventDefault();
         var myemployeeid = "0208042"; // fix me !!!!!
         
+        $("#ask_add_phone_book").popup( "open" ); // fix me !!!!! need to check yes or no
+        
         $.ajax({
           type: "POST",
           contentType: "application/json; charset=utf-8",
@@ -231,11 +233,11 @@
       
       if (resultcode == 001902)
       {
-        alert('add success');
+        //alert('add success');
       }
       else
       {
-        alert('add fail');
+        //alert('add fail');
       }
     }
     
@@ -285,7 +287,7 @@ $(function() {
       var jsExtNum = document.getElementById("ExtNum").value;
 
       if ((jsCName == "") && (jsEName == "") && (jsDepartment == "") && (jsExtNum == "")) {
-        $("#no_query_condition").popup( "open" )
+        $("#no_query_condition").popup( "open" );
         return;
       }
       
@@ -447,10 +449,11 @@ $(function() {
       
     }
     
-    $("#edit-button").click(function() {
+    function refreshEditMyPhonebookList()
+    {
       $('#edit_my_phonebook_list').empty();
       
-      $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
+      $('#edit_my_phonebook_list').append('<div class="ui-grid-c">');
       $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-a grid-style-editphone-a">Edit</li>');
       $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-b grid-style-editphone-b">Company</li>');
       $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-c grid-style-editphone-c">E.Name</li>');
@@ -458,18 +461,61 @@ $(function() {
       $('#edit_my_phonebook_list').append('</div>');
      
       for (var i=0; i<myphonebook.total; i++){
-        $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
-        $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox'+ i.toString() +'" id="checkbox' + i.toString() +'" class="custom"></input></li>');
+        $('#edit_my_phonebook_list').append('<div class="ui-grid-c">');
+        //$('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox'+ i.toString() +'" id="checkbox' + i.toString() +'" class="custom" value="' + i.toString() + '"></input></li>');
+        $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox[]" id="checkbox' + i.toString() +'" class="custom" value="' + i.toString() + '"></input></li>');
         $('#edit_my_phonebook_list').append('<li class="ui-block-b grid-style-editphone-data-b">' + myphonebook.company[i] + '</li>');
         $('#edit_my_phonebook_list').append('<li class="ui-block-c grid-style-editphone-data-c">' + myphonebook.ename[i] + '</li>');
         $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + myphonebook.cname[i] + '</li>');
         //myphonebook.extnum[i];
         $('#edit_my_phonebook_list').append('</div>');
       }
+    }
+    
+    $("#edit-button").click(function() {
+        refreshEditMyPhonebookList();        
     });
     
     $("#select-all").click(function() {
-      var test = 2;
+      for (var i=0; i<myphonebook.total; i++){
+        document.getElementById('checkbox'+i).checked = true; 
+      }
+    });
+    
+    $("#delete-phonebook").click(function() {
+      var finalTotal = 0;
+      var finalCompany = new Array();
+      var finalEname = new Array();
+      var finalCname = new Array();
+      var finalExtnum = new Array();
+      
+      $("#ask_delete_phone_book").popup( "open" ) // fix me !!!!! need to check yes or no
+      
+      for (var i=0; i<myphonebook.total; i++) {
+        if (document.getElementById('checkbox'+i).checked == true)
+        {
+          
+          
+        }
+        else
+        {
+          finalCompany[finalTotal] = myphonebook.company[i];
+          finalEname[finalTotal] = myphonebook.ename[i];
+          finalCname[finalTotal] = myphonebook.cname[i];
+          finalExtnum[finalTotal] = myphonebook.extnum[i];
+          finalTotal++;
+        }
+      }
+      
+      myphonebook.total = finalTotal;
+      for (var i=0; i<finalTotal; i++) {
+        myphonebook.company[i] = finalCompany[i];
+        myphonebook.ename[i] = finalEname[i];
+        myphonebook.cname[i] = finalCname[i];
+        myphonebook.extnum[i] = finalExtnum[i];
+      }
+      
+      refreshEditMyPhonebookList();
     });
 });
 

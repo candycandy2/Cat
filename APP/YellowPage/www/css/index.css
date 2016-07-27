@@ -152,6 +152,7 @@ h1 {
 
 .grid-style-a {
     font-size: 17px !important;
+    padding-left: 15px !important;
     background-color:#E0E0FF !important;
     line-height:3.0 !important;
     width: 27% !important;
@@ -170,7 +171,7 @@ h1 {
     font-size: 17px !important;
     background-color:#E0E0FF !important;
     line-height:3.0 !important;
-    width: 19% !important;
+    width: 21% !important;
     overflow:visible !important;
     font-weight:bold !important;
 }
@@ -179,13 +180,14 @@ h1 {
     font-size: 17px !important;
     background-color:#E0E0FF !important;
     line-height:3.0 !important;
-    width: 17% !important;
+    width: 15% !important;
     overflow:visible !important;
     border-bottom-width: 0px!important;
     font-weight:bold !important;
 }
 
 .grid-style-editphone-a {
+    position:relative !important;
     font-size: 17px !important;
     background-color:#E0E0FF !important;
     line-height:3.0 !important;
@@ -221,6 +223,8 @@ h1 {
 }
 
 .grid-style-data-a {
+    position:relative !important;
+    left: 15px !important;
     font-size: 17px !important;
     font-weight:bold !important;
     line-height:3.0 !important;
@@ -255,9 +259,9 @@ h1 {
     font-weight:bold !important;
     line-height:3.0 !important;
     width: 17% !important;
-    margin-top: 18px !important;
+/*     margin-top: 18px !important;
     padding-top: 10px !important;
-    left: -10px !important;
+    left: -10px !important; */
     background-color:white !important;
     border-color:white !important;
 }
