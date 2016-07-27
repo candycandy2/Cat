@@ -422,15 +422,20 @@ $(function() {
       
       if (resultcode == 1) {
         var dataContent = jsonobj['Content'];
+        myphonebook.total = dataContent.length;
         for (var i=0; i<dataContent.length; i++){
           $('#my_phonebook_list').append('<div class="ui-grid-c">');
           var company = dataContent[i].Company;
+          myphonebook.company[i] = company;
           $('#my_phonebook_list').append('<li class="ui-block-a grid-style-data-a">' + company + '</li>');
           var ename = dataContent[i].Name_EN;
+          myphonebook.ename[i] = ename;
           $('#my_phonebook_list').append('<li class="ui-block-b grid-style-data-b">' + ename + '</li>');
           var cname = dataContent[i].Name_CH;
+          myphonebook.cname[i] = cname;
           $('#my_phonebook_list').append('<li class="ui-block-c grid-style-data-c">' + cname + '</li>');
           var extnum = dataContent[i].Ext_No;
+          myphonebook.extnum[i] = extnum;
           $('#my_phonebook_list').append('<li class="ui-block-d grid-style-data-d"><a href="#" style="min-height:0em;min-width:0em;"><img src="img/detail.png"></a></li>');
           $('#my_phonebook_list').append('</div>');
         }
@@ -451,28 +456,16 @@ $(function() {
       $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-c grid-style-editphone-c">E.Name</li>');
       $('#edit_my_phonebook_list').append('<li data-role="list-divider" class="ui-block-d grid-style-editphone-d">C.Name</li>');
       $('#edit_my_phonebook_list').append('</div>');
-      
-      $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
-      $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom"></input></li>');
-      var company = "Qisda";
-      $('#edit_my_phonebook_list').append('<li class="ui-block-b grid-style-editphone-data-b">' + company + '</li>');
-      var ename = "Gia.Lee";
-      $('#edit_my_phonebook_list').append('<li class="ui-block-c grid-style-editphone-data-c">' + ename + '</li>');
-      var cname = "李小佳";
-      $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + cname + '</li>');
-      var extnum = "8800-1234";
-      $('#edit_my_phonebook_list').append('</div>');
-
-      $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
-      $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox-2" id="checkbox-2" class="custom"</input></li>');
-      company = "BenQ";
-      $('#edit_my_phonebook_list').append('<li class="ui-block-b grid-style-editphone-data-b">' + company + '</li>');
-      ename = "Ming.Wang";
-      $('#edit_my_phonebook_list').append('<li class="ui-block-c grid-style-editphone-data-c">' + ename + '</li>');
-      cname = "王大明";
-      $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + cname + '</li>');
-      extnum = "8800-5678";
-      $('#edit_my_phonebook_list').append('</div>');
+     
+      for (var i=0; i<myphonebook.total; i++){
+        $('#edit_my_phonebook_list').append('<div class="ui-grid-c grid_style">');
+        $('#edit_my_phonebook_list').append('<li class="ui-block-a grid-style-editphone-data-a"><input type="checkbox" name="checkbox'+ i.toString() +'" id="checkbox' + i.toString() +'" class="custom"></input></li>');
+        $('#edit_my_phonebook_list').append('<li class="ui-block-b grid-style-editphone-data-b">' + myphonebook.company[i] + '</li>');
+        $('#edit_my_phonebook_list').append('<li class="ui-block-c grid-style-editphone-data-c">' + myphonebook.ename[i] + '</li>');
+        $('#edit_my_phonebook_list').append('<li class="ui-block-d grid-style-editphone-data-d">' + myphonebook.cname[i] + '</li>');
+        //myphonebook.extnum[i];
+        $('#edit_my_phonebook_list').append('</div>');
+      }
     });
     
     $("#select-all").click(function() {
@@ -552,4 +545,12 @@ var employeedata = {
   ename: [],
   cname: [],
   addemployeeid : '9999999',
+};
+
+var myphonebook = {
+  total: 9999,
+  company: [],
+  ename: [],
+  cname: [],
+  extnum: [],
 };

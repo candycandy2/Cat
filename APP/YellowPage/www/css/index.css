@@ -250,6 +250,7 @@ h1 {
 }
 
 .grid-style-editphone-data-a {
+    position:relative !important;
     font-size: 17px !important;
     font-weight:bold !important;
     line-height:3.0 !important;
