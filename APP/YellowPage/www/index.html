@@ -116,12 +116,6 @@
             </ul>
           </div>
         </div>
-        
-        <div data-role="popup" id="ask_add_phone_book" class="popup-dialog-style">
-          <p><br>確定要加到我的電話簿 ?<br></p>
-          <a data-rel="back" data-role="button" data-inline="true" class="cancle-button-style">取消</a>
-          <a data-rel="back" data-role="button" data-inline="true" class="ok-button-style">確定</a>
-        </div>
       
         <div data-role="popup" id="no_query_condition" class="popup-dialog-style">
           <p><br>請輸入查詢條件<br><br></p>
@@ -180,6 +174,11 @@
             </div>
           </div>
         </div>
+        <div data-role="popup" id="ask_add_phone_book" class="popup-dialog-style">
+          <p><br>確定要加到我的電話簿 ?<br></p>
+          <a data-rel="back" data-role="button" data-inline="true" class="cancle-button-style">取消</a>
+          <a data-rel="back" data-role="button" data-inline="true" class="ok-button-style">確定</a>
+        </div>
       </div>
       
       <!-- Start of phonebook_page -->
@@ -199,7 +198,7 @@
       
       <!-- Start of phonebook_edit_page -->
       <div data-role="page" id="phonebook_edit_page">
-        <div data-role="header">
+        <div data-role="header" data-position="fixed">
           <a href="#phonebook_page" class="ui-btn-left">編輯完成</a>
           <div class="header_style"><h1>我的電話簿</h1></div>
         </div>
@@ -210,7 +209,13 @@
           </div>
         </div>
         <div data-role="footer" data-position="fixed" style="background:#4B0082;color:white;">
-          <a href="#" class="" id="select-all" style="background-color:#28004D;border-color:#28004D;color:white;margin-left:5px;">選擇全部</a>
+          <a href="#" class="" id="select-all" style="background-color:#28004D;border-color:#28004D;color:white;margin-left:5px;font-size:14px">選擇全部</a>
+          <a href="#" class="ui-btn-right" id="delete-phonebook" style="background-color:#28004D;border-color:#28004D;color:white;margin-right:5px;font-size:14px;width:50px">刪除</a>
+        </div>
+        <div data-role="popup" id="ask_delete_phone_book" class="popup-dialog-style">
+          <p><br>是否刪除選擇的連絡人 ?<br></p>
+          <a data-rel="back" data-role="button" data-inline="true" class="cancle-button-style">取消</a>
+          <a data-rel="back" data-role="button" data-inline="true" class="ok-button-style">確定</a>
         </div>
       </div>
       
