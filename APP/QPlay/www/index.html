@@ -41,6 +41,10 @@
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/owl.carousel.min.js"></script>
         <script type="text/javascript" src="js/modernizr-custom.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <!--<script type="text/javascript" src="cordova_plugins.js"></script>-->
+        <!--<script type="text/javascript" src="plugins/cordova-plugin-statusbar/www/statusbar.js"></script>-->
+        <script type="text/javascript" src="js/index.js"></script>
 
         <title>QPlay APP</title>
         <style>
@@ -60,7 +64,7 @@
     <body>
 
       <!-- Start of init page -->
-      <div data-role="page" id="initpage">
+      <div data-role="page" id="initpage 1-1">
         <div data-role="header">
           <h1></h1>
         </div>
@@ -68,84 +72,184 @@
         <div class="center" data-role="main" class="ui-content">
           <img src="img/logo.png" draggable="true"/>
           <h1 id="welcome" >Welcome page</h1>
-          <h1 id="testBattery" class="event received" >Welcome page</h1>
-          <h1 id="testApplicationCache" class="event received" >Welcome page</h1>
+          <a href="#mainpage 2-1"> MainPage </a>
         </div>
       </div>
       <!-- end of init page -->
-
-      <!-- Start of login page -->
-      <div data-role="page" id="loginpage">
-        <div data-role="header">
-          <h1></h1>
-        </div>
+      <div data-role="page" data-position="fixed" id="newspage 2-3">
+        <div data-role="header" style="overflow:hidden;" class="ui-header ui-bar-a ui-header-fixed slideup">
+          <h1>Message</h1>
+              <a href="#mainpage 2-1" data-icon="back" class="ui-btn-left">Back</a>
+              <a href="#" data-icon="edit" class="ui-btn-right">Edit</a>
+        </div><!-- /header -->
 
         <div data-role="main" class="ui-content">
-          <form action="index.html#qplaypage">
-            <label>Login</label>
-            <input type="text" data-clear-btn="true" name="loginname" id="loginname" value="">
-            <label>Passworld</label>
-            <input type="password" data-clear-btn="true" name="loginpassword" id="loginpassword" value="">
-            <label><a href="#qplaypage">Submit</a></label>
-            <a href="#popupDialog" data-rel="popupDialog" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Delete page...</a>
-            <label><a href="qplay://isLogin?scheme=qplaytest">qplay://isLogin?scheme=qplaytest</a></label>
-            <label><a href="qplaytest://session=qplaytestsession">qplaytest://session=qplaytestsession</a></label>
-          </form>
-            <button class="show-page-loading-msg" data-textonly="false" data-textvisible="false" data-msgtext="" data-inline="true">Icon (default)</button>
-            <button class="show-page-loading-msg" data-textonly="false" data-textvisible="true" data-msgtext="" data-inline="true">Icon + text</button>
-            <button class="show-page-loading-msg" data-textonly="true" data-textvisible="true" data-msgtext="Text only loader" data-inline="true">Text only</button>
-            <button class="hide-page-loading-msg" data-inline="true" data-icon="delete">Hide</button>
-            <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
-                <li><a href="#">Apple</a></li>
-                <li><a href="#">Banana</a></li>
-                <li><a href="#">Cherry</a></li>
-                <li><a href="#">Cranberry</a></li>
-                <li><a href="#">Grape</a></li>
-                <li><a href="#">Orange</a></li>
+            <ul data-role="listview" data-inset="false">
+              <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
+              <li>
+                  <h2>Stephen Weber</h2>
+                  <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                  <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+                  <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+              </li>
+              <li><a href="index.html">
+                  <h2>jQuery Team</h2>
+                  <p><strong>Boston Conference Planning</strong></p>
+                  <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
+                  <p class="ui-li-aside"><strong>9:18</strong>AM</p>
+              </a></li>
+              <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2>Avery Walker</h2>
+                  <p><strong>Re: Dinner Tonight</strong></p>
+                  <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                  <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+              </a></li>
             </ul>
         </div>
 
-        <div id="deviceready" class="blink">
-            <p class="event listening">Connecting to Device</p>
-            <p class="event received">Device is Ready</p>
+        <div data-role="footer" data-position="fixed" role="contentinfo" class="ui-footer ui-bar-a ui-footer-fixed slideup">
+            <div data-role="tabs" id="tabs">
+
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#News" data-transition="turn" class="ui-btn ui-btn-active" data-ajax="false">News</a></li>
+                        <li><a href="#Events" data-transition="slid" class="ui-btn" data-ajax="false">Events</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
+
       </div>
-      <!-- end of login page -->
 
       <!-- Start of qplay-main page -->
-      <div data-role="page" id="qplaypage">
+      <div data-role="page" id="mainpage 2-1">
           <div data-role="header" style="overflow:hidden;">
             <h1>QPlay</h1>
-            <a href="#loginpage" data-icon="user" class="ui-btn-icon-left ui-btn-right">Logout</a>
-          </div>
+                <a href="#newspage 2-3" data-icon="comment" class="ui-btn-left">Message</a>
+                <a href="#" data-icon="user" class="ui-btn-right">Logout</a>
+          </div><!-- /header -->
 
           <div data-role="main" class="ui-content">
-            <div class="owl-carousel owl-theme" id="applist1">
-                  <div>  Content1 </div>
-                  <div>  Content2 </div>
-                  <div>  Content3 </div>
-                  <div>  Content4 </div>
-                  <div>  Content5 </div>
-                  <div>  Content6 </div>
-                  <div>  Content7 </div>
-            </div>
-            <br>
-            <h4>New arrival...</h4>
-            <div class="owl-carousel owl-theme" id="applist2">
-
-                  <div class="owl-item"><h4>1</h4></div>
-                  <div class="owl-item"><h4>2</h4></div>
-                  <div class="owl-item"><h4>3</h4></div>
-                  <div class="owl-item"><h4>4</h4></div>
-                  <div class="owl-item"><h4>5</h4></div>
-                  <div class="owl-item"><h4>6</h4></div>
-                  <div class="owl-item"><h4>7</h4></div>
-                  <div class="owl-item"><h4>8</h4></div>
-                  <div class="owl-item"><h4>9</h4></div>
-                  <div class="owl-item"><h4>10</h4></div>
-                  <div class="owl-item"><h4>11</h4></div>
-                  <div class="owl-item"><h4>12</h4></div>
-            </div>
+              <h4>New arrival...</h4>
+              <div class="owl-carousel owl-theme" id="applist1">
+                    <div class="owl-item"><h4>1</h4></div>
+                    <div class="owl-item"><h4>2</h4></div>
+                    <div class="owl-item"><h4>3</h4></div>
+                    <div class="owl-item"><h4>4</h4></div>
+                    <div class="owl-item"><h4>5</h4></div>
+                    <div class="owl-item"><h4>6</h4></div>
+                    <div class="owl-item"><h4>7</h4></div>
+                    <div class="owl-item"><h4>8</h4></div>
+                    <div class="owl-item"><h4>9</h4></div>
+                    <div class="owl-item"><h4>10</h4></div>
+                    <div class="owl-item"><h4>11</h4></div>
+                    <div class="owl-item"><h4>12</h4></div>
+              </div>
+              <br>
+              <h4>Finance</h4>
+              <div class="owl-carousel owl-theme" id="applist2">
+                    <div class="owl-item"><h4>1</h4></div>
+                    <div class="owl-item"><h4>2</h4></div>
+                    <div class="owl-item"><h4>3</h4></div>
+                    <div class="owl-item"><h4>4</h4></div>
+                    <div class="owl-item"><h4>5</h4></div>
+                    <div class="owl-item"><h4>6</h4></div>
+                    <div class="owl-item"><h4>7</h4></div>
+                    <div class="owl-item"><h4>8</h4></div>
+                    <div class="owl-item"><h4>9</h4></div>
+                    <div class="owl-item"><h4>10</h4></div>
+                    <div class="owl-item"><h4>11</h4></div>
+                    <div class="owl-item"><h4>12</h4></div>
+              </div>
+              <br>
+              <h4>Supply chain Mangment</h4>
+              <div class="owl-carousel owl-theme" id="applist3">
+                    <div class="owl-item"><h4>1</h4></div>
+                    <div class="owl-item"><h4>2</h4></div>
+                    <div class="owl-item"><h4>3</h4></div>
+                    <div class="owl-item"><h4>4</h4></div>
+                    <div class="owl-item"><h4>5</h4></div>
+                    <div class="owl-item"><h4>6</h4></div>
+                    <div class="owl-item"><h4>7</h4></div>
+                    <div class="owl-item"><h4>8</h4></div>
+                    <div class="owl-item"><h4>9</h4></div>
+                    <div class="owl-item"><h4>10</h4></div>
+                    <div class="owl-item"><h4>11</h4></div>
+                    <div class="owl-item"><h4>12</h4></div>
+              </div>
         </div>
 
         <!-- Start of popupDialog page -->
@@ -160,8 +264,5 @@
                 <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Delete</a>
             </div>
         </div>
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+           id="cordova-plugin-qlogin"
+      version="1.0.0">
+    <name>QLoginPlugin</name>
+    <description>QPlay QLogin Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,qlogin,policy</keywords>
+	
+	<js-module src="www/QLogin.js" name="QLoginPlugin">
+		<clobbers target="window.plugins.qlogin" />
+	</js-module>
+	
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="QLoginPlugin" >
+                <param name="android-package" value="org.apache.cordova.qlogin.QLoginPlugin"/>
+            </feature>
+        </config-file>
+
+		<source-file src="src/android/QLoginPlugin.java" target-dir="src/org/apache/cordova/qlogin" />
+		<source-file src="src/android/LoginInfo.java" target-dir="src/org/apache/cordova/qlogin" />
+		<source-file src="src/android/LoginActivity.java" target-dir="src/org/apache/cordova/qlogin" />
+		<source-file src="src/android/login_activity.xml" target-dir="res/layout" />
+        	<info>
+               
+          </info>
+    </platform>
+	
+	<platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="QLoginPlugin">
+                <param name="ios-package" value="QLoginPlugin"/>
+				<param name="onload" value="true"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/QLoginPlugin.h" />
+        <source-file src="src/ios/QLoginPlugin.m" />
+    </platform>
+
+</plugin>
