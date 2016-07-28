@@ -138,6 +138,7 @@
     //urlString = [urlString stringByRemovingPercentEncoding];
     NSURL *url = [NSURL URLWithString:urlString];
     [[UIApplication sharedApplication] openURL:url];
+	_SourceAPP = nil;
 }
 @end
 
