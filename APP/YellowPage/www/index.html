@@ -104,15 +104,15 @@
           <br><br><br>
           <div>
             <a href="#ask_add_phone_book" data-rel="popup" data-role="button" data-inline="true">加到電話簿</a>
-            <a href="#no_query_condition" data-rel="popup" data-role="button" data-inline="true">輸入查詢條件</a>
+            <!-- <a href="#no_query_condition" data-rel="popup" data-role="button" data-inline="true">輸入查詢條件</a> -->
           </div>
         </div>
         <div data-role="footer" data-position="fixed" data-theme="b">
           <div data-role="navbar" data-iconpos="top" class="custom_navbar">
             <ul>
               <li><a href="#" data-icon="delete" id="cleanquery">清除查詢</a></li>
-              <li><a href="#query_result_page" data-icon="search" id="callAjax">開始查詢</a></li>
-              <li><a href="#" data-icon="star">我的電話簿</a></li>
+              <li><a href="#" data-icon="search" id="callAjax">開始查詢</a></li>
+              <li><a href="#phonebook_page" data-icon="star" id="myphonebook">我的電話簿</a></li>
             </ul>
           </div>
         </div>
@@ -135,8 +135,7 @@
         <div data-role="header"> 
           <a href="index.html" class="ui-btn-left">Back</a>
           <div class="header_style"><h1>查詢結果</h1></div>
-          <!-- <a href="index.html" data-icon="home" class="ui-btn-right">Home</a> -->
-          <a href="#detail_info_page" data-icon="home" class="ui-btn-right" id="testdetail">Home</a>
+          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
         </div>
         <div data-role="main" class="ui-content">
           <div data-role="listview" id="employee-data">
@@ -180,6 +179,38 @@
             <div class="ui-grid-b grid_style">
             </div>
           </div>
+        </div>
+      </div>
+      
+      <!-- Start of phonebook_page -->
+      <div data-role="page" id="phonebook_page">
+        <div data-role="header">
+          <a href="#phonebook_edit_page" class="ui-btn-left edit-button-style" id="edit-button"><img src="img/edit.png"></a>
+          <div class="header_style"><h1>我的電話簿</h1></div>
+          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
+        </div>
+        <div data-role="main" class="ui-content">
+          <div data-role="listview" id="my_phonebook_list">
+<!--             <div class="ui-grid-c grid_style">
+            </div> -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Start of phonebook_edit_page -->
+      <div data-role="page" id="phonebook_edit_page">
+        <div data-role="header">
+          <a href="#phonebook_page" class="ui-btn-left">編輯完成</a>
+          <div class="header_style"><h1>我的電話簿</h1></div>
+        </div>
+        <div data-role="main" class="ui-content">
+          <div data-role="listview" id="edit_my_phonebook_list">
+<!--             <div class="ui-grid-c grid_style">
+            </div> -->
+          </div>
+        </div>
+        <div data-role="footer" data-position="fixed" style="background:#4B0082;color:white;">
+          <a href="#" class="" id="select-all" style="background-color:#28004D;border-color:#28004D;color:white;margin-left:5px;">選擇全部</a>
         </div>
       </div>
       
