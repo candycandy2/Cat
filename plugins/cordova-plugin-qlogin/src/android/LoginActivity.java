@@ -50,6 +50,7 @@ public class LoginActivity extends Activity {
             }else{
                 Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data);
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
                 startActivity(intent);
             }
         }

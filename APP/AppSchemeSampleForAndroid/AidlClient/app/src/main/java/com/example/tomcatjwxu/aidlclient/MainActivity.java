@@ -39,6 +39,7 @@ public class MainActivity extends Activity{
 
                 // Otherwise allow the OS to handle things like tel, mailto, etc.
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
                 startActivity(intent);
                 return true;
             }
