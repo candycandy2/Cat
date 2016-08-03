@@ -140,6 +140,19 @@ class Verify
         }
     }
 
+    public static function chkAppKeyExist($appKey)
+    {
+        $registerInfoList = \DB::table("qp_register")
+            -> where('uuid', "=", $uuid)
+            -> where('status', '=', 'A')
+            -> select('row_id')->get();
+        if(count($registerInfoList) > 0 ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function chkSignature($signature, $signatureTime)
     {
         $nowTime = time();

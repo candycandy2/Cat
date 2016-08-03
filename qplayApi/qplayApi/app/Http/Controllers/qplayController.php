@@ -117,6 +117,7 @@ class qplayController extends Controller
             //Check uuid exist
             $uuidList = \DB::table("qp_register")
                 -> where('uuid', "=", $uuid)
+                -> where('status', '=', 'A')
                 -> select('uuid')->get();
             if(count($uuidList) > 0)
             {
@@ -176,14 +177,30 @@ class qplayController extends Controller
                     'token_valid'=>$token_valid,
                     'content'=>array("redirect_uri"=>$redirect_uri.'?result_code='.ResultCode::_999999_unknownError.'message='.'Call Service Error')]);
             }
-
+            $appHeaderList = \DB::table("qp_app_head")
+                ->join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                ->whereNotNull('qp_app_head.security_updated_at')
+                ->select('qp_project.app_key', 'qp_app_head.security_updated_at')->get();
+            $security_update_list = array();
+            $temp = 5184000;//两个月 60 * 60 * 24 * 30 * 2 = 5184000;
+            foreach ($appHeaderList as $item) {
+                if(time() -  $item->security_updated_at < $temp) {
+                    $sItem = array('app_key'=>$item->app_key,
+                        'security_updated_at'=>$item->security_updated_at
+                    );
+                    array_push($security_update_list, $sItem);
+                }
+            }
+            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
             return response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>'Call Service Successed',
                 'token_valid'=>$token_valid,
                 'content'=>array(
                     "uuid" => $uuid,
                     "redirect_uri"=>$redirect_uri.'?token='.$token.'&token_valid='.$token_valid,
-                    "token"=>$token)
+                    "token"=>$token,
+                    "emp_no"=>$userInfo->emp_no,
+                    'security_update_list' => $security_update_list)
             ]);
 
         }
@@ -318,11 +335,21 @@ class qplayController extends Controller
                     'content'=>array("redirect_uri"=>$redirect_uri.'?result_code='.ResultCode::_999999_unknownError.'message='.'Call Service Error')]);
             }
 
-            $appHeader = \DB::table("qp_app_head")
+            $appHeaderList = \DB::table("qp_app_head")
                 ->join("qp_project","project_row_id",  "=", "qp_project.row_id")
-                ->where('qp_project.app_key', "=", $appKey)
-                ->select('qp_app_head.security_updated_at','security_level')->get();
-            $security_updated_at = $appHeader[0]->security_updated_at;
+                ->whereNotNull('qp_app_head.security_updated_at')
+                ->select('qp_project.app_key', 'qp_app_head.security_updated_at')->get();
+            $security_update_list = array();
+            $temp = 5184000;//两个月 60 * 60 * 24 * 30 * 2 = 5184000;
+            foreach ($appHeaderList as $item) {
+                if(time() -  $item->security_updated_at < $temp) {
+                    $sItem = array('app_key'=>$item->app_key,
+                        'security_updated_at'=>$item->security_updated_at
+                    );
+                    array_push($security_update_list, $sItem);
+                }
+            }
+
             $userInfo = CommonUtil::getUserInfoByUUID($uuid);
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>'Login Successed',
@@ -331,7 +358,7 @@ class qplayController extends Controller
                     "redirect_uri"=>$redirect_uri.'?token='.$token.'&token_valid='.$token_valid,
                     "token"=>$token,
                     "emp_no"=>$userInfo->emp_no,
-                    'security_updated_at' => $security_updated_at)
+                    'security_update_list' => $security_update_list)
             ]);
         }
         else
@@ -511,7 +538,7 @@ class qplayController extends Controller
         $request = Request::instance();
 
         //通用api參數判斷
-        if(!array_key_exists('uuid', $input))
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
         {
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
@@ -520,6 +547,12 @@ class qplayController extends Controller
 
         $token = $request->header('token');
         $uuid = $input["uuid"];
+
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -535,7 +568,7 @@ class qplayController extends Controller
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
 
                 $sql = <<<SQL
-select distinct h.row_id as app_id, p.app_key as app_code,
+select distinct h.row_id as app_id, p.project_code as app_code,
 h.package_name, c.row_id as category_id, c.app_category,
 v.version_code as version, v.version_name,
 h.security_level,h.avg_score, us.score as user_score,
@@ -587,11 +620,13 @@ SQL;
 
                 $app_category_list = array();
                 $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
-                $sql = <<<SQL
-select row_id as category_id, app_category, sequence from qp_app_category
-where row_id in (:idList)
-SQL;
-                $categoryDataList = DB::select($sql, [':idList'=>$categoryIdListStr]);
+//                $sql = <<<SQL
+//select row_id as category_id, app_category, sequence from qp_app_category
+//where row_id in (:idList)
+//SQL;
+                $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
+                $categoryDataList = DB::select($sql);
+
                 foreach ($categoryDataList as $categoryData)
                 {
                     $category = array('category_id'=>$categoryData->category_id,
@@ -603,14 +638,8 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-                $sql = <<<SQL
-select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, 
-line.app_summary, line.app_description 
-from qp_app_line line, qp_language lang
-where line.lang_row_id = lang.row_id
-and line.app_row_id in (:idList)
-SQL;
-                $langDataList = DB::select($sql, [':idList'=>$appIdListStr]);
+                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description from qp_app_line line, qp_language lang where line.lang_row_id = lang.row_id and line.app_row_id in ('.$appIdListStr.')';
+                $langDataList = DB::select($sql);
                 foreach ($langDataList as $langData)
                 {
 
@@ -743,6 +772,12 @@ SQL;
         $token = $request->header('token');
         $uuid = $input["uuid"];
 
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
+
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
@@ -765,6 +800,36 @@ SQL;
 
                 $count_from = -1;
                 $count_to = -1;
+                if(array_key_exists('date_from', $input) && trim($input['date_from']) != "") {
+                    if(!array_key_exists('date_to', $input) || trim($input['date_to']) == "") {
+                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                            'message'=>'傳入參數不足或傳入參數格式錯誤',
+                            'content'=>'']);
+                    }
+                }
+                if(array_key_exists('date_to', $input) && trim($input['date_to']) != "") {
+                    if(!array_key_exists('date_from', $input) || trim($input['date_from']) == "") {
+                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                            'message'=>'傳入參數不足或傳入參數格式錯誤',
+                            'content'=>'']);
+                    }
+                }
+                if(array_key_exists('count_from', $input) && trim($input['count_from']) != "") {
+                    if (!array_key_exists('count_to', $input) || trim($input['count_to']) == "") {
+                        return response()->json(['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                            'message' => '傳入參數不足或傳入參數格式錯誤',
+                            'content' => '']);
+                    }
+                }
+                if(array_key_exists('count_to', $input) && trim($input['count_to']) != "") {
+                    if (!array_key_exists('count_from', $input) || trim($input['count_from']) == "") {
+                        return response()->json(['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                            'message' => '傳入參數不足或傳入參數格式錯誤',
+                            'content' => '']);
+                    }
+                }
+
+
                 if(array_key_exists('date_from', $input) && trim($input['date_from']) != "") {
                     if(!array_key_exists('date_to', $input) || trim($input['date_to']) == "") {
                         return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -894,6 +959,12 @@ SQL;
         $uuid = $input["uuid"];
         $message_row_id = $input["message_row_id"];
 
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
+
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
@@ -968,7 +1039,8 @@ SQL;
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('message_row_id', $input)
-            || !array_key_exists('message_type', $input) || !array_key_exists('status', $input))
+            || !array_key_exists('message_type', $input) || !array_key_exists('status', $input)
+        || trim($input["uuid"]) == "" || trim($input["message_row_id"]) == "" || trim($input["message_type"]) == "" || trim($input["status"]) == "")
         {
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
@@ -980,6 +1052,15 @@ SQL;
         $message_row_id = $input["message_row_id"];
         $message_type = $input["message_type"];
         $status = $input["status"];
+
+        $msgList = \DB::table("qp_message")
+            -> where('row_id', "=", $message_row_id)
+            -> select('row_id')->get();
+        if(count($msgList) < 1 ) {
+            return response()->json(['result_code'=>ResultCode::_999013_messageNotExist,
+                'message'=>'此消息不存在',
+                'content'=>'']);
+        }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -1000,6 +1081,7 @@ SQL;
 
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
+                    'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>''
                 ]);
             } else {
@@ -1026,7 +1108,7 @@ SQL;
 
         //通用api參數判斷
         if($pushToken == null || !array_key_exists('uuid', $input) || !array_key_exists('app_key', $input)
-            || !array_key_exists('device_type', $input))
+            || !array_key_exists('device_type', $input) || trim($input["uuid"]) == "" || trim($input["app_key"]) == "" || trim($input["device_type"]) == "")
         {
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
@@ -1036,6 +1118,18 @@ SQL;
         $uuid = $input["uuid"];
         $appKey = $input["app_key"];
         $deviceType = $input["device_type"];
+
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
+
+        if(!$Verify->chkAppKeyExist($appKey)) {
+            return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+                'message'=>'app_key不存在',
+                'content'=>'']);
+        }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -1052,7 +1146,7 @@ SQL;
                 -> select('uuid', 'row_id')->get();
             if(count($uuidList) < 1)
             {
-                return response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
+                return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
                     'message'=>'设备未注册',
                     'content'=>'']);
             }
@@ -1175,6 +1269,12 @@ SQL;
 
         $app_key = $input["app_key"];
         $need_push = $input["need_push"];
+
+        if(!$Verify->chkAppKeyExist($app_key)) {
+            return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+                'message'=>'app_key不存在',
+                'content'=>'']);
+        }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {

@@ -240,7 +240,7 @@ FORM;
 
         var getAppList = function () {
             $.ajax({
-                url: "v101/qplay/getAppList?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                url: "v101/qplay/getAppList?lang=en-us&uuid=A1234567890A1234567890",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -249,7 +249,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "5783536f4016a");
+                    request.setRequestHeader("token", "57a197580a154");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);

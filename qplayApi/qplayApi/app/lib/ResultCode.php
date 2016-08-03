@@ -24,6 +24,7 @@ abstract class ResultCode
     const _999010_appKeyIncorrect = '999010';  //app-key參數錯誤
     const _999011_signatureOvertime = '999011';  //signature參數錯誤或誤差超過15分鐘
     const _999012_appOffTheShelf = '999012';  //app已经下架
+    const _999013_messageNotExist = '999013';  //此消息不存在
     const _999999_unknownError = '999999';  //其他未知錯誤
 
     const _000901_userNotExistError = '000901';  //離職或是帳號資訊打錯
