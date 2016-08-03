@@ -42,13 +42,17 @@ class Verify
         $headerSignature = $request->header('Signature');
         $headerSignatureTime = $request->header('Signature-Time');
 
-
-
         //verify parameter count
         if($headerContentType == null || $headerAppKey == null
-            || $headerSignature == null || $headerSignatureTime == null || $headerAppKey != "qplay") {
+            || $headerSignature == null || $headerSignatureTime == null
+            || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
+        }
+
+        if($headerAppKey != "qplay") {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=> "app-key參數錯誤");
         }
 
         //verify language input
@@ -71,8 +75,8 @@ class Verify
         }
 
         if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
-            return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                "message"=>"Signature驗證碼不正確");
+            return array("code"=>ResultCode::_999011_signatureOvertime,
+                "message"=>"signature參數錯誤或誤差超過15分鐘");
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -80,15 +84,21 @@ class Verify
     }
 
     public static function verifyToken($uuid, $token) {
-        if($token == null) {
+        if($token == null || $uuid == null || trim($uuid) == "" || trim($token) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
+        }
+
+        if(!Verify::chkUuidExist($uuid)) {
+            return array("code"=>ResultCode::_000911_uuidNotExist,
+                "message"=> "uuid不存在");
         }
 
         $sessionList = \DB::table("qp_session")
             -> where('uuid', "=", $uuid)
             -> where('token', '=', $token)
-            -> select('token_valid_date', 'last_message_time')->get();
+            //-> select('token_valid_date', 'last_message_time')->get();
+            -> select('token_valid_date')->get();
         if(count($sessionList) < 1)
         {
             return array("code"=>ResultCode::_000908_tokenInvalid,
@@ -96,7 +106,7 @@ class Verify
         }
 
         $token_valid_date = $sessionList[0]->token_valid_date;
-        $last_message_time = $sessionList[0]->last_message_time;
+        //$last_message_time = $sessionList[0]->last_message_time;
         $ts = time() - $token_valid_date; //strtotime($token_valid_date);
         if($ts > Verify::$TOKEN_VALIDATE_TIME)
         {
@@ -113,8 +123,21 @@ class Verify
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
             "token_valid_date"=>$token_valid_date,
-            "last_message_time"=>$last_message_time,
+            //"last_message_time"=>$last_message_time,
             "message"=>"");
+    }
+
+    public static function chkUuidExist($uuid)
+    {
+        $registerInfoList = \DB::table("qp_register")
+            -> where('uuid', "=", $uuid)
+            -> where('status', '=', 'A')
+            -> select('row_id')->get();
+        if(count($registerInfoList) > 0 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function chkSignature($signature, $signatureTime)

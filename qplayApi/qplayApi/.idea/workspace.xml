@@ -25,72 +25,73 @@
       <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="35" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="35" selection-end-column="3" />
+            <state relative-caret-position="850">
+              <caret line="43" column="86" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="86" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/login.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="53" column="9" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
-              <folding>
-                <element signature="e#354#405#0#HTML" expanded="true" />
-                <element signature="e#1050#1115#0#HTML" expanded="true" />
-                <element signature="e#1885#1936#0#HTML" expanded="true" />
-                <element signature="e#2002#2029#0#HTML" expanded="true" />
-                <element signature="e#2196#2261#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="register.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/register.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-              <folding>
-                <element signature="e#352#403#0#HTML" expanded="true" />
-                <element signature="e#469#496#0#HTML" expanded="true" />
-                <element signature="e#663#728#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qplayController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="qplayController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="109" column="22" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
+            <state relative-caret-position="580">
+              <caret line="334" column="15" selection-start-line="334" selection-start-column="15" selection-end-line="334" selection-end-column="15" />
               <folding>
-                <element signature="e#277#1716#0#PHP" expanded="false" />
-                <marker date="1468906732218" expanded="true" signature="19427:20396" placeholder="select disti... qp_app_head" />
-                <marker date="1468906732218" expanded="true" signature="20073:20246" placeholder="select row_i... qp_app_head" />
-                <marker date="1468906732218" expanded="true" signature="20123:20245" placeholder="select app_r... qp_role_app" />
-                <marker date="1468906732218" expanded="true" signature="20183:20244" placeholder="select role_... qp_user_role" />
-                <marker date="1468906732218" expanded="true" signature="20254:20364" placeholder="select row_i... qp_app_head" />
-                <marker date="1468906732218" expanded="true" signature="20304:20363" placeholder="select app_r... qp_user_app" />
-                <marker date="1468906732218" expanded="true" signature="21970:22069" placeholder="select row_i... qp_app_category" />
-                <marker date="1468906732218" expanded="true" signature="22710:22945" placeholder="select line.... qp_app_line" />
-                <marker date="1468906732218" expanded="true" signature="30110:31014" placeholder="select disti... qp_message" />
-                <marker date="1468906732218" expanded="true" signature="30399:30566" placeholder="select messa... qp_user_message" />
-                <marker date="1468906732218" expanded="true" signature="30578:30860" placeholder="select messa... qp_role_message" />
-                <marker date="1468906732218" expanded="true" signature="30701:30814" placeholder="select role_... qp_user_role" />
+                <element signature="e#277#1746#0#PHP" expanded="false" />
+                <element signature="e#15038#18285#0#PHP" expanded="false" />
+                <element signature="e#18291#21220#0#PHP" expanded="false" />
+                <element signature="e#21226#27577#0#PHP" expanded="false" />
+                <element signature="e#27583#30231#0#PHP" expanded="false" />
+                <element signature="e#30237#36484#0#PHP" expanded="false" />
+                <element signature="e#36490#39872#0#PHP" expanded="false" />
+                <element signature="e#39878#42225#0#PHP" expanded="false" />
+                <element signature="e#42231#45630#0#PHP" expanded="false" />
+                <element signature="e#45636#47689#0#PHP" expanded="false" />
+                <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+                <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+                <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+                <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+                <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+                <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+                <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+                <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+                <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+                <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+                <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+                <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+                <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+                <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Verify.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CommonUtil.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/lib/CommonUtil.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResultCode.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/lib/ResultCode.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="28" column="61" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Verify.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="1300">
+              <caret line="53" column="68" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="68" />
               <folding>
                 <element signature="e#111#123#0#PHP" expanded="true" />
               </folding>
@@ -109,12 +110,17 @@
         <option value="$PROJECT_DIR$/config/database.php" />
         <option value="$PROJECT_DIR$/resources/views/app.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
-        <option value="$PROJECT_DIR$/app/lib/Verify.php" />
         <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/resources/views/test.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/register.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/login.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/testapp.blade.php" />
+        <option value="$PROJECT_DIR$/app/lib/CommonUtil.php" />
+        <option value="$PROJECT_DIR$/app/lib/Verify.php" />
+        <option value="$PROJECT_DIR$/resources/views/test.blade.php" />
+        <option value="$PROJECT_DIR$/app/lib/ResultCode.php" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
+        <option value="$PROJECT_DIR$/resources/views/testyellowpage.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/qplayController.php" />
       </list>
     </option>
@@ -137,10 +143,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="x" value="-4" />
+    <option name="y" value="-4" />
+    <option name="width" value="1374" />
+    <option name="height" value="732" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -167,7 +173,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -183,20 +189,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="storage" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -256,83 +248,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -354,9 +270,31 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qplayApi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qplayApi" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Http" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controllers" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -368,8 +306,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\www\qplayApi\public\css\images" />
       <recent name="E:\www\qplayApi\resources\views" />
+      <recent name="E:\www\qplayApi\public\css\images" />
       <recent name="F:\PhpStormWorkspace\qplayApi\app\lib" />
       <recent name="F:\PhpStormWorkspace\qplayApi\public\js" />
       <recent name="F:\PhpStormWorkspace\qplayApi\resources\views" />
@@ -425,19 +363,25 @@
       <workItem from="1466986877423" duration="2254000" />
       <workItem from="1466990247368" duration="13150000" />
       <workItem from="1467009510618" duration="5948000" />
-      <workItem from="1468888416875" duration="8924000" />
+      <workItem from="1468888416875" duration="18184000" />
+      <workItem from="1468992144877" duration="44000" />
+      <workItem from="1469086841365" duration="332000" />
+      <workItem from="1469604957990" duration="75000" />
+      <workItem from="1470013094263" duration="19088000" />
+      <workItem from="1470097934872" duration="18793000" />
+      <workItem from="1470196597595" duration="3386000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32811000" />
+    <option name="totallyTimeSpent" value="83789000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-4" y="-4" width="1374" height="732" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24158126" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10761347" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -475,6 +419,229 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="e#111#123#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="950">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/testyellowpage.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+            <element signature="e#2002#2708#0#PHP" expanded="false" />
+            <element signature="e#2714#3264#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4650">
+          <caret line="234" column="78" selection-start-line="234" selection-start-column="78" selection-end-line="234" selection-end-column="78" />
+          <folding>
+            <element signature="e#277#1746#0#PHP" expanded="false" />
+            <element signature="e#15038#18285#0#PHP" expanded="false" />
+            <element signature="e#18291#21220#0#PHP" expanded="false" />
+            <element signature="e#21226#27577#0#PHP" expanded="false" />
+            <element signature="e#27583#30231#0#PHP" expanded="false" />
+            <element signature="e#30237#36484#0#PHP" expanded="false" />
+            <element signature="e#36490#39872#0#PHP" expanded="false" />
+            <element signature="e#39878#42225#0#PHP" expanded="false" />
+            <element signature="e#42231#45630#0#PHP" expanded="false" />
+            <element signature="e#45636#47689#0#PHP" expanded="false" />
+            <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+            <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+            <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+            <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+            <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+            <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+            <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="e#111#123#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="950">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/testyellowpage.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+            <element signature="e#2002#2708#0#PHP" expanded="false" />
+            <element signature="e#2714#3264#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#277#1746#0#PHP" expanded="false" />
+            <element signature="e#15038#18285#0#PHP" expanded="false" />
+            <element signature="e#18291#21220#0#PHP" expanded="false" />
+            <element signature="e#21226#27577#0#PHP" expanded="false" />
+            <element signature="e#27583#30231#0#PHP" expanded="false" />
+            <element signature="e#30237#36484#0#PHP" expanded="false" />
+            <element signature="e#36490#39872#0#PHP" expanded="false" />
+            <element signature="e#39878#42225#0#PHP" expanded="false" />
+            <element signature="e#42231#45630#0#PHP" expanded="false" />
+            <element signature="e#45636#47689#0#PHP" expanded="false" />
+            <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+            <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+            <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+            <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+            <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+            <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+            <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="e#111#123#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="950">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/testyellowpage.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+            <element signature="e#2002#2708#0#PHP" expanded="false" />
+            <element signature="e#2714#3264#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25200">
+          <caret line="1056" column="69" selection-start-line="1056" selection-start-column="69" selection-end-line="1056" selection-end-column="69" />
+          <folding>
+            <element signature="e#277#1746#0#PHP" expanded="false" />
+            <element signature="e#15038#18285#0#PHP" expanded="false" />
+            <element signature="e#18291#21220#0#PHP" expanded="false" />
+            <element signature="e#21226#27577#0#PHP" expanded="false" />
+            <element signature="e#27583#30231#0#PHP" expanded="false" />
+            <element signature="e#30237#36484#0#PHP" expanded="false" />
+            <element signature="e#36490#39872#0#PHP" expanded="false" />
+            <element signature="e#39878#42225#0#PHP" expanded="false" />
+            <element signature="e#42231#45630#0#PHP" expanded="false" />
+            <element signature="e#45636#47689#0#PHP" expanded="false" />
+            <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+            <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+            <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+            <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+            <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+            <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+            <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="e#111#123#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -487,7 +654,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="950">
           <caret line="38" column="24" selection-start-line="38" selection-start-column="24" selection-end-line="38" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -496,19 +662,30 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#277#1716#0#PHP" expanded="false" />
-            <marker date="1468906732218" expanded="true" signature="19427:20396" placeholder="select disti... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20073:20246" placeholder="select row_i... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20123:20245" placeholder="select app_r... qp_role_app" />
-            <marker date="1468906732218" expanded="true" signature="20183:20244" placeholder="select role_... qp_user_role" />
-            <marker date="1468906732218" expanded="true" signature="20254:20364" placeholder="select row_i... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20304:20363" placeholder="select app_r... qp_user_app" />
-            <marker date="1468906732218" expanded="true" signature="21970:22069" placeholder="select row_i... qp_app_category" />
-            <marker date="1468906732218" expanded="true" signature="22710:22945" placeholder="select line.... qp_app_line" />
-            <marker date="1468906732218" expanded="true" signature="30110:31014" placeholder="select disti... qp_message" />
-            <marker date="1468906732218" expanded="true" signature="30399:30566" placeholder="select messa... qp_user_message" />
-            <marker date="1468906732218" expanded="true" signature="30578:30860" placeholder="select messa... qp_role_message" />
-            <marker date="1468906732218" expanded="true" signature="30701:30814" placeholder="select role_... qp_user_role" />
+            <element signature="e#277#1746#0#PHP" expanded="false" />
+            <element signature="e#15038#18285#0#PHP" expanded="false" />
+            <element signature="e#18291#21220#0#PHP" expanded="false" />
+            <element signature="e#21226#27577#0#PHP" expanded="false" />
+            <element signature="e#27583#30231#0#PHP" expanded="false" />
+            <element signature="e#30237#36484#0#PHP" expanded="false" />
+            <element signature="e#36490#39872#0#PHP" expanded="false" />
+            <element signature="e#39878#42225#0#PHP" expanded="false" />
+            <element signature="e#42231#45630#0#PHP" expanded="false" />
+            <element signature="e#45636#47689#0#PHP" expanded="false" />
+            <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+            <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+            <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+            <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+            <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+            <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+            <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
           </folding>
         </state>
       </provider>
@@ -535,7 +712,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
           <caret line="40" column="18" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -544,19 +720,30 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#277#1716#0#PHP" expanded="false" />
-            <marker date="1468906732218" expanded="true" signature="19427:20396" placeholder="select disti... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20073:20246" placeholder="select row_i... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20123:20245" placeholder="select app_r... qp_role_app" />
-            <marker date="1468906732218" expanded="true" signature="20183:20244" placeholder="select role_... qp_user_role" />
-            <marker date="1468906732218" expanded="true" signature="20254:20364" placeholder="select row_i... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20304:20363" placeholder="select app_r... qp_user_app" />
-            <marker date="1468906732218" expanded="true" signature="21970:22069" placeholder="select row_i... qp_app_category" />
-            <marker date="1468906732218" expanded="true" signature="22710:22945" placeholder="select line.... qp_app_line" />
-            <marker date="1468906732218" expanded="true" signature="30110:31014" placeholder="select disti... qp_message" />
-            <marker date="1468906732218" expanded="true" signature="30399:30566" placeholder="select messa... qp_user_message" />
-            <marker date="1468906732218" expanded="true" signature="30578:30860" placeholder="select messa... qp_role_message" />
-            <marker date="1468906732218" expanded="true" signature="30701:30814" placeholder="select role_... qp_user_role" />
+            <element signature="e#277#1746#0#PHP" expanded="false" />
+            <element signature="e#15038#18285#0#PHP" expanded="false" />
+            <element signature="e#18291#21220#0#PHP" expanded="false" />
+            <element signature="e#21226#27577#0#PHP" expanded="false" />
+            <element signature="e#27583#30231#0#PHP" expanded="false" />
+            <element signature="e#30237#36484#0#PHP" expanded="false" />
+            <element signature="e#36490#39872#0#PHP" expanded="false" />
+            <element signature="e#39878#42225#0#PHP" expanded="false" />
+            <element signature="e#42231#45630#0#PHP" expanded="false" />
+            <element signature="e#45636#47689#0#PHP" expanded="false" />
+            <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+            <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+            <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+            <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+            <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+            <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+            <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
           </folding>
         </state>
       </provider>
@@ -598,13 +785,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/lib/ResultCode.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/welcome.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -616,7 +796,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -631,14 +810,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="166">
           <caret line="29" column="69" selection-start-line="29" selection-start-column="69" selection-end-line="29" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_ide_helper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12">
-          <caret line="10041" column="18" selection-start-line="10041" selection-start-column="4" selection-end-line="10041" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -667,15 +838,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="1560" column="20" selection-start-line="1560" selection-start-column="20" selection-end-line="1560" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/test.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="54" column="35" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -683,15 +845,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="857" column="0" selection-start-line="857" selection-start-column="0" selection-end-line="857" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="35" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="35" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -699,56 +852,136 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
           <caret line="53" column="9" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
-          <folding>
-            <element signature="e#354#405#0#HTML" expanded="true" />
-            <element signature="e#1050#1115#0#HTML" expanded="true" />
-            <element signature="e#1885#1936#0#HTML" expanded="true" />
-            <element signature="e#2002#2029#0#HTML" expanded="true" />
-            <element signature="e#2196#2261#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/register.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
+        <state relative-caret-position="1050">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#352#403#0#HTML" expanded="true" />
-            <element signature="e#469#496#0#HTML" expanded="true" />
-            <element signature="e#663#728#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/testapp.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="109" column="22" selection-start-line="109" selection-start-column="22" selection-end-line="109" selection-end-column="22" />
-          <folding>
-            <element signature="e#277#1716#0#PHP" expanded="false" />
-            <marker date="1468906732218" expanded="true" signature="19427:20396" placeholder="select disti... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20073:20246" placeholder="select row_i... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20123:20245" placeholder="select app_r... qp_role_app" />
-            <marker date="1468906732218" expanded="true" signature="20183:20244" placeholder="select role_... qp_user_role" />
-            <marker date="1468906732218" expanded="true" signature="20254:20364" placeholder="select row_i... qp_app_head" />
-            <marker date="1468906732218" expanded="true" signature="20304:20363" placeholder="select app_r... qp_user_app" />
-            <marker date="1468906732218" expanded="true" signature="21970:22069" placeholder="select row_i... qp_app_category" />
-            <marker date="1468906732218" expanded="true" signature="22710:22945" placeholder="select line.... qp_app_line" />
-            <marker date="1468906732218" expanded="true" signature="30110:31014" placeholder="select disti... qp_message" />
-            <marker date="1468906732218" expanded="true" signature="30399:30566" placeholder="select messa... qp_user_message" />
-            <marker date="1468906732218" expanded="true" signature="30578:30860" placeholder="select messa... qp_role_message" />
-            <marker date="1468906732218" expanded="true" signature="30701:30814" placeholder="select role_... qp_user_role" />
-          </folding>
+        <state relative-caret-position="200">
+          <caret line="8" column="67" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_ide_helper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="281" column="13" selection-start-line="281" selection-start-column="13" selection-end-line="281" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="1300">
+          <caret line="53" column="68" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="68" />
           <folding>
             <element signature="e#111#123#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/test.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="140" column="29" selection-start-line="140" selection-start-column="29" selection-end-line="140" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_5.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="720" column="9" selection-start-line="720" selection-start-column="9" selection-end-line="720" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/curl.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="83" column="9" selection-start-line="83" selection-start-column="9" selection-end-line="83" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/CommonUtil.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="43" column="86" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1500">
+          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+            <element signature="e#2002#2708#0#PHP" expanded="false" />
+            <element signature="e#2714#3264#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/testyellowpage.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="127" column="67" selection-start-line="127" selection-start-column="67" selection-end-line="127" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/ResultCode.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="28" column="61" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="334" column="15" selection-start-line="334" selection-start-column="15" selection-end-line="334" selection-end-column="15" />
+          <folding>
+            <element signature="e#277#1746#0#PHP" expanded="false" />
+            <element signature="e#15038#18285#0#PHP" expanded="false" />
+            <element signature="e#18291#21220#0#PHP" expanded="false" />
+            <element signature="e#21226#27577#0#PHP" expanded="false" />
+            <element signature="e#27583#30231#0#PHP" expanded="false" />
+            <element signature="e#30237#36484#0#PHP" expanded="false" />
+            <element signature="e#36490#39872#0#PHP" expanded="false" />
+            <element signature="e#39878#42225#0#PHP" expanded="false" />
+            <element signature="e#42231#45630#0#PHP" expanded="false" />
+            <element signature="e#45636#47689#0#PHP" expanded="false" />
+            <marker date="1470202280665" expanded="true" signature="22319:23288" placeholder="select disti... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="22965:23138" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23015:23137" placeholder="select app_r... qp_role_app" />
+            <marker date="1470202280665" expanded="true" signature="23075:23136" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="23146:23256" placeholder="select row_i... qp_app_head" />
+            <marker date="1470202280665" expanded="true" signature="23196:23255" placeholder="select app_r... qp_user_app" />
+            <marker date="1470202280665" expanded="true" signature="24862:24961" placeholder="select row_i... qp_app_category" />
+            <marker date="1470202280665" expanded="true" signature="25602:25837" placeholder="select line.... qp_app_line" />
+            <marker date="1470202280665" expanded="true" signature="33668:35006" placeholder="select disti... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="33978:34294" placeholder="select messa... qp_user_message" />
+            <marker date="1470202280665" expanded="true" signature="34306:34745" placeholder="select messa... qp_role_message" />
+            <marker date="1470202280665" expanded="true" signature="34536:34653" placeholder="select role_... qp_user_role" />
+            <marker date="1470202280665" expanded="true" signature="37377:37764" placeholder="select m.row... qp_message" />
+            <marker date="1470202280665" expanded="true" signature="38270:38413" placeholder="select if(re... qp_user_message" />
           </folding>
         </state>
       </provider>
