@@ -1057,7 +1057,7 @@ SQL;
             -> where('row_id', "=", $message_row_id)
             -> select('row_id')->get();
         if(count($msgList) < 1 ) {
-            return response()->json(['result_code'=>ResultCode::_999013_messageNotExist,
+            return response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
                 'message'=>'此消息不存在',
                 'content'=>'']);
         }
@@ -1286,12 +1286,24 @@ SQL;
             if (\Request::isJson($content)) {
                 $jsonContent = json_decode($content, true);
                 $sourceUseId = $jsonContent['source_user_id'];
-                $userInfo = CommonUtil::getUserInfoByUserID($sourceUseId);
-                if($userInfo == null) {
+                $userStatus = CommonUtil::getUserStatusByUserID($sourceUseId);
+                if($userStatus == 2) {
                     return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
                         'message'=>"账号已被停权",
                         'content'=>'']);
                 }
+                if($userStatus == 0 || $userStatus == 1) {
+                    return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
+                        'message'=>"離職或是帳號資訊打錯",
+                        'content'=>'']);
+                }
+
+                $userInfo = CommonUtil::getUserInfoByUserID($sourceUseId);
+//                if($userInfo == null) {
+//                    return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
+//                        'message'=>"账号已被停权",
+//                        'content'=>'']);
+//                }
 
                 $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
                 if($projectInfo == null) {
@@ -1304,12 +1316,29 @@ SQL;
                 $destinationUserInfoList = array();
                 foreach ($destinationUserIdList as $destinationUserId)
                 {
-                    $destinationUserInfo = CommonUtil::getUserInfoByUserID($destinationUserId);
-                    if($destinationUserInfo == null) {
+                    $userStatus = CommonUtil::getUserStatusByUserID($destinationUserId);
+                    if($userStatus == 0) {
                         return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
                             'message'=>"接收推播用户不存在",
                             'content'=>'']);
                     }
+                    if($userStatus == 1) {
+                        return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
+                            'message'=>"離職或是帳號資訊打錯",
+                            'content'=>'']);
+                    }
+                    if($userStatus == 2) {
+                        return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
+                            'message'=>"账号已被停权",
+                            'content'=>'']);
+                    }
+
+                    $destinationUserInfo = CommonUtil::getUserInfoByUserID($destinationUserId);
+//                    if($destinationUserInfo == null) {
+//                        return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
+//                            'message'=>"接收推播用户不存在",
+//                            'content'=>'']);
+//                    }
                     array_push($destinationUserInfoList, $destinationUserInfo);
                 }
 
@@ -1349,6 +1378,58 @@ SQL;
             } else {
                 return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
                     "message"=>"Content-Type錯誤");
+            }
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
+        }
+    }
+
+    public function updateLastMessageTime() {
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+
+        $input = Input::get();
+        $request = Request::instance();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || !array_key_exists('last_update_time', $input)
+            || trim($input["uuid"]) == "" || trim($input["last_update_time"]) == "")
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $token = $request->header('token');
+        $uuid = $input["uuid"];
+        $last_update_time = $input["last_update_time"];
+
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            $verifyResult = $Verify->verifyToken($uuid, $token);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+                \DB::table("qp_register")
+                    -> where('uuid', '=', $uuid)
+                    -> update(
+                        ['last_message_time'=>$last_update_time]);
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Call Service Successed',
+                    'token_valid'=>$verifyResult["token_valid_date"],
+                    'content'=>array('uuid'=>$uuid)
+                ]);
+            } else {
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>$verifyResult["message"],
+                    'content'=>'']);
             }
         } else {
             return response()->json(['result_code'=>$verifyResult["code"],

@@ -98,6 +98,8 @@ FORM;
         <br/><br/>
 
         <input type="button" value="sendPushMessage" onclick="sendPushMessage()">
+
+        <input type="button" value="updateLastMessageTime" onclick="updateLastMessageTime()">
         <br/><br/>
 
         <a href="qplayauth_register" >Login</a>
@@ -165,7 +167,7 @@ FORM;
 
         var login = function () {
             $.ajax({
-                url: "v101/qplay/login?lang=en-us&uuid=" + "A1234567890A1234567890",//Math.uuid(),
+                url: "v101/qplay/login?lang=en-us&uuid=" + "aaaaadasdasdasd",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -176,7 +178,7 @@ FORM;
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "Qisda");
-                    request.setRequestHeader("loginid", "Sammi.Yao");
+                    request.setRequestHeader("loginid", "Moses.Zhu");
                     request.setRequestHeader("password", "QCS@2012");
                 },
                 success: function (d, status, xhr) {
@@ -444,7 +446,7 @@ FORM;
 
         var renewToken = function () {
             $.ajax({
-                url: "v101/qplay/renewToken?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                url: "v101/qplay/renewToken?lang=en-us&uuid=aaaaadasdasdasd",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -459,6 +461,30 @@ FORM;
                     alert(d.result_code + ": " + d.message);
                     $("#result_content").html("uuid: " + d.content.uuid + "</br>"
                             + "token: " + d.content.token);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
+        var updateLastMessageTime = function () {
+            $.ajax({
+                url: "v101/qplay/updateLastMessageTime?lang=en-us&uuid=aaaaadasdasdasd&last_update_time=1470100946",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a2e129547e5");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("uuid: " + d.content.uuid + "</br>"
+                            + "token_valid: " + d.token_valid);
                 },
                 error: function (e) {
                     alert(e);
