@@ -29,6 +29,7 @@ Route::any('/v101/qplay/updateMessage', 'qplayController@updateMessage');
 Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
 Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
 Route::post('/v101/qplay/sendPushMessage', 'qplayController@sendPushMessage');
+Route::post('/v101/qplay/updateLastMessageTime', 'qplayController@updateLastMessageTime');
 
 //Login Page
 Route::any('/qplayauth_register', function() {
@@ -42,6 +43,7 @@ Route::any('/v101/yellowpage/AddMyPhoneBook', 'yellowpageController@AddMyPhoneBo
 Route::any('/v101/yellowpage/DeleteMyPhoneBook', 'yellowpageController@DeleteMyPhoneBook');
 Route::any('/v101/yellowpage/QueryMyPhoneBook', 'yellowpageController@QueryMyPhoneBook');
 Route::any('/v101/yellowpage/QueryCompanyData', 'yellowpageController@QueryCompanyData');
+
 
 //for Test
 Route::any('/test', function() {

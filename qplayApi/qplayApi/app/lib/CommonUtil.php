@@ -45,6 +45,41 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserStatusByUserID($loginId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.login_id', '=', $loginId)
+            -> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+        if(count($userList) < 1) {
+            return 0; //用户不存在
+        }
+
+        if(count($userList) == 1) {
+            $user = $userList[0];
+            if($user->resign != "N") {
+                return 1; //用户已离职
+            }
+
+            if($user->status != "Y") {
+                return 2; //用户已停权
+            }
+        } else {
+            foreach ($userList as $user)
+            {
+                if($user->resign == "N") {
+                    if($user->status == "Y") {
+                        return 3; //正常
+                    } else {
+                        return 2; //停权
+                    }
+                }
+            }
+            return 1;  //离职
+        }
+
+        return 3; //正常
+    }
+
     public static function getProjectInfoAppKey($appKey)
     {
         $projectList = \DB::table('qp_project')
@@ -61,5 +96,10 @@ class CommonUtil
         $input = mb_convert_encoding($input,'UTF-8','ASCII,UTF-8,ISO-8859-1');
         if(substr($input,0,3) == pack("CCC",0xEF,0xBB,0xBF)) $input = substr($input,3);
         return $input;
+    }
+
+    public static function getMessageContentByCode($messageCode) {
+        //TODO
+        return "";
     }
 }

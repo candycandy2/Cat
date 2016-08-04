@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\lib\CommonUtil;
+use App\lib\ResultCode;
+use App\lib\Verify;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,56 +13,164 @@ class yellowpageController extends Controller
 {
     public function QueryEmployeeData()
     {
-        $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
-        $content = file_get_contents('php://input');
-        $data["strXml"] = $content;
-        $result = $this->post2($url, $data);
-        return $result;
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyYellowPage();
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
+            $content = file_get_contents('php://input');
+            $data["strXml"] = $content;
+            $result = $this->post2($url, $data);
+
+            $xml = simplexml_load_string($result);
+            $json = json_decode($xml);
+
+            $resultCode = $json->ResultCode;
+            $content = $json->Content;
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return response()->json(array("ResultCode"=>$resultCode,
+                "Message"=>$message,
+                "Content"=>$content));
+        } else {
+            return response()->json(array("ResultCode"=>$verifyResult["code"], 
+                "Message"=>$verifyResult["message"],
+                "Content"=>""));
+        }
     }
 
     public function QueryEmployeeDataDetail()
     {
-        $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail";
-        $content = file_get_contents('php://input');
-        $data["strXml"] = $content;
-        $result = $this->post2($url, $data);
-        return $result;
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyYellowPage();
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail";
+            $content = file_get_contents('php://input');
+            $data["strXml"] = $content;
+            $result = $this->post2($url, $data);
+
+            $xml = simplexml_load_string($result);
+            $json = json_decode($xml);
+
+            $resultCode = $json->ResultCode;
+            $content = $json->Content;
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return response()->json(array("ResultCode"=>$resultCode,
+                "Message"=>$message,
+                "Content"=>$content));
+        } else {
+            return response()->json(array("ResultCode"=>$verifyResult["code"],
+                "Message"=>$verifyResult["message"],
+                "Content"=>""));
+        }
     }
 
     public function AddMyPhoneBook()
     {
-        $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/AddMyPhoneBook";
-        $content = file_get_contents('php://input');
-        $data["strXml"] = $content;
-        $result = $this->post2($url, $data);
-        return $result;
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyYellowPage();
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/AddMyPhoneBook";
+            $content = file_get_contents('php://input');
+            $data["strXml"] = $content;
+            $result = $this->post2($url, $data);
+
+            $xml = simplexml_load_string($result);
+            $json = json_decode($xml);
+
+            $resultCode = $json->ResultCode;
+            $content = $json->Content;
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return response()->json(array("ResultCode"=>$resultCode,
+                "Message"=>$message,
+                "Content"=>$content));
+        } else {
+            return response()->json(array("ResultCode"=>$verifyResult["code"],
+                "Message"=>$verifyResult["message"],
+                "Content"=>""));
+        }
     }
 
     public function DeleteMyPhoneBook()
     {
-        $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/DeleteMyPhoneBook";
-        $content = file_get_contents('php://input');
-        $data["strXml"] = $content;
-        $result = $this->post2($url, $data);
-        return $result;
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyYellowPage();
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/DeleteMyPhoneBook";
+            $content = file_get_contents('php://input');
+            $data["strXml"] = $content;
+            $result = $this->post2($url, $data);
+
+            $xml = simplexml_load_string($result);
+            $json = json_decode($xml);
+
+            $resultCode = $json->ResultCode;
+            $content = $json->Content;
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return response()->json(array("ResultCode"=>$resultCode,
+                "Message"=>$message,
+                "Content"=>$content));
+        } else {
+            return response()->json(array("ResultCode"=>$verifyResult["code"],
+                "Message"=>$verifyResult["message"],
+                "Content"=>""));
+        }
     }
 
     public function QueryMyPhoneBook()
     {
-        $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryMyPhoneBook";
-        $content = file_get_contents('php://input');
-        $data["strXml"] = $content;
-        $result = $this->post2($url, $data);
-        return $result;
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyYellowPage();
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryMyPhoneBook";
+            $content = file_get_contents('php://input');
+            $data["strXml"] = $content;
+            $result = $this->post2($url, $data);
+
+            $xml = simplexml_load_string($result);
+            $json = json_decode($xml);
+
+            $resultCode = $json->ResultCode;
+            $content = $json->Content;
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return response()->json(array("ResultCode"=>$resultCode,
+                "Message"=>$message,
+                "Content"=>$content));
+        } else {
+            return response()->json(array("ResultCode"=>$verifyResult["code"],
+                "Message"=>$verifyResult["message"],
+                "Content"=>""));
+        }
     }
 
     public function QueryCompanyData()
     {
-        $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData";
-        $content = file_get_contents('php://input');
-        $data["strXml"] = $content;
-        $result = $this->post2($url, $data);
-        return $result;
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyYellowPage();
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData";
+            $content = file_get_contents('php://input');
+            $data["strXml"] = $content;
+            $result = $this->post2($url, $data);
+
+            $xml = simplexml_load_string($result);
+            $json = json_decode($xml);
+
+            $resultCode = $json->ResultCode;
+            $content = $json->Content;
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return response()->json(array("ResultCode"=>$resultCode,
+                "Message"=>$message,
+                "Content"=>$content));
+        } else {
+            return response()->json(array("ResultCode"=>$verifyResult["code"],
+                "Message"=>$verifyResult["message"],
+                "Content"=>""));
+        }
     }
 
     public function do_post_request($url, $data, $optional_headers = null)

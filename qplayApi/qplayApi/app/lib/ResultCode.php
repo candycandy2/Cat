@@ -24,7 +24,6 @@ abstract class ResultCode
     const _999010_appKeyIncorrect = '999010';  //app-key參數錯誤
     const _999011_signatureOvertime = '999011';  //signature參數錯誤或誤差超過15分鐘
     const _999012_appOffTheShelf = '999012';  //app已经下架
-    const _999013_messageNotExist = '999013';  //此消息不存在
     const _999999_unknownError = '999999';  //其他未知錯誤
 
     const _000901_userNotExistError = '000901';  //離職或是帳號資訊打錯
@@ -35,7 +34,7 @@ abstract class ResultCode
     const _000907_tokenOverdue = "000907"; //Token过期
     const _000908_tokenInvalid = "000908"; //Token失效
     const _000909_appKeyNotExist = "000909"; //app key不存在
-
+    const _000910_messageNotExist = '000910';  //此消息不存在
     const _000911_uuidNotExist = "000911"; //uuid不存在
     const _000912_userReceivePushMessageNotExist = "000912"; //接收推播用户不存在
     const _000913_NotNeedUpdate = "000913"; //app无需更新
