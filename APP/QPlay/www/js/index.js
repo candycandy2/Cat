@@ -183,10 +183,10 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        StatusBar.show();
+        //StatusBar.show();
         if (cordova.platformId == 'android') {
             //StatusBar.backgroundColorByName("purple");
-            StatusBar.hide();
+            //StatusBar.hide();
         }
 
         app.changeLevel(1);
@@ -245,3 +245,21 @@ var app = {
 };
 
 app.initialize();
+
+$(function() {
+    $("#doLogin").click(function() {
+      window.plugins.qlogin.openCertificationPage(loginsuccess, loginfail);
+    });
+    
+    function loginsuccess(data)
+    {
+      alert(data);
+      
+    };
+    
+    function loginfail(data)
+    {
+      alert(data);
+      
+    };
+});
