@@ -21,7 +21,7 @@ class CommonUtil
             -> where('qp_register.status', '=', 'A')
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
-            -> select('qp_user.row_id')->get();
+            -> select('qp_user.row_id', 'qp_user.emp_no')->get();
         if(count($userList) < 1) {
             return null;
         }

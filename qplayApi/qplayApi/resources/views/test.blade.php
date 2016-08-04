@@ -1,4 +1,4 @@
-@extends('app')
+@extends('testapp')
 
 @section('content')
     <?php
@@ -24,6 +24,54 @@ FORM;
             ?>
     {{--<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha256.js"></script>--}}
     {{--<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>--}}
+        <input type="text" id="tbxDateTime" /><br />
+        yyyy-MM-dd hh:mm:ss<br/>
+        <input type="button" value="Get Timestamp(Null for Now)" onclick="getTimeStamp()" />
+        <input type="button" value="Get Date(Null for Now)" onclick="getDate()" />
+
+        <div id="timestampResult"></div>
+
+    <br/><br/>
+        <script>
+            var getTimeStamp = function() {
+                var s = $("#tbxDateTime").val();
+                if(s.length == 0) {
+                    $("#timestampResult").text(Math.round(new Date().getTime() / 1000));
+                } else {
+                    $("#timestampResult").text(Math.round(new Date(s).getTime() / 1000));
+                }
+            };
+
+            var getDate = function() {
+                var s = $("#tbxDateTime").val();
+                if(s.length == 0) {
+                    $("#timestampResult").text(new Date().Format("yyyy-MM-dd hh:mm:ss"));
+                } else {
+                    var d = new Date();
+                    d.setTime(s * 1000);
+                    $("#timestampResult").text(d.Format("yyyy-MM-dd hh:mm:ss"));
+                }
+            };
+
+            Date.prototype.Format = function(fmt) { //author: meizz
+                var o = {
+                    "M+" : this.getMonth()+1,                 //月份
+                    "d+" : this.getDate(),                    //日
+                    "h+" : this.getHours(),                   //小时
+                    "m+" : this.getMinutes(),                 //分
+                    "s+" : this.getSeconds(),                 //秒
+                    "q+" : Math.floor((this.getMonth()+3)/3), //季度
+                    "S"  : this.getMilliseconds()             //毫秒
+                };
+                if(/(y+)/.test(fmt))
+                    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+                for(var k in o)
+                    if(new RegExp("("+ k +")").test(fmt))
+                        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+                return fmt;
+            }
+        </script>
+
 
         <input type="hidden" name="_token" value="{{$csrf_token}}">
 
@@ -88,7 +136,7 @@ FORM;
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + registerUUID,//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "mosesmosesmosesmoses",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -117,7 +165,7 @@ FORM;
 
         var login = function () {
             $.ajax({
-                url: "v101/qplay/login?lang=en-us&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
+                url: "v101/qplay/login?lang=en-us&uuid=" + "A1234567890A1234567890",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -128,7 +176,7 @@ FORM;
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "Qisda");
-                    request.setRequestHeader("loginid", "QGROUP\\Moses.Zhu");
+                    request.setRequestHeader("loginid", "Sammi.Yao");
                     request.setRequestHeader("password", "QCS@2012");
                 },
                 success: function (d, status, xhr) {
@@ -169,13 +217,13 @@ FORM;
 
         var checkAppVersion = function () {
             $.ajax({
-                url: "v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=101",
+                url: "v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=100",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "aplay1");
                     request.setRequestHeader("signature", "Moses824");//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
                     request.setRequestHeader("signature-time", "1467699291");
                 },
@@ -192,7 +240,7 @@ FORM;
 
         var getAppList = function () {
             $.ajax({
-                url: "v101/qplay/getAppList?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                url: "v101/qplay/getAppList?lang=en-us&uuid=A1234567890A1234567890",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -201,7 +249,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "5783536f4016a");
+                    request.setRequestHeader("token", "57a197580a154");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -248,7 +296,7 @@ FORM;
 
         var getSecturityList = function() {
             $.ajax({
-                url: "v101/qplay/getSecturityList?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&app_key=qplay",
+                url: "v101/qplay/getSecturityList?lang=en-us&uuid=A1234567890A1234567890&app_key=qplay",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -257,7 +305,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "5783536f4016a");
+                    request.setRequestHeader("token", "579ec219ddc92");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -272,7 +320,7 @@ FORM;
 
         var getMessageList = function () {
             $.ajax({
-                url: "v101/qplay/getMessageList?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",
+                url: "v101/qplay/getMessageList?lang=en-us&uuid=A1234567890A1234567890&date_from=1451577600&date_to=1469980800&count_from=1&count_to=200",  //&date_from=1451627340&date_to=1470030584
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -281,7 +329,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "578451c6819f5");
+                    request.setRequestHeader("token", "579ec219ddc92");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -290,12 +338,14 @@ FORM;
                     htmlStr += "message_list:<br/>";
                     $.each(d.content.message_list, function(i, m) {
                         htmlStr += "message_row_id:[" + m.message_row_id + "], <br/>";
+                        htmlStr += "message_title:[" + m.message_title + "], <br/>";
                         htmlStr += "message_type:[" + m.message_type + "], <br/>";
                         htmlStr += "message_text:[" + m.message_text + "], <br/>";
                         htmlStr += "message_html:[" + m.message_html + "], <br/>";
                         htmlStr += "message_url:[" + m.message_url + "], <br/>";
                         htmlStr += "read:[" + m.read + "], <br/>";
                         htmlStr += "message_source:[" + m.message_source + "], <br/>";
+                        htmlStr += "source_user:[" + m.source_user + "], <br/>";
                         htmlStr += "read_time:[" + m.read_time + "], <br/>";
                         htmlStr += "create_user:[" + m.create_user + "], <br/>";
                         htmlStr += "create_time:[" + m.create_time + "]<br/><br/>";
@@ -310,7 +360,7 @@ FORM;
 
         var getMessageDetail = function () {
             $.ajax({
-                url: "v101/qplay/getMessageDetail?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&message_row_id=1",
+                url: "v101/qplay/getMessageDetail?lang=en-us&uuid=A1234567890A1234567890&message_row_id=19",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -319,12 +369,24 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "578451c6819f5");
+                    request.setRequestHeader("token", "579ec219ddc92");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("version_code:" + d.content.version_code + "</br>"
-                            + "download_url" + d.content.download_url);
+                    var htmlStr = "token_valid: " + d.token_valid + "<br/>";
+                    htmlStr += "message_row_id:[" + d.content.message_row_id + "], <br/>";
+                    htmlStr += "message_title:[" + d.content.message_title + "], <br/>";
+                    htmlStr += "message_type:[" + d.content.message_type + "], <br/>";
+                    htmlStr += "message_text:[" + d.content.message_text + "], <br/>";
+                    htmlStr += "message_html:[" + d.content.message_html + "], <br/>";
+                    htmlStr += "message_url:[" + d.content.message_url + "], <br/>";
+                    htmlStr += "read:[" + d.content.read + "], <br/>";
+                    htmlStr += "message_source:[" + d.content.message_source + "], <br/>";
+                    htmlStr += "source_user:[" + d.content.source_user + "], <br/>";
+                    htmlStr += "read_time:[" + d.content.read_time + "], <br/>";
+                    htmlStr += "create_user:[" + d.content.create_user + "], <br/>";
+                    htmlStr += "create_time:[" + d.content.create_time + "]<br/><br/>";
+                    $("#result_content").html(htmlStr);
                 },
                 error: function (e) {
                     alert(e);
