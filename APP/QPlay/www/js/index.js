@@ -231,7 +231,7 @@ var app = {
     },
     securityLevel: function(rs){
         if(rs==1){
-            alert("Level: " + rs + "check login: need implement");
+            //alert("Level: " + rs + "check login: need implement");
         }else{
             alert("Level: " + rs);
         }
@@ -248,18 +248,6 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      window.plugins.qlogin.openCertificationPage(loginsuccess, loginfail);
+      window.plugins.qlogin.openCertificationPage(null, null);
     });
-    
-    function loginsuccess(data)
-    {
-      alert(data);
-      
-    };
-    
-    function loginfail(data)
-    {
-      alert(data);
-      
-    };
 });
