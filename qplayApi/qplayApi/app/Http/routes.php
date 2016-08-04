@@ -15,7 +15,7 @@
 //    return view('welcome');
 //});
 
-//Api
+//QPlay Api
 Route::any('/v101/qplay/getSecturityList', 'qplayController@getSecturityList');
 Route::any('/v101/qplay/register', 'qplayController@register');
 Route::any('/v101/qplay/isRegister', 'qplayController@isRegister');
@@ -35,7 +35,18 @@ Route::any('/qplayauth_register', function() {
     return view("login");
 });
 
+//YellowPage
+Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
+Route::any('/v101/yellowpage/QueryEmployeeDataDetail', 'yellowpageController@QueryEmployeeDataDetail');
+Route::any('/v101/yellowpage/AddMyPhoneBook', 'yellowpageController@AddMyPhoneBook');
+Route::any('/v101/yellowpage/DeleteMyPhoneBook', 'yellowpageController@DeleteMyPhoneBook');
+Route::any('/v101/yellowpage/QueryMyPhoneBook', 'yellowpageController@QueryMyPhoneBook');
+Route::any('/v101/yellowpage/QueryCompanyData', 'yellowpageController@QueryCompanyData');
+
 //for Test
 Route::any('/test', function() {
     return view("test");
+});
+Route::any('/testYellowpage', function() {
+    return view("testyellowpage");
 });

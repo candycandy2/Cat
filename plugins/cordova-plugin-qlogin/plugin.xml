@@ -13,11 +13,23 @@
 	</js-module>
 	
     <platform name="android">
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="QLoginPlugin" >
-                <param name="android-package" value="org.apache.cordova.qlogin.QLoginPlugin"/>
-            </feature>
-        </config-file>
+		<config-file target="res/xml/config.xml" parent="/*">
+				<feature name="QLoginPlugin" >
+					<param name="android-package" value="org.apache.cordova.qlogin.QLoginPlugin"/>
+				</feature>
+				<serverUrl href = "http://10.85.129.63:8084/qplayApi/public/index.php/qplayauth_register?uuid=44654456&amp;device_type=ios"/>
+       </config-file>
+		
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+           <activity android:name="org.apache.cordova.qlogin.LoginActivity">
+			    <intent-filter>
+                 <action android:name="android.intent.action.VIEW"/>
+                 <category android:name="android.intent.category.BROWSABLE"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+                 <data android:scheme="qplay"/>
+              </intent-filter>
+           </activity> 
+       </config-file>
 
 		<source-file src="src/android/QLoginPlugin.java" target-dir="src/org/apache/cordova/qlogin" />
 		<source-file src="src/android/LoginInfo.java" target-dir="src/org/apache/cordova/qlogin" />
@@ -34,6 +46,7 @@
                 <param name="ios-package" value="QLoginPlugin"/>
 				<param name="onload" value="true"/>
             </feature>
+	    <serverUrl href = "http://10.85.129.63:8084/qplayApi/public/index.php/qplayauth_register?uuid=44654456&amp;device_type=ios"/>
         </config-file>
 
         <header-file src="src/ios/QLoginPlugin.h" />
