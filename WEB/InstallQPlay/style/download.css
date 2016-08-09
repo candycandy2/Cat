@@ -1,0 +1,34 @@
+@charset "utf-8";
+/* CSS Document */
+
+.Wrapper{
+	display:block;
+	background-image: url(../img/bg.png);
+	width:375px;
+	height:667px;
+	position:relative;
+}
+.Logo{
+	background-image: url(../img/logo.png);
+	width: 109px;
+	height: 144px;
+	position: absolute;
+	left: 129px;
+	top: 82px;
+	}
+.Google{
+	background-image: url(../img/googleplay.png);
+	width: 281px;
+	height: 92px;
+	position: absolute;
+	left: 43px;
+	top: 302px;
+	}
+.Appstore{
+	background-image: url(../img/app%20store.png);
+	width: 281px;
+	height: 94px;
+	position: absolute;
+	left: 43px;
+	top: 442px;
+	}
