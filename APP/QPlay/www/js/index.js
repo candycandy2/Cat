@@ -189,6 +189,7 @@ var app = {
             //StatusBar.hide();
         }
 
+        app.setSecurity();
         app.changeLevel(1);
         document.addEventListener("resume", app.resumeCheckLevel);
     },
@@ -218,7 +219,8 @@ var app = {
                 "geo:*"
             ],
             Requests: [
-                "*://*.baidu.com/*"
+                "*://*.baidu.com/*",
+                "http://aic0-s12.qgroup.corp.com:8084/*"
             ]
         };
         window.plugins.qsecurity.setWhiteList(securityList,app.success,app.error);
@@ -237,7 +239,7 @@ var app = {
         }
     },
     success: function(){
-        alert("success!");
+        //alert("success!");
     },
     error: function(){
         alert("error!");
@@ -250,4 +252,51 @@ $(function() {
     $("#doLogin").click(function() {
       window.plugins.qlogin.openCertificationPage(null, null);
     });
+    
+    $("#checkAppVersion").click(function() {
+      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': 'qplay',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+        },
+        cache: false,
+        success: onCheckAppVersionSuccess,
+        error: onCheckAppVersionFail,
+      });
+    });
+    
+    function onCheckAppVersionSuccess(data)
+    {
+      //var rawdata = data['d'];
+      //var jsonobj = jQuery.parseJSON(data);
+      var jsonobj = data;
+      var resultcode = jsonobj['result_code'];
+    
+      if (resultcode == 1)
+      {
+          alert(jsonobj['message']);
+      }
+      else if (resultcode == 000913)
+      {
+          //alert("up to date");
+          alert(jsonobj['message']);
+      }
+    };
+    
+    function onCheckAppVersionFail(data)
+    {
+      var result = data;  
+      
+      alert("onCheckAppVersionFail");
+    };
 });
