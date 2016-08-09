@@ -39,7 +39,6 @@ abstract class ResultCode
     const _000912_userReceivePushMessageNotExist = "000912"; //接收推播用户不存在
     const _000913_NotNeedUpdate = "000913"; //app无需更新
     const _000914_userWithoutRight = '000914';  //用户停权
-
     const _000915_packageNotExist = "000915"; //package不存在
 
 

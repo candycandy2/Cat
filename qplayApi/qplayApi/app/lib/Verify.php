@@ -137,6 +137,46 @@ class Verify
             "message"=>"");
     }
 
+    public static function verifyUserByUserID($loginid, $domain)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=>"账号已被停权");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
+    public static function verifyUserByUserIDAndCompany($loginid, $company)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserIDAndCompany($loginid, $company);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=>"账号已被停权");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
     public static function chkUuidExist($uuid)
     {
         $registerInfoList = \DB::table("qp_register")
