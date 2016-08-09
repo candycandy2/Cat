@@ -61,13 +61,26 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getRoleInfo($roleDesc, $company)
+    {
+        $roleList = \DB::table('qp_role')
+            -> where('qp_role.role_description', '=', $roleDesc)
+            -> where('qp_role.company', '=', $company)
+            -> select('qp_role.row_id')->get();
+        if(count($roleList) < 1) {
+            return null;
+        }
+
+        return $roleList[0];
+    }
+
     public static function getUserInfoJustByUserIDAndCompany($loginId, $company)
     {
         $userList = \DB::table('qp_user')
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId)
-            -> where('qp_user.cimpany', '=', $company)
+            -> where('qp_user.company', '=', $company)
             -> select('qp_user.row_id')->get();
         if(count($userList) < 1) {
             return null;

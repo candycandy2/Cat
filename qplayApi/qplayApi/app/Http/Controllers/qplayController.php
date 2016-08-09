@@ -911,7 +911,7 @@ SQL;
                 $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId, ':uId3'=>$userId,]);
 
                 if($count_from >= 1) {
-                    array_slice($r, $count_from - 1, $count_to - $count_from + 1);
+                    $r = array_slice($r, $count_from - 1, $count_to - $count_from + 1);
                 }
 
                 if(!$useUserDate) {
@@ -1343,8 +1343,29 @@ SQL;
                         array_push($destinationUserInfoList, $destinationUserInfo);
                     }
 
+                    $destinationRoleIdList = $jsonContent['destination_role_id'];
+                    $destinationRoleInfoList = array();
+                    foreach ($destinationRoleIdList as $destinationRoleId)
+                    {
+                        $roleDesc = explode('\\', $destinationRoleId)[1];
+                        $company = explode('\\', $destinationRoleId)[0];
+
+                        $destinationRoleInfo = CommonUtil::getRoleInfo($roleDesc, $company);
+                        if($destinationRoleInfo == null) {
+                            return response()->json(['result_code'=>ResultCode::_000917_roleNotExist,
+                                'message'=>"角色不存在",
+                                'content'=>'']);
+                        }
+
+                        array_push($destinationRoleInfoList, $destinationRoleInfo);
+                    }
+
                     $message_type = $jsonContent['message_type'];
                     $message_title = $jsonContent['message_title'];
+                    if(strlen($message_title) > 99) {
+                        return array("code"=>ResultCode::_000916_titleLengthTooLong,
+                            "message"=>"标题栏位太长");
+                    }
                     $message_text = $jsonContent['message_text'];
                     $message_html = $jsonContent['message_html'];
                     $message_url = $jsonContent['message_url'];
@@ -1379,6 +1400,41 @@ SQL;
                                     'push_flag'=>'0'
                                 ]);
                         }
+                        foreach ($destinationRoleInfoList as $destinationRoleInfo) {
+                            \DB::table("qp_role_message")
+                                -> insertGetId([
+                                    'project_row_id'=>$projectInfo->row_id, 'role_row_id'=>$destinationRoleInfo->row_id,
+                                    'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
+                                    'created_user'=>$userInfo->row_id,
+                                    'created_at'=>$now,
+                                    'push_flag'=>'0'
+                                ]);
+
+                            $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$destinationRoleInfo->row_id.' )';
+                            $userInRoleList = DB::select($sql, []);
+                            foreach ($userInRoleList as $userRoleInfo) {
+                                $userRoleId = $userRoleInfo->row_id;
+                                $hasSent = false;
+                                foreach ($destinationUserInfoList as $destinationUserInfo){
+                                    if($destinationUserInfo->row_id == $userRoleId) {
+                                        $hasSent = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!$hasSent) {
+                                    \DB::table("qp_user_message")
+                                        -> insertGetId([
+                                            'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$userRoleId,
+                                            'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
+                                            'created_user'=>$userInfo->row_id,
+                                            'created_at'=>$now,
+                                            'push_flag'=>'0'
+                                        ]);
+                                }
+                            }
+                        }
+
 
                         \DB::commit();
                         return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
