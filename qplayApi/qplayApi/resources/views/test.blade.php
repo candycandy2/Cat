@@ -28,11 +28,17 @@ FORM;
         yyyy-MM-dd hh:mm:ss<br/>
         <input type="button" value="Get Timestamp(Null for Now)" onclick="getTimeStamp()" />
         <input type="button" value="Get Date(Null for Now)" onclick="getDate()" />
+        <input type="button" value="Url Decode" onclick="urlDecode()">
 
         <div id="timestampResult"></div>
 
     <br/><br/>
         <script>
+            var urlDecode = function() {
+                var s = $("#tbxDateTime").val();
+                $("#timestampResult").text(decodeURIComponent(s));
+            };
+
             var getTimeStamp = function() {
                 var s = $("#tbxDateTime").val();
                 if(s.length == 0) {
@@ -138,7 +144,7 @@ FORM;
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "maaaadadahgfhmosesaaavxvxmosesmoses",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest2",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -167,7 +173,7 @@ FORM;
 
         var login = function () {
             $.ajax({
-                url: "v101/qplay/login?lang=en-us&uuid=" + "aaaaadasdasdasd",//Math.uuid(),
+                url: "v101/qplay/login?lang=en-us&uuid=" + "chaosTest",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -242,7 +248,7 @@ FORM;
 
         var getAppList = function () {
             $.ajax({
-                url: "v101/qplay/getAppList?lang=en-us&uuid=A1234567890A1234567890",
+                url: "v101/qplay/getAppList?lang=en-us&uuid=chaosTest",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -251,7 +257,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a197580a154");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -322,7 +328,7 @@ FORM;
 
         var getMessageList = function () {
             $.ajax({
-                url: "v101/qplay/getMessageList?lang=en-us&uuid=aaaaadasdasdasd",  //&date_from=1451627340&date_to=1470030584//&date_from=1451577600&date_to=1469980800&count_from=1&count_to=200
+                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest",  //&date_from=1451627340&date_to=1470030584//&date_from=1451577600&date_to=1469980800&count_from=1&count_to=200
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -331,7 +337,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a3fea31119c");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -398,7 +404,7 @@ FORM;
 
         var updateMessage = function () {
             $.ajax({
-                url: "v101/qplay/updateMessage?lang=en-us&uuid=aaaaadasdasdasd&message_send_row_id=19&message_type=event&status=read",
+                url: "v101/qplay/updateMessage?lang=en-us&uuid=chaosTest&message_send_row_id=19&message_type=event&status=read",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -407,7 +413,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a3fea31119c");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -508,8 +514,10 @@ FORM;
                 message_html: "",
                 message_url:"",
                 message_source:"Oracle ERP",
-                source_user_id:"Moses.Zhu",
-                destination_user_id:["Moses.Zhu","Sammi.Yao"]};
+                source_user_id:"qisda\\Moses.Zhu",
+                destination_user_id:["qisda\\Moses.Zhu","qisda\\Sammi.Yao"],
+                destination_role_id:["",""],
+                };
             var mydataStr = $.toJSON(mydata);
 //            mydata = '{"first name":"moseszhu",' +
 //                    '"age":"31"}';

@@ -71,11 +71,14 @@ class qplayController extends Controller
         $password = $request->header('password');
 
         //通用api參數判斷
-        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "" || !array_key_exists('device_type', $input) || trim($input["device_type"]) == "" || $redirect_uri == null || $domain == null || $loginid == null || $password == null)
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
+            || !array_key_exists('device_type', $input) || trim($input["device_type"]) == ""
+            || $redirect_uri == null || $domain == null
+            || $loginid == null || $password == null)
         {
             $finalUrl = urlencode($redirect_uri.'?result_code='
                 .ResultCode::_999001_requestParameterLostOrIncorrect
-                .'message='
+                .'&message='
                 .'傳入參數不足或傳入參數格式錯誤');
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
@@ -87,164 +90,136 @@ class qplayController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $userStatus = CommonUtil::getUserStatusByUserID($loginid);
-            if($userStatus == 0) {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000912_userReceivePushMessageNotExist
-                    .'message='
-                    .'接收推播用户不存在');
-                return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
-                    'message'=>"接收推播用户不存在",
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-            if($userStatus == 1) {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000901_userNotExistError
-                    .'message='
-                    .'離職或是帳號資訊打錯');
-                return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
-                    'message'=>"離職或是帳號資訊打錯",
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-            if($userStatus == 2) {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000901_userNotExistError
-                    .'message='
-                    .'離職或是帳號資訊打錯');
-                return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
-                    'message'=>"账号已被停权",
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-
-            $user = CommonUtil::getUserInfoByUserID($loginid);
-
-
-            //Check user password with LDAP
-            $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
-            $userId = $domain . "\\" . $loginid;
-            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind = true;//TODO @ldap_bind($ldapConnect, $userId, $password);
-            if(!$bind)
+            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000902_passwordError
-                    .'message='
-                    .'Password Error');
-                return response()->json(['result_code'=>ResultCode::_000902_passwordError,
-                    'message'=>'Password Error',
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
+                $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
 
-            //Check uuid exist
-            $uuidList = \DB::table("qp_register")
-                -> where('uuid', "=", $uuid)
-                -> where('status', '=', 'A')
-                -> select('uuid')->get();
-            if(count($uuidList) > 0)
-            {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000903_deviceHasRegistered
-                    .'message='
-                    .'Device Has Registered');
-                return response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
-                    'message'=>'Device Has Registered',
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-
-            try
-            {
-                $now = date('Y-m-d H:i:s',time());
-                \DB::table("qp_register")->insert([
-                    'user_row_id'=>$user->row_id,
-                    'uuid'=>$uuid,
-                    'device_type'=>$device_type,
-                    'register_date'=>$now,
-                    'created_user'=>$user->row_id,
-                    'created_at'=>$now,
-                    'status'=>'A'
-                    //, 'remember_token'=>$token
-                ]);
-
-                $token = uniqid();  //生成token
-                $token_valid = time();
-                $sessionList = \DB::table("qp_session")
-                    -> where('uuid', "=", $uuid)
-                    -> where('user_row_id', '=', $user->row_id)
-                    -> select('uuid')->get();
-                if(count($sessionList) > 0)
+                //Check user password with LDAP
+                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $userId = $domain . "\\" . $loginid;
+                $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+                $bind = true;//TODO @ldap_bind($ldapConnect, $userId, $password);
+                if(!$bind)
                 {
-                    \DB::table("qp_session")
-                        ->where('user_row_id', '=', $user->row_id)
-                        ->where('uuid', '=', $uuid)
-                        ->update(['token'=>$token,
-                                  'token_valid_date'=>$now,
-                                  'updated_at'=>$now,
-                                  'updated_user'=>$user->row_id,
-                    ]);
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000902_passwordError
+                        .'&message='
+                        .'Password Error');
+                    return response()->json(['result_code'=>ResultCode::_000902_passwordError,
+                        'message'=>'Password Error',
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
                 }
-                else
+
+                //Check uuid exist
+                $uuidList = \DB::table("qp_register")
+                    -> where('uuid', "=", $uuid)
+                    -> where('status', '=', 'A')
+                    -> select('uuid')->get();
+                if(count($uuidList) > 0)
                 {
-                    \DB::table("qp_session")->insert([
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000903_deviceHasRegistered
+                        .'&message='
+                        .'Device Has Registered');
+                    return response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
+                        'message'=>'Device Has Registered',
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
+                }
+
+                try
+                {
+                    $token = uniqid();  //生成token
+                    $token_valid = time();
+                    $now = date('Y-m-d H:i:s',$token_valid);
+
+                    \DB::table("qp_register")->insert([
                         'user_row_id'=>$user->row_id,
                         'uuid'=>$uuid,
-                        'token'=>$token,
-                        'token_valid_date'=>date('Y-m-d H:i:s',time()),
-                        'created_at'=>$now,
+                        'device_type'=>$device_type,
+                        'register_date'=>$now,
                         'created_user'=>$user->row_id,
+                        'created_at'=>$now,
+                        'status'=>'A'
+                        //, 'remember_token'=>$token
                     ]);
-                }
-            }
-            catch (Exception $e)
-            {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_999999_unknownError
-                    .'message='
-                    .'Call Service Error');
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>'Call Service Error',
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-            $appHeaderList = \DB::table("qp_app_head")
-                ->join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
-                ->whereNotNull('qp_app_head.security_updated_at')
-                ->select('qp_project.app_key', 'qp_app_head.security_updated_at')->get();
-            $security_update_list = array();
-            $temp = 5184000;//两个月 60 * 60 * 24 * 30 * 2 = 5184000;
-            foreach ($appHeaderList as $item) {
-                if((time() -  $item->security_updated_at) < $temp) {
-                    $sItem = array('app_key'=>$item->app_key,
-                        'security_updated_at'=>$item->security_updated_at
-                    );
-                    array_push($security_update_list, $sItem);
-                }
-            }
-            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-            $finalUrl = urlencode($redirect_uri.'?result_code='
-                .$verifyResult["code"]
-                .'message='
-                .'Call Service Successed');
-            return response()->json(['result_code'=>$verifyResult["code"],
-                'message'=>'Call Service Successed',
-                'token_valid'=>$token_valid,
-                'content'=>array(
-                    "uuid" => $uuid,
-                    "redirect_uri"=>$finalUrl,
-                    "token"=>$token,
-                    "emp_no"=>$userInfo->emp_no,
-                    'security_update_list' => $security_update_list)
-            ]);
 
+                    $sessionList = \DB::table("qp_session")
+                        -> where('uuid', "=", $uuid)
+                        -> where('user_row_id', '=', $user->row_id)
+                        -> select('uuid')->get();
+                    if(count($sessionList) > 0)
+                    {
+                        \DB::table("qp_session")
+                            ->where('user_row_id', '=', $user->row_id)
+                            ->where('uuid', '=', $uuid)
+                            ->update(['token'=>$token,
+                                'token_valid_date'=>$token_valid,
+                                'updated_at'=>$now,
+                                'updated_user'=>$user->row_id,
+                            ]);
+                    }
+                    else
+                    {
+                        \DB::table("qp_session")->insert([
+                            'user_row_id'=>$user->row_id,
+                            'uuid'=>$uuid,
+                            'token'=>$token,
+                            'token_valid_date'=>$token_valid,
+                            'created_at'=>$now,
+                            'created_user'=>$user->row_id,
+                        ]);
+                    }
+                }
+                catch (Exception $e)
+                {
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_999999_unknownError
+                        .'&message='
+                        .'Call Service Error');
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>'Call Service Error',
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
+                }
+                $appHeaderList = \DB::table("qp_app_head")
+                    ->join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
+                    ->whereNotNull('qp_app_head.security_updated_at')
+                    ->select('qp_project.app_key', 'qp_app_head.security_updated_at')->get();
+                $security_update_list = array();
+                $temp = 5184000;//两个月 60 * 60 * 24 * 30 * 2 = 5184000;
+                foreach ($appHeaderList as $item) {
+                    if((time() -  $item->security_updated_at) < $temp) {
+                        $sItem = array('app_key'=>$item->app_key,
+                            'security_updated_at'=>$item->security_updated_at
+                        );
+                        array_push($security_update_list, $sItem);
+                    }
+                }
+                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+                $finalUrl = urlencode($redirect_uri.'?result_code='
+                    .$verifyResult["code"]
+                    .'&message='
+                    .'Call Service Successed');
+                return response()->json(['result_code'=>$verifyResult["code"],
+                    'message'=>'Call Service Successed',
+                    'token_valid'=>$token_valid,
+                    'content'=>array(
+                        "uuid" => $uuid,
+                        "redirect_uri"=>$finalUrl,
+                        "token"=>$token,
+                        "emp_no"=>$userInfo->emp_no,
+                        'security_update_list' => $security_update_list)
+                ]);
+            }
         }
-        else
-        {
-            $finalUrl = urlencode($redirect_uri.'?result_code='
-                .$verifyResult["code"]
-                .'message='
-                .$verifyResult["message"]);
-            return response()->json(['result_code'=>$verifyResult["code"],
-                'message'=>$finalUrl,
-                'content'=>array("redirect_uri"=>$redirect_uri)]);
-        }
+
+        $finalUrl = urlencode($redirect_uri.'?result_code='
+            .$verifyResult["code"]
+            .'&message='
+            .$verifyResult["message"]);
+        return response()->json(['result_code'=>$verifyResult["code"],
+            'message'=>$verifyResult["message"],
+            'content'=>array("redirect_uri"=>$finalUrl)]);
     }
 
     public function login()
@@ -267,7 +242,7 @@ class qplayController extends Controller
         {
             $finalUrl = urlencode($redirect_uri.'?result_code='
                 .ResultCode::_999001_requestParameterLostOrIncorrect
-                .'message='
+                .'&message='
                 .'傳入參數不足或傳入參數格式錯誤');
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
@@ -276,173 +251,146 @@ class qplayController extends Controller
         $uuid = $input["uuid"];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-
-            $userStatus = CommonUtil::getUserStatusByUserID($loginid);
-            if($userStatus == 0) {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000912_userReceivePushMessageNotExist
-                    .'message='
-                    .'接收推播用户不存在');
-                return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
-                    'message'=>"接收推播用户不存在",
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-            if($userStatus == 1) {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000901_userNotExistError
-                    .'message='
-                    .'離職或是帳號資訊打錯');
-                return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
-                    'message'=>"離職或是帳號資訊打錯",
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-            if($userStatus == 2) {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000901_userNotExistError
-                    .'message='
-                    .'離職或是帳號資訊打錯');
-                return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
-                    'message'=>"账号已被停权",
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-
-            $user = CommonUtil::getUserInfoByUserID($loginid);
-
-            //Check user password with LDAP
-            $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
-            $userId = $domain . "\\" . $loginid;
-            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind = true; //TODO @ldap_bind($ldapConnect, $userId, $password);
-            if(!$bind)
+            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000902_passwordError
-                    .'message='
-                    .'Password Error');
-                return response()->json(['result_code'=>ResultCode::_000902_passwordError,
-                    'message'=>'Password Error',
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
+                $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
-            //Check uuid exist
-            //Check user
-            $uuidList = \DB::table("qp_register")
-                -> where('uuid', "=", $uuid)
-                -> select('row_id','uuid', 'user_row_id')->get();
-            $uuidInDB = null;
-            if(count($uuidList) < 1)
-            {
-                $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_000905_deviceNotRegistered
-                    .'message='
-                    .'Device Not Registered');
-                return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
-                    'message'=>'Device Not Registered',
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
-            }
-            else
-            {
-                $uuidInDB = $uuidList[0];
-                if($user->row_id != $uuidInDB->user_row_id)
+                //Check user password with LDAP
+                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $userId = $domain . "\\" . $loginid;
+                $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+                $bind = true; //TODO @ldap_bind($ldapConnect, $userId, $password);
+                if(!$bind)
                 {
                     $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_000904_loginUserNotMathRegistered
-                        .'message='
-                        .'User Not Match Device');
-                    return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
-                        'message'=>'User Not Match Device',
+                        .ResultCode::_000902_passwordError
+                        .'&message='
+                        .'Password Error');
+                    return response()->json(['result_code'=>ResultCode::_000902_passwordError,
+                        'message'=>'Password Error',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
                 }
-            }
 
-            $token = uniqid();  //生成token
-            $token_valid = time();
-            try
-            {
-                $sessionList = \DB::table("qp_session")
+                //Check uuid exist
+                //Check user
+                $uuidList = \DB::table("qp_register")
                     -> where('uuid', "=", $uuid)
-                    -> where('user_row_id', '=', $user->row_id)
-                    -> select('uuid')
-                    -> get();
-                $now = date('Y-m-d H:i:s',time());
-                if(count($sessionList) > 0)
+                    -> select('row_id','uuid', 'user_row_id')->get();
+                $uuidInDB = null;
+                if(count($uuidList) < 1)
                 {
-                    \DB::table("qp_session")
-                        -> where('user_row_id', '=', $user->row_id)
-                        -> where('uuid', '=', $uuid)
-                        -> update([
-                        'token'=>$token,
-                        'token_valid_date'=>time(),
-                        'updated_at'=>$now,
-                        'updated_user'=>$user->row_id,
-                    ]);
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000905_deviceNotRegistered
+                        .'&message='
+                        .'Device Not Registered');
+                    return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                        'message'=>'Device Not Registered',
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
                 }
                 else
                 {
-                    \DB::table("qp_session")
-                        -> insert([
-                        'user_row_id'=>$user->row_id,
-                        'uuid'=>$uuid,
-                        'token'=>$token,
-                        'token_valid_date'=>time(),//'token_valid_date'=>date('Y-m-d H:i:s',time()),
-                        'created_user'=>$user->row_id,
-                        'created_at'=>$now,
-                    ]);
+                    $uuidInDB = $uuidList[0];
+                    if($user->row_id != $uuidInDB->user_row_id)
+                    {
+                        $finalUrl = urlencode($redirect_uri.'?result_code='
+                            .ResultCode::_000904_loginUserNotMathRegistered
+                            .'&message='
+                            .'User Not Match Device');
+                        return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
+                            'message'=>'User Not Match Device',
+                            'content'=>array("redirect_uri"=>$finalUrl)]);
+                    }
                 }
-            }
-            catch (Exception $e)
-            {
+
+                $token = uniqid();  //生成token
+                $token_valid = time();
+                $now = date('Y-m-d H:i:s',$token_valid);
+                try
+                {
+                    $sessionList = \DB::table("qp_session")
+                        -> where('uuid', "=", $uuid)
+                        -> where('user_row_id', '=', $user->row_id)
+                        -> select('uuid')
+                        -> get();
+
+                    if(count($sessionList) > 0)
+                    {
+                        \DB::table("qp_session")
+                            -> where('user_row_id', '=', $user->row_id)
+                            -> where('uuid', '=', $uuid)
+                            -> update([
+                                'token'=>$token,
+                                'token_valid_date'=>$token_valid,
+                                'updated_at'=>$now,
+                                'updated_user'=>$user->row_id,
+                            ]);
+                    }
+                    else
+                    {
+                        \DB::table("qp_session")
+                            -> insert([
+                                'user_row_id'=>$user->row_id,
+                                'uuid'=>$uuid,
+                                'token'=>$token,
+                                'token_valid_date'=>$token_valid,//'token_valid_date'=>date('Y-m-d H:i:s',time()),
+                                'created_user'=>$user->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                }
+                catch (Exception $e)
+                {
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_999999_unknownError
+                        .'&message='
+                        .'Call Service Error');
+                    $status_code = ResultCode::_999999_unknownError;
+                    return response()->json(['result_code'=>$status_code,
+                        'message'=>'Call Service Error',
+                        'token_valid'=>$token_valid,
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
+                }
+
+                $appHeaderList = \DB::table("qp_app_head")
+                    ->join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
+                    ->whereNotNull('qp_app_head.security_updated_at')
+                    ->select('qp_project.app_key', 'qp_app_head.security_updated_at')->get();
+                $security_update_list = array();
+                $temp = 5184000;//两个月 60 * 60 * 24 * 30 * 2 = 5184000;
+                foreach ($appHeaderList as $item) {
+                    if(time() -  $item->security_updated_at < $temp) {
+                        $sItem = array('app_key'=>$item->app_key,
+                            'security_updated_at'=>$item->security_updated_at
+                        );
+                        array_push($security_update_list, $sItem);
+                    }
+                }
+
+                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 $finalUrl = urlencode($redirect_uri.'?result_code='
-                    .ResultCode::_999999_unknownError
-                    .'message='
-                    .'Call Service Error');
-                $status_code = ResultCode::_999999_unknownError;
-                return response()->json(['result_code'=>$status_code,
-                    'message'=>'Call Service Error',
+                    .ResultCode::_1_reponseSuccessful
+                    .'&message='
+                    .'Login Successed');
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Login Successed',
                     'token_valid'=>$token_valid,
-                    'content'=>array("redirect_uri"=>$finalUrl)]);
+                    'content'=>array("uuid" => $uuid,
+                        "redirect_uri"=>$finalUrl,
+                        "token"=>$token,
+                        "emp_no"=>$userInfo->emp_no,
+                        'security_update_list' => $security_update_list)
+                ]);
             }
-
-            $appHeaderList = \DB::table("qp_app_head")
-                ->join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
-                ->whereNotNull('qp_app_head.security_updated_at')
-                ->select('qp_project.app_key', 'qp_app_head.security_updated_at')->get();
-            $security_update_list = array();
-            $temp = 5184000;//两个月 60 * 60 * 24 * 30 * 2 = 5184000;
-            foreach ($appHeaderList as $item) {
-                if(time() -  $item->security_updated_at < $temp) {
-                    $sItem = array('app_key'=>$item->app_key,
-                        'security_updated_at'=>$item->security_updated_at
-                    );
-                    array_push($security_update_list, $sItem);
-                }
-            }
-
-            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-            $finalUrl = urlencode($redirect_uri.'?result_code='
-                .ResultCode::_1_reponseSuccessful
-                .'message='
-                .'Login Successed');
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Login Successed',
-                'token_valid'=>$token_valid,
-                'content'=>array("uuid" => $uuid,
-                    "redirect_uri"=>$finalUrl,
-                    "token"=>$token,
-                    "emp_no"=>$userInfo->emp_no,
-                    'security_update_list' => $security_update_list)
-            ]);
         }
-        else
-        {
-            $finalUrl = urlencode($redirect_uri.'?result_code='
-                .$verifyResult["code"]
-                .'message='
-                .$verifyResult["message"]));
-            return response()->json(['result_code'=>$verifyResult["code"],
-                'message'=>$verifyResult["message"],
-                'content'=>array("redirect_uri"=>$finalUrl)]);
-        }
+
+        $finalUrl = urlencode($redirect_uri.'?result_code='
+            .$verifyResult["code"]
+            .'&message='
+            .$verifyResult["message"]);
+        return response()->json(['result_code'=>$verifyResult["code"],
+            'message'=>$verifyResult["message"],
+            'content'=>array("redirect_uri"=>$finalUrl)]);
     }
 
     public function logout()
@@ -464,72 +412,54 @@ class qplayController extends Controller
         $loginid = $input['loginid'];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            //Check user
-            $userList = \DB::table("qp_user")
-                -> where('login_id', "=", $loginid)
-                -> where('user_domain', '=', $domain)
-                -> select('row_id', 'login_id', 'emp_no', 'emp_name', 'email', 'user_domain', 'company'
-                    , 'department', 'status', 'resign')->get();
-            if(count($userList) == 0)
-            {
-                return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
-                    'message'=>'離職或是帳號資訊打錯',
-                    'content'=>'']);
-            }
-            $user = $userList[0];
-            if($user->status != "Y" || $user->resign != "N")
-            {
-                return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
-                    'message'=>'Access Forbidden',
-                    'content'=>'']);
-            }
-
-            //Check uuid exist
-            //Check user
-            $uuidList = \DB::table("qp_register")
-                -> where('uuid', "=", $uuid)
-                -> select('row_id','uuid', 'user_row_id')->get();
-            $uuidInDB = null;
-            if(count($uuidList) < 1)
-            {
-                return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
-                    'message'=>'Device Not Registered',
-                    'content'=>'']);
-            }
-            else
-            {
-                $uuidInDB = $uuidList[0];
-                if($user->row_id != $uuidInDB->user_row_id)
+            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+                $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
+                //Check uuid exist
+                //Check user
+                $uuidList = \DB::table("qp_register")
+                    -> where('uuid', "=", $uuid)
+                    -> select('row_id','uuid', 'user_row_id')->get();
+                $uuidInDB = null;
+                if(count($uuidList) < 1)
                 {
-                    return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
-                        'message'=>'User Not Match Device',
+                    return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                        'message'=>'Device Not Registered',
                         'content'=>'']);
                 }
-            }
+                else
+                {
+                    $uuidInDB = $uuidList[0];
+                    if($user->row_id != $uuidInDB->user_row_id)
+                    {
+                        return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
+                            'message'=>'User Not Match Device',
+                            'content'=>'']);
+                    }
+                }
 
-            try
-            {
-                \DB::table("qp_session")-> where('uuid', "=", $uuid)->delete();
-            }
-            catch (Exception $e)
-            {
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>'Call Service Error',
-                    'content'=>''
+                try
+                {
+                    \DB::table("qp_session")-> where('uuid', "=", $uuid)->delete();
+                }
+                catch (Exception $e)
+                {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>'Call Service Error',
+                        'content'=>''
+                    ]);
+                }
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>'Logout Successed',
+                    'content'=>array("uuid" => $uuid)
                 ]);
             }
+        }
 
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Logout Successed',
-                'content'=>array("uuid" => $uuid)
-            ]);
-        }
-        else
-        {
-            return response()->json(['result_code'=>$verifyResult["code"],
-                'message'=>$verifyResult["message"],
-                'content'=>'']);
-        }
+        return response()->json(['result_code'=>$verifyResult["code"],
+            'message'=>$verifyResult["message"],
+            'content'=>'']);
     }
 
     public function checkAppVersion()
@@ -680,8 +610,8 @@ SQL;
                         'app_code'=>$appData->app_code,
                         'package_name'=>$appData->package_name,
                         'app_category'=>$appData->app_category,
-                        'version'=>$appData->version,
-                        'version_name'=>$appData->version_name,
+                        'app_version'=>$appData->version,
+                        'app_version_name'=>$appData->version_name,
                         'security_level'=>$appData->security_level,
                         'avg_score'=>$appData->avg_score,
                         'user_score'=>$appData->user_score,
@@ -714,7 +644,7 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description from qp_app_line line, qp_language lang where line.lang_row_id = lang.row_id and line.app_row_id in ('.$appIdListStr.')';
+                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description from qp_app_line line, qp_language lang where line.lang_row_id = lang.row_id and line.app_row_id in ('.$appIdListStr.') order by app_row_id, lang_id';
                 $langDataList = DB::select($sql);
                 foreach ($langDataList as $langData)
                 {
@@ -941,44 +871,6 @@ SQL;
 
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 $userId = $userInfo->row_id;
-
-//                $sql = <<<SQL
-//select distinct tt.message_row_id, m.message_title,
-//	m.message_type, m.message_text,
-//  m.message_html, m.message_url,
-//	if(tt.read_time > 0, 'Y', 'N') as 'read',
-//	m.message_source,
-//  u.login_id as source_user,
-//  tt.read_time,
-//  u2.login_id as create_user, tt.created_at as create_time
-//from qp_message m
-//join
-//(
-//	select message_row_id, need_push, push_flag,
-//			   read_time,deleted_at,qp_user_message.created_at
-//    from qp_user_message
-//left join qp_message on qp_message.row_id = qp_user_message.message_row_id
-//   where user_row_id = :uId1
-//     and deleted_at = '0000-00-00 00:00:00'
-//     and qp_message.message_type = 'event'
-//   union
-//  select message_row_id, need_push, push_flag,
-//			   read_time,deleted_at, qp_role_message.created_at
-//    from qp_role_message
-//    left join qp_message on qp_message.row_id = qp_role_message.message_row_id
-//   where role_row_id in (select role_row_id
-//                           from qp_user_role
-//                          where user_row_id = :uId2)
-//
-//     and deleted_at = '0000-00-00 00:00:00'
-//     and qp_message.message_type = 'news'
-//) as tt on tt.message_row_id = m.row_id
-//LEFT JOIN qp_user u on m.source_user_row_id = u.row_id
-//LEFT JOIN qp_user u2 on m.created_user = u2.row_id
-//and UNIX_TIMESTAMP(m.created_at) >= $date_from
-//and UNIX_TIMESTAMP(m.created_at) <= $date_to
-//order by tt.created_at
-//SQL;
                 $sql = <<<SQL
 select m.row_id as message_row_id,
         ms.row_id as message_send_row_id,
@@ -989,29 +881,34 @@ select m.row_id as message_row_id,
 		m.message_url,
 		m.message_source,
 		u.login_id as source_user,
+		u2.login_id as create_user,
 		ms.created_at as create_time,
-		ms.read
+		ms.read,
+		ms.read_time
 from qp_message m
-, (select distinct qp_message_send.* , if(um.read_time > 0, 'Y', 'N') as 'read'
+, (select distinct qp_message_send.* , if(um.read_time > 0, 'Y', 'N') as 'read', um.read_time
      from qp_message_send 
 left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
-where qp_message_send.row_id in (
+where um.user_row_id = :uId3
+and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
+and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
+and qp_message_send.row_id in (
 select message_send_row_id from qp_user_message 
 where user_row_id = :uId1
-and UNIX_TIMESTAMP(created_at) >= $date_from
-and UNIX_TIMESTAMP(created_at) <= $date_to
+and deleted_at = 0
 union
 select message_send_row_id from qp_role_message
 where role_row_id in (select role_row_id from qp_user_role where user_row_id = :uId2)
-and UNIX_TIMESTAMP(created_at) >= $date_from
-and UNIX_TIMESTAMP(created_at) <= $date_to
+and deleted_at = 0
 )) ms,
-qp_user u
+qp_user u,qp_user u2
 where m.row_id = ms.message_row_id
 and ms.source_user_row_id = u.row_id
+and m.created_user = u2.row_id
+order by ms.created_at
 SQL;
 
-                $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId,]);
+                $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId, ':uId3'=>$userId,]);
 
                 if($count_from >= 1) {
                     array_slice($r, $count_from - 1, $count_to - $count_from + 1);
@@ -1019,13 +916,12 @@ SQL;
 
                 if(!$useUserDate) {
                     $now = date('Y-m-d H:i:s',time());
-                    $user = CommonUtil::getUserInfoByUUID($uuid);
                     \DB::table("qp_register")
                         -> where('user_row_id', '=', $userId)
                         -> where('uuid', '=', $uuid)
                         -> update(['last_message_time'=>$date_to,
                         'updated_at'=>$now,
-                        'updated_user'=>$user->row_id]);
+                        'updated_user'=>$userId]);
                 }
 
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
@@ -1079,6 +975,7 @@ SQL;
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $sql = <<<SQL
 select m.row_id as message_row_id,
+        ms.row_id as message_send_row_id,
 		   m.message_title,
 			 m.message_type, m.message_text,
 			 m.message_html, m.message_url,
@@ -1089,11 +986,14 @@ select m.row_id as message_row_id,
 from qp_message m, 
 		 qp_message_send ms,
 		 qp_user u1,
-	   qp_user u2
+	     qp_user u2,
+		 qp_user_message um
 where m.row_id = ms.message_row_id
 and ms.row_id = :msgSendId
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
+and um.message_send_row_id = ms.row_id
+and um.deleted_at = 0
 SQL;
                 $msgDetailList = DB::select($sql, [':msgSendId'=>$message_send_row_id]);
                 if(count($msgDetailList) > 0) {
@@ -1206,12 +1106,12 @@ SQL;
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
-                    'content'=>''
+                    'content'=>array('message_send_row_id' => $message_send_row_id)
                 ]);
             } else {
                 return response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
-                    'content'=>array('message_row_id' => $message_row_id)]);
+                    'content'=>'']);
             }
         } else {
             return response()->json(['result_code'=>$verifyResult["code"],
@@ -1410,102 +1310,88 @@ SQL;
             if (\Request::isJson($content)) {
                 $jsonContent = json_decode($content, true);
                 $sourceUseId = $jsonContent['source_user_id'];
-                $userStatus = CommonUtil::getUserStatusByUserID($sourceUseId);
-                if($userStatus == 2) {
-                    return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
-                        'message'=>"账号已被停权",
-                        'content'=>'']);
-                }
-                if($userStatus == 0 || $userStatus == 1) {
-                    return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
-                        'message'=>"離職或是帳號資訊打錯",
-                        'content'=>'']);
-                }
 
-                $userInfo = CommonUtil::getUserInfoByUserID($sourceUseId);
+                $userid = explode('\\', $sourceUseId)[1];
+                $company = explode('\\', $sourceUseId)[0];
+                $verifyResult = $Verify->verifyUserByUserIDAndCompany($userid, $company);
+                if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+                    $userInfo = CommonUtil::getUserInfoJustByUserIDAndCompany($userid, $company);
 
-                $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
-                if($projectInfo == null) {
-                    return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
-                        'message'=>"app key不存在",
-                        'content'=>'']);
-                }
-
-                $destinationUserIdList = $jsonContent['destination_user_id'];
-                $destinationUserInfoList = array();
-                foreach ($destinationUserIdList as $destinationUserId)
-                {
-                    $userStatus = CommonUtil::getUserStatusByUserID($destinationUserId);
-                    if($userStatus == 0) {
-                        return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
-                            'message'=>"接收推播用户不存在",
-                            'content'=>'']);
-                    }
-                    if($userStatus == 1) {
-                        return response()->json(['result_code'=>ResultCode::_000901_userNotExistError,
-                            'message'=>"離職或是帳號資訊打錯",
-                            'content'=>'']);
-                    }
-                    if($userStatus == 2) {
-                        return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
-                            'message'=>"账号已被停权",
+                    $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
+                    if($projectInfo == null) {
+                        return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+                            'message'=>"app key不存在",
                             'content'=>'']);
                     }
 
-                    $destinationUserInfo = CommonUtil::getUserInfoByUserID($destinationUserId);
+                    $destinationUserIdList = $jsonContent['destination_user_id'];
+                    $destinationUserInfoList = array();
+                    foreach ($destinationUserIdList as $destinationUserId)
+                    {
+                        $userid = explode('\\', $destinationUserId)[1];
+                        $company = explode('\\', $destinationUserId)[0];
+                        $verifyResult = $Verify->verifyUserByUserIDAndCompany($userid, $company);
 
-                    array_push($destinationUserInfoList, $destinationUserInfo);
-                }
+                        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful) {
+                            return response()->json(['result_code'=>$verifyResult["code"],
+                                'message'=>$verifyResult["message"],
+                                'content'=>'']);
+                        }
 
-                $message_type = $jsonContent['message_type'];
-                $message_title = $jsonContent['message_title'];
-                $message_text = $jsonContent['message_text'];
-                $message_html = $jsonContent['message_html'];
-                $message_url = $jsonContent['message_url'];
-                $message_source = $jsonContent['message_source'];
-                $now = date('Y-m-d H:i:s',time());
-                \DB::beginTransaction();
-                try {
-                    $newMessageId = \DB::table("qp_message")
-                        -> insertGetId([
-                            'message_type'=>$message_type, 'message_title'=>$message_title,
-                            'message_text'=>$message_text, 'message_html'=>$message_html,
-                            'message_url'=>$message_url, 'message_source'=>$message_source,
-                            'created_user'=>$userInfo->row_id,
-                            'created_at'=>$now,
-                        ]);
+                        $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndCompany($userid, $company);
 
-                    $newMessageSendId = \DB::table("qp_message_send")
-                        -> insertGetId([
-                            'message_row_id'=>$newMessageId,
-                            'source_user_row_id'=>$userInfo->row_id,
-                            'created_user'=>$userInfo->row_id,
-                            'created_at'=>$now,
-                        ]);
+                        array_push($destinationUserInfoList, $destinationUserInfo);
+                    }
 
-                    foreach ($destinationUserInfoList as $destinationUserInfo) {
-                        \DB::table("qp_user_message")
+                    $message_type = $jsonContent['message_type'];
+                    $message_title = $jsonContent['message_title'];
+                    $message_text = $jsonContent['message_text'];
+                    $message_html = $jsonContent['message_html'];
+                    $message_url = $jsonContent['message_url'];
+                    $message_source = $jsonContent['message_source'];
+                    $now = date('Y-m-d H:i:s',time());
+                    \DB::beginTransaction();
+                    try {
+                        $newMessageId = \DB::table("qp_message")
                             -> insertGetId([
-                                'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
-                                'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
+                                'message_type'=>$message_type, 'message_title'=>$message_title,
+                                'message_text'=>$message_text, 'message_html'=>$message_html,
+                                'message_url'=>$message_url, 'message_source'=>$message_source,
                                 'created_user'=>$userInfo->row_id,
                                 'created_at'=>$now,
-                                'push_flag'=>'0'
                             ]);
+
+                        $newMessageSendId = \DB::table("qp_message_send")
+                            -> insertGetId([
+                                'message_row_id'=>$newMessageId,
+                                'source_user_row_id'=>$userInfo->row_id,
+                                'created_user'=>$userInfo->row_id,
+                                'created_at'=>$now,
+                            ]);
+
+                        foreach ($destinationUserInfoList as $destinationUserInfo) {
+                            \DB::table("qp_user_message")
+                                -> insertGetId([
+                                    'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
+                                    'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
+                                    'created_user'=>$userInfo->row_id,
+                                    'created_at'=>$now,
+                                    'push_flag'=>'0'
+                                ]);
+                        }
+
+                        \DB::commit();
+                        return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                            'message'=>'Send Push Message Successed',
+                            'content'=>array('jsonContent'=>count($destinationUserIdList),
+                                'content'=>$content)//json_encode($jsonContent)
+                        ]);
+                    } catch (Exception $e) {
+                        \DB::rollBack();
+                        return array("code"=>ResultCode::_999999_unknownError,
+                            "message"=>"未知错误");
                     }
-
-                    \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                        'message'=>'Send Push Message Successed',
-                        'content'=>array('jsonContent'=>count($destinationUserIdList),
-                            'content'=>$content)//json_encode($jsonContent)
-                    ]);
-                } catch (Exception $e) {
-                    \DB::rollBack();
-                    return array("code"=>ResultCode::_999999_unknownError,
-                        "message"=>"未知错误");
                 }
-
             } else {
                 return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
                     "message"=>"Content-Type錯誤");
@@ -1546,11 +1432,15 @@ SQL;
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
+            $now = date('Y-m-d H:i:s',time());
+            $user = CommonUtil::getUserInfoByUUID($uuid);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 \DB::table("qp_register")
                     -> where('uuid', '=', $uuid)
                     -> update(
-                        ['last_message_time'=>$last_update_time]);
+                        ['last_message_time'=>$last_update_time,
+                            'updated_at'=>$now,
+                            'updated_user'=>$user->row_id]);
 
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
