@@ -4,31 +4,31 @@
 .Wrapper{
 	display:block;
 	background-image: url(../img/bg.png);
-	width:375px;
-	height:667px;
+	width:1125px;
+	height:2001px;
 	position:relative;
 }
 .Logo{
 	background-image: url(../img/logo.png);
-	width: 109px;
-	height: 144px;
+	width: 331px;
+	height: 437px;
 	position: absolute;
-	left: 129px;
-	top: 82px;
+	left: 384px;
+	top: 212px;
 	}
 .Google{
 	background-image: url(../img/googleplay.png);
-	width: 281px;
-	height: 92px;
+	width: 844px;
+	height: 276px;
 	position: absolute;
-	left: 43px;
-	top: 302px;
+	left: 128px;
+	top: 882px;
 	}
 .Appstore{
 	background-image: url(../img/app%20store.png);
-	width: 281px;
-	height: 94px;
+	width: 844px;
+	height: 276px;
 	position: absolute;
-	left: 43px;
-	top: 442px;
+	left: 129px;
+	top: 1322px;
 	}
