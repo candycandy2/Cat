@@ -328,7 +328,7 @@ FORM;
 
         var getMessageList = function () {
             $.ajax({
-                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest",  //&date_from=1451627340&date_to=1470030584//&date_from=1451577600&date_to=1469980800&count_from=1&count_to=200
+                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest&date_from=0&date_to=9470030584&count_from=1&count_to=2",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -516,7 +516,7 @@ FORM;
                 message_source:"Oracle ERP",
                 source_user_id:"qisda\\Moses.Zhu",
                 destination_user_id:["qisda\\Moses.Zhu","qisda\\Sammi.Yao"],
-                destination_role_id:["",""],
+                destination_role_id:["qisda\\staff"],
                 };
             var mydataStr = $.toJSON(mydata);
 //            mydata = '{"first name":"moseszhu",' +

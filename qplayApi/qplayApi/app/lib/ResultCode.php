@@ -40,6 +40,8 @@ abstract class ResultCode
     const _000913_NotNeedUpdate = "000913"; //app无需更新
     const _000914_userWithoutRight = '000914';  //用户停权
     const _000915_packageNotExist = "000915"; //package不存在
+    const _000916_titleLengthTooLong = "000916"; //标题栏位太长
+    const _000917_roleNotExist = "000917"; //角色不存在
 
 
     //TODO 以下为各系统扩展
