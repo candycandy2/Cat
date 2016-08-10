@@ -28,7 +28,9 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <!-- 
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+        <meta charset="UTF-8">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -45,7 +47,10 @@
         <!--<script type="text/javascript" src="cordova_plugins.js"></script>-->
         <!--<script type="text/javascript" src="plugins/cordova-plugin-statusbar/www/statusbar.js"></script>-->
         <script type="text/javascript" src="js/index.js"></script>
-
+        <script type="text/javascript" src="js/core-min.js"></script>
+        <script type="text/javascript" src="js/hmac-sha256.js"></script>
+        <script type="text/javascript" src="js/enc-base64-min.js"></script>
+        
         <title>QPlay APP</title>
         <style>
             img {/*讓img在div中居中*/　
@@ -72,7 +77,12 @@
         <div class="center" data-role="main" class="ui-content">
           <img src="img/logo.png" draggable="true"/>
           <h1 id="welcome" >Welcome page</h1>
+          <br><br><br>
           <a href="#mainpage 2-1"> MainPage </a>
+          <br>
+          <a href="#" id="doLogin"> Login </a>
+          <br>
+          <a href="#" id="checkAppVersion"> CheckVersion </a>
         </div>
       </div>
       <!-- end of init page -->

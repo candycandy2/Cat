@@ -14,26 +14,38 @@
     <input type="button" value="QueryMyPhoneBook" onclick="QueryMyPhoneBook()">
     <input type="button" value="QueryCompanyData" onclick="QueryCompanyData()">
 
+    <div id="resultContent"></div>
+
     <script>
         var sectoryKey = 'swexuc453refebraXecujeruBraqAc4e';
 
         var QueryEmployeeData = function () {
             var param = "<LayoutHeader><Company>Qisda</Company><Name_CH></Name_CH><Name_EN>Steven</Name_EN><DeptCode></DeptCode><Ext_No></Ext_No></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/QueryEmployeeData?lang=en-us",
+                url: "v101/yellowpage/QueryEmployeeData?lang=en-us&uuid=aaaaadasdasdasd",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a2e129547e5");
                 },
                 success: function (d, status, xhr) {
-                    alert(d);
+                    alert(d.ResultCode + "-" + d.Message);
+                    var h = "";
+                    $.each(d.Content, function(i, item) {
+                        h += "Company: " + item.Company + "<br />";
+                        h += "Ext_No: " + item.Ext_No + "<br />";
+                        h += "Name_CH: " + item.Name_CH + "<br />";
+                        h += "Name_EN: " + item.Name_EN + "<br /><br /><br /><br />";
+                    });
+                    $("#resultContent").html(h);
                 },
                 error: function (e) {
-                    alert(e);
+                    alert(e.responseText);
+                    //alert(d.ResultCode + "-" + d.Message);
                 }
             });
         };
