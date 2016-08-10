@@ -34,6 +34,9 @@ public class QLoginPlugin extends CordovaPlugin {
                 e.printStackTrace();
                 return false;
             }
+        }else if(action.equals("getLoginData")){
+            String loginData = LoginInfo.getInstance().getloginData();
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,loginData));
         }
         return true;
     }

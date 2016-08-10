@@ -53,7 +53,7 @@
     //获得屏幕的尺寸
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     screenBounds.origin.y = screenBounds.origin.y;
-    
+
     if(!_wkView){
         WKWebViewConfiguration *wvConfig = [[WKWebViewConfiguration alloc] init];
         [wvConfig.userContentController addScriptMessageHandler:self name:@"saveLoginResult"];
@@ -87,7 +87,11 @@
 {
     //(1)保存结果
     if (message.body) {
-        self.CertificationResult = message.body[0];
+        if ([message.body isKindOfClass:[NSString class]]) {
+            self.CertificationResult = message.body;
+        }else{
+            self.CertificationResult = [NSString stringWithFormat:@"%@",[message.body description]];
+        }
     }
     
     //(2)隐藏Webview
@@ -138,7 +142,13 @@
     //urlString = [urlString stringByRemovingPercentEncoding];
     NSURL *url = [NSURL URLWithString:urlString];
     [[UIApplication sharedApplication] openURL:url];
-	_SourceAPP = nil;
+    _SourceAPP = nil;
+}
+
+-(void)getLoginData:(CDVInvokedUrlCommand *)command
+{
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:self.CertificationResult];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 @end
 
