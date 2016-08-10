@@ -80,11 +80,7 @@ h1 {
 	font-family: "Gill Sans MT", "微軟正黑體", "Arial";
 }
 h4{
-	font-size:16px;
-	float:left;
-	text-indent:20px;
-	line-height:5px;
-	font-family:"Gill Sans MT", "微軟正黑體", Arial;
+	font-size:16px;	
 	}
 
 .event {
@@ -136,20 +132,16 @@ h4{
 	position: absolute;
 	text-align: left;
 	left: 47px;
-	height: 37px;
 }
 
 .dropbox_style {
-    margin-left:100px;
-	margin-top:5px;
-    width:220px;
-	height:36px;
+    margin-left:120px;
+    width:190px;
 }
 
 .editbox_style {
-    margin-left:100px;
-    width:220px;
-	height:36px;
+    margin-left:120px;
+    width:185px;
 }
 
 .custom_navbar ul li a {
