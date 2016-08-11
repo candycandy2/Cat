@@ -273,6 +273,8 @@ $(function() {
         success: onCheckAppVersionSuccess,
         error: onCheckAppVersionFail,
       });
+      
+      window.plugins.qlogin.getLoginData(getLoginDataSuccessCallback,getLoginDataErrorCallback);
     });
     
     function onCheckAppVersionSuccess(data)
@@ -299,4 +301,61 @@ $(function() {
       
       alert("onCheckAppVersionFail");
     };
+    
+    function getLoginDataSuccessCallback(rsData)
+    {
+      var jsonobj = jQuery.parseJSON(rsData);
+      var token = jsonobj['token_valid'];
+      rsDataFromServer.token = token;
+      var uuid = jsonobj['uuid'];
+      rsDataFromServer.uuid = uuid;
+      var redirecturl = jsonobj['redirect-url'];
+      rsDataFromServer.redirect = redirecturl;
+    };
+    
+    function getLoginDataErrorCallback()
+    {
+        
+    };
+    
+    $("#mainpage2-1").click(function() {
+      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': 'qplay',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+          'token': rsDataFromServer.token,
+        },
+        cache: false,
+        success: ongetAppListSuccess,
+        error: ongetAppListFail,
+      });
+
+      function ongetAppListSuccess(data)
+      {
+        alert("ongetAppListSuccess");
+      }
+      
+      function ongetAppListFail(data)
+      {
+        alert("ongetAppListFail");
+      }
+
+    });
 });
+
+// rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
+var rsDataFromServer = {
+  token: 'nullstring',
+  uuid: 'nullstring',
+  redirect: 'nullstring',
+};
