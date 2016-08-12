@@ -164,6 +164,8 @@
      $.mobile.loading( "hide" );
  });
 
+var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
+ 
 var app = {
     // Application Constructor
     initialize: function() {
@@ -220,7 +222,7 @@ var app = {
             ],
             Requests: [
                 "*://*.baidu.com/*",
-                "http://aic0-s12.qgroup.corp.com:8084/*"
+                serverURL + "/*"
             ]
         };
         window.plugins.qsecurity.setWhiteList(securityList,app.success,app.error);
@@ -271,7 +273,7 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
+        url: serverURL +"/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -334,7 +336,7 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
