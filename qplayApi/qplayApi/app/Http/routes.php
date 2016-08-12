@@ -28,8 +28,8 @@ Route::any('/v101/qplay/getMessageDetail', 'qplayController@getMessageDetail');
 Route::any('/v101/qplay/updateMessage', 'qplayController@updateMessage');
 Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
 Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
+Route::any('/v101/qplay/updateLastMessageTime', 'qplayController@updateLastMessageTime');
 Route::post('/v101/qplay/sendPushMessage', 'qplayController@sendPushMessage');
-Route::post('/v101/qplay/updateLastMessageTime', 'qplayController@updateLastMessageTime');
 
 //Login Page
 Route::any('/qplayauth_register', function() {

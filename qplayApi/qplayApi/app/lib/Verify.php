@@ -10,6 +10,7 @@ namespace App\lib;
 
 use Request;
 use Illuminate\Support\Facades\Input;
+use DB;
 
 class Verify
 {
@@ -104,11 +105,17 @@ class Verify
                 "message"=> "uuid不存在");
         }
 
-        $sessionList = \DB::table("qp_session")
-            -> where('uuid', "=", $uuid)
-            -> where('token', '=', $token)
-            //-> select('token_valid_date', 'last_message_time')->get();
-            -> select('token_valid_date')->get();
+//        $sessionList = \DB::table("qp_session")
+//            -> where('uuid', "=", $uuid)
+//            -> where('token', '=', $token)  //TODO $token解密后再查
+//            //-> select('token_valid_date', 'last_message_time')->get();
+//            -> select('token_valid_date')->get();
+        $sql = "select distinct s.token_valid_date, s.user_row_id from qp_session s, qp_register r where s.uuid = '"
+            .$uuid
+            ."' and s.token = '"
+            .$token
+            ."' and s.uuid = r.uuid and s.user_row_id = r.user_row_id and r.`status` = 'A'";
+        $sessionList = DB::select($sql, []);
         if(count($sessionList) < 1)
         {
             return array("code"=>ResultCode::_000908_tokenInvalid,
@@ -124,11 +131,15 @@ class Verify
                 "message"=> "token过期");
         }
 
-        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-        if($userInfo == null)
-        {
-            return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=> "账号已被停权");
+//        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+//        if($userInfo == null)
+//        {
+//            return array("code"=>ResultCode::_000914_userWithoutRight,
+//                "message"=> "账号已被停权");
+//        }
+        $checkUserResult = Verify::verifyUserByUserRowID($sessionList[0]->user_row_id);
+        if($checkUserResult["code"] != ResultCode::_1_reponseSuccessful) {
+            return $checkUserResult;
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -140,6 +151,25 @@ class Verify
     public static function verifyUserByUserID($loginid, $domain)
     {
         $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=>"账号已被停权");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
+    public static function verifyUserByUserRowID($userRowId) {
+        $userStatus = CommonUtil::getUserStatusByUserRowID($userRowId);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
                 "message"=>"離職或是帳號資訊打錯");
