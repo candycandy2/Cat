@@ -250,8 +250,17 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      window.plugins.qlogin.openCertificationPage(null, null);
+      //window.plugins.qlogin.openCertificationPage(null, null);
+      window.plugins.qlogin.openCertificationPage(loginSuccess, loginFail);
     });
+    
+    function loginSuccess() {
+      var success;
+    };
+    
+    function loginFail() {
+      var fail;
+    };
     
     $("#checkAppVersion").click(function() {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
@@ -305,12 +314,10 @@ $(function() {
     function getLoginDataSuccessCallback(rsData)
     {
       var jsonobj = jQuery.parseJSON(rsData);
-      var token = jsonobj['token_valid'];
-      rsDataFromServer.token = token;
-      var uuid = jsonobj['uuid'];
-      rsDataFromServer.uuid = uuid;
-      var redirecturl = jsonobj['redirect-url'];
-      rsDataFromServer.redirect = redirecturl;
+      rsDataFromServer.token_valid = jsonobj['token_valid'];
+      rsDataFromServer.token = jsonobj['token'];
+      rsDataFromServer.uuid = jsonobj['uuid'];
+      rsDataFromServer.redirect = jsonobj['redirect-uri'];
     };
     
     function getLoginDataErrorCallback()
@@ -342,13 +349,21 @@ $(function() {
 
       function ongetAppListSuccess(data)
       {
-        alert("ongetAppListSuccess");
-      }
+        var jsonobj = data;
+        var resultcode = jsonobj['result_code'];
+    
+        if (resultcode == 1) {
+          alert("extract app list and display to ui");
+        }
+        else {
+          alert("get app list return error code");
+        }
+      };
       
       function ongetAppListFail(data)
       {
         alert("ongetAppListFail");
-      }
+      };
 
     });
 });
@@ -356,6 +371,7 @@ $(function() {
 // rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
 var rsDataFromServer = {
   token: 'nullstring',
+  token_valid: 'nullstring',
   uuid: 'nullstring',
   redirect: 'nullstring',
 };
