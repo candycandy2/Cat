@@ -89,6 +89,41 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserStatusByUserRowID($userRowId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.row_id', '=', $userRowId)
+            -> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+        if(count($userList) < 1) {
+            return 0; //用户不存在
+        }
+
+        if(count($userList) == 1) {
+            $user = $userList[0];
+            if($user->resign != "N") {
+                return 1; //用户已离职
+            }
+
+            if($user->status != "Y") {
+                return 2; //用户已停权
+            }
+        } else {
+            foreach ($userList as $user)
+            {
+                if($user->resign == "N") {
+                    if($user->status == "Y") {
+                        return 3; //正常
+                    } else {
+                        return 2; //停权
+                    }
+                }
+            }
+            return 1;  //离职
+        }
+
+        return 3; //正常
+    }
+
     public static function getUserStatusByUserID($loginId, $domain)
     {
         $userList = \DB::table('qp_user')
