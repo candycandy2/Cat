@@ -164,6 +164,8 @@
      $.mobile.loading( "hide" );
  });
 
+var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
+ 
 var app = {
     // Application Constructor
     initialize: function() {
@@ -220,7 +222,7 @@ var app = {
             ],
             Requests: [
                 "*://*.baidu.com/*",
-                "http://aic0-s12.qgroup.corp.com:8084/*"
+                serverURL + "/*"
             ]
         };
         window.plugins.qsecurity.setWhiteList(securityList,app.success,app.error);
@@ -250,8 +252,17 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      window.plugins.qlogin.openCertificationPage(null, null);
+      //window.plugins.qlogin.openCertificationPage(null, null);
+      window.plugins.qlogin.openCertificationPage(loginSuccess, loginFail);
     });
+    
+    function loginSuccess() {
+      var success;
+    };
+    
+    function loginFail() {
+      var fail;
+    };
     
     $("#checkAppVersion").click(function() {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
@@ -262,7 +273,7 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
+        url: serverURL +"/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -305,12 +316,10 @@ $(function() {
     function getLoginDataSuccessCallback(rsData)
     {
       var jsonobj = jQuery.parseJSON(rsData);
-      var token = jsonobj['token_valid'];
-      rsDataFromServer.token = token;
-      var uuid = jsonobj['uuid'];
-      rsDataFromServer.uuid = uuid;
-      var redirecturl = jsonobj['redirect-url'];
-      rsDataFromServer.redirect = redirecturl;
+      rsDataFromServer.token_valid = jsonobj['token_valid'];
+      rsDataFromServer.token = jsonobj['token'];
+      rsDataFromServer.uuid = jsonobj['uuid'];
+      rsDataFromServer.redirect = jsonobj['redirect-uri'];
     };
     
     function getLoginDataErrorCallback()
@@ -327,7 +336,7 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -342,13 +351,21 @@ $(function() {
 
       function ongetAppListSuccess(data)
       {
-        alert("ongetAppListSuccess");
-      }
+        var jsonobj = data;
+        var resultcode = jsonobj['result_code'];
+    
+        if (resultcode == 1) {
+          alert("extract app list and display to ui");
+        }
+        else {
+          alert("get app list return error code");
+        }
+      };
       
       function ongetAppListFail(data)
       {
         alert("ongetAppListFail");
-      }
+      };
 
     });
 });
@@ -356,6 +373,7 @@ $(function() {
 // rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
 var rsDataFromServer = {
   token: 'nullstring',
+  token_valid: 'nullstring',
   uuid: 'nullstring',
   redirect: 'nullstring',
 };
