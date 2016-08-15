@@ -320,11 +320,13 @@ $(function() {
       rsDataFromServer.token = jsonobj['token'];
       rsDataFromServer.uuid = jsonobj['uuid'];
       rsDataFromServer.redirect = jsonobj['redirect-uri'];
+      
+      alert("uuid: " + rsDataFromServer.uuid);
     };
     
     function getLoginDataErrorCallback()
     {
-        
+      
     };
     
     $("#mainpage2-1").click(function() {
@@ -355,10 +357,18 @@ $(function() {
         var resultcode = jsonobj['result_code'];
     
         if (resultcode == 1) {
-          alert("extract app list and display to ui");
+          alert(jsonobj['message']);
+          var responsecontent = jsonobj['content'];
+          
+          var categorylist = responsecontent.app_category_list;
+          
+          var applist = responsecontent.app_list;
+          
+          var multilang = responsecontent.multi_lang;
+          
         }
         else {
-          alert("get app list return error code");
+          alert(jsonobj['message']);
         }
       };
       
