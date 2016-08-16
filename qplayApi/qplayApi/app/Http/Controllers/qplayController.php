@@ -647,7 +647,9 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description from qp_app_line line, qp_language lang where line.lang_row_id = lang.row_id and line.app_row_id in ('.$appIdListStr.') order by app_row_id, lang_id';
+                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.app_key from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
+                    .$appIdListStr
+                    .') order by app_row_id, lang_id';
                 $langDataList = DB::select($sql);
                 foreach ($langDataList as $langData)
                 {
@@ -662,6 +664,7 @@ SQL;
                         'app_name'=>$langData->app_name,
                         'app_summary'=>$langData->app_summary,
                         'app_description'=>$langData->app_description,
+                        'app_key'=>$langData->app_key,
                         'pic_list'=>$picList
                     );
 
