@@ -357,15 +357,29 @@ $(function() {
         var resultcode = jsonobj['result_code'];
     
         if (resultcode == 1) {
-          alert(jsonobj['message']);
+          //alert(jsonobj['message']);
           var responsecontent = jsonobj['content'];
           
-          var categorylist = responsecontent.app_category_list;
+          appcategorylist = responsecontent.app_category_list;
+          applist = responsecontent.app_list;
+          appmultilang = responsecontent.multi_lang;
           
-          var applist = responsecontent.app_list;
-          
-          var multilang = responsecontent.multi_lang;
-          
+          for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
+            var catetoryname = appcategorylist[categoryindex].app_category;
+            $('#appcontent').append('<h4>' + catetoryname + '</h4>');
+            $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+            for (var appindex=0; appindex<applist.length; appindex++) {
+              var appcategory = applist[appindex].app_category;
+              if (appcategory == catetoryname){
+                var appurl = applist[appindex].url;
+                var appurlicon = applist[appindex].icon_url;
+                var packagename = applist[appindex].package_name;
+                //$('#appcontent').append('<div class="owl-item"><h4>' + packagename + '</h4></div>');
+                $('#appcontent').append('<div class="owl-item"><h4><img src="img/star.png"></h4></div>');
+              } // if
+            } // for appindex
+            $('#appcontent').append('</div>');
+          } // for categoryindex
         }
         else {
           alert(jsonobj['message']);
@@ -387,3 +401,7 @@ var rsDataFromServer = {
   uuid: 'nullstring',
   redirect: 'nullstring',
 };
+
+var appcategorylist;
+var applist;
+var appmultilang;
