@@ -164,6 +164,8 @@
      $.mobile.loading( "hide" );
  });
 
+var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
+ 
 var app = {
     // Application Constructor
     initialize: function() {
@@ -220,7 +222,7 @@ var app = {
             ],
             Requests: [
                 "*://*.baidu.com/*",
-                "http://aic0-s12.qgroup.corp.com:8084/*"
+                serverURL + "/*"
             ]
         };
         window.plugins.qsecurity.setWhiteList(securityList,app.success,app.error);
@@ -250,8 +252,17 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      window.plugins.qlogin.openCertificationPage(null, null);
+      //window.plugins.qlogin.openCertificationPage(null, null);
+      window.plugins.qlogin.openCertificationPage(loginSuccess, loginFail);
     });
+    
+    function loginSuccess() {
+      var success;
+    };
+    
+    function loginFail() {
+      var fail;
+    };
     
     $("#checkAppVersion").click(function() {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
@@ -262,7 +273,7 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
+        url: serverURL +"/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -273,6 +284,8 @@ $(function() {
         success: onCheckAppVersionSuccess,
         error: onCheckAppVersionFail,
       });
+      
+      window.plugins.qlogin.getLoginData(getLoginDataSuccessCallback,getLoginDataErrorCallback);
     });
     
     function onCheckAppVersionSuccess(data)
@@ -299,4 +312,96 @@ $(function() {
       
       alert("onCheckAppVersionFail");
     };
+    
+    function getLoginDataSuccessCallback(rsData)
+    {
+      var jsonobj = jQuery.parseJSON(rsData);
+      rsDataFromServer.token_valid = jsonobj['token_valid'];
+      rsDataFromServer.token = jsonobj['token'];
+      rsDataFromServer.uuid = jsonobj['uuid'];
+      rsDataFromServer.redirect = jsonobj['redirect-uri'];
+      
+      alert("uuid: " + rsDataFromServer.uuid);
+    };
+    
+    function getLoginDataErrorCallback()
+    {
+      
+    };
+    
+    $("#mainpage2-1").click(function() {
+      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': 'qplay',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+          'token': rsDataFromServer.token,
+        },
+        cache: false,
+        success: ongetAppListSuccess,
+        error: ongetAppListFail,
+      });
+
+      function ongetAppListSuccess(data)
+      {
+        var jsonobj = data;
+        var resultcode = jsonobj['result_code'];
+    
+        if (resultcode == 1) {
+          //alert(jsonobj['message']);
+          var responsecontent = jsonobj['content'];
+          
+          appcategorylist = responsecontent.app_category_list;
+          applist = responsecontent.app_list;
+          appmultilang = responsecontent.multi_lang;
+          
+          for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
+            var catetoryname = appcategorylist[categoryindex].app_category;
+            $('#appcontent').append('<h4>' + catetoryname + '</h4>');
+            $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+            for (var appindex=0; appindex<applist.length; appindex++) {
+              var appcategory = applist[appindex].app_category;
+              if (appcategory == catetoryname){
+                var appurl = applist[appindex].url;
+                var appurlicon = applist[appindex].icon_url;
+                var packagename = applist[appindex].package_name;
+                //$('#appcontent').append('<div class="owl-item"><h4>' + packagename + '</h4></div>');
+                $('#appcontent').append('<div class="owl-item"><h4><img src="img/star.png"></h4></div>');
+              } // if
+            } // for appindex
+            $('#appcontent').append('</div>');
+          } // for categoryindex
+        }
+        else {
+          alert(jsonobj['message']);
+        }
+      };
+      
+      function ongetAppListFail(data)
+      {
+        alert("ongetAppListFail");
+      };
+
+    });
 });
+
+// rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
+var rsDataFromServer = {
+  token: 'nullstring',
+  token_valid: 'nullstring',
+  uuid: 'nullstring',
+  redirect: 'nullstring',
+};
+
+var appcategorylist;
+var applist;
+var appmultilang;

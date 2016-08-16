@@ -183,7 +183,7 @@ FORM;
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
-                    request.setRequestHeader("domain", "Qisda");
+                    request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
                     request.setRequestHeader("password", "QCS@2012");
                 },
@@ -368,7 +368,7 @@ FORM;
 
         var getMessageDetail = function () {
             $.ajax({
-                url: "v101/qplay/getMessageDetail?lang=en-us&uuid=aaaaadasdasdasd&message_send_row_id=19",
+                url: "v101/qplay/getMessageDetail?lang=en-us&uuid=chaosTest&message_send_row_id=19",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -377,7 +377,7 @@ FORM;
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a3fea31119c");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -476,16 +476,16 @@ FORM;
 
         var updateLastMessageTime = function () {
             $.ajax({
-                url: "v101/qplay/updateLastMessageTime?lang=en-us&uuid=aaaaadasdasdasd&last_update_time=1470100946",
+                url: "v101/qplay/updateLastMessageTime?lang=en-us&uuid=chaosTest&last_update_time=1470100946",
                 dataType: "json",
-                type: "POST",
+                type: "GET",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "qplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a2e129547e5");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -515,7 +515,7 @@ FORM;
                 message_url:"",
                 message_source:"Oracle ERP",
                 source_user_id:"qisda\\Moses.Zhu",
-                destination_user_id:["qisda\\Moses.Zhu","qisda\\Sammi.Yao"],
+                destination_user_id:["qisda\\Moses.Zhu22","qisda\\Sammi.Yao"],
                 destination_role_id:["qisda\\staff"],
                 };
             var mydataStr = $.toJSON(mydata);

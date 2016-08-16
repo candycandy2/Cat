@@ -42,6 +42,7 @@ abstract class ResultCode
     const _000915_packageNotExist = "000915"; //package不存在
     const _000916_titleLengthTooLong = "000916"; //标题栏位太长
     const _000917_roleNotExist = "000917"; //角色不存在
+    const _000918_dataIncomplete = "000918"; //数据不完整
 
 
     //TODO 以下为各系统扩展
