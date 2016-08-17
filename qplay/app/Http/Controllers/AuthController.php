@@ -40,10 +40,21 @@ class AuthController extends Controller
             // 认证通过...
             //return Auth::id();
             //return redirect()->intended('dashboard');
-            return redirect()->to('accountMaintain');
+            $menuList = Auth::user()->getMenuList();
+            if(count($menuList) > 0)
+            {
+                foreach ($menuList as $menu) {
+                    if($menu->Url != "")
+                    {
+                        return redirect()->to($menu->Url);
+                    }
+                }
+            }
+            $data['errormsg'] = "No Menu";
+            return \Redirect::to('auth/login')->with($data);
             //return view("user_maintain/account_maintain");
         } else {
-            $data['errormsg'] = "<b>" . "Login Failed" . "</b>";
+            $data['errormsg'] = "Login Failed";
             return \Redirect::to('auth/login')->with($data);
         }
     }

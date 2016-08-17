@@ -49,6 +49,7 @@ $title = trans('messages.TITLE_'.$menu_name);
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--}}
@@ -118,7 +119,7 @@ $title = trans('messages.TITLE_'.$menu_name);
 
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="nav sidebar-menu">
-                <li class="header">菜單</li>
+                <li class="header">{{trans('messages.MENU')}}</li>
 
                 @foreach ($menuList as $menu)
                     <li class="treeview
