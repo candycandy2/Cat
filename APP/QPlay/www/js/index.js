@@ -164,6 +164,14 @@
      $.mobile.loading( "hide" );
  });
 
+$(document).on("pageshow","#initpage1-1",function(){
+  //alert("pageshow event fired - initpage 1-1 is now shown");
+  setTimeout(function(){
+    //do check app version
+    checkAppVersionFunction();
+  }, 3000);
+});
+
 var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
  
 var app = {
@@ -252,8 +260,8 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      //window.plugins.qlogin.openCertificationPage(null, null);
-      window.plugins.qlogin.openCertificationPage(loginSuccess, loginFail);
+      window.plugins.qlogin.openCertificationPage(null, null);
+      //window.plugins.qlogin.openCertificationPage(loginSuccess, loginFail);
     });
     
     function loginSuccess() {
@@ -265,6 +273,12 @@ $(function() {
     };
     
     $("#checkAppVersion").click(function() {
+      //checkAppVersionFunction();
+      window.plugins.qlogin.getLoginData(getLoginDataSuccessCallback,getLoginDataErrorCallback);
+    });
+    
+    window.checkAppVersionFunction = function()
+    {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
@@ -284,9 +298,7 @@ $(function() {
         success: onCheckAppVersionSuccess,
         error: onCheckAppVersionFail,
       });
-      
-      window.plugins.qlogin.getLoginData(getLoginDataSuccessCallback,getLoginDataErrorCallback);
-    });
+    };
     
     function onCheckAppVersionSuccess(data)
     {
@@ -297,12 +309,15 @@ $(function() {
     
       if (resultcode == 1)
       {
+          //alert("need to update");
           alert(jsonobj['message']);
+          window.plugins.qlogin.openCertificationPage(null, null); // for testing
       }
       else if (resultcode == 000913)
       {
           //alert("up to date");
           alert(jsonobj['message']);
+          window.plugins.qlogin.openCertificationPage(null, null);
       }
     };
     
