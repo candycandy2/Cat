@@ -1394,8 +1394,9 @@ SQL;
                     $message_type = $jsonContent['message_type'];
                     $message_title = $jsonContent['message_title'];
                     if(strlen($message_title) > 99) {
-                        return array("code"=>ResultCode::_000916_titleLengthTooLong,
-                            "message"=>"标题栏位太长");
+                        return response()->json(['result_code'=>ResultCode::_000916_titleLengthTooLong,
+                            'message'=>"标题栏位太长",
+                            'content'=>'']);
                     }
                     $message_text = $jsonContent['message_text'];
                     $message_html = $jsonContent['message_html'];

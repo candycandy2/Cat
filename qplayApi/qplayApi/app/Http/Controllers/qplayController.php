@@ -630,9 +630,12 @@ SQL;
                 $app_category_list = array();
                 $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
 //                $sql = <<<SQL
-//select row_id as category_id, app_category, sequence from qp_app_category
-//where row_id in (:idList)
+//                select row_id as category_id, app_category, sequence
+//                from qp_app_category
+//                where row_id in (:idList)
 //SQL;
+//                $categoryDataList = DB::select($sql, [':idList'=>$categoryIdListStr]);
+
                 $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
                 $categoryDataList = DB::select($sql);
 
@@ -647,7 +650,7 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.app_key from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
+                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.project_code from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
                     .$appIdListStr
                     .') order by app_row_id, lang_id';
                 $langDataList = DB::select($sql);
@@ -664,7 +667,7 @@ SQL;
                         'app_name'=>$langData->app_name,
                         'app_summary'=>$langData->app_summary,
                         'app_description'=>$langData->app_description,
-                        'app_key'=>$langData->app_key,
+                        'project_code'=>$langData->project_code,
                         'pic_list'=>$picList
                     );
 
@@ -1453,8 +1456,9 @@ SQL;
                     $message_type = $jsonContent['message_type'];
                     $message_title = $jsonContent['message_title'];
                     if(strlen($message_title) > 99) {
-                        return array("result_code"=>ResultCode::_000916_titleLengthTooLong,
-                            "message"=>"标题栏位太长");
+                        return response()->json(['result_code'=>ResultCode::_000916_titleLengthTooLong,
+                            'message'=>"标题栏位太长",
+                            'content'=>'']);
                     }
                     $message_text = $jsonContent['message_text'];
                     $message_html = $jsonContent['message_html'];

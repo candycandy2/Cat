@@ -106,7 +106,7 @@
         });
     });
 </script>
-
+@include('layouts.message')
 @include('layouts.message_js')
 </body>
 </html>

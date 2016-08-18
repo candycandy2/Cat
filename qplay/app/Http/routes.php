@@ -13,6 +13,7 @@
 
 
 Route::any('/platform/getUserList', 'platformController@getUserList');
+Route::any('/platform/removeUserRight', 'platformController@removeUserRight');
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -27,6 +28,9 @@ Route::any('/', ['middleware' => 'auth', function() {
 
 Route::any('accountMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/account_maintain");
+}]);
+Route::any('accountDetailMaintain', ['middleware' => 'auth', function() {
+    return view("user_maintain/account_detail_maintain");
 }]);
 Route::any('roleMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/role_maintain");
