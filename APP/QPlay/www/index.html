@@ -67,7 +67,6 @@
         </style>
     </head>
     <body>
-
       <!-- Start of init page -->
       <div data-role="page" id="initpage1-1">
         <div data-role="header">
@@ -78,11 +77,9 @@
           <img src="img/logo.png" draggable="true"/>
           <h1 id="welcome" >Welcome page</h1>
           <br><br><br>
-          <a href="#mainpage 2-1" id="mainpage2-1"> MainPage </a>
-          <br>
-          <a href="#" id="doLogin"> Login </a>
-          <br>
-          <a href="#" id="checkAppVersion"> CheckVersion </a>
+          <a href="#" id="checkAppVersion"> Get Login Data </a><br><br>
+          <a href="#mainpage 2-1" id="mainpage2-1"> MainPage </a><br><br>
+          <!-- <a href="#" id="doLogin"> Login </a><br> -->
         </div>
       </div>
       <!-- end of init page -->
@@ -192,7 +189,6 @@
 
         <div data-role="footer" data-position="fixed" role="contentinfo" class="ui-footer ui-bar-a ui-footer-fixed slideup">
             <div data-role="tabs" id="tabs">
-
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#News" data-transition="turn" class="ui-btn ui-btn-active" data-ajax="false">News</a></li>
@@ -260,8 +256,8 @@
                     <div class="owl-item"><h4>11</h4></div>
                     <div class="owl-item"><h4>12</h4></div>
               </div>
-        </div>
-
+          </div>
+      </div>
         <!-- Start of popupDialog page -->
         <div data-role="page" data-dialog="true" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="top: 50%;left: 50%;margin: -100px 0 0 -200px;position: absolute;height: 200px;width: 400px;">
             <div data-role="header" data-theme="a">
@@ -274,5 +270,45 @@
                 <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Delete</a>
             </div>
         </div>
+        
+      <!-- Start of app detail page -->
+      <div data-role="page" id="appdetail2-2">
+          <div data-role="header" style="overflow:hidden;">
+              <h1></h1>
+              <a href="#mainpage 2-1" data-icon="arrow-l" class="ui-btn-left">Back</a>
+          </div><!-- /header -->
+          <div data-role="main" class="ui-content" id="appcontent">
+              <img src="img/ypicon.png" style="float:left;" align="middle" width=96 height=96>
+              <div style="line-height:6px; margin-left:120px;">
+                  <p>Yellow Page</p>
+                  <p>Find Employee Information</p>
+                  <p>V 1.0.2</p>
+                  <p>20M</p>
+              </div>
+              <a href="#" data-role="button" data-inline="true" class="install-btn">Install</a>
+              <br><br><br><br>
+              <div style="width:350px;text-align:center;">
+                  <p>you can via RRS app to reserve confercnec room parking space of BQT or QTY</p>
+              </div>
+              <br><br>
+              <div><img src="img/rank4p5.png" style="display:block; margin:auto;"></div>
+              <br><br>
+              <div class="owl-carousel owl-theme" id="appdetaillist">
+                    <div class="owl-item"><h4>1</h4></div>
+                    <div class="owl-item"><h4>2</h4></div>
+                    <div class="owl-item"><h4>3</h4></div>
+                    <div class="owl-item"><h4>4</h4></div>
+                    <div class="owl-item"><h4>5</h4></div>
+                    <div class="owl-item"><h4>6</h4></div>
+                    <div class="owl-item"><h4>7</h4></div>
+                    <div class="owl-item"><h4>8</h4></div>
+                    <div class="owl-item"><h4>9</h4></div>
+                    <div class="owl-item"><h4>10</h4></div>
+                    <div class="owl-item"><h4>11</h4></div>
+                    <div class="owl-item"><h4>12</h4></div>
+              </div>
+          </div><!-- /main -->
+      </div>
+        
     </body>
 </html>

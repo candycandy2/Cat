@@ -74,6 +74,23 @@
         }
     });
 
+    $('#appdetaillist').owlCarousel({
+        stagePadding: 50,
+        loop:false,
+        margin:10,
+        nav:false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
+    });
     $( "#dialog" ).dialog({ autoOpen: false });
 
     function callback(event) {
@@ -390,7 +407,7 @@ $(function() {
                 var appurlicon = applist[appindex].icon_url;
                 var packagename = applist[appindex].package_name;
                 //$('#appcontent').append('<div class="owl-item"><h4>' + packagename + '</h4></div>');
-                $('#appcontent').append('<div class="owl-item"><h4><img src="img/star.png"></h4></div>');
+                $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
               } // if
             } // for appindex
             $('#appcontent').append('</div>');
