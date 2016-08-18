@@ -12,4 +12,12 @@ class platformController extends Controller
     {
         
     }
+
+    public function getUserList()
+    {
+        $userList = \DB::table("qp_user")
+            -> select()
+            -> get();
+        return response()->json($userList);
+    }
 }

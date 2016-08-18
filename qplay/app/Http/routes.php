@@ -11,6 +11,9 @@
 |
 */
 
+
+Route::any('/platform/getUserList', 'platformController@getUserList');
+
 Route::any('auth/login', function() {
     return view("auth/login");
 });
@@ -31,6 +34,34 @@ Route::any('roleMaintain', ['middleware' => 'auth', function() {
 Route::any('about', ['middleware' => 'auth', function() {
     return view("about");
 }]);
+Route::any('push', ['middleware' => 'auth', function() {
+    return view("push");
+}]);
+Route::any('androidAppMaintain', ['middleware' => 'auth', function() {
+    return view("app_maintain/android");
+}]);
+Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
+    return view("app_maintain/ios");
+}]);
+Route::any('categoryMaintain', ['middleware' => 'auth', function() {
+    return view("app_maintain/category_maintain");
+}]);
+Route::any('securitySetting', ['middleware' => 'auth', function() {
+    return view("app_maintain/security_setting");
+}]);
+Route::any('menuMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/menu_maintain");
+}]);
+Route::any('groupMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/group_maintain");
+}]);
+Route::any('parameterMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/parameter_setting");
+}]);
+Route::any('projectMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/project_maintain");
+}]);
+
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {
     //App::setLocale($lang);
