@@ -44,6 +44,12 @@ class AuthController extends Controller
             if(count($menuList) > 0)
             {
                 foreach ($menuList as $menu) {
+                    if($menu->Url == "about")
+                    {
+                        return redirect()->to($menu->Url);
+                    }
+                }
+                foreach ($menuList as $menu) {
                     if($menu->Url != "")
                     {
                         return redirect()->to($menu->Url);

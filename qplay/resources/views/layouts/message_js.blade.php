@@ -2,8 +2,7 @@
 @if(Session::has('errormsg') )
     <script>
         $(document).ready(function () {
-            alert("{{Session::get('errormsg')}}");
-            $('#errModal').modal('show');
+            showMessageDialog("{{trans("messages.MESSAGE")}}", "{{Session::get('errormsg')}}", "");
         });
 
     </script>

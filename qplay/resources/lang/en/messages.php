@@ -6,6 +6,13 @@
  * Time: 10:51
  */
 return [
+    //Common
+    'MESSAGE' => 'Message',
+    'CANCEL' => 'Cancel',
+    'CONFIRM' => 'Confirm',
+    'ERROR' => 'Error',
+    'MSG_OPERATION_SUCCESS' => 'Operation Success!',
+
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
     'TITLE_USER_MAINTAIN' => 'User Maintain',
@@ -24,6 +31,20 @@ return [
     'TITLE_SYS_PARAMETER_MAINTAIN' => 'Parameter Setting',
     'TITLE_SYS_PROJECT_MAINTAIN' => 'Project Maintain',
 
+    //About
     'SYS_VERSION' => 'System Version',
     'SYS_SUGGEST_BROWSER' => 'Suggest Browser: Chrome, IE Above version 10',
+
+    //Account Maintain
+    'USER_LOGIN_ID' => 'Login ID',
+    'USER_EMP_NO' => 'Emp No',
+    'USER_EMP_NAME' => 'Emp Name',
+    'USER_EMAIL' => 'Email',
+    'USER_DOMAIN' => 'Domain',
+    'USER_COMPANY' => 'Company',
+    'USER_DEPARTMENT' => 'Department',
+    'USER_STATUS' => 'Status',
+    'REMOVE_RIGHT' => 'Remove Right',
+    'MSG_CONFIRM_REMOVE_RIGHT' => 'Confirm remove rights?',
+    'MSG_REMOVE_RIGHT_FAILED' => 'Remove user right failed!',
 ];

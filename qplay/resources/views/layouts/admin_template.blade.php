@@ -61,7 +61,8 @@ $title = trans('messages.TITLE_'.$menu_name);
     <link href="{{ asset('/dist/css/skins/_all-skins.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="style.css">--}}
-
+    <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -133,7 +134,7 @@ $title = trans('messages.TITLE_'.$menu_name);
                                     <li
                                             @if($submenu->Active)
                                                 class="active"
-                                            @endif><a href="{{$submenu->Url}}">{{$submenu->sName}}</a></li>
+                                            @endif><a href="{{$submenu->Url}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$submenu->sName}}</a></li>
                                 @endforeach
                             </ul>
                         @endif
@@ -188,14 +189,16 @@ $title = trans('messages.TITLE_'.$menu_name);
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
 
+    @include("layouts.message")
+    @include("layouts.confirm")
 </div><!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 {{--<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>--}}
 <!-- Bootstrap 3.3.6 -->
 <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 {{--<script src="../bootstrap/js/bootstrap.min.js"></script>--}}
+<script src="{{ asset('/bootstrap/js/bootstrap-table.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('/plugins/fastclick/fastclick.min.js') }}"></script>
 {{--<script src="../plugins/fastclick/fastclick.min.js"></script>--}}
