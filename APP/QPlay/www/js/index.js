@@ -75,19 +75,18 @@
     });
 
     $('#appdetaillist').owlCarousel({
-        stagePadding: 50,
+        stagePadding: 0,
         loop:false,
-        margin:10,
         nav:false,
         responsive:{
             0:{
-                items:3
+                items:1
             },
-            600:{
-                items:3
+            100:{
+                items:2
             },
-            1000:{
-                items:5
+            200:{
+                items:3
             }
         }
     });

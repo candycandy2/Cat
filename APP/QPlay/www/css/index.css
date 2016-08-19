@@ -120,4 +120,23 @@ h1 {
     float:right !important;
     text-align: center !important;
     line-height: 10px !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+}
+
+.detail-description-style {
+    width: 350px !important;
+    text-align: center !important;
+}
+
+.rank-style {
+    display: block;
+    margin: auto;
+}
+
+.detail-img-style {
+    width: 120px !important;
+    height: 230px !important;
+    margin:0px 30px !important;
 }
