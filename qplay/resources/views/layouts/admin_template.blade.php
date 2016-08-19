@@ -50,6 +50,7 @@ $title = trans('messages.TITLE_'.$menu_name);
     <!-- Bootstrap 3.3.6 -->
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--}}
@@ -103,9 +104,9 @@ $title = trans('messages.TITLE_'.$menu_name);
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="lang/en-us/{{urlencode(Route::current()->getUri())}}">English</a></li>
-                            <li><a href="lang/zh-cn/{{urlencode(Route::current()->getUri())}}">简体中文</a></li>
-                            <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri())}}">繁體中文</a></li>
+                            <li><a href="lang/en-us/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">English</a></li>
+                            <li><a href="lang/zh-cn/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">简体中文</a></li>
+                            <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">繁體中文</a></li>
                         </ul>
                     </li>
                     <li><a href="auth/logout">{{trans('messages.LOGOUT' )}}</a></li>
@@ -199,6 +200,7 @@ $title = trans('messages.TITLE_'.$menu_name);
 <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 {{--<script src="../bootstrap/js/bootstrap.min.js"></script>--}}
 <script src="{{ asset('/bootstrap/js/bootstrap-table.js') }}"></script>
+<script src="{{ asset('/bootstrap/js/bootstrap-switch.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('/plugins/fastclick/fastclick.min.js') }}"></script>
 {{--<script src="../plugins/fastclick/fastclick.min.js"></script>--}}

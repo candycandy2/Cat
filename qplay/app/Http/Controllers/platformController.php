@@ -55,4 +55,27 @@ class platformController extends Controller
 
         return null;
     }
+
+    public function saveUser() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $userId = $jsonContent['user_id'];
+            $status = $jsonContent['status'];
+            \DB::table("qp_user")
+                -> where('row_id', '=', $userId)
+                -> update(
+                    ['status'=>$status,
+                        'updated_at'=>$now,
+                        'updated_user'=>\Auth::user()->row_id]);
+        }
+        return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+    }
 }

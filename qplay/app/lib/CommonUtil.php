@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use DB;
 use Request;
 use Illuminate\Support\Facades\Input;
 
@@ -22,6 +23,19 @@ class CommonUtil
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
             -> select('qp_user.row_id', 'qp_user.emp_no')->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
+
+    public static function getUserEnableInfoByUserID($loginId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.login_id', '=', $loginId)
+            -> select()->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -72,6 +86,50 @@ class CommonUtil
         }
 
         return $roleList[0];
+    }
+
+    public static function getAllCompanyRoleList()
+    {
+        $companyList = \DB::table('qp_role')
+            ->select('company')->distinct()->get();
+        foreach ($companyList as $company) {
+            $roleList = \DB::table('qp_role')
+                ->where('company', '=', $company->company)
+                ->select()->get();
+            $company->roles = array();
+            foreach ($roleList as $role)
+            {
+                $company->roles[] = $role;
+            }
+        }
+
+        return $companyList;
+    }
+
+    public static function getAllGroupList()
+    {
+        $groupList = \DB::table('qp_group')
+            ->select()->get();
+
+        return $groupList;
+    }
+
+    public static function getAllMenuList()
+    {
+        $lang = 'en-us';
+        if(\Session::has("lang"))
+        {
+            $lang = \Session::get("lang");
+        }
+        $sql = <<<SQL
+select menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId , ml.menu_name as sName
+from qp_menu menu
+join qp_menu_language ml on ml.menu_row_id = menu.row_id
+and ml.lang_row_id in (select l.row_id from qp_language l where l.lang_code = '$lang')
+SQL;
+        $menuList = $r = DB::select($sql, []);
+
+        return $menuList;
     }
 
     public static function getUserInfoJustByUserIDAndCompany($loginId, $company)

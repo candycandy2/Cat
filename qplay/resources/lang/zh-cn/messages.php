@@ -9,9 +9,14 @@ return [
     //Common
     'MESSAGE' => '消息',
     'CANCEL' => '取消',
+    'CLOSE' => '关闭',
     'CONFIRM' => '确认',
+    'SAVE' => '保存',
+    'RETURN' => '返回',
     'ERROR' => '错误',
     'MSG_OPERATION_SUCCESS' => '操作成功!',
+    'MSG_OPERATION_FAILED' => '操作失败!',
+    'MSG_CONFIRM_SAVE' => '确认保存?',
 
     'MENU' => '菜单',
     'LOGOUT' => '登出',
@@ -36,7 +41,7 @@ return [
     'SYS_SUGGEST_BROWSER' => '系统建议浏览器: Chrome, IE10以上版本',
 
     //Account Maintain
-    'USER_LOGIN_ID' => '用户名',
+    'USER_LOGIN_ID' => '账号',
     'USER_EMP_NO' => '员工编号',
     'USER_EMP_NAME' => '员工姓名',
     'USER_EMAIL' => '邮箱',
@@ -44,7 +49,10 @@ return [
     'USER_COMPANY' => '公司',
     'USER_DEPARTMENT' => '部门',
     'USER_STATUS' => '状态',
+    'ROLE' => '企业角色',
+    'SYSTEM_GROUP' => '系统群组',
     'REMOVE_RIGHT' => '停权',
     'MSG_CONFIRM_REMOVE_RIGHT' => '确认移除所选员工权限吗?',
     'MSG_REMOVE_RIGHT_FAILED' => '用户停权失败!',
+    'MSG_BELONG_TO_GROUP_RIGHT' => '依系统群组权限',
 ];

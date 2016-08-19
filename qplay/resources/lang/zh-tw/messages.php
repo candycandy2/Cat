@@ -9,9 +9,14 @@ return [
     //Common
     'MESSAGE' => '消息',
     'CANCEL' => '取消',
+    'CLOSE' => '關閉',
     'CONFIRM' => '確認',
+    'SAVE' => '儲存',
+    'RETURN' => '返回',
     'ERROR' => '錯誤',
     'MSG_OPERATION_SUCCESS' => '操作成功!',
+    'MSG_OPERATION_FAILED' => '操作失敗!',
+    'MSG_CONFIRM_SAVE' => '確認儲存?',
 
     'MENU' => '選單',
     'LOGOUT' => '登出',
@@ -36,7 +41,7 @@ return [
     'SYS_SUGGEST_BROWSER' => '系統建議瀏覽器: Chrome, IE10以上版本',
 
     //Account Maintain
-    'USER_LOGIN_ID' => '用戶名',
+    'USER_LOGIN_ID' => '賬號',
     'USER_EMP_NO' => '員工編號',
     'USER_EMP_NAME' => '員工姓名',
     'USER_EMAIL' => '郵箱',
@@ -44,7 +49,10 @@ return [
     'USER_COMPANY' => '公司',
     'USER_DEPARTMENT' => '部門',
     'USER_STATUS' => '狀態',
+    'ROLE' => '企業角色',
+    'SYSTEM_GROUP' => '系統群組',
     'REMOVE_RIGHT' => '停權',
     'MSG_CONFIRM_REMOVE_RIGHT' => '確認移除所選員工權限嗎?',
     'MSG_REMOVE_RIGHT_FAILED' => '用戶停權失敗!',
+    'MSG_BELONG_TO_GROUP_RIGHT' => '依系統群組權限',
 ];

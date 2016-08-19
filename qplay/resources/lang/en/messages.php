@@ -9,9 +9,14 @@ return [
     //Common
     'MESSAGE' => 'Message',
     'CANCEL' => 'Cancel',
+    'CLOSE' => 'Close',
     'CONFIRM' => 'Confirm',
+    'SAVE' => 'Save',
+    'RETURN' => 'Return',
     'ERROR' => 'Error',
     'MSG_OPERATION_SUCCESS' => 'Operation Success!',
+    'MSG_OPERATION_FAILED' => 'Operation Failed!',
+    'MSG_CONFIRM_SAVE' => 'Confirm to Save?',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
@@ -44,7 +49,10 @@ return [
     'USER_COMPANY' => 'Company',
     'USER_DEPARTMENT' => 'Department',
     'USER_STATUS' => 'Status',
+    'ROLE' => 'Role',
+    'SYSTEM_GROUP' => 'System Group',
     'REMOVE_RIGHT' => 'Remove Right',
     'MSG_CONFIRM_REMOVE_RIGHT' => 'Confirm remove rights?',
     'MSG_REMOVE_RIGHT_FAILED' => 'Remove user right failed!',
+    'MSG_BELONG_TO_GROUP_RIGHT' => 'Belong to system group right',
 ];

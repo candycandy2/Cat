@@ -14,6 +14,7 @@
 
 Route::any('/platform/getUserList', 'platformController@getUserList');
 Route::any('/platform/removeUserRight', 'platformController@removeUserRight');
+Route::any('/platform/saveUser', 'platformController@saveUser');
 
 Route::any('auth/login', function() {
     return view("auth/login");
