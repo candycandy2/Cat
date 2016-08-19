@@ -113,3 +113,11 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+.install-btn {
+    width: 100px !important;
+    height: 10px !important;
+    float:right !important;
+    text-align: center !important;
+    line-height: 10px !important;
+}
