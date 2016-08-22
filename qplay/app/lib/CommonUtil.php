@@ -40,7 +40,18 @@ class CommonUtil
             return null;
         }
 
-        return $userList[0];
+        $user = $userList[0];
+        $user->roleList = array();
+
+        $roleList = \DB::table('qp_user_role')
+            -> where('user_row_id', '=', $user->row_id)
+            -> select('role_row_id')->get();
+
+        foreach ($roleList as $role) {
+            $user->roleList[] = $role->role_row_id;
+        }
+
+        return $user;
     }
 
     public static function getUserInfoByUserID($loginId, $domain)
@@ -110,7 +121,16 @@ class CommonUtil
     {
         $groupList = \DB::table('qp_group')
             ->select()->get();
-
+        foreach ($groupList as $group) {
+            $menuList = \DB::table('qp_group_menu')
+                ->where('group_row_id', '=', $group->row_id)
+                ->select()->get();
+            $group->menuList = array();
+            foreach ($menuList as $menu)
+            {
+                $group->menuList[] = $menu;
+            }
+        }
         return $groupList;
     }
 

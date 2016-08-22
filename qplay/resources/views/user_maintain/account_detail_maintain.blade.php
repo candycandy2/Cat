@@ -73,19 +73,27 @@ foreach ($oriMenuList as $menu) {
             {{trans("messages.ROLE")}}:<br /><br />
             @foreach($allCompanyRoleList as $companyRoles)
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" style="border:1px solid #d6caca;">
+                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
                         <tr>
                             <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                                <input type="checkbox">{{$companyRoles->company}}</input>
+                                <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;">
-                                <input type="checkbox">{{$companyRoles->roles[0]->role_description}}</input>
+                                <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
+                                    @if(in_array($companyRoles->roles[0]->row_id, $userInfo->roleList))
+                                        checked
+                                    @endif
+                                >{{$companyRoles->roles[0]->role_description}}</input>
                             </td>
                         </tr>
                         @for($i = 1; $i < count($companyRoles->roles); $i++)
                             <tr>
                                 <td style="border:1px solid #d6caca;">
-                                    <input type="checkbox">{{$companyRoles->roles[$i]->role_description}}</input>
+                                    <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
+                                           @if(in_array($companyRoles->roles[$i]->row_id, $userInfo->roleList))
+                                                checked
+                                           @endif
+                                    >{{$companyRoles->roles[$i]->role_description}}</input>
                                 </td>
                             </tr>
                         @endfor
@@ -100,29 +108,29 @@ foreach ($oriMenuList as $menu) {
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             {{trans("messages.SYSTEM_GROUP")}}:
             &nbsp;
-            <select class="select2-close-mask" name="ddlGroup" id="ddlGroup">
+            <select class="select2-close-mask" name="ddlGroup" id="ddlGroup" onchange="ChangeGroup();">
                 @foreach($allGroupList as $group)
                     <option value="{{$group->row_id}}">{{$group->group_name}}</option>
                 @endforeach
             </select>
-            &nbsp;<input type="checkbox" >{{trans("messages.MSG_BELONG_TO_GROUP_RIGHT")}}</input>
+            &nbsp;<input type="checkbox" id="cbxBelongToGroup" checked="checked" onclick="ChangeBelongToGroup(this)">{{trans("messages.MSG_BELONG_TO_GROUP_RIGHT")}}</input>
             <br /><br />
             @foreach($allMenuList as $menu)
-                <table class="table table-bordered" style="border:1px solid #d6caca;">
+                <table class="table table-bordered MenuTable" style="border:1px solid #d6caca;" id="MenuTable_{{$menu->Id}}" >
                     <tr>
                         <td rowspan="{{count($menu->subMenuList)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                            <input type="checkbox">{{$menu->sName}}</input>
+                            <input type="checkbox" data="{{$menu->Id}}" class="cbxMenu" onclick="MenuTableSelectedAll(this)" >{{$menu->sName}}</input>
                         </td>
                         <td style="border:1px solid #d6caca;">
                             @if(count($menu->subMenuList) > 0)
-                                <input type="checkbox">{{$menu->subMenuList[0]->sName}}</input>
+                                <input type="checkbox" data="{{$menu->subMenuList[0]->Id}}" class="cbxSubMenu" >{{$menu->subMenuList[0]->sName}}</input>
                             @endif
                         </td>
                     </tr>
                     @for($i = 1; $i < count($menu->subMenuList); $i++)
                         <tr>
                             <td style="border:1px solid #d6caca;">
-                                <input type="checkbox">{{$menu->subMenuList[$i]->sName}}</input>
+                                <input type="checkbox" data="{{$menu->subMenuList[$i]->Id}}" class="cbxSubMenu">{{$menu->subMenuList[$i]->sName}}</input>
                             </td>
                         </tr>
                     @endfor
@@ -132,6 +140,66 @@ foreach ($oriMenuList as $menu) {
     </div>
 
     <script>
+        var groupMenuList = new Array();
+        @for($i = 0; $i < count($allGroupList); $i++)
+                var group{{$i}} = new Object();
+                group{{$i}}.Id = {{$allGroupList[$i]->row_id}};
+                group{{$i}}.MenuIdList = new Array();
+                @for($j = 0; $j < count($allGroupList[$i]->menuList); $j++)
+                        group{{$i}}.MenuIdList.push({{$allGroupList[$i]->menuList[$j]->menu_row_id}});
+                @endfor
+                groupMenuList.push(group{{$i}});
+        @endfor
+
+        $(function () {
+            ChangeGroupProcess();
+            ChangeBelongToGroup();
+        });
+
+        var ChangeGroupProcess = function () {
+            $(".cbxMenu").prop("checked", false);
+            $(".cbxSubMenu").prop("checked", false);
+            var groupId = $("#ddlGroup").val();
+            $.each(groupMenuList, function (i, group) {
+                if(group.Id == groupId) {
+                    $.each(group.MenuIdList, function (j, menuId) {
+                        $(".MenuTable").find("[data=" + menuId +  "]").prop("checked", true);
+                    });
+                    return false;
+                }
+            });
+        };
+
+        var ChangeGroup = function () {
+            ChangeGroupProcess();
+        };
+
+        var MenuTableSelectedAll = function (cbx) {
+            var menuId = $(cbx).attr("data");
+            if($(cbx).is(':checked')) {
+                $("#MenuTable_" + menuId).find(".cbxSubMenu").prop("checked",true);
+            } else {
+                $("#MenuTable_" + menuId).find(".cbxSubMenu").prop("checked", false);
+            }
+        };
+
+        var RoleTableSelectedAll = function (cbx) {
+            var companyId = $(cbx).attr("data");
+            if($(cbx).is(':checked')) {
+                $("#RoleTable_" + companyId).find(".cbxRole").prop("checked",true);
+            } else {
+                $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
+            }
+        };
+
+        var ChangeBelongToGroup = function () {
+            if($("#cbxBelongToGroup").is(':checked')) {
+                $(".MenuTable").find("input").prop("disabled", true);
+            } else {
+                $(".MenuTable").find("input").prop("disabled", false);
+            }
+        };
+
         var SaveUser = function () {
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
                 hideConfirmDialog();
@@ -139,11 +207,38 @@ foreach ($oriMenuList as $menu) {
                 if($('#cbxUserStatus').is(':checked')) {
                     userStatus = "Y";
                 }
+                var belongToGroup = "N";
+                if($('#cbxBelongToGroup').is(':checked')) {
+                    belongToGroup = "Y";
+                }
+
                 var mydata =
                 {
-                    user_id:{{$userInfo->row_id}},
-                    status: userStatus
+                    user_id: {{$userInfo->row_id}},
+                    status: userStatus,
+                    role_list: new Array(),
+                    groupId: $("#ddlGroup").val(),
+                    menuBelongToGroup: belongToGroup,
+                    menu_list: new Array()
                 };
+
+                $(".cbxRole").each(function() {
+                    if($(this).is(':checked')) {
+                        mydata.role_list.push($(this).attr("data"));
+                    }
+                });
+
+                $(".cbxMenu").each(function() {
+                    if($(this).is(':checked')) {
+                        mydata.menu_list.push($(this).attr("data"));
+                    }
+                });
+                $(".cbxSubMenu").each(function() {
+                    if($(this).is(':checked')) {
+                        mydata.menu_list.push($(this).attr("data"));
+                    }
+                });
+
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
                     url: "platform/saveUser",

@@ -69,13 +69,70 @@ class platformController extends Controller
             $jsonContent = json_decode($content, true);
             $userId = $jsonContent['user_id'];
             $status = $jsonContent['status'];
-            \DB::table("qp_user")
-                -> where('row_id', '=', $userId)
-                -> update(
-                    ['status'=>$status,
-                        'updated_at'=>$now,
-                        'updated_user'=>\Auth::user()->row_id]);
+            $groupId = $jsonContent['groupId'];
+            $menuBelongToGroup = $jsonContent['menuBelongToGroup'];
+            \DB::beginTransaction();
+
+            try {
+                \DB::table("qp_user")
+                    -> where('row_id', '=', $userId)
+                    -> update(
+                        ['status'=>$status,
+                            'updated_at'=>$now,
+                            'updated_user'=>\Auth::user()->row_id]);
+
+                \DB::table("qp_user_role")-> where('user_row_id', "=", $userId)->delete();
+                $role_list = $jsonContent['role_list'];
+                foreach ($role_list as $roleId)
+                {
+                    \DB::table("qp_user_role")->insert([
+                        'user_row_id'=>$userId,
+                        'role_row_id'=>$roleId,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now]);
+                }
+
+                \DB::table("qp_user_group")-> where('user_row_id', "=", $userId)->delete();
+
+                \DB::table("qp_user_group")->insert([
+                    'user_row_id'=>$userId,
+                    'group_row_id'=>$groupId,
+                    'created_user'=>\Auth::user()->row_id,
+                    'created_at'=>$now]);
+
+                \DB::table("qp_user_menu")-> where('user_row_id', "=", $userId)->delete();
+
+                if($menuBelongToGroup == "Y") {
+                    $menuList = \DB::table('qp_group_menu')
+                        ->where('group_row_id', '=', $groupId)
+                        ->select()->get();
+                    foreach ($menuList as $menu) {
+                        \DB::table("qp_user_menu")->insert([
+                            'user_row_id'=>$userId,
+                            'menu_row_id'=>$menu->menu_row_id,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now]);
+                    }
+                } else {
+                    $menu_list = $jsonContent['menu_list'];
+                    foreach ($menu_list as $menuId) {
+                        \DB::table("qp_user_menu")->insert([
+                            'user_row_id'=>$userId,
+                            'menu_row_id'=>$menuId,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now]);
+                    }
+                }
+
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            }
+        } else {
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
         }
+
         return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
     }
 }
