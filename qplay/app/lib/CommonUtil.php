@@ -51,6 +51,22 @@ class CommonUtil
             $user->roleList[] = $role->role_row_id;
         }
 
+        $user->group_id = null;
+        $groupList = \DB::table('qp_user_group')
+            -> where('user_row_id', '=', $user->row_id)
+            -> select('group_row_id')->get();
+        if(count($groupList) > 0) {
+            $user->group_id = $groupList[0]->group_row_id;
+        }
+
+        $user->menuList = array();
+        $groupList = \DB::table('qp_user_menu')
+            -> where('user_row_id', '=', $user->row_id)
+            -> select('menu_row_id')->get();
+        foreach ($groupList as $menu) {
+            $user->menuList[] = $menu->menu_row_id;
+        }
+
         return $user;
     }
 

@@ -31,14 +31,10 @@ select menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId 
 from qp_menu menu
 join qp_menu_language ml on ml.menu_row_id = menu.row_id
 and ml.lang_row_id in (select l.row_id from qp_language l where l.lang_code = '$lang')
-and menu.row_id in (
-select distinct menu_row_id from qp_group_menu gm where gm.group_row_id in (
-select g.row_id
-from qp_group g, 
-		 qp_user_group ug
-where g.row_id = ug.group_row_id
-and ug.user_row_id = $userId
-))
+and menu.row_id in
+ (
+select distinct menu_row_id from qp_user_menu gm where gm.user_row_id = $userId
+)
 SQL;
         $menuList = $r = DB::select($sql, []);
         return $menuList;

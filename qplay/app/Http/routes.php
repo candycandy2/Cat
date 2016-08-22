@@ -13,8 +13,12 @@
 
 
 Route::any('/platform/getUserList', 'platformController@getUserList');
+Route::any('/platform/getRoleList', 'platformController@getRoleList');
 Route::any('/platform/removeUserRight', 'platformController@removeUserRight');
 Route::any('/platform/saveUser', 'platformController@saveUser');
+Route::any('/platform/deleteRole', 'platformController@deleteRole');
+Route::any('/platform/saveRole', 'platformController@saveRole');
+
 
 Route::any('auth/login', function() {
     return view("auth/login");

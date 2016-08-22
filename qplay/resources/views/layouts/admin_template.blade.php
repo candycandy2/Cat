@@ -190,8 +190,10 @@ $title = trans('messages.TITLE_'.$menu_name);
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
 
+    @yield('dialog_content')
     @include("layouts.message")
     @include("layouts.confirm")
+
 </div><!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->

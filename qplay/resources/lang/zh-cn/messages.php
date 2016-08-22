@@ -14,9 +14,12 @@ return [
     'SAVE' => '保存',
     'RETURN' => '返回',
     'ERROR' => '错误',
+    'DELETE'=> '删除',
+    'NEW'=> '新增',
     'MSG_OPERATION_SUCCESS' => '操作成功!',
     'MSG_OPERATION_FAILED' => '操作失败!',
     'MSG_CONFIRM_SAVE' => '确认保存?',
+    'MSG_REQUIRED_FIELD_MISSING' => '必填项内容缺失!',
 
     'MENU' => '菜单',
     'LOGOUT' => '登出',
@@ -55,4 +58,15 @@ return [
     'MSG_CONFIRM_REMOVE_RIGHT' => '确认移除所选员工权限吗?',
     'MSG_REMOVE_RIGHT_FAILED' => '用户停权失败!',
     'MSG_BELONG_TO_GROUP_RIGHT' => '依系统群组权限',
+
+    //Role Maintain
+    'COMPANY_NAME' => '公司名称',
+    'ROLE_NAME' => '角色名称',
+    'USERS' => '用户',
+    'MSG_CONFIRM_DELETE_ROLE' => '确认删除所选角色?',
+    'MSG_ROLE_EXIST_USERS' => '无法删除角色, 角色下存在用户!',
+    'MSG_DELETE_ROLE_FAILED' => '删除角色失败!',
+    'MSG_SAVE_ROLE_FAILED' => '新增角色失败!',
+    'MSG_NEW_ROLE' => '新增角色',
+    'MSG_EDIT_ROLE' => '编辑角色',
 ];

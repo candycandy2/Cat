@@ -14,9 +14,12 @@ return [
     'SAVE' => 'Save',
     'RETURN' => 'Return',
     'ERROR' => 'Error',
+    'DELETE'=> 'Delete',
+    'NEW'=> 'New',
     'MSG_OPERATION_SUCCESS' => 'Operation Success!',
     'MSG_OPERATION_FAILED' => 'Operation Failed!',
     'MSG_CONFIRM_SAVE' => 'Confirm to Save?',
+    'MSG_REQUIRED_FIELD_MISSING' => 'Required field missing!',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
@@ -52,7 +55,18 @@ return [
     'ROLE' => 'Role',
     'SYSTEM_GROUP' => 'System Group',
     'REMOVE_RIGHT' => 'Remove Right',
-    'MSG_CONFIRM_REMOVE_RIGHT' => 'Confirm remove rights?',
+    'MSG_CONFIRM_REMOVE_RIGHT' => 'Confirm to remove rights?',
     'MSG_REMOVE_RIGHT_FAILED' => 'Remove user right failed!',
     'MSG_BELONG_TO_GROUP_RIGHT' => 'Belong to system group right',
+
+    //Role Maintain
+    'COMPANY_NAME' => 'Company Name',
+    'ROLE_NAME' => 'Role Name',
+    'USERS' => 'Users',
+    'MSG_CONFIRM_DELETE_ROLE' => 'Confirm to delete roles?',
+    'MSG_ROLE_EXIST_USERS' => 'Can\'t delete, exist users!',
+    'MSG_DELETE_ROLE_FAILED' => 'Delete roles failed!',
+    'MSG_SAVE_ROLE_FAILED' => 'Save role failed!',
+    'MSG_NEW_ROLE' => 'Create Role',
+    'MSG_EDIT_ROLE' => 'Edit Role',
 ];

@@ -29,6 +29,26 @@ class platformController extends Controller
         return response()->json($userList);
     }
 
+    public function getRoleList()
+    {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $roleList = \DB::table("qp_role")
+            -> select()
+            -> get();
+        foreach ($roleList as $role) {
+            $count = \DB::table('qp_user_role')
+                ->where('role_row_id', '=', $role->row_id)
+                ->count();
+            $role->user_count = $count;
+        }
+
+        return response()->json($roleList);
+    }
+
     public function removeUserRight() {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -134,5 +154,67 @@ class platformController extends Controller
         }
 
         return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+    }
+
+    public function deleteRole() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $roleIdList = $jsonContent['role_id_list'];
+            foreach ($roleIdList as $rId) {
+                \DB::table("qp_role")
+                    -> where('row_id', '=', $rId)
+                    -> delete();
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveRole() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $company = $jsonContent['company'];
+            $roleDesc = $jsonContent['roleDesc'];
+
+            $isNew = $jsonContent['isNew'];
+            if($isNew == 'Y') {
+                \DB::table("qp_role")
+                    -> insert(
+                        ['role_description'=>$roleDesc,
+                            'company'=>$company,
+                            'created_at'=>$now,
+                            'created_user'=>\Auth::user()->row_id]);
+            } else {
+                $roleId = $jsonContent['roleId'];
+                \DB::table("qp_role")
+                    -> where('row_id', '=', $roleId)
+                    -> update(
+                        ['role_description'=>$roleDesc,
+                            'company'=>$company,
+                            'updated_at'=>$now,
+                            'updated_user'=>\Auth::user()->row_id]);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
     }
 }
