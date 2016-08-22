@@ -17,6 +17,7 @@ public class LoginActivity extends Activity {
     private WebView webview;
     private String serverUrl;
     private String tSchema;
+	private String uuid;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -27,6 +28,8 @@ public class LoginActivity extends Activity {
 
         //取得URL所帶進來的Intent物件
         Intent tIntent = this.getIntent();
+		Bundle b=tIntent.getExtras();
+        uuid=b.getString("uuid");
         Uri myURI = tIntent.getData();
         if(myURI!=null){
             tSchema = myURI.getQueryParameter("Name");
@@ -46,7 +49,11 @@ public class LoginActivity extends Activity {
         public void loginResult(String data){
             LoginInfo.getInstance().setloginData(data);
             if(tSchema==null){
-                finish();
+                Intent mIntent = new Intent();
+                mIntent.putExtra("data", data);
+                // 设置结果，并进行传送
+                setResult(RESULT_OK, mIntent);
+				finish();
             }else{
                 Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data);
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
@@ -62,6 +69,7 @@ public class LoginActivity extends Activity {
             String strNode = xml.getName();
             if (strNode.equals("serverUrl")) {
                 serverUrl = xml.getAttributeValue(null, "href");
+				serverUrl = serverUrl + "?device_type=android&uuid=" + uuid;
             }
         }
         @Override
