@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
+use DB;
 
 class platformController extends Controller
 {
@@ -217,4 +218,88 @@ class platformController extends Controller
 
         return null;
     }
+
+    public function getRoleUsers() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        $roleId = $input["role_id"];
+
+        $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$roleId.')';
+        return DB::select($sql, []);
+    }
+
+    public function saveRoleUsers() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $roleId = $jsonContent['role_id'];
+            $userIdList = $jsonContent['user_id_list'];
+            \DB::beginTransaction();
+            \DB::table("qp_user_role")-> where('role_row_id', "=", $roleId)->delete();
+            foreach ($userIdList as $uId) {
+                \DB::table("qp_user_role")
+                    -> insert(
+                        ['user_row_id'=>$uId,
+                            'role_row_id'=>$roleId,
+                            'created_at'=>$now,
+                            'created_user'=>\Auth::user()->row_id]);
+
+            }
+            \DB::commit();
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function getRootMenuList() {
+        $rootMenuList = \DB::table("qp_menu")
+            -> where("parent_id", "=", "0")
+            -> select()
+            -> get();
+
+        foreach ($rootMenuList as $menu) {
+            $menuId = $menu->row_id;
+
+            $menu->english_name = "";
+            $lang_code = 'en-us';
+            $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
+                ." and lang_row_id in (select row_id from qp_language where lang_code = '".$lang_code."')";
+            $res = DB::select($sql, []);
+            if(count($res) > 0) {
+                $menu->english_name = $res[0] -> menu_name;
+            }
+
+            $menu->simple_chinese_name = "";
+            $lang_code = 'zh-cn';
+            $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
+                ." and lang_row_id in (select row_id from qp_language where lang_code = '".$lang_code."')";
+            $res = DB::select($sql, []);
+            if(count($res) > 0) {
+                $menu->simple_chinese_name = $res[0] -> menu_name;
+            }
+
+            $menu->traditional_chinese_name = "";
+            $lang_code = 'zh-tw';
+            $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
+                ." and lang_row_id in (select row_id from qp_language where lang_code = '".$lang_code."')";
+            $res = DB::select($sql, []);
+            if(count($res) > 0) {
+                $menu->traditional_chinese_name = $res[0] -> menu_name;
+            }
+        }
+        return $rootMenuList;
+    }
+
 }

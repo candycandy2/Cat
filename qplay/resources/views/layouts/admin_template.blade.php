@@ -64,6 +64,7 @@ $title = trans('messages.TITLE_'.$menu_name);
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
+    <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -170,7 +171,7 @@ $title = trans('messages.TITLE_'.$menu_name);
         </div>
 
         <!-- Main content -->
-        <div class="content body">
+        <div class="content body" id="pageContent">
 
             @yield('content')
 
@@ -214,6 +215,14 @@ $title = trans('messages.TITLE_'.$menu_name);
 {{--<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>--}}
 {{--<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>--}}
 {{--<script src="docs.js"></script>--}}
+<script>
+    $(function() {
+
+        $(".content-wrapper").resize(function () {
+            $('.bootstrapTable').bootstrapTable('resetView');
+        });
+    })
+</script>
 </body>
 </html>
 
