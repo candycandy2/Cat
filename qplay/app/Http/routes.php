@@ -18,7 +18,9 @@ Route::any('/platform/removeUserRight', 'platformController@removeUserRight');
 Route::any('/platform/saveUser', 'platformController@saveUser');
 Route::any('/platform/deleteRole', 'platformController@deleteRole');
 Route::any('/platform/saveRole', 'platformController@saveRole');
-
+Route::any('/platform/getRoleUsers', 'platformController@getRoleUsers');
+Route::any('/platform/saveRoleUsers', 'platformController@saveRoleUsers');
+Route::any('/platform/getRootMenuList', 'platformController@getRootMenuList');
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -40,6 +42,10 @@ Route::any('accountDetailMaintain', ['middleware' => 'auth', function() {
 Route::any('roleMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/role_maintain");
 }]);
+Route::any('roleUsersMaintain', ['middleware' => 'auth', function() {
+    return view("user_maintain/role_users_maintain");
+}]);
+
 Route::any('about', ['middleware' => 'auth', function() {
     return view("about");
 }]);

@@ -11,6 +11,25 @@ use App\Http\Requests;
 
 class yellowpageController extends Controller
 {
+    public function GetData($url, $tokenValid) {
+        $content = file_get_contents('php://input');
+        $data["strXml"] = $content;
+        $result = $this->post2($url, $data);
+
+        $xml = simplexml_load_string($result);
+        $json = json_decode($xml);
+
+        $resultCode = $json->ResultCode;
+        if(property_exists($json, 'Content')) {
+            $content = $json->Content;
+        }
+        $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+        return response()->json(array("ResultCode"=>$resultCode,
+            "token_valid"=>$tokenValid,
+            "Message"=>$message,
+            "Content"=>$content));
+    }
+
     public function QueryEmployeeData()
     {
         $Verify = new Verify();
@@ -18,19 +37,7 @@ class yellowpageController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
-            $content = file_get_contents('php://input');
-            $data["strXml"] = $content;
-            $result = $this->post2($url, $data);
-
-            $xml = simplexml_load_string($result);
-            $json = json_decode($xml);
-
-            $resultCode = $json->ResultCode;
-            $content = $json->Content;
-            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-            return response()->json(array("ResultCode"=>$resultCode,
-                "Message"=>$message,
-                "Content"=>$content));
+            return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"], 
                 "Message"=>$verifyResult["message"],
@@ -45,19 +52,7 @@ class yellowpageController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail";
-            $content = file_get_contents('php://input');
-            $data["strXml"] = $content;
-            $result = $this->post2($url, $data);
-
-            $xml = simplexml_load_string($result);
-            $json = json_decode($xml);
-
-            $resultCode = $json->ResultCode;
-            $content = $json->Content;
-            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-            return response()->json(array("ResultCode"=>$resultCode,
-                "Message"=>$message,
-                "Content"=>$content));
+            return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
@@ -72,19 +67,7 @@ class yellowpageController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/AddMyPhoneBook";
-            $content = file_get_contents('php://input');
-            $data["strXml"] = $content;
-            $result = $this->post2($url, $data);
-
-            $xml = simplexml_load_string($result);
-            $json = json_decode($xml);
-
-            $resultCode = $json->ResultCode;
-            $content = $json->Content;
-            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-            return response()->json(array("ResultCode"=>$resultCode,
-                "Message"=>$message,
-                "Content"=>$content));
+            return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
@@ -99,19 +82,7 @@ class yellowpageController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/DeleteMyPhoneBook";
-            $content = file_get_contents('php://input');
-            $data["strXml"] = $content;
-            $result = $this->post2($url, $data);
-
-            $xml = simplexml_load_string($result);
-            $json = json_decode($xml);
-
-            $resultCode = $json->ResultCode;
-            $content = $json->Content;
-            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-            return response()->json(array("ResultCode"=>$resultCode,
-                "Message"=>$message,
-                "Content"=>$content));
+            return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
@@ -126,19 +97,7 @@ class yellowpageController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryMyPhoneBook";
-            $content = file_get_contents('php://input');
-            $data["strXml"] = $content;
-            $result = $this->post2($url, $data);
-
-            $xml = simplexml_load_string($result);
-            $json = json_decode($xml);
-
-            $resultCode = $json->ResultCode;
-            $content = $json->Content;
-            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-            return response()->json(array("ResultCode"=>$resultCode,
-                "Message"=>$message,
-                "Content"=>$content));
+            return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
@@ -153,19 +112,7 @@ class yellowpageController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData";
-            $content = file_get_contents('php://input');
-            $data["strXml"] = $content;
-            $result = $this->post2($url, $data);
-
-            $xml = simplexml_load_string($result);
-            $json = json_decode($xml);
-
-            $resultCode = $json->ResultCode;
-            $content = $json->Content;
-            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-            return response()->json(array("ResultCode"=>$resultCode,
-                "Message"=>$message,
-                "Content"=>$content));
+            return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],

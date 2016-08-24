@@ -14,7 +14,7 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
             {{trans("messages.NEW")}}
         </button>
     </div>
-    <table id="gridRoleList" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridRoleList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
            data-url="platform/getRoleList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
@@ -127,7 +127,7 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 };
                 if(!isNewRole) {
                     mydata.isNew = 'N';
-                    mydata.Id = currentMaintainRoleId;
+                    mydata.roleId = currentMaintainRoleId;
                 }
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
@@ -158,7 +158,7 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
             $('#gridRoleList').on('uncheck.bs.table', selectedChanged);
             $('#gridRoleList').on('check-all.bs.table', selectedChanged);
             $('#gridRoleList').on('uncheck-all.bs.table', selectedChanged);
-            $('#gridRoleList').on('	load-success.bs.table', selectedChanged);
+            $('#gridRoleList').on('load-success.bs.table', selectedChanged);
         });
 
         var selectedChanged = function (row, $element) {

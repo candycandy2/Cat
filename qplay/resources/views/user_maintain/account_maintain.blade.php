@@ -9,7 +9,7 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
             {{trans("messages.REMOVE_RIGHT")}}
         </button>
     </div>
-    <table id="gridUserList" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
            data-url="platform/getUserList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
