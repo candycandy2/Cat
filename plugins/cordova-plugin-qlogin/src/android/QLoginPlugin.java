@@ -1,8 +1,10 @@
 package org.apache.cordova.qlogin;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.ConfigXmlParser;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,10 +60,10 @@ public class QLoginPlugin extends CordovaPlugin {
 	
 	@Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        switch (resultCode) { //resultCodeÎª»Ø´«µÄ±ê¼Ç£¬ÎÒÔÚµÚ¶ş¸öActivityÖĞ»Ø´«µÄÊÇRESULT_OK
+        switch (resultCode) { //resultCodeä¸ºå›ä¼ çš„æ ‡è®°ï¼Œæˆ‘åœ¨ç¬¬äºŒä¸ªActivityä¸­å›ä¼ çš„æ˜¯RESULT_OK
             case Activity.RESULT_OK:
                 Bundle b=intent.getExtras();
-                String data=b.getString("data");//data¼´Îª»Ø´«µÄÖµ
+                String data=b.getString("data");//dataå³ä¸ºå›ä¼ çš„å€¼
 
                 String format = functionName+"(%s);";
                 final String js = String.format(format, data);
