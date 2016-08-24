@@ -42,17 +42,28 @@
     [ps parse];
     self.CertificationPageUrl = qp.ConfigedUrl;
     if (!self.CertificationPageUrl) {
-        self.CertificationPageUrl =@"http://10.85.129.62/Login/index.html";
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:QLOGIN_CONFIG_ERROR];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
     
-    //更新来源APP
+    //记录CallBack函数名
     if(command.arguments.count > 0 && command.arguments[0]){
-        self.SourceAPP = command.arguments[0];
+        self.CallBackJSOnSuccess = command.arguments[0];
+    }
+    
+    //插入传给API的参数(uuid)
+    if(command.arguments.count > 0 && command.arguments[1]){
+        //uuid
+        NSString* uuid = [[command.arguments[1] description]stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        
+        //url参数
+        NSString* urlParameters = [NSString  stringWithFormat:@"%@%@%@",@"?uuid=",uuid,@"&device_type=ios" ];
+        
+        self.CertificationPageUrl = [NSString stringWithFormat:@"%@%@",self.CertificationPageUrl,urlParameters];
     }
     
     //获得屏幕的尺寸
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    screenBounds.origin.y = screenBounds.origin.y;
 
     if(!_wkView){
         WKWebViewConfiguration *wvConfig = [[WKWebViewConfiguration alloc] init];
@@ -97,7 +108,10 @@
     //(2)隐藏Webview
     [self hideCertificateContainer:nil];
     
-    //(3)跳转回原APP
+    //(3)执行回调函数
+    [self execCDVWebViewCallBack];
+    
+    //(4)跳转回原APP
     if(_SourceAPP && ![_SourceAPP isEqual:@""]){
         [self jump2APP];
     }
@@ -149,6 +163,16 @@
 {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:self.CertificationResult];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+/**
+ *  登录成功后,登录页面关闭并回调UIWebView的JS
+ */
+-(void)execCDVWebViewCallBack{
+    if (self.CallBackJSOnSuccess) {
+        NSString* js = [[NSString alloc] initWithFormat:@"%@%@%@%@",self.CallBackJSOnSuccess,@"(",self.CertificationResult,@")"];
+        NSString* ret = [(UIWebView*)self.webView stringByEvaluatingJavaScriptFromString:js];
+    }
 }
 @end
 

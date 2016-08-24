@@ -22,7 +22,7 @@
         var QueryEmployeeData = function () {
             var param = "<LayoutHeader><Company>Qisda</Company><Name_CH></Name_CH><Name_EN>Steven</Name_EN><DeptCode></DeptCode><Ext_No></Ext_No></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/QueryEmployeeData?lang=en-us&uuid=aaaaadasdasdasd",
+                url: "v101/yellowpage/QueryEmployeeData?lang=en-us&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
@@ -30,7 +30,7 @@
                     request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a2e129547e5");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
                     alert(d.ResultCode + "-" + d.Message);
@@ -53,17 +53,18 @@
         var QueryEmployeeDataDetail = function() {
             var param = "<LayoutHeader><Companny>Qisda</Companny><Name_EN>Steven</Name_EN></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/QueryEmployeeDataDetail?lang=en-us",
+                url: "v101/yellowpage/QueryEmployeeDataDetail?lang=en-us&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
-                    alert(d);
+                    alert(d.ResultCode + "-" + d.Message);
                 },
                 error: function (e) {
                     alert(e);
@@ -74,17 +75,18 @@
         var AddMyPhoneBook = function () {
             var param = "<LayoutHeader><User_EmpID>0407731</User_EmpID><Add_EmpID>1207952</Add_EmpID><Add_Company>BenQ</Add_Company></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/AddMyPhoneBook?lang=en-us",
+                url: "v101/yellowpage/AddMyPhoneBook?lang=en-us&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
-                    alert(d);
+                    alert(d.ResultCode + "-" + d.Message);
                 },
                 error: function (e) {
                     alert(e);
@@ -95,17 +97,18 @@
         var DeleteMyPhoneBook = function () {
             var param = "<LayoutHeader><User_EmpID>0407731</User_EmpID><Delete_EmpID>1207952</Delete_EmpID><Delete_Company>BenQ</Delete_Company></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/DeleteMyPhoneBook?lang=en-us",
+                url: "v101/yellowpage/DeleteMyPhoneBook?lang=en-us&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
-                    alert(d);
+                    alert(d.ResultCode + "-" + d.Message);
                 },
                 error: function (e) {
                     alert(e);
@@ -116,17 +119,18 @@
         var QueryMyPhoneBook = function () {
             var param = "<LayoutHeader><User_EmpID>0407731</User_EmpID></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/QueryMyPhoneBook?lang=en-us",
+                url: "v101/yellowpage/QueryMyPhoneBook?lang=en-us&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
-                    alert(d);
+                    alert(d.ResultCode + "-" + d.Message);
                 },
                 error: function (e) {
                     alert(e);
@@ -137,17 +141,18 @@
         var QueryCompanyData = function () {
             var param = "<LayoutHeader><User_EmpID>0407731</User_EmpID></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/QueryCompanyData?lang=en-us",
+                url: "v101/yellowpage/QueryCompanyData?lang=en-us&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "yellowpage");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
-                    alert(d);
+                    alert(d.ResultCode + "-" + d.Message);
                 },
                 error: function (e) {
                     alert(e);

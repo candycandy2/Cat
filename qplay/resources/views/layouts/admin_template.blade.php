@@ -50,6 +50,7 @@ $title = trans('messages.TITLE_'.$menu_name);
     <!-- Bootstrap 3.3.6 -->
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--}}
@@ -63,6 +64,7 @@ $title = trans('messages.TITLE_'.$menu_name);
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
+    <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -103,9 +105,9 @@ $title = trans('messages.TITLE_'.$menu_name);
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="lang/en-us/{{urlencode(Route::current()->getUri())}}">English</a></li>
-                            <li><a href="lang/zh-cn/{{urlencode(Route::current()->getUri())}}">简体中文</a></li>
-                            <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri())}}">繁體中文</a></li>
+                            <li><a href="lang/en-us/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">English</a></li>
+                            <li><a href="lang/zh-cn/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">简体中文</a></li>
+                            <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">繁體中文</a></li>
                         </ul>
                     </li>
                     <li><a href="auth/logout">{{trans('messages.LOGOUT' )}}</a></li>
@@ -169,7 +171,7 @@ $title = trans('messages.TITLE_'.$menu_name);
         </div>
 
         <!-- Main content -->
-        <div class="content body">
+        <div class="content body" id="pageContent">
 
             @yield('content')
 
@@ -189,8 +191,10 @@ $title = trans('messages.TITLE_'.$menu_name);
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
 
+    @yield('dialog_content')
     @include("layouts.message")
     @include("layouts.confirm")
+
 </div><!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
@@ -199,6 +203,7 @@ $title = trans('messages.TITLE_'.$menu_name);
 <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 {{--<script src="../bootstrap/js/bootstrap.min.js"></script>--}}
 <script src="{{ asset('/bootstrap/js/bootstrap-table.js') }}"></script>
+<script src="{{ asset('/bootstrap/js/bootstrap-switch.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('/plugins/fastclick/fastclick.min.js') }}"></script>
 {{--<script src="../plugins/fastclick/fastclick.min.js"></script>--}}
@@ -210,6 +215,14 @@ $title = trans('messages.TITLE_'.$menu_name);
 {{--<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>--}}
 {{--<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>--}}
 {{--<script src="docs.js"></script>--}}
+<script>
+    $(function() {
+
+        $(".content-wrapper").resize(function () {
+            $('.bootstrapTable').bootstrapTable('resetView');
+        });
+    })
+</script>
 </body>
 </html>
 

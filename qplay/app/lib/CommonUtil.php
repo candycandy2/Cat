@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use DB;
 use Request;
 use Illuminate\Support\Facades\Input;
 
@@ -27,6 +28,46 @@ class CommonUtil
         }
 
         return $userList[0];
+    }
+
+    public static function getUserEnableInfoByUserID($loginId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.login_id', '=', $loginId)
+            -> select()->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        $user = $userList[0];
+        $user->roleList = array();
+
+        $roleList = \DB::table('qp_user_role')
+            -> where('user_row_id', '=', $user->row_id)
+            -> select('role_row_id')->get();
+
+        foreach ($roleList as $role) {
+            $user->roleList[] = $role->role_row_id;
+        }
+
+        $user->group_id = null;
+        $groupList = \DB::table('qp_user_group')
+            -> where('user_row_id', '=', $user->row_id)
+            -> select('group_row_id')->get();
+        if(count($groupList) > 0) {
+            $user->group_id = $groupList[0]->group_row_id;
+        }
+
+        $user->menuList = array();
+        $groupList = \DB::table('qp_user_menu')
+            -> where('user_row_id', '=', $user->row_id)
+            -> select('menu_row_id')->get();
+        foreach ($groupList as $menu) {
+            $user->menuList[] = $menu->menu_row_id;
+        }
+
+        return $user;
     }
 
     public static function getUserInfoByUserID($loginId, $domain)
@@ -72,6 +113,59 @@ class CommonUtil
         }
 
         return $roleList[0];
+    }
+
+    public static function getAllCompanyRoleList()
+    {
+        $companyList = \DB::table('qp_role')
+            ->select('company')->distinct()->get();
+        foreach ($companyList as $company) {
+            $roleList = \DB::table('qp_role')
+                ->where('company', '=', $company->company)
+                ->select()->get();
+            $company->roles = array();
+            foreach ($roleList as $role)
+            {
+                $company->roles[] = $role;
+            }
+        }
+
+        return $companyList;
+    }
+
+    public static function getAllGroupList()
+    {
+        $groupList = \DB::table('qp_group')
+            ->select()->get();
+        foreach ($groupList as $group) {
+            $menuList = \DB::table('qp_group_menu')
+                ->where('group_row_id', '=', $group->row_id)
+                ->select()->get();
+            $group->menuList = array();
+            foreach ($menuList as $menu)
+            {
+                $group->menuList[] = $menu;
+            }
+        }
+        return $groupList;
+    }
+
+    public static function getAllMenuList()
+    {
+        $lang = 'en-us';
+        if(\Session::has("lang"))
+        {
+            $lang = \Session::get("lang");
+        }
+        $sql = <<<SQL
+select menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId , ml.menu_name as sName
+from qp_menu menu
+join qp_menu_language ml on ml.menu_row_id = menu.row_id
+and ml.lang_row_id in (select l.row_id from qp_language l where l.lang_code = '$lang')
+SQL;
+        $menuList = $r = DB::select($sql, []);
+
+        return $menuList;
     }
 
     public static function getUserInfoJustByUserIDAndCompany($loginId, $company)

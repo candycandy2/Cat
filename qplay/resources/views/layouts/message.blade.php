@@ -10,7 +10,7 @@
                 <p class="text-warning"><small id="messageDialogWarningContent"></small></p>
             </div>
             <div class="modal-footer">
-                <button type="button"  class="btn btn-primary" data-dismiss="modal" data-dismiss="modal">{{trans("messages.CANCEL")}}</button>
+                <button type="button"  class="btn btn-primary" data-dismiss="modal" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
             </div>
         </div>
     </div>

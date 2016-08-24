@@ -34,6 +34,7 @@
             $("#confirmDialogWarningContent").text(warning);
         }
 
+        $("#btnConfirmDialogConfirm").unbind();
         $("#btnConfirmDialogConfirm").one('click', confirmFunction);
 
         $("#confirmDialog").modal('show');
