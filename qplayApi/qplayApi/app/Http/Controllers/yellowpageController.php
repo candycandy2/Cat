@@ -20,14 +20,15 @@ class yellowpageController extends Controller
         $json = json_decode($xml);
 
         $resultCode = $json->ResultCode;
+        $resultContent = "";
         if(property_exists($json, 'Content')) {
-            $content = $json->Content;
+            $resultContent = $json->Content;
         }
         $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
         return response()->json(array("ResultCode"=>$resultCode,
             "token_valid"=>$tokenValid,
             "Message"=>$message,
-            "Content"=>$content));
+            "Content"=>$resultContent));
     }
 
     public function QueryEmployeeData()
