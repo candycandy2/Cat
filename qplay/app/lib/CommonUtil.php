@@ -168,6 +168,54 @@ SQL;
         return $menuList;
     }
 
+    public static function getMenuInfo($menuId) {
+        $menuInfoList = \DB::table("qp_menu")
+            -> where("row_id", "=", $menuId)
+            -> select()
+            -> get();
+        if(count($menuInfoList) == 0) {
+            return null;
+        }
+
+        $menu = $menuInfoList[0];
+        $menu = self::getMenuMultyLanguage($menu);
+
+        return $menu;
+    }
+
+    public static function getMenuMultyLanguage($menu) {
+        $menuId = $menu->row_id;
+
+        $menu->english_name = "";
+        $lang_code = 'en-us';
+        $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
+            ." and lang_row_id in (select row_id from qp_language where lang_code = '".$lang_code."')";
+        $res = DB::select($sql, []);
+        if(count($res) > 0) {
+            $menu->english_name = $res[0] -> menu_name;
+        }
+
+        $menu->simple_chinese_name = "";
+        $lang_code = 'zh-cn';
+        $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
+            ." and lang_row_id in (select row_id from qp_language where lang_code = '".$lang_code."')";
+        $res = DB::select($sql, []);
+        if(count($res) > 0) {
+            $menu->simple_chinese_name = $res[0] -> menu_name;
+        }
+
+        $menu->traditional_chinese_name = "";
+        $lang_code = 'zh-tw';
+        $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
+            ." and lang_row_id in (select row_id from qp_language where lang_code = '".$lang_code."')";
+        $res = DB::select($sql, []);
+        if(count($res) > 0) {
+            $menu->traditional_chinese_name = $res[0] -> menu_name;
+        }
+
+        return $menu;
+    }
+
     public static function getUserInfoJustByUserIDAndCompany($loginId, $company)
     {
         $userList = \DB::table('qp_user')

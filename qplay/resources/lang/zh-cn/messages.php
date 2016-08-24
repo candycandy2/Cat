@@ -85,4 +85,12 @@ return [
     'ENGLISH_NAME' => '英文名',
     'SIMPLE_CHINESE_NAME' => '简体中文名',
     'TRADITIONAL_CHINESE_NAME' => '繁体中文名',
+    'SEQUENCE' => '序号',
+    'NEW_ROOT_MENU' => '新增父选单',
+    'NEW_SUB_MENU' => '新增子选单',
+    'EDIT_SUB_MENU' => '编辑子选单',
+    'SUB_MENU' => '子选单',
+    'MSG_CONFIRM_DELETE_MENU' => '确认删除所选菜单?',
+    'MSG_EXIST_SUBMENU' => '无法删除, 存在子菜单!',
+    'MSG_DELETE_MENU_FAILED' => '删除菜单失败!',
 ];

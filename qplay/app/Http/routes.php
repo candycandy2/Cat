@@ -21,6 +21,10 @@ Route::any('/platform/saveRole', 'platformController@saveRole');
 Route::any('/platform/getRoleUsers', 'platformController@getRoleUsers');
 Route::any('/platform/saveRoleUsers', 'platformController@saveRoleUsers');
 Route::any('/platform/getRootMenuList', 'platformController@getRootMenuList');
+Route::any('/platform/deleteMenu', 'platformController@deleteMenu');
+Route::any('/platform/newMenu', 'platformController@newMenu');
+Route::any('/platform/getSubMenuList', 'platformController@getSubMenuList');
+
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -66,6 +70,9 @@ Route::any('securitySetting', ['middleware' => 'auth', function() {
 }]);
 Route::any('menuMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/menu_maintain");
+}]);
+Route::any('rootMenuDetailMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/root_menu_detail_maintain");
 }]);
 Route::any('groupMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/group_maintain");

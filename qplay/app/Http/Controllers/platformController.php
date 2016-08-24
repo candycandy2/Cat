@@ -272,6 +272,12 @@ class platformController extends Controller
         foreach ($rootMenuList as $menu) {
             $menuId = $menu->row_id;
 
+            //count sub
+            $menu->number_submenu = 0;
+            $sql = "select count(*) as num from qp_menu where parent_id = ".$menuId;
+            $menu->number_submenu = DB::select($sql, [])[0] -> num;
+
+            //multi language
             $menu->english_name = "";
             $lang_code = 'en-us';
             $sql = "select * from qp_menu_language where menu_row_id = ".$menuId
@@ -300,6 +306,141 @@ class platformController extends Controller
             }
         }
         return $rootMenuList;
+    }
+
+    public function getSubMenuList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        $menuId = $input["menu_id"];
+
+        $menuList = \DB::table("qp_menu")
+            -> where("parent_id", "=", $menuId)
+            -> select()
+            -> get();
+        for($i = 0; $i < count($menuList); $i ++) {
+            $menu = $menuList[$i];
+            $menuList[$i] = CommonUtil::getMenuMultyLanguage($menu);
+        }
+
+        return $menuList;
+    }
+
+    public function deleteMenu() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $roleIdList = $jsonContent['menu_id_list'];
+            foreach ($roleIdList as $mId) {
+                \DB::table("qp_menu")
+                    -> where('row_id', '=', $mId)
+                    -> delete();
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function newMenu() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $parentId = $jsonContent['parentId'];
+            $menuName = $jsonContent['menuName'];
+            $link = $jsonContent['link'];
+            $englishName = $jsonContent['englishName'];
+            $simpleChineseName = $jsonContent['simpleChineseName'];
+            $traditionChineseName = $jsonContent['traditionChineseName'];
+
+            \DB::beginTransaction();
+            $sequence = 0;
+            $sql = "select max(sequence) as maxSeq from qp_menu where parent_id = ".$parentId;
+            $resList = DB::select($sql, []);
+            if($resList > 0) {
+                $sequence = $resList[0]->maxSeq + 1;
+            }
+            try {
+                $newMenuId = \DB::table("qp_menu")
+                    -> insertGetId([
+                        'parent_id'=>$parentId,
+                        'menu_name'=>$menuName,
+                        'path'=>$link,
+                        'sequence'=>$sequence,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                    ]);
+
+                $lang_code = 'en-us';
+                $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                $resList = DB::select($sql, []);
+                if($resList > 0) {
+                    $lang_id = $resList[0]->row_id;
+                    \DB::table("qp_menu_language")
+                        -> insertGetId([
+                            'menu_row_id'=>$newMenuId,
+                            'lang_row_id'=>$lang_id,
+                            'menu_name'=>$englishName,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now,
+                        ]);
+                }
+                $lang_code = 'zh-cn';
+                $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                $resList = DB::select($sql, []);
+                if($resList > 0) {
+                    $lang_id = $resList[0]->row_id;
+                    \DB::table("qp_menu_language")
+                        -> insertGetId([
+                            'menu_row_id'=>$newMenuId,
+                            'lang_row_id'=>$lang_id,
+                            'menu_name'=>$simpleChineseName,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now,
+                        ]);
+                }
+                $lang_code = 'zh-tw';
+                $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                $resList = DB::select($sql, []);
+                if($resList > 0) {
+                    $lang_id = $resList[0]->row_id;
+                    \DB::table("qp_menu_language")
+                        -> insertGetId([
+                            'menu_row_id'=>$newMenuId,
+                            'lang_row_id'=>$lang_id,
+                            'menu_name'=>$traditionChineseName,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now,
+                        ]);
+                }
+
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
     }
 
 }
