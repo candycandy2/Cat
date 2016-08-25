@@ -84,6 +84,8 @@
         </div>
       </div>
       <!-- end of init page -->
+      
+      <!-- Start of news list page -->
       <div data-role="page" data-position="fixed" id="newspage2-3">
         <div data-role="header" style="overflow:hidden;" class="ui-header ui-bar-a ui-header-fixed slideup">
           <h1>Message</h1>
@@ -93,6 +95,7 @@
 
         <div data-role="main" class="ui-content">
             <ul data-role="listview" data-inset="false">
+              <br><br>
               <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
               <li>
                   <h2>Stephen Weber</h2>
@@ -189,23 +192,63 @@
         </div>
 
         <div data-role="footer" data-position="fixed" role="contentinfo" class="ui-footer ui-bar-a ui-footer-fixed slideup">
-            <div data-role="tabs" id="tabs">
+            <div data-role="tabs">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#News" data-transition="turn" class="ui-btn ui-btn-active" data-ajax="false">News</a></li>
-                        <li><a href="#Events" data-transition="slid" class="ui-btn" data-ajax="false">Events</a></li>
+                        <li><a href="#" data-transition="turn" class="ui-btn ui-btn-active" data-ajax="false">News</a></li>
+                        <li><a href="#eventspage2-3b" data-transition="slid" class="ui-btn" data-ajax="false">Events</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-
       </div>
+      <!-- End of news list page -->
+      
+      <!-- Start of events list page -->
+      <div data-role="page" data-position="fixed" id="eventspage2-3b">
+        <div data-role="header" style="overflow:hidden;" class="ui-header ui-bar-a ui-header-fixed slideup">
+          <h1>Message</h1>
+              <a href="#mainpage 2-1" data-icon="back" class="ui-btn-left">Back</a>
+              <a href="#" data-icon="edit" class="ui-btn-right">Edit</a>
+        </div><!-- /header -->
 
+        <div data-role="main" class="ui-content">
+            <br><br>
+            <ul data-role="listview" data-inset="false">
+              <li><a href="index.html">
+                  <h2 style="white-space:pre-wrap;">[Qplay 系統通知]：Qplay 系統維護，於 2016/5/10 22:00~23:00 暫停服務</h2>
+                  <p>2016/05/10 08:00</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2 style="white-space:pre-wrap;">[XXXX系統通知]：產品OOOO已達庫存下限</h2>
+                  <p>2016/03/30 17:00</p>
+              </a></li>
+              <li><a href="index.html">
+                  <h2 style="white-space:pre-wrap;">[XXXX系統通知]：OOOOOO流量已達承載上限</h2>
+                  <p>2016/03/15 16:00</p>
+              </a></li>
+            </ul>
+        </div>
+
+        <div data-role="footer" data-position="fixed" role="contentinfo" class="ui-footer ui-bar-a ui-footer-fixed slideup">
+            <div data-role="tabs">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#newspage2-3" data-transition="turn" class="ui-btn" data-ajax="false">News</a></li>
+                        <li><a href="#" data-transition="slid" class="ui-btn ui-btn-active" data-ajax="false">Events</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- End of events list page -->
+      
       <!-- Start of qplay-main page -->
       <div data-role="page" id="mainpage 2-1">
           <div data-role="header" style="overflow:hidden;">
             <h1>QPlay</h1>
-                <a href="#newspage 2-3" data-icon="comment" class="ui-btn-left">Message</a>
+                <a href="#newspage2-3" data-icon="comment" class="ui-btn-left">News</a>
+                <a href="#eventspage2-3b" data-icon="comment" class="ui-btn-inline">Events</a>
                 <a href="#" data-icon="user" class="ui-btn-right">Logout</a>
           </div><!-- /header -->
 
