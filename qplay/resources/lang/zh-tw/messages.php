@@ -85,7 +85,15 @@ return [
     'ENGLISH_NAME' => '英文名',
     'SIMPLE_CHINESE_NAME' => '簡體中文名',
     'TRADITIONAL_CHINESE_NAME' => '繁體中文名',
-
+    'SEQUENCE' => '序號',
+    'NEW_ROOT_MENU' => '新增父選單',
+    'NEW_SUB_MENU' => '新增子選單',
+    'EDIT_SUB_MENU' => '編輯子選單',
+    'SUB_MENU' => '子選單',
+    'MSG_CONFIRM_DELETE_MENU' => '確認刪除所選菜單?',
+    'MSG_EXIST_SUBMENU' => '無法刪除, 存在子菜單!',
+    'MSG_DELETE_MENU_FAILED' => '刪除菜單失敗!',
+    
     //App Maintain
     'CATEGORY_NAME' => '類別名稱',
     'CATEGORY_APP_COUNT' => 'App',
@@ -102,5 +110,5 @@ return [
     'MSG_CATEGORY_EXIST_APPS' => '無法刪除類別,類別下存在apps!',
     'MSG_DELETE_CATEGORY_FAILED' => '刪除類別失敗!',	
     'MSG_CONFIRM_REMOVE_APP' => '確定移除所選App?',
-    'MSG_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!'
+    'MSG_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
 ];

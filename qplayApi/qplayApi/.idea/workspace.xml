@@ -22,7 +22,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="qplayController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="qplayController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
@@ -86,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="yellowpageController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="yellowpageController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+            <state relative-caret-position="166">
+              <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -99,50 +99,9 @@
       <file leaf-file-name="testyellowpage.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/testyellowpage.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2136">
-              <caret line="102" column="27" selection-start-line="102" selection-start-column="27" selection-end-line="102" selection-end-column="27" />
+            <state relative-caret-position="-475">
+              <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Verify.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="283" column="30" selection-start-line="283" selection-start-column="30" selection-end-line="283" selection-end-column="30" />
-              <folding>
-                <element signature="e#111#123#0#PHP" expanded="true" />
-                <element signature="e#6792#7514#0#PHP" expanded="false" />
-                <element signature="e#7878#8187#0#PHP" expanded="false" />
-                <element signature="e#8193#8560#0#PHP" expanded="false" />
-                <marker date="1471923819258" expanded="true" signature="3887:3986" placeholder="select disti... qp_session" />
-                <marker date="1471923819258" expanded="true" signature="3887:4022" placeholder="select disti... qp_session" />
-                <marker date="1471923819258" expanded="true" signature="3887:4038" placeholder="select disti... qp_session" />
-                <marker date="1471923819258" expanded="true" signature="3887:4150" placeholder="select disti... qp_session" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommonUtil.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/lib/CommonUtil.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="208" column="5" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
-              <folding>
-                <element signature="e#186#742#0#PHP" expanded="false" />
-                <element signature="e#748#1361#0#PHP" expanded="false" />
-                <element signature="e#1367#1846#0#PHP" expanded="false" />
-                <element signature="e#1852#2229#0#PHP" expanded="false" />
-                <element signature="e#2235#2722#0#PHP" expanded="false" />
-                <element signature="e#2728#3687#0#PHP" expanded="false" />
-                <element signature="e#3693#4714#0#PHP" expanded="false" />
-                <element signature="e#4720#5749#0#PHP" expanded="false" />
-                <element signature="e#5755#6059#0#PHP" expanded="false" />
-                <element signature="e#6065#6304#0#PHP" expanded="false" />
-                <element signature="e#6310#6412#0#PHP" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -449,11 +408,13 @@
       <workItem from="1471917043845" duration="260000" />
       <workItem from="1471917460192" duration="34000" />
       <workItem from="1471920401343" duration="5674000" />
+      <workItem from="1471942225245" duration="16000" />
+      <workItem from="1472024541784" duration="246000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="180105000" />
+    <option name="totallyTimeSpent" value="180367000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1374" height="732" extended-state="6" />
@@ -1150,7 +1111,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
+        <state relative-caret-position="6050">
           <caret line="283" column="30" selection-start-line="283" selection-start-column="30" selection-end-line="283" selection-end-column="30" />
           <folding>
             <element signature="e#111#123#0#PHP" expanded="true" />
@@ -1167,7 +1128,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/lib/CommonUtil.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
+        <state relative-caret-position="750">
           <caret line="208" column="5" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
           <folding>
             <element signature="e#186#742#0#PHP" expanded="false" />
@@ -1187,16 +1148,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/testyellowpage.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2136">
-          <caret line="102" column="27" selection-start-line="102" selection-start-column="27" selection-end-line="102" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        <state relative-caret-position="-475">
+          <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
           <folding />
         </state>
       </provider>
@@ -1260,6 +1213,14 @@
             <marker date="1471504909924" expanded="true" signature="65925:66055" placeholder="select * fro... qp_user" />
             <marker date="1471504909924" expanded="true" signature="65964:66021" placeholder="select user_... qp_user_role" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/yellowpageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+          <folding />
         </state>
       </provider>
     </entry>

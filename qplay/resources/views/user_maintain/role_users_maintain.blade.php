@@ -186,7 +186,6 @@ foreach ($allCompanyRoleList as $companyRoles) {
                     for(var j = 0; j < currentData.length; j++) {
                         if(currentData[j].row_id == user.row_id) {
                             currentData.splice(j,1);
-                            done = true;
                             break;
                         }
                     }
