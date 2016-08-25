@@ -85,4 +85,22 @@ return [
     'ENGLISH_NAME' => '英文名',
     'SIMPLE_CHINESE_NAME' => '簡體中文名',
     'TRADITIONAL_CHINESE_NAME' => '繁體中文名',
+
+    //App Maintain
+    'CATEGORY_NAME' => '類別名稱',
+    'CATEGORY_APP_COUNT' => 'App',
+    'ADD_APP' => '加入 App',
+    'ICON' => 'Icon',
+    'APP_NAME' => 'App 名稱',
+    'LAST_UPDATED_DATE' => '最後更新日期',
+    'RELEASED' => '發布狀態',
+    'SELECT_APP' => '選擇 App',
+    'MSG_NEW_CATEGORY' => '新增類別',
+    'MSG_EDIT_CATEGORY' => '編輯類別',
+    'MSG_SAVE_CATEGORY_FAILED' => '新增類別失敗!',
+    'MSG_CONFIRM_DELETE_CATEGORY' => '確定移除所選類別?',
+    'MSG_CATEGORY_EXIST_APPS' => '無法刪除類別,類別下存在apps!',
+    'MSG_DELETE_CATEGORY_FAILED' => '刪除類別失敗!',	
+    'MSG_CONFIRM_REMOVE_APP' => '確定移除所選App?',
+    'MSG_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!'
 ];

@@ -85,4 +85,22 @@ return [
     'ENGLISH_NAME' => '英文名',
     'SIMPLE_CHINESE_NAME' => '简体中文名',
     'TRADITIONAL_CHINESE_NAME' => '繁体中文名',
+
+    //App Maintain
+    'CATEGORY_NAME' => '类别名',
+    'CATEGORY_APP_COUNT' => 'App',
+	'ADD_APP' => '加入 App',
+    'ICON' => 'Icon',
+    'APP_NAME' => 'App 名称',
+    'LAST_UPDATED_DATE' => '最后更新日期',
+    'RELEASED' => '发布状态',
+    'SELECT_APP' => '选择 App',
+    'MSG_NEW_CATEGORY' => '新增类别',
+    'MSG_EDIT_CATEGORY' => '编辑类别',
+    'MSG_SAVE_CATEGORY_FAILED' => '新增类别失败!',
+    'MSG_CONFIRM_DELETE_CATEGORY' => '确认删除所选类别?',
+    'MSG_CATEGORY_EXIST_APPS' => '无法删除类别, 类别下存在apps!',
+    'MSG_DELETE_CATEGORY_FAILED' => '删除类别失败!',
+    'MSG_CONFIRM_REMOVE_APP' => '确定移除所选App?',
+    'MSG_APP_CATEGORY_EXIST' => 'App 类别名称已经存在!'
 ];
