@@ -85,4 +85,12 @@ return [
     'ENGLISH_NAME' => 'English',
     'SIMPLE_CHINESE_NAME' => 'Simple Chinese',
     'TRADITIONAL_CHINESE_NAME' => 'Traditional Chinese',
+    'SEQUENCE' => 'Sequence',
+    'NEW_ROOT_MENU' => 'New Root Menu',
+    'NEW_SUB_MENU' => 'New Sub Menu',
+    'EDIT_SUB_MENU' => 'Edit Sub Menu',
+    'SUB_MENU' => 'Sub Menu',
+    'MSG_CONFIRM_DELETE_MENU' => 'Confirm to delete selected menu?',
+    'MSG_EXIST_SUBMENU' => 'Can\'t delete, exist submenu!',
+    'MSG_DELETE_MENU_FAILED' => 'Delete menu failed!',
 ];
