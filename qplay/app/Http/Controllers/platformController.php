@@ -317,16 +317,7 @@ class platformController extends Controller
         $input = Input::get();
         $menuId = $input["menu_id"];
 
-        $menuList = \DB::table("qp_menu")
-            -> where("parent_id", "=", $menuId)
-            -> select()
-            -> get();
-        for($i = 0; $i < count($menuList); $i ++) {
-            $menu = $menuList[$i];
-            $menuList[$i] = CommonUtil::getMenuMultyLanguage($menu);
-        }
-
-        return $menuList;
+        return CommonUtil::getSubMenuList($menuId);
     }
 
     public function deleteMenu() {
@@ -443,4 +434,519 @@ class platformController extends Controller
         return null;
     }
 
+    public function saveRootMenu() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $menu_id = $jsonContent['menu_id'];
+            $sub_menu_list = $jsonContent['sub_menu_list'];
+            $menu_name = $jsonContent['menu_name'];
+            $link = $jsonContent['link'];
+            $english_name = $jsonContent['english_name'];
+            $simple_chinese_name = $jsonContent['simple_chinese_name'];
+            $tradition_chinese_name = $jsonContent['tradition_chinese_name'];
+            \DB::beginTransaction();
+
+            \DB::table("qp_menu")
+                -> where('row_id', '=', $menu_id)
+                -> update(
+                    ['menu_name'=>$menu_name,
+                        'path'=>$link,
+                        'updated_at'=>$now,
+                        'updated_user'=>\Auth::user()->row_id]);
+
+            $lang_code = 'en-us';
+            $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+            $resList = DB::select($sql, []);
+            if($resList > 0) {
+                $lang_id = $resList[0]->row_id;
+                \DB::table("qp_menu_language")
+                    -> where('menu_row_id', "=", $menu_id)
+                    -> where('lang_row_id', "=", $lang_id)
+                    -> update(['menu_name'=>$english_name,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now]);
+            }
+            $lang_code = 'zh-cn';
+            $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+            $resList = DB::select($sql, []);
+            if($resList > 0) {
+                $lang_id = $resList[0]->row_id;
+                \DB::table("qp_menu_language")
+                    -> where('menu_row_id', "=", $menu_id)
+                    -> where('lang_row_id', "=", $lang_id)
+                    -> update(['menu_name'=>$simple_chinese_name,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now]);
+            }
+            $lang_code = 'zh-tw';
+            $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+            $resList = DB::select($sql, []);
+            if($resList > 0) {
+                $lang_id = $resList[0]->row_id;
+                \DB::table("qp_menu_language")
+                    -> where('menu_row_id', "=", $menu_id)
+                    -> where('lang_row_id', "=", $lang_id)
+                    -> update(['menu_name'=>$tradition_chinese_name,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now]);
+            }
+
+            //SUB
+            $oriSubMenuList = CommonUtil::getSubMenuList($menu_id);
+            $deleteMenuIdList = array();
+            //Check delete
+            foreach ($oriSubMenuList as $menu) {
+                $exist = false;
+                foreach ($sub_menu_list as $currentMenu) {
+                    if($currentMenu["row_id"] == $menu->row_id) {
+                        $exist = true;
+                        break;
+                    }
+                }
+                if(!$exist) {
+                    array_push($deleteMenuIdList, $menu->row_id);
+                }
+            };
+            //delete
+            foreach ($deleteMenuIdList as $deleteMenuId) {
+                \DB::table("qp_menu_language")
+                    -> where('menu_row_id', "=", $deleteMenuId)
+                    -> delete();
+                \DB::table("qp_menu")
+                    -> where('row_id', "=", $deleteMenuId)
+                    -> delete();
+            }
+
+            //update and insert
+            for($i = 0; $i < count($sub_menu_list); $i++) {
+                $seq = $i + 1;
+                $thisMenu = $sub_menu_list[$i];
+                if(strstr($thisMenu["row_id"], "temp_id_")) { //insert
+                    $newMenuId = \DB::table("qp_menu")
+                        -> insertGetId([
+                            'parent_id'=>$menu_id,
+                            'menu_name'=>$thisMenu["menu_name"],
+                            'path'=>$thisMenu["path"],
+                            'sequence'=>$seq,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now,
+                        ]);
+
+                    $lang_code = 'en-us';
+                    $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                    $resList = DB::select($sql, []);
+                    if($resList > 0) {
+                        $lang_id = $resList[0]->row_id;
+                        \DB::table("qp_menu_language")
+                            -> insert([
+                                'menu_row_id'=>$newMenuId,
+                                'lang_row_id'=>$lang_id,
+                                'menu_name'=>$thisMenu["english_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                    $lang_code = 'zh-cn';
+                    $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                    $resList = DB::select($sql, []);
+                    if($resList > 0) {
+                        $lang_id = $resList[0]->row_id;
+                        \DB::table("qp_menu_language")
+                            -> insertGetId([
+                                'menu_row_id'=>$newMenuId,
+                                'lang_row_id'=>$lang_id,
+                                'menu_name'=>$thisMenu["simple_chinese_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                    $lang_code = 'zh-tw';
+                    $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                    $resList = DB::select($sql, []);
+                    if($resList > 0) {
+                        $lang_id = $resList[0]->row_id;
+                        \DB::table("qp_menu_language")
+                            -> insertGetId([
+                                'menu_row_id'=>$newMenuId,
+                                'lang_row_id'=>$lang_id,
+                                'menu_name'=>$thisMenu["traditional_chinese_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                } else { //update
+                    \DB::table("qp_menu")
+                        -> where("row_id", "=", $thisMenu["row_id"])
+                        -> update([
+                            'menu_name'=>$thisMenu["menu_name"],
+                            'path'=>$thisMenu["path"],
+                            'sequence'=>$seq,
+                            'updated_user'=>\Auth::user()->row_id,
+                            'updated_at'=>$now,
+                        ]);
+
+                    $lang_code = 'en-us';
+                    $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                    $resList = DB::select($sql, []);
+                    if($resList > 0) {
+                        $lang_id = $resList[0]->row_id;
+                        \DB::table("qp_menu_language")
+                            -> where('menu_row_id', "=", $thisMenu["row_id"])
+                            -> where('lang_row_id', "=", $lang_id)
+                            -> update(['menu_name'=>$thisMenu["english_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                    $lang_code = 'zh-cn';
+                    $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                    $resList = DB::select($sql, []);
+                    if($resList > 0) {
+                        $lang_id = $resList[0]->row_id;
+                        \DB::table("qp_menu_language")
+                            -> where('menu_row_id', "=", $thisMenu["row_id"])
+                            -> where('lang_row_id', "=", $lang_id)
+                            -> update(['menu_name'=>$thisMenu["simple_chinese_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                    $lang_code = 'zh-tw';
+                    $sql = "select row_id from qp_language where lang_code = '".$lang_code."'";
+                    $resList = DB::select($sql, []);
+                    if($resList > 0) {
+                        $lang_id = $resList[0]->row_id;
+                        \DB::table("qp_menu_language")
+                            -> where('menu_row_id', "=", $thisMenu["row_id"])
+                            -> where('lang_row_id', "=", $lang_id)
+                            -> update(['menu_name'=>$thisMenu["traditional_chinese_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+                }
+            }
+
+            \DB::commit();
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function getGroupList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $groupList = \DB::table("qp_group")
+            -> select()
+            -> get();
+        foreach ($groupList as $group) {
+            $count = \DB::table('qp_user_group')
+                ->where('group_row_id', '=', $group->row_id)
+                ->count();
+            $group->user_count = $count;
+        }
+
+        return response()->json($groupList);
+    }
+
+    public function deleteGroup() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $groupIdList = $jsonContent['group_id_list'];
+            foreach ($groupIdList as $gId) {
+                \DB::table("qp_group")
+                    -> where('row_id', '=', $gId)
+                    -> delete();
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveGroup() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $action = $jsonContent['action'];
+            $group_id = $jsonContent['group_id'];
+            $group_name = $jsonContent['group_name'];
+            $menu_list = $jsonContent['menu_list'];
+            \DB::beginTransaction();
+
+            $now = date('Y-m-d H:i:s',time());
+            if($action == "N") { //New
+                $newGroupId = \DB::table("qp_group")
+                    -> insertGetId([
+                        'group_name'=>$group_name,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                    ]);
+
+                foreach ($menu_list as $menuId) {
+                    \DB::table("qp_group_menu")->insert([
+                        'group_row_id'=>$newGroupId,
+                        'menu_row_id'=>$menuId,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now]);
+                }
+            } else if($action == "U") { //Edit
+                \DB::table("qp_group_menu")
+                    -> where("group_row_id", "=", $group_id)
+                    -> delete();
+                foreach ($menu_list as $menuId) {
+                    \DB::table("qp_group_menu")->insert([
+                        'group_row_id'=>$group_id,
+                        'menu_row_id'=>$menuId,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now]);
+                }
+            }
+
+            \DB::commit();;
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveGroupUsers() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $groupId = $jsonContent['group_id'];
+            $userIdList = $jsonContent['user_id_list'];
+            \DB::beginTransaction();
+            \DB::table("qp_user_group")-> where('group_row_id', "=", $groupId)->delete();
+            foreach ($userIdList as $uId) {
+                \DB::table("qp_user_group")
+                    -> insert(
+                        ['user_row_id'=>$uId,
+                            'group_row_id'=>$groupId,
+                            'created_at'=>$now,
+                            'created_user'=>\Auth::user()->row_id]);
+
+            }
+            \DB::commit();
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function getGroupUsers() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        $groupId = $input["group_id"];
+
+        $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_group where group_row_id = '.$groupId.')';
+        return DB::select($sql, []);
+    }
+
+    public function getParameterTypeList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $typeList = \DB::table("qp_parameter_type")
+            -> select()
+            -> get();
+
+        return response()->json($typeList);
+    }
+
+    public function deleteParameterType() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $typeIdList = $jsonContent['type_id_list'];
+
+            //Check
+            foreach ($typeIdList as $tId) {
+                $paraList = \DB::table("qp_parameter")
+                    -> where('parameter_type_row_id', '=', $tId)
+                    -> select() -> get();
+                if(count($paraList) > 0) {
+                    return response()->json(['result_code'=>999,
+                    'message'=>'Exist Parameter']); //TODO define error code and message
+                }
+            }
+
+            foreach ($typeIdList as $tId) {
+                \DB::table("qp_parameter_type")
+                    -> where('row_id', '=', $tId)
+                    -> delete();
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveParameterType() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $type_name = $jsonContent['type_name'];
+            $type_desc = $jsonContent['type_desc'];
+
+            $isNew = $jsonContent['isNew'];
+            if($isNew == 'Y') {
+                \DB::table("qp_parameter_type")
+                    -> insert(
+                        ['parameter_type_name'=>$type_name,
+                            'parameter_type_desc'=>$type_desc,
+                            'created_at'=>$now,
+                            'created_user'=>\Auth::user()->row_id]);
+            } else {
+                $typeId = $jsonContent['typeId'];
+                \DB::table("qp_parameter_type")
+                    -> where('row_id', '=', $typeId)
+                    -> update(
+                        ['parameter_type_name'=>$type_name,
+                            'parameter_type_desc'=>$type_desc,
+                            'updated_at'=>$now,
+                            'updated_user'=>\Auth::user()->row_id]);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function getParameterList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+//        select p.row_id, p.parameter_name, p.parameter_value, t.parameter_type_name from qp_parameter p
+//left join qp_parameter_type t on t.row_id = p.parameter_type_row_id
+        $typeList = \DB::table("qp_parameter")
+            -> leftJoin("qp_parameter_type", "qp_parameter_type.row_id", "=", "qp_parameter.parameter_type_row_id")
+            -> select()
+            -> get();
+
+        return response()->json($typeList);
+    }
+
+    public function deleteParameter() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $paraIdList = $jsonContent['para_id_list'];
+
+            foreach ($paraIdList as $pId) {
+                \DB::table("qp_parameter")
+                    -> where('row_id', '=', $pId)
+                    -> delete();
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveParameter() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $type_id = $jsonContent['type_id'];
+            $para_name = $jsonContent['para_name'];
+            $para_value = $jsonContent['para_value'];
+
+            $isNew = $jsonContent['isNew'];
+            if($isNew == 'Y') {
+                \DB::table("qp_parameter")
+                    -> insert(
+                        ['parameter_type_row_id' => $type_id,
+                            'parameter_name'=>$para_name,
+                            'parameter_value'=>$para_value,
+                            'created_at'=>$now,
+                            'created_user'=>\Auth::user()->row_id]);
+            } else {
+                $paraId = $jsonContent['paraId'];
+                \DB::table("qp_parameter")
+                    -> where('row_id', '=', $paraId)
+                    -> update(
+                        ['parameter_type_row_id' => $type_id,
+                            'parameter_name'=>$para_name,
+                            'parameter_value'=>$para_value,
+                            'updated_at'=>$now,
+                            'updated_user'=>\Auth::user()->row_id]);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
 }

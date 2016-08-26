@@ -22,6 +22,10 @@
     };
 
     var showConfirmDialog = function (title, content, warning, confirmFunction) {
+        $("#confirmDialogTitle").text("");
+        $("#confirmDialogContent").html("");
+        $("#confirmDialogWarningContent").html("");
+
         if(title) {
             $("#confirmDialogTitle").text(title);
         }

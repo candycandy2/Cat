@@ -4,5 +4,104 @@ $menu_name = "SYS_GROUP_MAINTAIN";
 ?>
 @extends('layouts.admin_template')
 @section('content')
+
+    <div id="toolbar">
+        <button type="button" class="btn btn-danger" onclick="deleteGroup()" id="btnDeleteGroup">
+            {{trans("messages.DELETE")}}
+        </button>
+        <a class="btn btn-primary" href="groupDetailMaintain?action=N" id="btnNewGroup">
+            {{trans("messages.NEW")}}
+        </a>
+    </div>
+    <table id="gridGroupList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+           data-url="platform/getGroupList" data-height="398" data-pagination="true"
+           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
+           data-show-toggle="true"  data-sortable="true"
+           data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
+           data-click-to-select="false" data-single-select="false">
+        <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+            <th data-field="group_name" data-sortable="true" data-formatter="groupNameFormatter">{{trans("messages.GROUP_NAME")}}</th>
+            <th data-field="user_count" data-sortable="true" data-formatter="userCountFormatter">{{trans("messages.USERS")}}</th>
+        </tr>
+        </thead>
+    </table>
+
+    <script>
+        function groupNameFormatter(value, row) {
+            return '<a href="groupDetailMaintain?action=U&group_id=' + row.row_id + '">' + value + '</a>';
+        };
+
+        function userCountFormatter(value, row) {
+            return '<a href="groupUsersMaintain?group_id=' + row.row_id + '">' + value + '</a>';
+        };
+
+        var deleteGroup = function() {
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_GROUP")}}", "", function () {
+                hideConfirmDialog();
+                var selectedGroups = $("#gridGroupList").bootstrapTable('getSelections');
+                var check = true;
+                $.each(selectedGroups, function (i, role) {
+                    if(role.user_count > 0) {
+                        check = false;
+                        return false;
+                    }
+                });
+                if(!check) {
+                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_GROUP_EXIST_USERS")}}");
+                    return false;
+                }
+
+                var groupIdList = new Array();
+                $.each(selectedGroups, function(i, group) {
+                    groupIdList.push(group.row_id);
+                });
+                var mydata = {group_id_list:groupIdList};
+                var mydataStr = $.toJSON(mydata);
+                $.ajax({
+                    url: "platform/deleteGroup",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: mydataStr,
+                    success: function (d, status, xhr) {
+                        if(d.result_code != 1) {
+                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                        }  else {
+                            $("#gridGroupList").bootstrapTable('refresh');
+                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                        }
+                    },
+                    error: function (e) {
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    }
+                });
+            });
+        };
+
+        $(function() {
+            $("#btnDeleteGroup").hide();
+            $('#gridGroupList').on('check.bs.table', selectedChanged);
+            $('#gridGroupList').on('uncheck.bs.table', selectedChanged);
+            $('#gridGroupList').on('check-all.bs.table', selectedChanged);
+            $('#gridGroupList').on('uncheck-all.bs.table', selectedChanged);
+            $('#gridGroupList').on('load-success.bs.table', selectedChanged);
+        });
+
+        var selectedChanged = function (row, $element) {
+            var selectedGroups = $("#gridGroupList").bootstrapTable('getSelections');
+            if(selectedGroups.length > 0) {
+                $("#btnDeleteGroup").show();
+                $("#btnNewGroup").hide();
+            } else {
+                $("#btnDeleteGroup").hide();
+                $("#btnNewGroup").show();
+            }
+        }
+
+    </script>
+
 @endsection
 

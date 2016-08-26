@@ -93,4 +93,24 @@ return [
     'MSG_CONFIRM_DELETE_MENU' => '确认删除所选菜单?',
     'MSG_EXIST_SUBMENU' => '无法删除, 存在子菜单!',
     'MSG_DELETE_MENU_FAILED' => '删除菜单失败!',
+
+    //Group Maintain
+    'GROUP_NAME' => '群组名称',
+    'GROUP_LIST' => '群组名单',
+    'MSG_CONFIRM_DELETE_GROUP' => '确认删除所选群组?',
+    'MSG_GROUP_EXIST_USERS' => '无法删除, 群组下存在用户!',
+
+    //Parameter Setting
+    'PARAMETER_TYPE' => '参数类型',
+    'PARAMETER' => '参数',
+    'PARAMETER_TYPE_NAME' => '类别名称',
+    'DESCRIPTION' => '描述',
+    'PARAMETER_NAME' => '参数名称',
+    'PARAMETER_VALUE' => '参数值',
+    'MSG_CONFIRM_DELETE_TYPE' => '确认删除所选的参数类别?',
+    'MSG_NEW_TYPE' => '新增参数类别',
+    'MSG_EDIT_TYPE' => '编辑参数类别',
+    'MSG_CONFIRM_DELETE_PARAMETER' => '确认删除所选的参数?',
+    'MSG_NEW_PARAMETER' => '新增参数',
+    'MSG_EDIT_PARAMETER' => '编辑参数',
 ];

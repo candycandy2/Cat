@@ -150,6 +150,26 @@ class CommonUtil
         return $groupList;
     }
 
+    public static function getGroup($groupId) {
+        $groupList = \DB::table('qp_group')
+            ->where("row_id", "=", $groupId)
+            ->select()->get();
+        if(count($groupList) > 0) {
+            $groupInfo = $groupList[0];
+            $groupInfo->menuList = array();
+            $menuList = \DB::table('qp_group_menu')
+                ->where('group_row_id', '=', $groupInfo->row_id)
+                ->select()->get();
+            foreach ($menuList as $menu)
+            {
+                $groupInfo->menuList[] = $menu->menu_row_id;
+            }
+
+            return $groupInfo;
+        }
+        return null;
+    }
+
     public static function getAllMenuList()
     {
         $lang = 'en-us';
@@ -181,6 +201,19 @@ SQL;
         $menu = self::getMenuMultyLanguage($menu);
 
         return $menu;
+    }
+
+    public static function getSubMenuList($rootMenuId) {
+        $menuList = \DB::table("qp_menu")
+            -> where("parent_id", "=", $rootMenuId)
+            -> select()
+            -> get();
+        for($i = 0; $i < count($menuList); $i ++) {
+            $menu = $menuList[$i];
+            $menuList[$i] = CommonUtil::getMenuMultyLanguage($menu);
+        }
+
+        return $menuList;
     }
 
     public static function getMenuMultyLanguage($menu) {
