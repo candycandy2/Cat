@@ -5,9 +5,11 @@
 
 ### 開發完成的Plugin
 1. [qsecurity-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qsecurity-plugin)
+2. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
+3. [scheme-code](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/issues/13)
+4. [push-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/issues/14)
 
 ### 開發中Plugin
-1. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
 
 目前運行版本, 更新的版本為驗證過, 請確認所有功能正常再更新
 
