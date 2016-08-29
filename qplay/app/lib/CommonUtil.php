@@ -358,4 +358,23 @@ SQL;
         //TODO
         return "";
     }
+
+    /**
+     * get app Categorgy Name by Row id
+     * @param  int $categoryId      qp_app_category.row_id
+     * @return Object               qurery result
+     * @author Cleo.W.Chan
+     */
+    public static function getCategoryInfoByRowId($categoryId){
+        $categoryList = \DB::table('qp_app_category')
+            -> where('row_id', '=', $categoryId)
+            -> select('row_id', 'app_category')->get();
+        
+        if(count($categoryList) < 1) {
+            return null;
+        }
+
+        return $categoryList[0];
+    }
+
 }

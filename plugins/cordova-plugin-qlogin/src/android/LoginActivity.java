@@ -9,7 +9,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.example.hello.R;
+import com.BenQ.QPlay.R;//need to change by project, example: com.BenQ.QPlay.R;
 import org.apache.cordova.ConfigXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -26,7 +26,6 @@ public class LoginActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        //取得URL所帶進來的Intent物件
         Intent tIntent = this.getIntent();
 		Bundle b=tIntent.getExtras();
         uuid=b.getString("uuid");
@@ -51,7 +50,6 @@ public class LoginActivity extends Activity {
             if(tSchema==null){
                 Intent mIntent = new Intent();
                 mIntent.putExtra("data", data);
-                // 设置结果，并进行传送
                 setResult(RESULT_OK, mIntent);
 				finish();
             }else{

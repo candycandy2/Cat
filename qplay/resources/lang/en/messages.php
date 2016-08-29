@@ -113,4 +113,22 @@ return [
     'MSG_CONFIRM_DELETE_PARAMETER' => 'Confirm delete selected parameter?',
     'MSG_NEW_PARAMETER' => 'New Parameter',
     'MSG_EDIT_PARAMETER' => 'Edit Parameter',
+	
+	//App Maintain
+    'CATEGORY_NAME' => 'Category Name',
+    'CATEGORY_APP_COUNT' => 'App',
+    'ADD_APP' => 'Add App',
+    'ICON' => 'Icon',
+    'APP_NAME' => 'App Name',
+    'LAST_UPDATED_DATE' => 'Last updated date',
+    'RELEASED' => 'Released',
+    'SELECT_APP' => 'Select App',
+    'MSG_NEW_CATEGORY' => 'Create Category',
+    'MSG_EDIT_CATEGORY' => 'Edit Category',
+    'MSG_SAVE_CATEGORY_FAILED' => 'Save category failed!',
+    'MSG_CONFIRM_DELETE_CATEGORY' => 'Confirm to delete category?',
+    'MSG_CATEGORY_EXIST_APPS' => 'Can\'t delete, exist apps!',
+    'MSG_DELETE_CATEGORY_FAILED' => 'Delete category failed!',
+    'MSG_CONFIRM_REMOVE_APP' => 'Confirm to remove selected apps?',
+    'MSG_APP_CATEGORY_EXIST' => 'The app category name already exist!',
 ];

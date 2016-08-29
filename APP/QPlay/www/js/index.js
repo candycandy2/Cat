@@ -276,17 +276,11 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      window.plugins.qlogin.openCertificationPage(null, null);
-      //window.plugins.qlogin.openCertificationPage(loginSuccess, loginFail);
+      var args = [];
+      args[0] = "LoginSuccess";//登录成功后调用的js function name
+      args[1] = device.uuid;//uuid
+      window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
     });
-    
-    function loginSuccess() {
-      var success;
-    };
-    
-    function loginFail() {
-      var fail;
-    };
     
     $("#checkAppVersion").click(function() {
       //checkAppVersionFunction();
@@ -327,13 +321,19 @@ $(function() {
       {
           //alert("need to update");
           alert(jsonobj['message']);
-          window.plugins.qlogin.openCertificationPage(null, null); // for testing
+          var args = [];
+          args[0] = "LoginSuccess";//登录成功后调用的js function name
+          args[1] = device.uuid;//uuid
+          window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
       }
       else if (resultcode == 000913)
       {
           //alert("up to date");
           alert(jsonobj['message']);
-          window.plugins.qlogin.openCertificationPage(null, null);
+          var args = [];
+          args[0] = "LoginSuccess";//登录成功后调用的js function name
+          args[1] = device.uuid;//uuid
+          window.plugins.qlogin.openCertificationPage(null, null, args);
       }
     };
     
@@ -360,7 +360,20 @@ $(function() {
       
     };
     
-    $("#mainpage2-1").click(function() {
+    window.LoginSuccess = function(data)
+    {
+      rsDataFromServer.token_valid = data['token_valid'];
+      rsDataFromServer.token = data['token'];
+      rsDataFromServer.uuid = data['uuid'];
+      rsDataFromServer.redirect = data['redirect-uri'];
+      //alert("uuid: " + rsDataFromServer.uuid);
+      
+      // need to check token_valid
+      callGetAppList();
+    };
+    
+    function callGetAppList()
+    {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
@@ -380,49 +393,50 @@ $(function() {
         cache: false,
         success: ongetAppListSuccess,
         error: ongetAppListFail,
-      });
-
-      function ongetAppListSuccess(data)
-      {
-        var jsonobj = data;
-        var resultcode = jsonobj['result_code'];
-    
-        if (resultcode == 1) {
-          //alert(jsonobj['message']);
-          var responsecontent = jsonobj['content'];
-          
-          appcategorylist = responsecontent.app_category_list;
-          applist = responsecontent.app_list;
-          appmultilang = responsecontent.multi_lang;
-          
-          for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
-            var catetoryname = appcategorylist[categoryindex].app_category;
-            $('#appcontent').append('<h4>' + catetoryname + '</h4>');
-            $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
-            for (var appindex=0; appindex<applist.length; appindex++) {
-              var appcategory = applist[appindex].app_category;
-              if (appcategory == catetoryname){
-                var appurl = applist[appindex].url;
-                var appurlicon = applist[appindex].icon_url;
-                var packagename = applist[appindex].package_name;
-                //$('#appcontent').append('<div class="owl-item"><h4>' + packagename + '</h4></div>');
-                $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
-              } // if
-            } // for appindex
-            $('#appcontent').append('</div>');
-          } // for categoryindex
-        }
-        else {
-          alert(jsonobj['message']);
-        }
-      };
+      });          
+    };
       
-      function ongetAppListFail(data)
-      {
-        alert("ongetAppListFail");
-      };
-
-    });
+    function ongetAppListSuccess(data)
+    {
+      $.mobile.changePage('#mainpage 2-1', { transition: "flip"} );
+      
+      var jsonobj = data;
+      var resultcode = jsonobj['result_code'];
+      
+      if (resultcode == 1) {
+        //alert(jsonobj['message']);
+        var responsecontent = jsonobj['content'];
+        
+        appcategorylist = responsecontent.app_category_list;
+        applist = responsecontent.app_list;
+        appmultilang = responsecontent.multi_lang;
+        
+        for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
+          var catetoryname = appcategorylist[categoryindex].app_category;
+          $('#appcontent').append('<h4>' + catetoryname + '</h4>');
+          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+          for (var appindex=0; appindex<applist.length; appindex++) {
+            var appcategory = applist[appindex].app_category;
+            if (appcategory == catetoryname){
+              var appurl = applist[appindex].url;
+              var appurlicon = applist[appindex].icon_url;
+              var packagename = applist[appindex].package_name;
+              //$('#appcontent').append('<div class="owl-item"><h4>' + packagename + '</h4></div>');
+              $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
+            } // if
+          } // for appindex
+          $('#appcontent').append('</div>');
+        } // for categoryindex
+      }
+      else {
+        alert(jsonobj['message']);
+      }
+    };
+    
+    function ongetAppListFail(data)
+    {
+      alert("ongetAppListFail");
+    };
 });
 
 // rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%

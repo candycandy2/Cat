@@ -37,6 +37,14 @@ Route::any('/platform/getParameterList', 'platformController@getParameterList');
 Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
 Route::any('/platform/saveParameter', 'platformController@saveParameter');
 
+Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
+Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
+Route::any('/AppMaintain/deleteCategory', 'AppMaintainController@deleteCategory');
+Route::any('/AppMaintain/getCategoryAppsList', 'AppMaintainController@getCategoryAppsList');
+Route::any('/AppMaintain/getOtherAppList', 'AppMaintainController@getOtherAppList');
+Route::any('/AppMaintain/saveCategoryApps', 'AppMaintainController@saveCategoryApps');
+
+
 Route::any('auth/login', function() {
     return view("auth/login");
 });
@@ -75,6 +83,9 @@ Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
 }]);
 Route::any('categoryMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/category_maintain");
+}]);
+Route::any('categoryAppsMaintain', ['middleware' => 'auth', function() {
+    return view("app_maintain/category_apps_maintain");
 }]);
 Route::any('securitySetting', ['middleware' => 'auth', function() {
     return view("app_maintain/security_setting");
