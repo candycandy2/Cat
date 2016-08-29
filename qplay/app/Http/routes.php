@@ -24,7 +24,18 @@ Route::any('/platform/getRootMenuList', 'platformController@getRootMenuList');
 Route::any('/platform/deleteMenu', 'platformController@deleteMenu');
 Route::any('/platform/newMenu', 'platformController@newMenu');
 Route::any('/platform/getSubMenuList', 'platformController@getSubMenuList');
-
+Route::any('/platform/saveRootMenu', 'platformController@saveRootMenu');
+Route::any('/platform/getGroupList', 'platformController@getGroupList');
+Route::any('/platform/deleteGroup', 'platformController@deleteGroup');
+Route::any('/platform/saveGroup', 'platformController@saveGroup');
+Route::any('/platform/getGroupUsers', 'platformController@getGroupUsers');
+Route::any('/platform/saveGroupUsers', 'platformController@saveGroupUsers');
+Route::any('/platform/getParameterTypeList', 'platformController@getParameterTypeList');
+Route::any('/platform/deleteParameterType', 'platformController@deleteParameterType');
+Route::any('/platform/saveParameterType', 'platformController@saveParameterType');
+Route::any('/platform/getParameterList', 'platformController@getParameterList');
+Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
+Route::any('/platform/saveParameter', 'platformController@saveParameter');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
@@ -87,6 +98,12 @@ Route::any('rootMenuDetailMaintain', ['middleware' => 'auth', function() {
 }]);
 Route::any('groupMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/group_maintain");
+}]);
+Route::any('groupDetailMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/group_detail_maintain");
+}]);
+Route::any('groupUsersMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/group_users_maintain");
 }]);
 Route::any('parameterMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/parameter_setting");
