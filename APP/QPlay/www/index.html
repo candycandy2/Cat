@@ -76,11 +76,12 @@
         <div class="center" data-role="main" class="ui-content">
           <img src="img/logo.png" draggable="true"/>
           <h1 id="welcome" >Welcome page</h1>
-          <!-- <br><br><br>
-          <a href="#" id="checkAppVersion"> Get Login Data </a><br><br>
+          <br><br><br>
+          <!-- <a href="#" id="checkAppVersion"> Get Login Data </a><br><br>
           <a href="#mainpage 2-1" id="mainpage2-1"> MainPage </a><br><br> -->
           <!-- <a href="#" id="doLogin"> Login </a><br> -->
           <!-- <a href="#appdetail2-2"> App Detail </a> -->
+          <!-- <a href="#webnewspage2-3-1"> Web news </a> -->
         </div>
       </div>
       <!-- end of init page -->
@@ -105,20 +106,20 @@
                 <div id="newspage2-3">
                     <ul data-role="listview" data-inset="false">
                         <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                        <li><a href="#mainpage 2-1">
+                        <li><a href="#webnewspage2-3-1">
                             <h2>Stephen Weber</h2>
                             <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
                             <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
                             <p class="ui-li-aside"><strong>6:24</strong>PM</p>
                         </a></li>
-                        <li><a href="#mainpage 2-1">
+                        <li><a href="#webnewspage2-3-1">
                             <h2>jQuery Team</h2>
                             <p><strong>Boston Conference Planning</strong></p>
                             <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
                             <p class="ui-li-aside"><strong>9:18</strong>AM</p>
                         </a></li>
                         <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                        <li><a href="#mainpage 2-1">
+                        <li><a href="#webnewspage2-3-1">
                             <h2>Avery Walker</h2>
                             <p><strong>Re: Dinner Tonight</strong></p>
                             <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
@@ -328,21 +329,41 @@
       
       <!-- Start of qplay-main page -->
       <div data-role="page" id="mainpage 2-1">
-          <div data-role="header" style="overflow:hidden;">
+        <div data-role="header" style="overflow:hidden;">
             <h1>QPlay</h1>
-                <a href="#newseventspage2-3" data-icon="comment" class="ui-btn-left">Message</a>
-                <a href="#" data-icon="user" class="ui-btn-right">Logout</a>
-          </div><!-- /header -->
+            <a href="#newseventspage2-3" data-icon="comment" class="ui-btn-left">Message</a>
+            <a href="#" data-icon="user" class="ui-btn-right">Logout</a>
+        </div><!-- /header -->
+        
+        <div data-role="main" class="ui-content" id="appcontent">
 
-          <div data-role="main" class="ui-content" id="appcontent">
-
-          </div>
+        </div>
       </div>
-        <!-- Start of popupDialog page -->
-        <div data-role="page" data-dialog="true" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="top: 50%;left: 50%;margin: -100px 0 0 -200px;position: absolute;height: 200px;width: 400px;">
-            <div data-role="header" data-theme="a">
-              <h1>Delete Page?</h1>
-            </div>
+        
+      <!-- Start of web news page 2-3-1 -->
+      <div data-role="page" id="webnewspage2-3-1">
+        <div data-role="header" style="overflow:hidden;">
+            <a href="#newseventspage2-3" data-icon="back" class="ui-btn-left">Back</a>
+            <a href="#mainpage 2-1" data-icon="home" class="ui-btn-right">Home</a>
+        </div><!-- /header -->
+        
+        <div data-role="main" class="ui-content" id="appcontent">
+            <img src="img/slogan.png" align="middle" width=100% height=64>
+            <br><br>
+            <p><div style="margin-left:20px;"><font color="#4B0082" size="2">[ITS 緊急安全通告]:</font></div></p>
+            <p><div style="margin-left:20px;"><font size="5"><strong>即刻解除安裝 QuickTime for Windows 軟體</strong></font></div></p>
+            <p><div style="margin-left:20px;"><font color="#4B0082" size="2">Publish Data: <strong>19 April, 2016</strong> Published by: <strong>ITS</strong></font></div></p>
+            <p><strong><font color="#800000">[Summary]</font></strong></p>
+            <p>就在趨勢科技 Zero Day Initiative 零時差漏洞懸賞機構發現了兩個新的 QuickTime for Windows 漏洞不久之後，<font color="#FF0000">Apple 即宣布即將終止對該軟體的支援</font>。<br><br>這兩個漏洞可能讓駭客從遠端執行程式碼，進而掌控受害的電腦。若發生在企業環境內部，這等於是敞開大門讓駭客進入全公司網路。<br><br>根據<a style="text-decoration: underline">趨勢科技</a>全球威脅通訊經理 Christopher Budd 表示，目前尚未看到有任何攻擊已利用這些漏洞，但問題是，這兩個漏洞永遠也沒有機會修補。<br><br>Budd 表示：「繼 Microsoft Windows XP 和 Oracle Java 6 之後，QuickTime for Windows 軟體現在也加入了支援終止的行列，因此未來不會再釋出更新來修補漏洞。所以，其資安風險將隨著被發現的漏洞數量而不斷升高。最終辦法還是只有依照 Apple 建議將 QuickTime for Windows <a style="text-decoration: underline">解除安裝</a>一途。」</p>
+        </div>
+      </div>
+      <!-- Start of web news page 2-3-1 -->
+      
+      <!-- Start of popupDialog page -->
+      <div data-role="page" data-dialog="true" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="top: 50%;left: 50%;margin: -100px 0 0 -200px;position: absolute;height: 200px;width: 400px;">
+          <div data-role="header" data-theme="a">
+            <h1>Delete Page?</h1>
+          </div>
             <div role="main" class="ui-content">
                 <h3 class="ui-title">Are you sure you want to delete this page?</h3>
                 <p>This action cannot be undone.</p>
