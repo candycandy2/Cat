@@ -21,6 +21,10 @@
     };
 
     var showMessageDialog = function (title, content, warning) {
+        $("#messageDialogTitle").text("");
+        $("#messageDialogContent").html("");
+        $("#messageDialogWarningContent").html("");
+
         if(title) {
             $("#messageDialogTitle").text(title);
         }

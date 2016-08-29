@@ -93,4 +93,24 @@ return [
     'MSG_CONFIRM_DELETE_MENU' => '確認刪除所選菜單?',
     'MSG_EXIST_SUBMENU' => '無法刪除, 存在子菜單!',
     'MSG_DELETE_MENU_FAILED' => '刪除菜單失敗!',
+
+    //Group Maintain
+    'GROUP_NAME' => '群組名稱',
+    'GROUP_LIST' => '群組名單',
+    'MSG_CONFIRM_DELETE_GROUP' => '確認刪除所選群組?',
+    'MSG_GROUP_EXIST_USERS' => '無法刪除, 群組下存在用戶!',
+
+    //Parameter Setting
+    'PARAMETER_TYPE' => '參數類型',
+    'PARAMETER' => '參數',
+    'PARAMETER_TYPE_NAME' => '類別名稱',
+    'DESCRIPTION' => '描述',
+    'PARAMETER_NAME' => '參數名稱',
+    'PARAMETER_VALUE' => '參數值',
+    'MSG_CONFIRM_DELETE_TYPE' => '確認刪除所選的參數類別?',
+    'MSG_NEW_TYPE' => '新增參數類別',
+    'MSG_EDIT_TYPE' => '編輯參數類別',
+    'MSG_CONFIRM_DELETE_PARAMETER' => '確認刪除所選的參數?',
+    'MSG_NEW_PARAMETER' => '新增參數',
+    'MSG_EDIT_PARAMETER' => '編輯參數',
 ];

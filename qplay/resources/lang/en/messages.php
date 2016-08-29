@@ -93,4 +93,24 @@ return [
     'MSG_CONFIRM_DELETE_MENU' => 'Confirm to delete selected menu?',
     'MSG_EXIST_SUBMENU' => 'Can\'t delete, exist submenu!',
     'MSG_DELETE_MENU_FAILED' => 'Delete menu failed!',
+
+    //Group Maintain
+    'GROUP_NAME' => 'Group Name',
+    'GROUP_LIST' => 'Group List',
+    'MSG_CONFIRM_DELETE_GROUP' => 'Confirm to delete selected group?',
+    'MSG_GROUP_EXIST_USERS' => 'Can\'t delete, exist users!',
+
+    //Parameter Setting
+    'PARAMETER_TYPE' => 'Parameter Type',
+    'PARAMETER' => 'Parameter',
+    'PARAMETER_TYPE_NAME' => 'Type Name',
+    'DESCRIPTION' => 'Description',
+    'PARAMETER_NAME' => 'Parameter Name',
+    'PARAMETER_VALUE' => 'Parameter Value',
+    'MSG_CONFIRM_DELETE_TYPE' => 'Confirm delete selected parameter type?',
+    'MSG_NEW_TYPE' => 'New Parameter Type',
+    'MSG_EDIT_TYPE' => 'Edit Parameter Type',
+    'MSG_CONFIRM_DELETE_PARAMETER' => 'Confirm delete selected parameter?',
+    'MSG_NEW_PARAMETER' => 'New Parameter',
+    'MSG_EDIT_PARAMETER' => 'Edit Parameter',
 ];

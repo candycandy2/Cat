@@ -172,11 +172,10 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                 return false;
             }
 
-
             if(isNewSubMenu) {
                 var currentData = $("#gridSubMenuList").bootstrapTable('getData');
                 var menu = new Object();
-                menu.row_id = "temp_id_" + currentData.length + 1;
+                menu.row_id = "temp_id_" + Math.round(new Date().getTime() / 1000);
                 menu.parent_id = {{$menuId}};
                 menu.menu_name = $("#tbxSubMenuName").val();
                 menu.path = $("#tbxSubLink").val();
@@ -222,6 +221,52 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                 $("#btnNewSubMenu").show();
             }
         };
+
+        var SaveMenu = function() {
+            var menuName = $("#tbxMenuName").val();
+            var link = $("#tbxLink").val();
+            var englishName = $("#tbxEnglishName").val();
+            var simpleChineseName = $("#tbxSimpleChineseName").val();
+            var traditionChineseName = $("#tbxTraditionalChineseName").val();
+            if(menuName == "" || englishName == "" || simpleChineseName == "" || traditionChineseName == "") {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+
+
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
+                hideConfirmDialog();
+                var allSubMenus = $("#gridSubMenuList").bootstrapTable('getData');
+
+                var mydata = {
+                    menu_id:{{$menuId}},
+                    sub_menu_list: allSubMenus,
+                    menu_name: menuName,
+                    link: link,
+                    english_name: englishName,
+                    simple_chinese_name: simpleChineseName,
+                    tradition_chinese_name: traditionChineseName
+                };
+                var mydataStr = $.toJSON(mydata);
+                $.ajax({
+                    url: "platform/saveRootMenu",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: mydataStr,
+                    success: function (d, status, xhr) {
+                        if(d.result_code != 1) {
+                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                        }  else {
+                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                        }
+                    },
+                    error: function (e) {
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    }
+                });
+            });
+        }
 
     </script>
 @endsection
