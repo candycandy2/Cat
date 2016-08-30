@@ -34,7 +34,7 @@ class AppMaintainController extends Controller
 
     public function saveCategory(){
 
-         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
             return null;
         }
@@ -192,5 +192,90 @@ class AppMaintainController extends Controller
 
         return null;
     }
+
+    public function getBlockList(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $blockList = \DB::table("qp_block_list")
+            -> where('deleted_at','=','0000-00-00 00:00:00')
+            -> select('row_id', 'ip', 'description')
+            -> orderBy('ip')
+            -> get();
+
+         return response()->json($blockList);
+    }
+
+    public function saveBlockList(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $blockIp = $jsonContent['blockIp'];
+            $description = $jsonContent['description'];
+            $isNew = $jsonContent['isNew'];
+            if($isNew == 'Y') {
+                \DB::table("qp_block_list")
+                    -> insert(
+                        ['ip'=>$blockIp,
+                            'description'=>$description,
+                            'created_at'=>$now,
+                            'created_user'=>\Auth::user()->row_id]);
+            } else {
+                $blockRowId = $jsonContent['blockRowId'];
+                \DB::table("qp_block_list")
+                    -> where('row_id', '=', $blockRowId)
+                    -> update(
+                        ['ip'=>$blockIp,
+                            'description'=>$description,
+                            'updated_at'=>$now,
+                            'updated_user'=>\Auth::user()->row_id]);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+
+    public function deleteBlockList(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $blockIdList = $jsonContent['blockIdList'];
+            \DB::table("qp_block_list")
+                ->whereIn('row_id', $blockIdList)
+                -> update(
+                    ['deleted_at'=>$now,
+                        'updated_at'=>$now,
+                        'updated_user'=>\Auth::user()->row_id]);
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
 }
+
 ?>
