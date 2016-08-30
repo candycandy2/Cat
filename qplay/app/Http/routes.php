@@ -43,6 +43,12 @@ Route::any('/AppMaintain/deleteCategory', 'AppMaintainController@deleteCategory'
 Route::any('/AppMaintain/getCategoryAppsList', 'AppMaintainController@getCategoryAppsList');
 Route::any('/AppMaintain/getOtherAppList', 'AppMaintainController@getOtherAppList');
 Route::any('/AppMaintain/saveCategoryApps', 'AppMaintainController@saveCategoryApps');
+Route::any('/AppMaintain/getBlockList', 'AppMaintainController@getBlockList');
+Route::any('/AppMaintain/saveBlockList', 'AppMaintainController@saveBlockList');
+Route::any('/AppMaintain/deleteBlockList', 'AppMaintainController@deleteBlockList');
+Route::any('/AppMaintain/getWhiteList', 'AppMaintainController@getWhiteList');
+
+
 
 
 Route::any('auth/login', function() {
