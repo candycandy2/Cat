@@ -107,22 +107,12 @@ class AppMaintainController extends Controller
         }
 
         $input = Input::get();
-        $categoryId = $input["category_id"];
-        
-        $categoryAppsList = \DB::table("qp_app_head as h")
-        -> join('qp_app_line as l','h.row_id', '=', 'l.app_row_id')
-        -> where('h.app_category_row_id', '=', $categoryId)
-        -> where('l.lang_row_id', '=', \DB::raw('h.default_lang_row_id'))
-        -> select('h.row_id','h.package_name','h.icon_url','l.app_name',\DB::raw('DATE_FORMAT(l.updated_at , \'%Y-%m-%d\') as updated_at'))
-        -> get();
-
-        foreach ($categoryAppsList as $app) {
-            $ready_count = \DB::table('qp_app_version')
-                ->where('app_row_id', '=', $app->row_id)
-                ->where('status', '=', 'ready')
-                ->count();
-            $app->released = ($ready_count > 0)?'Y':'N';
+        if( !isset($input["category_id"]) || !is_numeric($input["category_id"])){
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
+
+        $categoryId = $input["category_id"];
+        $categoryAppsList = $this->getAppList($categoryId);
         return response()->json($categoryAppsList);
     }
 
@@ -275,6 +265,63 @@ class AppMaintainController extends Controller
         }
 
         return null;
+    }
+
+    public function appList(){
+        
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $data = array();
+
+        $appList = json_encode($this->getAppList());
+        $data['appList']  = $appList;
+
+        $data['projectInfo'] = CommonUtil::getProjectInfo();
+        $data['langList']    = CommonUtil::getLangList();
+        return view("app_maintain/app_list")->with('data',$data);
+    }
+
+    public function appDetail(){
+        $data = array();
+
+        return view("app_maintain/app_detail")->with('data',$data);
+    }
+
+    private function getAppList($categoryId=null){
+
+        $appsList = \DB::table("qp_app_head as h")
+                -> join('qp_app_line as l','h.row_id', '=', 'l.app_row_id')
+                -> where(function($query) use ($categoryId){
+                
+                if(isset($categoryId) && is_numeric($categoryId))
+                    $query->where('h.app_category_row_id', '=', $categoryId);
+                })
+
+                ->where('l.lang_row_id', '=', \DB::raw('h.default_lang_row_id'))
+                -> select('h.row_id','h.package_name','h.icon_url','l.app_name',\DB::raw('DATE_FORMAT(l.updated_at , \'%Y-%m-%d\') as updated_at'))
+                -> get();
+
+        foreach ($appsList as $app) {
+            
+            $appVersionInfo = \DB::table('qp_app_version')
+                ->where('app_row_id', '=', $app->row_id)
+                ->select('version_name','device_type','status')
+                ->get();
+
+           if(isset($appVersionInfo[0])){
+
+                $record = $appVersionInfo[0];
+                $status = ($record->status == 'ready')?'':'-Unpublish';
+                $app->released = $record->device_type.'-'.$record->version_name.$status;
+
+           }else{
+                $app->released = "";
+           }        
+
+        }
+        return $appsList;
     }
 }
 

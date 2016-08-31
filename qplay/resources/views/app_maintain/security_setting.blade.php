@@ -29,7 +29,7 @@ $menu_name = "APP_SECURITY_SETTING";
 		    <table id="gridBlockList" data-toggle="table" data-sort-name="row_id" data-toolbar="#blackToolbar"
 		           data-url="AppMaintain/getBlockList" data-height="398" data-pagination="true"
 		           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-		           data-show-toggle="false"  data-sortable="true"
+		           data-show-toggle="true"  data-sortable="true"
 		           data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
 		           data-click-to-select="false" data-single-select="false">
 		        <thead>

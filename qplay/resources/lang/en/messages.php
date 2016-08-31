@@ -142,4 +142,10 @@ return [
     'MSG_CONFIRM_DELETE_BLOCK' => 'Confirm to remove selected blocked Lists?',
     'MSG_DELETE_BLOCK_FAILED' => 'Delete blocked list failed!',
     'MSG_SAVE_BLOCK_FAILED' => 'Save blocked list failed!',
+
+     //App Maintain
+    'NEW_APP' => 'New App',
+    'APP_PACKAGE_NAME' => 'Package Name',
+    'APP_KEY' => 'App Key',
+    'DEFAULT_LANG' => 'Default language',
 ];
