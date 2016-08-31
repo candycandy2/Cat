@@ -51,6 +51,7 @@ Route::any('/AppMaintain/getWhiteList', 'AppMaintainController@getWhiteList');
 
 
 
+
 Route::any('auth/login', function() {
     return view("auth/login");
 });
@@ -81,12 +82,10 @@ Route::any('about', ['middleware' => 'auth', function() {
 Route::any('push', ['middleware' => 'auth', function() {
     return view("push");
 }]);
-Route::any('androidAppMaintain', ['middleware' => 'auth', function() {
-    return view("app_maintain/android");
-}]);
-Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
-    return view("app_maintain/ios");
-}]);
+
+Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
+Route::any('AppMaintain/appDetail', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
+
 Route::any('categoryMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/category_maintain");
 }]);

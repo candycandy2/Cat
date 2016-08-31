@@ -142,4 +142,10 @@ return [
     'MSG_CONFIRM_DELETE_BLOCK' => '確定刪除所選黑名單?',
     'MSG_DELETE_BLOCK_FAILED' => '刪除黑名單失敗!',
     'MSG_SAVE_BLOCK_FAILED' => '儲存黑名單失敗!',
+
+    //App Maintain
+    'NEW_APP' => '新增應用程式',
+    'APP_PACKAGE_NAME' => 'Package Name',
+    'APP_KEY' => 'App Key',
+    'DEFAULT_LANG' => '預設語言',
 ];

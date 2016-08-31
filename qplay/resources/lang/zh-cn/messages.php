@@ -142,4 +142,10 @@ return [
     'MSG_CONFIRM_DELETE_BLOCK' => '确定删除所选黑名单?',
     'MSG_DELETE_BLOCK_FAILED' => '删除黑名单失败!',
     'MSG_SAVE_BLOCK_FAILED' => '储存黑名单失败!',
+
+     //App Maintain
+    'NEW_APP' => '新增应用程式',
+    'APP_PACKAGE_NAME' => 'Package Name',
+    'APP_KEY' => 'App Key',
+    'DEFAULT_LANG' => '预设语言',
 ];
