@@ -216,7 +216,8 @@ var app = {
         }
 
         app.setSecurity();
-        app.changeLevel(1);
+        //app.changeLevel(1);
+        
         document.addEventListener("resume", app.resumeCheckLevel);
     },
     // Update DOM on a Received Event
@@ -258,10 +259,16 @@ var app = {
         window.plugins.qsecurity.resumeCheckLevel(app.securityLevel,app.error);
     },
     securityLevel: function(rs){
-        if(rs==1){
-            //alert("Level: " + rs + "check login: need implement");
+        if((rs==1) && (loginjustdone==0)) {
+          //alert("Level: " + rs + " check login: need implement");
+          var args = [];
+          args[0] = "LoginSuccess";//登录成功后调用的js function name
+          args[1] = device.uuid;//uuid
+          window.plugins.qlogin.openCertificationPage(null, null, args);
+          loginjustdone = 1;
         }else{
-            alert("Level: " + rs);
+            //alert("Level: " + rs);
+            loginjustdone = 0;
         }
     },
     success: function(){
@@ -325,6 +332,7 @@ $(function() {
           args[0] = "LoginSuccess";//登录成功后调用的js function name
           args[1] = device.uuid;//uuid
           window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
+          loginjustdone = 1;
       }
       else if (resultcode == 000913)
       {
@@ -411,18 +419,29 @@ $(function() {
         applist = responsecontent.app_list;
         appmultilang = responsecontent.multi_lang;
         
+        $('#appcontent').html(""); // empty html content
+        
         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
           $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+          
+          // for testing
+          $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
+          
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
             if (appcategory == catetoryname){
               var appurl = applist[appindex].url;
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
-              //$('#appcontent').append('<div class="owl-item"><h4>' + packagename + '</h4></div>');
-              $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
+              
+              if (packagename == "benq.qplay") {
+                  app.changeLevel(applist[appindex].security_level);
+              }
+              else {
+                  $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src=' + applist[appindex].icon_url + '></h4></div>');
+              }
             } // if
           } // for appindex
           $('#appcontent').append('</div>');
@@ -450,3 +469,4 @@ var rsDataFromServer = {
 var appcategorylist;
 var applist;
 var appmultilang;
+var loginjustdone;
