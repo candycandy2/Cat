@@ -159,7 +159,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                     }
                 });
             });
-        };
+        }
 
     	$(function() {
     		$delBtn = $("#btnDelete");

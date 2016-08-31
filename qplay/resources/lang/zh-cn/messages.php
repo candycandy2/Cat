@@ -114,7 +114,7 @@ return [
     'MSG_NEW_PARAMETER' => '新增参数',
     'MSG_EDIT_PARAMETER' => '编辑参数',
 
-    //App Maintain
+    //App Category Maintain
     'CATEGORY_NAME' => '类别名',
     'CATEGORY_APP_COUNT' => 'App',
 	'ADD_APP' => '加入 App',
@@ -131,4 +131,21 @@ return [
     'MSG_DELETE_CATEGORY_FAILED' => '删除类别失败!',
     'MSG_CONFIRM_REMOVE_APP' => '确定移除所选App?',
     'MSG_APP_CATEGORY_EXIST' => 'App 类别名称已经存在!',
+
+    //App Security Setting
+    'BLOCK_LIST' => '黑名单',
+    'BLOCK_HINT'=> '(列表中的设备IP来源将无法访问与使用Qplay服务)',
+    'BLOCK_IP' => 'IP',
+    'BLOCK_DESCRIPT' => '描述',
+    'MSG_NEW_BLOCK' => '新增黑名单',
+    'MSG_EDIT_BLOCK' => '编辑黑名单',
+    'MSG_CONFIRM_DELETE_BLOCK' => '确定删除所选黑名单?',
+    'MSG_DELETE_BLOCK_FAILED' => '删除黑名单失败!',
+    'MSG_SAVE_BLOCK_FAILED' => '储存黑名单失败!',
+
+     //App Maintain
+    'NEW_APP' => '新增应用程式',
+    'APP_PACKAGE_NAME' => 'Package Name',
+    'APP_KEY' => 'App Key',
+    'DEFAULT_LANG' => '预设语言',
 ];
