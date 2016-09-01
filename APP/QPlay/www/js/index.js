@@ -328,20 +328,18 @@ $(function() {
       {
           //alert("need to update");
           alert(jsonobj['message']);
-          var args = [];
-          args[0] = "LoginSuccess";//登录成功后调用的js function name
-          args[1] = device.uuid;//uuid
-          window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
-          loginjustdone = 1;
+          
+          // do update process
+          // .....
+          
+          callisRegister(); // for testing
       }
       else if (resultcode == 000913)
       {
           //alert("up to date");
           alert(jsonobj['message']);
-          var args = [];
-          args[0] = "LoginSuccess";//登录成功后调用的js function name
-          args[1] = device.uuid;//uuid
-          window.plugins.qlogin.openCertificationPage(null, null, args);
+          
+          callisRegister();
       }
     };
     
@@ -456,6 +454,63 @@ $(function() {
     {
       alert("ongetAppListFail");
     };
+    
+    function callisRegister()
+    {
+      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/isRegister?lang=en-us&uuid=" + device.uuid,
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': 'qplay',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+        },
+        cache: false,
+        success: onisRegisterSuccess,
+        error: onisRegisterFail,
+      });          
+    };
+    
+    function onisRegisterSuccess(data)
+    {
+      var jsonobj = data;
+      var resultcode = jsonobj['result_code'];
+      
+      if (resultcode == 1)
+      {
+          alert(jsonobj['message']);
+          var responsecontent = jsonobj['content'];
+          if (responsecontent.is_register) {
+              //alert("is_register");
+              var args = [];
+              args[0] = "LoginSuccess";
+              args[1] = device.uuid;//uuid
+              window.plugins.qlogin.openCertificationPage(null, null, args);
+              loginjustdone = 1;
+          }
+          else {
+              //alert("!is_register");
+              var args = [];
+              args[0] = "LoginSuccess";
+              args[1] = device.uuid;//uuid
+              window.plugins.qlogin.openCertificationPage(null, null, args);
+              loginjustdone = 1;
+          }
+      }
+    };
+    
+    function onisRegisterFail(data)
+    {
+      alert("onisRegisterFail");
+    };
+    
 });
 
 // rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
