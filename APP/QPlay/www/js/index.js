@@ -556,12 +556,14 @@ $(function() {
               {
                   var title = message.message_title;
                   var txt = message.message_txt;
+                  var rowid = message.message_send_row_id;
                   
               }
               else if (message.message_type == 2)
               {
                   var title = message.message_title;
                   var txt = message.message_txt;
+                  var rowid = message.message_send_row_id;
                   
               }
           }
