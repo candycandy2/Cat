@@ -27,11 +27,14 @@ public class LoginActivity extends Activity {
         actionBar.hide();
 
         Intent tIntent = this.getIntent();
-		Bundle b=tIntent.getExtras();
-        uuid=b.getString("uuid");
+	Bundle b=tIntent.getExtras();
+        if(b!=null){
+            uuid=b.getString("uuid");
+        }
         Uri myURI = tIntent.getData();
         if(myURI!=null){
             tSchema = myURI.getQueryParameter("Name");
+            uuid = myURI.getQueryParameter("uuid");
         }
 
         webview = (WebView) findViewById(R.id.WebViewDetail);
