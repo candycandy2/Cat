@@ -511,6 +511,69 @@ $(function() {
       alert("onisRegisterFail");
     };
     
+    $("#newseventspage").click(function() {
+        callgetMessageList();
+    });
+    
+    function callgetMessageList()
+    {
+      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': 'qplay',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+          'token': rsDataFromServer.token,
+        },
+        cache: false,
+        success: ongetMessageListSuccess,
+        error: ongetMessageListFail,
+      });          
+    };
+    
+    function ongetMessageListSuccess(data)
+    {
+      var jsonobj = data;
+      var resultcode = jsonobj['result_code'];
+      
+      if (resultcode == 1)
+      {
+          alert(jsonobj['message']);
+          var responsecontent = jsonobj['content'];
+          
+          for (var appindex=0; appindex<responsecontent.message_count; appindex++)
+          {
+              var message = responsecontent.message_list[appindex];
+              if (message.message_type == 1) // 1:news  2:event
+              {
+                  var title = message.message_title;
+                  var txt = message.message_txt;
+                  var rowid = message.message_send_row_id;
+                  
+              }
+              else if (message.message_type == 2)
+              {
+                  var title = message.message_title;
+                  var txt = message.message_txt;
+                  var rowid = message.message_send_row_id;
+                  
+              }
+          }
+      }
+    };
+    
+    function ongetMessageListFail(data)
+    {
+      alert("ongetMessageListFail");
+    };
 });
 
 // rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
