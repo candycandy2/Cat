@@ -440,4 +440,16 @@ SQL;
         return $categoryList[0];
     }
 
+    public static function getProjectInfo()
+    {
+        $projectList = \DB::table('qp_project')
+            -> select('row_id', 'app_key')->get();
+        return $projectList;
+    }
+
+    public static function getLangList(){
+        $langList = \DB::table('qp_language')
+            -> select('row_id', 'lang_code', 'lang_desc')->get();
+        return $langList;
+    }
 }

@@ -114,7 +114,7 @@ return [
     'MSG_NEW_PARAMETER' => 'New Parameter',
     'MSG_EDIT_PARAMETER' => 'Edit Parameter',
 	
-	//App Maintain
+	//App Category Maintain
     'CATEGORY_NAME' => 'Category Name',
     'CATEGORY_APP_COUNT' => 'App',
     'ADD_APP' => 'Add App',
@@ -152,4 +152,21 @@ return [
     'COPY_MESSAGE' => 'Copy Message',
     'PUSH_AGAIN' => 'Push Again',
     'MSG_CONFIRM_PUSH_AGAIN' => 'Confirm to push again?',
+
+    //App Security Setting
+    'BLOCK_LIST' => 'Blocked List',
+    'BLOCK_HINT'=> '(The blocked ip would not visit or use the service on Qplay)',
+    'BLOCK_IP' => 'IP',
+    'BLOCK_DESCRIPT' => 'Descript',
+    'MSG_NEW_BLOCK' => 'Add Blocked IP',
+    'MSG_EDIT_BLOCK' => 'Edit Blocked List',
+    'MSG_CONFIRM_DELETE_BLOCK' => 'Confirm to remove selected blocked Lists?',
+    'MSG_DELETE_BLOCK_FAILED' => 'Delete blocked list failed!',
+    'MSG_SAVE_BLOCK_FAILED' => 'Save blocked list failed!',
+
+     //App Maintain
+    'NEW_APP' => 'New App',
+    'APP_PACKAGE_NAME' => 'Package Name',
+    'APP_KEY' => 'App Key',
+    'DEFAULT_LANG' => 'Default language',
 ];
