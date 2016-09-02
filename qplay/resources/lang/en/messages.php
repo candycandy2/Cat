@@ -132,6 +132,27 @@ return [
     'MSG_CONFIRM_REMOVE_APP' => 'Confirm to remove selected apps?',
     'MSG_APP_CATEGORY_EXIST' => 'The app category name already exist!',
 
+    //Push Message
+    'NEW_MESSAGE' => 'New Message',
+    'MESSAGE_TYPE' => 'Type',
+    'MESSAGE_TITLE' => 'Title',
+    'CREATED_DATE' => 'Created Date',
+    'MESSAGE_CREATED_USER' => 'Created User',
+    'STATUS' => 'Status',
+    'PUSH_TO' => 'Push To',
+    'PUSH_TYPE' => 'Push Type',
+    'MESSAGE_CONTENT' => 'Message Content',
+    'MESSAGE_RECEIVER' => 'Message Receiver',
+    'PUSH_IMMEDIATELY' => 'Push Immediately',
+    'MSG_CONFIRM_PUSH_IMMEDIATELY' => 'Confirm to push immediately?',
+    'MSG_MUST_CHOOSE_RECEIVER' => 'Must select message receiver!',
+    'MESSAGE_SEND_HISTORY' => 'Push History',
+    'PUSH_DATE' => 'Date',
+    'PUSH_SOURCE_USER' => 'Source User',
+    'COPY_MESSAGE' => 'Copy Message',
+    'PUSH_AGAIN' => 'Push Again',
+    'MSG_CONFIRM_PUSH_AGAIN' => 'Confirm to push again?',
+
     //App Security Setting
     'BLOCK_LIST' => 'Blocked List',
     'BLOCK_HINT'=> '(The blocked ip would not visit or use the service on Qplay)',

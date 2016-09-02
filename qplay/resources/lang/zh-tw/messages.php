@@ -132,6 +132,27 @@ return [
     'MSG_CONFIRM_REMOVE_APP' => '確定移除所選App?',
     'MSG_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
 
+    //Push Message
+    'NEW_MESSAGE' => '新增推播',
+    'MESSAGE_TYPE' => '類別',
+    'MESSAGE_TITLE' => '標題',
+    'CREATED_DATE' => '創建日期',
+    'MESSAGE_CREATED_USER' => '推播者',
+    'STATUS' => '狀態',
+    'PUSH_TO' => '推播至',
+    'PUSH_TYPE' => '推播類別',
+    'MESSAGE_CONTENT' => '內文',
+    'MESSAGE_RECEIVER' => '收訊者',
+    'PUSH_IMMEDIATELY' => '立即推播',
+    'MSG_CONFIRM_PUSH_IMMEDIATELY' => '確認立即推播?',
+    'MSG_MUST_CHOOSE_RECEIVER' => '必須選擇接收者!',
+    'MESSAGE_SEND_HISTORY' => '推播記錄',
+    'PUSH_DATE' => '日期',
+    'PUSH_SOURCE_USER' => '推播者',
+    'COPY_MESSAGE' => '複製推播',
+    'PUSH_AGAIN' => '再推播',
+    'MSG_CONFIRM_PUSH_AGAIN' => '确认再推播?',
+
     //App Security Setting
     'BLOCK_LIST' => '黑名單',
     'BLOCK_HINT'=> '(列表中的設備IP來源將無法訪問與使用Qplay服務)',

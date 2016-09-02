@@ -1,0 +1,225 @@
+@include("layouts.lang")
+<?php
+use Illuminate\Support\Facades\Input;
+$menu_name = "PUSH_SERVER";
+$input = Input::get();
+$push_send_row_id = $input["push_send_row_id"];
+$allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
+$sendInfo = \App\lib\CommonUtil::getMessageSendInfo($push_send_row_id);
+$messageInfo = $sendInfo->message_info;
+$messageType = $sendInfo->message_info->message_type;
+?>
+@extends('layouts.admin_template')
+@section('content')
+    <div class="row">
+        <div class="col-lg-8 col-xs-8">
+            <table>
+                <tr>
+                    <td>{{trans("messages.PUSH_TO")}}:</td>
+                    <td style="padding: 10px;">
+                        <select class="select2-close-mask form-control" name="ddlPushTo" id="ddlPushTo" disabled="disabled">
+                            <option value="qplay" selected="selected">QPlay</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{trans("messages.PUSH_TYPE")}}:</td>
+                    <td style="padding: 10px;">
+                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
+                            <option value="event"
+                                    @if($messageInfo->message_type=='event')
+                                    selected="selected"
+                                    @endif>event</option>
+                            <option value="event"
+                                    @if($messageInfo->message_type=='news')
+                                    selected="news"
+                                    @endif>news</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
+                    <td style="padding: 10px;" id="tbxTitle">
+                        {{$messageInfo->message_title}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
+                    <td style="padding: 10px;" id="tbxContent">
+                        {{$messageInfo->message_text}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-lg-4 col-xs-4" >
+            <div class="btn-toolbar" role="toolbar" style="float: right;">
+                <button type="button" class="btn btn-warning" onclick="SendAgain()">
+                    {{trans("messages.PUSH_AGAIN")}}
+                </button>
+                <a type="button" class="btn btn-default" href="push">
+                    {{trans("messages.CANCEL")}}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if($messageType == "event")
+    <div class="row" id="regionTypeEvent">
+        <div class="col-lg-12 col-xs-12">
+            <hr class="primary" style="border-top: 1px solid #bbb1b1;">
+            {{trans("messages.MESSAGE_RECEIVER")}}:
+            <br/><br/>
+
+            @foreach($allCompanyRoleList as $companyRoles)
+                @if(count($companyRoles->roles > 0))
+                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
+                        <tr>
+                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
+                                <input type="checkbox" data="{{$companyRoles->company}}" disabled="disabled"
+                                       onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
+                            </td>
+                            <td style="border:1px solid #d6caca;">
+                                <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole" disabled="disabled"
+                                       @if(in_array($companyRoles->roles[0]->row_id, $sendInfo->role_list)) checked="checked" @endif
+                                >{{$companyRoles->roles[0]->role_description}}</input>
+                            </td>
+                        </tr>
+                        @for($i = 1; $i < count($companyRoles->roles); $i++)
+                            <tr>
+                                <td style="border:1px solid #d6caca;">
+                                    <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole" disabled="disabled"
+                                           @if(in_array($companyRoles->roles[$i]->row_id, $sendInfo->role_list)) checked="checked" @endif
+                                    >{{$companyRoles->roles[$i]->role_description}}</input>
+                                </td>
+                            </tr>
+                        @endfor
+                    </table>
+                @endif
+            @endforeach
+
+            <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+                   data-url="platform/getSingleEventMessageReceiver?message_send_row_id={{$push_send_row_id}}" data-height="398" data-pagination="true"
+                   data-show-refresh="false" data-row-style="rowStyle" data-search="false"
+                   data-show-toggle="true"  data-sortable="false"
+                   data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
+                   data-click-to-select="false" data-single-select="false">
+                <thead>
+                <tr>
+                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+                    <th data-field="login_id" data-sortable="true">{{trans("messages.USER_LOGIN_ID")}}</th>
+                    <th data-field="company" data-sortable="true">{{trans("messages.USER_COMPANY")}}</th>
+                    <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    @elseif($messageType == "news")
+    <div class="row" id="regionTypeNews">
+        <div class="col-lg-12 col-xs-12">
+            <hr class="primary" style="border-top: 1px solid #bbb1b1;">
+            {{trans("messages.MESSAGE_RECEIVER")}}:
+            <br/><br/>
+            <table class="table table-bordered" id="CompanyTable" style="border:1px solid #d6caca;">
+                <tr>
+                    <td rowspan="{{count($allCompanyRoleList)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
+                        <input type="checkbox" data="All_Company" disabled="disabled" onclick="CompanyTableSelectedAll(this)">ALL</input>
+                    </td>
+                    <td style="border:1px solid #d6caca;">
+                        <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[0]->company}}"
+                               @if(in_array($allCompanyRoleList[0]->company, $sendInfo->company_list)) checked="checked" @endif
+                               class="cbxNewsCompany">{{$allCompanyRoleList[0]->company}}</input>
+                    </td>
+                </tr>
+                @for($i = 1; $i < count($allCompanyRoleList); $i++)
+                    <tr>
+                        <td style="border:1px solid #d6caca;">
+                            <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[$i]->company}}"
+                                   @if(in_array($allCompanyRoleList[$i]->company, $sendInfo->company_list)) checked="checked" @endif
+                                   class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
+                        </td>
+                    </tr>
+                @endfor
+            </table>
+        </div>
+    </div>
+    @endif
+    <script>
+        var SendAgain = function () {
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_AGAIN")}}", "", function () {
+                hideConfirmDialog();
+
+                var msgSourcer = $("#ddlPushTo").val();
+                var msgType = $("#ddlType").val();
+                var msgTitle = $("#tbxTitle").text();
+                var msgContent = $("#tbxContent").text();
+                var msgReceiver = new Object();
+
+                if(msgType == "news") {
+                    msgReceiver.type = "news";
+                    msgReceiver.company_list = new Array();
+                    $(".cbxNewsCompany").each(function(i, cbx) {
+                        if($(cbx).is(':checked')) {
+                            msgReceiver.company_list.push($(cbx).attr("data"));
+                        }
+                    });
+                    if(msgReceiver.company_list.length <= 0) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");
+                        return false;
+                    }
+                } else {
+                    msgReceiver.type = "event";
+                    msgReceiver.role_list = new Array();
+                    msgReceiver.user_list = new Array();
+
+                    $(".cbxRole").each(function(i, cbx) {
+                        if($(cbx).is(':checked')) {
+                            msgReceiver.role_list.push($(cbx).attr("data"));
+                        }
+                    });
+                    var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+                    $.each(selectedUsers, function(i, user) {
+                        msgReceiver.user_list.push(user.row_id);
+                    });
+
+                    if(msgReceiver.role_list.length <= 0 && msgReceiver.user_list.length <= 0) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");
+                        return false;
+                    }
+                }
+
+                var mydata =
+                {
+                    message_id: {{$messageInfo->row_id}},
+                    receiver: msgReceiver
+                };
+
+                var mydataStr = $.toJSON(mydata);
+                $.ajax({
+                    url: "platform/pushMessageImmediatelyAgain",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: mydataStr,
+                    success: function (d, status, xhr) {
+                        if(d.result_code != 1) {
+                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                        }  else {
+                            //TODO redirect to parent page and show message
+                            //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            window.location.href = "push";
+                        }
+                    },
+                    error: function (e) {
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    }
+                });
+            });
+        };
+
+
+    </script>
+@endsection
+
+

@@ -36,6 +36,11 @@ Route::any('/platform/saveParameterType', 'platformController@saveParameterType'
 Route::any('/platform/getParameterList', 'platformController@getParameterList');
 Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
 Route::any('/platform/saveParameter', 'platformController@saveParameter');
+Route::any('/platform/getMessageList', 'platformController@getMessageList');
+Route::any('/platform/getMessageSendList', 'platformController@getMessageSendList');
+Route::any('/platform/pushMessageImmediately', 'platformController@pushMessageImmediately');
+Route::any('/platform/pushMessageImmediatelyAgain', 'platformController@pushMessageImmediatelyAgain');
+Route::any('/platform/getSingleEventMessageReceiver', 'platformController@getSingleEventMessageReceiver');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
@@ -82,6 +87,23 @@ Route::any('about', ['middleware' => 'auth', function() {
 Route::any('push', ['middleware' => 'auth', function() {
     return view("push");
 }]);
+
+Route::any('newMessage', ['middleware' => 'auth', function() {
+    return view("push_new_message");
+}]);
+Route::any('messagePushHistory', ['middleware' => 'auth', function() {
+    return view("push_history");
+}]);
+Route::any('pushSendDetail', ['middleware' => 'auth', function() {
+    return view("push_send_detail_message");
+}]);
+Route::any('androidAppMaintain', ['middleware' => 'auth', function() {
+    return view("app_maintain/android");
+}]);
+Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
+    return view("app_maintain/ios");
+}]);
+
 
 Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
 Route::any('AppMaintain/appDetail', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);

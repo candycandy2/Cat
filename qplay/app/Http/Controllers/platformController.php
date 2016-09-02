@@ -949,4 +949,310 @@ class platformController extends Controller
 
         return null;
     }
+
+    public function getMessageList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $messageList = \DB::table("qp_message")
+            ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+            -> select("qp_message.row_id", "qp_message.message_type",
+                "qp_message.message_title", "qp_user.login_id as created_user",
+                "qp_message.created_at", "qp_message.visible")
+            -> get();
+
+        return response()->json($messageList);
+    }
+
+    public function getMessageSendList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        $message_id = $input["message_id"];
+
+        $sendList = \DB::table("qp_message_send")
+            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send.created_user")
+            -> where('qp_message_send.message_row_id', '=', $message_id)
+            -> select("qp_message_send.row_id", "qp_message_send.created_at", "qp_user.login_id as source_user")
+            -> get();
+
+        return $sendList;
+    }
+
+    public function pushMessageImmediately() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $sourcer = $jsonContent['sourcer'];
+            $type = $jsonContent['type'];
+            $title = $jsonContent['title'];
+            $content = $jsonContent['content'];
+            $receiver = $jsonContent['receiver'];
+
+            $now = date('Y-m-d H:i:s',time());
+            \DB::beginTransaction();
+            try {
+                $newMessageId = \DB::table("qp_message")
+                    -> insertGetId([
+                        'message_type'=>$type,
+                        'message_title'=>$title,
+                        'message_text'=>$content,
+                        'message_source'=>$sourcer,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                    ]);
+                $newMessageSendId = \DB::table("qp_message_send")
+                    -> insertGetId([
+                        'message_row_id'=>$newMessageId,
+                        'source_user_row_id'=>\Auth::user()->row_id,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                    ]);
+
+                if($receiver["type"] == "news") {
+                    $companyList = $receiver["company_list"];
+                    foreach ($companyList as $company) {
+                        $roleList = \DB::table("qp_role")
+                            ->where("company", '=', $company)
+                            ->select()
+                            ->get();
+                        foreach($roleList as $role) {
+                            \DB::table("qp_role_message")
+                                -> insert([
+                                    'project_row_id'=>1,
+                                    'role_row_id'=>$role->row_id,
+                                    'message_send_row_id'=>$newMessageSendId,
+                                    'need_push'=>1,
+                                    'push_flag'=>0,
+                                    'created_user'=>\Auth::user()->row_id,
+                                    'created_at'=>$now,
+                                ]);
+                        }
+                    }
+
+                    //TODO do push
+                } else {
+                    $roleList = $receiver["role_list"];
+                    $userList = $receiver["user_list"];
+
+                    $insertedUserIdList = array();
+                    foreach($roleList as $roleId) {
+                        \DB::table("qp_role_message")
+                            -> insert([
+                                'project_row_id'=>1,
+                                'role_row_id'=>$roleId,
+                                'message_send_row_id'=>$newMessageSendId,
+                                'need_push'=>1,
+                                'push_flag'=>0,
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                        $userListInRole = \DB::table("qp_user_role")
+                            ->where("role_row_id", "=", $roleId)
+                            ->select()->get();
+                        foreach ($userListInRole as $userInRole) {
+                            $userId = $userInRole->user_row_id;
+                            if(!in_array($userId, $insertedUserIdList)) {
+                                \DB::table("qp_user_message")
+                                    -> insert([
+                                        'project_row_id'=>1,
+                                        'user_row_id'=>$userId,
+                                        'message_send_row_id'=>$newMessageSendId,
+                                        'need_push'=>1,
+                                        'push_flag'=>0,
+                                        'created_user'=>\Auth::user()->row_id,
+                                        'created_at'=>$now,
+                                    ]);
+                                array_push($insertedUserIdList, $userId);
+                            }
+                        }
+                    }
+
+                    foreach($userList as $userId) {
+                        if(!in_array($userId, $insertedUserIdList)) {
+                            \DB::table("qp_user_message")
+                                -> insert([
+                                    'project_row_id'=>1,
+                                    'user_row_id'=>$userId,
+                                    'message_send_row_id'=>$newMessageSendId,
+                                    'need_push'=>1,
+                                    'push_flag'=>0,
+                                    'created_user'=>\Auth::user()->row_id,
+                                    'created_at'=>$now,
+                                ]);
+                            array_push($insertedUserIdList, $userId);
+                        }
+                    }
+                }
+
+                \DB::commit();
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            }catch (\Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e]);
+            }
+        }
+    }
+
+    public function pushMessageImmediatelyAgain() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $message_id = $jsonContent['message_id'];
+            $receiver = $jsonContent['receiver'];
+
+            $now = date('Y-m-d H:i:s',time());
+            \DB::beginTransaction();
+            try {
+                $newMessageSendId = \DB::table("qp_message_send")
+                    -> insertGetId([
+                        'message_row_id'=>$message_id,
+                        'source_user_row_id'=>\Auth::user()->row_id,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                    ]);
+
+                if($receiver["type"] == "news") {
+                    $companyList = $receiver["company_list"];
+                    foreach ($companyList as $company) {
+                        $roleList = \DB::table("qp_role")
+                            ->where("company", '=', $company)
+                            ->select()
+                            ->get();
+                        foreach($roleList as $role) {
+                            \DB::table("qp_role_message")
+                                -> insert([
+                                    'project_row_id'=>1,
+                                    'role_row_id'=>$role->row_id,
+                                    'message_send_row_id'=>$newMessageSendId,
+                                    'need_push'=>1,
+                                    'push_flag'=>0,
+                                    'created_user'=>\Auth::user()->row_id,
+                                    'created_at'=>$now,
+                                ]);
+                        }
+                    }
+
+                    //TODO do push
+                } else {
+                    $roleList = $receiver["role_list"];
+                    $userList = $receiver["user_list"];
+
+                    $insertedUserIdList = array();
+                    foreach($roleList as $roleId) {
+                        \DB::table("qp_role_message")
+                            -> insert([
+                                'project_row_id'=>1,
+                                'role_row_id'=>$roleId,
+                                'message_send_row_id'=>$newMessageSendId,
+                                'need_push'=>1,
+                                'push_flag'=>0,
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                        $userListInRole = \DB::table("qp_user_role")
+                            ->where("role_row_id", "=", $roleId)
+                            ->select()->get();
+                        foreach ($userListInRole as $userInRole) {
+                            $userId = $userInRole->user_row_id;
+                            if(!in_array($userId, $insertedUserIdList)) {
+                                \DB::table("qp_user_message")
+                                    -> insert([
+                                        'project_row_id'=>1,
+                                        'user_row_id'=>$userId,
+                                        'message_send_row_id'=>$newMessageSendId,
+                                        'need_push'=>1,
+                                        'push_flag'=>0,
+                                        'created_user'=>\Auth::user()->row_id,
+                                        'created_at'=>$now,
+                                    ]);
+                                array_push($insertedUserIdList, $userId);
+                            }
+                        }
+                    }
+
+                    foreach($userList as $userId) {
+                        if(!in_array($userId, $insertedUserIdList)) {
+                            \DB::table("qp_user_message")
+                                -> insert([
+                                    'project_row_id'=>1,
+                                    'user_row_id'=>$userId,
+                                    'message_send_row_id'=>$newMessageSendId,
+                                    'need_push'=>1,
+                                    'push_flag'=>0,
+                                    'created_user'=>\Auth::user()->row_id,
+                                    'created_at'=>$now,
+                                ]);
+                            array_push($insertedUserIdList, $userId);
+                        }
+                    }
+                }
+
+                \DB::commit();
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            }catch (\Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e]);
+            }
+        }
+    }
+
+    public function getSingleEventMessageReceiver() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        $messageSendId = $input["message_send_row_id"];
+
+        $userList = \DB::table('qp_user_message')
+            -> where('message_send_row_id', '=', $messageSendId)
+            -> select()->get();
+
+        $userIdListInRole = array();
+        $userIdListNotInRole = array();
+        $roleList = \DB::table('qp_role_message')
+            -> where('message_send_row_id', '=', $messageSendId)
+            -> select()->get();
+        foreach ($roleList as $role) {
+            $role_id = $role->role_row_id;
+            $userRoleList = \DB::table('qp_user_role')
+                -> where('role_row_id', '=', $role_id)
+                -> select()->get();
+            foreach ($userRoleList as $userRole) {
+                array_push($userIdListInRole, $userRole->user_row_id);
+            }
+        }
+
+        foreach ($userList as $user) {
+            $user_id = $user->user_row_id;
+            if(!in_array($user_id, $userIdListInRole)) {
+                array_push($userIdListNotInRole, $user_id);
+            }
+        }
+
+        return \DB::table('qp_user')->whereIn("row_id", $userIdListNotInRole)->select()->get();
+    }
 }

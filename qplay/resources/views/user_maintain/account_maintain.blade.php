@@ -4,7 +4,7 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
 ?>
 @extends('layouts.admin_template')
 @section('content')
-    <div id="toolbar" class="btn-group">
+    <div id="toolbar" class="btn-group" style="display: none;">
         <button type="button" class="btn btn-danger" onclick="removeRight()">
             {{trans("messages.REMOVE_RIGHT")}}
         </button>
@@ -68,7 +68,7 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
         };
 
         $(function() {
-            $("#toolbar").hide();
+            //$("#toolbar").hide();
             $('#gridUserList').on('check.bs.table', selectedChanged);
             $('#gridUserList').on('uncheck.bs.table', selectedChanged);
             $('#gridUserList').on('check-all.bs.table', selectedChanged);
@@ -78,9 +78,9 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
         var selectedChanged = function (row, $element) {
             var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
             if(selectedUsers.length > 0) {
-                $("#toolbar").show();
+                $("#toolbar").fadeIn(300);
             } else {
-                $("#toolbar").hide();
+                $("#toolbar").fadeOut(300);
             }
         }
     </script>
