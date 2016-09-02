@@ -359,6 +359,69 @@ SQL;
         return "";
     }
 
+    public static function getMessageInfo($messageId) {
+        $messageList = \DB::table('qp_message')
+            -> where('row_id', '=', $messageId)
+            -> select()->get();
+        if(count($messageList) < 1) {
+            return null;
+        }
+
+        $messageInfo = $messageList[0];
+
+        $sendList = \DB::table('qp_message_send')
+            -> where('message_row_id', '=', $messageId)
+            -> select()->get();
+        $messageInfo->send_list = $sendList;
+
+        return $messageInfo;
+    }
+
+    public static function getMessageSendInfo($messageSendId) {
+        $messageSendList = \DB::table('qp_message_send')
+            -> where('row_id', '=', $messageSendId)
+            -> select()->get();
+        if(count($messageSendList) < 1) {
+            return null;
+        }
+
+        $sendInfo = $messageSendList[0];
+
+        $messageList = \DB::table('qp_message')
+            -> where('row_id', '=', $sendInfo->message_row_id)
+            -> select()->get();
+        if(count($messageList) < 1) {
+            return null;
+        }
+
+        $sendInfo->message_info = $messageList[0];
+        $sendInfo->role_list = array();
+        $sendInfo->company_list = array();
+        $sendInfo->user_list = array();
+
+        $roleList = \DB::table('qp_role_message')
+            -> where('message_send_row_id', '=', $messageSendId)
+            -> select()->get();
+        foreach ($roleList as $role) {
+            array_push($sendInfo->role_list, $role->role_row_id);
+        }
+
+        if($sendInfo->message_info->message_type == "event") {
+
+        } else {
+            if(count($sendInfo->role_list) > 0) {
+                $companyList = \DB::table('qp_role')
+                    -> whereIn('row_id', $sendInfo->role_list)
+                    -> select('company')->distinct()->get();
+                foreach ($companyList as $companyInfo) {
+                    array_push($sendInfo->company_list, $companyInfo->company);
+                }
+            }
+        }
+
+        return $sendInfo;
+    }
+
     /**
      * get app Categorgy Name by Row id
      * @param  int $categoryId      qp_app_category.row_id
