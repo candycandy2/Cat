@@ -48,7 +48,7 @@ $menu_name = "APP_MAINTAIN";
             return false;
         }
 
-        window.location='{{asset('AppMaintain/appDetail')}}';
+        window.location='{{asset('appDetail')}}';
     };
 
 	$(function () {
@@ -73,7 +73,7 @@ $menu_name = "APP_MAINTAIN";
                     	<tr>
                             <td>{{trans("messages.APP_KEY")}}:</td>
                             <td style="padding: 10px;">
-	                            <select name="ddlAppKey" id="ddlAppKey" onchange="BindRoleList()">
+	                            <select name="ddlAppKey" id="ddlAppKey">
 					                @foreach($data['projectInfo'] as $pInfo)
 					                    <option value="{{$pInfo->row_id}}">{{$pInfo->app_key}}</option>
 					                @endforeach

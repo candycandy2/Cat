@@ -284,6 +284,12 @@ class AppMaintainController extends Controller
     }
 
     public function appDetail(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        
         $data = array();
 
         return view("app_maintain/app_detail")->with('data',$data);
