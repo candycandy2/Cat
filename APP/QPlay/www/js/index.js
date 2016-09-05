@@ -90,6 +90,7 @@
             }
         }
     });
+    
     $( "#dialog" ).dialog({ autoOpen: false });
 
     function callback(event) {
@@ -387,6 +388,7 @@ $(function() {
         type: "GET",
         contentType: "application/json",
         url: serverURL + "/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -421,10 +423,6 @@ $(function() {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
           $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
-          
-          // for testing
-          $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
-          
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
             if (appcategory == catetoryname){
@@ -432,17 +430,16 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
+              $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">'+ packagename.substr(5) + '</p></div>');
+              
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
               }
-              else {
-                  $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src=' + applist[appindex].icon_url + '></h4></div>');
-              }
-            } // if
+            } // if (appcategory == catetoryname)
           } // for appindex
           $('#appcontent').append('</div>');
         } // for categoryindex
-      }
+      } // if (resultcode == 1)
       else {
         alert(jsonobj['message']);
       }
@@ -641,7 +638,6 @@ var rsDataFromServer = {
 };
 
 var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
-//http://aic0-s12.qgroup.corp.com:8084/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=A1234567890A1234567890
 var appcategorylist;
 var applist;
 var appmultilang;
