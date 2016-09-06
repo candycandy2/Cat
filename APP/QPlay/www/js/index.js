@@ -90,6 +90,7 @@
             }
         }
     });
+    
     $( "#dialog" ).dialog({ autoOpen: false });
 
     function callback(event) {
@@ -188,8 +189,6 @@ $(document).on("pageshow","#initpage1-1",function(){
   }, 3000);
 });
 
-var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
- 
 var app = {
     // Application Constructor
     initialize: function() {
@@ -389,6 +388,7 @@ $(function() {
         type: "GET",
         contentType: "application/json",
         url: serverURL + "/qplayApi/public/index.php/v101/qplay/getAppList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -423,10 +423,6 @@ $(function() {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
           $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
-          
-          // for testing
-          $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src="img/ypicon.png"></h4></div>');
-          
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
             if (appcategory == catetoryname){
@@ -434,17 +430,16 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
+              $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">'+ packagename.substr(5) + '</p></div>');
+              
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
               }
-              else {
-                  $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><h4><img src=' + applist[appindex].icon_url + '></h4></div>');
-              }
-            } // if
+            } // if (appcategory == catetoryname)
           } // for appindex
           $('#appcontent').append('</div>');
         } // for categoryindex
-      }
+      } // if (resultcode == 1)
       else {
         alert(jsonobj['message']);
       }
@@ -574,6 +569,64 @@ $(function() {
     {
       alert("ongetMessageListFail");
     };
+    
+    function callgetMessageDetail(rawid)
+    {
+      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageDetail?lang=en-us&uuid=" + rsDataFromServer.uuid +"&message_send_row_id=" + rawid,
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': 'qplay',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+          'token': rsDataFromServer.token,
+        },
+        cache: false,
+        success: ongetMessageDetailSuccess,
+        error: ongetMessageDetailFail,
+      });          
+    };
+    
+    function ongetMessageDetailSuccess(data)
+    {
+      var jsonobj = data;
+      var resultcode = jsonobj['result_code'];
+      
+      if (resultcode == 1)
+      {
+          alert(jsonobj['message']);
+          var responsecontent = jsonobj['content'];
+          
+          var message = responsecontent.message_list[appindex];
+          if (responsecontent.message_type == 1) // 1:news  2:event
+          {
+              var title = responsecontent.message_title;
+              var txt = responsecontent.message_txt;
+              var rowid = responsecontent.message_send_row_id;
+              
+          }
+          else if (responsecontent.message_type == 2)
+          {
+              var title = responsecontent.message_title;
+              var txt = responsecontent.message_txt;
+              var rowid = responsecontent.message_send_row_id;
+              
+          }
+      }
+    };
+    
+    function ongetMessageDetailFail(data)
+    {
+      alert("ongetMessageDetailFail");
+    };
+    
 });
 
 // rsDataFromServer = "{"token_valid" : "1470820532", "uuid" : "44654456", "redirect-uri" : "http%3A%2F%2Fwww.moses.com%2Ftest%
@@ -584,6 +637,7 @@ var rsDataFromServer = {
   redirect: 'nullstring',
 };
 
+var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
 var appcategorylist;
 var applist;
 var appmultilang;

@@ -17,7 +17,8 @@ public class LoginActivity extends Activity {
     private WebView webview;
     private String serverUrl;
     private String tSchema;
-	private String uuid;
+    private String uuid;
+    private String function;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -35,6 +36,7 @@ public class LoginActivity extends Activity {
         if(myURI!=null){
             tSchema = myURI.getQueryParameter("Name");
             uuid = myURI.getQueryParameter("uuid");
+            function = myURI.getQueryParameter("Function");
         }
 
         webview = (WebView) findViewById(R.id.WebViewDetail);
@@ -56,7 +58,7 @@ public class LoginActivity extends Activity {
                 setResult(RESULT_OK, mIntent);
 				finish();
             }else{
-                Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data);
+                Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data+"&Function="+function);
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
                 startActivity(intent);
