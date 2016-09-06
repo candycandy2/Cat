@@ -48,7 +48,7 @@ $menu_name = "APP_MAINTAIN";
             return false;
         }
 
-        window.location='{{asset('appDetail')}}';
+        window.location='{{asset('appDetailMaintain')}}';
     };
 
 	$(function () {

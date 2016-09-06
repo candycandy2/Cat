@@ -292,7 +292,7 @@ class AppMaintainController extends Controller
         
         $data = array();
 
-        return view("app_maintain/app_detail")->with('data',$data);
+        return view("app_maintain/app_detail/main")->with('data',$data);
     }
 
     private function getAppList($categoryId=null){
