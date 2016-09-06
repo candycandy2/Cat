@@ -106,7 +106,7 @@ Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
 
 
 Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
-Route::any('AppMaintain/appDetail', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
+Route::any('appDetailMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
 
 Route::any('categoryMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/category_maintain");
