@@ -486,7 +486,8 @@ $(function() {
               //alert("is_register");
               var args = [];
               args[0] = "LoginSuccess";
-              args[1] = device.uuid;//uuid
+              //args[1] = device.uuid;//uuid
+              args[1] = "A1234567890A1234567890"; // for testing
               window.plugins.qlogin.openCertificationPage(null, null, args);
               loginjustdone = 1;
           }
@@ -520,7 +521,10 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        
+        // fix me !!! this is for testing
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + rsDataFromServer.uuid + "&date_from=1451577600&date_to=1470499200&count_from=1&count_to=200",
+        
         headers: {
           'Content-Type': 'application/json',
           'app-key': 'qplay',
@@ -541,27 +545,37 @@ $(function() {
       
       if (resultcode == 1)
       {
-          alert(jsonobj['message']);
+          //alert(jsonobj['message']);
           var responsecontent = jsonobj['content'];
+          var newsListItems = "";
+          var eventListItems = "";
           
           for (var appindex=0; appindex<responsecontent.message_count; appindex++)
           {
               var message = responsecontent.message_list[appindex];
-              if (message.message_type == 1) // 1:news  2:event
+              if (message.message_type == "news") // 1:news  2:event
               {
                   var title = message.message_title;
                   var txt = message.message_txt;
                   var rowid = message.message_send_row_id;
+                  var time = message.create_time;
                   
+                  newsListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
               }
-              else if (message.message_type == 2)
+              else if (message.message_type == "event")
               {
                   var title = message.message_title;
                   var txt = message.message_txt;
                   var rowid = message.message_send_row_id;
+                  var time = message.create_time;
                   
+                  eventListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
               }
           }
+          $("#newslistview").html(newsListItems);
+          $("#newslistview").listview('refresh');
+          $("#eventlistview").html(eventListItems);
+          $("#eventlistview").listview('refresh');
       }
     };
     
