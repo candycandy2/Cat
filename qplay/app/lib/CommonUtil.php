@@ -359,12 +359,6 @@ SQL;
         return "";
     }
 
-    /**
-     * get app Categorgy Name by Row id
-     * @param  int $categoryId      qp_app_category.row_id
-     * @return Object               qurery result
-     * @author Cleo.W.Chan
-     */
     public static function getCategoryInfoByRowId($categoryId){
         $categoryList = \DB::table('qp_app_category')
             -> where('row_id', '=', $categoryId)

@@ -58,6 +58,10 @@ $version_path   = $detail_path.'.app_version';
             width: 200px; 
             height: 320px;
         }
+        .screen-preview:hover, .icon-preview:hover {
+            opacity: .3;
+        }
+
         table.costum-table td { border: 1px solid #ddd; padding: 8px; }
         table.costum-table tr:first-child{font-weight:bold;}
         table.costum-table tr:last-child{background-color: #f9f9f9;}
