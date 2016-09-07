@@ -41,7 +41,7 @@ body {
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
+    text-transform:capitalize;
     width:100%;
 }
 
@@ -112,4 +112,43 @@ h1 {
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
+}
+
+.install-btn {
+    width: 100px !important;
+    height: 10px !important;
+    float:right !important;
+    text-align: center !important;
+    line-height: 10px !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+}
+
+.detail-description-style {
+    width: 350px !important;
+    text-align: center !important;
+}
+
+.rank-style {
+    display: block;
+    margin: auto;
+}
+
+.detail-img-style {
+    width: 120px !important;
+    height: 230px !important;
+    margin:0px 30px !important;
+}
+
+.navbar-style {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
