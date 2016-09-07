@@ -17,5 +17,6 @@
     <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
-    <serverUrl href = "http://10.85.129.63:8084/qplayApi/public/index.php/qplayauth_register"/>
+    <!-- <serverUrl href = "http://10.85.129.63:8084/qplayApi/public/index.php/qplayauth_register"/> -->
+    <serverUrl href = "http://qplay.benq.com/qplayApi/public/index.php/qplayauth_register"/>
 </widget>
