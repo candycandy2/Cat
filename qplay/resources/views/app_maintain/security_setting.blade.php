@@ -6,10 +6,10 @@ $menu_name = "APP_SECURITY_SETTING";
 @section('content')
 
 	<div class="row">
-    	<div class="col-lg-6 col-xs-6">
+    	<div class="col-lg-12 col-xs-12">
 	        <table>
 	            <tr>
-	                <td class="text-bold" style="padding: 10px;">{{trans('messages.BLOCK_LIST')}}</td>
+	                <td class="text-bold"  style="padding: 10px; width:auto;">{{trans('messages.BLOCK_LIST')}}</td>
 	                <td class="text-muted" style="padding: 10px;"><small>{{trans('messages.BLOCK_HINT')}}</small></td>
 	            </tr>
 	        </table>
