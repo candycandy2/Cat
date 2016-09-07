@@ -331,14 +331,24 @@ $(function() {
           // do update process
           // .....
           
-          callisRegister(); // for testing
+          // for testing
+          var args = [];
+          args[0] = "LoginSuccess";
+          //args[1] = device.uuid;//uuid
+          args[1] = "A1234567890A1234567890"; // for testing
+          window.plugins.qlogin.openCertificationPage(null, null, args);
+          loginjustdone = 1;
       }
       else if (resultcode == 000913)
       {
           //alert("up to date");
           alert(jsonobj['message']);
           
-          callisRegister();
+          var args = [];
+          args[0] = "LoginSuccess";
+          args[1] = device.uuid;//uuid
+          window.plugins.qlogin.openCertificationPage(null, null, args);
+          loginjustdone = 1;
       }
     };
     
@@ -401,7 +411,7 @@ $(function() {
         error: ongetAppListFail,
       });          
     };
-      
+    
     function ongetAppListSuccess(data)
     {
       $.mobile.changePage('#mainpage 2-1', { transition: "flip"} );
@@ -418,6 +428,7 @@ $(function() {
         appmultilang = responsecontent.multi_lang;
         
         $('#appcontent').html(""); // empty html content
+        var appItems = "";
         
         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
           var catetoryname = appcategorylist[categoryindex].app_category;
@@ -432,12 +443,17 @@ $(function() {
               
               $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">'+ packagename.substr(5) + '</p></div>');
               
+              //appItems += '<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">' + packagename.substr(5) + '</p></div>';
+              
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
               }
             } // if (appcategory == catetoryname)
           } // for appindex
+          
           $('#appcontent').append('</div>');
+          //$('#appcontent').html("");
+          
         } // for categoryindex
       } // if (resultcode == 1)
       else {
@@ -486,8 +502,8 @@ $(function() {
               //alert("is_register");
               var args = [];
               args[0] = "LoginSuccess";
-              //args[1] = device.uuid;//uuid
-              args[1] = "A1234567890A1234567890"; // for testing
+              args[1] = device.uuid;//uuid
+              //args[1] = "A1234567890A1234567890"; // for testing
               window.plugins.qlogin.openCertificationPage(null, null, args);
               loginjustdone = 1;
           }
@@ -651,7 +667,9 @@ var rsDataFromServer = {
   redirect: 'nullstring',
 };
 
-var serverURL = "http://aic0-s12.qgroup.corp.com:8084";
+//var serverURL = "http://aic0-s12.qgroup.corp.com:8084"; // QCS API Server
+//var serverURL = "http://10.82.246.95"; // QTT 內部 API Server
+var serverURL = "http://qplay.benq.com"; // QTT 外部 API Server
 var appcategorylist;
 var applist;
 var appmultilang;
