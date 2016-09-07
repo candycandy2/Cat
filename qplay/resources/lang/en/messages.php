@@ -23,6 +23,12 @@ return [
     'MSG_OPERATION_FAILED' => 'Operation Failed!',
     'MSG_CONFIRM_SAVE' => 'Confirm to Save?',
     'MSG_REQUIRED_FIELD_MISSING' => 'Required field missing!',
+    'MSG_CONFIRM_LOGOUT' => 'Confirm to logout?',
+    'PAGING_SHOWING' => 'Showing',
+    'PAGING_TO' => 'to',
+    'PAGING_OF' => 'of',
+    'PAGING_ROWS' => 'rows',
+    'PAGING_ROWS_PER_PAGE' => 'rows per page',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
@@ -169,4 +175,7 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => 'Default language',
+
+    'ERR_EXIST_ROLE' => 'Same role exist in this company!',
+    'ERR_GROUP_NAME_EXIST' => 'Group name exist!',
 ];

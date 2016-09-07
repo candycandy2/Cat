@@ -11,7 +11,7 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-xs-8">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td>{{trans("messages.PUSH_TO")}}:</td>
                     <td style="padding: 10px;">
@@ -47,12 +47,24 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
                         {{$messageInfo->message_text}}
                     </td>
                 </tr>
+                <tr>
+                    <td>{{trans("messages.STATUS")}}:</td>
+                    <td style="padding: 10px;">
+                        <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
+                            <input type="checkbox" id="cbxVisible"
+                                   @if($messageInfo->visible == 'Y')
+                                   checked
+                                    @endif
+                            />
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
 
         <div class="col-lg-4 col-xs-4" >
             <div class="btn-toolbar" role="toolbar" style="float: right;">
-                <button type="button" class="btn btn-primary" onclick="SaveMessage()">
+                <button type="button" class="btn btn-primary" onclick="SaveMessageVisible()">
                     {{trans("messages.SAVE")}}
                 </button>
                 <a type="button" class="btn btn-primary" href="newMessage?copy_from={{$messageId}}">
@@ -93,6 +105,42 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
     <script>
         var pushDateFormatter = function (value, row) {
             return '<a href="pushSendDetail?push_send_row_id=' + row.row_id + '">' + value + '</a>';
+        };
+
+        var SaveMessageVisible = function () {
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
+                hideConfirmDialog();
+                var visible = "N";
+                if($('#cbxVisible').is(':checked')) {
+                    visible = "Y";
+                }
+
+                var mydata =
+                {
+                    message_id: {{$messageId}},
+                    visible: visible
+                };
+
+                var mydataStr = $.toJSON(mydata);
+                $.ajax({
+                    url: "platform/saveMessageVisible",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: mydataStr,
+                    success: function (d, status, xhr) {
+                        if(d.result_code != 1) {
+                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                        }  else {
+                            $("#gridUserList").bootstrapTable('refresh');
+                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                        }
+                    },
+                    error: function (e) {
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    }
+                });
+            });
         };
     </script>
 @endsection

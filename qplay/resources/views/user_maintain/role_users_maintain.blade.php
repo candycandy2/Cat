@@ -47,19 +47,30 @@ foreach ($allCompanyRoleList as $companyRoles) {
     <div class="row">
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
-            {{trans("messages.ROLE_LIST")}}:&nbsp; {{trans("messages.FROM")}} &nbsp;
-            <select name="ddlCompany" id="ddlCompany" onchange="BindRoleList()">
-                @foreach($allCompanyRoleList as $company)
-                    <option value="{{$company->company}}">{{$company->company}}</option>
-                @endforeach
-            </select>
-            <select name="ddlRole" id="ddlRole">
-
-            </select>
-
-            <button type="button" class="btn btn-primary" onclick="CopyList()" id="btnCopyList">
-                {{trans("messages.COPY_LIST")}}
-            </button>
+            <table>
+                <tr>
+                    <td>{{trans("messages.ROLE_LIST")}}:&nbsp; {{trans("messages.FROM")}} &nbsp;</td>
+                    <td>
+                        <select name="ddlCompany" id="ddlCompany" onchange="BindRoleList()" class="form-control">
+                            @foreach($allCompanyRoleList as $company)
+                                <option value="{{$company->company}}">{{$company->company}}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <select name="ddlRole" id="ddlRole" class="form-control">
+                            <button type="button" class="btn btn-primary" onclick="CopyList()" id="btnCopyList">
+                                {{trans("messages.COPY_LIST")}}
+                            </button>
+                        </select>
+                    </td>
+                    <td> &nbsp;
+                        <button type="button" class="btn btn-primary" onclick="CopyList()" id="btnCopyList">
+                            {{trans("messages.COPY_LIST")}}
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -77,7 +88,7 @@ foreach ($allCompanyRoleList as $companyRoles) {
 
             <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
                    data-url="platform/getRoleUsers?role_id={{$roleId}}" data-height="398" data-pagination="true"
-                   data-show-refresh="false" data-row-style="rowStyle" data-search="true"
+                   data-show-refresh="false" data-row-style="rowStyle" data-search="false"
                    data-show-toggle="true"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
@@ -243,6 +254,9 @@ foreach ($allCompanyRoleList as $companyRoles) {
                     }
                 });
                 if(!exist) {
+                    if(newUser.state) {
+                        newUser.state = false;
+                    }
                     currentData.push(newUser);
                 }
             });

@@ -35,7 +35,7 @@
         }
 
         if(warning) {
-            $("#confirmDialogWarningContent").text(warning);
+            $("#confirmDialogWarningContent").html(warning);
         }
 
         $("#btnConfirmDialogConfirm").unbind();

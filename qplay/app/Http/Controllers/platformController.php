@@ -39,6 +39,7 @@ class platformController extends Controller
 
         $roleList = \DB::table("qp_role")
             -> select()
+            -> orderBy('company', 'role_description')
             -> get();
         foreach ($roleList as $role) {
             $count = \DB::table('qp_user_role')
@@ -118,22 +119,23 @@ class platformController extends Controller
                 \DB::table("qp_user_group")->insert([
                     'user_row_id'=>$userId,
                     'group_row_id'=>$groupId,
+                    'authority_by_group'=>$menuBelongToGroup,
                     'created_user'=>\Auth::user()->row_id,
                     'created_at'=>$now]);
 
                 \DB::table("qp_user_menu")-> where('user_row_id', "=", $userId)->delete();
 
                 if($menuBelongToGroup == "Y") {
-                    $menuList = \DB::table('qp_group_menu')
-                        ->where('group_row_id', '=', $groupId)
-                        ->select()->get();
-                    foreach ($menuList as $menu) {
-                        \DB::table("qp_user_menu")->insert([
-                            'user_row_id'=>$userId,
-                            'menu_row_id'=>$menu->menu_row_id,
-                            'created_user'=>\Auth::user()->row_id,
-                            'created_at'=>$now]);
-                    }
+//                    $menuList = \DB::table('qp_group_menu')
+//                        ->where('group_row_id', '=', $groupId)
+//                        ->select()->get();
+//                    foreach ($menuList as $menu) {
+//                        \DB::table("qp_user_menu")->insert([
+//                            'user_row_id'=>$userId,
+//                            'menu_row_id'=>$menu->menu_row_id,
+//                            'created_user'=>\Auth::user()->row_id,
+//                            'created_at'=>$now]);
+//                    }
                 } else {
                     $menu_list = $jsonContent['menu_list'];
                     foreach ($menu_list as $menuId) {
@@ -195,7 +197,12 @@ class platformController extends Controller
             $roleDesc = $jsonContent['roleDesc'];
 
             $isNew = $jsonContent['isNew'];
+            $existList = \DB::table("qp_role")->where('role_description', '=', $roleDesc)
+                ->where('company', '=', $company)->select()->get();
             if($isNew == 'Y') {
+                if(count($existList) > 0) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError, 'message'=>trans("messages.ERR_EXIST_ROLE")]);
+                }
                 \DB::table("qp_role")
                     -> insert(
                         ['role_description'=>$roleDesc,
@@ -204,6 +211,11 @@ class platformController extends Controller
                             'created_user'=>\Auth::user()->row_id]);
             } else {
                 $roleId = $jsonContent['roleId'];
+                if(count($existList) > 0) {
+                    if($existList[0]->row_id != $roleId) {
+                        return response()->json(['result_code'=>ResultCode::_999999_unknownError, 'message'=>trans("messages.ERR_EXIST_ROLE")]);
+                    }
+                }
                 \DB::table("qp_role")
                     -> where('row_id', '=', $roleId)
                     -> update(
@@ -360,6 +372,7 @@ class platformController extends Controller
             $englishName = $jsonContent['englishName'];
             $simpleChineseName = $jsonContent['simpleChineseName'];
             $traditionChineseName = $jsonContent['traditionChineseName'];
+            $visible = $jsonContent['visible'];
 
             \DB::beginTransaction();
             $sequence = 0;
@@ -374,6 +387,7 @@ class platformController extends Controller
                         'parent_id'=>$parentId,
                         'menu_name'=>$menuName,
                         'path'=>$link,
+                        'visible'=>$visible,
                         'sequence'=>$sequence,
                         'created_user'=>\Auth::user()->row_id,
                         'created_at'=>$now,
@@ -453,6 +467,7 @@ class platformController extends Controller
             $english_name = $jsonContent['english_name'];
             $simple_chinese_name = $jsonContent['simple_chinese_name'];
             $tradition_chinese_name = $jsonContent['tradition_chinese_name'];
+            $visible = $jsonContent['visible'];
             \DB::beginTransaction();
 
             \DB::table("qp_menu")
@@ -460,6 +475,7 @@ class platformController extends Controller
                 -> update(
                     ['menu_name'=>$menu_name,
                         'path'=>$link,
+                        'visible'=>$visible,
                         'updated_at'=>$now,
                         'updated_user'=>\Auth::user()->row_id]);
 
@@ -536,6 +552,7 @@ class platformController extends Controller
                             'parent_id'=>$menu_id,
                             'menu_name'=>$thisMenu["menu_name"],
                             'path'=>$thisMenu["path"],
+                            'visible'=>$thisMenu["visible"],
                             'sequence'=>$seq,
                             'created_user'=>\Auth::user()->row_id,
                             'created_at'=>$now,
@@ -589,6 +606,7 @@ class platformController extends Controller
                         -> update([
                             'menu_name'=>$thisMenu["menu_name"],
                             'path'=>$thisMenu["path"],
+                            'visible'=>$thisMenu["visible"],
                             'sequence'=>$seq,
                             'updated_user'=>\Auth::user()->row_id,
                             'updated_at'=>$now,
@@ -703,6 +721,11 @@ class platformController extends Controller
 
             $now = date('Y-m-d H:i:s',time());
             if($action == "N") { //New
+                $existList = \DB::table("qp_group")->where("group_name", '=', $group_name)->select()->get();
+                if(count($existList) > 0) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_GROUP_NAME_EXIST")]);
+                }
+
                 $newGroupId = \DB::table("qp_group")
                     -> insertGetId([
                         'group_name'=>$group_name,
@@ -718,6 +741,22 @@ class platformController extends Controller
                         'created_at'=>$now]);
                 }
             } else if($action == "U") { //Edit
+                $existList = \DB::table("qp_group")->where("group_name", '=', $group_name)->select()->get();
+                if(count($existList) > 0) {
+                    foreach ($existList as $existGroup) {
+                        if($existGroup->row_id != $group_id) {
+                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_GROUP_NAME_EXIST")]);
+                        }
+                    }
+                }
+                \DB::table("qp_group")
+                    ->where("row_id", "=", $group_id)
+                    -> update([
+                        'group_name'=>$group_name,
+                        'updated_user'=>\Auth::user()->row_id,
+                        'updated_at'=>$now,
+                    ]);
+
                 \DB::table("qp_group_menu")
                     -> where("group_row_id", "=", $group_id)
                     -> delete();
@@ -730,8 +769,13 @@ class platformController extends Controller
                 }
             }
 
-            \DB::commit();;
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            \DB::commit();
+            if($action == "N") {
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'new_group_id'=>$newGroupId]);
+            } else {
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            }
+
         }
 
         return null;
@@ -1254,5 +1298,32 @@ class platformController extends Controller
         }
 
         return \DB::table('qp_user')->whereIn("row_id", $userIdListNotInRole)->select()->get();
+    }
+
+    public function saveMessageVisible() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $message_id = $jsonContent['message_id'];
+            $visible = $jsonContent['visible'];
+
+            \DB::table("qp_message")
+                -> where('row_id', '=', $message_id)
+                -> update(
+                    ['visible' => $visible,
+                        'updated_at'=>$now,
+                        'updated_user'=>\Auth::user()->row_id]);
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
     }
 }

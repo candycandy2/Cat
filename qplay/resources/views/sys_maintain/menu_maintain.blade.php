@@ -16,20 +16,21 @@ $menu_name = "SYS_MENU_MAINTAIN";
     <table id="gridRootMenuList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
            data-url="platform/getRootMenuList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-           data-show-toggle="true"  data-sortable="true"
+           data-show-toggle="true"  data-sortable="false"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-visible="false">ID</th>
-            <th data-field="number_submenu" data-visible="false">Sub Count</th>
-            <th data-field="sequence" data-sortable="true">{{trans("messages.SEQUENCE")}}</th>
-            <th data-field="menu_name" data-sortable="true" data-formatter="menuNameFormatter">{{trans("messages.MENU_NAME")}}</th>
-            <th data-field="path" data-sortable="true">{{trans("messages.LINK")}}</th>
-            <th data-field="english_name" data-sortable="true" >{{trans("messages.ENGLISH_NAME")}}</th>
-            <th data-field="simple_chinese_name" data-sortable="true" >{{trans("messages.SIMPLE_CHINESE_NAME")}}</th>
-            <th data-field="traditional_chinese_name" data-sortable="true" >{{trans("messages.TRADITIONAL_CHINESE_NAME")}}</th>
+            <th data-field="number_submenu" data-visible="true">Sub Count</th>
+            <th data-field="sequence" data-sortable="false">{{trans("messages.SEQUENCE")}}</th>
+            <th data-field="menu_name" data-sortable="false" data-formatter="menuNameFormatter">{{trans("messages.MENU_NAME")}}</th>
+            <th data-field="path" data-sortable="false">{{trans("messages.LINK")}}</th>
+            <th data-field="english_name" data-sortable="false" >{{trans("messages.ENGLISH_NAME")}}</th>
+            <th data-field="simple_chinese_name" data-sortable="false" >{{trans("messages.SIMPLE_CHINESE_NAME")}}</th>
+            <th data-field="traditional_chinese_name" data-sortable="false" >{{trans("messages.TRADITIONAL_CHINESE_NAME")}}</th>
+            <th data-field="visible" data-sortable="false">{{trans("messages.STATUS")}}</th>
         </tr>
         </thead>
     </table>
@@ -101,6 +102,11 @@ $menu_name = "SYS_MENU_MAINTAIN";
             var englishName = $("#tbxEnglishName").val();
             var simpleChineseName = $("#tbxSimpleChineseName").val();
             var traditionChineseName = $("#tbxTraditionalChineseName").val();
+            var visible = "Y";
+            if(!$("#cbxVisible").is(":checked")) {
+                visible = "N";
+            }
+
             if(menuName == "" || englishName == "" || simpleChineseName == "" || traditionChineseName == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
@@ -114,7 +120,8 @@ $menu_name = "SYS_MENU_MAINTAIN";
                     link: link,
                     englishName: englishName,
                     simpleChineseName: simpleChineseName,
-                    traditionChineseName: traditionChineseName
+                    traditionChineseName: traditionChineseName,
+                    visible: visible
                 };
 
                 var mydataStr = $.toJSON(mydata);
@@ -173,40 +180,52 @@ $menu_name = "SYS_MENU_MAINTAIN";
                     <h1 class="modal-title" id="newRootMenuDialogTitle">{{trans("messages.NEW_ROOT_MENU")}}</h1>
                 </div>
                 <div class="modal-body">
-                    <table>
+                    <table width="100%">
                         <tr>
                             <td>{{trans("messages.MENU_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxMenuName"
+                                <input type="text" data-clear-btn="true" name="tbxMenuName" class="form-control"
                                        id="tbxMenuName" value=""/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.LINK")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxLink"
+                                <input type="text" data-clear-btn="true" name="tbxLink" class="form-control"
                                        id="tbxLink" value=""/>
                             </td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.ENGLISH_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxEnglishName"
+                                <input type="text" data-clear-btn="true" name="tbxEnglishName" class="form-control"
                                        id="tbxEnglishName" value=""/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.SIMPLE_CHINESE_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxSimpleChineseName"
+                                <input type="text" data-clear-btn="true" name="tbxSimpleChineseName" class="form-control"
                                        id="tbxSimpleChineseName" value=""/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.TRADITIONAL_CHINESE_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxTraditionalChineseName"
+                                <input type="text" data-clear-btn="true" name="tbxTraditionalChineseName" class="form-control"
                                        id="tbxTraditionalChineseName" value=""/>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                        </tr>
+                        <tr>
+                            <td>{{trans("messages.STATUS")}}:</td>
+                            <td style="padding: 10px;">
+                                <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
+                                    <input type="checkbox" id="cbxVisible" checked />
+                                </div>
                             </td>
                         </tr>
                     </table>

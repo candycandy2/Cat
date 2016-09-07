@@ -23,6 +23,12 @@ return [
     'MSG_OPERATION_FAILED' => '操作失败!',
     'MSG_CONFIRM_SAVE' => '确认保存?',
     'MSG_REQUIRED_FIELD_MISSING' => '必填项内容缺失!',
+	'MSG_CONFIRM_LOGOUT' => '确认登出?',
+	'PAGING_SHOWING' => '当前显示',
+	'PAGING_TO' => '至',
+	'PAGING_OF' => '笔记录, 共',
+	'PAGING_ROWS' => '笔记录',
+	'PAGING_ROWS_PER_PAGE' => '笔记录每页',
 
     'MENU' => '菜单',
     'LOGOUT' => '登出',
@@ -58,7 +64,7 @@ return [
     'ROLE' => '企业角色',
     'SYSTEM_GROUP' => '系统群组',
     'REMOVE_RIGHT' => '停权',
-    'MSG_CONFIRM_REMOVE_RIGHT' => '确认移除所选员工权限吗?',
+    'MSG_CONFIRM_REMOVE_RIGHT' => '确认将用户停权?',
     'MSG_REMOVE_RIGHT_FAILED' => '用户停权失败!',
     'MSG_BELONG_TO_GROUP_RIGHT' => '依系统群组权限',
 
@@ -169,4 +175,7 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => '预设语言',
+
+	'ERR_EXIST_ROLE' => '角色在当前公司内已存在!',
+	'ERR_GROUP_NAME_EXIST' => '群组名称已存在!',
 ];

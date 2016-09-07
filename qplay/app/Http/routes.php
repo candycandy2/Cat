@@ -41,6 +41,7 @@ Route::any('/platform/getMessageSendList', 'platformController@getMessageSendLis
 Route::any('/platform/pushMessageImmediately', 'platformController@pushMessageImmediately');
 Route::any('/platform/pushMessageImmediatelyAgain', 'platformController@pushMessageImmediatelyAgain');
 Route::any('/platform/getSingleEventMessageReceiver', 'platformController@getSingleEventMessageReceiver');
+Route::any('/platform/saveMessageVisible', 'platformController@saveMessageVisible');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
