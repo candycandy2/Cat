@@ -23,7 +23,7 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+            <th data-field="row_id" data-visible="false">ID</th>
             <th data-field="company" data-sortable="true">{{trans("messages.COMPANY_NAME")}}</th>
             <th data-field="role_description" data-sortable="true" data-formatter="roleNameFormatter">{{trans("messages.ROLE_NAME")}}</th>
             <th data-field="user_count" data-sortable="true" data-formatter="userCountFormatter">{{trans("messages.USERS")}}</th>
@@ -41,20 +41,25 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
         };
 
         var deleteRole = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_ROLE")}}", "", function () {
-                hideConfirmDialog();
-                var selectedRoles = $("#gridRoleList").bootstrapTable('getSelections');
-                var check = true;
-                $.each(selectedRoles, function (i, role) {
-                    if(role.user_count > 0) {
-                        check = false;
-                        return false;
-                    }
-                });
-                if(!check) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_ROLE_EXIST_USERS")}}");
+            var selectedRoles = $("#gridRoleList").bootstrapTable('getSelections');
+            var check = true;
+            $.each(selectedRoles, function (i, role) {
+                if(role.user_count > 0) {
+                    check = false;
                     return false;
                 }
+            });
+            if(!check) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_ROLE_EXIST_USERS")}}");
+                return false;
+            }
+
+            var confirmStr = "";
+            $.each(selectedRoles, function(i, role) {
+                confirmStr += role.role_description + "<br/>";
+            });
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_ROLE")}}", confirmStr, function () {
+                hideConfirmDialog();
                 
                 var roleIdList = new Array();
                 $.each(selectedRoles, function(i, role) {
@@ -117,38 +122,35 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 return false;
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                hideConfirmDialog();
-                var mydata = {
-                    isNew:'Y',
-                    roleId:-1,
-                    company:company,
-                    roleDesc:roleDesc
-                };
-                if(!isNewRole) {
-                    mydata.isNew = 'N';
-                    mydata.roleId = currentMaintainRoleId;
-                }
-                var mydataStr = $.toJSON(mydata);
-                $.ajax({
-                    url: "platform/saveRole",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_ROLE_FAILED")}}");
-                        }  else {
-                            $("#gridRoleList").bootstrapTable('refresh');
-                            $("#roleDetailMaintainDialog").modal('hide');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                        }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_ROLE_FAILED")}}", e.responseText);
+            var mydata = {
+                isNew:'Y',
+                roleId:-1,
+                company:company,
+                roleDesc:roleDesc
+            };
+            if(!isNewRole) {
+                mydata.isNew = 'N';
+                mydata.roleId = currentMaintainRoleId;
+            }
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveRole",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_ROLE_FAILED")}}", d.message);
+                    }  else {
+                        $("#gridRoleList").bootstrapTable('refresh');
+                        $("#roleDetailMaintainDialog").modal('hide');
+                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                     }
-                });
+                },
+                error: function (e) {
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_ROLE_FAILED")}}", e.responseText);
+                }
             });
         };
 
@@ -185,11 +187,11 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     <h1 class="modal-title" id="roleDetailMaintainDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table>
+                    <table style="width: 100%">
                         <tr>
                             <td>{{trans("messages.USER_COMPANY")}}:</td>
                             <td style="padding: 10px;">
-                                <select placeholder="Company" name="ddlCompany" id="ddlCompany">
+                                <select placeholder="Company" name="ddlCompany" id="ddlCompany" class="form-control">
                                     @foreach($allCompanyList as $company)
                                         <option value="{{$company->company}}">{{$company->company}}</option>
                                     @endforeach
@@ -199,9 +201,11 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         <tr>
                             <td>{{trans("messages.ROLE_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxRoleName"
-                                       id="tbxRoleName" value=""/>
+
+                                <input type="text" data-clear-btn="true" name="tbxRoleName" class="form-control"
+                                       id="tbxRoleName" value="" required="required"/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                     </table>
                 </div>

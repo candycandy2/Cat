@@ -12,40 +12,56 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
 
     <div class="row">
         <div class="col-lg-6 col-xs-6">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td>{{trans("messages.MENU_NAME")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxMenuName"
+                        <input type="text" data-clear-btn="true" name="tbxMenuName" class="form-control"
                                id="tbxMenuName" value="{{$menuInfo->menu_name}}"/>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.LINK")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxLink"
+                        <input type="text" data-clear-btn="true" name="tbxLink" class="form-control"
                                id="tbxLink" value="{{$menuInfo->path}}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.ENGLISH_NAME")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxEnglishName"
+                        <input type="text" data-clear-btn="true" name="tbxEnglishName" class="form-control"
                                id="tbxEnglishName" value="{{$menuInfo->english_name}}"/>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.SIMPLE_CHINESE_NAME")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxSimpleChineseName"
+                        <input type="text" data-clear-btn="true" name="tbxSimpleChineseName" class="form-control"
                                id="tbxSimpleChineseName" value="{{$menuInfo->simple_chinese_name}}"/>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.TRADITIONAL_CHINESE_NAME")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxTraditionalChineseName"
+                        <input type="text" data-clear-btn="true" name="tbxTraditionalChineseName" class="form-control"
                                id="tbxTraditionalChineseName" value="{{$menuInfo->traditional_chinese_name}}"/>
+                    </td>
+                    <td><span style="color: red;">*</span></td>
+                </tr>
+                <tr>
+                    <td>{{trans("messages.STATUS")}}:</td>
+                    <td style="padding: 10px;">
+                        <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
+                            <input type="checkbox" id="cbxVisible"
+                            @if($menuInfo->visible == "Y")
+                                checked
+                            @endif
+                            />
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -78,8 +94,8 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
 
             <table id="gridSubMenuList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
                    data-url="platform/getSubMenuList?menu_id={{$menuId}}" data-height="398" data-pagination="true"
-                   data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-                   data-show-toggle="true"  data-sortable="true"
+                   data-show-refresh="true" data-row-style="rowStyle" data-search="false"
+                   data-show-toggle="true"  data-sortable="false"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
                 <thead>
@@ -93,6 +109,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     <th data-field="english_name" data-sortable="false" >{{trans("messages.ENGLISH_NAME")}}</th>
                     <th data-field="simple_chinese_name" data-sortable="false" >{{trans("messages.SIMPLE_CHINESE_NAME")}}</th>
                     <th data-field="traditional_chinese_name" data-sortable="false" >{{trans("messages.TRADITIONAL_CHINESE_NAME")}}</th>
+                    <th data-field="visible" data-sortable="false">{{trans("messages.STATUS")}}</th>
                 </tr>
                 </thead>
             </table>
@@ -133,6 +150,8 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
             $("#tbxSubEnglishName").val("");
             $("#tbxSubSimpleChineseName").val("");
             $("#tbxSubTraditionalChineseName").val("");
+            $("#cbxSubVisible").prop("checked", false);
+            $('#switchSubVisible').bootstrapSwitch('setState', false);
 
             currentMaintainSubMenuId = null;
             isNewSubMenu = true;
@@ -149,6 +168,14 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     $("#tbxSubEnglishName").val(menu.english_name);
                     $("#tbxSubSimpleChineseName").val(menu.simple_chinese_name);
                     $("#tbxSubTraditionalChineseName").val(menu.traditional_chinese_name);
+                    if(menu.visible == "Y") {
+                        $("#cbxSubVisible").prop("checked", true);
+                        $('#switchSubVisible').bootstrapSwitch('setState', true);
+                    } else {
+                        $("#cbxSubVisible").prop("checked", false);
+                        $('#switchSubVisible').bootstrapSwitch('setState', false);
+                    }
+
                     return false;
                 }
             });
@@ -166,6 +193,10 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
             var englishName = $("#tbxSubEnglishName").val();
             var simpleChineseName = $("#tbxSubSimpleChineseName").val();
             var traditionChineseName = $("#tbxSubTraditionalChineseName").val();
+            var visible = "Y";
+            if(!$("#cbxSubVisible").is(":checked")) {
+                visible = "N";
+            }
 
             if(menuName == "" || englishName == "" || simpleChineseName == "" || traditionChineseName == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
@@ -182,6 +213,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                 menu.english_name = $("#tbxSubEnglishName").val();
                 menu.simple_chinese_name = $("#tbxSubSimpleChineseName").val();
                 menu.traditional_chinese_name = $("#tbxSubTraditionalChineseName").val();
+                menu.visible = visible;
                 currentData.push(menu);
                 $("#gridSubMenuList").bootstrapTable('load', currentData);
                 $("#subMenuMaintainDialog").modal('hide');
@@ -194,6 +226,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                         menu.english_name = $("#tbxSubEnglishName").val();
                         menu.simple_chinese_name = $("#tbxSubSimpleChineseName").val();
                         menu.traditional_chinese_name = $("#tbxSubTraditionalChineseName").val();
+                        menu.visible = visible;
                         return false;
                     }
                 });
@@ -228,6 +261,10 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
             var englishName = $("#tbxEnglishName").val();
             var simpleChineseName = $("#tbxSimpleChineseName").val();
             var traditionChineseName = $("#tbxTraditionalChineseName").val();
+            var visible = "Y";
+            if(!$("#cbxVisible").is(":checked")) {
+                visible = "N";
+            }
             if(menuName == "" || englishName == "" || simpleChineseName == "" || traditionChineseName == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
@@ -245,7 +282,8 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     link: link,
                     english_name: englishName,
                     simple_chinese_name: simpleChineseName,
-                    tradition_chinese_name: traditionChineseName
+                    tradition_chinese_name: traditionChineseName,
+                    visible: visible
                 };
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
@@ -314,6 +352,14 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxSubTraditionalChineseName"
                                        id="tbxSubTraditionalChineseName" value=""/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{trans("messages.STATUS")}}:</td>
+                            <td style="padding: 10px;">
+                                <div id="switchSubVisible" class="switch" data-on="success" data-on-label="Y" data-off-label="N">
+                                    <input type="checkbox" id="cbxSubVisible" checked />
+                                </div>
                             </td>
                         </tr>
                     </table>

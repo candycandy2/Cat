@@ -79,24 +79,50 @@ foreach ($oriMenuList as $menu) {
                                 <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
                                 <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
                                     @if(in_array($companyRoles->roles[0]->row_id, $userInfo->roleList))
                                         checked
                                     @endif
                                 >{{$companyRoles->roles[0]->role_description}}</input>
+                                </div>
+                                @if(count($companyRoles->roles) > 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole"
+                                               @if(in_array($companyRoles->roles[1]->row_id, $userInfo->roleList))
+                                               checked
+                                                @endif
+                                        >{{$companyRoles->roles[1]->role_description}}</input>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
-                        @for($i = 1; $i < count($companyRoles->roles); $i++)
+                        @if(count($companyRoles->roles) > 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
                             <tr>
                                 <td style="border:1px solid #d6caca;">
-                                    <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
-                                           @if(in_array($companyRoles->roles[$i]->row_id, $userInfo->roleList))
-                                                checked
-                                           @endif
-                                    >{{$companyRoles->roles[$i]->role_description}}</input>
+                                    @if(count($companyRoles->roles) > $i)
+                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
+                                                   @if(in_array($companyRoles->roles[$i]->row_id, $userInfo->roleList))
+                                                   checked
+                                                    @endif
+                                            >{{$companyRoles->roles[$i]->role_description}}</input>
+                                        </div>
+                                    @endif
+                                        @if(count($companyRoles->roles) > $i + 1)
+                                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole"
+                                                       @if(in_array($companyRoles->roles[$i + 1]->row_id, $userInfo->roleList))
+                                                       checked
+                                                        @endif
+                                                >{{$companyRoles->roles[$i + 1]->role_description}}</input>
+                                            </div>
+                                        @endif
                                 </td>
                             </tr>
                         @endfor
+                        @endif
                     </table>
                 @endif
             @endforeach
@@ -109,6 +135,7 @@ foreach ($oriMenuList as $menu) {
             {{trans("messages.SYSTEM_GROUP")}}:
             &nbsp;
             <select class="select2-close-mask" name="ddlGroup" id="ddlGroup" onchange="ChangeGroup();">
+                    <option></option>
                 @foreach($allGroupList as $group)
                     <option value="{{$group->row_id}}"
                     @if($userInfo->group_id != null && $group->row_id == $userInfo->group_id)
@@ -117,7 +144,11 @@ foreach ($oriMenuList as $menu) {
                     >{{$group->group_name}}</option>
                 @endforeach
             </select>
-            &nbsp;<input type="checkbox" id="cbxBelongToGroup" onclick="ChangeBelongToGroup(this)">{{trans("messages.MSG_BELONG_TO_GROUP_RIGHT")}}</input>
+            &nbsp;<input type="checkbox" id="cbxBelongToGroup"
+                         @if($userInfo->authority_by_group != null && $userInfo->authority_by_group == 'Y')
+                         checked="checked"
+                         @endif
+                         onclick="ChangeBelongToGroup(this)">{{trans("messages.MSG_BELONG_TO_GROUP_RIGHT")}}</input>
             <br /><br />
             @foreach($allMenuList as $menu)
                 <table class="table table-bordered MenuTable" style="border:1px solid #d6caca;" id="MenuTable_{{$menu->Id}}" >
@@ -131,25 +162,51 @@ foreach ($oriMenuList as $menu) {
                         </td>
                         <td style="border:1px solid #d6caca;">
                             @if(count($menu->subMenuList) > 0)
-                                <input type="checkbox" data="{{$menu->subMenuList[0]->Id}}"
-                                       @if(in_array($menu->subMenuList[0]->Id, $userInfo->menuList))
-                                       checked
-                                       @endif
-                                       class="cbxSubMenu" >{{$menu->subMenuList[0]->sName}}</input>
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <input type="checkbox" data="{{$menu->subMenuList[0]->Id}}"
+                                           @if(in_array($menu->subMenuList[0]->Id, $userInfo->menuList))
+                                           checked
+                                           @endif
+                                           class="cbxSubMenu" >{{$menu->subMenuList[0]->sName}}</input>
+                                </div>
                             @endif
+                                @if(count($menu->subMenuList) > 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$menu->subMenuList[1]->Id}}"
+                                               @if(in_array($menu->subMenuList[1]->Id, $userInfo->menuList))
+                                               checked
+                                               @endif
+                                               class="cbxSubMenu" >{{$menu->subMenuList[1]->sName}}</input>
+                                    </div>
+                                @endif
                         </td>
                     </tr>
-                    @for($i = 1; $i < count($menu->subMenuList); $i++)
+                    @if(count($menu->subMenuList) > 2)
+                    @for($i = 2; $i < (count($menu->subMenuList) + 1) / 2; $i = $i + 2)
                         <tr>
                             <td style="border:1px solid #d6caca;">
+                                @if(count($menu->subMenuList) > $i)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
                                 <input type="checkbox" data="{{$menu->subMenuList[$i]->Id}}"
                                        @if(in_array($menu->subMenuList[$i]->Id, $userInfo->menuList))
                                        checked
                                        @endif
                                        class="cbxSubMenu">{{$menu->subMenuList[$i]->sName}}</input>
+                                    </div>
+                                @endif
+                                    @if(count($menu->subMenuList) > $i + 1)
+                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <input type="checkbox" data="{{$menu->subMenuList[$i + 1]->Id}}"
+                                                   @if(in_array($menu->subMenuList[$i + 1]->Id, $userInfo->menuList))
+                                                   checked
+                                                   @endif
+                                                   class="cbxSubMenu">{{$menu->subMenuList[$i + 1]->sName}}</input>
+                                        </div>
+                                    @endif
                             </td>
                         </tr>
                     @endfor
+                    @endif
                 </table>
             @endforeach
         </div>

@@ -15,7 +15,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-xs-8">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td>{{trans("messages.PUSH_TO")}}:</td>
                     <td style="padding: 10px;">
@@ -23,6 +23,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                             <option value="qplay" selected="selected">QPlay</option>
                         </select>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.PUSH_TYPE")}}:</td>
@@ -32,6 +33,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                             <option value="news" @if($isCopy && $copyFromMessageInfo->message_type == "news") selected="selected" @endif>news</option>
                         </select>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
@@ -39,6 +41,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         <input type="text" data-clear-btn="true" name="tbxTitle" class="form-control"
                                id="tbxTitle" value="@if($isCopy){{$copyFromMessageInfo->message_title}}@endif"/>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
@@ -48,6 +51,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                                 {{$copyFromMessageInfo->message_text}}
                             @endif</textarea>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
             </table>
         </div>
@@ -78,20 +82,34 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                                 <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;">
-                                <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
-
-                                >{{$companyRoles->roles[0]->role_description}}</input>
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole">{{$companyRoles->roles[0]->role_description}}</input>
+                                </div>
+                                @if(count($companyRoles->roles) > 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole">{{$companyRoles->roles[1]->role_description}}</input>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
-                        @for($i = 1; $i < count($companyRoles->roles); $i++)
+                        @if(count($companyRoles->roles) > 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
                             <tr>
                                 <td style="border:1px solid #d6caca;">
-                                    <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
-
-                                    >{{$companyRoles->roles[$i]->role_description}}</input>
+                                    @if(count($companyRoles->roles) > $i)
+                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole">{{$companyRoles->roles[$i]->role_description}}</input>
+                                        </div>
+                                    @endif
+                                        @if(count($companyRoles->roles) > $i + 1)
+                                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole">{{$companyRoles->roles[$i + 1]->role_description}}</input>
+                                            </div>
+                                        @endif
                                 </td>
                             </tr>
                         @endfor
+                        @endif
                     </table>
                 @endif
             @endforeach
@@ -135,16 +153,36 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         <input type="checkbox" data="All_Company" onclick="CompanyTableSelectedAll(this)">ALL</input>
                     </td>
                     <td style="border:1px solid #d6caca;">
-                        <input type="checkbox" data="{{$allCompanyRoleList[0]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[0]->company}}</input>
+                        @if(count($allCompanyRoleList) > 0)
+                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                            <input type="checkbox" data="{{$allCompanyRoleList[0]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[0]->company}}</input>
+                        </div>
+                        @endif
+                            @if(count($allCompanyRoleList) > 1)
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <input type="checkbox" data="{{$allCompanyRoleList[1]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[1]->company}}</input>
+                                </div>
+                            @endif
                     </td>
                 </tr>
-                @for($i = 1; $i < count($allCompanyRoleList); $i++)
+                @if(count($allCompanyRoleList) > 2)
+                @for($i = 2; $i < (count($allCompanyRoleList) + 1) / 2; $i = $i + 2)
                     <tr>
                         <td style="border:1px solid #d6caca;">
-                            <input type="checkbox" data="{{$allCompanyRoleList[$i]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
+                            @if(count($allCompanyRoleList) > $i)
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <input type="checkbox" data="{{$allCompanyRoleList[$i]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
+                                </div>
+                            @endif
+                                @if(count($allCompanyRoleList) > $i + 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$allCompanyRoleList[$i + 1]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[$i + 1]->company}}</input>
+                                    </div>
+                                @endif
                         </td>
                     </tr>
                 @endfor
+                @endif
             </table>
         </div>
     </div>

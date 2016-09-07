@@ -110,7 +110,9 @@ $title = trans('messages.TITLE_'.$menu_name);
                             <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">繁體中文</a></li>
                         </ul>
                     </li>
-                    <li><a href="auth/logout">{{trans('messages.LOGOUT' )}}</a></li>
+                    <li>
+                        <a onclick="logout()" href="#">{{trans('messages.LOGOUT' )}}</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -221,7 +223,37 @@ $title = trans('messages.TITLE_'.$menu_name);
         $(".content-wrapper").resize(function () {
             $('.bootstrapTable').bootstrapTable('resetView');
         });
-    })
+
+        $('.bootstrapTable').on('load-success.bs.table', function() {
+            $(".pagination-info").each(function() {
+                $(this).text(
+                        $(this).text().replace("Showing", "{{trans("messages.PAGING_SHOWING")}}")
+                                .replace("to", "{{trans("messages.PAGING_TO")}}").replace("of", "{{trans("messages.PAGING_OF")}}")
+                                .replace("rows", "{{trans("messages.PAGING_ROWS")}}")
+                );
+            });
+            //$(".page-list").text();
+            $(".pagging_per_page").each(function() {
+                $(this).text(
+                        $(this).text().replace("rows per page", "{{trans("messages.PAGING_ROWS_PER_PAGE")}}")
+                );
+            });
+        });
+
+        $('.bootstrapTable').on('page-change.bs.table', function() {
+            if(selectedChanged) {
+                selectedChanged();
+            }
+        });
+    });
+
+    var logout = function () {
+        showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_LOGOUT")}}", "", function () {
+            hideConfirmDialog();
+
+            window.location.href = "auth/logout";
+        });
+    };
 </script>
 </body>
 </html>

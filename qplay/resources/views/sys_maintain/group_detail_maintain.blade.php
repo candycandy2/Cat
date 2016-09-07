@@ -28,13 +28,14 @@ foreach ($oriMenuList as $menu) {
 @section('content')
     <div class="row">
         <div class="col-lg-6 col-xs-6">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td>{{trans("messages.GROUP_NAME")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxGroupName"
+                        <input type="text" data-clear-btn="true" name="tbxGroupName" class="form-control"
                                id="tbxGroupName" value="@if($action == "U"){{$groupInfo->group_name}}@endif"/>
                     </td>
+                    <td><span style="color: red;">*</span></td>
                 </tr>
             </table>
         </div>
@@ -69,25 +70,51 @@ foreach ($oriMenuList as $menu) {
                         </td>
                         <td style="border:1px solid #d6caca;">
                             @if(count($menu->subMenuList) > 0)
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
                                 <input type="checkbox" data="{{$menu->subMenuList[0]->Id}}"
                                        @if($action == "U" && in_array($menu->subMenuList[0]->Id, $groupInfo->menuList))
                                        checked
                                        @endif
                                        class="cbxSubMenu" >{{$menu->subMenuList[0]->sName}}</input>
+                                </div>
                             @endif
+                                @if(count($menu->subMenuList) > 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$menu->subMenuList[1]->Id}}"
+                                               @if($action == "U" && in_array($menu->subMenuList[1]->Id, $groupInfo->menuList))
+                                               checked
+                                               @endif
+                                               class="cbxSubMenu" >{{$menu->subMenuList[1]->sName}}</input>
+                                    </div>
+                                @endif
                         </td>
                     </tr>
-                    @for($i = 1; $i < count($menu->subMenuList); $i++)
+                    @if(count($menu->subMenuList) > 2)
+                    @for($i = 2; $i < (count($menu->subMenuList) + 1) / 2; $i = $i + 2)
                         <tr>
                             <td style="border:1px solid #d6caca;">
+                                @if(count($menu->subMenuList) > $i)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
                                 <input type="checkbox" data="{{$menu->subMenuList[$i]->Id}}"
                                        @if($action == "U" && in_array($menu->subMenuList[$i]->Id, $groupInfo->menuList))
                                        checked
                                        @endif
                                        class="cbxSubMenu">{{$menu->subMenuList[$i]->sName}}</input>
+                                    </div>
+                                @endif
+                                    @if(count($menu->subMenuList) > $i + 1)
+                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$menu->subMenuList[$i + 1]->Id}}"
+                                               @if($action == "U" && in_array($menu->subMenuList[$i + 1]->Id, $groupInfo->menuList))
+                                               checked
+                                               @endif
+                                               class="cbxSubMenu">{{$menu->subMenuList[$i + 1]->sName}}</input>
+                                        </div>
+                                    @endif
                             </td>
                         </tr>
                     @endfor
+                    @endif
                 </table>
             @endforeach
         </div>
@@ -103,6 +130,8 @@ foreach ($oriMenuList as $menu) {
             }
         };
 
+        var pageAction = '{{$action}}';
+        var groupId = '{{$groupId}}';
         var SaveGroup = function() {
             var groupName = $("#tbxGroupName").val();
             if(groupName == "") {
@@ -112,8 +141,8 @@ foreach ($oriMenuList as $menu) {
 
             var mydata =
             {
-                action: '{{$action}}',
-                group_id: '{{$groupId}}',
+                action: pageAction,
+                group_id: groupId,
                 group_name:groupName,
                 menu_list: new Array()
             };
@@ -138,9 +167,12 @@ foreach ($oriMenuList as $menu) {
                 data: mydataStr,
                 success: function (d, status, xhr) {
                     if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
                     }  else {
-                        $("#gridUserList").bootstrapTable('refresh');
+                        if(pageAction == "N") {
+                            pageAction = "U";
+                            groupId = d.new_group_id;
+                        }
                         showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                     }
                 },
