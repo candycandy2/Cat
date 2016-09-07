@@ -37,9 +37,13 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
         };
 
         var removeRight = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_RIGHT")}}", "", function () {
+            var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+            var confirmHtml = "";
+            $.each(selectedUsers, function(i, user) {
+                confirmHtml += user.login_id + "<br/>";
+            });
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_RIGHT")}}", confirmHtml, function () {
                 hideConfirmDialog();
-                var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
                 var userIdList = new Array();
                 $.each(selectedUsers, function(i, user) {
                     userIdList.push(user.row_id);
@@ -73,6 +77,7 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
             $('#gridUserList').on('uncheck.bs.table', selectedChanged);
             $('#gridUserList').on('check-all.bs.table', selectedChanged);
             $('#gridUserList').on('uncheck-all.bs.table', selectedChanged);
+            //$('#gridUserList').on('page-change.bs.table', selectedChanged);
         });
 
         var selectedChanged = function (row, $element) {

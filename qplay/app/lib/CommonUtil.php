@@ -52,19 +52,30 @@ class CommonUtil
         }
 
         $user->group_id = null;
+        $user->authority_by_group = null;
         $groupList = \DB::table('qp_user_group')
             -> where('user_row_id', '=', $user->row_id)
-            -> select('group_row_id')->get();
+            -> select('group_row_id','authority_by_group')->get();
         if(count($groupList) > 0) {
             $user->group_id = $groupList[0]->group_row_id;
+            $user->authority_by_group =  $groupList[0]->authority_by_group;
         }
 
         $user->menuList = array();
-        $groupList = \DB::table('qp_user_menu')
-            -> where('user_row_id', '=', $user->row_id)
-            -> select('menu_row_id')->get();
-        foreach ($groupList as $menu) {
-            $user->menuList[] = $menu->menu_row_id;
+        if($user->authority_by_group != null && $user->authority_by_group == "Y") {
+            $menuList = \DB::table('qp_group_menu')
+                -> where('group_row_id', '=', $user->group_id)
+                -> select('menu_row_id')->get();
+            foreach ($menuList as $menu) {
+                $user->menuList[] = $menu->menu_row_id;
+            }
+        } else {
+            $menuList = \DB::table('qp_user_menu')
+                -> where('user_row_id', '=', $user->row_id)
+                -> select('menu_row_id')->get();
+            foreach ($menuList as $menu) {
+                $user->menuList[] = $menu->menu_row_id;
+            }
         }
 
         return $user;
@@ -118,11 +129,11 @@ class CommonUtil
     public static function getAllCompanyRoleList()
     {
         $companyList = \DB::table('qp_role')
-            ->select('company')->distinct()->get();
+            ->select('company')->distinct()->orderBy('company')->get();
         foreach ($companyList as $company) {
             $roleList = \DB::table('qp_role')
                 ->where('company', '=', $company->company)
-                ->select()->get();
+                ->select()->orderBy('role_description')->get();
             $company->roles = array();
             foreach ($roleList as $role)
             {
@@ -422,12 +433,6 @@ SQL;
         return $sendInfo;
     }
 
-    /**
-     * get app Categorgy Name by Row id
-     * @param  int $categoryId      qp_app_category.row_id
-     * @return Object               qurery result
-     * @author Cleo.W.Chan
-     */
     public static function getCategoryInfoByRowId($categoryId){
         $categoryList = \DB::table('qp_app_category')
             -> where('row_id', '=', $categoryId)

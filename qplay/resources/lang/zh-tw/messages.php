@@ -23,6 +23,12 @@ return [
     'MSG_OPERATION_FAILED' => '操作失敗!',
     'MSG_CONFIRM_SAVE' => '確認儲存?',
     'MSG_REQUIRED_FIELD_MISSING' => '必填項內容缺失!',
+    'MSG_CONFIRM_LOGOUT' => '確認登出?',
+    'PAGING_SHOWING' => '當前顯示',
+    'PAGING_TO' => '至',
+    'PAGING_OF' => '筆記錄, 共',
+    'PAGING_ROWS' => '筆記錄',
+    'PAGING_ROWS_PER_PAGE' => '筆記錄每頁',
 
     'MENU' => '選單',
     'LOGOUT' => '登出',
@@ -58,7 +64,7 @@ return [
     'ROLE' => '企業角色',
     'SYSTEM_GROUP' => '系統群組',
     'REMOVE_RIGHT' => '停權',
-    'MSG_CONFIRM_REMOVE_RIGHT' => '確認移除所選員工權限嗎?',
+    'MSG_CONFIRM_REMOVE_RIGHT' => '確認將用戶停權?',
     'MSG_REMOVE_RIGHT_FAILED' => '用戶停權失敗!',
     'MSG_BELONG_TO_GROUP_RIGHT' => '依系統群組權限',
 
@@ -169,4 +175,7 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => '預設語言',
+
+    'ERR_EXIST_ROLE' => '角色在當前公司內已存在!',
+    'ERR_GROUP_NAME_EXIST' => '群組名稱已存在!',
 ];

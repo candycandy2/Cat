@@ -13,7 +13,7 @@ $messageType = $sendInfo->message_info->message_type;
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-xs-8">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td>{{trans("messages.PUSH_TO")}}:</td>
                     <td style="padding: 10px;">
@@ -70,7 +70,6 @@ $messageType = $sendInfo->message_info->message_type;
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             {{trans("messages.MESSAGE_RECEIVER")}}:
             <br/><br/>
-
             @foreach($allCompanyRoleList as $companyRoles)
                 @if(count($companyRoles->roles > 0))
                     <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
@@ -80,20 +79,42 @@ $messageType = $sendInfo->message_info->message_type;
                                        onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;">
-                                <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole" disabled="disabled"
-                                       @if(in_array($companyRoles->roles[0]->row_id, $sendInfo->role_list)) checked="checked" @endif
-                                >{{$companyRoles->roles[0]->role_description}}</input>
+                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole" disabled="disabled"
+                                           @if(in_array($companyRoles->roles[0]->row_id, $sendInfo->role_list)) checked="checked" @endif
+                                    >{{$companyRoles->roles[0]->role_description}}</input>
+                                </div>
+                                    @if(count($companyRoles->roles) > 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole" disabled="disabled"
+                                               @if(in_array($companyRoles->roles[1]->row_id, $sendInfo->role_list)) checked="checked" @endif
+                                        >{{$companyRoles->roles[1]->role_description}}</input>
+                                    </div>
+                                    @endif
                             </td>
                         </tr>
-                        @for($i = 1; $i < count($companyRoles->roles); $i++)
+                        @if(count($companyRoles->roles) > 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
                             <tr>
                                 <td style="border:1px solid #d6caca;">
-                                    <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole" disabled="disabled"
-                                           @if(in_array($companyRoles->roles[$i]->row_id, $sendInfo->role_list)) checked="checked" @endif
-                                    >{{$companyRoles->roles[$i]->role_description}}</input>
+                                    @if(count($companyRoles->roles) > $i)
+                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole" disabled="disabled"
+                                                   @if(in_array($companyRoles->roles[$i]->row_id, $sendInfo->role_list)) checked="checked" @endif
+                                            >{{$companyRoles->roles[$i]->role_description}}</input>
+                                        </div>
+                                    @endif
+                                    @if(count($companyRoles->roles) > $i + 1)
+                                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole" disabled="disabled"
+                                                       @if(in_array($companyRoles->roles[$i + 1]->row_id, $sendInfo->role_list)) checked="checked" @endif
+                                                >{{$companyRoles->roles[$i + 1]->role_description}}</input>
+                                            </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endfor
+                        @endif
                     </table>
                 @endif
             @endforeach
@@ -127,20 +148,42 @@ $messageType = $sendInfo->message_info->message_type;
                         <input type="checkbox" data="All_Company" disabled="disabled" onclick="CompanyTableSelectedAll(this)">ALL</input>
                     </td>
                     <td style="border:1px solid #d6caca;">
+                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
                         <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[0]->company}}"
                                @if(in_array($allCompanyRoleList[0]->company, $sendInfo->company_list)) checked="checked" @endif
                                class="cbxNewsCompany">{{$allCompanyRoleList[0]->company}}</input>
+                        </div>
+                        @if(count($allCompanyRoleList) > 1)
+                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[1]->company}}"
+                                       @if(in_array($allCompanyRoleList[1]->company, $sendInfo->company_list)) checked="checked" @endif
+                                       class="cbxNewsCompany">{{$allCompanyRoleList[1]->company}}</input>
+                            </div>
+                        @endif
                     </td>
                 </tr>
-                @for($i = 1; $i < count($allCompanyRoleList); $i++)
+                @if(count($allCompanyRoleList) > 2)
+                @for($i = 2; $i < (count($allCompanyRoleList) + 1) / 2; $i = $i + 2)
                     <tr>
                         <td style="border:1px solid #d6caca;">
-                            <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[$i]->company}}"
-                                   @if(in_array($allCompanyRoleList[$i]->company, $sendInfo->company_list)) checked="checked" @endif
-                                   class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
+                            @if(count($allCompanyRoleList) > $i)
+                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[$i]->company}}"
+                                       @if(in_array($allCompanyRoleList[$i]->company, $sendInfo->company_list)) checked="checked" @endif
+                                       class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
+                            </div>
+                            @endif
+                                @if(count($allCompanyRoleList) > $i + 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[$i + 1]->company}}"
+                                               @if(in_array($allCompanyRoleList[$i + 1]->company, $sendInfo->company_list)) checked="checked" @endif
+                                               class="cbxNewsCompany">{{$allCompanyRoleList[$i + 1]->company}}</input>
+                                    </div>
+                                @endif
                         </td>
                     </tr>
                 @endfor
+                @endif
             </table>
         </div>
     </div>

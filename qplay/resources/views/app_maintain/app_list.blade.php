@@ -19,7 +19,7 @@ $menu_name = "APP_MAINTAIN";
         <tr>
             <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
             <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
-            <th data-field="app_name" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
+            <th data-field="app_name" data-sortable="true" data-formatter="appEditFormatter">{{trans("messages.APP_NAME")}}</th>
             <th data-field="package_name" data-sortable="true">{{trans("messages.APP_PACKAGE_NAME")}}</th>
             <th data-field="updated_at" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
             <th data-field="released" data-sortable="true">{{trans("messages.RELEASED")}}</th>
@@ -32,6 +32,11 @@ $menu_name = "APP_MAINTAIN";
 	    var path = '{{asset('icon/')}}';
 	    return '<img src="'+ path + '/' + row.icon_url + '" class="img-rounded"  width="90" height="90">';
 	};
+
+    function appEditFormatter(value, row){
+        var path = '{{asset('appDetailMaintain?id=')}}' + row.row_id;
+        return '<a href="' + path + '" </a>' + value;
+    }
 
 	var newApp = function(){
 		 $("#newAppDialog").find('.modal-title').text('{{trans('messages.NEW_APP')}}');
@@ -48,7 +53,7 @@ $menu_name = "APP_MAINTAIN";
             return false;
         }
 
-        window.location='{{asset('AppMaintain/appDetail')}}';
+        window.location='{{asset('appDetailMaintain')}}';
     };
 
 	$(function () {
@@ -73,7 +78,7 @@ $menu_name = "APP_MAINTAIN";
                     	<tr>
                             <td>{{trans("messages.APP_KEY")}}:</td>
                             <td style="padding: 10px;">
-	                            <select name="ddlAppKey" id="ddlAppKey" onchange="BindRoleList()">
+	                            <select name="ddlAppKey" id="ddlAppKey">
 					                @foreach($data['projectInfo'] as $pInfo)
 					                    <option value="{{$pInfo->row_id}}">{{$pInfo->app_key}}</option>
 					                @endforeach

@@ -44,6 +44,12 @@ class AuthController extends Controller
             if(count($menuList) > 0)
             {
                 foreach ($menuList as $menu) {
+                    if($menu->Url == "accountMaintain")
+                    {
+                        return redirect()->to($menu->Url);
+                    }
+                }
+                foreach ($menuList as $menu) {
                     if($menu->Url == "about")
                     {
                         return redirect()->to($menu->Url);
@@ -56,7 +62,7 @@ class AuthController extends Controller
                     }
                 }
             }
-            $data['errormsg'] = "No Menu";
+            $data['errormsg'] = "No authority to access the system";
             return \Redirect::to('auth/login')->with($data);
             //return view("user_maintain/account_maintain");
         } else {

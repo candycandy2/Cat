@@ -472,7 +472,7 @@
             return 'Loading, please wait...';
         },
         formatRecordsPerPage: function (pageNumber) {
-            return sprintf('%s rows per page', pageNumber);
+            return sprintf('%s <span class="pagging_per_page">rows per page</span>', pageNumber);
         },
         formatShowingRows: function (pageFrom, pageTo, totalRows) {
             return sprintf('Showing %s to %s of %s rows', pageFrom, pageTo, totalRows);

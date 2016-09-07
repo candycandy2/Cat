@@ -347,7 +347,7 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
 @endsection
 
 @section('dialog_content')
-    <div id="typeDetailMaintainDialog" class="modal fade">
+    <div id="typeDetailMaintainDialog" class="modal fade" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -355,19 +355,20 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                     <h1 class="modal-title" id="typeDetailMaintainDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table>
+                    <table style="width: 100%">
                         <tr>
                             <td>{{trans("messages.PARAMETER_TYPE_NAME")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxTypeName"
-                                       id="tbxTypeName" value=""/>
+                                       id="tbxTypeName" value="" class="form-control"/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.DESCRIPTION")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxTypeDescription"
-                                       id="tbxTypeDescription" value=""/>
+                                       id="tbxTypeDescription" value="" class="form-control"/>
                             </td>
                         </tr>
                     </table>
@@ -388,28 +389,31 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                     <h1 class="modal-title" id="parameterDetailMaintainDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table>
+                    <table style="width: 100%">
                         <tr>
                             <td>{{trans("messages.PARAMETER_TYPE_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <select id="ddlParameterTypeList" name="ddlParameterTypeList">
+                                <select id="ddlParameterTypeList" name="ddlParameterTypeList" class="form-control">
 
                                 </select>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.PARAMETER_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxParameterName"
+                                <input type="text" data-clear-btn="true" name="tbxParameterName" class="form-control"
                                        id="tbxParameterName" value=""/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.PARAMETER_VALUE")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxParameterValue"
+                                <input type="text" data-clear-btn="true" name="tbxParameterValue" class="form-control"
                                        id="tbxParameterValue" value=""/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                     </table>
                 </div>
