@@ -130,7 +130,7 @@ class qplayController extends Controller
                 try
                 {
                     $token = uniqid();  //生成token
-                    $token_valid = time();
+                    $token_valid = time() + (2 * 86400);
                     $now = date('Y-m-d H:i:s',$token_valid);
 
                     \DB::table("qp_register")->insert([
@@ -305,8 +305,8 @@ class qplayController extends Controller
                 }
 
                 $token = uniqid();  //生成token
-                $token_valid = time();
-                $now = date('Y-m-d H:i:s',$token_valid);
+                $token_valid = time() + (2 * 86400);
+                $now = date('Y-m-d H:i:s',time());
                 try
                 {
                     $sessionList = \DB::table("qp_session")
@@ -902,6 +902,7 @@ left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where um.user_row_id = :uId1
 and qp_message.message_type = 'event'
+and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
@@ -914,6 +915,7 @@ select distinct qp_message_send.* , 'N' as 'read', '' as 'read_time'
      from qp_message_send 
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where qp_message.message_type = 'news'
+and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
@@ -1022,6 +1024,7 @@ from qp_message m,
 	   qp_user u2,
 		 qp_user_message um
 where m.row_id = ms.message_row_id
+and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
@@ -1305,7 +1308,7 @@ SQL;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $token = uniqid();
-                $token_valid = time();
+                $token_valid = time() + (2 * 86400);
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 $now = date('Y-m-d H:i:s',time());
                 $user = CommonUtil::getUserInfoByUUID($uuid);
@@ -1333,7 +1336,7 @@ SQL;
                 'content'=>'']);
         }
     }
-
+    
     public function sendPushMessage()
     {
         $Verify = new Verify();
@@ -1381,28 +1384,30 @@ SQL;
                         'message'=>"数据不完整",
                         'content'=>'']);
                 }
-                if($jsonContent['message_type'] == "event" &&
-                     ( (!array_key_exists('destination_user_id', $jsonContent) || $jsonContent['destination_user_id'] == null)
-                    && (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null))) {
-                    return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
-                        'message'=>"数据不完整",
-                        'content'=>'']);
-                }
+                if(strtoupper($need_push) == "Y") {
+                    if($jsonContent['message_type'] == "event" &&
+                        ( (!array_key_exists('destination_user_id', $jsonContent) || $jsonContent['destination_user_id'] == null)
+                            && (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null))) {
+                        return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
+                            'message'=>"数据不完整",
+                            'content'=>'']);
+                    }
 
-                if($jsonContent['message_type'] == "news" &&
-                     (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null)) {
-                    return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
-                        'message'=>"数据不完整",
-                        'content'=>'']);
+                    if($jsonContent['message_type'] == "news" &&
+                        (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null)) {
+                        return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
+                            'message'=>"数据不完整",
+                            'content'=>'']);
+                    }
                 }
 
                 $sourceUseId = $jsonContent['source_user_id'];
 
                 $userid = explode('\\', $sourceUseId)[1];
-                $company = explode('\\', $sourceUseId)[0];
-                $verifyResult = $Verify->verifyUserByUserIDAndCompany($userid, $company);
+                $domain = explode('\\', $sourceUseId)[0];
+                $verifyResult = $Verify->verifyUserByUserIDAndDomain($userid, $domain);
                 if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                    $userInfo = CommonUtil::getUserInfoJustByUserIDAndCompany($userid, $company);
+                    $userInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
 
                     $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
                     if($projectInfo == null) {
@@ -1416,8 +1421,8 @@ SQL;
                     foreach ($destinationUserIdList as $destinationUserId)
                     {
                         $userid = explode('\\', $destinationUserId)[1];
-                        $company = explode('\\', $destinationUserId)[0];
-                        $verifyResult = $Verify->verifyUserByUserIDAndCompany($userid, $company);
+                        $domain = explode('\\', $destinationUserId)[0];
+                        $verifyResult = $Verify->verifyUserByUserIDAndDomain($userid, $domain);
 
                         if($verifyResult["code"] == ResultCode::_000901_userNotExistError) {
                             return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
@@ -1431,7 +1436,7 @@ SQL;
                                 'content'=>'']);
                         }
 
-                        $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndCompany($userid, $company);
+                        $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
 
                         array_push($destinationUserInfoList, $destinationUserInfo);
                     }
@@ -1440,8 +1445,8 @@ SQL;
                     $destinationRoleInfoList = array();
                     foreach ($destinationRoleIdList as $destinationRoleId)
                     {
-                        $roleDesc = explode('\\', $destinationRoleId)[1];
-                        $company = explode('\\', $destinationRoleId)[0];
+                        $roleDesc = explode('/', $destinationRoleId)[1];
+                        $company = explode('/', $destinationRoleId)[0];
 
                         $destinationRoleInfo = CommonUtil::getRoleInfo($roleDesc, $company);
                         if($destinationRoleInfo == null) {
@@ -1454,21 +1459,23 @@ SQL;
                     }
 
                     $message_type = $jsonContent['message_type'];
-                    $message_title = $jsonContent['message_title'];
+                    $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
                     if(strlen($message_title) > 99) {
                         return response()->json(['result_code'=>ResultCode::_000916_titleLengthTooLong,
                             'message'=>"标题栏位太长",
                             'content'=>'']);
                     }
-                    $message_text = $jsonContent['message_text'];
-                    $message_html = $jsonContent['message_html'];
-                    $message_url = $jsonContent['message_url'];
+                    $template_id = $jsonContent['template_id'];
+                    $message_text = CommonUtil::jsUnescape(base64_decode($jsonContent['message_text']));
+                    $message_html = CommonUtil::jsUnescape(base64_decode($jsonContent['message_html']));
+                    $message_url = CommonUtil::jsUnescape(base64_decode($jsonContent['message_url']));
                     $message_source = $jsonContent['message_source'];
                     $now = date('Y-m-d H:i:s',time());
                     \DB::beginTransaction();
                     try {
                         $newMessageId = \DB::table("qp_message")
                             -> insertGetId([
+                                'template_id'=>$template_id, 'visible'=>'Y',
                                 'message_type'=>$message_type, 'message_title'=>$message_title,
                                 'message_text'=>$message_text, 'message_html'=>$message_html,
                                 'message_url'=>$message_url, 'message_source'=>$message_source,
