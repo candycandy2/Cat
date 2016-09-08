@@ -32,8 +32,64 @@ FORM;
 
         <div id="timestampResult"></div>
 
+    <br/>
+    <br/>
+    <textarea id="base64encode" onkeyup="base64encode()"></textarea>
+    <textarea id="base64decode" onkeyup="base64decode()"></textarea>
+
     <br/><br/>
         <script>
+            var keyStr = "ABCDEFGHIJKLMNOP" +
+                    "QRSTUVWXYZabcdef" +
+                    "ghijklmnopqrstuv" +
+                    "wxyz0123456789+/" +
+                    "=";
+            var base64encode = function () {
+
+                var b = $("#base64encode").val();
+                $("#base64decode").val($.base64.btoa(escape(b)));
+            };
+
+            var base64decode = function () {
+//                var a = $("#base64decode").val();
+//                $("#base64encode").val($.base64.atob(a));
+            };
+
+            var encode64 = function (input)
+            {
+                input = escape(input);
+                var output = "";
+                var chr1, chr2, chr3 = "";
+                var enc1, enc2, enc3, enc4 = "";
+                var i = 0;
+                do
+                {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2))
+                    {
+                        enc3 = enc4 = 64;
+                    }
+                    else if (isNaN(chr3))
+                    {
+                        enc4 = 64;
+                    }
+                    output = output +
+                            keyStr.charAt(enc1) +
+                            keyStr.charAt(enc2) +
+                            keyStr.charAt(enc3) +
+                            keyStr.charAt(enc4);
+                    chr1 = chr2 = chr3 = "";
+                    enc1 = enc2 = enc3 = enc4 = "";
+                } while (i < input.length);
+                return output;
+            }
+            
             var urlDecode = function() {
                 var s = $("#tbxDateTime").val();
                 $("#timestampResult").text(decodeURIComponent(s));
@@ -508,15 +564,16 @@ FORM;
 //                    '"source_user_id":"QGROUP\\\\Moses.Zhu",' +
 //                    '"destination_user_id":["QGROUP\\\\Moses.Zhu","QGROUP\\\\Tim.Zhang"]' +
 //                    '}';
-            var mydata = {message_title: "System Announcement",
+            var mydata = {message_title: "JXU1NTRBJXU1NTRB",//"System Announcement",
+                template_id:3,
                         message_type: "event",
-                message_text: "system is down",
+                message_text: "c3lzdGVtIGlzIGRvd24=", //"system is down",
                 message_html: "",
                 message_url:"",
                 message_source:"Oracle ERP",
-                source_user_id:"qisda\\Moses.Zhu",
-                destination_user_id:["qisda\\Moses.Zhu22","qisda\\Sammi.Yao"],
-                destination_role_id:["qisda\\staff"],
+                source_user_id:"Qgroup\\Moses.Zhu",
+                destination_user_id:["Qgroup\\Moses.Zhu","Qgroup\\Sammi.Yao"],
+                destination_role_id:["Qisda/staff"],
                 };
             var mydataStr = $.toJSON(mydata);
 //            mydata = '{"first name":"moseszhu",' +
