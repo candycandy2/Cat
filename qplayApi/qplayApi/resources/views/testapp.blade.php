@@ -9,6 +9,8 @@
 	<script src="{{ asset('/js/jquery-1.12.3.min.js') }}"></script>
 	<script src="{{ asset('/js/jquery.json.js') }}"></script>
 	<script src="{{ asset('/js/Math.uuid.js') }}"></script>
+	<script src="{{ asset('/js/jquery.base64.js') }}"></script>
+
 	<style>
 		body {
 			font-family: Arial;

@@ -124,8 +124,9 @@ class Verify
 
         $token_valid_date = $sessionList[0]->token_valid_date;
         //$last_message_time = $sessionList[0]->last_message_time;
-        $ts = time() - $token_valid_date; //strtotime($token_valid_date);
-        if($ts > Verify::$TOKEN_VALIDATE_TIME)
+        //$ts = time() - $token_valid_date; //strtotime($token_valid_date);
+        //if($ts > Verify::$TOKEN_VALIDATE_TIME)
+        if(time() > $token_valid_date)
         {
             return array("code"=>ResultCode::_000907_tokenOverdue,
                 "message"=> "token过期");
@@ -190,6 +191,26 @@ class Verify
     public static function verifyUserByUserIDAndCompany($loginid, $company)
     {
         $userStatus = CommonUtil::getUserStatusByUserIDAndCompany($loginid, $company);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=>"账号已被停权");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
+    public static function verifyUserByUserIDAndDomain($loginid, $domain)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserIDAndDomain($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
                 "message"=>"離職或是帳號資訊打錯");
@@ -276,8 +297,6 @@ class Verify
         $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
     }
-
-    
 
     public static function verifyYellowPage() {
         $request = Request::instance();
