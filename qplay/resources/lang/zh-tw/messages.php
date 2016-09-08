@@ -35,9 +35,9 @@ return [
     'TITLE_USER_MAINTAIN' => '用戶管理',
     'TITLE_APP_MAINTAIN' => 'App管理',
     'TITLE_SYS_MAINTAIN' => '系統管理',
-    'TITLE_PUSH_SERVER' => '推送服務',
+    'TITLE_PUSH_SERVER' => '推播服務',
     'TITLE_ABOUT' => '關於',
-    'TITLE_USER_ACCOUNT_MAINTAIN' => '賬號管理',
+    'TITLE_USER_ACCOUNT_MAINTAIN' => '帳號管理',
     'TITLE_USER_ROLE_MAINTAIN' => '企業角色管理',
     'TITLE_APP_ANDROID' => 'Android',
     'TITLE_APP_IOS' => 'iOS',
@@ -53,7 +53,7 @@ return [
     'SYS_SUGGEST_BROWSER' => '系統建議瀏覽器: Chrome, IE10以上版本',
 
     //Account Maintain
-    'USER_LOGIN_ID' => '賬號',
+    'USER_LOGIN_ID' => '帳號',
     'USER_EMP_NO' => '員工編號',
     'USER_EMP_NAME' => '員工姓名',
     'USER_EMAIL' => '郵箱',
@@ -157,7 +157,7 @@ return [
     'PUSH_SOURCE_USER' => '推播者',
     'COPY_MESSAGE' => '複製推播',
     'PUSH_AGAIN' => '再推播',
-    'MSG_CONFIRM_PUSH_AGAIN' => '确认再推播?',
+    'MSG_CONFIRM_PUSH_AGAIN' => '確認再推播?',
 
     //App Security Setting
     'BLOCK_LIST' => '黑名單',

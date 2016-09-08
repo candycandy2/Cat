@@ -37,7 +37,7 @@ return [
     'TITLE_SYS_MAINTAIN' => '系统管理',
     'TITLE_PUSH_SERVER' => '推送服务',
     'TITLE_ABOUT' => '关于',
-    'TITLE_USER_ACCOUNT_MAINTAIN' => '账号管理',
+    'TITLE_USER_ACCOUNT_MAINTAIN' => '帐号管理',
     'TITLE_USER_ROLE_MAINTAIN' => '企业角色管理',
     'TITLE_APP_ANDROID' => 'Android',
     'TITLE_APP_IOS' => 'iOS',
@@ -53,7 +53,7 @@ return [
     'SYS_SUGGEST_BROWSER' => '系统建议浏览器: Chrome, IE10以上版本',
 
     //Account Maintain
-    'USER_LOGIN_ID' => '账号',
+    'USER_LOGIN_ID' => '帐号',
     'USER_EMP_NO' => '员工编号',
     'USER_EMP_NAME' => '员工姓名',
     'USER_EMAIL' => '邮箱',
