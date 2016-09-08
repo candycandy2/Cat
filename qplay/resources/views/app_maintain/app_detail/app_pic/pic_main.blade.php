@@ -34,26 +34,21 @@
                         </div>
                     </div>
                     <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#tab_android_phone" data-toggle="tab">Android Phone</a></li>
-                        <li role="presentation"><a href="#tab_android_tablet" data-toggle="tab">Android Tablet</a></li>
-                        <li role="presentation"><a href="#tab_ios_phone" data-toggle="tab">IOS Phone</a></li>
-                        <li role="presentation"><a href="#tab_ios_pad" data-toggle="tab">IOS pad</a></li>
+                        <li role="presentation" class="active"><a href="#tab_android" data-toggle="tab">Android</a></li>
+                        <li role="presentation"><a href="#tab_ios" data-toggle="tab">IOS</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade in active" id="tab_android_phone">
+                        <div class="tab-pane fade in active" id="tab_android">
                             <div class="screen-preview js-img-file">
                                 <div>+</div>
                                 <div>新增<br>螢幕擷取畫面</div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="tab_android_tablet">
-                           456
-                        </div>
-                        <div class="tab-pane fade" id="tab_ios_phone">
-                           IOS-123
-                        </div>
-                        <div class="tab-pane fade" id="tab_ios_pad">
-                            IOS-456
+                        <div class="tab-pane fade" id="tab_ios">
+                            <div class="screen-preview js-img-file">
+                                <div>+</div>
+                                <div>新增<br>螢幕擷取畫面</div>
+                            </div>
                         </div>
                     </div>
                 </div>
