@@ -65,8 +65,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
     <script>
 
         function iconFormatter(value, row) {
-            var path = '{{asset('icon/')}}';
-            return '<img src="'+ path + '/' + row.icon_url + '" class="img-rounded"  width="90" height="90">';
+            return '<img src="' + row.icon_url + '" class="img-rounded"  width="90" height="90">';
         };
 
         $(function () {

@@ -27,10 +27,10 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="appKey">App Key</label>
                 <div class="col-sm-10">
-                    <select name="ddlAKey" id="ddlAppKey" class="form-control" onchange="">
-                        <option value="1">AAA</option>
-                        <option value="2">BBB</option>
-                        <option value="3">CCC</option>
+                    <select name="ddlAppKey" id="ddlAppKey" class="form-control" onchange="">
+                        <option value="1">qplay</option>
+                        <option value="2">YellowPage</option>
+                        <option value="3">RRS</option>
                     </select>
                 </div>
             </div>
@@ -141,10 +141,9 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="email">應用程式分類</label>
                 <div class="col-sm-10">
-                    <select name="ddlAKey" class="form-control" id="ddlAppKey" onchange="">
-                        <option value="1">AAA</option>
-                        <option value="2">BBB</option>
-                        <option value="3">CCC</option>
+                    <select name="ddlAppCategory" class="form-control" id="ddlAppCategory" onchange="">
+                        <option value="1">Common</option>
+                        <option value="2">ERM</option>
                     </select>
                 </div>
             </div>
@@ -152,9 +151,9 @@
                 <label class="control-label col-sm-2" for="pwd">安全級別</label>
                 <div class="col-sm-10"> 
                     <select name="ddlAKey" class="form-control" id="ddlAppKey" onchange="">
-                        <option value="1">AAA</option>
-                        <option value="2">BBB</option>
-                        <option value="3">CCC</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
                     </select>
                 </div>
             </div>
@@ -179,6 +178,20 @@
                             <td>
                                 <label>
                                     <input type="checkbox" id="checkboxSuccess" value="option1">
+                                    Finance
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    <input type="checkbox" id="checkboxSuccess" value="option1">
+                                    HR
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="checkbox" id="checkboxSuccess" value="option1">
                                     ITS
                                 </label>
                             </td>
@@ -187,27 +200,13 @@
                             <td>
                                 <label>
                                     <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    QA
+                                    Others
                                 </label>
                             </td>
                             <td>
                                 <label>
                                     <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CSE
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
-                                </label>
-                            </td>
-                            <td>
-                                <label>
-                                    <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
+                                    salse
                                 </label>
                             </td>
                         </tr>
@@ -224,27 +223,13 @@
                             <td>
                                 <label>
                                     <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
+                                    administrator
                                 </label>
                             </td>
                             <td>
                                 <label>
                                     <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
-                                </label>
-                            </td>
-                            <td>
-                                <label>
-                                    <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
+                                    AIC0 RD
                                 </label>
                             </td>
                         </tr>
@@ -258,7 +243,21 @@
                             <td>
                                 <label>
                                     <input type="checkbox" id="checkboxSuccess" value="option1">
-                                    CEO
+                                    Finance
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    <input type="checkbox" id="checkboxSuccess" value="option1">
+                                    ITS
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="checkbox" id="checkboxSuccess" value="option1">
+                                    Others
                                 </label>
                             </td>
                         </tr>

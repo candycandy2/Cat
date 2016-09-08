@@ -34,7 +34,7 @@
         };
     $(function () {
         $('#gridAndroidVersionList').bootstrapTable({
-            data: [{"row_id":2,"version_name":"benq.yellowpage","version_no":"1472128597_terra.png","version_path":"yellowpage","upload_time":"0000-00-00","status":"android-v0.1-Unpublish"},{"row_id":1,"version_name":"benq.qplay","version_no":"1472126148_gmail.png","version_path":"aplay","upload_time":"0000-00-00","status":"android-v0.1"}]
+            data: [{"row_id":1,"version_name":"1.0.0.0","version_no":"100","version_path":"http://qplay.benq.com/qplay/storage/android/","upload_time":"2016-09-22","status":"Unpublish"},{"row_id":3,"version_name":"1.0.0.1","version_no":"101","version_path":"http://qplay.benq.com/qplay/storage/android/","upload_time":"2016-10-30","status":"android-v0.1"}]
         });
     });
 
