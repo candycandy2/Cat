@@ -1005,6 +1005,7 @@ class platformController extends Controller
             -> select("qp_message.row_id", "qp_message.message_type",
                 "qp_message.message_title", "qp_user.login_id as created_user",
                 "qp_message.created_at", "qp_message.visible")
+            -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
             -> get();
 
         return response()->json($messageList);
