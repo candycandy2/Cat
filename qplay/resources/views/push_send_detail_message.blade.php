@@ -47,7 +47,7 @@ $messageType = $sendInfo->message_info->message_type;
                 {{$messageInfo->message_title}}
               </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" style="word-wrap:break-word;">
               <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
               <div class="col-xs-10">
                 {{$messageInfo->message_text}}
