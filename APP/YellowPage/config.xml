@@ -26,4 +26,5 @@
     </platform>
     <plugin name="cordova-plugin-splashscreen" spec="~3.2.2" />
     <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
+    <serverUrl href = "http://qplay.benq.com/qplayApi/public/index.php/qplayauth_register"/>
 </widget>
