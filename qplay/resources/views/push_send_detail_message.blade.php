@@ -11,45 +11,48 @@ $messageType = $sendInfo->message_info->message_type;
 ?>
 @extends('layouts.admin_template')
 @section('content')
+    <style>
+        label {
+            font-weight: normal !important;
+        }       
+    </style>
     <div class="row">
         <div class="col-lg-8 col-xs-8">
-            <table style="width: 100%">
-                <tr>
-                    <td>{{trans("messages.PUSH_TO")}}:</td>
-                    <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlPushTo" id="ddlPushTo" disabled="disabled">
-                            <option value="qplay" selected="selected">QPlay</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.PUSH_TYPE")}}:</td>
-                    <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
-                            <option value="event"
-                                    @if($messageInfo->message_type=='event')
-                                    selected="selected"
-                                    @endif>event</option>
-                            <option value="event"
-                                    @if($messageInfo->message_type=='news')
-                                    selected="news"
-                                    @endif>news</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
-                    <td style="padding: 10px;" id="tbxTitle">
-                        {{$messageInfo->message_title}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
-                    <td style="padding: 10px;" id="tbxContent">
-                        {{$messageInfo->message_text}}
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group row">
+              <label for="ddlPushTo" class="col-xs-2">{{trans("messages.PUSH_TO")}}:</label>
+              <div class="col-xs-10">
+                <select class="select2-close-mask form-control" name="ddlPushTo" id="ddlPushTo" disabled="disabled">
+                    <option value="qplay" selected="selected">QPlay</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="ddlType" class="col-xs-2">{{trans("messages.PUSH_TYPE")}}:</label>
+              <div class="col-xs-10">
+               <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
+                    <option value="event"
+                            @if($messageInfo->message_type=='event')
+                            selected="selected"
+                            @endif>event</option>
+                    <option value="event"
+                            @if($messageInfo->message_type=='news')
+                            selected="news"
+                            @endif>news</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_TITLE")}}:</label>
+              <div class="col-xs-10">
+                {{$messageInfo->message_title}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
+              <div class="col-xs-10">
+                {{$messageInfo->message_text}}
+              </div>
+            </div>
         </div>
 
         <div class="col-lg-4 col-xs-4" >
