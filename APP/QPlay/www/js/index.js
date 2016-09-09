@@ -603,7 +603,7 @@ $(function() {
               //Do important stuff....
               //employeedata.index = this.getAttribute('value');
               var i = this.getAttribute('value');
-              alert("messageindex " + i.toString());
+              //alert("messageindex " + i.toString());
               $.mobile.changePage('#webnewspage2-3-1', { transition: "flip"} );
               
           });
