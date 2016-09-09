@@ -206,7 +206,7 @@ h1 {
 }
 
 .Author_Block{
-	margin-left:32px;
+	margin-left:0px;
 	margin-top:48px;
 }
     
@@ -218,7 +218,7 @@ h1 {
 }
 
 .Author_Content{
-	width:494px;
+	width:260px;
 	font-size:16px;
 	font-family:Arial, Helvetica, sans-serif;
 	color:#181818;
@@ -235,14 +235,19 @@ h1 {
 	height:24px;
 	background-image:url(../img/content.png);
 	float:left;
+    margin-top: 14px;
 }
 
 .Content_Content{
-	width:494px;
+	width:260px;
 	font-size:14px;
 	font-family:Arial, Helvetica, sans-serif;
 	color:#0d0d0d;
 	margin-left:12px;
 	float:left;
 	padding-bottom:56px;
+}
+
+.Clear{
+	clear:both;
 }
