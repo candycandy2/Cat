@@ -42,6 +42,9 @@ Route::any('/platform/pushMessageImmediately', 'platformController@pushMessageIm
 Route::any('/platform/pushMessageImmediatelyAgain', 'platformController@pushMessageImmediatelyAgain');
 Route::any('/platform/getSingleEventMessageReceiver', 'platformController@getSingleEventMessageReceiver');
 Route::any('/platform/saveMessageVisible', 'platformController@saveMessageVisible');
+Route::any('/platform/getProjectList', 'platformController@getProjectList');
+Route::any('/platform/deleteProject', 'platformController@deleteProject');
+Route::any('/platform/saveProject', 'platformController@saveProject');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
@@ -139,7 +142,9 @@ Route::any('parameterMaintain', ['middleware' => 'auth', function() {
 Route::any('projectMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/project_maintain");
 }]);
-
+Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
+    return view("sys_maintain/project_detail_maintain");
+}]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {
     //App::setLocale($lang);

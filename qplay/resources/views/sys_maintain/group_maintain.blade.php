@@ -13,7 +13,7 @@ $menu_name = "SYS_GROUP_MAINTAIN";
             {{trans("messages.NEW")}}
         </a>
     </div>
-    <table id="gridGroupList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridGroupList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbar"
            data-url="platform/getGroupList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
@@ -21,10 +21,10 @@ $menu_name = "SYS_GROUP_MAINTAIN";
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
-            <th data-field="state" data-checkbox="true"></th>
-            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-            <th data-field="group_name" data-sortable="true" data-formatter="groupNameFormatter">{{trans("messages.GROUP_NAME")}}</th>
-            <th data-field="user_count" data-sortable="true" data-formatter="userCountFormatter">{{trans("messages.USERS")}}</th>
+            <th data-field="state" data-searchable="false" data-checkbox="true"></th>
+            <th data-field="row_id" data-searchable="false" data-sortable="false" data-visible="false">ID</th>
+            <th data-field="group_name" data-searchable="true" data-search-formatter="false" data-sortable="true" data-formatter="groupNameFormatter">{{trans("messages.GROUP_NAME")}}</th>
+            <th data-field="user_count" data-searchable="false"  data-sortable="true" data-formatter="userCountFormatter">{{trans("messages.USERS")}}</th>
         </tr>
         </thead>
     </table>
@@ -39,20 +39,23 @@ $menu_name = "SYS_GROUP_MAINTAIN";
         };
 
         var deleteGroup = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_GROUP")}}", "", function () {
-                hideConfirmDialog();
-                var selectedGroups = $("#gridGroupList").bootstrapTable('getSelections');
-                var check = true;
-                $.each(selectedGroups, function (i, role) {
-                    if(role.user_count > 0) {
-                        check = false;
-                        return false;
-                    }
-                });
-                if(!check) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_GROUP_EXIST_USERS")}}");
+            var confirmStr = "";
+            var selectedGroups = $("#gridGroupList").bootstrapTable('getSelections');
+            var check = true;
+            $.each(selectedGroups, function (i, group) {
+                confirmStr += group.group_name + "<br/>";
+                if(group.user_count > 0) {
+                    check = false;
                     return false;
                 }
+            });
+            if(!check) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_GROUP_EXIST_USERS")}}");
+                return false;
+            }
+
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_GROUP")}}", confirmStr, function () {
+                hideConfirmDialog();
 
                 var groupIdList = new Array();
                 $.each(selectedGroups, function(i, group) {
