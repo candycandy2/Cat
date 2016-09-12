@@ -22,6 +22,7 @@ return [
     'MSG_OPERATION_SUCCESS' => '操作成功!',
     'MSG_OPERATION_FAILED' => '操作失敗!',
     'MSG_CONFIRM_SAVE' => '確認儲存?',
+    'MSG_CONFIRM_COPY' => '確認複製?',
     'MSG_REQUIRED_FIELD_MISSING' => '必填項內容缺失!',
     'MSG_CONFIRM_LOGOUT' => '確認登出?',
     'PAGING_SHOWING' => '當前顯示',
@@ -46,7 +47,7 @@ return [
     'TITLE_SYS_MENU_MAINTAIN' => '選單維護',
     'TITLE_SYS_GROUP_MAINTAIN' => '系統群組管理',
     'TITLE_SYS_PARAMETER_MAINTAIN' => '參數設置',
-    'TITLE_SYS_PROJECT_MAINTAIN' => '用户管理',
+    'TITLE_SYS_PROJECT_MAINTAIN' => '专案管理',
 
     //About
     'SYS_VERSION' => '系統版本',
@@ -99,6 +100,7 @@ return [
     'MSG_CONFIRM_DELETE_MENU' => '確認刪除所選菜單?',
     'MSG_EXIST_SUBMENU' => '無法刪除, 存在子菜單!',
     'MSG_DELETE_MENU_FAILED' => '刪除菜單失敗!',
+    'MSG_MENU_NAME_EXIST' => '菜單名稱已存在!',
 
     //Group Maintain
     'GROUP_NAME' => '群組名稱',
@@ -142,6 +144,7 @@ return [
     'NEW_MESSAGE' => '新增推播',
     'MESSAGE_TYPE' => '類別',
     'MESSAGE_TITLE' => '標題',
+    'TEMPLATE_ID' => '模板ID',
     'CREATED_DATE' => '創建日期',
     'MESSAGE_CREATED_USER' => '推播者',
     'STATUS' => '狀態',
@@ -176,6 +179,17 @@ return [
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => '預設語言',
 
+    //Project Maintain
+    'PROJECT_CODE' => '專案代碼',
+    'PROJECT_DESCRIPTION' => '專案描述',
+    'PROJECT_PM' => 'PM',
+    'PROJECT_MEMO' => 'Memo',
+    'MSG_CONFIRM_DELETE_PROJECT' => '確認刪除所選專案?',
+
     'ERR_EXIST_ROLE' => '角色在當前公司內已存在!',
     'ERR_GROUP_NAME_EXIST' => '群組名稱已存在!',
+    'ERR_TYPE_NAME_EXIST' => '參數類別已存在!',
+    'ERR_PROJECT_EXIST_APP' => '專案下存在App!',
+    'ERR_PROJECT_CODE_EXIST' => '專案代碼已存在!',
+    'ERR_APP_KEY_EXIST' => 'App key已存在!',
 ];

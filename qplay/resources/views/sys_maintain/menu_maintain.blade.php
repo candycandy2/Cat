@@ -41,20 +41,21 @@ $menu_name = "SYS_MENU_MAINTAIN";
         };
 
         var deleteRootMenu = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_MENU")}}", "", function () {
-                hideConfirmDialog();
-                var selectedRootMenus = $("#gridRootMenuList").bootstrapTable('getSelections');
-                var check = true;
-                $.each(selectedRootMenus, function (i, menu) {
-                    if(menu.number_submenu > 0) {
-                        check = false;
-                        return false;
-                    }
-                });
-                if(!check) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_EXIST_SUBMENU")}}");
+            var selectedRootMenus = $("#gridRootMenuList").bootstrapTable('getSelections');
+            var check = true;
+            $.each(selectedRootMenus, function (i, menu) {
+                if(menu.number_submenu > 0) {
+                    check = false;
                     return false;
                 }
+            });
+            if(!check) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_EXIST_SUBMENU")}}");
+                return false;
+            }
+
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_MENU")}}", "", function () {
+                hideConfirmDialog();
 
                 var menuIdList = new Array();
                 $.each(selectedRootMenus, function(i, menu) {
@@ -98,6 +99,20 @@ $menu_name = "SYS_MENU_MAINTAIN";
 
         var SaveNewRootMenu = function() {
             var menuName = $("#tbxMenuName").val();
+
+            var existMenuList = $("#gridRootMenuList").bootstrapTable('getData');
+            var checkMenuName = true;
+            $.each(existMenuList, function (i, menu) {
+                if(menu.menu_name == menuName) {
+                    checkMenuName = false;
+                    return false;
+                }
+            });
+            if(!checkMenuName) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MENU_NAME_EXIST")}}");
+                return false;
+            }
+
             var link = $("#tbxLink").val();
             var englishName = $("#tbxEnglishName").val();
             var simpleChineseName = $("#tbxSimpleChineseName").val();
