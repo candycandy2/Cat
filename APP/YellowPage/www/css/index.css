@@ -131,6 +131,11 @@ h4{
     line-height:44px;
 }
 
+/*Fix bug - iOS status bar overlapping App*/
+.ios-fix-overlap {
+    margin-top:20px;
+}
+
 .label_style {
 	width: 120px;
 	position: absolute;

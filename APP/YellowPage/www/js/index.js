@@ -599,8 +599,16 @@ var app = {
         //app.addCompanySelect();
         var args = [];
         args[0] = "LoginSuccess";
-        args[1] = "12455"; // for testing
         
+        if (device.platform === "Android")
+        {
+          args[1] = "A1234567890A1234567890";
+        }
+        else
+        {
+          args[1] = "12455";
+        }
+
         window.plugins.qlogin.openCertificationPage(null, null, args);
         //Darren - end
     },
@@ -617,6 +625,11 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        if (device.platform === "iOS")
+        {
+          $('div[data-role="header"]').addClass('ios-fix-overlap');
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

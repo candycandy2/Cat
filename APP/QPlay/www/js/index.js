@@ -218,6 +218,11 @@ var app = {
         //app.changeLevel(1);
         
         document.addEventListener("resume", app.resumeCheckLevel);
+
+        if (device.platform === "iOS")
+        {
+          $('div[data-role="header"]').addClass('ios-fix-overlap');
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
