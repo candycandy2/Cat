@@ -49,4 +49,7 @@ APP/*/platforms/
 APP/*/plugins/
 
 APP/QPlay/npm-debug.log
+
+qplay/vendor/swiftmailer/swiftmailer/tests/_samples/charsets/iso-2022-jp/one.txt
+
 WEB/InstallQPlay/index2.html
