@@ -118,11 +118,20 @@
     if ((employeedata.total == 9999) ||(employeedata.index >= employeedata.total))
       return;
 
+    var signatureTime = getSignature("getTime");
+    var signatureInBase64 = getSignature("getInBase64", signatureTime);
+
     $.ajax({
       type: "POST",
-      contentType: "application/json; charset=utf-8",
-      url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail",
-      data: '{"strXml":"<LayoutHeader><Company>' + employeedata.company[employeedata.index] + '</Company><Name_EN>' + employeedata.ename[employeedata.index] + '</Name_EN></LayoutHeader>"}',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'App-Key': 'yellowpage',
+        'Signature-Time': signatureTime,
+        'Signature': signatureInBase64,
+        'token': rsDataFromServer.token
+      },
+      url: serverURL + "/qplayApi/public/index.php/v101/yellowpage/QueryEmployeeDataDetail?lang=en-us&uuid=" + rsDataFromServer.uuid,
+      data: '<LayoutHeader><Company>' + employeedata.company[employeedata.index] + '</Company><Name_EN>' + employeedata.ename[employeedata.index] + '</Name_EN></LayoutHeader>',
       dataType: "json",
       cache: false,
       success: onDetailSuccess,
@@ -131,14 +140,12 @@
 
     function onDetailSuccess(data)
     {
-      var rawdata = data['d'];
-      var jsonobj = jQuery.parseJSON(rawdata);
       var companySelect = document.getElementById('Company');
       
-      var resultcode = jsonobj['ResultCode'];
+      var resultcode = data['ResultCode'];
       
       if (resultcode == 1) {
-        var dataContent = jsonobj['Content'];
+        var dataContent = data['Content'];
         var company = dataContent[0].Company;
         var ename = dataContent[0].Name_EN;
         var cname = dataContent[0].Name_CH;
@@ -303,7 +310,9 @@ $(function() {
       var jsDepartment = document.getElementById("Department").value;
       var jsExtNum = document.getElementById("ExtNum").value;
       //var jsurl = "http://mproject_api.benq.com/v101/yellowpage/QueryEmployeeData?lang=en-us&Company=" + jsCompany + "&Name_CH=" + jsCName + "&Name_EN=" + jsEName + "&Department=" + jsDepartment + "&Ext_No=" + jsExtNum;
-
+      var signatureTime = getSignature("getTime");
+      var signatureInBase64 = getSignature("getInBase64", signatureTime);
+      
       $('#employee-data').empty();
       $('#employee-data').append('<div class="ui-grid-c">');
       $('#employee-data').append('<li data-role="list-divider" class="ui-block-a grid-style-a">Company</li>');
@@ -313,18 +322,16 @@ $(function() {
       $('#employee-data').append('</div>');
       
       $.ajax({
-        //type: "GET",
         type: "POST",
-        contentType: "application/json; charset=utf-8",
-        //url: jsurl,
-        //headers: {
-        //  'Content-Type': 'json',
-        //  'App-Key':'yellowpage',
-        //  'Signature-Time':'1458900578',
-        //  'Signature':'WsnMjPaCnVTJmUk0tIkeT9bEIng='
-        //},
-        url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData",
-        data: '{"strXml":"<LayoutHeader><Company>' + jsCompany + '</Company><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>"}',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'App-Key': 'yellowpage',
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+          'token': rsDataFromServer.token
+        },
+        url: serverURL + "/qplayApi/public/index.php/v101/yellowpage/QueryEmployeeData?lang=en-us&uuid=" + rsDataFromServer.uuid,
+        data: '<LayoutHeader><Company>' + jsCompany + '</Company><Name_CH>' + jsCName + '</Name_CH><Name_EN>' + jsEName + '</Name_EN><DeptCode>' + jsDepartment + '</DeptCode><Ext_No>' + jsExtNum + '</Ext_No></LayoutHeader>',
         dataType: "json",
         cache: false,
         success: onQueryEmployeeDataSuccess
@@ -337,13 +344,10 @@ $(function() {
 
     function onQueryEmployeeDataSuccess(data)
     {
-      var rawdata = data['d'];
-      var jsonobj = jQuery.parseJSON(rawdata);
-
-      var resultcode = jsonobj['ResultCode'];
+      var resultcode = data['ResultCode'];
 
       if (resultcode == 1 || resultcode == 1906) {
-        var dataContent = jsonobj['Content'];
+        var dataContent = data['Content'];
         employeedata.total = dataContent.length;
         for (var i=0; i<dataContent.length; i++){
           $('#employee-data').append('<div class="ui-grid-c">');
@@ -572,13 +576,33 @@ $(function() {
         $('#my_phonebook_list').append('</div>');
       }
     };
+    
+    window.getSignature = function(action, signatureTime)
+    {
+      if (action === "getTime")
+      {
+        return Math.round(new Date().getTime()/1000);
+      }
+      else
+      {
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+        return CryptoJS.enc.Base64.stringify(hash);
+      }
+    }
 });
 
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-        app.addCompanySelect();
+        //20160907 Darren - start
+        //app.addCompanySelect();
+        var args = [];
+        args[0] = "LoginSuccess";
+        args[1] = "12455"; // for testing
+        
+        window.plugins.qlogin.openCertificationPage(null, null, args);
+        //Darren - end
     },
     // Bind Event Listeners
     //
@@ -608,10 +632,19 @@ var app = {
     // add compony option in dropbox
     addCompanySelect: function()
     {
+        var signatureTime = getSignature("getTime");
+        var signatureInBase64 = getSignature("getInBase64", signatureTime);
+
         $.ajax({
           type: "POST",
-          contentType: "application/json; charset=utf-8",
-          url: "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData",
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'App-Key': 'yellowpage',
+            'Signature-Time': signatureTime,
+            'Signature': signatureInBase64,
+            'token': rsDataFromServer.token
+          },
+          url: serverURL + "/qplayApi/public/index.php/v101/yellowpage/QueryCompanyData?lang=en-us&uuid=" + rsDataFromServer.uuid,
           dataType: "json",
           cache: false,
           success: app.onSuccess
@@ -619,14 +652,11 @@ var app = {
     },
     onSuccess: function(data)
     {
-      var rawdata = data['d'];
-      var jsonobj = jQuery.parseJSON(rawdata);
       var companySelect = document.getElementById('Company');
-      
-      var resultcode = jsonobj['ResultCode'];
+      var resultcode = data['ResultCode'];
       
       if (resultcode == 1 || resultcode == 1906) {
-        var dataContent = jsonobj['Content'];
+        var dataContent = data['Content'];
         for (var i=2; i<dataContent.length; i++){ // ignore 0 and 1, 0: "All Company", 1: ""
           var companyname = dataContent[i].CompanyName;
           companySelect.options[companySelect.options.length] = new Option(companyname, companyname);
@@ -635,7 +665,10 @@ var app = {
     },
 };
 
-app.initialize();
+setTimeout(function(){
+    //do check app version
+    app.initialize();
+}, 3000);
 
 // Store object
 var employeedata = {
@@ -655,4 +688,24 @@ var myphonebook = {
   cname: [],
   extnum: [],
   employeeid: [],
+};
+
+var serverURL = "http://qplay.benq.com"; // QTT Outside API Server
+var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
+
+var rsDataFromServer = {
+  token: 'nullstring',
+  token_valid: 'nullstring',
+  uuid: 'nullstring',
+  redirect: 'nullstring',
+};
+
+window.LoginSuccess = function(data)
+{
+  rsDataFromServer.token_valid = data['token_valid'];
+  rsDataFromServer.token = data['token'];
+  rsDataFromServer.uuid = data['uuid'];
+  rsDataFromServer.redirect = data['redirect-uri'];
+  
+  app.addCompanySelect();
 };
