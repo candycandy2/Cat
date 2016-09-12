@@ -22,6 +22,7 @@ return [
     'MSG_OPERATION_SUCCESS' => 'Operation Success!',
     'MSG_OPERATION_FAILED' => 'Operation Failed!',
     'MSG_CONFIRM_SAVE' => 'Confirm to Save?',
+    'MSG_CONFIRM_COPY' => 'Confirm to Copy?',
     'MSG_REQUIRED_FIELD_MISSING' => 'Required field missing!',
     'MSG_CONFIRM_LOGOUT' => 'Confirm to logout?',
     'PAGING_SHOWING' => 'Showing',
@@ -99,6 +100,7 @@ return [
     'MSG_CONFIRM_DELETE_MENU' => 'Confirm to delete selected menu?',
     'MSG_EXIST_SUBMENU' => 'Can\'t delete, exist submenu!',
     'MSG_DELETE_MENU_FAILED' => 'Delete menu failed!',
+    'MSG_MENU_NAME_EXIST' => 'Menu name exist!',
 
     //Group Maintain
     'GROUP_NAME' => 'Group Name',
@@ -142,6 +144,7 @@ return [
     'NEW_MESSAGE' => 'New Message',
     'MESSAGE_TYPE' => 'Type',
     'MESSAGE_TITLE' => 'Title',
+    'TEMPLATE_ID' => 'Template ID',
     'CREATED_DATE' => 'Created Date',
     'MESSAGE_CREATED_USER' => 'Created User',
     'STATUS' => 'Status',
@@ -176,6 +179,17 @@ return [
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => 'Default language',
 
+    //Project Maintain
+    'PROJECT_CODE' => 'Project Code',
+    'PROJECT_DESCRIPTION' => 'Project Description',
+    'PROJECT_PM' => 'PM',
+    'PROJECT_MEMO' => 'Memo',
+    'MSG_CONFIRM_DELETE_PROJECT' => 'Confirm to delete project?',
+
     'ERR_EXIST_ROLE' => 'Same role exist in this company!',
     'ERR_GROUP_NAME_EXIST' => 'Group name exist!',
+    'ERR_TYPE_NAME_EXIST' => 'Parameter type exist!',
+    'ERR_PROJECT_EXIST_APP' => 'Project exist app!',
+    'ERR_PROJECT_CODE_EXIST' => 'Project code exist!',
+    'ERR_APP_KEY_EXIST' => 'App key exist!',
 ];

@@ -219,6 +219,28 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
 
         var SaveTypeMaintain = function() {
             var typeName = $("#tbxTypeName").val();
+
+            var typeList = $("#gridTypeList").bootstrapTable('getData');
+            var nameCheck = true;
+            $.each(typeList, function(i, existType) {
+                if(isNewType) {
+                    if(existType.parameter_type_name == typeName) {
+                        nameCheck = false;
+                        return false;
+                    }
+                } else {
+                    if(existType.parameter_type_name == typeName && existType.row_id != currentMaintainTypeId) {
+                        nameCheck = false;
+                        return false;
+                    }
+                }
+            });
+            if(!nameCheck) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_TYPE_NAME_EXIST")}}");
+                return false;
+            }
+
+
             var typeDesc = $("#tbxTypeDescription").val();
             if(typeName == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");

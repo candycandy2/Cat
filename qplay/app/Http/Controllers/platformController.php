@@ -39,7 +39,8 @@ class platformController extends Controller
 
         $roleList = \DB::table("qp_role")
             -> select()
-            -> orderBy('company', 'role_description')
+            -> orderBy('company')
+            -> orderBy('role_description')
             -> get();
         foreach ($roleList as $role) {
             $count = \DB::table('qp_user_role')
@@ -186,6 +187,11 @@ class platformController extends Controller
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
             return null;
+        }
+
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
         }
 
         $content = file_get_contents('php://input');
@@ -692,11 +698,17 @@ class platformController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $groupIdList = $jsonContent['group_id_list'];
+            \DB::beginTransaction();
             foreach ($groupIdList as $gId) {
+                \DB::table("qp_group_menu")
+                    -> where('group_row_id', '=', $gId)
+                    -> delete();
+
                 \DB::table("qp_group")
                     -> where('row_id', '=', $gId)
                     -> delete();
             }
+            \DB::commit();
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }
 
@@ -1005,6 +1017,7 @@ class platformController extends Controller
             -> select("qp_message.row_id", "qp_message.message_type",
                 "qp_message.message_title", "qp_user.login_id as created_user",
                 "qp_message.created_at", "qp_message.visible")
+            -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
             -> get();
 
         return response()->json($messageList);
@@ -1040,6 +1053,7 @@ class platformController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $sourcer = $jsonContent['sourcer'];
+            $template_id = $jsonContent['template_id'];
             $type = $jsonContent['type'];
             $title = $jsonContent['title'];
             $content = $jsonContent['content'];
@@ -1051,9 +1065,11 @@ class platformController extends Controller
                 $newMessageId = \DB::table("qp_message")
                     -> insertGetId([
                         'message_type'=>$type,
+                        'template_id' => $template_id,
                         'message_title'=>$title,
                         'message_text'=>$content,
                         'message_source'=>$sourcer,
+                        'visible'=>'Y',
                         'created_user'=>\Auth::user()->row_id,
                         'created_at'=>$now,
                     ]);
@@ -1322,6 +1338,141 @@ class platformController extends Controller
                         'updated_user'=>\Auth::user()->row_id]);
 
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function getProjectList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $messageList = \DB::table("qp_project")
+            -> select()
+            -> get();
+        foreach ($messageList as $message) {
+            $message->with_app = "N";
+            $appList = \DB::table("qp_app_head")
+                -> where("project_row_id", "=", $message->row_id)
+                -> select()
+                -> get();
+            if(count($appList) > 0) {
+                $message->with_app = "Y";
+            }
+        }
+
+        return response()->json($messageList);
+    }
+
+    public function deleteProject() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $project_id_list = $jsonContent['project_id_list'];
+
+            foreach ($project_id_list as $pId) {
+                \DB::table("qp_project")
+                    -> where('row_id', '=', $pId)
+                    -> delete();
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveProject() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $action = $jsonContent['action'];
+            $project_id = $jsonContent['project_id'];
+            $project_code = $jsonContent['project_code'];
+            $app_key = $jsonContent['app_key'];
+            $project_pm = $jsonContent['project_pm'];
+            $project_description = $jsonContent['project_description'];
+            $project_memo = $jsonContent['project_memo'];
+            \DB::beginTransaction();
+
+            $now = date('Y-m-d H:i:s',time());
+            if($action == "N") { //New
+                $existList = \DB::table("qp_project")->where("project_code", '=', $project_code)->select()->get();
+                if(count($existList) > 0) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_CODE_EXIST")]);
+                }
+                $existList = \DB::table("qp_project")->where("app_key", '=', $app_key)->select()->get();
+                if(count($existList) > 0) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_APP_KEY_EXIST")]);
+                }
+
+                $newProjectId = \DB::table("qp_project")
+                    -> insertGetId([
+                        'project_code'=>$project_code,
+                        'app_key' => $app_key,
+                        'project_description' => $project_description,
+                        'project_memo' => $project_memo,
+                        'project_pm' => $project_pm,
+                        'created_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                    ]);
+            } else if($action == "U") { //Edit
+                $existList = \DB::table("qp_project")->where("project_code", '=', $project_code)->select()->get();
+                if(count($existList) > 0) {
+                    foreach ($existList as $existProject) {
+                        if($existProject->row_id != $project_id) {
+                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_CODE_EXIST")]);
+                        }
+                    }
+                }
+                $existList = \DB::table("qp_project")->where("app_key", '=', $app_key)->select()->get();
+                if(count($existList) > 0) {
+                    foreach ($existList as $existProject) {
+                        if($existProject->row_id != $project_id) {
+                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_APP_KEY_EXIST")]);
+                        }
+                    }
+                }
+
+                \DB::table("qp_project")
+                    ->where("row_id", "=", $project_id)
+                    -> update([
+                        'project_code'=>$project_code,
+                        'app_key' => $app_key,
+                        'project_description' => $project_description,
+                        'project_memo' => $project_memo,
+                        'project_pm' => $project_pm,
+                        'updated_user'=>\Auth::user()->row_id,
+                        'updated_at'=>$now,
+                    ]);
+            }
+
+            \DB::commit();
+            if($action == "N") {
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'new_project_id'=>$newProjectId]);
+            } else {
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            }
+
         }
 
         return null;
