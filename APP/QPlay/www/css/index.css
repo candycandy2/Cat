@@ -59,6 +59,11 @@ body {
                                    /* offset horizontal: half of text area width */
 }
 
+/*Fix bug - iOS status bar overlapping App*/
+.ios-fix-overlap {
+    margin-top:20px;
+}
+
 /* Landscape layout (with min-width) */
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {
