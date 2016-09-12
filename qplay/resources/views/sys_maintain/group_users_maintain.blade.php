@@ -35,33 +35,6 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
     <div class="row">
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
-            <table>
-                <tr>
-                    <td>
-                        {{trans("messages.GROUP_LIST")}}:&nbsp; {{trans("messages.FROM")}} &nbsp;
-                    </td>
-                    <td>
-                        <select name="ddlGroup" id="ddlGroup" class="form-control">
-                            @foreach($allGroupList as $group)
-                                @if($group->row_id != $groupId)
-                                <option value="{{$group->row_id}}">{{$group->group_name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </td>
-                    <td style="padding-left: 10px;">
-                        <button type="button" class="btn btn-primary" onclick="CopyList()" id="btnCopyList">
-                            {{trans("messages.COPY_LIST")}}
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12 col-xs-12">
-            <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             <div id="toolbar">
                 <button type="button" class="btn btn-danger" onclick="RemoveUser()" id="btnDeleteUser">
                     {{trans("messages.REMOVE")}}

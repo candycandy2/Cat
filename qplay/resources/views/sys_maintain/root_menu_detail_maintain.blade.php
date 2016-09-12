@@ -151,7 +151,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
             $("#tbxSubSimpleChineseName").val("");
             $("#tbxSubTraditionalChineseName").val("");
             $("#cbxSubVisible").prop("checked", false);
-            $('#switchSubVisible').bootstrapSwitch('setState', false);
+            $('#switchSubVisible').bootstrapSwitch('setState', true);
 
             currentMaintainSubMenuId = null;
             isNewSubMenu = true;

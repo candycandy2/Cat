@@ -9,57 +9,60 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
 ?>
 @extends('layouts.admin_template')
 @section('content')
+<style>
+label {
+    font-weight: normal !important;
+}       
+</style>
     <div class="row">
         <div class="col-lg-8 col-xs-8">
-            <table style="width: 100%">
-                <tr>
-                    <td>{{trans("messages.PUSH_TO")}}:</td>
-                    <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlPushTo" id="ddlPushTo" disabled="disabled">
-                            <option value="qplay" selected="selected">QPlay</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.PUSH_TYPE")}}:</td>
-                    <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
-                            <option value="event"
-                                    @if($messageInfo->message_type=='event')
-                                    selected="selected"
-                                    @endif>event</option>
-                            <option value="event"
-                                    @if($messageInfo->message_type=='news')
-                                    selected="news"
-                                    @endif>news</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
-                    <td style="padding: 10px;">
-                        {{$messageInfo->message_title}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
-                    <td style="padding: 10px;">
-                        {{$messageInfo->message_text}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.STATUS")}}:</td>
-                    <td style="padding: 10px;">
-                        <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
-                            <input type="checkbox" id="cbxVisible"
-                                   @if($messageInfo->visible == 'Y')
-                                   checked
-                                    @endif
-                            />
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group row">
+              <label for="ddlPushTo" class="col-xs-2">{{trans("messages.PUSH_TO")}}:</label>
+              <div class="col-xs-10">
+                <select class="select2-close-mask form-control" name="ddlPushTo" id="ddlPushTo" disabled="disabled">
+                    <option value="qplay" selected="selected">QPlay</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="ddlType" class="col-xs-2">{{trans("messages.PUSH_TYPE")}}:</label>
+              <div class="col-xs-10">
+                <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
+                    <option value="event"
+                            @if($messageInfo->message_type=='event')
+                            selected="selected"
+                            @endif>event</option>
+                    <option value="event"
+                            @if($messageInfo->message_type=='news')
+                            selected="news"
+                            @endif>news</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="tbxMessageTitle" class="col-xs-2">{{trans("messages.MESSAGE_TITLE")}}:</label>
+              <div class="col-xs-10">
+                {{$messageInfo->message_title}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
+              <div class="col-xs-10" style="word-wrap:break-word;">
+                {{$messageInfo->message_text}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="cbxVisible" class="col-xs-2">{{trans("messages.STATUS")}}:</label>
+              <div class="col-xs-10">
+                <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
+                    <input type="checkbox" id="cbxVisible"
+                           @if($messageInfo->visible == 'Y')
+                           checked
+                            @endif
+                    />
+                </div>
+              </div>
+            </div>
         </div>
 
         <div class="col-lg-4 col-xs-4" >
