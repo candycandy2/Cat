@@ -599,8 +599,6 @@ $(function() {
                   var rowid = message.message_send_row_id;
                   var time = message.create_time;
                   
-                  //newsListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
-                  
                   newsListItems += "<li><a value=" + messageindex.toString() + " id=\"messageindex" + messageindex.toString() + "\"><h2 style=\"white-space:pre-wrap;\">" + title + "</h2><p>" + time + "</p></a></li>";
               }
               else if (message.message_type == "event")
