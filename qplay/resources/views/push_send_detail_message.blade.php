@@ -42,13 +42,13 @@ $messageType = $sendInfo->message_info->message_type;
               </div>
             </div>
             <div class="form-group row">
-              <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_TITLE")}}:</label>
+              <label for="tbxMessageTitle" class="col-xs-2">{{trans("messages.MESSAGE_TITLE")}}:</label>
               <div class="col-xs-10">
                 {{$messageInfo->message_title}}
               </div>
             </div>
             <div class="form-group row" style="word-wrap:break-word;">
-              <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
+              <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
               <div class="col-xs-10">
                 {{$messageInfo->message_text}}
               </div>

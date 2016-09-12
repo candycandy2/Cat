@@ -40,19 +40,19 @@ label {
               </div>
             </div>
             <div class="form-group row">
-              <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_TITLE")}}:</label>
+              <label for="tbxMessageTitle" class="col-xs-2">{{trans("messages.MESSAGE_TITLE")}}:</label>
               <div class="col-xs-10">
                 {{$messageInfo->message_title}}
               </div>
             </div>
             <div class="form-group row">
-              <label for="ddlType" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
+              <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
               <div class="col-xs-10" style="word-wrap:break-word;">
                 {{$messageInfo->message_text}}
               </div>
             </div>
             <div class="form-group row">
-              <label for="ddlType" class="col-xs-2">{{trans("messages.STATUS")}}:</label>
+              <label for="cbxVisible" class="col-xs-2">{{trans("messages.STATUS")}}:</label>
               <div class="col-xs-10">
                 <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
                     <input type="checkbox" id="cbxVisible"
