@@ -295,6 +295,19 @@ $(function() {
       window.plugins.qlogin.getLoginData(getLoginDataSuccessCallback,getLoginDataErrorCallback);
     });
     
+    $("#InstallApp").click(function() {
+      for (var appindex=0; appindex<applist.length; appindex++) {
+          var appurl = applist[appindex].url;
+          var appurlicon = applist[appindex].icon_url;
+          var packagename = applist[appindex].package_name;
+          
+          if (packagename == "benq.yellowpage") {
+              //window.location = appurl;
+              window.open(appurl, '_self', false);
+          }
+      } // for appindex
+    });
+    
     window.checkAppVersionFunction = function()
     {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
