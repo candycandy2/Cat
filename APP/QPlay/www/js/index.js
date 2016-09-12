@@ -295,6 +295,19 @@ $(function() {
       window.plugins.qlogin.getLoginData(getLoginDataSuccessCallback,getLoginDataErrorCallback);
     });
     
+    $("#InstallApp").click(function() {
+      for (var appindex=0; appindex<applist.length; appindex++) {
+          var appurl = applist[appindex].url;
+          var appurlicon = applist[appindex].icon_url;
+          var packagename = applist[appindex].package_name;
+          
+          if (packagename == "benq.yellowpage") {
+              //window.location = appurl;
+              window.open(appurl, '_self', false);
+          }
+      } // for appindex
+    });
+    
     window.checkAppVersionFunction = function()
     {
       var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
@@ -328,7 +341,7 @@ $(function() {
       if (resultcode == 1)
       {
           //alert("need to update");
-          alert(jsonobj['message']);
+          //alert(jsonobj['message']);
           
           // do update process
           // .....
@@ -337,7 +350,13 @@ $(function() {
           var args = [];
           args[0] = "LoginSuccess";
           //args[1] = device.uuid;//uuid
-          args[1] = "A1234567890A1234567890"; // for testing
+          if (device.platform == "Android")
+              args[1] = "A1234567890A1234567890"; // for testing
+          else if (device.platform == "iOS")
+              args[1] = "12455";
+          else
+              alert("device.platform error !!!");
+          
           window.plugins.qlogin.openCertificationPage(null, null, args);
           loginjustdone = 1;
       }
@@ -580,8 +599,6 @@ $(function() {
                   var rowid = message.message_send_row_id;
                   var time = message.create_time;
                   
-                  //newsListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
-                  
                   newsListItems += "<li><a value=" + messageindex.toString() + " id=\"messageindex" + messageindex.toString() + "\"><h2 style=\"white-space:pre-wrap;\">" + title + "</h2><p>" + time + "</p></a></li>";
               }
               else if (message.message_type == "event")
@@ -686,6 +703,8 @@ var rsDataFromServer = {
   redirect: 'nullstring',
 };
 
+//var serverURL = "http://aic0-s12.qgroup.corp.com:8084"; // QCS API Server
+//var serverURL = "http://10.82.246.95"; // QTT 內部 API Server
 var serverURL = "http://qplay.benq.com"; // QTT 外部 API Server
 var appkey = "qplay"; // appkey
 var appcategorylist;
