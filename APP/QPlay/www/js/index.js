@@ -428,12 +428,16 @@ $(function() {
         appmultilang = responsecontent.multi_lang;
         
         $('#appcontent').html(""); // empty html content
-        var appItems = "";
+        var carouselItem;
         
         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
           $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+          var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
+          //init carousel
+          owl.owlCarousel();
+          
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
             if (appcategory == catetoryname){
@@ -441,9 +445,9 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
-              $('#appcontent').append('<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">'+ packagename.substr(5) + '</p></div>');
+              carouselItem = '<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">' + packagename.substr(5) + '</p></div>';
               
-              //appItems += '<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">' + packagename.substr(5) + '</p></div>';
+              $('#appcontent').append(carouselItem);
               
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
@@ -452,8 +456,6 @@ $(function() {
           } // for appindex
           
           $('#appcontent').append('</div>');
-          //$('#appcontent').html("");
-          
         } // for categoryindex
       } // if (resultcode == 1)
       else {
@@ -562,13 +564,13 @@ $(function() {
       if (resultcode == 1)
       {
           //alert(jsonobj['message']);
-          var responsecontent = jsonobj['content'];
+          messagecontent = jsonobj['content'];
           var newsListItems = "";
           var eventListItems = "";
           
-          for (var appindex=0; appindex<responsecontent.message_count; appindex++)
+          for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++)
           {
-              var message = responsecontent.message_list[appindex];
+              var message = messagecontent.message_list[messageindex];
               if (message.message_type == "news") // 1:news  2:event
               {
                   var title = message.message_title;
@@ -576,7 +578,9 @@ $(function() {
                   var rowid = message.message_send_row_id;
                   var time = message.create_time;
                   
-                  newsListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
+                  //newsListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
+                  
+                  newsListItems += "<li><a value=" + messageindex.toString() + " id=\"messageindex" + messageindex.toString() + "\"><h2 style=\"white-space:pre-wrap;\">" + title + "</h2><p>" + time + "</p></a></li>";
               }
               else if (message.message_type == "event")
               {
@@ -592,6 +596,19 @@ $(function() {
           $("#newslistview").listview('refresh');
           $("#eventlistview").html(eventListItems);
           $("#eventlistview").listview('refresh');
+          
+          $('a[id^="messageindex"]').click(function(e) {
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              //Do important stuff....
+              //employeedata.index = this.getAttribute('value');
+              var i = this.getAttribute('value');
+              //alert("messageindex " + i.toString());
+              $.mobile.changePage('#webnewspage2-3-1', { transition: "flip"} );
+              
+          });
+          
+          
       }
     };
     
@@ -674,3 +691,4 @@ var appcategorylist;
 var applist;
 var appmultilang;
 var loginjustdone;
+var messagecontent;

@@ -117,6 +117,16 @@ var delLang = function(){
 var changDefaultLang = function(){
 	 $('#changDefaultLangDialog').modal('show');
 }
+
+
+var addWhite = function() {
+    $("#tbxUrl").val("");
+    $("#whiteListDialogTitle").text("{{trans("messages.MSG_NEW_BLOCK")}}");
+    $("#whiteListDialog").modal('show');
+    currentBlockId = null;
+    isNew = true;
+};
+
 $('.js-switch-lang').click(function(){
 	var editLang = $(this).text();
 	var lanId = $(this).data('toggle');
