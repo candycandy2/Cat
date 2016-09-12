@@ -8,7 +8,7 @@
     <div data-role="page" id="pageLogin">
         <div role="main" class="ui-content" style="text-align: center;">
             <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
-            <h1>BenQ Qplay Login</h1>
+            <h1>BenQ QPlay Login</h1>
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <input type="text" data-clear-btn="true" name="tbxName"
                        id="tbxName" value="" placeholder="User Name" />

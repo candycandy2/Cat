@@ -61,6 +61,17 @@ cordova-plugin-statusbar 2.1.3 "StatusBar"
 ![screen shot 2016-07-11 at 6 24 48 pm](https://cloud.githubusercontent.com/assets/1924451/16727912/ffc915c0-4795-11e6-8e20-7e285c334fd5.png)
 
 
+Requirements check results for android:
+ - Java JDK: installed .
+ - Android SDK: installed 
+ - Android target: installed android-23
+ - Gradle: installed 
+
+Requirements check results for ios:
+ - Apple OS X: installed darwin
+ - Xcode: installed 7.3
+ - ios-deploy: installed 2.0.0
+
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
 
 Item A

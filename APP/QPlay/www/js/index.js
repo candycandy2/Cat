@@ -235,17 +235,19 @@ var app = {
         var securityList = {
             level: 2,
             Navigations: [
-                "*://*.baidu.com/*",
-                "*://*.qq.com/*"
+                serverURL + "/*",
+                "itms-services://*"
             ],
             Intents: [
+                "itms-services:*",
+                "http:*",
+                "https:*",
                 "tel:*",
                 "sms:*",
                 "mailto:*",
                 "geo:*"
             ],
             Requests: [
-                "*://*.baidu.com/*",
                 serverURL + "/*"
             ]
         };
@@ -306,7 +308,7 @@ $(function() {
         url: serverURL +"/qplayApi/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=1",
         headers: {
           'Content-Type': 'application/json',
-          'app-key': 'qplay',
+          'app-key': appkey,
           'Signature-Time': signatureTime,
           'Signature': signatureInBase64,
         },
@@ -401,7 +403,7 @@ $(function() {
         
         headers: {
           'Content-Type': 'application/json',
-          'app-key': 'qplay',
+          'app-key': appkey,
           'Signature-Time': signatureTime,
           'Signature': signatureInBase64,
           'token': rsDataFromServer.token,
@@ -481,7 +483,7 @@ $(function() {
         url: serverURL + "/qplayApi/public/index.php/v101/qplay/isRegister?lang=en-us&uuid=" + device.uuid,
         headers: {
           'Content-Type': 'application/json',
-          'app-key': 'qplay',
+          'app-key': appkey,
           'Signature-Time': signatureTime,
           'Signature': signatureInBase64,
         },
@@ -545,7 +547,7 @@ $(function() {
         
         headers: {
           'Content-Type': 'application/json',
-          'app-key': 'qplay',
+          'app-key': appkey,
           'Signature-Time': signatureTime,
           'Signature': signatureInBase64,
           'token': rsDataFromServer.token,
@@ -630,7 +632,7 @@ $(function() {
         url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageDetail?lang=en-us&uuid=" + rsDataFromServer.uuid +"&message_send_row_id=" + rawid,
         headers: {
           'Content-Type': 'application/json',
-          'app-key': 'qplay',
+          'app-key': appkey,
           'Signature-Time': signatureTime,
           'Signature': signatureInBase64,
           'token': rsDataFromServer.token,
@@ -684,9 +686,8 @@ var rsDataFromServer = {
   redirect: 'nullstring',
 };
 
-//var serverURL = "http://aic0-s12.qgroup.corp.com:8084"; // QCS API Server
-//var serverURL = "http://10.82.246.95"; // QTT 內部 API Server
 var serverURL = "http://qplay.benq.com"; // QTT 外部 API Server
+var appkey = "qplay"; // appkey
 var appcategorylist;
 var applist;
 var appmultilang;
