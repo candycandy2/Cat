@@ -26,6 +26,22 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
+                    <td>{{trans("messages.TEMPLATE_ID")}}:</td>
+                    <td style="padding: 10px;">
+                        <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID">
+                            <option value="1" @if($isCopy && $copyFromMessageInfo->template_id == 1) selected="selected" @endif>1</option>
+                            <option value="2" @if($isCopy && $copyFromMessageInfo->template_id == 2) selected="selected" @endif>2</option>
+                            <option value="3" @if($isCopy && $copyFromMessageInfo->template_id == 3) selected="selected" @endif>3</option>
+                            <option value="4" @if($isCopy && $copyFromMessageInfo->template_id == 4) selected="selected" @endif>4</option>
+                            <option value="5" @if($isCopy && $copyFromMessageInfo->template_id == 5) selected="selected" @endif>5</option>
+                            <option value="6" @if($isCopy && $copyFromMessageInfo->template_id == 6) selected="selected" @endif>6</option>
+                            <option value="7" @if($isCopy && $copyFromMessageInfo->template_id == 7) selected="selected" @endif>7</option>
+                            <option value="8" @if($isCopy && $copyFromMessageInfo->template_id == 8) selected="selected" @endif>8</option>
+                        </select>
+                    </td>
+                    <td><span style="color: red;">*</span></td>
+                </tr>
+                <tr>
                     <td>{{trans("messages.PUSH_TYPE")}}:</td>
                     <td style="padding: 10px;">
                         <select class="select2-close-mask form-control" name="ddlType" id="ddlType" onchange="ChangeType()">
@@ -47,9 +63,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
                     <td style="padding: 10px;">
                         <textarea data-clear-btn="true" name="tbxContent" class="form-control col-lg-6 col-xs-6"
-                               id="tbxContent" value="" rows="3">@if($isCopy)
-                                {{$copyFromMessageInfo->message_text}}
-                            @endif</textarea>
+                               id="tbxContent" value="" rows="3">@if($isCopy){{$copyFromMessageInfo->message_text}}@endif</textarea>
                     </td>
                     <td><span style="color: red;">*</span></td>
                 </tr>
@@ -288,8 +302,9 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
             var msgType = $("#ddlType").val();
             var msgTitle = $("#tbxTitle").val();
             var msgContent = $("#tbxContent").val();
+            var msgTemplateId = $("#ddlTemplateID").val();
             var msgReceiver = new Object();
-            if(msgTitle == "" || msgContent == "") {
+            if(msgTitle == "" || msgContent == "" || msgTemplateId == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
             }
@@ -333,6 +348,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 var mydata =
                 {
                     sourcer: msgSourcer,
+                    template_id: msgTemplateId,
                     type: msgType,
                     title: msgTitle,
                     content: msgContent,

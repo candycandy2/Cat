@@ -10,7 +10,7 @@ $menu_name = "PUSH_SERVER";
         </a>
     </div>
 
-    <table id="gridMessageList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridMessageList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbar"
            data-url="platform/getMessageList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"

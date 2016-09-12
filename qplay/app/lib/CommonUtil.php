@@ -452,6 +452,17 @@ SQL;
         return $projectList;
     }
 
+    public static function getProjectInfoById($projectId)
+    {
+        $projectList = \DB::table('qp_project')
+            -> where("row_id", "=", $projectId)
+            -> select()->get();
+        if(count($projectList) > 0) {
+            return $projectList[0];
+        }
+        return null;
+    }
+
     public static function getLangList(){
         $langList = \DB::table('qp_language')
             -> select('row_id', 'lang_code', 'lang_desc')->get();

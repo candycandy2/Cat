@@ -128,7 +128,9 @@ foreach ($allCompanyRoleList as $companyRoles) {
                 if(companyRoles.company == currentSelectedCompanyName) {
                     var optionStrs = "";
                     $.each(companyRoles.roles, function (j, role) {
-                        optionStrs += "<option value='" + role.row_id + "'>" + role.role_description + "</option>";
+                        if(role.row_id != '{{$roleId}}') {
+                            optionStrs += "<option value='" + role.row_id + "'>" + role.role_description + "</option>";
+                        }
                     });
                     $("#ddlRole").html(optionStrs);
                     return false;
@@ -137,33 +139,37 @@ foreach ($allCompanyRoleList as $companyRoles) {
         };
 
         var CopyList = function () {
-            var mydataStr = "";
-            $.ajax({
-                url: "platform/getRoleUsers?role_id=" + $("#ddlRole").val(),
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    var currentData = $("#gridUserList").bootstrapTable('getData');
-                    $.each(d, function(i, newUser) {
-                        var exist = false;
-                        $.each(currentData, function(j, cUser) {
-                            if(cUser.row_id == newUser.row_id) {
-                                exist = true;
-                                return false;
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_COPY")}}", "", function () {
+                hideConfirmDialog();
+
+                var mydataStr = "";
+                $.ajax({
+                    url: "platform/getRoleUsers?role_id=" + $("#ddlRole").val(),
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: mydataStr,
+                    success: function (d, status, xhr) {
+                        var currentData = $("#gridUserList").bootstrapTable('getData');
+                        $.each(d, function(i, newUser) {
+                            var exist = false;
+                            $.each(currentData, function(j, cUser) {
+                                if(cUser.row_id == newUser.row_id) {
+                                    exist = true;
+                                    return false;
+                                }
+                            });
+                            if(!exist) {
+                                currentData.push(newUser);
                             }
                         });
-                        if(!exist) {
-                            currentData.push(newUser);
-                        }
-                    });
-                    $("#gridUserList").bootstrapTable('load', currentData);
-                    showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_COPY_LIST_SUCCESS")}}");
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
+                        $("#gridUserList").bootstrapTable('load', currentData);
+                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_COPY_LIST_SUCCESS")}}");
+                    },
+                    error: function (e) {
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    }
+                });
             });
         };
 

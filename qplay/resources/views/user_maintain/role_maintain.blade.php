@@ -14,7 +14,7 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
             {{trans("messages.NEW")}}
         </button>
     </div>
-    <table id="gridRoleList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridRoleList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbar"
            data-url="platform/getRoleList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
