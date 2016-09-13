@@ -131,7 +131,7 @@ h1 {
 }
 
 .detail-description-style {
-    width: 350px !important;
+    width: auto !important;
     text-align: center !important;
 }
 
