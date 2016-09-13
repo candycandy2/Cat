@@ -267,11 +267,7 @@ var app = {
     securityLevel: function(rs){
         if((rs==1) && (loginjustdone==0)) {
           //alert("Level: " + rs + " check login: need implement");
-          var args = [];
-          args[0] = "LoginSuccess";//登录成功后调用的js function name
-          args[1] = device.uuid;//uuid
-          window.plugins.qlogin.openCertificationPage(null, null, args);
-          loginjustdone = 1;
+          doLoginFunction();
         }else{
             //alert("Level: " + rs);
             loginjustdone = 0;
@@ -289,10 +285,7 @@ app.initialize();
 
 $(function() {
     $("#doLogin").click(function() {
-      var args = [];
-      args[0] = "LoginSuccess";//登录成功后调用的js function name
-      args[1] = device.uuid;//uuid
-      window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
+      doLoginFunction();
     });
     
     $("#checkAppVersion").click(function() {
@@ -313,9 +306,76 @@ $(function() {
       } // for appindex
     });
     
+    $("#logout").click(function() {
+      doLogoutFunction();
+      doLoginFunction();
+    });
+    
+    window.doLoginFunction = function()
+    {
+      var args = [];
+      args[0] = "LoginSuccess";//登录成功后调用的js function name
+      //args[1] = device.uuid;//uuid
+      
+      // for testing
+      if (device.platform == "Android")
+          args[1] = "A1234567890A1234567890";
+      else if (device.platform == "iOS")
+          args[1] = "12455";
+      else
+          alert("device.platform error !!!");
+
+      window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
+      loginjustdone = 1;
+    }
+    
+    window.doLogoutFunction = function()
+    {
+      var signatureTime = Math.round(new Date().getTime()/1000);
+      var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+      var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+      
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: serverURL +"/qplayApi/public/index.php/v101/qplay/logout?lang=en-us&uuid=" + device.uuid + "&domain=" + rsDataFromServer.domain + "&loginid=" + rsDataFromServer.empno,
+        headers: {
+          'Content-Type': 'application/json',
+          'app-key': appkey,
+          'Signature-Time': signatureTime,
+          'Signature': signatureInBase64,
+        },
+        cache: false,
+        success: onLogoutSuccess,
+        error: onLogoutFail,
+      });
+    }
+    
+    function onLogoutSuccess(data)
+    {
+      //var rawdata = data['d'];
+      //var jsonobj = jQuery.parseJSON(data);
+      var jsonobj = data;
+      var resultcode = jsonobj['result_code'];
+    
+      if (resultcode == 1)
+      {
+      }
+      else
+      {
+          //alert(jsonobj['message']);
+      }
+    };
+    
+    function onLogoutFail(data)
+    {
+      var result = data;  
+      
+      alert("onLogoutFail");
+    };
+    
     window.checkAppVersionFunction = function()
     {
-      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
       var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -352,29 +412,14 @@ $(function() {
           // .....
           
           // for testing
-          var args = [];
-          args[0] = "LoginSuccess";
-          //args[1] = device.uuid;//uuid
-          if (device.platform == "Android")
-              args[1] = "A1234567890A1234567890"; // for testing
-          else if (device.platform == "iOS")
-              args[1] = "12455";
-          else
-              alert("device.platform error !!!");
-          
-          window.plugins.qlogin.openCertificationPage(null, null, args);
-          loginjustdone = 1;
+          doLoginFunction();
       }
       else if (resultcode == 000913)
       {
           //alert("up to date");
           alert(jsonobj['message']);
           
-          var args = [];
-          args[0] = "LoginSuccess";
-          args[1] = device.uuid;//uuid
-          window.plugins.qlogin.openCertificationPage(null, null, args);
-          loginjustdone = 1;
+          doLoginFunction();
       }
     };
     
@@ -408,14 +453,16 @@ $(function() {
       rsDataFromServer.uuid = data['uuid'];
       rsDataFromServer.redirect = data['redirect-uri'];
       //alert("uuid: " + rsDataFromServer.uuid);
+      rsDataFromServer.empno = data['emp_no'];
+      rsDataFromServer.domain = data['domain'];
       
       // need to check token_valid
+      
       callGetAppList();
     };
     
     function callGetAppList()
     {
-      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
       var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -496,7 +543,6 @@ $(function() {
     
     function callisRegister()
     {
-      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
       var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -528,20 +574,11 @@ $(function() {
           var responsecontent = jsonobj['content'];
           if (responsecontent.is_register) {
               //alert("is_register");
-              var args = [];
-              args[0] = "LoginSuccess";
-              args[1] = device.uuid;//uuid
-              //args[1] = "A1234567890A1234567890"; // for testing
-              window.plugins.qlogin.openCertificationPage(null, null, args);
-              loginjustdone = 1;
+              doLoginFunction();
           }
           else {
               //alert("!is_register");
-              var args = [];
-              args[0] = "LoginSuccess";
-              args[1] = device.uuid;//uuid
-              window.plugins.qlogin.openCertificationPage(null, null, args);
-              loginjustdone = 1;
+              doLoginFunction();
           }
       }
     };
@@ -557,7 +594,6 @@ $(function() {
     
     function callgetMessageList()
     {
-      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
       var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -643,7 +679,6 @@ $(function() {
     
     function callgetMessageDetail(rawid)
     {
-      var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
       var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -706,12 +741,16 @@ var rsDataFromServer = {
   token_valid: 'nullstring',
   uuid: 'nullstring',
   redirect: 'nullstring',
+  empno: 'nullstring',
+  domain: 'nullstring',
 };
 
+var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+var appkey = "qplay"; // appkey
 //var serverURL = "http://aic0-s12.qgroup.corp.com:8084"; // QCS API Server
 //var serverURL = "http://10.82.246.95"; // QTT 內部 API Server
 var serverURL = "http://qplay.benq.com"; // QTT 外部 API Server
-var appkey = "qplay"; // appkey
+
 var appcategorylist;
 var applist;
 var appmultilang;
