@@ -146,18 +146,6 @@ h1 {
     margin:0px 30px !important;
 }
 
-.navbar-style {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
-
 .Header_Normal{
     display:block;
 	background-image: url(../img/header_normal.png);
@@ -187,7 +175,7 @@ h1 {
     
 .Date{
 	position: absolute;
-	left: 235px;
+	left: 243px;
 	top: 50px;
 	font-size: 16px;
 	color: #FFF;

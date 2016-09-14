@@ -645,7 +645,7 @@ $(function() {
               else if (message.message_type == "event")
               {
                   var title = message.message_title;
-                  var txt = message.message_txt;
+                  var txt = message.message_text;
                   var rowid = message.message_send_row_id;
                   var time = message.create_time;
                   
@@ -660,15 +660,11 @@ $(function() {
           $('a[id^="messageindex"]').click(function(e) {
               e.stopImmediatePropagation();
               e.preventDefault();
-              //Do important stuff....
-              //employeedata.index = this.getAttribute('value');
-              var i = this.getAttribute('value');
-              //alert("messageindex " + i.toString());
-              $.mobile.changePage('#webnewspage2-3-1', { transition: "flip"} );
               
+              var i = this.getAttribute('value');
+              var rowid = messagecontent.message_list[i].message_send_row_id;
+              callgetMessageDetail(rowid)
           });
-          
-          
       }
     };
     
@@ -677,7 +673,7 @@ $(function() {
       alert("ongetMessageListFail");
     };
     
-    function callgetMessageDetail(rawid)
+    function callgetMessageDetail(rowid)
     {
       var signatureTime = Math.round(new Date().getTime()/1000);
       var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
@@ -686,7 +682,7 @@ $(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageDetail?lang=en-us&uuid=" + rsDataFromServer.uuid +"&message_send_row_id=" + rawid,
+        url: serverURL + "/qplayApi/public/index.php/v101/qplay/getMessageDetail?lang=en-us&uuid=" + rsDataFromServer.uuid +"&message_send_row_id=" + rowid,
         headers: {
           'Content-Type': 'application/json',
           'app-key': appkey,
@@ -707,21 +703,37 @@ $(function() {
       
       if (resultcode == 1)
       {
-          alert(jsonobj['message']);
+          //alert(jsonobj['message']);
           var responsecontent = jsonobj['content'];
           
-          var message = responsecontent.message_list[appindex];
-          if (responsecontent.message_type == 1) // 1:news  2:event
+          if (responsecontent.message_type == "news") // 1:news  2:event
           {
               var title = responsecontent.message_title;
-              var txt = responsecontent.message_txt;
+              var messagetext = responsecontent.message_text;
+              var messagehtml = responsecontent.message_html;
               var rowid = responsecontent.message_send_row_id;
+              var time = responsecontent.create_time;
+              var author = responsecontent.create_user;
               
+              var element = document.getElementById("newsDetailCreateTime");
+              element.textContent = time.substr(0, 10);
+              
+              element = document.getElementById("newsDetailTitle");
+              element.textContent = title;
+              
+              element = document.getElementById("newsAuthor");
+              element.textContent = author;
+
+              element = document.getElementById("newsContent");
+              element.textContent = messagetext;
+              
+              $.mobile.changePage('#webnewspage2-3-1', { transition: "flip"} );
           }
-          else if (responsecontent.message_type == 2)
+          else if (responsecontent.message_type == "event")
           {
               var title = responsecontent.message_title;
-              var txt = responsecontent.message_txt;
+              var messagetext = responsecontent.message_text;
+              var messagehtml = responsecontent.message_html;
               var rowid = responsecontent.message_send_row_id;
               
           }
