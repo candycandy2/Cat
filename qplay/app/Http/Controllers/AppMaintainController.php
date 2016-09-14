@@ -112,7 +112,7 @@ class AppMaintainController extends Controller
         }
 
         $categoryId = $input["category_id"];
-        $categoryAppsList = $this->getAppList($categoryId);
+        $categoryAppsList = $this->formatVersionStatus($this->getAppList($categoryId,'='));
         return response()->json($categoryAppsList);
     }
 
@@ -125,24 +125,12 @@ class AppMaintainController extends Controller
         }
         
         $input = Input::get();
-        $categoryId = $input["category_id"];
-
-        $otherAppsList = \DB::table("qp_app_head as h")
-        -> join('qp_app_line as l','h.row_id', '=', 'l.app_row_id')
-        -> where('h.app_category_row_id', '<>', $categoryId)
-        -> where('l.lang_row_id', '=', \DB::raw('h.default_lang_row_id'))
-         -> select('h.row_id','h.package_name','h.icon_url','l.app_name',\DB::raw('DATE_FORMAT(l.updated_at , \'%Y-%m-%d\') as updated_at'))
-        -> get();
-
-        foreach ($otherAppsList as $app) {
-            $ready_count = \DB::table('qp_app_version')
-                ->where('app_row_id', '=', $app->row_id)
-                ->where('status', '=', 'ready')
-                ->count();
-            $app->released = ($ready_count > 0)?'Y':'N';
+        if( !isset($input["category_id"]) || !is_numeric($input["category_id"])){
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
-
-         return response()->json($otherAppsList);
+        $categoryId = $input["category_id"];
+        $otherAppsList = $this->formatVersionStatus($this->getAppList($categoryId,'<>'));
+        return response()->json($otherAppsList);
     }
 
 
@@ -275,8 +263,8 @@ class AppMaintainController extends Controller
         }
         $data = array();
 
-        $appList = json_encode($this->getAppList());
-        $data['appList']  = $appList;
+        $appList = $this->formatVersionStatus($this->getAppList());
+        $data['appList']  = json_encode($appList);
 
         $data['projectInfo'] = CommonUtil::getProjectInfo();
         $data['langList']    = CommonUtil::getLangList();
@@ -295,39 +283,58 @@ class AppMaintainController extends Controller
         return view("app_maintain/app_detail/main")->with('data',$data);
     }
 
-    private function getAppList($categoryId=null){
+    private function getAppList($categoryId=null,$op=null){
 
         $appsList = \DB::table("qp_app_head as h")
                 -> join('qp_app_line as l','h.row_id', '=', 'l.app_row_id')
-                -> where(function($query) use ($categoryId){
+                -> where(function($query) use ($categoryId,$op){
                 
-                if(isset($categoryId) && is_numeric($categoryId))
-                    $query->where('h.app_category_row_id', '=', $categoryId);
+                if(isset($categoryId) && is_numeric($categoryId) && isset($op))
+
+                    $query->where('h.app_category_row_id', $op, $categoryId);
                 })
 
                 ->where('l.lang_row_id', '=', \DB::raw('h.default_lang_row_id'))
-                -> select('h.row_id','h.package_name','h.icon_url','l.app_name',\DB::raw('DATE_FORMAT(l.updated_at , \'%Y-%m-%d\') as updated_at'))
+                -> select('h.row_id','h.package_name','h.icon_url','h.app_category_row_id','l.app_name',\DB::raw('DATE_FORMAT(l.updated_at , \'%Y-%m-%d\') as updated_at'))
                 -> get();
 
         foreach ($appsList as $app) {
             
             $appVersionInfo = \DB::table('qp_app_version')
                 ->where('app_row_id', '=', $app->row_id)
-                ->select('version_name','device_type','status')
+                ->select('app_row_id','version_name','device_type','status','updated_at')
+                ->orderBy('status','device_type','updated_at')
                 ->get();
-
-           if(isset($appVersionInfo[0])){
-
-                $record = $appVersionInfo[0];
-                $status = ($record->status == 'ready')?'':'-Unpublish';
-                $app->released = $record->device_type.'-'.$record->version_name.$status;
-
-           }else{
-                $app->released = "";
-           }        
-
+            foreach ( $appVersionInfo  as $value) {
+                $versionArray[$value->device_type][$value->status] = $value->version_name;
+            }
+            foreach ($versionArray as $deviceType => $versionStatus) {
+                if(array_key_exists('ready',$versionStatus)){
+                    $app->released[$deviceType] = $deviceType.'-'.$versionStatus['ready'];
+                }else{
+                    $app->released[$deviceType] = 'Unpublish';
+                }
+            }
         }
         return $appsList;
+    }
+
+     private function formatVersionStatus($appList){
+        
+         foreach($appList as $app){
+            $tmpStr = "";
+            $tag = 1;
+            foreach($app->released as $deviceType => $versionStatus){
+                if($tag == 1){ 
+                    $tmpStr = $versionStatus;
+                }else{
+                    $tmpStr = $tmpStr.'<br>'.$versionStatus;
+                }
+                $tag++;
+            }
+            $app->released = $tmpStr;
+        }
+        return $appList;
     }
 }
 
