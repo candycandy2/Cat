@@ -178,6 +178,7 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => 'Default language',
+    'SELECT_APP_KEY' => 'Select App Key',
 
     //Project Maintain
     'PROJECT_CODE' => 'Project Code',
