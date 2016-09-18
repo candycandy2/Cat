@@ -244,6 +244,14 @@ $title = trans('messages.TITLE_'.$menu_name);
             if(selectedChanged) {
                 selectedChanged();
             }
+
+            $(".pagination-info").each(function() {
+                $(this).text(
+                        $(this).text().replace("Showing", "{{trans("messages.PAGING_SHOWING")}}")
+                                .replace("to", "{{trans("messages.PAGING_TO")}}").replace("of", "{{trans("messages.PAGING_OF")}}")
+                                .replace("rows", "{{trans("messages.PAGING_ROWS")}}")
+                );
+            });
         });
     });
 
