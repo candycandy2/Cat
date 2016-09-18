@@ -1049,6 +1049,7 @@ from qp_message m,
 	   qp_user u2,
 		 qp_role_message rm
 where m.row_id = ms.message_row_id
+and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
@@ -1251,26 +1252,55 @@ SQL;
 
             $now = date('Y-m-d H:i:s',time());
             $user = CommonUtil::getUserInfoByUUID($uuid);
-            if(count($existPushToken) > 0)
-            {
-                \DB::table("qp_push_token")
-                    -> where('register_row_id', "=", $registerId)
-                    -> where('project_row_id', "=", $projectId)
-                    -> where('device_type', "=", $deviceType)
-                    ->update([
+            \DB::beginTransaction();
+            try {
+                if(count($existPushToken) > 0)
+                {
+                    \DB::table("qp_push_token")
+                        -> where('register_row_id', "=", $registerId)
+                        -> where('project_row_id', "=", $projectId)
+                        -> where('device_type', "=", $deviceType)
+                        ->update([
+                            'push_token'=>$pushToken,
+                            'updated_at'=>$now,
+                            'updated_user'=>$user->row_id,]);
+                }
+                else
+                {
+                    \DB::table("qp_push_token")->insert([
+                        'register_row_id'=>$registerId,
+                        'project_row_id'=>$projectId,
                         'push_token'=>$pushToken,
-                        'updated_at'=>$now,
-                        'updated_user'=>$user->row_id,]);
-            }
-            else
-            {
-                \DB::table("qp_push_token")->insert([
-                    'register_row_id'=>$registerId,
-                    'project_row_id'=>$projectId,
-                    'push_token'=>$pushToken,
-                    'created_user'=>$user->row_id,
-                    'created_at'=>$now,
-                    'device_type'=>$deviceType]);
+                        'created_user'=>$user->row_id,
+                        'created_at'=>$now,
+                        'device_type'=>$deviceType]);
+                }
+
+                //Register to Message Center
+                $app_id = "";  //TODO 正式上线需要读配置
+
+                $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/RegisterDevice";
+                $args = array('App_id' => $app_id,
+                    'TenantId' => '00000000-0000-0000-0000-000000000000',
+                    'Provider' => 'JPush',
+                    'Client_id' => $pushToken,
+                    'User_Name' => 'QPlay',
+                    'Badge_number' => '0');
+                $data["register"] = json_encode($args);
+                $result = CommonUtil::doPost($url, $data);
+                if(!str_contains($result, "true")) {
+                    \DB::rollBack();
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>'Register to Message Center Failed!',
+                        'content'=>'']);
+                }
+
+                \DB::commit();
+            } catch (Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>'未知错误',
+                    'content'=>'']);
             }
 
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
