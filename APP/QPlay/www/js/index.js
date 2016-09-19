@@ -74,10 +74,11 @@
         }
     });
 
-    $('#appdetaillist').owlCarousel({
+    $('#appDetailPicList').owlCarousel({
         stagePadding: 0,
         loop:false,
         nav:false,
+        margin:10,
         responsive:{
             0:{
                 items:1
@@ -518,7 +519,7 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
-              carouselItem = '<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">' + packagename.substr(5) + '</p></div>';
+              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;\">" + packagename.substr(5) + "</p></div>";
               
               $('#appcontent').append(carouselItem);
               
@@ -530,6 +531,14 @@ $(function() {
           
           $('#appcontent').append('</div>');
         } // for categoryindex
+        
+        $('a[id^="application"]').click(function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            var index = this.getAttribute('value');
+            callDisplayAppDetail(index);
+        });
       } // if (resultcode == 1)
       else {
         alert(jsonobj['message']);
@@ -540,6 +549,35 @@ $(function() {
     {
       alert("ongetAppListFail");
     };
+    
+    function callDisplayAppDetail(index)
+    {
+      var element = document.getElementById("appDetailIcon");
+      element.src = applist[index].icon_url;
+      
+      element = document.getElementById("appDetailAppName");
+      element.textContent = appmultilang[index*3+2].app_name;
+      
+      element = document.getElementById("appDetailAppSummary");
+      element.textContent = appmultilang[index*3+2].app_summary;
+      
+      element = document.getElementById("appDetailAppVersion");
+      element.textContent = applist[index].app_version_name;
+      
+      element = document.getElementById("appDetailAppDescription");
+      element.textContent = appmultilang[index*3+2].app_description
+      
+      var appranking = applist[index].avg_score;
+      
+      var content = "";
+      var piclist = appmultilang[index*3+2].pic_list;
+      for (var listIndex=0; listIndex<piclist.length; listIndex++)
+      {
+          content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
+          $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
+      }
+      $.mobile.changePage('#appdetail2-2', { transition: "flip"} );
+    }
     
     function callisRegister()
     {
