@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\lib\CommonUtil;
+use App\lib\MyJPush;
 use App\lib\ResultCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
 use DB;
+use JPush\Client as JPush;
+use JPush\Exceptions\JPushException;
 
 class platformController extends Controller
 {
@@ -1081,6 +1084,7 @@ class platformController extends Controller
                         'created_at'=>$now,
                     ]);
 
+                $real_push_user_list = array();
                 if($receiver["type"] == "news") {
                     $companyList = $receiver["company_list"];
                     foreach ($companyList as $company) {
@@ -1099,10 +1103,17 @@ class platformController extends Controller
                                     'created_user'=>\Auth::user()->row_id,
                                     'created_at'=>$now,
                                 ]);
+                            $userListInRole = \DB::table("qp_user_role")
+                                ->where("role_row_id", "=", $role->row_id)
+                                ->select()->get();
+                            foreach ($userListInRole as $userInRole) {
+                                $userId = $userInRole -> user_row_id;
+                                if(!in_array($userId, $real_push_user_list)) {
+                                    array_push($real_push_user_list, $userId);
+                                }
+                            }
                         }
                     }
-
-                    //TODO do push
                 } else {
                     $roleList = $receiver["role_list"];
                     $userList = $receiver["user_list"];
@@ -1136,6 +1147,7 @@ class platformController extends Controller
                                         'created_at'=>$now,
                                     ]);
                                 array_push($insertedUserIdList, $userId);
+                                array_push($real_push_user_list, $userId);
                             }
                         }
                     }
@@ -1153,16 +1165,40 @@ class platformController extends Controller
                                     'created_at'=>$now,
                                 ]);
                             array_push($insertedUserIdList, $userId);
+                            array_push($real_push_user_list, $userId);
+                        }
+                    }
+                }
+
+                foreach ($real_push_user_list as $uId) {
+                    $register_list = \DB::table("qp_register")
+                        ->where("user_row_id", "=", $uId)
+                        ->where("status", "=", "A")
+                        ->select()->get();
+                    foreach ($register_list as $register) {
+                        $registerId = $register->row_id;
+                        $push_token_list = \DB::table("qp_push_token")
+                            ->where("register_row_id", "=", $registerId)
+                            ->select()->get();
+                        if(count($push_token_list) > 0) {
+                            foreach ($push_token_list as $token) {
+                                $to = $token->push_token;//"18071adc030551e965c";
+                                if(!CommonUtil::PushMessageWithMessageCenter($title, $to)) {
+                                    \DB::rollBack();
+                                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>'push message with Message Center failed!']);
+                                }
+                            }
                         }
                     }
                 }
 
                 \DB::commit();
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result, 'data'=>json_encode($args)]);
             }catch (\Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e]);
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
             }
         }
     }

@@ -468,4 +468,46 @@ SQL;
             -> select('row_id', 'lang_code', 'lang_desc')->get();
         return $langList;
     }
+
+    public static function doPost($url, $data){//file_get_content
+        $postdata = http_build_query($data);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+        $context = stream_context_create($opts);
+        $result = file_get_contents($url, false, $context);
+        return $result;
+    }
+
+    public static function PushMessageWithMessageCenter($message, $to) {
+        $jpush_app_id = "293a09f63dd77abea15f42c3";
+        $id = strtoupper(md5(uniqid(rand(),true)));
+        $args = array('Id' => $id,
+            'TenantId' => '00000000-0000-0000-0000-000000000000',
+            'AppId' => $jpush_app_id,
+            'To' => $to,
+            'Message' => $message,
+            'Sound' => 'default',
+            'Badge' => '0',
+            'Timing' => '1900-01-01 00:00:00.000',
+            'Expire' => '2099-12-31 00:00:00.000',
+            'Status' => 'W',
+            'To_Type' => 'NONE',
+            'Parameter' => '',
+            'CreatedDate' => '2016-09-14');
+        $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS";
+        $data["pns"] = json_encode($args);
+        $result = self::doPost($url, $data);
+
+        if(str_contains($result, "true")) {
+            return true;
+        }
+
+        return false;
+    }
 }
