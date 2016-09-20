@@ -504,13 +504,32 @@ $(function() {
         $('#appcontent').html(""); // empty html content
         var carouselItem;
         
+        var carousel_Settings = {
+            touchDrag: false,
+            mouseDrag: false,
+            loop:false,
+            nav:false,
+            margin:0,
+            responsive:{
+                0:{
+                    items:1
+                },
+                100:{
+                    items:2
+                },
+                350:{
+                    items:4
+                }
+            }
+        };
+        
         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
-          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '></div>');
           var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
           //init carousel
-          owl.owlCarousel();
+          owl.owlCarousel(carousel_Settings);
           
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
@@ -519,17 +538,15 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
-              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;\">" + packagename.substr(5) + "</p></div>";
+              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
               
-              $('#appcontent').append(carouselItem);
+              $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
               
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
               }
             } // if (appcategory == catetoryname)
           } // for appindex
-          
-          $('#appcontent').append('</div>');
         } // for categoryindex
         
         $('a[id^="application"]').click(function(e) {
