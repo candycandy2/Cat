@@ -573,6 +573,11 @@ $(function() {
       var piclist = appmultilang[index*3+2].pic_list;
       for (var listIndex=0; listIndex<piclist.length; listIndex++)
       {
+          $('#appDetailPicList').trigger('remove.owl.carousel', listIndex);
+      }
+      
+      for (listIndex=0; listIndex<piclist.length; listIndex++)
+      {
           content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
           $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
       }
