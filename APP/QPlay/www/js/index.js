@@ -316,15 +316,15 @@ $(function() {
     {
       var args = [];
       args[0] = "LoginSuccess";//登录成功后调用的js function name
-      //args[1] = device.uuid;//uuid
+      args[1] = device.uuid;//uuid
       
       // for testing
-      if (device.platform == "Android")
+/*       if (device.platform == "Android")
           args[1] = "A1234567890A1234567890";
       else if (device.platform == "iOS")
           args[1] = "12455";
       else
-          alert("device.platform error !!!");
+          alert("device.platform error !!!"); */
 
       window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
       loginjustdone = 1;
@@ -354,8 +354,6 @@ $(function() {
     
     function onLogoutSuccess(data)
     {
-      //var rawdata = data['d'];
-      //var jsonobj = jQuery.parseJSON(data);
       var jsonobj = data;
       var resultcode = jsonobj['result_code'];
     
@@ -399,8 +397,6 @@ $(function() {
     
     function onCheckAppVersionSuccess(data)
     {
-      //var rawdata = data['d'];
-      //var jsonobj = jQuery.parseJSON(data);
       var jsonobj = data;
       var resultcode = jsonobj['result_code'];
     
