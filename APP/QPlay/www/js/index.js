@@ -573,22 +573,37 @@ $(function() {
       var element = document.getElementById("appDetailIcon");
       element.src = applist[index].icon_url;
       
+      for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++)
+      {
+          if ((applist[index].app_code == appmultilang[multilangIndex].project_code) &&
+              (appmultilang[multilangIndex].lang == "zh-tw"))
+          {
+            break;
+          }
+      }
+      
+      if (multilangIndex > appmultilang.length)
+      {
+          alert("find multilang error!!!");
+          return;
+      }
+      
       element = document.getElementById("appDetailAppName");
-      element.textContent = appmultilang[index*3+2].app_name;
+      element.textContent = appmultilang[multilangIndex].app_name;
       
       element = document.getElementById("appDetailAppSummary");
-      element.textContent = appmultilang[index*3+2].app_summary;
+      element.textContent = appmultilang[multilangIndex].app_summary;
       
       element = document.getElementById("appDetailAppVersion");
       element.textContent = applist[index].app_version_name;
       
       element = document.getElementById("appDetailAppDescription");
-      element.textContent = appmultilang[index*3+2].app_description
+      element.textContent = appmultilang[multilangIndex].app_description
       
       var appranking = applist[index].avg_score;
       
       var content = "";
-      var piclist = appmultilang[index*3+2].pic_list;
+      var piclist = appmultilang[multilangIndex].pic_list;
       for (var listIndex=0; listIndex<piclist.length; listIndex++)
       {
           $('#appDetailPicList').trigger('remove.owl.carousel', listIndex);
@@ -822,7 +837,7 @@ var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appkey = "qplay"; // appkey
 //var serverURL = "http://aic0-s12.qgroup.corp.com:8084"; // QCS API Server
 //var serverURL = "http://10.82.246.95"; // QTT 內部 API Server
-var serverURL = "http://qplay.benq.com"; // QTT 外部 API Server
+var serverURL = "https://qplay.benq.com"; // QTT 外部 API Server
 
 var appcategorylist;
 var applist;
