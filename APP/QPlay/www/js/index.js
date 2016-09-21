@@ -295,7 +295,7 @@ $(function() {
     });
     
     $("#InstallApp").click(function() {
-      for (var appindex=0; appindex<applist.length; appindex++) {
+/*       for (var appindex=0; appindex<applist.length; appindex++) {
           var appurl = applist[appindex].url;
           var appurlicon = applist[appindex].icon_url;
           var packagename = applist[appindex].package_name;
@@ -304,7 +304,12 @@ $(function() {
               //window.location = appurl;
               window.open(appurl, '_self', false);
           }
-      } // for appindex
+      } // for appindex */
+      
+      if (selectAppIndex != 9999)
+      {
+        window.open(applist[selectAppIndex].url, '_self', false);
+      }
     });
     
     $("#logout").click(function() {
@@ -316,15 +321,15 @@ $(function() {
     {
       var args = [];
       args[0] = "LoginSuccess";//登录成功后调用的js function name
-      //args[1] = device.uuid;//uuid
+      args[1] = device.uuid;//uuid
       
       // for testing
-      if (device.platform == "Android")
+/*       if (device.platform == "Android")
           args[1] = "A1234567890A1234567890";
       else if (device.platform == "iOS")
           args[1] = "12455";
       else
-          alert("device.platform error !!!");
+          alert("device.platform error !!!"); */
 
       window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
       loginjustdone = 1;
@@ -354,8 +359,6 @@ $(function() {
     
     function onLogoutSuccess(data)
     {
-      //var rawdata = data['d'];
-      //var jsonobj = jQuery.parseJSON(data);
       var jsonobj = data;
       var resultcode = jsonobj['result_code'];
     
@@ -399,8 +402,6 @@ $(function() {
     
     function onCheckAppVersionSuccess(data)
     {
-      //var rawdata = data['d'];
-      //var jsonobj = jQuery.parseJSON(data);
       var jsonobj = data;
       var resultcode = jsonobj['result_code'];
     
@@ -504,13 +505,32 @@ $(function() {
         $('#appcontent').html(""); // empty html content
         var carouselItem;
         
+        var carousel_Settings = {
+            touchDrag: false,
+            mouseDrag: false,
+            loop:false,
+            nav:false,
+            margin:0,
+            responsive:{
+                0:{
+                    items:1
+                },
+                100:{
+                    items:2
+                },
+                350:{
+                    items:4
+                }
+            }
+        };
+        
         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
-          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '></div>');
           var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
           //init carousel
-          owl.owlCarousel();
+          owl.owlCarousel(carousel_Settings);
           
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
@@ -519,25 +539,23 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
-              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;\">" + packagename.substr(5) + "</p></div>";
+              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
               
-              $('#appcontent').append(carouselItem);
+              $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
               
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
               }
             } // if (appcategory == catetoryname)
           } // for appindex
-          
-          $('#appcontent').append('</div>');
         } // for categoryindex
         
         $('a[id^="application"]').click(function(e) {
             e.stopImmediatePropagation();
             e.preventDefault();
             
-            var index = this.getAttribute('value');
-            callDisplayAppDetail(index);
+            selectAppIndex = this.getAttribute('value');
+            callDisplayAppDetail(selectAppIndex);
         });
       } // if (resultcode == 1)
       else {
@@ -811,3 +829,4 @@ var applist;
 var appmultilang;
 var loginjustdone;
 var messagecontent;
+var selectAppIndex = 9999;
