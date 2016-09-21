@@ -295,7 +295,7 @@ $(function() {
     });
     
     $("#InstallApp").click(function() {
-      for (var appindex=0; appindex<applist.length; appindex++) {
+/*       for (var appindex=0; appindex<applist.length; appindex++) {
           var appurl = applist[appindex].url;
           var appurlicon = applist[appindex].icon_url;
           var packagename = applist[appindex].package_name;
@@ -304,7 +304,9 @@ $(function() {
               //window.location = appurl;
               window.open(appurl, '_self', false);
           }
-      } // for appindex
+      } // for appindex */
+      
+      window.open(applist[selectAppIndex].url, '_self', false);
     });
     
     $("#logout").click(function() {
@@ -549,8 +551,8 @@ $(function() {
             e.stopImmediatePropagation();
             e.preventDefault();
             
-            var index = this.getAttribute('value');
-            callDisplayAppDetail(index);
+            selectAppIndex = this.getAttribute('value');
+            callDisplayAppDetail(selectAppIndex);
         });
       } // if (resultcode == 1)
       else {
@@ -824,3 +826,4 @@ var applist;
 var appmultilang;
 var loginjustdone;
 var messagecontent;
+var selectAppIndex;
