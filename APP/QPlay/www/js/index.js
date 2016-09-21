@@ -306,7 +306,10 @@ $(function() {
           }
       } // for appindex */
       
-      window.open(applist[selectAppIndex].url, '_self', false);
+      if (selectAppIndex != 9999)
+      {
+        window.open(applist[selectAppIndex].url, '_self', false);
+      }
     });
     
     $("#logout").click(function() {
@@ -826,4 +829,4 @@ var applist;
 var appmultilang;
 var loginjustdone;
 var messagecontent;
-var selectAppIndex;
+var selectAppIndex = 9999;
