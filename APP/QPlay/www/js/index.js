@@ -74,10 +74,11 @@
         }
     });
 
-    $('#appdetaillist').owlCarousel({
+    $('#appDetailPicList').owlCarousel({
         stagePadding: 0,
         loop:false,
         nav:false,
+        margin:10,
         responsive:{
             0:{
                 items:1
@@ -294,7 +295,7 @@ $(function() {
     });
     
     $("#InstallApp").click(function() {
-      for (var appindex=0; appindex<applist.length; appindex++) {
+/*       for (var appindex=0; appindex<applist.length; appindex++) {
           var appurl = applist[appindex].url;
           var appurlicon = applist[appindex].icon_url;
           var packagename = applist[appindex].package_name;
@@ -303,7 +304,12 @@ $(function() {
               //window.location = appurl;
               window.open(appurl, '_self', false);
           }
-      } // for appindex
+      } // for appindex */
+      
+      if (selectAppIndex != 9999)
+      {
+        window.open(applist[selectAppIndex].url, '_self', false);
+      }
     });
     
     $("#logout").click(function() {
@@ -315,15 +321,15 @@ $(function() {
     {
       var args = [];
       args[0] = "LoginSuccess";//登录成功后调用的js function name
-      //args[1] = device.uuid;//uuid
+      args[1] = device.uuid;//uuid
       
       // for testing
-      if (device.platform == "Android")
+/*       if (device.platform == "Android")
           args[1] = "A1234567890A1234567890";
       else if (device.platform == "iOS")
           args[1] = "12455";
       else
-          alert("device.platform error !!!");
+          alert("device.platform error !!!"); */
 
       window.plugins.qlogin.openCertificationPage(null, null, args); // for testing
       loginjustdone = 1;
@@ -353,8 +359,6 @@ $(function() {
     
     function onLogoutSuccess(data)
     {
-      //var rawdata = data['d'];
-      //var jsonobj = jQuery.parseJSON(data);
       var jsonobj = data;
       var resultcode = jsonobj['result_code'];
     
@@ -398,8 +402,6 @@ $(function() {
     
     function onCheckAppVersionSuccess(data)
     {
-      //var rawdata = data['d'];
-      //var jsonobj = jQuery.parseJSON(data);
       var jsonobj = data;
       var resultcode = jsonobj['result_code'];
     
@@ -503,13 +505,32 @@ $(function() {
         $('#appcontent').html(""); // empty html content
         var carouselItem;
         
+        var carousel_Settings = {
+            touchDrag: false,
+            mouseDrag: false,
+            loop:false,
+            nav:false,
+            margin:0,
+            responsive:{
+                0:{
+                    items:1
+                },
+                100:{
+                    items:2
+                },
+                350:{
+                    items:4
+                }
+            }
+        };
+        
         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
           var catetoryname = appcategorylist[categoryindex].app_category;
           $('#appcontent').append('<h4>' + catetoryname + '</h4>');
-          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '>');
+          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '></div>');
           var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
           //init carousel
-          owl.owlCarousel();
+          owl.owlCarousel(carousel_Settings);
           
           for (var appindex=0; appindex<applist.length; appindex++) {
             var appcategory = applist[appindex].app_category;
@@ -518,18 +539,24 @@ $(function() {
               var appurlicon = applist[appindex].icon_url;
               var packagename = applist[appindex].package_name;
               
-              carouselItem = '<div class="owl-item"><a href="#appdetail2-2"><img src="' + applist[appindex].icon_url + '" style="width:50px;height:50px;"></a><p style="font-size:0.8em;margin-top:0px;">' + packagename.substr(5) + '</p></div>';
+              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
               
-              $('#appcontent').append(carouselItem);
+              $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
               
               if (packagename == "benq.qplay") {
                   app.changeLevel(applist[appindex].security_level);
               }
             } // if (appcategory == catetoryname)
           } // for appindex
-          
-          $('#appcontent').append('</div>');
         } // for categoryindex
+        
+        $('a[id^="application"]').click(function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            selectAppIndex = this.getAttribute('value');
+            callDisplayAppDetail(selectAppIndex);
+        });
       } // if (resultcode == 1)
       else {
         alert(jsonobj['message']);
@@ -540,6 +567,55 @@ $(function() {
     {
       alert("ongetAppListFail");
     };
+    
+    function callDisplayAppDetail(index)
+    {
+      var element = document.getElementById("appDetailIcon");
+      element.src = applist[index].icon_url;
+      
+      for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++)
+      {
+          if ((applist[index].app_code == appmultilang[multilangIndex].project_code) &&
+              (appmultilang[multilangIndex].lang == "zh-tw"))
+          {
+            break;
+          }
+      }
+      
+      if (multilangIndex > appmultilang.length)
+      {
+          alert("find multilang error!!!");
+          return;
+      }
+      
+      element = document.getElementById("appDetailAppName");
+      element.textContent = appmultilang[multilangIndex].app_name;
+      
+      element = document.getElementById("appDetailAppSummary");
+      element.textContent = appmultilang[multilangIndex].app_summary;
+      
+      element = document.getElementById("appDetailAppVersion");
+      element.textContent = applist[index].app_version_name;
+      
+      element = document.getElementById("appDetailAppDescription");
+      element.textContent = appmultilang[multilangIndex].app_description
+      
+      var appranking = applist[index].avg_score;
+      
+      var content = "";
+      var piclist = appmultilang[multilangIndex].pic_list;
+      for (var listIndex=0; listIndex<piclist.length; listIndex++)
+      {
+          $('#appDetailPicList').trigger('remove.owl.carousel', listIndex);
+      }
+      
+      for (listIndex=0; listIndex<piclist.length; listIndex++)
+      {
+          content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
+          $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
+      }
+      $.mobile.changePage('#appdetail2-2', { transition: "flip"} );
+    }
     
     function callisRegister()
     {
@@ -761,10 +837,11 @@ var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appkey = "qplay"; // appkey
 //var serverURL = "http://aic0-s12.qgroup.corp.com:8084"; // QCS API Server
 //var serverURL = "http://10.82.246.95"; // QTT 內部 API Server
-var serverURL = "http://qplay.benq.com"; // QTT 外部 API Server
+var serverURL = "https://qplay.benq.com"; // QTT 外部 API Server
 
 var appcategorylist;
 var applist;
 var appmultilang;
 var loginjustdone;
 var messagecontent;
+var selectAppIndex = 9999;

@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 
 import java.util.List;
 
@@ -187,6 +189,17 @@ public class QSecurityPlugin extends CordovaPlugin {
 
     @Override
     public Boolean shouldAllowNavigation(String url) {
+        if(allowedRequests.isUrlWhiteListed(url)) { //added bu Moses Zhu on 20160920
+            if(url.toLowerCase().endsWith(".apk")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                Uri uri = Uri.parse(url);
+                intent.setData(uri);
+                cordova.getActivity().startActivity(intent);
+            }
+            return true;
+        }
+
         if (allowedNavigations.isUrlWhiteListed(url)) {
             return true;
         }
