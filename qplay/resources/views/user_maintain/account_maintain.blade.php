@@ -18,8 +18,8 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-            <th data-field="login_id" data-sortable="true" data-formatter="nameFormatter">{{trans("messages.USER_LOGIN_ID")}}</th>
+            <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
+            <th data-field="login_id" data-sortable="true" data-formatter="nameFormatter" data-search-formatter="false">{{trans("messages.USER_LOGIN_ID")}}</th>
             <th data-field="emp_no" data-sortable="true">{{trans("messages.USER_EMP_NO")}}</th>
             <th data-field="emp_name" data-sortable="true">{{trans("messages.USER_EMP_NAME")}}</th>
             <th data-field="email" data-sortable="true">{{trans("messages.USER_EMAIL")}}</th>

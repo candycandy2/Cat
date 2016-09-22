@@ -84,7 +84,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             {{trans("messages.SUB_MENU")}}
             <div id="toolbar">
-                <button type="button" class="btn btn-danger" onclick="deleteSubMenu()" id="btnDeleteSubMenu">
+                <button type="button" class="btn btn-danger" onclick="deleteSubMenu()" id="btnDeleteSubMenu" style="display: none;">
                     {{trans("messages.DELETE")}}
                 </button>
                 <button type="button" class="btn btn-primary" onclick="newSubMenu()" id="btnNewSubMenu">
@@ -104,7 +104,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     <th data-field="row_id" data-visible="false">ID</th>
                     <th data-field="number_submenu" data-visible="false">Sub Count</th>
                     <th data-field="sequence" data-sortable="false">{{trans("messages.SEQUENCE")}}</th>
-                    <th data-field="menu_name" data-sortable="false" data-formatter="menuNameFormatter">{{trans("messages.MENU_NAME")}}</th>
+                    <th data-field="menu_name" data-sortable="false" data-formatter="menuNameFormatter" data-search-formatter="false">{{trans("messages.MENU_NAME")}}</th>
                     <th data-field="path" data-sortable="false">{{trans("messages.LINK")}}</th>
                     <th data-field="english_name" data-sortable="false" >{{trans("messages.ENGLISH_NAME")}}</th>
                     <th data-field="simple_chinese_name" data-sortable="false" >{{trans("messages.SIMPLE_CHINESE_NAME")}}</th>
@@ -236,7 +236,6 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
         };
 
         $(function () {
-            $("#btnDeleteSubMenu").hide();
             $('#gridSubMenuList').on('check.bs.table', selectedChanged);
             $('#gridSubMenuList').on('uncheck.bs.table', selectedChanged);
             $('#gridSubMenuList').on('check-all.bs.table', selectedChanged);
@@ -246,12 +245,15 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
 
         var selectedChanged = function (row, $element) {
             var selectedSubMenu = $("#gridSubMenuList").bootstrapTable('getSelections');
+
             if(selectedSubMenu.length > 0) {
-                $("#btnDeleteSubMenu").show();
-                $("#btnNewSubMenu").hide();
+                $("#btnNewSubMenu").fadeOut(300, function() {
+                    $("#btnDeleteSubMenu").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteSubMenu").hide();
-                $("#btnNewSubMenu").show();
+                $("#btnDeleteSubMenu").fadeOut(300, function() {
+                    $("#btnNewSubMenu").fadeIn(300);
+                });
             }
         };
 
@@ -294,7 +296,7 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     data: mydataStr,
                     success: function (d, status, xhr) {
                         if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}" + "<br/>" + d.message);
                         }  else {
                             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                         }

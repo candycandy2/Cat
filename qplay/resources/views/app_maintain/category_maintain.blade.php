@@ -195,14 +195,13 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                     <h1 class="modal-title" id="categoryDetailMaintainDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table style="width:100%">
+                    <table>
                         <tr>
                             <td>{{trans("messages.CATEGORY_NAME")}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" name="tbxCategoryName"
-                                       id="tbxCategoryName" value="" required="required"/>
+                                <input type="text" data-clear-btn="true" name="tbxCategoryName"
+                                       id="tbxCategoryName" value=""/>
                             </td>
-                            <td><span style="color: red;">*</span></td>
                         </tr>
                     </table>
                 </div>

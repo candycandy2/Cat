@@ -147,6 +147,8 @@ return [
     'TEMPLATE_ID' => '模板ID',
     'CREATED_DATE' => '創建日期',
     'MESSAGE_CREATED_USER' => '推播者',
+    'ADD_RECEIVER' => '加入更多收訊者',
+    'MSG_CONFIRM_REMOVE_RECEIVER' => '確認移除收訊者? 以下人員將不會收到推播',
     'STATUS' => '狀態',
     'PUSH_TO' => '推播至',
     'PUSH_TYPE' => '推播類別',
@@ -155,12 +157,13 @@ return [
     'PUSH_IMMEDIATELY' => '立即推播',
     'MSG_CONFIRM_PUSH_IMMEDIATELY' => '確認立即推播?',
     'MSG_MUST_CHOOSE_RECEIVER' => '必須選擇接收者!',
-    'MESSAGE_SEND_HISTORY' => '推播記錄',
+    'MESSAGE_SEND_HISTORY' => '推播紀錄',
     'PUSH_DATE' => '日期',
     'PUSH_SOURCE_USER' => '推播者',
     'COPY_MESSAGE' => '複製推播',
     'PUSH_AGAIN' => '再推播',
     'MSG_CONFIRM_PUSH_AGAIN' => '確認再推播?',
+    'MSG_EVENT_INFORMATION' => '*Event為個別或緊急通知，僅能選擇群組或個人推播',
 
     //App Security Setting
     'BLOCK_LIST' => '黑名單',
@@ -178,7 +181,6 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => '預設語言',
-    'SELECT_APP_KEY' => '選擇App Key',
 
     //Project Maintain
     'PROJECT_CODE' => '專案代碼',
@@ -190,7 +192,9 @@ return [
     'ERR_EXIST_ROLE' => '角色在當前公司內已存在!',
     'ERR_GROUP_NAME_EXIST' => '群組名稱已存在!',
     'ERR_TYPE_NAME_EXIST' => '參數類別已存在!',
-    'ERR_PROJECT_EXIST_APP' => '專案下存在App!',
+    'ERR_PROJECT_EXIST_APP' => '該專案下有發佈中的App, 不可刪除!',
     'ERR_PROJECT_CODE_EXIST' => '專案代碼已存在!',
     'ERR_APP_KEY_EXIST' => 'App key已存在!',
+    'ERR_PARAMETER_NAME_EXIST_IN_TYPE' => '參數名稱在該參數類別下已存在!',
+    'ERR_EXIST_PARAMETER_IN_TYPE' => '該類別下存在參數!',
 ];

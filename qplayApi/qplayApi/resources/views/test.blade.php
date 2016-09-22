@@ -484,7 +484,7 @@ FORM;
 
         var sendPushToken = function () {
             $.ajax({
-                url: "v101/qplay/sendPushToken?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&app_key=qplay&device_type=android",
+                url: "v101/qplay/sendPushToken?lang=en-us&uuid=chaosTest&app_key=qplay&device_type=android",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",

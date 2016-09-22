@@ -174,7 +174,7 @@ $menu_name = "APP_SECURITY_SETTING";
 
 
 @section('dialog_content')
-      <div id="blockListDialog" class="modal fade">
+    <div id="blockListDialog" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -182,19 +182,18 @@ $menu_name = "APP_SECURITY_SETTING";
                     <h1 class="modal-title" id="blockListDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table style="width: 100%">
+                    <table>
                         <tr>
                             <td>{{trans('messages.BLOCK_IP')}}:</td>
                             <td style="padding: 10px;">
-                                <input class="form-control" type="text" data-clear-btn="true" name="tbxIp"
-                                       id="tbxIp" value=""  required="required"/>
+                                <input type="text" data-clear-btn="true" name="tbxIp"
+                                       id="tbxIp" value=""/>
                             </td>
-                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
-                            <td>{{trans('messages.BLOCK_DESCRIPT')}}:</td>
+                        	<td>{{trans('messages.BLOCK_DESCRIPT')}}:</td>
                             <td style="padding: 10px;">
-                                <input class="form-control" type="text" data-clear-btn="true" name="tbxDescription"
+                                <input type="text" data-clear-btn="true" name="tbxDescription"
                                        id="tbxDescription" value=""/>
                             </td>
                         </tr>

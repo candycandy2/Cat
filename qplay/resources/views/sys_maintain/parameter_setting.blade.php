@@ -22,14 +22,14 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
         <div class="tab-pane fade in active" id="tab_content_parameter_type">
             <!--Parameter Type-->
             <div id="toolbarType">
-                <button type="button" class="btn btn-danger" onclick="deleteType()" id="btnDeleteType">
+                <button type="button" class="btn btn-danger" onclick="deleteType()" id="btnDeleteType" style="display: none;">
                     {{trans("messages.DELETE")}}
                 </button>
                 <button type="button" class="btn btn-primary" onclick="newType()" id="btnNewType">
                     {{trans("messages.NEW")}}
                 </button>
             </div>
-            <table id="gridTypeList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbarType"
+            <table id="gridTypeList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbarType"
                    data-url="platform/getParameterTypeList" data-height="398" data-pagination="true"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                    data-show-toggle="true"  data-sortable="true"
@@ -38,8 +38,8 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-                    <th data-field="parameter_type_name" data-sortable="true" data-formatter="typeNameFormatter">{{trans("messages.PARAMETER_TYPE_NAME")}}</th>
+                    <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
+                    <th data-field="parameter_type_name" data-sortable="true" data-formatter="typeNameFormatter" data-search-formatter="false">{{trans("messages.PARAMETER_TYPE_NAME")}}</th>
                     <th data-field="parameter_type_desc" data-sortable="true">{{trans("messages.DESCRIPTION")}}</th>
                 </tr>
                 </thead>
@@ -48,14 +48,14 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
         <div class="tab-pane fade" id="tab_content_parameter">
             <!--Parameter-->
             <div id="toolbarParameter">
-                <button type="button" class="btn btn-danger" onclick="deleteParameter()" id="btnDeleteParameter">
+                <button type="button" class="btn btn-danger" onclick="deleteParameter()" id="btnDeleteParameter" style="display: none;">
                     {{trans("messages.DELETE")}}
                 </button>
                 <button type="button" class="btn btn-primary" onclick="newParameter()" id="btnNewParameter">
                     {{trans("messages.NEW")}}
                 </button>
             </div>
-            <table id="gridParameterList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbarParameter"
+            <table id="gridParameterList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbarParameter"
                    data-url="platform/getParameterList" data-height="398" data-pagination="true"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                    data-show-toggle="true"  data-sortable="true"
@@ -64,9 +64,9 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+                    <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
                     <th data-field="parameter_type_name" data-sortable="true">{{trans("messages.PARAMETER_TYPE_NAME")}}</th>
-                    <th data-field="parameter_name" data-formatter="parameterNameFormatter" data-sortable="true">{{trans("messages.PARAMETER_NAME")}}</th>
+                    <th data-field="parameter_name" data-formatter="parameterNameFormatter" data-sortable="true" data-search-formatter="false">{{trans("messages.PARAMETER_NAME")}}</th>
                     <th data-field="parameter_value" data-sortable="true">{{trans("messages.PARAMETER_VALUE")}}</th>
                 </tr>
                 </thead>
@@ -84,40 +84,46 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
         };
 
         $(function() {
-            $("#btnDeleteType").hide();
             $('#gridTypeList').on('check.bs.table', selectedTypeChanged);
             $('#gridTypeList').on('uncheck.bs.table', selectedTypeChanged);
             $('#gridTypeList').on('check-all.bs.table', selectedTypeChanged);
             $('#gridTypeList').on('uncheck-all.bs.table', selectedTypeChanged);
             $('#gridTypeList').on('load-success.bs.table', typeDataLoadSuccessed);
+            $('#gridTypeList').on('page-change.bs.table', selectedTypeChanged);
 
-            $("#btnDeleteParameter").hide();
             $('#gridParameterList').on('check.bs.table', selectedParameterChanged);
             $('#gridParameterList').on('uncheck.bs.table', selectedParameterChanged);
             $('#gridParameterList').on('check-all.bs.table', selectedParameterChanged);
             $('#gridParameterList').on('uncheck-all.bs.table', selectedParameterChanged);
             $('#gridParameterList').on('load-success.bs.table', selectedParameterChanged);
+            $('#gridParameterList').on('page-change.bs.table', selectedParameterChanged);
         });
 
         var selectedTypeChanged = function (row, $element) {
             var selectedType = $("#gridTypeList").bootstrapTable('getSelections');
+
             if(selectedType.length > 0) {
-                $("#btnDeleteType").show();
-                $("#btnNewType").hide();
+                $("#btnNewType").fadeOut(300, function() {
+                    $("#btnDeleteType").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteType").hide();
-                $("#btnNewType").show();
+                $("#btnDeleteType").fadeOut(300, function() {
+                    $("#btnNewType").fadeIn(300);
+                });
             }
         }
 
         var selectedParameterChanged = function (row, $element) {
             var selectedParameter = $("#gridParameterList").bootstrapTable('getSelections');
+
             if(selectedParameter.length > 0) {
-                $("#btnDeleteParameter").show();
-                $("#btnNewParameter").hide();
+                $("#btnNewParameter").fadeOut(300, function() {
+                    $("#btnDeleteParameter").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteParameter").hide();
-                $("#btnNewParameter").show();
+                $("#btnDeleteParameter").fadeOut(300, function() {
+                    $("#btnNewParameter").fadeIn(300);
+                });
             }
         }
         
@@ -145,7 +151,7 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                     data: mydataStr,
                     success: function (d, status, xhr) {
                         if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
                         }  else {
                             $("#gridTypeList").bootstrapTable('refresh');
                             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
@@ -247,39 +253,36 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                 return false;
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                hideConfirmDialog();
-                var mydata = {
-                    isNew:'Y',
-                    typeId:-1,
-                    type_name:typeName,
-                    type_desc:typeDesc
-                };
-                if(!isNewType) {
-                    mydata.isNew = 'N';
-                    mydata.typeId = currentMaintainTypeId;
-                }
-                var mydataStr = $.toJSON(mydata);
-                $.ajax({
-                    url: "platform/saveParameterType",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                        }  else {
-                            $("#gridTypeList").bootstrapTable('refresh');
-                            $("#gridParameterList").bootstrapTable('refresh');
-                            $("#typeDetailMaintainDialog").modal('hide');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                        }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+            var mydata = {
+                isNew:'Y',
+                typeId:-1,
+                type_name:typeName,
+                type_desc:typeDesc
+            };
+            if(!isNewType) {
+                mydata.isNew = 'N';
+                mydata.typeId = currentMaintainTypeId;
+            }
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveParameterType",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                    }  else {
+                        $("#gridTypeList").bootstrapTable('refresh');
+                        $("#gridParameterList").bootstrapTable('refresh');
+                        $("#typeDetailMaintainDialog").modal('hide');
+                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                     }
-                });
+                },
+                error: function (e) {
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                }
             });
         };
 
@@ -320,39 +323,36 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                 return false;
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                hideConfirmDialog();
-                var mydata = {
-                    isNew:'Y',
-                    paraId:-1,
-                    type_id:paraTypeId,
-                    para_name:paraName,
-                    para_value:paraValue
-                };
-                if(!isNewParameter) {
-                    mydata.isNew = 'N';
-                    mydata.paraId = currentMaintainParameterId;
-                }
-                var mydataStr = $.toJSON(mydata);
-                $.ajax({
-                    url: "platform/saveParameter",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                        }  else {
-                            $("#gridParameterList").bootstrapTable('refresh');
-                            $("#parameterDetailMaintainDialog").modal('hide');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                        }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+            var mydata = {
+                isNew:'Y',
+                paraId:-1,
+                type_id:paraTypeId,
+                para_name:paraName,
+                para_value:paraValue
+            };
+            if(!isNewParameter) {
+                mydata.isNew = 'N';
+                mydata.paraId = currentMaintainParameterId;
+            }
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveParameter",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                    }  else {
+                        $("#gridParameterList").bootstrapTable('refresh');
+                        $("#parameterDetailMaintainDialog").modal('hide');
+                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                     }
-                });
+                },
+                error: function (e) {
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                }
             });
         };
 

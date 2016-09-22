@@ -147,6 +147,8 @@ return [
     'TEMPLATE_ID' => 'Template ID',
     'CREATED_DATE' => 'Created Date',
     'MESSAGE_CREATED_USER' => 'Created User',
+    'ADD_RECEIVER' => 'Add More Receiver',
+    'MSG_CONFIRM_REMOVE_RECEIVER' => 'Confirm to remove? users following will not receiver message',
     'STATUS' => 'Status',
     'PUSH_TO' => 'Push To',
     'PUSH_TYPE' => 'Push Type',
@@ -161,6 +163,7 @@ return [
     'COPY_MESSAGE' => 'Copy Message',
     'PUSH_AGAIN' => 'Push Again',
     'MSG_CONFIRM_PUSH_AGAIN' => 'Confirm to push again?',
+    'MSG_EVENT_INFORMATION' => '*Event is for individual or emergency notification, only select group or personal push',
 
     //App Security Setting
     'BLOCK_LIST' => 'Blocked List',
@@ -178,7 +181,6 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => 'Default language',
-    'SELECT_APP_KEY' => 'Select App Key',
 
     //Project Maintain
     'PROJECT_CODE' => 'Project Code',
@@ -190,7 +192,9 @@ return [
     'ERR_EXIST_ROLE' => 'Same role exist in this company!',
     'ERR_GROUP_NAME_EXIST' => 'Group name exist!',
     'ERR_TYPE_NAME_EXIST' => 'Parameter type exist!',
-    'ERR_PROJECT_EXIST_APP' => 'Project exist app!',
+    'ERR_PROJECT_EXIST_APP' => 'Project exist app, can not delete!',
     'ERR_PROJECT_CODE_EXIST' => 'Project code exist!',
     'ERR_APP_KEY_EXIST' => 'App key exist!',
+    'ERR_PARAMETER_NAME_EXIST_IN_TYPE' => 'Parameter name exist in this type!',
+    'ERR_EXIST_PARAMETER_IN_TYPE' => 'Exist parameter in this type!',
 ];

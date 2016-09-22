@@ -45,8 +45,8 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     <td>{{trans("messages.PUSH_TYPE")}}:</td>
                     <td style="padding: 10px;">
                         <select class="select2-close-mask form-control" name="ddlType" id="ddlType" onchange="ChangeType()">
-                            <option value="event" @if($isCopy && $copyFromMessageInfo->message_type == "event") selected="selected" @endif >event</option>
-                            <option value="news" @if($isCopy && $copyFromMessageInfo->message_type == "news") selected="selected" @endif>news</option>
+                            <option value="event" @if($isCopy && $copyFromMessageInfo->message_type == "event") selected="selected" @endif >Event</option>
+                            <option value="news" @if($isCopy && $copyFromMessageInfo->message_type == "news") selected="selected" @endif>News</option>
                         </select>
                     </td>
                     <td><span style="color: red;">*</span></td>
@@ -85,7 +85,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
     <div class="row" style="display:none;" id="regionTypeEvent">
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
-            {{trans("messages.MESSAGE_RECEIVER")}}:
+            {{trans("messages.MESSAGE_RECEIVER")}}:&nbsp;&nbsp;{{trans("messages.MSG_EVENT_INFORMATION")}}
             <br/><br/>
 
             @foreach($allCompanyRoleList as $companyRoles)
@@ -133,7 +133,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     {{trans("messages.REMOVE")}}
                 </button>
                 <button type="button" class="btn btn-primary" onclick="AddUser()" id="btnAddUser">
-                    {{trans("messages.ADD_USER")}}
+                    {{trans("messages.ADD_RECEIVER")}}
                 </button>
             </div>
 
@@ -146,7 +146,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+                    <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
                     <th data-field="login_id" data-sortable="true">{{trans("messages.USER_LOGIN_ID")}}</th>
                     <th data-field="company" data-sortable="true">{{trans("messages.USER_COMPANY")}}</th>
                     <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
@@ -238,9 +238,14 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
         };
 
         var RemoveUser = function () {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_USER")}}", "", function () {
+            var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+            var confirmDetailStr = "";
+
+            $.each(selectedUsers, function(i, user) {
+                confirmDetailStr += user.login_id + "<br/>";
+            });
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_RECEIVER")}}", confirmDetailStr, function () {
                 hideConfirmDialog();
-                var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
                 var currentData = $("#gridUserList").bootstrapTable('getData');
                 $.each(selectedUsers, function(i, user) {
                     for(var j = 0; j < currentData.length; j++) {
@@ -250,21 +255,19 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         }
                     }
                 });
+
                 $("#gridUserList").bootstrapTable('load', currentData);
                 selectedUserChanged();
             });
         };
 
         var AddUser = function() {
-            $("#gridAllUserList").bootstrapTable('uncheckAll');
-            $("#gridAllUserList").bootstrapTable('refresh');
-            $("#selectUserDialog").modal('show');
+            selectUserDialog_Show();
         };
 
-        var SelectUser = function() {
+        var afterSelectedUser = function(selectedUserList) {
             var currentData = $("#gridUserList").bootstrapTable('getData');
-            var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
-            $.each(selectedUsers, function(i, newUser) {
+            $.each(selectedUserList, function(i, newUser) {
                 var exist = false;
                 $.each(currentData, function(j, cUser) {
                     if(cUser.row_id == newUser.row_id) {
@@ -277,8 +280,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 }
             });
             $("#gridUserList").bootstrapTable('load', currentData);
-            $("#selectUserDialog").modal('hide');
-        }
+        };
 
         var RoleTableSelectedAll = function (cbx) {
             var companyId = $(cbx).attr("data");
@@ -331,7 +333,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         msgReceiver.role_list.push($(cbx).attr("data"));
                     }
                 });
-                var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+                var selectedUsers = $("#gridUserList").bootstrapTable('getData');
                 $.each(selectedUsers, function(i, user) {
                     msgReceiver.user_list.push(user.row_id);
                 });
@@ -383,38 +385,6 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 @endsection
 
 @section('dialog_content')
-    <div id="selectUserDialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="roleDetailMaintainDialogTitle">{{trans("messages.SELECT_USER")}}</h1>
-                </div>
-                <div class="modal-body">
-                    <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
-                           data-url="platform/getUserList" data-height="298" data-pagination="true"
-                           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-                           data-show-toggle="true"  data-sortable="true"
-                           data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
-                           data-click-to-select="false" data-single-select="false">
-                        <thead>
-                        <tr>
-                            <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-                            <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
-                            <th data-field="emp_no" data-sortable="true">{{trans("messages.USER_EMP_NO")}}</th>
-                            <th data-field="login_id" data-sortable="true" >{{trans("messages.USER_LOGIN_ID")}}</th>
-                            <th data-field="emp_name" data-sortable="true">{{trans("messages.USER_EMP_NAME")}}</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="SelectUser()">{{trans("messages.SELECT")}}</button>
-                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('layouts.dialog_user_selection')
 @endsection
 

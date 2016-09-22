@@ -6,7 +6,7 @@ $menu_name = "SYS_MENU_MAINTAIN";
 @section('content')
 
     <div id="toolbar">
-        <button type="button" class="btn btn-danger" onclick="deleteRootMenu()" id="btnDeleteRootMenu">
+        <button type="button" class="btn btn-danger" onclick="deleteRootMenu()" id="btnDeleteRootMenu" style="display: none;">
             {{trans("messages.DELETE")}}
         </button>
         <button type="button" class="btn btn-primary" onclick="newRootMenu()" id="btnNewRootMenu">
@@ -22,10 +22,10 @@ $menu_name = "SYS_MENU_MAINTAIN";
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="row_id" data-visible="false">ID</th>
+            <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="number_submenu" data-visible="true">Sub Count</th>
             <th data-field="sequence" data-sortable="false">{{trans("messages.SEQUENCE")}}</th>
-            <th data-field="menu_name" data-sortable="false" data-formatter="menuNameFormatter">{{trans("messages.MENU_NAME")}}</th>
+            <th data-field="menu_name" data-sortable="false" data-formatter="menuNameFormatter" data-search-formatter="false">{{trans("messages.MENU_NAME")}}</th>
             <th data-field="path" data-sortable="false">{{trans("messages.LINK")}}</th>
             <th data-field="english_name" data-sortable="false" >{{trans("messages.ENGLISH_NAME")}}</th>
             <th data-field="simple_chinese_name" data-sortable="false" >{{trans("messages.SIMPLE_CHINESE_NAME")}}</th>
@@ -103,7 +103,7 @@ $menu_name = "SYS_MENU_MAINTAIN";
             var existMenuList = $("#gridRootMenuList").bootstrapTable('getData');
             var checkMenuName = true;
             $.each(existMenuList, function (i, menu) {
-                if(menu.menu_name == menuName) {
+                if(menu.menu_name.toUpperCase() == menuName.toUpperCase()) {
                     checkMenuName = false;
                     return false;
                 }
@@ -127,43 +127,39 @@ $menu_name = "SYS_MENU_MAINTAIN";
                 return false;
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                hideConfirmDialog();
-                var mydata = {
-                    parentId: 0,
-                    menuName: menuName,
-                    link: link,
-                    englishName: englishName,
-                    simpleChineseName: simpleChineseName,
-                    traditionChineseName: traditionChineseName,
-                    visible: visible
-                };
+            var mydata = {
+                parentId: 0,
+                menuName: menuName,
+                link: link,
+                englishName: englishName,
+                simpleChineseName: simpleChineseName,
+                traditionChineseName: traditionChineseName,
+                visible: visible
+            };
 
-                var mydataStr = $.toJSON(mydata);
-                $.ajax({
-                    url: "platform/newMenu",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                        }  else {
-                            $("#gridRootMenuList").bootstrapTable('refresh');
-                            $("#newRootMenuDialog").modal('hide');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                        }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/newMenu",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+                    }  else {
+                        $("#gridRootMenuList").bootstrapTable('refresh');
+                        $("#newRootMenuDialog").modal('hide');
+                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                     }
-                });
+                },
+                error: function (e) {
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                }
             });
         };
 
         $(function() {
-            $("#btnDeleteRootMenu").hide();
             $('#gridRootMenuList').on('check.bs.table', selectedChanged);
             $('#gridRootMenuList').on('uncheck.bs.table', selectedChanged);
             $('#gridRootMenuList').on('check-all.bs.table', selectedChanged);
@@ -173,12 +169,15 @@ $menu_name = "SYS_MENU_MAINTAIN";
 
         var selectedChanged = function (row, $element) {
             var selectedMenu = $("#gridRootMenuList").bootstrapTable('getSelections');
+
             if(selectedMenu.length > 0) {
-                $("#btnDeleteRootMenu").show();
-                $("#btnNewRootMenu").hide();
+                $("#btnNewRootMenu").fadeOut(300, function() {
+                    $("#btnDeleteRootMenu").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteRootMenu").hide();
-                $("#btnNewRootMenu").show();
+                $("#btnDeleteRootMenu").fadeOut(300, function() {
+                    $("#btnNewRootMenu").fadeIn(300);
+                });
             }
         }
 

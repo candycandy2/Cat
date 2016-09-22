@@ -499,15 +499,20 @@ SQL;
             'Status' => 'W',
             'To_Type' => 'NONE',
             'Parameter' => '',
-            'CreatedDate' => '2016-09-14');
+            'CreatedDate' => date('Y-m-d H:i:s',time()));
         $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS";
         $data["pns"] = json_encode($args);
-        $result = self::doPost($url, $data);
+        $response = self::doPost($url, $data);
 
-        if(str_contains($result, "true")) {
-            return true;
+        $result = array();
+        if(str_contains($response, "true")) {
+            $result["result"] = true;
+            $result["info"] = $data["pns"];
+        } else {
+            $result["result"] = false;
+            $result["info"] = $data["pns"];
         }
 
-        return false;
+        return $result;
     }
 }

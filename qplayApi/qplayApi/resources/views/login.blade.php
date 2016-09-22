@@ -8,16 +8,15 @@
     <div data-role="page" id="pageLogin">
         <div role="main" class="ui-content" style="text-align: center;">
             <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
-            <h1>BenQ QPlay Login</h1>
+            <h1>BenQ Qplay Login</h1>
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <input type="text" data-clear-btn="true" name="tbxName"
                        id="tbxName" value="" placeholder="User Name" />
                 <input type="password" data-clear-btn="true" name="tbxPassword"
                        id="tbxPassword" value="" placeholder="Password" />
                 <select placeholder="Company" name="ddlCompany" id="ddlCompany">
-                    <option value="" selected="selected"></option>
+                    <option value="BENQ" selected="selected">Benq</option>
                     <option value="QGROUP">Qisda</option>
-                    <option value="BENQ">Benq</option>
                 </select>
                 <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
                         onclick="tryLogin()">Log In</button>

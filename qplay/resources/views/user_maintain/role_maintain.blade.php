@@ -7,7 +7,7 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
 @section('content')
 
     <div id="toolbar">
-        <button type="button" class="btn btn-danger" onclick="deleteRole()" id="btnDeleteRole">
+        <button type="button" class="btn btn-danger" onclick="deleteRole()" id="btnDeleteRole" style="display: none;">
             {{trans("messages.DELETE")}}
         </button>
         <button type="button" class="btn btn-primary" onclick="newRole()" id="btnNewRole">
@@ -23,10 +23,10 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="row_id" data-visible="false">ID</th>
+            <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="company" data-sortable="true">{{trans("messages.COMPANY_NAME")}}</th>
-            <th data-field="role_description" data-sortable="true" data-formatter="roleNameFormatter">{{trans("messages.ROLE_NAME")}}</th>
-            <th data-field="user_count" data-sortable="true" data-formatter="userCountFormatter">{{trans("messages.USERS")}}</th>
+            <th data-field="role_description" data-sortable="true" data-formatter="roleNameFormatter" data-search-formatter="false">{{trans("messages.ROLE_NAME")}}</th>
+            <th data-field="user_count" data-sortable="true" data-formatter="userCountFormatter" data-search-formatter="false">{{trans("messages.USERS")}}</th>
         </tr>
         </thead>
     </table>
@@ -155,7 +155,6 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
         };
 
         $(function() {
-            $("#btnDeleteRole").hide();
             $('#gridRoleList').on('check.bs.table', selectedChanged);
             $('#gridRoleList').on('uncheck.bs.table', selectedChanged);
             $('#gridRoleList').on('check-all.bs.table', selectedChanged);
@@ -166,11 +165,13 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
         var selectedChanged = function (row, $element) {
             var selectedUsers = $("#gridRoleList").bootstrapTable('getSelections');
             if(selectedUsers.length > 0) {
-                $("#btnDeleteRole").show();
-                $("#btnNewRole").hide();
+                $("#btnNewRole").fadeOut(300, function() {
+                    $("#btnDeleteRole").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteRole").hide();
-                $("#btnNewRole").show();
+                $("#btnDeleteRole").fadeOut(300, function() {
+                    $("#btnNewRole").fadeIn(300);
+                });
             }
         }
 

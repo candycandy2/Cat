@@ -18,6 +18,7 @@
 //QPlay Api
 Route::any('/v101/qplay/getSecturityList', 'qplayController@getSecturityList');
 Route::any('/v101/qplay/register', 'qplayController@register');
+Route::any('/v101/qplay/unregister', 'qplayController@unregister');
 Route::any('/v101/qplay/isRegister', 'qplayController@isRegister');
 Route::any('/v101/qplay/login', 'qplayController@login');
 Route::any('/v101/qplay/logout', 'qplayController@logout');

@@ -21,9 +21,9 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="row_id" data-visible="false">ID</th>
+            <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
-            <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter">{{trans("messages.PROJECT_CODE")}}</th>
+            <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
             <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
             <th data-field="project_description" data-sortable="true" >{{trans("messages.PROJECT_DESCRIPTION")}}</th>
             <th data-field="project_pm" data-sortable="true" >{{trans("messages.PROJECT_PM")}}</th>
@@ -52,7 +52,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
 
             var confirmStr = "";
             $.each(selectProjects, function(i, project) {
-                confirmStr += project.app_key + "<br/>";
+                confirmStr += project.project_code + "&nbsp;&nbsp;&nbsp;" + project.app_key + "<br/>";
             });
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_PROJECT")}}", confirmStr, function () {
                 hideConfirmDialog();

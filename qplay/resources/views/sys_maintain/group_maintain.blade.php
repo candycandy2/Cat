@@ -6,7 +6,7 @@ $menu_name = "SYS_GROUP_MAINTAIN";
 @section('content')
 
     <div id="toolbar">
-        <button type="button" class="btn btn-danger" onclick="deleteGroup()" id="btnDeleteGroup">
+        <button type="button" class="btn btn-danger" onclick="deleteGroup()" id="btnDeleteGroup" style="display: none;">
             {{trans("messages.DELETE")}}
         </button>
         <a class="btn btn-primary" href="groupDetailMaintain?action=N" id="btnNewGroup">
@@ -85,7 +85,6 @@ $menu_name = "SYS_GROUP_MAINTAIN";
         };
 
         $(function() {
-            $("#btnDeleteGroup").hide();
             $('#gridGroupList').on('check.bs.table', selectedChanged);
             $('#gridGroupList').on('uncheck.bs.table', selectedChanged);
             $('#gridGroupList').on('check-all.bs.table', selectedChanged);
@@ -95,12 +94,15 @@ $menu_name = "SYS_GROUP_MAINTAIN";
 
         var selectedChanged = function (row, $element) {
             var selectedGroups = $("#gridGroupList").bootstrapTable('getSelections');
+
             if(selectedGroups.length > 0) {
-                $("#btnDeleteGroup").show();
-                $("#btnNewGroup").hide();
+                $("#btnNewGroup").fadeOut(300, function() {
+                    $("#btnDeleteGroup").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteGroup").hide();
-                $("#btnNewGroup").show();
+                $("#btnDeleteGroup").fadeOut(300, function() {
+                    $("#btnNewGroup").fadeIn(300);
+                });
             }
         }
 

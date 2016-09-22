@@ -31,11 +31,11 @@ label {
                     <option value="event"
                             @if($messageInfo->message_type=='event')
                             selected="selected"
-                            @endif>event</option>
+                            @endif>Event</option>
                     <option value="event"
                             @if($messageInfo->message_type=='news')
                             selected="news"
-                            @endif>news</option>
+                            @endif>News</option>
                 </select>
               </div>
             </div>
@@ -86,7 +86,7 @@ label {
             {{trans("messages.MESSAGE_SEND_HISTORY")}}:
             <br/><br/>
 
-            <table id="gridSendList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
+            <table id="gridSendList" class="bootstrapTable" data-toggle="table"
                    data-url="platform/getMessageSendList?message_id={{$messageId}}" data-height="298" data-pagination="true"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                    data-show-toggle="true"  data-sortable="true"
@@ -95,8 +95,8 @@ label {
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-                    <th data-field="created_at" data-sortable="true" data-formatter="pushDateFormatter">{{trans("messages.PUSH_DATE")}}</th>
+                    <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
+                    <th data-field="created_at" data-sortable="true" data-formatter="pushDateFormatter" data-search-formatter="false">{{trans("messages.PUSH_DATE")}}</th>
                     <th data-field="source_user" data-sortable="true">{{trans("messages.PUSH_SOURCE_USER")}}</th>
                 </tr>
                 </thead>
