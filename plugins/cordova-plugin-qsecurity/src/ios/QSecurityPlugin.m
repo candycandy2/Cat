@@ -30,6 +30,7 @@
         [self.whitelistHosts addObject:@"file:///*"];
         [self.whitelistHosts addObject:@"content:///*"];
         [self.whitelistHosts addObject:@"data:///*"];
+        [self.whitelistHosts addObject:@"itms-services:///*"];
     }
     return self;
 }
@@ -108,23 +109,19 @@
 
 - (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSString* allowIntents_whitelistRejectionFormatString = @"QSecurity ERROR External navigation rejected - <allow-intent> not set for url='%@'";
-    NSString* allowNavigations_whitelistRejectionFormatString = @"QSecurity ERROR Internal navigation rejected - <allow-navigation> not set for url='%@'";
+    NSString* allowIntents_whitelistRejectionFormatString = @"ERROR External navigation rejected - <allow-intent> not set for url='%@'";
+    NSString* allowNavigations_whitelistRejectionFormatString = @"ERROR Internal navigation rejected - <allow-navigation> not set for url='%@'";
     
     NSURL* url = [request URL];
     BOOL allowNavigationsPass = NO;
     NSMutableArray* errorLogs = [NSMutableArray array];
     
     switch (navigationType) {
+        case UIWebViewNavigationTypeOther:
         case UIWebViewNavigationTypeLinkClicked:
             // Note that the rejection strings will *only* print if
             // it's a link click (and url is not whitelisted by <allow-*>)
-            //return TRUE;
             if ([self.allowIntentsWhitelist URLIsAllowed:url logFailure:NO]) {
-                // the url *is* in a <allow-intent> tag, push to the system
-                [[UIApplication sharedApplication] openURL:url];
-                return NO;
-            }else if ([self.allowNavigationsWhitelist URLIsAllowed:url logFailure:NO]) {
                 // the url *is* in a <allow-intent> tag, push to the system
                 [[UIApplication sharedApplication] openURL:url];
                 return NO;
