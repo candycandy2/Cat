@@ -33,11 +33,11 @@ $messageType = $sendInfo->message_info->message_type;
                     <option value="event"
                             @if($messageInfo->message_type=='event')
                             selected="selected"
-                            @endif>event</option>
+                            @endif>Event</option>
                     <option value="event"
                             @if($messageInfo->message_type=='news')
                             selected="news"
-                            @endif>news</option>
+                            @endif>News</option>
                 </select>
               </div>
             </div>
@@ -130,7 +130,7 @@ $messageType = $sendInfo->message_info->message_type;
                    data-click-to-select="false" data-single-select="false">
                 <thead>
                 <tr>
-                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+                    <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
                     <th data-field="login_id" data-sortable="true">{{trans("messages.USER_LOGIN_ID")}}</th>
                     <th data-field="company" data-sortable="true">{{trans("messages.USER_COMPANY")}}</th>
                     <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
@@ -224,7 +224,7 @@ $messageType = $sendInfo->message_info->message_type;
                             msgReceiver.role_list.push($(cbx).attr("data"));
                         }
                     });
-                    var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+                    var selectedUsers = $("#gridUserList").bootstrapTable('getData');
                     $.each(selectedUsers, function(i, user) {
                         msgReceiver.user_list.push(user.row_id);
                     });

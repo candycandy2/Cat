@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\lib\CommonUtil;
-use App\lib\MyJPush;
 use App\lib\ResultCode;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
 use DB;
-use JPush\Client as JPush;
-use JPush\Exceptions\JPushException;
 
 class platformController extends Controller
 {
+    private function setLanguange() {
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
+    }
+
     public function process()
     {
         
@@ -25,6 +28,7 @@ class platformController extends Controller
         {
             return null;
         }
+        $this->setLanguange();
 
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
@@ -39,6 +43,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $roleList = \DB::table("qp_role")
             -> select()
@@ -60,6 +66,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -87,6 +95,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -169,6 +179,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
 
@@ -192,10 +204,7 @@ class platformController extends Controller
             return null;
         }
 
-        \App::setLocale("en-us");
-        if(\Session::has('lang') && \Session::get("lang") != "") {
-            \App::setLocale(\Session::get("lang"));
-        }
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -246,6 +255,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $input = Input::get();
         $roleId = $input["role_id"];
 
@@ -258,6 +269,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -285,6 +298,13 @@ class platformController extends Controller
     }
 
     public function getRootMenuList() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $this->setLanguange();
+
         $rootMenuList = \DB::table("qp_menu")
             -> where("parent_id", "=", "0")
             -> select()
@@ -335,6 +355,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $input = Input::get();
         $menuId = $input["menu_id"];
 
@@ -346,6 +368,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -369,6 +393,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -463,6 +489,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
@@ -478,6 +506,17 @@ class platformController extends Controller
             $tradition_chinese_name = $jsonContent['tradition_chinese_name'];
             $visible = $jsonContent['visible'];
             \DB::beginTransaction();
+
+            $existList = \DB::table("qp_menu")
+                -> select() -> get();
+
+            foreach ($existList as $existMenu) {
+                if(strtoupper($existMenu->menu_name) == strtoupper($menu_name)
+                && $existMenu->row_id != $menu_id) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>trans("messages.MSG_MENU_NAME_EXIST")]);
+                }
+            }
 
             \DB::table("qp_menu")
                 -> where('row_id', '=', $menu_id)
@@ -676,6 +715,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $groupList = \DB::table("qp_group")
             -> select()
             -> get();
@@ -694,6 +735,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -723,6 +766,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -802,6 +847,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
@@ -833,6 +880,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $input = Input::get();
         $groupId = $input["group_id"];
 
@@ -846,8 +895,11 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $typeList = \DB::table("qp_parameter_type")
             -> select()
+            ->orderBy("parameter_type_name")
             -> get();
 
         return response()->json($typeList);
@@ -858,6 +910,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -873,7 +927,7 @@ class platformController extends Controller
                     -> select() -> get();
                 if(count($paraList) > 0) {
                     return response()->json(['result_code'=>999,
-                    'message'=>'Exist Parameter']); //TODO define error code and message
+                    'message'=>trans("messages.ERR_EXIST_PARAMETER_IN_TYPE")]);
                 }
             }
 
@@ -893,6 +947,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -933,14 +989,18 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
 //        select p.row_id, p.parameter_name, p.parameter_value, t.parameter_type_name from qp_parameter p
 //left join qp_parameter_type t on t.row_id = p.parameter_type_row_id
-        $typeList = \DB::table("qp_parameter")
+        $paraList = \DB::table("qp_parameter")
             -> leftJoin("qp_parameter_type", "qp_parameter_type.row_id", "=", "qp_parameter.parameter_type_row_id")
-            -> select()
+            -> orderBy("qp_parameter_type.parameter_type_name")
+            -> orderBy("qp_parameter.parameter_name")
+            -> select("qp_parameter.row_id", "qp_parameter_type.parameter_type_name", "qp_parameter.parameter_name", "qp_parameter.parameter_value")
             -> get();
 
-        return response()->json($typeList);
+        return response()->json($paraList);
     }
 
     public function deleteParameter() {
@@ -948,6 +1008,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -973,6 +1035,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
@@ -984,6 +1048,15 @@ class platformController extends Controller
 
             $isNew = $jsonContent['isNew'];
             if($isNew == 'Y') {
+                $existParameterList = \DB::table("qp_parameter")
+                    ->where('parameter_type_row_id', '=', $type_id)
+                    ->select()->get();
+                foreach ($existParameterList as $existParameterInfo) {
+                    if(strtoupper($existParameterInfo->parameter_name) == strtoupper($para_name)) {
+                        return response()->json(['result_code'=>ResultCode::_999999_unknownError, 'message'=>trans("messages.ERR_PARAMETER_NAME_EXIST_IN_TYPE")]);
+                    }
+                }
+
                 \DB::table("qp_parameter")
                     -> insert(
                         ['parameter_type_row_id' => $type_id,
@@ -1015,6 +1088,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $messageList = \DB::table("qp_message")
             ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
             -> select("qp_message.row_id", "qp_message.message_type",
@@ -1032,6 +1107,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $input = Input::get();
         $message_id = $input["message_id"];
 
@@ -1039,6 +1116,7 @@ class platformController extends Controller
             -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send.created_user")
             -> where('qp_message_send.message_row_id', '=', $message_id)
             -> select("qp_message_send.row_id", "qp_message_send.created_at", "qp_user.login_id as source_user")
+            -> orderBy("qp_message_send.created_at", "desc")
             -> get();
 
         return $sendList;
@@ -1049,6 +1127,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1170,32 +1250,38 @@ class platformController extends Controller
                     }
                 }
 
+                $to = "";
                 foreach ($real_push_user_list as $uId) {
-                    $register_list = \DB::table("qp_register")
-                        ->where("user_row_id", "=", $uId)
-                        ->where("status", "=", "A")
-                        ->select()->get();
-                    foreach ($register_list as $register) {
-                        $registerId = $register->row_id;
-                        $push_token_list = \DB::table("qp_push_token")
-                            ->where("register_row_id", "=", $registerId)
-                            ->select()->get();
-                        if(count($push_token_list) > 0) {
-                            foreach ($push_token_list as $token) {
-                                $to = $token->push_token;//"18071adc030551e965c";
-                                if(!CommonUtil::PushMessageWithMessageCenter($title, $to)) {
-                                    \DB::rollBack();
-                                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>'push message with Message Center failed!']);
-                                }
-                            }
-                        }
+//                    $register_list = \DB::table("qp_register")
+//                        ->where("user_row_id", "=", $uId)
+//                        ->where("status", "=", "A")
+//                        ->select()->get();
+//                    foreach ($register_list as $register) {
+//                        $registerId = $register->row_id;
+//                        $push_token_list = \DB::table("qp_push_token")
+//                            ->where("register_row_id", "=", $registerId)
+//                            ->select()->get();
+//                        if(count($push_token_list) > 0) {
+//                            foreach ($push_token_list as $token) {
+//                                $to = $to.$token->push_token.";";
+//                                //$to = $token->push_token;//"18071adc030551e965c";
+//                            }
+//                        }
+//                    }
+                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
+                    if(count($userPushList) > 0) {
+                        $to = $to.$userPushList[0]->login_id.";";
                     }
+                }
+                $result = CommonUtil::PushMessageWithMessageCenter($title, $to);
+                if(!$result["result"]) {
+                    \DB::rollBack();
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
                 }
 
                 \DB::commit();
 
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result, 'data'=>json_encode($args)]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"]]);
             }catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
@@ -1208,6 +1294,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1320,6 +1408,8 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $input = Input::get();
         $messageSendId = $input["message_send_row_id"];
 
@@ -1327,11 +1417,13 @@ class platformController extends Controller
             -> where('message_send_row_id', '=', $messageSendId)
             -> select()->get();
 
-        $userIdListInRole = array();
-        $userIdListNotInRole = array();
         $roleList = \DB::table('qp_role_message')
             -> where('message_send_row_id', '=', $messageSendId)
             -> select()->get();
+
+        $userIdListInRole = array();
+        $userIdListNotInRole = array();
+        
         foreach ($roleList as $role) {
             $role_id = $role->role_row_id;
             $userRoleList = \DB::table('qp_user_role')
@@ -1357,6 +1449,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1385,8 +1479,11 @@ class platformController extends Controller
             return null;
         }
 
+        $this->setLanguange();
+
         $messageList = \DB::table("qp_project")
             -> select()
+            -> orderBy("project_code")
             -> get();
         foreach ($messageList as $message) {
             $message->with_app = "N";
@@ -1395,7 +1492,22 @@ class platformController extends Controller
                 -> select()
                 -> get();
             if(count($appList) > 0) {
-                $message->with_app = "Y";
+                foreach ($appList as $appInfo) {
+                    $appId = $appInfo->row_id;
+                    $appVersionList = \DB::table("qp_app_version")
+                        -> where("app_row_id", "=", $appId)
+                        -> where("status", "=", "ready")
+                        -> select()
+                        -> get();
+
+                    if(count($appVersionList) > 0) {
+                        $message->with_app = "Y";
+                        break;
+                    }
+                }
+            }
+            if($message->with_app == "Y") {
+                break;
             }
         }
 
@@ -1407,6 +1519,8 @@ class platformController extends Controller
         {
             return null;
         }
+
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1432,10 +1546,7 @@ class platformController extends Controller
             return null;
         }
 
-        \App::setLocale("en-us");
-        if(\Session::has('lang') && \Session::get("lang") != "") {
-            \App::setLocale(\Session::get("lang"));
-        }
+        $this->setLanguange();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);

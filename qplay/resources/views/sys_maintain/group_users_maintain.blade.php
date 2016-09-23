@@ -36,7 +36,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             <div id="toolbar">
-                <button type="button" class="btn btn-danger" onclick="RemoveUser()" id="btnDeleteUser">
+                <button type="button" class="btn btn-danger" onclick="RemoveUser()" id="btnDeleteUser" style="display: none;">
                     {{trans("messages.REMOVE")}}
                 </button>
                 <button type="button" class="btn btn-primary" onclick="AddUser()" id="btnAddUser">
@@ -53,7 +53,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
+                    <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
                     <th data-field="login_id" data-sortable="true">{{trans("messages.USER_LOGIN_ID")}}</th>
                     <th data-field="company" data-sortable="true">{{trans("messages.USER_COMPANY")}}</th>
                     <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
@@ -97,7 +97,6 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
         };
 
         $(function () {
-            $("#btnDeleteUser").hide();
             $('#gridUserList').on('check.bs.table', selectedChanged);
             $('#gridUserList').on('uncheck.bs.table', selectedChanged);
             $('#gridUserList').on('check-all.bs.table', selectedChanged);
@@ -107,12 +106,15 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
 
         var selectedChanged = function (row, $element) {
             var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+
             if(selectedUsers.length > 0) {
-                $("#btnDeleteUser").show();
-                $("#btnAddUser").hide();
+                $("#btnAddUser").fadeOut(300, function() {
+                    $("#btnDeleteUser").fadeIn(300);
+                });
             } else {
-                $("#btnDeleteUser").hide();
-                $("#btnAddUser").show();
+                $("#btnDeleteUser").fadeOut(300, function() {
+                    $("#btnAddUser").fadeIn(300);
+                });
             }
         };
 
@@ -135,9 +137,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
         };
 
         var AddUser = function() {
-            $("#gridAllUserList").bootstrapTable('uncheckAll');
-            $("#gridAllUserList").bootstrapTable('refresh');
-            $("#selectUserDialog").modal('show');
+            selectUserDialog_Show();
         };
 
         var SaveGroupUsers = function() {
@@ -170,10 +170,9 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
             });
         }
 
-        var SelectUser = function() {
+        var afterSelectedUser = function(selectedUserList) {
             var currentData = $("#gridUserList").bootstrapTable('getData');
-            var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
-            $.each(selectedUsers, function(i, newUser) {
+            $.each(selectedUserList, function(i, newUser) {
                 var exist = false;
                 $.each(currentData, function(j, cUser) {
                     if(cUser.row_id == newUser.row_id) {
@@ -186,44 +185,11 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
                 }
             });
             $("#gridUserList").bootstrapTable('load', currentData);
-            $("#selectUserDialog").modal('hide');
         }
     </script>
 @endsection
 
 @section('dialog_content')
-    <div id="selectUserDialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="roleDetailMaintainDialogTitle">{{trans("messages.SELECT_USER")}}</h1>
-                </div>
-                <div class="modal-body">
-                    <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
-                           data-url="platform/getUserList" data-height="298" data-pagination="true"
-                           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-                           data-show-toggle="true"  data-sortable="true"
-                           data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
-                           data-click-to-select="false" data-single-select="false">
-                        <thead>
-                        <tr>
-                            <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-                            <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
-                            <th data-field="emp_no" data-sortable="true">{{trans("messages.USER_EMP_NO")}}</th>
-                            <th data-field="login_id" data-sortable="true" >{{trans("messages.USER_LOGIN_ID")}}</th>
-                            <th data-field="emp_name" data-sortable="true">{{trans("messages.USER_EMP_NAME")}}</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="SelectUser()">{{trans("messages.SELECT")}}</button>
-                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('layouts.dialog_user_selection')
 @endsection
 

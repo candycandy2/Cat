@@ -99,7 +99,7 @@ class qplayController extends Controller
                 $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-                $bind = true;//TODO @ldap_bind($ldapConnect, $userId, $password);
+                $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
                 if(!$bind)
                 {
                     $finalUrl = urlencode($redirect_uri.'?result_code='
@@ -222,6 +222,101 @@ class qplayController extends Controller
             'content'=>array("redirect_uri"=>$finalUrl)]);
     }
 
+    public function unregister() {
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+
+        $input = Input::get();
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
+        || !array_key_exists('target_uuid', $input) || trim($input["target_uuid"]) == "")
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $uuid = $input["uuid"];
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+
+        $target_uuid = $input["target_uuid"];
+
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            \DB::beginTransaction();
+            $now = date('Y-m-d H:i:s',time());
+            try {
+                \DB::table("qp_session")
+                    ->where("uuid", "=", $target_uuid)
+                    ->delete();
+
+                \DB::table("qp_register")
+                    ->where("uuid", "=", $target_uuid)
+                    ->update(
+                        [
+                            'status'=>'I',
+                            'unregister_date'=>$now,
+                            'updated_at'=>$now,
+                            'updated_user'=>$userInfo->row_id,
+                        ]
+                    );
+
+                $registerList = \DB::table("qp_register")
+                    ->where("uuid", "=", $target_uuid)->select()->get();
+
+                foreach ($registerList as $registerInfo) {
+                    $registerId = $registerInfo->row_id;
+                    $pushTokenList = \DB::table("qp_push_token")
+                        -> where("register_row_id", "=", $registerId)
+                        -> select() -> get();
+
+                    //Unregister to Message Center
+                    $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+                    $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/UnregisterDevice";
+                    foreach ($pushTokenList as $pushTokenInfo) {
+                        $args = array('App_id' => $app_id,
+                            'Client_id' => $pushTokenInfo->push_token);
+                        $data["register"] = json_encode($args);
+                        $result = CommonUtil::doPost($url, $data);
+                        if(!str_contains($result, "true")) {
+                            \DB::rollBack();
+                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                                'message'=>'Unregister to Message Center Failed!' . $result,
+                                'content'=>$data]);
+                        }
+                    }
+
+                    \DB::table("qp_push_token")
+                        ->where("register_row_id", "=", $registerId)
+                        ->delete();
+                }
+
+                \DB::commit();
+            } catch (Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>'未知错误',
+                    'content'=>'']);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                'message'=>'Call Service Successed',
+                'content'=>array('uuid'=>$uuid)
+            ]);
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
+        }
+    }
+
     public function login()
     {
         $Verify = new Verify();
@@ -260,7 +355,7 @@ class qplayController extends Controller
                 $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-                $bind = true; //TODO @ldap_bind($ldapConnect, $userId, $password);
+                $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
                 if(!$bind)
                 {
                     $finalUrl = urlencode($redirect_uri.'?result_code='
@@ -1277,22 +1372,22 @@ SQL;
                 }
 
                 //Register to Message Center
-                $app_id = "";  //TODO 正式上线需要读配置
-
+                $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+//                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,
-                    'TenantId' => '00000000-0000-0000-0000-000000000000',
+                    'Tenant_id' => '00000000-0000-0000-0000-000000000000',
                     'Provider' => 'JPush',
                     'Client_id' => $pushToken,
-                    'User_Name' => 'QPlay',
+                    'User_Name' => $user->login_id,
                     'Badge_number' => '0');
                 $data["register"] = json_encode($args);
                 $result = CommonUtil::doPost($url, $data);
                 if(!str_contains($result, "true")) {
                     \DB::rollBack();
                     return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>'Register to Message Center Failed!',
-                        'content'=>'']);
+                        'message'=>'Register to Message Center Failed!' . $result,
+                        'content'=>$data]);
                 }
 
                 \DB::commit();

@@ -241,15 +241,23 @@ $title = trans('messages.TITLE_'.$menu_name);
         });
 
         $('.bootstrapTable').on('page-change.bs.table', function() {
-            if(selectedChanged) {
+            try {
                 selectedChanged();
-            }
-
+            } catch (err) {}
+//            if(selectedChanged) {
+//                selectedChanged();
+//            }
             $(".pagination-info").each(function() {
                 $(this).text(
                         $(this).text().replace("Showing", "{{trans("messages.PAGING_SHOWING")}}")
                                 .replace("to", "{{trans("messages.PAGING_TO")}}").replace("of", "{{trans("messages.PAGING_OF")}}")
                                 .replace("rows", "{{trans("messages.PAGING_ROWS")}}")
+                );
+            });
+
+            $(".pagging_per_page").each(function() {
+                $(this).text(
+                        $(this).text().replace("rows per page", "{{trans("messages.PAGING_ROWS_PER_PAGE")}}")
                 );
             });
         });
