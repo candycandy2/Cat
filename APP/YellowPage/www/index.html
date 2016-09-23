@@ -30,192 +30,317 @@
         -->
         <!--
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"; charset="UTF-8"> -->
-        <meta charset="UTF-8"> -->
+        <meta charset="UTF-8">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
         <!--<script src="css/sliding.css"></script>-->
         <!--<script src="css/bp-touchSwipe.css"></script>-->
         <link rel="stylesheet" href="css/owl.carousel.min.css">
         <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/owl.carousel.min.js"></script>
-        <title>Hello World</title>
+        <title>Yellow Page</title>
     </head>
     <body>
     
-      <!-- Start of main_query_page -->
-      <div data-role="page" id="main_query_page">
-        <div data-role="header">
-          <div class="header_style">
-            <h1>YellowPage</h1>
-          </div>
-        </div>
-        <br>
-        <div data-role="main" class="ui-content">
-          <div>           
-            <h4>公司</h4>
-            <div class="dropbox_style">
-              <select name="select-company" id="Company">
-                 <option value="All Company">All Company</option>
-              </select>
+        <!-- Start of main_query_page -->
+        <div data-role="page" id="main_query_page">
+            <div class="ios-fix-overlap-div"></div>
+            <div data-role="header" data-position="fixed" class="page-header">
+                <div class="header_style">
+                    <h1>YellowPage</h1>
+                </div>
             </div>
-          </div>
-          <br>
-          <div>
-            <div>
-              <h4>中文姓名</h4>
-             </div>
-            <div class="editbox_style">
-              <input id="CName" type="text" />
+            
+            <div data-role="main" class="ui-content page-main">
+                <div style="float:none; height:30px;">&nbsp;</div>
+                <div>
+                    <h4>公司</h4>
+                    <div class="dropbox_style">
+                        <select name="select-company" id="Company">
+                            <option value="All Company">All Company</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <h4>中文姓名</h4>
+                    </div>
+                    <div class="editbox_style">
+                        <input id="CName" type="text" />
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <h4>英文姓名</h4>
+                    </div>
+                    <div class="editbox_style">
+                        <input id="EName" type="text" />
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <h4>部門</h4>
+                    </div>
+                    <div class="editbox_style">
+                        <input id="Department" type="text" />
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <h4>分機</h4>
+                    </div>
+                    <div class="editbox_style">
+                        <input id="ExtNum" type="text" />
+                    </div>
+                </div>
             </div>
-          </div>
-          <br>
-          <div>
-            <div>
-              <h4>英文姓名</h4>
+            
+            <div data-role="footer" data-position="fixed" data-theme="b">
+                <div data-role="navbar" data-iconpos="top" class="custom_navbar">
+                    <ul>
+                        <li><a href="#" data-icon="delete" id="cleanquery">清除查詢</a></li>
+                        <li><a href="#" data-icon="search" id="callAjax">開始查詢</a></li>
+                        <li><a href="#phonebook_page" data-icon="star" id="myphonebook">我的電話簿</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="editbox_style">
-              <input id="EName" type="text" />
+            
+            <div data-role="popup" id="no_query_condition" data-overlay-theme="b" data-dismissible="false">
+                <div data-role="main" class="ui-content popup-msg">
+                    <p>請輸入查詢條件</p>
+                    <p>
+                        <a href="#" class="ui-btn ui-btn-inline" data-rel="back">關閉</a>
+                    </p>
+                </div>
             </div>
-          </div>
-          <br>
-          <div>
-            <div>
-              <h4>部門</h4>
-            </div>
-            <div class="editbox_style">
-              <input id="Department" type="text" />
-            </div>
-          </div>
-          <br>
-          <div>
-            <div>
-              <h4>分機</h4>
-            </div>
-            <div class="editbox_style">
-              <input id="ExtNum" type="text" />
-            </div>
-          </div>
-          <br><br><br>
-          <div>
-            <!-- <a href="#ask_add_phone_book" data-rel="popup" data-role="button" data-inline="true">加到電話簿</a> -->
-            <!-- <a href="#no_query_condition" data-rel="popup" data-role="button" data-inline="true">輸入查詢條件</a> -->
-          </div>
-        </div>
-        <div data-role="footer" data-position="fixed" data-theme="b">
-          <div data-role="navbar" data-iconpos="top" class="custom_navbar">
-            <ul>
-              <li><a href="#" data-icon="delete" id="cleanquery">清除查詢</a></li>
-              <li><a href="#" data-icon="search" id="callAjax">開始查詢</a></li>
-              <li><a href="#phonebook_page" data-icon="star" id="myphonebook">我的電話簿</a></li>
-            </ul>
-          </div>
         </div>
       
-        <div data-role="popup" id="no_query_condition" class="popup-dialog-style">
-          <p><br>請輸入查詢條件<br><br></p>
-          <a data-rel="back" data-role="button" class="close-button-style">關閉</a>
-        </div>
+        <!-- Start of query_result_page -->
+        <div data-role="page" id="query_result_page">
+            <div class="ios-fix-overlap-div"></div>
+            <div data-role="header" data-position="fixed" class="page-header">
+                <a href="index.html" class="ui-btn ui-icon-back ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+                <div class="header_style"><h1>查詢結果</h1></div>
+                <a href="index.html" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
 
-      </div>
-      
-      <!-- Start of query_result_page -->
-      <div data-role="page" id="query_result_page">
-        <div data-role="header"> 
-          <a href="index.html" class="ui-btn-left">Back</a>
-          <div class="header_style"><h1>查詢結果</h1></div>
-          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
-        </div>
-        <div data-role="main" class="ui-content">
-          <div data-role="listview" id="employee-data">
-<!--             <div data-role="list-divider" >
-              <li style="float:left;">Company</li>
-              <li style="float:left;">E.Name</li>
-              <li style="float:left;">C.Name</li>
-              <li style="float:left;">Detail</li>
-            </div> -->
-            <!--<div class="ui-grid-c grid_style">
-              <li class="ui-block-a">Qisda</li>
-              <li class="ui-block-b">Gia.Lee</li>
-              <li class="ui-block-c">李小佳</li>
-              <li class="ui-block-d"><a href="#">></a></li>
+                <div class="ui-grid-c q-result-grid" data-position="fixed">
+                    <div class="ui-block-a company"><div class="ui-bar ui-bar-a">Company</div></div>
+                    <div class="ui-block-b e-name"><div class="ui-bar ui-bar-a">E.Name</div></div>
+                    <div class="ui-block-c c-name"><div class="ui-bar ui-bar-a">C.Name</div></div>
+                </div>
             </div>
-            <div class="ui-grid-c grid_style">
-              <li class="ui-block-a">BenQ</li>
-              <li class="ui-block-b">Ming.Wang</li>
-              <li class="ui-block-c">王大明</li>
-              <li class="ui-block-d"><a href="#">></a></li>
+
+            <div data-role="main" class="ui-content page-main">
+          
+                <ul data-role="listview" data-icon="false" class="q-result-grid" id="employee-data">
+                  <!--<li>
+                    <div class="company">
+                      <p>BenqHospital</p>
+                    </div>
+                    <div class="e-name">
+                      <p><a href="#detail_info_page" id="detailindex" >Giaqwersas.Lee.RqedasdeLee.Rqedasde</a></p>
+                      <p><a rel="external" href="tel:+012345678" style="color:red;">9999-9999</a></p>
+                    </div>
+                    <div class="c-name">
+                      <p><a href="#detail_info_page" id="detailindex" >李小佳</a></p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="company">
+                      <p>BenQ</p>
+                    </div>
+                    <div class="e-name">
+                      <p>Ming.Wang</p>
+                      <p class="phone-number">9999-9999</p>
+                    </div>
+                    <div class="c-name">
+                      <p>王大明</p>
+                    </div>
+                  </li>-->
+                    <li>
+                        <div class="error_msg">
+                            您搜尋的結果最多顯示10筆，<br>
+                            如找不到您要的資料，請將搜尋範圍在縮小。
+                        </div>
+                    </li>
+                </ul>
+            </div> 
+        </div>
+      
+        <!-- Start of detail_info_page -->
+        <div data-role="page" id="detail_info_page">
+            <div class="ios-fix-overlap-div"></div>
+            <div data-role="header" data-position="fixed" class="page-header">
+                <a href="#query_result_page" class="ui-btn ui-icon-back ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+                <div class="header_style"><h1>詳細資料</h1></div>
+                <a href="index.html" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
             </div>
-            <div class="ui-grid-c grid_style">
-              <li class="ui-block-a">AUO</li>
-              <li class="ui-block-b">YoYo.Ma</li>
-              <li class="ui-block-c">馬友友</li>
-              <li class="ui-block-d"><a href="#">></a></li>
-            </div> -->
-          </div>
-        </div> 
-      </div>
-      
-      <!-- Start of detail_info_page -->
-      <div data-role="page" id="detail_info_page">
-        <div data-role="header">
-          <a href="#query_result_page" class="ui-btn-left">Back</a>
-          <div class="header_style"><h1>詳細資料</h1></div>
-          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
-        </div>
-        <div data-role="main" class="ui-content">
-          <div data-role="listview" id="detail-data">
-            <div class="ui-grid-b grid_style">
+
+            <div data-role="main" class="ui-content page-main">
+                <ul data-role="listview" data-icon="false" class="q-result-grid" id="detail-data">
+                    <li>
+                        <div class="item-name">
+                            <p>公司</p>
+                        </div>
+                        <div class="item-content">
+                            <p class="company-data">
+                                <span class="company" id="companyName"><!--BenQHospital--></span>
+                                <span class="star">
+                                    <a href="#ask_add_phone_book" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-icon-notext ui-icon-star"></a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>英文姓名</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="eName"><!--Giaqwersas.Lee.Rqedasde--></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>中文姓名</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="cName"><!--張先生--></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>工號</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="employeeID"><!--0806022--></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>專業區</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="sideCode"><!--NMH--></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>部門</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="dept"></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>部門名稱</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="deptCode"></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>分機</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="extNo"><!--8100-6162--></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-name">
+                            <p>E-mail</p>
+                        </div>
+                        <div class="item-content">
+                            <p id="eMail"><!--WEQESDF.QWQESFSFS@BenQ.com--></p>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </div>
+        
+            <div data-role="popup" id="ask_add_phone_book" data-overlay-theme="b" data-dismissible="false">
+                <div data-role="main" class="ui-content popup-msg">
+                    <p>確定要加到我的電話簿?</p>
+                    <p>
+                        <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
+                        <a href="#" class="ui-btn ui-btn-inline" id="addPhonebook">確定</a>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div data-role="popup" id="ask_add_phone_book" class="popup-dialog-style">
-          <p><br>確定要加到我的電話簿 ?<br></p>
-          <a data-rel="back" data-role="button" data-inline="true" class="cancle-button-style">取消</a>
-          <a data-rel="back" data-role="button" data-inline="true" class="ok-button-style">確定</a>
-        </div>
-      </div>
       
-      <!-- Start of phonebook_page -->
-      <div data-role="page" id="phonebook_page">
-        <div data-role="header">
-          <a href="#phonebook_edit_page" class="ui-btn-left edit-button-style" id="edit-button"><img src="img/edit.png"></a>
-          <div class="header_style"><h1>我的電話簿</h1></div>
-          <a href="index.html" data-icon="home" class="ui-btn-right">Home</a>
+        <!-- Start of phonebook_page -->
+        <div data-role="page" id="phonebook_page">
+            <div class="ios-fix-overlap-div"></div>
+            <div data-role="header" data-position="fixed" class="page-header">
+                <a href="#" class="ui-btn ui-icon-edit ui-btn-icon-left ui-btn-icon-notext ui-btn-b" id="phonebookEdit"></a>
+                <div class="header_style"><h1>我的電話簿</h1></div>
+                <a href="index.html" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+
+                <div class="ui-grid-c q-result-grid" data-position="fixed">
+                    <div class="ui-block-a company"><div class="ui-bar ui-bar-a">Company</div></div>
+                    <div class="ui-block-b e-name"><div class="ui-bar ui-bar-a">E.Name</div></div>
+                    <div class="ui-block-c c-name"><div class="ui-bar ui-bar-a">C.Name</div></div>
+                </div>
+            </div>
+        
+            <div data-role="main" class="ui-content page-main">
+                <ul data-role="listview" data-icon="false" class="q-result-grid" id="my_phonebook_list">
+                  <!--<li>
+                    <div class="company">
+                        <p class="edit-checkbox hide">
+                            <input type="checkbox" name="checkbox-mini" class="custom" data-mini="true">
+                        </p>
+                        <p>
+                            BenQ
+                        </p>
+                    </div>
+                    <div class="e-name">
+                      <p><a href="#detail_info_page" id="detailindex" >Giaqwersas.Lee.RqedasdeLee.Rqedasde</a></p>
+                      <p><a rel="external" href="tel:+012345678" style="color:red;">9999-9999</a></p>
+                    </div>
+                    <div class="c-name">
+                      <p><a href="#detail_info_page" id="detailindex" >李小佳</a></p>
+                    </div>
+                  </li>-->
+                </ul>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-theme="b" id="phonebookEditBtn" class="hide">
+                <div data-role="navbar" data-iconpos="top" class="custom_navbar">
+                    <ul>
+                        <li>
+                            <a href="#" data-icon="check" id="selectAll">選擇全部</a>
+                            <a href="#" data-icon="check" id="unselectAll">取消全部</a>
+                        </li>
+                        <li><a href="#" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="delete" id="phoneDelete">刪除聯絡人</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div data-role="popup" id="phonebookDelectAlert" data-overlay-theme="b" data-dismissible="false">
+                <div data-role="main" class="ui-content popup-msg">
+                    <p>請選擇要刪除的聯絡人!</p>
+                    <p>
+                        <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
+                    </p>
+                </div>
+            </div>
+            <div data-role="popup" id="phonebookDelectConfirm" data-overlay-theme="b" data-dismissible="false">
+                <div data-role="main" class="ui-content popup-msg">
+                    <p>是否刪除選擇的聯絡人?</p>
+                    <p>
+                        <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                        <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
+                    </p>
+                </div>
+            </div>
+
         </div>
-        <div data-role="main" class="ui-content">
-          <div data-role="listview" id="my_phonebook_list">
-<!--             <div class="ui-grid-c grid_style">
-            </div> -->
-          </div>
-        </div>
-      </div>
-      
-      <!-- Start of phonebook_edit_page -->
-      <div data-role="page" id="phonebook_edit_page">
-        <div data-role="header" data-position="fixed">
-          <a href="#phonebook_page" class="ui-btn-left" id="edit-complete">編輯完成</a>
-          <div class="header_style"><h1>我的電話簿</h1></div>
-        </div>
-        <div data-role="main" class="ui-content">
-          <div data-role="listview" id="edit_my_phonebook_list">
-<!--             <div class="ui-grid-c grid_style">
-            </div> -->
-          </div>
-        </div>
-        <div data-role="footer" data-position="fixed" style="background:#4B0082;color:white;">
-          <a href="#" class="" id="select-all" style="background-color:#28004D;border-color:#28004D;color:white;margin-left:5px;font-size:14px">選擇全部</a>
-          <a href="#" class="ui-btn-right" id="delete-phonebook" style="background-color:#28004D;border-color:#28004D;color:white;margin-right:5px;font-size:14px;width:50px">刪除</a>
-        </div>
-        <div data-role="popup" id="ask_delete_phone_book" class="popup-dialog-style">
-          <p><br>是否刪除選擇的連絡人 ?<br></p>
-          <a data-rel="back" data-role="button" data-inline="true" class="cancle-button-style">取消</a>
-          <a data-rel="back" data-role="button" data-inline="true" class="ok-button-style">確定</a>
-        </div>
-      </div>
 
       <script type="text/javascript" src="cordova.js"></script>
       <script type="text/javascript" src="js/index.js"></script>
