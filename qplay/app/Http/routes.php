@@ -13,6 +13,7 @@
 
 
 Route::any('/platform/getUserList', 'platformController@getUserList');
+Route::any('/platform/getUserListWithoutGroup', 'platformController@getUserListWithoutGroup');
 Route::any('/platform/getRoleList', 'platformController@getRoleList');
 Route::any('/platform/removeUserRight', 'platformController@removeUserRight');
 Route::any('/platform/saveUser', 'platformController@saveUser');

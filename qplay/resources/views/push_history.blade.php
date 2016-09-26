@@ -15,6 +15,39 @@ label {
 }       
 </style>
     <div class="row">
+        <div class="col-lg-4 col-xs-4"></div>
+        <div class="col-lg-8 col-xs-8">
+            <div class="btn-toolbar" role="toolbar" style="float: right;">
+                <table>
+                    <tr>
+                        <td style="padding: 5px;">
+                            {{trans("messages.PUBLISH_STATUS")}}:
+                        </td>
+                        <td style="padding: 5px;">
+                            <div class="switch" id="switchVisible" data-on="success" data-on-label="Y" data-off-label="N">
+                                <input type="checkbox" id="cbxVisible"
+                                       @if($messageInfo->visible == 'Y')
+                                       checked
+                                        @endif
+                                />
+                            </div>
+                        </td>
+                        <td style="padding: 5px;">
+                            <a type="button" class="btn btn-primary" href="newMessage?copy_from={{$messageId}}">
+                                {{trans("messages.COPY_MESSAGE")}}
+                            </a>
+                        </td>
+                        <td style="padding: 5px;">
+                            <a type="button" class="btn btn-default" href="push">
+                                {{trans("messages.RETURN")}}
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-8 col-xs-8">
             <div class="form-group row">
               <label for="ddlPushTo" class="col-xs-2">{{trans("messages.PUSH_TO")}}:</label>
@@ -51,35 +84,9 @@ label {
                 {{$messageInfo->message_text}}
               </div>
             </div>
-            <div class="form-group row">
-              <label for="cbxVisible" class="col-xs-2">{{trans("messages.STATUS")}}:</label>
-              <div class="col-xs-10">
-                <div class="switch" data-on="success" data-on-label="Y" data-off-label="N">
-                    <input type="checkbox" id="cbxVisible"
-                           @if($messageInfo->visible == 'Y')
-                           checked
-                            @endif
-                    />
-                </div>
-              </div>
-            </div>
         </div>
-
-        <div class="col-lg-4 col-xs-4" >
-            <div class="btn-toolbar" role="toolbar" style="float: right;">
-                <button type="button" class="btn btn-primary" onclick="SaveMessageVisible()">
-                    {{trans("messages.SAVE")}}
-                </button>
-                <a type="button" class="btn btn-primary" href="newMessage?copy_from={{$messageId}}">
-                    {{trans("messages.COPY_MESSAGE")}}
-                </a>
-                <a type="button" class="btn btn-default" href="push">
-                    {{trans("messages.RETURN")}}
-                </a>
-            </div>
-        </div>
+        <div class="col-lg-4 col-xs-4"></div>
     </div>
-
     <div class="row">
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
@@ -106,12 +113,18 @@ label {
     </div>
 
     <script>
+        $(function() {
+            $('#switchVisible').on('switch-change', SaveMessageVisible);
+        });
+
         var pushDateFormatter = function (value, row) {
             return '<a href="pushSendDetail?push_send_row_id=' + row.row_id + '">' + value + '</a>';
         };
 
+        var oriVisible = '{{$messageInfo->visible}}';
         var SaveMessageVisible = function () {
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
+                $('#confirmDialog').unbind();
                 hideConfirmDialog();
                 var visible = "N";
                 if($('#cbxVisible').is(':checked')) {
@@ -135,7 +148,7 @@ label {
                         if(d.result_code != 1) {
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
-                            $("#gridUserList").bootstrapTable('refresh');
+                            oriVisible = visible;
                             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                         }
                     },
@@ -143,6 +156,17 @@ label {
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                     }
                 });
+            }, function () {
+                $('#switchVisible').unbind();
+                if(oriVisible == "Y") {
+                    $('#switchVisible').bootstrapSwitch('setState', true);
+                    //$("#cbxVisible").prop("checked", true);
+                } else {
+                    //$("#cbxVisible").prop("checked", false);
+                    $('#switchVisible').bootstrapSwitch('setState', false);
+                }
+                $('#switchVisible').on('switch-change', SaveMessageVisible);
+//                $('.switch').bootstrapSwitch();
             });
         };
     </script>

@@ -15,9 +15,8 @@
                 <input type="password" data-clear-btn="true" name="tbxPassword"
                        id="tbxPassword" value="" placeholder="Password" />
                 <select placeholder="Company" name="ddlCompany" id="ddlCompany">
-                    <option value="" selected="selected"></option>
+                    <option value="BENQ" selected="selected">BenQ</option>
                     <option value="QGROUP">Qisda</option>
-                    <option value="BENQ">Benq</option>
                 </select>
                 <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
                         onclick="tryLogin()">Log In</button>

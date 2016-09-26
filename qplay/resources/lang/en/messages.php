@@ -164,6 +164,9 @@ return [
     'PUSH_AGAIN' => 'Push Again',
     'MSG_CONFIRM_PUSH_AGAIN' => 'Confirm to push again?',
     'MSG_EVENT_INFORMATION' => '*Event is for individual or emergency notification, only select group or personal push',
+    'MSG_NEWS_INFORMATION' => '*News is for the public announcement, only in accordance with the company\'s other push',
+    'MSG_PUSH_TITLE_PLACEHOLDER' => '(Please note: Please fill in the text with sensitive content)',
+    'PUBLISH_STATUS'=>'Publish Status',
 
     //App Security Setting
     'BLOCK_LIST' => 'Blocked List',
@@ -197,4 +200,5 @@ return [
     'ERR_APP_KEY_EXIST' => 'App key exist!',
     'ERR_PARAMETER_NAME_EXIST_IN_TYPE' => 'Parameter name exist in this type!',
     'ERR_EXIST_PARAMETER_IN_TYPE' => 'Exist parameter in this type!',
+    'ERR_USER_HAS_IN_GROUP' => 'User has in other group!',
 ];

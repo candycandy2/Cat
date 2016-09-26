@@ -162,8 +162,11 @@ return [
 	'PUSH_SOURCE_USER' => '推播者',
 	'COPY_MESSAGE' => '复制推播',
 	'PUSH_AGAIN' => '再推播',
-	'MSG_CONFIRM_PUSH_AGAIN' => '確認再推播?',
+	'MSG_CONFIRM_PUSH_AGAIN' => '确认再推播?',
 	'MSG_EVENT_INFORMATION' => '*Event为个别或紧急通知，仅能选择群组或个人推播',
+	'MSG_NEWS_INFORMATION' => '*News为公开式公告，仅能依公司别推播',
+	'MSG_PUSH_TITLE_PLACEHOLDER' => '(请注意: 具敏感性内容请填写于内文)',
+	'PUBLISH_STATUS'=>'发布状态',
 
     //App Security Setting
     'BLOCK_LIST' => '黑名单',
@@ -197,4 +200,5 @@ return [
 	'ERR_APP_KEY_EXIST' => 'App key已存在!',
 	'ERR_PARAMETER_NAME_EXIST_IN_TYPE' => '参数名称在该参数类别下已存在!',
 	'ERR_EXIST_PARAMETER_IN_TYPE' => '该类别下存在参数!',
+	'ERR_USER_HAS_IN_GROUP' => '用户已在其他群组中!',
 ];
