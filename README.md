@@ -3,6 +3,10 @@
 
 使用WEB為主要開發環境, 只要你會寫網頁, 就可以開發APP
 
+###  安裝
+
+![qplayinstall](https://cloud.githubusercontent.com/assets/1924451/18819378/6873332c-83c2-11e6-892f-db70c5257f4d.png)
+
 ### 開發完成的Plugin
 1. [qsecurity-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qsecurity-plugin)
 2. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
