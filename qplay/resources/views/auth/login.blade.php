@@ -57,8 +57,8 @@
             </div>
             <div class="form-group has-feedback">
                 <select class="form-control" name="domain" id="domain">
-                    <option value="QGROUP">QGROUP</option>
                     <option value="BenQ">BenQ</option>
+                    <option value="Qgroup">Qgroup</option>
                 </select>
             </div>
             <div class="form-group has-feedback">

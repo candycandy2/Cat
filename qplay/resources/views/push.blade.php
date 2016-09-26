@@ -23,7 +23,7 @@ $menu_name = "PUSH_SERVER";
             <th data-field="message_title" data-sortable="true" data-formatter="messageTitleFormatter" data-search-formatter="false">{{trans("messages.MESSAGE_TITLE")}}</th>
             <th data-field="created_at" data-sortable="true">{{trans("messages.CREATED_DATE")}}</th>
             <th data-field="created_user" data-sortable="true">{{trans("messages.MESSAGE_CREATED_USER")}}</th>
-            <th data-field="visible" data-sortable="true">{{trans("messages.STATUS")}}</th>
+            <th data-field="visible" data-sortable="true">{{trans("messages.PUBLISH_STATUS")}}</th>
         </tr>
         </thead>
     </table>

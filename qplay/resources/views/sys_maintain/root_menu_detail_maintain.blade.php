@@ -320,41 +320,45 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     <h1 class="modal-title" id="subMenuMaintainDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table>
+                    <table width="100%">
                         <tr>
                             <td>{{trans("messages.MENU_NAME")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxSubMenuName"
-                                       id="tbxSubMenuName" value=""/>
+                                       id="tbxSubMenuName" value="" class="form-control"/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.LINK")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxSubLink"
-                                       id="tbxSubLink" value=""/>
+                                       id="tbxSubLink" value="" class="form-control"/>
                             </td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.ENGLISH_NAME")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxSubEnglishName"
-                                       id="tbxSubEnglishName" value=""/>
+                                       id="tbxSubEnglishName" value="" class="form-control"/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.SIMPLE_CHINESE_NAME")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxSubSimpleChineseName"
-                                       id="tbxSubSimpleChineseName" value=""/>
+                                       id="tbxSubSimpleChineseName" value="" class="form-control"/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.TRADITIONAL_CHINESE_NAME")}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" name="tbxSubTraditionalChineseName"
-                                       id="tbxSubTraditionalChineseName" value=""/>
+                                       id="tbxSubTraditionalChineseName" value="" class="form-control"/>
                             </td>
+                            <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
                             <td>{{trans("messages.STATUS")}}:</td>

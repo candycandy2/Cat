@@ -54,7 +54,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 <tr>
                     <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxTitle" class="form-control"
+                        <input type="text" data-clear-btn="true" name="tbxTitle" class="form-control" placeholder="{{trans("messages.MSG_PUSH_TITLE_PLACEHOLDER")}}"
                                id="tbxTitle" value="@if($isCopy){{$copyFromMessageInfo->message_title}}@endif"/>
                     </td>
                     <td><span style="color: red;">*</span></td>
@@ -159,7 +159,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
     <div class="row" style="display:none;" id="regionTypeNews">
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
-            {{trans("messages.MESSAGE_RECEIVER")}}:
+            {{trans("messages.MESSAGE_RECEIVER")}}:&nbsp;&nbsp;{{trans("messages.MSG_NEWS_INFORMATION")}}
             <br/><br/>
             <table class="table table-bordered" id="CompanyTable" style="border:1px solid #d6caca;">
                 <tr>

@@ -37,6 +37,29 @@ class platformController extends Controller
         return response()->json($userList);
     }
 
+    public function getUserListWithoutGroup() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $this->setLanguange();
+
+        $rowIdListWithoutGroup = array();
+        $userWithoutGroupList = \DB::table("qp_user_group")
+            -> select()
+            -> get();
+        foreach ($userWithoutGroupList as $info) {
+            array_push($rowIdListWithoutGroup, $info->user_row_id);
+        }
+
+        $userList = \DB::table("qp_user")
+            -> where("resign", "=", "N")
+            -> whereNotIn("row_id", $rowIdListWithoutGroup)
+            -> select()
+            -> get();
+        return response()->json($userList);
+    }
+
     public function getRoleList()
     {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -857,15 +880,24 @@ class platformController extends Controller
             $groupId = $jsonContent['group_id'];
             $userIdList = $jsonContent['user_id_list'];
             \DB::beginTransaction();
-            \DB::table("qp_user_group")-> where('group_row_id', "=", $groupId)->delete();
+            //\DB::table("qp_user_group")-> where('group_row_id', "=", $groupId)->delete();
             foreach ($userIdList as $uId) {
-                \DB::table("qp_user_group")
-                    -> insert(
-                        ['user_row_id'=>$uId,
-                            'group_row_id'=>$groupId,
-                            'created_at'=>$now,
-                            'created_user'=>\Auth::user()->row_id]);
-
+                $existInfo = \DB::table("qp_user_group")
+//                    -> where('group_row_id', "=", $groupId)
+                    -> where('user_row_id', "=", $uId)
+                    -> select()->get();
+                if(count($existInfo) > 1
+                    || (count($existInfo) == 1 && $existInfo[0]->group_row_id != $groupId)) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError, 'message'=>trans("messages.ERR_USER_HAS_IN_GROUP")]);
+                } else if(count($existInfo) == 0) {
+                    \DB::table("qp_user_group")
+                        -> insert(
+                            ['user_row_id'=>$uId,
+                                'group_row_id'=>$groupId,
+                                'authority_by_group' => 'Y',
+                                'created_at'=>$now,
+                                'created_user'=>\Auth::user()->row_id]);
+                }
             }
             \DB::commit();
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
@@ -1423,7 +1455,7 @@ class platformController extends Controller
 
         $userIdListInRole = array();
         $userIdListNotInRole = array();
-        
+
         foreach ($roleList as $role) {
             $role_id = $role->role_row_id;
             $userRoleList = \DB::table('qp_user_role')
