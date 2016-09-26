@@ -34,7 +34,19 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        document.addEventListener('pagebeforecreate', this.onPagebeforecreate, false);
+        //document.addEventListener('pageshow', this.onPageshow, false);
+        $(document).on("pageshow",function(event,data){
+          alert("Sorry, requested page does not exist.");
+        });
 
+    },
+    onPagebeforecreate: function() {
+        alert("onPagebeforecreate event fired!");
+
+    },
+    onPageshow: function() {
+        alert("onPageshow event fired!");
 
     },
     // Update DOM on a Received Event

@@ -10,6 +10,23 @@
       <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
       <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
       <title>Hello World</title>
+      <script>
+      $(document).on("pagebeforeshow",function(event,data){
+        alert("pagebeforeshow event fired!\nURL: " + data.url);
+      });
+      $(document).on("pageshow",function(event,data){
+        alert("pageshow event fired!\nURL: " + data.url);
+      });
+      $(document).on("pagebeforehide",function(event,data){
+        alert("pagebeforehide event fired!\nURL: " + data.url);
+      });
+      $(document).on("pagehide",function(event,data){
+        alert("pagehide event fired!\nURL: " + data.url);
+      });
+      $(document).on("pagecontainerloadfailed",function(event,data){
+        alert("Sorry, requested page does not exist.");
+      });
+      </script>
     </head>
     <body onload="onLoad()">
         <div data-role="page" id="home">
