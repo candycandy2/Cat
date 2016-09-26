@@ -40,7 +40,7 @@ $title = trans('messages.TITLE_'.$menu_name);
 
 ?>
 
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -63,6 +63,7 @@ $title = trans('messages.TITLE_'.$menu_name);
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.cookie.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -74,7 +75,6 @@ $title = trans('messages.TITLE_'.$menu_name);
 </head>
 <body class="skin-blue fixed" data-spy="scroll" data-target="#scrollspy">
 <div class="wrapper">
-
     <header class="main-header">
         <!-- Logo -->
         <!-- Logo -->
@@ -218,7 +218,18 @@ $title = trans('messages.TITLE_'.$menu_name);
 {{--<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>--}}
 {{--<script src="docs.js"></script>--}}
 <script>
+    var clID = '{{Auth::user()->login_id}}';
     $(function() {
+
+        $(".bootstrapTable").each(function(i, table) {
+            if($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S")) {
+                var s = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S");
+                //dropdown-menu
+                //$(this).bootstrapTable('selectPageSize', s);
+                $(this).bootstrapTable('getOptions').pageSize = s;
+                //$(this).bootstrapTable('refresh');
+            }
+        });
 
         $(".content-wrapper").resize(function () {
             $('.bootstrapTable').bootstrapTable('resetView');
@@ -232,21 +243,32 @@ $title = trans('messages.TITLE_'.$menu_name);
                                 .replace("rows", "{{trans("messages.PAGING_ROWS")}}")
                 );
             });
-            //$(".page-list").text();
+
             $(".pagging_per_page").each(function() {
                 $(this).text(
                         $(this).text().replace("rows per page", "{{trans("messages.PAGING_ROWS_PER_PAGE")}}")
                 );
             });
+
+            if($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P")) {
+                var p = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P");
+                $(this).bootstrapTable('selectPage', p);
+                $(this).parent().parent().find(".page-number").each(function(m, liPage) {
+                    var $a = $(liPage).first("a");
+                    if($a.text() == p) {
+                        $(liPage).addClass("active");
+                        return false;
+                    }
+                });
+                //page-number active
+            }
         });
 
-        $('.bootstrapTable').on('page-change.bs.table', function() {
+        $('.bootstrapTable').on('page-change.bs.table', function(e ,page, size) {
             try {
                 selectedChanged();
             } catch (err) {}
-//            if(selectedChanged) {
-//                selectedChanged();
-//            }
+
             $(".pagination-info").each(function() {
                 $(this).text(
                         $(this).text().replace("Showing", "{{trans("messages.PAGING_SHOWING")}}")
@@ -260,6 +282,9 @@ $title = trans('messages.TITLE_'.$menu_name);
                         $(this).text().replace("rows per page", "{{trans("messages.PAGING_ROWS_PER_PAGE")}}")
                 );
             });
+
+            $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P", page);
+            $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S", size);
         });
     });
 

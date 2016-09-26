@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="btnConfirmDialogConfirm" class="btn btn-danger" >{{trans("messages.CONFIRM")}}</button>
-                <button type="button"  class="btn btn-primary" data-dismiss="modal" data-dismiss="modal">{{trans("messages.CANCEL")}}</button>
+                <button type="button"  id="btnConfirmDialogCancel" class="btn btn-primary" data-dismiss="modal" data-dismiss="modal">{{trans("messages.CANCEL")}}</button>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         $("#confirmDialog").modal('hide');
     };
 
-    var showConfirmDialog = function (title, content, warning, confirmFunction) {
+    var showConfirmDialog = function (title, content, warning, confirmFunction, cancelFunction) {
         $("#confirmDialogTitle").text("");
         $("#confirmDialogContent").html("");
         $("#confirmDialogWarningContent").html("");
@@ -40,6 +40,12 @@
 
         $("#btnConfirmDialogConfirm").unbind();
         $("#btnConfirmDialogConfirm").one('click', confirmFunction);
+
+        try {
+            if(cancelFunction) {
+                $('#confirmDialog').one('hidden.bs.modal', cancelFunction);
+            }
+        }catch (err) {}
 
         $("#confirmDialog").modal('show');
     }

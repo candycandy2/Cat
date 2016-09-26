@@ -164,6 +164,9 @@ return [
     'PUSH_AGAIN' => '再推播',
     'MSG_CONFIRM_PUSH_AGAIN' => '確認再推播?',
     'MSG_EVENT_INFORMATION' => '*Event為個別或緊急通知，僅能選擇群組或個人推播',
+    'MSG_NEWS_INFORMATION' => '*News為公開式公告，僅能依公司別推播',
+    'MSG_PUSH_TITLE_PLACEHOLDER' => '(請注意: 具敏感性內容請填寫于內文)',
+    'PUBLISH_STATUS'=>'發佈狀態',
 
     //App Security Setting
     'BLOCK_LIST' => '黑名單',
@@ -197,4 +200,5 @@ return [
     'ERR_APP_KEY_EXIST' => 'App key已存在!',
     'ERR_PARAMETER_NAME_EXIST_IN_TYPE' => '參數名稱在該參數類別下已存在!',
     'ERR_EXIST_PARAMETER_IN_TYPE' => '該類別下存在參數!',
+    'ERR_USER_HAS_IN_GROUP' => '用戶已在其他群組中!',
 ];
