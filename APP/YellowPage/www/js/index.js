@@ -61,7 +61,7 @@
             }
         }
     });
-    
+
     $( "#dialog" ).dialog({ autoOpen: false });
 
     function callback(event) {
@@ -127,9 +127,9 @@
             $('#my_phonebook_list .ui-checkbox').hide();
             $('#phonebookEditBtn').hide();
        }
-       
+
     });
-    
+
  });
 
 $('#phonebook_page').on('pagebeforeshow', function(){
@@ -153,7 +153,7 @@ $('#phonebook_page #unselectAll').on('click', function(){
 $('#phonebook_page #my_phonebook_list').on('click', function(){
     var checkboxTotalCount = $('#phonebook_page :checkbox').length;
     var checkboxCheckedCount = $('#phonebook_page :checkbox:checked').length;
-    
+
     if (checkboxTotalCount === checkboxCheckedCount)
     {
         $('#phonebook_page #unselectAll').show();
@@ -183,8 +183,8 @@ $('#phoneDelete').on('click', function(){
 });
 
  $(document).on('pagebeforeshow', '#detail_info_page', function(){
-    
-    if ((employeedata.total == 9999) || (employeedata.index >= employeedata.total)) 
+
+    if ((employeedata.total == 9999) || (employeedata.index >= employeedata.total))
     {
       return;
     }
@@ -212,9 +212,9 @@ $('#phoneDelete').on('click', function(){
     function onDetailSuccess(data)
     {
       var companySelect = document.getElementById('Company');
-      
+
       var resultcode = data['ResultCode'];
-      
+
       if (resultcode == 1) {
         var dataContent = data['Content'];
         var company = dataContent[0].Company;
@@ -226,7 +226,7 @@ $('#phoneDelete').on('click', function(){
         var dept = dataContent[0].Dept;
         var extno = dataContent[0].Ext_No;
         var email = dataContent[0].EMail;
-        
+
         $("#detail-data #companyName").html(company);
         $("#detail-data #eName").html(ename);
         $("#detail-data #cName").html(cname);
@@ -238,11 +238,11 @@ $('#phoneDelete').on('click', function(){
         $("#detail-data #eMail").html(email);
 
       }
-      
+
       $('#addPhonebook').on('click', function(e) {
-        
+
         var myemployeeid = "0208042"; // fix me !!!!!
-        
+
         $.ajax({
           type: "POST",
           contentType: "application/json; charset=utf-8",
@@ -256,19 +256,19 @@ $('#phoneDelete').on('click', function(){
 
       });
     }
-    
+
     function onDetailFail(data)
     {
       var reault = data;
     }
-    
+
     function onAddMyPhoneBookSuccess(data)
     {
       var rawdata = data['d'];
       var jsonobj = jQuery.parseJSON(rawdata);
 
       var resultcode = jsonobj['ResultCode'];
-      
+
       if (resultcode == 001902)
       {
         $.mobile.changePage('#phonebook_page');
@@ -276,16 +276,16 @@ $('#phoneDelete').on('click', function(){
       }
       else
       {
-        
+
       }
     }
-    
+
     function onAddMyPhoneBookFail(data)
     {
-      
+
     }
  });
- 
+
  $( document ).on( "click", ".show-page-loading-msg", function() {
      var $this = $( this ),
          theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
@@ -301,7 +301,7 @@ $('#phoneDelete').on('click', function(){
              html: html
      });
  })
- 
+
  .on( "click", ".hide-page-loading-msg", function() {
      $.mobile.loading( "hide" );
  });
@@ -317,7 +317,7 @@ $(function() {
     $("#callAjax").click(function() {
       getEmployeeData();
     });
-    
+
     window.getEmployeeData = function()
     {
       var jsCName = document.getElementById("CName").value;
@@ -329,10 +329,10 @@ $(function() {
         $("#no_query_condition").popup( "open" );
         return;
       }
-      
+
       callQueryEmployeeData();
     };
-    
+
     window.callQueryEmployeeData = function()
     {
       var jsCompany = document.getElementById("Company").value;
@@ -342,7 +342,7 @@ $(function() {
       var jsExtNum = document.getElementById("ExtNum").value;
       var signatureTime = getSignature("getTime");
       var signatureInBase64 = getSignature("getInBase64", signatureTime);
-      
+
       $.ajax({
         type: "POST",
         headers: {
@@ -359,7 +359,7 @@ $(function() {
         success: onQueryEmployeeDataSuccess
       });
     };
-    
+
     $("#resultLog").ajaxError(function(event, request, settings, exception) {
       $("#resultLog").html("Error Calling: " + settings.url + "<br />HTTP Code: " + request.status);
     });
@@ -369,14 +369,14 @@ $(function() {
       var resultcode = data['ResultCode'];
 
       if (resultcode == 1 || resultcode == 1906) {
-        
+
         var dataContent = data['Content'];
         employeedata.total = dataContent.length;
-        
+
         var htmlContent = "";
 
         for (var i=0; i<dataContent.length; i++){
-          
+
           var company = dataContent[i].Company;
           employeedata.company[i] = company;
 
@@ -395,16 +395,16 @@ $(function() {
             +   '</div>'
             +   '<div class="e-name">'
             +       '<p><a href="#detail_info_page" value="' + i.toString() + '" id="detailindex' + i.toString() + '">' + ename + '</a></p>'
-            +       '<p><a rel="external" href="tel:+' + extnum + '" style="color:red;">' + extnum + '</a></p>'
+            +       '<p><a rel="external" href="tel:' + extnum + '" style="color:red;">' + extnum + '</a></p>'
             +   '</div>'
             +   '<div class="c-name">'
             +       '<p><a href="#detail_info_page" value="' + i.toString() + '" id="detailindex' + i.toString() + '">' + cname + '</a></p>'
             +   '</div>'
             + '</li>';
 
-          htmlContent = content;  
+          htmlContent = content;
         }
-        
+
         $("#employee-data").prepend($(htmlContent)).enhanceWithin();
 
         $('#employee-data').listview('refresh');
@@ -414,21 +414,21 @@ $(function() {
         $('a[id^="detailindex"]').click(function(e) {
           e.stopImmediatePropagation();
           e.preventDefault();
-          
+
           employeedata.index = this.getAttribute('value');
           $.mobile.changePage('#detail_info_page');
         });
 
       }
     };
-    
+
     $("#cleanquery").click(function() {
       $('#CName').val("");
       $('#EName').val("");
       $('#Department').val("");
       $('#ExtNum').val("");
     });
-    
+
     $("#employee-data").listview({
       autodividers: true,
       autodividersSelector: function ( li ) {
@@ -436,15 +436,15 @@ $(function() {
       return out;
       }
     });
-    
-    
+
+
     $("#myphonebook").click(function() {
         queryMyPhoneBook();
     });
-    
+
     window.queryMyPhoneBook = function() {
         var myemployeeid = "0208042"; // fix me !!!!!
-      
+
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -462,19 +462,19 @@ $(function() {
       var rawdata = data['d'];
       var jsonobj = jQuery.parseJSON(rawdata);
       var companySelect = document.getElementById('Company');
-      
+
       var resultcode = jsonobj['ResultCode'];
-      
+
       if (resultcode == 1) {
-        
+
         var dataContent = jsonobj['Content'];
         myphonebook.total = dataContent.length;
         var htmlContent = "";
 
         for (var i=0; i<dataContent.length; i++){
-          
+
           var company = dataContent[i].Company;
-          myphonebook.company[i] = company; 
+          myphonebook.company[i] = company;
 
           var ename = dataContent[i].Name_EN;
           myphonebook.ename[i] = ename;
@@ -507,15 +507,15 @@ $(function() {
 
           htmlContent = content;
         }
-        
+
         $("#my_phonebook_list").html(htmlContent).enhanceWithin();
         $('#my_phonebook_list').listview('refresh');
       }
     };
-    
+
     window.onQueryMyPhoneBookFail = function(data)
     {
-      
+
     };
 
     $("#phonebookDelectConfirm #cancel").on('click', function(){
@@ -530,12 +530,12 @@ $(function() {
       var finalCname = new Array();
       var finalExtnum = new Array();
       var finalEmployeeid = new Array();
-      
-      
+
+
       var doDeleteCount = 0;
       var checkboxCheckedCount = $('#phonebook_page :checkbox:checked').length;
       var doRefresh = false;
-       
+
       for (var i=0; i<myphonebook.total; i++) {
         if (document.getElementById('checkbox'+i).checked == true)
         {
@@ -544,13 +544,13 @@ $(function() {
           if (checkboxCheckedCount === doDeleteCount)
           {
             doRefresh = true;
-          }  
+          }
 
           deletePhoneBook(i, doRefresh);
 
         }
         else
-        { 
+        {
           finalCompany[finalTotal] = myphonebook.company[i];
           finalEname[finalTotal] = myphonebook.ename[i];
           finalCname[finalTotal] = myphonebook.cname[i];
@@ -559,7 +559,7 @@ $(function() {
           finalTotal++;
         }
       }
-      
+
       myphonebook.total = finalTotal;
       for (var i=0; i<finalTotal; i++) {
         myphonebook.company[i] = finalCompany[i];
@@ -568,13 +568,13 @@ $(function() {
         myphonebook.extnum[i] = finalExtnum[i];
         myphonebook.employeeid[i] = finalEmployeeid[i];
       }
-      
+
     });
 
     function deletePhoneBook(index, doRefresh)
     {
       var myemployeeid = "0208042"; // fix me !!!!!
-      
+
       $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -588,24 +588,24 @@ $(function() {
         error: onDeleteMyPhoneBookFail,
       });
     };
-    
+
     function onDeleteMyPhoneBookSuccess(data, doRefresh)
     {
         if (doRefresh) {
             refreshMyPhonebookList();
         }
     };
-    
+
     function onDeleteMyPhoneBookFail(data)
     {
-      
+
     };
 
     function refreshMyPhonebookList()
     {
-      
+
       $('#my_phonebook_list').empty();
-      
+
       var htmlContent = "";
 
       for (var i=0; i<myphonebook.total; i++){
@@ -626,7 +626,7 @@ $(function() {
             +   '</div>'
             + '</li>';
 
-        htmlContent = content;    
+        htmlContent = content;
       }
 
       $("#my_phonebook_list").html(htmlContent).enhanceWithin();
@@ -634,7 +634,7 @@ $(function() {
 
       $("#phonebookDelectConfirm").popup('close');
     };
-    
+
     window.getSignature = function(action, signatureTime)
     {
       if (action === "getTime")
@@ -653,7 +653,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-        
+
         app.addCompanySelect();
         var args = [];
         args[0] = "LoginSuccess";
@@ -718,7 +718,7 @@ var app = {
     {
       var companySelect = document.getElementById('Company');
       var resultcode = data['ResultCode'];
-      
+
       if (resultcode == 1 || resultcode == 1906) {
         var dataContent = data['Content'];
         for (var i=2; i<dataContent.length; i++){ // ignore 0 and 1, 0: "All Company", 1: ""
@@ -769,6 +769,6 @@ window.LoginSuccess = function(data)
   rsDataFromServer.token = data['token'];
   rsDataFromServer.uuid = data['uuid'];
   rsDataFromServer.redirect = data['redirect-uri'];
-  
+
   app.addCompanySelect();
 };
