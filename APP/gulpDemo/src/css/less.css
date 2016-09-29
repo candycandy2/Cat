@@ -1,0 +1,10 @@
+/* less.css */
+div span {
+  font-size: 20px;
+}
+div span b {
+  color: red;
+}
+div i {
+  font-size: 12px;
+}
