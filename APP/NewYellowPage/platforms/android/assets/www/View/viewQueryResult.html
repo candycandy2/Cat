@@ -1,0 +1,51 @@
+<!-- Start of viewQueryResult -->
+<div data-role="page" id="viewQueryResult">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="index.html" class="ui-btn ui-icon-back ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+        <div class="header-style"><h1>查詢結果</h1></div>
+        <a href="index.html" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+
+        <div class="ui-grid-c q-result-grid" data-position="fixed">
+            <div class="ui-block-a company"><div class="ui-bar ui-bar-a">Company</div></div>
+            <div class="ui-block-b e-name"><div class="ui-bar ui-bar-a">E.Name</div></div>
+            <div class="ui-block-c c-name"><div class="ui-bar ui-bar-a">C.Name</div></div>
+        </div>
+    </div>
+
+    <div data-role="main" class="ui-content page-main">
+  
+        <ul data-role="listview" data-icon="false" class="q-result-grid" id="employeeData">
+          <!--<li>
+            <div class="company">
+              <p>BenqHospital</p>
+            </div>
+            <div class="e-name">
+              <p><a href="#detail_info_page" id="detailindex" >Giaqwersas.Lee.RqedasdeLee.Rqedasde</a></p>
+              <p><a rel="external" href="tel:+012345678" style="color:red;">9999-9999</a></p>
+            </div>
+            <div class="c-name">
+              <p><a href="#detail_info_page" id="detailindex" >李小佳</a></p>
+            </div>
+          </li>
+          <li>
+            <div class="company">
+              <p>BenQ</p>
+            </div>
+            <div class="e-name">
+              <p>Ming.Wang</p>
+              <p class="phone-number">9999-9999</p>
+            </div>
+            <div class="c-name">
+              <p>王大明</p>
+            </div>
+          </li>-->
+            <li id="errorMsg" style="display:none;">
+                <div class="error-msg">
+                    您搜尋的結果最多顯示10筆，<br>
+                    如找不到您要的資料，請將搜尋範圍在縮小。
+                </div>
+            </li>
+        </ul>
+    </div> 
+</div>
