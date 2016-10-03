@@ -1,0 +1,539 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #A7A7A7),
+        color-stop(0.51, #E4E4E4)
+    );
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    text-transform:capitalize;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+.app {
+    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    position:absolute;             /* position in the center of the screen */
+    left:50%;
+    top:50%;
+    height:50px;                   /* text area height */
+    width:225px;                   /* text area width */
+    text-align:center;
+    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+                                   /* offset horizontal: half of text area width */
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position:left center;
+        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+                                      /* offset horizontal: half of image width and text area width */
+    }
+}
+
+h1 {
+    font-size:20px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+	text-shadow:none;
+	font-family: "Gill Sans MT", "微軟正黑體", "Arial";
+}
+h4 {
+	font-size:16px;
+	float:left;
+	text-indent:20px;
+	font-family:"Gill Sans MT", "微軟正黑體", Arial;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+
+.header_style {
+    overflow:hidden;
+    background-color:#4B0082;
+    color:white;
+    border-style:none;
+    line-height:44px;
+}
+
+.label_style {
+	width: 120px;
+	position: absolute;
+	text-align: left;
+	left: 47px;
+	height: 37px;
+}
+
+.dropbox_style {
+    margin-left:100px;
+	margin-top:5px;
+    width:220px;
+	height:36px;
+}
+
+.editbox_style {
+    margin-left:100px;
+    width:220px;
+	height:36px;
+}
+
+.custom_navbar ul li a {
+    background:#4B0082 !important; 
+    color:white !important;
+    border-style:none;
+    font-size:large !important;
+}
+
+.list_divider_style {
+    background-color:#E0E0FF;
+    line-height:2.7;
+}
+
+.grid-style-a {
+    font-size: 17px !important;
+    padding-left: 15px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 27% !important;
+    font-weight:bold !important;
+}
+
+.grid-style-b {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 37% !important;
+    font-weight:bold !important;
+}
+
+.grid-style-c {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 21% !important;
+    overflow:visible !important;
+    font-weight:bold !important;
+}
+
+.grid-style-d {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 15% !important;
+    overflow:visible !important;
+    border-bottom-width: 0px!important;
+    font-weight:bold !important;
+}
+
+.grid-style-editphone-a {
+    position:relative !important;
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 17% !important;
+    font-weight:bold !important;
+}
+
+.grid-style-editphone-b {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 27% !important;
+    font-weight:bold !important;
+}
+
+.grid-style-editphone-c {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 35% !important;
+    overflow:visible !important;
+    font-weight:bold !important;
+}
+
+.grid-style-editphone-d {
+    font-size: 17px !important;
+    background-color:#E0E0FF !important;
+    line-height:3.0 !important;
+    width: 21% !important;
+    overflow:visible !important;
+    border-bottom-width: 0px!important;
+    font-weight:bold !important;
+}
+
+.grid-style-data-a {
+    position:relative !important;
+    left: 15px !important;
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 27% !important;
+}
+
+.grid-style-data-b {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 37% !important;
+}
+
+.grid-style-data-c {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 28% !important;
+}
+
+.grid-style-data-d {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    width: 8% !important;
+    overflow:visible !important;
+    margin-top:20px !important;
+}
+
+.grid-style-editphone-data-a {
+    position:relative !important;
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 17% !important;
+/*     margin-top: 18px !important;
+    padding-top: 10px !important;
+    left: -10px !important; */
+    background-color:white !important;
+    border-color:white !important;
+}
+
+.grid-style-editphone-data-b {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 27% !important;
+}
+
+.grid-style-editphone-data-c {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 35% !important;
+}
+
+.grid-style-editphone-data-d {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:3.0 !important;
+    width: 21% !important;
+}
+
+.grid-style-detail-a {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:2.0 !important;
+    width: 25% !important;
+}
+
+.grid-style-detail-b-1 {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:2.0 !important;
+    width: 65% !important;
+    color: blue !important;
+}
+
+.grid-style-detail-b {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:2.0 !important;
+    width: 75% !important;
+    color: blue !important;
+}
+
+.grid-style-detail-c {
+    font-size: 17px !important;
+    font-weight:bold !important;
+    line-height:2.0 !important;
+    width: 10% !important;
+}
+
+.popup-dialog-style {
+    width:250px !important;
+    height:130px !important;
+    color:white !important;
+    background-color:#4B0082 !important;
+    text-align:center !important;
+}
+
+.cancle-button-style {
+    width:50px !important;
+    height:15px !important;
+    text-align:center !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+}
+
+.ok-button-style {
+    width:50px !important;
+    height:15px !important;
+    text-align:center !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+}
+
+.edit-button-style {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    border-top-width: 0px !important;
+    border-right-width: 0px !important;
+    border-left-width: 0px !important;
+    border-bottom-width: 0px !important;
+}
+
+/*Fix bug - iOS status bar overlapping App*/
+.ios-fix-overlap {
+    margin-top: 20px;
+}
+
+.ios-fix-overlap-div {
+    height: 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #FFF;
+    display: none;
+}
+
+/*override jQuery Mobile*/
+.ui-btn {
+    text-align: center;
+}
+
+.ui-content {
+    overflow-x: visible;
+    padding: 0px;
+}
+
+.ui-content .ui-listview {
+    margin: 0px;
+}
+
+.ui-listview > .ui-li-static {
+    padding: 0px;
+    white-space: normal;
+}
+
+.ui-popup-container {
+    width: 80%;
+}
+
+#my_phonebook_list .ui-checkbox input {
+    width: 14px;
+    height: 14px;
+    margin: 0px;
+    margin: 0 auto;
+}
+
+#my_phonebook_list .ui-checkbox {
+    margin: 0px;
+    top: 5px;
+    left: 35%;
+    display: none;
+}
+
+/*new class*/
+.hide {
+    display: none;
+}
+
+#main_query_page .ui-content > div{
+    float: left;
+}
+
+.q-result-grid {
+    text-align: center;
+}
+
+.q-result-grid > li div {
+    float: left;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    overflow-wrap: break-word;
+}
+
+.q-result-grid > li p {
+    width: 95%;
+    font-weight: normal;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: auto;
+}
+
+.q-result-grid a {
+    text-decoration: none;
+}
+
+.q-result-grid .error_msg {
+    color: #FFF;
+    background-color: red;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    display: flex;
+}
+
+#employee-data.q-result-grid > li div {
+    height: 60px;
+}
+
+#employee-data p {
+    margin: 0px 2px;
+    font-size: 12px;
+}
+
+.q-result-grid .company{
+    width: 30%;
+}
+
+.q-result-grid .e-name{
+    width: 40%;
+}
+
+.q-result-grid .c-name{
+    width: 30%;
+}
+
+#detail-data.q-result-grid > li div {
+    height: 50px;
+}
+
+#detail-data p {
+    margin: 0px 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#detail-data .item-name {
+    width: 30%;
+}
+
+#detail-data .item-content {
+    width: 70%;
+    color: blue;
+}
+
+#detail-data .company-data {
+    display: flex;
+}
+
+#detail-data .company {
+    display: inline-block;
+    width: 80%;
+    padding-top: 2px;
+}
+
+#detail-data .star {
+    display: inline-block;
+}
+
+#my_phonebook_list p {
+    margin: 0px 2px;
+    font-size: 12px;
+}
+
+.popup-msg {
+    height: 100px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    background-color: #4B0082;
+    font-weight: bold;
+}
+
+.popup-msg .ui-btn {
+    padding: 5px 10px;
+    background-color: #28004D;
+    border: none;
+    color: #FFF;
+}
