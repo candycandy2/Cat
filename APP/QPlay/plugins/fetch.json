@@ -1,0 +1,26 @@
+{
+    "cordova-plugin-qlogin": {
+        "source": {
+            "type": "local",
+            "path": "../../plugins/cordova-plugin-qlogin"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-qsecurity": {
+        "source": {
+            "type": "local",
+            "path": "../../plugins/cordova-plugin-qsecurity"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}

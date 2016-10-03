@@ -1,0 +1,85 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"QLoginPlugin\"><param name=\"android-package\" value=\"org.apache.cordova.qlogin.QLoginPlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<serverUrl href=\"http://qplay.benq.com/qplayApi/public/index.php/qplayauth_register\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"QSecurityPlugin\"><param name=\"android-package\" value=\"org.apache.cordova.qsecurity.QSecurityPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/manifest/application": [
+                        {
+                            "xml": "<activity android:name=\"org.apache.cordova.qlogin.LoginActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.BROWSABLE\" /><category android:name=\"android.intent.category.DEFAULT\" /><data android:scheme=\"qplay\" /></intent-filter></activity>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-qlogin": {
+            "PACKAGE_NAME": "com.BenQ.QPlay"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.BenQ.QPlay"
+        },
+        "cordova-plugin-qsecurity": {
+            "PACKAGE_NAME": "com.BenQ.QPlay"
+        }
+    },
+    "dependent_plugins": {},
+    "modules": [
+        {
+            "id": "cordova-plugin-qlogin.QLoginPlugin",
+            "file": "plugins/cordova-plugin-qlogin/www/QLogin.js",
+            "pluginId": "cordova-plugin-qlogin",
+            "clobbers": [
+                "window.plugins.qlogin"
+            ]
+        },
+        {
+            "id": "cordova-plugin-device.device",
+            "file": "plugins/cordova-plugin-device/www/device.js",
+            "pluginId": "cordova-plugin-device",
+            "clobbers": [
+                "device"
+            ]
+        },
+        {
+            "id": "cordova-plugin-qsecurity.QSecurityPlugin",
+            "file": "plugins/cordova-plugin-qsecurity/www/QSecurity.js",
+            "pluginId": "cordova-plugin-qsecurity",
+            "clobbers": [
+                "window.plugins.qsecurity"
+            ]
+        }
+    ],
+    "plugin_metadata": {
+        "cordova-plugin-qlogin": "1.0.0",
+        "cordova-plugin-device": "1.1.2",
+        "cordova-plugin-qsecurity": "1.0.0"
+    }
+}
