@@ -1,7 +1,7 @@
 //qplayAPI - YellowPage
 
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
-var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
+var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 function QPlayAPI(requestType, requestAction, successCallback, failCallback = null, queryData = null) {
 
