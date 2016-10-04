@@ -1,7 +1,7 @@
 
 /*global variable*/
 
-var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
+var pageList = ["viewInitial1-1", "viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
 
 var loginData = {
     token:          "",
@@ -17,7 +17,5 @@ window.initialSuccess = function(data) {
     loginData.token =       data.token;
     loginData.token_valid = data.token_valid;
     loginData.uuid =        data.uuid;
-    
-    var companyData = new QueryCompanyData();
 }
 //console.log($.mobile.pageContainer.pagecontainer("getActivePage"));
