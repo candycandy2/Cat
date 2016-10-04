@@ -35,7 +35,7 @@ var app = {
         args[0] = "initialSuccess"; //set in APP's index.js
         args[1] = device.uuid;
 
-        window.plugins.qlogin.openCertificationPage(null, null, args);
+        //window.plugins.qlogin.openCertificationPage(null, null, args);
         
 
         if (device.platform === "iOS") {
