@@ -22,9 +22,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                     }
                 };
 
-                this.failCallback = function(data) {
-                    
-                };
+                this.failCallback = function(data) {};
 
                 var __construct = function() {
                     QPlayAPI("POST", "QueryCompanyData", self.successCallback, self.failCallback);
@@ -44,18 +42,12 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 if (emptyData) {
                     $("#noQueryCondition").popup("open");
                 } else {
-                    $(":mobile-pagecontainer").pagecontainer("change", $("#viewQueryResult"));
+                    $.mobile.changePage('#viewQueryResult');
                 }
             }
 
             /********************************** page event *************************************/
-            $("#viewDataInput").one("pagebeforeshow", function(event, ui) {
-            
-            });
-
-            $("#viewDataInput").one("pageshow", function(event, ui) {
-            
-            });
+            $("#viewDataInput").one("pagebeforeshow", function(event, ui) {});
 
             /********************************** dom event *************************************/
             $("#cleanQuery").on("click", function() {
