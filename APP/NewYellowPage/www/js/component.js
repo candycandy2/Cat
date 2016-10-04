@@ -76,7 +76,7 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 
 /********************************** function *************************************/
 
-function getSignature (action, signatureTime) {
+function getSignature(action, signatureTime) {
   
   if (action === "getTime") {
     return Math.round(new Date().getTime()/1000);
@@ -85,4 +85,17 @@ function getSignature (action, signatureTime) {
     return CryptoJS.enc.Base64.stringify(hash);
   }
 
+}
+
+function loadingMask(action) {
+    if (action === "show") {
+        $("body").addClass("ui-loading");
+        $.mobile.loading("show", {
+            html: '<div class="loader"><img src="img/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>'
+        });
+    } else {
+        $("body").removeClass("ui-loading");
+        $.mobile.loading("hide");
+        $(".ui-loader").remove();
+    }
 }

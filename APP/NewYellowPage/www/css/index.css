@@ -209,10 +209,6 @@
 }
 
 /*override jQuery Mobile*/
-.ui-btn {
-    text-align: center;
-}
-
 .ui-content {
     overflow-x: visible;
     padding: 0px;
@@ -231,23 +227,36 @@
     width: 80%;
 }
 
-#my_phonebook_list .ui-checkbox input {
+#detailData .ui-btn {
+    border: none;
+}
+
+#myPhonebookList .ui-checkbox input {
     width: 14px;
     height: 14px;
     margin: 0px;
     margin: 0 auto;
 }
 
-#my_phonebook_list .ui-checkbox {
+#myPhonebookList .ui-checkbox {
     margin: 0px;
     top: 5px;
     left: 35%;
     display: none;
 }
 
+#myPhonebookList p {
+    margin: 0px 2px;
+    font-size: 12px;
+}
+
 /*new class*/
 .hide {
     display: none;
+}
+
+.page-header a {
+    margin-top: 6px;
 }
 
 #viewIndex .ui-content > div{
@@ -307,42 +316,37 @@
     width: 30%;
 }
 
-#detail-data.q-result-grid > li div {
+#detailData.q-result-grid > li div {
     height: 50px;
 }
 
-#detail-data p {
+#detailData p {
     margin: 0px 5px;
     font-size: 14px;
     font-weight: bold;
 }
 
-#detail-data .item-name {
+#detailData .item-name {
     width: 30%;
 }
 
-#detail-data .item-content {
+#detailData .item-content {
     width: 70%;
     color: blue;
 }
 
-#detail-data .company-data {
+#detailData .company-data {
     display: flex;
 }
 
-#detail-data .company {
+#detailData .company {
     display: inline-block;
     width: 80%;
     padding-top: 2px;
 }
 
-#detail-data .star {
+#detailData .star {
     display: inline-block;
-}
-
-#my_phonebook_list p {
-    margin: 0px 2px;
-    font-size: 12px;
 }
 
 .popup-msg {
