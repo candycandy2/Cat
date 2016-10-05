@@ -45,7 +45,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                     QPlayAPI("POST", "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData);
                 }();
 
-            };
+            }
             
             function AddMyPhoneBook() {
                 
@@ -68,10 +68,11 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                     QPlayAPI("POST", "AddMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
 
-            };
+            }
 
             /********************************** page event *************************************/
             $("#viewDetailInfo").on("pagebeforeshow", function(event, ui){
+                loadingMask("show");
                 QueryEmployeeDataDetail();
             });
 
