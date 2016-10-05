@@ -59,6 +59,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             });
 
             $("#callQuery").on("click", function() {
+                prevPageID = "viewDataInput";
                 checkInputData();
             });
 

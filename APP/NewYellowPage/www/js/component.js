@@ -89,13 +89,12 @@ function getSignature(action, signatureTime) {
 
 function loadingMask(action) {
     if (action === "show") {
-        $("body").addClass("ui-loading");
-        $.mobile.loading("show", {
-            html: '<div class="loader"><img src="img/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>'
-        });
+        if ($(".loader").length === 0) {
+            $('<div class="loader"><img src="img/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
+        } else {
+            $(".loader").show();
+        }
     } else {
-        $("body").removeClass("ui-loading");
-        $.mobile.loading("hide");
-        $(".ui-loader").remove();
+        $(".loader").hide();
     }
 }

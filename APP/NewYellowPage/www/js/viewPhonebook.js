@@ -77,7 +77,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                     QPlayAPI("POST", "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
 
-            };
+            }
 
             function deletePhoneBook(index) {
                 
@@ -101,7 +101,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
-            };
+            }
 
             function refreshMyPhonebookList() {
 
@@ -196,6 +196,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             $("#phonebookDelectConfirm #confirm").on('click', function(){
                 var doDeleteCount = 0;
                 var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
+                loadingMask("show");
 
                 $.map(phonebookData, function(value, key) {
                     var tempData = {};
