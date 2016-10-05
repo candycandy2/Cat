@@ -5,9 +5,26 @@
 // appSecretKey => set in QPlayAPI.js under specific APP
 //
 
+var loginData = {
+    token:          "",
+    token_valid:    "",
+    uuid:           ""
+};
+
 var app = {
     // Application Constructor
     initialize: function() {
+
+        //For test, to clear localStorageData
+        /*
+        if (window.localStorage.length === 0) {
+            this.bindEvents();
+        } else {
+            window.localStorage.clear();
+            this.bindEvents();
+        }
+        */
+
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -21,22 +38,29 @@ var app = {
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
-        /*
-        if (data ok) {
-            initialSuccess(); //set in APP's index.js
-        } else {
-            call APP QPlay to check data
-        }
-        */
-        
-        //scheme not work now, so use QLogin to get token
-        
-        var args = [];
-        args[0] = "initialSuccess"; //set in APP's index.js
-        args[1] = device.uuid;
+        var getDataFromServer = false;
 
-        window.plugins.qlogin.openCertificationPage(null, null, args);
-        
+        if (window.localStorage.length === 0) {
+            getDataFromServer = true;
+        } else {
+            var loginDataExist = processStorageData("check");
+            
+            if (loginDataExist) {
+                processStorageData("setLoginData");
+                initialSuccess();
+            } else {
+                getDataFromServer = true;
+            }
+        }
+
+        if (getDataFromServer) {
+            //scheme not work now, so use QLogin to get token
+            var args = [];
+            args[0] = "initialSuccess"; //set in APP's index.js
+            args[1] = device.uuid;
+
+            window.plugins.qlogin.openCertificationPage(null, null, args);
+        }
 
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
@@ -55,18 +79,15 @@ app.initialize();
 $(document).one("pagebeforecreate", function(){
     
     $(':mobile-pagecontainer').html("");
-
-    for (var i=0; i<pageList.length; i++) {
-        var pageID = pageList[i];
-
+    
+    $.map(pageList, function(value, key) {
         (function(pageID){
             $.get("View/" + pageID + ".html", function(data) {
                 $.mobile.pageContainer.append(data);
                 $("#" + pageID).page().enhanceWithin();
             }, "html"); 
-        }(pageID));
-    }
-
+        }(value));
+    });
 });
 
 
@@ -75,16 +96,40 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
+function processStorageData(action, data = null) {
+
+    if (action === "check") {
+        var checkLoginDataExist = true;
+
+        $.map(loginData, function(value, key) {
+            if (key === "token" || key === "token_valid") {
+                if (value === null) {
+                    checkLoginDataExist = false;
+                }
+            }
+        });
+
+        return checkLoginDataExist;
+    } else if (action === "setLoginData") {
+        $.map(loginData, function(value, key) {
+            loginData[key] = window.localStorage.getItem(key);
+        });
+    } else if (action === "setLocalStorage") {
+        $.map(data, function(value, key) {
+            window.localStorage.setItem(key, value);
+            loginData[key] = value;
+        });
+    }
+
+}
 
 function getSignature(action, signatureTime) {
-  
   if (action === "getTime") {
     return Math.round(new Date().getTime()/1000);
   } else {
     var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
     return CryptoJS.enc.Base64.stringify(hash);
   }
-
 }
 
 function loadingMask(action) {
