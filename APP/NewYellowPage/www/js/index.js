@@ -1,5 +1,5 @@
 
-/*global variable*/
+/*global variable, function*/
 
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
 
@@ -10,6 +10,10 @@ var loginData = {
 };
 
 var employeeData = {};
+var employeeSelectedIndex;
+var phonebookData = {};
+var myEmpID = "1609009";
+var prevPageID;
 
 window.initialSuccess = function(data) {
     
@@ -19,5 +23,11 @@ window.initialSuccess = function(data) {
     loginData.uuid =        data.uuid;
     
     var companyData = new QueryCompanyData();
+
+    $("a[name=goPrevPage]").on("click", function(){
+        $.mobile.changePage('#' + prevPageID);
+        prevPageID = null;
+    });
 }
 //console.log($.mobile.pageContainer.pagecontainer("getActivePage"));
+

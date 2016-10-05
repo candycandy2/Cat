@@ -17,6 +17,21 @@ body {
     border-style: none;
     font-size: 16px;
     text-align: center;
+    line-height: 0;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    flex-flow: column wrap;
+    align-items: center;
 }
 
 /* override jQuery Mobile */
