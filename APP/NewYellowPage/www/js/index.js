@@ -1,6 +1,6 @@
 
 /*global variable, function*/
-
+var appKey = "appyellowpage";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
 
 var employeeData = {};
@@ -10,9 +10,10 @@ var myEmpID = "1609009";
 var prevPageID;
 
 window.initialSuccess = function(data) {
-    
     //data return from [qplayApi/public/index.php/v101/qplay/login]
-    processStorageData("setLocalStorage", data);
+    if (data !== null) {
+        processStorageData("setLocalStorage", data);
+    }
 
     var companyData = new QueryCompanyData();
 
