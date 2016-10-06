@@ -1,7 +1,11 @@
-.center {
-    vertical-align : middle;
+.initialMain {
     width: 100%;
     height: 100%;
     text-align: center;
-    margin-bottom: 10px;
+    vertical-align : middle;
+}
+
+.initialLogo {
+    margin-top: 20%;
+    margin-bottom: 45%;
 }
