@@ -12,12 +12,10 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                 window.plugins.qlogin.openCertificationPage(null, null, args);
             }
             
-            function checkAppVersion() {
-                
+            window.checkAppVersion = function() {
                 var self = this;
                 
                 this.successCallback = function(data) {
-                    
                     loadingMask("hide");
                     
                     var resultcode = data['result_code'];
@@ -31,19 +29,33 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         // .....
 
                         // for testing
-                        doLogin();
+                        if (getDataFromServer) {
+                            doLogin();
+                        } else {
+                            $.mobile.changePage('#viewMain2-1');
+                        }
                     }
                     else if (resultcode == 000913)
                     {
                         //alert("up to date");
                         //alert(data['message']);
-
-                        doLogin();
+                        if (getDataFromServer) {
+                            doLogin();
+                        } else {
+                            $.mobile.changePage('#viewMain2-1');
+                        }
+                    }
+                    else
+                    {
+                        //alert(data['message']);
                     }
                     
                 };
                 
-                this.failCallback = function(data) {};
+                this.failCallback = function(data)
+                {
+                    loadingMask("hide");
+                };
                 
                 var __construct = function() {
                     
@@ -59,10 +71,6 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
 
             $("#viewInitial1-1").one("pageshow", function(event, ui) {
                 
-                setTimeout(function(){
-                    checkAppVersion();
-                    loadingMask("show");
-                }, 2000);
             });
 
             /********************************** dom event *************************************/
