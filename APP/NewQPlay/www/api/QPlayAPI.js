@@ -1,10 +1,12 @@
-//qplayAPI - YellowPage
+//qplayAPI - QPlay
 
-var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
-var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
-function QPlayAPI(requestType, requestAction, successCallback, failCallback = null, queryData = null) {
 
+function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
+
+    failCallback =  failCallback || null;
+    queryData = queryData || null;
+    
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
