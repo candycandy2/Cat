@@ -10,6 +10,7 @@ var loginData = {
     token_valid:    "",
     uuid:           ""
 };
+var getDataFromServer = false;
 
 var app = {
     // Application Constructor
@@ -38,8 +39,6 @@ var app = {
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
-        var getDataFromServer = false;
-
         if (window.localStorage.length === 0) {
             getDataFromServer = true;
         } else {
@@ -52,16 +51,15 @@ var app = {
                 getDataFromServer = true;
             }
         }
-
+        
         if (getDataFromServer) {
-            //scheme not work now, so use QLogin to get token
-            var args = [];
-            args[0] = "initialSuccess"; //set in APP's index.js
-            args[1] = device.uuid;
-
-            window.plugins.qlogin.openCertificationPage(null, null, args);
+            if (appKey !== "appqplay") {
+                getServerData();
+            } else {
+                initialSuccess();
+            }
         }
-
+        
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
@@ -103,7 +101,7 @@ function processStorageData(action, data = null) {
 
         $.map(loginData, function(value, key) {
             if (key === "token" || key === "token_valid") {
-                if (value === null) {
+                if (window.localStorage.getItem(key) === null) {
                     checkLoginDataExist = false;
                 }
             }
@@ -121,6 +119,23 @@ function processStorageData(action, data = null) {
         });
     }
 
+}
+
+function getServerData() {
+    if (appKey === "appqplay") {
+        var args = [];
+        args[0] = "initialSuccess"; //set in APP's index.js
+        args[1] = device.uuid;
+
+        window.plugins.qlogin.openCertificationPage(null, null, args);
+    } else {
+        //scheme not work now, so use QLogin to get token
+        var args = [];
+        args[0] = "initialSuccess"; //set in APP's index.js
+        args[1] = device.uuid;
+
+        window.plugins.qlogin.openCertificationPage(null, null, args);
+    }
 }
 
 function getSignature(action, signatureTime) {
