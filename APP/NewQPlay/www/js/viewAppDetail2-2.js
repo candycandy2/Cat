@@ -5,22 +5,55 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
         create: function(event, ui) {
             
             /********************************** function *************************************/
- 
-            function QueryAppDetail() {
-                var self = this;
+             function displayAppDetail() {
 
-                this.successCallback = function(data) {
-                    var resultcode = data['result_code'];
-                    
-                    if (resultcode == 1) {
+                var element = document.getElementById("appDetailIcon");
+                element.src = applist[selectAppIndex].icon_url;
 
-                    } // if (resultcode == 1)
-                    else {
-                        
+                for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++)
+                {
+                    if ((applist[selectAppIndex].app_code == appmultilang[multilangIndex].project_code) &&
+                        (appmultilang[multilangIndex].lang == "zh-tw"))
+                    {
+                        break;
                     }
-                }; 
+                }
 
-                this.failCallback = function(data) {};
+                if (multilangIndex > appmultilang.length)
+                {
+                    console.log("find multilang error!!!");
+                    //alert("find multilang error!!!");
+                    return;
+                }
+
+                element = document.getElementById("appDetailAppName");
+                element.textContent = appmultilang[multilangIndex].app_name;
+
+                element = document.getElementById("appDetailAppSummary");
+                element.textContent = appmultilang[multilangIndex].app_summary;
+
+                element = document.getElementById("appDetailAppVersion");
+                element.textContent = applist[selectAppIndex].app_version_name;
+
+                element = document.getElementById("appDetailAppDescription");
+                element.textContent = appmultilang[multilangIndex].app_description
+
+                var appranking = applist[selectAppIndex].avg_score;
+
+                var content = "";
+                var piclist = appmultilang[multilangIndex].pic_list;
+                for (var listIndex=0; listIndex<piclist.length; listIndex++)
+                {
+                    (function(indexNow){
+                        $('#appDetailPicList').trigger('remove.owl.carousel', indexNow);
+                    }(listIndex));
+                }
+
+                for (listIndex=0; listIndex<piclist.length; listIndex++)
+                {
+                    content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
+                    $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
+                }
 
                 var __construct = function() {
                     
@@ -29,15 +62,21 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
             /********************************** page event *************************************/
             $("#viewAppDetail2-2").on("pagebeforeshow", function(event, ui) {
-                console.log("QueryAppDetail");
-                QueryAppDetail();
+                displayAppDetail();
             });
 
-            $("#viewAppDetail2-2").one("pageshow", function(event, ui) {
-
+            $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
+                
             });
 
             /********************************** dom event *************************************/
+            $("#InstallApp").click(function() {
+                if (selectAppIndex != 9999)
+                {
+                    window.open(applist[selectAppIndex].url, '_self', false);
+                }
+            });
+            
         }
     });
 
