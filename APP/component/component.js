@@ -26,7 +26,10 @@ var app = {
         }
         
 
+        //For release
+        /*
         this.bindEvents();
+        */
     },
     // Bind Event Listeners
     bindEvents: function() {
