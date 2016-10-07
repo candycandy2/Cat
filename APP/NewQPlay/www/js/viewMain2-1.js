@@ -40,38 +40,37 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         };
                         
                         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
-                          var catetoryname = appcategorylist[categoryindex].app_category;
-                          $('#appcontent').append('<h4>' + catetoryname + '</h4>');
-                          $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '></div>');
-                          var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
-                          //init carousel
-                          owl.owlCarousel(carousel_Settings);
+                            var catetoryname = appcategorylist[categoryindex].app_category;
+                            $('#appcontent').append('<h4>' + catetoryname + '</h4>');
+                            $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '></div>');
+                            var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
+                            //init carousel
+                            owl.owlCarousel(carousel_Settings);
                           
-                          for (var appindex=0; appindex<applist.length; appindex++) {
-                            var appcategory = applist[appindex].app_category;
-                            if (appcategory == catetoryname){
-                              var appurl = applist[appindex].url;
-                              var appurlicon = applist[appindex].icon_url;
-                              var packagename = applist[appindex].package_name;
+                            for (var appindex=0; appindex<applist.length; appindex++) {
+                                var appcategory = applist[appindex].app_category;
+                                if (appcategory == catetoryname){
+                                    var appurl = applist[appindex].url;
+                                    var appurlicon = applist[appindex].icon_url;
+                                    var packagename = applist[appindex].package_name;
                               
-                              carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
+                                    carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
                               
-                              $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
+                                    $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
                               
-                              // fix me !!!!
-                              //if (packagename == "benq.qplay") {
-                              //    app.changeLevel(applist[appindex].security_level);
-                              //}
-                            } // if (appcategory == catetoryname)
-                          } // for appindex
+                                    // fix me !!!!
+                                    //if (packagename == "benq.qplay") {
+                                    //    app.changeLevel(applist[appindex].security_level);
+                                    //}
+                                } // if (appcategory == catetoryname)
+                            } // for appindex
                         } // for categoryindex
-                        
+
                         $('a[id^="application"]').click(function(e) {
                             e.stopImmediatePropagation();
                             e.preventDefault();
                             
                             selectAppIndex = this.getAttribute('value');
-                            //callDisplayAppDetail(selectAppIndex);
                             $.mobile.changePage('#viewAppDetail2-2');
                         });
                     } // if (resultcode == 1)
