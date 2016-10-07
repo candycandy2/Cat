@@ -44,12 +44,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         $("#eventlistview").listview('refresh');
 
                         $('a[id^="messageindex"]').click(function(e) {
-                          e.stopImmediatePropagation();
-                          e.preventDefault();
+                            e.stopImmediatePropagation();
+                            e.preventDefault();
                           
-                          var i = this.getAttribute('value');
-                          var rowid = messagecontent.message_list[i].message_send_row_id;
-                          callgetMessageDetail(rowid)
+                            var i = this.getAttribute('value');
+                            messageRowId = messagecontent.message_list[i].message_send_row_id;
+                            $.mobile.changePage("#viewWebNews2-3-1");
                         });
                     } // if (resultcode == 1)
                     else {
