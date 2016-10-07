@@ -5,10 +5,28 @@
 // appSecretKey => set in QPlayAPI.js under specific APP
 //
 
+var loginData = {
+    token:          "",
+    token_valid:    "",
+    uuid:           ""
+};
+var getDataFromServer = false;
+
 var app = {
     // Application Constructor
     initialize: function() {
-        this.bindEvents();
+
+        // to clear localStorageData
+        // need to comment out after token validation checking been done
+        
+        if (window.localStorage.length === 0) {
+            this.bindEvents();
+        } else {
+            window.localStorage.clear();
+            this.bindEvents();
+        }
+        
+        //this.bindEvents();
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -21,23 +39,27 @@ var app = {
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
-        /*
-        if (data ok) {
-            initialSuccess(); //set in APP's index.js
+        if (window.localStorage.length === 0) {
+            getDataFromServer = true;
         } else {
-            call APP QPlay to check data
+            var loginDataExist = processStorageData("check");
+            
+            if (loginDataExist) {
+                processStorageData("setLoginData");
+                initialSuccess();
+            } else {
+                getDataFromServer = true;
+            }
         }
-        */
         
-        //scheme not work now, so use QLogin to get token
+        if (getDataFromServer) {
+            if (appKey !== "appqplay") {
+                getServerData();
+            } else {
+                initialSuccess();
+            }
+        }
         
-        var args = [];
-        args[0] = "initialSuccess"; //set in APP's index.js
-        args[1] = device.uuid;
-
-        //window.plugins.qlogin.openCertificationPage(null, null, args);
-        
-
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
@@ -55,18 +77,15 @@ app.initialize();
 $(document).one("pagebeforecreate", function(){
     
     $(':mobile-pagecontainer').html("");
-
-    for (var i=0; i<pageList.length; i++) {
-        var pageID = pageList[i];
-
+    
+    $.map(pageList, function(value, key) {
         (function(pageID){
             $.get("View/" + pageID + ".html", function(data) {
                 $.mobile.pageContainer.append(data);
                 $("#" + pageID).page().enhanceWithin();
             }, "html"); 
-        }(pageID));
-    }
-
+        }(value));
+    });
 });
 
 
@@ -75,6 +94,50 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
+function processStorageData(action, data) {
+    
+    data = data || null;
+    if (action === "check") {
+        var checkLoginDataExist = true;
+
+        $.map(loginData, function(value, key) {
+            if (key === "token" || key === "token_valid") {
+                if (window.localStorage.getItem(key) === null) {
+                    checkLoginDataExist = false;
+                }
+            }
+        });
+
+        return checkLoginDataExist;
+    } else if (action === "setLoginData") {
+        $.map(loginData, function(value, key) {
+            loginData[key] = window.localStorage.getItem(key);
+        });
+    } else if (action === "setLocalStorage") {
+        $.map(data, function(value, key) {
+            window.localStorage.setItem(key, value);
+            loginData[key] = value;
+        });
+    }
+
+}
+
+function getServerData() {
+    if (appKey === "appqplay") {
+        var args = [];
+        args[0] = "initialSuccess"; //set in APP's index.js
+        args[1] = device.uuid;
+
+        window.plugins.qlogin.openCertificationPage(null, null, args);
+    } else {
+        //scheme not work now, so use QLogin to get token
+        var args = [];
+        args[0] = "initialSuccess"; //set in APP's index.js
+        args[1] = device.uuid;
+
+        window.plugins.qlogin.openCertificationPage(null, null, args);
+    }
+}
 
 function getSignature(action, signatureTime) {
   if (action === "getTime") {
