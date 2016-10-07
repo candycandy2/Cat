@@ -5,13 +5,6 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
         create: function(event, ui) {
             
             /********************************** function *************************************/
-            function doLogin() {
-                var args = [];
-                args[0] = "initialSuccess"; //登入成功後調用的 call back function name, set in APP's index.js
-                args[1] = device.uuid; //uuid
-                window.plugins.qlogin.openCertificationPage(null, null, args);
-            }
-            
             window.checkAppVersion = function() {
                 var self = this;
                 
@@ -20,34 +13,29 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                     
                     var resultcode = data['result_code'];
                     
-                    if (resultcode == 1)
+                    if (resultcode == 1) // need to update app
                     {
-                        //alert("need to update");
-                        //alert(data['message']);
-
                         // do update process
                         // .....
 
                         // for testing
                         if (getDataFromServer) {
-                            doLogin();
+                            getServerData();
                         } else {
                             $.mobile.changePage('#viewMain2-1');
                         }
                     }
-                    else if (resultcode == 000913)
+                    else if (resultcode == 000913) // app is up to date
                     {
-                        //alert("up to date");
-                        //alert(data['message']);
                         if (getDataFromServer) {
-                            doLogin();
+                            getServerData();
                         } else {
                             $.mobile.changePage('#viewMain2-1');
                         }
                     }
                     else
                     {
-                        //alert(data['message']);
+
                     }
                     
                 };
