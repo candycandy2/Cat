@@ -13,6 +13,7 @@ var appmultilang;
 var loginjustdone;
 var messagecontent;
 var selectAppIndex = 9999;
+var messageRowId = 9999;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
