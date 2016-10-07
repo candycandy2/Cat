@@ -17,16 +17,19 @@ var app = {
     initialize: function() {
 
         //For test, to clear localStorageData
-        /*
+        
         if (window.localStorage.length === 0) {
             this.bindEvents();
         } else {
             window.localStorage.clear();
             this.bindEvents();
         }
-        */
+        
 
+        //For release
+        /*
         this.bindEvents();
+        */
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -94,7 +97,8 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
-function processStorageData(action, data = null) {
+function processStorageData(action, data) {
+    data = data || null;
 
     if (action === "check") {
         var checkLoginDataExist = true;
