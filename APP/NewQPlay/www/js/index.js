@@ -9,6 +9,13 @@ var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 var employeeData = {};
 
+var appcategorylist;
+var applist;
+var appmultilang;
+var loginjustdone;
+var messagecontent;
+var selectAppIndex = 9999;
+
 window.initialSuccess = function(data) {
     if (data !== undefined) {
         processStorageData("setLocalStorage", data);
