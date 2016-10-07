@@ -5,40 +5,49 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
         create: function(event, ui) {
             
             /********************************** function *************************************/
-            function checkAppVersion() {
-                
+            window.checkAppVersion = function() {
                 var self = this;
                 
                 this.successCallback = function(data) {
-                    
                     loadingMask("hide");
                     
                     var resultcode = data['result_code'];
                     
-                    if (resultcode == 1)
+                    if (resultcode == 1) // need to update app
                     {
-                        //alert("need to update");
-                        alert(data['message']);
-
                         // do update process
                         // .....
 
                         // for testing
-                        //doLoginFunction();
+                        if (getDataFromServer) {
+                            getServerData();
+                        } else {
+                            $.mobile.changePage('#viewMain2-1');
+                        }
                     }
-                    else if (resultcode == 000913)
+                    else if (resultcode == 000913) // app is up to date
                     {
-                        //alert("up to date");
-                        alert(data['message']);
+                        if (getDataFromServer) {
+                            getServerData();
+                        } else {
+                            $.mobile.changePage('#viewMain2-1');
+                        }
+                    }
+                    else
+                    {
 
-                        //doLoginFunction();
                     }
                     
                 };
                 
-                this.failCallback = function(data) {};
+                this.failCallback = function(data)
+                {
+                    loadingMask("hide");
+                };
                 
                 var __construct = function() {
+                    
+                    // fix me !!! need to get device type and app version
                     apiCheckAppVersion(self.successCallback, self.failCallback, "android", "1");
                 }();
             }
@@ -49,11 +58,7 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
             });
 
             $("#viewInitial1-1").one("pageshow", function(event, ui) {
-                loadingMask("show");
-                setTimeout(function(){
-                    checkAppVersion();
-                    
-                }, 3000);
+                
             });
 
             /********************************** dom event *************************************/
