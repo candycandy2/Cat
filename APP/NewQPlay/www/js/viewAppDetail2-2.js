@@ -7,8 +7,8 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             /********************************** function *************************************/
              function displayAppDetail() {
 
-                var element = document.getElementById("appDetailIcon");
-                element.src = applist[selectAppIndex].icon_url;
+                $("#appDetailIcon").attr("src", applist[selectAppIndex].icon_url); 
+                
 
                 for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++)
                 {
@@ -26,17 +26,10 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                     return;
                 }
 
-                element = document.getElementById("appDetailAppName");
-                element.textContent = appmultilang[multilangIndex].app_name;
-
-                element = document.getElementById("appDetailAppSummary");
-                element.textContent = appmultilang[multilangIndex].app_summary;
-
-                element = document.getElementById("appDetailAppVersion");
-                element.textContent = applist[selectAppIndex].app_version_name;
-
-                element = document.getElementById("appDetailAppDescription");
-                element.textContent = appmultilang[multilangIndex].app_description
+                $("#appDetailAppName").html(appmultilang[multilangIndex].app_name);
+                $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
+                $("#appDetailAppVersion").html(appmultilang[multilangIndex].app_version_name);
+                $("#appDetailAppDescription").html(appmultilang[multilangIndex].app_description);
 
                 var appranking = applist[selectAppIndex].avg_score;
 
