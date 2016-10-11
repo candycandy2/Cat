@@ -40,7 +40,7 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
                     <th data-field="parameter_type_name" data-sortable="true" data-formatter="typeNameFormatter" data-search-formatter="false">{{trans("messages.PARAMETER_TYPE_NAME")}}</th>
-                    <th data-field="parameter_type_desc" data-sortable="true">{{trans("messages.DESCRIPTION")}}</th>
+                    <th data-field="parameter_type_desc" data-sortable="true" data-width="700px" data-class="grid_long_column">{{trans("messages.DESCRIPTION")}}</th>
                 </tr>
                 </thead>
             </table>
@@ -65,9 +65,10 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
+                    <th data-field="parameter_type_row_id" data-sortable="false" data-visible="false" data-searchable="false">TypeID</th>
                     <th data-field="parameter_type_name" data-sortable="true">{{trans("messages.PARAMETER_TYPE_NAME")}}</th>
                     <th data-field="parameter_name" data-formatter="parameterNameFormatter" data-sortable="true" data-search-formatter="false">{{trans("messages.PARAMETER_NAME")}}</th>
-                    <th data-field="parameter_value" data-sortable="true">{{trans("messages.PARAMETER_VALUE")}}</th>
+                    <th data-field="parameter_value" data-sortable="true" data-width="600px" data-class="grid_long_column">{{trans("messages.PARAMETER_VALUE")}}</th>
                 </tr>
                 </thead>
             </table>
@@ -133,14 +134,25 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
         }
 
         var deleteType = function() {
+            var selectedType = $("#gridTypeList").bootstrapTable('getSelections');
+            var paramList = $("#gridParameterList").bootstrapTable('getData');
+            var typeIdList = new Array();
+            var check = true;
+            $.each(selectedType, function(i, type) {
+                typeIdList.push(type.row_id);
+                $.each(paramList, function(j, p) {
+                    if(p.parameter_type_name == type.parameter_type_name) {
+                        check = false;
+                        return false;
+                    }
+                });
+            });
+            if(!check) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_EXIST_PARAMETER_IN_TYPE")}}");
+                return;
+            }
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_TYPE")}}", "", function () {
                 hideConfirmDialog();
-                var selectedType = $("#gridTypeList").bootstrapTable('getSelections');
-
-                var typeIdList = new Array();
-                $.each(selectedType, function(i, type) {
-                    typeIdList.push(type.row_id);
-                });
                 var mydata = {type_id_list:typeIdList};
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
@@ -230,12 +242,12 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
             var nameCheck = true;
             $.each(typeList, function(i, existType) {
                 if(isNewType) {
-                    if(existType.parameter_type_name == typeName) {
+                    if(existType.parameter_type_name.toUpperCase() == typeName.toUpperCase()) {
                         nameCheck = false;
                         return false;
                     }
                 } else {
-                    if(existType.parameter_type_name == typeName && existType.row_id != currentMaintainTypeId) {
+                    if(existType.parameter_type_name.toUpperCase() == typeName.toUpperCase() && existType.row_id != currentMaintainTypeId) {
                         nameCheck = false;
                         return false;
                     }
@@ -310,7 +322,7 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
 
             $("#parameterDetailMaintainDialogTitle").text("{{trans("messages.MSG_EDIT_PARAMETER")}}");
             $("#parameterDetailMaintainDialog").modal('show');
-            currentMaintainParameterId = typeId;
+            currentMaintainParameterId = paraId;
             isNewParameter = false;
         };
 
@@ -320,6 +332,28 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
             var paraValue = $("#tbxParameterValue").val();
             if(paraName == "" || paraTypeId == "" || paraValue == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+
+            var parameterList = $("#gridParameterList").bootstrapTable('getData');
+            var nameCheck = true;
+            $.each(parameterList, function(i, existParam) {
+                if(existParam.parameter_type_row_id == paraTypeId) {
+                    if(isNewParameter) {
+                        if(existParam.parameter_name.toUpperCase() == paraName.toUpperCase()) {
+                            nameCheck = false;
+                            return false;
+                        }
+                    } else {
+                        if(existParam.parameter_name.toUpperCase() == paraName.toUpperCase() && existParam.row_id != currentMaintainParameterId) {
+                            nameCheck = false;
+                            return false;
+                        }
+                    }
+                }
+            });
+            if(!nameCheck) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_PARAMETER_NAME_EXIST_IN_TYPE")}}");
                 return false;
             }
 

@@ -6,6 +6,10 @@ $input = Input::get();
 $messageInfo = null;
 $messageId = $input["message_id"];
 $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
+$needPushFlag = 'N';
+if(count($messageInfo->send_list) == 0) {
+    $needPushFlag = 'Y';
+}
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -58,6 +62,21 @@ label {
               </div>
             </div>
             <div class="form-group row">
+                <label for="ddlPushTo" class="col-xs-2">{{trans("messages.TEMPLATE_ID")}}:</label>
+                <div class="col-xs-10">
+                    <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled">
+                        <option value="1" @if($messageInfo->template_id == 1) selected="selected" @endif>1</option>
+                        <option value="2" @if($messageInfo->template_id == 2) selected="selected" @endif>2</option>
+                        <option value="3" @if($messageInfo->template_id == 3) selected="selected" @endif>3</option>
+                        <option value="4" @if($messageInfo->template_id == 4) selected="selected" @endif>4</option>
+                        <option value="5" @if($messageInfo->template_id == 5) selected="selected" @endif>5</option>
+                        <option value="6" @if($messageInfo->template_id == 6) selected="selected" @endif>6</option>
+                        <option value="7" @if($messageInfo->template_id == 7) selected="selected" @endif>7</option>
+                        <option value="8" @if($messageInfo->template_id == 8) selected="selected" @endif>8</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
               <label for="ddlType" class="col-xs-2">{{trans("messages.PUSH_TYPE")}}:</label>
               <div class="col-xs-10">
                 <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
@@ -80,8 +99,9 @@ label {
             </div>
             <div class="form-group row">
               <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
-              <div class="col-xs-10" style="word-wrap:break-word;">
-                {{$messageInfo->message_text}}
+              <div class="col-xs-10" style="word-wrap:break-word;"><pre>{{$messageInfo->message_text}}</pre>
+{{--                {{str_replace("\n", "<br/>",$messageInfo->message_text)}}--}}
+
               </div>
             </div>
         </div>
@@ -101,7 +121,6 @@ label {
                    data-click-to-select="false" data-single-select="false">
                 <thead>
                 <tr>
-                    <th data-field="state" data-checkbox="true"></th>
                     <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
                     <th data-field="created_at" data-sortable="true" data-formatter="pushDateFormatter" data-search-formatter="false">{{trans("messages.PUSH_DATE")}}</th>
                     <th data-field="source_user" data-sortable="true">{{trans("messages.PUSH_SOURCE_USER")}}</th>
@@ -115,21 +134,29 @@ label {
     <script>
         $(function() {
             $('#switchVisible').on('switch-change', SaveMessageVisible);
+            @if($needPushFlag == 'Y')
+                    window.location.href = "newMessage?copy_from={{$messageId}}&from_history=Y";
+            @endif
         });
 
         var pushDateFormatter = function (value, row) {
-            return '<a href="pushSendDetail?push_send_row_id=' + row.row_id + '">' + value + '</a>';
+            return '<a href="pushSendDetail?message_id=' + {{$messageId}} + '&push_send_row_id=' + row.row_id + '">' + value + '</a>';
         };
 
         var oriVisible = '{{$messageInfo->visible}}';
+        var msgY = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_Y")}}".replace("%s", "{{$messageInfo->message_title}}");
+        var msgN = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_N")}}".replace("%s", "{{$messageInfo->message_title}}");
         var SaveMessageVisible = function () {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
+            var visible = "N";
+            var msg = msgN;
+            if($('#cbxVisible').is(':checked')) {
+                visible = "Y";
+                msg = msgY;
+            }
+
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", msg, "", function () {
                 $('#confirmDialog').unbind();
                 hideConfirmDialog();
-                var visible = "N";
-                if($('#cbxVisible').is(':checked')) {
-                    visible = "Y";
-                }
 
                 var mydata =
                 {

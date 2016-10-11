@@ -5,9 +5,14 @@ $menu_name = "PUSH_SERVER";
 $input = Input::get();
 $isCopy = false;
 $copyFromMessageInfo = null;
+$fromHistory = false;
+$tempFlag = 0;
 if(array_key_exists("copy_from",$input)) {
     $isCopy = true;
     $copyFromMessageInfo = \App\lib\CommonUtil::getMessageInfo($input["copy_from"]);
+    if(array_key_exists('from_history', $input) && $input["from_history"] == "Y") {
+        $fromHistory = true;
+    }
 }
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 ?>
@@ -28,7 +33,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 <tr>
                     <td>{{trans("messages.TEMPLATE_ID")}}:</td>
                     <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID">
+                        <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" @if($fromHistory) disabled="disabled" @endif>
                             <option value="1" @if($isCopy && $copyFromMessageInfo->template_id == 1) selected="selected" @endif>1</option>
                             <option value="2" @if($isCopy && $copyFromMessageInfo->template_id == 2) selected="selected" @endif>2</option>
                             <option value="3" @if($isCopy && $copyFromMessageInfo->template_id == 3) selected="selected" @endif>3</option>
@@ -44,7 +49,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 <tr>
                     <td>{{trans("messages.PUSH_TYPE")}}:</td>
                     <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" onchange="ChangeType()">
+                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" onchange="ChangeType()" @if($fromHistory) disabled="disabled" @endif>
                             <option value="event" @if($isCopy && $copyFromMessageInfo->message_type == "event") selected="selected" @endif >Event</option>
                             <option value="news" @if($isCopy && $copyFromMessageInfo->message_type == "news") selected="selected" @endif>News</option>
                         </select>
@@ -55,14 +60,14 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
                     <td style="padding: 10px;">
                         <input type="text" data-clear-btn="true" name="tbxTitle" class="form-control" placeholder="{{trans("messages.MSG_PUSH_TITLE_PLACEHOLDER")}}"
-                               id="tbxTitle" value="@if($isCopy){{$copyFromMessageInfo->message_title}}@endif"/>
+                               id="tbxTitle" value="@if($isCopy){{$copyFromMessageInfo->message_title}}@endif" @if($fromHistory) disabled="disabled" @endif/>
                     </td>
                     <td><span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
                     <td style="padding: 10px;">
-                        <textarea data-clear-btn="true" name="tbxContent" class="form-control col-lg-6 col-xs-6"
+                        <textarea data-clear-btn="true" name="tbxContent" class="form-control col-lg-6 col-xs-6" @if($fromHistory) disabled="disabled" @endif
                                id="tbxContent" value="" rows="3">@if($isCopy){{$copyFromMessageInfo->message_text}}@endif</textarea>
                     </td>
                     <td><span style="color: red;">*</span></td>
@@ -89,34 +94,35 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
             <br/><br/>
 
             @foreach($allCompanyRoleList as $companyRoles)
+            <!--{{$tempFlag++}}-->
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
+                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
                         <tr>
-                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
+                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
                                 <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
-                            <td style="border:1px solid #d6caca;">
-                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                            <td style="border:1px solid #d6caca;padding: 0px;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                     <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole">{{$companyRoles->roles[0]->role_description}}</input>
                                 </div>
                                 @if(count($companyRoles->roles) > 1)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                         <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole">{{$companyRoles->roles[1]->role_description}}</input>
                                     </div>
                                 @endif
                             </td>
                         </tr>
                         @if(count($companyRoles->roles) > 2)
-                        @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1); $i = $i + 2)
                             <tr>
-                                <td style="border:1px solid #d6caca;">
+                                <td style="border:1px solid #d6caca;padding: 0px;">
                                     @if(count($companyRoles->roles) > $i)
-                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                             <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole">{{$companyRoles->roles[$i]->role_description}}</input>
                                         </div>
                                     @endif
                                         @if(count($companyRoles->roles) > $i + 1)
-                                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                                 <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole">{{$companyRoles->roles[$i + 1]->role_description}}</input>
                                             </div>
                                         @endif
@@ -139,8 +145,8 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 
             <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
                    data-url="" data-height="398" data-pagination="true"
-                   data-show-refresh="false" data-row-style="rowStyle" data-search="true"
-                   data-show-toggle="true"  data-sortable="true"
+                   data-show-refresh="false" data-row-style="rowStyle" data-search="false"
+                   data-show-toggle="false"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
                 <thead>
@@ -161,35 +167,35 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             {{trans("messages.MESSAGE_RECEIVER")}}:&nbsp;&nbsp;{{trans("messages.MSG_NEWS_INFORMATION")}}
             <br/><br/>
-            <table class="table table-bordered" id="CompanyTable" style="border:1px solid #d6caca;">
+            <table class="table table-bordered" id="CompanyTable" style="border:1px solid #d6caca;width:60%;">
                 <tr>
                     <td rowspan="{{count($allCompanyRoleList)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
                         <input type="checkbox" data="All_Company" onclick="CompanyTableSelectedAll(this)">ALL</input>
                     </td>
-                    <td style="border:1px solid #d6caca;">
+                    <td style="border:1px solid #d6caca;padding: 0px;">
                         @if(count($allCompanyRoleList) > 0)
-                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                        <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                             <input type="checkbox" data="{{$allCompanyRoleList[0]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[0]->company}}</input>
                         </div>
                         @endif
                             @if(count($allCompanyRoleList) > 1)
-                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                     <input type="checkbox" data="{{$allCompanyRoleList[1]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[1]->company}}</input>
                                 </div>
                             @endif
                     </td>
                 </tr>
                 @if(count($allCompanyRoleList) > 2)
-                @for($i = 2; $i < (count($allCompanyRoleList) + 1) / 2; $i = $i + 2)
+                @for($i = 2; $i < (count($allCompanyRoleList) + 1); $i = $i + 2)
                     <tr>
-                        <td style="border:1px solid #d6caca;">
+                        <td style="border:1px solid #d6caca;padding: 0px;">
                             @if(count($allCompanyRoleList) > $i)
-                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                     <input type="checkbox" data="{{$allCompanyRoleList[$i]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
                                 </div>
                             @endif
                                 @if(count($allCompanyRoleList) > $i + 1)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                         <input type="checkbox" data="{{$allCompanyRoleList[$i + 1]->company}}" class="cbxNewsCompany">{{$allCompanyRoleList[$i + 1]->company}}</input>
                                     </div>
                                 @endif
@@ -311,6 +317,11 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 return false;
             }
 
+            if(getByteLength(msgTitle) > 99) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_OUT_OF_LENGTH")}}".replace("%s", "{{trans("messages.MESSAGE_TITLE")}}").replace("%l", "99"));
+                return false;
+            }
+
             if(msgType == "news") {
                 msgReceiver.type = "news";
                 msgReceiver.company_list = new Array();
@@ -325,6 +336,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 }
             } else {
                 msgReceiver.type = "event";
+                msgReceiver.company_list = new Array();
                 msgReceiver.role_list = new Array();
                 msgReceiver.user_list = new Array();
 
@@ -344,9 +356,15 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 }
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_IMMEDIATELY")}}", "", function () {
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_IMMEDIATELY")}}".replace("%s", msgType), "", function () {
                 hideConfirmDialog();
 
+                var from_history = "N";
+                var msgId = -1;
+                @if($fromHistory)
+                from_history = "Y";
+                msgId = {{$input["copy_from"]}};
+                @endif
                 var mydata =
                 {
                     sourcer: msgSourcer,
@@ -354,7 +372,9 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     type: msgType,
                     title: msgTitle,
                     content: msgContent,
-                    receiver: msgReceiver
+                    receiver: msgReceiver,
+                    from_history: from_history,
+                    msg_id: msgId
                 };
 
                 var mydataStr = $.toJSON(mydata);
@@ -369,8 +389,10 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
                             //TODO redirect to parent page and show message
+                            var sendId = d.send_id;
+                            var msgId = d.message_id;
                             //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            window.location.href = "push";
+                            window.location.href = "pushSendDetail?with_msg_id=MSG_PUSH_SUCCESS&push_send_row_id=" + sendId + "&message_id=" + msgId;//"push";
                         }
                     },
                     error: function (e) {

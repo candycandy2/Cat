@@ -11,6 +11,8 @@ use DB;
 class platformController extends Controller
 {
     private function setLanguange() {
+        //date_default_timezone_set('UTC');
+        date_default_timezone_set('PRC');
         \App::setLocale("en-us");
         if(\Session::has('lang') && \Session::get("lang") != "") {
             \App::setLocale(\Session::get("lang"));
@@ -33,6 +35,8 @@ class platformController extends Controller
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
             -> select()
+            -> orderBy("department")
+            -> orderBy("login_id")
             -> get();
         return response()->json($userList);
     }
@@ -56,6 +60,8 @@ class platformController extends Controller
             -> where("resign", "=", "N")
             -> whereNotIn("row_id", $rowIdListWithoutGroup)
             -> select()
+            -> orderBy("department")
+            -> orderBy("login_id")
             -> get();
         return response()->json($userList);
     }
@@ -95,6 +101,7 @@ class platformController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
+
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $userIdList = $jsonContent['user_id_list'];
@@ -185,6 +192,7 @@ class platformController extends Controller
                 }
 
                 \DB::commit();
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
             } catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
@@ -192,8 +200,6 @@ class platformController extends Controller
         } else {
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
         }
-
-        return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
     }
 
     public function deleteRole() {
@@ -401,6 +407,15 @@ class platformController extends Controller
             $jsonContent = json_decode($content, true);
             $roleIdList = $jsonContent['menu_id_list'];
             foreach ($roleIdList as $mId) {
+                \DB::table("qp_menu_language")
+                    -> where('menu_row_id', "=", $mId)
+                    -> delete();
+                \DB::table("qp_user_menu")
+                    -> where('menu_row_id', "=", $mId)
+                    -> delete();
+                \DB::table("qp_group_menu")
+                    -> where('menu_row_id', "=", $mId)
+                    -> delete();
                 \DB::table("qp_menu")
                     -> where('row_id', '=', $mId)
                     -> delete();
@@ -431,6 +446,16 @@ class platformController extends Controller
             $simpleChineseName = $jsonContent['simpleChineseName'];
             $traditionChineseName = $jsonContent['traditionChineseName'];
             $visible = $jsonContent['visible'];
+
+            $existList = \DB::table("qp_menu")
+                -> select() -> get();
+
+            foreach ($existList as $existMenu) {
+                if(strtoupper($existMenu->menu_name) == strtoupper($menuName)) {
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>trans("messages.MSG_MENU_NAME_EXIST")]);
+                }
+            }
 
             \DB::beginTransaction();
             $sequence = 0;
@@ -494,10 +519,59 @@ class platformController extends Controller
                         ]);
                 }
 
+                //Add right to Administrator
+                $adminList = \DB::table("qp_group")->where("group_name", "=", "Administrator")->select()->get();
+                if(count($adminList) > 0) {
+                    $adminId = $adminList[0]->row_id;
+                    \DB::table("qp_group_menu")
+                        -> insert([
+                            'menu_row_id'=>$newMenuId,
+                            'group_row_id'=>$adminId,
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now,
+                        ]);
+                }
+
                 \DB::commit();
             } catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
+
+        return null;
+    }
+
+    public function saveMenuSequence() {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $this->setLanguange();
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $menuSequencMappingList = $jsonContent['menu_sequence_mapping_list'];
+            \DB::beginTransaction();
+            try {
+                foreach ($menuSequencMappingList as $mapping) {
+                    \DB::table("qp_menu")
+                        -> where('row_id', '=', $mapping["row_id"])
+                        -> update(
+                            ['sequence'=>$mapping["sequence"],
+                                'updated_at'=>$now,
+                                'updated_user'=>\Auth::user()->row_id]);
+                }
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError, 'message'=>$e->getMessage().$e->getTraceAsString()]);
             }
 
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
@@ -608,6 +682,12 @@ class platformController extends Controller
                 \DB::table("qp_menu_language")
                     -> where('menu_row_id', "=", $deleteMenuId)
                     -> delete();
+                \DB::table("qp_user_menu")
+                    -> where('menu_row_id', "=", $deleteMenuId)
+                    -> delete();
+                \DB::table("qp_group_menu")
+                    -> where('menu_row_id', "=", $deleteMenuId)
+                    -> delete();
                 \DB::table("qp_menu")
                     -> where('row_id', "=", $deleteMenuId)
                     -> delete();
@@ -667,6 +747,19 @@ class platformController extends Controller
                                 'menu_row_id'=>$newMenuId,
                                 'lang_row_id'=>$lang_id,
                                 'menu_name'=>$thisMenu["traditional_chinese_name"],
+                                'created_user'=>\Auth::user()->row_id,
+                                'created_at'=>$now,
+                            ]);
+                    }
+
+                    //Add right to Administrator
+                    $adminList = \DB::table("qp_group")->where("group_name", "=", "Administrator")->select()->get();
+                    if(count($adminList) > 0) {
+                        $adminId = $adminList[0]->row_id;
+                        \DB::table("qp_group_menu")
+                            -> insert([
+                                'menu_row_id'=>$newMenuId,
+                                'group_row_id'=>$adminId,
                                 'created_user'=>\Auth::user()->row_id,
                                 'created_at'=>$now,
                             ]);
@@ -881,7 +974,31 @@ class platformController extends Controller
             $userIdList = $jsonContent['user_id_list'];
             \DB::beginTransaction();
             //\DB::table("qp_user_group")-> where('group_row_id', "=", $groupId)->delete();
+            $currentUserList = \DB::table("qp_user_group")
+                -> where('group_row_id', "=", $groupId)
+                -> select()->get();
+            $dataNeedToDelete = array();
+            foreach ($currentUserList as $existUser) {
+                $existUserRowId = $existUser->user_row_id;
+                $exist = false;
+                foreach ($userIdList as $uId) {
+                    if($uId == $existUserRowId) {
+                        $exist = true;
+                        break;
+                    }
+                }
+                if(!$exist) {
+                    array_push($dataNeedToDelete, $existUser->row_id);
+                }
+            }
+            foreach ($dataNeedToDelete as $deleteId) {
+                \DB::table("qp_user_group")
+                    ->where("row_id", "=", $deleteId)
+                    ->delete();
+            }
+
             foreach ($userIdList as $uId) {
+
                 $existInfo = \DB::table("qp_user_group")
 //                    -> where('group_row_id', "=", $groupId)
                     -> where('user_row_id', "=", $uId)
@@ -1029,7 +1146,7 @@ class platformController extends Controller
             -> leftJoin("qp_parameter_type", "qp_parameter_type.row_id", "=", "qp_parameter.parameter_type_row_id")
             -> orderBy("qp_parameter_type.parameter_type_name")
             -> orderBy("qp_parameter.parameter_name")
-            -> select("qp_parameter.row_id", "qp_parameter_type.parameter_type_name", "qp_parameter.parameter_name", "qp_parameter.parameter_value")
+            -> select("qp_parameter.row_id", "qp_parameter.parameter_type_row_id", "qp_parameter_type.parameter_type_name", "qp_parameter.parameter_name", "qp_parameter.parameter_value")
             -> get();
 
         return response()->json($paraList);
@@ -1122,13 +1239,25 @@ class platformController extends Controller
 
         $this->setLanguange();
 
-        $messageList = \DB::table("qp_message")
-            ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
-            -> select("qp_message.row_id", "qp_message.message_type",
-                "qp_message.message_title", "qp_user.login_id as created_user",
-                "qp_message.created_at", "qp_message.visible")
-            -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
-            -> get();
+        $messageList = array();
+        if(\Auth::user()->isAdmin()) {
+            $messageList = \DB::table("qp_message")
+                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+                -> select("qp_message.row_id", "qp_message.message_type",
+                    "qp_message.message_title", "qp_user.login_id as created_user",
+                    "qp_message.created_at", "qp_message.visible")
+                -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
+                -> get();
+        } else {
+            $messageList = \DB::table("qp_message")
+                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+                -> select("qp_message.row_id", "qp_message.message_type",
+                    "qp_message.message_title", "qp_user.login_id as created_user",
+                    "qp_message.created_at", "qp_message.visible")
+                -> where("qp_user.row_id", "=", \Auth::user()->row_id)
+                -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
+                -> get();
+        }
 
         return response()->json($messageList);
     }
@@ -1173,58 +1302,79 @@ class platformController extends Controller
             $title = $jsonContent['title'];
             $content = $jsonContent['content'];
             $receiver = $jsonContent['receiver'];
+            $from_history = $jsonContent['from_history'];
+            $newMessageId = $jsonContent['msg_id'];
 
             $now = date('Y-m-d H:i:s',time());
             \DB::beginTransaction();
             try {
-                $newMessageId = \DB::table("qp_message")
-                    -> insertGetId([
-                        'message_type'=>$type,
-                        'template_id' => $template_id,
-                        'message_title'=>$title,
-                        'message_text'=>$content,
-                        'message_source'=>$sourcer,
-                        'visible'=>'Y',
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
+                if($from_history != "Y") {
+                    $newMessageId = \DB::table("qp_message")
+                        -> insertGetId([
+                            'message_type'=>$type,
+                            'template_id' => $template_id,
+                            'message_title'=>$title,
+                            'message_text'=>$content,
+                            'message_source'=>$sourcer,
+                            'visible'=>'Y',
+                            'created_user'=>\Auth::user()->row_id,
+                            'created_at'=>$now,
+                        ]);
+                }
+
+                $companyList = $receiver["company_list"];
+                $companyLabel = "";
+                if($receiver["type"] == "news") {
+                    foreach ($companyList as $company) {
+                        $companyLabel = $companyLabel.$company.";";
+                    }
+                }
                 $newMessageSendId = \DB::table("qp_message_send")
                     -> insertGetId([
                         'message_row_id'=>$newMessageId,
                         'source_user_row_id'=>\Auth::user()->row_id,
+                        'company_label'=>$companyLabel,
                         'created_user'=>\Auth::user()->row_id,
                         'created_at'=>$now,
                     ]);
 
                 $real_push_user_list = array();
                 if($receiver["type"] == "news") {
-                    $companyList = $receiver["company_list"];
                     foreach ($companyList as $company) {
-                        $roleList = \DB::table("qp_role")
-                            ->where("company", '=', $company)
-                            ->select()
-                            ->get();
-                        foreach($roleList as $role) {
-                            \DB::table("qp_role_message")
-                                -> insert([
-                                    'project_row_id'=>1,
-                                    'role_row_id'=>$role->row_id,
-                                    'message_send_row_id'=>$newMessageSendId,
-                                    'need_push'=>1,
-                                    'push_flag'=>0,
-                                    'created_user'=>\Auth::user()->row_id,
-                                    'created_at'=>$now,
-                                ]);
-                            $userListInRole = \DB::table("qp_user_role")
-                                ->where("role_row_id", "=", $role->row_id)
-                                ->select()->get();
-                            foreach ($userListInRole as $userInRole) {
-                                $userId = $userInRole -> user_row_id;
-                                if(!in_array($userId, $real_push_user_list)) {
-                                    array_push($real_push_user_list, $userId);
-                                }
+                        $userList = \DB::table("qp_user")
+                            ->where("company", "=", $company)
+                            ->select()->get();
+                        foreach ($userList as $user) {
+                            $userId = $user -> row_id;
+                            if(!in_array($userId, $real_push_user_list)) {
+                                array_push($real_push_user_list, $userId);
                             }
                         }
+//                        $roleList = \DB::table("qp_role")
+//                            ->where("company", '=', $company)
+//                            ->select()
+//                            ->get();
+//                        foreach($roleList as $role) {
+//                            \DB::table("qp_role_message")
+//                                -> insert([
+//                                    'project_row_id'=>1,
+//                                    'role_row_id'=>$role->row_id,
+//                                    'message_send_row_id'=>$newMessageSendId,
+//                                    'need_push'=>1,
+//                                    'push_flag'=>0,
+//                                    'created_user'=>\Auth::user()->row_id,
+//                                    'created_at'=>$now,
+//                                ]);
+//                            $userListInRole = \DB::table("qp_user_role")
+//                                ->where("role_row_id", "=", $role->row_id)
+//                                ->select()->get();
+//                            foreach ($userListInRole as $userInRole) {
+//                                $userId = $userInRole -> user_row_id;
+//                                if(!in_array($userId, $real_push_user_list)) {
+//                                    array_push($real_push_user_list, $userId);
+//                                }
+//                            }
+//                        }
                     }
                 } else {
                     $roleList = $receiver["role_list"];
@@ -1284,24 +1434,8 @@ class platformController extends Controller
 
                 $to = "";
                 foreach ($real_push_user_list as $uId) {
-//                    $register_list = \DB::table("qp_register")
-//                        ->where("user_row_id", "=", $uId)
-//                        ->where("status", "=", "A")
-//                        ->select()->get();
-//                    foreach ($register_list as $register) {
-//                        $registerId = $register->row_id;
-//                        $push_token_list = \DB::table("qp_push_token")
-//                            ->where("register_row_id", "=", $registerId)
-//                            ->select()->get();
-//                        if(count($push_token_list) > 0) {
-//                            foreach ($push_token_list as $token) {
-//                                $to = $to.$token->push_token.";";
-//                                //$to = $token->push_token;//"18071adc030551e965c";
-//                            }
-//                        }
-//                    }
                     $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                    if(count($userPushList) > 0) {
+                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
                         $to = $to.$userPushList[0]->login_id.";";
                     }
                 }
@@ -1313,7 +1447,7 @@ class platformController extends Controller
 
                 \DB::commit();
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"]]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
             }catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
@@ -1340,36 +1474,65 @@ class platformController extends Controller
             $now = date('Y-m-d H:i:s',time());
             \DB::beginTransaction();
             try {
+                $title = \DB::table("qp_message")->where("row_id", "=", $message_id)->select()->get()[0]->message_title;
+
+                $companyList = $receiver["company_list"];
+                $companyLabel = "";
+                if($receiver["type"] == "news") {
+                    foreach ($companyList as $company) {
+                        $companyLabel = $companyLabel.$company.";";
+                    }
+                }
+
                 $newMessageSendId = \DB::table("qp_message_send")
                     -> insertGetId([
                         'message_row_id'=>$message_id,
                         'source_user_row_id'=>\Auth::user()->row_id,
+                        'company_label'=>$companyLabel,
                         'created_user'=>\Auth::user()->row_id,
                         'created_at'=>$now,
                     ]);
 
+                $real_push_user_list = array();
+
                 if($receiver["type"] == "news") {
-                    $companyList = $receiver["company_list"];
                     foreach ($companyList as $company) {
-                        $roleList = \DB::table("qp_role")
-                            ->where("company", '=', $company)
-                            ->select()
-                            ->get();
-                        foreach($roleList as $role) {
-                            \DB::table("qp_role_message")
-                                -> insert([
-                                    'project_row_id'=>1,
-                                    'role_row_id'=>$role->row_id,
-                                    'message_send_row_id'=>$newMessageSendId,
-                                    'need_push'=>1,
-                                    'push_flag'=>0,
-                                    'created_user'=>\Auth::user()->row_id,
-                                    'created_at'=>$now,
-                                ]);
+                        $userList = \DB::table("qp_user")
+                            ->where("company", "=", $company)
+                            ->select()->get();
+                        foreach ($userList as $user) {
+                            $userId = $user -> row_id;
+                            if(!in_array($userId, $real_push_user_list)) {
+                                array_push($real_push_user_list, $userId);
+                            }
                         }
+//                        $roleList = \DB::table("qp_role")
+//                            ->where("company", '=', $company)
+//                            ->select()
+//                            ->get();
+//                        foreach($roleList as $role) {
+//                            \DB::table("qp_role_message")
+//                                -> insert([
+//                                    'project_row_id'=>1,
+//                                    'role_row_id'=>$role->row_id,
+//                                    'message_send_row_id'=>$newMessageSendId,
+//                                    'need_push'=>1,
+//                                    'push_flag'=>0,
+//                                    'created_user'=>\Auth::user()->row_id,
+//                                    'created_at'=>$now,
+//                                ]);
+//                            $userListInRole = \DB::table("qp_user_role")
+//                                ->where("role_row_id", "=", $role->row_id)
+//                                ->select()->get();
+//                            foreach ($userListInRole as $userInRole) {
+//                                $userId = $userInRole -> user_row_id;
+//                                if(!in_array($userId, $real_push_user_list)) {
+//                                    array_push($real_push_user_list, $userId);
+//                                }
+//                            }
+//                        }
                     }
 
-                    //TODO do push
                 } else {
                     $roleList = $receiver["role_list"];
                     $userList = $receiver["user_list"];
@@ -1403,6 +1566,7 @@ class platformController extends Controller
                                         'created_at'=>$now,
                                     ]);
                                 array_push($insertedUserIdList, $userId);
+                                array_push($real_push_user_list, $userId);
                             }
                         }
                     }
@@ -1420,8 +1584,22 @@ class platformController extends Controller
                                     'created_at'=>$now,
                                 ]);
                             array_push($insertedUserIdList, $userId);
+                            array_push($real_push_user_list, $userId);
                         }
                     }
+                }
+
+                $to = "";
+                foreach ($real_push_user_list as $uId) {
+                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
+                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
+                        $to = $to.$userPushList[0]->login_id.";";
+                    }
+                }
+                $result = CommonUtil::PushMessageWithMessageCenter($title, $to);
+                if(!$result["result"]) {
+                    \DB::rollBack();
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
                 }
 
                 \DB::commit();
@@ -1513,14 +1691,14 @@ class platformController extends Controller
 
         $this->setLanguange();
 
-        $messageList = \DB::table("qp_project")
+        $projectList = \DB::table("qp_project")
             -> select()
             -> orderBy("project_code")
             -> get();
-        foreach ($messageList as $message) {
-            $message->with_app = "N";
+        foreach ($projectList as $project) {
+            $project->with_app = "N";
             $appList = \DB::table("qp_app_head")
-                -> where("project_row_id", "=", $message->row_id)
+                -> where("project_row_id", "=", $project->row_id)
                 -> select()
                 -> get();
             if(count($appList) > 0) {
@@ -1533,17 +1711,14 @@ class platformController extends Controller
                         -> get();
 
                     if(count($appVersionList) > 0) {
-                        $message->with_app = "Y";
+                        $project->with_app = "Y";
                         break;
                     }
                 }
             }
-            if($message->with_app == "Y") {
-                break;
-            }
         }
 
-        return response()->json($messageList);
+        return response()->json($projectList);
     }
 
     public function deleteProject() {
@@ -1561,11 +1736,42 @@ class platformController extends Controller
             $jsonContent = json_decode($content, true);
             $project_id_list = $jsonContent['project_id_list'];
 
-            foreach ($project_id_list as $pId) {
-                \DB::table("qp_project")
-                    -> where('row_id', '=', $pId)
-                    -> delete();
+            \DB::beginTransaction();
+            try{
+                foreach ($project_id_list as $pId) {
+                    $appHeadList = \DB::table("qp_app_head")
+                        ->where("project_row_id", "=", $pId)
+                        ->select()->get();
+                    foreach ($appHeadList as $appHead) {
+                        $appHeadId = $appHead->row_id;
+                        \DB::table("qp_app_line")
+                            -> where('app_row_id', '=', $appHeadId)
+                            -> delete();
+                        \DB::table("qp_app_evalution")
+                            -> where('app_row_id', '=', $appHeadId)
+                            -> delete();
+                        \DB::table("qp_app_pic")
+                            -> where('app_row_id', '=', $appHeadId)
+                            -> delete();
+                        \DB::table("qp_app_version")
+                            -> where('app_row_id', '=', $appHeadId)
+                            -> delete();
+                        \DB::table("qp_app_head")
+                            -> where('row_id', '=', $appHeadId)
+                            -> delete();
+                    }
+
+                    \DB::table("qp_project")
+                        -> where('row_id', '=', $pId)
+                        -> delete();
+
+                    \DB::commit();
+                }
+            }catch (\Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
+
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }
 
@@ -1591,6 +1797,13 @@ class platformController extends Controller
             $project_pm = $jsonContent['project_pm'];
             $project_description = $jsonContent['project_description'];
             $project_memo = $jsonContent['project_memo'];
+
+            //Check pm exist
+            $pmList = \DB::table("qp_user") -> where('login_id', '=', $project_pm) ->select() ->get();
+            if(count($pmList) <= 0) {
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_PM_NOT_EXIST")]);
+            }
+
             \DB::beginTransaction();
 
             $now = date('Y-m-d H:i:s',time());

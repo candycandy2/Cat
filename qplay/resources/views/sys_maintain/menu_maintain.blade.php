@@ -13,18 +13,18 @@ $menu_name = "SYS_MENU_MAINTAIN";
             {{trans("messages.NEW")}}
         </button>
     </div>
-    <table id="gridRootMenuList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-           data-url="platform/getRootMenuList" data-height="398" data-pagination="true"
-           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-           data-show-toggle="true"  data-sortable="false"
-           data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
+    <table id="gridRootMenuList" class="bootstrapTable" data-toggle="table" data-sort-name="sequence" data-toolbar="#toolbar"
+           data-url="platform/getRootMenuList" data-height="398" data-pagination="false"
+           data-show-refresh="true" data-search="false"
+           data-show-toggle="false"  data-sortable="false"
+           data-striped="false" data-page-size="10" data-page-list="[5,10,20,50]"
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="number_submenu" data-visible="true">Sub Count</th>
-            <th data-field="sequence" data-sortable="false">{{trans("messages.SEQUENCE")}}</th>
+            <th data-field="sequence" data-sortable="false" >{{trans("messages.SEQUENCE")}}</th>
             <th data-field="menu_name" data-sortable="false" data-formatter="menuNameFormatter" data-search-formatter="false">{{trans("messages.MENU_NAME")}}</th>
             <th data-field="path" data-sortable="false">{{trans("messages.LINK")}}</th>
             <th data-field="english_name" data-sortable="false" >{{trans("messages.ENGLISH_NAME")}}</th>
@@ -34,8 +34,21 @@ $menu_name = "SYS_MENU_MAINTAIN";
         </tr>
         </thead>
     </table>
-
+    <style type="text/css">
+        .myDragClass {
+            background-color: #7fb4e2;
+            color: white;
+        }
+    </style>
+    <script src="{{ asset('/js/jquery.tablednd.js') }}"></script>
     <script>
+//        function rowStyle(row, index) {
+//            return {
+//                classes: 'drag ui-draggable-handle',
+//                //css: {"color": "blue", "font-size": "50px"}
+//            };
+//        }
+
         function menuNameFormatter(value, row) {
             return '<a href="rootMenuDetailMaintain?menu_id=' + row.row_id + '">' + value + '</a>';
         };
@@ -73,8 +86,9 @@ $menu_name = "SYS_MENU_MAINTAIN";
                         if(d.result_code != 1) {
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_DELETE_MENU_FAILED")}}");
                         }  else {
-                            $("#gridRootMenuList").bootstrapTable('refresh');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            //$("#gridRootMenuList").bootstrapTable('refresh');
+                            //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            window.location.href = "menuMaintain?with_msg_id=MSG_OPERATION_SUCCESS";
                         }
                     },
                     error: function (e) {
@@ -148,9 +162,10 @@ $menu_name = "SYS_MENU_MAINTAIN";
                     if(d.result_code != 1) {
                         showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                     }  else {
-                        $("#gridRootMenuList").bootstrapTable('refresh');
-                        $("#newRootMenuDialog").modal('hide');
-                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                        //$("#gridRootMenuList").bootstrapTable('refresh');
+                        //$("#newRootMenuDialog").modal('hide');
+                        //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                        window.location.href = "menuMaintain?with_msg_id=MSG_OPERATION_SUCCESS";
                     }
                 },
                 error: function (e) {
@@ -165,6 +180,7 @@ $menu_name = "SYS_MENU_MAINTAIN";
             $('#gridRootMenuList').on('check-all.bs.table', selectedChanged);
             $('#gridRootMenuList').on('uncheck-all.bs.table', selectedChanged);
             $('#gridRootMenuList').on('load-success.bs.table', selectedChanged);
+            //$('#gridRootMenuList').tableDnD();
         });
 
         var selectedChanged = function (row, $element) {
@@ -179,7 +195,63 @@ $menu_name = "SYS_MENU_MAINTAIN";
                     $("#btnNewRootMenu").fadeIn(300);
                 });
             }
-        }
+            $('#gridRootMenuList').tableDnD({
+                onDragStop: function (table, row) {
+                    var sequenceIndex = 2;
+                    var currentSequenceArray = new Array();
+                    $("#gridRootMenuList tbody").find("tr").each(function(i, row) {
+                        currentSequenceArray.push(Number($($(row).find("td")[sequenceIndex]).text()));
+                    });
+
+                    var needResetSequence = false;
+                    for(var i = 0; i < currentSequenceArray.length; i++) {
+                        if(currentSequenceArray[i + 1] && currentSequenceArray[i + 1] < currentSequenceArray[i]) {
+                            needResetSequence = true;
+                            break;
+                        }
+                    }
+                    if(needResetSequence) {
+                        SaveNewMenuSequence(currentSequenceArray);
+                    }
+                },
+                onDragClass: "myDragClass",
+            });
+        };
+
+        var SaveNewMenuSequence = function(sequenceList) {
+            var currentMenuList = $("#gridRootMenuList").bootstrapTable('getData');
+            var menuSequencMappingList = new Array();
+            $.each(currentMenuList, function(i, menu) {
+                var mapping = new Object();
+                mapping.row_id = menu.row_id;
+                mapping.sequence = sequenceList[i];
+                menuSequencMappingList.push(mapping);
+            });
+            var mydata = {
+                menu_sequence_mapping_list: menuSequencMappingList
+            };
+
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveMenuSequence",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        $("#gridRootMenuList").bootstrapTable('refresh');
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                    }  else {
+                        window.location.href = "menuMaintain?with_msg_id=MSG_OPERATION_SUCCESS";
+                    }
+                },
+                error: function (e) {
+                    $("#gridRootMenuList").bootstrapTable('refresh');
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                }
+            });
+        };
 
     </script>
 
