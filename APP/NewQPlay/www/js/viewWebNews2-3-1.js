@@ -23,17 +23,10 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function(){
                             var time = responsecontent.create_time;
                             var author = responsecontent.create_user;
 
-                            var element = document.getElementById("newsDetailCreateTime");
-                            element.textContent = time.substr(0, 10);
-
-                            element = document.getElementById("newsDetailTitle");
-                            element.textContent = title;
-
-                            element = document.getElementById("newsAuthor");
-                            element.textContent = author;
-
-                            element = document.getElementById("newsContent");
-                            element.textContent = messagetext;
+                            $("#newsDetailCreateTime").html(time.substr(0, 10));
+                            $("#newsDetailTitle").html(title);
+                            $("#newsAuthor").html(author);
+                            $("#newsContent").html(messagetext);
                         }
                         else if (responsecontent.message_type == "event")
                         {
