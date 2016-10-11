@@ -13,7 +13,7 @@ function apiGetMessageList(successCallback, failCallback, dateFrom, dateTo, coun
         type: "GET",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
-            'app-key': 'qplay',
+            'app-key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
             'token': loginData.token
