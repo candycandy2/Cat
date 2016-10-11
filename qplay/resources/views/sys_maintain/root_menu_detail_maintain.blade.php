@@ -92,11 +92,11 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                 </button>
             </div>
 
-            <table id="gridSubMenuList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-                   data-url="platform/getSubMenuList?menu_id={{$menuId}}" data-height="398" data-pagination="true"
+            <table id="gridSubMenuList" class="bootstrapTable" data-toggle="table" data-sort-name="sequence" data-toolbar="#toolbar"
+                   data-url="platform/getSubMenuList?menu_id={{$menuId}}" data-height="398" data-pagination="false"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="false"
-                   data-show-toggle="true"  data-sortable="false"
-                   data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
+                   data-show-toggle="false"  data-sortable="false"
+                   data-striped="false" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
                 <thead>
                 <tr>
@@ -116,7 +116,14 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
         </div>
     </div>
 
+    <style type="text/css">
+        .myDragClass {
+            background-color: #7fb4e2;
+            color: white;
+        }
+    </style>
 
+    <script src="{{ asset('/js/jquery.tablednd.js') }}"></script>
     <script>
         function menuNameFormatter(value, row) {
             return '<a href="#" onclick="updateSubMenu(\'' + row.row_id + '\')">' + value + '</a>';
@@ -202,26 +209,49 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
             }
-
+            var currentData = $("#gridSubMenuList").bootstrapTable('getData');
+            var thisMenuName = $("#tbxSubMenuName").val();
             if(isNewSubMenu) {
-                var currentData = $("#gridSubMenuList").bootstrapTable('getData');
+                var check = true;
+                $.each(currentData, function(i, menu){
+                    if(menu.menu_name.toUpperCase() == thisMenuName.toUpperCase()) {
+                        check = false;
+                        return false;
+                    }
+                });
+
+                if(!check) {
+                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MENU_NAME_EXIST")}}");
+                    return;
+                }
+
                 var menu = new Object();
                 menu.row_id = "temp_id_" + Math.round(new Date().getTime() / 1000);
                 menu.parent_id = {{$menuId}};
-                menu.menu_name = $("#tbxSubMenuName").val();
+                menu.menu_name = thisMenuName;
                 menu.path = $("#tbxSubLink").val();
                 menu.english_name = $("#tbxSubEnglishName").val();
                 menu.simple_chinese_name = $("#tbxSubSimpleChineseName").val();
                 menu.traditional_chinese_name = $("#tbxSubTraditionalChineseName").val();
                 menu.visible = visible;
                 currentData.push(menu);
-                $("#gridSubMenuList").bootstrapTable('load', currentData);
-                $("#subMenuMaintainDialog").modal('hide');
             } else {
-                var currentData = $("#gridSubMenuList").bootstrapTable('getData');
+                var check = true;
+                $.each(currentData, function(i, menu){
+                    if(menu.menu_name.toUpperCase() == thisMenuName.toUpperCase() && menu.row_id != currentMaintainSubMenuId) {
+                        check = false;
+                        return false;
+                    }
+                });
+
+                if(!check) {
+                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MENU_NAME_EXIST")}}");
+                    return;
+                }
+
                 $.each(currentData, function(i, menu) {
                     if(menu.row_id == currentMaintainSubMenuId) {
-                        menu.menu_name = $("#tbxSubMenuName").val();
+                        menu.menu_name = thisMenuName;
                         menu.path = $("#tbxSubLink").val();
                         menu.english_name = $("#tbxSubEnglishName").val();
                         menu.simple_chinese_name = $("#tbxSubSimpleChineseName").val();
@@ -230,9 +260,12 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                         return false;
                     }
                 });
-                $("#gridSubMenuList").bootstrapTable('load', currentData);
-                $("#subMenuMaintainDialog").modal('hide');
             }
+            $("#gridSubMenuList").bootstrapTable('load', currentData);
+            $('#gridSubMenuList').tableDnD({
+                onDragClass: "myDragClass",
+            });
+            $("#subMenuMaintainDialog").modal('hide');
         };
 
         $(function () {
@@ -255,7 +288,47 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     $("#btnNewSubMenu").fadeIn(300);
                 });
             }
+
+            $('#gridSubMenuList').tableDnD({
+                onDragClass: "myDragClass",
+            });
         };
+/*
+        var SaveNewMenuSequence = function(sequenceList) {
+            var currentMenuList = $("#gridSubMenuList").bootstrapTable('getData');
+            var menuSequencMappingList = new Array();
+            $.each(currentMenuList, function(i, menu) {
+                var mapping = new Object();
+                mapping.row_id = menu.row_id;
+                mapping.sequence = sequenceList[i];
+                menuSequencMappingList.push(mapping);
+            });
+            var mydata = {
+                menu_sequence_mapping_list: menuSequencMappingList
+            };
+
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveMenuSequence",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        $("#gridSubMenuList").bootstrapTable('refresh');
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                    }  else {
+                        window.location.href = "rootMenuDetailMaintain?menu_id={{$menuId}}&with_msg_id=MSG_OPERATION_SUCCESS";
+                    }
+                },
+                error: function (e) {
+                    $("#gridSubMenuList").bootstrapTable('refresh');
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                }
+            });
+        };
+*/
 
         var SaveMenu = function() {
             var menuName = $("#tbxMenuName").val();
@@ -273,38 +346,47 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
             }
 
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                hideConfirmDialog();
-                var allSubMenus = $("#gridSubMenuList").bootstrapTable('getData');
-
-                var mydata = {
-                    menu_id:{{$menuId}},
-                    sub_menu_list: allSubMenus,
-                    menu_name: menuName,
-                    link: link,
-                    english_name: englishName,
-                    simple_chinese_name: simpleChineseName,
-                    tradition_chinese_name: traditionChineseName,
-                    visible: visible
-                };
-                var mydataStr = $.toJSON(mydata);
-                $.ajax({
-                    url: "platform/saveRootMenu",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}" + "<br/>" + d.message);
-                        }  else {
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                        }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+            var tempSubMenus = $("#gridSubMenuList").bootstrapTable('getData');
+            var allSubMenus = new Array();
+            var menuNameIndex = 2;
+            $("#gridSubMenuList tbody").find("tr").each(function(i, row) {
+                var thisMenuName = $($(row).find("td")[menuNameIndex]).text();
+                $.each(tempSubMenus, function(j, menu) {
+                    if(menu.menu_name == thisMenuName) {
+                        allSubMenus.push(menu);
+                        return false;
                     }
                 });
+            });
+
+            var mydata = {
+                menu_id:{{$menuId}},
+                sub_menu_list: allSubMenus,
+                menu_name: menuName,
+                link: link,
+                english_name: englishName,
+                simple_chinese_name: simpleChineseName,
+                tradition_chinese_name: traditionChineseName,
+                visible: visible
+            };
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveRootMenu",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}" + "<br/>" + d.message);
+                    }  else {
+                        //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                        window.location.href = "rootMenuDetailMaintain?menu_id={{$menuId}}&with_msg_id=MSG_OPERATION_SUCCESS";
+                    }
+                },
+                error: function (e) {
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                }
             });
         }
 

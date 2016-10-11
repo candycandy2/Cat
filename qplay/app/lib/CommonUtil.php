@@ -390,8 +390,9 @@ SQL;
 
     public static function getMessageSendInfo($messageSendId) {
         $messageSendList = \DB::table('qp_message_send')
-            -> where('row_id', '=', $messageSendId)
-            -> select()->get();
+            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send.created_user")
+            -> where('qp_message_send.row_id', '=', $messageSendId)
+            -> select("qp_message_send.*", "qp_user.login_id as source_user")->get();
         if(count($messageSendList) < 1) {
             return null;
         }
@@ -420,14 +421,16 @@ SQL;
         if($sendInfo->message_info->message_type == "event") {
 
         } else {
-            if(count($sendInfo->role_list) > 0) {
-                $companyList = \DB::table('qp_role')
-                    -> whereIn('row_id', $sendInfo->role_list)
-                    -> select('company')->distinct()->get();
-                foreach ($companyList as $companyInfo) {
-                    array_push($sendInfo->company_list, $companyInfo->company);
-                }
-            }
+            $companyStr = $sendInfo->company_label;
+            $sendInfo->company_list = explode(";", $companyStr);
+//            if(count($sendInfo->role_list) > 0) {
+//                $companyList = \DB::table('qp_role')
+//                    -> whereIn('row_id', $sendInfo->role_list)
+//                    -> select('company')->distinct()->get();
+//                foreach ($companyList as $companyInfo) {
+//                    array_push($sendInfo->company_list, $companyInfo->company);
+//                }
+//            }
         }
 
         return $sendInfo;
@@ -485,7 +488,7 @@ SQL;
     }
 
     public static function PushMessageWithMessageCenter($message, $to) {
-        $jpush_app_id = "293a09f63dd77abea15f42c3";
+        $jpush_app_id = "293a09f63dd77abea15f42c3";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
             'TenantId' => '00000000-0000-0000-0000-000000000000',
@@ -500,7 +503,7 @@ SQL;
             'To_Type' => 'NONE',
             'Parameter' => '',
             'CreatedDate' => date('Y-m-d H:i:s',time()));
-        $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS";
+        $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
         $data["pns"] = json_encode($args);
         $response = self::doPost($url, $data);
 

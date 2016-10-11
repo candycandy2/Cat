@@ -22,9 +22,9 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
 
         <div class="col-lg-6 col-xs-6" >
             <div class="btn-toolbar" role="toolbar" style="float: right;">
-                <button type="button" class="btn btn-primary" onclick="SaveGroupUsers()">
-                    {{trans("messages.SAVE")}}
-                </button>
+                {{--<button type="button" class="btn btn-primary" onclick="SaveGroupUsers()">--}}
+                    {{--{{trans("messages.SAVE")}}--}}
+                {{--</button>--}}
                 <a type="button" class="btn btn-default" href="groupMaintain">
                     {{trans("messages.RETURN")}}
                 </a>
@@ -65,37 +65,6 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
 
 
     <script>
-        var CopyList = function () {
-            var mydataStr = "";
-            $.ajax({
-                url: "platform/getGroupUsers?group_id=" + $("#ddlGroup").val(),
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    var currentData = $("#gridUserList").bootstrapTable('getData');
-                    $.each(d, function(i, newUser) {
-                        var exist = false;
-                        $.each(currentData, function(j, cUser) {
-                            if(cUser.row_id == newUser.row_id) {
-                                exist = true;
-                                return false;
-                            }
-                        });
-                        if(!exist) {
-                            currentData.push(newUser);
-                        }
-                    });
-                    $("#gridUserList").bootstrapTable('load', currentData);
-                    showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_COPY_LIST_SUCCESS")}}");
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-        };
-
         $(function () {
             $('#gridUserList').on('check.bs.table', selectedChanged);
             $('#gridUserList').on('uncheck.bs.table', selectedChanged);
@@ -133,6 +102,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
                 });
                 $("#gridUserList").bootstrapTable('load', currentData);
                 selectedChanged();
+                SaveGroupUsers();
             });
         };
 
@@ -141,32 +111,31 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
         };
 
         var SaveGroupUsers = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                hideConfirmDialog();
-                var selectedUsers = $("#gridUserList").bootstrapTable('getData');
-                var userIdList = new Array();
-                $.each(selectedUsers, function(i, user) {
-                    userIdList.push(user.row_id);
-                });
-                var mydata = {user_id_list:userIdList, group_id:{{$groupId}}};
-                var mydataStr = $.toJSON(mydata);
-                $.ajax({
-                    url: "platform/saveGroupUsers",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                        }  else {
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                        }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+            var selectedUsers = $("#gridUserList").bootstrapTable('getData');
+            var userIdList = new Array();
+            $.each(selectedUsers, function(i, user) {
+                userIdList.push(user.row_id);
+            });
+            var mydata = {user_id_list:userIdList, group_id:{{$groupId}}};
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "platform/saveGroupUsers",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                        $("#gridUserList").bootstrapTable('refresh');
+                    }  else {
+                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                     }
-                });
+                },
+                error: function (e) {
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    $("#gridUserList").bootstrapTable('refresh');
+                }
             });
         }
 
@@ -185,6 +154,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
                 }
             });
             $("#gridUserList").bootstrapTable('load', currentData);
+            SaveGroupUsers();
         }
     </script>
 @endsection
@@ -198,7 +168,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
                     <h1 class="modal-title" id="roleDetailMaintainDialogTitle">{{trans("messages.SELECT_USER")}}</h1>
                 </div>
                 <div class="modal-body">
-                    <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
+                    <table id="gridAllUserList" class="bootstrapTable" data-toggle="table"
                            data-url="platform/getUserListWithoutGroup" data-height="298" data-pagination="true"
                            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                            data-show-toggle="true"  data-sortable="true"
@@ -212,7 +182,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
                             <th data-field="emp_no" data-sortable="true">{{trans("messages.USER_EMP_NO")}}</th>
                             <th data-field="login_id" data-sortable="true" >{{trans("messages.USER_LOGIN_ID")}}</th>
                             <th data-field="emp_name" data-sortable="true">{{trans("messages.USER_EMP_NAME")}}</th>
-                            <th data-field="status" data-sortable="true">{{trans("messages.STATUS")}}</th>
+                            <th data-field="status" data-sortable="true" data-formatter="userStatusFormatter">{{trans("messages.STATUS")}}</th>
                         </tr>
                         </thead>
                     </table>
@@ -225,6 +195,14 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
         </div>
     </div>
     <script>
+        function userStatusFormatter(value, row) {
+            if(value.toUpperCase() == "Y") {
+                return "{{trans("messages.STATUS_HAS_RIGHT")}}";
+            } else {
+                return "{{trans("messages.STATUS_HAS_NO_RIGHT")}}";
+            }
+        };
+
         var selectUserDialog_SelectUser = function() {
             try {
                 var selectedUserList = $("#gridAllUserList").bootstrapTable('getSelections');
@@ -238,6 +216,7 @@ $groupInfo = \App\lib\CommonUtil::getGroup($groupId);
 
         var selectUserDialog_Show = function () {
             $("#gridAllUserList").bootstrapTable('uncheckAll');
+            $("#gridAllUserList").bootstrapTable('resetSearch', "");
             $("#gridAllUserList").bootstrapTable('refresh');
             $("#selectUserDialog").modal('show');
         };

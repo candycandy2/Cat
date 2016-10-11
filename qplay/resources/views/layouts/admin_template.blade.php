@@ -1,10 +1,12 @@
 <?php
+use Illuminate\Support\Facades\Input;
 /**
  * Created by PhpStorm.
  * User: Moses.Zhu
  * Date: 2016/8/15
  * Time: 17:09
  */
+date_default_timezone_set('PRC');
 $oriMenuList = Auth::user()->getMenuList();
 $menuList = array();
 $breadList = ['Home'];
@@ -37,6 +39,13 @@ foreach ($oriMenuList as $menu) {
 }
 
 $title = trans('messages.TITLE_'.$menu_name);
+$withMessage = false;
+$withMsgId = -1;
+$input = Input::get();
+if(array_key_exists('with_msg_id', $input)) {
+    $withMessage = true;
+    $withMsgId= $input['with_msg_id'];
+}
 
 ?>
 
@@ -72,18 +81,23 @@ $title = trans('messages.TITLE_'.$menu_name);
     <script src="{{ asset('/oss/html5shiv.min.js') }}"></script>
     <script src="{{ asset('/oss/respond.min.js') }}"></script>
     <![endif]-->
+    <style type="text/css">
+        td.grid_long_column {
+            display:block;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+    </style>
 </head>
 <body class="skin-blue fixed" data-spy="scroll" data-target="#scrollspy">
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
         <!-- Logo -->
-        <a href="#" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            {{--<span class="logo-mini"><b>A</b>LT</span>--}}
-            <!-- logo for regular state and mobile devices -->
-            Hello, {{Auth::user()->login_id}}
-        </a>
+        <a href="#" class="logo">{{Auth::user()->login_id}}</a>
+    {{--{{date_default_timezone_get()}}--}}
+    {{--{{date('Y-m-d H:i:s',time())}}--}}
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
@@ -219,69 +233,213 @@ $title = trans('messages.TITLE_'.$menu_name);
 {{--<script src="docs.js"></script>--}}
 <script>
     var clID = '{{Auth::user()->login_id}}';
+    var cLang = "en-us";
+    @if(\Session::has('lang') && \Session::get("lang") != "")
+        cLang = "{{\Session::get("lang")}}";
+    @endif
+    var bootstrapTableFormatter_en_US = {
+        formatLoadingMessage: function () {
+            return 'Loading, please wait...';
+        },
+        formatRecordsPerPage: function (pageNumber) {
+            return sprintf('%s <span class="pagging_per_page">rows per page</span>', pageNumber);
+        },
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+            return sprintf('Showing %s to %s of %s rows', pageFrom, pageTo, totalRows);
+        },
+        formatDetailPagination: function (totalRows) {
+            return sprintf('Showing %s rows', totalRows);
+        },
+        formatSearch: function () {
+            return 'Search';
+        },
+        formatNoMatches: function () {
+            return 'No matching records found';
+        },
+        formatPaginationSwitch: function () {
+            return 'Hide/Show pagination';
+        },
+        formatRefresh: function () {
+            return 'Refresh';
+        },
+        formatToggle: function () {
+            return 'Toggle';
+        },
+        formatColumns: function () {
+            return 'Columns';
+        },
+        formatAllRows: function () {
+            return 'All';
+        }
+    };
+    var bootstrapTableFormatter_zh_CN = {
+        formatLoadingMessage: function () {
+            return '加载中, 请稍等...';
+        },
+        formatRecordsPerPage: function (pageNumber) {
+            return sprintf('%s <span class="pagging_per_page">笔记录每页</span>', pageNumber);
+        },
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+            return sprintf('显示 %s 到 %s 笔记录, 共 %s 笔记录', pageFrom, pageTo, totalRows);
+        },
+        formatDetailPagination: function (totalRows) {
+            return sprintf('显示 %s 笔记录', totalRows);
+        },
+        formatSearch: function () {
+            return '查询';
+        },
+        formatNoMatches: function () {
+            return '没有匹配的记录';
+        },
+        formatPaginationSwitch: function () {
+            return '显示/隐藏分页';
+        },
+        formatRefresh: function () {
+            return '刷新';
+        },
+        formatToggle: function () {
+            return '切换';
+        },
+        formatColumns: function () {
+            return '列';
+        },
+        formatAllRows: function () {
+            return '全部';
+        }
+    };
+    var bootstrapTableFormatter_zh_TW = {
+        formatLoadingMessage: function () {
+            return '加載中, 請稍等...';
+        },
+        formatRecordsPerPage: function (pageNumber) {
+            return sprintf('%s <span class="pagging_per_page">筆記錄每頁</span>', pageNumber);
+        },
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+            return sprintf('顯示 %s 到 %s 筆記錄, 共 %s 筆記錄', pageFrom, pageTo, totalRows);
+        },
+        formatDetailPagination: function (totalRows) {
+            return sprintf('顯示 %s 筆記錄', totalRows);
+        },
+        formatSearch: function () {
+            return '查詢';
+        },
+        formatNoMatches: function () {
+            return '沒有匹配的記錄';
+        },
+        formatPaginationSwitch: function () {
+            return '顯示/隱藏分頁';
+        },
+        formatRefresh: function () {
+            return '刷新';
+        },
+        formatToggle: function () {
+            return '切換';
+        },
+        formatColumns: function () {
+            return '列';
+        },
+        formatAllRows: function () {
+            return '全部';
+        }
+    };
+
+    var sprintf = function (str) {
+        var args = arguments,
+                flag = true,
+                i = 1;
+
+        str = str.replace(/%s/g, function () {
+            var arg = args[i++];
+
+            if (typeof arg === 'undefined') {
+                flag = false;
+                return '';
+            }
+            return arg;
+        });
+        return flag ? str : '';
+    };
+
+    var changeBootstrapTableFormatter = function (current, target) {
+        current.formatLoadingMessage = target.formatLoadingMessage;
+        current.formatRecordsPerPage = target.formatRecordsPerPage;
+        current.formatShowingRows = target.formatShowingRows;
+        current.formatDetailPagination = target.formatDetailPagination;
+        current.formatSearch = target.formatSearch;
+        current.formatNoMatches = target.formatNoMatches;
+        current.formatPaginationSwitch = target.formatPaginationSwitch;
+        current.formatRefresh = target.formatRefresh;
+        current.formatToggle = target.formatToggle;
+        current.formatColumns = target.formatColumns;
+        current.formatAllRows = target.formatAllRows;
+    };
     $(function() {
+        @if($withMessage)
+        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.".$withMsgId)}}");
+        @endif
+
+        var currentBootstrapTableLang = bootstrapTableFormatter_en_US;
+        if(cLang == "zh-cn") {
+            currentBootstrapTableLang = bootstrapTableFormatter_zh_CN;
+        } else if(cLang == "zh-tw") {
+            currentBootstrapTableLang = bootstrapTableFormatter_zh_TW;
+        }
 
         $(".bootstrapTable").each(function(i, table) {
-            if($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S")) {
-                var s = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S");
-                //dropdown-menu
-                //$(this).bootstrapTable('selectPageSize', s);
-                $(this).bootstrapTable('getOptions').pageSize = s;
-                //$(this).bootstrapTable('refresh');
+            if($(this).attr("id") != "gridAllUserList") {
+                if($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S")) {
+                    var s = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S");
+                    $(this).bootstrapTable('getOptions').pageSize = s;
+                }
             }
+
+            changeBootstrapTableFormatter($(this).bootstrapTable('getOptions'), currentBootstrapTableLang);
         });
 
         $(".content-wrapper").resize(function () {
             $('.bootstrapTable').bootstrapTable('resetView');
         });
 
+        $('.bootstrapTable').on('search.bs.table', function(e, text) {
+            $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST", text);
+        });
+
         $('.bootstrapTable').on('load-success.bs.table', function() {
-            $(".pagination-info").each(function() {
-                $(this).text(
-                        $(this).text().replace("Showing", "{{trans("messages.PAGING_SHOWING")}}")
-                                .replace("to", "{{trans("messages.PAGING_TO")}}").replace("of", "{{trans("messages.PAGING_OF")}}")
-                                .replace("rows", "{{trans("messages.PAGING_ROWS")}}")
-                );
-            });
+            $('.bootstrapTable').off('page-change.bs.table');
+            if($(this).attr("id") != "gridAllUserList") {
+                if ($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST")) {
+                    var st = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST");
+                    $(this).bootstrapTable('resetSearch', st); //resetSearch
+                }
 
-            $(".pagging_per_page").each(function() {
-                $(this).text(
-                        $(this).text().replace("rows per page", "{{trans("messages.PAGING_ROWS_PER_PAGE")}}")
-                );
-            });
-
-            if($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P")) {
-                var p = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P");
-                $(this).bootstrapTable('selectPage', p);
-                $(this).parent().parent().find(".page-number").each(function(m, liPage) {
-                    var $a = $(liPage).first("a");
-                    if($a.text() == p) {
-                        $(liPage).addClass("active");
-                        return false;
-                    }
-                });
-                //page-number active
+                if($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P")) {
+                    var p = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P");
+                    $(this).bootstrapTable('selectPage', p);
+                    $(this).parent().parent().find(".page-number").each(function(m, liPage) {
+                        var $a = $(liPage).first("a");
+                        if($a.text() == p) {
+                            $(liPage).addClass("active");
+                            return false;
+                        }
+                    });
+                    //page-number active
+                }
             }
+
+            $('.bootstrapTable').on('page-change.bs.table', function(e ,page, size) {
+                try {
+                    selectedChanged();
+                } catch (err) {}
+
+                $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P", page);
+                $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S", size);
+            });
         });
 
         $('.bootstrapTable').on('page-change.bs.table', function(e ,page, size) {
             try {
                 selectedChanged();
             } catch (err) {}
-
-            $(".pagination-info").each(function() {
-                $(this).text(
-                        $(this).text().replace("Showing", "{{trans("messages.PAGING_SHOWING")}}")
-                                .replace("to", "{{trans("messages.PAGING_TO")}}").replace("of", "{{trans("messages.PAGING_OF")}}")
-                                .replace("rows", "{{trans("messages.PAGING_ROWS")}}")
-                );
-            });
-
-            $(".pagging_per_page").each(function() {
-                $(this).text(
-                        $(this).text().replace("rows per page", "{{trans("messages.PAGING_ROWS_PER_PAGE")}}")
-                );
-            });
 
             $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P", page);
             $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S", size);
@@ -294,6 +452,10 @@ $title = trans('messages.TITLE_'.$menu_name);
 
             window.location.href = "auth/logout";
         });
+    };
+
+    var getByteLength = function (str) {
+        return str.replace(/[^\x00-\xff]/g,"aaa").length;
     };
 </script>
 </body>

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Input;
 $menu_name = "PUSH_SERVER";
 $input = Input::get();
 $push_send_row_id = $input["push_send_row_id"];
+$messageId = $input["message_id"];
+$tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 $sendInfo = \App\lib\CommonUtil::getMessageSendInfo($push_send_row_id);
 $messageInfo = $sendInfo->message_info;
@@ -27,6 +29,21 @@ $messageType = $sendInfo->message_info->message_type;
               </div>
             </div>
             <div class="form-group row">
+                <label for="ddlPushTo" class="col-xs-2">{{trans("messages.TEMPLATE_ID")}}:</label>
+                <div class="col-xs-10">
+                    <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled">
+                        <option value="1" @if($messageInfo->template_id == 1) selected="selected" @endif>1</option>
+                        <option value="2" @if($messageInfo->template_id == 2) selected="selected" @endif>2</option>
+                        <option value="3" @if($messageInfo->template_id == 3) selected="selected" @endif>3</option>
+                        <option value="4" @if($messageInfo->template_id == 4) selected="selected" @endif>4</option>
+                        <option value="5" @if($messageInfo->template_id == 5) selected="selected" @endif>5</option>
+                        <option value="6" @if($messageInfo->template_id == 6) selected="selected" @endif>6</option>
+                        <option value="7" @if($messageInfo->template_id == 7) selected="selected" @endif>7</option>
+                        <option value="8" @if($messageInfo->template_id == 8) selected="selected" @endif>8</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
               <label for="ddlType" class="col-xs-2">{{trans("messages.PUSH_TYPE")}}:</label>
               <div class="col-xs-10">
                <select class="select2-close-mask form-control" name="ddlType" id="ddlType" disabled="disabled">
@@ -34,9 +51,9 @@ $messageType = $sendInfo->message_info->message_type;
                             @if($messageInfo->message_type=='event')
                             selected="selected"
                             @endif>Event</option>
-                    <option value="event"
+                    <option value="news"
                             @if($messageInfo->message_type=='news')
-                            selected="news"
+                            selected="selected"
                             @endif>News</option>
                 </select>
               </div>
@@ -53,6 +70,12 @@ $messageType = $sendInfo->message_info->message_type;
                 {{$messageInfo->message_text}}
               </div>
             </div>
+            <div class="form-group row" style="word-wrap:break-word;">
+                <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_SEND_HISTORY")}}:</label>
+                <div class="col-xs-10">
+                    {{$sendInfo->created_at}} &nbsp;&nbsp;&nbsp; {{$sendInfo->source_user}}
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-4 col-xs-4" >
@@ -60,7 +83,7 @@ $messageType = $sendInfo->message_info->message_type;
                 <button type="button" class="btn btn-warning" onclick="SendAgain()">
                     {{trans("messages.PUSH_AGAIN")}}
                 </button>
-                <a type="button" class="btn btn-default" href="push">
+                <a type="button" class="btn btn-default" href="messagePushHistory?message_id={{$messageId}}">
                     {{trans("messages.CANCEL")}}
                 </a>
             </div>
@@ -74,21 +97,22 @@ $messageType = $sendInfo->message_info->message_type;
             {{trans("messages.MESSAGE_RECEIVER")}}:
             <br/><br/>
             @foreach($allCompanyRoleList as $companyRoles)
+            <!--{{$tempFlag++}}-->
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
+                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
                         <tr>
-                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
+                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
                                 <input type="checkbox" data="{{$companyRoles->company}}" disabled="disabled"
                                        onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
-                            <td style="border:1px solid #d6caca;">
-                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                            <td style="border:1px solid #d6caca;padding: 0px;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                     <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole" disabled="disabled"
                                            @if(in_array($companyRoles->roles[0]->row_id, $sendInfo->role_list)) checked="checked" @endif
                                     >{{$companyRoles->roles[0]->role_description}}</input>
                                 </div>
                                     @if(count($companyRoles->roles) > 1)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                         <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole" disabled="disabled"
                                                @if(in_array($companyRoles->roles[1]->row_id, $sendInfo->role_list)) checked="checked" @endif
                                         >{{$companyRoles->roles[1]->role_description}}</input>
@@ -97,18 +121,18 @@ $messageType = $sendInfo->message_info->message_type;
                             </td>
                         </tr>
                         @if(count($companyRoles->roles) > 2)
-                        @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1); $i = $i + 2)
                             <tr>
-                                <td style="border:1px solid #d6caca;">
+                                <td style="border:1px solid #d6caca;padding: 0px;">
                                     @if(count($companyRoles->roles) > $i)
-                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                             <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole" disabled="disabled"
                                                    @if(in_array($companyRoles->roles[$i]->row_id, $sendInfo->role_list)) checked="checked" @endif
                                             >{{$companyRoles->roles[$i]->role_description}}</input>
                                         </div>
                                     @endif
                                     @if(count($companyRoles->roles) > $i + 1)
-                                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                                 <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole" disabled="disabled"
                                                        @if(in_array($companyRoles->roles[$i + 1]->row_id, $sendInfo->role_list)) checked="checked" @endif
                                                 >{{$companyRoles->roles[$i + 1]->role_description}}</input>
@@ -125,7 +149,7 @@ $messageType = $sendInfo->message_info->message_type;
             <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
                    data-url="platform/getSingleEventMessageReceiver?message_send_row_id={{$push_send_row_id}}" data-height="398" data-pagination="true"
                    data-show-refresh="false" data-row-style="rowStyle" data-search="false"
-                   data-show-toggle="true"  data-sortable="false"
+                   data-show-toggle="false"  data-sortable="false"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
                 <thead>
@@ -145,19 +169,19 @@ $messageType = $sendInfo->message_info->message_type;
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             {{trans("messages.MESSAGE_RECEIVER")}}:
             <br/><br/>
-            <table class="table table-bordered" id="CompanyTable" style="border:1px solid #d6caca;">
+            <table class="table table-bordered" id="CompanyTable" style="border:1px solid #d6caca;width:60%;">
                 <tr>
                     <td rowspan="{{count($allCompanyRoleList)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
                         <input type="checkbox" data="All_Company" disabled="disabled" onclick="CompanyTableSelectedAll(this)">ALL</input>
                     </td>
-                    <td style="border:1px solid #d6caca;">
-                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                    <td style="border:1px solid #d6caca;padding: 0px;">
+                        <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                         <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[0]->company}}"
                                @if(in_array($allCompanyRoleList[0]->company, $sendInfo->company_list)) checked="checked" @endif
                                class="cbxNewsCompany">{{$allCompanyRoleList[0]->company}}</input>
                         </div>
                         @if(count($allCompanyRoleList) > 1)
-                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                            <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                 <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[1]->company}}"
                                        @if(in_array($allCompanyRoleList[1]->company, $sendInfo->company_list)) checked="checked" @endif
                                        class="cbxNewsCompany">{{$allCompanyRoleList[1]->company}}</input>
@@ -166,18 +190,18 @@ $messageType = $sendInfo->message_info->message_type;
                     </td>
                 </tr>
                 @if(count($allCompanyRoleList) > 2)
-                @for($i = 2; $i < (count($allCompanyRoleList) + 1) / 2; $i = $i + 2)
+                @for($i = 2; $i < (count($allCompanyRoleList) + 1) ; $i = $i + 2)
                     <tr>
-                        <td style="border:1px solid #d6caca;">
+                        <td style="border:1px solid #d6caca;padding: 0px;">
                             @if(count($allCompanyRoleList) > $i)
-                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                            <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                 <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[$i]->company}}"
                                        @if(in_array($allCompanyRoleList[$i]->company, $sendInfo->company_list)) checked="checked" @endif
                                        class="cbxNewsCompany">{{$allCompanyRoleList[$i]->company}}</input>
                             </div>
                             @endif
                                 @if(count($allCompanyRoleList) > $i + 1)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                         <input type="checkbox" disabled="disabled" data="{{$allCompanyRoleList[$i + 1]->company}}"
                                                @if(in_array($allCompanyRoleList[$i + 1]->company, $sendInfo->company_list)) checked="checked" @endif
                                                class="cbxNewsCompany">{{$allCompanyRoleList[$i + 1]->company}}</input>
@@ -192,12 +216,19 @@ $messageType = $sendInfo->message_info->message_type;
     </div>
     @endif
     <script>
+        var msgVisible = '{{$messageInfo->visible}}';
+
         var SendAgain = function () {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_AGAIN")}}", "", function () {
+            if(msgVisible.toUpperCase() != 'Y') {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_MESSAGE_INVISIBLE")}}");
+                return false;
+            }
+
+            var msgType = $("#ddlType").val();
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_AGAIN")}}".replace("%s", msgType), "", function () {
                 hideConfirmDialog();
 
                 var msgSourcer = $("#ddlPushTo").val();
-                var msgType = $("#ddlType").val();
                 var msgTitle = $("#tbxTitle").text();
                 var msgContent = $("#tbxContent").text();
                 var msgReceiver = new Object();
@@ -216,6 +247,7 @@ $messageType = $sendInfo->message_info->message_type;
                     }
                 } else {
                     msgReceiver.type = "event";
+                    msgReceiver.company_list = new Array();
                     msgReceiver.role_list = new Array();
                     msgReceiver.user_list = new Array();
 
@@ -233,6 +265,11 @@ $messageType = $sendInfo->message_info->message_type;
                         showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");
                         return false;
                     }
+                }
+
+                if(getByteLength(msgTitle) > 99) {
+                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_OUT_OF_LENGTH")}}".replace("%s", "{{trans("messages.MESSAGE_TITLE")}}").replace("%l", "99"));
+                    return false;
                 }
 
                 var mydata =
@@ -253,8 +290,8 @@ $messageType = $sendInfo->message_info->message_type;
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
                             //TODO redirect to parent page and show message
-                            //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            window.location.href = "push";
+                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_PUSH_SUCCESS")}}");
+                            //window.location.href = "push?with_msg_id=MSG_PUSH_SUCCESS";
                         }
                     },
                     error: function (e) {

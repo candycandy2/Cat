@@ -6,7 +6,7 @@
                 <h1 class="modal-title" id="roleDetailMaintainDialogTitle">{{trans("messages.SELECT_USER")}}</h1>
             </div>
             <div class="modal-body">
-                <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
+                <table id="gridAllUserList" class="bootstrapTable" data-toggle="table"
                        data-url="platform/getUserList" data-height="298" data-pagination="true"
                        data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                        data-show-toggle="true"  data-sortable="true"
@@ -20,7 +20,7 @@
                         <th data-field="emp_no" data-sortable="true">{{trans("messages.USER_EMP_NO")}}</th>
                         <th data-field="login_id" data-sortable="true" >{{trans("messages.USER_LOGIN_ID")}}</th>
                         <th data-field="emp_name" data-sortable="true">{{trans("messages.USER_EMP_NAME")}}</th>
-                        <th data-field="status" data-sortable="true">{{trans("messages.STATUS")}}</th>
+                        <th data-field="status" data-sortable="true" data-formatter="userStatusFormatter">{{trans("messages.STATUS")}}</th>
                     </tr>
                     </thead>
                 </table>
@@ -33,6 +33,13 @@
     </div>
 </div>
 <script>
+    function userStatusFormatter(value, row) {
+        if(value.toUpperCase() == "Y") {
+            return "{{trans("messages.STATUS_HAS_RIGHT")}}";
+        } else {
+            return "{{trans("messages.STATUS_HAS_NO_RIGHT")}}";
+        }
+    };
     var selectUserDialog_SelectUser = function() {
         try {
             var selectedUserList = $("#gridAllUserList").bootstrapTable('getSelections');

@@ -40,7 +40,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <b>QPLay</b>Platform
+        <b>QPlay</b>Playform
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -92,11 +92,11 @@
 <!-- /.login-box -->
 
 <!-- jQuery 2.2.3 -->
-<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
-<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script src="{{ asset('/plugins/iCheck/icheck.min.js') }}"></script>
 <script>
     $(function () {
         $('input').iCheck({

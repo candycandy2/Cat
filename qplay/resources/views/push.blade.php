@@ -1,6 +1,7 @@
 @include("layouts.lang")
 <?php
 $menu_name = "PUSH_SERVER";
+
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -20,7 +21,7 @@ $menu_name = "PUSH_SERVER";
         <tr>
             <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
             <th data-field="message_type" data-sortable="true" data-formatter="messageTypeFormatter">{{trans("messages.MESSAGE_TYPE")}}</th>
-            <th data-field="message_title" data-sortable="true" data-formatter="messageTitleFormatter" data-search-formatter="false">{{trans("messages.MESSAGE_TITLE")}}</th>
+            <th data-field="message_title" data-sortable="true" data-formatter="messageTitleFormatter" data-search-formatter="false" data-width="600px" data-class="grid_long_column">{{trans("messages.MESSAGE_TITLE")}}</th>
             <th data-field="created_at" data-sortable="true">{{trans("messages.CREATED_DATE")}}</th>
             <th data-field="created_user" data-sortable="true">{{trans("messages.MESSAGE_CREATED_USER")}}</th>
             <th data-field="visible" data-sortable="true">{{trans("messages.PUBLISH_STATUS")}}</th>

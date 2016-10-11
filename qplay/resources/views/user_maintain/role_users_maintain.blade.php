@@ -53,7 +53,11 @@ foreach ($allCompanyRoleList as $companyRoles) {
                     <td>
                         <select name="ddlCompany" id="ddlCompany" onchange="BindRoleList()" class="form-control">
                             @foreach($allCompanyRoleList as $company)
-                                <option value="{{$company->company}}">{{$company->company}}</option>
+                                <option value="{{$company->company}}"
+                                @if($roleInfo->company == $company->company)
+                                    selected = "selected"
+                                @endif
+                                >{{$company->company}}</option>
                             @endforeach
                         </select>
                     </td>
