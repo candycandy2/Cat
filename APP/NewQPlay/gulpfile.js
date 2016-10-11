@@ -15,7 +15,7 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var less = require('gulp-less');
-var copy = require('gulp-copy');
+//var copy = require('gulp-copy');
 
 
 gulp.task('copy',function(){
@@ -23,6 +23,11 @@ gulp.task('copy',function(){
         .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets'));
 });
 
+gulp.task('componentCSS',function(){
+    return gulp.src('../component/*.css')
+        .pipe(gulp.dest('www/css/'));
+});
+/*
 gulp.task('less',function(){
     return gulp.src('www/src/css/*.less')
         .pipe(less())
@@ -34,7 +39,13 @@ gulp.task('concat:css', ['less'], function(){
         .pipe(concat('style.css'))
         .pipe(gulp.dest('www/dist/css'));
 });
+*/
 
+gulp.task('componentJS',function(){
+    return gulp.src('../component/*.js')
+        .pipe(gulp.dest('www/js/'));
+});
+/*
 gulp.task('concat:js', function(){
     return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
         .pipe(uglify())
@@ -45,4 +56,8 @@ gulp.task('concat:js', function(){
 gulp.task('default', ['concat:js', 'concat:css'], function(){
     return gulp.src('www/src/index.html')
         .pipe(gulp.dest('www/dist'));
+});
+*/
+gulp.task('default', ['componentCSS', 'componentJS'], function(){
+    
 });
