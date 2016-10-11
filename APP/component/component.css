@@ -28,10 +28,8 @@ body {
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.4);
-    display: flex;
-    justify-content: center;
-    flex-flow: column wrap;
-    align-items: center;
+    text-align: center;
+    padding-top: 70%;
 }
 
 /* override jQuery Mobile */
