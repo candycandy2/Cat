@@ -14,7 +14,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         type: requestType,
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': 'qplay',
+            'App-Key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
             'token': loginData.token
