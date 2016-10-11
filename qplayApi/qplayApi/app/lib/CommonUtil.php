@@ -318,4 +318,36 @@ class CommonUtil
         $result = file_get_contents($url, false, $context);
         return $result;
     }
+
+    public static function PushMessageWithMessageCenter($message, $to) {
+        $jpush_app_id = "293a09f63dd77abea15f42c3";  //TODO
+        $id = strtoupper(md5(uniqid(rand(),true)));
+        $args = array('Id' => $id,
+            'TenantId' => '00000000-0000-0000-0000-000000000000',
+            'AppId' => $jpush_app_id,
+            'To' => $to,
+            'Message' => $message,
+            'Sound' => 'default',
+            'Badge' => '0',
+            'Timing' => '1900-01-01 00:00:00.000',
+            'Expire' => '2099-12-31 00:00:00.000',
+            'Status' => 'W',
+            'To_Type' => 'NONE',
+            'Parameter' => '',
+            'CreatedDate' => date('Y-m-d H:i:s',time()));
+        $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
+        $data["pns"] = json_encode($args);
+        $response = self::doPost($url, $data);
+
+        $result = array();
+        if(str_contains($response, "true")) {
+            $result["result"] = true;
+            $result["info"] = $data["pns"];
+        } else {
+            $result["result"] = false;
+            $result["info"] = $data["pns"];
+        }
+
+        return $result;
+    }
 }
