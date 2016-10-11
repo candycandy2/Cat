@@ -5,6 +5,8 @@
 // appSecretKey => set in QPlayAPI.js under specific APP
 //
 
+var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
+var appSecretKey;
 var loginData = {
     token:          "",
     token_valid:    "",
@@ -17,19 +19,19 @@ var app = {
     initialize: function() {
 
         //For test, to clear localStorageData
-        
+        /*
         if (window.localStorage.length === 0) {
             this.bindEvents();
         } else {
             window.localStorage.clear();
             this.bindEvents();
         }
-        
+        */
 
         //For release
-        /*
+
         this.bindEvents();
-        */
+
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -45,12 +47,15 @@ var app = {
         if (window.localStorage.length === 0) {
             getDataFromServer = true;
         } else {
-            var loginDataExist = processStorageData("check");
             
+            //1. check loginData exist in localStorage
+            var loginDataExist = processStorageData("checkLocalStorage");
+
             if (loginDataExist) {
-                processStorageData("setLoginData");
-                initialSuccess();
+                //2. if token exist, check token valid from server
+                processStorageData("checkSecurityList");
             } else {
+                //3. if token not exist, call QLogin
                 getDataFromServer = true;
             }
         }
@@ -100,7 +105,7 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 function processStorageData(action, data) {
     data = data || null;
 
-    if (action === "check") {
+    if (action === "checkLocalStorage") {
         var checkLoginDataExist = true;
 
         $.map(loginData, function(value, key) {
@@ -112,10 +117,12 @@ function processStorageData(action, data) {
         });
 
         return checkLoginDataExist;
-    } else if (action === "setLoginData") {
+    } else if (action === "checkSecurityList") {
         $.map(loginData, function(value, key) {
             loginData[key] = window.localStorage.getItem(key);
         });
+
+        getSecurityList();
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
             window.localStorage.setItem(key, value);
@@ -140,6 +147,52 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     }
+}
+//Now just for check [token]
+function getSecurityList() {
+
+    var self = this;
+
+    this.successCallback = function(data) {
+        if (data['result_code'] === 1) {
+            initialSuccess();
+        } else if (data['result_code'] === "000907") {
+            //token expired
+            getServerData();
+        } else if (data['result_code'] === "000908") {
+            //token invalid
+            getServerData();
+        } else {
+            //fail
+        }
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+
+        appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
+        var signatureTime = getSignature("getTime");
+        var signatureInBase64 = getSignature("getInBase64", signatureTime);
+
+        $.ajax({
+            type: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': 'qplay',
+                'Signature-Time': signatureTime,
+                'Signature': signatureInBase64,
+                'token': loginData.token
+            },
+            url: serverURL + "/qplayApi/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
+            dataType: "json",
+            cache: false,
+            success: self.successCallback,
+            fail: self.failCallback
+        });
+
+    }();
+
 }
 
 function getSignature(action, signatureTime) {

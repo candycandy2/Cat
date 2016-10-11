@@ -1,6 +1,7 @@
 
 /*global variable, function*/
-var appKey = "appyellowpage";
+//var appKey = "appyellowpage";
+var appKey = "yellowpage";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
 
 var employeeData = {};
@@ -11,7 +12,7 @@ var prevPageID;
 
 window.initialSuccess = function(data) {
     //data return from [qplayApi/public/index.php/v101/qplay/login]
-    if (data !== null) {
+    if (data !== undefined) {
         processStorageData("setLocalStorage", data);
     }
 
@@ -21,6 +22,7 @@ window.initialSuccess = function(data) {
         $.mobile.changePage('#' + prevPageID);
         prevPageID = null;
     });
+
 }
 //console.log($.mobile.pageContainer.pagecontainer("getActivePage"));
 
