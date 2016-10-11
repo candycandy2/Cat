@@ -24,6 +24,7 @@ Route::any('/platform/saveRoleUsers', 'platformController@saveRoleUsers');
 Route::any('/platform/getRootMenuList', 'platformController@getRootMenuList');
 Route::any('/platform/deleteMenu', 'platformController@deleteMenu');
 Route::any('/platform/newMenu', 'platformController@newMenu');
+Route::any('/platform/saveMenuSequence', 'platformController@saveMenuSequence');
 Route::any('/platform/getSubMenuList', 'platformController@getSubMenuList');
 Route::any('/platform/saveRootMenu', 'platformController@saveRootMenu');
 Route::any('/platform/getGroupList', 'platformController@getGroupList');

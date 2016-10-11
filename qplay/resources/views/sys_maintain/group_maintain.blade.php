@@ -23,7 +23,7 @@ $menu_name = "SYS_GROUP_MAINTAIN";
         <tr>
             <th data-field="state" data-searchable="false" data-checkbox="true"></th>
             <th data-field="row_id" data-searchable="false" data-sortable="false" data-visible="false">ID</th>
-            <th data-field="group_name" data-searchable="true" data-search-formatter="false" data-sortable="true" data-formatter="groupNameFormatter">{{trans("messages.GROUP_NAME")}}</th>
+            <th data-field="group_name" data-searchable="true" data-search-formatter="false" data-sortable="true" data-formatter="groupNameFormatter" data-width="600px" data-class="grid_long_column">{{trans("messages.GROUP_NAME")}}</th>
             <th data-field="user_count" data-searchable="false"  data-sortable="true" data-formatter="userCountFormatter">{{trans("messages.USERS")}}</th>
         </tr>
         </thead>
@@ -41,15 +41,25 @@ $menu_name = "SYS_GROUP_MAINTAIN";
         var deleteGroup = function() {
             var confirmStr = "";
             var selectedGroups = $("#gridGroupList").bootstrapTable('getSelections');
-            var check = true;
+            var checkHasUser = true;
+            var checkHasAdmin = true;
             $.each(selectedGroups, function (i, group) {
+                if(group.group_name.toUpperCase() == "ADMINISTRATOR") {
+                    checkHasAdmin = false;
+                    return false;
+                }
                 confirmStr += group.group_name + "<br/>";
                 if(group.user_count > 0) {
-                    check = false;
+                    checkHasUser = false;
                     return false;
                 }
             });
-            if(!check) {
+            if(!checkHasAdmin) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_ADMIN_GROUP_CAN_NOT_DELETE")}}");
+                return false;
+            }
+
+            if(!checkHasUser) {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_GROUP_EXIST_USERS")}}");
                 return false;
             }

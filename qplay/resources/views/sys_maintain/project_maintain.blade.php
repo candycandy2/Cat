@@ -25,7 +25,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             <th data-field="with_app" data-visible="false">WithApp</th>
             <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
             <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
-            <th data-field="project_description" data-sortable="true" >{{trans("messages.PROJECT_DESCRIPTION")}}</th>
+            <th data-field="project_description" data-sortable="true" data-width="600px" data-class="grid_long_column">{{trans("messages.PROJECT_DESCRIPTION")}}</th>
             <th data-field="project_pm" data-sortable="true" >{{trans("messages.PROJECT_PM")}}</th>
         </tr>
         </thead>

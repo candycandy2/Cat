@@ -27,8 +27,15 @@ if($action == "U") {
                 <tr>
                     <td>{{trans("messages.APP_KEY")}}:</td>
                     <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxAppKey" class="form-control"
-                               id="tbxAppKey" value="@if($action == "U"){{$projectInfo->app_key}}@endif"/>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td>app</td>
+                                <td>
+                                    <input type="text" data-clear-btn="true" name="tbxAppKey" class="form-control" onchange="toLower(this)"
+                                           id="tbxAppKey" value="@if($action == "U" && strpos($projectInfo->app_key, "app") == 0){{substr($projectInfo->app_key,3)}}@endif"/>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td><span style="color: red;">*</span></td>
                 </tr>
@@ -70,6 +77,10 @@ if($action == "U") {
     </div>
 
     <script>
+        var toLower = function (c) {
+            $(c).val($(c).val().toLowerCase());
+        };
+
         var pageAction = '{{$action}}';
         var projectId = '{{$projectId}}';
         var SaveProject = function() {
@@ -81,6 +92,7 @@ if($action == "U") {
                 return false;
             }
 
+            appKey = "app" + appKey;
             var mydata =
             {
                 action: pageAction,

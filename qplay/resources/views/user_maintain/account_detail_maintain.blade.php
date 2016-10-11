@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Input;
 $menu_name = "USER_ACCOUNT_MAINTAIN";
 $input = Input::get();
 $userLoginId = $input["login_id"];
+$tempFlag = 0;
 $userInfo = \App\lib\CommonUtil::getUserEnableInfoByUserID($userLoginId);
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 $allGroupList = \App\lib\CommonUtil::getAllGroupList();
@@ -72,14 +73,15 @@ foreach ($oriMenuList as $menu) {
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             {{trans("messages.ROLE")}}:<br /><br />
             @foreach($allCompanyRoleList as $companyRoles)
+                <!--{{$tempFlag++}}-->
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
+                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca; width:60%;">
                         <tr>
-                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
+                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
                                 <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
-                            <td style="border:1px solid #d6caca;">
-                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                            <td style="border:1px solid #d6caca;padding: 0px;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                 <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
                                     @if(in_array($companyRoles->roles[0]->row_id, $userInfo->roleList))
                                         checked
@@ -87,7 +89,7 @@ foreach ($oriMenuList as $menu) {
                                 >{{$companyRoles->roles[0]->role_description}}</input>
                                 </div>
                                 @if(count($companyRoles->roles) > 1)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                         <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole"
                                                @if(in_array($companyRoles->roles[1]->row_id, $userInfo->roleList))
                                                checked
@@ -98,11 +100,11 @@ foreach ($oriMenuList as $menu) {
                             </td>
                         </tr>
                         @if(count($companyRoles->roles) > 2)
-                        @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1); $i = $i + 2)
                             <tr>
-                                <td style="border:1px solid #d6caca;">
+                                <td style="border:1px solid #d6caca;padding: 0px;">
                                     @if(count($companyRoles->roles) > $i)
-                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                             <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
                                                    @if(in_array($companyRoles->roles[$i]->row_id, $userInfo->roleList))
                                                    checked
@@ -111,7 +113,7 @@ foreach ($oriMenuList as $menu) {
                                         </div>
                                     @endif
                                         @if(count($companyRoles->roles) > $i + 1)
-                                            <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                            <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                                 <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole"
                                                        @if(in_array($companyRoles->roles[$i + 1]->row_id, $userInfo->roleList))
                                                        checked
@@ -151,18 +153,19 @@ foreach ($oriMenuList as $menu) {
                          onclick="ChangeBelongToGroup(this)">{{trans("messages.MSG_BELONG_TO_GROUP_RIGHT")}}</input>
             <br /><br />
             @foreach($allMenuList as $menu)
-                <table class="table table-bordered MenuTable" style="border:1px solid #d6caca;" id="MenuTable_{{$menu->Id}}" >
+                <table class="table table-bordered MenuTable" style="width:60%;margin-bottom:-1px" id="MenuTable_{{$menu->Id}}" >
                     <tr>
-                        <td rowspan="{{count($menu->subMenuList)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
+                        <td rowspan="{{count($menu->subMenuList)}}" class="bg-gray-light col-lg-4 col-xs-4" style="background-color:#e2dbdb;text-align: center;border:1px solid #d6caca;vertical-align: middle;">
                             <input type="checkbox" data="{{$menu->Id}}"
                                    @if(in_array($menu->Id, $userInfo->menuList))
                                    checked
                                    @endif
                                    class="cbxMenu" onclick="MenuTableSelectedAll(this)" >{{$menu->sName}}</input>
                         </td>
-                        <td style="border:1px solid #d6caca;">
+                        <td style="border:1px solid #d6caca;padding: 0px;">
+                            <div class="col-lg-12 col-xs-12">
                             @if(count($menu->subMenuList) > 0)
-                                <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                     <input type="checkbox" data="{{$menu->subMenuList[0]->Id}}"
                                            @if(in_array($menu->subMenuList[0]->Id, $userInfo->menuList))
                                            checked
@@ -171,7 +174,7 @@ foreach ($oriMenuList as $menu) {
                                 </div>
                             @endif
                                 @if(count($menu->subMenuList) > 1)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                         <input type="checkbox" data="{{$menu->subMenuList[1]->Id}}"
                                                @if(in_array($menu->subMenuList[1]->Id, $userInfo->menuList))
                                                checked
@@ -179,14 +182,17 @@ foreach ($oriMenuList as $menu) {
                                                class="cbxSubMenu" >{{$menu->subMenuList[1]->sName}}</input>
                                     </div>
                                 @endif
+                            </div>
                         </td>
                     </tr>
                     @if(count($menu->subMenuList) > 2)
-                    @for($i = 2; $i < (count($menu->subMenuList) + 1) / 2; $i = $i + 2)
+                    @for($i = 2; $i <= (count($menu->subMenuList) + 1)  ; $i = $i + 2)
+                            @if(count($menu->subMenuList) > $i)
                         <tr>
-                            <td style="border:1px solid #d6caca;">
+                            <td style="border-right:1px solid #d6caca;border-bottom:1px solid #d6caca;padding: 0px;">
+                                <div class="col-lg-12 col-xs-12">
                                 @if(count($menu->subMenuList) > $i)
-                                    <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
                                 <input type="checkbox" data="{{$menu->subMenuList[$i]->Id}}"
                                        @if(in_array($menu->subMenuList[$i]->Id, $userInfo->menuList))
                                        checked
@@ -195,7 +201,7 @@ foreach ($oriMenuList as $menu) {
                                     </div>
                                 @endif
                                     @if(count($menu->subMenuList) > $i + 1)
-                                        <div class="col-lg-6 col-xs-6" style="text-align: center;">
+                                        <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
                                             <input type="checkbox" data="{{$menu->subMenuList[$i + 1]->Id}}"
                                                    @if(in_array($menu->subMenuList[$i + 1]->Id, $userInfo->menuList))
                                                    checked
@@ -203,8 +209,10 @@ foreach ($oriMenuList as $menu) {
                                                    class="cbxSubMenu">{{$menu->subMenuList[$i + 1]->sName}}</input>
                                         </div>
                                     @endif
+                                </div>
                             </td>
                         </tr>
+                            @endif
                     @endfor
                     @endif
                 </table>
@@ -229,18 +237,23 @@ foreach ($oriMenuList as $menu) {
             ChangeBelongToGroup();
         });
 
+        var hasChanged = false;
         var ChangeGroupProcess = function () {
-            $(".cbxMenu").prop("checked", false);
-            $(".cbxSubMenu").prop("checked", false);
-            var groupId = $("#ddlGroup").val();
-            $.each(groupMenuList, function (i, group) {
-                if(group.Id == groupId) {
-                    $.each(group.MenuIdList, function (j, menuId) {
-                        $(".MenuTable").find("[data=" + menuId +  "]").prop("checked", true);
-                    });
-                    return false;
-                }
-            });
+            if(hasChanged) {
+                $(".cbxMenu").prop("checked", false);
+                $(".cbxSubMenu").prop("checked", false);
+                var groupId = $("#ddlGroup").val();
+                $.each(groupMenuList, function (i, group) {
+                    if(group.Id == groupId) {
+                        $.each(group.MenuIdList, function (j, menuId) {
+                            $(".MenuTable").find("[data=" + menuId +  "]").prop("checked", true);
+                        });
+                        return false;
+                    }
+                });
+            } else {
+                hasChanged = true;
+            }
         };
 
         var ChangeGroup = function () {
@@ -274,6 +287,12 @@ foreach ($oriMenuList as $menu) {
         };
 
         var SaveUser = function () {
+            var groupID = $("#ddlGroup").val();
+            if(groupID == "") {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_MUST_CHOOSE_GROUP")}}");
+                return;
+            }
+
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
                 hideConfirmDialog();
                 var userStatus = "N";
@@ -290,7 +309,7 @@ foreach ($oriMenuList as $menu) {
                     user_id: {{$userInfo->row_id}},
                     status: userStatus,
                     role_list: new Array(),
-                    groupId: $("#ddlGroup").val(),
+                    groupId: groupID,
                     menuBelongToGroup: belongToGroup,
                     menu_list: new Array()
                 };
