@@ -16,7 +16,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <allow-intent href="qplay:*" />
+    <allow-intent href="appqplay:*" />
     <allow-intent href="*:*" />
     <platform name="android">
         <allow-intent href="market:*" />
