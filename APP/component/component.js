@@ -44,7 +44,6 @@ var app = {
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
-        
         if (window.localStorage.length === 0) {
             getDataFromServer = true;
         } else {
@@ -62,7 +61,7 @@ var app = {
         }
         
         if (getDataFromServer) {
-            if (appKey !== "appqplay") {
+            if (appKey !== "qplay") {
                 getServerData();
             } else {
                 initialSuccess();
@@ -73,7 +72,7 @@ var app = {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
-        
+    
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
