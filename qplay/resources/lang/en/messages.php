@@ -184,6 +184,12 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => 'Default language',
+    'SELECT_APP_KEY' => 'Select App Key',
+    'MSG_NEW_WHITE' => 'Add White List',
+    'MSG_EDIT_WHITE' => 'Edit White List',
+    'MSG_CONFIRM_DELETE_WHITE' => 'Confirm to remove selected white Lists?',
+    'MSG_DELETE_WHITE_FAILED' => 'Delete white list failed!',
+    'MSG_SAVE_WHITE_FAILED' => 'Save white list failed!',
 
     //Project Maintain
     'PROJECT_CODE' => 'Project Code',

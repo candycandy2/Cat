@@ -125,7 +125,7 @@ return [
     //App Category Maintain
     'CATEGORY_NAME' => '类别名',
     'CATEGORY_APP_COUNT' => 'App',
-	'ADD_APP' => '加入 App',
+    'ADD_APP' => '加入 App',
     'ICON' => 'Icon',
     'APP_NAME' => 'App 名称',
     'LAST_UPDATED_DATE' => '最后更新日期',
@@ -184,6 +184,12 @@ return [
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
     'DEFAULT_LANG' => '预设语言',
+    'SELECT_APP_KEY' => '选择App Key',
+    'MSG_NEW_WHITE' => '新增白名单',
+    'MSG_EDIT_WHITE' => '编辑白名单',
+    'MSG_CONFIRM_DELETE_WHITE' => '确定删除所选白名单?',
+    'MSG_DELETE_WHITE_FAILED' => '删除白名单失败!',
+    'MSG_SAVE_WHITE_FAILED' => '储存白名单失败!',
 
 	//Project Maintain
 	'PROJECT_CODE' => '专案代码',
