@@ -28,7 +28,7 @@ public class LoginActivity extends Activity {
         actionBar.hide();
 
         Intent tIntent = this.getIntent();
-	Bundle b=tIntent.getExtras();
+        Bundle b=tIntent.getExtras();
         if(b!=null){
             uuid=b.getString("uuid");
         }
