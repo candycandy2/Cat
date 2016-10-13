@@ -143,7 +143,7 @@ foreach ($enableRole as $role){
             > IOS-{{$appStatus['ios']}}</span>
         </span>
         <div class="btn-toolbar" role="toolbar" style="float: right;">
-            <button type="button" class="btn btn-primary" onclick="SaveAppDetail()">
+            <button type="button" id="saveAppDetail" class="btn btn-primary" onclick="SaveAppDetail()" style="display: none">
                 {{trans("messages.SAVE")}}
             </button>
             <a type="button" class="btn btn-default" href="AppMaintain">
@@ -173,8 +173,10 @@ foreach ($enableRole as $role){
     </div>
 
 <script>
+var oriDefaultLang = {{$defaultLang}};
 var jsDefaultLang = {{$defaultLang}};
 var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
+var jsAppRowId = {{app('request')->input('app_row_id')}};
 var selectedChanged = function (row, $element) {
     if(typeof(row)!='undefined'){
         var $currentTarget = $(row.currentTarget);
@@ -197,6 +199,7 @@ $(function () {
     $('.bootstrapTable').on('check-all.bs.table', selectedChanged);
     $('.bootstrapTable').on('uncheck-all.bs.table', selectedChanged);
     $('.bootstrapTable').on('load-success.bs.table', selectedChanged);
+    $('#saveAppDetail').show(); 
 });
 </script>
 <script src="{{ asset('/js/appMaintain/switch_lang_tool.js') }}"></script>

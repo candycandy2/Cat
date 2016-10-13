@@ -1,12 +1,13 @@
 SaveAppDetail = function(){
 var formData = new FormData();
 var mainInfoData = $('#mainInfoForm').serializeArray(); 
+formData.append('appId',jsAppRowId);
+//if change default language
+if(jsDefaultLang != oriDefaultLang){
+    formData.append('defaultLang',jsDefaultLang);
+}
 
-$.each(mainInfoData,function(key,input){
-   formData.append(input.name,input.value);
-});
-
-//formData.append("mainInfo", mainInfoData);
+formData.append('mainInfoForm',$('#mainInfoForm').serialize());
 
         $.ajax({
             url: "AppMaintain/saveAppDetail",

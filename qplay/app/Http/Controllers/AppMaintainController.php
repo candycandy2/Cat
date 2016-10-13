@@ -9,6 +9,9 @@ use App\Http\Controllers\Config;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use App\Model\QP_App_Head;
+use App\Model\QP_App_Line;
+use App\Model\QP_App_Pic;
 use DB;
 use File;
 
@@ -287,14 +290,13 @@ class AppMaintainController extends Controller
         }
         $data = array();
         $appRowId = $input["app_row_id"];
-
         $appBasic = \DB::table("qp_app_head as h")
                 -> join('qp_project as p', 'h.project_row_id', '=', 'p.row_id')
                 -> join('qp_app_line as l', 'h.row_id', '=', 'l.app_row_id')
                 -> join('qp_language as lang', 'l.lang_row_id', '=', 'lang.row_id')
                 -> where('h.row_id', '=', $appRowId)
                 -> select('h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
-                            'h.security_level','h.icon_url','company_label','l.app_description' ,'l.app_name' ,
+                            'h.security_level','h.icon_url','h.company_label','l.row_id','l.app_description' ,'l.app_name' ,
                             'l.lang_row_id','l.app_summary','lang.lang_desc' ,'lang.lang_code',
                             'p.app_key')
                 -> get();
@@ -1103,8 +1105,67 @@ class AppMaintainController extends Controller
             return null;
         }
         $input = Input::get();
-       
+        $appId = $input['appId'];
+        $defaultLang = (isset($input['defaultLang']))?$input['defaultLang']:null;
+        parse_str($input['mainInfoForm'], $mainInfoData);
+        $this->saveAppMainInfo($appId, $mainInfoData,  $defaultLang);
+
+    }
+
+
+    private function saveAppMainInfo($appId, $data, $defaultLang){
+
+        //1.change Default Language
+        if(isset($defaultLang)){
+            $appHead = QP_App_Head::find($appId);
+            $appHead->default_lang_row_id = $defaultLang;
+            $appHead->updated_user =\Auth::user()->row_id;
+            $appHead->save();
+        }
+
+        //2.Create or Update the record
+        $operateLanAry = [];
+        $inputLanAry = [];
+        foreach ($data as $key => $value) {
+           $keyArr = explode('_',$key);
+           $lanId = null;
+           if(isset($keyArr[1])){
+                $lanId = $keyArr[1];
+                $inputLanAry[] = $lanId;
+           }
+           if(!in_array($lanId,$operateLanAry)){
+                if(isset($lanId) && !in_array($lanId, $operateLanAry )){
+                    $line = QP_App_Line::firstOrNew(['app_row_id'=>$appId,'lang_row_id'=>$lanId]);
+                    $line->app_name =  $data['txbAppName_'. $lanId];
+                    $line->app_summary =  $data['txbAppSummary_'. $lanId];
+                    $line->app_description =  $data['txbAppDescription_'. $lanId];
+                    if(!$line->exists) {
+                        $line->created_user = \Auth::user()->row_id;
+                    } 
+                    $line->updated_user = \Auth::user()->row_id;
+                    $line->save();
+                    $operateLanAry[] = $lanId ;
+                }
+            }
+        }
+
+        //3. test if need delete or not
+        $oriLangAry = QP_App_Line::where('app_row_id', $appId)
+                 ->pluck('lang_row_id')->toArray();
+        $diffLangAry = array_diff($oriLangAry,array_unique($inputLanAry));
         
+        if(count($diffLangAry) > 0){
+            //3.1 Find the defferent to delete
+            $deletedRows = QP_App_Line::where('app_row_id',$appId)
+                                        ->whereIn('lang_row_id',$diffLangAry)
+                                        ->delete(); 
+            //3.2 Delete screenshot use same langId
+            $deletePicRows = QP_App_Pic::where('app_row_id', $appId)
+                        ->whereIn('lang_row_id',$diffLangAry)
+                        ->delete(); 
+        }
+
+
     }
 
     private function getErrorCode($projectRowId,$appRowId){
