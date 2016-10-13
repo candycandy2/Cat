@@ -70,11 +70,15 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/dist/css/AdminLTE.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/dist/css/skins/_all-skins.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/ui/css/jquery-ui.structure.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/ui/css/jquery-ui.theme.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.cookie.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
+    <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
