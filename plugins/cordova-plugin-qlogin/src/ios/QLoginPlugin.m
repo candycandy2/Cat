@@ -52,7 +52,7 @@
     }
     
     //插入传给API的参数(uuid)
-    if(command.arguments.count > 0 && command.arguments[1]){
+    if(command.arguments.count > 1 && command.arguments[1]){
         //uuid
         NSString* uuid = [[command.arguments[1] description]stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         
@@ -138,7 +138,7 @@
     
     NSURLComponents *uc = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     for (NSURLQueryItem *item in uc.queryItems) {
-        if ([item.name  isEqual: @"name"]) {
+        if ([item.name  isEqual: @"Name"]) {
             sourceAPP = item.value;
         }
     }
