@@ -40,6 +40,10 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    
+    'upload_url' => env('APP_UPLOAD_URL', 'http://localhost/qplay/public/app'),
+
+    'upload_path' => env('APP_UPLOAD_PATH'),
 
     /*
     |--------------------------------------------------------------------------

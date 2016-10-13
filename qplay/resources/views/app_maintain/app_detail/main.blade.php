@@ -4,7 +4,35 @@ $menu_name = "APP_MAINTAIN";
 $detail_path    = "app_maintain.app_detail";
 $pic_path       = $detail_path.'.app_pic';
 $version_path   = $detail_path.'.app_version';
+$appStatus =  \App\lib\CommonUtil::getAppVersionStatus(app('request')->input('app_row_id'));
 
+$lang = array();
+$appBasic = $data['appBasic'];
+$langList = $data['langList'];
+$categoryList = $data['categoryList'];
+$picData =  $data['picData'];
+$errorCode = $data['errorCode'];
+$companyLabel =  $data['company_label'];
+$allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
+$enableRole = \App\lib\CommonUtil::getAppRoleByAppId(app('request')->input('app_row_id'));
+$enableRoleArray = array();
+$defaultLang = 0;
+$categoryId = 0;
+$securityLevel = 3;
+
+$default = 0;
+$allowLangList=[];
+
+foreach ($appBasic as $key => $appData){
+    $allowLangList[$appData->lang_row_id]=$appData->lang_desc.' '.$appData->lang_code;
+    $defaultLang = $appData->default_lang_row_id;
+    $categoryId = $appData->app_category_row_id;
+    $securityLevel = $appData->security_level;
+}
+
+foreach ($enableRole as $role){
+    $enableRoleArray[] = $role->role_row_id;
+}
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -36,7 +64,7 @@ $version_path   = $detail_path.'.app_version';
             margin-bottom: 20px;
             text-align: center;
         }
-        .icon-preview{
+        .icon-upl-btn{
             background: url() no-repeat center 50% #FFFAD9;
             border-width:3px;
             border-style:dashed;
@@ -47,7 +75,11 @@ $version_path   = $detail_path.'.app_version';
             width: 120px; 
             height: 120px;
         }
-        .screen-preview{
+        .icon-preview{
+            width: 120px; 
+            height: 120px;
+        }
+        .screen-upl-btn{
             background: url() no-repeat center 50% #FFFAD9;
             border-width:3px;
             border-style:dashed;
@@ -58,8 +90,33 @@ $version_path   = $detail_path.'.app_version';
             width: 200px; 
             height: 320px;
         }
-        .screen-preview:hover, .icon-preview:hover {
+        .screen-preview{
+            width: 200px; 
+            height: 320px;
+        }
+        .screen-preview:hover, .icon-preview:hover, .screen-upl-btn:hover, .icon-upl-btn:hover{
             opacity: .3;
+        }
+        .sortable { list-style-type: none; margin: 0; padding: 0;  }
+        .sortable li { margin: 10px 10px 10px 10px; float: left }
+        
+        .imgLi{
+            display : inline-block;
+            position : relative;
+        }
+        .imgLi .delete{
+            position : absolute;
+            top : -15px;
+            right : -15px;
+            width : 30px;
+            height : 30px;
+            box-shadow:2px 2px 2px 0px #cccccc;
+        }
+        .imgLi .delete:hover{
+            top : -16px;
+        }
+        .imgLi .delete:active{
+            top : -15px;
         }
 
         table.costum-table td { border: 1px solid #ddd; padding: 8px; }
@@ -72,9 +129,21 @@ $version_path   = $detail_path.'.app_version';
         
     </style>
     <div class="col-lg-12 col-xs-12 text-right">
-        <span style="padding-right: 8px;  line-height: 50px;"> Android-Unpublish | IOS-Unpublish</span>
+        <span class="text-success"  id="appVersionStatus" style="padding-right: 8px;  line-height: 50px; font-size: 20px;">
+            <span  data-toggle='gridAndroidVersionList'
+                @if ($appStatus['android'] != 'UnPlished')
+                    style="font-weight:bold;"
+                @endif
+            > Android-{{$appStatus['android']}}</span>
+             |
+            <span data-toggle='gridIOSVersionList'
+                @if ($appStatus['ios'] != 'UnPlished')
+                    style="font-weight:bold;"
+                @endif
+            > IOS-{{$appStatus['ios']}}</span>
+        </span>
         <div class="btn-toolbar" role="toolbar" style="float: right;">
-            <button type="button" class="btn btn-primary" onclick="SaveCategoryApps()">
+            <button type="button" class="btn btn-primary" onclick="SaveAppDetail()">
                 {{trans("messages.SAVE")}}
             </button>
             <a type="button" class="btn btn-default" href="AppMaintain">
@@ -104,57 +173,33 @@ $version_path   = $detail_path.'.app_version';
     </div>
 
 <script>
-var newApi = function(){
-	 $('#newApiDialog').modal('show');
+var jsDefaultLang = {{$defaultLang}};
+var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
+var selectedChanged = function (row, $element) {
+    if(typeof(row)!='undefined'){
+        var $currentTarget = $(row.currentTarget);
+        var $currentToolBar = $($currentTarget.data('toolbar'));
+        $currentToolBar.find('.btn-danger').hide();
+        var selectedItems = $currentTarget.bootstrapTable('getSelections');
+        if(selectedItems.length > 0) {
+            $currentToolBar.find('.btn-danger').show();
+            $currentToolBar.find('.btn-primary').hide();
+        } else {
+            $currentToolBar.find('.btn-danger').hide();
+            $currentToolBar.find('.btn-primary').show();
+        }
+    }
 }
-var addLang = function(){
-	 $('#addLangDialog').modal('show');
-}
-var delLang = function(){
-	 $('#delLangDialog').modal('show');
-}
-
-var changDefaultLang = function(){
-	 $('#changDefaultLangDialog').modal('show');
-}
-
-
-var addWhite = function() {
-    $("#tbxUrl").val("");
-    $("#whiteListDialogTitle").text("{{trans("messages.MSG_NEW_BLOCK")}}");
-    $("#whiteListDialog").modal('show');
-    currentBlockId = null;
-    isNew = true;
-};
-
-$('.js-switch-lang').click(function(){
-	var editLang = $(this).text();
-	var lanId = $(this).data('toggle');
-    var source = $(this).parent().data('source');
-    var $hintObj = $('#' + source);
-	$hintObj.text(editLang);
-	$('div.lang:visible').fadeOut('1500',function(){
-		$('.js-lang-'+ lanId).fadeIn('1500');
-	});	
-});
 
 $(function () {
-    $('div.lang').hide();
-    $('.js-lang-1').show();
-
-    $("#file").change(function(){
-         console.log($(this).val());
-    });
-
-    $(".js-img-file").click(function(){
-        $('#fileIconUpload').trigger('click');
-    })
-
+    $('.bootstrapTable').on('check.bs.table', selectedChanged);
+    $('.bootstrapTable').on('uncheck.bs.table', selectedChanged);
+    $('.bootstrapTable').on('check-all.bs.table', selectedChanged);
+    $('.bootstrapTable').on('uncheck-all.bs.table', selectedChanged);
+    $('.bootstrapTable').on('load-success.bs.table', selectedChanged);
 });
-
 </script>
-
-
+<script src="{{ asset('/js/appMaintain/switch_lang_tool.js') }}"></script>
+<script src="{{ asset('/js/appMaintain/app_pic.js') }}"></script>
+<script src="{{ asset('/js/appMaintain/app_maintain.js') }}"></script>
 @endsection
-
-
