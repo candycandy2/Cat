@@ -131,22 +131,22 @@
 }
 
 //intent跳转后，先打开认证页
-- (void)handleOpenURL:(NSNotification*)notification{
-    NSLog(@"%@",notification.object);
-    NSURL *url =notification.object;
-    NSString *sourceAPP = nil;
-    
-    NSURLComponents *uc = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
-    for (NSURLQueryItem *item in uc.queryItems) {
-        if ([item.name  isEqual: @"Name"]) {
-            sourceAPP = item.value;
-        }
-    }
-    
-    NSArray *args = [NSArray arrayWithObject:sourceAPP];
-    CDVInvokedUrlCommand *cmd = [[CDVInvokedUrlCommand alloc] initWithArguments:args callbackId:nil className:nil methodName:nil];
-    [self openCertificationPage:cmd];
-}
+//- (void)handleOpenURL:(NSNotification*)notification{
+//    NSLog(@"%@",notification.object);
+//    NSURL *url =notification.object;
+//    NSString *sourceAPP = nil;
+//    
+//    NSURLComponents *uc = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
+//    for (NSURLQueryItem *item in uc.queryItems) {
+//        if ([item.name  isEqual: @"Name"]) {
+//            sourceAPP = item.value;
+//        }
+//    }
+//    
+//    NSArray *args = [NSArray arrayWithObject:sourceAPP];
+//    CDVInvokedUrlCommand *cmd = [[CDVInvokedUrlCommand alloc] initWithArguments:args callbackId:nil className:nil methodName:nil];
+//    [self openCertificationPage:cmd];
+//}
 
 //返回调用的APP
 -(void)jump2APP{
@@ -171,7 +171,7 @@
 -(void)execCDVWebViewCallBack{
     if (self.CallBackJSOnSuccess) {
         NSString* js = [[NSString alloc] initWithFormat:@"%@%@%@%@",self.CallBackJSOnSuccess,@"(",self.CertificationResult,@")"];
-        NSString* ret = [(UIWebView*)self.webView stringByEvaluatingJavaScriptFromString:js];
+        [(UIWebView*)self.webView stringByEvaluatingJavaScriptFromString:js];
     }
 }
 @end
