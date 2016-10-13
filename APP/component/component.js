@@ -44,6 +44,7 @@ var app = {
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
+        
         if (window.localStorage.length === 0) {
             getDataFromServer = true;
         } else {
@@ -72,7 +73,7 @@ var app = {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
-
+        
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -133,7 +134,8 @@ function processStorageData(action, data) {
 }
 
 function getServerData() {
-    if (appKey === "appqplay") {
+
+    if (appKey === "qplay") {
         var args = [];
         args[0] = "initialSuccess"; //set in APP's index.js
         args[1] = device.uuid;
@@ -147,6 +149,7 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     }
+
 }
 //Now just for check [token]
 function getSecurityList() {
@@ -214,4 +217,10 @@ function loadingMask(action) {
     } else {
         $(".loader").hide();
     }
+}
+
+function handleOpenURL(url) {
+    setTimeout(function() {
+        console.log(url);
+    }, 500);
 }
