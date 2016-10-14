@@ -77,6 +77,11 @@ $(function (){
         $(e.target.children[2]).trigger('click');
     });
      
+    $( ".sortable" ).sortable({
+        start: function( event, ui ) {
+        }
+    });
+
     $( ".sortable" ).disableSelection();
 
     $('body').on('mouseover','.screen-preview',function(e) {  
