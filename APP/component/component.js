@@ -12,6 +12,7 @@ var loginData = {
     token_valid:    "",
     uuid:           ""
 };
+var queryData = {};
 var getDataFromServer = false;
 
 var app = {
@@ -29,9 +30,9 @@ var app = {
         */
 
         //For release
-
+        
         this.bindEvents();
-
+        
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -55,7 +56,7 @@ var app = {
                 //2. if token exist, check token valid from server
                 processStorageData("checkSecurityList");
             } else {
-                //3. if token not exist, call QLogin
+                //3. if token not exist, call QLogin / QPlay
                 getDataFromServer = true;
             }
         }
@@ -71,8 +72,10 @@ var app = {
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
+        } else {
+            window.plugins.qlogin.openAppCheckScheme(null, null);
         }
-    
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -141,15 +144,18 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        //scheme not work now, so use QLogin to get token
-        var args = [];
-        args[0] = "initialSuccess"; //set in APP's index.js
-        args[1] = device.uuid;
-
-        window.plugins.qlogin.openCertificationPage(null, null, args);
+        //open QPlay
+        openAPP("appqplay://callbackApp=appyellowpage&action=getLoginData");
     }
 
 }
+
+function openAPP(URL) {
+    $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
+    document.getElementById("schemeLink").click();
+    $("#schemeLink").remove();
+}
+
 //Now just for check [token]
 function getSecurityList() {
 
@@ -218,8 +224,48 @@ function loadingMask(action) {
     }
 }
 
+function getLoginDataCallBack() {
+    var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] + 
+                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'];
+    openAPP(callBackURL);
+
+    loginData['doLoginDataCallBack'] = false;
+}
+
 function handleOpenURL(url) {
     setTimeout(function() {
-        console.log(url);
-    }, 500);
+        if (url !== "null") {
+            var tempURL = url.split("//");
+            var queryString = tempURL[1];
+            var tempQueryData = queryString.split("&");
+            queryData = {};
+
+            $.map(tempQueryData, function(value, key) {
+                var tempData = value.split("=");
+                queryData[tempData[0]] = tempData[1];
+            });
+
+            if (queryData["action"] === "getLoginData") {
+
+                if (!getDataFromServer) {
+                    getLoginDataCallBack();
+                } else {
+                    loginData['doLoginDataCallBack'] = true;
+                    initialSuccess();
+                }
+
+            } else if (queryData["action"] === "retrunLoginData") {
+
+                $.map(queryData, function(value, key) {
+                    if (key !== "callbackApp" && key !== "action") {
+                        window.localStorage.setItem(key, value);
+                        loginData[key] = value;
+                    }
+                });
+
+                initialSuccess();
+
+            }
+        }
+    }, 1000);
 }

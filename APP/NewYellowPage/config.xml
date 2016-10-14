@@ -10,6 +10,7 @@
     <content src="index.html" />
     <access origin="*" />
     <access origin="tel:*" launch-external="yes" />
+    <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -27,5 +28,5 @@
     </platform>
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
     <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
-    <serverUrl href = "https://qplay.benq.com/qplayApi/public/index.php/qplayauth_register"/>
+    <serverUrl href="https://qplay.benq.com/qplayApi/public/index.php/qplayauth_register"/>
 </widget>

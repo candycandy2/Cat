@@ -19,6 +19,11 @@ var messageRowId = 9999;
 window.initialSuccess = function(data) {
     if (data !== undefined) {
         processStorageData("setLocalStorage", data);
+
+        if (loginData['doLoginDataCallBack'] === true) {
+            getLoginDataCallBack();
+        }
+
         $.mobile.changePage('#viewMain2-1');
     } else {
         setTimeout(function(){
