@@ -24,6 +24,10 @@ qlogin.prototype.getLoginData = function(callback, error_callback) {
     Cordova.exec(callback,error_callback, "QLoginPlugin", "getLoginData", []);
 }
 
+qlogin.prototype.openAppCheckScheme = function(callback, error_callback) {
+    Cordova.exec(callback, error_callback, "QLoginPlugin", "openAppCheckScheme", []);
+}
+
 module.exports = new qlogin();
 
 
