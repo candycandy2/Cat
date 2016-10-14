@@ -78,7 +78,11 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.cookie.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
+    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
+    @if (App::getLocale()!='en-us')
+    <script src="{{ asset('/js/validate_lang/messages_'.App::getLocale().'.js') }}"></script>
+    @endif
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -91,6 +95,9 @@ if(array_key_exists('with_msg_id', $input)) {
             white-space:nowrap;
             overflow:hidden;
             text-overflow:ellipsis;
+        }
+        .error{
+             color: red;
         }
     </style>
 </head>

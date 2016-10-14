@@ -21,7 +21,7 @@
                         @endif
                     >
                         <div class="icon-upl-btn js-icon-file"><div>+</div><div>新增大圖示</div></div>
-                        <input type="file" id="fileIconUpload" class="js-upl-overlap" style="display:none">
+                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none">
                     </div>
                 
                 </div>
@@ -72,7 +72,7 @@
                                         <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}">
                                             <div>+</div>
                                             <div>新增<br>螢幕擷取畫面</div>
-                                            <input type="file" id="fileScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" >
+                                            <input type="file" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" >
                                         </li>
                                     @endif
                                 </ul>
@@ -88,7 +88,7 @@
                                     <li class="screen-upl-btn js-screen-file" id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
                                         <div>新增<br>螢幕擷取畫面</div>
-                                        <input type="file" id="fileScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none">
+                                        <input type="file" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none">
                                     </li>
                                     @endif
                                 </ul>

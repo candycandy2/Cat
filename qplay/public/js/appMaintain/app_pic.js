@@ -15,7 +15,9 @@ $(function (){
                 $('.iconUpload').parent().find('.imgLi').append('<img class="icon-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/></div>')
                 $('.icon-preview').attr('src', e.target.result);
                 $('.iconUpload').parent().find('.imgLi').show();
+                $('.iconUpload').next('label.error').remove();
                 $('.iconUpload').hide();
+                //$('label[for="fileIconUpload"]').remove();
                // var KB = format_float(e.total / 1024, 2);
                // $('.size').text("檔案大小：" + KB + " KB");
             }
@@ -34,6 +36,7 @@ $(function (){
                 if(imgCount >= 5){
                     $('#'+ uplBtnId).parent('ul').find('.screen-upl-btn').hide();
                 }
+                $('#'+ uplBtnId).next('label.error').remove();
             }   
             reader.readAsDataURL(input.files[0]);
         }
@@ -74,38 +77,22 @@ $(function (){
         $(e.target.children[2]).trigger('click');
     });
      
-    $( ".sortable" ).sortable({
-        start: function( event, ui ) {
-            clearTimeout(timeout);  
-        }
-    });
-
     $( ".sortable" ).disableSelection();
 
-    $('body').on('mousedown','.screen-preview',function(e) {  
-        var $currentTarget = $(e.currentTarget);
-        timeout = setTimeout(function() {
-            $currentTarget.next('.delete').show()
-        }, 500);  
+    $('body').on('mouseover','.screen-preview',function(e) {  
+        $(e.currentTarget).next('.delete').show()
     });
-    $('body').on('mouseup','.screen-preview',function() {  
-         clearTimeout(timeout);  
-    });
-    $('body').on('mouseout','.screen-preview',function() {  
-         clearTimeout(timeout);  
+
+    $('body').on('mouseout','.screen-preview',function(e) {  
+        $(e.currentTarget).next('.delete').hide();  
     });
     
-    $('body').on('mousedown','.icon-preview',function(e) {  
-        var $currentTarget = $(e.currentTarget);
-        iconTimeout = setTimeout(function() {
-            $currentTarget.next('.delete').show()
-        }, 500);  
+    $('body').on('mouseover','.icon-preview',function(e) {  
+        $(e.currentTarget).next('.delete').show()
     });
-    $('body').on('mouseup','.icon-preview',function() {  
-         clearTimeout(iconTimeout);  
-    });
-    $('body').on('mouseout','.icon-preview',function() {  
-         clearTimeout(iconTimeout);  
+
+    $('body').on('mouseout','.icon-preview',function(e) {  
+        $(e.currentTarget).next('.delete').hide();  
     });
 
     $('body').on('click','.imgLi .delete',function(e) {

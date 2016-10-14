@@ -177,7 +177,6 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="userApp">角色設定</label>
                 <div class="col-sm-10">
-       
                     <select name="ddlAppUserType" class="form-control" id="ddlAppUserType">
                         <option value="1"
                         @if (isset($companyLabel))
@@ -205,7 +204,7 @@
                                     @foreach($allCompanyRoleList as $companyRoles)
 
                                     <td id="CompanyTable_{{$companyRoles->company}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                                        <input type="checkbox" name="" value="{{$companyRoles->company}}" 
+                                        <input type="checkbox" name="chkCompany" value="{{$companyRoles->company}}" 
                                         @if (is_array($companyLabel) && in_array($companyRoles->company,$companyLabel))
                                             checked
                                         @endif
@@ -227,11 +226,11 @@
                                 <table class="table table-bordered js-role-table" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
                                     <tr>
                                         <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                                            <input type="checkbox" data="{{$companyRoles->company}}" class="cbxAllRole" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
+                                            <input type="checkbox" data="{{$companyRoles->company}}" name="cbxAllRole" class="cbxAllRole" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                                         </td>
                                         <td style="border:1px solid #d6caca;">
                                             <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                            <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
+                                            <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" name="cbxRole" class="cbxRole"
                                                 @if(in_array($companyRoles->roles[0]->row_id, $enableRoleArray))
                                                     checked
                                                 @endif
@@ -239,7 +238,7 @@
                                             </div>
                                             @if(count($companyRoles->roles) > 1)
                                                 <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                    <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole"
+                                                    <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" name="cbxRole" class="cbxRole"
                                                            @if(in_array($companyRoles->roles[1]->row_id, $enableRoleArray))
                                                            checked
                                                             @endif
@@ -254,7 +253,7 @@
                                             <td style="border:1px solid #d6caca;">
                                                 @if(count($companyRoles->roles) > $i)
                                                     <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                        <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
+                                                        <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}"  name="cbxRole" class="cbxRole"
                                                                @if(in_array($companyRoles->roles[$i]->row_id, $enableRoleArray ))
                                                                checked
                                                                 @endif
@@ -263,7 +262,7 @@
                                                 @endif
                                                     @if(count($companyRoles->roles) > $i + 1)
                                                         <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                            <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole"
+                                                            <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}"  name="cbxRole" class="cbxRole"
                                                                    @if(in_array($companyRoles->roles[$i + 1]->row_id, $enableRoleArray ))
                                                                    checked
                                                                     @endif
@@ -725,6 +724,7 @@
                 success: function (d, status, xhr) {
                     if(d.result_code != 1) {
                         showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
+
                     }
                 },
                 error: function (e) {
@@ -946,11 +946,13 @@
             if($(this).val() == 1){
                  $('#selUserRole').fadeOut('1500',function(){
                     $('#selNormal').fadeIn('1500');
-                }); 
+                });
+                $('label[for=setAppUser]').remove();
             }else{
                  $('#selNormal').fadeOut('1500',function(){
                     $('#selUserRole').fadeIn('1500');
                 }); 
+                 $('label[for=chkCompany]').remove();
             }
         });
        
