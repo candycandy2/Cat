@@ -15,6 +15,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.JavascriptInterface;
+import android.net.Uri;
 
 import java.util.List;
 
@@ -23,7 +25,8 @@ public class QLoginPlugin extends CordovaPlugin {
 	private static Activity cordovaActivity;
     private static QLoginPlugin instance;
     private String functionName;
-	
+    private String schemeData;
+
 	public QLoginPlugin() {
         instance = this;
     }
@@ -54,6 +57,11 @@ public class QLoginPlugin extends CordovaPlugin {
         }else if(action.equals("getLoginData")){
             String loginData = LoginInfo.getInstance().getloginData();
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,loginData));
+        }else if(action.equals("openAppCheckScheme")){
+            Intent intent = cordova.getActivity().getIntent();
+            Uri myURI = intent.getData();
+            schemeData = "" + myURI;
+            openAppCheckScheme();
         }
         return true;
     }
@@ -79,5 +87,14 @@ public class QLoginPlugin extends CordovaPlugin {
             default:
                 break;
         }
+    }
+
+    @JavascriptInterface
+    public void openAppCheckScheme() {
+        cordovaActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                instance.webView.loadUrl("javascript:" + "handleOpenURL('" + schemeData + "');");
+            }
+        });
     }
 }
