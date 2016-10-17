@@ -10,6 +10,8 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 var self = this;
 
                 this.successCallback = function(data) {
+                    loadingMask("hide");
+
                     var resultcode = data['ResultCode'];
                     
                     if (resultcode === "1" || resultcode === "1906") {
