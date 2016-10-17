@@ -17,10 +17,9 @@ var concat = require('gulp-concat');
 var less = require('gulp-less');
 //var copy = require('gulp-copy');
 
-
 gulp.task('copy',function(){
-    return gulp.src('Images/iOS/**/*')
-        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets'));
+    return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
+        .pipe(gulp.dest('platforms/ios/YellowPage/Images.xcassets/',{overwrite: true}));
 });
 
 gulp.task('componentCSS',function(){
@@ -58,6 +57,6 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
         .pipe(gulp.dest('www/dist'));
 });
 */
-gulp.task('default', ['componentCSS', 'componentJS'], function(){
-    
+gulp.task('default', ['copy', 'componentCSS', 'componentJS'], function(){
+
 });
