@@ -21,6 +21,7 @@
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
+        <hook type="before_compile" src="hooks/xcode8.js" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
