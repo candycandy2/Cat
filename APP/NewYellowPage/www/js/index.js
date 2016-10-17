@@ -12,6 +12,8 @@ var prevPageID;
 
 window.initialSuccess = function() {
 
+    loadingMask("show");
+
     var companyData = new QueryCompanyData();
 
     $("a[name=goPrevPage]").on("click", function(){
