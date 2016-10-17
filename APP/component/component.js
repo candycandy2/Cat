@@ -249,15 +249,15 @@ function getLoginDataCallBack() {
 
 function handleOpenURL(url) {
 
-    var waitCahckAPPVerInterval = setInterval(function(){ waitCahckAPPVer() }, 1000);
+    var waitCheckAPPVerInterval = setInterval(function(){ waitCheckAPPVer() }, 1000);
 
-    function waitCahckAPPVer() {
+    function waitCheckAPPVer() {
         if (url !== "null") {
 
             if (appKey === "qplay" && (loginData['callCheckAPPVer'] === true || loginData['callQLogin'] === true)) {
                 return;
             } else {
-                clearInterval(waitCahckAPPVerInterval);
+                clearInterval(waitCheckAPPVerInterval);
             }
 
             var tempURL = url.split("//");
