@@ -22,6 +22,11 @@ gulp.task('copy',function(){
         .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/',{overwrite: true}));
 });
 
+gulp.task('copyProfile',function(){
+    return gulp.src('Profile/*', {base: 'Profile/'})
+        .pipe(gulp.dest('platforms/ios/QPlay/',{overwrite: true}));
+});
+
 gulp.task('componentCSS',function(){
     return gulp.src('../component/*.css')
         .pipe(gulp.dest('www/css/'));
@@ -57,6 +62,6 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
         .pipe(gulp.dest('www/dist'));
 });
 */
-gulp.task('default', ['copy', 'componentCSS', 'componentJS'], function(){
+gulp.task('default', ['copy', 'copyProfile', 'componentCSS', 'componentJS'], function(){
 
 });
