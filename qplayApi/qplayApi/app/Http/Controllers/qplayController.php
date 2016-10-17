@@ -214,6 +214,9 @@ class qplayController extends Controller
                         "redirect_uri"=>$finalUrl,
                         "token"=>$token,
                         "emp_no"=>$userInfo->emp_no,
+                        "emp_no"=>$userInfo->emp_no,
+                        "domain"=>$userInfo->user_domain,
+                        "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ]);
             }
@@ -412,27 +415,34 @@ class qplayController extends Controller
                 }
 
                 $token = uniqid();  //生成token
-                $token_valid = time() + (2 * 86400);
-                $now = date('Y-m-d H:i:s',time());
+                $nowTimestamp = time();
+                $token_valid = $nowTimestamp + (2 * 86400);
+                $now = date('Y-m-d H:i:s',$nowTimestamp);
                 try
                 {
                     $sessionList = \DB::table("qp_session")
                         -> where('uuid', "=", $uuid)
                         -> where('user_row_id', '=', $user->row_id)
-                        -> select('uuid')
+                        -> select()
                         -> get();
 
                     if(count($sessionList) > 0)
                     {
-                        \DB::table("qp_session")
-                            -> where('user_row_id', '=', $user->row_id)
-                            -> where('uuid', '=', $uuid)
-                            -> update([
-                                'token'=>$token,
-                                'token_valid_date'=>$token_valid,
-                                'updated_at'=>$now,
-                                'updated_user'=>$user->row_id,
-                            ]);
+                        $old_token_valid = $sessionList[0]->token_valid_date;
+                        $old_token = $sessionList[0]->token;
+                        if($nowTimestamp <= $old_token_valid && $old_token_valid - $nowTimestamp >= (2 * 60 * 60)) {
+                            $token = $old_token;
+                        } else {
+                            \DB::table("qp_session")
+                                -> where('user_row_id', '=', $user->row_id)
+                                -> where('uuid', '=', $uuid)
+                                -> update([
+                                    'token'=>$token,
+                                    'token_valid_date'=>$token_valid,
+                                    'updated_at'=>$now,
+                                    'updated_user'=>$user->row_id,
+                                ]);
+                        }
                     }
                     else
                     {
@@ -487,6 +497,8 @@ class qplayController extends Controller
                         "redirect_uri"=>$finalUrl,
                         "token"=>$token,
                         "emp_no"=>$userInfo->emp_no,
+                        "domain"=>$userInfo->user_domain,
+                        "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ]);
             }
@@ -1532,7 +1544,12 @@ SQL;
         }
 
         $app_key = $input["app_key"];
-        $need_push = $input["need_push"];
+        $need_push = trim(strtoupper($input["need_push"]));
+        if($need_push != "Y" && $need_push != "N") {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
 
         if(!$Verify->chkAppKeyExist($app_key)) {
             return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
@@ -1562,7 +1579,7 @@ SQL;
                         'message'=>"数据不完整",
                         'content'=>'']);
                 }
-                if(strtoupper($need_push) == "Y") {
+                if($need_push == "Y") {
                     if($jsonContent['message_type'] == "event" &&
                         ( (!array_key_exists('destination_user_id', $jsonContent) || $jsonContent['destination_user_id'] == null)
                             && (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null))) {
@@ -1661,15 +1678,17 @@ SQL;
                                 'created_at'=>$now,
                             ]);
 
-                        if(strtoupper($need_push) == "Y") {
-                            $newMessageSendId = \DB::table("qp_message_send")
-                                -> insertGetId([
-                                    'message_row_id'=>$newMessageId,
-                                    'source_user_row_id'=>$userInfo->row_id,
-                                    'created_user'=>$userInfo->row_id,
-                                    'created_at'=>$now,
-                                ]);
+                        $newMessageSendId = \DB::table("qp_message_send")
+                            -> insertGetId([
+                                'message_row_id'=>$newMessageId,
+                                'source_user_row_id'=>$userInfo->row_id,
+                                'created_user'=>$userInfo->row_id,
+                                'created_at'=>$now,
+                                'need_push'=>$need_push,
+                                'push_flag'=>'0'
+                            ]);
 
+                        if($need_push == "Y") {
                             $hasSentUserIdList = array();
                             $real_push_user_list = array();
                             if($message_type == "event") {
@@ -1680,10 +1699,9 @@ SQL;
                                     \DB::table("qp_user_message")
                                         -> insertGetId([
                                             'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
-                                            'message_send_row_id'=>$newMessageSendId, 'need_push'=>'1',//'need_push'=>$need_push,
+                                            'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
                                             'created_user'=>$userInfo->row_id,
-                                            'created_at'=>$now,
-                                            'push_flag'=>'0'
+                                            'created_at'=>$now
                                         ]);
                                     $hasSentUserIdList[] = $destinationUserInfo->row_id;
                                     $real_push_user_list[] = $destinationUserInfo->row_id;
@@ -1694,10 +1712,9 @@ SQL;
                                 \DB::table("qp_role_message")
                                     -> insertGetId([
                                         'project_row_id'=>$projectInfo->row_id, 'role_row_id'=>$destinationRoleInfo->row_id,
-                                        'message_send_row_id'=>$newMessageSendId,  'need_push'=>'1',//'need_push'=>$need_push,
+                                        'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0', 'need_push'=>'1',//'need_push'=>$need_push,
                                         'created_user'=>$userInfo->row_id,
-                                        'created_at'=>$now,
-                                        'push_flag'=>'0'
+                                        'created_at'=>$now
                                     ]);
 
                                 if($message_type == "event") {

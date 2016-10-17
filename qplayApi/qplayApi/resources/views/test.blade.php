@@ -200,7 +200,7 @@ FORM;
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest2",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest3",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -210,16 +210,21 @@ FORM;
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
-                    request.setRequestHeader("domain", "Qisda");
+                    request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
-                    request.setRequestHeader("password", "111");
+                    request.setRequestHeader("password", "Qcs.2012");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
-                            + "content: <br/> uuid: " + d.content.uuid + "<br/>"
-                            + "redirect-uri: " + d.content.redirect_uri + "<br/>"
-                            + "token: " + d.content.token);
+                    if(d.result_code == 1) {
+                        $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
+                                + "content: <br/> uuid: " + d.content.uuid + "<br/>"
+                                + "redirect-uri: " + d.content.redirect_uri + "<br/>"
+                                + "domain: " + d.content.domain + "<br/>"
+                                + "emp_no: " + d.content.emp_no + "<br/>"
+                                + "checksum: " + d.content.checksum + "<br/>"
+                                + "token: " + d.content.token);
+                    }
                 },
                 error: function (e) {
                     alert(e);
@@ -241,15 +246,20 @@ FORM;
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
-                    request.setRequestHeader("password", "QCS@2012");
+                    request.setRequestHeader("password", "Qcs.2012");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
-                            + "content: <br/> uuid: " + d.content.uuid + "<br/>"
-                            + "redirect-uri: " + d.content.redirect_uri + "<br/>"
-                            + "token: " + d.content.token + "<br/>"
-                            + "security_updated_at: " + d.content.security_updated_at);
+                    if(d.result_code == 1) {
+                        $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
+                                + "content: <br/> uuid: " + d.content.uuid + "<br/>"
+                                + "redirect-uri: " + d.content.redirect_uri + "<br/>"
+                                + "token: " + d.content.token + "<br/>"
+                                + "domain: " + d.content.domain + "<br/>"
+                                + "emp_no: " + d.content.emp_no + "<br/>"
+                                + "checksum: " + d.content.checksum + "<br/>"
+                                + "security_updated_at: " + d.content.security_updated_at);
+                    }
                 },
                 error: function (e) {
                     alert(e);
