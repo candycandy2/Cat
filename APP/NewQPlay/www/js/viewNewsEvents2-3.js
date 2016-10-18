@@ -60,7 +60,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    apiGetMessageList(self.successCallback, self.failCallback, "1451577600", "1470499200", "1", "200");
+                    apiGetMessageList(self.successCallback, self.failCallback, "1470499200", "1476755108", "1", "200");
                 }();
             }
 
@@ -73,6 +73,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
             });
 
+            $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {
+                $("#newspage2-3").show();
+                $("#eventspage2-3b").hide();
+                $("#navNews").addClass("ui-btn-active");
+                $("#navEvents").removeClass("ui-btn-active");
+            });
             /********************************** dom event *************************************/
         }
     });
