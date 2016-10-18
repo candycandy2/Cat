@@ -76,3 +76,9 @@ body {
     background-color: #FFF;
     display: none;
 }
+
+/*Fix - Android text in ui-btn, the vertical does not in middle*/
+.android-fix-btn-text-middle {
+    position: relative;
+    top: 2px;
+}
