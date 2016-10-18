@@ -87,6 +87,7 @@ var app = {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         } else {
+            $('.ui-btn span').addClass('android-fix-btn-text-middle');
             window.plugins.qlogin.openAppCheckScheme(null, null);
         }
 
