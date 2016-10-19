@@ -78,11 +78,11 @@ foreach ($oriMenuList as $menu) {
                     <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca; width:60%;">
                         <tr>
                             <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
-                                <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
+                                <input class="cbxCompany" type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;padding: 0px;">
                                 <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
-                                <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
+                                <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)"
                                     @if(in_array($companyRoles->roles[0]->row_id, $userInfo->roleList))
                                         checked
                                     @endif
@@ -90,7 +90,7 @@ foreach ($oriMenuList as $menu) {
                                 </div>
                                 @if(count($companyRoles->roles) > 1)
                                     <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
-                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole"
+                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)"
                                                @if(in_array($companyRoles->roles[1]->row_id, $userInfo->roleList))
                                                checked
                                                 @endif
@@ -105,7 +105,7 @@ foreach ($oriMenuList as $menu) {
                                 <td style="border:1px solid #d6caca;padding: 0px;">
                                     @if(count($companyRoles->roles) > $i)
                                         <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
-                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
+                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)"
                                                    @if(in_array($companyRoles->roles[$i]->row_id, $userInfo->roleList))
                                                    checked
                                                     @endif
@@ -114,7 +114,7 @@ foreach ($oriMenuList as $menu) {
                                     @endif
                                         @if(count($companyRoles->roles) > $i + 1)
                                             <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
-                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole"
+                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)"
                                                        @if(in_array($companyRoles->roles[$i + 1]->row_id, $userInfo->roleList))
                                                        checked
                                                         @endif
@@ -276,6 +276,27 @@ foreach ($oriMenuList as $menu) {
             } else {
                 $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
             }
+        };
+
+        var RoleTableSelectedOne = function (cbx) {
+            var $companyTable = $(cbx).parents("table").first();
+            var allCheckd = true;
+            $.each($companyTable.find(".cbxRole"), function(i, cbx) {
+                if(!$(cbx).is(":checked")) {
+                    allCheckd = false;
+                    return false;
+                }
+            });
+            if(allCheckd) {
+                $companyTable.find(".cbxCompany").prop("checked",true);
+            } else {
+                $companyTable.find(".cbxCompany").prop("checked",false);
+            }
+//            if($(cbx).is(':checked')) {
+//                $("#RoleTable_" + companyId).find(".cbxRole").prop("checked",true);
+//            } else {
+//                $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
+//            }
         };
 
         var ChangeBelongToGroup = function () {

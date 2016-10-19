@@ -10,9 +10,9 @@ use DB;
 
 class platformController extends Controller
 {
-    private function setLanguange() {
+    private function setLanguage() {
         //date_default_timezone_set('UTC');
-        date_default_timezone_set('PRC');
+        //date_default_timezone_set('PRC');
         \App::setLocale("en-us");
         if(\Session::has('lang') && \Session::get("lang") != "") {
             \App::setLocale(\Session::get("lang"));
@@ -30,7 +30,7 @@ class platformController extends Controller
         {
             return null;
         }
-        $this->setLanguange();
+        $this->setLanguage();
 
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
@@ -46,7 +46,7 @@ class platformController extends Controller
         {
             return null;
         }
-        $this->setLanguange();
+        $this->setLanguage();
 
         $rowIdListWithoutGroup = array();
         $userWithoutGroupList = \DB::table("qp_user_group")
@@ -73,7 +73,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $roleList = \DB::table("qp_role")
             -> select()
@@ -96,7 +96,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -126,7 +126,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -208,7 +208,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -233,7 +233,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -284,7 +284,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $input = Input::get();
         $roleId = $input["role_id"];
@@ -299,7 +299,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -332,7 +332,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $rootMenuList = \DB::table("qp_menu")
             -> where("parent_id", "=", "0")
@@ -384,7 +384,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $input = Input::get();
         $menuId = $input["menu_id"];
@@ -398,7 +398,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -432,7 +432,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -550,7 +550,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -586,7 +586,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -831,7 +831,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $groupList = \DB::table("qp_group")
             -> select()
@@ -852,7 +852,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -883,7 +883,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -963,7 +963,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -988,12 +988,15 @@ class platformController extends Controller
                     }
                 }
                 if(!$exist) {
-                    array_push($dataNeedToDelete, $existUser->row_id);
+                    array_push($dataNeedToDelete, $existUser);
                 }
             }
-            foreach ($dataNeedToDelete as $deleteId) {
+            foreach ($dataNeedToDelete as $deleteItem) {
+                \DB::table("qp_user_menu")
+                    ->where("user_row_id", "=", $deleteItem->user_row_id)
+                    ->delete();
                 \DB::table("qp_user_group")
-                    ->where("row_id", "=", $deleteId)
+                    ->where("row_id", "=", $deleteItem->row_id)
                     ->delete();
             }
 
@@ -1029,7 +1032,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $input = Input::get();
         $groupId = $input["group_id"];
@@ -1044,7 +1047,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $typeList = \DB::table("qp_parameter_type")
             -> select()
@@ -1060,7 +1063,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1097,7 +1100,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1138,7 +1141,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
 //        select p.row_id, p.parameter_name, p.parameter_value, t.parameter_type_name from qp_parameter p
 //left join qp_parameter_type t on t.row_id = p.parameter_type_row_id
@@ -1158,7 +1161,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1184,7 +1187,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1237,7 +1240,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $messageList = array();
         if(\Auth::user()->isAdmin()) {
@@ -1268,7 +1271,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $input = Input::get();
         $message_id = $input["message_id"];
@@ -1289,7 +1292,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1461,7 +1464,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1618,7 +1621,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $input = Input::get();
         $messageSendId = $input["message_send_row_id"];
@@ -1660,7 +1663,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1689,7 +1692,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $projectList = \DB::table("qp_project")
             -> select()
@@ -1727,7 +1730,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1784,7 +1787,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguange();
+        $this->setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
