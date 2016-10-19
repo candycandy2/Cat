@@ -18,7 +18,9 @@ var messageRowId = 9999;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
+        loginData['callQLogin'] = false;
         processStorageData("setLocalStorage", data);
+
         $.mobile.changePage('#viewMain2-1');
     } else {
         setTimeout(function(){

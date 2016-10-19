@@ -10,11 +10,9 @@ var phonebookData = {};
 var myEmpID = "1609009";
 var prevPageID;
 
-window.initialSuccess = function(data) {
-    //data return from [qplayApi/public/index.php/v101/qplay/login]
-    if (data !== undefined) {
-        processStorageData("setLocalStorage", data);
-    }
+window.initialSuccess = function() {
+
+    loadingMask("show");
 
     var companyData = new QueryCompanyData();
 

@@ -7,3 +7,4 @@
 
 APP/*/platforms/
 APP/*/plugins/
+APP/*/www/*/component.*

@@ -10,6 +10,7 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                 
                 this.successCallback = function(data) {
                     loadingMask("hide");
+                    loginData['callCheckAPPVer'] = false;
                     
                     var resultcode = data['result_code'];
                     

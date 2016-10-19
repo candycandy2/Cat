@@ -58,16 +58,12 @@
     background-image: url(../img/header_normal.png);
     width:auto;
     height:90px;
-    position:relative;
-    top: 22px;
-    margin-left:-10px;
-    margin-right:-10px;
     background-size: 100% 100%;
 }
 
 .Priority_Normal{
-    position: absolute;
-    left: 238px;
+    position: relative;
+    left: 67%;
     top: 15px;
     font-size:12px;
     color:#FFF;
@@ -81,9 +77,9 @@
 }
     
 .Date{
-    position: absolute;
-    left: 243px;
-    top: 50px;
+    position: relative;
+    left: 70%;
+    top: 30px;
     font-size: 16px;
     color: #FFF;
     font-family: "Gill Sans MT";
@@ -105,11 +101,6 @@
     top: 150px;
 }
 
-.Author_Block{
-    margin-left:0px;
-    margin-top:48px;
-}
-    
 .Author_icon{
     width:30px;
     height:24px;
@@ -118,16 +109,21 @@
 }
 
 .Author_Content{
-    width:260px;
+    overflow-wrap: break-word;
+    width: 80%;
     font-size:16px;
     font-family:Arial, Helvetica, sans-serif;
     color:#181818;
     margin-left:12px;
     float:left;
+    line-height: 1.5;
 }
 
-.Content_Block{
-    margin-top:36px;
+.Content_Block {
+    clear: both;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .Content_icon{
@@ -135,19 +131,18 @@
     height:24px;
     background-image:url(../img/content.png);
     float:left;
-    margin-top: 14px;
 }
 
 .Content_Content{
-    width:260px;
+    overflow-wrap: break-word;
+    width: 80%;
     font-size:14px;
     font-family:Arial, Helvetica, sans-serif;
     color:#0d0d0d;
     margin-left:12px;
     float:left;
-    padding-bottom:56px;
 }
 
-.Clear{
-    clear:both;
+#appcontent {
+    padding: 10px;
 }

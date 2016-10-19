@@ -8,10 +8,14 @@
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey;
 var loginData = {
-    token:          "",
-    token_valid:    "",
-    uuid:           ""
+    token:           "",
+    token_valid:     "",
+    uuid:            "",
+    callCheckAPPVer: false,
+    callQLogin:      false
+
 };
+var queryData = {};
 var getDataFromServer = false;
 
 var app = {
@@ -29,9 +33,9 @@ var app = {
         */
 
         //For release
-
+        
         this.bindEvents();
-
+        
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -40,14 +44,23 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        
+
+        if (appKey !== "qplay") {
+            if (window.localStorage.getItem("openScheme") === "true") {
+                if (device.platform !== "iOS") {
+                    window.plugins.qlogin.openAppCheckScheme(null, null);
+                    window.localStorage.setItem("openScheme", false);
+                }
+                return;
+            }
+        }
+
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
         if (window.localStorage.length === 0) {
             getDataFromServer = true;
         } else {
-            
             //1. check loginData exist in localStorage
             var loginDataExist = processStorageData("checkLocalStorage");
 
@@ -55,15 +68,17 @@ var app = {
                 //2. if token exist, check token valid from server
                 processStorageData("checkSecurityList");
             } else {
-                //3. if token not exist, call QLogin
+                //3. if token not exist, call QLogin / QPlay
                 getDataFromServer = true;
             }
         }
-        
+
         if (getDataFromServer) {
             if (appKey !== "qplay") {
                 getServerData();
             } else {
+                loginData['callCheckAPPVer'] = true;
+                loginData['callQLogin'] = true;
                 initialSuccess();
             }
         }
@@ -71,8 +86,11 @@ var app = {
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
+        } else {
+            $('.ui-btn span').addClass('android-fix-btn-text-middle');
+            window.plugins.qlogin.openAppCheckScheme(null, null);
         }
-    
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -141,15 +159,19 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        //scheme not work now, so use QLogin to get token
-        var args = [];
-        args[0] = "initialSuccess"; //set in APP's index.js
-        args[1] = device.uuid;
-
-        window.plugins.qlogin.openCertificationPage(null, null, args);
+        //open QPlay
+        window.localStorage.setItem("openScheme", true);
+        openAPP("appqplay://callbackApp=appyellowpage&action=getLoginData");
     }
 
 }
+
+function openAPP(URL) {
+    $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
+    document.getElementById("schemeLink").click();
+    $("#schemeLink").remove();
+}
+
 //Now just for check [token]
 function getSecurityList() {
 
@@ -218,8 +240,58 @@ function loadingMask(action) {
     }
 }
 
+function getLoginDataCallBack() {
+    var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] + 
+                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'];
+    openAPP(callBackURL);
+
+    loginData['doLoginDataCallBack'] = false;
+}
+
 function handleOpenURL(url) {
-    setTimeout(function() {
-        console.log(url);
-    }, 500);
+
+    var waitCheckAPPVerInterval = setInterval(function(){ waitCheckAPPVer() }, 1000);
+
+    function waitCheckAPPVer() {
+        if (url !== "null") {
+
+            if (appKey === "qplay" && (loginData['callCheckAPPVer'] === true || loginData['callQLogin'] === true)) {
+                return;
+            } else {
+                clearInterval(waitCheckAPPVerInterval);
+            }
+
+            var tempURL = url.split("//");
+            var queryString = tempURL[1];
+            var tempQueryData = queryString.split("&");
+            queryData = {};
+
+            $.map(tempQueryData, function(value, key) {
+                var tempData = value.split("=");
+                queryData[tempData[0]] = tempData[1];
+            });
+
+            if (queryData["action"] === "getLoginData") {
+
+                getLoginDataCallBack();
+
+            } else if (queryData["action"] === "retrunLoginData") {
+
+                if (device.platform === "iOS") {
+                    window.localStorage.setItem("openScheme", false);
+                }
+
+                $.map(queryData, function(value, key) {
+                    if (key !== "callbackApp" && key !== "action") {
+                        window.localStorage.setItem(key, value);
+                        loginData[key] = value;
+                    }
+                });
+
+                initialSuccess();
+
+            }
+        }
+    }
+
 }
