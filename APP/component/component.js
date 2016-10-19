@@ -33,13 +33,21 @@ var app = {
         */
 
         //For release
-        
+
         this.bindEvents();
-        
+
     },
     // Bind Event Listeners
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+        //QPUSH////////////////////////////////////////////////////////////////////////////////
+        //後台打开通知
+        document.addEventListener('qpush.openNotification', this.onOpenNotification, false);
+        //後台收到通知
+        document.addEventListener('qpush.backgoundNotification', this.onBackgoundNotification, false);
+        //前台收到通知
+        document.addEventListener('qpush.receiveNotification', this.onReceiveNotification, false);
     },
     // deviceready Event Handler
     onDeviceReady: function() {
@@ -49,31 +57,25 @@ var app = {
 
         //For QSecurity
         setWhiteList();
-        /*
-        if (appKey !== "qplay") {
-            if (window.localStorage.getItem("openScheme") === "true") {
-                if (device.platform !== "iOS") {
-                    window.plugins.qlogin.openAppCheckScheme(null, null);
-                    window.localStorage.setItem("openScheme", false);
-                }
-                return;
-            }
+        //初始化JPush
+        window.plugins.QPushPlugin.init();
+        window.plugins.QPushPlugin.getRegistrationID(this.onGetRegistradionID);
+    },
+    onGetRegistradionID: function (data){
+        try {
+            console.log("QPushPlugin:registrationID is " + data);
+        } catch(exception) {
+            console.log(exception);
         }
-
-        //check data(token, token_value, ...) on web-storage
-        checkStorageData();
-        
-        if (device.platform === "iOS") {
-            $('.page-header, .page-main').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display','block');
-        } else {
-            $('.ui-btn span').addClass('android-fix-btn-text-middle');
-
-            if (appKey === "qplay") {
-                window.plugins.qlogin.openAppCheckScheme(null, null);
-            }
-        }
-        */
+    },
+    onOpenNotification: function(data) {
+    //添加後台打開通知后需要執行的內容，data.alert為消息內容
+    },
+    onBackgoundNotification: function(data) {
+    //添加後台收到通知后需要執行的內容
+    },
+    onReceiveNotification: function(data) {
+    //添加前台收到通知后需要執行的內容
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -84,15 +86,15 @@ var app = {
 app.initialize();
 
 $(document).one("pagebeforecreate", function(){
-    
+
     $(':mobile-pagecontainer').html("");
-    
+
     $.map(pageList, function(value, key) {
         (function(pageID){
             $.get("View/" + pageID + ".html", function(data) {
                 $.mobile.pageContainer.append(data);
                 $("#" + pageID).page().enhanceWithin();
-            }, "html"); 
+            }, "html");
         }(value));
     });
 });
@@ -342,7 +344,7 @@ function loadingMask(action) {
 }
 
 function getLoginDataCallBack() {
-    var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] + 
+    var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] +
                       "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'];
     openAPP(callBackURL);
 
