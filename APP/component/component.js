@@ -45,6 +45,9 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
+        //For QSecurity
+        setWhiteList();
+
         if (appKey !== "qplay") {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (device.platform !== "iOS") {
@@ -58,37 +61,17 @@ var app = {
         //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
-        if (window.localStorage.length === 0) {
-            getDataFromServer = true;
-        } else {
-            //1. check loginData exist in localStorage
-            var loginDataExist = processStorageData("checkLocalStorage");
-
-            if (loginDataExist) {
-                //2. if token exist, check token valid from server
-                processStorageData("checkSecurityList");
-            } else {
-                //3. if token not exist, call QLogin / QPlay
-                getDataFromServer = true;
-            }
-        }
-
-        if (getDataFromServer) {
-            if (appKey !== "qplay") {
-                getServerData();
-            } else {
-                loginData['callCheckAPPVer'] = true;
-                loginData['callQLogin'] = true;
-                initialSuccess();
-            }
-        }
+        checkStorageData();
         
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         } else {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
-            window.plugins.qlogin.openAppCheckScheme(null, null);
+
+            if (appKey === "qplay") {
+                window.plugins.qlogin.openAppCheckScheme(null, null);
+            }
         }
 
     },
@@ -120,6 +103,83 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
+function setWhiteList() {
+    if (device.platform !== "iOS") {
+        if (appKey === "qplay") {
+            var securityList = {
+                level: 2,
+                Navigations: [
+                    "https://qplay.benq.com/*",
+                    "itms-services://*"
+                ],
+                Intents: [
+                    "itms-services:*",
+                    "http:*",
+                    "https:*",
+                    "appyellowpage:*",
+                    "tel:*",
+                    "sms:*",
+                    "mailto:*",
+                    "geo:*"
+                ],
+                Requests: [
+                    serverURL + "/*"
+                ]
+            };
+        } else {
+            var securityList = {
+                level: 2,
+                Navigations: [
+                    "https://qplay.benq.com/*",
+                    "itms-services://*"
+                ],
+                Intents: [
+                    "itms-services:*",
+                    "http:*",
+                    "https:*",
+                    "appqplay:*",
+                    "tel:*",
+                    "sms:*",
+                    "mailto:*",
+                    "geo:*"
+                ],
+                Requests: [
+                    serverURL + "/*"
+                ]
+            };
+        }
+
+        window.plugins.qsecurity.setWhiteList(securityList, null, null);
+    }
+}
+
+function checkStorageData() {
+    if (window.localStorage.length === 0) {
+        getDataFromServer = true;
+    } else {
+        //1. check loginData exist in localStorage
+        var loginDataExist = processStorageData("checkLocalStorage");
+
+        if (loginDataExist) {
+            //2. if token exist, check token valid from server
+            processStorageData("checkSecurityList");
+        } else {
+            //3. if token not exist, call QLogin / QPlay
+            getDataFromServer = true;
+        }
+    }
+
+    if (getDataFromServer) {
+        if (appKey !== "qplay") {
+            getServerData();
+        } else {
+            loginData['callCheckAPPVer'] = true;
+            loginData['callQLogin'] = true;
+            initialSuccess();
+        }
+    }
+}
+
 function processStorageData(action, data) {
     data = data || null;
 
@@ -290,6 +350,11 @@ function handleOpenURL(url) {
 
                 initialSuccess();
 
+            }
+        } else {
+            if (appKey !== "qplay") {
+                checkStorageData();
+                clearInterval(waitCheckAPPVerInterval);
             }
         }
     }
