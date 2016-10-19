@@ -30,6 +30,9 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 
 import java.util.List;
 
@@ -78,6 +81,7 @@ public class QSecurityPlugin extends CordovaPlugin {
     }
 
     public void setSecurityList(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+        Log.v("QSecurity", "setSecurityList:");
         try{
             final JSONObject option = data.getJSONObject(0);
             String level = option.getString("level");
@@ -96,6 +100,7 @@ public class QSecurityPlugin extends CordovaPlugin {
                 if(navList==null || !navList.contains(url)){
                     allowedNavigations.addWhiteListEntry(url, false);
                     navList.add(url);
+                    Log.v("QSecurity", "setSecurityList:"+url);
                 }
             }
 
@@ -105,6 +110,7 @@ public class QSecurityPlugin extends CordovaPlugin {
                 if(intList==null || !intList.contains(url)){
                     allowedIntents.addWhiteListEntry(url, false);
                     intList.add(url);
+                    Log.v("QSecurity", "setSecurityList:"+url);
                 }
             }
 
@@ -114,6 +120,7 @@ public class QSecurityPlugin extends CordovaPlugin {
                 if(reqList==null || !reqList.contains(url)){
                     allowedRequests.addWhiteListEntry(url, false);
                     reqList.add(url);
+                    Log.v("QSecurity", "setSecurityList:"+url);
                 }
             }
 
@@ -187,29 +194,52 @@ public class QSecurityPlugin extends CordovaPlugin {
 
     @Override
     public Boolean shouldAllowNavigation(String url) {
+
+        Log.v("QSecurity", "shouldAllowNavigation:"+url);
+        if(allowedRequests.isUrlWhiteListed(url)) { //added bu Moses Zhu on 20160920
+            if(url.toLowerCase().endsWith(".apk")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                Uri uri = Uri.parse(url);
+                intent.setData(uri);
+                cordova.getActivity().startActivity(intent);
+                return true;
+            }
+        }
+
         if (allowedNavigations.isUrlWhiteListed(url)) {
             return true;
         }
+        Log.v("QSecurity", "[X]shouldAllowNavigation:"+url);
         return null; // Default policy
     }
 
     @Override
     public Boolean shouldAllowRequest(String url) {
-        if (Boolean.TRUE == shouldAllowNavigation(url)) {
-            return true;
-        }
-        if (allowedRequests.isUrlWhiteListed(url)) {
-            return true;
-        }
-        return null; // Default policy
+         Log.v("QSecurity", "shouldAllowRequest:"+url);
+
+         //return true;
+         if (Boolean.TRUE == shouldAllowNavigation(url)) {
+             return true;
+         }
+         if (allowedRequests.isUrlWhiteListed(url)) {
+             return true;
+         }
+
+         Log.v("QSecurity", "[X]shouldAllowRequest:"+url);
+         return null; // Default policy
     }
 
     @Override
     public Boolean shouldOpenExternalUrl(String url) {
-        if (allowedIntents.isUrlWhiteListed(url)) {
-            return true;
-        }
-        return null; // Default policy
+         Log.v("QSecurity", "shouldOpenExternalUrl:"+url);
+        //return true;
+         if (allowedIntents.isUrlWhiteListed(url)) {
+             return true;
+         }
+
+         Log.v("QSecurity", "[X]shouldOpenExternalUrl:"+url);
+         return null; // Default policy
     }
 
     public Whitelist getAllowedNavigations() {

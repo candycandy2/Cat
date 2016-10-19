@@ -20,6 +20,9 @@ class qplayController extends Controller
         $verifyResult = $Verify->verify();
 
         $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
@@ -64,6 +67,9 @@ class qplayController extends Controller
 
         $request = Request::instance();
         $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
@@ -99,7 +105,7 @@ class qplayController extends Controller
                 $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-                $bind = true;//TODO @ldap_bind($ldapConnect, $userId, $password);
+                $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
                 if(!$bind)
                 {
                     $finalUrl = urlencode($redirect_uri.'?result_code='
@@ -130,7 +136,7 @@ class qplayController extends Controller
                 try
                 {
                     $token = uniqid();  //生成token
-                    $token_valid = time();
+                    $token_valid = time() + (2 * 86400);
                     $now = date('Y-m-d H:i:s',$token_valid);
 
                     \DB::table("qp_register")->insert([
@@ -208,6 +214,9 @@ class qplayController extends Controller
                         "redirect_uri"=>$finalUrl,
                         "token"=>$token,
                         "emp_no"=>$userInfo->emp_no,
+                        "emp_no"=>$userInfo->emp_no,
+                        "domain"=>$userInfo->user_domain,
+                        "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ]);
             }
@@ -222,6 +231,104 @@ class qplayController extends Controller
             'content'=>array("redirect_uri"=>$finalUrl)]);
     }
 
+    public function unregister() {
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+
+        $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
+        || !array_key_exists('target_uuid', $input) || trim($input["target_uuid"]) == "")
+        {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
+
+        $uuid = $input["uuid"];
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+
+        $target_uuid = $input["target_uuid"];
+
+        if(!$Verify->chkUuidExist($uuid)) {
+            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+        }
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            \DB::beginTransaction();
+            $now = date('Y-m-d H:i:s',time());
+            try {
+                \DB::table("qp_session")
+                    ->where("uuid", "=", $target_uuid)
+                    ->delete();
+
+                \DB::table("qp_register")
+                    ->where("uuid", "=", $target_uuid)
+                    ->update(
+                        [
+                            'status'=>'I',
+                            'unregister_date'=>$now,
+                            'updated_at'=>$now,
+                            'updated_user'=>$userInfo->row_id,
+                        ]
+                    );
+
+                $registerList = \DB::table("qp_register")
+                    ->where("uuid", "=", $target_uuid)->select()->get();
+
+                foreach ($registerList as $registerInfo) {
+                    $registerId = $registerInfo->row_id;
+                    $pushTokenList = \DB::table("qp_push_token")
+                        -> where("register_row_id", "=", $registerId)
+                        -> select() -> get();
+
+                    //Unregister to Message Center
+                    $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+                    $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/UnregisterDevice";
+                    foreach ($pushTokenList as $pushTokenInfo) {
+                        $args = array('App_id' => $app_id,
+                            'Client_id' => $pushTokenInfo->push_token);
+                        $data["register"] = json_encode($args);
+                        $result = CommonUtil::doPost($url, $data);
+                        if(!str_contains($result, "true")) {
+                            \DB::rollBack();
+                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                                'message'=>'Unregister to Message Center Failed!' . $result,
+                                'content'=>$data]);
+                        }
+                    }
+
+                    \DB::table("qp_push_token")
+                        ->where("register_row_id", "=", $registerId)
+                        ->delete();
+                }
+
+                \DB::commit();
+            } catch (Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>'未知错误',
+                    'content'=>'']);
+            }
+
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                'message'=>'Call Service Successed',
+                'content'=>array('uuid'=>$uuid)
+            ]);
+        } else {
+            return response()->json(['result_code'=>$verifyResult["code"],
+                'message'=>$verifyResult["message"],
+                'content'=>'']);
+        }
+    }
+
     public function login()
     {
         $Verify = new Verify();
@@ -229,6 +336,9 @@ class qplayController extends Controller
 
         $request = Request::instance();
         $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
@@ -260,7 +370,7 @@ class qplayController extends Controller
                 $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-                $bind = true; //TODO @ldap_bind($ldapConnect, $userId, $password);
+                $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
                 if(!$bind)
                 {
                     $finalUrl = urlencode($redirect_uri.'?result_code='
@@ -305,27 +415,34 @@ class qplayController extends Controller
                 }
 
                 $token = uniqid();  //生成token
-                $token_valid = time();
-                $now = date('Y-m-d H:i:s',$token_valid);
+                $nowTimestamp = time();
+                $token_valid = $nowTimestamp + (2 * 86400);
+                $now = date('Y-m-d H:i:s',$nowTimestamp);
                 try
                 {
                     $sessionList = \DB::table("qp_session")
                         -> where('uuid', "=", $uuid)
                         -> where('user_row_id', '=', $user->row_id)
-                        -> select('uuid')
+                        -> select()
                         -> get();
 
                     if(count($sessionList) > 0)
                     {
-                        \DB::table("qp_session")
-                            -> where('user_row_id', '=', $user->row_id)
-                            -> where('uuid', '=', $uuid)
-                            -> update([
-                                'token'=>$token,
-                                'token_valid_date'=>$token_valid,
-                                'updated_at'=>$now,
-                                'updated_user'=>$user->row_id,
-                            ]);
+                        $old_token_valid = $sessionList[0]->token_valid_date;
+                        $old_token = $sessionList[0]->token;
+                        if($nowTimestamp <= $old_token_valid && $old_token_valid - $nowTimestamp >= (2 * 60 * 60)) {
+                            $token = $old_token;
+                        } else {
+                            \DB::table("qp_session")
+                                -> where('user_row_id', '=', $user->row_id)
+                                -> where('uuid', '=', $uuid)
+                                -> update([
+                                    'token'=>$token,
+                                    'token_valid_date'=>$token_valid,
+                                    'updated_at'=>$now,
+                                    'updated_user'=>$user->row_id,
+                                ]);
+                        }
                     }
                     else
                     {
@@ -380,6 +497,8 @@ class qplayController extends Controller
                         "redirect_uri"=>$finalUrl,
                         "token"=>$token,
                         "emp_no"=>$userInfo->emp_no,
+                        "domain"=>$userInfo->user_domain,
+                        "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ]);
             }
@@ -400,6 +519,9 @@ class qplayController extends Controller
         $verifyResult = $Verify->verify();
 
         $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('domain', $input) || !array_key_exists('loginid', $input))
@@ -470,6 +592,9 @@ class qplayController extends Controller
         $verifyResult = $Verify->verify();
 
         $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('package_name', $input) || !array_key_exists('device_type', $input) || !array_key_exists('version_code', $input)
@@ -544,6 +669,9 @@ class qplayController extends Controller
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
@@ -630,9 +758,12 @@ SQL;
                 $app_category_list = array();
                 $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
 //                $sql = <<<SQL
-//select row_id as category_id, app_category, sequence from qp_app_category
-//where row_id in (:idList)
+//                select row_id as category_id, app_category, sequence
+//                from qp_app_category
+//                where row_id in (:idList)
 //SQL;
+//                $categoryDataList = DB::select($sql, [':idList'=>$categoryIdListStr]);
+
                 $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
                 $categoryDataList = DB::select($sql);
 
@@ -647,7 +778,7 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.app_key from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
+                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.project_code from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
                     .$appIdListStr
                     .') order by app_row_id, lang_id';
                 $langDataList = DB::select($sql);
@@ -664,7 +795,7 @@ SQL;
                         'app_name'=>$langData->app_name,
                         'app_summary'=>$langData->app_summary,
                         'app_description'=>$langData->app_description,
-                        'app_key'=>$langData->app_key,
+                        'project_code'=>$langData->project_code,
                         'pic_list'=>$picList
                     );
 
@@ -696,13 +827,16 @@ SQL;
         }
     }
 
-    public function getSecturityList()
+    public function getSecurityList()
     {
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('app_key', $input))
@@ -772,6 +906,9 @@ SQL;
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input))
@@ -899,6 +1036,7 @@ left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where um.user_row_id = :uId1
 and qp_message.message_type = 'event'
+and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
@@ -911,6 +1049,7 @@ select distinct qp_message_send.* , 'N' as 'read', '' as 'read_time'
      from qp_message_send 
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where qp_message.message_type = 'news'
+and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
@@ -922,7 +1061,7 @@ qp_user u,qp_user u2
 where m.row_id = ms.message_row_id
 and ms.source_user_row_id = u.row_id
 and m.created_user = u2.row_id
-order by ms.created_at
+order by ms.created_at desc
 SQL;
 
                 $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId, ':uId3'=>$userId,]);
@@ -967,6 +1106,9 @@ SQL;
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
@@ -1019,6 +1161,7 @@ from qp_message m,
 	   qp_user u2,
 		 qp_user_message um
 where m.row_id = ms.message_row_id
+and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
@@ -1043,6 +1186,7 @@ from qp_message m,
 	   qp_user u2,
 		 qp_role_message rm
 where m.row_id = ms.message_row_id
+and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
@@ -1105,6 +1249,9 @@ SQL;
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('message_send_row_id', $input)
@@ -1182,6 +1329,9 @@ SQL;
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         $pushToken = $request->header('push-token');
 
@@ -1237,6 +1387,15 @@ SQL;
                 -> where('app_key', "=", $appKey)
                 -> select('row_id')->lists('row_id')[0];
 
+            $existInfoList = \DB::table("qp_push_token")
+                -> where('push_token', "=", $pushToken)
+                -> select()->get();
+            if(count($existInfoList) > 1 || (count($existInfoList) == 1 && $existInfoList[0]->register_row_id != $registerId)) {
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>'push token已使用',
+                    'content'=>'']);
+            }
+
             $existPushToken =  \DB::table("qp_push_token")
                     -> where('register_row_id', "=", $registerId)
                     -> where('project_row_id', "=", $projectId)
@@ -1245,26 +1404,55 @@ SQL;
 
             $now = date('Y-m-d H:i:s',time());
             $user = CommonUtil::getUserInfoByUUID($uuid);
-            if(count($existPushToken) > 0)
-            {
-                \DB::table("qp_push_token")
-                    -> where('register_row_id', "=", $registerId)
-                    -> where('project_row_id', "=", $projectId)
-                    -> where('device_type', "=", $deviceType)
-                    ->update([
+            \DB::beginTransaction();
+            try {
+                if(count($existPushToken) > 0)
+                {
+                    \DB::table("qp_push_token")
+                        -> where('register_row_id', "=", $registerId)
+                        -> where('project_row_id', "=", $projectId)
+                        -> where('device_type', "=", $deviceType)
+                        ->update([
+                            'push_token'=>$pushToken,
+                            'updated_at'=>$now,
+                            'updated_user'=>$user->row_id,]);
+                }
+                else
+                {
+                    \DB::table("qp_push_token")->insert([
+                        'register_row_id'=>$registerId,
+                        'project_row_id'=>$projectId,
                         'push_token'=>$pushToken,
-                        'updated_at'=>$now,
-                        'updated_user'=>$user->row_id,]);
-            }
-            else
-            {
-                \DB::table("qp_push_token")->insert([
-                    'register_row_id'=>$registerId,
-                    'project_row_id'=>$projectId,
-                    'push_token'=>$pushToken,
-                    'created_user'=>$user->row_id,
-                    'created_at'=>$now,
-                    'device_type'=>$deviceType]);
+                        'created_user'=>$user->row_id,
+                        'created_at'=>$now,
+                        'device_type'=>$deviceType]);
+                }
+
+                //Register to Message Center
+                $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+//                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
+                $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/RegisterDevice";
+                $args = array('App_id' => $app_id,
+                    'Tenant_id' => '00000000-0000-0000-0000-000000000000',
+                    'Provider' => 'JPush',
+                    'Client_id' => $pushToken,
+                    'User_Name' => $user->login_id,
+                    'Badge_number' => '0');
+                $data["register"] = json_encode($args);
+                $result = CommonUtil::doPost($url, $data);
+                if(!str_contains($result, "true")) {
+                    \DB::rollBack();
+                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>'Register to Message Center Failed!' . $result,
+                        'content'=>$data]);
+                }
+
+                \DB::commit();
+            } catch (Exception $e) {
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>'未知错误',
+                    'content'=>'']);
             }
 
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
@@ -1285,6 +1473,9 @@ SQL;
 
         $input = Input::get();
         $request = Request::instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input))
@@ -1302,7 +1493,7 @@ SQL;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $token = uniqid();
-                $token_valid = time();
+                $token_valid = time() + (2 * 86400);
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 $now = date('Y-m-d H:i:s',time());
                 $user = CommonUtil::getUserInfoByUUID($uuid);
@@ -1330,7 +1521,7 @@ SQL;
                 'content'=>'']);
         }
     }
-
+    
     public function sendPushMessage()
     {
         $Verify = new Verify();
@@ -1338,6 +1529,10 @@ SQL;
 
         $input = Input::get();
         $request = \Request::instance();
+
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('app_key', $input) || !array_key_exists('need_push', $input)
@@ -1349,7 +1544,12 @@ SQL;
         }
 
         $app_key = $input["app_key"];
-        $need_push = $input["need_push"];
+        $need_push = trim(strtoupper($input["need_push"]));
+        if($need_push != "Y" && $need_push != "N") {
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>'傳入參數不足或傳入參數格式錯誤',
+                'content'=>'']);
+        }
 
         if(!$Verify->chkAppKeyExist($app_key)) {
             return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
@@ -1368,6 +1568,7 @@ SQL;
                 $jsonContent = json_decode($content, true);
 
                 if(!array_key_exists('message_title', $jsonContent) || trim($jsonContent['message_title']) == ""
+                || !array_key_exists('template_id', $jsonContent) || trim($jsonContent['template_id']) == ""
                 || !array_key_exists('message_type', $jsonContent) || ($jsonContent['message_type'] != "news" && $jsonContent['message_type'] != "event")
                 || ( (!array_key_exists('message_text', $jsonContent) || trim($jsonContent['message_text']) == "")
                   && (!array_key_exists('message_html', $jsonContent) || trim($jsonContent['message_html']) == "")
@@ -1378,28 +1579,30 @@ SQL;
                         'message'=>"数据不完整",
                         'content'=>'']);
                 }
-                if($jsonContent['message_type'] == "event" &&
-                     ( (!array_key_exists('destination_user_id', $jsonContent) || $jsonContent['destination_user_id'] == null)
-                    && (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null))) {
-                    return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
-                        'message'=>"数据不完整",
-                        'content'=>'']);
-                }
+                if($need_push == "Y") {
+                    if($jsonContent['message_type'] == "event" &&
+                        ( (!array_key_exists('destination_user_id', $jsonContent) || $jsonContent['destination_user_id'] == null)
+                            && (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null))) {
+                        return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
+                            'message'=>"数据不完整",
+                            'content'=>'']);
+                    }
 
-                if($jsonContent['message_type'] == "news" &&
-                     (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null)) {
-                    return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
-                        'message'=>"数据不完整",
-                        'content'=>'']);
+                    if($jsonContent['message_type'] == "news" &&
+                        (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null)) {
+                        return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
+                            'message'=>"数据不完整",
+                            'content'=>'']);
+                    }
                 }
 
                 $sourceUseId = $jsonContent['source_user_id'];
 
                 $userid = explode('\\', $sourceUseId)[1];
-                $company = explode('\\', $sourceUseId)[0];
-                $verifyResult = $Verify->verifyUserByUserIDAndCompany($userid, $company);
+                $domain = explode('\\', $sourceUseId)[0];
+                $verifyResult = $Verify->verifyUserByUserIDAndDomain($userid, $domain);
                 if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                    $userInfo = CommonUtil::getUserInfoJustByUserIDAndCompany($userid, $company);
+                    $userInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
 
                     $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
                     if($projectInfo == null) {
@@ -1413,8 +1616,8 @@ SQL;
                     foreach ($destinationUserIdList as $destinationUserId)
                     {
                         $userid = explode('\\', $destinationUserId)[1];
-                        $company = explode('\\', $destinationUserId)[0];
-                        $verifyResult = $Verify->verifyUserByUserIDAndCompany($userid, $company);
+                        $domain = explode('\\', $destinationUserId)[0];
+                        $verifyResult = $Verify->verifyUserByUserIDAndDomain($userid, $domain);
 
                         if($verifyResult["code"] == ResultCode::_000901_userNotExistError) {
                             return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
@@ -1428,7 +1631,7 @@ SQL;
                                 'content'=>'']);
                         }
 
-                        $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndCompany($userid, $company);
+                        $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
 
                         array_push($destinationUserInfoList, $destinationUserInfo);
                     }
@@ -1437,8 +1640,8 @@ SQL;
                     $destinationRoleInfoList = array();
                     foreach ($destinationRoleIdList as $destinationRoleId)
                     {
-                        $roleDesc = explode('\\', $destinationRoleId)[1];
-                        $company = explode('\\', $destinationRoleId)[0];
+                        $roleDesc = explode('/', $destinationRoleId)[1];
+                        $company = explode('/', $destinationRoleId)[0];
 
                         $destinationRoleInfo = CommonUtil::getRoleInfo($roleDesc, $company);
                         if($destinationRoleInfo == null) {
@@ -1451,20 +1654,23 @@ SQL;
                     }
 
                     $message_type = $jsonContent['message_type'];
-                    $message_title = $jsonContent['message_title'];
+                    $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
                     if(strlen($message_title) > 99) {
-                        return array("result_code"=>ResultCode::_000916_titleLengthTooLong,
-                            "message"=>"标题栏位太长");
+                        return response()->json(['result_code'=>ResultCode::_000916_titleLengthTooLong,
+                            'message'=>"标题栏位太长",
+                            'content'=>'']);
                     }
-                    $message_text = $jsonContent['message_text'];
-                    $message_html = $jsonContent['message_html'];
-                    $message_url = $jsonContent['message_url'];
+                    $template_id = $jsonContent['template_id'];
+                    $message_text = CommonUtil::jsUnescape(base64_decode($jsonContent['message_text']));
+                    $message_html = CommonUtil::jsUnescape(base64_decode($jsonContent['message_html']));
+                    $message_url = CommonUtil::jsUnescape(base64_decode($jsonContent['message_url']));
                     $message_source = $jsonContent['message_source'];
                     $now = date('Y-m-d H:i:s',time());
                     \DB::beginTransaction();
                     try {
                         $newMessageId = \DB::table("qp_message")
                             -> insertGetId([
+                                'template_id'=>$template_id, 'visible'=>'Y',
                                 'message_type'=>$message_type, 'message_title'=>$message_title,
                                 'message_text'=>$message_text, 'message_html'=>$message_html,
                                 'message_url'=>$message_url, 'message_source'=>$message_source,
@@ -1478,67 +1684,84 @@ SQL;
                                 'source_user_row_id'=>$userInfo->row_id,
                                 'created_user'=>$userInfo->row_id,
                                 'created_at'=>$now,
+                                'need_push'=>$need_push,
+                                'push_flag'=>'0'
                             ]);
 
-                        $hasSentUserIdList = array();
-                        if($message_type == "event") {
-                            foreach ($destinationUserInfoList as $destinationUserInfo) {
-                                if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
-                                    continue;
-                                }
-                                \DB::table("qp_user_message")
-                                    -> insertGetId([
-                                        'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
-                                        'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
-                                        'created_user'=>$userInfo->row_id,
-                                        'created_at'=>$now,
-                                        'push_flag'=>'0'
-                                    ]);
-                                $hasSentUserIdList[] = $destinationUserInfo->row_id;
-                            }
-                        }
-
-                        foreach ($destinationRoleInfoList as $destinationRoleInfo) {
-                            \DB::table("qp_role_message")
-                                -> insertGetId([
-                                    'project_row_id'=>$projectInfo->row_id, 'role_row_id'=>$destinationRoleInfo->row_id,
-                                    'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
-                                    'created_user'=>$userInfo->row_id,
-                                    'created_at'=>$now,
-                                    'push_flag'=>'0'
-                                ]);
-
+                        if($need_push == "Y") {
+                            $hasSentUserIdList = array();
+                            $real_push_user_list = array();
                             if($message_type == "event") {
-                                $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$destinationRoleInfo->row_id.' )';
-                                $userInRoleList = DB::select($sql, []);
-                                foreach ($userInRoleList as $userRoleInfo) {
-                                    $userRoleId = $userRoleInfo->row_id;
-                                    $hasSent = false;
-                                    foreach ($destinationUserInfoList as $destinationUserInfo){
-                                        if($destinationUserInfo->row_id == $userRoleId) {
+                                foreach ($destinationUserInfoList as $destinationUserInfo) {
+                                    if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
+                                        continue;
+                                    }
+                                    \DB::table("qp_user_message")
+                                        -> insertGetId([
+                                            'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
+                                            'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
+                                            'created_user'=>$userInfo->row_id,
+                                            'created_at'=>$now
+                                        ]);
+                                    $hasSentUserIdList[] = $destinationUserInfo->row_id;
+                                    $real_push_user_list[] = $destinationUserInfo->row_id;
+                                }
+                            }
+
+                            foreach ($destinationRoleInfoList as $destinationRoleInfo) {
+                                \DB::table("qp_role_message")
+                                    -> insertGetId([
+                                        'project_row_id'=>$projectInfo->row_id, 'role_row_id'=>$destinationRoleInfo->row_id,
+                                        'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0', 'need_push'=>'1',//'need_push'=>$need_push,
+                                        'created_user'=>$userInfo->row_id,
+                                        'created_at'=>$now
+                                    ]);
+
+                                if($message_type == "event") {
+                                    $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$destinationRoleInfo->row_id.' )';
+                                    $userInRoleList = DB::select($sql, []);
+                                    foreach ($userInRoleList as $userRoleInfo) {
+                                        $userRowId = $userRoleInfo->row_id;
+                                        $hasSent = false;
+                                        foreach ($destinationUserInfoList as $destinationUserInfo){
+                                            if($destinationUserInfo->row_id == $userRowId) {
+                                                $hasSent = true;
+                                                break;
+                                            }
+                                        }
+                                        if(in_array($userRowId, $hasSentUserIdList)) {
                                             $hasSent = true;
-                                            break;
+                                        }
+
+                                        if(!$hasSent) {
+                                            \DB::table("qp_user_message")
+                                                -> insertGetId([
+                                                    'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$userRowId,
+                                                    'message_send_row_id'=>$newMessageSendId,  'need_push'=>'1',//'need_push'=>$need_push,
+                                                    'created_user'=>$userInfo->row_id,
+                                                    'created_at'=>$now,
+                                                    'push_flag'=>'0'
+                                                ]);
+                                            $hasSentUserIdList[] = $userRowId;
+                                            $real_push_user_list[] = $userRowId;
                                         }
                                     }
-                                    if(in_array($userRoleId, $hasSentUserIdList)) {
-                                        $hasSent = true;
-                                    }
-
-                                    if(!$hasSent) {
-                                        \DB::table("qp_user_message")
-                                            -> insertGetId([
-                                                'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$userRoleId,
-                                                'message_send_row_id'=>$newMessageSendId, 'need_push'=>$need_push,
-                                                'created_user'=>$userInfo->row_id,
-                                                'created_at'=>$now,
-                                                'push_flag'=>'0'
-                                            ]);
-                                        $hasSentUserIdList[] = $userRoleId;
-                                    }
                                 }
                             }
-                        }
 
+                            $to = "";
+                            foreach ($real_push_user_list as $uId) {
+                                $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
+                                if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
+                                    $to = $to.$userPushList[0]->login_id.";";
+                                }
+                            }
+                            $result = CommonUtil::PushMessageWithMessageCenter($message_title, $to);
+                            if(!$result["result"]) {
+                                \DB::rollBack();
+                                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                            }
+                        }
 
                         \DB::commit();
                         return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
@@ -1567,6 +1790,10 @@ SQL;
 
         $input = Input::get();
         $request = Request::instance();
+
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('last_update_time', $input)

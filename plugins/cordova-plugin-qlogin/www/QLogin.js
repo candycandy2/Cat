@@ -2,8 +2,8 @@
 var exec = require('cordova/exec');
 var qlogin = function() {}
 
-qlogin.prototype.openCertificationPage = function(callback, error_callback) {
-    Cordova.exec(callback,error_callback, "QLoginPlugin", "openCertificationPage", []);
+qlogin.prototype.openCertificationPage = function(callback, error_callback, args) {
+    Cordova.exec(callback,error_callback, "QLoginPlugin", "openCertificationPage", args);
 }
 
 qlogin.prototype.getLoginData = function(callback, error_callback) {
@@ -22,6 +22,10 @@ qlogin.prototype.getLoginData = function(callback, error_callback) {
     };
 
     Cordova.exec(callback,error_callback, "QLoginPlugin", "getLoginData", []);
+}
+
+qlogin.prototype.openAppCheckScheme = function(callback, error_callback) {
+    Cordova.exec(callback, error_callback, "QLoginPlugin", "openAppCheckScheme", []);
 }
 
 module.exports = new qlogin();

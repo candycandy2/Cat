@@ -9,7 +9,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.example.hello.R;
+import com.BenQ.QPlay.R;//need to change by project, example: com.BenQ.QPlay.R;
 import org.apache.cordova.ConfigXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -17,6 +17,8 @@ public class LoginActivity extends Activity {
     private WebView webview;
     private String serverUrl;
     private String tSchema;
+    private String uuid;
+    private String function;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -25,11 +27,16 @@ public class LoginActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
-        //取得URL所帶進來的Intent物件
         Intent tIntent = this.getIntent();
+        Bundle b=tIntent.getExtras();
+        if(b!=null){
+            uuid=b.getString("uuid");
+        }
         Uri myURI = tIntent.getData();
         if(myURI!=null){
             tSchema = myURI.getQueryParameter("Name");
+            uuid = myURI.getQueryParameter("uuid");
+            function = myURI.getQueryParameter("Function");
         }
 
         webview = (WebView) findViewById(R.id.WebViewDetail);
@@ -46,9 +53,12 @@ public class LoginActivity extends Activity {
         public void loginResult(String data){
             LoginInfo.getInstance().setloginData(data);
             if(tSchema==null){
-                finish();
+                Intent mIntent = new Intent();
+                mIntent.putExtra("data", data);
+                setResult(RESULT_OK, mIntent);
+				finish();
             }else{
-                Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data);
+                Uri uri = Uri.parse(tSchema+"://Login?Parameters="+data+"&Function="+function);
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
                 startActivity(intent);
@@ -62,6 +72,7 @@ public class LoginActivity extends Activity {
             String strNode = xml.getName();
             if (strNode.equals("serverUrl")) {
                 serverUrl = xml.getAttributeValue(null, "href");
+				serverUrl = serverUrl + "?device_type=android&uuid=" + uuid;
             }
         }
         @Override

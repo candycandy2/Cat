@@ -42,17 +42,28 @@
     [ps parse];
     self.CertificationPageUrl = qp.ConfigedUrl;
     if (!self.CertificationPageUrl) {
-        self.CertificationPageUrl =@"http://10.85.129.62/Login/index.html";
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:QLOGIN_CONFIG_ERROR];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
     
-    //更新来源APP
+    //记录CallBack函数名
     if(command.arguments.count > 0 && command.arguments[0]){
-        self.SourceAPP = command.arguments[0];
+        self.CallBackJSOnSuccess = command.arguments[0];
+    }
+    
+    //插入传给API的参数(uuid)
+    if(command.arguments.count > 1 && command.arguments[1]){
+        //uuid
+        NSString* uuid = [[command.arguments[1] description]stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        
+        //url参数
+        NSString* urlParameters = [NSString  stringWithFormat:@"%@%@%@",@"?uuid=",uuid,@"&device_type=ios" ];
+        
+        self.CertificationPageUrl = [NSString stringWithFormat:@"%@%@",self.CertificationPageUrl,urlParameters];
     }
     
     //获得屏幕的尺寸
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    screenBounds.origin.y = screenBounds.origin.y;
 
     if(!_wkView){
         WKWebViewConfiguration *wvConfig = [[WKWebViewConfiguration alloc] init];
@@ -97,7 +108,10 @@
     //(2)隐藏Webview
     [self hideCertificateContainer:nil];
     
-    //(3)跳转回原APP
+    //(3)执行回调函数
+    [self execCDVWebViewCallBack];
+    
+    //(4)跳转回原APP
     if(_SourceAPP && ![_SourceAPP isEqual:@""]){
         [self jump2APP];
     }
@@ -117,22 +131,22 @@
 }
 
 //intent跳转后，先打开认证页
-- (void)handleOpenURL:(NSNotification*)notification{
-    NSLog(@"%@",notification.object);
-    NSURL *url =notification.object;
-    NSString *sourceAPP = nil;
-    
-    NSURLComponents *uc = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
-    for (NSURLQueryItem *item in uc.queryItems) {
-        if ([item.name  isEqual: @"name"]) {
-            sourceAPP = item.value;
-        }
-    }
-    
-    NSArray *args = [NSArray arrayWithObject:sourceAPP];
-    CDVInvokedUrlCommand *cmd = [[CDVInvokedUrlCommand alloc] initWithArguments:args callbackId:nil className:nil methodName:nil];
-    [self openCertificationPage:cmd];
-}
+//- (void)handleOpenURL:(NSNotification*)notification{
+//    NSLog(@"%@",notification.object);
+//    NSURL *url =notification.object;
+//    NSString *sourceAPP = nil;
+//    
+//    NSURLComponents *uc = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
+//    for (NSURLQueryItem *item in uc.queryItems) {
+//        if ([item.name  isEqual: @"Name"]) {
+//            sourceAPP = item.value;
+//        }
+//    }
+//    
+//    NSArray *args = [NSArray arrayWithObject:sourceAPP];
+//    CDVInvokedUrlCommand *cmd = [[CDVInvokedUrlCommand alloc] initWithArguments:args callbackId:nil className:nil methodName:nil];
+//    [self openCertificationPage:cmd];
+//}
 
 //返回调用的APP
 -(void)jump2APP{
@@ -149,6 +163,16 @@
 {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:self.CertificationResult];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+/**
+ *  登录成功后,登录页面关闭并回调UIWebView的JS
+ */
+-(void)execCDVWebViewCallBack{
+    if (self.CallBackJSOnSuccess) {
+        NSString* js = [[NSString alloc] initWithFormat:@"%@%@%@%@",self.CallBackJSOnSuccess,@"(",self.CertificationResult,@")"];
+        [(UIWebView*)self.webView stringByEvaluatingJavaScriptFromString:js];
+    }
 }
 @end
 

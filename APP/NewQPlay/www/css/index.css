@@ -1,0 +1,148 @@
+.initialMain {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.initialLogo {
+    margin-top: 20%;
+    margin-bottom: 45%;
+}
+
+.appDetailIcon {
+    float: left;
+    width: 72px;
+    height: 85px;
+}
+
+.appDetailInfo {
+    line-height: 6px;
+    margin-left: 85px;
+}
+
+.appDetailAppName {
+    font-size: 1.5em;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.install-btn {
+    width: 100px !important;
+    height: 10px !important;
+    float:right !important;
+    text-align: center !important;
+    line-height: 10px !important;
+    color:white !important;
+    background-color:#28004D !important;
+    border-color:#28004D !important;
+    margin-top:0px !important;
+}
+
+.detail-description-style {
+    margin-top: 30%;
+    margin-bottom: 15%;
+    width: auto !important;
+    text-align: center !important;
+}
+
+.rank-style {
+    margin: auto;
+    margin-bottom: 15%;
+    display: block !important;
+}
+
+.Header_Normal{
+    display:block;
+    background-image: url(../img/header_normal.png);
+    width:auto;
+    height:90px;
+    background-size: 100% 100%;
+}
+
+.Priority_Normal{
+    position: relative;
+    left: 67%;
+    top: 15px;
+    font-size:12px;
+    color:#FFF;
+    font-family: "Gill Sans MT";
+}
+    
+.Normal{
+    font-size:16px;
+    color:#ccffcc;
+    font-family: "Gill Sans MT";
+}
+    
+.Date{
+    position: relative;
+    left: 70%;
+    top: 30px;
+    font-size: 16px;
+    color: #FFF;
+    font-family: "Gill Sans MT";
+}
+    
+.webnewspageFooter{
+    display:block;
+    background-image:url(../img/footer.jpg);
+    width:auto;
+    height:50px;
+    background-size: 100% 100%;
+}
+
+.Content_bg{
+    display:block;
+    width:auto;
+    background-color:#fafafa;
+    overflow:hidden;
+    top: 150px;
+}
+
+.Author_icon{
+    width:30px;
+    height:24px;
+    background-image:url(../img/auther.png);
+    float:left;
+}
+
+.Author_Content{
+    overflow-wrap: break-word;
+    width: 80%;
+    font-size:16px;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#181818;
+    margin-left:12px;
+    float:left;
+    line-height: 1.5;
+}
+
+.Content_Block {
+    clear: both;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.Content_icon{
+    width:30px;
+    height:24px;
+    background-image:url(../img/content.png);
+    float:left;
+}
+
+.Content_Content{
+    overflow-wrap: break-word;
+    width: 80%;
+    font-size:14px;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#0d0d0d;
+    margin-left:12px;
+    float:left;
+}
+
+#appcontent {
+    padding: 10px;
+}

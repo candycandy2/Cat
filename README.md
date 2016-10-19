@@ -3,11 +3,17 @@
 
 使用WEB為主要開發環境, 只要你會寫網頁, 就可以開發APP
 
+###  安裝
+
+![qplayinstall](https://cloud.githubusercontent.com/assets/1924451/18819378/6873332c-83c2-11e6-892f-db70c5257f4d.png)
+
 ### 開發完成的Plugin
 1. [qsecurity-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qsecurity-plugin)
+2. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
+3. [scheme-code](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/issues/13)
+4. [push-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/issues/14)
 
 ### 開發中Plugin
-1. [qlogin-plugin](https://github.com/BenQdigiPages/EnterpriseAPPPlatform/wiki/qlogin-plugin)
 
 目前運行版本, 更新的版本為驗證過, 請確認所有功能正常再更新
 
@@ -29,9 +35,11 @@ cordova-plugin-statusbar 2.1.3 "StatusBar"
 
 目錄結構
 - /componentapp  …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
+- /TemplateCordovaAPP …之後會廢除, 改由componentapp取代
 - /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
 - /APP                  …放置APP的地方,包括使用www+css+js的UI功能
-- /TemplateCordovaAPP …之後會廢除, 改由componentapp取代
+- /WEB                  …放置WEB的地方,Login, Download...
+- /qplay                …放置PHP Platform
 - /qplayApi             …放置PHP API
 
 ## Android BUILD
@@ -56,6 +64,17 @@ cordova-plugin-statusbar 2.1.3 "StatusBar"
 ![screen shot 2016-07-11 at 6 24 36 pm](https://cloud.githubusercontent.com/assets/1924451/16727908/fcbbd534-4795-11e6-9641-a3a15c3667a0.png)
 ![screen shot 2016-07-11 at 6 24 48 pm](https://cloud.githubusercontent.com/assets/1924451/16727912/ffc915c0-4795-11e6-8e20-7e285c334fd5.png)
 
+
+Requirements check results for android:
+ - Java JDK: installed .
+ - Android SDK: installed 
+ - Android target: installed android-23
+ - Gradle: installed 
+
+Requirements check results for ios:
+ - Apple OS X: installed darwin
+ - Xcode: installed 7.3
+ - ios-deploy: installed 2.0.0
 
 ![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
 

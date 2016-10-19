@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.BenQ.Yellowpage" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.qplay.appyellowpage" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>YellowPage</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -9,6 +9,7 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <access origin="tel:*" launch-external="yes" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -26,4 +27,5 @@
     </platform>
     <plugin name="cordova-plugin-splashscreen" spec="~3.2.2" />
     <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
+    <serverUrl href = "http://qplay.benq.com/qplayApi/public/index.php/qplayauth_register"/>
 </widget>

@@ -21,7 +21,7 @@ class CommonUtil
             -> where('qp_register.status', '=', 'A')
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
-            -> select('qp_user.row_id', 'qp_user.emp_no')->get();
+            -> select('qp_user.row_id', 'qp_user.emp_no', 'qp_user.login_id')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -81,6 +81,21 @@ class CommonUtil
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId)
             -> where('qp_user.company', '=', $company)
+            -> select('qp_user.row_id')->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
+
+    public static function getUserInfoJustByUserIDAndDomain($loginId, $domain)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.status', '=', 'Y')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.login_id', '=', $loginId)
+            -> where('qp_user.user_domain', '=', $domain)
             -> select('qp_user.row_id')->get();
         if(count($userList) < 1) {
             return null;
@@ -196,6 +211,42 @@ class CommonUtil
         return 3; //正常
     }
 
+    public static function getUserStatusByUserIDAndDomain($loginId, $domain)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.login_id', '=', $loginId)
+            -> where('qp_user.user_domain', '=', $domain)
+            -> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+        if(count($userList) < 1) {
+            return 0; //用户不存在
+        }
+
+        if(count($userList) == 1) {
+            $user = $userList[0];
+            if($user->resign != "N") {
+                return 1; //用户已离职
+            }
+
+            if($user->status != "Y") {
+                return 2; //用户已停权
+            }
+        } else {
+            foreach ($userList as $user)
+            {
+                if($user->resign == "N") {
+                    if($user->status == "Y") {
+                        return 3; //正常
+                    } else {
+                        return 2; //停权
+                    }
+                }
+            }
+            return 1;  //离职
+        }
+
+        return 3; //正常
+    }
+
     public static function getProjectInfoAppKey($appKey)
     {
         $projectList = \DB::table('qp_project')
@@ -217,5 +268,86 @@ class CommonUtil
     public static function getMessageContentByCode($messageCode) {
         //TODO
         return "";
+    }
+
+    public static function getSecretKeyByAppKey($appKey) {
+        $projectList = \DB::table('qp_project')
+            -> where('qp_project.app_key', '=', $appKey)
+            -> select('qp_project.row_id', 'qp_project.secret_key')->get();
+        if(count($projectList) > 0) {
+            return $projectList[0]->secret_key;
+        }
+
+        return null;
+    }
+
+    public static function jsUnescape($str){
+        $ret = '';
+        $len = strlen($str);
+        for ($i = 0; $i < $len; $i++)
+        {
+            if ($str[$i] == '%' && $str[$i+1] == 'u')
+            {
+                $val = hexdec(substr($str, $i+2, 4));
+                if ($val < 0x7f) $ret .= chr($val);
+                else if($val < 0x800) $ret .= chr(0xc0|($val>>6)).chr(0x80|($val&0x3f));
+                else $ret .= chr(0xe0|($val>>12)).chr(0x80|(($val>>6)&0x3f)).chr(0x80|($val&0x3f));
+                $i += 5;
+            }
+            else if ($str[$i] == '%')
+            {
+                $ret .= urldecode(substr($str, $i, 3));
+                $i += 2;
+            }
+            else $ret .= $str[$i];
+        }
+        return $ret;
+    }
+
+    public static function doPost($url, $data){//file_get_content
+        $postdata = http_build_query($data);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+        $context = stream_context_create($opts);
+        $result = file_get_contents($url, false, $context);
+        return $result;
+    }
+
+    public static function PushMessageWithMessageCenter($message, $to) {
+        $jpush_app_id = "293a09f63dd77abea15f42c3";  //TODO
+        $id = strtoupper(md5(uniqid(rand(),true)));
+        $args = array('Id' => $id,
+            'TenantId' => '00000000-0000-0000-0000-000000000000',
+            'AppId' => $jpush_app_id,
+            'To' => $to,
+            'Message' => $message,
+            'Sound' => 'default',
+            'Badge' => '0',
+            'Timing' => '1900-01-01 00:00:00.000',
+            'Expire' => '2099-12-31 00:00:00.000',
+            'Status' => 'W',
+            'To_Type' => 'NONE',
+            'Parameter' => '',
+            'CreatedDate' => date('Y-m-d H:i:s',time()));
+        $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
+        $data["pns"] = json_encode($args);
+        $response = self::doPost($url, $data);
+
+        $result = array();
+        if(str_contains($response, "true")) {
+            $result["result"] = true;
+            $result["info"] = $data["pns"];
+        } else {
+            $result["result"] = false;
+            $result["info"] = $data["pns"];
+        }
+
+        return $result;
     }
 }

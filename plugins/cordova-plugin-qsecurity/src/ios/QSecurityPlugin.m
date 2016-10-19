@@ -30,6 +30,7 @@
         [self.whitelistHosts addObject:@"file:///*"];
         [self.whitelistHosts addObject:@"content:///*"];
         [self.whitelistHosts addObject:@"data:///*"];
+        [self.whitelistHosts addObject:@"itms-services:///*"];
     }
     return self;
 }
@@ -116,6 +117,7 @@
     NSMutableArray* errorLogs = [NSMutableArray array];
     
     switch (navigationType) {
+        case UIWebViewNavigationTypeOther:
         case UIWebViewNavigationTypeLinkClicked:
             // Note that the rejection strings will *only* print if
             // it's a link click (and url is not whitelisted by <allow-*>)

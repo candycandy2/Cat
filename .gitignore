@@ -1,51 +1,10 @@
-# Non-project-specific build files:
-TemplateCordovaAPP/platforms/android/build.xml
-TemplateCordovaAPP/platforms/android/local.properties
-TemplateCordovaAPP/platforms/android/gradlew
-TemplateCordovaAPP/platforms/android/gradlew.bat
-TemplateCordovaAPP/platforms/android/.gradle
-TemplateCordovaAPP/platforms/android/.idea
-TemplateCordovaAPP/platforms/android/*/*.iml
-TemplateCordovaAPP/platforms/android/*.iml
-TemplateCordovaAPP/platforms/android/gradle.properties
-# Ant builds
-TemplateCordovaAPP/platforms/android/ant-build
-TemplateCordovaAPP/platforms/android/ant-gen
-# Eclipse builds
-TemplateCordovaAPP/platforms/android/gen
-TemplateCordovaAPP/platforms/android/out
-# Gradle builds
-TemplateCordovaAPP/platforms/android/*/build
-#ios
-TemplateCordovaAPP/platforms/ios/*/xcuserdata
-TemplateCordovaAPP/platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/
-TemplateCordovaAPP/platforms/ios/*/project.xcworkspace
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
 
-# Non-project-specific build files:
-componentapp/platforms/android/build.xml
-componentapp/platforms/android/local.properties
-componentapp/platforms/android/gradlew
-componentapp/platforms/android/gradlew.bat
-componentapp/platforms/android/.gradle
-componentapp/platforms/android/.idea
-componentapp/platforms/android/*/*.iml
-componentapp/platforms/android/*.iml
-componentapp/platforms/android/gradle.properties
-# Ant builds
-componentapp/platforms/android/ant-build
-componentapp/platforms/android/ant-gen
-# Eclipse builds
-componentapp/platforms/android/gen
-componentapp/platforms/android/out
-# Gradle builds
-componentapp/platforms/android/*/build
-#ios
-componentapp/platforms/ios/*/xcuserdata
-componentapp/platforms/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/
-componentapp/platforms/ios/*/project.xcworkspace
 
-APP/*/hooks/
 APP/*/platforms/
 APP/*/plugins/
-
-APP/QPlay/npm-debug.log
+APP/*/www/*/component.*

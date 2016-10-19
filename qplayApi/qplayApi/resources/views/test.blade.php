@@ -32,8 +32,64 @@ FORM;
 
         <div id="timestampResult"></div>
 
+    <br/>
+    <br/>
+    <textarea id="base64encode" onkeyup="base64encode()"></textarea>
+    <textarea id="base64decode" onkeyup="base64decode()"></textarea>
+
     <br/><br/>
         <script>
+            var keyStr = "ABCDEFGHIJKLMNOP" +
+                    "QRSTUVWXYZabcdef" +
+                    "ghijklmnopqrstuv" +
+                    "wxyz0123456789+/" +
+                    "=";
+            var base64encode = function () {
+
+                var b = $("#base64encode").val();
+                $("#base64decode").val($.base64.btoa(escape(b)));
+            };
+
+            var base64decode = function () {
+//                var a = $("#base64decode").val();
+//                $("#base64encode").val($.base64.atob(a));
+            };
+
+            var encode64 = function (input)
+            {
+                input = escape(input);
+                var output = "";
+                var chr1, chr2, chr3 = "";
+                var enc1, enc2, enc3, enc4 = "";
+                var i = 0;
+                do
+                {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2))
+                    {
+                        enc3 = enc4 = 64;
+                    }
+                    else if (isNaN(chr3))
+                    {
+                        enc4 = 64;
+                    }
+                    output = output +
+                            keyStr.charAt(enc1) +
+                            keyStr.charAt(enc2) +
+                            keyStr.charAt(enc3) +
+                            keyStr.charAt(enc4);
+                    chr1 = chr2 = chr3 = "";
+                    enc1 = enc2 = enc3 = enc4 = "";
+                } while (i < input.length);
+                return output;
+            }
+            
             var urlDecode = function() {
                 var s = $("#tbxDateTime").val();
                 $("#timestampResult").text(decodeURIComponent(s));
@@ -144,7 +200,7 @@ FORM;
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest2",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest3",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -154,16 +210,21 @@ FORM;
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
-                    request.setRequestHeader("domain", "Qisda");
+                    request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
-                    request.setRequestHeader("password", "111");
+                    request.setRequestHeader("password", "Qcs.2012");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
-                            + "content: <br/> uuid: " + d.content.uuid + "<br/>"
-                            + "redirect-uri: " + d.content.redirect_uri + "<br/>"
-                            + "token: " + d.content.token);
+                    if(d.result_code == 1) {
+                        $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
+                                + "content: <br/> uuid: " + d.content.uuid + "<br/>"
+                                + "redirect-uri: " + d.content.redirect_uri + "<br/>"
+                                + "domain: " + d.content.domain + "<br/>"
+                                + "emp_no: " + d.content.emp_no + "<br/>"
+                                + "checksum: " + d.content.checksum + "<br/>"
+                                + "token: " + d.content.token);
+                    }
                 },
                 error: function (e) {
                     alert(e);
@@ -185,15 +246,20 @@ FORM;
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
-                    request.setRequestHeader("password", "QCS@2012");
+                    request.setRequestHeader("password", "Qcs.2012");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
-                    $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
-                            + "content: <br/> uuid: " + d.content.uuid + "<br/>"
-                            + "redirect-uri: " + d.content.redirect_uri + "<br/>"
-                            + "token: " + d.content.token + "<br/>"
-                            + "security_updated_at: " + d.content.security_updated_at);
+                    if(d.result_code == 1) {
+                        $("#result_content").html("token_valid:" +  d.token_valid + "<br/>"
+                                + "content: <br/> uuid: " + d.content.uuid + "<br/>"
+                                + "redirect-uri: " + d.content.redirect_uri + "<br/>"
+                                + "token: " + d.content.token + "<br/>"
+                                + "domain: " + d.content.domain + "<br/>"
+                                + "emp_no: " + d.content.emp_no + "<br/>"
+                                + "checksum: " + d.content.checksum + "<br/>"
+                                + "security_updated_at: " + d.content.security_updated_at);
+                    }
                 },
                 error: function (e) {
                     alert(e);
@@ -428,7 +494,7 @@ FORM;
 
         var sendPushToken = function () {
             $.ajax({
-                url: "v101/qplay/sendPushToken?lang=en-us&uuid=CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20&app_key=qplay&device_type=android",
+                url: "v101/qplay/sendPushToken?lang=en-us&uuid=chaosTest&app_key=qplay&device_type=android",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -508,15 +574,16 @@ FORM;
 //                    '"source_user_id":"QGROUP\\\\Moses.Zhu",' +
 //                    '"destination_user_id":["QGROUP\\\\Moses.Zhu","QGROUP\\\\Tim.Zhang"]' +
 //                    '}';
-            var mydata = {message_title: "System Announcement",
+            var mydata = {message_title: "JXU1NTRBJXU1NTRB",//"System Announcement",
+                template_id:3,
                         message_type: "event",
-                message_text: "system is down",
+                message_text: "c3lzdGVtIGlzIGRvd24=", //"system is down",
                 message_html: "",
                 message_url:"",
                 message_source:"Oracle ERP",
-                source_user_id:"qisda\\Moses.Zhu",
-                destination_user_id:["qisda\\Moses.Zhu22","qisda\\Sammi.Yao"],
-                destination_role_id:["qisda\\staff"],
+                source_user_id:"Qgroup\\Moses.Zhu",
+                destination_user_id:["Qgroup\\Moses.Zhu","Qgroup\\Sammi.Yao"],
+                destination_role_id:["Qisda/staff"],
                 };
             var mydataStr = $.toJSON(mydata);
 //            mydata = '{"first name":"moseszhu",' +

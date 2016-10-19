@@ -124,8 +124,9 @@ class Verify
 
         $token_valid_date = $sessionList[0]->token_valid_date;
         //$last_message_time = $sessionList[0]->last_message_time;
-        $ts = time() - $token_valid_date; //strtotime($token_valid_date);
-        if($ts > Verify::$TOKEN_VALIDATE_TIME)
+        //$ts = time() - $token_valid_date; //strtotime($token_valid_date);
+        //if($ts > Verify::$TOKEN_VALIDATE_TIME)
+        if(time() > $token_valid_date)
         {
             return array("code"=>ResultCode::_000907_tokenOverdue,
                 "message"=> "token过期");
@@ -207,6 +208,26 @@ class Verify
             "message"=>"");
     }
 
+    public static function verifyUserByUserIDAndDomain($loginid, $domain)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserIDAndDomain($loginid, $domain);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=>"離職或是帳號資訊打錯");
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=>"账号已被停权");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
     public static function chkUuidExist($uuid)
     {
         $registerInfoList = \DB::table("qp_register")
@@ -249,15 +270,32 @@ class Verify
 
     public static function getSignature($signatureTime)
     {
-        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
+        $key = CommonUtil::getSecretKeyByAppKey("qplay");
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
 
     }
 
     public static function chkSignatureYellowPage($signature, $signatureTime)
     {
-        //TODO
+        $nowTime = time();
+        $serverSignature = self::getSignatureYellowPage($signatureTime);
+        if(strcmp($serverSignature, $signature) != 0) {
+            return 1; //不匹配
+        }
+
+        if(abs($nowTime - $signatureTime) > 900) {
+            return 2; //超时
+        }
+
         return 3;
+    }
+
+    public static function getSignatureYellowPage($signatureTime)
+    {
+        $key = CommonUtil::getSecretKeyByAppKey("YellowPage");
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
+        return $ServerSignature;
     }
 
     public static function verifyYellowPage() {
@@ -271,7 +309,8 @@ class Verify
         //verify parameter count
         if($headerContentType == null || $headerAppKey == null
             || $headerSignature == null || $headerSignatureTime == null
-            || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
+            || trim($headerContentType) == "" || trim($headerAppKey) == ""
+            || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
