@@ -96,6 +96,7 @@ foreach ($enableRole as $role){
         }
         .screen-preview:hover, .icon-preview:hover, .screen-upl-btn:hover, .icon-upl-btn:hover{
             opacity: .3;
+            cursor:move;
         }
         .sortable { list-style-type: none; margin: 0; padding: 0;  }
         .sortable li { margin: 10px 10px 10px 10px; float: left }
@@ -128,6 +129,9 @@ foreach ($enableRole as $role){
         table.costum-table tr:last-child td:last-child { border-bottom-right-radius: 3px; }
         
     </style>
+    <div id="appMaintainAlert" class="alert alert-danger" style="display: none">
+        <strong>Danger!</strong>
+    </div>
     <div class="col-lg-12 col-xs-12 text-right">
         <span class="text-success"  id="appVersionStatus" style="padding-right: 8px;  line-height: 50px; font-size: 20px;">
             <span  data-toggle='gridAndroidVersionList'
@@ -177,6 +181,7 @@ var oriDefaultLang = {{$defaultLang}};
 var jsDefaultLang = {{$defaultLang}};
 var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
 var jsAppRowId = {{app('request')->input('app_row_id')}};
+var delPicArr = new Array();
 var selectedChanged = function (row, $element) {
     if(typeof(row)!='undefined'){
         var $currentTarget = $(row.currentTarget);

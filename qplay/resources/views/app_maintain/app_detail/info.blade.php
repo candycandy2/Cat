@@ -42,19 +42,19 @@
                 @foreach ($appBasic as $appData)
                 <div class="lang js-lang-{{$appData->lang_row_id}}">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="">App 名稱</label>
+                        <label class="control-label col-sm-2" for="txbAppName_{{$appData->lang_row_id}}">App 名稱</label>
                         <div class="col-sm-10"> 
                             <input type="text" class="form-control" id="txbAppName_{{$appData->lang_row_id}}" name="txbAppName_{{$appData->lang_row_id}}"placeholder="Enter app name" value="{{$appData->app_name}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="">App 摘要</label>
+                        <label class="control-label col-sm-2" for="txbAppSummary_{{$appData->lang_row_id}}">App 摘要</label>
                         <div class="col-sm-10"> 
                             <input type="text" class="form-control" id="txbAppSummary_{{$appData->lang_row_id}}" name="txbAppSummary_{{$appData->lang_row_id}}" placeholder="Enter app summary" value="{{$appData->app_summary}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="">App 描述</label>
+                        <label class="control-label col-sm-2" for="txbAppDescription_{{$appData->lang_row_id}}">App 描述</label>
                         <div class="col-sm-10"> 
                             <textarea class="form-control" id="txbAppDescription_{{$appData->lang_row_id}}" name="txbAppDescription_{{$appData->lang_row_id}}"  placeholder="Enter app description">{{$appData->app_description}}</textarea>
                         </div>
@@ -314,21 +314,21 @@
 <!--Dymaic Div Content -->
 <div id="infoDymaicContent" style="display: none">
     <div class="form-group">
-        <label class="control-label col-sm-2">App 名稱</label>
+        <label class="control-label col-sm-2" for="txbAppName_{langId}">App 名稱</label>
         <div class="col-sm-10"> 
-            <input type="text" class="form-control js-app-name"  id="" name="" placeholder="Enter app name">
+            <input type="text" class="form-control js-app-name"  id="txbAppName_{langId}" name="txbAppName_{langId}" placeholder="Enter app name">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">App 摘要</label>
+        <label class="control-label col-sm-2" for="txbAppSummary_{langId}">App 摘要</label>
         <div class="col-sm-10"> 
-            <input type="text" class="form-control js-app-summary" id="" name="" placeholder="Enter app summary">
+            <input type="text" class="form-control js-app-summary" id="txbAppSummary_{langId}" name="txbAppSummary_{langId}" placeholder="Enter app summary">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">App 描述</label>
+        <label class="control-label col-sm-2" for="txbAppDescription_{langId}">App 描述</label>
         <div class="col-sm-10"> 
-            <textarea class="form-control js-app-description"  id="" name="" placeholder="Enter app description"></textarea>
+            <textarea class="form-control js-app-description"  id="txbAppDescription_{langId}" name="txbAppDescription_{langId}" placeholder="Enter app description"></textarea>
         </div>
     </div>
 </div>
