@@ -430,8 +430,9 @@ class qplayController extends Controller
                     {
                         $old_token_valid = $sessionList[0]->token_valid_date;
                         $old_token = $sessionList[0]->token;
-                        if($nowTimestamp <= $old_token_valid && $old_token_valid - $nowTimestamp >= (2 * 60 * 60)) {
+                        if($nowTimestamp <= $old_token_valid && $old_token_valid - $nowTimestamp >= (60 * 60)) {
                             $token = $old_token;
+                            $token_valid = $old_token_valid;
                         } else {
                             \DB::table("qp_session")
                                 -> where('user_row_id', '=', $user->row_id)
