@@ -18,14 +18,14 @@ var less = require('gulp-less');
 var shell = require('gulp-shell')
 //var copy = require('gulp-copy');
 
-gulp.task('copy',function(){
-    return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
-        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/',{overwrite: true}));
+gulp.task('copyAndroidImages',function(){
+    return gulp.src('Images/android/**/*', {base: 'Images/android/'})
+        .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
 });
 
-gulp.task('copyProfile',function(){
-    return gulp.src('Profile/*', {base: 'Profile/'})
-        .pipe(gulp.dest('platforms/ios/QPlay/',{overwrite: true}));
+gulp.task('copyIOSImages',function(){
+    return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
+        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/',{overwrite: true}));
 });
 
 gulp.task('install', shell.task([
@@ -36,7 +36,8 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity/',
   'cordova plugin add ../../plugins/cordova-plugin-qlogin/',
   'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-splashscreen'
+  'cordova plugin add cordova-plugin-splashscreen',
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay'
 ]));
 
 gulp.task('build', shell.task([
@@ -78,6 +79,6 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
         .pipe(gulp.dest('www/dist'));
 });
 */
-gulp.task('default', ['copy', 'copyProfile', 'componentCSS', 'componentJS', 'build'], function(){
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
 
 });
