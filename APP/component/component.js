@@ -45,9 +45,11 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
+        //[device] data ready to get on this step.
+
         //For QSecurity
         setWhiteList();
-
+        /*
         if (appKey !== "qplay") {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (device.platform !== "iOS") {
@@ -57,8 +59,6 @@ var app = {
                 return;
             }
         }
-
-        //[device] data ready to get on this step.
 
         //check data(token, token_value, ...) on web-storage
         checkStorageData();
@@ -73,7 +73,7 @@ var app = {
                 window.plugins.qlogin.openAppCheckScheme(null, null);
             }
         }
-
+        */
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -104,53 +104,94 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 
 /********************************** function *************************************/
 function setWhiteList() {
-    if (device.platform !== "iOS") {
-        if (appKey === "qplay") {
-            var securityList = {
-                level: 2,
-                Navigations: [
-                    "https://qplay.benq.com/*",
-                    "itms-services://*"
-                ],
-                Intents: [
-                    "itms-services:*",
-                    "http:*",
-                    "https:*",
-                    "appyellowpage:*",
-                    "tel:*",
-                    "sms:*",
-                    "mailto:*",
-                    "geo:*"
-                ],
-                Requests: [
-                    serverURL + "/*"
-                ]
-            };
-        } else {
-            var securityList = {
-                level: 2,
-                Navigations: [
-                    "https://qplay.benq.com/*",
-                    "itms-services://*"
-                ],
-                Intents: [
-                    "itms-services:*",
-                    "http:*",
-                    "https:*",
-                    "appqplay:*",
-                    "tel:*",
-                    "sms:*",
-                    "mailto:*",
-                    "geo:*"
-                ],
-                Requests: [
-                    serverURL + "/*"
-                ]
-            };
+
+    var self = this;
+
+    this.successCallback = function() {
+
+        if (appKey !== "qplay") {
+            if (window.localStorage.getItem("openScheme") === "true") {
+                if (device.platform !== "iOS") {
+                    window.plugins.qlogin.openAppCheckScheme(null, null);
+                    window.localStorage.setItem("openScheme", false);
+                }
+                return;
+            }
         }
 
-        window.plugins.qsecurity.setWhiteList(securityList, null, null);
-    }
+        //check data(token, token_value, ...) on web-storage
+        checkStorageData();
+
+        if (device.platform === "iOS") {
+            $('.page-header, .page-main').addClass('ios-fix-overlap');
+            $('.ios-fix-overlap-div').css('display','block');
+        } else {
+            $('.ui-btn span').addClass('android-fix-btn-text-middle');
+
+            if (appKey === "qplay") {
+                window.plugins.qlogin.openAppCheckScheme(null, null);
+            }
+        }
+
+    };
+
+    this.failCallback = function() {};
+
+    var __construct = function() {
+        if (device.platform !== "iOS") {
+            if (appKey === "qplay") {
+                var securityList = {
+                    level: 2,
+                    Navigations: [
+                        "https://qplay.benq.com/*",
+                        "itms-services://*"
+                    ],
+                    /*Intents: [
+                        "itms-services:*",
+                        "http:*",
+                        "https:*",
+                        "appyellowpage:*",
+                        "tel:*",
+                        "sms:*",
+                        "mailto:*",
+                        "geo:*"
+                    ],*/
+                    Intents: [
+                        "https:*"
+                    ],
+                    Requests: [
+                        "https://qplay.benq.com/*"
+                    ]
+                };
+            } else {
+                var securityList = {
+                    level: 2,
+                    Navigations: [
+                        "https://qplay.benq.com/*",
+                        "itms-services://*"
+                    ],
+                    /*Intents: [
+                        "itms-services:*",
+                        "http:*",
+                        "https:*",
+                        "appqplay:*",
+                        "tel:*",
+                        "sms:*",
+                        "mailto:*",
+                        "geo:*"
+                    ],*/
+                    Intents: [],
+                    Requests: [
+                        "https://qplay.benq.com/*"
+                    ]
+                };
+            }
+
+            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+        } else {
+            self.successCallback();
+        }
+    }();
 }
 
 function checkStorageData() {
