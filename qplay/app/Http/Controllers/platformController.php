@@ -1337,6 +1337,8 @@ class platformController extends Controller
                         'message_row_id'=>$newMessageId,
                         'source_user_row_id'=>\Auth::user()->row_id,
                         'company_label'=>$companyLabel,
+                        'need_push'=>1,
+                        'push_flag'=>0,
                         'created_user'=>\Auth::user()->row_id,
                         'created_at'=>$now,
                     ]);
@@ -1390,8 +1392,8 @@ class platformController extends Controller
                                 'project_row_id'=>1,
                                 'role_row_id'=>$roleId,
                                 'message_send_row_id'=>$newMessageSendId,
-                                'need_push'=>1,
-                                'push_flag'=>0,
+                                //'need_push'=>1,
+                                //'push_flag'=>0,
                                 'created_user'=>\Auth::user()->row_id,
                                 'created_at'=>$now,
                             ]);
@@ -1406,8 +1408,8 @@ class platformController extends Controller
                                         'project_row_id'=>1,
                                         'user_row_id'=>$userId,
                                         'message_send_row_id'=>$newMessageSendId,
-                                        'need_push'=>1,
-                                        'push_flag'=>0,
+                                        //'need_push'=>1,
+                                        //'push_flag'=>0,
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
                                     ]);
@@ -1424,8 +1426,8 @@ class platformController extends Controller
                                     'project_row_id'=>1,
                                     'user_row_id'=>$userId,
                                     'message_send_row_id'=>$newMessageSendId,
-                                    'need_push'=>1,
-                                    'push_flag'=>0,
+                                    //'need_push'=>1,
+                                    //'push_flag'=>0,
                                     'created_user'=>\Auth::user()->row_id,
                                     'created_at'=>$now,
                                 ]);

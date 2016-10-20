@@ -448,22 +448,10 @@ SQL;
         return $categoryList[0];
     }
 
-    public static function getNonUsedProjectList()
+    public static function getProjectInfo()
     {
-        $applistArray = array();
-                $appList = \DB::table("qp_app_head")
-                -> select("project_row_id")
-                -> distinct()
-                -> get();
-                foreach ($appList as $app)
-                {
-                    $applistArray[] = $app->project_row_id;
-                }
-
         $projectList = \DB::table('qp_project')
-            -> select('row_id', 'app_key')
-            ->whereNotIn('row_id', $applistArray)
-            ->get();
+            -> select('row_id', 'app_key')->get();
         return $projectList;
     }
 
@@ -484,64 +472,6 @@ SQL;
         return $langList;
     }
 
-
-    public static function getAllCategoryList(){
-        $categoryList = \DB::table('qp_app_category')
-            -> select('row_id', 'app_category')->get();
-        if(count($categoryList) > 0) {
-             return $categoryList;
-        }
-        return null;
-    }
-
-
-    public static function getAppRoleByAppId($appId){
-        $enableRole = \DB::table('qp_role_app')
-            -> select('row_id', 'role_row_id')
-            -> where('app_row_id','=',$appId)
-            ->get();
-        return $enableRole;
-    }
-
-    public static function getAppVersionStatus($appId){
-        
-      $appStatus = array('android'=>'UnPlished','ios'=>'UnPlished');
-    
-      foreach ( $appStatus as $key => $value) {
-         
-          $deviceStatus = \DB::table('qp_app_version')
-            -> select('version_name')
-            -> where('app_row_id','=',$appId)
-            -> where('device_type','=',$key)
-            -> where('status','=','ready')
-            ->first();
-        if(count($deviceStatus) > 0){
-            $appStatus[$key] = $deviceStatus->version_name;
-        }
-      }
-        return $appStatus;
-    }
-
-    public static function  removeBOM($str = '')
-    {
-        if (substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf))
-            $str = substr($str, 3);
-
-        return $str;
-    }
-
-    public static function getProjectIdByAppId($appId){
-        $projectId = null;
-            $appHead = \DB::table('qp_app_head')
-            -> select('project_row_id')
-            -> where('row_id','=',$appId)
-            ->first();
-        if(count ($appHead) > 0){
-             $projectId = $appHead->project_row_id;
-        }
-        return $projectId;
-    }
-    
     public static function doPost($url, $data){//file_get_content
         $postdata = http_build_query($data);
 
@@ -558,7 +488,7 @@ SQL;
     }
 
     public static function PushMessageWithMessageCenter($message, $to) {
-        $jpush_app_id = "293a09f63dd77abea15f42c3";  //TODO
+        $jpush_app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
             'TenantId' => '00000000-0000-0000-0000-000000000000',
@@ -587,6 +517,5 @@ SQL;
         }
 
         return $result;
-
     }
 }
