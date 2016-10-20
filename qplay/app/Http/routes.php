@@ -77,7 +77,7 @@ Route::any('/AppMaintain/deleteAppVersion', 'AppMaintainController@deleteAppVers
 Route::any('/AppMaintain/unPublishApp', 'AppMaintainController@unPublishApp');
 Route::any('/AppMaintain/publishApp', 'AppMaintainController@publishApp');
 Route::any('/AppMaintain/saveErrorCode', 'AppMaintainController@saveErrorCode');
-
+Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
 
 
 

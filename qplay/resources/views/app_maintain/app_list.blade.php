@@ -29,7 +29,7 @@ $menu_name = "APP_MAINTAIN";
 
 <script>
     function iconFormatter(value, row) {
-        return '<img src="' + row.icon_url + '" class="img-rounded"  width="90" height="90">';
+        return '<img src="' +'app/'+row.row_id+'/icon/'+row.icon_url + '" class="img-rounded"  width="90" height="90">';
     };
 
     function appEditFormatter(value, row){
@@ -130,35 +130,6 @@ $menu_name = "APP_MAINTAIN";
                             <input type="hidden" name="hidAppKey" id="hidAppKey" value="" required="required"/>
                         </table>
                     </form>
-                    <table>
-                        <tr>
-                            <td>{{trans("messages.APP_KEY")}}:</td>
-                            <td style="padding: 10px;">
-                                <select name="ddlAppKey" id="ddlAppKey">
-                                    @foreach($data['projectInfo'] as $pInfo)
-                                        <option value="{{$pInfo->row_id}}">{{$pInfo->app_key}}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.APP_NAME")}}:</td>
-                            <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" name="tbxAppName"
-                                       id="tbxAppName" value=""/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.DEFAULT_LANG")}}:</td>
-                            <td style="padding: 10px;">
-                                <select name="ddlLang" id="ddlLang" onchange="">
-                                    @foreach($data['langList'] as $lList)
-                                        <option value="{{$lList->row_id}}">{{$lList->lang_desc}}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button"  class="btn btn-danger" onclick="saveMainInfo()">{{trans("messages.NEW")}}</button>
