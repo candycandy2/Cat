@@ -370,7 +370,6 @@
                 </div>
                  <div class="modal-body" id="removeableLang" style="height: 150px; overflow-y: auto;">
                      @foreach ($allowLangList as $allowLangId => $allowLang)
-                      {{-- @if ($allowLangId != $defaultLang) --}}
                         <div class="checkbox @if ($allowLangId == $defaultLang) disabled @endif">
                           <label>
                                 @if ($allowLangId == $defaultLang) 
@@ -382,7 +381,6 @@
                                 
                           </label>
                         </div>
-                       {{-- @endif   --}}
                      @endforeach
                 </div>
                 <div class="modal-footer">
@@ -618,52 +616,7 @@
     };
 
     /*--Custom API End--*/
-
-    /*--Category Start --*/
-    
-    var SaveCategoryApps = function(categoeyId) {
-        var mydata = {app_id_list:[{{ app('request')->input('app_row_id') }}], category_id:categoeyId};
-        var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "AppMaintain/saveCategoryApps",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-        }
-
-    /*--Category End --*/
-
-    /*--Security Level Start--*/
-    var SaveSecurityLevel = function(securityLevel){
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, securityLevel:securityLevel};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-                url: "AppMaintain/saveSecurityLevel",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-    }
-    /*--Security Level End--*/
+   
 
     /*--Add User to App Start --*/
     $('.js-role-table').each(function(){
@@ -673,127 +626,35 @@
     })
     var RoleTableSelectedAll = function (cbx) {
         var companyId = $(cbx).attr("data");
-        var chkRoleList = new Array();
-        var unCheckRoleList = new Array();
         if($(cbx).is(':checked')) {
             $("#RoleTable_" + companyId).find(".cbxRole").prop("checked",true);
-            $("#RoleTable_" + companyId).find(".cbxRole:checked").each(function(){
-                chkRoleList.push($(this).attr('data'));
-            });
         } else {
             $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
-            $("#RoleTable_" + companyId).find(".cbxRole").not(":checked").each(function(){
-                unCheckRoleList.push($(this).attr('data'));
-            })
         }
-        if(chkRoleList.length > 0){
-            SaveAppRole(chkRoleList);
-        }
-        if(unCheckRoleList.length > 0){
-            DelAppRole(unCheckRoleList);
-        }
+
     };
-    var SaveAppRole = function(chkRoleList){
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, roleRowIdList:chkRoleList};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-            url: "AppMaintain/saveAppRole",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json",
-            data: mydataStr,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                }
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-            }
-        });
-    }
-    var DelAppRole = function(unCheckRoleList){
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, roleRowIdList:unCheckRoleList};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-                url: "AppMaintain/deleteAppRole",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-    }
-
-    var SaveAppUser = function(currentData){
-        var appUserList = new Array();
-         $.each(currentData, function(i, data) {
-            if(data.state==false){
-               appUserList.push(data.row_id);
-            }
-         });
-        if(appUserList.length > 0){
-            var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, appUserList:appUserList};
-            var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "AppMaintain/saveAppUser",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}");
-                    }
-                    $("#gridAllUserList").bootstrapTable('refresh');
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}", e.responseText);
-                }
-            });
-        }
-    }
 
     var DeleteAppUser = function() {
-        showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_APP_USER")}}", "", function () {
-            hideConfirmDialog();
             var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
-            var check = true;
-            var appUserList = new Array();
+            var confirmStr = "";
             $.each(selectedUsers, function(i, user) {
-                appUserList.push(user.row_id);
+                confirmStr += user.login_id + "<br/>";
             });
-            var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, appUserList:appUserList};
-            var mydataStr = $.toJSON(mydata);
-            if(appUserList.length > 0){
-                $.ajax({
-                    url: "AppMaintain/deleteAppUser",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_DELETE_APP_USER_FAILED")}}");
-                        }  else {
-                            $("#gridUserList").bootstrapTable('refresh');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_USER")}}", confirmStr, function () {
+                hideConfirmDialog();
+                var currentData = $("#gridUserList").bootstrapTable('getData');
+                $.each(selectedUsers, function(i, user) {
+                    for(var j = 0; j < currentData.length; j++) {
+                        if(currentData[j].row_id == user.row_id) {
+                            currentData.splice(j,1);
+                            break;
                         }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_APP_USER_FAILED")}}", e.responseText);
                     }
                 });
-            }
-        });
+                $("#gridUserList").bootstrapTable('load', currentData);
+                selectedChanged();
+            });
+        
     };
 
     var AddAppUser = function() {
@@ -801,125 +662,62 @@
         $("#gridAllUserList").bootstrapTable('refresh');
         $("#selectUserDialog").modal('show');
     };
-     var SelectUser = function() {
-            var currentData = $("#gridUserList").bootstrapTable('getData');
-            var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
-            $.each(selectedUsers, function(i, newUser) {
-                var exist = false;
-                $.each(currentData, function(j, cUser) {
-                    if(cUser.row_id == newUser.row_id) {
-                        exist = true;
-                        return false;
-                    }
-                });
-                if(!exist) {
-                    if(newUser.state) {
-                        newUser.state = false;
-                    }
-                    currentData.push(newUser);
+    var SelectUser = function() {
+        var currentData = $("#gridUserList").bootstrapTable('getData');
+        var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
+        $.each(selectedUsers, function(i, newUser) {
+            newUser.state=false;
+            var exist = false;
+            $.each(currentData, function(j, cUser) {
+                if(cUser.row_id == newUser.row_id) {
+                    exist = true;
+                    return false;
                 }
             });
-            SaveAppUser(currentData);
-            $("#gridUserList").bootstrapTable('load', currentData);
-            $("#selectUserDialog").modal('hide');
-
-           
-        }
+            if(!exist) {
+                currentData.push(newUser);
+            }
+        });
+        $("#gridUserList").bootstrapTable('load', currentData);
+        $('#selectUserDialog').modal('hide');
+    }
     /*--Add User to App End --*/
     
     /*-- Error Code Start--*/
-    var showErrorCodeTable = function($target){
-        var fileName;
-        fileName = $target.val();
-        if (!!$target.prop('files') && $target.prop('files').length > 1) {
-            fileName =$target[0].files.length+' files';
-        }
-        else {
-            fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
-        }
-        if (!fileName) {
-            return;
-        }
-        if(fileName){
-            saveErrorCode();
-        }
-
-     }
-     $('#errorCodeFile').change(function(){
-        showErrorCodeTable($(this))
-     })
-
-
-    var saveErrorCode = function(){
-     
-       var formData = new FormData($('#errorCodeForm')[0]);
-       formData.append("appRowId", {{app('request')->input('app_row_id')}});
-         $.ajax({
-            url: "AppMaintain/saveErrorCode",
-            type: "POST",
-            contentType: false,
-            data: formData,
-            processData: false,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}",d.message);
-                }  else {
-                     $('#customApiErrorCode').find('#errorCodeFileName').html('<a href="'+d.content+'" class="link" download>' + d.content + '</a>');
-                    $('#customApiErrorCode').show();
-                }
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText)
-                ;
-            }
-        });
-
-    }
-
     var deleteErrorCode = function(){
-       
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-            url: "AppMaintain/deleteErrorCode",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json",
-            data: mydataStr,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}");
-                }
-                $("#customApiErrorCode").hide();
-                $("#btndDeleteErrorCodeFile").hide();
-                $("#btnUplErrorCodeFile").show();
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}", e.responseText);
-            }
-        });
-    
+        $("#customApiErrorCode").remove();
+        $("#btndDeleteErrorCodeFile").hide();
+        $("#btnUplErrorCodeFile").show();
     }
-
-     /*-- Error Code End--*/
+    /*-- Error Code End--*/
+    
+    /*--Security Level Start--*/
+    var showSecurityLevelHint = function(){
+        $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
+    }
 
     $(function () {
        
-        $('#ddlAppCategory').change(function(){
-            SaveCategoryApps($(this).select().val());
-        });
-
         $("#ddlSecurityLevel > option").each(function() {
             if($(this).val() == {{$securityLevel}}){
                 $(this).prop("selected", true);
             }
         });
 
-        $("#ddlSecurityLevel").change(function() {
-            SaveSecurityLevel($(this).select().val());
-            $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
+        showSecurityLevelHint();
+        $('#ddlSecurityLevel').change(function(){
+            showSecurityLevelHint();
         });
-        $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
+
+         $('.cbxRole').change(function(){
+           var selectRoleList = [$(this).attr('data')];
+           if($(this).prop('checked')){
+             SaveAppRole(selectRoleList);
+           }else{
+             DelAppRole(selectRoleList);
+           }
+
+        })
 
         $('.cbxRole').change(function(){
            var selectRoleList = [$(this).attr('data')];
@@ -947,9 +745,14 @@
                  $('#selUserRole').fadeOut('1500',function(){
                     $('#selNormal').fadeIn('1500');
                 });
+                $('#selUserRole').find('input[name=cbxRole]','input[name=cbxAllRole').prop('checked',false);
+                var currentData = $("#gridUserList").bootstrapTable('getData');
+                currentData.splice(0,currentData.length);
+                $("#gridUserList").bootstrapTable('load', currentData);
                 $('label[for=setAppUser]').remove();
             }else{
                  $('#selNormal').fadeOut('1500',function(){
+                    $('#selNormal').find('input[name=chkCompany]').prop('checked',false);
                     $('#selUserRole').fadeIn('1500');
                 }); 
                  $('label[for=chkCompany]').remove();

@@ -320,21 +320,6 @@ var delAppVersion = function(device){
     }
 }
 
-var showUploadFileName = function($target){
-    var fileName;
-    fileName = $target.val();
-    $target.parent().next('.file-input-name').remove();
-    if (!!$target.prop('files') && $target.prop('files').length > 1) {
-        fileName =$target[0].files.length+' files';
-    }
-    else {
-        fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
-    }
-    if (!fileName) {
-        return;
-    }
-    $target.parent().after('<span class="file-input-name" style="padding-left: 20px">'+fileName+'</span>');  
-}
 
 var unPublishApp = function(versionId,$gridList){
     var mydata = {versionRowId:versionId};

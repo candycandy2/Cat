@@ -11,7 +11,7 @@
                             style="display:none"
                         @endif
                     >
-                        <img class="icon-preview" src="{{ \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appBasic[0]->icon_url)}}">
+                        <img class="icon-preview" data-url="{{$appBasic[0]->icon_url}}" src="{{ \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appBasic[0]->icon_url)}}">
                         <img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/>
                     </div>
                  
