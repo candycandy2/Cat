@@ -96,6 +96,7 @@ foreach ($enableRole as $role){
         }
         .screen-preview:hover, .icon-preview:hover, .screen-upl-btn:hover, .icon-upl-btn:hover{
             opacity: .3;
+            cursor:move;
         }
         .sortable { list-style-type: none; margin: 0; padding: 0;  }
         .sortable li { margin: 10px 10px 10px 10px; float: left }
@@ -118,6 +119,10 @@ foreach ($enableRole as $role){
         .imgLi .delete:active{
             top : -15px;
         }
+        .file-input-name{
+            padding-left: 20px;
+            padding-right: 20px; 
+        }
 
         table.costum-table td { border: 1px solid #ddd; padding: 8px; }
         table.costum-table tr:first-child{font-weight:bold;}
@@ -128,6 +133,9 @@ foreach ($enableRole as $role){
         table.costum-table tr:last-child td:last-child { border-bottom-right-radius: 3px; }
         
     </style>
+    <div id="appMaintainAlert" class="alert alert-danger" style="display: none">
+        <strong>Danger!</strong>
+    </div>
     <div class="col-lg-12 col-xs-12 text-right">
         <span class="text-success"  id="appVersionStatus" style="padding-right: 8px;  line-height: 50px; font-size: 20px;">
             <span  data-toggle='gridAndroidVersionList'
@@ -143,7 +151,7 @@ foreach ($enableRole as $role){
             > IOS-{{$appStatus['ios']}}</span>
         </span>
         <div class="btn-toolbar" role="toolbar" style="float: right;">
-            <button type="button" class="btn btn-primary" onclick="SaveAppDetail()">
+            <button type="button" id="saveAppDetail" class="btn btn-primary" onclick="SaveAppDetail()" style="display: none">
                 {{trans("messages.SAVE")}}
             </button>
             <a type="button" class="btn btn-default" href="AppMaintain">
@@ -175,6 +183,8 @@ foreach ($enableRole as $role){
 <script>
 var jsDefaultLang = {{$defaultLang}};
 var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
+var jsAppRowId = {{app('request')->input('app_row_id')}};
+var delPicArr = new Array();
 var selectedChanged = function (row, $element) {
     if(typeof(row)!='undefined'){
         var $currentTarget = $(row.currentTarget);
@@ -182,13 +192,31 @@ var selectedChanged = function (row, $element) {
         $currentToolBar.find('.btn-danger').hide();
         var selectedItems = $currentTarget.bootstrapTable('getSelections');
         if(selectedItems.length > 0) {
-            $currentToolBar.find('.btn-danger').show();
-            $currentToolBar.find('.btn-primary').hide();
+             $currentToolBar.find('.btn-primary').fadeOut(300, function() {
+                $currentToolBar.find('.btn-danger').fadeIn(300);
+            });
         } else {
-            $currentToolBar.find('.btn-danger').hide();
-            $currentToolBar.find('.btn-primary').show();
+            $currentToolBar.find('.btn-danger').fadeOut(300, function() {
+                $currentToolBar.find('.btn-primary').fadeIn(300);
+            });
         }
     }
+}
+
+var showUploadFileName = function($target){
+    var fileName;
+    fileName = $target.val();
+    $target.parent().next('.file-input-name').remove();
+    if (!!$target.prop('files') && $target.prop('files').length > 1) {
+        fileName =$target[0].files.length+' files';
+    }
+    else {
+        fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+    }
+    if (!fileName) {
+        return;
+    }
+    $target.parent().after('<span class="file-input-name">'+fileName+'</span>');  
 }
 
 $(function () {
@@ -197,6 +225,7 @@ $(function () {
     $('.bootstrapTable').on('check-all.bs.table', selectedChanged);
     $('.bootstrapTable').on('uncheck-all.bs.table', selectedChanged);
     $('.bootstrapTable').on('load-success.bs.table', selectedChanged);
+    $('#saveAppDetail').show(); 
 });
 </script>
 <script src="{{ asset('/js/appMaintain/switch_lang_tool.js') }}"></script>

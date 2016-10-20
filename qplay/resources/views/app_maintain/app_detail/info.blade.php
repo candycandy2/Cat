@@ -42,19 +42,19 @@
                 @foreach ($appBasic as $appData)
                 <div class="lang js-lang-{{$appData->lang_row_id}}">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="">App 名稱</label>
+                        <label class="control-label col-sm-2" for="txbAppName_{{$appData->lang_row_id}}">App 名稱</label>
                         <div class="col-sm-10"> 
                             <input type="text" class="form-control" id="txbAppName_{{$appData->lang_row_id}}" name="txbAppName_{{$appData->lang_row_id}}"placeholder="Enter app name" value="{{$appData->app_name}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="">App 摘要</label>
+                        <label class="control-label col-sm-2" for="txbAppSummary_{{$appData->lang_row_id}}">App 摘要</label>
                         <div class="col-sm-10"> 
                             <input type="text" class="form-control" id="txbAppSummary_{{$appData->lang_row_id}}" name="txbAppSummary_{{$appData->lang_row_id}}" placeholder="Enter app summary" value="{{$appData->app_summary}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="">App 描述</label>
+                        <label class="control-label col-sm-2" for="txbAppDescription_{{$appData->lang_row_id}}">App 描述</label>
                         <div class="col-sm-10"> 
                             <textarea class="form-control" id="txbAppDescription_{{$appData->lang_row_id}}" name="txbAppDescription_{{$appData->lang_row_id}}"  placeholder="Enter app description">{{$appData->app_description}}</textarea>
                         </div>
@@ -177,7 +177,6 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="userApp">角色設定</label>
                 <div class="col-sm-10">
-       
                     <select name="ddlAppUserType" class="form-control" id="ddlAppUserType">
                         <option value="1"
                         @if (isset($companyLabel))
@@ -205,7 +204,7 @@
                                     @foreach($allCompanyRoleList as $companyRoles)
 
                                     <td id="CompanyTable_{{$companyRoles->company}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                                        <input type="checkbox" name="" value="{{$companyRoles->company}}" 
+                                        <input type="checkbox" name="chkCompany" value="{{$companyRoles->company}}" 
                                         @if (is_array($companyLabel) && in_array($companyRoles->company,$companyLabel))
                                             checked
                                         @endif
@@ -227,11 +226,11 @@
                                 <table class="table table-bordered js-role-table" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
                                     <tr>
                                         <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                                            <input type="checkbox" data="{{$companyRoles->company}}" class="cbxAllRole" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
+                                            <input type="checkbox" data="{{$companyRoles->company}}" name="cbxAllRole" class="cbxAllRole" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                                         </td>
                                         <td style="border:1px solid #d6caca;">
                                             <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                            <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole"
+                                            <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" name="cbxRole" class="cbxRole"
                                                 @if(in_array($companyRoles->roles[0]->row_id, $enableRoleArray))
                                                     checked
                                                 @endif
@@ -239,7 +238,7 @@
                                             </div>
                                             @if(count($companyRoles->roles) > 1)
                                                 <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                    <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole"
+                                                    <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" name="cbxRole" class="cbxRole"
                                                            @if(in_array($companyRoles->roles[1]->row_id, $enableRoleArray))
                                                            checked
                                                             @endif
@@ -254,7 +253,7 @@
                                             <td style="border:1px solid #d6caca;">
                                                 @if(count($companyRoles->roles) > $i)
                                                     <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                        <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole"
+                                                        <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}"  name="cbxRole" class="cbxRole"
                                                                @if(in_array($companyRoles->roles[$i]->row_id, $enableRoleArray ))
                                                                checked
                                                                 @endif
@@ -263,7 +262,7 @@
                                                 @endif
                                                     @if(count($companyRoles->roles) > $i + 1)
                                                         <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                            <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole"
+                                                            <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}"  name="cbxRole" class="cbxRole"
                                                                    @if(in_array($companyRoles->roles[$i + 1]->row_id, $enableRoleArray ))
                                                                    checked
                                                                     @endif
@@ -315,21 +314,21 @@
 <!--Dymaic Div Content -->
 <div id="infoDymaicContent" style="display: none">
     <div class="form-group">
-        <label class="control-label col-sm-2">App 名稱</label>
+        <label class="control-label col-sm-2" for="txbAppName_{langId}">App 名稱</label>
         <div class="col-sm-10"> 
-            <input type="text" class="form-control js-app-name"  id="" name="" placeholder="Enter app name">
+            <input type="text" class="form-control js-app-name"  id="txbAppName_{langId}" name="txbAppName_{langId}" placeholder="Enter app name">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">App 摘要</label>
+        <label class="control-label col-sm-2" for="txbAppSummary_{langId}">App 摘要</label>
         <div class="col-sm-10"> 
-            <input type="text" class="form-control js-app-summary" id="" name="" placeholder="Enter app summary">
+            <input type="text" class="form-control js-app-summary" id="txbAppSummary_{langId}" name="txbAppSummary_{langId}" placeholder="Enter app summary">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">App 描述</label>
+        <label class="control-label col-sm-2" for="txbAppDescription_{langId}">App 描述</label>
         <div class="col-sm-10"> 
-            <textarea class="form-control js-app-description"  id="" name="" placeholder="Enter app description"></textarea>
+            <textarea class="form-control js-app-description"  id="txbAppDescription_{langId}" name="txbAppDescription_{langId}" placeholder="Enter app description"></textarea>
         </div>
     </div>
 </div>
@@ -371,7 +370,6 @@
                 </div>
                  <div class="modal-body" id="removeableLang" style="height: 150px; overflow-y: auto;">
                      @foreach ($allowLangList as $allowLangId => $allowLang)
-                      {{-- @if ($allowLangId != $defaultLang) --}}
                         <div class="checkbox @if ($allowLangId == $defaultLang) disabled @endif">
                           <label>
                                 @if ($allowLangId == $defaultLang) 
@@ -383,7 +381,6 @@
                                 
                           </label>
                         </div>
-                       {{-- @endif   --}}
                      @endforeach
                 </div>
                 <div class="modal-footer">
@@ -619,52 +616,7 @@
     };
 
     /*--Custom API End--*/
-
-    /*--Category Start --*/
-    
-    var SaveCategoryApps = function(categoeyId) {
-        var mydata = {app_id_list:[{{ app('request')->input('app_row_id') }}], category_id:categoeyId};
-        var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "AppMaintain/saveCategoryApps",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-        }
-
-    /*--Category End --*/
-
-    /*--Security Level Start--*/
-    var SaveSecurityLevel = function(securityLevel){
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, securityLevel:securityLevel};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-                url: "AppMaintain/saveSecurityLevel",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-    }
-    /*--Security Level End--*/
+   
 
     /*--Add User to App Start --*/
     $('.js-role-table').each(function(){
@@ -674,126 +626,35 @@
     })
     var RoleTableSelectedAll = function (cbx) {
         var companyId = $(cbx).attr("data");
-        var chkRoleList = new Array();
-        var unCheckRoleList = new Array();
         if($(cbx).is(':checked')) {
             $("#RoleTable_" + companyId).find(".cbxRole").prop("checked",true);
-            $("#RoleTable_" + companyId).find(".cbxRole:checked").each(function(){
-                chkRoleList.push($(this).attr('data'));
-            });
         } else {
             $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
-            $("#RoleTable_" + companyId).find(".cbxRole").not(":checked").each(function(){
-                unCheckRoleList.push($(this).attr('data'));
-            })
         }
-        if(chkRoleList.length > 0){
-            SaveAppRole(chkRoleList);
-        }
-        if(unCheckRoleList.length > 0){
-            DelAppRole(unCheckRoleList);
-        }
-    };
-    var SaveAppRole = function(chkRoleList){
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, roleRowIdList:chkRoleList};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-            url: "AppMaintain/saveAppRole",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json",
-            data: mydataStr,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                }
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-            }
-        });
-    }
-    var DelAppRole = function(unCheckRoleList){
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, roleRowIdList:unCheckRoleList};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-                url: "AppMaintain/deleteAppRole",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                }
-            });
-    }
 
-    var SaveAppUser = function(currentData){
-        var appUserList = new Array();
-         $.each(currentData, function(i, data) {
-            if(data.state==false){
-               appUserList.push(data.row_id);
-            }
-         });
-        if(appUserList.length > 0){
-            var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, appUserList:appUserList};
-            var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "AppMaintain/saveAppUser",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}");
-                    }
-                    $("#gridAllUserList").bootstrapTable('refresh');
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}", e.responseText);
-                }
-            });
-        }
-    }
+    };
 
     var DeleteAppUser = function() {
-        showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_APP_USER")}}", "", function () {
-            hideConfirmDialog();
             var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
-            var check = true;
-            var appUserList = new Array();
+            var confirmStr = "";
             $.each(selectedUsers, function(i, user) {
-                appUserList.push(user.row_id);
+                confirmStr += user.login_id + "<br/>";
             });
-            var mydata = {appRowId:{{ app('request')->input('app_row_id') }}, appUserList:appUserList};
-            var mydataStr = $.toJSON(mydata);
-            if(appUserList.length > 0){
-                $.ajax({
-                    url: "AppMaintain/deleteAppUser",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: mydataStr,
-                    success: function (d, status, xhr) {
-                        if(d.result_code != 1) {
-                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_DELETE_APP_USER_FAILED")}}");
-                        }  else {
-                            $("#gridUserList").bootstrapTable('refresh');
-                            showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_USER")}}", confirmStr, function () {
+                hideConfirmDialog();
+                var currentData = $("#gridUserList").bootstrapTable('getData');
+                $.each(selectedUsers, function(i, user) {
+                    for(var j = 0; j < currentData.length; j++) {
+                        if(currentData[j].row_id == user.row_id) {
+                            currentData.splice(j,1);
+                            break;
                         }
-                    },
-                    error: function (e) {
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_APP_USER_FAILED")}}", e.responseText);
                     }
                 });
-            }
-        });
+                $("#gridUserList").bootstrapTable('load', currentData);
+                selectedChanged();
+            });
+        
     };
 
     var AddAppUser = function() {
@@ -801,125 +662,62 @@
         $("#gridAllUserList").bootstrapTable('refresh');
         $("#selectUserDialog").modal('show');
     };
-     var SelectUser = function() {
-            var currentData = $("#gridUserList").bootstrapTable('getData');
-            var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
-            $.each(selectedUsers, function(i, newUser) {
-                var exist = false;
-                $.each(currentData, function(j, cUser) {
-                    if(cUser.row_id == newUser.row_id) {
-                        exist = true;
-                        return false;
-                    }
-                });
-                if(!exist) {
-                    if(newUser.state) {
-                        newUser.state = false;
-                    }
-                    currentData.push(newUser);
+    var SelectUser = function() {
+        var currentData = $("#gridUserList").bootstrapTable('getData');
+        var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
+        $.each(selectedUsers, function(i, newUser) {
+            newUser.state=false;
+            var exist = false;
+            $.each(currentData, function(j, cUser) {
+                if(cUser.row_id == newUser.row_id) {
+                    exist = true;
+                    return false;
                 }
             });
-            SaveAppUser(currentData);
-            $("#gridUserList").bootstrapTable('load', currentData);
-            $("#selectUserDialog").modal('hide');
-
-           
-        }
+            if(!exist) {
+                currentData.push(newUser);
+            }
+        });
+        $("#gridUserList").bootstrapTable('load', currentData);
+        $('#selectUserDialog').modal('hide');
+    }
     /*--Add User to App End --*/
     
     /*-- Error Code Start--*/
-    var showErrorCodeTable = function($target){
-        var fileName;
-        fileName = $target.val();
-        if (!!$target.prop('files') && $target.prop('files').length > 1) {
-            fileName =$target[0].files.length+' files';
-        }
-        else {
-            fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
-        }
-        if (!fileName) {
-            return;
-        }
-        if(fileName){
-            saveErrorCode();
-        }
-
-     }
-     $('#errorCodeFile').change(function(){
-        showErrorCodeTable($(this))
-     })
-
-
-    var saveErrorCode = function(){
-     
-       var formData = new FormData($('#errorCodeForm')[0]);
-       formData.append("appRowId", {{app('request')->input('app_row_id')}});
-         $.ajax({
-            url: "AppMaintain/saveErrorCode",
-            type: "POST",
-            contentType: false,
-            data: formData,
-            processData: false,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}",d.message);
-                }  else {
-                     $('#customApiErrorCode').find('#errorCodeFileName').html('<a href="'+d.content+'" class="link" download>' + d.content + '</a>');
-                    $('#customApiErrorCode').show();
-                }
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText)
-                ;
-            }
-        });
-
-    }
-
     var deleteErrorCode = function(){
-       
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-            url: "AppMaintain/deleteErrorCode",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json",
-            data: mydataStr,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}");
-                }
-                $("#customApiErrorCode").hide();
-                $("#btndDeleteErrorCodeFile").hide();
-                $("#btnUplErrorCodeFile").show();
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}", e.responseText);
-            }
-        });
-    
+        $("#customApiErrorCode").remove();
+        $("#btndDeleteErrorCodeFile").hide();
+        $("#btnUplErrorCodeFile").show();
     }
-
-     /*-- Error Code End--*/
+    /*-- Error Code End--*/
+    
+    /*--Security Level Start--*/
+    var showSecurityLevelHint = function(){
+        $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
+    }
 
     $(function () {
        
-        $('#ddlAppCategory').change(function(){
-            SaveCategoryApps($(this).select().val());
-        });
-
         $("#ddlSecurityLevel > option").each(function() {
             if($(this).val() == {{$securityLevel}}){
                 $(this).prop("selected", true);
             }
         });
 
-        $("#ddlSecurityLevel").change(function() {
-            SaveSecurityLevel($(this).select().val());
-            $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
+        showSecurityLevelHint();
+        $('#ddlSecurityLevel').change(function(){
+            showSecurityLevelHint();
         });
-        $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
+
+         $('.cbxRole').change(function(){
+           var selectRoleList = [$(this).attr('data')];
+           if($(this).prop('checked')){
+             SaveAppRole(selectRoleList);
+           }else{
+             DelAppRole(selectRoleList);
+           }
+
+        })
 
         $('.cbxRole').change(function(){
            var selectRoleList = [$(this).attr('data')];
@@ -946,11 +744,18 @@
             if($(this).val() == 1){
                  $('#selUserRole').fadeOut('1500',function(){
                     $('#selNormal').fadeIn('1500');
-                }); 
+                });
+                $('#selUserRole').find('input[name=cbxRole]','input[name=cbxAllRole').prop('checked',false);
+                var currentData = $("#gridUserList").bootstrapTable('getData');
+                currentData.splice(0,currentData.length);
+                $("#gridUserList").bootstrapTable('load', currentData);
+                $('label[for=setAppUser]').remove();
             }else{
                  $('#selNormal').fadeOut('1500',function(){
+                    $('#selNormal').find('input[name=chkCompany]').prop('checked',false);
                     $('#selUserRole').fadeIn('1500');
                 }); 
+                 $('label[for=chkCompany]').remove();
             }
         });
        

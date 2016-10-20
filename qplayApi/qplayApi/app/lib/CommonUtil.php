@@ -21,7 +21,7 @@ class CommonUtil
             -> where('qp_register.status', '=', 'A')
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
-            -> select('qp_user.row_id', 'qp_user.emp_no', 'qp_user.login_id')->get();
+            -> select()->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -320,7 +320,7 @@ class CommonUtil
     }
 
     public static function PushMessageWithMessageCenter($message, $to) {
-        $jpush_app_id = "293a09f63dd77abea15f42c3";  //TODO
+        $jpush_app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
             'TenantId' => '00000000-0000-0000-0000-000000000000',

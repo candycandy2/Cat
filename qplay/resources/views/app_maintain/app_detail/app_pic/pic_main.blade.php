@@ -5,13 +5,13 @@
              <div class="form-group">
                 <label class="control-label col-sm-2">大圖示 :</label>
                 <div class="col-sm-10">
-                 
+                    <div style="margin: 10px" class="text-muted">(512 * 512)</div>
                     <div class="imgLi"
                         @if(!isset($appBasic[0]->icon_url) || $appBasic[0]->icon_url=="")
                             style="display:none"
                         @endif
                     >
-                        <img class="icon-preview" src="{{$appBasic[0]->icon_url}}">
+                        <img class="icon-preview" data-url="{{$appBasic[0]->icon_url}}" src="{{ \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appBasic[0]->icon_url)}}">
                         <img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/>
                     </div>
                  
@@ -21,7 +21,7 @@
                         @endif
                     >
                         <div class="icon-upl-btn js-icon-file"><div>+</div><div>新增大圖示</div></div>
-                        <input type="file" id="fileIconUpload" class="js-upl-overlap" style="display:none">
+                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none">
                     </div>
                 
                 </div>
@@ -31,7 +31,7 @@
 </div>
 <div class="row">
     <div class="col-lg-10 col-xs-12" id="app-screenShot">
-         <form class="form-horizontal" id="screenShotForm">
+         <form class="form-horizontal" id="screenShotForm"  enctype="multipart/form-data">
              <div class="form-group">
                 <label class="control-label col-sm-2">螢幕擷取畫面 :</label>
                 <div class="col-sm-10 js-lang-tool-bar">
@@ -63,32 +63,34 @@
                                     
                                     <?php $i = 0; ?>
                                     @if(isset($picData[$appData->lang_row_id]['android_screenshot']))
-                                        @foreach ($picData[$appData->lang_row_id]['android_screenshot'] as  $pic)
+                                        @foreach ($picData[$appData->lang_row_id]['android_screenshot'] as $picId => $pic)
                                         <?php $i ++ ?>
-                                            <li class="imgLi"><img src="{{$pic}}" class="screen-preview js-screen-file"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>
+                                            <li class="imgLi" data-picid="{{$picId}}" data-url="{{$pic}}" data-lang="{{$appData->lang_row_id}}" data-device="android"><img src="{{ \App\lib\FilePath::getScreenShotUrl(app('request')->input('app_row_id'),$appData->lang_row_id,'android',$pic)}}" class="screen-preview js-screen-file"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/>
+                                            </li>
                                         @endforeach
                                     @endif
                                     @if($i < 5)
                                         <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}">
                                             <div>+</div>
                                             <div>新增<br>螢幕擷取畫面</div>
-                                            <input type="file" id="fileScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" >
+                                            <input type="file" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                         </li>
                                     @endif
                                 </ul>
                                 <ul class="form-group tab-pane fade sortable" id="tab_ios_{{$appData->lang_row_id}}">
                                     <?php $j = 0; ?>
                                      @if(isset($picData[$appData->lang_row_id]['ios_screenshot']))
-                                        @foreach ($picData[$appData->lang_row_id]['ios_screenshot'] as  $pic)
+                                        @foreach ($picData[$appData->lang_row_id]['ios_screenshot'] as $picId => $pic)
                                         <?php $j ++ ?>
-                                         <li class="imgLi"><img src="{{$pic}}" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>
+                                         <li class="imgLi" data-picid="{{$picId}}"  data-url="{{$pic}}" data-lang="{{$appData->lang_row_id}}" data-device="ios"><img src="{{ \App\lib\FilePath::getScreenShotUrl(app('request')->input('app_row_id'),$appData->lang_row_id,'ios',$pic)}}" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/>
+                                         </li>
                                         @endforeach
                                     @endif  
                                     @if($j < 5)  
                                     <li class="screen-upl-btn js-screen-file" id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
                                         <div>新增<br>螢幕擷取畫面</div>
-                                        <input type="file" id="fileScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none">
+                                        <input type="file" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                     </li>
                                     @endif
                                 </ul>
@@ -105,22 +107,24 @@
 <!--Dymaic Div Content -->
 <div id="picDymaicContent" style="display: none">
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#tab_android" data-toggle="tab">Android</a></li>
-        <li role="presentation"><a href="#tab_ios" data-toggle="tab">IOS</a></li>
+        <li role="presentation" class="active"><a href="#tab_android_{langId}" data-toggle="tab">Android</a></li>
+        <li role="presentation"><a href="#tab_ios_{langId}" data-toggle="tab">IOS</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab_android">
-            <div class="screen-upl-btn js-img-file">
+        <ul class="form-group tab-pane fade in active sortable" id="tab_android_{langId}">
+            <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{langId}">
                 <div>+</div>
                 <div>新增<br>螢幕擷取畫面</div>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="tab_ios">
-            <div class="screen-upl-btn js-img-file">
+                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" multiple>
+            </li>
+        </ul>
+        <ul class="form-group tab-pane fade sortable sortable" id="tab_ios_{langId}">
+            <li class="screen-upl-btn js-screen-file" id="iosScreenUpl_{langId}">
                 <div>+</div>
                 <div>新增<br>螢幕擷取畫面</div>
-            </div>
-        </div>
+                <input type="file" name="iosScreenUpload_{langId}" id="iosScreenUpload_{langId}" class="js-upl-addition" style="display:none" multiple>
+            </li>
+        </ul>
     </div>
 </div>
 <!--Dymaic Div Content -->

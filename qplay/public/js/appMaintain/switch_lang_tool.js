@@ -28,6 +28,7 @@
     }
 
     var AddAppAllowLang = function(){
+
         var $addLangDialog = $('#addLangDialog');
         var $targetLanObj =  $addLangDialog.find('input[name="optionsRadios"]:checked');
         var targetLanId = $targetLanObj.val();
@@ -51,23 +52,13 @@
 
     var cloneInfo = function(targetLanId){
         var $contentObj = $('#infoDymaicContent');
-        var appName = 'txbAppName_'+targetLanId;
-        var appSummary = 'txbAppSummary_'+targetLanId;
-        var appDescription = 'txbAppDescription_'+targetLanId;
-        $contentObj.children().find('.js-app-name').attr( "id", appName).attr("name",appName);
-        $contentObj.children().find('.js-app-summary').attr( "id", appSummary).attr("name",appSummary);
-        $contentObj.children().find('.js-app-description').attr( "id", appDescription).attr("name",appDescription);
-        var content =  '<div class="lang js-lang-' + targetLanId + '">' + $contentObj.html() + '</div>';
+        var content =  '<div class="lang js-lang-' + targetLanId + '">' + $contentObj.html().replace(/\{langId}/g,targetLanId) + '</div>';
         $('.info-dymaic-content').append(content);
 
     }
     var clonePic = function(targetLanId){
          var $contentObj = $('#picDymaicContent');
-         $contentObj.children().find('.tab-pane').eq(0).attr("id","tab_android_"+targetLanId);
-         $contentObj.children().find('.tab-pane').eq(1).attr("id","tab_ios_"+targetLanId);
-         $contentObj.children().find('li').eq(0).children('a').attr("href","#tab_android_"+targetLanId);
-         $contentObj.children().find('li').eq(1).children('a').attr("href","#tab_ios_"+targetLanId);
-         var content =  '<div class="lang js-lang-' + targetLanId + '">' + $contentObj.html() + '</div>';
+         var content =  '<div class="lang js-lang-' + targetLanId + '">' + $contentObj.html().replace(/\{langId}/g,targetLanId) + '</div>';
          $('.pic-dymaic-content').append(content);
     }
 
@@ -85,9 +76,9 @@
        $('#defaultableLang').find($('#optionsRadios_'+langId)).parent().remove();
     }
 
-    var addAddbleLang = function(langId,langStr){
-        var addableLangContent = '<div class="radio" id="radioLang_'+langId+'"><label><input type="radio" name="optionsRadios" value="'+ langId +'">'+langStr+'</label></div>';
-       $('#addableLang').append(addableLangContent);
+    var addSelectableLang = function(langId,langStr){
+        var selectableLangContent = '<div class="radio" id="radioLang_'+langId+'"><label><input type="radio" name="optionsRadios" value="'+ langId +'">'+langStr+'</label></div>';
+       $('#addableLang').append(selectableLangContent);
     } 
 
     var removeSwitchLang = function(langId){
@@ -100,7 +91,7 @@
         var $langToolBar = $('.js-lang-tool-bar');
         var $switchLangBtn = $langToolBar .find('.js-switch-lang-btn');
         var $addLangBtn = $('#btnAddLang');
-
+        var defaultableLangCount = $('#defaultableLang').find('input[name="optionsRadios"]').length;
         var newCount = $('#btnLagSwitchController').find('.js-switchLang').children().length;
         
         (addableLangCount == 0)?$addLangBtn.hide():$addLangBtn.show();
@@ -109,6 +100,9 @@
             $switchLangBtn.show();
         }else{
             $switchLangBtn.hide();
+        }
+        if(defaultableLangCount > 1){
+            $('#btnChangeDefaultLang').removeClass('disabled').attr('title','').attr("onclick",'changDefaultLang()');
         }
     }
     var switchToLangCotent = function(langId){
@@ -120,7 +114,7 @@
         var chk = $('#removeableLang').find('input[type=checkbox]:checked').each(function(){
         var chkLangId = $(this).val();
         var targetLanStr = $(this).parent().text().trim();
-            addAddbleLang(chkLangId,targetLanStr);  
+            addSelectableLang(chkLangId,targetLanStr);  
             $(this).parent().remove(); 
             $('.js-lang-' + chkLangId).remove();
             removeDefaulableLang(chkLangId);
