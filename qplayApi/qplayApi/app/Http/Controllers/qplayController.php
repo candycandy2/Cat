@@ -1430,7 +1430,7 @@ SQL;
                 }
 
                 //Register to Message Center
-                $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+                $app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
 //                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,
