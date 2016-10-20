@@ -33,17 +33,83 @@ var app = {
         */
 
         //For release
-        
+
         this.bindEvents();
-        
+
     },
     // Bind Event Listeners
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+        //QPUSH////////////////////////////////////////////////////////////////////////////////
+        //後台打开通知
+        document.addEventListener('qpush.openNotification', this.onOpenNotification, false);
+        //後台收到通知
+        document.addEventListener('qpush.backgoundNotification', this.onBackgoundNotification, false);
+        //前台收到通知
+        document.addEventListener('qpush.receiveNotification', this.onReceiveNotification, false);
     },
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        //[device] data ready to get on this step.
+
+        //For QSecurity
+        setWhiteList();
+        //初始化JPush
+        window.plugins.QPushPlugin.init();
+        window.plugins.QPushPlugin.getRegistrationID(this.onGetRegistradionID);
+    },
+    onGetRegistradionID: function (data){
+        try {
+            console.log("QPushPlugin:registrationID is " + data);
+        } catch(exception) {
+            console.log(exception);
+        }
+    },
+    onOpenNotification: function(data) {
+    //添加後台打開通知后需要執行的內容，data.alert為消息內容
+    },
+    onBackgoundNotification: function(data) {
+    //添加後台收到通知后需要執行的內容
+    },
+    onReceiveNotification: function(data) {
+    //添加前台收到通知后需要執行的內容
+    },
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+
+    }
+};
+
+app.initialize();
+
+$(document).one("pagebeforecreate", function(){
+
+    $(':mobile-pagecontainer').html("");
+
+    $.map(pageList, function(value, key) {
+        (function(pageID){
+            $.get("View/" + pageID + ".html", function(data) {
+                $.mobile.pageContainer.append(data);
+                $("#" + pageID).page().enhanceWithin();
+            }, "html");
+        }(value));
+    });
+});
+
+
+$(document).one("pagecreate", "#"+pageList[0], function(){
+    $(":mobile-pagecontainer").pagecontainer("change", $("#"+pageList[0]));
+});
+
+/********************************** function *************************************/
+function setWhiteList() {
+
+    var self = this;
+
+    this.successCallback = function() {
 
         if (appKey !== "qplay") {
             if (window.localStorage.getItem("openScheme") === "true") {
@@ -55,71 +121,108 @@ var app = {
             }
         }
 
-        //[device] data ready to get on this step.
-
         //check data(token, token_value, ...) on web-storage
-        if (window.localStorage.length === 0) {
-            getDataFromServer = true;
-        } else {
-            //1. check loginData exist in localStorage
-            var loginDataExist = processStorageData("checkLocalStorage");
+        checkStorageData();
 
-            if (loginDataExist) {
-                //2. if token exist, check token valid from server
-                processStorageData("checkSecurityList");
-            } else {
-                //3. if token not exist, call QLogin / QPlay
-                getDataFromServer = true;
-            }
-        }
-
-        if (getDataFromServer) {
-            if (appKey !== "qplay") {
-                getServerData();
-            } else {
-                loginData['callCheckAPPVer'] = true;
-                loginData['callQLogin'] = true;
-                initialSuccess();
-            }
-        }
-        
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         } else {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
-            window.plugins.qlogin.openAppCheckScheme(null, null);
+
+            if (appKey === "qplay") {
+                window.plugins.qlogin.openAppCheckScheme(null, null);
+            }
         }
 
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    };
 
+    this.failCallback = function() {};
+
+    var __construct = function() {
+        if (device.platform !== "iOS") {
+            if (appKey === "qplay") {
+                var securityList = {
+                    level: 2,
+                    Navigations: [
+                        "https://qplay.benq.com/*",
+                        "itms-services://*"
+                    ],
+                    /*Intents: [
+                        "itms-services:*",
+                        "http:*",
+                        "https:*",
+                        "appyellowpage:*",
+                        "tel:*",
+                        "sms:*",
+                        "mailto:*",
+                        "geo:*"
+                    ],*/
+                    Intents: [
+                        "https:*"
+                    ],
+                    Requests: [
+                        "https://qplay.benq.com/*"
+                    ]
+                };
+            } else {
+                var securityList = {
+                    level: 2,
+                    Navigations: [
+                        "https://qplay.benq.com/*",
+                        "itms-services://*"
+                    ],
+                    /*Intents: [
+                        "itms-services:*",
+                        "http:*",
+                        "https:*",
+                        "appqplay:*",
+                        "tel:*",
+                        "sms:*",
+                        "mailto:*",
+                        "geo:*"
+                    ],*/
+                    Intents: [],
+                    Requests: [
+                        "https://qplay.benq.com/*"
+                    ]
+                };
+            }
+
+            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+        } else {
+            self.successCallback();
+        }
+    }();
+}
+
+function checkStorageData() {
+    if (window.localStorage.length === 0) {
+        getDataFromServer = true;
+    } else {
+        //1. check loginData exist in localStorage
+        var loginDataExist = processStorageData("checkLocalStorage");
+
+        if (loginDataExist) {
+            //2. if token exist, check token valid from server
+            processStorageData("checkSecurityList");
+        } else {
+            //3. if token not exist, call QLogin / QPlay
+            getDataFromServer = true;
+        }
     }
-};
 
-app.initialize();
+    if (getDataFromServer) {
+        if (appKey !== "qplay") {
+            getServerData();
+        } else {
+            loginData['callCheckAPPVer'] = true;
+            loginData['callQLogin'] = true;
+            initialSuccess();
+        }
+    }
+}
 
-$(document).one("pagebeforecreate", function(){
-    
-    $(':mobile-pagecontainer').html("");
-    
-    $.map(pageList, function(value, key) {
-        (function(pageID){
-            $.get("View/" + pageID + ".html", function(data) {
-                $.mobile.pageContainer.append(data);
-                $("#" + pageID).page().enhanceWithin();
-            }, "html"); 
-        }(value));
-    });
-});
-
-
-$(document).one("pagecreate", "#"+pageList[0], function(){
-    $(":mobile-pagecontainer").pagecontainer("change", $("#"+pageList[0]));
-});
-
-/********************************** function *************************************/
 function processStorageData(action, data) {
     data = data || null;
 
@@ -241,7 +344,7 @@ function loadingMask(action) {
 }
 
 function getLoginDataCallBack() {
-    var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] + 
+    var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] +
                       "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'];
     openAPP(callBackURL);
 
@@ -290,6 +393,11 @@ function handleOpenURL(url) {
 
                 initialSuccess();
 
+            }
+        } else {
+            if (appKey !== "qplay") {
+                checkStorageData();
+                clearInterval(waitCheckAPPVerInterval);
             }
         }
     }
