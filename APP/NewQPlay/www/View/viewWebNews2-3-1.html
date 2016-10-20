@@ -12,13 +12,18 @@
     </div>
 
     <div data-role="main" class="ui-content page-main" id="appcontent">
-        <div class="Header_Normal">
-            <div class="Priority_Normal">Priority-<span class="Normal">Normal</span></div>
-            <div class="Date" id="newsDetailCreateTime">2016 / Sep 9</div>
+        <div class="news-header header-normal">
+            <div class="header-right">
+                <div class="priority-title">Priority-
+                    <span class="priority-normal">Normal</span>
+                    <span class="priority-high" style="display:none;">High</span>
+                </div>
+                <div class="header-date" id="newsDetailCreateTime">2016 / Sep 9</div>
+            </div>
         </div>
-        <div class="Content_bg">
+        <div class="content-bg">
             <h2>Service Notice</h2>
-            <h3 id="newsDetailTitle">Network operations maintenance</h3>
+            <h3 id="newsDetailTitle"><!--Network operations maintenance--></h3>
 
             <div class="Author_Block">
                 <div class="Author_icon"></div>
@@ -46,6 +51,13 @@
     </div>
     
     <div data-role="footer" data-position="fixed">
-        <div class="webnewspageFooter"></div>
+        <div class="footer-top">
+            <div class="footer-benq"></div>
+            <div class="footer-qisda"></div>
+            <div class="footer-text">
+                This newsletter was sent by ITS.
+            </div>
+        </div>
+        <div class="footer-bottom"></div>
     </div>
 </div>
