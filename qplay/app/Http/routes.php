@@ -65,17 +65,12 @@ Route::any('/AppMaintain/getCustomApi', 'AppMaintainController@getCustomApi');
 Route::any('/AppMaintain/saveCustomApi', 'AppMaintainController@saveCustomApi');
 Route::any('/AppMaintain/deleteCustomApi', 'AppMaintainController@deleteCustomApi');
 Route::any('/AppMaintain/getAppUser', 'AppMaintainController@getAppUser');
-Route::any('/AppMaintain/saveAppUser', 'AppMaintainController@saveAppUser');
-Route::any('/AppMaintain/deleteAppUser', 'AppMaintainController@deleteAppUser');
-Route::any('/AppMaintain/saveAppRole', 'AppMaintainController@saveAppRole');
-Route::any('/AppMaintain/deleteAppRole', 'AppMaintainController@deleteAppRole');
 Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersionList');
 Route::any('/AppMaintain/saveAppVersion', 'AppMaintainController@saveAppVersion');
 Route::any('/AppMaintain/editAppVersion', 'AppMaintainController@editAppVersion');
 Route::any('/AppMaintain/deleteAppVersion', 'AppMaintainController@deleteAppVersion');
 Route::any('/AppMaintain/unPublishApp', 'AppMaintainController@unPublishApp');
 Route::any('/AppMaintain/publishApp', 'AppMaintainController@publishApp');
-Route::any('/AppMaintain/saveErrorCode', 'AppMaintainController@saveErrorCode');
 Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
 
 

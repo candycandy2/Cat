@@ -684,80 +684,14 @@
     /*--Add User to App End --*/
     
     /*-- Error Code Start--*/
-    var showErrorCodeTable = function($target){
-        var fileName;
-        fileName = $target.val();
-        if (!!$target.prop('files') && $target.prop('files').length > 1) {
-            fileName =$target[0].files.length+' files';
-        }
-        else {
-            fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
-        }
-        if (!fileName) {
-            return;
-        }
-        if(fileName){
-            saveErrorCode();
-        }
-
-     }
-     $('#errorCodeFile').change(function(){
-        showErrorCodeTable($(this))
-     })
-
-
-    var saveErrorCode = function(){
-     
-       var formData = new FormData($('#errorCodeForm')[0]);
-       formData.append("appRowId", {{app('request')->input('app_row_id')}});
-         $.ajax({
-            url: "AppMaintain/saveErrorCode",
-            type: "POST",
-            contentType: false,
-            data: formData,
-            processData: false,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}",d.message);
-                }  else {
-                     $('#customApiErrorCode').find('#errorCodeFileName').html('<a href="'+d.content+'" class="link" download>' + d.content + '</a>');
-                    $('#customApiErrorCode').show();
-                }
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText)
-                ;
-            }
-        });
-
-    }
-
     var deleteErrorCode = function(){
-       
-        var mydata = {appRowId:{{ app('request')->input('app_row_id') }}};
-        var mydataStr = $.toJSON(mydata);
-        $.ajax({
-            url: "AppMaintain/deleteErrorCode",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json",
-            data: mydataStr,
-            success: function (d, status, xhr) {
-                if(d.result_code != 1) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}");
-                }
-                $("#customApiErrorCode").hide();
-                $("#btndDeleteErrorCodeFile").hide();
-                $("#btnUplErrorCodeFile").show();
-            },
-            error: function (e) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_APP_USER_FAILED")}}", e.responseText);
-            }
-        });
-    
+        $("#customApiErrorCode").remove();
+        $("#btndDeleteErrorCodeFile").hide();
+        $("#btnUplErrorCodeFile").show();
     }
-
-     /*-- Error Code End--*/
+    /*-- Error Code End--*/
+    
+    /*--Security Level Start--*/
     var showSecurityLevelHint = function(){
         $('#securityLevelHint').text( $("#ddlSecurityLevel option:selected").data('hint'));
     }

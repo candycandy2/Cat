@@ -119,6 +119,10 @@ foreach ($enableRole as $role){
         .imgLi .delete:active{
             top : -15px;
         }
+        .file-input-name{
+            padding-left: 20px;
+            padding-right: 20px; 
+        }
 
         table.costum-table td { border: 1px solid #ddd; padding: 8px; }
         table.costum-table tr:first-child{font-weight:bold;}
@@ -197,6 +201,22 @@ var selectedChanged = function (row, $element) {
             });
         }
     }
+}
+
+var showUploadFileName = function($target){
+    var fileName;
+    fileName = $target.val();
+    $target.parent().next('.file-input-name').remove();
+    if (!!$target.prop('files') && $target.prop('files').length > 1) {
+        fileName =$target[0].files.length+' files';
+    }
+    else {
+        fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+    }
+    if (!fileName) {
+        return;
+    }
+    $target.parent().after('<span class="file-input-name">'+fileName+'</span>');  
 }
 
 $(function () {
