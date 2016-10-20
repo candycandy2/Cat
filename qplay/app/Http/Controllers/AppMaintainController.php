@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Input;
 use App\Model\QP_App_Head;
 use App\Model\QP_App_Line;
 use App\Model\QP_App_Pic;
+use App\Model\QP_Role_App;
+use App\Model\QP_User_App;
 use DB;
 use File;
 
@@ -163,15 +165,12 @@ class AppMaintainController extends Controller
                         ['app_category_row_id'=>0,
                             'updated_at'=>$now,
                             'updated_user'=>\Auth::user()->row_id]);
-            foreach ($appIdList as $aId) {
-               \DB::table("qp_app_head")
-                    -> where('row_id', '=', $aId)
-                    -> update(
-                        ['app_category_row_id'=>$categoryId,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-            }
+            \DB::table("qp_app_head")
+                -> whereIn('row_id', $appIdList)
+                -> update(
+                    ['app_category_row_id'=>$categoryId,
+                        'updated_at'=>$now,
+                        'updated_user'=>\Auth::user()->row_id]);
             \DB::commit();
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }
@@ -575,36 +574,6 @@ class AppMaintainController extends Controller
         return null;
     }
 
-    public function saveSecurityLevel(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appRowId = $jsonContent['appRowId'];
-            $securityLevel = $jsonContent['securityLevel'];
-            
-            \DB::table("qp_app_head")
-                    -> where('row_id', "=", $appRowId)
-                    -> update(
-                        ['security_level'=>$securityLevel,
-                            'security_updated_at'=>time(),
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
-
     public function getAppUser(){
 
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -625,110 +594,6 @@ class AppMaintainController extends Controller
         return response()->json($customApiList);
     }
 
-    public function saveAppUser(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appRowId = $jsonContent["appRowId"];
-            $appUserList = $jsonContent["appUserList"];
-            $now = date('Y-m-d H:i:s',time());
-            //delete same data ,for shure
-            \DB::table("qp_user_app")
-                -> where('app_row_id', '=', $appRowId)
-                -> whereIn('user_row_id', $appUserList)
-                -> delete();
-
-            foreach ($appUserList as $userRowId) {
-                 \DB::table("qp_user_app")
-                -> insert(
-                    ['user_row_id'=>$userRowId,
-                        'app_row_id'=>$appRowId,
-                        'created_at'=>$now,
-                        'created_user'=>\Auth::user()->row_id]);
-            }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-        return null;
-    }
-
-    public function deleteAppUser(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-         if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appRowId = $jsonContent["appRowId"];
-            $appUserList = $jsonContent["appUserList"];
-            \DB::table("qp_user_app")
-                -> where('app_row_id', '=', $appRowId)
-                -> whereIn('user_row_id', $appUserList)
-                -> delete();
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-        return null;
-    }
-
-    public function saveAppRole(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appRowId = $jsonContent["appRowId"];
-            $roleRowIdList = $jsonContent["roleRowIdList"];
-            $now = date('Y-m-d H:i:s',time());
-            //delete same data ,for shure
-            \DB::table("qp_role_app")
-                -> where('app_row_id', '=', $appRowId)
-                -> whereIn('role_row_id', $roleRowIdList)
-                -> delete();
-
-            foreach ($roleRowIdList as $roleRowId) {
-                 \DB::table("qp_role_app")
-                -> insert(
-                    ['role_row_id'=>$roleRowId,
-                        'app_row_id'=>$appRowId,
-                        'created_at'=>$now,
-                        'created_user'=>\Auth::user()->row_id]);
-            }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-        return null;
-    }
-
-    public function deleteAppRole(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-         if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appRowId = $jsonContent["appRowId"];
-            $roleRowIdList = $jsonContent["roleRowIdList"];
-            \DB::table("qp_role_app")
-                -> where('app_row_id', '=', $appRowId)
-                -> whereIn('role_row_id', $roleRowIdList)
-                -> delete();
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-        return null;
-    }
-   
     public function getAppVersionList(){
 
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -1107,20 +972,35 @@ class AppMaintainController extends Controller
         }
 
         $input = $request->all();
-        //save app info data
+
         $appId = $input['appId'];
-        $defaultLang = (isset($input['defaultLang']))?$input['defaultLang']:null;
-        parse_str($input['mainInfoForm'], $mainInfoData);
-        $this->saveAppMainInfo($appId, $mainInfoData,  $defaultLang);
+        //var_dump($input);exit();
         
-        //save app pic data
-        $icon = null; 
-        $delPic = $input['delPic'];
-        $insPic  = $input['insPic'];
+        parse_str($input['mainInfoForm'], $mainInfoData);
+        $this->saveAppMainInfo($appId, $mainInfoData);
+        $iconfileName = $input['icon'];
         if(isset($input['fileIconUpload'])){
             $icon = $input['fileIconUpload'];
             $this->validatePic('icon',$icon);
+            $iconfileName = $this->uploadIcon($appId, $icon);
         }
+
+        $chkCompany = (isset($input['chkCompany']))?implode(";",$input['chkCompany']):null;
+        $dataArr = array(
+            'default_lang_row_id'=>$input['defaultLang'],
+            'app_category_row_id'=>$input['categoryId'],
+            'security_level'=>$input['securityLevel'],
+            'company_label'=> $chkCompany,
+            'updated_user'=>\Auth::user()->row_id,
+            'icon_url'=>$iconfileName
+            );
+        $this->updateAppHeadById($appId, $dataArr);
+        
+        
+        //Save app pic data 
+        $delPic = $input['delPic'];
+        $insPic  = $input['insPic'];
+
         $objGetPattern = array(
                         'android'=>"/^androidScreenUpload_/",
                         'ios'=>"/^iosScreenUpload_/"
@@ -1132,29 +1012,32 @@ class AppMaintainController extends Controller
                 foreach ($files as $file) {
                     $this->validatePic($filesKey,$file);
                     $sreenShot[$key]=$fileList;
-                }// end foreach files
-            }// end foreach fileList category by language
-        }// enf foreach objGetPattern by device type
-        $this->saveAppPic($appId, $icon, $sreenShot, $delPic, $insPic);
+                }
+            }
+        }
+        $this->saveAppPic($appId, $sreenShot, $delPic, $insPic);
+        $aooRoleList = (isset($input['appRoleList']))?$input['appRoleList']:array();
+        $this->saveAppRole($appId,$aooRoleList);
+        $appUserList = (isset($input['appUserList']))?$input['appUserList']:array();
+        $this->saveAppUser($appId,$appUserList);
         
     }
     
-    private function saveAppPic($appId, $icon,$sreenShot, $delPic, $insPic){
-       // 1.Upload Icon and update icon url
-        if(isset($icon)){
-            $iconUploadPath =  FilePath::getIconUploadPath($appId);
 
-            if (!file_exists($iconUploadPath)) {
-                mkdir($iconUploadPath, 0777, true);
-            }
-            $icon->move($iconUploadPath,$icon->getClientOriginalName());
-            $appHead = QP_App_Head::find($appId);
-            $appHead->icon_url = $icon->getClientOriginalName();
-            $appHead->updated_user =\Auth::user()->row_id;
-            $appHead->save();
+    private function uploadIcon($appId,$icon){
+        $iconUploadPath =  FilePath::getIconUploadPath($appId);
+
+        if (!file_exists($iconUploadPath)) {
+            mkdir($iconUploadPath, 0777, true);
         }
+        $icon->move($iconUploadPath,$icon->getClientOriginalName());
+        return $icon->getClientOriginalName();
+    }
+
+    private function saveAppPic($appId, $sreenShot, $delPic, $insPic){
+      
         try{
-            //2.Delete screenshot image file
+            //1.Delete screenshot image file
             \DB::beginTransaction();
             $delPicArr = explode(',',$delPic);
             foreach($delPicArr as $picId){
@@ -1170,7 +1053,7 @@ class AppMaintainController extends Controller
                 }
             }
 
-            //3.Upload new svreenshot image file
+            //2.Upload new svreenshot image file
             if(isset($sreenShot)){
                 foreach ($sreenShot as $deviceType =>$languagePic) {
                     foreach ($languagePic as $langPic => $picArr) {
@@ -1184,7 +1067,7 @@ class AppMaintainController extends Controller
                 }
             }
 
-            //4.Modify database
+            //3.Modify database
             $deletePicRows = QP_App_Pic::where('app_row_id', $appId)
                     ->delete();
             $insertArray = array();
@@ -1227,22 +1110,13 @@ class AppMaintainController extends Controller
     }
 
     /**
-     * To save app main information
+     * To save  app name, app summary ,app description by language
      * @param  int      $appId          app unique id
      * @param  Array    $data           Form Data Array
-     * @param  int      $defaultLang The app default language id
      */
-    private function saveAppMainInfo($appId, $data, $defaultLang){
+    private function saveAppMainInfo($appId, $data){
 
-        //1.change Default Language
-        if(isset($defaultLang)){
-            $appHead = QP_App_Head::find($appId);
-            $appHead->default_lang_row_id = $defaultLang;
-            $appHead->updated_user =\Auth::user()->row_id;
-            $appHead->save();
-        }
-
-        //2.Create or Update the record
+        //1.Create or Update the record
         $operateLanAry = [];
         $inputLanAry = [];
         foreach ($data as $key => $value) {
@@ -1448,7 +1322,7 @@ class AppMaintainController extends Controller
      * @return Array           Returns an array indexed using the keys from the input array.
      * @author Cleo.W.Chan
      */
-    function getArrayByKeyRegex( $pattern, $input, $flags = 0 )
+    private function getArrayByKeyRegex( $pattern, $input, $flags = 0 )
     {
         $keys = preg_grep( $pattern, array_keys( $input ), $flags );
         $vals = array();
@@ -1457,6 +1331,61 @@ class AppMaintainController extends Controller
             $vals[$key] = $input[$key];
         }
         return $vals;
+    }
+
+    /**
+     * update qp_apphead by row_id 
+     * @param  Int    $appId   app row_id
+     * @param  Array  $dataArr update data
+     * @return bool|int        If update success,return the record updated;if fail, return false
+     */
+    private function updateAppHeadById(Int $appId, Array $dataArr){
+        return QP_App_Head::where('row_id', $appId)
+                     ->update($dataArr);
+    }
+
+    private function saveAppRole($appId,$appRoleList){
+        try{
+            \DB::beginTransaction();
+            $deletedRows = QP_Role_App::where('app_row_id',$appId)
+                                ->delete(); 
+            $insertArray = array();
+            foreach ($appRoleList as $role) {
+                $data = array(
+                        'app_row_id'=>$appId,
+                        'role_row_id'=>$role,
+                        'created_user'=>\Auth::user()->row_id,
+                        'updated_user'=>\Auth::user()->row_id
+                    );
+                $insertArray[]=$data;
+            }
+            QP_Role_App::insert($insertArray);
+            \DB::commit();
+        }catch(\Exception $e){
+            \DB::rollback();
+        }
+    }
+
+    private function saveAppUser($appId,$appUserList){
+        try{
+            \DB::beginTransaction();
+            $deletedRows = QP_User_App::where('app_row_id',$appId)
+                                ->delete(); 
+            $insertArray = array();
+            foreach ($appUserList as $role) {
+                $data = array(
+                        'app_row_id'=>$appId,
+                        'user_row_id'=>$role,
+                        'created_user'=>\Auth::user()->row_id,
+                        'updated_user'=>\Auth::user()->row_id
+                    );
+                $insertArray[]=$data;
+            }
+            QP_User_App::insert($insertArray);
+            \DB::commit();
+        }catch(\Exception $e){
+            \DB::rollback();
+        }
     }
 }
 

@@ -177,7 +177,6 @@ foreach ($enableRole as $role){
     </div>
 
 <script>
-var oriDefaultLang = {{$defaultLang}};
 var jsDefaultLang = {{$defaultLang}};
 var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
 var jsAppRowId = {{app('request')->input('app_row_id')}};
@@ -189,11 +188,13 @@ var selectedChanged = function (row, $element) {
         $currentToolBar.find('.btn-danger').hide();
         var selectedItems = $currentTarget.bootstrapTable('getSelections');
         if(selectedItems.length > 0) {
-            $currentToolBar.find('.btn-danger').show();
-            $currentToolBar.find('.btn-primary').hide();
+             $currentToolBar.find('.btn-primary').fadeOut(300, function() {
+                $currentToolBar.find('.btn-danger').fadeIn(300);
+            });
         } else {
-            $currentToolBar.find('.btn-danger').hide();
-            $currentToolBar.find('.btn-primary').show();
+            $currentToolBar.find('.btn-danger').fadeOut(300, function() {
+                $currentToolBar.find('.btn-primary').fadeIn(300);
+            });
         }
     }
 }

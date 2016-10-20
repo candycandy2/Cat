@@ -100,10 +100,9 @@ $(function () {
                 if(validate==submitFormAry.length){
                     var formData = new FormData();
                     formData.append('appId',jsAppRowId);
-                    if(jsDefaultLang != oriDefaultLang){
-                        formData.append('defaultLang',jsDefaultLang);
-                    }
+                    formData.append('defaultLang',jsDefaultLang);
                     formData.append('mainInfoForm',$('#mainInfoForm').serialize());
+                    formData.append('icon',$('#iconForm').find('.icon-preview').data('url'));
                     if(typeof ($( '#fileIconUpload' )[0].files[0]) != "undefined"){
                         formData.append('fileIconUpload', $( '#fileIconUpload' )[0].files[0]);
                     }
@@ -120,12 +119,23 @@ $(function () {
                         });
                     });
                     $('#screenShotForm').find('.imgLi').each(function(){
-                     //  formData.append('insPic[]['+$(this).data('lang')+']['+$(this).data('device')+']', $(this).data('url'));
                         formData.append('insPic[]',$(this).data('lang')+'-'+$(this).data('device')+'-'+$(this).data('url'));
                     })
                     formData.append('delPic',delPicArr.join(","));
-                   
-                  
+                    formData.append('categoryId',$('#ddlAppCategory').val());
+                    formData.append('securityLevel',$('#ddlSecurityLevel').val());
+                    $('input[name=chkCompany]:checked').each(function(){
+                        formData.append('chkCompany[]',$(this).val());
+                    });
+                    $('input[name=cbxRole]:checked').each(function(){
+                        formData.append('appRoleList[]',$(this).attr('data'));
+                    });
+                    var currentData =  $("#gridUserList").bootstrapTable('getData');
+                    $.each(currentData, function(i, user) {
+                        formData.append('appUserList[]',user.row_id);
+                    });
+
+
                     $.ajax({
                         url: "AppMaintain/saveAppDetail",
                         type: "POST",
@@ -135,7 +145,7 @@ $(function () {
                         success: function (d, status, xhr) {
                             validate = 0
                             alert('ok');
-                            location.reload();
+                            //location.reload();
                         },
                         error: function (e) {
                             validate = 0

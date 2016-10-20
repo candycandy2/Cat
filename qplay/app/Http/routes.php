@@ -64,7 +64,6 @@ Route::any('/AppMaintain/deleteWhiteList', 'AppMaintainController@deleteWhiteLis
 Route::any('/AppMaintain/getCustomApi', 'AppMaintainController@getCustomApi');
 Route::any('/AppMaintain/saveCustomApi', 'AppMaintainController@saveCustomApi');
 Route::any('/AppMaintain/deleteCustomApi', 'AppMaintainController@deleteCustomApi');
-Route::any('/AppMaintain/saveSecurityLevel', 'AppMaintainController@saveSecurityLevel');
 Route::any('/AppMaintain/getAppUser', 'AppMaintainController@getAppUser');
 Route::any('/AppMaintain/saveAppUser', 'AppMaintainController@saveAppUser');
 Route::any('/AppMaintain/deleteAppUser', 'AppMaintainController@deleteAppUser');
