@@ -430,8 +430,9 @@ class qplayController extends Controller
                     {
                         $old_token_valid = $sessionList[0]->token_valid_date;
                         $old_token = $sessionList[0]->token;
-                        if($nowTimestamp <= $old_token_valid && $old_token_valid - $nowTimestamp >= (2 * 60 * 60)) {
+                        if($nowTimestamp <= $old_token_valid && $old_token_valid - $nowTimestamp >= (60 * 60)) {
                             $token = $old_token;
+                            $token_valid = $old_token_valid;
                         } else {
                             \DB::table("qp_session")
                                 -> where('user_row_id', '=', $user->row_id)
@@ -1429,7 +1430,7 @@ SQL;
                 }
 
                 //Register to Message Center
-                $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+                $app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
 //                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,

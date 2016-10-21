@@ -41,11 +41,11 @@ class FilePath
     } 
 
     public static function getScreenShotUploadPath($appRowId,$langRowId,$deviceType){
-        return base_path(\Config::get('app.upload_path')).'\\'.$appRowId.'\\'.'screenshoot'.'\\'.$langRowId.'\\'. $deviceType .'\\';
+        return base_path(\Config::get('app.upload_path')).'\\'.$appRowId.'\\'.'screenshot'.'\\'.$langRowId.'\\'. $deviceType .'\\';
     }
 
     public static function getScreenShotUrl($appRowId,$langRowId,$deviceType,$fileName){
-         return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'screenshoot'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
+         return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'screenshot'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
     } 
 
     public static function getErrorCodeUploadPath($appRowId){
