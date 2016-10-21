@@ -8,3 +8,13 @@
 APP/*/platforms/
 APP/*/plugins/
 APP/*/www/*/component.*
+
+WEB/loginQplay/images/login_bg.png
+
+WEB/loginQplay/images/logo.png
+
+WEB/loginQplay/login.html
+
+WEB/loginQplay/style/login.css
+
+WEB/loginQplay/style/yui_reset.css
