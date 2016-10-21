@@ -5,7 +5,7 @@ $detail_path    = "app_maintain.app_detail";
 $pic_path       = $detail_path.'.app_pic';
 $version_path   = $detail_path.'.app_version';
 $appStatus =  \App\lib\CommonUtil::getAppVersionStatus(app('request')->input('app_row_id'));
-
+$tempFlag = 0;
 $lang = array();
 $appBasic = $data['appBasic'];
 $langList = $data['langList'];

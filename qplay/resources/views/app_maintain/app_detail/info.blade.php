@@ -220,56 +220,58 @@
                          style="display: none"
                     @endif
                     >
-                        <div class="table-responsive" style="margin-top:10px ">
-                        @foreach($allCompanyRoleList as $companyRoles)
-                            @if(count($companyRoles->roles > 0))
-                                <table class="table table-bordered js-role-table" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;">
-                                    <tr>
-                                        <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;">
-                                            <input type="checkbox" data="{{$companyRoles->company}}" name="cbxAllRole" class="cbxAllRole" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
-                                        </td>
-                                        <td style="border:1px solid #d6caca;">
-                                            <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                            <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" name="cbxRole" class="cbxRole"
-                                                @if(in_array($companyRoles->roles[0]->row_id, $enableRoleArray))
-                                                    checked
-                                                @endif
-                                            >{{$companyRoles->roles[0]->role_description}}</input>
-                                            </div>
-                                            @if(count($companyRoles->roles) > 1)
-                                                <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                    <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" name="cbxRole" class="cbxRole"
-                                                           @if(in_array($companyRoles->roles[1]->row_id, $enableRoleArray))
-                                                           checked
-                                                            @endif
-                                                    >{{$companyRoles->roles[1]->role_description}}</input>
-                                                </div>
+            <div class="table-responsive" style="margin-top:10px ">
+            @foreach($allCompanyRoleList as $companyRoles)
+            <!--{{$tempFlag++}}-->
+                @if(count($companyRoles->roles > 0))
+                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
+                        <tr>
+                            <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
+                                <input type="checkbox" data="{{$companyRoles->company}}"
+                                       onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
+                            </td>
+                            <td style="border:1px solid #d6caca;padding: 0px;">
+                                <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
+                                    <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" name="cbxRole" class="cbxRole" 
+                                            @if(in_array($companyRoles->roles[0]->row_id, $enableRoleArray))
+                                                checked
                                             @endif
-                                        </td>
-                                    </tr>
-                                    @if(count($companyRoles->roles) > 2)
-                                    @for($i = 2; $i < (count($companyRoles->roles) + 1) / 2; $i = $i + 2)
-                                        <tr>
-                                            <td style="border:1px solid #d6caca;">
-                                                @if(count($companyRoles->roles) > $i)
-                                                    <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                        <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}"  name="cbxRole" class="cbxRole"
-                                                               @if(in_array($companyRoles->roles[$i]->row_id, $enableRoleArray ))
-                                                               checked
-                                                                @endif
-                                                        >{{$companyRoles->roles[$i]->role_description}}</input>
-                                                    </div>
-                                                @endif
-                                                    @if(count($companyRoles->roles) > $i + 1)
-                                                        <div class="col-lg-6 col-xs-6" style="text-align: left;">
-                                                            <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}"  name="cbxRole" class="cbxRole"
-                                                                   @if(in_array($companyRoles->roles[$i + 1]->row_id, $enableRoleArray ))
-                                                                   checked
-                                                                    @endif
-                                                            >{{$companyRoles->roles[$i + 1]->role_description}}</input>
-                                                        </div>
+                                    >{{$companyRoles->roles[0]->role_description}}</input>
+                                </div>
+                                    @if(count($companyRoles->roles) > 1)
+                                    <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
+                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" name="cbxRole" class="cbxRole" 
+                                               @if(in_array($companyRoles->roles[1]->row_id, $enableRoleArray))
+                                                    checked
+                                               @endif
+                                        >{{$companyRoles->roles[1]->role_description}}</input>
+                                    </div>
+                                    @endif
+                            </td>
+                        </tr>
+                        @if(count($companyRoles->roles) > 2)
+                        @for($i = 2; $i < (count($companyRoles->roles) + 1); $i = $i + 2)
+                            <tr>
+                                <td style="border:1px solid #d6caca;padding: 0px;">
+                                    @if(count($companyRoles->roles) > $i)
+                                        <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
+                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" name="cbxRole" class="cbxRole" 
+                                                   @if(in_array($companyRoles->roles[$i]->row_id, $enableRoleArray))
+                                                        checked
+                                                   @endif
+                                            >{{$companyRoles->roles[$i]->role_description}}</input>
+                                        </div>
+                                    @endif
+                                    @if(count($companyRoles->roles) > $i + 1)
+                                            <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
+                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" name="cbxRole" class="cbxRole"
+                                                    @if(in_array($companyRoles->roles[$i + 1]->row_id, $enableRoleArray))
+                                                        checked
                                                     @endif
-                                            </td>
+                                                >{{$companyRoles->roles[$i + 1]->role_description}}</input>
+                                            </div>
+                                    @endif
+                                        </td>
                                         </tr>
                                     @endfor
                                     @endif

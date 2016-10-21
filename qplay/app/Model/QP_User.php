@@ -18,6 +18,21 @@ class QP_User extends Model implements  Authenticatable
         'password'=>'required|alpha_num|between:6,12|confirmed',
     ];
 
+    public function isAdmin() {
+        $adminGroupList = DB::table("qp_group")->where("group_name", '=', "Administrator")->select()->get();
+        if(count($adminGroupList) > 0) {
+            $adminId = $adminGroupList[0]->row_id;
+            $testList = DB::table("qp_user_group")
+                ->where("group_row_id", '=', $adminId)
+                ->where("user_row_id", '=', $this->row_id)
+                ->select()->get();
+            if(count($testList) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getMenuList()
     {
         $userId = $this->row_id;
@@ -40,7 +55,7 @@ class QP_User extends Model implements  Authenticatable
 
         if($menuFromGroup == "Y") {
             $sql = <<<SQL
-select menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId , ml.menu_name as sName
+select menu.sequence, menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId , ml.menu_name as sName
 from qp_menu menu
 join qp_menu_language ml on ml.menu_row_id = menu.row_id
 and ml.lang_row_id in (select l.row_id from qp_language l where l.lang_code = '$lang')
@@ -49,10 +64,11 @@ and menu.row_id in
 select distinct menu_row_id from qp_group_menu gm where gm.group_row_id = $groupId
 )
 and menu.visible = 'Y'
+order by menu.sequence
 SQL;
         } else {
             $sql = <<<SQL
-select menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId , ml.menu_name as sName
+select menu.sequence, menu.row_id as Id, menu.menu_name as Name, path as Url, parent_id as pId , ml.menu_name as sName
 from qp_menu menu
 join qp_menu_language ml on ml.menu_row_id = menu.row_id
 and ml.lang_row_id in (select l.row_id from qp_language l where l.lang_code = '$lang')
@@ -61,6 +77,7 @@ and menu.row_id in
 select distinct menu_row_id from qp_user_menu gm where gm.user_row_id = $userId
 )
 and menu.visible = 'Y'
+order by menu.sequence
 SQL;
         }
 

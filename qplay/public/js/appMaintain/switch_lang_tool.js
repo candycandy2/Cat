@@ -139,5 +139,6 @@ $(function (){
         var lanId = $(this).data('toggle');
         switchToLangCotent(lanId);
     });
+    checkLangToolStatus();
 
 });
