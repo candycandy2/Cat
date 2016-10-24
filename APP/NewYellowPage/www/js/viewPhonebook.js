@@ -76,7 +76,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
-console.log(self);
+
             }
 
             function deletePhoneBook(index) {

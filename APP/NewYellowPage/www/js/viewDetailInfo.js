@@ -44,7 +44,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData);
                 }();
-console.log(self);
+
             }
             
             function AddMyPhoneBook() {
