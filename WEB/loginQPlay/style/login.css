@@ -1,10 +1,10 @@
 .wrapper{
-	display: block;
-	width: auto;
-	height: 100%;
-	background: url("../images/login_bg.png") repeat-x 0 0;
+    display: block;
+    width: auto;
+    height: 100%;
+    background: url("../images/login_bg.png") repeat-x 0 0;
 
 }
 .bg-logon-banner{
-	text-align:center;margin:80px auto 20px;
+    text-align:center;margin:80px auto 20px;
 }
