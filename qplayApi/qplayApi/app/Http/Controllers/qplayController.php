@@ -719,6 +719,7 @@ class qplayController extends Controller
                     }
                     $companyAppIdStr = substr($companyAppIdStr, 0, strlen($companyAppIdStr) - 1);
                     $companyAppIdStr = rtrim($companyAppIdStr, ',');
+                    $companyAppIdStr = ltrim($companyAppIdStr, ',');
                     $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
                         . $userInfo->row_id
                         . " left join qp_project p on h.project_row_id = p.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = '"
@@ -793,6 +794,7 @@ SQL;
                 $app_category_list = array();
                 $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
                 $categoryIdListStr = rtrim($categoryIdListStr, ',');
+                $categoryIdListStr = ltrim($categoryIdListStr, ',');
 //                $sql = <<<SQL
 //                select row_id as category_id, app_category, sequence
 //                from qp_app_category
@@ -817,6 +819,8 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
+                $appIdListStr = rtrim($appIdListStr, ',');
+                $appIdListStr = ltrim($appIdListStr, ',');
                 $langDataList = array();
                 if(strlen($appIdListStr) > 0) {
                     $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.project_code from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
@@ -1800,7 +1804,7 @@ SQL;
                                     $to = $to.$userPushList[0]->login_id.";";
                                 }
                             }
-                            $result = CommonUtil::PushMessageWithMessageCenter($message_title, $to);
+                            $result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
                             if(!$result["result"]) {
                                 \DB::rollBack();
                                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
