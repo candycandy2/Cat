@@ -76,7 +76,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
-
+console.log(self);
             }
 
             function deletePhoneBook(index) {
@@ -127,7 +127,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             /********************************** page event *************************************/
             $("#viewPhonebook").on("pagebeforeshow", function(event, ui){
                 loadingMask("show");
-                QueryMyPhoneBook();
+                var myPhoneBook = new QueryMyPhoneBook();
 
                 $('.edit-checkbox').hide();
                 $('.ui-checkbox').hide();

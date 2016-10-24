@@ -50,7 +50,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function(){
             
             /********************************** page event *************************************/
             $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
-                QueryMessageDetail();
+                var messageDetail = new QueryMessageDetail();
             });
 
             $("#viewWebNews2-3-1").one("pageshow", function(event, ui) {
