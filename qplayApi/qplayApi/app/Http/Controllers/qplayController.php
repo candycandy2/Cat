@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\lib\CommonUtil;
+use App\lib\FilePath;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 use Request;
@@ -705,8 +706,9 @@ class qplayController extends Controller
 
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 
-                $companyAppList = \DB::table('qp_app_head')
-                    -> where('company_label', 'like',  $userInfo->company) -> select() ->get();
+//                $companyAppList = \DB::table('qp_app_head')
+//                    -> where('company_label', 'like',  $userInfo->company) -> select() ->get();
+                $companyAppList = DB::select("select * from qp_app_head where company_label like '%" . $userInfo->company . "%'");
 
                 $sql = "";
                 $appDataList = array();
@@ -717,15 +719,17 @@ class qplayController extends Controller
                     }
                     $companyAppIdStr = substr($companyAppIdStr, 0, strlen($companyAppIdStr) - 1);
                     $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
-                        + $userInfo->row_id
-                        + " left join qp_project p on h.project_row_id = p.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = :device_type and v.status = 'ready' where h.row_id in (select row_id from qp_app_head where row_id in ( select app_row_id from qp_role_app where role_row_id in ( select role_row_id from qp_user_role where user_row_id = "
-                        + $userInfo->row_id
-                        + " )) union  select row_id from qp_app_head where row_id in ( select app_row_id from qp_user_app where user_row_id = "
-                        + $userInfo->row_id
-                        + ")) select row_id from qp_app_head where row_id in ("
-                        + $companyAppIdStr
-                        + ") and version_code is not null";
-
+                        . $userInfo->row_id
+                        . " left join qp_project p on h.project_row_id = p.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = '"
+                        . $device_type
+                        ."' and v.status = 'ready' where h.row_id in (select row_id from qp_app_head where row_id in ( select app_row_id from qp_role_app where role_row_id in ( select role_row_id from qp_user_role where user_row_id = "
+                        . $userInfo->row_id
+                        . " )) union  select row_id from qp_app_head where row_id in ( select app_row_id from qp_user_app where user_row_id = "
+                        . $userInfo->row_id
+                        . ") union select row_id from qp_app_head where row_id in ("
+                        . $companyAppIdStr
+                        . ")) and version_code is not null";
+                    //return response()->json(['sql'=>$sql]);
                     $appDataList = DB::select($sql);
                 } else {
                     $sql = <<<SQL
@@ -777,8 +781,8 @@ SQL;
                         'avg_score'=>$appData->avg_score,
                         'user_score'=>$appData->user_score,
                         'sequence'=>$appData->sequence,
-                        'url'=>$appData->url,
-                        'icon_url'=>$appData->icon_url
+                        'url'=>FilePath::getApkDownloadUrl($appData->app_id, $device_type, $appData->version, $appData->url),//$appData->url
+                        'icon_url'=>FilePath::getIconUrl($appData->app_id, $appData->icon_url)//$appData->icon_url
                     );
                     $categoryIdListStr = $categoryIdListStr.($appData->category_id).",";
                     $appIdListStr = $appIdListStr.($appData->app_id).",";
@@ -826,6 +830,9 @@ SQL;
 
                     $picList = \DB::table("qp_app_pic")->where('app_row_id', '=', $appId)
                         ->where('lang_row_id', '=', $langId)->select('pic_type', 'pic_url', 'sequence_by_type')->get();
+                    foreach ($picList as $picItem) {
+                        $picItem->pic_url = FilePath::getScreenShotUrl($appId, $langId , $device_type, $picItem->pic_url);
+                    }
 
                     $lang = array('lang'=>$langData->lang,
                         'app_name'=>$langData->app_name,
@@ -1427,7 +1434,7 @@ SQL;
                 -> where('push_token', "=", $pushToken)
                 -> select()->get();
             if(count($existInfoList) > 1 || (count($existInfoList) == 1 && $existInfoList[0]->register_row_id != $registerId)) {
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                return response()->json(['result_code'=>ResultCode::_999013_pushTokenUsed,
                     'message'=>'push token已使用',
                     'content'=>'']);
             }

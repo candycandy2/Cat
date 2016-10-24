@@ -51,7 +51,7 @@ class Verify
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
 
-        if($headerAppKey != "qplay") {
+        if($headerAppKey != "appqplay") {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=> "app-key參數錯誤");
         }
@@ -315,7 +315,7 @@ class Verify
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
 
-        if($headerAppKey != "yellowpage") {
+        if($headerAppKey != "appyellowpage") {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=> "app-key參數錯誤");
         }
