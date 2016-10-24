@@ -718,6 +718,7 @@ class qplayController extends Controller
                         $companyAppIdStr = $companyAppIdStr.$companyApp->row_id.',';
                     }
                     $companyAppIdStr = substr($companyAppIdStr, 0, strlen($companyAppIdStr) - 1);
+                    $companyAppIdStr = rtrim($companyAppIdStr, ',');
                     $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
                         . $userInfo->row_id
                         . " left join qp_project p on h.project_row_id = p.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = '"
@@ -1780,10 +1781,9 @@ SQL;
                                             \DB::table("qp_user_message")
                                                 -> insertGetId([
                                                     'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$userRowId,
-                                                    'message_send_row_id'=>$newMessageSendId,  'need_push'=>'1',//'need_push'=>$need_push,
+                                                    'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
                                                     'created_user'=>$userInfo->row_id,
-                                                    'created_at'=>$now,
-                                                    'push_flag'=>'0'
+                                                    'created_at'=>$now//, 'push_flag'=>'0'
                                                 ]);
                                             $hasSentUserIdList[] = $userRowId;
                                             $real_push_user_list[] = $userRowId;
