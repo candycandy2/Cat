@@ -8,12 +8,14 @@
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey;
 var loginData = {
+    deviceType:      "",
+    pushToken:       "",
     token:           "",
     token_valid:     "",
     uuid:            "",
     callCheckAPPVer: false,
-    callQLogin:      false
-
+    callQLogin:      false,
+    openMessage:     false
 };
 var queryData = {};
 var getDataFromServer = false;
@@ -41,13 +43,15 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
 
-        //QPUSH////////////////////////////////////////////////////////////////////////////////
-        //後台打开通知
-        document.addEventListener('qpush.openNotification', this.onOpenNotification, false);
-        //後台收到通知
-        document.addEventListener('qpush.backgoundNotification', this.onBackgoundNotification, false);
-        //前台收到通知
-        document.addEventListener('qpush.receiveNotification', this.onReceiveNotification, false);
+        if (appKey === "appqplay") {
+            //QPUSH////////////////////////////////////////////////////////////////////////////////
+            //後台打开通知
+            document.addEventListener('qpush.openNotification', this.onOpenNotification, false);
+            //後台收到通知
+            document.addEventListener('qpush.backgoundNotification', this.onBackgoundNotification, false);
+            //前台收到通知
+            document.addEventListener('qpush.receiveNotification', this.onReceiveNotification, false);
+        }
     },
     // deviceready Event Handler
     onDeviceReady: function() {
@@ -56,20 +60,36 @@ var app = {
         //[device] data ready to get on this step.
 
         //For QSecurity
-        setWhiteList();
-        //初始化JPush
-        window.plugins.QPushPlugin.init();
-        window.plugins.QPushPlugin.getRegistrationID(this.onGetRegistradionID);
+        var whiteList = new setWhiteList();
+
+        if (appKey === "appqplay") {
+            //初始化JPush
+            window.plugins.QPushPlugin.init();
+            window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+        }
     },
     onGetRegistradionID: function (data){
         try {
-            console.log("QPushPlugin:registrationID is " + data);
+            loginData["deviceType"] = device.platform;
+            loginData["pushToken"] = data;
+
+            var doPushToken = new sendPushToken();
         } catch(exception) {
             console.log(exception);
         }
     },
     onOpenNotification: function(data) {
     //添加後台打開通知后需要執行的內容，data.alert為消息內容
+
+        //If APP not open, check message after checkAppVersion()
+        messageRowId = data.extras["Parameter"];
+
+        if (loginData["openMessage"] === false) {
+            loginData["openMessage"] = true;
+        } else {
+            $.mobile.changePage("#viewWebNews2-3-1");
+        }
+
     },
     onBackgoundNotification: function(data) {
     //添加後台收到通知后需要執行的內容
@@ -111,7 +131,7 @@ function setWhiteList() {
 
     this.successCallback = function() {
 
-        if (appKey !== "qplay") {
+        if (appKey !== "appqplay") {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (device.platform !== "iOS") {
                     window.plugins.qlogin.openAppCheckScheme(null, null);
@@ -130,7 +150,7 @@ function setWhiteList() {
         } else {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
 
-            if (appKey === "qplay") {
+            if (appKey === "appqplay") {
                 window.plugins.qlogin.openAppCheckScheme(null, null);
             }
         }
@@ -141,7 +161,7 @@ function setWhiteList() {
 
     var __construct = function() {
         if (device.platform !== "iOS") {
-            if (appKey === "qplay") {
+            if (appKey === "appqplay") {
                 var securityList = {
                     level: 2,
                     Navigations: [
@@ -213,7 +233,7 @@ function checkStorageData() {
     }
 
     if (getDataFromServer) {
-        if (appKey !== "qplay") {
+        if (appKey !== "appqplay") {
             getServerData();
         } else {
             loginData['callCheckAPPVer'] = true;
@@ -240,7 +260,9 @@ function processStorageData(action, data) {
         return checkLoginDataExist;
     } else if (action === "checkSecurityList") {
         $.map(loginData, function(value, key) {
-            loginData[key] = window.localStorage.getItem(key);
+            if (window.localStorage.getItem(key) !== null) {
+                loginData[key] = window.localStorage.getItem(key);
+            }
         });
 
         getSecurityList();
@@ -255,7 +277,7 @@ function processStorageData(action, data) {
 
 function getServerData() {
 
-    if (appKey === "qplay") {
+    if (appKey === "appqplay") {
         var args = [];
         args[0] = "initialSuccess"; //set in APP's index.js
         args[1] = device.uuid;
@@ -306,7 +328,7 @@ function getSecurityList() {
             type: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'App-Key': 'qplay',
+                'App-Key': 'appqplay',
                 'Signature-Time': signatureTime,
                 'Signature': signatureInBase64,
                 'token': loginData.token
@@ -320,6 +342,20 @@ function getSecurityList() {
 
     }();
 
+}
+
+function sendPushToken(data) {
+    var self = this;
+
+    this.successCallback = function(data) {
+
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback);
+    }();
 }
 
 function getSignature(action, signatureTime) {
@@ -358,7 +394,7 @@ function handleOpenURL(url) {
     function waitCheckAPPVer() {
         if (url !== "null") {
 
-            if (appKey === "qplay" && (loginData['callCheckAPPVer'] === true || loginData['callQLogin'] === true)) {
+            if (appKey === "appqplay" && (loginData['callCheckAPPVer'] === true || loginData['callQLogin'] === true)) {
                 return;
             } else {
                 clearInterval(waitCheckAPPVerInterval);
@@ -395,7 +431,7 @@ function handleOpenURL(url) {
 
             }
         } else {
-            if (appKey !== "qplay") {
+            if (appKey !== "appqplay") {
                 checkStorageData();
                 clearInterval(waitCheckAPPVerInterval);
             }
