@@ -146,6 +146,9 @@
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
                                 + '"token" : "' + d.content.token + '", '
+                                + '"emp_no" : "' + d.content.emp_no + '",'
+                                + '"domain" : "' + d.content.domain + '",'
+                                + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                         callPlugin();
                     } else {
@@ -179,6 +182,9 @@
                             + '"uuid" : "' + d.content.uuid + '", '
                             + '"redirect-uri" : "' + d.content.redirect_uri + '", '
                             + '"token" : "' + d.content.token + '", '
+                            + '"emp_no" : "' + d.content.emp_no + '",'
+                            + '"domain" : "' + d.content.domain + '",'
+                            + '"checksum" : "' + d.content.checksum + '",'
                             + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                     $.mobile.changePage("#pageRegister");
                 },
