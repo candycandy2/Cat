@@ -73,7 +73,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             /********************************** page event *************************************/
             $("#viewDetailInfo").on("pagebeforeshow", function(event, ui){
                 loadingMask("show");
-                QueryEmployeeDataDetail();
+                var employeeDataDetail = new QueryEmployeeDataDetail();
             });
 
             /********************************** dom event *************************************/

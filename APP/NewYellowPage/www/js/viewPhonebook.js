@@ -127,7 +127,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             /********************************** page event *************************************/
             $("#viewPhonebook").on("pagebeforeshow", function(event, ui){
                 loadingMask("show");
-                QueryMyPhoneBook();
+                var myPhoneBook = new QueryMyPhoneBook();
 
                 $('.edit-checkbox').hide();
                 $('.ui-checkbox').hide();

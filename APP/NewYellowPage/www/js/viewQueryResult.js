@@ -80,14 +80,14 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "QueryEmployeeData", self.successCallback, self.failCallback, queryData);
                 }();
-                
+
             }
 
             /********************************** page event *************************************/
             $("#viewQueryResult").on("pagebeforeshow", function(event, ui){
                 if (prevPageID !== null) {
                     loadingMask("show");
-                    QueryEmployeeData();
+                    var employeeData = new QueryEmployeeData();
                 }
             });
         }

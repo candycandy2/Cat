@@ -66,7 +66,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
-                QueryMessageList();
+                var messageList = new QueryMessageList();
             });
 
             $("#viewNewsEvents2-3").one("pageshow", function(event, ui) {
