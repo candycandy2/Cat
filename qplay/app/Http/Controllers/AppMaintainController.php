@@ -848,7 +848,7 @@ class AppMaintainController extends Controller
         try{
             $input = $request->all();
             $appId = $input['appId'];
-           // var_dump($input);exit();
+           //var_dump($input);exit();
             
             parse_str($input['mainInfoForm'], $mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
@@ -1156,15 +1156,15 @@ class AppMaintainController extends Controller
                     ->where('status', '=', 'ready')
                     ->select('app_row_id','version_name','device_type','status','updated_at')
                     ->orderBy('status','device_type','updated_at')
-                    ->first();
+                    ->get();
                 
                 $app->released['android'] = 'android-Unpublish';
                 $app->released['ios'] = 'ios-Unpublish';
-                if(count( $appVersionInfo ) > 0) {
-                    $app->released[$appVersionInfo->device_type] = 
-                        $appVersionInfo->device_type.'-'.$appVersionInfo->version_name;
+
+                foreach ( $appVersionInfo as $version) {
+                     $app->released[$version->device_type] = 
+                        $version->device_type.'-'.$version->version_name;
                 }
-              
             }
         }catch(Exception $e){
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,
