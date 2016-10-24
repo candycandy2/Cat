@@ -792,6 +792,7 @@ SQL;
 
                 $app_category_list = array();
                 $categoryIdListStr = substr($categoryIdListStr, 0, strlen($categoryIdListStr) - 1);
+                $categoryIdListStr = rtrim($categoryIdListStr, ',');
 //                $sql = <<<SQL
 //                select row_id as category_id, app_category, sequence
 //                from qp_app_category
