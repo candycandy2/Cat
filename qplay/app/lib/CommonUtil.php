@@ -551,7 +551,7 @@ SQL;
 
     public static function getAppVersionStatus($appId){
         
-      $appStatus = array('android'=>'UnPlished','ios'=>'UnPlished');
+      $appStatus = array('android'=>'UnPublish','ios'=>'UnPublish');
     
       foreach ( $appStatus as $key => $value) {
          

@@ -3,8 +3,46 @@ var submitFormAry = [$("#mainInfoForm"),
                      $("#basicInfoForm"),
                      $('#iconForm'),
                      $('#screenShotForm')];
-var validate = 0;
+
+
 SaveAppDetail = function(){
+    
+     var unPublishStr = 'UnPublish';
+     var appName = $('#txbAppName_'+jsDefaultLang).val();
+     var newAandroidStatus = unPublishStr;
+     var newIOSStatus = unPublishStr;
+     var confirmSrt = "";
+     var confirmTitleSrt = "";
+    
+     $('#gridAndroidVersionList').find('div.switch-success').each(function(){
+        newAandroidStatus = $(this).parent().data('name');
+     });
+     $('#gridIOSVersionList').find('div.switch-success').each(function(){
+        newIOSStatus = $(this).parent().data('name');
+     });
+
+     if((jsOriAndroidStatus!=unPublishStr || jsOriIOSStatus!=unPublishStr) && 
+        (newAandroidStatus == unPublishStr && newIOSStatus == unPublishStr)){
+        confirmSrt = '確認將 '+ appName +' 取消發布？';
+        confirmTitleSrt = '取消發佈確認';
+     }else if(jsOriAndroidStatus != newAandroidStatus || jsOriIOSStatus != newIOSStatus){
+         confirmSrt = '確認將 ' + appName + ' 發布 Android- ' + newAandroidStatus + ' | IOS- ' + newIOSStatus + '？';
+         confirmTitleSrt = '發佈確認';
+     }
+     
+     if(confirmTitleSrt !="" && confirmSrt!=""){
+         showConfirmDialog(confirmTitleSrt,confirmSrt,"", function () {
+            hideConfirmDialog();
+            SaveAppDetailToDB();
+        });
+     }else{
+          SaveAppDetailToDB();
+     }
+       
+}
+
+var validate = 0;
+SaveAppDetailToDB = function(){
     validate = 0;
     $("#mainInfoForm").find("input[name^=txbAppName_]").each(function(){
         $(this).rules("add", {
@@ -109,6 +147,7 @@ $(function () {
                     var formData = new FormData();
                     formData.append('appId',jsAppRowId);
                     formData.append('defaultLang',jsDefaultLang);
+                    formData.append('appKey',jsAppKey);
                     formData.append('mainInfoForm',$('#mainInfoForm').serialize());
                     formData.append('icon',$('#iconForm').find('.icon-preview').data('url'));
                     if(typeof ($( '#fileIconUpload' )[0].files[0]) != "undefined"){
@@ -149,11 +188,25 @@ $(function () {
                     $('input[name=cbxRole]:checked').each(function(){
                         formData.append('appRoleList[]',$(this).attr('data'));
                     });
-                    var currentData =  $("#gridUserList").bootstrapTable('getData');
-                    $.each(currentData, function(i, user) {
+                    var appUserData =  $("#gridUserList").bootstrapTable('getData');
+                    $.each(appUserData, function(i, user) {
                         formData.append('appUserList[]',user.row_id);
                     });
+                    
+                    var androidVersionList =  $("#gridAndroidVersionList").bootstrapTable('getData');
+                    $.each(androidVersionList, function(i, version) {
+                        $.each(version, function(j,v){
+                            formData.append('versionList[android][' + i + '][' + j + ']',v);
+                        }); 
+                    });
+                    var iosVersionList =  $("#gridIOSVersionList").bootstrapTable('getData');
+                    $.each(iosVersionList, function(i, version) {
+                        $.each(version, function(j,v){
+                            formData.append('versionList[ios][' + i + '][' + j + ']',v);
+                        }); 
+                    });
 
+                    formData.append('delVersionArr',delVersionArr);
 
                     $.ajax({
                         url: "AppMaintain/saveAppDetail",
@@ -163,18 +216,18 @@ $(function () {
                         processData: false,
                         success: function (d, status, xhr) {
                             validate = 0
-
                             if(d.result_code != 1) {
                                 showMessageDialog("錯誤",d.message);
                             }else{
                                 showMessageDialog("消息","操作成功!");
+                                $('#messageDialog').find('button').click(function(){
+                                    location.reload();
+                                });
                             }
-                            //location.reload();
                         },
                         error: function (e) {
                             validate = 0
                              showMessageDialog("錯誤", "操作失敗", e.responseText)
-                            //alert('error')
                         }
                     });
                      
