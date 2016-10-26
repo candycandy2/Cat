@@ -85,6 +85,15 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
         };
 
         $(function() {
+            try {
+                if(!tableSelectChangedFunctionList) {
+                    tableSelectChangedFunctionList = new Array();
+                }
+            } catch(e){
+                tableSelectChangedFunctionList = new Array();
+            }
+
+
             $('#gridTypeList').on('check.bs.table', selectedTypeChanged);
             $('#gridTypeList').on('uncheck.bs.table', selectedTypeChanged);
             $('#gridTypeList').on('check-all.bs.table', selectedTypeChanged);
@@ -98,6 +107,9 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
             $('#gridParameterList').on('uncheck-all.bs.table', selectedParameterChanged);
             $('#gridParameterList').on('load-success.bs.table', selectedParameterChanged);
             $('#gridParameterList').on('page-change.bs.table', selectedParameterChanged);
+
+            tableSelectChangedFunctionList.push(selectedTypeChanged);
+            tableSelectChangedFunctionList.push(selectedParameterChanged);
         });
 
         var selectedTypeChanged = function (row, $element) {

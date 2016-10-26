@@ -352,4 +352,8 @@ class CommonUtil
 
         return $result;
     }
+
+    public static function logApi() {
+
+    }
 }
