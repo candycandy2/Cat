@@ -13,6 +13,9 @@ var loginData = {
     token:           "",
     token_valid:     "",
     uuid:            "",
+    checksum:        "",
+    domain:          "",
+    emp_no:          "",
     callCheckAPPVer: false,
     callQLogin:      false,
     openMessage:     false
@@ -62,7 +65,7 @@ var app = {
         //For QSecurity
         var whiteList = new setWhiteList();
 
-        if (appKey === "appqplay") {
+        if (appKey === "appqplay" && device.platform === "Android") {
             //初始化JPush
             window.plugins.QPushPlugin.init();
             window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
@@ -135,9 +138,9 @@ function setWhiteList() {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (device.platform !== "iOS") {
                     window.plugins.qlogin.openAppCheckScheme(null, null);
-                    window.localStorage.setItem("openScheme", false);
+                    return;
                 }
-                return;
+                window.localStorage.setItem("openScheme", false);
             }
         }
 
@@ -286,7 +289,7 @@ function getServerData() {
     } else {
         //open QPlay
         window.localStorage.setItem("openScheme", true);
-        openAPP("appqplay://callbackApp=appyellowpage&action=getLoginData");
+        openAPP("appqplay://callbackApp=" + appKey + "&action=getLoginData");
     }
 
 }
@@ -333,7 +336,7 @@ function getSecurityList() {
                 'Signature': signatureInBase64,
                 'token': loginData.token
             },
-            url: serverURL + "/qplayApi/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
+            url: serverURL + "/qplayApiTest/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
             dataType: "json",
             cache: false,
             success: self.successCallback,
@@ -346,6 +349,7 @@ function getSecurityList() {
 
 function sendPushToken(data) {
     var self = this;
+    var queryStr = "&app_key=appqplay&device_type=" + loginData.deviceType;
 
     this.successCallback = function(data) {
 
@@ -354,7 +358,7 @@ function sendPushToken(data) {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback);
+        QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
@@ -381,7 +385,8 @@ function loadingMask(action) {
 
 function getLoginDataCallBack() {
     var callBackURL = queryData["callbackApp"] + "://callbackApp=appqplay&action=retrunLoginData&token=" + loginData['token'] +
-                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'];
+                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] + 
+                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'];
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;

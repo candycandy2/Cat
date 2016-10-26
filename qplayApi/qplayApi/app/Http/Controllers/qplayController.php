@@ -653,7 +653,7 @@ class qplayController extends Controller
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Need to update',
                     'content'=>array("version_code"=>$versionLine->version_code,
-                        'download_url'=>$versionLine->url)]);
+                        'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $version_code, $versionLine->url))]);
             }
         }
         else
@@ -898,6 +898,11 @@ SQL;
         $token = $request->header('token');
         $uuid = $input['uuid'];
         $appKey = $input['app_key'];
+        if($appKey != "appqplay") {
+            return response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
+                'message'=>'app-key參數錯誤',
+                'content'=>'']);
+        }
 
         if(!$Verify->chkUuidExist($uuid)) {
             return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
