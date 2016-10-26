@@ -50,7 +50,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             function AddMyPhoneBook() {
                 
                 var self = this;
-                var queryData = '<LayoutHeader><User_EmpID>' + myEmpID + '</User_EmpID>' + 
+                var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' + 
                                 '<Add_EmpID>' + employeeData[employeeSelectedIndex].employeeid + '</Add_EmpID>' + 
                                 '<Add_Company>' + employeeData[employeeSelectedIndex].company + '</Add_Company></LayoutHeader>';
 
