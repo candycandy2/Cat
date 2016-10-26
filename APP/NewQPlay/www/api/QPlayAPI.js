@@ -2,18 +2,14 @@
 
 
 
-function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
+function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
 
     failCallback =  failCallback || null;
     queryData = queryData || null;
+    queryStr = queryStr || "";
     
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
-    var queryStr = "";
-
-    if (requestAction === "sendPushToken") {
-        queryStr = "&app_key=appqplay&device_type=" + loginData.deviceType;
-    }
 
     $.ajax({
         type: requestType,

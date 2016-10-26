@@ -87,16 +87,70 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
             }
 
+            function doLogOut() {
+                //需要 User AD Account
+                var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.emp_no;
+
+                this.successCallback = function(data) {
+                    var resultcode = data['result_code'];
+
+                    if (resultcode == 1) {
+                        //clear data
+                        var loginData = {
+                            deviceType:      "",
+                            pushToken:       "",
+                            token:           "",
+                            token_valid:     "",
+                            uuid:            "",
+                            checksum:        "",
+                            domain:          "",
+                            emp_no:          "",
+                            callCheckAPPVer: false,
+                            callQLogin:      false,
+                            openMessage:     false
+                        };
+
+                        window.localStorage.clear();
+
+                        //open QLogin page
+                        var args = [];
+                        args[0] = "initialSuccess";
+                        args[1] = device.uuid;
+
+                        window.plugins.qlogin.openCertificationPage(null, null, args);
+                    }
+                };
+
+                this.failCallback = function(data) {};
+
+                var __construct = function() {
+                    QPlayAPI("POST", "logout", self.successCallback, self.failCallback, null, queryStr);
+                }();
+            }
+
             /********************************** page event *************************************/
             $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
-                QueryAppList();
+                var appList = new QueryAppList();
             });
 
-            $("#viewMain2-1").one("pageshow", function(event, ui) {
-
+            $("#viewMain2-1").on("pageshow", function(event, ui) {
+                $('#logoutConfirm').popup('close');
             });
 
             /********************************** dom event *************************************/
+            /*
+            $("#logout").on("click", function(){
+                $('#logoutConfirm').popup('open');
+            });
+
+            $("#logoutConfirm #cancel").on("click", function(){
+                $('#logoutConfirm').popup('close');
+            });
+
+            $("#logoutConfirm #confirm").on("click", function(){
+                var logout = new doLogOut();
+            });
+            */
         }
     });
 
