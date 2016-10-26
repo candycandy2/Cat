@@ -55,7 +55,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
             /********************************** page event *************************************/
             $("#viewAppDetail2-2").on("pagebeforeshow", function(event, ui) {
-                displayAppDetail();
+                var appDetail = new displayAppDetail();
             });
 
             $("#viewAppDetail2-2").on("pageshow", function(event, ui) {

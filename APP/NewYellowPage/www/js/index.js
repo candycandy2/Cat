@@ -7,7 +7,6 @@ var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhone
 var employeeData = {};
 var employeeSelectedIndex;
 var phonebookData = {};
-var myEmpID = "1609009";
 var prevPageID;
 
 window.initialSuccess = function() {
