@@ -13,7 +13,28 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     
                     if (resultcode == 1) {
                         
-                        messagecontent = data['content'];
+                        if (loginData["messagecontent"] === null) {
+                            loginData["messagecontent"] = data['content'];
+                            window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
+
+                            messagecontent = data['content'];
+                        } else {
+
+                            var localContent = JSON.parse(loginData["messagecontent"]);
+                            messagecontent = data['content'];
+
+                            if (messagecontent.message_count !== 0) {
+                                for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++) {
+                                    var message = messagecontent.message_list[messageindex];
+
+                                    localContent.message_count = parseInt(localContent.message_count + 1, 10);
+                                    localContent.message_list.unshift(message);
+                                }
+                            }
+
+                            messagecontent = localContent;
+                        }
+
                         var newsListItems = "";
                         var eventListItems = "";
 
@@ -36,7 +57,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                               var rowid = message.message_send_row_id;
                               var time = message.create_time;
                               
-                              eventListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
+                              eventListItems += "<li><a value=" + messageindex.toString() + " id=\"messageindex" + messageindex.toString() + "\"><h2 style=\"white-space:pre-wrap;\">" + title + "</h2><p>" + time + "</p></a></li>";
                           }
                         }
 
