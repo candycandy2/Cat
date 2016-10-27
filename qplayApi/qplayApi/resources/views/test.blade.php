@@ -179,7 +179,7 @@ FORM;
 
         var isRegister = function () {
             $.ajax({
-                url: "v101/qplay/isRegister?lang=en-us&uuid=" + registerUUID,//Math.uuid(),
+                url: "v101/qplay/isRegister?lang=en-us&uuid=chaosTest3",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",

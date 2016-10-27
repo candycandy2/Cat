@@ -15,6 +15,8 @@ use DB;
 
 class qplayController extends Controller
 {
+    public $API_VERSION = 'v101';
+
     public function isRegister()
     {
         $Verify = new Verify();
@@ -25,14 +27,33 @@ class qplayController extends Controller
             $input[strtolower($k)] = $v;
         }
 
+        $request = Request::instance();
+
+        //For Log
+        $ACTION = 'isRegister';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi('', $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
         $uuid = $input["uuid"];
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+        $userId = $userInfo->row_id;
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -42,22 +63,31 @@ class qplayController extends Controller
                 -> select('uuid')->get();
             if(count($uuidList) > 0)
             {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Device Has Registered',
                     'content'=>array("is_register"=>1)]);
+                CommonUtil::logApi($userId, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
             else
             {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Device Has not Registered',
                     'content'=>array("is_register"=>0)]);
+                CommonUtil::logApi($userId, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         }
         else
         {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi($userId, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -71,6 +101,10 @@ class qplayController extends Controller
         foreach ($input as $k=>$v) {
             $input[strtolower($k)] = $v;
         }
+
+        //For Log
+        $ACTION = 'register';
+        $APP_KEY = $request->header('App-Key');
 
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
@@ -87,9 +121,13 @@ class qplayController extends Controller
                 .ResultCode::_999001_requestParameterLostOrIncorrect
                 .'&message='
                 .'傳入參數不足或傳入參數格式錯誤');
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>array("redirect_uri"=>$finalUrl)]);
+            CommonUtil::logApi('', $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+
         }
 
         $uuid = $input["uuid"];
@@ -113,9 +151,12 @@ class qplayController extends Controller
                         .ResultCode::_000902_passwordError
                         .'&message='
                         .'Password Error');
-                    return response()->json(['result_code'=>ResultCode::_000902_passwordError,
+                    $result = response()->json(['result_code'=>ResultCode::_000902_passwordError,
                         'message'=>'Password Error',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
 
                 //Check uuid exist
@@ -129,16 +170,20 @@ class qplayController extends Controller
                         .ResultCode::_000903_deviceHasRegistered
                         .'&message='
                         .'Device Has Registered');
-                    return response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
+                    $result = response()->json(['result_code'=>ResultCode::_000903_deviceHasRegistered,
                         'message'=>'Device Has Registered',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
 
                 try
                 {
                     $token = uniqid();  //生成token
-                    $token_valid = time() + (2 * 86400);
-                    $now = date('Y-m-d H:i:s',$token_valid);
+                    $nowTimestamp = time();
+                    $token_valid = $nowTimestamp + (2 * 86400);
+                    $now = date('Y-m-d H:i:s',$nowTimestamp);
 
                     \DB::table("qp_register")->insert([
                         'user_row_id'=>$user->row_id,
@@ -184,9 +229,12 @@ class qplayController extends Controller
                         .ResultCode::_999999_unknownError
                         .'&message='
                         .'Call Service Error');
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
                         'message'=>'Call Service Error',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
                 $appHeaderList = \DB::table("qp_app_head")
                     ->join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
@@ -207,7 +255,7 @@ class qplayController extends Controller
                     .$token
                     .'&token_valid='
                     .$token_valid);
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>'Call Service Successed',
                     'token_valid'=>$token_valid,
                     'content'=>array(
@@ -220,6 +268,11 @@ class qplayController extends Controller
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ]);
+
+                CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+
+                return $result;
             }
         }
 
@@ -227,9 +280,12 @@ class qplayController extends Controller
             .$verifyResult["code"]
             .'&message='
             .$verifyResult["message"]);
-        return response()->json(['result_code'=>$verifyResult["code"],
+        $result = response()->json(['result_code'=>$verifyResult["code"],
             'message'=>$verifyResult["message"],
             'content'=>array("redirect_uri"=>$finalUrl)]);
+        CommonUtil::logApi("", $APP_KEY, $this->API_VERSION, $ACTION,
+            response()->json(apache_response_headers()), $result);
+        return $result;
     }
 
     public function unregister() {
@@ -241,24 +297,45 @@ class qplayController extends Controller
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $request = Request::instance();
+        $ACTION = 'unregister';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
         || !array_key_exists('target_uuid', $input) || trim($input["target_uuid"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $uuid = $input["uuid"];
-        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
 
         $target_uuid = $input["target_uuid"];
 
+
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
@@ -314,19 +391,28 @@ class qplayController extends Controller
                 \DB::commit();
             } catch (Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>'未知错误',
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
 
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+            $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>'Call Service Successed',
                 'content'=>array('uuid'=>$uuid)
             ]);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -340,6 +426,10 @@ class qplayController extends Controller
         foreach ($input as $k=>$v) {
             $input[strtolower($k)] = $v;
         }
+
+        //For Log
+        $ACTION = 'login';
+        $APP_KEY = $request->header('App-Key');
 
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
@@ -355,9 +445,12 @@ class qplayController extends Controller
                 .ResultCode::_999001_requestParameterLostOrIncorrect
                 .'&message='
                 .'傳入參數不足或傳入參數格式錯誤');
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>array("redirect_uri"=>$finalUrl)]);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
         $uuid = $input["uuid"];
 
@@ -378,9 +471,12 @@ class qplayController extends Controller
                         .ResultCode::_000902_passwordError
                         .'&message='
                         .'Password Error');
-                    return response()->json(['result_code'=>ResultCode::_000902_passwordError,
+                    $result = response()->json(['result_code'=>ResultCode::_000902_passwordError,
                         'message'=>'Password Error',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
 
                 //Check uuid exist
@@ -396,9 +492,12 @@ class qplayController extends Controller
                         .ResultCode::_000905_deviceNotRegistered
                         .'&message='
                         .'Device Not Registered');
-                    return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                    $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
                         'message'=>'Device Not Registered',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
                 else
                 {
@@ -409,9 +508,12 @@ class qplayController extends Controller
                             .ResultCode::_000904_loginUserNotMathRegistered
                             .'&message='
                             .'User Not Match Device');
-                        return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
+                        $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                             'message'=>'User Not Match Device',
                             'content'=>array("redirect_uri"=>$finalUrl)]);
+                        CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
 
@@ -466,10 +568,13 @@ class qplayController extends Controller
                         .'&message='
                         .'Call Service Error');
                     $status_code = ResultCode::_999999_unknownError;
-                    return response()->json(['result_code'=>$status_code,
+                    $result = response()->json(['result_code'=>$status_code,
                         'message'=>'Call Service Error',
                         'token_valid'=>$token_valid,
                         'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
 
                 $appHeaderList = \DB::table("qp_app_head")
@@ -488,11 +593,12 @@ class qplayController extends Controller
                 }
 
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+
                 $finalUrl = urlencode($redirect_uri.'?token='
                     .$token
                     .'&token_valid='
                     .$token_valid);
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Login Successed',
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid,
@@ -503,6 +609,10 @@ class qplayController extends Controller
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ]);
+
+                CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         }
 
@@ -510,9 +620,12 @@ class qplayController extends Controller
             .$verifyResult["code"]
             .'&message='
             .$verifyResult["message"]);
-        return response()->json(['result_code'=>$verifyResult["code"],
+        $result = response()->json(['result_code'=>$verifyResult["code"],
             'message'=>$verifyResult["message"],
             'content'=>array("redirect_uri"=>$finalUrl)]);
+        CommonUtil::logApi("", $APP_KEY, $ACTION,
+            response()->json(apache_response_headers()), $result);
+        return $result;
     }
 
     public function logout()
@@ -525,12 +638,20 @@ class qplayController extends Controller
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $request = Request::instance();
+        $ACTION = 'logout';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('domain', $input) || !array_key_exists('loginid', $input))
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
         $uuid = $input["uuid"];
         $domain = $input['domain'];
@@ -549,18 +670,24 @@ class qplayController extends Controller
                 $uuidInDB = null;
                 if(count($uuidList) < 1)
                 {
-                    return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                    $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
                         'message'=>'Device Not Registered',
                         'content'=>'']);
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
                 else
                 {
                     $uuidInDB = $uuidList[0];
                     if($user->row_id != $uuidInDB->user_row_id)
                     {
-                        return response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
+                        $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                             'message'=>'User Not Match Device',
                             'content'=>'']);
+                        CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
 
@@ -570,22 +697,34 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
                         'message'=>'Call Service Error',
                         'content'=>''
                     ]);
+
+                    CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+
+                    return $result;
                 }
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Logout Successed',
                     'content'=>array("uuid" => $uuid)
                 ]);
+
+                CommonUtil::logApi($user->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         }
 
-        return response()->json(['result_code'=>$verifyResult["code"],
+        $result = response()->json(['result_code'=>$verifyResult["code"],
             'message'=>$verifyResult["message"],
             'content'=>'']);
+        CommonUtil::logApi("", $APP_KEY, $ACTION,
+            response()->json(apache_response_headers()), $result);
+        return $result;
     }
 
     public function checkAppVersion()
@@ -598,13 +737,22 @@ class qplayController extends Controller
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $request = Request::instance();
+        $ACTION = 'checkAppVersion';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('package_name', $input) || !array_key_exists('device_type', $input) || !array_key_exists('version_code', $input)
         || trim($input["package_name"]) == "" || trim($input['device_type']) == "" || trim($input['version_code']) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $package_name = $input["package_name"];
@@ -617,9 +765,13 @@ class qplayController extends Controller
                 -> where('package_name', "=", $package_name)
                 -> select('row_id')->get();
             if(count($appRowIdList) < 1) {
-                return response()->json(['result_code'=>ResultCode::_000915_packageNotExist,
+                $result = response()->json(['result_code'=>ResultCode::_000915_packageNotExist,
                     'message'=>'package name不存在',
                     'content'=>'']);
+
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
             $app_row_id = $appRowIdList[0]->row_id;
 
@@ -630,37 +782,52 @@ class qplayController extends Controller
                 -> select('version_code', 'url')->get();
             if(count($versionList) < 1)
             {
-                return response()->json(['result_code'=>ResultCode::_999012_appOffTheShelf,
+                $result = response()->json(['result_code'=>ResultCode::_999012_appOffTheShelf,
                     'message'=>'app已经下架',
                     'content'=>'']);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
             if(count($versionList) > 1)
             {
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>'Call Service Failed',
                     'content'=>'']);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
 
             $versionLine = $versionList[0];
             if($versionLine->version_code == $version_code)
             {
-                return response()->json(['result_code'=>ResultCode::_000913_NotNeedUpdate,
+                $result = response()->json(['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>'App version is Nearest',
                     'content'=>'']);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
             else
             {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Need to update',
                     'content'=>array("version_code"=>$versionLine->version_code,
                         'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $version_code, $versionLine->url))]);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         }
         else
         {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -675,21 +842,42 @@ class qplayController extends Controller
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'getAppList';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
         $uuid = $input["uuid"];
 
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
@@ -704,8 +892,6 @@ class qplayController extends Controller
                     -> select('uuid', 'device_type')->get();
                 $device_type = $registerInfo[0]->device_type;
 
-                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-                
 //                $companyAppList = \DB::table('qp_app_head')
 //                    -> where('company_label', 'like',  $userInfo->company) -> select() ->get();
                 $companyAppList = DB::select("select * from qp_app_head where company_label like '%" . $userInfo->company . "%'");
@@ -852,7 +1038,7 @@ SQL;
                 }
 
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array(
@@ -860,19 +1046,28 @@ SQL;
                         'app_list'=>$app_list,
                         'multi_lang'=>$multi_lang)
                 ]);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
             else
             {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         }
         else
         {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -887,28 +1082,53 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'getSecurityList';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('app_key', $input))
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
         $uuid = $input['uuid'];
         $appKey = $input['app_key'];
-        if($appKey != "appqplay") {
-            return response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
-                'message'=>'app-key參數錯誤',
-                'content'=>'']);
-        }
 
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        if($appKey != "appqplay") {
+            $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
+                'message'=>'app-key參數錯誤',
+                'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
 
         if ($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
 
@@ -934,21 +1154,30 @@ SQL;
                     -> lists('security_level');
 
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>json_encode($whitelist),
                     'security_level'=>$level[0],
                 ]);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             } else {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
     }
@@ -964,25 +1193,46 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'getMessageList';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input))
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
         $uuid = $input["uuid"];
 
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
+            $userId = $userInfo->row_id;
+
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
@@ -1006,69 +1256,92 @@ SQL;
                 $count_to = -1;
                 if(array_key_exists('date_from', $input) && trim($input['date_from']) != "") {
                     if(!array_key_exists('date_to', $input) || trim($input['date_to']) == "") {
-                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>'傳入參數不足或傳入參數格式錯誤',
                             'content'=>'']);
+                        CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
                 if(array_key_exists('date_to', $input) && trim($input['date_to']) != "") {
                     if(!array_key_exists('date_from', $input) || trim($input['date_from']) == "") {
-                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>'傳入參數不足或傳入參數格式錯誤',
                             'content'=>'']);
+                        CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
                 if(array_key_exists('count_from', $input) && trim($input['count_from']) != "") {
                     if (!array_key_exists('count_to', $input) || trim($input['count_to']) == "") {
-                        return response()->json(['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                        $result = response()->json(['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message' => '傳入參數不足或傳入參數格式錯誤',
                             'content' => '']);
+                        CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
                 if(array_key_exists('count_to', $input) && trim($input['count_to']) != "") {
                     if (!array_key_exists('count_from', $input) || trim($input['count_from']) == "") {
-                        return response()->json(['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                        $result = response()->json(['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message' => '傳入參數不足或傳入參數格式錯誤',
                             'content' => '']);
+                        CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
 
 
                 if(array_key_exists('date_from', $input) && trim($input['date_from']) != "") {
                     if(!array_key_exists('date_to', $input) || trim($input['date_to']) == "") {
-                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>'傳入參數不足或傳入參數格式錯誤',
                             'content'=>'']);
+                        CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                     $useUserDate = true;
                     $date_from = $input['date_from'];
 
                     $date_to = $input['date_to'];
                     if($date_to < $date_from) {
-                        return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>'傳入參數不足或傳入參數格式錯誤',
                             'content'=>'']);
+                        CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
 
                     if(array_key_exists('count_from', $input) && trim($input['count_from']) != "") {
                         if(!array_key_exists('count_to', $input) || trim($input['count_to']) == "") {
-                            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                                 'content'=>'']);
+                            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                                response()->json(apache_response_headers()), $result);
+                            return $result;
                         }
 
                         $count_from = $input['count_from'];
                         $count_to = $input['count_to'];
                         if($count_from < 1 || $count_to < 1 || $count_to < $count_from) {
-                            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                                 'content'=>'']);
+                            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                                response()->json(apache_response_headers()), $result);
+                            return $result;
                         }
                     }
                 }
 
-                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-                $userId = $userInfo->row_id;
+
                 $sql = <<<SQL
 select ms.row_id as message_send_row_id,
 		m.row_id as message_row_id,        
@@ -1135,21 +1408,30 @@ SQL;
                         'updated_user'=>$userId]);
                 }
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_count'=> count($r),
                         'message_list'=>$r)
                 ]);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             } else {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -1164,13 +1446,20 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'getMessageDetail';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
             || !array_key_exists('message_send_row_id', $input) || trim($input["message_send_row_id"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
@@ -1178,25 +1467,40 @@ SQL;
         $message_send_row_id = $input["message_send_row_id"];
 
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
             $userId = $userInfo->row_id;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $sql = 'select * from qp_message where row_id = (select message_row_id from qp_message_send where row_id = '.$message_send_row_id.')';
                 $msgList = DB::select($sql, []);
                 if(count($msgList) == 0) {
-                    return response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+                    $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
                         'message'=>'消息不存在',
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>''
                     ]);
+                    CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
                 $msg = $msgList[0];
                 $sql = <<<SQL
@@ -1271,28 +1575,40 @@ SQL;
                             $msgDetail->read_time = $userRead->read_time;
                         }
                     }
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                         'message'=>'Call Service Successed',
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetail
                     ]);
+                    CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 } else {
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                    $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                         'message'=>'Call Service Successed',
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetailList
                     ]);
+                    CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
                 }
 
             } else {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -1307,15 +1623,22 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'updateMessage';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('message_send_row_id', $input)
             || !array_key_exists('message_type', $input) || !array_key_exists('status', $input)
         || trim($input["uuid"]) == "" || trim($input["message_send_row_id"]) == ""
             || trim($input["message_type"]) == "" || trim($input["status"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
@@ -1324,29 +1647,53 @@ SQL;
         $message_type = $input["message_type"];
         $status = $input["status"];
 
+        if(!$Verify->chkUuidExist($uuid)) {
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>'uuid不存在',
+                'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
         $msgSendList = \DB::table("qp_message_send")
             -> where('row_id', "=", $message_send_row_id)
             -> select('message_row_id')->get();
         if(count($msgSendList) < 1 ) {
-            return response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
                 'message'=>'此消息不存在',
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
         $message_row_id = $msgSendList[0]->message_row_id;
         $msgList = \DB::table("qp_message")
             -> where('row_id', "=", $message_row_id)
             -> select('row_id')->get();
         if(count($msgList) < 1 ) {
-            return response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
                 'message'=>'此消息不存在',
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 if($status == 'read' && $message_type == "event") {
                     $now = date('Y-m-d H:i:s',time());
                     $user = CommonUtil::getUserInfoByUUID($uuid);
@@ -1359,20 +1706,29 @@ SQL;
                                 'updated_user'=>$user->row_id]);
                 }
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_send_row_id' => $message_send_row_id)
                 ]);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             } else {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -1389,13 +1745,20 @@ SQL;
 
         $pushToken = $request->header('push-token');
 
+        //For Log
+        $ACTION = 'sendPushToken';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if($pushToken == null || !array_key_exists('uuid', $input) || !array_key_exists('app_key', $input)
             || !array_key_exists('device_type', $input) || trim($input["uuid"]) == "" || trim($input["app_key"]) == "" || trim($input["device_type"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $uuid = $input["uuid"];
@@ -1403,25 +1766,35 @@ SQL;
         $deviceType = $input["device_type"];
 
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if(!$Verify->chkAppKeyExist($appKey)) {
-            return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
                 'message'=>'app_key不存在',
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-            if($userInfo == null)
-            {
-                return array("code"=>ResultCode::_000914_userWithoutRight,
-                    "message"=> "账号已被停权");
-            }
 
             $uuidList = \DB::table("qp_register")
                 -> where('uuid', "=", $uuid)
@@ -1430,9 +1803,12 @@ SQL;
                 -> select('uuid', 'row_id')->get();
             if(count($uuidList) < 1)
             {
-                return response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
                     'message'=>'设备未注册',
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
 
             $registerId = $uuidList[0]->row_id;
@@ -1445,9 +1821,12 @@ SQL;
                 -> where('push_token', "=", $pushToken)
                 -> select()->get();
             if(count($existInfoList) > 1 || (count($existInfoList) == 1 && $existInfoList[0]->register_row_id != $registerId)) {
-                return response()->json(['result_code'=>ResultCode::_999013_pushTokenUsed,
+                $result = response()->json(['result_code'=>ResultCode::_999013_pushTokenUsed,
                     'message'=>'push token已使用',
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
 
             $existPushToken =  \DB::table("qp_push_token")
@@ -1504,19 +1883,29 @@ SQL;
                 \DB::commit();
             } catch (Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>'未知错误',
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
 
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+            $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>'Call Service Successed',
                 'content'=>array('uuid'=>$uuid)
             ]);
+
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
@@ -1531,16 +1920,33 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'renewToken';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input))
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
         $uuid = $input["uuid"];
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -1559,20 +1965,29 @@ SQL;
                         'updated_at'=>$now,
                         'updated_user'=>$user->row_id,]);
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Renew Successed',
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid, "token"=>$token)
                 ]);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             } else {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi($userInfo->row_id, $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
     
@@ -1588,27 +2003,40 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'sendPushMessage';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('app_key', $input) || !array_key_exists('need_push', $input)
         || trim($input["app_key"]) == "" || trim($input["need_push"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $app_key = $input["app_key"];
         $need_push = trim(strtoupper($input["need_push"]));
         if($need_push != "Y" && $need_push != "N") {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if(!$Verify->chkAppKeyExist($app_key)) {
-            return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
                 'message'=>'app_key不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
@@ -1633,7 +2061,9 @@ SQL;
                         'message'=>"数据不完整",
                         'content'=>'']);
                 }
+                $need_push_db = 0;
                 if($need_push == "Y") {
+                    $need_push_db = 1;
                     if($jsonContent['message_type'] == "event" &&
                         ( (!array_key_exists('destination_user_id', $jsonContent) || $jsonContent['destination_user_id'] == null)
                             && (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null))) {
@@ -1644,9 +2074,12 @@ SQL;
 
                     if($jsonContent['message_type'] == "news" &&
                         (!array_key_exists('destination_role_id', $jsonContent) || $jsonContent['destination_role_id'] == null)) {
-                        return response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
+                        $result = response()->json(['result_code'=>ResultCode::_000918_dataIncomplete,
                             'message'=>"数据不完整",
                             'content'=>'']);
+                        CommonUtil::logApi("", $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
 
@@ -1660,9 +2093,12 @@ SQL;
 
                     $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
                     if($projectInfo == null) {
-                        return response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
+                        $result = response()->json(['result_code'=>ResultCode::_000909_appKeyNotExist,
                             'message'=>"app key不存在",
                             'content'=>'']);
+                        CommonUtil::logApi("", $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
 
                     $destinationUserIdList = $jsonContent['destination_user_id'];
@@ -1674,15 +2110,21 @@ SQL;
                         $verifyResult = $Verify->verifyUserByUserIDAndDomain($userid, $domain);
 
                         if($verifyResult["code"] == ResultCode::_000901_userNotExistError) {
-                            return response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
+                            $result = response()->json(['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
                                 'message'=>"接收推播的用户不存在",
                                 'content'=>'']);
+                            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                                response()->json(apache_response_headers()), $result);
+                            return $result;
                         }
 
                         if($verifyResult["code"] != ResultCode::_1_reponseSuccessful) {
-                            return response()->json(['result_code'=>$verifyResult["code"],
+                            $result = response()->json(['result_code'=>$verifyResult["code"],
                                 'message'=>$verifyResult["message"],
                                 'content'=>'']);
+                            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                                response()->json(apache_response_headers()), $result);
+                            return $result;
                         }
 
                         $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
@@ -1699,9 +2141,13 @@ SQL;
 
                         $destinationRoleInfo = CommonUtil::getRoleInfo($roleDesc, $company);
                         if($destinationRoleInfo == null) {
-                            return response()->json(['result_code'=>ResultCode::_000917_roleNotExist,
+                            $result = response()->json(['result_code'=>ResultCode::_000917_roleNotExist,
                                 'message'=>"角色不存在",
                                 'content'=>'']);
+
+                            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                                response()->json(apache_response_headers()), $result);
+                            return $result;
                         }
 
                         array_push($destinationRoleInfoList, $destinationRoleInfo);
@@ -1710,9 +2156,13 @@ SQL;
                     $message_type = $jsonContent['message_type'];
                     $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
                     if(strlen($message_title) > 99) {
-                        return response()->json(['result_code'=>ResultCode::_000916_titleLengthTooLong,
+                        $result = response()->json(['result_code'=>ResultCode::_000916_titleLengthTooLong,
                             'message'=>"标题栏位太长",
                             'content'=>'']);
+
+                        CommonUtil::logApi("", $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                     $template_id = $jsonContent['template_id'];
                     $message_text = CommonUtil::jsUnescape(base64_decode($jsonContent['message_text']));
@@ -1738,7 +2188,7 @@ SQL;
                                 'source_user_row_id'=>$userInfo->row_id,
                                 'created_user'=>$userInfo->row_id,
                                 'created_at'=>$now,
-                                'need_push'=>$need_push,
+                                'need_push'=>$need_push_db,
                                 'push_flag'=>'0'
                             ]);
 
@@ -1812,29 +2262,41 @@ SQL;
                             $result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
                             if(!$result["result"]) {
                                 \DB::rollBack();
-                                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                                $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                                    response()->json(apache_response_headers()), $result);
+                                return $result;
                             }
                         }
 
                         \DB::commit();
-                        return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                        $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                             'message'=>'Send Push Message Successed',
                             'content'=>array('jsonContent'=>count($destinationUserIdList),
                                 'content'=>$content)//json_encode($jsonContent)
                         ]);
+                        CommonUtil::logApi("", $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     } catch (Exception $e) {
                         \DB::rollBack();
-                        return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
                             'message'=>'未知错误',
                             'content'=>'']);
+                        CommonUtil::logApi("", $APP_KEY, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
                     }
                 }
             }
         }
 
-        return response()->json(['result_code'=>$verifyResult["code"],
+        $result = response()->json(['result_code'=>$verifyResult["code"],
             'message'=>$verifyResult["message"],
             'content'=>'']);
+        CommonUtil::logApi("", $APP_KEY, $ACTION,
+            response()->json(apache_response_headers()), $result);
+        return $result;
     }
 
     public function updateLastMessageTime() {
@@ -1848,13 +2310,20 @@ SQL;
             $input[strtolower($k)] = $v;
         }
 
+        //For Log
+        $ACTION = 'sendPushMessage';
+        $APP_KEY = $request->header('App-Key');
+
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('last_update_time', $input)
             || trim($input["uuid"]) == "" || trim($input["last_update_time"]) == "")
         {
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+            $result = response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         $token = $request->header('token');
@@ -1862,16 +2331,29 @@ SQL;
         $last_update_time = $input["last_update_time"];
 
         if(!$Verify->chkUuidExist($uuid)) {
-            return response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
+        $user = CommonUtil::getUserInfoByUUID($uuid);
+        if($user == null)
+        {
+            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+                "message"=> "账号已被停权");
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
             $now = date('Y-m-d H:i:s',time());
-            $user = CommonUtil::getUserInfoByUUID($uuid);
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 \DB::table("qp_register")
                     -> where('uuid', '=', $uuid)
@@ -1881,20 +2363,29 @@ SQL;
                             'updated_at'=>$now,
                             'updated_user'=>$user->row_id]);
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('uuid'=>$uuid)
                 ]);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             } else {
-                return response()->json(['result_code'=>$verifyResult["code"],
+                $result = response()->json(['result_code'=>$verifyResult["code"],
                     'message'=>$verifyResult["message"],
                     'content'=>'']);
+                CommonUtil::logApi("", $APP_KEY, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
             }
         } else {
-            return response()->json(['result_code'=>$verifyResult["code"],
+            $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
+            CommonUtil::logApi("", $APP_KEY, $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 }
