@@ -65,17 +65,15 @@
                                     @if(isset($picData[$appData->lang_row_id]['android_screenshot']))
                                         @foreach ($picData[$appData->lang_row_id]['android_screenshot'] as $picId => $pic)
                                         <?php $i ++ ?>
-                                            <li class="imgLi" data-picid="{{$picId}}" data-url="{{$pic}}" data-lang="{{$appData->lang_row_id}}" data-device="android"><img src="{{ \App\lib\FilePath::getScreenShotUrl(app('request')->input('app_row_id'),$appData->lang_row_id,'android',$pic)}}" class="screen-preview js-screen-file"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/>
+                                            <li class="imgLi" data-picid="{{$picId}}" data-url="{{$pic}}" data-lang="{{$appData->lang_row_id}}" data-device="android"><img src="{{ \App\lib\FilePath::getScreenShotUrl(app('request')->input('app_row_id'),$appData->lang_row_id,'android',$pic)}}" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/>
                                             </li>
                                         @endforeach
                                     @endif
-                                    @if($i < 5)
-                                        <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}">
-                                            <div>+</div>
-                                            <div>新增<br>螢幕擷取畫面</div>
-                                            <input type="file" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
-                                        </li>
-                                    @endif
+                                    <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}" @if($i >= 5)  style="display:none"   @endif>
+                                        <div>+</div>
+                                        <div>新增<br>螢幕擷取畫面</div>
+                                        <input type="file" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                    </li>
                                 </ul>
                                 <ul class="form-group tab-pane fade sortable" id="tab_ios_{{$appData->lang_row_id}}">
                                     <?php $j = 0; ?>
@@ -86,13 +84,11 @@
                                          </li>
                                         @endforeach
                                     @endif  
-                                    @if($j < 5)  
-                                    <li class="screen-upl-btn js-screen-file" id="iosScreenUpl_{{$appData->lang_row_id}}">
+                                    <li class="screen-upl-btn js-screen-file" @if($i >= 5)  style="display:none"   @endif id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
                                         <div>新增<br>螢幕擷取畫面</div>
                                         <input type="file" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                     </li>
-                                    @endif
                                 </ul>
                             </div>
                         </div>

@@ -60,6 +60,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
+    <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--}}
@@ -72,6 +73,8 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.cookie.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
@@ -87,6 +90,9 @@ if(array_key_exists('with_msg_id', $input)) {
             white-space:nowrap;
             overflow:hidden;
             text-overflow:ellipsis;
+        }
+        .error{
+            color: red;
         }
     </style>
 </head>
