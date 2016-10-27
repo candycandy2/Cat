@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 use App\Model\QP_App_Head;
 use App\Model\QP_App_Line;
 use App\Model\QP_App_Pic;
+use App\Model\QP_App_Version;
 use App\Model\QP_Role_App;
 use App\Model\QP_User_App;
 use DB;
@@ -647,7 +648,7 @@ class AppMaintainController extends Controller
         $destinationPath    =  FilePath::getApkUploadPath($appRowId,$deviceType,$versionCode);
         try{
             if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
+                mkdir($destinationPath, 0755, true);
             }
 
             $fileName =  Input::file('file')->getClientOriginalName();
@@ -702,154 +703,17 @@ class AppMaintainController extends Controller
         return null;
     }
 
-    public function editAppVersion(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $versionRowId = $jsonContent['versionRowId'];
-            $versionName = $jsonContent['versionName'];
-            
-
-            \DB::table("qp_app_version")
-                    -> where('row_id', "=", $versionRowId)
-                    -> update(
-                        ['version_name'=> $versionName ,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
-    public function deleteAppVersion(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $versionItemList = $jsonContent["versionItemList"];
-            $now = date('Y-m-d H:i:s',time());
-            foreach ($versionItemList as $versionItem) {
-
-               $destinationPath = FilePath::getApkUploadPath($versionItem['app_row_id'],$versionItem['device_type'],$versionItem['version_code']);
-    
-                if($versionItem['device_type'] == 'ios'){
-                   if (file_exists($destinationPath.'manifest.plist')) {
-                        unlink($destinationPath.'manifest.plist');
-                    }
-                }
-                if(file_exists($destinationPath.$versionItem['url'])){
-                    $result = unlink($destinationPath.$versionItem['url']);
-                    if($result){
-                        rmdir($destinationPath);
-                    }
-                }
-                
-
-                $result = \DB::table("qp_app_version")
-                -> where('row_id', '=', $versionItem['row_id'])
-                -> delete();
-            }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-        return null;    
-    }
-
-    public function publishApp(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-         
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $versionRowId = $jsonContent['versionRowId'];
-
-            $versionInfo = \DB::table("qp_app_version")
-                -> where('row_id', '=', $versionRowId)
-                -> select('app_row_id', 'device_type')
-                -> first();
-            
-            \DB::table("qp_app_version")
-                    -> where('app_row_id', "=", $versionInfo->app_row_id)
-                    -> where('device_type', "=", $versionInfo->device_type)
-                    -> where('status', "=", "ready")
-                    -> update(
-                        ['status'=> 'cancel' ,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-            
-            \DB::table("qp_app_version")
-                    -> where('row_id', "=", $versionRowId)
-                    -> update(
-                        ['status'=> 'ready' ,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
-    public function unPublishApp(){
-        
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $versionRowId = $jsonContent['versionRowId'];
-            
-            \DB::table("qp_app_version")
-                    -> where('row_id', "=", $versionRowId)
-                    -> update(
-                        ['status'=> 'cancel' ,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-
-    }
-
-    
     public function saveAppDetail(Request $request){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
             return null;
         }
-        try{
+       \DB::beginTransaction();
+       try{
             $input = $request->all();
             $appId = $input['appId'];
-           // var_dump($input);exit();
-            
+            $appkey = $input['appKey'];
+
             parse_str($input['mainInfoForm'], $mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
             $iconfileName = $input['icon'];
@@ -902,11 +766,23 @@ class AppMaintainController extends Controller
                 }
             }
             
+            if(isset($input['delVersionArr']) && is_array($input['delVersionArr'])){
+                $this->deleteAppVersionFile($appId,explode(",", $input['delVersionArr']));
+            }
+            if(isset($input['versionList']) && is_array($input['versionList'])){
+                $versionList = $input['versionList'];
+            }else{
+                $versionList = array();
+            }
+            $this->saveAppVersionList($appkey, $appId, $versionList);
+            \DB::commit();
+           
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        
         }catch(\Exception $e){
-            return array("code"=>ResultCode::_999999_unknownError,
-                    "message"=>$e->getMessage());
+          
+           return array("code"=>ResultCode::_999999_unknownError,
+                   "message"=>$e->getMessage()); 
+           \DB::rollBack();
         }
     }
     
@@ -915,7 +791,7 @@ class AppMaintainController extends Controller
         $iconUploadPath =  FilePath::getIconUploadPath($appId);
 
         if (!file_exists($iconUploadPath)) {
-            mkdir($iconUploadPath, 0777, true);
+            mkdir($iconUploadPath, 0755, true);
         }
         $icon->move($iconUploadPath,$icon->getClientOriginalName());
         return $icon->getClientOriginalName();
@@ -1090,7 +966,7 @@ class AppMaintainController extends Controller
      */
     private function getManifest($appRowId, $appKey, $deviceType, $versionCode, $fileName){
     
-        $MANIFEST_TEMPLETE_PATH = base_path('resources\templete\manifest.plist');
+        $MANIFEST_TEMPLETE_PATH = base_path('resources'. DIRECTORY_SEPARATOR .'templete'. DIRECTORY_SEPARATOR .'manifest.plist');
         $contents = null;
 
         if (File::exists($MANIFEST_TEMPLETE_PATH))
@@ -1156,15 +1032,15 @@ class AppMaintainController extends Controller
                     ->where('status', '=', 'ready')
                     ->select('app_row_id','version_name','device_type','status','updated_at')
                     ->orderBy('status','device_type','updated_at')
-                    ->first();
+                    ->get();
                 
                 $app->released['android'] = 'android-Unpublish';
                 $app->released['ios'] = 'ios-Unpublish';
-                if(count( $appVersionInfo ) > 0) {
-                    $app->released[$appVersionInfo->device_type] = 
-                        $appVersionInfo->device_type.'-'.$appVersionInfo->version_name;
+
+                foreach ( $appVersionInfo as $version) {
+                     $app->released[$version->device_type] = 
+                        $version->device_type.'-'.$version->version_name;
                 }
-              
             }
         }catch(Exception $e){
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,
@@ -1288,7 +1164,7 @@ class AppMaintainController extends Controller
         $destinationPath   =  FilePath::getErrorCodeUploadPath($appId);
 
         if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0777, true);
+            mkdir($destinationPath, 0755, true);
         }
         $errorCodeFile->move($destinationPath,$ERROR_CODE_FILE_NAME);
         $errorCodeJson = file_get_contents(FilePath::getErrorCodeUploadPath($appId).$ERROR_CODE_FILE_NAME);
@@ -1371,6 +1247,88 @@ class AppMaintainController extends Controller
         }
     }
 
+    private function deleteAppVersionFile(Int $appId, Array $delVersionArr){
+
+        foreach ($delVersionArr as  $vId) {
+            $versionItem = QP_App_Version::where('row_id', $vId)
+                            ->first(['version_code','url','device_type']);
+            $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
+            
+            if($versionItem['device_type'] == 'ios'){
+               if (file_exists($destinationPath.'manifest.plist')) {
+                   unlink($destinationPath.'manifest.plist');
+                }
+            }
+
+            if(file_exists($destinationPath.$versionItem['url'])){
+                $result = unlink($destinationPath.$versionItem['url']);
+            }
+        }
+
+    }
+
+    /**
+     * save the changre of app version list
+     * @param  Int    $appId       target app id
+     * @param  Array  $versionList version object array
+     */
+    private function saveAppVersionList($appKey ,Int $appId, Array $versionList){
+        $deleteVersionRows = QP_App_Version::where('app_row_id', $appId)
+                             ->delete();
+        $insertArray = [];
+        foreach ($versionList as $deviceType => $versionItems) {
+            $hasPublished = false;  
+            foreach ($versionItems as $value) {
+                $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
+                if(isset($value['version_file'])){
+                    $value['version_file']->move($destinationPath,$value['url']);
+                    if($deviceType == 'ios'){
+                        $manifestContent = $this->getManifest($appId, $appKey, $deviceType, $value['version_code'],$value['url']);
+                         if(isset($manifestContent)){
+                            $file = fopen($destinationPath."manifest.plist","w"); 
+                            fwrite($file,$manifestContent );
+                            fclose($file);
+                         }
+                    }
+                }
+                
+                $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
+                if($value['status'] == 'ready'){
+                    $hasPublished = true;
+                    \File::copy($destinationPath.$value['url'],$publishFilePath.$value['url']);
+                    if($deviceType == 'ios'){
+                        \File::copy($destinationPath.'manifest.plist',$publishFilePath.'manifest.plist');
+                    }
+                }
+                if(!$hasPublished){
+                    if(file_exists($publishFilePath.$value['url'])){
+                        $result = unlink($publishFilePath.$value['url']);
+                    }
+                    if($deviceType == 'ios'){
+                        if(file_exists($publishFilePath.'manifest.plist')){
+                            unlink($publishFilePath.'manifest.plist');
+                        }
+                    }
+                }
+                $readyDate = ($value['status'] == 'ready')?time():null;
+                $data = array(
+                    'app_row_id'=>$appId,
+                    'version_code'=>$value['version_code'],
+                    'version_name'=>$value['version_name'],
+                    'url'=>$value['url'],
+                    'status'=>$value['status'],
+                    'device_type'=>$deviceType,
+                    'ready_date'=>$readyDate,
+                    'created_user'=>\Auth::user()->row_id,
+                    'updated_user'=>\Auth::user()->row_id,
+                    'updated_at'=>$value['updated_at']
+                );
+                $insertArray[]=$data;
+            }
+        }
+        QP_App_Version::insert($insertArray);
+        
+    }
 }
 
 ?>
