@@ -8,17 +8,20 @@
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey;
 var loginData = {
-    deviceType:      "",
-    pushToken:       "",
-    token:           "",
-    token_valid:     "",
-    uuid:            "",
-    checksum:        "",
-    domain:          "",
-    emp_no:          "",
-    callCheckAPPVer: false,
-    callQLogin:      false,
-    openMessage:     false
+    deviceType:          "",
+    pushToken:           "",
+    token:               "",
+    token_valid:         "",
+    uuid:                "",
+    checksum:            "",
+    domain:              "",
+    emp_no:              "",
+    messagecontent:      null,
+    msgDateFrom:         null,
+    doLoginDataCallBack: false,
+    callCheckAPPVer:     false,
+    callQLogin:          false,
+    openMessage:         false
 };
 var queryData = {};
 var getDataFromServer = false;
@@ -144,18 +147,20 @@ function setWhiteList() {
             }
         }
 
+        if (device.platform === "Android") {
+            $('.ui-btn span').addClass('android-fix-btn-text-middle');
+
+            if (appKey === "appqplay") {
+                window.plugins.qlogin.openAppCheckScheme(null, null);
+            }
+        }
+
         //check data(token, token_value, ...) on web-storage
         checkStorageData();
 
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
-        } else {
-            $('.ui-btn span').addClass('android-fix-btn-text-middle');
-
-            if (appKey === "appqplay") {
-                window.plugins.qlogin.openAppCheckScheme(null, null);
-            }
         }
 
     };
@@ -274,6 +279,10 @@ function processStorageData(action, data) {
             window.localStorage.setItem(key, value);
             loginData[key] = value;
         });
+
+        if (appKey === "appqplay") {
+            getMessageList();
+        }
     }
 
 }
@@ -389,7 +398,10 @@ function getLoginDataCallBack() {
                       "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'];
     openAPP(callBackURL);
 
+    getMessageList();
     loginData['doLoginDataCallBack'] = false;
+
+    $.mobile.changePage('#viewMain2-1');
 }
 
 function handleOpenURL(url) {
@@ -398,6 +410,10 @@ function handleOpenURL(url) {
 
     function waitCheckAPPVer() {
         if (url !== "null") {
+
+            if (appKey === "appqplay") {
+                loginData['doLoginDataCallBack'] = true;
+            }
 
             if (appKey === "appqplay" && (loginData['callCheckAPPVer'] === true || loginData['callQLogin'] === true)) {
                 return;
