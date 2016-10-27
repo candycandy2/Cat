@@ -38,7 +38,7 @@ return [
     'TITLE_USER_MAINTAIN' => '用戶管理',
     'TITLE_APP_MAINTAIN' => 'App管理',
     'TITLE_SYS_MAINTAIN' => '系統管理',
-    'TITLE_PUSH_SERVER' => '推播服務',
+    'TITLE_PUSH_SERVER' => '訊息服務',
     'TITLE_ABOUT' => '關於',
     'TITLE_USER_ACCOUNT_MAINTAIN' => '帳號管理',
     'TITLE_USER_ROLE_MAINTAIN' => '企業角色管理',
@@ -143,7 +143,7 @@ return [
     'MSG_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
 
     //Push Message
-    'NEW_MESSAGE' => '新增推播',
+    'NEW_MESSAGE' => '新增訊息',
     'MESSAGE_TYPE' => '類別',
     'MESSAGE_TITLE' => '標題',
     'TEMPLATE_ID' => '模板編號',
@@ -158,6 +158,7 @@ return [
     'MESSAGE_RECEIVER' => '收訊者',
     'PUSH_IMMEDIATELY' => '立即推播',
     'MSG_CONFIRM_PUSH_IMMEDIATELY' => '系統將發出%s推播',
+    'MSG_CONFIRM_SAVE_IMMEDIATELY' => '系統將保存%s推播',
     'MSG_MUST_CHOOSE_RECEIVER' => '必須選擇接收者!',
     'MESSAGE_SEND_HISTORY' => '推播紀錄',
     'PUSH_DATE' => '日期',

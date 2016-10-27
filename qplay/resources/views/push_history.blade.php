@@ -10,6 +10,14 @@ $needPushFlag = 'N';
 if(count($messageInfo->send_list) == 0) {
     $needPushFlag = 'Y';
 }
+
+$pushSendRowId = -1;
+foreach ($messageInfo->send_list as $sendItem) {
+    if($sendItem->need_push == 0) {
+        $needPushFlag = 'Y';
+        $pushSendRowId = $sendItem->row_id;
+    }
+}
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -135,7 +143,8 @@ label {
         $(function() {
             $('#switchVisible').on('switch-change', SaveMessageVisible);
             @if($needPushFlag == 'Y')
-                    window.location.href = "newMessage?copy_from={{$messageId}}&from_history=Y";
+                    //window.location.href = "newMessage?copy_from={{$messageId}}&from_history=Y";
+                window.location.href = "updateMessage?message_id={{$messageId}}&push_send_row_id={{$pushSendRowId}}";
             @endif
         });
 
