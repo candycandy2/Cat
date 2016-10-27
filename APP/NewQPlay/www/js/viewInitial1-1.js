@@ -23,6 +23,9 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         if (getDataFromServer) {
                             getServerData();
                         } else {
+
+                            getMessageList();
+
                             if (loginData["openMessage"] === true) {
                                 $.mobile.changePage("#viewWebNews2-3-1");
                             } else {
@@ -36,6 +39,9 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         if (getDataFromServer) {
                             getServerData();
                         } else {
+
+                            getMessageList();
+
                             if (loginData["openMessage"] === true) {
                                 $.mobile.changePage("#viewWebNews2-3-1");
                             } else {
