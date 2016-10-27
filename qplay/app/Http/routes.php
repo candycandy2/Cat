@@ -40,6 +40,9 @@ Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
 Route::any('/platform/saveParameter', 'platformController@saveParameter');
 Route::any('/platform/getMessageList', 'platformController@getMessageList');
 Route::any('/platform/getMessageSendList', 'platformController@getMessageSendList');
+Route::any('/platform/saveNewMessage', 'platformController@saveNewMessage');
+Route::any('/platform/saveUpdateMessage', 'platformController@saveUpdateMessage');
+Route::any('/platform/saveUpdateAndPushMessage', 'platformController@saveUpdateAndPushMessage');
 Route::any('/platform/pushMessageImmediately', 'platformController@pushMessageImmediately');
 Route::any('/platform/pushMessageImmediatelyAgain', 'platformController@pushMessageImmediatelyAgain');
 Route::any('/platform/getSingleEventMessageReceiver', 'platformController@getSingleEventMessageReceiver');
@@ -109,6 +112,9 @@ Route::any('push', ['middleware' => 'auth', function() {
 
 Route::any('newMessage', ['middleware' => 'auth', function() {
     return view("push_new_message");
+}]);
+Route::any('updateMessage', ['middleware' => 'auth', function() {
+    return view("push_update_message");
 }]);
 Route::any('messagePushHistory', ['middleware' => 'auth', function() {
     return view("push_history");
