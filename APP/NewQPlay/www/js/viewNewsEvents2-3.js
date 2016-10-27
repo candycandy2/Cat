@@ -5,13 +5,14 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
         create: function(event, ui) {
             
             /********************************** function *************************************/
-            function QueryMessageList() {
+            window.QueryMessageList = function() {
                 var self = this;
 
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
                     
                     if (resultcode == 1) {
+                        
                         messagecontent = data['content'];
                         var newsListItems = "";
                         var eventListItems = "";
@@ -38,6 +39,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                               eventListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
                           }
                         }
+
                         $("#newslistview").html(newsListItems);
                         $("#newslistview").listview('refresh');
                         $("#eventlistview").html(eventListItems);
@@ -60,13 +62,20 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    apiGetMessageList(self.successCallback, self.failCallback, "1470499200", "1476755108", "1", "200");
+
+                    var timeStamp = Math.round((new Date()).getTime() / 1000);
+
+                    if (msgDateFromType === "month") {
+                        timeStamp = timeStamp - (60 * 60 * 24 * 30);
+                    }
+
+                    apiGetMessageList(self.successCallback, self.failCallback);
                 }();
             }
 
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
-                var messageList = new QueryMessageList();
+
             });
 
             $("#viewNewsEvents2-3").one("pageshow", function(event, ui) {
