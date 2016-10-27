@@ -225,6 +225,9 @@ foreach ($allCompanyRoleList as $companyRoles) {
         };
 
         var AddUser = function() {
+            $("#gridAllUserList").bootstrapTable('uncheckAll');
+            $("#gridAllUserList").bootstrapTable('resetSearch', "");
+            $("#gridAllUserList").bootstrapTable('refresh');
             selectUserDialog_Show();
         };
 

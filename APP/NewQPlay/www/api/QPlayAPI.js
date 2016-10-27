@@ -2,10 +2,11 @@
 
 
 
-function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
+function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
 
     failCallback =  failCallback || null;
     queryData = queryData || null;
+    queryStr = queryStr || "";
     
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
@@ -17,9 +18,10 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'App-Key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
-            'token': loginData.token
+            'token': loginData.token,
+            'push-token': loginData.pushToken
         },
-        url: serverURL + "/qplayApi/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/qplayApiTest/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
         cache: false,

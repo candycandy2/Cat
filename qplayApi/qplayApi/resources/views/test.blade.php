@@ -35,7 +35,8 @@ FORM;
     <br/>
     <br/>
     <textarea id="base64encode" onkeyup="base64encode()"></textarea>
-    <textarea id="base64decode" onkeyup="base64decode()"></textarea>
+    <textarea id="base64decode" ></textarea>
+    <input type="button" value="decode" onclick="base64decode()">
 
     <br/><br/>
         <script>
@@ -51,8 +52,8 @@ FORM;
             };
 
             var base64decode = function () {
-//                var a = $("#base64decode").val();
-//                $("#base64encode").val($.base64.atob(a));
+                var a = $("#base64decode").val();
+                $("#base64encode").val($.base64.atob(a));
             };
 
             var encode64 = function (input)
@@ -184,7 +185,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
@@ -206,7 +207,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
@@ -240,7 +241,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
@@ -275,7 +276,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
@@ -297,7 +298,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "aplay1");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
                     request.setRequestHeader("signature-time", "1467699291");
                 },
@@ -320,10 +321,10 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a93c3dbee41");
+                    request.setRequestHeader("token", "580da532d3894");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -370,13 +371,13 @@ FORM;
 
         var getSecturityList = function() {
             $.ajax({
-                url: "v101/qplay/getSecturityList?lang=en-us&uuid=A1234567890A1234567890&app_key=qplay",
+                url: "v101/qplay/getSecurityList?lang=en-us&uuid=A1234567890A1234567890&app_key=appqplay",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "579ec219ddc92");
@@ -394,16 +395,17 @@ FORM;
 
         var getMessageList = function () {
             $.ajax({
-                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest&date_from=0&date_to=9470030584&count_from=1&count_to=2",
+                //url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest&date_from=0&date_to=9470030584&count_from=1&count_to=2",
+                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a93c3dbee41");
+                    request.setRequestHeader("token", "58088b2c90326");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -440,7 +442,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "57a93c3dbee41");
@@ -476,7 +478,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "57a93c3dbee41");
@@ -500,7 +502,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("push-token", "test_token");
@@ -524,7 +526,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "5784945d01e24");
@@ -548,7 +550,7 @@ FORM;
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "57a93c3dbee41");
@@ -596,7 +598,7 @@ FORM;
                 contentType: "application/json",
                 data: mydataStr,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "5784945d01e24");

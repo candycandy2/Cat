@@ -1,13 +1,12 @@
 
 /*global variable, function*/
-//var appKey = "appyellowpage";
-var appKey = "yellowpage";
+var appKey = "appyellowpage";
+//var appKey = "yellowpage";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
 
 var employeeData = {};
 var employeeSelectedIndex;
 var phonebookData = {};
-var myEmpID = "1609009";
 var prevPageID;
 
 window.initialSuccess = function() {

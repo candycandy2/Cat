@@ -7,8 +7,17 @@
     ?>
     <div data-role="page" id="pageLogin">
         <div role="main" class="ui-content" style="text-align: center;">
-            <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
-            <h1>BenQ QPlay Login</h1>
+            <table style="margin:auto;">
+                <tr>
+                    <td>
+                        <img src="{{asset('/css/images/benq_logo.png')}}" />
+                    </td>
+                    <td>
+                        <img src="{{asset('/css/images/qisda_logo.png')}}" />
+                    </td>
+                </tr>
+            </table>
+            <h1>QPlay Login</h1>
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <input type="text" data-clear-btn="true" name="tbxName"
                        id="tbxName" value="" placeholder="User Name" />
@@ -35,7 +44,16 @@
 
     <div data-role="page" id="pageRegister">
         <div role="main" class="ui-content" style="text-align: center;">
-            <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
+            <table style="margin:auto;">
+                <tr>
+                    <td>
+                        <img src="{{asset('/css/images/benq_logo.png')}}" />
+                    </td>
+                    <td>
+                        <img src="{{asset('/css/images/qisda_logo.png')}}" />
+                    </td>
+                </tr>
+            </table>
             <h3>Your device has been verified</h3>
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <img src="{{asset('/css/images/icon_ok.png')}}" style="200px; margin:20px;" />
@@ -85,7 +103,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
@@ -114,7 +132,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
@@ -128,6 +146,9 @@
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
                                 + '"token" : "' + d.content.token + '", '
+                                + '"emp_no" : "' + d.content.emp_no + '",'
+                                + '"domain" : "' + d.content.domain + '",'
+                                + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                         callPlugin();
                     } else {
@@ -148,7 +169,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "qplay");
+                    request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
@@ -161,6 +182,9 @@
                             + '"uuid" : "' + d.content.uuid + '", '
                             + '"redirect-uri" : "' + d.content.redirect_uri + '", '
                             + '"token" : "' + d.content.token + '", '
+                            + '"emp_no" : "' + d.content.emp_no + '",'
+                            + '"domain" : "' + d.content.domain + '",'
+                            + '"checksum" : "' + d.content.checksum + '",'
                             + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                     $.mobile.changePage("#pageRegister");
                 },

@@ -321,7 +321,7 @@ class CommonUtil
         return $result;
     }
 
-    public static function PushMessageWithMessageCenter($message, $to) {
+    public static function PushMessageWithMessageCenter($message, $to, $parameter = '') {
         $jpush_app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
@@ -335,7 +335,7 @@ class CommonUtil
             'Expire' => '2099-12-31 00:00:00.000',
             'Status' => 'W',
             'To_Type' => 'NONE',
-            'Parameter' => '',
+            'Parameter' => $parameter,
             'CreatedDate' => date('Y-m-d H:i:s',time()));
         $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
         $data["pns"] = json_encode($args);
@@ -351,5 +351,9 @@ class CommonUtil
         }
 
         return $result;
+    }
+
+    public static function logApi() {
+
     }
 }

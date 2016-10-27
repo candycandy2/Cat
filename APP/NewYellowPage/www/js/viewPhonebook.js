@@ -29,7 +29,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             function QueryMyPhoneBook() {
                 
                 var self = this;
-                var queryData = '<LayoutHeader><User_EmpID>' + myEmpID + '</User_EmpID></LayoutHeader>';
+                var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
 
                 this.successCallback = function(data) {
                     
@@ -82,7 +82,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             function deletePhoneBook(index) {
                 
                 var self = this;
-                var queryData = '<LayoutHeader><User_EmpID>' + myEmpID + '</User_EmpID>' +
+                var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' +
                                 '<Delete_EmpID>' + phonebookData[index].employeeid + '</Delete_EmpID>' + 
                                 '<Delete_Company>' + phonebookData[index].company + '</Delete_Company></LayoutHeader>';
 
@@ -127,7 +127,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             /********************************** page event *************************************/
             $("#viewPhonebook").on("pagebeforeshow", function(event, ui){
                 loadingMask("show");
-                QueryMyPhoneBook();
+                var myPhoneBook = new QueryMyPhoneBook();
 
                 $('.edit-checkbox').hide();
                 $('.ui-checkbox').hide();

@@ -13,7 +13,7 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                     loginData['callCheckAPPVer'] = false;
                     
                     var resultcode = data['result_code'];
-                    
+
                     if (resultcode == 1) // need to update app
                     {
                         // do update process
@@ -23,7 +23,12 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         if (getDataFromServer) {
                             getServerData();
                         } else {
-                            $.mobile.changePage('#viewMain2-1');
+                            if (loginData["openMessage"] === true) {
+                                $.mobile.changePage("#viewWebNews2-3-1");
+                            } else {
+                                loginData["openMessage"] = true;
+                                $.mobile.changePage('#viewMain2-1');
+                            }
                         }
                     }
                     else if (resultcode == 000913) // app is up to date
@@ -31,7 +36,12 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         if (getDataFromServer) {
                             getServerData();
                         } else {
-                            $.mobile.changePage('#viewMain2-1');
+                            if (loginData["openMessage"] === true) {
+                                $.mobile.changePage("#viewWebNews2-3-1");
+                            } else {
+                                loginData["openMessage"] = true;
+                                $.mobile.changePage('#viewMain2-1');
+                            }
                         }
                     }
                     else

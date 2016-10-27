@@ -1444,7 +1444,7 @@ class platformController extends Controller
                         $to = $to.$userPushList[0]->login_id.";";
                     }
                 }
-                $result = CommonUtil::PushMessageWithMessageCenter($title, $to);
+                $result = CommonUtil::PushMessageWithMessageCenter($title, $to, $newMessageSendId);
                 if(!$result["result"]) {
                     \DB::rollBack();
                     return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
@@ -1601,7 +1601,7 @@ class platformController extends Controller
                         $to = $to.$userPushList[0]->login_id.";";
                     }
                 }
-                $result = CommonUtil::PushMessageWithMessageCenter($title, $to);
+                $result = CommonUtil::PushMessageWithMessageCenter($title, $to, $newMessageSendId);
                 if(!$result["result"]) {
                     \DB::rollBack();
                     return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
