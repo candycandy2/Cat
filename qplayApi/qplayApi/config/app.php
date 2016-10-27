@@ -40,6 +40,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'upload_folder' => env('APP_UPLOAD_FOLDER', 'app'),
+    'app_file_url' => env('APP_FILE_SERVER_URL'),
 
     /*
     |--------------------------------------------------------------------------

@@ -11,7 +11,7 @@ class FilePath
     }
 
     public static function getApkUrl($appRowId,$deviceType,$versionCode,$fileName){
-       return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
+       return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
     }
 
     public static function getApkDownloadUrl($appRowId,$deviceType,$versionCode,$fileName){
@@ -29,7 +29,7 @@ class FilePath
     }
 
     public static function getApkPublishUrl($appRowId,$deviceType,$fileName){
-        return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
+        return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
     }
 
     public static function getIconUploadPath($appRowId){
@@ -37,7 +37,7 @@ class FilePath
     }
 
     public static function getIconUrl($appRowId,$fileName){
-         return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'icon'.'/'.$fileName;
+         return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'icon'.'/'.$fileName;
     } 
 
     public static function getBannerUploadPath($appRowId,$langRowId,$deviceType){
@@ -45,7 +45,7 @@ class FilePath
     }
 
     public static function getBannerUrl($appRowId,$langRowId,$deviceType,$fileName){
-         return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'banner'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
+         return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'banner'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
     } 
 
     public static function getScreenShotUploadPath($appRowId,$langRowId,$deviceType){
@@ -53,7 +53,7 @@ class FilePath
     }
 
     public static function getScreenShotUrl($appRowId,$langRowId,$deviceType,$fileName){
-         return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'screenshot'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
+         return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'screenshot'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
     } 
 
     public static function getErrorCodeUploadPath($appRowId){
@@ -61,7 +61,7 @@ class FilePath
     }
 
     public static function getErrorCodeUrl($appRowId,$fileName){
-         return url(\Config::get('app.upload_url')).'/'.$appRowId.'/'.'error_code'.'/'.$fileName;
+         return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'error_code'.'/'.$fileName;
     }
 
 }

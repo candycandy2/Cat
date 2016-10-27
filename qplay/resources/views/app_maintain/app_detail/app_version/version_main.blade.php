@@ -301,7 +301,7 @@ function getFormattedDate() {
 }
 
 function getApkDownLoadPath(appId,deviceType,versionCode,fileName){
-    var baseUrl = '{{url(\Config::get('app.upload_url'))}}';
+    var baseUrl = '{{url(\Config::get('app.upload_folder'))}}';
     var url =  baseUrl + '/' +  appId + '/apk/' +  deviceType + '/' + versionCode + '/' + fileName;    
     if(deviceType == 'ios'){
         url = 'itms-services://?action=download-manifest&url=' + url;

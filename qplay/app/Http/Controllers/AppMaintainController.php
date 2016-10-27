@@ -648,7 +648,7 @@ class AppMaintainController extends Controller
         $destinationPath    =  FilePath::getApkUploadPath($appRowId,$deviceType,$versionCode);
         try{
             if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
+                mkdir($destinationPath, 0755, true);
             }
 
             $fileName =  Input::file('file')->getClientOriginalName();
@@ -791,7 +791,7 @@ class AppMaintainController extends Controller
         $iconUploadPath =  FilePath::getIconUploadPath($appId);
 
         if (!file_exists($iconUploadPath)) {
-            mkdir($iconUploadPath, 0777, true);
+            mkdir($iconUploadPath, 0755, true);
         }
         $icon->move($iconUploadPath,$icon->getClientOriginalName());
         return $icon->getClientOriginalName();
@@ -1164,7 +1164,7 @@ class AppMaintainController extends Controller
         $destinationPath   =  FilePath::getErrorCodeUploadPath($appId);
 
         if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0777, true);
+            mkdir($destinationPath, 0755, true);
         }
         $errorCodeFile->move($destinationPath,$ERROR_CODE_FILE_NAME);
         $errorCodeJson = file_get_contents(FilePath::getErrorCodeUploadPath($appId).$ERROR_CODE_FILE_NAME);
