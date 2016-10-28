@@ -584,6 +584,9 @@ class AppMaintainController extends Controller
                 $iconfileName = $this->uploadIcon($appId, $icon);
             }
 
+            $ori = QP_App_Head::where('row_id', $appId)
+                            ->first(['security_level']);
+
             $chkCompany = (isset($input['chkCompany']))?implode(";",$input['chkCompany']):null;
             $dataArr = array(
                 'default_lang_row_id'=>$input['defaultLang'],
@@ -593,6 +596,9 @@ class AppMaintainController extends Controller
                 'updated_user'=>\Auth::user()->row_id,
                 'icon_url'=>$iconfileName
                 );
+            if($ori->security_level != $input['securityLevel']){
+                $dataArr['security_updated_at'] = time(); 
+            }
             $this->updateAppHeadById($appId, $dataArr);
             
             $delPic = $input['delPic'];
