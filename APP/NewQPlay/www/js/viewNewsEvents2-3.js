@@ -5,14 +5,36 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
         create: function(event, ui) {
             
             /********************************** function *************************************/
-            function QueryMessageList() {
+            window.QueryMessageList = function() {
                 var self = this;
 
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
                     
                     if (resultcode == 1) {
-                        messagecontent = data['content'];
+                        
+                        if (loginData["messagecontent"] === null) {
+                            loginData["messagecontent"] = data['content'];
+                            window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
+
+                            messagecontent = data['content'];
+                        } else {
+
+                            var localContent = JSON.parse(loginData["messagecontent"]);
+                            messagecontent = data['content'];
+
+                            if (messagecontent.message_count !== 0) {
+                                for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++) {
+                                    var message = messagecontent.message_list[messageindex];
+
+                                    localContent.message_count = parseInt(localContent.message_count + 1, 10);
+                                    localContent.message_list.unshift(message);
+                                }
+                            }
+
+                            messagecontent = localContent;
+                        }
+
                         var newsListItems = "";
                         var eventListItems = "";
 
@@ -35,9 +57,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                               var rowid = message.message_send_row_id;
                               var time = message.create_time;
                               
-                              eventListItems += "<li><a href='" + "#webnewspage2-3-1'><h2 style=" + "white-space:pre-wrap;" + ">" + title + '</h2><p>' + time + "</p></a></li>";
+                              eventListItems += "<li><a value=" + messageindex.toString() + " id=\"messageindex" + messageindex.toString() + "\"><h2 style=\"white-space:pre-wrap;\">" + title + "</h2><p>" + time + "</p></a></li>";
                           }
                         }
+
                         $("#newslistview").html(newsListItems);
                         $("#newslistview").listview('refresh');
                         $("#eventlistview").html(eventListItems);
@@ -60,13 +83,20 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    apiGetMessageList(self.successCallback, self.failCallback, "1470499200", "1476755108", "1", "200");
+
+                    var timeStamp = Math.round((new Date()).getTime() / 1000);
+
+                    if (msgDateFromType === "month") {
+                        timeStamp = timeStamp - (60 * 60 * 24 * 30);
+                    }
+
+                    apiGetMessageList(self.successCallback, self.failCallback);
                 }();
             }
 
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
-                var messageList = new QueryMessageList();
+
             });
 
             $("#viewNewsEvents2-3").one("pageshow", function(event, ui) {

@@ -19,7 +19,6 @@ $enableRoleArray = array();
 $defaultLang = 0;
 $categoryId = 0;
 $securityLevel = 3;
-
 $default = 0;
 $allowLangList=[];
 
@@ -28,6 +27,7 @@ foreach ($appBasic as $key => $appData){
     $defaultLang = $appData->default_lang_row_id;
     $categoryId = $appData->app_category_row_id;
     $securityLevel = $appData->security_level;
+    $appKey =  $appData->app_key;
 }
 
 foreach ($enableRole as $role){
@@ -36,116 +36,20 @@ foreach ($enableRole as $role){
 ?>
 @extends('layouts.admin_template')
 @section('content')
-    <style>
-        .tab-content {
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            background-color: #fff;
-            padding:20px;
-        }
-        .label-hint {
-            color: #fff;
-            background-color: #333;
-            border-radius: 3px;
-            padding: 6px 12px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.42857143;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            border: 1px solid transparent;
-        }
-        table.costum-table { 
-            border-collapse: separate;
-            width: 100%;
-            max-width: 100%;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .icon-upl-btn{
-            background: url() no-repeat center 50% #FFFAD9;
-            border-width:3px;
-            border-style:dashed;
-            border-color:#FFAC55;
-            cursor: pointer;
-            text-align:center;
-            padding-top:40px;
-            width: 120px; 
-            height: 120px;
-        }
-        .icon-preview{
-            width: 120px; 
-            height: 120px;
-        }
-        .screen-upl-btn{
-            background: url() no-repeat center 50% #FFFAD9;
-            border-width:3px;
-            border-style:dashed;
-            border-color:#FFAC55;
-            cursor: pointer;
-            text-align:center;
-            padding-top:140px;
-            width: 200px; 
-            height: 320px;
-        }
-        .screen-preview{
-            width: 200px; 
-            height: 320px;
-        }
-        .screen-preview:hover, .icon-preview:hover, .screen-upl-btn:hover, .icon-upl-btn:hover{
-            opacity: .3;
-            cursor:move;
-        }
-        .sortable { list-style-type: none; margin: 0; padding: 0;  }
-        .sortable li { margin: 10px 10px 10px 10px; float: left }
-        
-        .imgLi{
-            display : inline-block;
-            position : relative;
-        }
-        .imgLi .delete{
-            position : absolute;
-            top : -15px;
-            right : -15px;
-            width : 30px;
-            height : 30px;
-            box-shadow:2px 2px 2px 0px #cccccc;
-        }
-        .imgLi .delete:hover{
-            top : -16px;
-        }
-        .imgLi .delete:active{
-            top : -15px;
-        }
-        .file-input-name{
-            padding-left: 20px;
-            padding-right: 20px; 
-        }
-
-        table.costum-table td { border: 1px solid #ddd; padding: 8px; }
-        table.costum-table tr:first-child{font-weight:bold;}
-        table.costum-table tr:last-child{background-color: #f9f9f9;}
-        table.costum-table tr:first-child td:first-child { border-top-left-radius: 3px;}
-        table.costum-table tr:first-child td:last-child { border-top-right-radius: 3px;}
-        table.costum-table tr:last-child td:first-child { border-bottom-left-radius: 3px;}
-        table.costum-table tr:last-child td:last-child { border-bottom-right-radius: 3px; }
-        
-    </style>
+ <link href="{{ asset('/css/appMaintain/app_maintain.css') }}" rel="stylesheet">
     <div id="appMaintainAlert" class="alert alert-danger" style="display: none">
         <strong>Danger!</strong>
     </div>
     <div class="col-lg-12 col-xs-12 text-right">
         <span class="text-success"  id="appVersionStatus" style="padding-right: 8px;  line-height: 50px; font-size: 20px;">
             <span  data-toggle='gridAndroidVersionList'
-                @if ($appStatus['android'] != 'UnPlished')
+                @if ($appStatus['android'] != 'UnPublish')
                     style="font-weight:bold;"
                 @endif
             > Android-{{$appStatus['android']}}</span>
              |
             <span data-toggle='gridIOSVersionList'
-                @if ($appStatus['ios'] != 'UnPlished')
+                @if ($appStatus['ios'] != 'UnPublish')
                     style="font-weight:bold;"
                 @endif
             > IOS-{{$appStatus['ios']}}</span>
@@ -184,7 +88,11 @@ foreach ($enableRole as $role){
 var jsDefaultLang = {{$defaultLang}};
 var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
 var jsAppRowId = {{app('request')->input('app_row_id')}};
+var jsAppKey =  '{{$appKey}}';
+var jsOriAndroidStatus = '{{$appStatus['android']}}';
+var jsOriIOSStatus = '{{$appStatus['ios']}}';
 var delPicArr = new Array();
+var delVersionArr = new Array();
 var selectedChanged = function (row, $element) {
     if(typeof(row)!='undefined'){
         var $currentTarget = $(row.currentTarget);

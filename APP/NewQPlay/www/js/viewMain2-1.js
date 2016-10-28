@@ -133,6 +133,12 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 var appList = new QueryAppList();
             });
 
+            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
+                if (loginData["msgDateFrom"] === true) {
+                    var messageList = new QueryMessageList();
+                }
+            });
+
             $("#viewMain2-1").on("pageshow", function(event, ui) {
                 $('#logoutConfirm').popup('close');
             });
@@ -149,6 +155,21 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
             $("#logoutConfirm #confirm").on("click", function(){
                 var logout = new doLogOut();
+            });
+            */
+            $("#newseventspage").on("click", function(){
+                /*
+                if (loginData["msgDateFrom"] === null) {
+                    //var messageList = new QueryMessageList();
+                    $('#selectMsgDateFrom').popup('open');
+                }
+                */
+                $.mobile.changePage('#viewNewsEvents2-3');
+            });
+            /*
+            $("#selectMsgDateFrom").on("click", function(){
+                msgDateFromType = $('input[name=selectDateFrom]:checked').val();
+                var messageList = new QueryMessageList();
             });
             */
         }

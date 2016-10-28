@@ -15,6 +15,8 @@ var loginjustdone;
 var messagecontent;
 var selectAppIndex = 9999;
 var messageRowId = 9999;
+var msgDateFromType;
+var callBackURL;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
@@ -22,11 +24,37 @@ window.initialSuccess = function(data) {
         loginData['callQLogin'] = false;
         processStorageData("setLocalStorage", data);
 
-        $.mobile.changePage('#viewMain2-1');
+        if (loginData['doLoginDataCallBack'] === false) {
+            $.mobile.changePage('#viewMain2-1');
+        }
     } else {
-        setTimeout(function(){
-            checkAppVersion();
-            loadingMask("show");
-        }, 2000);
+        if (loginData['doLoginDataCallBack'] === false) {
+            setTimeout(function(){
+                var checkAppVer = new checkAppVersion();
+                loadingMask("show");
+            }, 2000);
+        }
     }
+
+    //For test
+    //var unregisterTesr = new unregister();
+}
+
+function getMessageList() {
+    var messageList = new QueryMessageList();
+}
+
+function unregister() {
+
+    var queryStr = "&target_uuid=" + loginData.uuid;
+
+    this.successCallback = function(data) {
+        console.log(data);
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
+    }();
 }
