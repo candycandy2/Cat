@@ -2,7 +2,8 @@ var submitFormAry = [$("#mainInfoForm"),
                      $("#errorCodeForm"),
                      $("#basicInfoForm"),
                      $('#iconForm'),
-                     $('#screenShotForm')];
+                     $('#screenShotForm'),
+                     $('#customApiForm')];
 
 
 SaveAppDetail = function(){
@@ -207,6 +208,13 @@ $(function () {
                     });
 
                     formData.append('delVersionArr',delVersionArr);
+
+                    var customApiList =  $("#gridCustomApi").bootstrapTable('getData');
+                    $.each(customApiList, function(i, apiObj) {
+                         $.each(apiObj, function(j,data){
+                            formData.append('customApiList[' + i + '][' + j + ']',data);
+                        }); 
+                    });
 
                     $.ajax({
                         url: "AppMaintain/saveAppDetail",

@@ -37,7 +37,7 @@ class yellowpageController extends Controller
         $verifyResult = $Verify->verifyYellowPage();
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
+            $url = CommonUtil::getApiCustomerUrl("QueryEmployeeData");//"http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
             return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"], 
@@ -52,7 +52,7 @@ class yellowpageController extends Controller
         $verifyResult = $Verify->verifyYellowPage();
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail";
+            $url = CommonUtil::getApiCustomerUrl("QueryEmployeeDataDetail");//"http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeDataDetail";
             return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
@@ -67,7 +67,7 @@ class yellowpageController extends Controller
         $verifyResult = $Verify->verifyYellowPage();
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/AddMyPhoneBook";
+            $url = CommonUtil::getApiCustomerUrl("AddMyPhoneBook");//"http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/AddMyPhoneBook";
             return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
@@ -82,7 +82,7 @@ class yellowpageController extends Controller
         $verifyResult = $Verify->verifyYellowPage();
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/DeleteMyPhoneBook";
+            $url = CommonUtil::getApiCustomerUrl("DeleteMyPhoneBook");//"http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/DeleteMyPhoneBook";
             return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
@@ -97,7 +97,7 @@ class yellowpageController extends Controller
         $verifyResult = $Verify->verifyYellowPage();
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryMyPhoneBook";
+            $url = CommonUtil::getApiCustomerUrl("QueryMyPhoneBook"); //"http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryMyPhoneBook";
             return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
@@ -112,7 +112,7 @@ class yellowpageController extends Controller
         $verifyResult = $Verify->verifyYellowPage();
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData";
+            $url = CommonUtil::getApiCustomerUrl("QueryCompanyData"); //"http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryCompanyData";
             return $this->GetData($url, $verifyResult["token_valid_date"]);
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
