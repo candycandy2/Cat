@@ -164,20 +164,6 @@ var EditAppVersion = function(){
     $("#appVersionDialog").modal('hide');
 }
 
-function validRequired(fieldList){
-    var errors = new Array();
-    $.each(fieldList, function(i, item) {
-        var value = $('input[name='+item+']').val();
-        if($.trim(value) == ""){
-            var error = new Error;
-            error.field = item;
-            error.msg = '此為必填欄位';
-            errors.push(error);
-        }
-   });
-    return errors;
-}
-
 function Error(field, msg) {
     this.field = field;
     this.msg = msg;

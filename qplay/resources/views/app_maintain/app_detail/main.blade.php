@@ -127,6 +127,20 @@ var showUploadFileName = function($target){
     $target.parent().after('<span class="file-input-name">'+fileName+'</span>');  
 }
 
+function validRequired(fieldList){
+    var errors = new Array();
+    $.each(fieldList, function(i, item) {
+        var value = $('input[name='+item+']').val();
+        if($.trim(value) == ""){
+            var error = new Error;
+            error.field = item;
+            error.msg = '此為必填欄位';
+            errors.push(error);
+        }
+   });
+    return errors;
+}
+
 $(function () {
     $('.bootstrapTable').on('check.bs.table', selectedChanged);
     $('.bootstrapTable').on('uncheck.bs.table', selectedChanged);
