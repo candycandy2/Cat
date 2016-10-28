@@ -201,7 +201,7 @@ FORM;
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest3",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
