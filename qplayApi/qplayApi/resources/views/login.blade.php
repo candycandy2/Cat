@@ -146,7 +146,7 @@
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
                                 + '"token" : "' + d.content.token + '", '
-                                + '"login_id" : "' + d.content.login_id + '", '
+                                + '"loginid" : "' + d.content.loginid + '", '
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
