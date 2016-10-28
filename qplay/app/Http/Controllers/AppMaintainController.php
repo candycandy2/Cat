@@ -14,6 +14,7 @@ use App\Model\QP_App_Head;
 use App\Model\QP_App_Line;
 use App\Model\QP_App_Pic;
 use App\Model\QP_App_Version;
+use App\Model\QP_App_Custom_Api;
 use App\Model\QP_Role_App;
 use App\Model\QP_User_App;
 use DB;
@@ -502,79 +503,6 @@ class AppMaintainController extends Controller
 
     }
 
-
-    public function saveCustomApi(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-
-        if (\Request::isJson($content)) {
-
-            $jsonContent = json_decode($content, true);
-            $apiAction = $jsonContent['apiAction'];
-            $apiVersion = $jsonContent['apiVersion'];
-            $apiUrl = $jsonContent['apiUrl'];
-            $appKey = $jsonContent['appKey'];
-            $appRowId = $jsonContent["appRowId"];
-            $isNewCustomApi = $jsonContent['isNewCustomApi'];
-            if($isNewCustomApi == 'Y') {
-                \DB::table("qp_app_custom_api")
-                    -> insert(
-                        ['app_row_id'=>$appRowId,
-                            'api_action'=>$apiAction,
-                            'api_version'=>$apiVersion,
-                            'api_url'=>$apiUrl,
-                            'app_key'=>$appKey,
-                            'created_at'=>$now,
-                            'created_user'=>\Auth::user()->row_id]);
-            } else {
-                $customApiRowId = $jsonContent['customApiRowId'];
-                \DB::table("qp_app_custom_api")
-                    -> where('row_id', '=', $customApiRowId)
-                    -> update(
-                        ['api_action'=>$apiAction,
-                            'api_version'=>$apiVersion,
-                            'api_url'=>$apiUrl,
-                            'app_key'=>$appKey,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-            }
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-
-    } 
-
-    public function deleteCustomApi(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $customApiIdList = $jsonContent['customApiIdList'];
-            foreach ($customApiIdList as $apiId) {
-                \DB::table("qp_app_custom_api")
-                    -> where('row_id', '=', $apiId)
-                    -> delete();
-            }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
     public function getAppUser(){
 
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -714,6 +642,8 @@ class AppMaintainController extends Controller
             $appId = $input['appId'];
             $appkey = $input['appKey'];
 
+            //var_dump($input);exit();
+            
             parse_str($input['mainInfoForm'], $mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
             $iconfileName = $input['icon'];
@@ -734,8 +664,6 @@ class AppMaintainController extends Controller
                 );
             $this->updateAppHeadById($appId, $dataArr);
             
-            
-            //Save app pic data 
             $delPic = $input['delPic'];
             $insPic  = $input['insPic'];
 
@@ -775,6 +703,9 @@ class AppMaintainController extends Controller
                 $versionList = array();
             }
             $this->saveAppVersionList($appkey, $appId, $versionList);
+            if(isset($input['customApiList']) && is_array($input['customApiList'])){
+                $this->saveCustomApi($appkey, $appId, $input['customApiList']);
+            }
             \DB::commit();
            
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
@@ -1328,6 +1259,55 @@ class AppMaintainController extends Controller
         }
         QP_App_Version::insert($insertArray);
         
+    }
+
+    
+    /**
+     * To save CustomApi
+     * @param  Int    $appkey        target app key
+     * @param  Int    $appId         target app id
+     * @param  Array  $customApiList $customApiList custom api object array
+     */
+    private function saveCustomApi( String $appkey, Int $appId, Array $customApiList){
+
+        $insertArray = [];
+        $updateArray = [];
+        $saveId = [];
+        $now = date('Y-m-d H:i:s',time());
+        foreach($customApiList as $customApi){
+            $data = array(
+                'app_row_id'=>$appId,
+                'app_key'=>$appkey,
+                'api_version'=>$customApi['api_version'],
+                'api_action'=>$customApi['api_action'],
+                'api_url'=>$customApi['api_url'],
+                );
+            if(isset($customApi['row_id'])){
+                $data['row_id'] = $customApi['row_id'];
+                $data['updated_user'] = \Auth::user()->row_id;
+                $data['updated_at'] = $now;
+                $updateArray[] = $data;
+                $saveId[] = $customApi['row_id'];
+            }else{   
+                $data['created_user'] = \Auth::user()->row_id;
+                $data['created_at'] = $now;
+                $insertArray[] = $data;
+            }
+        }
+
+        $deleteApiRows = QP_App_Custom_Api::where('app_row_id', $appId)
+                            ->whereNotIn('row_id',$saveId)
+                            ->delete();
+        
+        foreach($updateArray as $value){
+            $user = QP_App_Custom_Api::find($value['row_id']);
+            $user->api_version = $value['api_version'];
+            $user->api_action = $value['api_action'];
+            $user->api_url = $value['api_url'];
+            $user->save();
+        }
+        QP_App_Custom_Api::insert($insertArray);
+
     }
 }
 
