@@ -20,6 +20,7 @@ var callBackURL;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
+
         loginData['callQLogin'] = false;
         processStorageData("setLocalStorage", data);
 

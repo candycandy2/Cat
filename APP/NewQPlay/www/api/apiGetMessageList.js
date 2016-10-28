@@ -25,7 +25,7 @@ function apiGetMessageList(successCallback, failCallback, dateFrom, dateTo) {
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL +"/qplayApi/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL +"/qplayApiTest/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         cache: false,
         success: successCallback,
