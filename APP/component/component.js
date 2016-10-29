@@ -8,6 +8,7 @@
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey;
 var loginData = {
+    verion:              "",
     deviceType:          "",
     pushToken:           "",
     token:               "",
@@ -23,6 +24,7 @@ var loginData = {
     callQLogin:          false,
     openMessage:         false
 };
+var headerClickCount = 0;
 var queryData = {};
 var getDataFromServer = false;
 
@@ -64,6 +66,7 @@ var app = {
         app.receivedEvent('deviceready');
 
         //[device] data ready to get on this step.
+        readConfig();
 
         //For QSecurity
         var whiteList = new setWhiteList();
@@ -123,6 +126,7 @@ $(document).one("pagebeforecreate", function(){
             }, "html");
         }(value));
     });
+
 });
 
 
@@ -163,6 +167,11 @@ function setWhiteList() {
             $('.ios-fix-overlap-div').css('display','block');
         }
 
+        if (device.platform === "iOS") {
+            $(".ui-title").on("click", function(){
+                infoMessage();
+            });
+        }
     };
 
     this.failCallback = function() {};
@@ -390,6 +399,67 @@ function loadingMask(action) {
     } else {
         $(".loader").hide();
     }
+}
+
+function readConfig() {
+
+    if (device.platform === "iOS") {
+        var configPath = "../config.xml";
+    } else {
+        var configPath = "../../android_res/xml/config.xml";
+    }
+
+    $.ajax({
+        url: configPath,
+        dataType: 'html',
+        success: function(html) {
+            var config = $(html);
+            loginData["version"] = config[2].getAttribute("version");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            //console.log(textStatus, errorThrown);
+        }
+    });
+
+}
+
+//Show Version/AD/UUID
+function infoMessage() {
+
+    var openMsg = false;
+
+    if (headerClickCount === 0) {
+        headerClickCount++;
+    } else if (headerClickCount === 1) {
+        headerClickCount++;
+        openMsg = true;
+    } else {
+        headerClickCount = 0;
+    }
+
+    if (openMsg) {
+        loadingMask("show");
+
+        var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
+                    '<p style="padding:0 5%">' + loginData["version"] + '</p>' +
+                    '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
+                    '<p style="padding:0 5%">' + "Darren.K.Ti" + '</p>' +
+                    '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
+                  '</div>';
+
+        $.mobile.pageContainer.append(msg);
+    }
+
+    dblClick = setTimeout(function(){
+        headerClickCount = 0;
+    }, 1000);
+
+    $("#closeInfoMsg").on("click", function(){
+        $("#infoMsg").remove();
+        loadingMask("hide");
+        clearTimeout(dblClick);
+
+    });
 }
 
 function getLoginDataCallBack() {
