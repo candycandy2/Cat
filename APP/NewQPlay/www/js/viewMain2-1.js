@@ -102,17 +102,22 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         //clear data
                         var loginData = {
-                            deviceType:      "",
-                            pushToken:       "",
-                            token:           "",
-                            token_valid:     "",
-                            uuid:            "",
-                            checksum:        "",
-                            domain:          "",
-                            emp_no:          "",
-                            callCheckAPPVer: false,
-                            callQLogin:      false,
-                            openMessage:     false
+                            verion:              "",
+                            deviceType:          "",
+                            pushToken:           "",
+                            token:               "",
+                            token_valid:         "",
+                            uuid:                "",
+                            checksum:            "",
+                            domain:              "",
+                            emp_no:              "",
+                            loginid:             "",
+                            messagecontent:      null,
+                            msgDateFrom:         null,
+                            doLoginDataCallBack: false,
+                            callCheckAPPVer:     false,
+                            callQLogin:          false,
+                            openMessage:         false
                         };
 
                         window.localStorage.clear();
@@ -146,9 +151,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
             /********************************** dom event *************************************/
             $("#logout").on("click", function(){
-                if (loginData["deviceType"] === "Android") {
-                    $('#logoutConfirm').popup('open');
-                }
+                $('#logoutConfirm').popup('open');
             });
 
             $("#logoutConfirm #cancel").on("click", function(){
