@@ -17,6 +17,7 @@ var loginData = {
     checksum:            "",
     domain:              "",
     emp_no:              "",
+    loginid:             "",
     messagecontent:      null,
     msgDateFrom:         null,
     doLoginDataCallBack: false,
@@ -408,17 +409,19 @@ function readConfig() {
         var configPath = "../../android_res/xml/config.xml";
     }
 
-    $.ajax({
-        url: configPath,
-        dataType: 'html',
-        success: function(html) {
-            var config = $(html);
-            loginData["version"] = config[2].getAttribute("version");
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            //console.log(textStatus, errorThrown);
-        }
-    });
+    if (device.platform === "iOS") {
+        $.ajax({
+            url: configPath,
+            dataType: 'html',
+            success: function(html) {
+                var config = $(html);
+                loginData["version"] = config[2].getAttribute("version");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //console.log(textStatus, errorThrown);
+            }
+        });
+    }
 
 }
 
