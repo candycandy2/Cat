@@ -572,10 +572,9 @@ class AppMaintainController extends Controller
             $input = $request->all();
             $appId = $input['appId'];
             $appkey = $input['appKey'];
-
+           
             parse_str($input['mainInfoForm'],$mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
-
 
             $iconfileName = $input['icon'];
             if(isset($input['fileIconUpload'])){
@@ -1153,44 +1152,26 @@ class AppMaintainController extends Controller
      * @param  Array  $versionList version object array
      */
     private function saveAppVersionList($appKey ,Int $appId, Array $versionList){
-        $deleteVersionRows = QP_App_Version::where('app_row_id', $appId)
-                             ->delete();
+        
+        $appStatus = CommonUtil::getAppVersionStatus($appId);
         $insertArray = [];
+        $updateArray = [];
+        $saveId = [];
+        $now = date('Y-m-d H:i:s',time());
+
         foreach ($versionList as $deviceType => $versionItems) {
-            $hasPublished = false;  
-            foreach ($versionItems as $value) {
-                $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                if(isset($value['version_file'])){
-                    $value['version_file']->move($destinationPath,$value['url']);
-                    if($deviceType == 'ios'){
-                        $manifestContent = $this->getManifest($appId, $appKey, $deviceType, $value['version_code'],$value['url']);
-                         if(isset($manifestContent)){
-                            $file = fopen($destinationPath."manifest.plist","w"); 
-                            fwrite($file,$manifestContent );
-                            fclose($file);
-                         }
-                    }
+
+            $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
+            if($appStatus[$deviceType]['url']!="" && 
+                file_exists($publishFilePath.$appStatus[$deviceType]['url'])){
+                    $result = unlink($publishFilePath.$appStatus[$deviceType]['url']);
+            }
+            if($deviceType == 'ios'){
+                if(file_exists($publishFilePath.'manifest.plist')){
+                    unlink($publishFilePath.'manifest.plist');
                 }
-                
-                $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
-                if($value['status'] == 'ready'){
-                    $hasPublished = true;
-                    \File::copy($destinationPath.$value['url'],$publishFilePath.$value['url']);
-                    if($deviceType == 'ios'){
-                        \File::copy($destinationPath.'manifest.plist',$publishFilePath.'manifest.plist');
-                    }
-                }
-                if(!$hasPublished){
-                    if(file_exists($publishFilePath.$value['url'])){
-                        $result = unlink($publishFilePath.$value['url']);
-                    }
-                    if($deviceType == 'ios'){
-                        if(file_exists($publishFilePath.'manifest.plist')){
-                            unlink($publishFilePath.'manifest.plist');
-                        }
-                    }
-                }
-                $readyDate = ($value['status'] == 'ready')?time():null;
+            }
+            foreach ($versionItems as $value) {    
                 $data = array(
                     'app_row_id'=>$appId,
                     'version_code'=>$value['version_code'],
@@ -1198,13 +1179,70 @@ class AppMaintainController extends Controller
                     'url'=>$value['url'],
                     'status'=>$value['status'],
                     'device_type'=>$deviceType,
-                    'ready_date'=>$readyDate,
-                    'created_user'=>\Auth::user()->row_id,
-                    'updated_user'=>\Auth::user()->row_id,
-                    'updated_at'=>$value['updated_at']
                 );
-                $insertArray[]=$data;
+                if(($value['status'] == 'ready') ){
+                    if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
+                        $data ['ready_date'] = time();
+                    }
+                }else{
+                     $data ['ready_date'] = 'null';
+                }
+
+                if(isset($value['row_id'])){//update
+                     $data['row_id'] = $value['row_id'];
+                     $data['updated_user'] = \Auth::user()->row_id;
+                     $data['updated_at'] = $now;
+                     $updateArray[] = $data;
+                     $saveId[] = $value['row_id'];
+                }else{//new
+
+                    //file upload
+                    $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
+                    if(isset($value['version_file'])){
+                        $value['version_file']->move($destinationPath,$value['url']);
+                        if($deviceType == 'ios'){
+                            $manifestContent = $this->getManifest($appId, $appKey, $deviceType, $value['version_code'],$value['url']);
+                             if(isset($manifestContent)){
+                                $file = fopen($destinationPath."manifest.plist","w"); 
+                                fwrite($file,$manifestContent );
+                                fclose($file);
+                             }
+                        }
+                    }
+                    //arrange data
+                    $data['created_user'] = \Auth::user()->row_id;
+                    $data['created_at'] = $now;
+                    $insertArray[]=$data;
+                }
+
+                $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
+                if($value['status'] == 'ready'){
+                    $hasPublished = true;
+                    \File::copy($destinationPath.$value['url'],$publishFilePath.$value['url']);
+                    if($deviceType == 'ios'){
+                        \File::copy($destinationPath.'manifest.plist',$publishFilePath.'manifest.plist');
+                    }
+                }
+
             }
+
+        }
+
+        $deleteApiRows = QP_App_Version::where('app_row_id','=',$appId)
+                            ->whereNotIn('row_id',$saveId)
+                            ->delete();
+        foreach($updateArray as $value){
+            $updatedRow = QP_App_Version::find($value['row_id']);
+            $updatedRow->version_name = $value['version_name'];
+            $updatedRow->status = $value['status'];
+            if(isset($value['ready_date'])){
+                if($value['ready_date'] == 'null'){
+                    $updatedRow->ready_date = NULL;
+                }else{
+                    $updatedRow->ready_date = $value['ready_date'];
+                }
+            }
+            $updatedRow->save();
         }
         QP_App_Version::insert($insertArray);
         
