@@ -157,7 +157,7 @@ return [
     'MESSAGE_CONTENT' => 'Message Content',
     'MESSAGE_RECEIVER' => 'Message Receiver',
     'PUSH_IMMEDIATELY' => 'Push Immediately',
-    'MSG_CONFIRM_PUSH_IMMEDIATELY' => 'Confirm to push %s immediately?',
+    'MSG_CONFIRM_PUSH_IMMEDIATELY' => 'Confirm to push %s immediately? message can not change when pushed.',
     'MSG_CONFIRM_SAVE_IMMEDIATELY' => 'Confirm to save %s immediately?',
     'MSG_MUST_CHOOSE_RECEIVER' => 'Must select message receiver!',
     'MESSAGE_SEND_HISTORY' => 'Push History',

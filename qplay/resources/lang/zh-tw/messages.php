@@ -157,7 +157,7 @@ return [
     'MESSAGE_CONTENT' => '內文',
     'MESSAGE_RECEIVER' => '收訊者',
     'PUSH_IMMEDIATELY' => '立即推播',
-    'MSG_CONFIRM_PUSH_IMMEDIATELY' => '系統將發出%s推播',
+    'MSG_CONFIRM_PUSH_IMMEDIATELY' => '系統將發出%s推播, 推播后將無法修改內容和收件人!',
     'MSG_CONFIRM_SAVE_IMMEDIATELY' => '系統將保存%s推播',
     'MSG_MUST_CHOOSE_RECEIVER' => '必須選擇接收者!',
     'MESSAGE_SEND_HISTORY' => '推播紀錄',
