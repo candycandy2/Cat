@@ -44,6 +44,7 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-console',
+  'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay',
   'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=b376539a868fdf5696228432'
 ]));

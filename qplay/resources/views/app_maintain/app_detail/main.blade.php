@@ -43,16 +43,16 @@ foreach ($enableRole as $role){
     <div class="col-lg-12 col-xs-12 text-right">
         <span class="text-success"  id="appVersionStatus" style="padding-right: 8px;  line-height: 50px; font-size: 20px;">
             <span  data-toggle='gridAndroidVersionList'
-                @if ($appStatus['android'] != 'UnPublish')
+                @if ($appStatus['android']['str'] != 'UnPublish')
                     style="font-weight:bold;"
                 @endif
-            > Android-{{$appStatus['android']}}</span>
+            > Android-{{$appStatus['android']['str']}}</span>
              |
             <span data-toggle='gridIOSVersionList'
-                @if ($appStatus['ios'] != 'UnPublish')
+                @if ($appStatus['ios']['str'] != 'UnPublish')
                     style="font-weight:bold;"
                 @endif
-            > IOS-{{$appStatus['ios']}}</span>
+            > IOS-{{$appStatus['ios']['str']}}</span>
         </span>
         <div class="btn-toolbar" role="toolbar" style="float: right;">
             <button type="button" id="saveAppDetail" class="btn btn-primary" onclick="SaveAppDetail()" style="display: none">
@@ -89,8 +89,8 @@ var jsDefaultLang = {{$defaultLang}};
 var jsDefaultLangStr = '{{$allowLangList[$defaultLang]}}';
 var jsAppRowId = {{app('request')->input('app_row_id')}};
 var jsAppKey =  '{{$appKey}}';
-var jsOriAndroidStatus = '{{$appStatus['android']}}';
-var jsOriIOSStatus = '{{$appStatus['ios']}}';
+var jsOriAndroidStatus = '{{$appStatus['android']['str']}}';
+var jsOriIOSStatus = '{{$appStatus['ios']['str']}}';
 var delPicArr = new Array();
 var delVersionArr = new Array();
 var selectedChanged = function (row, $element) {

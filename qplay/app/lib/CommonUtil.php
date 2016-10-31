@@ -551,18 +551,29 @@ SQL;
 
     public static function getAppVersionStatus($appId){
         
-      $appStatus = array('android'=>'UnPublish','ios'=>'UnPublish');
+      $appStatus = array('android'=>array(
+                                    'str'=>'UnPublish',
+                                    'versionCode'=>'',
+                                    'url'=>''
+                                ),
+                         'ios'=>array(
+                                    'str'=>'UnPublish',
+                                    'versionCode'=>'',
+                                    'url'=>''
+                                )
+                        );
     
-      foreach ( $appStatus as $key => $value) {
-         
+      foreach ( $appStatus as $key => $value) {     
           $deviceStatus = \DB::table('qp_app_version')
-            -> select('version_name')
+            -> select('version_name','version_code','url')
             -> where('app_row_id','=',$appId)
             -> where('device_type','=',$key)
             -> where('status','=','ready')
             ->first();
         if(count($deviceStatus) > 0){
-            $appStatus[$key] = $deviceStatus->version_name;
+            $appStatus[$key]['str'] = $deviceStatus->version_name;
+            $appStatus[$key]['versionCode'] = $deviceStatus->version_code;
+            $appStatus[$key]['url'] = $deviceStatus->url;
         }
       }
         return $appStatus;

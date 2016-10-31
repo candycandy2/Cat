@@ -8,6 +8,7 @@
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey;
 var loginData = {
+    verion:              "",
     deviceType:          "",
     pushToken:           "",
     token:               "",
@@ -16,6 +17,7 @@ var loginData = {
     checksum:            "",
     domain:              "",
     emp_no:              "",
+    loginid:             "",
     messagecontent:      null,
     msgDateFrom:         null,
     doLoginDataCallBack: false,
@@ -64,6 +66,7 @@ var app = {
         app.receivedEvent('deviceready');
 
         //[device] data ready to get on this step.
+        readConfig();
 
         //For QSecurity
         var whiteList = new setWhiteList();
@@ -123,6 +126,7 @@ $(document).one("pagebeforecreate", function(){
             }, "html");
         }(value));
     });
+
 });
 
 
@@ -163,6 +167,9 @@ function setWhiteList() {
             $('.ios-fix-overlap-div').css('display','block');
         }
 
+        $(".ui-title").on("taphold", function(){
+            infoMessage();
+        });
     };
 
     this.failCallback = function() {};
@@ -390,6 +397,50 @@ function loadingMask(action) {
     } else {
         $(".loader").hide();
     }
+}
+
+function readConfig() {
+    /*
+    if (device.platform === "iOS") {
+        var configPath = "../config.xml";
+    } else {
+        var configPath = "../../android_res/xml/config.xml";
+    }
+
+    if (device.platform === "iOS") {
+        $.ajax({
+            url: configPath,
+            dataType: 'html',
+            success: function(html) {
+                var config = $(html);
+                loginData["version"] = config[2].getAttribute("version");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //console.log(textStatus, errorThrown);
+            }
+        });
+    }
+    */
+    loginData["version"] = AppVersion.version;
+}
+
+//Show Version/AD/UUID
+function infoMessage() {
+    loadingMask("show");
+
+    var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
+                '<p style="padding:0 5%">' + loginData["version"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
+                '<p style="padding:0 5%">' + "Darren.K.Ti" + '</p>' +
+                '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
+              '</div>';
+
+    $.mobile.pageContainer.append(msg);
+
+    $("#closeInfoMsg").on("click", function(){
+        $("#infoMsg").remove();
+        loadingMask("hide");
+    });
 }
 
 function getLoginDataCallBack() {

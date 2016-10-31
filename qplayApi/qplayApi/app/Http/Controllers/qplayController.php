@@ -40,15 +40,15 @@ class qplayController extends Controller
         }
         $uuid = $input["uuid"];
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-        if($userInfo == null)
-        {
-            $result = array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=> "账号已被停权");
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
-            return $result;
-        }
-        $userId = $userInfo->row_id;
+//        if($userInfo == null)
+//        {
+//            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+//                "message"=> "账号已被停权");
+//            CommonUtil::logApi("", $ACTION,
+//                response()->json(apache_response_headers()), $result);
+//            return $result;
+//        }
+//        $userId = $userInfo->row_id;
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -61,7 +61,7 @@ class qplayController extends Controller
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Device Has Registered',
                     'content'=>array("is_register"=>1)]);
-                CommonUtil::logApi($userId, $ACTION,
+                CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
                 return $result;
             }
@@ -70,7 +70,7 @@ class qplayController extends Controller
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Device Has not Registered',
                     'content'=>array("is_register"=>0)]);
-                CommonUtil::logApi($userId, $ACTION,
+                CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
                 return $result;
             }
@@ -80,7 +80,7 @@ class qplayController extends Controller
             $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
-            CommonUtil::logApi($userId, $ACTION,
+            CommonUtil::logApi("", $ACTION,
                 response()->json(apache_response_headers()), $result);
             return $result;
         }

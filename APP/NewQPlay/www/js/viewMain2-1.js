@@ -88,36 +88,42 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             }
 
             function doLogOut() {
+                var self = this;
+
                 //需要 User AD Account
-                var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.emp_no;
+                var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
 
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
 
                     if (resultcode == 1) {
+
+                        $('#logoutConfirm').popup('close');
+
                         //clear data
                         var loginData = {
-                            deviceType:      "",
-                            pushToken:       "",
-                            token:           "",
-                            token_valid:     "",
-                            uuid:            "",
-                            checksum:        "",
-                            domain:          "",
-                            emp_no:          "",
-                            callCheckAPPVer: false,
-                            callQLogin:      false,
-                            openMessage:     false
+                            verion:              "",
+                            deviceType:          "",
+                            pushToken:           "",
+                            token:               "",
+                            token_valid:         "",
+                            uuid:                "",
+                            checksum:            "",
+                            domain:              "",
+                            emp_no:              "",
+                            loginid:             "",
+                            messagecontent:      null,
+                            msgDateFrom:         null,
+                            doLoginDataCallBack: false,
+                            callCheckAPPVer:     false,
+                            callQLogin:          false,
+                            openMessage:         false
                         };
 
                         window.localStorage.clear();
 
-                        //open QLogin page
-                        var args = [];
-                        args[0] = "initialSuccess";
-                        args[1] = device.uuid;
+                        app.initialize();
 
-                        window.plugins.qlogin.openCertificationPage(null, null, args);
                     }
                 };
 
@@ -144,7 +150,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             });
 
             /********************************** dom event *************************************/
-            /*
             $("#logout").on("click", function(){
                 $('#logoutConfirm').popup('open');
             });
@@ -156,7 +161,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             $("#logoutConfirm #confirm").on("click", function(){
                 var logout = new doLogOut();
             });
-            */
+
             $("#newseventspage").on("click", function(){
                 /*
                 if (loginData["msgDateFrom"] === null) {
