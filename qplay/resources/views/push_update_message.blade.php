@@ -414,10 +414,6 @@ $messageType = $sendInfo->message_info->message_type;
                         msgReceiver.company_list.push($(cbx).attr("data"));
                     }
                 });
-                {{--if(msgReceiver.company_list.length <= 0) {--}}
-                    {{--showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");--}}
-                    {{--return false;--}}
-                {{--}--}}
             } else {
                 msgReceiver.type = "event";
                 msgReceiver.company_list = new Array();
@@ -433,11 +429,6 @@ $messageType = $sendInfo->message_info->message_type;
                 $.each(selectedUsers, function(i, user) {
                     msgReceiver.user_list.push(user.row_id);
                 });
-
-                {{--if(msgReceiver.role_list.length <= 0 && msgReceiver.user_list.length <= 0) {--}}
-                    {{--showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");--}}
-                    {{--return false;--}}
-                {{--}--}}
             }
 
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE_IMMEDIATELY")}}".replace("%s", msgType), "", function () {
@@ -465,11 +456,8 @@ $messageType = $sendInfo->message_info->message_type;
                         if(d.result_code != 1) {
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
-                            //TODO redirect to parent page and show message
                             var sendId = d.send_id;
                             var msgId = d.message_id;
-                            //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            //window.location.href = "pushSendDetail?with_msg_id=MSG_PUSH_SUCCESS&push_send_row_id=" + sendId + "&message_id=" + msgId;//"push";
                             window.location.href = "updateMessage?with_msg_id=MSG_OPERATION_SUCCESS&push_send_row_id=" + sendId + "&message_id=" + msgId;//"push";
                         }
                     },
@@ -531,7 +519,17 @@ $messageType = $sendInfo->message_info->message_type;
                 }
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE_IMMEDIATELY")}}".replace("%s", msgType), "", function () {
+            var messageVisible = false;
+            if($('#cbxVisible').is(':checked')) {
+                messageVisible = true;
+            }
+
+            if(!messageVisible) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_MESSAGE_INVISIBLE")}}");
+                return false;
+            }
+
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_IMMEDIATELY")}}".replace("%s", msgType), "", function () {
                 hideConfirmDialog();
                 var mydata =
                 {
