@@ -62,8 +62,6 @@ Route::any('/AppMaintain/saveBlockList', 'AppMaintainController@saveBlockList');
 Route::any('/AppMaintain/deleteBlockList', 'AppMaintainController@deleteBlockList');
 Route::any('/AppMaintain/saveAppMainData', 'AppMaintainController@saveAppMainData');
 Route::any('/AppMaintain/getWhiteList', 'AppMaintainController@getWhiteList');
-Route::any('/AppMaintain/saveWhiteList', 'AppMaintainController@saveWhiteList');
-Route::any('/AppMaintain/deleteWhiteList', 'AppMaintainController@deleteWhiteList');
 Route::any('/AppMaintain/getCustomApi', 'AppMaintainController@getCustomApi');
 Route::any('/AppMaintain/getAppUser', 'AppMaintainController@getAppUser');
 Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersionList');

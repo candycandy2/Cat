@@ -3,7 +3,8 @@ var submitFormAry = [$("#mainInfoForm"),
                      $("#basicInfoForm"),
                      $('#iconForm'),
                      $('#screenShotForm'),
-                     $('#customApiForm')];
+                     $('#customApiForm'),
+                     $('#whistListForm')];
 
 
 SaveAppDetail = function(){
@@ -210,9 +211,16 @@ $(function () {
                     formData.append('delVersionArr',delVersionArr);
 
                     var customApiList =  $("#gridCustomApi").bootstrapTable('getData');
-                    $.each(customApiList, function(i, apiObj) {
-                         $.each(apiObj, function(j,data){
+                    $.each(customApiList, function(i, api) {
+                         $.each(api, function(j,data){
                             formData.append('customApiList[' + i + '][' + j + ']',data);
+                        }); 
+                    });
+
+                    var whiteList =  $("#gridWhiteList").bootstrapTable('getData');
+                    $.each(whiteList, function(i, white) {
+                         $.each(white, function(j,data){
+                            formData.append('whiteList[' + i + '][' + j + ']',data);
                         }); 
                     });
 

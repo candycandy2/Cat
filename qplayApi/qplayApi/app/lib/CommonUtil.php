@@ -404,7 +404,7 @@ class CommonUtil
             -> where('api_version', '=', $apiVersion)
             -> where('api_action', '=', $action)
             -> select()->get();
-        if(coun($urlInfoList) < 1) {
+        if(count($urlInfoList) < 1) {
             return null;
         }
 

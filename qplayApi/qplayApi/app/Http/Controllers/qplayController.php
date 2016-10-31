@@ -40,15 +40,15 @@ class qplayController extends Controller
         }
         $uuid = $input["uuid"];
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-        if($userInfo == null)
-        {
-            $result = array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=> "账号已被停权");
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
-            return $result;
-        }
-        $userId = $userInfo->row_id;
+//        if($userInfo == null)
+//        {
+//            $result = array("code"=>ResultCode::_000914_userWithoutRight,
+//                "message"=> "账号已被停权");
+//            CommonUtil::logApi("", $ACTION,
+//                response()->json(apache_response_headers()), $result);
+//            return $result;
+//        }
+//        $userId = $userInfo->row_id;
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
@@ -61,7 +61,7 @@ class qplayController extends Controller
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Device Has Registered',
                     'content'=>array("is_register"=>1)]);
-                CommonUtil::logApi($userId, $ACTION,
+                CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
                 return $result;
             }
@@ -70,7 +70,7 @@ class qplayController extends Controller
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Device Has not Registered',
                     'content'=>array("is_register"=>0)]);
-                CommonUtil::logApi($userId, $ACTION,
+                CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
                 return $result;
             }
@@ -80,7 +80,7 @@ class qplayController extends Controller
             $result = response()->json(['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>'']);
-            CommonUtil::logApi($userId, $ACTION,
+            CommonUtil::logApi("", $ACTION,
                 response()->json(apache_response_headers()), $result);
             return $result;
         }
@@ -256,7 +256,7 @@ class qplayController extends Controller
                         "uuid" => $uuid,
                         "redirect_uri"=>$finalUrl,
                         "token"=>$token,
-                        "emp_no"=>$userInfo->emp_no,
+                        "loginid"=>$userInfo->login_id,
                         "emp_no"=>$userInfo->emp_no,
                         "domain"=>$userInfo->user_domain,
                         "checksum"=>md5($password),
@@ -277,7 +277,7 @@ class qplayController extends Controller
         $result = response()->json(['result_code'=>$verifyResult["code"],
             'message'=>$verifyResult["message"],
             'content'=>array("redirect_uri"=>$finalUrl)]);
-        CommonUtil::logApi("", $this->API_VERSION, $ACTION,
+        CommonUtil::logApi("", $ACTION,
             response()->json(apache_response_headers()), $result);
         return $result;
     }
@@ -360,7 +360,7 @@ class qplayController extends Controller
                         -> select() -> get();
 
                     //Unregister to Message Center
-                    $app_id = "293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+                    $app_id = "b376539a868fdf5696228432";  //TODO 正式上线需要读配置
                     $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
                         $args = array('App_id' => $app_id,
@@ -594,6 +594,7 @@ class qplayController extends Controller
                     'content'=>array("uuid" => $uuid,
                         "redirect_uri"=>$finalUrl,
                         "token"=>$token,
+                        "loginid"=>$userInfo->login_id,
                         "emp_no"=>$userInfo->emp_no,
                         "domain"=>$userInfo->user_domain,
                         "checksum"=>md5($password),

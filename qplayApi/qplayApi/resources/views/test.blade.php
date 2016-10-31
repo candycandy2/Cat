@@ -201,13 +201,13 @@ FORM;
         
         var register = function () {
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=android",//Math.uuid(),
+                url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest4",//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key", "appqplay1");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");

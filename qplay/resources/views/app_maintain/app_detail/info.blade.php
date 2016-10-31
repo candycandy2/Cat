@@ -536,9 +536,6 @@
             });
         });
     };
-
-    var currentCustomApiId = null;
-    var isNewCustomApi = false;
     var newCustomApi = function() {
         $("#tbxApiAction").val("");
         $("#tbxApiVersion").val("");
@@ -546,12 +543,9 @@
         $("#newCustomApiDialogTitle").text("{{trans("messages.MSG_NEW_CUSTOM_API")}}");
         $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("new")');
         $("#newCustomApiDialog").modal('show');
-        currentCustomApiId = null;
-        isNewCustomApi = true;
     };
-
     var updateCustomApi = function(index,customApiRowId) {
-        console.log(index);
+
         var currentData = $("#gridCustomApi").bootstrapTable('getData');
         $("#tbxApiAction").val(currentData[index].api_action);
         $("#tbxApiVersion").val(currentData[index].api_version);
@@ -559,10 +553,7 @@
         $("#newCustomApiDialogTitle").text("{{trans("messages.MSG_EDIT_CUSTOM_API")}}");
         $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("edit",'+index+')');
         $("#newCustomApiDialog").modal('show');
-        currentCustomApiId = customApiRowId;
-        isNewCustomApi = false;
     };
-
     var saveCustomApi = function(action,index) {
 
         var apiAction = $("#tbxApiAction").val();
@@ -584,7 +575,6 @@
             newCustomApi.api_url = apiUrl;
             currentData.push(newCustomApi);  
         }else{ 
-            console.log(index);
             currentData[index].api_action = apiAction;
             currentData[index].api_version = apiVersion;
             currentData[index].api_url = apiUrl;

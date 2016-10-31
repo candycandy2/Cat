@@ -348,7 +348,7 @@ function getSecurityList() {
             type: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'App-Key': 'appqplay',
+                'App-Key': appKey,
                 'Signature-Time': signatureTime,
                 'Signature': signatureInBase64,
                 'token': loginData.token
