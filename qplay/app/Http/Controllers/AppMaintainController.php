@@ -913,12 +913,12 @@ class AppMaintainController extends Controller
                     ->orderBy('status','device_type','updated_at')
                     ->get();
                 
-                $app->released['android'] = 'android-Unpublish';
-                $app->released['ios'] = 'ios-Unpublish';
+                $app->released['android'] = 'Android-Unpublish';
+                $app->released['ios'] = 'IOS-Unpublish';
 
                 foreach ( $appVersionInfo as $version) {
-                     $app->released[$version->device_type] = 
-                        $version->device_type.'-'.$version->version_name;
+                    $deviceStr = (strtolower($version->device_type == 'ios'))?'IOS':'Android';
+                    $app->released[$version->device_type] = $deviceStr.'-'.$version->version_name;
                 }
             }
         }catch(Exception $e){
