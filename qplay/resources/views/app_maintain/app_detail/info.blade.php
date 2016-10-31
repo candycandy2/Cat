@@ -434,6 +434,7 @@
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxApiAction"
                                        id="tbxApiAction" value=""/>
+                                <span style="color: red;" class="error" for="tbxApiAction"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
                         </tr>
@@ -442,21 +443,24 @@
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxApiVersion"
                                        id="tbxApiVersion" value=""/>
+                                <span style="color: red;" class="error" for="tbxApiVersion"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
+                            
                         </tr>
                          <tr>
                             <td>Api Url:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxApiUrl"
                                        id="tbxApiUrl" value=""/>
+                                <span style="color: red;" class="error" for="tbxApiUrl"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
                         </tr>
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="saveCustomApi()">{{trans("messages.SAVE")}}</button>
+                    <button type="button"  class="btn btn-danger" id="saveCustomApi" onclick="saveCustomApi()">{{trans("messages.SAVE")}}</button>
                     <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
                 </div>
             </div>
@@ -505,116 +509,78 @@
     /*--Custom API Start--*/
 
     function customApiActionFormatter(value, row){
-        return '<a href="#" onclick="updateCustomApi(' + row.row_id + ')">' + value + '</a>';
+        return '<a href="#" class="editCustomApi" data-rowid="'+ row.row_id  +'"> '+ value +'</a>';
     }
 
     var deleteCustomApi = function() {
         showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_CUSTOM_API")}}", "", function () {
-            hideConfirmDialog();
-            var selectedCustomApi = $("#gridCustomApi").bootstrapTable('getSelections');
-            var check = true;
-            var customApiIdList = new Array();
+             hideConfirmDialog();
+            var $gridList = $("#gridCustomApi");
+            var $toolbar  =  $($gridList.data('toolbar'));
+            var selectedCustomApi = $gridList.bootstrapTable('getSelections');
+            var currentData = $gridList.bootstrapTable('getData');
             $.each(selectedCustomApi, function(i, api) {
-                customApiIdList.push(api.row_id);
-            });
-            var mydata = {customApiIdList:customApiIdList};
-            var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "AppMaintain/deleteCustomApi",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_DELETE_CUSTOM_API_FAILED")}}");
-                    }  else {
-                        $("#gridCustomApi").bootstrapTable('refresh');
-                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                for(var j = 0; j < currentData.length; j++) {
+                    if(currentData[j].row_id == api.row_id) {
+                        currentData.splice(j,1);
+                        break;
                     }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_CUSTOM_API_FAILED")}}", e.responseText);
                 }
+                $gridList.bootstrapTable('load', currentData);
+            });
+            $gridList.find('checkbox[name=btSelectItem]').each(function(){
+                $(this).prop('check',false);
+            });
+            $toolbar.find('.btn-danger').fadeOut(300, function() {
+                $toolbar.find('.btn-primary').fadeIn(300);
             });
         });
     };
-
-    var currentCustomApiId = null;
-    var isNewCustomApi = false;
     var newCustomApi = function() {
         $("#tbxApiAction").val("");
         $("#tbxApiVersion").val("");
         $("#tbxApiUrl").val("");
         $("#newCustomApiDialogTitle").text("{{trans("messages.MSG_NEW_CUSTOM_API")}}");
+        $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("new")');
         $("#newCustomApiDialog").modal('show');
-        currentCustomApiId = null;
-        isNewCustomApi = true;
     };
+    var updateCustomApi = function(index,customApiRowId) {
 
-    var updateCustomApi = function(customApiRowId) {
-        var allCustomApiList = $("#gridCustomApi").bootstrapTable('getData');
-        $.each(allCustomApiList, function(i, api) {
-            if(api.row_id == customApiRowId) {
-                $("#tbxApiAction").val(api.api_action);
-                $("#tbxApiVersion").val(api.api_version);
-                $("#tbxApiUrl").val(api.api_url);
-                return false;
-            }
-        });
-
+        var currentData = $("#gridCustomApi").bootstrapTable('getData');
+        $("#tbxApiAction").val(currentData[index].api_action);
+        $("#tbxApiVersion").val(currentData[index].api_version);
+        $("#tbxApiUrl").val(currentData[index].api_url);
         $("#newCustomApiDialogTitle").text("{{trans("messages.MSG_EDIT_CUSTOM_API")}}");
+        $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("edit",'+index+')');
         $("#newCustomApiDialog").modal('show');
-        currentCustomApiId = customApiRowId;
-        isNewCustomApi = false;
     };
+    var saveCustomApi = function(action,index) {
 
-    var saveCustomApi = function() {
         var apiAction = $("#tbxApiAction").val();
         var apiVersion = $("#tbxApiVersion").val();
         var apiUrl = $("#tbxApiUrl").val();
-        var appKey = $('#txbAppKey').val();
-        if(apiAction == "" ||　apiVersion == "" || apiUrl == "") {
-            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+        var require = ['tbxApiAction','tbxApiVersion','tbxApiUrl'];
+        var errors = validRequired(require);
+        $.each(errors,function(i, error){
+            $('span[for='+error.field+']').html(error.msg);
+        });
+        if(errors.length > 0){
             return false;
         }
-
-        showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-            hideConfirmDialog();
-            var mydata = {
-                isNewCustomApi:'Y',
-                customApiRowId:-1,
-                apiAction:apiAction,
-                apiVersion:apiVersion,
-                apiUrl:apiUrl,
-                appKey:appKey,
-                appRowId:{{ app('request')->input('app_row_id') }}
-            };
-            if(!isNewCustomApi) {
-                mydata.isNewCustomApi = 'N';
-                mydata.customApiRowId = currentCustomApiId;
-            }
-            var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "AppMaintain/saveCustomApi",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_CUSTOM_API_FAILED")}}");
-                    }  else {
-                        $("#gridCustomApi").bootstrapTable('refresh');
-                        $("#newCustomApiDialog").modal('hide');
-                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                    }
-                },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_CUSTOM_API_FAILED")}}", e.responseText);
-                }
-            });
-        });
+        var currentData = $("#gridCustomApi").bootstrapTable('getData');
+        if(action == "new"){
+            var newCustomApi = new Object();
+            newCustomApi.api_action  = apiAction;
+            newCustomApi.api_version = apiVersion;
+            newCustomApi.api_url = apiUrl;
+            currentData.push(newCustomApi);  
+        }else{ 
+            currentData[index].api_action = apiAction;
+            currentData[index].api_version = apiVersion;
+            currentData[index].api_url = apiUrl;
+        }
+        $("#gridCustomApi").bootstrapTable('load', currentData);
+        $("#newCustomApiDialog").modal('hide');
     };
 
     /*--Custom API End--*/
@@ -759,6 +725,12 @@
                 }); 
                  $('label[for=chkCompany]').remove();
             }
+        });
+
+        $('body').on('click','.editCustomApi',function(e) {  
+             $currentTarget = $(e.currentTarget);
+             var index = $currentTarget.parent().parent().data('index');
+             updateCustomApi(index, $currentTarget.data('rowid'));
         });
        
     });
