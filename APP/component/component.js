@@ -24,7 +24,6 @@ var loginData = {
     callQLogin:          false,
     openMessage:         false
 };
-var headerClickCount = 0;
 var queryData = {};
 var getDataFromServer = false;
 
@@ -168,7 +167,7 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $(".ui-title").on("click", function(){
+            $(".ui-title").on("taphold", function(){
                 infoMessage();
             });
         }
@@ -425,40 +424,20 @@ function readConfig() {
 
 //Show Version/AD/UUID
 function infoMessage() {
+    loadingMask("show");
 
-    var openMsg = false;
+    var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
+                '<p style="padding:0 5%">' + loginData["version"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
+                '<p style="padding:0 5%">' + "Darren.K.Ti" + '</p>' +
+                '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
+              '</div>';
 
-    if (headerClickCount === 0) {
-        headerClickCount++;
-    } else if (headerClickCount === 1) {
-        headerClickCount++;
-        openMsg = true;
-    } else {
-        headerClickCount = 0;
-    }
-
-    if (openMsg) {
-        loadingMask("show");
-
-        var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
-                    '<p style="padding:0 5%">' + loginData["version"] + '</p>' +
-                    '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
-                    '<p style="padding:0 5%">' + "Darren.K.Ti" + '</p>' +
-                    '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
-                  '</div>';
-
-        $.mobile.pageContainer.append(msg);
-    }
-
-    dblClick = setTimeout(function(){
-        headerClickCount = 0;
-    }, 1000);
+    $.mobile.pageContainer.append(msg);
 
     $("#closeInfoMsg").on("click", function(){
         $("#infoMsg").remove();
         loadingMask("hide");
-        clearTimeout(dblClick);
-
     });
 }
 
