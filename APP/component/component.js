@@ -167,11 +167,9 @@ function setWhiteList() {
             $('.ios-fix-overlap-div').css('display','block');
         }
 
-        if (device.platform === "iOS") {
-            $(".ui-title").on("taphold", function(){
-                infoMessage();
-            });
-        }
+        $(".ui-title").on("taphold", function(){
+            infoMessage();
+        });
     };
 
     this.failCallback = function() {};
@@ -402,7 +400,7 @@ function loadingMask(action) {
 }
 
 function readConfig() {
-
+    /*
     if (device.platform === "iOS") {
         var configPath = "../config.xml";
     } else {
@@ -422,7 +420,8 @@ function readConfig() {
             }
         });
     }
-
+    */
+    loginData["version"] = AppVersion.version;
 }
 
 //Show Version/AD/UUID
