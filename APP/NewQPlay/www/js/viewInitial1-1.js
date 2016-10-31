@@ -63,9 +63,7 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                 };
                 
                 var __construct = function() {
-                    
-                    // fix me !!! need to get device type and app version
-                    apiCheckAppVersion(self.successCallback, self.failCallback, "android", "1");
+                    apiCheckAppVersion(self.successCallback, self.failCallback, device.platform, "1");
                 }();
             }
 

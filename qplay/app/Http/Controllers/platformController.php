@@ -1473,6 +1473,13 @@ class platformController extends Controller
                         $companyLabel = $companyLabel.$company.";";
                     }
                 }
+                \DB::table("qp_message_send")
+                    -> where('row_id', '=', $messageSendId)
+                    -> update([
+                        'company_label'=>$companyLabel,
+                        'updated_user'=>\Auth::user()->row_id,
+                        'updated_at'=>$now,
+                    ]);
 
                 \DB::table("qp_role_message")
                     -> where('message_send_row_id', '=', $messageSendId)
@@ -1598,12 +1605,6 @@ class platformController extends Controller
                             'updated_at'=>$now,
                             'updated_user'=>\Auth::user()->row_id]);
 
-                \DB::table("qp_message_send")
-                    -> where('row_id', '=', $messageSendId)
-                    -> update(
-                        ['need_push'=>1,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
 
                 $companyList = $receiver["company_list"];
                 $companyLabel = "";
@@ -1612,6 +1613,15 @@ class platformController extends Controller
                         $companyLabel = $companyLabel.$company.";";
                     }
                 }
+
+                \DB::table("qp_message_send")
+                    -> where('row_id', '=', $messageSendId)
+                    -> update(
+                        ['need_push'=>1,
+                            'company_label'=>$companyLabel,
+                            'created_at'=>$now,
+                            'updated_at'=>$now,
+                            'updated_user'=>\Auth::user()->row_id]);
 
                 \DB::table("qp_role_message")
                     -> where('message_send_row_id', '=', $messageSendId)
