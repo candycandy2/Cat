@@ -8,6 +8,10 @@
     margin: 0;
 }
 
+#viewAppDetail2-2 .ui-content {
+    padding: 0;
+}
+
 /*new class*/
 .initialMain {
     width: 100%;
@@ -23,14 +27,16 @@
 }
 
 .appDetailIcon {
+    width: 25%;
+    height: 25%;
+    display: inline-block;
     float: left;
-    width: 72px;
-    height: 85px;
 }
 
 .appDetailInfo {
     line-height: 6px;
-    margin-left: 85px;
+    float: left;
+    margin-left: 10px;
 }
 
 .appDetailAppName {
@@ -40,10 +46,16 @@
     font-weight: bold;
 }
 
+.install-btn-content {
+    clear: both;
+    width: 100%;
+    height: auto;
+    text-align: right;
+}
+
 .install-btn {
     width: 100px !important;
     height: 10px !important;
-    float:right !important;
     text-align: center !important;
     line-height: 10px !important;
     color:white !important;
@@ -52,17 +64,15 @@
     margin-top:0px !important;
 }
 
-.detail-description-style {
-    margin-top: 30%;
-    margin-bottom: 15%;
+.detail-description {
+    margin-bottom: 2%;
     width: auto !important;
     text-align: center !important;
 }
 
-.rank-style {
-    margin: auto;
-    margin-bottom: 15%;
-    display: block !important;
+.rank {
+    text-align: center;
+    margin-bottom: 5%;
 }
 
 .news-header {
@@ -192,4 +202,20 @@
 
 #newsDetailTitle {
     color: #492582;
+}
+
+#viewAppDetail2-2 .page-main {
+    background-color: #FFF;
+}
+
+#viewAppDetail2-2 .bottom {
+    background-color: #f9f9f9;
+}
+
+#viewAppDetail2-2 .top, #viewAppDetail2-2 .bottom {
+    padding: 5%;
+}
+
+#viewAppDetail2-2 .top {
+    padding-bottom: 0;
 }

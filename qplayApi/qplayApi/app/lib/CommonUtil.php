@@ -106,6 +106,20 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserIdByUUID($uuid) {
+        $userList = \DB::table('qp_user')
+            -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
+            -> where('qp_register.uuid', '=', $uuid)
+            -> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
+                'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
+                'qp_user.department','qp_user.status', 'qp_user.resign'  )->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0]->row_id;
+    }
+
     public static function getUserStatusByUserRowID($userRowId)
     {
         $userList = \DB::table('qp_user')
@@ -411,9 +425,23 @@ class CommonUtil
         return $urlInfoList[0]->api_url;
     }
 
+    public static function checkCompanyExist($company) {
+        $userList = \DB::table('qp_user')
+            -> where('company', '=', $company)
+            -> select()->get();
+        if(count($userList) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function logApi($userId, $action, $responseHeader, $responseBody) {
         $version = self::getApiVersionFromUrl();
         $appKey = self::getAppKeyFromHeader();
+        if($appKey == null) {
+            $appKey = "";
+        }
         $now = date('Y-m-d H:i:s',time());
         $ip = self::getIP();
         $url_parameter = $_SERVER["QUERY_STRING"];
