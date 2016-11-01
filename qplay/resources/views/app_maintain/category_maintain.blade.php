@@ -33,7 +33,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
     <script>
 
     	function categoryNameFormatter(value, row) {
-            return '<a href="#" onclick="updateCategory(' + row.row_id + ')">' + value + '</a>';
+            return '<a href="#" onclick="updateCategory(' + row.row_id + ')">' + htmlEscape(value) + '</a>';
         };
 
         function appCountFormatter(value, row) {
@@ -87,6 +87,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         var isNewCategory = false;
     	var newCategory = function() {
             $("#tbxCategoryName").val("");
+            $('#hidCategoryId').val("");
             $("#categoryDetailMaintainDialogTitle").text("{{trans("messages.MSG_NEW_CATEGORY")}}");
             $("#appCategoryDetailMaintainDialog").modal('show');
             currentMaintainCategoryId = null;
@@ -109,6 +110,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
             });
 
             $dialog_title.text("{{trans("messages.MSG_EDIT_CATEGORY")}}");
+            $('#hidCategoryId').val(categoryId);
             $dialog.modal('show');
             currentMaintainCategoryId = categoryId;
             isNewCategory = false;
@@ -116,10 +118,26 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
 
 
         var SaveCategoryMaintain = function() {
-            var categoryName = $( "#tbxCategoryName" ).val();
+            var categoryName = $.trim($( "#tbxCategoryName" ).val());
+            var updateId = $('#hidCategoryId').val();
             var status = $( "input[name=optRadio]:checked" ).val();
+            var currentData = $gridList.bootstrapTable('getData');
+            var duplicate = false;
+
             if(categoryName == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+            
+            $.each(currentData, function(i, category) {
+                if(category.app_category == categoryName && updateId!= category.row_id) {
+                    duplicate = true;
+                    return false;
+                }
+            });
+
+            if(duplicate){
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_APP_CATEGORY_EXIST")}}");
                 return false;
             }
 
@@ -204,6 +222,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                             </td>
                             <td><span style="color: red;">*</span></td>
                         </tr>
+                        <input type="hidden" id="hidCategoryId">
                     </table>
                 </div>
                 <div class="modal-footer">
