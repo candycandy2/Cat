@@ -972,7 +972,9 @@ SQL;
                         'url'=>FilePath::getApkDownloadUrl($appData->app_id, $device_type, $appData->version, $appData->url),//$appData->url
                         'icon_url'=>FilePath::getIconUrl($appData->app_id, $appData->icon_url)//$appData->icon_url
                     );
-                    $categoryIdListStr = $categoryIdListStr.($appData->category_id).",";
+                    if($appData->category_id != null && trim($appData->category_id) != "") {
+                        $categoryIdListStr = $categoryIdListStr.($appData->category_id).",";
+                    }
                     $appIdListStr = $appIdListStr.($appData->app_id).",";
                     array_push($app_list, $app);
                 }
