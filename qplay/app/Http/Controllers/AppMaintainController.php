@@ -478,90 +478,6 @@ class AppMaintainController extends Controller
         return response()->json($appVersionList);
     }
 
-    public function saveAppVersion(Request $request){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        $correctAppType = ['android','ios'];
-       
-        $input = Input::get();
-        if( !isset($input["appRowId"]) || !is_numeric($input["appRowId"]) || 
-            !isset($input["deviceType"]) || !in_array($input["deviceType"],$correctAppType) || 
-            !isset($input["tbxVersionNo"]) || !is_numeric($input["appRowId"])
-            || !isset($input["tbxVersionName"]) ){
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
-        }
-
-        if(!Input::hasFile('file')){
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
-        }
-
-        $appRowId       = $input['appRowId'];
-        $appKey         = $input['appKey'];
-        $deviceType     = $input['deviceType'];
-        $versionCode    = $input['tbxVersionNo'];
-        $tbxVersionName = $input['tbxVersionName'];
-       
-        $destinationPath    =  FilePath::getApkUploadPath($appRowId,$deviceType,$versionCode);
-        try{
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            $fileName =  Input::file('file')->getClientOriginalName();
-            $request->file('file')->move($destinationPath, $fileName);
-            //create manifest.plist
-            if($deviceType == 'ios'){
-                 $manifestContent = $this->getManifest($appRowId, $appKey, $deviceType, $versionCode, $fileName);
-                 if(isset($manifestContent)){
-                    $file = fopen($destinationPath."manifest.plist","w"); 
-                    fwrite($file,$manifestContent );
-                    fclose($file);
-                 }
-            }
-            $now = date('Y-m-d H:i:s',time());
-
-            $version = \DB::table("qp_app_version")
-                -> where('app_row_id', '=', $appRowId)
-                -> where('version_code', '=',$versionCode)
-                -> where('device_type', '=', $deviceType)
-                -> select('row_id')
-                -> first();
-
-            if(count($version) > 0){
-                \DB::table("qp_app_version")
-                    -> where('row_id', "=", $version->row_id)
-                    -> update(
-                        ['version_name'=>$tbxVersionName,
-                            'url'=>$fileName,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-            }else{
-                \DB::table("qp_app_version")
-                -> insert(
-                    ['app_row_id'=>$appRowId,
-                        'version_code'=>$versionCode,
-                        'version_name'=>$tbxVersionName,
-                        'url'=>$fileName,
-                        'status'=>'cancel',
-                        'device_type'=>$deviceType,
-                        'created_at'=>$now,
-                        'created_user'=>\Auth::user()->row_id,
-                        'updated_at'=>$now]);
-            }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-
-        }catch(Exception $e){
-            return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                'message'=>'Save App Version Error',
-                'content'=>''
-            ]);
-        }
-        return null;
-    }
-
     public function saveAppDetail(Request $request){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -894,17 +810,11 @@ class AppMaintainController extends Controller
                     ->where('app_row_id', '=', $app->row_id)
                     ->where('lang_row_id', '=', $app->default_lang_row_id)
                     ->select('app_row_id', 'app_name', 'updated_at')
-                    ->orderBy('updated_at')
-                    ->get();
+                    ->first();
 
                 $app->app_name = "-";
-                $app->updated_at = $app->created_at;
-                
-                foreach ($appLineInfo as $line) {
-                    $app->app_name = $line->app_name;
-                    $app->updated_at = $line->updated_at;
-                }
-               
+                $app->updated_at = ($app->updated_at == '0000-00-00 00:00:00')?$app->created_at:$app->updated_at;
+                $app->app_name = $appLineInfo->app_name;
 
                 $appVersionInfo = \DB::table('qp_app_version')
                     ->where('app_row_id', '=', $app->row_id)
@@ -913,12 +823,12 @@ class AppMaintainController extends Controller
                     ->orderBy('status','device_type','updated_at')
                     ->get();
                 
-                $app->released['android'] = 'android-Unpublish';
-                $app->released['ios'] = 'ios-Unpublish';
+                $app->released['android'] = 'Android-Unpublish';
+                $app->released['ios'] = 'IOS-Unpublish';
 
                 foreach ( $appVersionInfo as $version) {
-                     $app->released[$version->device_type] = 
-                        $version->device_type.'-'.$version->version_name;
+                    $deviceStr = (strtolower($version->device_type == 'ios'))?'IOS':'Android';
+                    $app->released[$version->device_type] = $deviceStr.'-'.$version->version_name;
                 }
             }
         }catch(Exception $e){
