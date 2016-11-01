@@ -11,6 +11,9 @@ if(count($messageInfo->send_list) == 0) {
     $needPushFlag = 'Y';
 }
 
+$msgTitle = str_replace(array("\r","\n"), ' ', $messageInfo->message_title);
+$msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
+
 $pushSendRowId = -1;
 foreach ($messageInfo->send_list as $sendItem) {
     if($sendItem->need_push == 0) {
@@ -153,8 +156,8 @@ label {
         };
 
         var oriVisible = '{{$messageInfo->visible}}';
-        var msgY = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_Y")}}".replace("%s", "{{$messageInfo->message_title}}");
-        var msgN = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_N")}}".replace("%s", "{{$messageInfo->message_title}}");
+        var msgY = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_Y")}}".replace("%s", "{{$msgTitle}}");
+        var msgN = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_N")}}".replace("%s", "{{$msgTitle}}");
         var SaveMessageVisible = function () {
             var visible = "N";
             var msg = msgN;
