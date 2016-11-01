@@ -7,9 +7,20 @@ $push_send_row_id = $input["push_send_row_id"];
 $messageId = $input["message_id"];
 $tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
+for($i = 0; $i < count($allCompanyRoleList); $i++) {
+    $allCompanyRoleList[$i]->company = strtolower($allCompanyRoleList[$i]->company);
+}
 $sendInfo = \App\lib\CommonUtil::getMessageSendInfo($push_send_row_id);
+for($i = 0; $i < count($sendInfo->company_list); $i++) {
+    $sendInfo->company_list[$i] = strtolower($sendInfo->company_list[$i]);
+}
+
 $messageInfo = $sendInfo->message_info;
 $messageType = $sendInfo->message_info->message_type;
+
+$msgTitle = str_replace(array("\r","\n"), ' ', $messageInfo->message_title);
+$msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
+
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -571,8 +582,8 @@ $messageType = $sendInfo->message_info->message_type;
         };
 
         var oriVisible = '{{$messageInfo->visible}}';
-        var msgY = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_Y")}}".replace("%s", "{{$messageInfo->message_title}}");
-        var msgN = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_N")}}".replace("%s", "{{$messageInfo->message_title}}");
+        var msgY = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_Y")}}".replace("%s", "{{$msgTitle}}");
+        var msgN = "{{trans("messages.MSG_CONFIRM_SAVE_PUSH_STATUS_N")}}".replace("%s", "{{$msgTitle}}");
         var SaveMessageVisible = function () {
             var visible = "N";
             var msg = msgN;
