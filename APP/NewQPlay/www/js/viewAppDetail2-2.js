@@ -59,7 +59,15 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             });
 
             $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
-                
+                //Auto resize detail-description
+                var pageHeight = $("#viewAppDetail2-2").height();
+                var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
+                var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
+                var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
+                var mainOwlCarouselHeight = $("#viewAppDetail2-2 .page-main .owl-carousel").height();
+
+                var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainOwlCarouselHeight);
+                $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
             });
 
             /********************************** dom event *************************************/
