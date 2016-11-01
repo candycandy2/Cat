@@ -41,21 +41,23 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         };
 
         var deleteCategory = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_CATEGORY")}}", "", function () {
-                hideConfirmDialog();
-                var selectedCategories = $("#gridCategoryList").bootstrapTable('getSelections');
-                var check = true;
-                $.each(selectedCategories, function (i, category) {
-                    if(category.app_count > 0) {
-                        check = false;
-                        return false;
-                    }
-                });
-                if(!check) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_CATEGORY_EXIST_APPS")}}");
+            var $gridList = $("#gridCategoryList");
+            var currentData = $gridList.bootstrapTable('getData');
+            var selectedCategories = $("#gridCategoryList").bootstrapTable('getSelections');
+            var check = true;
+            $.each(selectedCategories, function (i, category) {
+
+                if(category.app_count > 0) {
+                    check = false;
                     return false;
                 }
-                
+            });
+            if(!check) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_CATEGORY_EXIST_APPS")}}");
+                return false;
+            }
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_CATEGORY")}}", "", function () {
+                hideConfirmDialog();
                 var categoryIdList = new Array();
                 $.each(selectedCategories, function(i, category) {
                     categoryIdList.push(category.row_id);
