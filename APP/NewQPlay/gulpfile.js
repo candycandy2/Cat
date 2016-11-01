@@ -38,15 +38,14 @@ gulp.task('install', shell.task([
   'cordova platform rm android',
   'cordova platform add ios',
   'cordova platform add android',
-  'cordova plugin add ../../plugins/cordova-plugin-qsecurity',
   'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplay.benq.com/qplayApiTest/public/qplayauth_register',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-splashscreen',
-  'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay',
-  'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=b376539a868fdf5696228432'
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplaytest',
+  'cordova plugin add ../../plugins/cordova-plugin-qsecurity',
+  'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=f507b968e6a2c8d91db2a8fd'
 ]));
 
 gulp.task('build', shell.task([
