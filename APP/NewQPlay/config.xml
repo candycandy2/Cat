@@ -25,5 +25,4 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <serverUrl href="http://qplay.benq.com/qplayApiTest/public/index.php/qplayauth_register" />
 </widget>
