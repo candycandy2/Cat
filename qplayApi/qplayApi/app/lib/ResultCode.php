@@ -25,6 +25,7 @@ abstract class ResultCode
     const _999011_signatureOvertime = '999011';  //signature參數錯誤或誤差超過15分鐘
     const _999012_appOffTheShelf = '999012';  //app已经下架
     const _999013_pushTokenUsed = '999013';  //push token已经使用
+    const _999013_companyNotExist = '999014';  //company不存在
     const _999999_unknownError = '999999';  //其他未知錯誤
 
     const _000901_userNotExistError = '000901';  //離職或是帳號資訊打錯

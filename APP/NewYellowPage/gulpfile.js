@@ -45,7 +45,7 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage'
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpagetest'
 ]));
 
 gulp.task('build', shell.task([
