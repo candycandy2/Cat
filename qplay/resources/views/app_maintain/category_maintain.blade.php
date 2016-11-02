@@ -194,8 +194,8 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         });
 
         var selectedChanged = function (row, $element) {
-            var selectedUsers = $gridList.bootstrapTable('getSelections');
-            if(selectedUsers.length > 0) {
+            var selectedApps = $gridList.bootstrapTable('getSelections');
+            if(selectedApps.length > 0) {
             	$delBtn.show();
             	$newBtn.hide();
             } else {

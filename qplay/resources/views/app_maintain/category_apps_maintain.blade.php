@@ -43,7 +43,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             </div>
 
             <table id="gridAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-                   data-url="AppMaintain/getCategoryAppsList?category_id={{$categoryId}}" data-height="398" data-pagination="true"
+                   data-url="AppMaintain/getCategoryAppsList?category_id={{$categoryId}}" data-height="600" data-pagination="true"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="false"
                    data-show-toggle="true"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -105,6 +105,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             var currentData =  $gridList.bootstrapTable('getData');
             var selectedApps = $gridDialogList.bootstrapTable('getSelections');
             $.each(selectedApps, function(i, newApp) {
+                newApp.state = false;
                 var exist = false;
                 $.each(currentData, function(j, cApp) {
                     if(cApp.row_id == newApp.row_id) {
