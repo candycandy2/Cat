@@ -28,7 +28,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 $("#appDetailAppName").html(appmultilang[multilangIndex].app_name);
                 $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
-                $("#appDetailAppVersion").html(appmultilang[multilangIndex].app_version_name);
+                $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
                 $("#appDetailAppDescription").html(appmultilang[multilangIndex].app_description);
 
                 var appranking = applist[selectAppIndex].avg_score;
@@ -59,15 +59,22 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             });
 
             $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
-                //Auto resize detail-description
-                var pageHeight = $("#viewAppDetail2-2").height();
-                var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
-                var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
-                var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
-                var mainOwlCarouselHeight = $("#viewAppDetail2-2 .page-main .owl-carousel").height();
 
-                var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainOwlCarouselHeight);
-                $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
+                var timer = setTimeout(function(){
+                    //Auto resize detail-description
+                    var pageHeight = $("#viewAppDetail2-2").height();
+                    var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
+                    var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
+                    var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
+                    var mainDDescriptionHeight = $("#viewAppDetail2-2 .detail-description").height();
+                    var mainOwlCarouselHeight = $("#viewAppDetail2-2 .page-main .owl-carousel").height();
+
+                    var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainDDescriptionHeight + mainOwlCarouselHeight);
+                    $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
+
+                    clearTimeout(timer);
+                }, 1000);
+
             });
 
             /********************************** dom event *************************************/

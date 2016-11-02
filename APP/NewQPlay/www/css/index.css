@@ -68,6 +68,7 @@
     margin-bottom: 2%;
     width: auto !important;
     text-align: center !important;
+    overflow: scroll;
 }
 
 .rank {
