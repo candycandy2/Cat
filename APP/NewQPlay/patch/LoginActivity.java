@@ -9,7 +9,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.benq.appqplay.R;//need to change by project, example: com.BenQ.QPlay.R;
+import com.benq.appqplaytest.R;//need to change by project, example: com.BenQ.QPlay.R;
 import org.apache.cordova.ConfigXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 
