@@ -140,7 +140,6 @@ return [
     'MSG_CATEGORY_EXIST_APPS' => 'Can\'t delete, exist apps!',
     'MSG_DELETE_CATEGORY_FAILED' => 'Delete category failed!',
     'MSG_CONFIRM_REMOVE_APP' => 'Confirm to remove selected apps?',
-    'MSG_APP_CATEGORY_EXIST' => 'The app category name already exist!',
 
     //Push Message
     'NEW_MESSAGE' => 'New Message',
@@ -219,4 +218,6 @@ return [
     'ERR_OUT_OF_LENGTH' => '%s is longer than %l !',
     'ERR_ADMIN_GROUP_CAN_NOT_DELETE' => 'Administrator group can\'t delete!',
     'ERR_GROUP_CAN_NOT_NAMED_ADMIN' => 'Administrator group is system group, user can not use this name!',
+    'ERR_APP_CATEGORY_EXIST' => 'The app category name already exist!',
+    'ERR_WRONG_TYPE'=>'Please enter correct %s type!'
 ];

@@ -15,7 +15,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
           {{trans("messages.NEW")}}
         </button>
     </div>
-    <table id="gridCategoryList" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridCategoryList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
            data-url="AppMaintain/getCategoryList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
@@ -139,7 +139,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
             });
 
             if(duplicate){
-                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_APP_CATEGORY_EXIST")}}");
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_APP_CATEGORY_EXIST")}}");
                 return false;
             }
 
@@ -164,7 +164,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                     success: function (d, status, xhr) {
                         if(d.result_code != 1) {
                             if(d.result_code == {{ResultCode::_000918_AppCategoryNameExist}}){
-                                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_APP_CATEGORY_EXIST")}}");
+                                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_APP_CATEGORY_EXIST")}}");
                                 return false;
                             }
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_CATEGORY_FAILED")}}");
