@@ -16,43 +16,43 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var less = require('gulp-less');
 var shell = require('gulp-shell')
-//var copy = require('gulp-copy');
+    //var copy = require('gulp-copy');
 
-gulp.task('patch',function(){
-    return gulp.src('patch/LoginActivity.java', {base: 'patch/'})
-        .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/',{overwrite: true}));
+gulp.task('patch', function() {
+    return gulp.src('patch/LoginActivity.java', { base: 'patch/' })
+        .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
 });
 
-gulp.task('copyAndroidImages',function(){
-    return gulp.src('Images/android/**/*', {base: 'Images/android/'})
-        .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
+gulp.task('copyAndroidImages', function() {
+    return gulp.src('Images/android/**/*', { base: 'Images/android/' })
+        .pipe(gulp.dest('platforms/android/res/', { overwrite: true }));
 });
 
-gulp.task('copyIOSImages',function(){
-    return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
-        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/',{overwrite: true}));
+gulp.task('copyIOSImages', function() {
+    return gulp.src('Images/iOS/**/*', { base: 'Images/iOS/' })
+        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/', { overwrite: true }));
 });
 
 gulp.task('install', shell.task([
-  'cordova platform rm ios',
-  'cordova platform rm android',
-  'cordova platform add ios',
-  'cordova platform add android',
-  'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplay.benq.com/qplayApiTest/public/qplayauth_register',
-  'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-splashscreen',
-  'cordova plugin add cordova-plugin-console',
-  'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplaytest',
-  'cordova plugin add ../../plugins/cordova-plugin-qsecurity',
-  'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=f507b968e6a2c8d91db2a8fd'
+    'cordova platform rm ios',
+    'cordova platform rm android',
+    'cordova platform add ios',
+    'cordova platform add android',
+    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplay.benq.com/qplayApiTest/public/qplayauth_register',
+    'cordova plugin add cordova-plugin-device',
+    'cordova plugin add cordova-plugin-splashscreen',
+    'cordova plugin add cordova-plugin-console',
+    'cordova plugin add cordova-plugin-appversion',
+    'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplaytest',
+    'cordova plugin add ../../plugins/cordova-plugin-qsecurity',
+    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=f507b968e6a2c8d91db2a8fd'
 ]));
 
 gulp.task('build', shell.task([
-  'cordova build ios --debug --device --buildConfig=build.json',
+    'cordova build ios --debug --device --buildConfig=build.json',
 ]))
 
-gulp.task('componentCSS',function(){
+gulp.task('componentCSS', function() {
     return gulp.src('../component/*.css')
         .pipe(gulp.dest('www/css/'));
 });
@@ -70,7 +70,7 @@ gulp.task('concat:css', ['less'], function(){
 });
 */
 
-gulp.task('componentJS',function(){
+gulp.task('componentJS', function() {
     return gulp.src('../component/*.js')
         .pipe(gulp.dest('www/js/'));
 });
@@ -87,6 +87,6 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
         .pipe(gulp.dest('www/dist'));
 });
 */
-gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
+gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function() {
 
 });
