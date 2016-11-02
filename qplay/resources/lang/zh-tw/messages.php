@@ -139,7 +139,7 @@ return [
     'MSG_CONFIRM_DELETE_CATEGORY' => '確定移除所選類別?',
     'MSG_CATEGORY_EXIST_APPS' => '無法刪除類別,類別下存在apps!',
     'MSG_DELETE_CATEGORY_FAILED' => '刪除類別失敗!',
-    'MSG_CONFIRM_REMOVE_APP' => '確定移除所選App?',
+    'MSG_CONFIRM_REMOVE_APP' => '%s移除類別後將為未分類APP，可能影響用戶權限，確認移除?',
 
     //Push Message
     'NEW_MESSAGE' => '新增訊息',

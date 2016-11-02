@@ -152,15 +152,21 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         }
 
         var RemoveApp = function () {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}", "", function () {
+
+            var selectedApps = $gridList.bootstrapTable('getSelections');
+            var currentData = $gridList.bootstrapTable('getData');
+            var appNameArr = new Array();
+            $.each(selectedApps, function(i, app) {
+                appNameArr.push(app.app_name)
+            });
+            
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}".replace("%s",'<p class="text-warning">' + appNameArr.join("、") + '</p>'), "", function () {
                 hideConfirmDialog();
-                var selectedApps = $gridList.bootstrapTable('getSelections');
-                var currentData = $gridList.bootstrapTable('getData');
+                
                 $.each(selectedApps, function(i, app) {
                     for(var j = 0; j < currentData.length; j++) {
                         if(currentData[j].row_id == app.row_id) {
                             currentData.splice(j,1);
-                            done = true;
                             break;
                         }
                     }
