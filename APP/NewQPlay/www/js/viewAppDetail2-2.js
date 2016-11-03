@@ -29,7 +29,9 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 $("#appDetailAppName").html(appmultilang[multilangIndex].app_name);
                 $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
                 $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
-                $("#appDetailAppDescription").html(appmultilang[multilangIndex].app_description);
+
+                var appDescription = appmultilang[multilangIndex].app_description.replace(/\n/g,"<br>");
+                $("#appDetailAppDescription").html(appDescription);
 
                 var appranking = applist[selectAppIndex].avg_score;
 
