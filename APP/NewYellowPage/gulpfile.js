@@ -39,7 +39,6 @@ gulp.task('install', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity/',
-  'cordova plugin add ../../plugins/cordova-plugin-qlogin/',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-whitelist',
