@@ -13,7 +13,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             <table>
                 <tr>
                     <td>{{trans("messages.CATEGORY_NAME")}}:</td>
-                    <td class="text-bold" style="padding: 10px;">{{$categoryInfo->app_category}}</td>
+                    <td  id="tdCategoryName" class="text-bold" style="padding: 10px;">{{$categoryInfo->app_category}}</td>
                 </tr>
             </table>
         </div>
@@ -104,21 +104,28 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         var SelectApp = function() {
             var currentData =  $gridList.bootstrapTable('getData');
             var selectedApps = $gridDialogList.bootstrapTable('getSelections');
-            $.each(selectedApps, function(i, newApp) {
-                newApp.state = false;
-                var exist = false;
-                $.each(currentData, function(j, cApp) {
-                    if(cApp.row_id == newApp.row_id) {
-                        exist = true;
-                        return false;
+            var addAppsList = new Array();
+            $.each(selectedApps, function(i, app) {
+                addAppsList.push(app.app_name);
+            });
+            showConfirmDialog("{{trans("messages.MSG_CONFIRM_ADD")}}", "{{trans("messages.MSG_CONFIRM_ADD_APPS_TO_CATEGORY")}}".replace("%s",'<span class="text-warning">' + $('#tdCategoryName').text() + '</span>'),addAppsList.join('、'), function () {
+                hideConfirmDialog();
+                $.each(selectedApps, function(i, newApp) {
+                    newApp.state = false;
+                    var exist = false;
+                    $.each(currentData, function(j, cApp) {
+                        if(cApp.row_id == newApp.row_id) {
+                            exist = true;
+                            return false;
+                        }
+                    });
+                    if(!exist) {
+                        currentData.push(newApp);
                     }
                 });
-                if(!exist) {
-                    currentData.push(newApp);
-                }
+                $gridList.bootstrapTable('load', currentData);
+                $selectAppDialog.modal('hide');
             });
-            $gridList.bootstrapTable('load', currentData);
-            $selectAppDialog.modal('hide');
         }
 
         var SaveCategoryApps = function() {
@@ -160,7 +167,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 appNameArr.push(app.app_name)
             });
             
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}".replace("%s",'<p class="text-warning">' + appNameArr.join("、") + '</p>'), "", function () {
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}",appNameArr.join("、"), function () {
                 hideConfirmDialog();
                 
                 $.each(selectedApps, function(i, app) {

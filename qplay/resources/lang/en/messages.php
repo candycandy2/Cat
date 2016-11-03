@@ -139,7 +139,9 @@ return [
     'MSG_CONFIRM_DELETE_CATEGORY' => 'Confirm to delete category?',
     'MSG_CATEGORY_EXIST_APPS' => 'Can\'t delete, exist apps!',
     'MSG_DELETE_CATEGORY_FAILED' => 'Delete category failed!',
-    'MSG_CONFIRM_REMOVE_APP' => '%s Confirm to delete apps? Remove the belonged category,the apps would be uncatagorized ,that might affect the interests of users.',
+    'MSG_CONFIRM_REMOVE_APP' => 'Confirm to delete apps? Remove the belonged category,the apps would be uncatagorized ,that might affect the interests of users.',
+    'MSG_CONFIRM_ADD'=>'Confirm to add?',
+    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'System will set the category %s to add',
 
     //Push Message
     'NEW_MESSAGE' => 'New Message',
