@@ -8,7 +8,8 @@
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey;
 var loginData = {
-    verion:              "",
+    versionName:         "",
+    versionCode:         "",
     deviceType:          "",
     pushToken:           "",
     token:               "",
@@ -421,7 +422,8 @@ function readConfig() {
         });
     }
     */
-    loginData["version"] = AppVersion.version;
+    loginData["versionName"] = AppVersion.version;
+    loginData["versionCode"] = AppVersion.build;
 }
 
 //Show Version/AD/UUID
@@ -429,7 +431,7 @@ function infoMessage() {
     loadingMask("show");
 
     var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
-                '<p style="padding:0 5%">' + loginData["version"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
                 '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
                 '<p style="padding:0 5%">' + "Darren.K.Ti" + '</p>' +
                 '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
