@@ -24,7 +24,7 @@
         <header-file src="src/ios/Plugins/QPushPlugin.h" />
         <source-file src="src/ios/Plugins/QPushPlugin.m" />
         <header-file src="src/ios/lib/JPUSHService.h" />
-        <source-file src="src/ios/lib/jpush-ios-2.1.8.a" framework="true" />
+        <source-file src="src/ios/lib/jpush-ios-2.2.0.a" framework="true" />
         <header-file src="src/ios/Plugins/AppDelegate+QPush.h" />
         <source-file src="src/ios/Plugins/AppDelegate+QPush.m" />
         <resource-file src="src/ios/PushConfig.plist" />
