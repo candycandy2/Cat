@@ -37,6 +37,7 @@
         <framework src="UIKit.framework" weak="true" />
         <framework src="Security.framework" weak="true" />
         <framework src="libz.tbd" weak="true" />
+        <framework src="libresolv.tbd" weak="true" />
         <framework src="AdSupport.framework" weak="true" />
         <config-file target="*PushConfig.plist" parent="APP_KEY">
             <string>$API_KEY</string>
