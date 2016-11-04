@@ -414,7 +414,7 @@ function readConfig() {
         appKey = appKey + "test";
         appApiPath = appApiPath + "Test";
         qplayAppKey = qplayAppKey + "test";
-    } else if (loginData["versionName"].indexOf("Staging") !== -1) {
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
         appKey = appKey + "dev";
         qplayAppKey = qplayAppKey + "test";
     }
