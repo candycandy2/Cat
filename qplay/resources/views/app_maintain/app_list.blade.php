@@ -10,7 +10,7 @@ $menu_name = "APP_MAINTAIN";
         </button>
     </div>
      <table id="gridAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-           data-url="" data-height="600" data-pagination="true"
+           data-url="AppMaintain/getMaintainAppList" data-height="600" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -71,10 +71,6 @@ $menu_name = "APP_MAINTAIN";
     };
 
     $(function () {
-        $('#gridAppList').bootstrapTable({
-            data: {!!$data['appList']!!}
-        });
-
         $('#ddlAppKey').change(function(){
             var appKey = $('#ddlAppKey :selected').text();
             $('#hidAppKey').val(appKey);

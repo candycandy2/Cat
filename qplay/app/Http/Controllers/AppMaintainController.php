@@ -271,13 +271,20 @@ class AppMaintainController extends Controller
             return null;
         }
         $data = array();
-
-        $appList = $this->formatVersionStatus($this->getAppList());
-        $data['appList']  = json_encode($appList);
-
         $data['projectInfo'] = CommonUtil::getNonUsedProjectList();
         $data['langList']    = CommonUtil::getLangList();
         return view("app_maintain/app_list")->with('data',$data);
+    }
+
+    public function getMaintainAppList(){
+         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $data = array();
+
+        $appList = $this->formatVersionStatus($this->getAppList());
+        return json_encode($appList);
     }
 
     public function appDetail(){
