@@ -2,7 +2,6 @@
 /*global variable*/
 
 var appKey = "appqplay";
-//var appKey = "qplay";
 var pageList = ["viewInitial1-1", "viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
 
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
