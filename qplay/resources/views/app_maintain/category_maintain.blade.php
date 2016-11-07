@@ -15,7 +15,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
           {{trans("messages.NEW")}}
         </button>
     </div>
-    <table id="gridCategoryList" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+    <table id="gridCategoryList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
            data-url="AppMaintain/getCategoryList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
@@ -33,7 +33,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
     <script>
 
     	function categoryNameFormatter(value, row) {
-            return '<a href="#" onclick="updateCategory(' + row.row_id + ')">' + value + '</a>';
+            return '<a href="#" onclick="updateCategory(' + row.row_id + ')">' + htmlEscape(value) + '</a>';
         };
 
         function appCountFormatter(value, row) {
@@ -41,21 +41,23 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         };
 
         var deleteCategory = function() {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_CATEGORY")}}", "", function () {
-                hideConfirmDialog();
-                var selectedCategories = $("#gridCategoryList").bootstrapTable('getSelections');
-                var check = true;
-                $.each(selectedCategories, function (i, category) {
-                    if(category.app_count > 0) {
-                        check = false;
-                        return false;
-                    }
-                });
-                if(!check) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_CATEGORY_EXIST_APPS")}}");
+            var $gridList = $("#gridCategoryList");
+            var currentData = $gridList.bootstrapTable('getData');
+            var selectedCategories = $("#gridCategoryList").bootstrapTable('getSelections');
+            var check = true;
+            $.each(selectedCategories, function (i, category) {
+
+                if(category.app_count > 0) {
+                    check = false;
                     return false;
                 }
-                
+            });
+            if(!check) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_CATEGORY_EXIST_APPS")}}");
+                return false;
+            }
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_DELETE_CATEGORY")}}", "", function () {
+                hideConfirmDialog();
                 var categoryIdList = new Array();
                 $.each(selectedCategories, function(i, category) {
                     categoryIdList.push(category.row_id);
@@ -87,6 +89,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         var isNewCategory = false;
     	var newCategory = function() {
             $("#tbxCategoryName").val("");
+            $('#hidCategoryId').val("");
             $("#categoryDetailMaintainDialogTitle").text("{{trans("messages.MSG_NEW_CATEGORY")}}");
             $("#appCategoryDetailMaintainDialog").modal('show');
             currentMaintainCategoryId = null;
@@ -109,6 +112,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
             });
 
             $dialog_title.text("{{trans("messages.MSG_EDIT_CATEGORY")}}");
+            $('#hidCategoryId').val(categoryId);
             $dialog.modal('show');
             currentMaintainCategoryId = categoryId;
             isNewCategory = false;
@@ -116,10 +120,26 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
 
 
         var SaveCategoryMaintain = function() {
-            var categoryName = $( "#tbxCategoryName" ).val();
+            var categoryName = $.trim($( "#tbxCategoryName" ).val());
+            var updateId = $('#hidCategoryId').val();
             var status = $( "input[name=optRadio]:checked" ).val();
+            var currentData = $gridList.bootstrapTable('getData');
+            var duplicate = false;
+
             if(categoryName == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+            
+            $.each(currentData, function(i, category) {
+                if(category.app_category == categoryName && updateId!= category.row_id) {
+                    duplicate = true;
+                    return false;
+                }
+            });
+
+            if(duplicate){
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_APP_CATEGORY_EXIST")}}");
                 return false;
             }
 
@@ -144,7 +164,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                     success: function (d, status, xhr) {
                         if(d.result_code != 1) {
                             if(d.result_code == {{ResultCode::_000918_AppCategoryNameExist}}){
-                                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_APP_CATEGORY_EXIST")}}");
+                                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_APP_CATEGORY_EXIST")}}");
                                 return false;
                             }
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_SAVE_CATEGORY_FAILED")}}");
@@ -174,8 +194,8 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         });
 
         var selectedChanged = function (row, $element) {
-            var selectedUsers = $gridList.bootstrapTable('getSelections');
-            if(selectedUsers.length > 0) {
+            var selectedApps = $gridList.bootstrapTable('getSelections');
+            if(selectedApps.length > 0) {
             	$delBtn.show();
             	$newBtn.hide();
             } else {
@@ -204,6 +224,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                             </td>
                             <td><span style="color: red;">*</span></td>
                         </tr>
+                        <input type="hidden" id="hidCategoryId">
                     </table>
                 </div>
                 <div class="modal-footer">

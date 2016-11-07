@@ -17,7 +17,8 @@ function apiCheckAppVersion(successCallback, failCallback, deviceType, versionCo
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
         },
-        url: serverURL +"/qplayApiTest/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=com.qplay.appqplay&device_type=" + deviceType + "&version_code=" + versionCode,
+        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/checkAppVersion?lang=en-us&package_name=com.benq." + appKey + 
+             "&device_type=" + deviceType + "&version_code=" + versionCode,
         dataType: "json",
         cache: false,
         success: successCallback,

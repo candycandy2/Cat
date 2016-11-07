@@ -1,7 +1,6 @@
 
 /*global variable, function*/
 var appKey = "appyellowpage";
-//var appKey = "yellowpage";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
 
 var employeeData = {};
