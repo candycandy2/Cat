@@ -139,8 +139,9 @@ return [
     'MSG_CONFIRM_DELETE_CATEGORY' => '确认删除所选类别?',
     'MSG_CATEGORY_EXIST_APPS' => '无法删除类别, 类别下存在apps!',
     'MSG_DELETE_CATEGORY_FAILED' => '删除类别失败!',
-    'MSG_CONFIRM_REMOVE_APP' => '确定移除所选App?',
-    'MSG_APP_CATEGORY_EXIST' => 'App 类别名称已经存在!',
+    'MSG_CONFIRM_REMOVE_APP' => '移除类别后将为未分类APP，可能影响用户权限，确认移除?',
+    'MSG_CONFIRM_ADD'=>'确认加入?',
+    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'系统将调整APP类别 %s 加入',
 
 	//Push Message
 	'NEW_MESSAGE' => '新增讯息',
@@ -219,4 +220,6 @@ return [
 	'ERR_OUT_OF_LENGTH' => '%s 不能长于 %l 位!',
 	'ERR_ADMIN_GROUP_CAN_NOT_DELETE' => 'Administrator群组无法删除!',
 	'ERR_GROUP_CAN_NOT_NAMED_ADMIN' => 'Administrator是系统群组, 无法使用该名称!',
+    'ERR_APP_CATEGORY_EXIST' => 'App 类别名称已经存在!',
+    'ERR_WRONG_TYPE'=>'请输入正确的 %s 格式!'
 ];

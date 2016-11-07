@@ -21,7 +21,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'token': loginData.token,
             'push-token': loginData.pushToken
         },
-        url: serverURL + "/qplayApiTest/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
         cache: false,
