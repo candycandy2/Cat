@@ -197,6 +197,16 @@ return [
     'MSG_CONFIRM_DELETE_WHITE' => '确定删除所选白名单?',
     'MSG_DELETE_WHITE_FAILED' => '删除白名单失败!',
     'MSG_SAVE_WHITE_FAILED' => '储存白名单失败!',
+    'MSG_NEW_CUSTOM_API' => '新增API',
+    'MSG_EDIT_CUSTOM_API' => '编辑API',
+    'MSG_CONFIRM_DELETE_CUSTOM_API' => '确定删除所选API?',
+    'MSG_DELETE_CUSTOM_API_FAILED' => '删除API失败!',
+    'MSG_SAVE_CUSTOM_API_FAILED' => '储存API失败!',
+    'MSG_CONFIRM_DELETE_APP_USER' => '确定删除所选用户?',
+    'MSG_DELETE_APP_USER_FAILED' => '删除用户失败!',
+    'MSG_SAVE_APP_USER_FAILED' => '新增用户失败!',
+    'MSG_JSON_PARSING_ERROR'=>'json 档案解析失败，请确认上传档案的内容!',
+    'MSG_APP_KEY_INCORRECT_ERROR'=>'上传档案appkey与专案不符，请确认上传档案内容!',
 
 	//Project Maintain
 	'PROJECT_CODE' => '专案代码',

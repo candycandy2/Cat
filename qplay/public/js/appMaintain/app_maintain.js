@@ -232,13 +232,13 @@ $(function () {
                         processData: false,
                         success: function (d, status, xhr) {
                             validate = 0
-                            if(d.result_code != 1) {
-                                showMessageDialog("錯誤",d.message);
-                            }else{
-                                showMessageDialog("消息","操作成功!");
+                            if(d.result_code == 1) {
+                                 showMessageDialog("消息","操作成功!");
                                 $('#messageDialog').find('button').click(function(){
                                     location.reload();
                                 });
+                            }else{
+                               showMessageDialog("錯誤",d.message);
                             }
                         },
                         error: function (e) {

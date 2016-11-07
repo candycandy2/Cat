@@ -490,6 +490,8 @@ class AppMaintainController extends Controller
         {
             return null;
         }
+        $this->setLanguage();
+
        \DB::beginTransaction();
        try{
             $input = $request->all();
@@ -549,7 +551,10 @@ class AppMaintainController extends Controller
             $this->saveAppUser($appId,$appUserList);
 
             if(isset($input['errorCodeFile'])){
-                $this->saveErrorCode($appId,$input['errorCodeFile']);
+                $result = $this->saveErrorCode($appId,$appkey,$input['errorCodeFile']);
+                if($result['result_code']!= ResultCode::_1_reponseSuccessful){
+                    return response()->json($result);
+                }
             }else{
                 if(isset($input['deleteErrorCode']) && $input['deleteErrorCode'] == 'true'){
                     $this->deleteErrorCode($appId);
@@ -583,11 +588,17 @@ class AppMaintainController extends Controller
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
            return array("code"=>ResultCode::_999999_unknownError,
-                   "message"=>$e->getMessage()); 
+                   "message"=>trans("messages.MSG_OPERATION_FAILED")); 
            \DB::rollBack();
         }
     }
     
+    private function setLanguage() {
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
+   } 
 
     private function uploadIcon($appId,$icon){
         $iconUploadPath =  FilePath::getIconUploadPath($appId);
@@ -948,12 +959,13 @@ class AppMaintainController extends Controller
     }
 
     /**
-     * To Save Error By AppId
+     * To Save Error By AppId,AppKey
      * @param  int          $appId         app_row_id
+     * @param  String       $appKey        app_key
      * @param  FileObject   $errorCodeFile The file want to upload
      * 
      */
-    private function saveErrorCode($appId, $errorCodeFile){
+    private function saveErrorCode($appId, $appkey, $errorCodeFile){
 
         $ERROR_CODE_FILE_NAME =  'Error.json';
    
@@ -971,24 +983,33 @@ class AppMaintainController extends Controller
          $errorCodeJson = mb_convert_encoding($errorCodeJson, 'UTF-8','Unicode');
         }
         $errorCodeArray = json_decode(CommonUtil::removeBOM($errorCodeJson));
-        $jsonProjectId = CommonUtil::getProjectInfoAppKey($errorCodeArray->error_list->appkey)->row_id;
-        $appProjectId = CommonUtil::getProjectIdByAppId($appId);
-
-        if(!isset($jsonProjectId) || $jsonProjectId != $appProjectId){
-             throw new \Exception("appkey not match this app,please check your json file!"); 
+        if(is_null($errorCodeArray)){
+            return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
+                    'message'=>trans("messages.MSG_JSON_PARSING_ERROR")
+                ];
         }
-
+        if(!isset($errorCodeArray->error_list->appkey) || !isset($errorCodeArray->error_list->code_list)){
+            return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
+                    'message'=>trans("messages.MSG_JSON_PARSING_ERROR")
+                ];
+        }
+        if($errorCodeArray->error_list->appkey != $appkey){
+              return ['result_code'=>ResultCode::_999010_appKeyIncorrect,
+                        'message'=>trans("messages.MSG_APP_KEY_INCORRECT_ERROR")
+                ];
+        }
+        $appProjectId = CommonUtil::getProjectIdByAppId($appId);
         $langList =  CommonUtil::getLangList();
         $now = date('Y-m-d H:i:s',time());
         $langMap = [];
         foreach ( $langList  as $langItem) {
             $langMap[$langItem->lang_code] = $langItem->row_id;
         }
-     
         $insertArray = [];
+        
         foreach ($errorCodeArray->error_list->code_list  as  $value) {
             foreach ($value->language_list as $langList) {
-                $insertArray[] = array('project_row_id'=>  $jsonProjectId,
+                $insertArray[] = array('project_row_id'=>  $appProjectId,
                                     'lang_row_id'=>$langMap[$langList->language],
                                     'error_code'=>$value->error_code,
                                     'error_desc'=>$langList->error_description,
@@ -998,23 +1019,13 @@ class AppMaintainController extends Controller
                                     );
             }
         }
-        
-       \DB::beginTransaction();
-       try {
-           \DB::table("qp_error_code")
-                    -> where('project_row_id', '=', $jsonProjectId)
-                    -> delete();
-           \DB::table("qp_error_code")->insert($insertArray);
-           \DB::commit();
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                        'message'=>'Save Error Success!',
-                        'content'=>FilePath::getErrorCodeUrl($appId,$ERROR_CODE_FILE_NAME)
-                            ]);
-        } catch (Exception $e) {
-            \DB::rollBack();
-            throw new Exception($e); 
-        }
 
+       \DB::table("qp_error_code")
+                -> where('project_row_id', '=', $appProjectId)
+                -> delete();
+       \DB::table("qp_error_code")->insert($insertArray);
+          
+       return ['result_code'=>ResultCode::_1_reponseSuccessful,];
     }
 
     /**

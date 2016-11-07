@@ -142,6 +142,7 @@ return [
     'MSG_CONFIRM_REMOVE_APP' => '移除類別後將為未分類APP，可能影響用戶權限，確認移除?',
     'MSG_CONFIRM_ADD'=>'確認加入?',
     'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'系統將調整APP類別 %s 加入',
+    
 
     //Push Message
     'NEW_MESSAGE' => '新增訊息',
@@ -205,6 +206,8 @@ return [
     'MSG_CONFIRM_DELETE_APP_USER' => '確定刪除所選用戶?',
     'MSG_DELETE_APP_USER_FAILED' => '刪除用戶失敗!',
     'MSG_SAVE_APP_USER_FAILED' => '新增用戶失敗!',
+    'MSG_JSON_PARSING_ERROR'=>'json 檔案解析失敗，請確認上傳檔案內容!',
+    'MSG_APP_KEY_INCORRECT_ERROR'=>'上傳檔案appkey與專案不符，請確認上傳檔案內容!',
 
     //Project Maintain
     'PROJECT_CODE' => '專案代碼',

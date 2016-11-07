@@ -197,6 +197,16 @@ return [
     'MSG_CONFIRM_DELETE_WHITE' => 'Confirm to remove selected white Lists?',
     'MSG_DELETE_WHITE_FAILED' => 'Delete white list failed!',
     'MSG_SAVE_WHITE_FAILED' => 'Save white list failed!',
+    'MSG_NEW_CUSTOM_API' => 'New custom API',
+    'MSG_EDIT_CUSTOM_API' => 'Edit custum API',
+    'MSG_CONFIRM_DELETE_CUSTOM_API' => 'Confirm to delete selected custum API?',
+    'MSG_DELETE_CUSTOM_API_FAILED' => 'Delete Custom AIP failed!',
+    'MSG_SAVE_CUSTOM_API_FAILED' => 'Save custum API failed!',
+    'MSG_CONFIRM_DELETE_APP_USER' => 'Confirm to delete selected users?',
+    'MSG_DELETE_APP_USER_FAILED' => 'Delete users failed!',
+    'MSG_SAVE_APP_USER_FAILED' => 'New users failed!',
+    'MSG_JSON_PARSING_ERROR'=>'Parsing json error,please check your file content!',
+    'MSG_APP_KEY_INCORRECT_ERROR'=>'App key incrrect,please check yout file content!',
 
     //Project Maintain
     'PROJECT_CODE' => 'Project Code',
