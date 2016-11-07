@@ -139,8 +139,9 @@ return [
     'MSG_CONFIRM_DELETE_CATEGORY' => '確定移除所選類別?',
     'MSG_CATEGORY_EXIST_APPS' => '無法刪除類別,類別下存在apps!',
     'MSG_DELETE_CATEGORY_FAILED' => '刪除類別失敗!',
-    'MSG_CONFIRM_REMOVE_APP' => '確定移除所選App?',
-    'MSG_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
+    'MSG_CONFIRM_REMOVE_APP' => '移除類別後將為未分類APP，可能影響用戶權限，確認移除?',
+    'MSG_CONFIRM_ADD'=>'確認加入?',
+    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'系統將調整APP類別 %s 加入',
 
     //Push Message
     'NEW_MESSAGE' => '新增訊息',
@@ -227,4 +228,6 @@ return [
     'ERR_OUT_OF_LENGTH' => '%s 不能長于 %l 位!',
     'ERR_ADMIN_GROUP_CAN_NOT_DELETE' => 'Administrator群組無法刪除!',
     'ERR_GROUP_CAN_NOT_NAMED_ADMIN' => 'Administrator是系統群組, 無法使用該名稱!',
+    'ERR_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
+    'ERR_WRONG_TYPE'=>'請輸入正確的 %s 格式!'
 ];
