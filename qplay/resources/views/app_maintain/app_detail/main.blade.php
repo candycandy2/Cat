@@ -147,6 +147,8 @@ $(function () {
     $('.bootstrapTable').on('check-all.bs.table', selectedChanged);
     $('.bootstrapTable').on('uncheck-all.bs.table', selectedChanged);
     $('.bootstrapTable').on('load-success.bs.table', selectedChanged);
+    $('body').on('page-change.bs.table','.bootstrapTable',selectedChanged);
+    
     $('#saveAppDetail').show(); 
 });
 </script>
