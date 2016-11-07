@@ -518,19 +518,12 @@
             var $gridList = $("#gridCustomApi");
             var $toolbar  =  $($gridList.data('toolbar'));
             var selectedCustomApi = $gridList.bootstrapTable('getSelections');
-            var currentData = $gridList.bootstrapTable('getData');
-            $.each(selectedCustomApi, function(i, api) {
-                for(var j = 0; j < currentData.length; j++) {
-                    if(currentData[j].row_id == api.row_id) {
-                        currentData.splice(j,1);
-                        break;
-                    }
-                }
-                $gridList.bootstrapTable('load', currentData);
-            });
-            $gridList.find('checkbox[name=btSelectItem]').each(function(){
-                $(this).prop('check',false);
-            });
+            var currentData = $gridList.bootstrapTable('getData');             
+           $.each(selectedCustomApi, function(i, api) {
+               var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
+               currentData.splice(index,1);
+               $gridList.bootstrapTable('load', currentData);
+           });
             $toolbar.find('.btn-danger').fadeOut(300, function() {
                 $toolbar.find('.btn-primary').fadeIn(300);
             });
