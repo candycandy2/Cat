@@ -198,7 +198,7 @@ return [
     'MSG_DELETE_WHITE_FAILED' => 'Delete white list failed!',
     'MSG_SAVE_WHITE_FAILED' => 'Save white list failed!',
     'MSG_NEW_CUSTOM_API' => 'New custom API',
-    'MSG_EDIT_CUSTOM_API' => 'Edit custum API',
+    'MSG_EDIT_CUSTOM_API' => 'Edit custom API',
     'MSG_CONFIRM_DELETE_CUSTOM_API' => 'Confirm to delete selected custum API?',
     'MSG_DELETE_CUSTOM_API_FAILED' => 'Delete Custom AIP failed!',
     'MSG_SAVE_CUSTOM_API_FAILED' => 'Save custum API failed!',
