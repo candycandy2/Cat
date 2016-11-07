@@ -81,7 +81,7 @@
                     </div>
                     <table id="gridCustomApi" class="bootstrapTable" data-toggle="table" data-sort-name="api_action" data-toolbar="#toolbarNewAppApi"
                            data-url="AppMaintain/getCustomApi?app_row_id={{ app('request')->input('app_row_id') }}" data-height="398" data-pagination="true"
-                           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
+                           data-show-refresh="true" data-row-style="rowStyle" data-search="false"
                            data-show-toggle="true"  data-sortable="true"
                            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                            data-click-to-select="false" data-single-select="false">
