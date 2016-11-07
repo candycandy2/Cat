@@ -109,7 +109,7 @@
                                 刪除
                             </span>
                             <span class="btn btn-primary btn-file" name="btnUplErrorCodeFile" id="btnUplErrorCodeFile">
-                                新增錯誤代碼 <input type="file" class="file" name="errorCodeFile" id="errorCodeFile">
+                                新增錯誤代碼 <input type="file" class="file" name="errorCodeFile" id="errorCodeFile" accept=".json">
                             </span>
                         </div>
                         <div class="form-group table-responsive" id="customApiErrorCode" 
