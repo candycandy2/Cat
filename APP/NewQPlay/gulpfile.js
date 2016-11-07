@@ -33,23 +33,23 @@ var vcode = getArg("--vcode");
 var appNameDecorate = "";
 var appVersionDecorate = "Production";
 var apiPath = "qplayApi";
-var QPushAPPKey = "b376539a868fdf5696228432";
+var QPushAPPKey = "1dd3ebb8bb12f1895b4a5e25";
 var patchFolder = "patch";
 
 if (env === "test") {
     appNameDecorate = "test";
     appVersionDecorate = "Staging";
     apiPath = "qplayApiTest";
-    QPushAPPKey = "cc722d0edf30c19cb4b3cb65";
+    QPushAPPKey = "33938c8b001b601c1e647cbd";
     patchFolder = "patchTest";
 } else if (env === "dev") {
     appNameDecorate = "dev";
     appVersionDecorate = "Development";
-    QPushAPPKey = "e906aeed3712b3c06aa89bb9";
+    QPushAPPKey = "e343504d536ebce16b70167e";
 }
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' + 
-                    '<widget id="com.benq.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
+                    '<widget id="com.qplay.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         '<name>QPlay</name>' +
                         '<description>' +
@@ -87,6 +87,14 @@ gulp.task('config', function(){
 
 //ex: gulp install --env test
 gulp.task('install', shell.task([
+    'cordova plugin remove cordova-plugin-qlogin',
+    'cordova plugin remove cordova-plugin-qpush',
+    'cordova plugin remove cordova-plugin-device',
+    'cordova plugin remove cordova-plugin-splashscreen',
+    'cordova plugin remove cordova-plugin-console',
+    'cordova plugin remove cordova-plugin-appversion',
+    'cordova plugin remove cordova-plugin-customurlscheme',
+    'cordova plugin remove cordova-plugin-qsecurity',
     'cordova platform rm ios',
     'cordova platform rm android',
     'cordova platform add ios',
