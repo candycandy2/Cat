@@ -18,13 +18,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h1 class="modal-title" id="newAppVersionDialogTitle">上傳新版本</h1>
+                <h1 class="modal-title" id="newAppVersionDialogTitle">{{trans('messages.UPLOAD_NEW_VERSION')}}</h1>
             </div>
             <div class="modal-body">
                 <form id="newAppVersionForm" source="" enctype='multipart/form-data' action="AppMaintain/saveAppVersion" method="post">
                     <table style="width:100%">
                         <tr>
-                            <td>版本名稱:</td>
+                            <td>{{trans('messages.VERSION_NAME')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxVersionName"
                                        id="tbxVersionName" value=""/>
@@ -33,7 +33,7 @@
                             <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
-                            <td>版本號:</td>
+                            <td>{{trans('messages.VERSION_NO')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxVersionNo"
                                        id="tbxVersionNo" value=""/>
@@ -42,10 +42,10 @@
                             <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
-                            <td>檔案:</td>
+                            <td>{{trans('messages.FILE')}}:</td>
                             <td style="padding: 10px;">
                                 <span class="btn btn-primary btn-file">
-                                    瀏覽檔案<input type="file" id="versionFile" name="versionFile" class="file">
+                                    {{trans('messages.BROWSE_FILE')}}<input type="file" id="versionFile" name="versionFile" class="file">
                                 </span>
                                 <span class="file-input-name" style="padding-left: 20px"></span>
                                 <span style="color: red;" class="error" for="versionFile"></span>
@@ -70,12 +70,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h1 class="modal-title" id="appVersionDialogDialogTitle">修改版本</h1>
+                <h1 class="modal-title" id="appVersionDialogDialogTitle">{{trans('messages.EDIT_VERSION')}}</h1>
             </div>
             <div class="modal-body">
                 <table style="width:100%">
                     <tr>
-                        <td>版本名稱:</td>
+                        <td>{{trans('messages.VERSION_NAME')}}:</td>
                         <td style="padding: 10px;">
                             <input type="text" class="form-control" data-clear-btn="true" name="tbxEditVersionName"
                                    id="tbxEditVersionName" value=""/>
@@ -84,14 +84,14 @@
                         <td><span style="color: red;">*</span></td>
                     </tr>
                     <tr>
-                        <td>檔案:</td>
+                        <td>{{trans('messages.FILE')}}:</td>
                         <td style="padding: 10px;">
                             <input type="text" class="form-control" data-clear-btn="true" name="tbxEditVersionUrl"
                                    id="tbxEditVersionUrl" value="" disabled />
                         </td>
                     </tr>
                     <tr>
-                        <td>狀態:</td>
+                        <td>{{trans('messages.VERSION_STATUS')}}:</td>
                         <td style="padding: 10px;">
                             <input type="text" class="form-control" data-clear-btn="true" name="tbxEditVersionStatus"
                                    id="tbxEditVersionStatus" value="" disabled/>
@@ -194,7 +194,7 @@ var uploadNewVersion = function(){
          if(fileExtension != _validExtension){
             var error = new Error;
             error.field = 'versionFile';
-            error.msg = device+'僅接受'+_validExtension+'檔案';
+            error.msg = device+'{{trans('messages.VALIDATE_ACCEPT')}}'+_validExtension+'{{trans('messages.FILE')}}';
             errors.push(error);
          }
     }
@@ -202,7 +202,7 @@ var uploadNewVersion = function(){
     if(versionCode!="" && !regNum.test(versionCode)){
         var error = new Error;
         error.field = 'tbxVersionNo';
-        error.msg = '僅接受數字';
+        error.msg = '{{trans('messages.VALIDATE_ACCEPT_NUMERIC')}}';
         errors.push(error);
     }
 
@@ -210,7 +210,7 @@ var uploadNewVersion = function(){
         if($.trim(currentData[j].version_code) == $.trim(versionCode)) {
             var error = new Error;
             error.field = 'tbxVersionNo';
-            error.msg = '版本號不可重複';
+            error.msg = '{{trans('messages.ERR_VERSION_NO_DUPLICATE')}}';
             errors.push(error);
             break;
         }
@@ -251,7 +251,7 @@ var delAppVersion = function(device){
         }
     });
     if(validToDelete){
-         showConfirmDialog("{{trans("messages.CONFIRM")}}", "系統將刪除所選版本，確認刪除?", "", function () {
+         showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans('messages.MSG_CONFIRM_DELETE_VERSION')}}", "", function () {
                 hideConfirmDialog();
                 var currentData = $gridList.bootstrapTable('getData');
                 $.each(selectedVersion, function(i, version) {
@@ -274,7 +274,7 @@ var delAppVersion = function(device){
 
             });
     }else{
-        showMessageDialog("無法刪除","所選版本為發布狀態，不可刪除");
+        showMessageDialog("{{trans('messages.MSG_VERSION_CAN_NOT_DELETE')}}","{{trans('messages.MSG_VERSION_IS_PUBLISH_CAN_NOT_DELETE')}}");
     }
      
 }

@@ -985,17 +985,17 @@ class AppMaintainController extends Controller
         $errorCodeArray = json_decode(CommonUtil::removeBOM($errorCodeJson));
         if(is_null($errorCodeArray)){
             return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
-                    'message'=>trans("messages.MSG_JSON_PARSING_ERROR")
+                    'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
                 ];
         }
         if(!isset($errorCodeArray->error_list->appkey) || !isset($errorCodeArray->error_list->code_list)){
             return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
-                    'message'=>trans("messages.MSG_JSON_PARSING_ERROR")
+                    'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
                 ];
         }
         if($errorCodeArray->error_list->appkey != $appkey){
               return ['result_code'=>ResultCode::_999010_appKeyIncorrect,
-                        'message'=>trans("messages.MSG_APP_KEY_INCORRECT_ERROR")
+                        'message'=>trans("messages.ERR_APP_KEY_INCORRECT_ERROR")
                 ];
         }
         $appProjectId = CommonUtil::getProjectIdByAppId($appId);

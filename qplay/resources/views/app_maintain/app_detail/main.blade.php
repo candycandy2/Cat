@@ -64,10 +64,10 @@ foreach ($enableRole as $role){
         </div>
     </div>
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#tab_content_info" data-toggle="tab">應用程式資訊</a></li>
-        <li role="presentation"><a href="#tab_content_pic" data-toggle="tab">圖示資訊</a></li>
-        <li role="presentation"><a href="#tab_content_version" data-toggle="tab">版本控制</a></li>
-        <li role="presentation"><a href="#tab_content_white_list" data-toggle="tab">白名單設定</a></li>
+        <li role="presentation" class="active"><a href="#tab_content_info" data-toggle="tab">{{trans('messages.TAB_INFORMATION')}}</a></li>
+        <li role="presentation"><a href="#tab_content_pic" data-toggle="tab">{{trans('messages.TAB_PIC_INFORMATION')}}</a></li>
+        <li role="presentation"><a href="#tab_content_version" data-toggle="tab">{{trans('messages.TAB_VERSION_CONTROLL')}}</a></li>
+        <li role="presentation"><a href="#tab_content_white_list" data-toggle="tab">{{trans('messages.TAB_WHITE_LIST_SETTING')}}</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane fade in active" id="tab_content_info">
@@ -93,6 +93,7 @@ var jsOriAndroidStatus = '{{$appStatus['android']['str']}}';
 var jsOriIOSStatus = '{{$appStatus['ios']['str']}}';
 var delPicArr = new Array();
 var delVersionArr = new Array();
+
 var selectedChanged = function (row, $element) {
     if(typeof(row)!='undefined'){
         var $currentTarget = $(row.currentTarget);
@@ -134,7 +135,7 @@ function validRequired(fieldList){
         if($.trim(value) == ""){
             var error = new Error;
             error.field = item;
-            error.msg = '此為必填欄位';
+            error.msg = '{{trans('messages.MSG_REQUIRED_FIELD')}}';
             errors.push(error);
         }
    });

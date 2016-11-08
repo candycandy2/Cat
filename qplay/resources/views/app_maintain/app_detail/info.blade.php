@@ -6,7 +6,7 @@
                 <div class="col-sm-10 js-lang-tool-bar" id="langToolBar">
                     <span class="label-hint" id="hintInfo"></span>
                     <div class="btn-group js-switch-lang-btn"  id="btnLagSwitchController" style="display:@if (count($appBasic) <= 1) none @endif">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">語言<span class="badge js-lang-count"  style="margin-left: 5px;padding: 2px 5px;" ></span><span class="caret" style="margin-left: 5px"></span></button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{trans('messages.BTN_LANGUAGE')}}<span class="badge js-lang-count"  style="margin-left: 5px;padding: 2px 5px;" ></span><span class="caret" style="margin-left: 5px"></span></button>
                         
                         <ul class="dropdown-menu js-switchLang" role="menu"  data-source="hintInfo" id="switchLang">
                             
@@ -18,16 +18,16 @@
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        管理語言 <span class="caret"></span></button>
+                        {{trans('messages.BTN_LANGUAGE_SETTING')}} <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li id="btnAddLang"><a href="#" onclick="addLang()">新增語言</a></li>
+                            <li id="btnAddLang"><a href="#" onclick="addLang()">{{trans('messages.BTN_LANGUAGE_NEW')}}</a></li>
                             <li id="btnRemoveLang">
-                            <a href="#" onclick="delLang()" >移除語言</a></li>
+                            <a href="#" onclick="delLang()" >{{trans('messages.BTN_LANGUAGE_REMOVE')}}</a></li>
                             <li id="btnChangeDefaultLang" @if (count($allowLangList) <= 1) 
                                 class="disabled" 
-                                title="沒有可變更的語言" 
+                                title="{{trans('messages.MSG_NO_CHANGABLE_LANGUAGE')}}" 
                             @endif>
-                            <a href="#" @if (count($allowLangList) > 1) onclick="changDefaultLang()" @endif >變更預設語言</a></li>
+                            <a href="#" @if (count($allowLangList) > 1) onclick="changDefaultLang()" @endif >{{trans('messages.BTN_LANGUAGE_CHANGE_DEFAULT')}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -42,19 +42,19 @@
                 @foreach ($appBasic as $appData)
                 <div class="lang js-lang-{{$appData->lang_row_id}}">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="txbAppName_{{$appData->lang_row_id}}">App 名稱</label>
+                        <label class="control-label col-sm-2" for="txbAppName_{{$appData->lang_row_id}}">{{trans('messages.APP_NAME')}}</label>
                         <div class="col-sm-10"> 
                             <input type="text" class="form-control" id="txbAppName_{{$appData->lang_row_id}}" name="txbAppName_{{$appData->lang_row_id}}"placeholder="Enter app name" value="{{$appData->app_name}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="txbAppSummary_{{$appData->lang_row_id}}">App 摘要</label>
+                        <label class="control-label col-sm-2" for="txbAppSummary_{{$appData->lang_row_id}}">{{trans('messages.APP_SUMMARY')}}</label>
                         <div class="col-sm-10"> 
                             <input type="text" class="form-control" id="txbAppSummary_{{$appData->lang_row_id}}" name="txbAppSummary_{{$appData->lang_row_id}}" placeholder="Enter app summary" value="{{$appData->app_summary}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="txbAppDescription_{{$appData->lang_row_id}}">App 描述</label>
+                        <label class="control-label col-sm-2" for="txbAppDescription_{{$appData->lang_row_id}}">{{trans('messages.APP_DESCRIPTION')}}</label>
                         <div class="col-sm-10"> 
                             <textarea class="form-control" id="txbAppDescription_{{$appData->lang_row_id}}" name="txbAppDescription_{{$appData->lang_row_id}}"  placeholder="Enter app description">{{$appData->app_description}}</textarea>
                         </div>
@@ -70,14 +70,14 @@
     <div class="col-lg-10 col-xs-12" id="app-apiInfo">
         <form class="form-horizontal" id="customApiForm">
             <div class="form-group">
-                <label class="control-label col-sm-2" for="customApi">Api 資訊</label>
+                <label class="control-label col-sm-2" for="customApi">{{trans('messages.CUSTOM_API_INFORMATION')}}</label>
                 <div class="col-sm-10">
                     <label>API</label>
                     <div id="toolbarNewAppApi">
                         <button type="button" class="btn btn-danger" onclick="deleteCustomApi()" id="btnDeleteCustomApi">
                             {{trans("messages.DELETE")}}
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="newCustomApi()" id="btnNewCustomApi">新增API</button>
+                        <button type="button" class="btn btn-primary" onclick="newCustomApi()" id="btnNewCustomApi">{{trans('messages.NEW_CUSTOM_API')}}</button>
                     </div>
                     <table id="gridCustomApi" class="bootstrapTable" data-toggle="table" data-sort-name="api_action" data-toolbar="#toolbarNewAppApi"
                            data-url="AppMaintain/getCustomApi?app_row_id={{ app('request')->input('app_row_id') }}" data-height="398" data-pagination="true"
@@ -89,9 +89,9 @@
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
                             <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
-                            <th data-field="api_action" data-sortable="false" data-formatter="customApiActionFormatter">Api Action</th>
-                            <th data-field="api_version" data-sortable="false">Api Version</th>
-                            <th data-field="api_url" data-sortable="false">Api Url</th>
+                            <th data-field="api_action" data-sortable="false" data-formatter="customApiActionFormatter">{{trans('messages.CUSTOM_API_ACTION')}}</th>
+                            <th data-field="api_version" data-sortable="false">{{trans('messages.CUSTOM_API_VERSION')}}</th>
+                            <th data-field="api_url" data-sortable="false">{{trans('messages.CUSTOM_API_URL')}}</th>
                         </tr>
                         </thead>
                     </table>
@@ -102,14 +102,14 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for=""></label>
                 <div class="col-sm-10">
-                    <label>錯誤代碼</label>  
+                    <label>{{trans('messages.ERROR_CODE')}}</label>  
                     <div id="toolbarNewErrorCode">
                         <div class="form-group">
                             <span class="btn btn-danger btn-file" name="btndDeleteErrorCodeFile" id="btndDeleteErrorCodeFile" onclick="deleteErrorCode()" style="display: none">
-                                刪除
+                                {{trans('messages.DELETE')}}
                             </span>
                             <span class="btn btn-primary btn-file" name="btnUplErrorCodeFile" id="btnUplErrorCodeFile">
-                                新增錯誤代碼 <input type="file" class="file" name="errorCodeFile" id="errorCodeFile" accept=".json">
+                                {{trans('messages.NEW_ERROR_CODE')}} <input type="file" class="file" name="errorCodeFile" id="errorCodeFile" accept=".json">
                             </span>
                         </div>
                         <div class="form-group table-responsive" id="customApiErrorCode" 
@@ -120,7 +120,7 @@
                             <table  id="gridCustomApiErrorCode" class="costum-table">
                                 <tr>
                                     <td width="36px"></td>
-                                    <td>目前錯誤代碼</td>
+                                    <td>{{trans('messages.CURRENT_ERROR_CODE')}}</td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -147,10 +147,10 @@
     <div class="col-lg-10 col-xs-12" id="app-basicInfo">
         <form class="form-horizontal" id="basicInfoForm">
             <div class="form-group">
-                <label class="control-label col-sm-2" for="email">應用程式分類</label>
+                <label class="control-label col-sm-2" for="email">{{trans('messages.APP_CATEGORY')}}</label>
                 <div class="col-sm-10">
                     <select name="ddlAppCategory" class="form-control selectpicker" id="ddlAppCategory">
-                    <option value="0">未分類</option>
+                    <option value="0"  style="background: #333; color: #fff;">{{trans('messages.NON_CATEGORY')}}</option>
                     @foreach ($categoryList as $category)
                         @if ($category->row_id == $categoryId)
                         <option value="{{$category->row_id}}" selected>{{$category->app_category}}</option>
@@ -162,12 +162,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">安全級別</label>
+                <label class="control-label col-sm-2" for="pwd">{{trans('messages.SECURITY_LEVEL')}}</label>
                 <div class="col-sm-5"> 
                     <select name="ddlSecurityLevel" class="form-control" id="ddlSecurityLevel">
-                        <option value="1" data-hint="*需登入QPlay，且開啟App或Resume時需再次輸入密碼">高階</option>
-                        <option value="2" data-hint="*需登入QPlay，且開啟App時需再次輸入密碼">中階</option>
-                        <option value="3" data-hint="*登入QPlay即可使用該App" selected>一般</option>
+                        <option value="1" data-hint="*{{trans('messages.SECURITY_HINT_HIGH')}}">{{trans('messages.SECURITY_HIGH')}}</option>
+                        <option value="2" data-hint="*{{trans('messages.SECURITY_HINT_MIDDIUM')}}">{{trans('messages.SECURITY_MIDDIUM')}}</option>
+                        <option value="3" data-hint="*{{trans('messages.SECURITY_HINT_NORMAL')}}" selected>{{trans('messages.SECURITY_NORMAL')}}</option>
                     </select>
                 </div>
                 <div class="col-sm-5">
@@ -175,19 +175,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="userApp">角色設定</label>
+                <label class="control-label col-sm-2" for="userApp">{{trans('messages.USER_SETTING')}}</label>
                 <div class="col-sm-10">
                     <select name="ddlAppUserType" class="form-control" id="ddlAppUserType">
                         <option value="1"
                         @if (isset($companyLabel))
                             selected
                         @endif
-                        >依公司選擇</option>
+                        >{{trans('messages.USER_SETTING_BY_COMPOANY')}}</option>
                         <option value="2"
                         @if (!isset($companyLabel))
                             selected
                         @endif
-                        >依企業角色選擇</option>
+                        >{{trans('messages.USER_SETTING_BY_ROLE')}}</option>
                     </select>
                 </div>
     
@@ -316,19 +316,19 @@
 <!--Dymaic Div Content -->
 <div id="infoDymaicContent" style="display: none">
     <div class="form-group">
-        <label class="control-label col-sm-2" for="txbAppName_{langId}">App 名稱</label>
+        <label class="control-label col-sm-2" for="txbAppName_{langId}">{{trans('messages.APP_NAME')}}</label>
         <div class="col-sm-10"> 
             <input type="text" class="form-control js-app-name"  id="txbAppName_{langId}" name="txbAppName_{langId}" placeholder="Enter app name">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="txbAppSummary_{langId}">App 摘要</label>
+        <label class="control-label col-sm-2" for="txbAppSummary_{langId}">{{trans('messages.APP_SUMMARY')}}</label>
         <div class="col-sm-10"> 
             <input type="text" class="form-control js-app-summary" id="txbAppSummary_{langId}" name="txbAppSummary_{langId}" placeholder="Enter app summary">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="txbAppDescription_{langId}">App 描述</label>
+        <label class="control-label col-sm-2" for="txbAppDescription_{langId}">{{trans('messages.APP_DESCRIPTION')}}</label>
         <div class="col-sm-10"> 
             <textarea class="form-control js-app-description"  id="txbAppDescription_{langId}" name="txbAppDescription_{langId}" placeholder="Enter app description"></textarea>
         </div>
@@ -341,7 +341,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="addLangDialogTitle">新增語言</h1>
+                    <h1 class="modal-title" id="addLangDialogTitle">{{trans('messages.BTN_LANGUAGE_NEW')}}</h1>
                 </div>
                  <div class="modal-body " id="addableLang" style="height: 150px; overflow-y: auto;">
                  @foreach ($langList as $lang)
@@ -368,7 +368,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="delLangDialogTitle">移除語言</h1>
+                    <h1 class="modal-title" id="delLangDialogTitle">{{trans('messages.BTN_LANGUAGE_REMOVE')}}</h1>
                 </div>
                  <div class="modal-body" id="removeableLang" style="height: 150px; overflow-y: auto;">
                      @foreach ($allowLangList as $allowLangId => $allowLang)
@@ -376,7 +376,7 @@
                           <label>
                                 @if ($allowLangId == $defaultLang) 
                                     <input type="checkbox" value="{{$allowLangId}}"  disabled >
-                                    <span class="text-muted">{{$allowLang}} (預設語言，無法刪除)</span>
+                                    <span class="text-muted">{{$allowLang}} ({{trans('messages.MSG_DEFAULT_LANGUAGE_CAN_NOT_REMOVE')}})</span>
                                 @else
                                     <input type="checkbox" value="{{$allowLangId}}">{{$allowLang}}
                                 @endif
@@ -398,7 +398,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="changDefaultLangDialogTitle">變更預設語言</h1>
+                    <h1 class="modal-title" id="changDefaultLangDialogTitle">{{trans('messages.BTN_LANGUAGE_CHANGE_DEFAULT')}}</h1>
                 </div>
                  <div class="modal-body" id="defaultableLang" style="height: 150px; overflow-y: auto;">
                  @foreach ($allowLangList as $allowLangId => $allowLang)
@@ -430,7 +430,7 @@
                  <div class="modal-body">
                     <table style="width: 100%">
                         <tr>
-                            <td>Api Action:</td>
+                            <td>{{trans('messages.CUSTOM_API_ACTION')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxApiAction"
                                        id="tbxApiAction" value=""/>
@@ -439,7 +439,7 @@
                             <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
-                            <td>Api Version:</td>
+                            <td>{{trans('messages.CUSTOM_API_VERSION')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxApiVersion"
                                        id="tbxApiVersion" value=""/>
@@ -449,7 +449,7 @@
                             
                         </tr>
                          <tr>
-                            <td>Api Url:</td>
+                            <td>{{trans('messages.CUSTOM_API_URL')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxApiUrl"
                                        id="tbxApiUrl" value=""/>
