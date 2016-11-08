@@ -550,19 +550,20 @@
         $("#newCustomApiDialog").modal('show');
     };
     var saveCustomApi = function(action,index) {
-
         var apiAction = $("#tbxApiAction").val();
         var apiVersion = $("#tbxApiVersion").val();
         var apiUrl = $("#tbxApiUrl").val();
         var require = ['tbxApiAction','tbxApiVersion','tbxApiUrl'];
         var errors = validRequired(require);
+        var currentData = $("#gridCustomApi").bootstrapTable('getData');
+        $.merge(errors,validateDuplicateAPI(currentData, index, apiAction, apiVersion));
         $.each(errors,function(i, error){
             $('span[for='+error.field+']').html(error.msg);
         });
         if(errors.length > 0){
             return false;
         }
-        var currentData = $("#gridCustomApi").bootstrapTable('getData');
+       
         if(action == "new"){
             var newCustomApi = new Object();
             newCustomApi.api_action  = apiAction;
@@ -578,6 +579,18 @@
         $("#newCustomApiDialog").modal('hide');
     };
 
+    validateDuplicateAPI = function(currentData, index, apiAction, apiVersion){
+        var errors = new Array();
+        $.each(currentData,function(i,customApi){
+            if(index != i && customApi.api_action == apiAction && customApi.api_version == apiVersion){
+                var error = new Error;
+                error.field = 'tbxApiVersion';
+                error.msg = '已存在相同版本的API action';
+                errors.push(error);
+            }
+        });
+        return errors;
+    }
     /*--Custom API End--*/
    
 
