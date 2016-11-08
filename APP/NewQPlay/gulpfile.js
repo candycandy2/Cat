@@ -95,18 +95,20 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-appversion',
     'cordova plugin remove cordova-plugin-customurlscheme',
     'cordova plugin remove cordova-plugin-qsecurity',
+    'cordova plugin remove cordova-plugin-whitelist',
     'cordova platform rm ios',
     'cordova platform rm android',
     'cordova platform add ios',
     'cordova platform add android',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplay.benq.com/' + apiPath + '/public/qplayauth_register',
+    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
     'cordova plugin add cordova-plugin-device',
     'cordova plugin add cordova-plugin-splashscreen',
     'cordova plugin add cordova-plugin-console',
     'cordova plugin add cordova-plugin-appversion',
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
-    'cordova plugin add ../../plugins/cordova-plugin-qsecurity',
-    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey
+    'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable ENV=' + appNameDecorate,
+    'cordova plugin add cordova-plugin-whitelist'
 ]));
 
 gulp.task('patch', function() {
@@ -165,6 +167,6 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
 */
 
 //ex: gulp --env test --vname 1.0.0.8 --vcode 8
-gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function() {
+gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
 
 });
