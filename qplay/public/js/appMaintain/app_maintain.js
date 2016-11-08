@@ -9,7 +9,7 @@ var submitFormAry = [$("#mainInfoForm"),
 
 SaveAppDetail = function(){
     
-     var unPublishStr = 'UnPublish';
+     var unPublishStr = 'Unpublish';
      var appName = $('#txbAppName_'+jsDefaultLang).val();
      var newAandroidStatus = unPublishStr;
      var newIOSStatus = unPublishStr;

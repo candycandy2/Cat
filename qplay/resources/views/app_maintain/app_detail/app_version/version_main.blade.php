@@ -126,7 +126,7 @@ var newAppVersion = function (device){
 
 function switchFormatter(value, row) {
     var status = (row.status == 'ready')?'success':'off';
-    return'<div class="switch  has-switch" data-version="'+ row.row_id +'" data-name="'+row.version_name+'"><div class="switch-'+ status +' switch-animate"><input type="checkbox"><span class="switch-left switch-success">Publish</span><label class="">&nbsp;</label><span class="switch-right">UnPlish</span></div></div></div>';
+    return'<div class="switch switch-large has-switch" data-version="'+ row.row_id +'" data-name="'+row.version_name+'"><div class="switch-'+ status +' switch-animate"><input type="checkbox"><span class="switch-left switch-success">Publish</span><label class="">&nbsp;</label><span class="switch-right">Unpublish</span></div></div></div>';
 };
 
 function versionNameFormatter(value, row) {
@@ -134,7 +134,7 @@ function versionNameFormatter(value, row) {
 };
 
 var updateVersion = function(row_id, device_type, version_name, url, status){
-    var statusStr = (status == 'ready')?'Publish':'UnPlish';
+    var statusStr = (status == 'ready')?'Publish':'Unpublish';
     $('#hidVersionRowId').val(row_id);
     $('#hidDeviceType').val(device_type);
     $('#tbxEditVersionName').val(version_name);
@@ -324,7 +324,7 @@ $(function () {
 
      $('body').on('click','.editVersion',function(e) {  
         $currentTarget = $(e.currentTarget);
-        var statusStr = ($currentTarget.data('status') == 'ready')?'Publish':'UnPlish';
+        var statusStr = ($currentTarget.data('status') == 'ready')?'Publish':'Unpublish';
         $('#hidIndex').val($currentTarget.parent().parent().data('index'));
         $('#hidVersionRowId').val($currentTarget.data('rowid'));
         $('#hidDeviceType').val($currentTarget.data('device'));

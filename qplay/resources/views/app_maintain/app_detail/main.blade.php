@@ -43,13 +43,13 @@ foreach ($enableRole as $role){
     <div class="col-lg-12 col-xs-12 text-right">
         <span class="text-success"  id="appVersionStatus" style="padding-right: 8px;  line-height: 50px; font-size: 20px;">
             <span  data-toggle='gridAndroidVersionList'
-                @if ($appStatus['android']['str'] != 'UnPublish')
+                @if ($appStatus['android']['str'] != 'Unpublish')
                     style="font-weight:bold;"
                 @endif
             > Android-{{$appStatus['android']['str']}}</span>
              |
             <span data-toggle='gridIOSVersionList'
-                @if ($appStatus['ios']['str'] != 'UnPublish')
+                @if ($appStatus['ios']['str'] != 'Unpublish')
                     style="font-weight:bold;"
                 @endif
             > IOS-{{$appStatus['ios']['str']}}</span>
