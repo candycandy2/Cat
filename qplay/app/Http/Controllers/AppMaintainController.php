@@ -1260,6 +1260,7 @@ class AppMaintainController extends Controller
         foreach($updateArray as $value){
             $updatedRow = QP_White_List::find($value['row_id']);
             $updatedRow->allow_url = $value['allow_url'];
+            $updatedRow->updated_user = $value['updated_user'];
             $updatedRow->save();
         }
         QP_White_List::insert($insertArray);
