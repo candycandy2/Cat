@@ -1,10 +1,8 @@
 
 /*global variable*/
-
-var appKey = "appqplay";
+var appKeyOriginal = "appqplay";
+var appKey = "";
 var pageList = ["viewInitial1-1", "viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
-
-var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e"; // QPlay app secret key
 
 var appcategorylist;
