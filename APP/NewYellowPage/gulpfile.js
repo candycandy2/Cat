@@ -88,7 +88,6 @@ gulp.task('config', function(){
 
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  
   'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-splashscreen',
   'cordova plugin remove cordova-plugin-console',
