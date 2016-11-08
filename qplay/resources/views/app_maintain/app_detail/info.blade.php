@@ -544,6 +544,7 @@
         $("#tbxApiAction").val(currentData[index].api_action);
         $("#tbxApiVersion").val(currentData[index].api_version);
         $("#tbxApiUrl").val(currentData[index].api_url);
+        $("#newCustomApiDialog").find('span.error').html("");
         $("#newCustomApiDialogTitle").text("{{trans("messages.MSG_EDIT_CUSTOM_API")}}");
         $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("edit",'+index+')');
         $("#newCustomApiDialog").modal('show');
