@@ -6,7 +6,6 @@
 //
 
 var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
-var appSecretKey;
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 
@@ -324,9 +323,10 @@ function getSecurityList() {
 
     var __construct = function() {
 
-        appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
-        var signatureTime = getSignature("getTime");
-        var signatureInBase64 = getSignature("getInBase64", signatureTime);
+        var QPlaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
+        var signatureTime = Math.round(new Date().getTime()/1000);
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), QPlaySecretKey);
+        var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
 
         $.ajax({
             type: 'GET',
@@ -337,7 +337,7 @@ function getSecurityList() {
                 'Signature': signatureInBase64,
                 'token': loginData.token
             },
-            url: serverURL + "/qplayApiTest/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
+            url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
             dataType: "json",
             cache: false,
             success: self.successCallback,
@@ -411,11 +411,11 @@ function readConfig() {
 
     //according to the versionName, change the appKey
     if (loginData["versionName"].indexOf("Staging") !== -1) {
-        appKey = appKey + "test";
+        appKey = appKeyOriginal + "test";
         appApiPath = appApiPath + "Test";
         qplayAppKey = qplayAppKey + "test";
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
-        appKey = appKey + "dev";
+        appKey = appKeyOriginal + "dev";
         qplayAppKey = qplayAppKey + "test";
     }
 
