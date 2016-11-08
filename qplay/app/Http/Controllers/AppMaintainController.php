@@ -1209,7 +1209,6 @@ class AppMaintainController extends Controller
                 $insertArray[] = $data;
             }
         }
-
         $deleteApiRows = QP_App_Custom_Api::where('app_row_id','=',$appId)
                             ->whereNotIn('row_id',$saveId)
                             ->delete();
@@ -1219,6 +1218,7 @@ class AppMaintainController extends Controller
             $updatedRow->api_version = $value['api_version'];
             $updatedRow->api_action = $value['api_action'];
             $updatedRow->api_url = $value['api_url'];
+            $updatedRow->updated_user = $value['updated_user'];
             $updatedRow->save();
         }
         QP_App_Custom_Api::insert($insertArray);
