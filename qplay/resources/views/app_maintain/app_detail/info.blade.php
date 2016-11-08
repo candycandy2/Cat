@@ -533,6 +533,7 @@
         $("#tbxApiAction").val("");
         $("#tbxApiVersion").val("");
         $("#tbxApiUrl").val("");
+        $("#newCustomApiDialog").find('span.error').html("");
         $("#newCustomApiDialogTitle").text("{{trans("messages.MSG_NEW_CUSTOM_API")}}");
         $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("new")');
         $("#newCustomApiDialog").modal('show');
