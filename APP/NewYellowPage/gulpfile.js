@@ -88,31 +88,30 @@ gulp.task('config', function(){
 
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  'cordova plugin remove cordova-plugin-qsecurity',
+  
   'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-qlogin',
   'cordova plugin remove cordova-plugin-splashscreen',
-  'cordova plugin remove cordova-plugin-whitelist',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
+  'cordova plugin remove cordova-plugin-qsecurity',
+  'cordova plugin remove cordova-plugin-whitelist',
   'cordova platform rm ios',
   'cordova platform rm android',
   'cordova platform add ios',
   'cordova platform add android',
-  'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplay.benq.com/' + apiPath + '/public/qplayauth_register',
-  'cordova plugin add ../../plugins/cordova-plugin-qsecurity/',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-splashscreen',
-  'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable ENV=' + appNameDecorate,
+  'cordova plugin add cordova-plugin-whitelist'
 ]));
 
 gulp.task('patch', function() {
-    return gulp.src(patchFolder + '/LoginActivity.java', {base: patchFolder + '/'})
-        .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/',{overwrite: true}));
+    return gulp.src(patchFolder + '/LoginActivity.java', { base: patchFolder + '/' })
+        .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
 });
 
 gulp.task('copyAndroidImages', function() {

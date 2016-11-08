@@ -40,17 +40,6 @@
             </feature>
             <serverUrl href="$LOGIN_URL" />
         </config-file>
-        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
-            <array>
-                <string>fb</string>
-                <string>twitter</string>
-                <string>itms-apps</string>
-                <string>tel</string>
-                <string>mailto</string>
-                <string>appqplaytest</string>
-                <string>appyellowpagetest</string>
-            </array>
-        </config-file>
         <header-file src="src/ios/QLoginPlugin.h" />
         <source-file src="src/ios/QLoginPlugin.m" />
     </platform>

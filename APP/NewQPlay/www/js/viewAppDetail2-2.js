@@ -61,6 +61,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             });
 
             $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
+                loadingMask("show");
 
                 var timer = setTimeout(function(){
                     //Auto resize detail-description
@@ -74,8 +75,9 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                     var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainDDescriptionHeight + mainOwlCarouselHeight);
                     $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
 
+                    loadingMask("hide");
                     clearTimeout(timer);
-                }, 1000);
+                }, 500);
 
             });
 
