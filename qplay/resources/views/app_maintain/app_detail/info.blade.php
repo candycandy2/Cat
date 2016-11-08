@@ -111,6 +111,9 @@
                             <span class="btn btn-primary btn-file" name="btnUplErrorCodeFile" id="btnUplErrorCodeFile">
                                 {{trans('messages.NEW_ERROR_CODE')}} <input type="file" class="file" name="errorCodeFile" id="errorCodeFile" accept=".json">
                             </span>
+                            <small class="text-muted">
+                                *{{trans('messages.ERROR_CODE_HINT')}}
+                            </small>
                         </div>
                         <div class="form-group table-responsive" id="customApiErrorCode" 
                         @if (!isset($errorCode))
