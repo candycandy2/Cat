@@ -34,7 +34,7 @@ window.initialSuccess = function(data) {
     }
 
     //For test
-    //var unregisterTesr = new unregister();
+    //var unregisterTest = new unregister();
 }
 
 function getMessageList() {
@@ -43,6 +43,7 @@ function getMessageList() {
 
 function unregister() {
 
+    var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
     this.successCallback = function(data) {
