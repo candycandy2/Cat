@@ -128,7 +128,7 @@ function setWhiteList() {
         if (appKey !== qplayAppKey) {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (device.platform !== "iOS") {
-                    window.plugins.qlogin.openAppCheckScheme(null, null);
+                    //window.plugins.qlogin.openAppCheckScheme(null, null);
                     return;
                 }
                 window.localStorage.setItem("openScheme", false);
@@ -139,7 +139,7 @@ function setWhiteList() {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
 
             if (appKey === qplayAppKey) {
-                window.plugins.qlogin.openAppCheckScheme(null, null);
+                //window.plugins.qlogin.openAppCheckScheme(null, null);
             }
         }
 
@@ -264,7 +264,7 @@ function processStorageData(action, data) {
             }
         });
 
-        getSecurityList();
+        var securityList = new getSecurityList();
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
             window.localStorage.setItem(key, value);
@@ -503,9 +503,7 @@ function handleOpenURL(url) {
 
             } else if (queryData["action"] === "retrunLoginData") {
 
-                if (device.platform === "iOS") {
-                    window.localStorage.setItem("openScheme", false);
-                }
+                window.localStorage.setItem("openScheme", false);
 
                 $.map(queryData, function(value, key) {
                     if (key !== "callbackApp" && key !== "action") {
