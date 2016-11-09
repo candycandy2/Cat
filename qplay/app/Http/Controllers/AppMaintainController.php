@@ -1117,7 +1117,7 @@ class AppMaintainController extends Controller
                         $data ['ready_date'] = time();
                     }
                 }else{
-                     $data ['ready_date'] = 'null';
+                     $data ['ready_date'] = NULL;
                 }
 
                 if(isset($value['row_id'])){//update
@@ -1167,6 +1167,7 @@ class AppMaintainController extends Controller
             $updatedRow = QP_App_Version::find($value['row_id']);
             $updatedRow->version_name = $value['version_name'];
             $updatedRow->status = $value['status'];
+            $updatedRow->updated_user = $value['updated_user'];
             if(isset($value['ready_date'])){
                 if($value['ready_date'] == 'null'){
                     $updatedRow->ready_date = NULL;
