@@ -497,17 +497,16 @@ class AppMaintainController extends Controller
             $input = $request->all();
             $appId = $input['appId'];
             $appkey = $input['appKey'];
-           
+
             parse_str($input['mainInfoForm'],$mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
-
-            $iconfileName = $input['icon'];
             if(isset($input['fileIconUpload'])){
                 $icon = $input['fileIconUpload'];
                 $this->validatePic('icon',$icon);
-                $iconfileName = $this->uploadIcon($appId, $icon);
+                $this->uploadIcon($appId, $icon);
+            }elseif($input['icon']=="undefined"){
+                $this->deleteIcon($appId); 
             }
-
             $ori = QP_App_Head::where('row_id', $appId)
                             ->first(['security_level']);
 
@@ -518,16 +517,14 @@ class AppMaintainController extends Controller
                 'security_level'=>$input['securityLevel'],
                 'company_label'=> $chkCompany,
                 'updated_user'=>\Auth::user()->row_id,
-                'icon_url'=>$iconfileName
                 );
             if($ori->security_level != $input['securityLevel']){
                 $dataArr['security_updated_at'] = time(); 
             }
             $this->updateAppHeadById($appId, $dataArr);
             
-            $delPic = $input['delPic'];
-            $insPic  = $input['insPic'];
-
+            $delPic = (isset($input['delPic']))?$input['delPic']:"";
+            $insPic  =(isset($input['insPic']))?$input['insPic']:array() ;
             $objGetPattern = array(
                             'android'=>"/^androidScreenUpload_/",
                             'ios'=>"/^iosScreenUpload_/"
@@ -542,7 +539,7 @@ class AppMaintainController extends Controller
                     }
                 }
             }
-            $this->saveAppPic($appId, $sreenShot, $delPic, $insPic);
+            $this->saveAppScreenShot($appId, $sreenShot, $delPic, $insPic);
 
             $aooRoleList = (isset($input['appRoleList']))?$input['appRoleList']:array();
             $this->saveAppRole($appId,$aooRoleList);
@@ -583,12 +580,12 @@ class AppMaintainController extends Controller
             }
             $this->saveWhiteList($appId, $whiteList);
 
-            \DB::commit();
+           \DB::commit();
            
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
            return array("code"=>ResultCode::_999999_unknownError,
-                   "message"=>trans("messages.MSG_OPERATION_FAILED")); 
+                   "message"=>trans("messages.MSG_OPERATION_FAILED"));
            \DB::rollBack();
         }
     }
@@ -598,8 +595,7 @@ class AppMaintainController extends Controller
         if(\Session::has('lang') && \Session::get("lang") != "") {
             \App::setLocale(\Session::get("lang"));
         }
-   } 
-
+    } 
     private function uploadIcon($appId,$icon){
         $iconUploadPath =  FilePath::getIconUploadPath($appId);
 
@@ -607,10 +603,32 @@ class AppMaintainController extends Controller
             mkdir($iconUploadPath, 0755, true);
         }
         $icon->move($iconUploadPath,$icon->getClientOriginalName());
-        return $icon->getClientOriginalName();
+
+        $qpAppHead = QP_App_Head::find($appId);
+        $qpAppHead->icon_url=$icon->getClientOriginalName();
+        $qpAppHead->save();
     }
 
-    private function saveAppPic($appId, $sreenShot, $delPic, $insPic){
+    private function deleteIcon($appId){
+        $oriIcon = QP_App_Head::where('row_id', $appId)
+                        ->first(['icon_url']);
+        $oriIconFile = FilePath::getIconUploadPath($appId).$oriIcon->icon_url;
+        if($oriIcon->icon_url!="" && file_exists($oriIconFile)){
+            unlink($oriIconFile);
+        }
+        $qpAppHead = QP_App_Head::find($appId);
+        $qpAppHead->icon_url="";
+        $qpAppHead->save();
+    }
+
+    /**
+     * save App Screenshot
+     * @param  int    $appId     qpp id
+     * @param  Array  $sreenShot screenshot file array
+     * @param  String $delPic    delete screenshot id List
+     * @param  Array  $insPic    insert screenshot information array ex: array('langId_deviceType_filename')
+     */
+    private function saveAppScreenShot($appId, $sreenShot, $delPic, Array $insPic){
       
         try{
             //1.Delete screenshot image file
@@ -679,7 +697,6 @@ class AppMaintainController extends Controller
         $validator = \Validator::make(array($filesKey=>$file), $rules);
         if($validator->passes()){
             $filename = $file->getClientOriginalName();
-           // var_dump($filename);
         }else{
              var_dump( $validator->messages());
         }

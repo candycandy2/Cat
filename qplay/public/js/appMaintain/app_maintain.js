@@ -110,6 +110,7 @@ $(function () {
                 setAppUser: "cbxRole cbxAllRole"
             },
             errorPlacement: function ($error, $element) {
+                console.log($element.attr("name"));
                 validate =0;
                 $alert = $('#appMaintainAlert');
                 if($element.attr("name") == 'chkCompany'){
@@ -141,8 +142,8 @@ $(function () {
                // $('#appMaintainAlert').fadeIn('1500');
            },
            submitHandler: function (form) {
-
                 validate ++;
+                console.log(validate);
                 if(validate==submitFormAry.length){
                     var formData = new FormData();
                     formData.append('appId',jsAppRowId);
@@ -259,16 +260,26 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
-        if($('.icon-preview').length == 1 ){
+        if($('.icon-preview:visible').length == 1 ){
             return true;
         }
         return false;
     });
 
     jQuery.validator.addMethod("screenshot", function(value, element) {
-        if($(element).parent().parent().find('li.imgLi').length > 0 ){
-            return true;
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        var ios = new RegExp('^iosScreenUpload_');
+        var android = new RegExp('^androidScreenUpload_');
+        if($(element).parent().parent().find('li.imgLi').length == 0){
+           if(ios.test($(element).attr('name')) && iosPublishCnt == 0){
+                return true;
+           }
+           if(android.test($(element).attr('name')) && androidPublishCnt == 0){
+                return true;
+           }
+           return false;
         }
-        return false;
+        return true;
     });
 });

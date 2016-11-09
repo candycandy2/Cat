@@ -690,21 +690,21 @@
 
          $('.cbxRole').change(function(){
            var selectRoleList = [$(this).attr('data')];
-           if($(this).prop('checked')){
-             SaveAppRole(selectRoleList);
-           }else{
-             DelAppRole(selectRoleList);
-           }
+           // if($(this).prop('checked')){
+           //   SaveAppRole(selectRoleList);
+           // }else{
+           //   DelAppRole(selectRoleList);
+           // }
 
         })
 
         $('.cbxRole').change(function(){
            var selectRoleList = [$(this).attr('data')];
-           if($(this).prop('checked')){
-             SaveAppRole(selectRoleList);
-           }else{
-             DelAppRole(selectRoleList);
-           }
+           // if($(this).prop('checked')){
+           //   SaveAppRole(selectRoleList);
+           // }else{
+           //   DelAppRole(selectRoleList);
+           // }
 
         })
 
