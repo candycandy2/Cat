@@ -552,12 +552,12 @@ SQL;
     public static function getAppVersionStatus($appId){
         
       $appStatus = array('android'=>array(
-                                    'str'=>'UnPublish',
+                                    'str'=>'Unpublish',
                                     'versionCode'=>'',
                                     'url'=>''
                                 ),
                          'ios'=>array(
-                                    'str'=>'UnPublish',
+                                    'str'=>'Unpublish',
                                     'versionCode'=>'',
                                     'url'=>''
                                 )

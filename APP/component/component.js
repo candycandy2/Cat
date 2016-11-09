@@ -503,9 +503,7 @@ function handleOpenURL(url) {
 
             } else if (queryData["action"] === "retrunLoginData") {
 
-                if (device.platform === "iOS") {
-                    window.localStorage.setItem("openScheme", false);
-                }
+                window.localStorage.setItem("openScheme", false);
 
                 $.map(queryData, function(value, key) {
                     if (key !== "callbackApp" && key !== "action") {

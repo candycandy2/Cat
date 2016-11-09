@@ -12,7 +12,7 @@
          $oldDefLangObj.parent().text("").append('<input type="checkbox" value="'+oldVal+'">'+oldLang);
          var $targetDefLangObj  = $('#delLangDialog').find('input[type=checkbox][value='+jsDefaultLang+']');
          var targetLang = $targetDefLangObj.parent().text();
-         $targetDefLangObj.parent().text("").append('<input type="checkbox" value="'+jsDefaultLang+'" disabled=""><span class="text-muted">'+targetLang+' (預設語言，無法刪除)</span>');
+         $targetDefLangObj.parent().text("").append('<input type="checkbox" value="'+jsDefaultLang+'" disabled=""><span class="text-muted">'+targetLang+' ('+Messages.MSG_DEFAULT_LANGUAGE_CAN_NOT_REMOVE+')</span>');
          $('#delLangDialog').modal('show');
     }
 
