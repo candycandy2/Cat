@@ -588,7 +588,7 @@
             if(index != i && customApi.api_action == apiAction && customApi.api_version == apiVersion){
                 var error = new Error;
                 error.field = 'tbxApiVersion';
-                error.msg = '已存在相同版本的API action';
+                error.msg = Messages.ERR_DUPLICATE_API_ACTION;
                 errors.push(error);
             }
         });

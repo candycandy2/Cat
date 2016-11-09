@@ -476,7 +476,7 @@ class AppMaintainController extends Controller
         $appVersionList = \DB::table("qp_app_version")
                 -> where('app_row_id', '=', $appRowId)
                 -> where('device_type', '=', $deviceType)
-                -> select('row_id','device_type', 'version_code', 'version_name', 'url','status','updated_at')
+                -> select('row_id','device_type', 'version_code', 'version_name', 'url','status','created_at')
                 -> get();
         foreach ($appVersionList as $appVersion) {
             $appVersion->download_url = FilePath::getApkDownloadUrl($appRowId,$deviceType,
@@ -914,48 +914,52 @@ class AppMaintainController extends Controller
                      ->update($dataArr);
     }
 
-    private function saveAppRole($appId,$appRoleList){
-        try{
-            \DB::beginTransaction();
+    /**
+     * To save enable role by app role id 
+     * @param  int $appId       qp_app.row_d
+     * @param  Array $appRoleList enable role array list
+     */
+    private function saveAppRole($appId, Array $appRoleList){
             $deletedRows = QP_Role_App::where('app_row_id',$appId)
                                 ->delete(); 
             $insertArray = array();
+            $now = date('Y-m-d H:i:s',time());
             foreach ($appRoleList as $role) {
                 $data = array(
                         'app_row_id'=>$appId,
                         'role_row_id'=>$role,
                         'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id
+                        'updated_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                        'updated_at'=>$now
                     );
                 $insertArray[]=$data;
             }
             QP_Role_App::insert($insertArray);
-            \DB::commit();
-        }catch(\Exception $e){
-            \DB::rollback();
-        }
     }
 
-    private function saveAppUser($appId,$appUserList){
-        try{
-            \DB::beginTransaction();
+    /**
+     * To save enable user by app row id
+     * @param  int $appId           qp_qpp.row_id
+     * @param  Array $appUserList   enable user array list
+     */
+    private function saveAppUser($appId, Array $appUserList){
             $deletedRows = QP_User_App::where('app_row_id',$appId)
                                 ->delete(); 
             $insertArray = array();
+            $now = date('Y-m-d H:i:s',time());
             foreach ($appUserList as $role) {
                 $data = array(
                         'app_row_id'=>$appId,
                         'user_row_id'=>$role,
                         'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id
+                        'updated_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                        'updated_at'=>$now
                     );
                 $insertArray[]=$data;
             }
             QP_User_App::insert($insertArray);
-            \DB::commit();
-        }catch(\Exception $e){
-            \DB::rollback();
-        }
     }
 
     /**
@@ -1139,7 +1143,7 @@ class AppMaintainController extends Controller
                     }
                     //arrange data
                     $data['created_user'] = \Auth::user()->row_id;
-                    $data['created_at'] = $now;
+                    $data['created_at'] = $value['created_at'];
                     $insertArray[]=$data;
                 }
 

@@ -8,6 +8,6 @@ var Messages = {
     MSG_CONFIRM_UNPUBLISH : '取消發佈確認',
     MSG_CONFIRM_PUBLISH_STATUS : '確認將 %s 發布 Android- %l | IOS- %k？',
     MSG_CONFIRM_PUBLISH : '發佈確認',
-    MSG_NOT_COMPLETE : '資訊未填寫完成'
-
+    MSG_NOT_COMPLETE : '資訊未填寫完成',
+    ERR_DUPLICATE_API_ACTION : '已存在相同版本的API action'
 }

@@ -229,7 +229,7 @@ var uploadNewVersion = function(){
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
     newVersion.state = "undefined";
     newVersion.status = 'cancel';
-    newVersion.updated_at = getFormattedDate();
+    newVersion.created_at = getFormattedDate();
     newVersion.url = fileName;
     newVersion.version_code = versionCode;
     newVersion.version_name = versionName;
@@ -281,9 +281,17 @@ var delAppVersion = function(device){
 
 function getFormattedDate() {
     var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var str = date.getFullYear() + "-" + FormatNumberLength((date.getMonth() + 1),2) + "-" + FormatNumberLength(date.getDate(),2) + " " +  FormatNumberLength(date.getHours(),2) + ":" + FormatNumberLength(date.getMinutes(),2) + ":" + FormatNumberLength(date.getSeconds(),2);
 
     return str;
+}
+
+function FormatNumberLength(num, length) {
+    var r = "" + num;
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
 }
 
 function getApkDownLoadPath(appId,deviceType,versionCode,fileName){

@@ -8,5 +8,6 @@ var Messages = {
     MSG_CONFIRM_UNPUBLISH : '取消发布确认',
     MSG_CONFIRM_PUBLISH_STATUS : '确认将 %s 发布 Android- %l | IOS- %k？',
     MSG_CONFIRM_PUBLISH : '发布确认',
-    MSG_NOT_COMPLETE : '资讯未填写完成'
+    MSG_NOT_COMPLETE : '资讯未填写完成',
+    ERR_DUPLICATE_API_ACTION : '已存在相同版本的API action'
 }
