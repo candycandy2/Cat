@@ -14,7 +14,7 @@
        data-show-toggle="true"  data-sortable="true"
        data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
        data-click-to-select="false" data-single-select="false"
-       data-sort-name="created_at" data-sort-order="desc">
+       data-sort-name="version_code" data-sort-order="desc">
     <thead>
     <tr>
         <th data-field="state" data-checkbox="true"></th>
