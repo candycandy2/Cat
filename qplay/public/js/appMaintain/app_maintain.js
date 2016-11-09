@@ -9,7 +9,7 @@ var submitFormAry = [$("#mainInfoForm"),
 
 SaveAppDetail = function(){
     
-     var unPublishStr = 'UnPublish';
+     var unPublishStr = 'Unpublish';
      var appName = $('#txbAppName_'+jsDefaultLang).val();
      var newAandroidStatus = unPublishStr;
      var newIOSStatus = unPublishStr;
@@ -25,11 +25,11 @@ SaveAppDetail = function(){
 
      if((jsOriAndroidStatus!=unPublishStr || jsOriIOSStatus!=unPublishStr) && 
         (newAandroidStatus == unPublishStr && newIOSStatus == unPublishStr)){
-        confirmSrt = '確認將 '+ appName +' 取消發布？';
-        confirmTitleSrt = '取消發佈確認';
+        confirmSrt = Messages.MSG_CONFIRM_UNPUBLISH_VERSION.replace('%s',appName);
+        confirmTitleSrt = Messages.MSG_CONFIRM_UNPUBLISH;
      }else if(jsOriAndroidStatus != newAandroidStatus || jsOriIOSStatus != newIOSStatus){
-         confirmSrt = '確認將 ' + appName + ' 發布 Android- ' + newAandroidStatus + ' | IOS- ' + newIOSStatus + '？';
-         confirmTitleSrt = '發佈確認';
+         confirmSrt = Messages.MSG_CONFIRM_PUBLISH_STATUS.replace('%s',appName).replace('%l',newAandroidStatus).replace('%k',newIOSStatus);
+         confirmTitleSrt = Messages.MSG_CONFIRM_PUBLISH;
      }
      
      if(confirmTitleSrt !="" && confirmSrt!=""){
@@ -79,7 +79,6 @@ SaveAppDetailToDB = function(){
         submitFormAry[i].submit();
     }
 }
-
 $(function () {
     for(var key in submitFormAry){       
        submitFormAry[key].validate({
@@ -111,7 +110,6 @@ $(function () {
                 setAppUser: "cbxRole cbxAllRole"
             },
             errorPlacement: function ($error, $element) {
-                console.log($element.attr("name"));
                 validate =0;
                 $alert = $('#appMaintainAlert');
                 if($element.attr("name") == 'chkCompany'){
@@ -139,7 +137,7 @@ $(function () {
                     $error.insertAfter($element);
                     //$alert.append('<p>'+langStr+'-'+labelName+' : '+$error.text()+'</p>');
                 }
-                showMessageDialog("錯誤", "資訊未填寫完成");
+                showMessageDialog(Messages.ERROR,Messages.MSG_NOT_COMPLETE);
                // $('#appMaintainAlert').fadeIn('1500');
            },
            submitHandler: function (form) {
@@ -232,18 +230,18 @@ $(function () {
                         processData: false,
                         success: function (d, status, xhr) {
                             validate = 0
-                            if(d.result_code != 1) {
-                                showMessageDialog("錯誤",d.message);
-                            }else{
-                                showMessageDialog("消息","操作成功!");
+                            if(d.result_code == 1) {
+                                 showMessageDialog(Messages.MESSAGE,Messages.MSG_OPERATION_SUCCESS);
                                 $('#messageDialog').find('button').click(function(){
                                     location.reload();
                                 });
+                            }else{
+                               showMessageDialog(Messages.ERROR,d.message);
                             }
                         },
                         error: function (e) {
                             validate = 0
-                             showMessageDialog("錯誤", "操作失敗", e.responseText)
+                             showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
                         }
                     });
                      
