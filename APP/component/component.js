@@ -128,7 +128,7 @@ function setWhiteList() {
         if (appKey !== qplayAppKey) {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (device.platform !== "iOS") {
-                    window.plugins.qlogin.openAppCheckScheme(null, null);
+                    //window.plugins.qlogin.openAppCheckScheme(null, null);
                     return;
                 }
                 window.localStorage.setItem("openScheme", false);
@@ -139,7 +139,7 @@ function setWhiteList() {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
 
             if (appKey === qplayAppKey) {
-                window.plugins.qlogin.openAppCheckScheme(null, null);
+                //window.plugins.qlogin.openAppCheckScheme(null, null);
             }
         }
 
