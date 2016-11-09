@@ -264,7 +264,7 @@ function processStorageData(action, data) {
             }
         });
 
-        getSecurityList();
+        var securityList = new getSecurityList();
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
             window.localStorage.setItem(key, value);

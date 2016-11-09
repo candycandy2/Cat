@@ -33,15 +33,7 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         if (getDataFromServer) {
                             getServerData();
                         } else {
-
-                            getMessageList();
-
-                            if (loginData["openMessage"] === true) {
-                                $.mobile.changePage("#viewWebNews2-3-1");
-                            } else {
-                                loginData["openMessage"] = true;
-                                $.mobile.changePage('#viewMain2-1');
-                            }
+                            var doReNewToken = new reNewToken();
                         }
                     }
                 };
@@ -54,6 +46,42 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                 var __construct = function() {
                     apiCheckAppVersion(self.successCallback, self.failCallback, device.platform, loginData["versionCode"]);
                 }();
+            }
+
+            function reNewToken() {
+                var self = this;
+
+                this.successCallback = function(data) {
+                    var resultSuccess = false;
+                    var resultcode = data['result_code'];
+
+                    if (resultcode == 1) {
+                        loginData["token"] = data['content'].token;
+                        loginData["token_valid"] = data['content'].token_valid;
+
+                        window.localStorage.setItem("token", data['content'].token);
+                        window.localStorage.setItem("token_valid", data['content'].token_valid);
+
+                        getMessageList();
+
+                        if (loginData["openMessage"] === true) {
+                            $.mobile.changePage("#viewWebNews2-3-1");
+                        } else {
+                            loginData["openMessage"] = true;
+                            $.mobile.changePage('#viewMain2-1');
+                        }
+
+                    } else {
+                        //other case
+                    }
+                };
+
+                this.failCallback = function(data) {};
+
+                var __construct = function() {
+                    QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
+                }();
+
             }
 
             /********************************** page event *************************************/
