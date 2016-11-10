@@ -105,7 +105,8 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         qplayAppKey = "appqplay";
 
                         var loginData = {
-                            verion:              "",
+                            versionName:         "",
+                            versionCode:         "",
                             deviceType:          "",
                             pushToken:           "",
                             token:               "",
