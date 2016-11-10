@@ -24,7 +24,7 @@
                         @endif
                     >
                         <div class="icon-upl-btn js-icon-file"><div>+</div><div>{{trans('messages.NEW_ICON')}}</div></div>
-                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none" accept="image/*">
+                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none" accept=".jpeg,.jpg,.png">
                     </div>
                 
                 </div>
@@ -39,6 +39,7 @@
                 <label class="control-label col-sm-2">{{trans('messages.SCREENSHOT')}} :</label>
                 <div class="col-sm-10 js-lang-tool-bar">
                     <!--Language Tool-->
+                    <div style="margin: 10px" class="text-muted">(1024 * 768)</div>
                     <div class="form-group">
                         <div class="col-sm-10">
                             <span class="label-hint" id="hintPic"></span>
@@ -75,7 +76,7 @@
                                     <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}" @if($i >= 5)  style="display:none"   @endif>
                                         <div>+</div>
                                         <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
-                                        <input type="file" accept="image/*" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                        <input type="file" accept=".jpeg,.jpg,.png" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                     </li>
                                 </ul>
                                 <ul class="form-group tab-pane fade sortable" id="tab_ios_{{$appData->lang_row_id}}">
@@ -90,7 +91,7 @@
                                     <li class="screen-upl-btn js-screen-file" @if($i >= 5)  style="display:none"   @endif id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
                                         <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
-                                        <input type="file" accept="image/*" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                        <input type="file" accept=".jpeg,.jpg,.png" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                     </li>
                                 </ul>
                             </div>
@@ -114,7 +115,7 @@
             <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{langId}">
                 <div>+</div>
                 <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
-                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" accept="image/*" multiple>
+                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" accept=".jpeg,.jpg.png" multiple>
             </li>
         </ul>
         <ul class="form-group tab-pane fade sortable sortable" id="tab_ios_{langId}">

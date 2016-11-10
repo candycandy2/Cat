@@ -30,7 +30,7 @@ $menu_name = "APP_MAINTAIN";
 <script>
     function iconFormatter(value, row) {
         if(row.icon_url == ""){
-            return "-";
+            return "";
         }
         return '<img src="' +'app/'+row.row_id+'/icon/'+row.icon_url + '" class="img-rounded"  width="90" height="90">';
     };

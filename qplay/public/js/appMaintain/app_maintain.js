@@ -131,6 +131,8 @@ $(function () {
                     // }
                 }else if($element.attr("name") == 'errorCodeFile' ){
                    $error.insertAfter($('input[name=errorCodeFile]').parent().next());
+                }else if($element.attr('name') == 'fileIconUpload'){
+                   $error.insertAfter($('.iconUpload'));
                 }else{
                     var langTag = $element.attr("name").split('_')[1];
                     var langStr = $('#ddlLang_'+langTag).find('a').text();
