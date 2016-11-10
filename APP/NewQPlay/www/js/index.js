@@ -25,12 +25,10 @@ window.initialSuccess = function(data) {
             $.mobile.changePage('#viewMain2-1');
         }
     } else {
-        if (loginData['doLoginDataCallBack'] === false) {
-            setTimeout(function(){
-                var checkAppVer = new checkAppVersion();
-                loadingMask("show");
-            }, 2000);
-        }
+        setTimeout(function(){
+            var checkAppVer = new checkAppVersion();
+            loadingMask("show");
+        }, 2000);
     }
 
     //For test
