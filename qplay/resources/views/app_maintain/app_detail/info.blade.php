@@ -615,6 +615,7 @@
 
     var DeleteAppUser = function() {
             var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');
+            var $toolbar  =  $($("#gridUserList").data('toolbar'));
             var confirmStr = "";
             $.each(selectedUsers, function(i, user) {
                 confirmStr += user.login_id + "<br/>";
@@ -631,7 +632,9 @@
                     }
                 });
                 $("#gridUserList").bootstrapTable('load', currentData);
-                selectedChanged();
+                $toolbar.find('.btn-danger').fadeOut(300, function() {
+                    $toolbar.find('.btn-primary').fadeIn(300);
+                });
             });
         
     };
@@ -690,22 +693,10 @@
 
          $('.cbxRole').change(function(){
            var selectRoleList = [$(this).attr('data')];
-           // if($(this).prop('checked')){
-           //   SaveAppRole(selectRoleList);
-           // }else{
-           //   DelAppRole(selectRoleList);
-           // }
-
         })
 
         $('.cbxRole').change(function(){
            var selectRoleList = [$(this).attr('data')];
-           // if($(this).prop('checked')){
-           //   SaveAppRole(selectRoleList);
-           // }else{
-           //   DelAppRole(selectRoleList);
-           // }
-
         })
 
         $('body').on('click','#chkErrorCode',function(){
