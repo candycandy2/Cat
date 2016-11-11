@@ -48,6 +48,8 @@ if (env === "test") {
     QPushAPPKey = "e343504d536ebce16b70167e";
 }
 
+var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string>";
+
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' + 
                     '<widget id="com.qplay.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
@@ -107,7 +109,7 @@ gulp.task('install', shell.task([
     'cordova plugin add cordova-plugin-console',
     'cordova plugin add cordova-plugin-appversion',
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
-    'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable ENV=' + appNameDecorate,
+    'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add cordova-plugin-whitelist'
 ]));
 
