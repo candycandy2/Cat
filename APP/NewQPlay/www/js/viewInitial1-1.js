@@ -64,11 +64,15 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
 
                         getMessageList();
 
-                        if (loginData["openMessage"] === true) {
-                            $.mobile.changePage("#viewWebNews2-3-1");
+                        if (loginData['doLoginDataCallBack'] === true) {
+                            getLoginDataCallBack();
                         } else {
-                            loginData["openMessage"] = true;
-                            $.mobile.changePage('#viewMain2-1');
+                            if (loginData["openMessage"] === true) {
+                                $.mobile.changePage("#viewWebNews2-3-1");
+                            } else {
+                                loginData["openMessage"] = true;
+                                $.mobile.changePage('#viewMain2-1');
+                            }
                         }
 
                     } else {
