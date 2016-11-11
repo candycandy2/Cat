@@ -48,12 +48,12 @@ table.costum-table {
     cursor: pointer;
     text-align:center;
     padding-top:140px;
-    width: 200px; 
-    height: 320px;
+    width: 225px; 
+    height: 300px;
 }
 .screen-preview{
-    width: 200px; 
-    height: 320px;
+    width: 225px; 
+    height: 300px;
 }
 .screen-preview:hover, .icon-preview:hover, .screen-upl-btn:hover, .icon-upl-btn:hover{
     opacity: .3;

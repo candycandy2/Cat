@@ -39,7 +39,7 @@
                 <label class="control-label col-sm-2">{{trans('messages.SCREENSHOT')}} :</label>
                 <div class="col-sm-10 js-lang-tool-bar">
                     <!--Language Tool-->
-                    <div style="margin: 10px" class="text-muted">(1024 * 768)</div>
+                    <div style="margin: 10px" class="text-muted">(768 * 1024)</div>
                     <div class="form-group">
                         <div class="col-sm-10">
                             <span class="label-hint" id="hintPic"></span>

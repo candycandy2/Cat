@@ -51,7 +51,7 @@ $(function (){
                 reader.langId = langId;
                 reader.deviceType = deviceType;
                 reader.onload = function (e,name) { 
-                    var valisRes = validImageSize(1024,768,e.target.result)
+                    var valisRes = validImageSize(768,1024,e.target.result)
                        if(valisRes!=""){
                             showMessageDialog(Messages.ERROR,valisRes);
                             $("#"+$(input).attr('id')).val('');
