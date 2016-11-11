@@ -9,5 +9,7 @@ var Messages = {
     MSG_CONFIRM_PUBLISH_STATUS : 'Confirm %s publish to Android- %l | IOS- %k？',
     MSG_CONFIRM_PUBLISH : 'Confirm Publish',
     MSG_NOT_COMPLETE : 'The information is not complete',
-    ERR_DUPLICATE_API_ACTION : 'The same version of the API action already exists'
+    ERR_DUPLICATE_API_ACTION : 'The same version of the API action already exists',
+    ERR_SCREENSHOT_FILE_LIMIT : 'The screenshot can only upload %s sheets. You have selected %l sheets',
+    ERR_SCREENSHOT_SCALE_LIMIT : 'File size, accepted only %s * %l'
 }

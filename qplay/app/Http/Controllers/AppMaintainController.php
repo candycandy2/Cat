@@ -495,14 +495,25 @@ class AppMaintainController extends Controller
        \DB::beginTransaction();
        try{
             $input = $request->all();
+
+            $rules = array('icon' => 'mimes:png,jpeg'); 
+            $validateArr = array();
+            if(isset($input['fileIconUpload'])){
+                $validateArr['icon'] = $input['fileIconUpload'];
+            }
+            $validator = \Validator::make( $validateArr, $rules);
+            if(!$validator->passes()){
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>$validator->messages()
+                ]);
+            }
             $appId = $input['appId'];
             $appkey = $input['appKey'];
-
             parse_str($input['mainInfoForm'],$mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
+
             if(isset($input['fileIconUpload'])){
                 $icon = $input['fileIconUpload'];
-                $this->validatePic('icon',$icon);
                 $this->uploadIcon($appId, $icon);
             }elseif($input['icon']=="undefined"){
                 $this->deleteIcon($appId); 
@@ -522,24 +533,8 @@ class AppMaintainController extends Controller
                 $dataArr['security_updated_at'] = time(); 
             }
             $this->updateAppHeadById($appId, $dataArr);
-            
-            $delPic = (isset($input['delPic']))?$input['delPic']:"";
-            $insPic  =(isset($input['insPic']))?$input['insPic']:array() ;
-            $objGetPattern = array(
-                            'android'=>"/^androidScreenUpload_/",
-                            'ios'=>"/^iosScreenUpload_/"
-                            );
-            $sreenShot = null;
-            foreach ($objGetPattern as $key => $value) {
-                $fileList = $this->getArrayByKeyRegex($value, $input);
-                foreach($fileList as $filesKey => $files) { 
-                    foreach ($files as $file) {
-                        $this->validatePic($filesKey,$file);
-                        $sreenShot[$key]=$fileList;
-                    }
-                }
-            }
-            $this->saveAppScreenShot($appId, $sreenShot, $delPic, $insPic);
+                
+            $this->saveAppScreenShot($appId, $input);
 
             $aooRoleList = (isset($input['appRoleList']))?$input['appRoleList']:array();
             $this->saveAppRole($appId,$aooRoleList);
@@ -584,8 +579,10 @@ class AppMaintainController extends Controller
            
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
-           return array("code"=>ResultCode::_999999_unknownError,
-                   "message"=>trans("messages.MSG_OPERATION_FAILED"));
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                'message'=>trans("messages.MSG_OPERATION_FAILED"),
+                'content'=>''
+            ]);           
            \DB::rollBack();
         }
     }
@@ -624,15 +621,26 @@ class AppMaintainController extends Controller
     /**
      * save App Screenshot
      * @param  int    $appId     qpp id
-     * @param  Array  $sreenShot screenshot file array
-     * @param  String $delPic    delete screenshot id List
-     * @param  Array  $insPic    insert screenshot information array ex: array('langId_deviceType_filename')
+     * @param  Array  $input     form post data
      */
-    private function saveAppScreenShot($appId, $sreenShot, $delPic, Array $insPic){
+    private function saveAppScreenShot($appId, $input){
       
-        try{
-            //1.Delete screenshot image file
-            \DB::beginTransaction();
+            $delPic = (isset($input['delPic']))?$input['delPic']:"";
+            $insPic  =(isset($input['insPic']))?$input['insPic']:array() ;
+            $objGetPattern = array(
+                            'android'=>"/^androidScreenUpload_/",
+                            'ios'=>"/^iosScreenUpload_/"
+                            );
+            $sreenShot = null;
+            foreach ($objGetPattern as $deviceType => $regx) {
+                $fileList = $this->getArrayByKeyRegex($regx, $input);
+                foreach($fileList as $filesKey => $files) { 
+                    foreach ($files as $file) {
+                        $sreenShot[$deviceType]=$fileList;
+                    }
+                }
+            }
+
             $delPicArr = explode(',',$delPic);
             foreach($delPicArr as $picId){
                 $appPic = QP_App_Pic::find($picId);
@@ -665,6 +673,7 @@ class AppMaintainController extends Controller
             $deletePicRows = QP_App_Pic::where('app_row_id', $appId)
                     ->delete();
             $insertArray = array();
+            $now = date('Y-m-d H:i:s',time());
             foreach ($insPic as $seq => $item) {
                 $picItem = explode('-',$item);
                 $data = array(
@@ -674,32 +683,14 @@ class AppMaintainController extends Controller
                         'sequence_by_type'=>$seq+1,
                         'pic_url'=>$picItem[2],
                         'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id
+                        'updated_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                        'updated_at'=>$now
                     );
                 $insertArray[]=$data;
             }
             QP_App_Pic::insert($insertArray);
-            \DB::commit();
-        }catch(\Exception $e){
-            \DB::rollback();
-        }
         
-    }
-
-    /**
-     * validate image Type
-     * @param  string   $filesKey Validation field string
-     * @param  FileObj  $file     The File to be validated
-     * @return mixed           [description]
-     */
-    private function validatePic($filesKey,$file){
-        $rules = array($filesKey => 'required|mimes:png,jpeg'); 
-        $validator = \Validator::make(array($filesKey=>$file), $rules);
-        if($validator->passes()){
-            $filename = $file->getClientOriginalName();
-        }else{
-             var_dump( $validator->messages());
-        }
     }
 
     /**

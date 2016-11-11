@@ -1,3 +1,4 @@
+var screenShotfileQueue = {};
 $(function (){
     
     function format_float(num, pos)
@@ -10,8 +11,13 @@ $(function (){
         
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-            
             reader.onload = function (e) {
+               var valisRes = validImageSize(512,512,e.target.result)
+               if(valisRes!=""){
+                    showMessageDialog(Messages.ERROR,valisRes);
+                    $("#"+$(input).attr('id')).val('');
+                    return false;
+               }
                 $('.iconUpload').parent().find('.imgLi').html('<img class="icon-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/></div>')
                 $('.icon-preview').attr('src', e.target.result);
                 $('.iconUpload').parent().find('.imgLi').show();
@@ -23,22 +29,35 @@ $(function (){
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
     function screenPreview(input,uplBtnId){
-       
         var langId = $(input).attr('id').split('_')[1];
         var deviceType = ( $(input).attr('id').split('_')[0] == 'androidScreenUpload')?'android':'ios';
+        var oriImageCnt =  $('#'+ uplBtnId).parent('ul').find('li .screen-preview').length;
+        if(typeof screenShotfileQueue[$(input).attr('id')] == "undefined"){
+            screenShotfileQueue[$(input).attr('id')] = new Array();
+
+        }
+        var total = parseInt(oriImageCnt) + parseInt(input.files.length);
+        if(total > 5){
+            showMessageDialog(Messages.ERROR, Messages.ERR_SCREENSHOT_FILE_LIMIT.replace('%s',5).replace('%l',total));
+            return false;
+        }
         for(var i = 0; i< input.files.length; i++)
         {
-
             if (input.files && input.files[i]) {
+                screenShotfileQueue[$(input).attr('id')].push(input.files[i]);
                 var reader = new FileReader();
                 reader.fileName = input.files[i].name;
                 reader.langId = langId;
                 reader.deviceType = deviceType;
-                reader.onload = function (e,name) {
-                    
-                    $('#'+ uplBtnId).before('<li class="imgLi" data-url="'+e.target.fileName+'" data-lang="'+e.target.langId+'" data-device="'+deviceType+'"><img src="'+e.target.result+'" class="screen-preview js-screen-file"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>');
+                reader.onload = function (e,name) { 
+                    var valisRes = validImageSize(1024,768,e.target.result)
+                       if(valisRes!=""){
+                            showMessageDialog(Messages.ERROR,valisRes);
+                            $("#"+$(input).attr('id')).val('');
+                            return false;
+                       }    
+                    $('#'+ uplBtnId).before('<li class="imgLi" data-url="'+e.target.fileName+'" data-lang="'+e.target.langId+'" data-device="'+deviceType+'"><img src="'+e.target.result+'" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>');
                     var imgCount = $('#'+ uplBtnId).parent('ul').find('li .screen-preview').length;
                     if(imgCount >= 5){
                         $('#'+ uplBtnId).parent('ul').find('.screen-upl-btn').hide();
@@ -48,28 +67,54 @@ $(function (){
                 reader.readAsDataURL(input.files[i]);
             }
         }
+        $("#"+$(input).attr('id')).val('');
     }
 
     function deleteIcon($target){
         $target.parent().hide();
         $target.parent().find('img').remove();
+        $("#fileIconUpload").val('');
         $('.iconUpload').show();
     }
 
     function deleteScreenShot($target){
         var $container = $target.parents('ul');
-        delPicArr.push($target.parent().data('picid'));
+        if(typeof($target.parent().data('picid'))!="undefined"){
+            delPicArr.push($target.parent().data('picid'));
+        }
+
+        deleteScreenShotQueue($target.parent().data('url'),$container.find('.js-upl-addition').attr('id'));
         $target.parent().remove();
         if($container.find('li:visible').length < 5){
             $container.find('.js-screen-file').show();
         }
     }
 
+    function deleteScreenShotQueue(find,target){
+        $.each( screenShotfileQueue[target], function(i, file) {
+            if(typeof file!= "undefined" && file.name == find){
+              screenShotfileQueue[target].splice(i,1)
+            }
+        });
+    }
+
+    function validImageSize(widthLimit,heightLimit,fileBase64){
+        var result = "";
+        var img = new Image();
+        img.src = fileBase64;
+        var width = img.width;
+        var height = img.height;
+        if(width != widthLimit || height != heightLimit){
+            result =  Messages.ERR_SCREENSHOT_SCALE_LIMIT.replace('%s',widthLimit).replace('%l',heightLimit);
+        }
+        return result;
+    }
+
     $("body").on("change", ".js-upl-overlap", function (){
         iconPreview(this);
     });
 
-    $("body").on("change", ".js-upl-addition", function (){
+    $("body").on("change", ".js-upl-addition", function (){ 
         var uplBtnId = $(this).parent().attr('id');
         screenPreview(this,uplBtnId);
     });
@@ -81,7 +126,11 @@ $(function (){
     $("body").on("click", ".js-screen-file", function (e){
         $(e.target.children[2]).trigger('click');
     });
-     
+
+    $("body").on("click", ".js-screen-file > div", function (e){
+      $(e.target).parent().click();
+    });
+
     $( ".sortable" ).sortable({
         start: function( event, ui ) {
         }

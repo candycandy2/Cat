@@ -61,7 +61,10 @@ table.costum-table {
 }
 .sortable { list-style-type: none; margin: 0; padding: 0;  }
 .sortable li { margin: 10px 10px 10px 10px; float: left }
-
+.js-screen-file {
+    opacity: 1 !important;
+    cursor:pointer !important;
+}
 .imgLi{
     display : inline-block;
     position : relative;

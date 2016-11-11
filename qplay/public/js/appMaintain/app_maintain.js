@@ -110,7 +110,6 @@ $(function () {
                 setAppUser: "cbxRole cbxAllRole"
             },
             errorPlacement: function ($error, $element) {
-                console.log($element.attr("name"));
                 validate =0;
                 $alert = $('#appMaintainAlert');
                 if($element.attr("name") == 'chkCompany'){
@@ -145,7 +144,6 @@ $(function () {
            },
            submitHandler: function (form) {
                 validate ++;
-                console.log(validate);
                 if(validate==submitFormAry.length){
                     var formData = new FormData();
                     formData.append('appId',jsAppRowId);
@@ -156,18 +154,13 @@ $(function () {
                     if(typeof ($( '#fileIconUpload' )[0].files[0]) != "undefined"){
                         formData.append('fileIconUpload', $( '#fileIconUpload' )[0].files[0]);
                     }
-                    $('#screenShotForm').find('input[name^=iosScreenUpload_]').each(function(){      
-                        var iosFile = $(this).attr('id');
-                        $.each($( '#'+iosFile )[0].files, function(i, file) {
-                            formData.append(iosFile + '[]', file);
-                        });
+
+                    $.each(screenShotfileQueue,function(i,item){
+                          $.each(item, function(j, file) {
+                                formData.append(i + '[]', file);
+                          });
                     });
-                    $('#screenShotForm').find('input[name^=androidScreenUpload_]').each(function(){
-                        var androidFile = $(this).attr('id');
-                        $.each($( '#'+androidFile )[0].files, function(i, file) {
-                            formData.append(androidFile + '[]', file);
-                        });
-                    });
+
                     $('#screenShotForm').find('.imgLi').each(function(){
                         formData.append('insPic[]',$(this).data('lang')+'-'+$(this).data('device')+'-'+$(this).data('url'));
                     })
@@ -262,7 +255,7 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
-        if($('.icon-preview:visible').length == 1 ){
+        if($('.icon-preview').length == 1 && $('.icon-preview').attr('src')!=""){
             return true;
         }
         return false;

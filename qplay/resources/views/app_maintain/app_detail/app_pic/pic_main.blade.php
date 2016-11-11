@@ -24,7 +24,7 @@
                         @endif
                     >
                         <div class="icon-upl-btn js-icon-file"><div>+</div><div>{{trans('messages.NEW_ICON')}}</div></div>
-                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none" accept=".jpeg,.jpg,.png">
+                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none">
                     </div>
                 
                 </div>
@@ -115,7 +115,7 @@
             <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{langId}">
                 <div>+</div>
                 <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
-                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" accept=".jpeg,.jpg.png" multiple>
+                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" accept=".jpeg,.jpg,.png" multiple>
             </li>
         </ul>
         <ul class="form-group tab-pane fade sortable sortable" id="tab_ios_{langId}">
