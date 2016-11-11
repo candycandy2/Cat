@@ -704,8 +704,31 @@ class qplayController extends Controller
                 $device_type = $registerInfo[0]->device_type;
 
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+                
+                $companyAppList = \DB::table('qp_app_head')
+                    -> where('company_label', 'like',  $userInfo->company) -> select() ->get();
 
-                $sql = <<<SQL
+                $sql = "";
+                $appDataList = array();
+                if(count($companyAppList) > 0) {
+                    $companyAppIdStr = "";
+                    foreach ($companyAppList as $companyApp) {
+                        $companyAppIdStr = $companyAppIdStr.$companyApp->row_id.',';
+                    }
+                    $companyAppIdStr = substr($companyAppIdStr, 0, strlen($companyAppIdStr) - 1);
+                    $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
+                        + $userInfo->row_id
+                        + " left join qp_project p on h.project_row_id = p.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = :device_type and v.status = 'ready' where h.row_id in (select row_id from qp_app_head where row_id in ( select app_row_id from qp_role_app where role_row_id in ( select role_row_id from qp_user_role where user_row_id = "
+                        + $userInfo->row_id
+                        + " )) union  select row_id from qp_app_head where row_id in ( select app_row_id from qp_user_app where user_row_id = "
+                        + $userInfo->row_id
+                        + ")) select row_id from qp_app_head where row_id in ("
+                        + $companyAppIdStr
+                        + ") and version_code is not null";
+
+                    $appDataList = DB::select($sql);
+                } else {
+                    $sql = <<<SQL
 select distinct h.row_id as app_id, p.project_code as app_code,
 h.package_name, c.row_id as category_id, c.app_category,
 v.version_code as version, v.version_name,
@@ -727,11 +750,17 @@ select row_id from qp_app_head where row_id in (
 and version_code is not null
 SQL;
 
-                $appDataList = DB::select($sql, [':id1'=>$userInfo->row_id,
-                        ':id2'=>$userInfo->row_id,
-                        ':device_type'=>$device_type,
-                        ':id3'=>$userInfo->row_id]
-                );
+
+                    $appDataList = DB::select($sql, [':id1'=>$userInfo->row_id,
+                            ':id2'=>$userInfo->row_id,
+                            ':device_type'=>$device_type,
+                            ':id3'=>$userInfo->row_id]
+                    );
+                }
+
+
+
+                //test return response()->json(['result_code'=>count($appDataList),'type'=>$device_type, 'id'=>$userInfo->row_id]);
 
                 $app_list = array();
                 $categoryIdListStr = "";
@@ -751,8 +780,8 @@ SQL;
                         'url'=>$appData->url,
                         'icon_url'=>$appData->icon_url
                     );
-                    $categoryIdListStr = $categoryIdListStr.$appData->category_id.",";
-                    $appIdListStr = $appIdListStr.$appData->app_id.",";
+                    $categoryIdListStr = $categoryIdListStr.($appData->category_id).",";
+                    $appIdListStr = $appIdListStr.($appData->app_id).",";
                     array_push($app_list, $app);
                 }
 
@@ -765,8 +794,11 @@ SQL;
 //SQL;
 //                $categoryDataList = DB::select($sql, [':idList'=>$categoryIdListStr]);
 
-                $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
-                $categoryDataList = DB::select($sql);
+                $categoryDataList = array();
+                if(strlen($categoryIdListStr) > 0) {
+                    $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
+                    $categoryDataList = DB::select($sql);
+                }
 
                 foreach ($categoryDataList as $categoryData)
                 {
@@ -779,10 +811,13 @@ SQL;
 
                 $multi_lang = array();
                 $appIdListStr = substr($appIdListStr, 0, strlen($appIdListStr) - 1);
-                $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.project_code from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
-                    .$appIdListStr
-                    .') order by app_row_id, lang_id';
-                $langDataList = DB::select($sql);
+                $langDataList = array();
+                if(strlen($appIdListStr) > 0) {
+                    $sql = 'select line.app_row_id,lang.row_id as lang_id,lang.lang_code as lang, line.app_name, line.app_summary, line.app_description ,proj.project_code from qp_app_line line, qp_language lang, qp_app_head head, qp_project proj where line.lang_row_id = lang.row_id and line.app_row_id = head.row_id and head.project_row_id = proj.row_id and line.app_row_id in ('
+                        .$appIdListStr
+                        .') order by app_row_id, lang_id';
+                    $langDataList = DB::select($sql);
+                }
                 foreach ($langDataList as $langData)
                 {
 
