@@ -87,16 +87,100 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
             }
 
+            function doLogOut() {
+                var self = this;
+
+                //需要 User AD Account
+                var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
+
+                this.successCallback = function(data) {
+                    var resultcode = data['result_code'];
+
+                    if (resultcode == 1) {
+
+                        $('#logoutConfirm').popup('close');
+
+                        //clear data
+                        appApiPath = "qplayApi";
+                        qplayAppKey = "appqplay";
+
+                        var loginData = {
+                            versionName:         "",
+                            versionCode:         "",
+                            deviceType:          "",
+                            pushToken:           "",
+                            token:               "",
+                            token_valid:         "",
+                            uuid:                "",
+                            checksum:            "",
+                            domain:              "",
+                            emp_no:              "",
+                            loginid:             "",
+                            messagecontent:      null,
+                            msgDateFrom:         null,
+                            doLoginDataCallBack: false,
+                            callCheckAPPVer:     false,
+                            callQLogin:          false,
+                            openMessage:         false
+                        };
+
+                        window.localStorage.clear();
+
+                        app.initialize();
+
+                    }
+                };
+
+                this.failCallback = function(data) {};
+
+                var __construct = function() {
+                    QPlayAPI("POST", "logout", self.successCallback, self.failCallback, null, queryStr);
+                }();
+            }
+
             /********************************** page event *************************************/
             $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
-                QueryAppList();
+                var appList = new QueryAppList();
             });
 
-            $("#viewMain2-1").one("pageshow", function(event, ui) {
+            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
+                if (loginData["msgDateFrom"] === true) {
+                    var messageList = new QueryMessageList();
+                }
+            });
 
+            $("#viewMain2-1").on("pageshow", function(event, ui) {
+                $('#logoutConfirm').popup('close');
             });
 
             /********************************** dom event *************************************/
+            $("#logout").on("click", function(){
+                $('#logoutConfirm').popup('open');
+            });
+
+            $("#logoutConfirm #cancel").on("click", function(){
+                $('#logoutConfirm').popup('close');
+            });
+
+            $("#logoutConfirm #confirm").on("click", function(){
+                var logout = new doLogOut();
+            });
+
+            $("#newseventspage").on("click", function(){
+                /*
+                if (loginData["msgDateFrom"] === null) {
+                    //var messageList = new QueryMessageList();
+                    $('#selectMsgDateFrom').popup('open');
+                }
+                */
+                $.mobile.changePage('#viewNewsEvents2-3');
+            });
+            /*
+            $("#selectMsgDateFrom").on("click", function(){
+                msgDateFromType = $('input[name=selectDateFrom]:checked').val();
+                var messageList = new QueryMessageList();
+            });
+            */
         }
     });
 

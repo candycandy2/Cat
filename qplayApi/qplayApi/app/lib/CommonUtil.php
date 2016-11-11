@@ -106,6 +106,20 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserIdByUUID($uuid) {
+        $userList = \DB::table('qp_user')
+            -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
+            -> where('qp_register.uuid', '=', $uuid)
+            -> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
+                'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
+                'qp_user.department','qp_user.status', 'qp_user.resign'  )->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0]->row_id;
+    }
+
     public static function getUserStatusByUserRowID($userRowId)
     {
         $userList = \DB::table('qp_user')
@@ -321,7 +335,7 @@ class CommonUtil
         return $result;
     }
 
-    public static function PushMessageWithMessageCenter($message, $to) {
+    public static function PushMessageWithMessageCenter($message, $to, $parameter = '') {
         $jpush_app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
@@ -335,7 +349,7 @@ class CommonUtil
             'Expire' => '2099-12-31 00:00:00.000',
             'Status' => 'W',
             'To_Type' => 'NONE',
-            'Parameter' => '',
+            'Parameter' => $parameter,
             'CreatedDate' => date('Y-m-d H:i:s',time()));
         $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
         $data["pns"] = json_encode($args);
@@ -351,5 +365,127 @@ class CommonUtil
         }
 
         return $result;
+    }
+
+    public static function getApiVersionFromUrl() {
+        return explode("/", Request::instance()->path())[0];
+    }
+
+    public static function getAppKeyFromHeader() {
+        $request = Request::instance();
+        return $request->header('App-Key');
+    }
+
+    public static function getProjectInfo() {
+        $appKey = self::getAppKeyFromHeader();
+        return self::getProjectInfoByAppKey($appKey);
+    }
+
+    public static function getProjectInfoByAppKey($appKey) {
+        $projectList = \DB::table('qp_project')
+            -> where('app_key', '=', $appKey)
+            -> select()->get();
+        if(count($projectList) < 1) {
+            return null;
+        }
+
+        return $projectList[0];
+    }
+
+    public static function getAppHeaderInfo() {
+        $projectInfo = self::getProjectInfo();
+        if($projectInfo == null) {
+            return null;
+        }
+        $appList = \DB::table('qp_app_head')
+            -> where('project_row_id', '=', $projectInfo->row_id)
+            -> select()->get();
+
+        if(count($appList) < 1) {
+            return null;
+        }
+
+        return $appList[0];
+    }
+
+    public static function getApiCustomerUrl($action) {
+        $appKey = self::getAppKeyFromHeader();
+        $apiVersion = self::getApiVersionFromUrl();
+        $appRowId = self::getAppHeaderInfo() -> row_id;
+        $urlInfoList = \DB::table('qp_app_custom_api')
+            -> where('app_row_id', '=', $appRowId)
+            -> where('app_key', '=', $appKey)
+            -> where('api_version', '=', $apiVersion)
+            -> where('api_action', '=', $action)
+            -> select()->get();
+        if(count($urlInfoList) < 1) {
+            return null;
+        }
+
+        return $urlInfoList[0]->api_url;
+    }
+
+    public static function checkCompanyExist($company) {
+        $userList = \DB::table('qp_user')
+            -> where('company', '=', $company)
+            -> select()->get();
+        if(count($userList) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function logApi($userId, $action, $responseHeader, $responseBody) {
+        $version = self::getApiVersionFromUrl();
+        $appKey = self::getAppKeyFromHeader();
+        if($appKey == null) {
+            $appKey = "";
+        }
+        $now = date('Y-m-d H:i:s',time());
+        $ip = self::getIP();
+        $url_parameter = $_SERVER["QUERY_STRING"];
+        $request_header = response()->json(apache_request_headers());
+        $request_body = self::prepareJSON(file_get_contents('php://input'));
+
+        \DB::table("qp_api_log")
+            -> insert([
+                'user_row_id'=>$userId,
+                'app_key'=>$appKey,
+                'api_version'=>$version,
+                'action'=>$action,
+                'ip'=>$ip,
+                'url_parameter'=>$url_parameter,
+                'request_header'=>$request_header,
+                'request_body'=>$request_body,
+                'request_header'=>$request_header,
+                'request_body'=>$request_body,
+                'response_header'=>$responseHeader,
+                'response_body'=>$responseBody,
+                'created_at'=>$now,
+            ]);
+    }
+
+    public static function getIP() {
+        if (getenv('HTTP_CLIENT_IP')) {
+            $ip = getenv('HTTP_CLIENT_IP');
+        }
+        elseif (getenv('HTTP_X_FORWARDED_FOR')) {
+            $ip = getenv('HTTP_X_FORWARDED_FOR');
+        }
+        elseif (getenv('HTTP_X_FORWARDED')) {
+            $ip = getenv('HTTP_X_FORWARDED');
+        }
+        elseif (getenv('HTTP_FORWARDED_FOR')) {
+            $ip = getenv('HTTP_FORWARDED_FOR');
+
+        }
+        elseif (getenv('HTTP_FORWARDED')) {
+            $ip = getenv('HTTP_FORWARDED');
+        }
+        else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
     }
 }

@@ -499,7 +499,7 @@ SQL;
         return $result;
     }
 
-    public static function PushMessageWithMessageCenter($message, $to) {
+    public static function PushMessageWithMessageCenter($message, $to, $parameter='') {
         $jpush_app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
@@ -513,7 +513,7 @@ SQL;
             'Expire' => '2099-12-31 00:00:00.000',
             'Status' => 'W',
             'To_Type' => 'NONE',
-            'Parameter' => '',
+            'Parameter' => $parameter,
             'CreatedDate' => date('Y-m-d H:i:s',time()));
         $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
         $data["pns"] = json_encode($args);
@@ -551,18 +551,29 @@ SQL;
 
     public static function getAppVersionStatus($appId){
         
-      $appStatus = array('android'=>'UnPlished','ios'=>'UnPlished');
+      $appStatus = array('android'=>array(
+                                    'str'=>'Unpublish',
+                                    'versionCode'=>'',
+                                    'url'=>''
+                                ),
+                         'ios'=>array(
+                                    'str'=>'Unpublish',
+                                    'versionCode'=>'',
+                                    'url'=>''
+                                )
+                        );
     
-      foreach ( $appStatus as $key => $value) {
-         
+      foreach ( $appStatus as $key => $value) {     
           $deviceStatus = \DB::table('qp_app_version')
-            -> select('version_name')
+            -> select('version_name','version_code','url')
             -> where('app_row_id','=',$appId)
             -> where('device_type','=',$key)
             -> where('status','=','ready')
             ->first();
         if(count($deviceStatus) > 0){
-            $appStatus[$key] = $deviceStatus->version_name;
+            $appStatus[$key]['str'] = $deviceStatus->version_name;
+            $appStatus[$key]['versionCode'] = $deviceStatus->version_code;
+            $appStatus[$key]['url'] = $deviceStatus->url;
         }
       }
         return $appStatus;

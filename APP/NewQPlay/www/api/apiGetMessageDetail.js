@@ -18,7 +18,7 @@ function getMessageDetail(successCallback, failCallback, rowId) {
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL +"/qplayApi/public/index.php/v101/qplay/getMessageDetail?lang=en-us&uuid=" + loginData.uuid + "&message_send_row_id=" + rowId,
+        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/getMessageDetail?lang=en-us&uuid=" + loginData.uuid + "&message_send_row_id=" + rowId,
         dataType: "json",
         cache: false,
         success: successCallback,

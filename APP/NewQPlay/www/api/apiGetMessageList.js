@@ -2,13 +2,20 @@
 
 
 
-function apiGetMessageList(successCallback, failCallback, dateFrom, dateTo, countFrom, countTo) {
+function apiGetMessageList(successCallback, failCallback, dateFrom, dateTo) {
 
     failCallback = failCallback || null;
-    
+    dateFrom = dateFrom || null;
+    dateTo = dateTo || null;
+
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
-    
+    var queryStr = ""; 
+
+    if (dateFrom !== null) {
+        queryStr = "&date_from=" + dateFrom + "&date_to=" + dateTo;
+    }
+
     $.ajax({
         type: "GET",
         headers: {
@@ -18,7 +25,7 @@ function apiGetMessageList(successCallback, failCallback, dateFrom, dateTo, coun
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL +"/qplayApi/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + loginData.uuid + "&date_from=" + dateFrom + "&date_to=" + dateTo + "&count_from=" + countFrom + "&count_to=" + countTo,
+        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/getMessageList?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         cache: false,
         success: successCallback,

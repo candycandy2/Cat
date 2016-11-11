@@ -26,7 +26,7 @@ $menu_name = "APP_SECURITY_SETTING";
 		          {{trans("messages.NEW")}}
 		        </button>
 		    </div>
-		    <table id="gridBlockList" data-toggle="table" data-sort-name="row_id" data-toolbar="#blackToolbar"
+		    <table id="gridBlockList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#blackToolbar"
 		           data-url="AppMaintain/getBlockList" data-height="398" data-pagination="true"
 		           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
 		           data-show-toggle="true"  data-sortable="true"
@@ -107,10 +107,15 @@ $menu_name = "APP_SECURITY_SETTING";
         };
 
         var saveBlockList = function() {
-            var ip = $("#tbxIp").val();
+            var ip = $.trim($("#tbxIp").val());
             var description = $("#tbxDescription").val();
             if(ip == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+
+            if(!ValidateIPaddress(ip)){
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_WRONG_TYPE")}}".replace("%s","IP"));
                 return false;
             }
 

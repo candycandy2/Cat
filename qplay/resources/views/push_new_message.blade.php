@@ -77,8 +77,8 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 
         <div class="col-lg-4 col-xs-4" >
             <div class="btn-toolbar" role="toolbar" style="float: right;">
-                <button type="button" class="btn btn-warning" onclick="SendMessage()">
-                    {{trans("messages.PUSH_IMMEDIATELY")}}
+                <button type="button" class="btn btn-warning" onclick="SaveMessage()">
+                    {{trans("messages.SAVE")}}
                 </button>
                 <a type="button" class="btn btn-default" href="push">
                     {{trans("messages.CANCEL")}}
@@ -96,18 +96,18 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
             @foreach($allCompanyRoleList as $companyRoles)
             <!--{{$tempFlag++}}-->
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
+                    <table class="table table-bordered RoleTable" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
                         <tr>
                             <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
-                                <input type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
+                                <input class="cbxCompany" type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;padding: 0px;">
                                 <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
-                                    <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole">{{$companyRoles->roles[0]->role_description}}</input>
+                                    <input type="checkbox" data="{{$companyRoles->roles[0]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)">{{$companyRoles->roles[0]->role_description}}</input>
                                 </div>
                                 @if(count($companyRoles->roles) > 1)
                                     <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
-                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole">{{$companyRoles->roles[1]->role_description}}</input>
+                                        <input type="checkbox" data="{{$companyRoles->roles[1]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)">{{$companyRoles->roles[1]->role_description}}</input>
                                     </div>
                                 @endif
                             </td>
@@ -118,12 +118,12 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                                 <td style="border:1px solid #d6caca;padding: 0px;">
                                     @if(count($companyRoles->roles) > $i)
                                         <div class="col-lg-6 col-xs-6" style="text-align: left;border-right:1px solid #d6caca;padding: 8px;">
-                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole">{{$companyRoles->roles[$i]->role_description}}</input>
+                                            <input type="checkbox" data="{{$companyRoles->roles[$i]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)">{{$companyRoles->roles[$i]->role_description}}</input>
                                         </div>
                                     @endif
                                         @if(count($companyRoles->roles) > $i + 1)
                                             <div class="col-lg-6 col-xs-6" style="text-align: left;padding: 8px;">
-                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole">{{$companyRoles->roles[$i + 1]->role_description}}</input>
+                                                <input type="checkbox" data="{{$companyRoles->roles[$i + 1]->row_id}}" class="cbxRole" onclick="RoleTableSelectedOne(this)">{{$companyRoles->roles[$i + 1]->role_description}}</input>
                                             </div>
                                         @endif
                                 </td>
@@ -228,6 +228,8 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
             $('#gridUserList').on('check-all.bs.table', selectedUserChanged);
             $('#gridUserList').on('uncheck-all.bs.table', selectedUserChanged);
             $('#gridUserList').on('load-success.bs.table', selectedUserChanged);
+
+            CheckRoleTableSelect();
         });
         
         var selectedUserChanged = function () {
@@ -268,6 +270,9 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
         };
 
         var AddUser = function() {
+            $("#gridAllUserList").bootstrapTable('uncheckAll');
+            $("#gridAllUserList").bootstrapTable('resetSearch', "");
+            $("#gridAllUserList").bootstrapTable('refresh');
             selectUserDialog_Show();
         };
 
@@ -288,12 +293,46 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
             $("#gridUserList").bootstrapTable('load', currentData);
         };
 
+        var CheckRoleTableSelect = function () {
+            $(".RoleTable").each(function(i, tb) {
+                var $companyTable = $(tb);
+                var allCheckd = true;
+                $.each($companyTable.find(".cbxRole"), function(i, cbx) {
+                    if(!$(cbx).is(":checked")) {
+                        allCheckd = false;
+                        return false;
+                    }
+                });
+                if(allCheckd) {
+                    $companyTable.find(".cbxCompany").prop("checked",true);
+                } else {
+                    $companyTable.find(".cbxCompany").prop("checked",false);
+                }
+            });
+        };
+
         var RoleTableSelectedAll = function (cbx) {
             var companyId = $(cbx).attr("data");
             if($(cbx).is(':checked')) {
                 $("#RoleTable_" + companyId).find(".cbxRole").prop("checked",true);
             } else {
                 $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
+            }
+        };
+
+        var RoleTableSelectedOne = function (cbx) {
+            var $companyTable = $(cbx).parents("table").first();
+            var allCheckd = true;
+            $.each($companyTable.find(".cbxRole"), function(i, cbx) {
+                if(!$(cbx).is(":checked")) {
+                    allCheckd = false;
+                    return false;
+                }
+            });
+            if(allCheckd) {
+                $companyTable.find(".cbxCompany").prop("checked",true);
+            } else {
+                $companyTable.find(".cbxCompany").prop("checked",false);
             }
         };
 
@@ -304,8 +343,8 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                 $("#CompanyTable").find("input[type='checkbox']").prop("checked", false);
             }
         };
-        
-        var SendMessage = function () {
+
+        var SaveMessage = function () {
             var msgSourcer = $("#ddlPushTo").val();
             var msgType = $("#ddlType").val();
             var msgTitle = $("#tbxTitle").val();
@@ -330,10 +369,10 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         msgReceiver.company_list.push($(cbx).attr("data"));
                     }
                 });
-                if(msgReceiver.company_list.length <= 0) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");
-                    return false;
-                }
+                {{--if(msgReceiver.company_list.length <= 0) {--}}
+                    {{--showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");--}}
+                    {{--return false;--}}
+                {{--}--}}
             } else {
                 msgReceiver.type = "event";
                 msgReceiver.company_list = new Array();
@@ -350,13 +389,13 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     msgReceiver.user_list.push(user.row_id);
                 });
 
-                if(msgReceiver.role_list.length <= 0 && msgReceiver.user_list.length <= 0) {
-                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");
-                    return false;
-                }
+                {{--if(msgReceiver.role_list.length <= 0 && msgReceiver.user_list.length <= 0) {--}}
+                    {{--showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_MUST_CHOOSE_RECEIVER")}}");--}}
+                    {{--return false;--}}
+                {{--}--}}
             }
 
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_PUSH_IMMEDIATELY")}}".replace("%s", msgType), "", function () {
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE_IMMEDIATELY")}}".replace("%s", msgType), "", function () {
                 hideConfirmDialog();
 
                 var from_history = "N";
@@ -379,7 +418,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
-                    url: "platform/pushMessageImmediately",
+                    url: "platform/saveNewMessage",
                     dataType: "json",
                     type: "POST",
                     contentType: "application/json",
@@ -392,7 +431,8 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                             var sendId = d.send_id;
                             var msgId = d.message_id;
                             //showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            window.location.href = "pushSendDetail?with_msg_id=MSG_PUSH_SUCCESS&push_send_row_id=" + sendId + "&message_id=" + msgId;//"push";
+                            //window.location.href = "pushSendDetail?with_msg_id=MSG_PUSH_SUCCESS&push_send_row_id=" + sendId + "&message_id=" + msgId;//"push";
+                            window.location.href = "updateMessage?with_msg_id=MSG_OPERATION_SUCCESS&push_send_row_id=" + sendId + "&message_id=" + msgId;//"push";
                         }
                     },
                     error: function (e) {

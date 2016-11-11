@@ -75,7 +75,7 @@ foreach ($oriMenuList as $menu) {
             @foreach($allCompanyRoleList as $companyRoles)
                 <!--{{$tempFlag++}}-->
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca; width:60%;">
+                    <table class="table table-bordered RoleTable" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca; width:60%;">
                         <tr>
                             <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
                                 <input class="cbxCompany" type="checkbox" data="{{$companyRoles->company}}" onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
@@ -170,7 +170,7 @@ foreach ($oriMenuList as $menu) {
                                            @if(in_array($menu->subMenuList[0]->Id, $userInfo->menuList))
                                            checked
                                            @endif
-                                           class="cbxSubMenu" >{{$menu->subMenuList[0]->sName}}</input>
+                                           class="cbxSubMenu" onclick="MenuTableSelectedOne(this)" >{{$menu->subMenuList[0]->sName}}</input>
                                 </div>
                             @endif
                                 @if(count($menu->subMenuList) > 1)
@@ -179,7 +179,7 @@ foreach ($oriMenuList as $menu) {
                                                @if(in_array($menu->subMenuList[1]->Id, $userInfo->menuList))
                                                checked
                                                @endif
-                                               class="cbxSubMenu" >{{$menu->subMenuList[1]->sName}}</input>
+                                               class="cbxSubMenu" onclick="MenuTableSelectedOne(this)" >{{$menu->subMenuList[1]->sName}}</input>
                                     </div>
                                 @endif
                             </div>
@@ -197,7 +197,7 @@ foreach ($oriMenuList as $menu) {
                                        @if(in_array($menu->subMenuList[$i]->Id, $userInfo->menuList))
                                        checked
                                        @endif
-                                       class="cbxSubMenu">{{$menu->subMenuList[$i]->sName}}</input>
+                                       class="cbxSubMenu" onclick="MenuTableSelectedOne(this)">{{$menu->subMenuList[$i]->sName}}</input>
                                     </div>
                                 @endif
                                     @if(count($menu->subMenuList) > $i + 1)
@@ -206,7 +206,7 @@ foreach ($oriMenuList as $menu) {
                                                    @if(in_array($menu->subMenuList[$i + 1]->Id, $userInfo->menuList))
                                                    checked
                                                    @endif
-                                                   class="cbxSubMenu">{{$menu->subMenuList[$i + 1]->sName}}</input>
+                                                   class="cbxSubMenu" onclick="MenuTableSelectedOne(this)">{{$menu->subMenuList[$i + 1]->sName}}</input>
                                         </div>
                                     @endif
                                 </div>
@@ -235,7 +235,26 @@ foreach ($oriMenuList as $menu) {
         $(function () {
             ChangeGroupProcess();
             ChangeBelongToGroup();
+            CheckRoleTableSelect();
         });
+
+        var CheckRoleTableSelect = function () {
+            $(".RoleTable").each(function(i, tb) {
+                var $companyTable = $(tb);
+                var allCheckd = true;
+                $.each($companyTable.find(".cbxRole"), function(i, cbx) {
+                    if(!$(cbx).is(":checked")) {
+                        allCheckd = false;
+                        return false;
+                    }
+                });
+                if(allCheckd) {
+                    $companyTable.find(".cbxCompany").prop("checked",true);
+                } else {
+                    $companyTable.find(".cbxCompany").prop("checked",false);
+                }
+            });
+        };
 
         var hasChanged = false;
         var ChangeGroupProcess = function () {
@@ -269,6 +288,22 @@ foreach ($oriMenuList as $menu) {
             }
         };
 
+        var MenuTableSelectedOne = function (cbx) {
+            var $menuTable = $(cbx).parents("table").first();
+            var hasChecked = false;
+            $.each($menuTable.find(".cbxSubMenu"), function(i, cbx) {
+                if($(cbx).is(":checked")) {
+                    hasChecked = true;
+                    return false;
+                }
+            });
+            if(hasChecked) {
+                $menuTable.find(".cbxMenu").prop("checked",true);
+            } else {
+                $menuTable.find(".cbxMenu").prop("checked",false);
+            }
+        };
+
         var RoleTableSelectedAll = function (cbx) {
             var companyId = $(cbx).attr("data");
             if($(cbx).is(':checked')) {
@@ -292,11 +327,6 @@ foreach ($oriMenuList as $menu) {
             } else {
                 $companyTable.find(".cbxCompany").prop("checked",false);
             }
-//            if($(cbx).is(':checked')) {
-//                $("#RoleTable_" + companyId).find(".cbxRole").prop("checked",true);
-//            } else {
-//                $("#RoleTable_" + companyId).find(".cbxRole").prop("checked", false);
-//            }
         };
 
         var ChangeBelongToGroup = function () {

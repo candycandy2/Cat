@@ -17,48 +17,48 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-           id="cordova-plugin-qsecurity"
-      version="1.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-qsecurity" version="1.0.0">
     <name>QSecurityPlugin</name>
     <description>QPlay QSecurity Plugin</description>
     <license>Apache 2.0</license>
+    <preference name="ENV" />
     <keywords>cordova,qsecurity,policy</keywords>
-
     <engines>
-      <engine name="cordova-android" version=">=4.0.0" />
+        <engine name="cordova-android" version=">=4.0.0" />
     </engines>
-	
-	<js-module src="www/QSecurity.js" name="QSecurityPlugin">
-    <clobbers target="window.plugins.qsecurity" />
-  </js-module>
-
+    <js-module src="www/QSecurity.js" name="QSecurityPlugin">
+        <clobbers target="window.plugins.qsecurity" />
+    </js-module>
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="QSecurityPlugin" >
-                <param name="android-package" value="org.apache.cordova.qsecurity.QSecurityPlugin"/>
+            <feature name="QSecurityPlugin">
+                <param name="android-package" value="org.apache.cordova.qsecurity.QSecurityPlugin" />
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-
         <source-file src="src/android/QSecurityPlugin.java" target-dir="src/org/apache/cordova/qsecurity" />
-		<source-file src="src/android/SecurityList.java" target-dir="src/org/apache/cordova/qsecurity" />
-
-        	<info>
-               
-          </info>
+        <source-file src="src/android/SecurityList.java" target-dir="src/org/apache/cordova/qsecurity" />
+        <info>
+        </info>
     </platform>
-
-	<platform name="ios">
+    <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="QSecurityPlugin">
-                <param name="ios-package" value="QSecurityPlugin"/>
+                <param name="ios-package" value="QSecurityPlugin" />
             </feature>
         </config-file>
-
+        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+            <array>
+                <string>fb</string>
+                <string>twitter</string>
+                <string>itms-apps</string>
+                <string>tel</string>
+                <string>mailto</string>
+                <string>appqplay$ENV</string>
+                <string>appyellowpage$ENV</string>
+            </array>
+        </config-file>
         <header-file src="src/ios/QSecurityPlugin.h" />
         <source-file src="src/ios/QSecurityPlugin.m" />
     </platform>
-
 </plugin>

@@ -2,8 +2,8 @@
 <div data-role="page" id="viewMain2-1">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
-        <h1>QPlay</h1>
-        <a href="#viewNewsEvents2-3" data-icon="comment" class="ui-btn-left" id="newseventspage">
+        <h1><img src="img/qplay_word.svg" width="60%" height="60%"></h1>
+        <a href="#" data-icon="comment" class="ui-btn-left" id="newseventspage">
             <span>Message</span>
         </a>
         <a href="#" data-icon="user" class="ui-btn-right" id="logout">
@@ -14,4 +14,27 @@
     <div data-role="main" class="ui-content page-main" id="appcontent">
 
     </div>
+
+    <div data-role="popup" id="logoutConfirm" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>Logout Now?</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" id="cancel">cancel</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="confirm">confirm</a>
+            </p>
+        </div>
+    </div>
+
+    <div data-role="popup" id="selectMsgDateFrom" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content" style="width:90%; height:200px;">
+            <label data-mini="true" for="month">Show news within 1 month.</label>
+            <input data-mini="true" type="radio" name="selectDateFrom" id="month" value="month" checked="checked">
+            <label data-mini="true" for="skip">Skip all historical news.</label>
+            <input data-mini="true" type="radio" name="selectDateFrom" id="skip" value="skip">
+            <p style="text-align:center;">
+                <a href="#" class="ui-btn ui-btn-inline" id="OK">OK</a>
+            </p>
+        </div>
+    </div>
+
 </div>

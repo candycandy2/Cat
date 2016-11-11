@@ -13,7 +13,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             <table>
                 <tr>
                     <td>{{trans("messages.CATEGORY_NAME")}}:</td>
-                    <td class="text-bold" style="padding: 10px;">{{$categoryInfo->app_category}}</td>
+                    <td  id="tdCategoryName" class="text-bold" style="padding: 10px;">{{$categoryInfo->app_category}}</td>
                 </tr>
             </table>
         </div>
@@ -43,8 +43,8 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             </div>
 
             <table id="gridAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-                   data-url="AppMaintain/getCategoryAppsList?category_id={{$categoryId}}" data-height="398" data-pagination="true"
-                   data-show-refresh="true" data-row-style="rowStyle" data-search="true"
+                   data-url="AppMaintain/getCategoryAppsList?category_id={{$categoryId}}" data-height="600" data-pagination="true"
+                   data-show-refresh="true" data-row-style="rowStyle" data-search="false"
                    data-show-toggle="true"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
@@ -104,20 +104,28 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         var SelectApp = function() {
             var currentData =  $gridList.bootstrapTable('getData');
             var selectedApps = $gridDialogList.bootstrapTable('getSelections');
-            $.each(selectedApps, function(i, newApp) {
-                var exist = false;
-                $.each(currentData, function(j, cApp) {
-                    if(cApp.row_id == newApp.row_id) {
-                        exist = true;
-                        return false;
+            var addAppsList = new Array();
+            $.each(selectedApps, function(i, app) {
+                addAppsList.push(app.app_name);
+            });
+            showConfirmDialog("{{trans("messages.MSG_CONFIRM_ADD")}}", "{{trans("messages.MSG_CONFIRM_ADD_APPS_TO_CATEGORY")}}".replace("%s",'<span class="text-warning">' + htmlEscape($('#tdCategoryName').text()) + '</span>'),addAppsList.join('、'), function () {
+                hideConfirmDialog();
+                $.each(selectedApps, function(i, newApp) {
+                    newApp.state = false;
+                    var exist = false;
+                    $.each(currentData, function(j, cApp) {
+                        if(cApp.row_id == newApp.row_id) {
+                            exist = true;
+                            return false;
+                        }
+                    });
+                    if(!exist) {
+                        currentData.push(newApp);
                     }
                 });
-                if(!exist) {
-                    currentData.push(newApp);
-                }
+                $gridList.bootstrapTable('load', currentData);
+                $selectAppDialog.modal('hide');
             });
-            $gridList.bootstrapTable('load', currentData);
-            $selectAppDialog.modal('hide');
         }
 
         var SaveCategoryApps = function() {
@@ -151,15 +159,21 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         }
 
         var RemoveApp = function () {
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}", "", function () {
+
+            var selectedApps = $gridList.bootstrapTable('getSelections');
+            var currentData = $gridList.bootstrapTable('getData');
+            var appNameArr = new Array();
+            $.each(selectedApps, function(i, app) {
+                appNameArr.push(app.app_name)
+            });
+            
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}",appNameArr.join("、"), function () {
                 hideConfirmDialog();
-                var selectedApps = $gridList.bootstrapTable('getSelections');
-                var currentData = $gridList.bootstrapTable('getData');
+                
                 $.each(selectedApps, function(i, app) {
                     for(var j = 0; j < currentData.length; j++) {
                         if(currentData[j].row_id == app.row_id) {
                             currentData.splice(j,1);
-                            done = true;
                             break;
                         }
                     }

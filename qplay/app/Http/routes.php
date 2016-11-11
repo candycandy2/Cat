@@ -40,6 +40,9 @@ Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
 Route::any('/platform/saveParameter', 'platformController@saveParameter');
 Route::any('/platform/getMessageList', 'platformController@getMessageList');
 Route::any('/platform/getMessageSendList', 'platformController@getMessageSendList');
+Route::any('/platform/saveNewMessage', 'platformController@saveNewMessage');
+Route::any('/platform/saveUpdateMessage', 'platformController@saveUpdateMessage');
+Route::any('/platform/saveUpdateAndPushMessage', 'platformController@saveUpdateAndPushMessage');
 Route::any('/platform/pushMessageImmediately', 'platformController@pushMessageImmediately');
 Route::any('/platform/pushMessageImmediatelyAgain', 'platformController@pushMessageImmediatelyAgain');
 Route::any('/platform/getSingleEventMessageReceiver', 'platformController@getSingleEventMessageReceiver');
@@ -59,22 +62,11 @@ Route::any('/AppMaintain/saveBlockList', 'AppMaintainController@saveBlockList');
 Route::any('/AppMaintain/deleteBlockList', 'AppMaintainController@deleteBlockList');
 Route::any('/AppMaintain/saveAppMainData', 'AppMaintainController@saveAppMainData');
 Route::any('/AppMaintain/getWhiteList', 'AppMaintainController@getWhiteList');
-Route::any('/AppMaintain/saveWhiteList', 'AppMaintainController@saveWhiteList');
-Route::any('/AppMaintain/deleteWhiteList', 'AppMaintainController@deleteWhiteList');
 Route::any('/AppMaintain/getCustomApi', 'AppMaintainController@getCustomApi');
-Route::any('/AppMaintain/saveCustomApi', 'AppMaintainController@saveCustomApi');
-Route::any('/AppMaintain/deleteCustomApi', 'AppMaintainController@deleteCustomApi');
 Route::any('/AppMaintain/getAppUser', 'AppMaintainController@getAppUser');
 Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersionList');
-Route::any('/AppMaintain/saveAppVersion', 'AppMaintainController@saveAppVersion');
-Route::any('/AppMaintain/editAppVersion', 'AppMaintainController@editAppVersion');
-Route::any('/AppMaintain/deleteAppVersion', 'AppMaintainController@deleteAppVersion');
-Route::any('/AppMaintain/unPublishApp', 'AppMaintainController@unPublishApp');
-Route::any('/AppMaintain/publishApp', 'AppMaintainController@publishApp');
 Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
-
-
-
+Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintainAppList');
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -109,6 +101,9 @@ Route::any('push', ['middleware' => 'auth', function() {
 
 Route::any('newMessage', ['middleware' => 'auth', function() {
     return view("push_new_message");
+}]);
+Route::any('updateMessage', ['middleware' => 'auth', function() {
+    return view("push_update_message");
 }]);
 Route::any('messagePushHistory', ['middleware' => 'auth', function() {
     return view("push_history");

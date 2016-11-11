@@ -84,7 +84,7 @@ foreach ($oriMenuList as $menu) {
                                        checked
                                        @endif
                                        @if($isAdmin) disabled = "disabled"  @endif
-                                       class="cbxSubMenu" >{{$menu->subMenuList[0]->sName}}</input>
+                                       class="cbxSubMenu" onclick="MenuTableSelectedOne(this)">{{$menu->subMenuList[0]->sName}}</input>
                                 </div>
                             @endif
                                 @if(count($menu->subMenuList) > 1)
@@ -94,7 +94,7 @@ foreach ($oriMenuList as $menu) {
                                                checked
                                                @endif
                                                @if($isAdmin) disabled = "disabled"  @endif
-                                               class="cbxSubMenu" >{{$menu->subMenuList[1]->sName}}</input>
+                                               class="cbxSubMenu" onclick="MenuTableSelectedOne(this)" >{{$menu->subMenuList[1]->sName}}</input>
                                     </div>
                                 @endif
                         </td>
@@ -111,7 +111,7 @@ foreach ($oriMenuList as $menu) {
                                        checked
                                        @endif
                                        @if($isAdmin) disabled = "disabled"  @endif
-                                       class="cbxSubMenu">{{$menu->subMenuList[$i]->sName}}</input>
+                                       class="cbxSubMenu" onclick="MenuTableSelectedOne(this)">{{$menu->subMenuList[$i]->sName}}</input>
                                     </div>
                                 @endif
                                     @if(count($menu->subMenuList) > $i + 1)
@@ -121,7 +121,7 @@ foreach ($oriMenuList as $menu) {
                                                checked
                                                @endif
                                                @if($isAdmin) disabled = "disabled"  @endif
-                                               class="cbxSubMenu">{{$menu->subMenuList[$i + 1]->sName}}</input>
+                                               class="cbxSubMenu" onclick="MenuTableSelectedOne(this)">{{$menu->subMenuList[$i + 1]->sName}}</input>
                                         </div>
                                     @endif
                             </td>
@@ -141,6 +141,22 @@ foreach ($oriMenuList as $menu) {
                 $("#MenuTable_" + menuId).find(".cbxSubMenu").prop("checked",true);
             } else {
                 $("#MenuTable_" + menuId).find(".cbxSubMenu").prop("checked", false);
+            }
+        };
+
+        var MenuTableSelectedOne = function (cbx) {
+            var $menuTable = $(cbx).parents("table").first();
+            var hasChecked = false;
+            $.each($menuTable.find(".cbxSubMenu"), function(i, cbx) {
+                if($(cbx).is(":checked")) {
+                    hasChecked = true;
+                    return false;
+                }
+            });
+            if(hasChecked) {
+                $menuTable.find(".cbxMenu").prop("checked",true);
+            } else {
+                $menuTable.find(".cbxMenu").prop("checked",false);
             }
         };
 

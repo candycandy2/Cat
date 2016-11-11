@@ -12,33 +12,30 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                     loadingMask("hide");
                     loginData['callCheckAPPVer'] = false;
                     
+                    var resultSuccess = false;
                     var resultcode = data['result_code'];
-                    
+
                     if (resultcode == 1) // need to update app
                     {
                         // do update process
-                        // .....
-
-                        // for testing
-                        if (getDataFromServer) {
-                            getServerData();
-                        } else {
-                            $.mobile.changePage('#viewMain2-1');
-                        }
+                        resultSuccess = true;
                     }
                     else if (resultcode == 000913) // app is up to date
                     {
-                        if (getDataFromServer) {
-                            getServerData();
-                        } else {
-                            $.mobile.changePage('#viewMain2-1');
-                        }
+                        resultSuccess = true;
                     }
                     else
                     {
 
                     }
-                    
+
+                    if (resultSuccess) {
+                        if (getDataFromServer) {
+                            getServerData();
+                        } else {
+                            var doReNewToken = new reNewToken();
+                        }
+                    }
                 };
                 
                 this.failCallback = function(data)
@@ -47,10 +44,48 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                 };
                 
                 var __construct = function() {
-                    
-                    // fix me !!! need to get device type and app version
-                    apiCheckAppVersion(self.successCallback, self.failCallback, "android", "1");
+                    apiCheckAppVersion(self.successCallback, self.failCallback, device.platform, loginData["versionCode"]);
                 }();
+            }
+
+            function reNewToken() {
+                var self = this;
+
+                this.successCallback = function(data) {
+                    var resultSuccess = false;
+                    var resultcode = data['result_code'];
+
+                    if (resultcode == 1) {
+                        loginData["token"] = data['content'].token;
+                        loginData["token_valid"] = data['content'].token_valid;
+
+                        window.localStorage.setItem("token", data['content'].token);
+                        window.localStorage.setItem("token_valid", data['content'].token_valid);
+
+                        getMessageList();
+
+                        if (loginData['doLoginDataCallBack'] === true) {
+                            getLoginDataCallBack();
+                        } else {
+                            if (loginData["openMessage"] === true) {
+                                $.mobile.changePage("#viewWebNews2-3-1");
+                            } else {
+                                loginData["openMessage"] = true;
+                                $.mobile.changePage('#viewMain2-1');
+                            }
+                        }
+
+                    } else {
+                        //other case
+                    }
+                };
+
+                this.failCallback = function(data) {};
+
+                var __construct = function() {
+                    QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
+                }();
+
             }
 
             /********************************** page event *************************************/

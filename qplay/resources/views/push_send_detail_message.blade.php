@@ -7,7 +7,13 @@ $push_send_row_id = $input["push_send_row_id"];
 $messageId = $input["message_id"];
 $tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
+for($i = 0; $i < count($allCompanyRoleList); $i++) {
+    $allCompanyRoleList[$i]->company = strtolower($allCompanyRoleList[$i]->company);
+}
 $sendInfo = \App\lib\CommonUtil::getMessageSendInfo($push_send_row_id);
+for($i = 0; $i < count($sendInfo->company_list); $i++) {
+    $sendInfo->company_list[$i] = strtolower($sendInfo->company_list[$i]);
+}
 $messageInfo = $sendInfo->message_info;
 $messageType = $sendInfo->message_info->message_type;
 ?>
@@ -67,7 +73,7 @@ $messageType = $sendInfo->message_info->message_type;
             <div class="form-group row" style="word-wrap:break-word;">
               <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_CONTENT")}}:</label>
               <div class="col-xs-10">
-                {{$messageInfo->message_text}}
+                  <pre>{{$messageInfo->message_text}}</pre>
               </div>
             </div>
             <div class="form-group row" style="word-wrap:break-word;">
@@ -99,10 +105,10 @@ $messageType = $sendInfo->message_info->message_type;
             @foreach($allCompanyRoleList as $companyRoles)
             <!--{{$tempFlag++}}-->
                 @if(count($companyRoles->roles > 0))
-                    <table class="table table-bordered" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
+                    <table class="table table-bordered RoleTable" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
                         <tr>
                             <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">
-                                <input type="checkbox" data="{{$companyRoles->company}}" disabled="disabled"
+                                <input class="cbxCompany" type="checkbox" data="{{$companyRoles->company}}" disabled="disabled"
                                        onclick="RoleTableSelectedAll(this)">{{$companyRoles->company}}</input>
                             </td>
                             <td style="border:1px solid #d6caca;padding: 0px;">
@@ -216,6 +222,10 @@ $messageType = $sendInfo->message_info->message_type;
     </div>
     @endif
     <script>
+        $(function() {
+            CheckRoleTableSelect();
+        });
+
         var msgVisible = '{{$messageInfo->visible}}';
 
         var SendAgain = function () {
@@ -301,7 +311,23 @@ $messageType = $sendInfo->message_info->message_type;
             });
         };
 
-
+        var CheckRoleTableSelect = function () {
+            $(".RoleTable").each(function(i, tb) {
+                var $companyTable = $(tb);
+                var allCheckd = true;
+                $.each($companyTable.find(".cbxRole"), function(i, cbx) {
+                    if(!$(cbx).is(":checked")) {
+                        allCheckd = false;
+                        return false;
+                    }
+                });
+                if(allCheckd) {
+                    $companyTable.find(".cbxCompany").prop("checked",true);
+                } else {
+                    $companyTable.find(".cbxCompany").prop("checked",false);
+                }
+            });
+        };
     </script>
 @endsection
 

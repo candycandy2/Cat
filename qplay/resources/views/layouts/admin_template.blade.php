@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Input;
  * Date: 2016/8/15
  * Time: 17:09
  */
-date_default_timezone_set('PRC');
+//date_default_timezone_set('PRC');
 $oriMenuList = Auth::user()->getMenuList();
 $menuList = array();
 $breadList = ['Home'];
@@ -60,6 +60,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
+    <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--}}
@@ -70,18 +71,17 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/dist/css/AdminLTE.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/dist/css/skins/_all-skins.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/ui/css/jquery-ui.structure.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/ui/css/jquery-ui.theme.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('/js/common.js') }}"></script>
+    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.cookie.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
-    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
-    @if (App::getLocale()!='en-us')
-    <script src="{{ asset('/js/validate_lang/messages_'.App::getLocale().'.js') }}"></script>
+    <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
+    @if(App::getLocale()!='en-us')
+    <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
     @endif
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -97,7 +97,7 @@ if(array_key_exists('with_msg_id', $input)) {
             text-overflow:ellipsis;
         }
         .error{
-             color: red;
+            color: red;
         }
     </style>
 </head>
@@ -407,6 +407,18 @@ if(array_key_exists('with_msg_id', $input)) {
             changeBootstrapTableFormatter($(this).bootstrapTable('getOptions'), currentBootstrapTableLang);
         });
 
+        try {
+            if(!tableSelectChangedFunctionList) {
+                tableSelectChangedFunctionList = new Array();
+            }
+        } catch(e){
+            tableSelectChangedFunctionList = new Array();
+        }
+        try {
+            tableSelectChangedFunctionList.push(selectedChanged);
+        } catch(e){
+        }
+
         $(".content-wrapper").resize(function () {
             $('.bootstrapTable').bootstrapTable('resetView');
         });
@@ -439,7 +451,10 @@ if(array_key_exists('with_msg_id', $input)) {
 
             $('.bootstrapTable').on('page-change.bs.table', function(e ,page, size) {
                 try {
-                    selectedChanged();
+                    //selectedChanged();
+                    for(var i = 0; i < tableSelectChangedFunctionList.length; i++) {
+                        tableSelectChangedFunctionList[i]();
+                    }
                 } catch (err) {}
 
                 $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P", page);
@@ -449,7 +464,10 @@ if(array_key_exists('with_msg_id', $input)) {
 
         $('.bootstrapTable').on('page-change.bs.table', function(e ,page, size) {
             try {
-                selectedChanged();
+                //selectedChanged();
+                for(var i = 0; i < tableSelectChangedFunctionList.length; i++) {
+                    tableSelectChangedFunctionList[i]();
+                }
             } catch (err) {}
 
             $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P", page);

@@ -1,13 +1,13 @@
 
 /*global variable, function*/
-//var appKey = "appyellowpage";
-var appKey = "yellowpage";
+var appKeyOriginal = "appyellowpage";
+var appKey = "";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
+var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
 
 var employeeData = {};
 var employeeSelectedIndex;
 var phonebookData = {};
-var myEmpID = "1609009";
 var prevPageID;
 
 window.initialSuccess = function() {
