@@ -21,7 +21,7 @@ $menu_name = "APP_MAINTAIN";
             <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
             <th data-field="app_name" data-sortable="true" data-formatter="appEditFormatter">{{trans("messages.APP_NAME")}}</th>
             <th data-field="package_name" data-sortable="true">{{trans("messages.APP_PACKAGE_NAME")}}</th>
-            <th data-field="updated_at" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
+            <th data-field="updated_at" data-sortable="true" data-formatter="updateDateFormatter">{{trans("messages.LAST_UPDATED_DATE")}}</th>
             <th data-field="released" data-sortable="true">{{trans("messages.RELEASED")}}</th>
         </tr>
         </thead>
@@ -38,6 +38,10 @@ $menu_name = "APP_MAINTAIN";
     function appEditFormatter(value, row){
         var path = '{{asset('appDetailMaintain?app_row_id=')}}' + row.row_id;
         return '<a href="' + path + '" </a>' + value;
+    }
+
+    function updateDateFormatter(value, row){
+        return convertUTCToLocalDateTime(value);
     }
     
     var newApp = function(){

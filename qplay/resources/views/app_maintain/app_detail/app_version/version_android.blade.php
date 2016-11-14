@@ -23,7 +23,7 @@
         <th data-field="version_name" data-sortable="true" data-formatter = "versionNameFormatter">{{trans('messages.VERSION_NAME')}}</th>
         <th data-field="version_code"  data-sortable="true">{{trans('messages.VERSION_NO')}}</th>
         <th data-field="download_url" data-sortable="true">{{trans('messages.VERSION_URL')}}</th>
-        <th data-field="created_at" data-sortable="true">{{trans('messages.UPLOAD_TIME')}}</th>
+        <th data-field="created_at" data-sortable="true" data-formatter="createdDateFormatter">{{trans('messages.UPLOAD_TIME')}}</th>
         <th data-field="status" data-formatter="switchFormatter">{{trans('messages.VERSION_STATUS')}}</th>
     </tr>
     </thead>

@@ -192,12 +192,18 @@ $(function () {
                     var androidVersionList =  $("#gridAndroidVersionList").bootstrapTable('getData');
                     $.each(androidVersionList, function(i, version) {
                         $.each(version, function(j,v){
+                            if(j == 'created_at'){
+                                v = convertLocalToUTCDateTime(v);
+                            }
                             formData.append('versionList[android][' + i + '][' + j + ']',v);
                         }); 
                     });
                     var iosVersionList =  $("#gridIOSVersionList").bootstrapTable('getData');
                     $.each(iosVersionList, function(i, version) {
                         $.each(version, function(j,v){
+                            if(j == 'created_at'){
+                                v = convertLocalToUTCDateTime(v);
+                            }
                             formData.append('versionList[ios][' + i + '][' + j + ']',v);
                         }); 
                     });
