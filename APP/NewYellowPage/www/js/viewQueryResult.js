@@ -64,7 +64,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         });
 
                         //data length over 10, show error msg
-                        if (dataContent.length >= 10) {
+                        if (dataContent.length >= 5) {
                             $("#errorMsg").show();
                         } else {
                             $("#errorMsg").hide();                            

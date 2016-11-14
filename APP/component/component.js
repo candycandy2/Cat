@@ -484,9 +484,9 @@ function handleOpenURL(url) {
 
         if (appKey === qplayAppKey && queryData["action"] === "getLoginData") {
             loginData['doLoginDataCallBack'] = true;
-            console.log(loginData['doLoginDataCallBack']);
 
             if (device.platform === "iOS") {
+                $.mobile.changePage('#viewInitial1-1');
                 var whiteList = new setWhiteList();
             }
 

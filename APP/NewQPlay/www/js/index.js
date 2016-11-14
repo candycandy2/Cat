@@ -19,6 +19,7 @@ window.initialSuccess = function(data) {
     if (data !== undefined) {
 
         loginData['callQLogin'] = false;
+        getDataFromServer = false;
         processStorageData("setLocalStorage", data);
 
         if (loginData['doLoginDataCallBack'] === false) {
