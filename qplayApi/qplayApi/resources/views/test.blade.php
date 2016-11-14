@@ -138,8 +138,9 @@ FORM;
 
         <input type="hidden" name="_token" value="{{$csrf_token}}">
 
-        <input type="button" value="isRegister" onclick="isRegister()">
-        <input type="button" value="register" onclick="register()">
+        <input type="button" value="isRegister" onclick="isRegister()" />
+        <input type="button" value="register" onclick="register()" />
+        <input type="button" value="isLogin" onclick="isLogin()" />
         <br/><br/>
 
         <input type="button" value="login" onclick="login()">
@@ -176,6 +177,30 @@ FORM;
     <script>
         var sectoryKey = 'swexuc453refebraXecujeruBraqAc4e';
         var registerUUID = "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20";
+
+        var mosesAndroidUuid = "A000004E11012A9";
+        var isLogin = function () {
+            $.ajax({
+                url: "v101/qplay/isLogin?lang=en-us&uuid=" + mosesAndroidUuid,
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data:{},
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("is_login:" +  d.is_login + "<br/>"
+                            + "login_id: " + d.login_id + "<br/>");
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        };
 
         var isRegister = function () {
             $.ajax({
