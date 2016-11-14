@@ -162,6 +162,7 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
 */
 
 //ex: gulp --env test --vname 1.0.0.8 --vcode 8
+//remove petch task
 gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
 
 });
