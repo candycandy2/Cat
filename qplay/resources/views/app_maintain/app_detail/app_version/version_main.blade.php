@@ -227,13 +227,12 @@ var uploadNewVersion = function(){
     if(errors.length > 0){
         return false;
     }
-
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
     newVersion.state = "undefined";
     newVersion.status = 'cancel';
-    newVersion.created_at = getDateTime(new Date());
+    newVersion.created_at = getUTCDateTime(new Date());
     newVersion.url = fileName;
     newVersion.version_code = versionCode;
     newVersion.version_name = versionName;
