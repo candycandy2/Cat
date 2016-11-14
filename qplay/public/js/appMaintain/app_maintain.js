@@ -80,6 +80,14 @@ SaveAppDetailToDB = function(){
     }
 }
 $(function () {
+    
+    $(document).ajaxStart(function(){
+        $( "#saveAppDetail" ).prop( "disabled", true );
+    });
+    $(document).ajaxComplete(function(){
+        $( "#saveAppDetail" ).prop( "disabled", false );
+    });
+
     for(var key in submitFormAry){       
        submitFormAry[key].validate({
             ignore: [],
