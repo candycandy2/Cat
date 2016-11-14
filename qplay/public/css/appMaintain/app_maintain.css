@@ -48,12 +48,12 @@ table.costum-table {
     cursor: pointer;
     text-align:center;
     padding-top:140px;
-    width: 200px; 
-    height: 320px;
+    width: 225px; 
+    height: 300px;
 }
 .screen-preview{
-    width: 200px; 
-    height: 320px;
+    width: 225px; 
+    height: 300px;
 }
 .screen-preview:hover, .icon-preview:hover, .screen-upl-btn:hover, .icon-upl-btn:hover{
     opacity: .3;
@@ -61,7 +61,10 @@ table.costum-table {
 }
 .sortable { list-style-type: none; margin: 0; padding: 0;  }
 .sortable li { margin: 10px 10px 10px 10px; float: left }
-
+.js-screen-file {
+    opacity: 1 !important;
+    cursor:pointer !important;
+}
 .imgLi{
     display : inline-block;
     position : relative;
