@@ -29,6 +29,8 @@
                 </select>
                 <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
                         onclick="tryLogin()">Log In</button>
+                <button id="btnOriLogin" class="ui-btn ui-btn-corner-all" style="display:none;color:white;background-color: #3c3c75;font-family: Arial;"
+                        onclick="oriLogin()">Origin Log In</button>
             </div>
         </div>
         <div data-role="popup" id="dlgMessage"
@@ -65,6 +67,19 @@
         </div>
     </div>
     <script>
+        $(function () {
+            var showOriLogin = getQueryString("show_origin_login");
+            if(showOriLogin && showOriLogin == "Y") {
+                $("#btnOriLogin").show();
+            }
+        });
+
+        var oriLogin = function() {
+            if(window.smartfactoryapp) {
+                window.smartfactoryapp.OriLogin();
+            }
+        };
+
         var showMessage = function (msg) {
             $("#messageContainer").text(msg);
             $("#dlgMessage").popup('open');
@@ -203,6 +218,9 @@
         var LoginMsg = null;
         var callPlugin = function () {
             if(LoginMsg) {
+                if(window.smartfactoryapp) {
+                    window.smartfactoryapp.EndLogin(LoginMsg);
+                }
                 if (browser.versions.iPhone || browser.versions.iPad || browser.versions.ios) {
                     window.webkit.messageHandlers.saveLoginResult.postMessage(LoginMsg);
                 }else if (browser.versions.android) {
