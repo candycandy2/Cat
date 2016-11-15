@@ -10,4 +10,6 @@
 
 @interface qhash : NSObject
 
++ (NSString*)timeHash:(NSString*)appkey;
+
 @end

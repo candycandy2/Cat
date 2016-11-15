@@ -18,6 +18,7 @@
 		3047A5141AB8059700498E2A /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5111AB8059700498E2A /* build.xcconfig */; };
 		E715E2F71DDAAC55008C5617 /* qhash.m in Sources */ = {isa = PBXBuildFile; fileRef = E715E2F61DDAAC55008C5617 /* qhash.m */; };
 		E715E2F81DDAAC55008C5617 /* qhash.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E715E2F51DDAAC55008C5617 /* qhash.h */; };
+		E715E3041DDAFE05008C5617 /* libqhash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E715E2F31DDAAC55008C5617 /* libqhash.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = CordovaLib;
+		};
+		E715E3021DDAFE01008C5617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E715E2F21DDAAC55008C5617;
+			remoteInfo = qhash;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -80,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E715E3041DDAFE05008C5617 /* libqhash.a in Frameworks */,
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,6 +231,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E715E3031DDAFE01008C5617 /* PBXTargetDependency */,
 				301BF551109A68C00062928A /* PBXTargetDependency */,
 			);
 			name = HelloCordova;
@@ -357,6 +367,11 @@
 			isa = PBXTargetDependency;
 			name = CordovaLib;
 			targetProxy = 301BF550109A68C00062928A /* PBXContainerItemProxy */;
+		};
+		E715E3031DDAFE01008C5617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E715E2F21DDAAC55008C5617 /* qhash */;
+			targetProxy = E715E3021DDAFE01008C5617 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -564,6 +579,7 @@
 				E715E2FB1DDAAC55008C5617 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
