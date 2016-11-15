@@ -133,6 +133,10 @@ function versionNameFormatter(value, row) {
     return '<a href="#" class="editVersion" data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version="'+row.version_name+'" data-url="'+row.url+'" data-status="'+row.status+'"> '+ value +'</a>';
 };
 
+function createdDateFormatter(value, row){
+    return convertUTCToLocalDateTime(value);
+}
+
 var updateVersion = function(row_id, device_type, version_name, url, status){
     var statusStr = (status == 'ready')?'Publish':'Unpublish';
     $('#hidVersionRowId').val(row_id);
@@ -223,13 +227,12 @@ var uploadNewVersion = function(){
     if(errors.length > 0){
         return false;
     }
-
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
     newVersion.state = "undefined";
     newVersion.status = 'cancel';
-    newVersion.updated_at = getFormattedDate();
+    newVersion.created_at = getUTCDateTime(new Date());
     newVersion.url = fileName;
     newVersion.version_code = versionCode;
     newVersion.version_name = versionName;
@@ -277,13 +280,6 @@ var delAppVersion = function(device){
         showMessageDialog("{{trans('messages.MSG_VERSION_CAN_NOT_DELETE')}}","{{trans('messages.MSG_VERSION_IS_PUBLISH_CAN_NOT_DELETE')}}");
     }
      
-}
-
-function getFormattedDate() {
-    var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-    return str;
 }
 
 function getApkDownLoadPath(appId,deviceType,versionCode,fileName){

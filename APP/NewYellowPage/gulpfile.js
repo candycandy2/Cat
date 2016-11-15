@@ -45,6 +45,8 @@ if (env === "test") {
     appVersionDecorate = "Development";
 }
 
+var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string>";
+
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appyellowpage' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
@@ -56,6 +58,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
+                        '<preference name="orientation" value="portrait" />' +
                         '<access origin="*" />' +
                         '<access origin="tel:*" launch-external="yes" />' +
                         '<allow-navigation href="*" />' +
@@ -104,14 +107,9 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate,
-  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable ENV=' + appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist'
 ]));
-
-gulp.task('patch', function() {
-    return gulp.src(patchFolder + '/LoginActivity.java', { base: patchFolder + '/' })
-        .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
-});
 
 gulp.task('copyAndroidImages', function() {
     return gulp.src('Images/android/**/*', {base: 'Images/android/'})
@@ -164,6 +162,7 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
 */
 
 //ex: gulp --env test --vname 1.0.0.8 --vcode 8
-gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
+//remove petch task
+gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
 
 });

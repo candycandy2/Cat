@@ -19,22 +19,21 @@ window.initialSuccess = function(data) {
     if (data !== undefined) {
 
         loginData['callQLogin'] = false;
+        getDataFromServer = false;
         processStorageData("setLocalStorage", data);
 
         if (loginData['doLoginDataCallBack'] === false) {
             $.mobile.changePage('#viewMain2-1');
         }
     } else {
-        if (loginData['doLoginDataCallBack'] === false) {
-            setTimeout(function(){
-                var checkAppVer = new checkAppVersion();
-                loadingMask("show");
-            }, 2000);
-        }
+        setTimeout(function(){
+            var checkAppVer = new checkAppVersion();
+            loadingMask("show");
+        }, 2000);
     }
 
     //For test
-    //var unregisterTesr = new unregister();
+    //var unregisterTest = new unregister();
 }
 
 function getMessageList() {
@@ -43,6 +42,7 @@ function getMessageList() {
 
 function unregister() {
 
+    var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
     this.successCallback = function(data) {

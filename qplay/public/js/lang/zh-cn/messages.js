@@ -8,5 +8,8 @@ var Messages = {
     MSG_CONFIRM_UNPUBLISH : '取消发布确认',
     MSG_CONFIRM_PUBLISH_STATUS : '确认将 %s 发布 Android- %l | IOS- %k？',
     MSG_CONFIRM_PUBLISH : '发布确认',
-    MSG_NOT_COMPLETE : '资讯未填写完成'
+    MSG_NOT_COMPLETE : '资讯未填写完成',
+    ERR_DUPLICATE_API_ACTION : '已存在相同版本的API action',
+    ERR_SCREENSHOT_FILE_LIMIT : '萤幕撷取画面仅能上传%s张，您选择了%l张',
+    ERR_SCREENSHOT_SCALE_LIMIT : '档案大小，仅接受 %s * %langMap'
 }
