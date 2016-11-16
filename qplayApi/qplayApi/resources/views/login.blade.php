@@ -194,16 +194,21 @@
                     request.setRequestHeader("password", password);
                 },
                 success: function (d, status, xhr) {
-                    LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
-                            + '"uuid" : "' + d.content.uuid + '", '
-                            + '"redirect-uri" : "' + d.content.redirect_uri + '", '
-                            + '"token" : "' + d.content.token + '", '
-                            + '"loginid" : "' + d.content.loginid + '", '
-                            + '"emp_no" : "' + d.content.emp_no + '",'
-                            + '"domain" : "' + d.content.domain + '",'
-                            + '"checksum" : "' + d.content.checksum + '",'
-                            + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
-                    $.mobile.changePage("#pageRegister");
+                    if(d.result_code && d.result_code == 1) {
+                        LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
+                                + '"uuid" : "' + d.content.uuid + '", '
+                                + '"redirect-uri" : "' + d.content.redirect_uri + '", '
+                                + '"token" : "' + d.content.token + '", '
+                                + '"loginid" : "' + d.content.loginid + '", '
+                                + '"emp_no" : "' + d.content.emp_no + '",'
+                                + '"domain" : "' + d.content.domain + '",'
+                                + '"checksum" : "' + d.content.checksum + '",'
+                                + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
+                        $.mobile.changePage("#pageRegister");
+                    } else {
+                        showMessage(d.result_code + ": " + d.message);
+                    }
+
                 },
                 error: function (e) {
                     showMessage(e);
