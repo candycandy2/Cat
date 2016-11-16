@@ -33,7 +33,7 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-    NSLog(@"timeHash %@",[qhash timeHash:@"apprrs"]);
+    NSLog(@"timeHash %@",[qhash timeHash:@"swexuc453refebraXecujeruBraqAc4e"]);
     self.viewController = [[MainViewController alloc] init];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
