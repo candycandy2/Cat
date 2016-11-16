@@ -32,3 +32,35 @@ componentapp/platforms/ios/HelloCordova.xcodeproj/project.xcworkspace/xcuserdata
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+
+componentapp/platforms/android/.idea/.name
+
+# Built application files
+componentapp/platforms/android/*/build/
+
+# Crashlytics configuations
+com_crashlytics_export_strings.xml
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Gradle generated files
+componentapp/platforms/android/.gradle/
+
+# Signing files
+componentapp/platforms/android/.signing/
+
+# User-specific configurations
+componentapp/platforms/android/.idea/
+componentapp/platforms/android/*.iml
+componentapp/platforms/android/CordovaLib/build/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
