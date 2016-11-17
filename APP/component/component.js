@@ -78,11 +78,15 @@ var app = {
         messageRowId = data.extras["Parameter"];
 
         if (loginData["openMessage"] === false) {
+
             loginData["openMessage"] = true;
+            window.localStorage.setItem("openMessage", true);
+            window.localStorage.setItem("messageRowId", messageRowId);
+
+            $.mobile.changePage("#viewWebNews2-3-1");
         } else {
             $.mobile.changePage("#viewWebNews2-3-1");
         }
-
     },
     onBackgoundNotification: function(data) {
     //添加後台收到通知后需要執行的內容
@@ -420,11 +424,11 @@ function readConfig() {
     //QPUSH////////////////////////////////////////////////////////////////////////////////
     if (appKey === qplayAppKey) {
         //後台打开通知
-        document.addEventListener('qpush.openNotification', this.onOpenNotification, false);
+        document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
         //後台收到通知
-        document.addEventListener('qpush.backgoundNotification', this.onBackgoundNotification, false);
+        document.addEventListener('qpush.backgoundNotification', app.onBackgoundNotification, false);
         //前台收到通知
-        document.addEventListener('qpush.receiveNotification', this.onReceiveNotification, false);
+        document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
     }
 
     //For QSecurity
@@ -484,9 +488,9 @@ function handleOpenURL(url) {
 
         if (appKey === qplayAppKey && queryData["action"] === "getLoginData") {
             loginData['doLoginDataCallBack'] = true;
-            console.log(loginData['doLoginDataCallBack']);
 
             if (device.platform === "iOS") {
+                $.mobile.changePage('#viewInitial1-1');
                 var whiteList = new setWhiteList();
             }
 
