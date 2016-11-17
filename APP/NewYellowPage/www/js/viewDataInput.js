@@ -14,13 +14,15 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                     var resultcode = data['ResultCode'];
                     
-                    if (resultcode === "1" || resultcode === "1906") {
+                    if (resultcode === "1") {
                         var dataContent = data['Content'];
                         
                         for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
                         }
+                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+                        getServerData();
                     }
                 };
 

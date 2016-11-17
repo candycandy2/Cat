@@ -15,7 +15,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 this.successCallback = function(data) {
                     var resultcode = data['ResultCode'];
                     
-                    if (resultcode == 1 || resultcode == 1901 || resultcode == 1906) {
+                    if (resultcode === "1" || resultcode === "001901" || resultcode === "001906") {
                         
                         employeeData = {};
                         var dataContent = data['Content'];
@@ -66,10 +66,10 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         });
 
                         //data length over 5, show error msg
-                        if (resultcode == 1906) {
+                        if (resultcode === "001906") {
                             $("#errorMsg").show();
                             $("#errorMsg2").hide();
-                        } else if (resultcode == 1901) {
+                        } else if (resultcode === "001901") {
                             $("#errorMsg2").show();
                             $("#errorMsg").hide();
                         } else {
@@ -77,6 +77,8 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             $("#errorMsg2").hide();
                         }
 
+                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+                        getServerData();
                     }
 
                     loadingMask("hide");
