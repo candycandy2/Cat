@@ -65,7 +65,8 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             employeeSelectedIndex = $(this).attr("value");
                             $.mobile.changePage('#viewDetailInfo');
                         });
-
+                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+                        getServerData();
                     } else {
                         //ResultCode = 001901, [no data]
                     }
@@ -91,6 +92,8 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         if (doRefresh) {
                             refreshMyPhonebookList();
                         }
+                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+                        getServerData();
                     } else {
                         //ResultCode = 001905, [fail]
                     }
