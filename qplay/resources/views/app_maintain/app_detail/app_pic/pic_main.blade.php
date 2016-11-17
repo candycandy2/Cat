@@ -3,15 +3,18 @@
     <div class="col-lg-10 col-xs-12" id="app-icon">
         <form class="form-horizontal" id="iconForm">
              <div class="form-group">
-                <label class="control-label col-sm-2">大圖示 :</label>
+                <label class="control-label col-sm-2">{{trans('messages.ICON')}} :</label>
                 <div class="col-sm-10">
                     <div style="margin: 10px" class="text-muted">(512 * 512)</div>
+                    <?= $src = ""?>
                     <div class="imgLi"
                         @if(!isset($appBasic[0]->icon_url) || $appBasic[0]->icon_url=="")
                             style="display:none"
+                        @else
+                            <?=$src = \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appBasic[0]->icon_url);?>
                         @endif
                     >
-                        <img class="icon-preview" data-url="{{$appBasic[0]->icon_url}}" src="{{ \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appBasic[0]->icon_url)}}">
+                        <img class="icon-preview" data-url="{{$appBasic[0]->icon_url}}" src="{{$src}}">
                         <img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/>
                     </div>
                  
@@ -20,7 +23,7 @@
                             style="display:none"
                         @endif
                     >
-                        <div class="icon-upl-btn js-icon-file"><div>+</div><div>新增大圖示</div></div>
+                        <div class="icon-upl-btn js-icon-file"><div>+</div><div>{{trans('messages.NEW_ICON')}}</div></div>
                         <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none">
                     </div>
                 
@@ -33,14 +36,15 @@
     <div class="col-lg-10 col-xs-12" id="app-screenShot">
          <form class="form-horizontal" id="screenShotForm"  enctype="multipart/form-data">
              <div class="form-group">
-                <label class="control-label col-sm-2">螢幕擷取畫面 :</label>
+                <label class="control-label col-sm-2">{{trans('messages.SCREENSHOT')}} :</label>
                 <div class="col-sm-10 js-lang-tool-bar">
                     <!--Language Tool-->
+                    <div style="margin: 10px" class="text-muted">(768 * 1024)</div>
                     <div class="form-group">
                         <div class="col-sm-10">
-                            <span class="label-hint" id="hintPic">繁體中文 zh-tw</span>
+                            <span class="label-hint" id="hintPic"></span>
                             <div class="btn-group js-switch-lang-btn">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">語言<span class="badge js-lang-count"  style="margin-left: 5px;padding: 2px 5px;" ></span><span class="caret" style="margin-left: 5px"></span></button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{trans('messages.BTN_LANGUAGE')}}<span class="badge js-lang-count"  style="margin-left: 5px;padding: 2px 5px;" ></span><span class="caret" style="margin-left: 5px"></span></button>
                                 <ul class="dropdown-menu js-switchLang" role="menu"  data-source="hintPic" id="switchPicLang">
                             
                                 @foreach ($appBasic as $appData)
@@ -71,8 +75,8 @@
                                     @endif
                                     <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}" @if($i >= 5)  style="display:none"   @endif>
                                         <div>+</div>
-                                        <div>新增<br>螢幕擷取畫面</div>
-                                        <input type="file" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                        <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
+                                        <input type="file" accept=".jpeg,.jpg,.png" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                     </li>
                                 </ul>
                                 <ul class="form-group tab-pane fade sortable" id="tab_ios_{{$appData->lang_row_id}}">
@@ -86,8 +90,8 @@
                                     @endif  
                                     <li class="screen-upl-btn js-screen-file" @if($i >= 5)  style="display:none"   @endif id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
-                                        <div>新增<br>螢幕擷取畫面</div>
-                                        <input type="file" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                        <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
+                                        <input type="file" accept=".jpeg,.jpg,.png" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
                                     </li>
                                 </ul>
                             </div>
@@ -110,14 +114,14 @@
         <ul class="form-group tab-pane fade in active sortable" id="tab_android_{langId}">
             <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{langId}">
                 <div>+</div>
-                <div>新增<br>螢幕擷取畫面</div>
-                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" multiple>
+                <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
+                <input type="file" name="androidScreenUpload_{langId}" id="androidScreenUpload_{langId}" class="js-upl-addition" style="display:none" accept=".jpeg,.jpg,.png" multiple>
             </li>
         </ul>
         <ul class="form-group tab-pane fade sortable sortable" id="tab_ios_{langId}">
             <li class="screen-upl-btn js-screen-file" id="iosScreenUpl_{langId}">
                 <div>+</div>
-                <div>新增<br>螢幕擷取畫面</div>
+                <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
                 <input type="file" name="iosScreenUpload_{langId}" id="iosScreenUpload_{langId}" class="js-upl-addition" style="display:none" multiple>
             </li>
         </ul>

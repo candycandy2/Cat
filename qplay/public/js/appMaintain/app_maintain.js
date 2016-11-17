@@ -9,7 +9,7 @@ var submitFormAry = [$("#mainInfoForm"),
 
 SaveAppDetail = function(){
     
-     var unPublishStr = 'UnPublish';
+     var unPublishStr = 'Unpublish';
      var appName = $('#txbAppName_'+jsDefaultLang).val();
      var newAandroidStatus = unPublishStr;
      var newIOSStatus = unPublishStr;
@@ -25,11 +25,11 @@ SaveAppDetail = function(){
 
      if((jsOriAndroidStatus!=unPublishStr || jsOriIOSStatus!=unPublishStr) && 
         (newAandroidStatus == unPublishStr && newIOSStatus == unPublishStr)){
-        confirmSrt = '確認將 '+ appName +' 取消發布？';
-        confirmTitleSrt = '取消發佈確認';
+        confirmSrt = Messages.MSG_CONFIRM_UNPUBLISH_VERSION.replace('%s',appName);
+        confirmTitleSrt = Messages.MSG_CONFIRM_UNPUBLISH;
      }else if(jsOriAndroidStatus != newAandroidStatus || jsOriIOSStatus != newIOSStatus){
-         confirmSrt = '確認將 ' + appName + ' 發布 Android- ' + newAandroidStatus + ' | IOS- ' + newIOSStatus + '？';
-         confirmTitleSrt = '發佈確認';
+         confirmSrt = Messages.MSG_CONFIRM_PUBLISH_STATUS.replace('%s',appName).replace('%l',newAandroidStatus).replace('%k',newIOSStatus);
+         confirmTitleSrt = Messages.MSG_CONFIRM_PUBLISH;
      }
      
      if(confirmTitleSrt !="" && confirmSrt!=""){
@@ -79,8 +79,15 @@ SaveAppDetailToDB = function(){
         submitFormAry[i].submit();
     }
 }
-
 $(function () {
+    
+    $(document).ajaxStart(function(){
+        $( "#saveAppDetail" ).prop( "disabled", true );
+    });
+    $(document).ajaxComplete(function(){
+        $( "#saveAppDetail" ).prop( "disabled", false );
+    });
+
     for(var key in submitFormAry){       
        submitFormAry[key].validate({
             ignore: [],
@@ -111,7 +118,6 @@ $(function () {
                 setAppUser: "cbxRole cbxAllRole"
             },
             errorPlacement: function ($error, $element) {
-                console.log($element.attr("name"));
                 validate =0;
                 $alert = $('#appMaintainAlert');
                 if($element.attr("name") == 'chkCompany'){
@@ -132,6 +138,8 @@ $(function () {
                     // }
                 }else if($element.attr("name") == 'errorCodeFile' ){
                    $error.insertAfter($('input[name=errorCodeFile]').parent().next());
+                }else if($element.attr('name') == 'fileIconUpload'){
+                   $error.insertAfter($('.iconUpload'));
                 }else{
                     var langTag = $element.attr("name").split('_')[1];
                     var langStr = $('#ddlLang_'+langTag).find('a').text();
@@ -139,11 +147,10 @@ $(function () {
                     $error.insertAfter($element);
                     //$alert.append('<p>'+langStr+'-'+labelName+' : '+$error.text()+'</p>');
                 }
-                showMessageDialog("錯誤", "資訊未填寫完成");
+                showMessageDialog(Messages.ERROR,Messages.MSG_NOT_COMPLETE);
                // $('#appMaintainAlert').fadeIn('1500');
            },
            submitHandler: function (form) {
-
                 validate ++;
                 if(validate==submitFormAry.length){
                     var formData = new FormData();
@@ -155,18 +162,13 @@ $(function () {
                     if(typeof ($( '#fileIconUpload' )[0].files[0]) != "undefined"){
                         formData.append('fileIconUpload', $( '#fileIconUpload' )[0].files[0]);
                     }
-                    $('#screenShotForm').find('input[name^=iosScreenUpload_]').each(function(){      
-                        var iosFile = $(this).attr('id');
-                        $.each($( '#'+iosFile )[0].files, function(i, file) {
-                            formData.append(iosFile + '[]', file);
-                        });
+
+                    $.each(screenShotfileQueue,function(i,item){
+                          $.each(item, function(j, file) {
+                                formData.append(i + '[]', file);
+                          });
                     });
-                    $('#screenShotForm').find('input[name^=androidScreenUpload_]').each(function(){
-                        var androidFile = $(this).attr('id');
-                        $.each($( '#'+androidFile )[0].files, function(i, file) {
-                            formData.append(androidFile + '[]', file);
-                        });
-                    });
+
                     $('#screenShotForm').find('.imgLi').each(function(){
                         formData.append('insPic[]',$(this).data('lang')+'-'+$(this).data('device')+'-'+$(this).data('url'));
                     })
@@ -232,18 +234,18 @@ $(function () {
                         processData: false,
                         success: function (d, status, xhr) {
                             validate = 0
-                            if(d.result_code != 1) {
-                                showMessageDialog("錯誤",d.message);
-                            }else{
-                                showMessageDialog("消息","操作成功!");
+                            if(d.result_code == 1) {
+                                 showMessageDialog(Messages.MESSAGE,Messages.MSG_OPERATION_SUCCESS);
                                 $('#messageDialog').find('button').click(function(){
                                     location.reload();
                                 });
+                            }else{
+                               showMessageDialog(Messages.ERROR,d.message);
                             }
                         },
                         error: function (e) {
                             validate = 0
-                             showMessageDialog("錯誤", "操作失敗", e.responseText)
+                             showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
                         }
                     });
                      
@@ -261,16 +263,26 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
-        if($('.icon-preview').length == 1 ){
+        if($('.icon-preview').length == 1 && $('.icon-preview').attr('src')!=""){
             return true;
         }
         return false;
     });
 
     jQuery.validator.addMethod("screenshot", function(value, element) {
-        if($(element).parent().parent().find('li.imgLi').length > 0 ){
-            return true;
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        var ios = new RegExp('^iosScreenUpload_');
+        var android = new RegExp('^androidScreenUpload_');
+        if($(element).parent().parent().find('li.imgLi').length == 0){
+           if(ios.test($(element).attr('name')) && iosPublishCnt == 0){
+                return true;
+           }
+           if(android.test($(element).attr('name')) && androidPublishCnt == 0){
+                return true;
+           }
+           return false;
         }
-        return false;
+        return true;
     });
 });

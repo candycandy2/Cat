@@ -476,7 +476,7 @@ class AppMaintainController extends Controller
         $appVersionList = \DB::table("qp_app_version")
                 -> where('app_row_id', '=', $appRowId)
                 -> where('device_type', '=', $deviceType)
-                -> select('row_id','device_type', 'version_code', 'version_name', 'url','status','updated_at')
+                -> select('row_id','device_type', 'version_code', 'version_name', 'url','status','created_at')
                 -> get();
         foreach ($appVersionList as $appVersion) {
             $appVersion->download_url = FilePath::getApkDownloadUrl($appRowId,$deviceType,
@@ -490,22 +490,34 @@ class AppMaintainController extends Controller
         {
             return null;
         }
+        $this->setLanguage();
+
        \DB::beginTransaction();
        try{
             $input = $request->all();
+
+            $rules = array('icon' => 'mimes:png,jpeg'); 
+            $validateArr = array();
+            if(isset($input['fileIconUpload'])){
+                $validateArr['icon'] = $input['fileIconUpload'];
+            }
+            $validator = \Validator::make( $validateArr, $rules);
+            if(!$validator->passes()){
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>$validator->messages()
+                ]);
+            }
             $appId = $input['appId'];
             $appkey = $input['appKey'];
-           
             parse_str($input['mainInfoForm'],$mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
 
-            $iconfileName = $input['icon'];
             if(isset($input['fileIconUpload'])){
                 $icon = $input['fileIconUpload'];
-                $this->validatePic('icon',$icon);
-                $iconfileName = $this->uploadIcon($appId, $icon);
+                $this->uploadIcon($appId, $icon);
+            }elseif($input['icon']=="undefined"){
+                $this->deleteIcon($appId); 
             }
-
             $ori = QP_App_Head::where('row_id', $appId)
                             ->first(['security_level']);
 
@@ -516,31 +528,13 @@ class AppMaintainController extends Controller
                 'security_level'=>$input['securityLevel'],
                 'company_label'=> $chkCompany,
                 'updated_user'=>\Auth::user()->row_id,
-                'icon_url'=>$iconfileName
                 );
             if($ori->security_level != $input['securityLevel']){
                 $dataArr['security_updated_at'] = time(); 
             }
             $this->updateAppHeadById($appId, $dataArr);
-            
-            $delPic = $input['delPic'];
-            $insPic  = $input['insPic'];
-
-            $objGetPattern = array(
-                            'android'=>"/^androidScreenUpload_/",
-                            'ios'=>"/^iosScreenUpload_/"
-                            );
-            $sreenShot = null;
-            foreach ($objGetPattern as $key => $value) {
-                $fileList = $this->getArrayByKeyRegex($value, $input);
-                foreach($fileList as $filesKey => $files) { 
-                    foreach ($files as $file) {
-                        $this->validatePic($filesKey,$file);
-                        $sreenShot[$key]=$fileList;
-                    }
-                }
-            }
-            $this->saveAppPic($appId, $sreenShot, $delPic, $insPic);
+                
+            $this->saveAppScreenShot($appId, $input);
 
             $aooRoleList = (isset($input['appRoleList']))?$input['appRoleList']:array();
             $this->saveAppRole($appId,$aooRoleList);
@@ -549,7 +543,10 @@ class AppMaintainController extends Controller
             $this->saveAppUser($appId,$appUserList);
 
             if(isset($input['errorCodeFile'])){
-                $this->saveErrorCode($appId,$input['errorCodeFile']);
+                $result = $this->saveErrorCode($appId,$appkey,$input['errorCodeFile']);
+                if($result['result_code']!= ResultCode::_1_reponseSuccessful){
+                    return response()->json($result);
+                }
             }else{
                 if(isset($input['deleteErrorCode']) && $input['deleteErrorCode'] == 'true'){
                     $this->deleteErrorCode($appId);
@@ -578,17 +575,24 @@ class AppMaintainController extends Controller
             }
             $this->saveWhiteList($appId, $whiteList);
 
-            \DB::commit();
+           \DB::commit();
            
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
-           return array("code"=>ResultCode::_999999_unknownError,
-                   "message"=>$e->getMessage()); 
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                'message'=>trans("messages.MSG_OPERATION_FAILED"),
+                'content'=>''
+            ]);           
            \DB::rollBack();
         }
     }
     
-
+    private function setLanguage() {
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
+    } 
     private function uploadIcon($appId,$icon){
         $iconUploadPath =  FilePath::getIconUploadPath($appId);
 
@@ -596,14 +600,47 @@ class AppMaintainController extends Controller
             mkdir($iconUploadPath, 0755, true);
         }
         $icon->move($iconUploadPath,$icon->getClientOriginalName());
-        return $icon->getClientOriginalName();
+
+        $qpAppHead = QP_App_Head::find($appId);
+        $qpAppHead->icon_url=$icon->getClientOriginalName();
+        $qpAppHead->save();
     }
 
-    private function saveAppPic($appId, $sreenShot, $delPic, $insPic){
+    private function deleteIcon($appId){
+        $oriIcon = QP_App_Head::where('row_id', $appId)
+                        ->first(['icon_url']);
+        $oriIconFile = FilePath::getIconUploadPath($appId).$oriIcon->icon_url;
+        if($oriIcon->icon_url!="" && file_exists($oriIconFile)){
+            unlink($oriIconFile);
+        }
+        $qpAppHead = QP_App_Head::find($appId);
+        $qpAppHead->icon_url="";
+        $qpAppHead->save();
+    }
+
+    /**
+     * save App Screenshot
+     * @param  int    $appId     qpp id
+     * @param  Array  $input     form post data
+     */
+    private function saveAppScreenShot($appId, $input){
       
-        try{
-            //1.Delete screenshot image file
-            \DB::beginTransaction();
+            $delPic = (isset($input['delPic']))?$input['delPic']:"";
+            $insPic  =(isset($input['insPic']))?$input['insPic']:array() ;
+            $objGetPattern = array(
+                            'android'=>"/^androidScreenUpload_/",
+                            'ios'=>"/^iosScreenUpload_/"
+                            );
+            $sreenShot = null;
+            foreach ($objGetPattern as $deviceType => $regx) {
+                $fileList = $this->getArrayByKeyRegex($regx, $input);
+                foreach($fileList as $filesKey => $files) { 
+                    foreach ($files as $file) {
+                        $sreenShot[$deviceType]=$fileList;
+                    }
+                }
+            }
+
             $delPicArr = explode(',',$delPic);
             foreach($delPicArr as $picId){
                 $appPic = QP_App_Pic::find($picId);
@@ -636,6 +673,7 @@ class AppMaintainController extends Controller
             $deletePicRows = QP_App_Pic::where('app_row_id', $appId)
                     ->delete();
             $insertArray = array();
+            $now = date('Y-m-d H:i:s',time());
             foreach ($insPic as $seq => $item) {
                 $picItem = explode('-',$item);
                 $data = array(
@@ -645,33 +683,14 @@ class AppMaintainController extends Controller
                         'sequence_by_type'=>$seq+1,
                         'pic_url'=>$picItem[2],
                         'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id
+                        'updated_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                        'updated_at'=>$now
                     );
                 $insertArray[]=$data;
             }
             QP_App_Pic::insert($insertArray);
-            \DB::commit();
-        }catch(\Exception $e){
-            \DB::rollback();
-        }
         
-    }
-
-    /**
-     * validate image Type
-     * @param  string   $filesKey Validation field string
-     * @param  FileObj  $file     The File to be validated
-     * @return mixed           [description]
-     */
-    private function validatePic($filesKey,$file){
-        $rules = array($filesKey => 'required|mimes:png,jpeg'); 
-        $validator = \Validator::make(array($filesKey=>$file), $rules);
-        if($validator->passes()){
-            $filename = $file->getClientOriginalName();
-           // var_dump($filename);
-        }else{
-             var_dump( $validator->messages());
-        }
     }
 
     /**
@@ -903,57 +922,62 @@ class AppMaintainController extends Controller
                      ->update($dataArr);
     }
 
-    private function saveAppRole($appId,$appRoleList){
-        try{
-            \DB::beginTransaction();
+    /**
+     * To save enable role by app role id 
+     * @param  int $appId       qp_app.row_d
+     * @param  Array $appRoleList enable role array list
+     */
+    private function saveAppRole($appId, Array $appRoleList){
             $deletedRows = QP_Role_App::where('app_row_id',$appId)
                                 ->delete(); 
             $insertArray = array();
+            $now = date('Y-m-d H:i:s',time());
             foreach ($appRoleList as $role) {
                 $data = array(
                         'app_row_id'=>$appId,
                         'role_row_id'=>$role,
                         'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id
+                        'updated_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                        'updated_at'=>$now
                     );
                 $insertArray[]=$data;
             }
             QP_Role_App::insert($insertArray);
-            \DB::commit();
-        }catch(\Exception $e){
-            \DB::rollback();
-        }
     }
 
-    private function saveAppUser($appId,$appUserList){
-        try{
-            \DB::beginTransaction();
+    /**
+     * To save enable user by app row id
+     * @param  int $appId           qp_qpp.row_id
+     * @param  Array $appUserList   enable user array list
+     */
+    private function saveAppUser($appId, Array $appUserList){
             $deletedRows = QP_User_App::where('app_row_id',$appId)
                                 ->delete(); 
             $insertArray = array();
+            $now = date('Y-m-d H:i:s',time());
             foreach ($appUserList as $role) {
                 $data = array(
                         'app_row_id'=>$appId,
                         'user_row_id'=>$role,
                         'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id
+                        'updated_user'=>\Auth::user()->row_id,
+                        'created_at'=>$now,
+                        'updated_at'=>$now
                     );
                 $insertArray[]=$data;
             }
             QP_User_App::insert($insertArray);
-            \DB::commit();
-        }catch(\Exception $e){
-            \DB::rollback();
-        }
     }
 
     /**
-     * To Save Error By AppId
+     * To Save Error By AppId,AppKey
      * @param  int          $appId         app_row_id
+     * @param  String       $appKey        app_key
      * @param  FileObject   $errorCodeFile The file want to upload
      * 
      */
-    private function saveErrorCode($appId, $errorCodeFile){
+    private function saveErrorCode($appId, $appkey, $errorCodeFile){
 
         $ERROR_CODE_FILE_NAME =  'Error.json';
    
@@ -971,24 +995,33 @@ class AppMaintainController extends Controller
          $errorCodeJson = mb_convert_encoding($errorCodeJson, 'UTF-8','Unicode');
         }
         $errorCodeArray = json_decode(CommonUtil::removeBOM($errorCodeJson));
-        $jsonProjectId = CommonUtil::getProjectInfoAppKey($errorCodeArray->error_list->appkey)->row_id;
-        $appProjectId = CommonUtil::getProjectIdByAppId($appId);
-
-        if(!isset($jsonProjectId) || $jsonProjectId != $appProjectId){
-             throw new \Exception("appkey not match this app,please check your json file!"); 
+        if(is_null($errorCodeArray)){
+            return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
+                    'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
+                ];
         }
-
+        if(!isset($errorCodeArray->error_list->appkey) || !isset($errorCodeArray->error_list->code_list)){
+            return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
+                    'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
+                ];
+        }
+        if($errorCodeArray->error_list->appkey != $appkey){
+              return ['result_code'=>ResultCode::_999010_appKeyIncorrect,
+                        'message'=>trans("messages.ERR_APP_KEY_INCORRECT_ERROR")
+                ];
+        }
+        $appProjectId = CommonUtil::getProjectIdByAppId($appId);
         $langList =  CommonUtil::getLangList();
         $now = date('Y-m-d H:i:s',time());
         $langMap = [];
         foreach ( $langList  as $langItem) {
             $langMap[$langItem->lang_code] = $langItem->row_id;
         }
-     
         $insertArray = [];
+        
         foreach ($errorCodeArray->error_list->code_list  as  $value) {
             foreach ($value->language_list as $langList) {
-                $insertArray[] = array('project_row_id'=>  $jsonProjectId,
+                $insertArray[] = array('project_row_id'=>  $appProjectId,
                                     'lang_row_id'=>$langMap[$langList->language],
                                     'error_code'=>$value->error_code,
                                     'error_desc'=>$langList->error_description,
@@ -998,23 +1031,13 @@ class AppMaintainController extends Controller
                                     );
             }
         }
-        
-       \DB::beginTransaction();
-       try {
-           \DB::table("qp_error_code")
-                    -> where('project_row_id', '=', $jsonProjectId)
-                    -> delete();
-           \DB::table("qp_error_code")->insert($insertArray);
-           \DB::commit();
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                        'message'=>'Save Error Success!',
-                        'content'=>FilePath::getErrorCodeUrl($appId,$ERROR_CODE_FILE_NAME)
-                            ]);
-        } catch (Exception $e) {
-            \DB::rollBack();
-            throw new Exception($e); 
-        }
 
+       \DB::table("qp_error_code")
+                -> where('project_row_id', '=', $appProjectId)
+                -> delete();
+       \DB::table("qp_error_code")->insert($insertArray);
+          
+       return ['result_code'=>ResultCode::_1_reponseSuccessful,];
     }
 
     /**
@@ -1102,7 +1125,7 @@ class AppMaintainController extends Controller
                         $data ['ready_date'] = time();
                     }
                 }else{
-                     $data ['ready_date'] = 'null';
+                     $data ['ready_date'] = NULL;
                 }
 
                 if(isset($value['row_id'])){//update
@@ -1128,7 +1151,7 @@ class AppMaintainController extends Controller
                     }
                     //arrange data
                     $data['created_user'] = \Auth::user()->row_id;
-                    $data['created_at'] = $now;
+                    $data['created_at'] = $value['created_at'];
                     $insertArray[]=$data;
                 }
 
@@ -1152,6 +1175,7 @@ class AppMaintainController extends Controller
             $updatedRow = QP_App_Version::find($value['row_id']);
             $updatedRow->version_name = $value['version_name'];
             $updatedRow->status = $value['status'];
+            $updatedRow->updated_user = $value['updated_user'];
             if(isset($value['ready_date'])){
                 if($value['ready_date'] == 'null'){
                     $updatedRow->ready_date = NULL;
@@ -1198,7 +1222,6 @@ class AppMaintainController extends Controller
                 $insertArray[] = $data;
             }
         }
-
         $deleteApiRows = QP_App_Custom_Api::where('app_row_id','=',$appId)
                             ->whereNotIn('row_id',$saveId)
                             ->delete();
@@ -1208,6 +1231,7 @@ class AppMaintainController extends Controller
             $updatedRow->api_version = $value['api_version'];
             $updatedRow->api_action = $value['api_action'];
             $updatedRow->api_url = $value['api_url'];
+            $updatedRow->updated_user = $value['updated_user'];
             $updatedRow->save();
         }
         QP_App_Custom_Api::insert($insertArray);
@@ -1249,6 +1273,7 @@ class AppMaintainController extends Controller
         foreach($updateArray as $value){
             $updatedRow = QP_White_List::find($value['row_id']);
             $updatedRow->allow_url = $value['allow_url'];
+            $updatedRow->updated_user = $value['updated_user'];
             $updatedRow->save();
         }
         QP_White_List::insert($insertArray);

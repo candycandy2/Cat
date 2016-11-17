@@ -8,3 +8,59 @@
 APP/*/platforms/
 APP/*/plugins/
 APP/*/www/*/component.*
+
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## Build generated
+componentapp/platforms/ios/build/
+componentapp/platforms/ios/DerivedData/
+
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+componentapp/platforms/ios/HelloCordova.xcodeproj/project.xcworkspace/xcuserdata/
+
+## Other
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+componentapp/platforms/android/.idea/.name
+
+# Built application files
+componentapp/platforms/android/*/build/
+
+# Crashlytics configuations
+com_crashlytics_export_strings.xml
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Gradle generated files
+componentapp/platforms/android/.gradle/
+
+# Signing files
+componentapp/platforms/android/.signing/
+
+# User-specific configurations
+componentapp/platforms/android/.idea/
+componentapp/platforms/android/*.iml
+componentapp/platforms/android/CordovaLib/build/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+

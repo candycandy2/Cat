@@ -4,7 +4,7 @@
             {{trans("messages.DELETE")}}
         </button>
         <button type="button" class="btn btn-primary" onclick="newAppVersion('android')" id="btnNewAndroidVersion">
-            上傳新版本
+            {{trans('messages.UPLOAD_NEW_VERSION')}}
         </button>
     </div>
 </div>
@@ -14,17 +14,17 @@
        data-show-toggle="true"  data-sortable="true"
        data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
        data-click-to-select="false" data-single-select="false"
-       data-sort-name="updated_at" data-sort-order="desc">
+       data-sort-name="version_code" data-sort-order="desc">
     <thead>
     <tr>
         <th data-field="state" data-checkbox="true"></th>
         <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
         <th data-field="device_type" data-sortable="false" data-visible="false">deviceType</th>
-        <th data-field="version_name" data-sortable="true" data-formatter = "versionNameFormatter">版本名稱</th>
-        <th data-field="version_code"  data-sortable="true">版本號</th>
-        <th data-field="download_url" data-sortable="true">版本路徑</th>
-        <th data-field="updated_at" data-sortable="true">上傳時間</th>
-        <th data-field="status" data-formatter="switchFormatter">狀態</th>
+        <th data-field="version_name" data-sortable="true" data-formatter = "versionNameFormatter">{{trans('messages.VERSION_NAME')}}</th>
+        <th data-field="version_code"  data-sortable="true">{{trans('messages.VERSION_NO')}}</th>
+        <th data-field="download_url" data-sortable="true">{{trans('messages.VERSION_URL')}}</th>
+        <th data-field="created_at" data-sortable="true" data-formatter="createdDateFormatter">{{trans('messages.UPLOAD_TIME')}}</th>
+        <th data-field="status" data-formatter="switchFormatter">{{trans('messages.VERSION_STATUS')}}</th>
     </tr>
     </thead>
 </table>

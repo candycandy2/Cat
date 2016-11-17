@@ -29,6 +29,8 @@
                 </select>
                 <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
                         onclick="tryLogin()">Log In</button>
+                <button id="btnOriLogin" class="ui-btn ui-btn-corner-all" style="display:none;color:white;background-color: #3c3c75;font-family: Arial;"
+                        onclick="oriLogin()">Origin Log In</button>
             </div>
         </div>
         <div data-role="popup" id="dlgMessage"
@@ -65,6 +67,19 @@
         </div>
     </div>
     <script>
+        $(function () {
+            var showOriLogin = getQueryString("show_origin_login");
+            if(showOriLogin && showOriLogin == "Y") {
+                $("#btnOriLogin").show();
+            }
+        });
+
+        var oriLogin = function() {
+            if(window.smartfactoryapp) {
+                window.smartfactoryapp.OriLogin();
+            }
+        };
+
         var showMessage = function (msg) {
             $("#messageContainer").text(msg);
             $("#dlgMessage").popup('open');
@@ -179,16 +194,21 @@
                     request.setRequestHeader("password", password);
                 },
                 success: function (d, status, xhr) {
-                    LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
-                            + '"uuid" : "' + d.content.uuid + '", '
-                            + '"redirect-uri" : "' + d.content.redirect_uri + '", '
-                            + '"token" : "' + d.content.token + '", '
-                            + '"loginid" : "' + d.content.loginid + '", '
-                            + '"emp_no" : "' + d.content.emp_no + '",'
-                            + '"domain" : "' + d.content.domain + '",'
-                            + '"checksum" : "' + d.content.checksum + '",'
-                            + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
-                    $.mobile.changePage("#pageRegister");
+                    if(d.result_code && d.result_code == 1) {
+                        LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
+                                + '"uuid" : "' + d.content.uuid + '", '
+                                + '"redirect-uri" : "' + d.content.redirect_uri + '", '
+                                + '"token" : "' + d.content.token + '", '
+                                + '"loginid" : "' + d.content.loginid + '", '
+                                + '"emp_no" : "' + d.content.emp_no + '",'
+                                + '"domain" : "' + d.content.domain + '",'
+                                + '"checksum" : "' + d.content.checksum + '",'
+                                + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
+                        $.mobile.changePage("#pageRegister");
+                    } else {
+                        showMessage(d.result_code + ": " + d.message);
+                    }
+
                 },
                 error: function (e) {
                     showMessage(e);
@@ -203,6 +223,9 @@
         var LoginMsg = null;
         var callPlugin = function () {
             if(LoginMsg) {
+                if(window.smartfactoryapp) {
+                    window.smartfactoryapp.EndLogin(LoginMsg);
+                }
                 if (browser.versions.iPhone || browser.versions.iPad || browser.versions.ios) {
                     window.webkit.messageHandlers.saveLoginResult.postMessage(LoginMsg);
                 }else if (browser.versions.android) {

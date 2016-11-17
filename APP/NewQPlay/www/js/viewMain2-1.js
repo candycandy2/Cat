@@ -101,8 +101,12 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         $('#logoutConfirm').popup('close');
 
                         //clear data
+                        appApiPath = "qplayApi";
+                        qplayAppKey = "appqplay";
+
                         var loginData = {
-                            verion:              "",
+                            versionName:         "",
+                            versionCode:         "",
                             deviceType:          "",
                             pushToken:           "",
                             token:               "",
