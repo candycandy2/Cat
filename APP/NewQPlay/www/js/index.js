@@ -23,7 +23,12 @@ window.initialSuccess = function(data) {
         processStorageData("setLocalStorage", data);
 
         if (loginData['doLoginDataCallBack'] === false) {
-            $.mobile.changePage('#viewMain2-1');
+            if (window.localStorage.getItem("openMessage") === "true") {
+                messageRowId = window.localStorage.getItem("messageRowId");
+                $.mobile.changePage("#viewWebNews2-3-1");
+            } else {
+                $.mobile.changePage('#viewMain2-1');
+            }
         }
     } else {
         setTimeout(function(){
