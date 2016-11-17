@@ -567,6 +567,43 @@ class qplayController extends Controller
             $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
+                $uuidList = \DB::table("qp_register")
+                    -> where('uuid', "=", $uuid)
+                    -> where('status', "=", "A")
+                    -> select('row_id','uuid', 'user_row_id')->get();
+                $uuidInDB = null;
+                if(count($uuidList) < 1)
+                {
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000905_deviceNotRegistered
+                        .'&message='
+                        .'Device Not Registered');
+                    $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                        'message'=>'Device Not Registered',
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi("", $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
+                }
+                else
+                {
+                    $uuidInDB = $uuidList[0];
+                    $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                    if($tempUser->row_id != $uuidInDB->user_row_id)
+                    {
+                        $finalUrl = urlencode($redirect_uri.'?result_code='
+                            .ResultCode::_000904_loginUserNotMathRegistered
+                            .'&message='
+                            .'User Not Match Device');
+                        $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
+                            'message'=>'User Not Match Device',
+                            'content'=>array("redirect_uri"=>$finalUrl)]);
+                        CommonUtil::logApi($tempUser->row_id, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
+                    }
+                }
+
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
                 //Check user password with LDAP
@@ -590,41 +627,7 @@ class qplayController extends Controller
 
                 //Check uuid exist
                 //Check user
-                $uuidList = \DB::table("qp_register")
-                    -> where('uuid', "=", $uuid)
-                    -> where('status', "=", "A")
-                    -> select('row_id','uuid', 'user_row_id')->get();
-                $uuidInDB = null;
-                if(count($uuidList) < 1)
-                {
-                    $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_000905_deviceNotRegistered
-                        .'&message='
-                        .'Device Not Registered');
-                    $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
-                        'message'=>'Device Not Registered',
-                        'content'=>array("redirect_uri"=>$finalUrl)]);
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
-                    return $result;
-                }
-                else
-                {
-                    $uuidInDB = $uuidList[0];
-                    if($user->row_id != $uuidInDB->user_row_id)
-                    {
-                        $finalUrl = urlencode($redirect_uri.'?result_code='
-                            .ResultCode::_000904_loginUserNotMathRegistered
-                            .'&message='
-                            .'User Not Match Device');
-                        $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
-                            'message'=>'User Not Match Device',
-                            'content'=>array("redirect_uri"=>$finalUrl)]);
-                        CommonUtil::logApi($user->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
-                        return $result;
-                    }
-                }
+
 
                 $token = uniqid();  //生成token
                 $nowTimestamp = time();
