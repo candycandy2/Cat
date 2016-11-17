@@ -70,9 +70,6 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                             if (window.localStorage.getItem("openMessage") === "true") {
                                 $.mobile.changePage("#viewWebNews2-3-1");
                             } else {
-                                window.localStorage.getItem("openMessage") === "false";
-                                loginData["openMessage"] = false;
-
                                 $.mobile.changePage('#viewMain2-1');
                             }
                         }
