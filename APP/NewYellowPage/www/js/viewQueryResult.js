@@ -15,12 +15,13 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 this.successCallback = function(data) {
                     var resultcode = data['ResultCode'];
                     
-                    if (resultcode == 1 || resultcode == 1906) {
+                    if (resultcode == 1 || resultcode == 1901 || resultcode == 1906) {
                         
                         employeeData = {};
                         var dataContent = data['Content'];
                         var htmlContent = "";
                         var errorMsg = $("#errorMsg").clone();
+                        var errorMsg2 = $("#errorMsg2").clone();
                         
                         for (var i=0; i<dataContent.length; i++){
                             var tempData = {};
@@ -51,6 +52,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         
                         $("#employeeData").html("");
                         $("#employeeData").append(errorMsg);
+                        $("#employeeData").append(errorMsg2);
                         $("#employeeData").prepend($(htmlContent)).enhanceWithin();
                         $('#employeeData').listview('refresh');
 
@@ -63,11 +65,16 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             $.mobile.changePage('#viewDetailInfo');
                         });
 
-                        //data length over 10, show error msg
-                        if (dataContent.length >= 5) {
+                        //data length over 5, show error msg
+                        if (resultcode == 1906) {
                             $("#errorMsg").show();
+                            $("#errorMsg2").hide();
+                        } else if (resultcode == 1901) {
+                            $("#errorMsg2").show();
+                            $("#errorMsg").hide();
                         } else {
-                            $("#errorMsg").hide();                            
+                            $("#errorMsg").hide();
+                            $("#errorMsg2").hide();
                         }
 
                     }
