@@ -21,12 +21,14 @@ package com.benq.componentapp;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
+//import com.qplay.qhash;
 
 public class MainActivity extends CordovaActivity
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        //String str = qhash.timeHash("bdsjdsjbdsj");
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml
         loadUrl(launchUrl);

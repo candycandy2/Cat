@@ -111,11 +111,6 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-whitelist'
 ]));
 
-gulp.task('patch', function() {
-    return gulp.src(patchFolder + '/LoginActivity.java', { base: patchFolder + '/' })
-        .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
-});
-
 gulp.task('copyAndroidImages', function() {
     return gulp.src('Images/android/**/*', {base: 'Images/android/'})
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
@@ -167,6 +162,7 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
 */
 
 //ex: gulp --env test --vname 1.0.0.8 --vcode 8
-gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
+//remove petch task
+gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
 
 });
