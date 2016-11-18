@@ -132,7 +132,10 @@ function validRequired(fieldList){
     var errors = new Array();
     $.each(fieldList, function(i, item) {
         var value = $('input[name='+item+']').val();
-        if($.trim(value) == ""){
+        if(typeof value == "undefined"){
+            value = $('#' + item).val();
+        }
+        if($.trim(value) == "" || typeof value == "undefined"){
             var error = new Error;
             error.field = item;
             error.msg = '{{trans('messages.MSG_REQUIRED_FIELD')}}';
