@@ -37,8 +37,8 @@ var patchFolder = "patch";
 
 if (env === "test") {
     appNameDecorate = "test";
-    appVersionDecorate = "Staging";
-    apiPath = "qplayApiTest";
+    appVersionDecorate = "NewStaging";
+    //apiPath = "qplayApiTest";
     patchFolder = "patchTest";
 } else if (env === "dev") {
     appNameDecorate = "dev";
