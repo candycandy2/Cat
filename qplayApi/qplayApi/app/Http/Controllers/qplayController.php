@@ -242,7 +242,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $LDAP_SERVER_IP = "LDAP://BQTDC01.benq.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -607,7 +607,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $LDAP_SERVER_IP = "LDAP://BQTDC01.benq.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -1682,8 +1682,9 @@ and um.deleted_at = 0
 and um.user_row_id = $userId
 SQL;
                 if($msg->message_type == 'news') {
+
                     $sql = <<<SQL
-select distinct m.row_id as message_row_id,
+                    select distinct m.row_id as message_row_id,
         ms.row_id as message_send_row_id,
 		   m.message_title,
 			 m.message_type, m.message_text,
@@ -1695,16 +1696,12 @@ select distinct m.row_id as message_row_id,
 from qp_message m, 
 		 qp_message_send ms,
 		 qp_user u1,
-	   qp_user u2,
-		 qp_role_message rm
+	   qp_user u2
 where m.row_id = ms.message_row_id
 and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
-and rm.message_send_row_id = ms.row_id
-and rm.deleted_at = 0
-and rm.role_row_id in (select role_row_id from qp_user_role where user_row_id = $userId)
 SQL;
                 }
 
