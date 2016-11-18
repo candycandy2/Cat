@@ -24,7 +24,7 @@
                         @endif
                     >
                         <div class="icon-upl-btn js-icon-file"><div>+</div><div>{{trans('messages.NEW_ICON')}}</div></div>
-                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none">
+                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none" accept=".jpeg,.jpg,.png">
                     </div>
                 
                 </div>
