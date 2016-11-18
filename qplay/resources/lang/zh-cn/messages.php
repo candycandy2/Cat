@@ -226,9 +226,12 @@ return [
     'NEW_ICON' => '新增大图示',
     'SCREENSHOT' => '萤幕撷取画面',
     'UPLOAD_NEW_VERSION' => '上传新版本',
+    'UPLOAD_NEW_EXTERNAL_LINK' => '新增外部连结',
+    'EXTERNAL_LINK' => '连结',
     'VERSION_NAME' => '版本名称',
     'VERSION_NO' => '版本号',
     'VERSION_URL' => '版本路径',
+    'VERSION_LOG' => '版本描述',
     'UPLOAD_TIME' => '上传时间',
     'VERSION_STATUS' => '状态',
     'EDIT_VERSION' => '修改版本',
@@ -261,6 +264,7 @@ return [
     'ERR_JSON_PARSING_ERROR' => 'json 档案解析失败，请确认上传档案的内容!',
     'ERR_APP_KEY_INCORRECT_ERROR' => '上传档案appkey与专案不符，请确认上传档案内容!',
     'ERR_VERSION_NO_DUPLICATE' => '版本号不可重复',
+    'ERR_VERSION_NAME_DUPLICATE' => '版本名称不可重复',
 
 	//Project Maintain
 	'PROJECT_CODE' => '专案代码',

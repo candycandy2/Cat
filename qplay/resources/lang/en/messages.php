@@ -226,9 +226,12 @@ return [
     'NEW_ICON' => 'New Icon',
     'SCREENSHOT' => 'Screenshot',
     'UPLOAD_NEW_VERSION' => 'Upload New Version',
+    'UPLOAD_NEW_EXTERNAL_LINK' => 'Add External Link',
+    'EXTERNAL_LINK' => 'External Link',
     'VERSION_NAME' => 'Version Name',
     'VERSION_NO' => 'Version No',
     'VERSION_URL' => 'Version Url',
+    'VERSION_LOG' => 'Version Log',
     'UPLOAD_TIME' => 'Upload time',
     'VERSION_STATUS' => 'Status',
     'EDIT_VERSION' => 'Edit Version',
@@ -261,6 +264,7 @@ return [
     'ERR_JSON_PARSING_ERROR'=>'Parsing json error,please check your file content!',
     'ERR_APP_KEY_INCORRECT_ERROR'=>'App key incrrect,please check yout file content!',
     'ERR_VERSION_NO_DUPLICATE' => 'Version No. can not de duplicated',
+    'ERR_VERSION_NAME_DUPLICATE' => 'Version Name. can not de duplicated',
 
     //Project Maintain
     'PROJECT_CODE' => 'Project Code',

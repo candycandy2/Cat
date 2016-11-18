@@ -104,6 +104,9 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         appApiPath = "qplayApi";
                         qplayAppKey = "appqplay";
 
+                        //logout can not clear messagecontent
+                        var messagecontent = window.localStorage.getItem("messagecontent");
+
                         var loginData = {
                             versionName:         "",
                             versionCode:         "",
@@ -126,8 +129,9 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         window.localStorage.clear();
 
-                        app.initialize();
+                        window.localStorage.setItem("messagecontent", messagecontent);
 
+                        app.initialize();
                     }
                 };
 

@@ -263,6 +263,11 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        if(androidPublishCnt + iosPublishCnt ==0){
+            return true;
+        }
         if($('.icon-preview').length == 1 && $('.icon-preview').attr('src')!=""){
             return true;
         }

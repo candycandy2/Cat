@@ -32,6 +32,9 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function(){
                         $("#newsAuthor").html(author);
                         $("#newsContent").html(messagetext);
 
+                        window.localStorage.getItem("openMessage") === "false";
+                        loginData["openMessage"] = false;
+
                     } // if (resultcode == 1)
                     else {
                         

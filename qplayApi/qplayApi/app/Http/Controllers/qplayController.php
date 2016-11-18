@@ -242,7 +242,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $LDAP_SERVER_IP = "LDAP://BQTDC01.benq.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -567,10 +567,47 @@ class qplayController extends Controller
             $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
+                $uuidList = \DB::table("qp_register")
+                    -> where('uuid', "=", $uuid)
+                    -> where('status', "=", "A")
+                    -> select('row_id','uuid', 'user_row_id')->get();
+                $uuidInDB = null;
+                if(count($uuidList) < 1)
+                {
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000905_deviceNotRegistered
+                        .'&message='
+                        .'Device Not Registered');
+                    $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
+                        'message'=>'Device Not Registered',
+                        'content'=>array("redirect_uri"=>$finalUrl)]);
+                    CommonUtil::logApi("", $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
+                }
+                else
+                {
+                    $uuidInDB = $uuidList[0];
+                    $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                    if($tempUser->row_id != $uuidInDB->user_row_id)
+                    {
+                        $finalUrl = urlencode($redirect_uri.'?result_code='
+                            .ResultCode::_000904_loginUserNotMathRegistered
+                            .'&message='
+                            .'User Not Match Device');
+                        $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
+                            'message'=>'User Not Match Device',
+                            'content'=>array("redirect_uri"=>$finalUrl)]);
+                        CommonUtil::logApi($tempUser->row_id, $ACTION,
+                            response()->json(apache_response_headers()), $result);
+                        return $result;
+                    }
+                }
+
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $LDAP_SERVER_IP = "LDAP://BQTDC01.benq.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -590,41 +627,7 @@ class qplayController extends Controller
 
                 //Check uuid exist
                 //Check user
-                $uuidList = \DB::table("qp_register")
-                    -> where('uuid', "=", $uuid)
-                    -> where('status', "=", "A")
-                    -> select('row_id','uuid', 'user_row_id')->get();
-                $uuidInDB = null;
-                if(count($uuidList) < 1)
-                {
-                    $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_000905_deviceNotRegistered
-                        .'&message='
-                        .'Device Not Registered');
-                    $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
-                        'message'=>'Device Not Registered',
-                        'content'=>array("redirect_uri"=>$finalUrl)]);
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
-                    return $result;
-                }
-                else
-                {
-                    $uuidInDB = $uuidList[0];
-                    if($user->row_id != $uuidInDB->user_row_id)
-                    {
-                        $finalUrl = urlencode($redirect_uri.'?result_code='
-                            .ResultCode::_000904_loginUserNotMathRegistered
-                            .'&message='
-                            .'User Not Match Device');
-                        $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
-                            'message'=>'User Not Match Device',
-                            'content'=>array("redirect_uri"=>$finalUrl)]);
-                        CommonUtil::logApi($user->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
-                        return $result;
-                    }
-                }
+
 
                 $token = uniqid();  //生成token
                 $nowTimestamp = time();
@@ -1023,7 +1026,7 @@ class qplayController extends Controller
                     $companyAppIdStr = substr($companyAppIdStr, 0, strlen($companyAppIdStr) - 1);
                     $companyAppIdStr = rtrim($companyAppIdStr, ',');
                     $companyAppIdStr = ltrim($companyAppIdStr, ',');
-                    $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
+                    $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url, v.external_app, v.size from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
                         . $userInfo->row_id
                         . " left join qp_project p on h.project_row_id = p.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = '"
                         . $device_type
@@ -1679,8 +1682,9 @@ and um.deleted_at = 0
 and um.user_row_id = $userId
 SQL;
                 if($msg->message_type == 'news') {
+
                     $sql = <<<SQL
-select distinct m.row_id as message_row_id,
+                    select distinct m.row_id as message_row_id,
         ms.row_id as message_send_row_id,
 		   m.message_title,
 			 m.message_type, m.message_text,
@@ -1692,16 +1696,12 @@ select distinct m.row_id as message_row_id,
 from qp_message m, 
 		 qp_message_send ms,
 		 qp_user u1,
-	   qp_user u2,
-		 qp_role_message rm
+	   qp_user u2
 where m.row_id = ms.message_row_id
 and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
-and rm.message_send_row_id = ms.row_id
-and rm.deleted_at = 0
-and rm.role_row_id in (select role_row_id from qp_user_role where user_row_id = $userId)
 SQL;
                 }
 
