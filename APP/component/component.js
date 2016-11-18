@@ -5,7 +5,8 @@
 // appSecretKey => set in QPlayAPI.js under specific APP
 //
 
-var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
+//var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
+var serverURL = "https://qplaytest.benq.com"; // Azure Staging Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 
@@ -163,7 +164,7 @@ function setWhiteList() {
                 var securityList = {
                     level: 2,
                     Navigations: [
-                        "https://qplay.benq.com/*",
+                        "https://qplaytest.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -180,14 +181,14 @@ function setWhiteList() {
                         "https:*"
                     ],
                     Requests: [
-                        "https://qplay.benq.com/*"
+                        "https://qplaytest.benq.com/*"
                     ]
                 };
             } else {
                 var securityList = {
                     level: 2,
                     Navigations: [
-                        "https://qplay.benq.com/*",
+                        "https://qplaytest.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -202,7 +203,7 @@ function setWhiteList() {
                     ],*/
                     Intents: [],
                     Requests: [
-                        "https://qplay.benq.com/*"
+                        "https://qplaytest.benq.com/*"
                     ]
                 };
             }
@@ -414,7 +415,7 @@ function readConfig() {
     //according to the versionName, change the appKey
     if (loginData["versionName"].indexOf("Staging") !== -1) {
         appKey = appKeyOriginal + "test";
-        appApiPath = appApiPath + "Test";
+        //appApiPath = appApiPath + "Test";
         qplayAppKey = qplayAppKey + "test";
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
         appKey = appKeyOriginal + "dev";
@@ -462,7 +463,7 @@ function infoMessage() {
 
 function getLoginDataCallBack() {
     var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
-                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] + 
+                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
                       "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'];
     openAPP(callBackURL);
 

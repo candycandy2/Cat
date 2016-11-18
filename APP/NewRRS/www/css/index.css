@@ -1,0 +1,278 @@
+/*scrollmenu start*/
+div.scrollmenu {
+    background-color: white;
+    overflow: auto;
+    white-space: nowrap;
+    border-style: groove;
+    border-width: 1px 0px 1px 0px;
+    border-color: #e4e4e4 !important;
+}
+
+    div.scrollmenu a {
+        display: inline-block;
+        color: black !important;
+        text-align: center;
+        padding: 14px;
+        text-decoration: none;
+        border-style: groove;
+        border-width: 0px 1px 0px 0px;
+        border-color: #e4e4e4 !important;
+    }
+
+/*div.scrollmenu a:hover {
+            background-color: #d6cadc;
+            color: black !important;
+        }*/
+/*scrollmenu end*/
+
+/*arrow_box start*/
+.arrow_box {
+    position: relative !important;
+    background: #d6cadc !important;
+    /*border: 4px solid #d6cadc !important;*/
+}
+
+    .arrow_box:after, .arrow_box:before {
+        top: 100%;
+        left: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .arrow_box:after {
+        border-color: rgba(136, 183, 213, 0);
+        border-top-color: #d6cadc;
+        border-width: 10px;
+        margin-left: -10px;
+    }
+
+    .arrow_box:before {
+        border-color: rgba(194, 225, 245, 0);
+        border-top-color: #d6cadc;
+        border-width: 16px;
+        margin-left: -16px;
+    }
+
+/*arrow_box end*/
+
+/*override jQuery Mobile start*/
+.ui-controlgroup-controls {
+    width: 100%;
+}
+
+.ui-radio-30 div.ui-radio {
+    width: 33%;
+}
+
+.ui-radio-50 div.ui-radio {
+    width: 50%;
+}
+
+.ui-btn-active {
+    background-color: #d6cadc !important;
+    border-color: #d6cadc !important;
+    color: black !important;
+}
+
+a.ui-btn-active {
+    background-color: #f9f9f9 !important;
+    border-color: #f9f9f9 !important;
+    color: #471e86 !important;
+    border-left-color: #808080 !important;
+    border-left-width: 2px;
+}
+
+div.ui-bar {
+    height: 60px !important;
+    text-align: center !important;
+    /*line-height: 60px !important;*/
+}
+
+    div.ui-bar > div {
+        margin: 0px;
+    }
+
+        div.ui-bar > div:first-child {
+            margin-top: 10px;
+        }
+
+.ui-content {
+    padding-left: 0em !important;
+    padding-right: 0em !important;
+}
+
+    .ui-content > h3 {
+        margin: 15px 0px 0px 15px;
+    }
+
+
+/*override jQuery Mobile end*/
+
+.other-adjust {
+    text-align: left !important;
+    margin-left: 10px !important;
+    margin-bottom: 5px !important;
+    font-size: x-large !important;
+    font-weight: bold !important;
+}
+
+.ui-left-adjust {
+    text-align: left !important;
+    margin-left: 10px !important;
+    margin-top: 5px;
+}
+
+/*public area start*/
+.btn-benq-color {
+    background-color: #471e86 !important;
+    color: white !important;
+}
+
+.ui-benq-color {
+    color: #471e86;
+}
+
+.ui-color-lightblue {
+    color: #85c3f7;
+}
+
+.ui-color-yellow {
+    color: #ffce43;
+}
+
+hr.ui-color-yellow {
+    border: 0 !important;
+    height: 1px !important;
+    background-color: #ffce43 !important;
+    border-color: #ffce43 !important;
+}
+
+.ui-color-green {
+    color: #34823a;
+}
+
+.margin-10 {
+    margin: 10px;
+}
+
+.col-95 {
+    width: 95% !important;
+}
+
+.col-9 {
+    width: 90% !important;
+}
+
+.col-8 {
+    width: 80% !important;
+}
+
+.col-7 {
+    width: 70% !important;
+}
+
+.col-6 {
+    width: 60% !important;
+}
+
+.col-5 {
+    width: 50% !important;
+}
+
+.col-4 {
+    width: 40% !important;
+}
+
+.col-3 {
+    width: 30% !important;
+}
+
+.col-2 {
+    width: 20% !important;
+}
+
+.col-1 {
+    width: 10% !important;
+}
+
+.ui-color-free {
+    background-color: white;
+}
+
+.ui-color-reserve {
+    background-color: #fff8e1;
+}
+
+.ui-color-noreserve {
+    background-color: #e4e4e4;
+}
+
+#div-icon-discribe {
+    text-align: center;
+    margin-top: 10px;
+}
+
+    #div-icon-discribe > div {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+    }
+
+    #div-icon-discribe > h3 {
+        display: inline-block;
+        margin: 0;
+    }
+
+    #div-icon-discribe > a {
+        width: 100%;
+        margin: 10px auto;
+    }
+
+.ui-grid-c {
+    padding: 10px;
+}
+
+    .ui-grid-c > div {
+        height: 60px !important;
+        /*text-align: center !important;*/
+        border-width: 1px;
+        border-style: groove;
+        padding-left: 15px;
+    }
+
+        .ui-grid-c > div > div {
+            display: inline-block;
+            margin-left: 0px;
+        }
+
+            .ui-grid-c > div > div:first-child {
+                width: 10px;
+                height: 10px;
+                margin-top: 10px;
+            }
+
+#page-two {
+    text-align: center;
+}
+
+.div-btn-area a {
+    display: inline-block;
+}
+
+.div-setting-area {
+    margin-top: 50px;
+}
+
+    .div-setting-area a:link {
+        text-decoration: none;
+        color: black;
+    }
+
+
+/*public area start*/
+
+
