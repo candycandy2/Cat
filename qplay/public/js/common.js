@@ -48,6 +48,9 @@ function getDateTime(date){
 }
 
 function convertUTCToLocalDateTime(UTCdate){
+   if(UTCdate == '0000-00-00 00:00:00'){
+        return '-';
+   }
    var date = new Date(UTCdate + ' AM UTC');
    return getDateTime(date);
 }
