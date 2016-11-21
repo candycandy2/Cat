@@ -226,9 +226,12 @@ return [
     'NEW_ICON' => '新增大圖示',
     'SCREENSHOT' => '螢幕擷取畫面',
     'UPLOAD_NEW_VERSION' => '上傳新版本',
+    'UPLOAD_NEW_EXTERNAL_LINK' => '新增外部連結',
+    'EXTERNAL_LINK' => '連結',
     'VERSION_NAME' => '版本名稱',
     'VERSION_NO' => '版本號',
     'VERSION_URL' => '版本路徑',
+    'VERSION_LOG' => '版本描述',
     'UPLOAD_TIME'=>'上傳時間',
     'VERSION_STATUS'=>'狀態',
     'EDIT_VERSION' => '修改版本',
@@ -261,6 +264,7 @@ return [
     'ERR_JSON_PARSING_ERROR' => 'json 檔案解析失敗，請確認上傳檔案內容!',
     'ERR_APP_KEY_INCORRECT_ERROR' => '上傳檔案appkey與專案不符，請確認上傳檔案內容!',
     'ERR_VERSION_NO_DUPLICATE' => '版本號不可重複',
+    'ERR_VERSION_NAME_DUPLICATE' => '版本名稱不可重複',
 
     //Project Maintain
     'PROJECT_CODE' => '專案代碼',

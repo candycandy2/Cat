@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="css/component.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <script type="text/javascript" src="js/lib/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.mobile-1.4.5.min.js"></script>
+
+</head>
+<body>
+    <div data-role="page" id="viewDataInput" class="viewIndex">
+        <div class="ios-fix-overlap-div"></div>
+        <div data-role="header" data-position="fixed" class="page-header">
+            <div class="header-style">
+                <h1 class="ui-title">偏好設置</h1>
+            </div>
+        </div>
+
+        <div data-role="main" class="page-main">
+            <div class="margin-10">
+                <div class="arrow_box" style="padding-right: 10px;">
+                    <fieldset class="ui-grid-b">
+                        <div class="ui-block-a col-2">
+                            <h3 style="text-align:center;">名稱</h3>
+                        </div>
+                        <div class="ui-block-b col-8">
+                            <input name="Title" id="Title" type="text" />
+                        </div>
+                        <div class="ui-block-a col-2">
+                            <h3 style="text-align:center;">地點</h3>
+                        </div>
+                        <div class="ui-block-b col-8">
+                            <select name="Site" id="Site">
+                                <option value="BQT/QTT">BQT/QTT</option>
+                                <option value="BQT/QTT">BQT/QTT</option>
+                                <option value="BQT/QTT">BQT/QTT</option>
+                                <option value="BQT/QTT">BQT/QTT</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                </div>
+                <div style="text-align:center;margin-top:15px;"><h3>    偏好選擇</h3></div>
+            </div>
+            <div class="margin-10">
+                <div class="ui-left-adjust"><h3>人數</h3></div>
+                <fieldset data-role="controlgroup" data-type="horizontal" class="ui-radio-30">
+                    <input type="radio" name="num" id="num-1" value="on" checked="checked">
+                    <label for="num-1">不限</label>
+                    <input type="radio" name="num" id="num-2" value="off">
+                    <label for="num-2">2-8人</label>
+                    <input type="radio" name="num" id="num-3" value="other">
+                    <label for="num-3">8人以上</label>
+                </fieldset>
+            </div>
+            <div class="margin-10">
+                <div class="ui-left-adjust"><h3>時段</h3></div>
+                <fieldset data-role="controlgroup" data-type="horizontal" class="ui-radio-50">
+                    <input type="radio" name="time" id="time-1" value="on" checked="checked">
+                    <label for="time-1">不限</label>
+                    <input type="radio" name="time" id="time-2" value="off">
+                    <label for="time-2">2-8人</label>
+                </fieldset>
+            </div>
+            <div class="margin-10">
+                <div class="ui-left-adjust"><h3>樓層</h3></div>
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">
+                        <div class="ui-bar ui-bar-a ui-btn-active">不限</div>
+                    </div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-a">1F</div></div>
+                    <div class="ui-block-c"><div class="ui-bar ui-bar-a ">1F</div></div>
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-a">1F</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-a">1F</div></div>
+                    <div class="ui-block-c"><div class="ui-bar ui-bar-a">1F</div></div>
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-a">1F</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-a">1F</div></div>
+                    <div class="ui-block-c"><div class="ui-bar ui-bar-a">1F</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
