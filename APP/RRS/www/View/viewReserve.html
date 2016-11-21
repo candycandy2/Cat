@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="../css/lib/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/component.css">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <script type="text/javascript" src="../js/lib/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery.mobile-1.4.5.min.js"></script>
+    <!-- <script type="text/javascript">
+        $(function () {
+            $('#tab-two').trigger('click');
+        });</script> -->
+</head>
+
+<body>
+    <div data-role="page" id="viewReserve" class="viewIndex">
+        <div class="ios-fix-overlap-div"></div>
+        <div data-role="header" data-position="fixed" class="page-header">
+            <div id="container" class="header-style">
+                <div id="left" class="ui-title"></div>
+                <div id="center" class="ui-title"></div>
+                <div id="right" class="ui-title">
+                <a href="#viewMyReserve">我的預約</a></div>
+            </div>
+        </div>
+        <div data-role="main" class="page-main">
+            <div data-role="tabs">
+                <div id="navbar" data-role="navbar">
+                    <ul>
+                        <li>
+                            <a href="#page-one" class="ui-btn-active">
+                                <span style="font-size: larger;">一般預約</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#page-two">
+                                <span style="font-size: larger;">快速預約</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ui-content" id="page-one">
+                    <div id="scroll-date" class="scrollmenu">
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="" class="arrow_box">8/23<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                        <a href="">8/29<br />(一)</a>
+                    </div>
+                    <select name="Site" id="Site">
+                        <option value="1F">
+                            <h2>1F</h2></option>
+                        <option value="1F">
+                            <h2>1F</h2></option>
+                        <option value="1F">
+                            <h2>1F</h2></option>
+                        <option value="1F">
+                            <h2>1F</h2></option>
+                    </select>
+                    <div id="scroll-room" class="scrollmenu">
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                        <a href="">T01</a>
+                    </div>
+                    <h3 style="padding-left:3%;">開始使用時間</h3>
+                    <div id="main-grid-select" class="ui-margin-10">
+                        <div class="ui-grid-c">
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a ui-color-reserve">
+                                    <span></span><span>08:30</span></div>
+                            </div>
+                            <div id="noreserv" class="ui-block-b">
+                                <div class="ui-bar ui-bar-a ui-color-noreserve">
+                                    <span></span>
+                                    <span>09:30</span>
+                                    <br>
+                                    <span>Steven Yan</span></div>
+                            </div>
+                            <div id="select-item" class="ui-block-c">
+                                <div class="ui-bar ui-bar-a ui-color-reserve">
+                                    <span></span><span>08:30</span></div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a">不限</div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div class="ui-bar ui-bar-a">1F</div>
+                            </div>
+                            <div class="ui-block-c">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a">不限</div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div class="ui-bar ui-bar-a">1F</div>
+                            </div>
+                            <div class="ui-block-c">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a">不限</div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div class="ui-bar ui-bar-a">1F</div>
+                            </div>
+                            <div class="ui-block-c">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a">不限</div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div class="ui-bar ui-bar-a">1F</div>
+                            </div>
+                            <div class="ui-block-c">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">1F</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="icon-discribe">
+                        <div class="ui-color-free">
+                        </div>
+                        <h3>有空</h3>
+                        <div class="ui-color-reserve"></div>
+                        <h3>我的預約</h3>
+                        <div class="ui-color-noreserve"></div>
+                        <h3>不可預約</h3>
+                    </div>
+                    <a href="#Reserve" class="btn-benq ui-btn ui-shadow ui-corner-all col-4">預約</a>
+                </div>
+                <div class="ui-content" id="page-two">
+                    <div id="main-select" class="ui-margin-10">
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a col-2">
+                                <h3>我要預約</h3>
+                            </div>
+                            <div class="ui-block-b col-8">
+                                <select name="Site" id="Site">
+                                    <option value="BQT/QTT">BQT/QTT</option>
+                                    <option value="BQT/QTT">BQT/QTT</option>
+                                    <option value="BQT/QTT">BQT/QTT</option>
+                                    <option value="BQT/QTT">BQT/QTT</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="grid-select">
+                        <div class="ui-grid-d">
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a ui-btn-active">8/29
+                                    <br>(一)
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div class="ui-bar ui-bar-a">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-c">
+                                <div class="ui-bar ui-bar-a ">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-e">
+                                <div class="ui-bar ui-bar-a ">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-a">
+                                <div class="ui-bar ui-bar-a">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div class="ui-bar ui-bar-a">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-c">
+                                <div class="ui-bar ui-bar-a">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-d">
+                                <div class="ui-bar ui-bar-a ">8/29
+                                    <br>(一)</div>
+                            </div>
+                            <div class="ui-block-e">
+                                <div class="ui-bar ui-bar-a ">8/29
+                                    <br>(一)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-color-green">
+                        <h2>T121會議室可使用</h2>
+                    </div>
+                    <div id="btn-area">
+                        <a href="#Cancel" class="btn-benq ui-btn ui-shadow ui-corner-all col-3">我再想想</a>
+                        <a href="#Reserve" class="btn-benq ui-btn ui-shadow ui-corner-all col-3">立即預約</a>
+                    </div>
+                    <div id="setting-area"><a href="#viewSettingList">偏好設置</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
