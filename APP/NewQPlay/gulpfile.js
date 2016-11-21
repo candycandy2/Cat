@@ -38,8 +38,8 @@ var patchFolder = "patch";
 
 if (env === "test") {
     appNameDecorate = "test";
-    appVersionDecorate = "Staging";
-    apiPath = "qplayApiTest";
+    appVersionDecorate = "NewStaging";
+    //apiPath = "qplayApiTest";
     QPushAPPKey = "33938c8b001b601c1e647cbd";
     patchFolder = "patchTest";
 } else if (env === "dev") {
@@ -50,7 +50,7 @@ if (env === "test") {
 
 var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string>";
 
-var configContent =   '<?xml version="1.0" encoding="utf-8"?>' + 
+var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         '<name>QPlay</name>' +
@@ -103,7 +103,7 @@ gulp.task('install', shell.task([
     'cordova platform rm android',
     'cordova platform add ios',
     'cordova platform add android',
-    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplay.benq.com/' + apiPath + '/public/qplayauth_register',
+    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=https://qplaytest.benq.com/' + apiPath + '/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
     'cordova plugin add cordova-plugin-device',
     'cordova plugin add cordova-plugin-splashscreen',
