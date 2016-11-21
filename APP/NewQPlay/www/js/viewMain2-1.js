@@ -50,11 +50,20 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             for (var appindex=0; appindex<applist.length; appindex++) {
                                 var appcategory = applist[appindex].app_category;
                                 if (appcategory == catetoryname){
+
+                                    //Multi Language
+                                    for (var i=0; i<appmultilang.length; i++) {
+                                        if (appmultilang[i].project_code == applist[appindex].app_code) {
+                                            if (appmultilang[i].lang == "zh-tw") {
+                                                var packagename = appmultilang[i].app_name;
+                                            }
+                                        }
+                                    }
+
                                     var appurl = applist[appindex].url;
                                     var appurlicon = applist[appindex].icon_url;
-                                    var packagename = applist[appindex].package_name;
                               
-                                    carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
+                                    carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename + "</p></div>";
                               
                                     $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
                               
