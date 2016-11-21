@@ -5,8 +5,7 @@
 // appSecretKey => set in QPlayAPI.js under specific APP
 //
 
-//var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
-var serverURL = "https://qplaytest.benq.com"; // Azure Staging Server
+var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 
@@ -340,7 +339,7 @@ function getSecurityList() {
                 'Signature': signatureInBase64,
                 'token': loginData.token
             },
-            url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
+            url: serverURL + "/qplayApi/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
             dataType: "json",
             cache: false,
             success: self.successCallback,
@@ -415,10 +414,11 @@ function readConfig() {
     //according to the versionName, change the appKey
     if (loginData["versionName"].indexOf("Staging") !== -1) {
         appKey = appKeyOriginal + "test";
-        //appApiPath = appApiPath + "Test";
+        serverURL = "https://qplaytest.benq.com"; // Staging API Server
         qplayAppKey = qplayAppKey + "test";
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
         appKey = appKeyOriginal + "dev";
+        serverURL = "https://qplaydev.benq.com"; // Development API Server
         qplayAppKey = qplayAppKey + "test";
     }
 
