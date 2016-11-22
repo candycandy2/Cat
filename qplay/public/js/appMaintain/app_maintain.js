@@ -112,6 +112,9 @@ $(function () {
                 },
                 errorCodeFile:{
                     accept:"json"
+                },
+                ddlAppCategory:{
+                    required:true
                 }
             }, 
             groups: {
