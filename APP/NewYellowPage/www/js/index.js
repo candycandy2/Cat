@@ -22,5 +22,44 @@ window.initialSuccess = function() {
     });
 
 }
-//console.log($.mobile.pageContainer.pagecontainer("getActivePage"));
 
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+    if (activePageID === "viewDataInput") {
+
+        if (checkPopupShown()) {
+            $.mobile.changePage('#viewDataInput');
+        } else {
+            navigator.app.exitApp();
+        }
+
+    } else if (activePageID === "viewQueryResult") {
+
+        $.mobile.changePage('#viewDataInput');
+
+    } else if (activePageID === "viewDetailInfo") {
+
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+        } else {
+            $.mobile.changePage('#' + prevPageID);
+        }
+
+    } else if (activePageID === "viewPhonebook") {
+
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+        } else {
+            //If User is doing edit phonebook, cancel edit mode.
+            if ($("#phonebookEditBtn").css("display") === "block") {
+                cancelEditMode();
+            } else {
+                $.mobile.changePage('#viewDataInput');
+            }
+        }
+
+    }
+}
