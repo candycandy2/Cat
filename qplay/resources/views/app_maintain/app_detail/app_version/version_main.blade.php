@@ -206,8 +206,11 @@ function versionLogDateFormatter(value, row){
         var versionLog = value.replace(/\n/g,"<br />");
        return versionLog;
     }
-    return '-';
-    
+    return '-';   
+}
+
+function fileSizeFormatter(value, row){
+    return formatSizeUnits(value);
 }
 
 var newAppVersion = function (device){
@@ -216,6 +219,7 @@ var newAppVersion = function (device){
         $dialogObj.find('#versionFile').val("");
         $dialogObj.find('.file-input-name').text("");
         $dialogObj.find('input[type=text]').val("");
+        $dialogObj.find('textarea').val("");
         $dialogObj.find('span.error').html("");
         $dialogObj.modal('show');
 }
@@ -314,6 +318,7 @@ var uploadNewVersion = function(){
     if(errors.length > 0){
         return false;
     }
+   
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
@@ -325,6 +330,8 @@ var uploadNewVersion = function(){
     newVersion.version_name = versionName;
     newVersion.version_log  = versionLog;
     newVersion.version_file = $('#versionFile')[0].files[0];
+    newVersion.size = $('#versionFile')[0].files[0].size;
+    //newVersion.size = formatFloat($('#versionFile')[0].files[0].size/1024/1024,2) + 'MB';
     newVersion.external_app = 0;
     currentData.push(newVersion);
     $gridList.bootstrapTable('load', currentData);

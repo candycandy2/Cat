@@ -235,6 +235,7 @@ return [
     'UPLOAD_TIME' => 'Upload time',
     'VERSION_STATUS' => 'Status',
     'EDIT_VERSION' => 'Edit Version',
+    'FILE_SIZE' => 'File Size',
     'TAB_INFORMATION' => 'Information',
     'TAB_PIC_INFORMATION' => 'Icon & Screenshot',
     'TAB_VERSION_CONTROLL'=>'Version Controll',

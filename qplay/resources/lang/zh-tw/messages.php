@@ -235,6 +235,7 @@ return [
     'UPLOAD_TIME'=>'上傳時間',
     'VERSION_STATUS'=>'狀態',
     'EDIT_VERSION' => '修改版本',
+    'FILE_SIZE' => '檔案大小',
     'TAB_INFORMATION' => '應用程式資訊',
     'TAB_PIC_INFORMATION' => '圖示資訊',
     'TAB_VERSION_CONTROLL' => '版本控制',

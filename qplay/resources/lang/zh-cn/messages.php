@@ -235,6 +235,7 @@ return [
     'UPLOAD_TIME' => '上传时间',
     'VERSION_STATUS' => '状态',
     'EDIT_VERSION' => '修改版本',
+    'FILE_SIZE' => '档案大小',
     'TAB_INFORMATION' => '应用程式资讯',
     'TAB_PIC_INFORMATION' => '图示资讯',
     'TAB_VERSION_CONTROLL' => '版本控制',
