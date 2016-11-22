@@ -30,6 +30,7 @@ var loginData = {
 };
 var queryData = {};
 var getDataFromServer = false;
+var popupID;
 
 var app = {
     // Application Constructor
@@ -57,6 +58,9 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        //[Android]Handle the back button, set in index.js
+        document.addEventListener("backbutton", onBackKeyDown, false);
 
         //[device] data ready to get on this step.
         readConfig();
@@ -123,6 +127,18 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
+
+//[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
+function checkPopupShown() {
+    if ($(".ui-popup-active").length > 0) {
+        popupID = $(".ui-popup-active")[0].children[0].id;
+        return true;
+    } else {
+        popupID = "";
+        return false;
+    }
+}
+
 //Plugin-QSecurity 
 function setWhiteList() {
 
@@ -439,7 +455,7 @@ function readConfig() {
     var whiteList = new setWhiteList();
 
     //Plugin-QPush
-    if (appKey === qplayAppKey && device.platform === "Android") {
+    if (appKey === qplayAppKey) {
         //初始化JPush
         window.plugins.QPushPlugin.init();
         window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
@@ -451,9 +467,9 @@ function infoMessage() {
     loadingMask("show");
 
     var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
-                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
-                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
                 '<p style="padding:0 5%">' + loginData["loginid"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
                 '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
               '</div>';
 
