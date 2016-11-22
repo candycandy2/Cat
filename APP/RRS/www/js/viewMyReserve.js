@@ -1,86 +1,102 @@
-$(document).one("pagecreate", "#viewMyReserve", function() {
+    $(document).one("pagecreate", "#viewMyReserve", function() {
 
-    var myReserveData = {};
-    var date = new Date();
+        var dict = {
+            "1": "(一)",
+            "2": "(二)",
+            "3": "(三)",
+            "4": "(四)",
+            "5": "(五)"
+        };
 
-    $("#viewMyReserve").pagecontainer({
-        create: function(event, ui) {
+        $("#viewMyReserve").pagecontainer({
+            create: function(event, ui) {
 
-            /********************************** function *************************************/
-            function myReserveHTML(index, BeginTime, EndTime, room) {
-                return '<div class="ui-btn ui-shadow ui-corner-all ui-margin-10"><div class="ui-grid-b">'
-                        +   '<div class="ui-block-a ui-padding-8 col-5"><h1 class="ui-benq-color">' + room + ' - ' + room + '</h1></div'
-                        +   '<div class="ui-block-b col-3"><h1 class="ui-benq-color">' + room + '</h1></div>'
-                        +   '<div class="ui-block-c col-2"><a href="#Cancel" value="' + index.toString() + '" name="cancelIndex" class="btn-benq ui-btn ui-shadow ui-corner-all">取消</a></div>'
-                        + '</div></div>';
-            }
+                /********************************** function *************************************/
 
-            function queryMyReserve() {
+                function queryMyReserve() {
 
-                var self = this;
+                    var self = this;
 
-                this.successCallback = $.getJSON('../js/MyReserve', function(data) {
+                    this.successCallback = $.getJSON('../js/MyReserve', function(data) {
 
-                    myReserveData = data['content'];
-                    // var asc = 'asc';
-                    // sortResults('ReserveDate', asc);
+                        if (data['result_code'] === "1") {
 
-                    if (data['result_code'] === "1") {
+                            var htmlContent_today = "";
+                            var htmlContent_other = "";
 
-                        var htmlContent = "";
+                            sortResults(data['content'], 'ReserveDate', 'asc');
 
-                        // today
-                        if (data['ReserveDate'] == date.yyyymmdd()) {
+                            for (var i = 0, item; item = data['content'][i]; i++) {
+                                if (item.ReserveDate == new Date().yyyymmdd()) {
 
-                            for (var i = 0; i < data['Content'].length; i++) {
-
-                                var content = htmlContent + myReserveHTML(
-                                    data['Content'][i].ReserveTraceAggID, 
-                                    data['Content'][i].ReserveBeginTime, 
-                                    data['Content'][i].ReserveEndTime, 
-                                    data['Content'][i].MeetingRoomName);
-
-                                htmlContent = content;
+                                    htmlContent_today
+                                        += replace_str($('#today').get(0).outerHTML, item);
+                                } else {
+                                    htmlContent_other
+                                        += replace_str($('#other-day').get(0).outerHTML, item);
+                                }
                             }
 
-                            $("#myReserve").html(htmlContent).enhanceWithin();
+                            $("#today").remove();
+                            $("#other-day").remove();
+                            $("#today-line").after(htmlContent_today);
+                            $("#other-day-line").after(htmlContent_other);
 
+                        } else {
+                            //ResultCode = 001901, [no data]
                         }
+                    });
 
-                    } else {
-                        //ResultCode = 001901, [no data]
-                    }
+                    // this.failCallback = function(data) {};
+
+                    // var __construct = function() {
+                    //     QPlayAPI("POST", "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData);
+                    // }();
+
+                }
+
+                /********************************** page event *************************************/
+                $("#viewMyReserve").on("pagebeforeshow", function(event, ui) {
+                    // loadingMask("show");
+                    queryMyReserve();
                 });
 
-                this.failCallback = function(data) {};
+                /********************************** dom event *************************************/
+                function replace_str(content, item) {
 
-                // var __construct = function() {
-                //     QPlayAPI("POST", "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData);
-                // }();
+                    // convert yyyymmdd to yyyy/mm/dd
+                    var match = item.ReserveDate.match(/(\d{4})(\d{2})(\d{2})/);
+                    var newDateStr = match[2] + '/' + match[3] + '/' + match[1];
 
+                    // convert date format to mm/dd(day of week)
+                    var d = new Date(newDateStr);
+                    var date_format =
+                        d.getMonth() + 1 + '/' +
+                        d.getDate() +
+                        dict[d.getDay()];
+
+                    return content
+                        .replace('Begin', item.ReserveBeginTime)
+                        .replace('End', item.ReserveEndTime)
+                        .replace('room', item.MeetingRoomName)
+                        .replace('index', item.ReserveTraceAggID)
+                        .replace('date', date_format);
+                }
+
+                function sortResults(data, prop, asc) {
+                    data = data.sort(function(a, b) {
+                        if (asc) return (a[prop] > b[prop]);
+                        else return (b[prop] > a[prop]);
+                    });
+                }
+
+                Date.prototype.yyyymmdd = function() {
+                    var yyyy = this.getFullYear().toString();
+                    var mm = (this.getMonth() + 1).toString();
+                    var dd = this.getDate().toString();
+                    return yyyy + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" + dd[0]);
+                };
             }
+        });
 
-            /********************************** page event *************************************/
-            $("#viewMyReserve").on("pagebeforeshow", function(event, ui) {
-                // loadingMask("show");
-                queryMyReserve();
-            });
-
-            /********************************** dom event *************************************/
-            function sortResults(prop, asc) {
-                myReserveData = myReserveData.sort(function(a, b) {
-                    if (asc) return (a[prop] > b[prop]);
-                    else return (b[prop] > a[prop]);
-                });
-            }
-
-            Date.prototype.yyyymmdd = function() {
-                var yyyy = this.getFullYear().toString();
-                var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based 
-                var dd = this.getDate().toString();
-                return yyyy + "/" + (mm[1] ? mm : "0" + mm[0]) + "/" + (dd[1] ? dd : "0" + dd[0]); // padding 
-            };
-        }
     });
-
-});
