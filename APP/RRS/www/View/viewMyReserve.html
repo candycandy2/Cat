@@ -13,14 +13,14 @@
     <script type="text/javascript" src="../js/lib/jquery.mobile-1.4.5.min.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="../js/viewMyReserve.js"> -->
     <script>
-    $(document).one("pagecreate", "#viewMyReserve", function() {
+    $(document).one('pagecreate', '#viewMyReserve', function() {
 
         var dict = {
-            "1": "(一)",
-            "2": "(二)",
-            "3": "(三)",
-            "4": "(四)",
-            "5": "(五)"
+            '1': '(一)',
+            '2': '(二)',
+            '3': '(三)',
+            '4': '(四)',
+            '5': '(五)'
         };
 
         $("#viewMyReserve").pagecontainer({
@@ -32,12 +32,12 @@
 
                     var self = this;
 
-                    this.successCallback = $.getJSON('../js/MyReserve', function(data) {
+                    this.successCallback = $.getJSON('../js/QueryMyReserve', function(data) {
 
-                        if (data['result_code'] === "1") {
+                        if (data['result_code'] === '1') {
 
-                            var htmlContent_today = "";
-                            var htmlContent_other = "";
+                            var htmlContent_today = '';
+                            var htmlContent_other = '';
 
                             sortResults(data['content'], 'ReserveDate', 'asc');
 
@@ -52,10 +52,10 @@
                                 }
                             }
 
-                            $("#today").remove();
-                            $("#other-day").remove();
-                            $("#today-line").after(htmlContent_today);
-                            $("#other-day-line").after(htmlContent_other);
+                            $('#today').remove();
+                            $('#other-day').remove();
+                            $('#today-line').after(htmlContent_today);
+                            $('#other-day-line').after(htmlContent_other);
 
                         } else {
                             //ResultCode = 001901, [no data]
@@ -71,7 +71,7 @@
                 }
 
                 /********************************** page event *************************************/
-                $("#viewMyReserve").on("pagebeforeshow", function(event, ui) {
+                $('#viewMyReserve').on('pagebeforeshow', function(event, ui) {
                     // loadingMask("show");
                     queryMyReserve();
                 });
@@ -109,7 +109,7 @@
                     var yyyy = this.getFullYear().toString();
                     var mm = (this.getMonth() + 1).toString();
                     var dd = this.getDate().toString();
-                    return yyyy + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" + dd[0]);
+                    return yyyy + (mm[1] ? mm : '0' + mm[0]) + (dd[1] ? dd : '0' + dd[0]);
                 };
             }
         });
