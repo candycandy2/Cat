@@ -127,6 +127,11 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 doRefresh = false;
             }
 
+            window.cancelEditMode = function() {
+                $('.edit-checkbox').hide();
+                $('#myPhonebookList .ui-checkbox').hide();
+                $('#phonebookEditBtn').hide();
+            };
             /********************************** page event *************************************/
             $("#viewPhonebook").on("pagebeforeshow", function(event, ui){
                 loadingMask("show");
@@ -148,9 +153,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                     $('#viewPhonebook :checkbox').prop('checked', false);
                     $('#viewPhonebook #unselectAll').hide();
                } else {
-                    $('.edit-checkbox').hide();
-                    $('#myPhonebookList .ui-checkbox').hide();
-                    $('#phonebookEditBtn').hide();
+                    cancelEditMode();
                }
             });
 
