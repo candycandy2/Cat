@@ -153,7 +153,7 @@
                 <label class="control-label col-sm-2" for="email">{{trans('messages.APP_CATEGORY')}}</label>
                 <div class="col-sm-10">
                     <select name="ddlAppCategory" class="form-control selectpicker" id="ddlAppCategory">
-                    <option value="0"  style="background: #333; color: #fff;">{{trans('messages.NON_CATEGORY')}}</option>
+                    <option value="" disabled selected>{{trans('messages.MSG_SELECT_CATEGORY')}}</option>
                     @foreach ($categoryList as $category)
                         @if ($category->row_id == $categoryId)
                         <option value="{{$category->row_id}}" selected>{{$category->app_category}}</option>
@@ -177,6 +177,7 @@
                     <small class="text-muted" id="securityLevelHint"></small>
                 </div>
             </div>
+            @if($appData->app_key != 'appqplay')
             <div class="form-group">
                 <label class="control-label col-sm-2" for="userApp">{{trans('messages.USER_SETTING')}}</label>
                 <div class="col-sm-10">
@@ -312,6 +313,7 @@
                    
                 </div>
             </div>
+            @endif
         </form>
     </div>
 </div>
