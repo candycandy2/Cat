@@ -64,6 +64,9 @@ var app = {
 
         //[device] data ready to get on this step.
         readConfig();
+
+        //for touch overflow content Enabled
+        $.mobile.touchOverflowEnabled = true;
     },
     onGetRegistradionID: function (data){
         try {
