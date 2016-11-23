@@ -74,9 +74,13 @@ h1 {
 }
 
 .ui-btn-active {
-    background-color: #d6cadc !important;
+    background-color: #d6cadc;
     border-color: #d6cadc !important;
     color: black !important;
+}
+
+.ui-controlgroup-controls label.ui-btn-active {
+    background-color: #d6cadc !important;
 }
 
 .ui-controlgroup-controls {
@@ -191,6 +195,16 @@ h1 {
 #icon-discribe > h3 {
     display: inline-block;
     margin: 0;
+}
+
+#cntIcon {
+    width: 20%;
+    height: 40%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    font-size: large;
 }
 
 

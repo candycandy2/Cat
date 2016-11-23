@@ -448,7 +448,7 @@ class AppMaintainController extends Controller
             return null;
         }
         $input = Input::get();
-         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
+        if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
         $appRowId = $input["app_row_id"];
@@ -476,7 +476,7 @@ class AppMaintainController extends Controller
         $appVersionList = \DB::table("qp_app_version")
                 -> where('app_row_id', '=', $appRowId)
                 -> where('device_type', '=', $deviceType)
-                -> select('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'status','created_at')
+                -> select('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status', 'created_at')
                 -> get();
         foreach ($appVersionList as $appVersion) {
             if($appVersion->external_app == 1){
@@ -1132,6 +1132,7 @@ class AppMaintainController extends Controller
                      $saveId[] = $value['row_id'];
                 }else{//new
                     if($value['external_app']==0){//file upload
+                        $data['size'] =($value['size'] == 'null')?0:$value['size'];
                         $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
                         if(isset($value['version_file'])){
                             $value['version_file']->move($destinationPath,$value['url']);

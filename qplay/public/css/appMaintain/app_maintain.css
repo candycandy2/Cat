@@ -39,6 +39,11 @@ table.costum-table {
 .icon-preview{
     width: 120px; 
     height: 120px;
+    cursor:auto !important;
+}
+.js-icon-file {
+    opacity: 1 !important;
+    cursor:pointer !important;
 }
 .screen-upl-btn{
     background: url() no-repeat center 50% #FFFAD9;
