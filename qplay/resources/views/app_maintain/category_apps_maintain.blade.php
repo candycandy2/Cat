@@ -34,9 +34,6 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         <div class="col-lg-12 col-xs-12">
             <hr class="primary" style="border-top: 1px solid #bbb1b1;">
             <div id="toolbar">
-                <button type="button" class="btn btn-danger" onclick="RemoveApp()" id="btnDelete">
-                    {{trans("messages.REMOVE")}}
-                </button>
                 <button type="button" class="btn btn-primary" onclick="AddApp()" id="btnAdd">
                     {{trans("messages.ADD_APP")}}
                 </button>
@@ -50,7 +47,6 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                    data-click-to-select="false" data-single-select="false">
                 <thead>
                 <tr>
-                    <th data-field="state" data-checkbox="true"></th>
                     <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
                     <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
                     <th data-field="app_name" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
@@ -65,6 +61,9 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
     <script>
 
         function iconFormatter(value, row) {
+            if(row.icon_url == ""){
+                return "";
+            }
             return '<img src="' +'app/'+row.row_id+'/icon/'+row.icon_url + '" class="img-rounded"  width="90" height="90">';
         };
 
@@ -157,31 +156,6 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 });
             });
         }
-
-        var RemoveApp = function () {
-
-            var selectedApps = $gridList.bootstrapTable('getSelections');
-            var currentData = $gridList.bootstrapTable('getData');
-            var appNameArr = new Array();
-            $.each(selectedApps, function(i, app) {
-                appNameArr.push(app.app_name)
-            });
-            
-            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_REMOVE_APP")}}",appNameArr.join("、"), function () {
-                hideConfirmDialog();
-                
-                $.each(selectedApps, function(i, app) {
-                    for(var j = 0; j < currentData.length; j++) {
-                        if(currentData[j].row_id == app.row_id) {
-                            currentData.splice(j,1);
-                            break;
-                        }
-                    }
-                });
-                $gridList.bootstrapTable('load', currentData);
-                selectedChanged();
-            });
-        };
     </script>
 @endsection
 

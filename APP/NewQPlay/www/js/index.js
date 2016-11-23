@@ -27,6 +27,9 @@ window.initialSuccess = function(data) {
                 messageRowId = window.localStorage.getItem("messageRowId");
                 $.mobile.changePage("#viewWebNews2-3-1");
             } else {
+                $.mobile.changePage('#viewMain2-1', {
+                    reloadPage: true
+                });
                 $.mobile.changePage('#viewMain2-1');
             }
         }
