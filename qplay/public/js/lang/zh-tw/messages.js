@@ -11,5 +11,6 @@ var Messages = {
     MSG_NOT_COMPLETE : '資訊未填寫完成',
     ERR_DUPLICATE_API_ACTION : '已存在相同版本的API action',
     ERR_SCREENSHOT_FILE_LIMIT : '螢幕擷取畫面僅能上傳%s張，您選擇了%l張',
-    ERR_SCREENSHOT_SCALE_LIMIT : '檔案大小，僅接受 %s * %l'
+    ERR_SCREENSHOT_SCALE_LIMIT : '檔案大小，僅接受 %s * %l',
+    ERR_QPLAY_MUST_PUBLISH : 'QPlay 必須要有一個發佈版本，請將版本%s設定為發佈',
 }

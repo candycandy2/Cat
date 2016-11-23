@@ -11,5 +11,6 @@ var Messages = {
     MSG_NOT_COMPLETE : '资讯未填写完成',
     ERR_DUPLICATE_API_ACTION : '已存在相同版本的API action',
     ERR_SCREENSHOT_FILE_LIMIT : '萤幕撷取画面仅能上传%s张，您选择了%l张',
-    ERR_SCREENSHOT_SCALE_LIMIT : '档案大小，仅接受 %s * %langMap'
+    ERR_SCREENSHOT_SCALE_LIMIT : '档案大小，仅接受 %s * %langMap',
+    ERR_QPLAY_MUST_PUBLISH : 'QPlay 必须要有一个发布版本，请将%s狀態设定为发布',
 }
