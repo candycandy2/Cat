@@ -35,19 +35,24 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 var appranking = applist[selectAppIndex].avg_score;
 
+                var platform = device.platform.toLowerCase();
                 var content = "";
                 var piclist = appmultilang[multilangIndex].pic_list;
+                var indexNow = 0;
                 for (var listIndex=0; listIndex<piclist.length; listIndex++)
                 {
-                    (function(indexNow){
+                    if (piclist[listIndex].pic_type === platform + "_screenshot") {
                         $('#appDetailPicList').trigger('remove.owl.carousel', indexNow);
-                    }(listIndex));
+                        indexNow++;
+                    }
                 }
 
                 for (listIndex=0; listIndex<piclist.length; listIndex++)
                 {
-                    content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
-                    $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
+                    if (piclist[listIndex].pic_type === platform + "_screenshot") {
+                        content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
+                        $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
+                    }
                 }
 
                 var __construct = function() {
