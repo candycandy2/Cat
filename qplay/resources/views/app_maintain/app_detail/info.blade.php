@@ -177,6 +177,7 @@
                     <small class="text-muted" id="securityLevelHint"></small>
                 </div>
             </div>
+            @if($appData->app_key != 'appqplay')
             <div class="form-group">
                 <label class="control-label col-sm-2" for="userApp">{{trans('messages.USER_SETTING')}}</label>
                 <div class="col-sm-10">
@@ -312,6 +313,7 @@
                    
                 </div>
             </div>
+            @endif
         </form>
     </div>
 </div>
