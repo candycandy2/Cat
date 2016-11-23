@@ -30,6 +30,7 @@ var loginData = {
 };
 var queryData = {};
 var getDataFromServer = false;
+var popupID;
 
 var app = {
     // Application Constructor
@@ -58,6 +59,9 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
+        //[Android]Handle the back button, set in index.js
+        document.addEventListener("backbutton", onBackKeyDown, false);
+
         //[device] data ready to get on this step.
         readConfig();
     },
@@ -72,7 +76,7 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
-    //添加後台打開通知后需要執行的內容，data.alert為消息內容
+    //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
 
         //If APP not open, check message after checkAppVersion()
         messageRowId = data.extras["Parameter"];
@@ -89,10 +93,10 @@ var app = {
         }
     },
     onBackgoundNotification: function(data) {
-    //添加後台收到通知后需要執行的內容
+    //Plugin-QPush > 添加後台收到通知后需要執行的內容
     },
     onReceiveNotification: function(data) {
-    //添加前台收到通知后需要執行的內容
+    //Plugin-QPush > 添加前台收到通知后需要執行的內容
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -123,6 +127,19 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
+
+//[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
+function checkPopupShown() {
+    if ($(".ui-popup-active").length > 0) {
+        popupID = $(".ui-popup-active")[0].children[0].id;
+        return true;
+    } else {
+        popupID = "";
+        return false;
+    }
+}
+
+//Plugin-QSecurity 
 function setWhiteList() {
 
     var self = this;
@@ -280,6 +297,8 @@ function processStorageData(action, data) {
 
 }
 
+//QPlay => open QLogin
+//Other APP => open QPlay to get Token or do QLogin
 function getServerData() {
 
     if (appKey === qplayAppKey) {
@@ -289,7 +308,6 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        //open QPlay
         window.localStorage.setItem("openScheme", true);
         openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
     }
@@ -302,7 +320,7 @@ function openAPP(URL) {
     $("#schemeLink").remove();
 }
 
-//Now just for check [token]
+//Plugin-QSecurity > Now just for check [token] valid
 function getSecurityList() {
 
     var self = this;
@@ -350,6 +368,7 @@ function getSecurityList() {
 
 }
 
+//Plugin-QPush
 function sendPushToken(data) {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
@@ -381,7 +400,7 @@ function loadingMask(action) {
         } else {
             $(".loader").show();
         }
-    } else {
+    } else if (action === "hide") {
         $(".loader").hide();
     }
 }
@@ -422,7 +441,7 @@ function readConfig() {
         qplayAppKey = qplayAppKey + "test";
     }
 
-    //QPUSH////////////////////////////////////////////////////////////////////////////////
+    //Plugin-QPush
     if (appKey === qplayAppKey) {
         //後台打开通知
         document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
@@ -432,24 +451,25 @@ function readConfig() {
         document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
     }
 
-    //For QSecurity
+    //Plugin-QSecurity
     var whiteList = new setWhiteList();
 
-    if (appKey === qplayAppKey && device.platform === "Android") {
+    //Plugin-QPush
+    if (appKey === qplayAppKey) {
         //初始化JPush
         window.plugins.QPushPlugin.init();
         window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
     }
 }
 
-//Show Version/AD/UUID
+//Taphold APP Header to show Version/AD/UUID
 function infoMessage() {
     loadingMask("show");
 
     var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
-                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
-                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
                 '<p style="padding:0 5%">' + loginData["loginid"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
                 '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
               '</div>';
 
@@ -461,6 +481,7 @@ function infoMessage() {
     });
 }
 
+//Return Login Data from QPlay
 function getLoginDataCallBack() {
     var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
                       "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
@@ -473,10 +494,12 @@ function getLoginDataCallBack() {
     $.mobile.changePage('#viewMain2-1');
 }
 
+//For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
 function handleOpenURL(url) {
 
     if (url !== "null") {
 
+        //parse URL parameter
         var tempURL = url.split("//");
         var queryString = tempURL[1];
         var tempQueryData = queryString.split("&");
