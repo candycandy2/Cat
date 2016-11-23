@@ -12,9 +12,9 @@
     <script type="text/javascript" src="../js/lib/jquery-1.12.3.min.js"></script>
     <script type="text/javascript" src="../js/lib/jquery.mobile-1.4.5.min.js"></script>
     <script>
-    $(document).one("pagecreate", "#viewSettingList", function() {
+    $(document).one('pagecreate', '#viewSettingList', function() {
 
-        $("#viewSettingList").pagecontainer({
+        $('#viewSettingList').pagecontainer({
             create: function(event, ui) {
 
                 /********************************** function *************************************/
@@ -31,20 +31,20 @@
                     // localStorage.setItem('localData', JSON.stringify(obj));
 
                     var data = JSON.parse(localStorage.getItem('localData'));
-                    var htmlContent = "";
+                    var htmlContent = '';
 
                     for (var i = 0, item; item = data['content'][i]; i++) {
                         htmlContent
                             += replace_str($('#setting').get(0).outerHTML, item);
                     }
 
-                    $("#setting").remove();
-                    $("#default").after(htmlContent);
+                    $('#setting').remove();
+                    $('#default').after(htmlContent);
 
                 }
 
                 /********************************** page event *************************************/
-                $("#viewSettingList").on("pagebeforeshow", function(event, ui) {
+                $('#viewSettingList').on('pagebeforeshow', function(event, ui) {
                     // loadingMask("show");
                     queryQuickReserve();
                 });
@@ -52,11 +52,11 @@
                 /********************************** dom event *************************************/
                 function replace_str(content, item) {
 
-                    var peopleStr = (item.people == 'none') ? "不限" : item.people;
+                    var peopleStr = (item.people == 'none') ? '不限' : item.people;
                     // var start_time = new Date(item.time);
                     // var end_time = end_time.setMinutes(start_time.getMinutes() + 30);
                     // var timeStr = (item.time == 'hour') ? "現在起一小時" : start_time + ' - ' + end_time;
-                    var floorStr = (item.floor == 'none') ? "不限" : item.floor;
+                    var floorStr = (item.floor == 'none') ? '不限' : item.floor;
 
                     return content
                         .replace('index', item.id)
