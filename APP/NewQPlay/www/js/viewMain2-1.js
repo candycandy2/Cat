@@ -107,8 +107,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                     if (resultcode == 1) {
 
-                        $('#logoutConfirm').popup('close');
-
                         //clear data
                         appApiPath = "qplayApi";
                         qplayAppKey = "appqplay";
@@ -152,14 +150,11 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             }
 
             /********************************** page event *************************************/
-            $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
-                var appList = new QueryAppList();
-            });
-
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
                 if (loginData["msgDateFrom"] === true) {
                     var messageList = new QueryMessageList();
                 }
+                var appList = new QueryAppList();
             });
 
             $("#viewMain2-1").on("pageshow", function(event, ui) {
@@ -176,6 +171,10 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             });
 
             $("#logoutConfirm #confirm").on("click", function(){
+
+                $('#logoutConfirm').popup('close');
+                loadingMask("show");
+
                 var logout = new doLogOut();
             });
 
