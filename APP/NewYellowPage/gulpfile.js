@@ -32,13 +32,11 @@ var vcode = getArg("--vcode");
 
 var appNameDecorate = "";
 var appVersionDecorate = "Production";
-var apiPath = "qplayApi";
 var patchFolder = "patch";
 
 if (env === "test") {
     appNameDecorate = "test";
-    appVersionDecorate = "Staging";
-    apiPath = "qplayApiTest";
+    appVersionDecorate = "NewStaging";
     patchFolder = "patchTest";
 } else if (env === "dev") {
     appNameDecorate = "dev";

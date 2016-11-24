@@ -27,6 +27,9 @@ window.initialSuccess = function(data) {
                 messageRowId = window.localStorage.getItem("messageRowId");
                 $.mobile.changePage("#viewWebNews2-3-1");
             } else {
+                $.mobile.changePage('#viewMain2-1', {
+                    reloadPage: true
+                });
                 $.mobile.changePage('#viewMain2-1');
             }
         }
@@ -59,4 +62,28 @@ function unregister() {
     var __construct = function() {
         QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
     }();
+}
+
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+    if (activePageID === "viewMain2-1") {
+
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+        } else {
+            navigator.app.exitApp();
+        }
+
+    } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2" || activePageID === "viewNewsEvents2-3") {
+
+        $.mobile.changePage('#viewMain2-1');
+
+    } else if (activePageID === "viewWebNews2-3-1") {
+
+        $.mobile.changePage('#viewNewsEvents2-3');
+
+    }
 }

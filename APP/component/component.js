@@ -5,7 +5,7 @@
 // appSecretKey => set in QPlayAPI.js under specific APP
 //
 
-var serverURL = "https://qplay.benq.com"; // QTT Outside API Server
+var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 
@@ -30,6 +30,8 @@ var loginData = {
 };
 var queryData = {};
 var getDataFromServer = false;
+var popupID;
+var callHandleOpenURL = false;
 
 var app = {
     // Application Constructor
@@ -58,8 +60,14 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
+        //[Android]Handle the back button, set in index.js
+        document.addEventListener("backbutton", onBackKeyDown, false);
+
         //[device] data ready to get on this step.
         readConfig();
+
+        //for touch overflow content Enabled
+        $.mobile.touchOverflowEnabled = true;
     },
     onGetRegistradionID: function (data){
         try {
@@ -72,7 +80,7 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
-    //添加後台打開通知后需要執行的內容，data.alert為消息內容
+    //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
 
         //If APP not open, check message after checkAppVersion()
         messageRowId = data.extras["Parameter"];
@@ -89,10 +97,10 @@ var app = {
         }
     },
     onBackgoundNotification: function(data) {
-    //添加後台收到通知后需要執行的內容
+    //Plugin-QPush > 添加後台收到通知后需要執行的內容
     },
     onReceiveNotification: function(data) {
-    //添加前台收到通知后需要執行的內容
+    //Plugin-QPush > 添加前台收到通知后需要執行的內容
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -123,27 +131,47 @@ $(document).one("pagecreate", "#"+pageList[0], function(){
 });
 
 /********************************** function *************************************/
+
+//[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
+function checkPopupShown() {
+    if ($(".ui-popup-active").length > 0) {
+        popupID = $(".ui-popup-active")[0].children[0].id;
+        return true;
+    } else {
+        popupID = "";
+        return false;
+    }
+}
+
+//Plugin-QSecurity 
 function setWhiteList() {
 
     var self = this;
 
     this.successCallback = function() {
+        var doCheckStorageData = false;
 
         if (appKey !== qplayAppKey) {
             if (window.localStorage.getItem("openScheme") === "true") {
-                if (device.platform !== "iOS") {
+                if (callHandleOpenURL) {
                     return;
+                } else {
+                    doCheckStorageData = true;
                 }
-                window.localStorage.setItem("openScheme", false);
+            } else {
+                doCheckStorageData = true;
             }
+        } else {
+            doCheckStorageData = true;
+        }
+
+        if (doCheckStorageData) {
+            checkStorageData();
         }
 
         if (device.platform === "Android") {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
         }
-
-        //check data(token, token_value, ...) on web-storage
-        checkStorageData();
 
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
@@ -163,7 +191,7 @@ function setWhiteList() {
                 var securityList = {
                     level: 2,
                     Navigations: [
-                        "https://qplay.benq.com/*",
+                        "https://qplaytest.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -180,14 +208,14 @@ function setWhiteList() {
                         "https:*"
                     ],
                     Requests: [
-                        "https://qplay.benq.com/*"
+                        "https://qplaytest.benq.com/*"
                     ]
                 };
             } else {
                 var securityList = {
                     level: 2,
                     Navigations: [
-                        "https://qplay.benq.com/*",
+                        "https://qplaytest.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -202,7 +230,7 @@ function setWhiteList() {
                     ],*/
                     Intents: [],
                     Requests: [
-                        "https://qplay.benq.com/*"
+                        "https://qplaytest.benq.com/*"
                     ]
                 };
             }
@@ -214,6 +242,7 @@ function setWhiteList() {
     }();
 }
 
+//check data(token, token_value, ...) on web-storage
 function checkStorageData() {
     if (window.localStorage.length === 0) {
         getDataFromServer = true;
@@ -280,6 +309,8 @@ function processStorageData(action, data) {
 
 }
 
+//QPlay => open QLogin
+//Other APP => open QPlay to get Token or do QLogin
 function getServerData() {
 
     if (appKey === qplayAppKey) {
@@ -289,7 +320,6 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        //open QPlay
         window.localStorage.setItem("openScheme", true);
         openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
     }
@@ -302,7 +332,7 @@ function openAPP(URL) {
     $("#schemeLink").remove();
 }
 
-//Now just for check [token]
+//Plugin-QSecurity > Now just for check [token] valid
 function getSecurityList() {
 
     var self = this;
@@ -315,6 +345,9 @@ function getSecurityList() {
             getServerData();
         } else if (data['result_code'] === "000908") {
             //token invalid
+            getServerData();
+        } else if (data['result_code'] === "000911") {
+            //uuid not exist
             getServerData();
         } else {
             //fail
@@ -339,7 +372,7 @@ function getSecurityList() {
                 'Signature': signatureInBase64,
                 'token': loginData.token
             },
-            url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
+            url: serverURL + "/qplayApi/public/index.php/v101/qplay/getSecurityList?lang=en-us&uuid=" + loginData.uuid + "&app_key=" + appKey,
             dataType: "json",
             cache: false,
             success: self.successCallback,
@@ -350,6 +383,7 @@ function getSecurityList() {
 
 }
 
+//Plugin-QPush
 function sendPushToken(data) {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
@@ -381,7 +415,7 @@ function loadingMask(action) {
         } else {
             $(".loader").show();
         }
-    } else {
+    } else if (action === "hide") {
         $(".loader").hide();
     }
 }
@@ -414,14 +448,15 @@ function readConfig() {
     //according to the versionName, change the appKey
     if (loginData["versionName"].indexOf("Staging") !== -1) {
         appKey = appKeyOriginal + "test";
-        appApiPath = appApiPath + "Test";
+        serverURL = "https://qplaytest.benq.com"; // Staging API Server
         qplayAppKey = qplayAppKey + "test";
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
         appKey = appKeyOriginal + "dev";
+        serverURL = "https://qplaydev.benq.com"; // Development API Server
         qplayAppKey = qplayAppKey + "test";
     }
 
-    //QPUSH////////////////////////////////////////////////////////////////////////////////
+    //Plugin-QPush
     if (appKey === qplayAppKey) {
         //後台打开通知
         document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
@@ -431,24 +466,27 @@ function readConfig() {
         document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
     }
 
-    //For QSecurity
-    var whiteList = new setWhiteList();
+    //Plugin-QSecurity
+    setTimeout(function() {
+        var whiteList = new setWhiteList();
+    }, 1000);
 
-    if (appKey === qplayAppKey && device.platform === "Android") {
+    //Plugin-QPush
+    if (appKey === qplayAppKey) {
         //初始化JPush
         window.plugins.QPushPlugin.init();
         window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
     }
 }
 
-//Show Version/AD/UUID
+//Taphold APP Header to show Version/AD/UUID
 function infoMessage() {
     loadingMask("show");
 
     var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
-                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
-                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
                 '<p style="padding:0 5%">' + loginData["loginid"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
+                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
                 '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
               '</div>';
 
@@ -460,9 +498,10 @@ function infoMessage() {
     });
 }
 
+//Return Login Data from QPlay
 function getLoginDataCallBack() {
     var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
-                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] + 
+                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
                       "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'];
     openAPP(callBackURL);
 
@@ -472,10 +511,14 @@ function getLoginDataCallBack() {
     $.mobile.changePage('#viewMain2-1');
 }
 
+//For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
 function handleOpenURL(url) {
 
     if (url !== "null") {
 
+        callHandleOpenURL = true;
+
+        //parse URL parameter
         var tempURL = url.split("//");
         var queryString = tempURL[1];
         var tempQueryData = queryString.split("&");

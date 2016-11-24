@@ -94,9 +94,19 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 }();
             }
 
+            function tabChange() {
+                $("#" + activeNvrDiv).show();
+                $("#" + inactiveNvrDiv).hide();
+                $("#" + activeNvrBar).addClass("ui-btn-active");
+                $("#" + inactiveNvrBar).removeClass("ui-btn-active");
+            }
+
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
-
+                activeNvrBar = "navNews";
+                activeNvrDiv = "newspage2-3";
+                inactiveNvrBar = "navEvents";
+                inactiveNvrDiv = "eventspage2-3b";
             });
 
             $("#viewNewsEvents2-3").one("pageshow", function(event, ui) {
@@ -104,12 +114,25 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
             });
 
             $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {
-                $("#newspage2-3").show();
-                $("#eventspage2-3b").hide();
-                $("#navNews").addClass("ui-btn-active");
-                $("#navEvents").removeClass("ui-btn-active");
+                tabChange();
             });
+
             /********************************** dom event *************************************/
+            $("#navNews").on("click", function() {
+                activeNvrBar = "navNews";
+                inactiveNvrBar = "navEvents";
+                activeNvrDiv = "newspage2-3";
+                inactiveNvrDiv = "eventspage2-3b";
+                tabChange();
+            });
+
+            $("#navEvents").on("click", function() {
+                activeNvrBar = "navEvents";
+                inactiveNvrBar = "navNews";
+                activeNvrDiv = "eventspage2-3b";
+                inactiveNvrDiv = "newspage2-3";
+                tabChange();
+            });
         }
     });
 

@@ -11,11 +11,27 @@ SaveAppDetail = function(){
     
      var unPublishStr = 'Unpublish';
      var appName = $('#txbAppName_'+jsDefaultLang).val();
+     var appKey = $('#txbAppKey').val();
      var newAandroidStatus = unPublishStr;
      var newIOSStatus = unPublishStr;
      var confirmSrt = "";
      var confirmTitleSrt = "";
-    
+     var qplayAppErr = [];
+         
+    if(appKey == 'appqplay'){
+        if($('#gridAndroidVersionList').find('div.switch-success').size() <= 0){
+            qplayAppErr.push('Android');
+        }
+        if($('#gridIOSVersionList').find('div.switch-success').size() <= 0){
+            qplayAppErr.push('IOS');
+        }
+
+        if(qplayAppErr.length > 0){
+            showMessageDialog(Messages.ERROR,Messages.ERR_QPLAY_MUST_PUBLISH.replace('%s',qplayAppErr.join("、")));
+            return false;
+        }
+    }
+
      $('#gridAndroidVersionList').find('div.switch-success').each(function(){
         newAandroidStatus = $(this).parent().data('name');
      });
@@ -112,6 +128,9 @@ $(function () {
                 },
                 errorCodeFile:{
                     accept:"json"
+                },
+                ddlAppCategory:{
+                    required:true
                 }
             }, 
             groups: {
