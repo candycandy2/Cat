@@ -31,6 +31,9 @@ Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
 Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
 Route::any('/v101/qplay/updateLastMessageTime', 'qplayController@updateLastMessageTime');
 Route::post('/v101/qplay/sendPushMessage', 'qplayController@sendPushMessage');
+//Smart Factory
+Route::any('/v101/qplay/isLogin', 'qplayController@isLogin');
+Route::any('/v101/qplay/logoutSmartFactory', 'qplayController@logoutSmartFactory');
 
 //Login Page
 Route::any('/qplayauth_register', function() {

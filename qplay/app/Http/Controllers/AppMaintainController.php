@@ -364,7 +364,7 @@ class AppMaintainController extends Controller
                 $newAppRowId = \DB::table("qp_app_head")
                             -> insertGetId(
                                 [   'project_row_id'=> $request->input('ddlAppKey'),
-                                    'package_name'=>'com.qplay.'.$request->input('hidAppKey'),
+                                    'package_name'=>\Config::get('app.app_package').'.'.$request->input('hidAppKey'),
                                     'default_lang_row_id'=>$request->input('ddlLang'),
                                     'icon_url'=>'',
                                     'security_level'=>3,

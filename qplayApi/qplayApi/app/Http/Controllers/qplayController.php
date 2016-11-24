@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -1088,7 +1088,8 @@ SQL;
                     $app = array('app_id'=>$appData->app_id,
                         'app_code'=>$appData->app_code,
                         'package_name'=>$appData->package_name,
-                        'app_category'=>$appData->app_category,
+                        'app_category_id'=>$appData->category_id,  //update app_category to category_id by steven20161124
+                        //'app_category'=>$appData->app_category,
                         'app_version'=>$appData->version,
                         'app_version_name'=>$appData->version_name,
                         'security_level'=>$appData->security_level,
@@ -1150,7 +1151,8 @@ SQL;
                     $langId = $langData->lang_id;
 
                     $picList = \DB::table("qp_app_pic")->where('app_row_id', '=', $appId)
-                        ->where('lang_row_id', '=', $langId)->select('pic_type', 'pic_url', 'sequence_by_type')->get();
+                        ->where('lang_row_id', '=', $langId)
+                        ->where('pic_type', '=', $device_type.'_screenshot')->select('pic_type', 'pic_url', 'sequence_by_type')->get();
                     foreach ($picList as $picItem) {
                         $picItem->pic_url = FilePath::getScreenShotUrl($appId, $langId , $device_type, $picItem->pic_url);
                     }
@@ -1259,6 +1261,7 @@ SQL;
                 response()->json(apache_response_headers()), $result);
             return $result;
         }
+
 
         if(($appKey != "appqplaytest") &&($appKey != "appyellowpagetest") &&($appKey != "apprrstest")) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
