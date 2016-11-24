@@ -13,6 +13,9 @@
          var $targetDefLangObj  = $('#delLangDialog').find('input[type=checkbox][value='+jsDefaultLang+']');
          var targetLang = $targetDefLangObj.parent().text();
          $targetDefLangObj.parent().text("").append('<input type="checkbox" value="'+jsDefaultLang+'" disabled=""><span class="text-muted">'+targetLang+' ('+Messages.MSG_DEFAULT_LANGUAGE_CAN_NOT_REMOVE+')</span>');
+         $('#delLangDialog').find('input[type="checkbox"]').each(function(){
+            $(this).prop('checked',false);
+         });
          $('#delLangDialog').modal('show');
     }
 
@@ -111,18 +114,21 @@
        $('.label-hint').text($('#ddlLang_'+langId).children('a').text());
     }
     var saveRemoveLang= function(){
-        var chk = $('#removeableLang').find('input[type=checkbox]:checked').each(function(){
-        var chkLangId = $(this).val();
-        var targetLanStr = $(this).parent().text().trim();
-            addSelectableLang(chkLangId,targetLanStr);  
-            $(this).parent().remove(); 
-            $('.js-lang-' + chkLangId).remove();
-            removeDefaulableLang(chkLangId);
-            removeSwitchLang(chkLangId); 
-        })
-        switchToLangCotent(jsDefaultLang);
-        checkLangToolStatus();
-        $('#delLangDialog').modal('hide');  
+        showConfirmDialog(Messages.REMOVE_CONFIRM, Messages.MSG_SYSTEM_WILL_DELETE_ALL_ALNGUAGE,"",function () {
+            hideConfirmDialog();
+            var chk = $('#removeableLang').find('input[type=checkbox]:checked').each(function(){
+            var chkLangId = $(this).val();
+            var targetLanStr = $(this).parent().text().trim();
+                addSelectableLang(chkLangId,targetLanStr);  
+                $(this).parent().remove(); 
+                $('.js-lang-' + chkLangId).remove();
+                removeDefaulableLang(chkLangId);
+                removeSwitchLang(chkLangId); 
+            });
+            switchToLangCotent(jsDefaultLang);
+            checkLangToolStatus();
+            $('#delLangDialog').modal('hide');  
+        });
     }
 
 $(function (){
