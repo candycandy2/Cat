@@ -14,15 +14,15 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 
                 this.successCallback = function(data) {
                     var resultcode = data['ResultCode'];
-                    
+
                     if (resultcode === "1" || resultcode === "001901" || resultcode === "001906") {
-                        
+
                         employeeData = {};
                         var dataContent = data['Content'];
                         var htmlContent = "";
                         var errorMsg = $("#errorMsg").clone();
                         var errorMsg2 = $("#errorMsg2").clone();
-                        
+
                         for (var i=0; i<dataContent.length; i++){
                             var tempData = {};
 
@@ -32,7 +32,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             tempData["extnum"] = dataContent[i].Ext_No;
 
                             employeeData[i] = tempData;
-                            
+
                             var content = htmlContent
                                 + '<li>'
                                 +   '<div class="company">'
@@ -49,7 +49,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
 
                             htmlContent = content;
                         }
-                        
+
                         $("#employeeData").html("");
                         $("#employeeData").append(errorMsg);
                         $("#employeeData").append(errorMsg2);
