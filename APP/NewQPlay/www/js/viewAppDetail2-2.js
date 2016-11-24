@@ -36,6 +36,8 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 var piclist = appmultilang[multilangIndex].pic_list;
                 var indexNow = 0;
 
+                $('#appDetailPicListContent').html("");
+
                 for (var listIndex=0; listIndex<piclist.length; listIndex++) {
                     if (piclist[listIndex].pic_type === platform + "_screenshot") {
                         content += "<div class='detail-img-style'><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
