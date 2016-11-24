@@ -49,7 +49,7 @@ if (env === "test") {
     QPushAPPKey = "e343504d536ebce16b70167e";
 }
 
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string>";
+var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string><string>appcalendar" + appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +

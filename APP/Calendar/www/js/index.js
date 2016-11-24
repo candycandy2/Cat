@@ -1,8 +1,8 @@
 
 /*global variable, function*/
-var appKeyOriginal = "appyellowpage";
+var appKeyOriginal = "appcalendar";
 var appKey = "";
-var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
+var pageList = ["viewDataInput", "viewQueryResult"];
 var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
 
 var employeeData = {};
@@ -39,27 +39,6 @@ function onBackKeyDown() {
     } else if (activePageID === "viewQueryResult") {
 
         $.mobile.changePage('#viewDataInput');
-
-    } else if (activePageID === "viewDetailInfo") {
-
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            $.mobile.changePage('#' + prevPageID);
-        }
-
-    } else if (activePageID === "viewPhonebook") {
-
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            //If User is doing edit phonebook, cancel edit mode.
-            if ($("#phonebookEditBtn").css("display") === "block") {
-                cancelEditMode();
-            } else {
-                $.mobile.changePage('#viewDataInput');
-            }
-        }
 
     }
 }
