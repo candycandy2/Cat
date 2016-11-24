@@ -74,7 +74,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         });
 
                     } else {
-                        alert(data['message']);
+
                     }
                 }; 
 
