@@ -234,6 +234,26 @@
     color:#0d0d0d;
     float:left;
     margin: 5px 0 0 12px;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.Content_Content table {
+    width: 100% !important;
+    display:block;
+}
+
+
+.Content_Content tbody {
+    display: inline-block;
+    width: 100% !important;
+    overflow: auto;
+}
+
+
+.Content_Content img {
+    width: 80vw !important;
+    height: 80vw !important;
 }
 
 #newsDetailTitle {
