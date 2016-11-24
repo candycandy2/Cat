@@ -1088,7 +1088,8 @@ SQL;
                     $app = array('app_id'=>$appData->app_id,
                         'app_code'=>$appData->app_code,
                         'package_name'=>$appData->package_name,
-                        'app_category'=>$appData->app_category,
+                        'app_category_id'=>$appData->category_id,  //update app_category to category_id by steven20161124
+                        //'app_category'=>$appData->app_category,
                         'app_version'=>$appData->version,
                         'app_version_name'=>$appData->version_name,
                         'security_level'=>$appData->security_level,
