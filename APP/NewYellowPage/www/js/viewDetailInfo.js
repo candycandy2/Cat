@@ -19,8 +19,10 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                                 '<Name_EN>' + listData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
 
                 this.successCallback = function(data) {
-                    if (data['ResultCode'] === "1") {
-                        
+                    var resultcode = data['ResultCode'];
+
+                    if (resultcode === "1") {
+
                         if (prevPageID === "viewQueryResult") {
                             employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
                         }
