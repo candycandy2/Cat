@@ -533,7 +533,9 @@ SQL;
 
     public static function getAllCategoryList(){
         $categoryList = \DB::table('qp_app_category')
-            -> select('row_id', 'app_category')->get();
+            -> select('row_id', 'app_category')
+            -> orderBy('app_category')
+            ->get();
         if(count($categoryList) > 0) {
              return $categoryList;
         }
