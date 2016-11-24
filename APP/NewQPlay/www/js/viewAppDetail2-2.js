@@ -9,9 +9,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 $("#appDetailIcon").attr("src", applist[selectAppIndex].icon_url); 
                 
-
-                for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++)
-                {
+                for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
                     if ((applist[selectAppIndex].app_code == appmultilang[multilangIndex].project_code) &&
                         (appmultilang[multilangIndex].lang == "zh-tw"))
                     {
@@ -19,10 +17,8 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                     }
                 }
 
-                if (multilangIndex > appmultilang.length)
-                {
+                if (multilangIndex > appmultilang.length) {
                     console.log("find multilang error!!!");
-                    //alert("find multilang error!!!");
                     return;
                 }
 
@@ -39,51 +35,48 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 var content = "";
                 var piclist = appmultilang[multilangIndex].pic_list;
                 var indexNow = 0;
-                for (var listIndex=0; listIndex<piclist.length; listIndex++)
-                {
+
+                $('#appDetailPicListContent').html("");
+
+                for (var listIndex=0; listIndex<piclist.length; listIndex++) {
                     if (piclist[listIndex].pic_type === platform + "_screenshot") {
-                        $('#appDetailPicList').trigger('remove.owl.carousel', indexNow);
-                        indexNow++;
+                        content += "<div class='detail-img-style'><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
                     }
                 }
 
-                for (listIndex=0; listIndex<piclist.length; listIndex++)
-                {
-                    if (piclist[listIndex].pic_type === platform + "_screenshot") {
-                        content = "<div class=\"owl-item detail-img-style\"><img src=" + piclist[listIndex].pic_url + "></div>";
-                        $('#appDetailPicList').owlCarousel('add', content).owlCarousel('refresh');
-                    }
-                }
+                $('#appDetailPicListContent').append(content);
+
+                //Auto resize appDetailPicListContent
+                var tempIMG = $(".detail-img-style")[0];
+                var imgWidth = tempIMG.clientWidth;
+                var picListContentWidth = imgWidth * piclist.length;
+                $("#appDetailPicListContent").css("width", picListContentWidth + "px");
+
+                //Auto resize detail-description
+                var pageHeight = $("#viewAppDetail2-2").height();
+                var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
+                var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
+                var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
+                var mainDDescriptionHeight = $("#viewAppDetail2-2 .detail-description").height();
+                var appDetailPicListHeight = $("#viewAppDetail2-2 #appDetailPicList").height();
+
+                var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainDDescriptionHeight + appDetailPicListHeight);
+                $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
+
+                loadingMask("hide");
 
                 var __construct = function() {
-                    
+
                 }();
             }
 
             /********************************** page event *************************************/
-            $("#viewAppDetail2-2").on("pagebeforeshow", function(event, ui) {
+            $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
                 var appDetail = new displayAppDetail();
             });
 
-            $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
+            $("#viewAppDetail2-2").on("pagebeforeshow", function(event, ui) {
                 loadingMask("show");
-
-                var timer = setTimeout(function(){
-                    //Auto resize detail-description
-                    var pageHeight = $("#viewAppDetail2-2").height();
-                    var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
-                    var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
-                    var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
-                    var mainDDescriptionHeight = $("#viewAppDetail2-2 .detail-description").height();
-                    var mainOwlCarouselHeight = $("#viewAppDetail2-2 .page-main .owl-carousel").height();
-
-                    var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainDDescriptionHeight + mainOwlCarouselHeight);
-                    $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
-
-                    loadingMask("hide");
-                    clearTimeout(timer);
-                }, 500);
-
             });
 
             /********************************** dom event *************************************/

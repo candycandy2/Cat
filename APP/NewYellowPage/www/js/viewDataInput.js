@@ -13,10 +13,10 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                     loadingMask("hide");
 
                     var resultcode = data['ResultCode'];
-                    
+
                     if (resultcode === "1") {
                         var dataContent = data['Content'];
-                        
+
                         for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
@@ -33,7 +33,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 }();
 
             };
-            
+
             function checkInputData() {
                 var emptyData = true;
 

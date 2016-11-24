@@ -500,7 +500,7 @@ SQL;
     }
 
     public static function PushMessageWithMessageCenter($message, $to, $parameter='') {
-        $jpush_app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO
+        $jpush_app_id = "33938c8b001b601c1e647cbd";//"1dd3ebb8bb12f1895b4a5e25";  //TODO
         $id = strtoupper(md5(uniqid(rand(),true)));
         $args = array('Id' => $id,
             'TenantId' => '00000000-0000-0000-0000-000000000000',
@@ -515,7 +515,7 @@ SQL;
             'To_Type' => 'NONE',
             'Parameter' => $parameter,
             'CreatedDate' => date('Y-m-d H:i:s',time()));
-        $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/SendPNS"; //TODO
+        $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/SendPNS"; //TODO http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx
         $data["pns"] = json_encode($args);
         $response = self::doPost($url, $data);
 

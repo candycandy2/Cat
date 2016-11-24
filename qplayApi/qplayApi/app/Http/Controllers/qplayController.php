@@ -242,7 +242,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BQTDC01.benq.corp.com";
+                $LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -480,7 +480,7 @@ class qplayController extends Controller
 
                     //Unregister to Message Center
                     $app_id = "b376539a868fdf5696228432";  //TODO 正式上线需要读配置
-                    $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/UnregisterDevice";
+                    $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
                         $args = array('App_id' => $app_id,
                             'Client_id' => $pushTokenInfo->push_token);
@@ -607,7 +607,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BQTDC01.benq.corp.com";
+                $LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -1088,7 +1088,8 @@ SQL;
                     $app = array('app_id'=>$appData->app_id,
                         'app_code'=>$appData->app_code,
                         'package_name'=>$appData->package_name,
-                        'app_category'=>$appData->app_category,
+                        'app_category_id'=>$appData->category_id,  //update app_category to category_id by steven20161124
+                        //'app_category'=>$appData->app_category,
                         'app_version'=>$appData->version,
                         'app_version_name'=>$appData->version_name,
                         'security_level'=>$appData->security_level,
@@ -1260,7 +1261,7 @@ SQL;
             return $result;
         }
 
-        if($appKey != "appqplay") {
+        if(($appKey != "appqplaytest") &&($appKey != "appyellowpagetest") &&($appKey != "apprrstest")) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -2037,7 +2038,7 @@ SQL;
                 //Register to Message Center
                 $app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
 //                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
-                $url = "http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx/RegisterDevice";
+                $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,
                     'Tenant_id' => '00000000-0000-0000-0000-000000000000',
                     'Provider' => 'JPush',
