@@ -32,8 +32,9 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
 
                 this.successCallback = function(data) {
-                    
-                    if (data['ResultCode'] === "1") {
+                    var resultcode = data['ResultCode'];
+
+                    if (resultcode === "1") {
 
                         phonebookData = {};
                         var htmlContent = "";
@@ -48,7 +49,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             tempData["employeeid"] = data['Content'][i].EmployeeID;
 
                             phonebookData[i] = tempData;
-                            
+
                             var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"]);
                             htmlContent = content;
                         }
@@ -60,7 +61,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         $('a[name="detailIndex"]').click(function(e) {
                             e.stopImmediatePropagation();
                             e.preventDefault();
-                            
+
                             prevPageID = "viewPhonebook";
                             employeeSelectedIndex = $(this).attr("value");
                             $.mobile.changePage('#viewDetailInfo');
