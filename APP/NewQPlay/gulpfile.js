@@ -49,7 +49,29 @@ if (env === "test") {
     QPushAPPKey = "e343504d536ebce16b70167e";
 }
 
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string><string>appcalendar" + appNameDecorate + "</string>";
+var schemeSetting = "<string>appqplay" + appNameDecorate + "</string>"
+                    + "<string>appyellowpage" + appNameDecorate + "</string>"
+                    + "<string>appcalendar" + appNameDecorate + "</string>"
+                    + "<string>appscheme01" + appNameDecorate + "</string>"
+                    + "<string>appscheme02" + appNameDecorate + "</string>"
+                    + "<string>appscheme03" + appNameDecorate + "</string>"
+                    + "<string>appscheme04" + appNameDecorate + "</string>"
+                    + "<string>appscheme05" + appNameDecorate + "</string>"
+                    + "<string>appscheme06" + appNameDecorate + "</string>"
+                    + "<string>appscheme07" + appNameDecorate + "</string>"
+                    + "<string>appscheme08" + appNameDecorate + "</string>"
+                    + "<string>appscheme09" + appNameDecorate + "</string>"
+                    + "<string>appscheme10" + appNameDecorate + "</string>"
+                    + "<string>appscheme11" + appNameDecorate + "</string>"
+                    + "<string>appscheme12" + appNameDecorate + "</string>"
+                    + "<string>appscheme13" + appNameDecorate + "</string>"
+                    + "<string>appscheme14" + appNameDecorate + "</string>"
+                    + "<string>appscheme15" + appNameDecorate + "</string>"
+                    + "<string>appscheme16" + appNameDecorate + "</string>"
+                    + "<string>appscheme17" + appNameDecorate + "</string>"
+                    + "<string>appscheme18" + appNameDecorate + "</string>"
+                    + "<string>appscheme19" + appNameDecorate + "</string>"
+                    + "<string>appscheme20" + appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
