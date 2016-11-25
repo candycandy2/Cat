@@ -26,9 +26,6 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
                 $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
 
-                var appDescription = appmultilang[multilangIndex].app_description.replace(/\n/g,"<br>");
-                $("#appDetailAppDescription").html(appDescription);
-
                 var appranking = applist[selectAppIndex].avg_score;
 
                 var platform = device.platform.toLowerCase();
@@ -57,11 +54,18 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
                 var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
                 var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
-                var mainDDescriptionHeight = $("#viewAppDetail2-2 .detail-description").height();
                 var appDetailPicListHeight = $("#viewAppDetail2-2 #appDetailPicList").height();
+                if (device.platform === "iOS") {
+                    var fixHeight = 40;
+                } else {
+                    var fixHeight = 20;
+                }
 
-                var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + mainDDescriptionHeight + appDetailPicListHeight);
+                var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + pageHeaderHeight + appDetailPicListHeight + fixHeight);
                 $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
+
+                var appDescription = appmultilang[multilangIndex].app_description.replace(/\n/g,"<br>");
+                $("#appDetailAppDescription").html(appDescription);
 
                 loadingMask("hide");
 
