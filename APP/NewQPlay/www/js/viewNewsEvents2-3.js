@@ -82,7 +82,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     if (callGetMessageList) {
-                        loadingMask("close");
+                        loadingMask("hide");
                         callGetMessageList = false;
                     }
                 }; 
