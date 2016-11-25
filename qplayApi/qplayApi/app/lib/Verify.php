@@ -51,7 +51,7 @@ class Verify
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
 
-        if($headerAppKey != "appqplay") {
+        if($headerAppKey != "appqplaytest") {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=> "app-key參數錯誤");
         }
@@ -270,7 +270,7 @@ class Verify
 
     public static function getSignature($signatureTime)
     {
-        $key = CommonUtil::getSecretKeyByAppKey("qplay");
+        $key = CommonUtil::getSecretKeyByAppKey("appqplaytest");
         $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
 
@@ -293,7 +293,7 @@ class Verify
 
     public static function getSignatureYellowPage($signatureTime)
     {
-        $key = CommonUtil::getSecretKeyByAppKey("YellowPage");
+        $key = CommonUtil::getSecretKeyByAppKey("appyellowpagetest");
         $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
     }
@@ -315,7 +315,7 @@ class Verify
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
 
-        if($headerAppKey != "appyellowpage") {
+        if($headerAppKey != "appyellowpagetest") {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=> "app-key參數錯誤");
         }
@@ -366,5 +366,103 @@ class Verify
         }
 
         return self::verifyToken($uuid, $token);
+
     }
+
+//rrs start
+
+    public static function chkSignatureRRS($signature, $signatureTime)
+    {
+        $nowTime = time();
+        $serverSignature = self::getSignatureRRS($signatureTime);
+        if(strcmp($serverSignature, $signature) != 0) {
+            return 1; //不匹配
+        }
+
+        if(abs($nowTime - $signatureTime) > 900) {
+            return 2; //超?
+        }
+
+        return 3;
+    }
+
+    public static function getSignatureRRS($signatureTime)
+    {
+        $key = CommonUtil::getSecretKeyByAppKey("apprrstest");
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
+        return $ServerSignature;
+    }
+
+    public static function verifyRRS() {
+        $request = Request::instance();
+        $input = Input::get();
+        $headerContentType = $request->header('Content-Type');
+        $headerAppKey = $request->header('App-Key');
+        $headerSignature = $request->header('Signature');
+        $headerSignatureTime = $request->header('Signature-Time');
+
+        //verify parameter count
+        if($headerContentType == null || $headerAppKey == null
+            || $headerSignature == null || $headerSignatureTime == null
+            || trim($headerContentType) == "" || trim($headerAppKey) == ""
+            || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=> "傳入參數不足或傳入參數格式錯誤");
+        }
+
+        if($headerAppKey != "apprrstest") {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=> "app-key參數錯誤");
+        }
+
+        //verify language input
+        if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
+            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
+                "message"=>"lang參數錯誤 or 不存在");
+        }
+
+        //verify content-type
+        if (!stristr($headerContentType,'application/json')) {
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                "message"=>"Content-Type錯誤");
+        }
+
+        //TODO for test
+        if($headerSignature == "Moses824")
+        {
+//            return array("code"=>ResultCode::_1_reponseSuccessful,
+//                "message"=>"");
+        } else {
+            $sigResult = self::chkSignatureRRS($headerSignature, $headerSignatureTime);
+            if ($sigResult == 1) {
+                return array("code"=>ResultCode::_999008_signatureIsInvalid,
+                    "message"=>"Signature驗證碼不正確");
+            }
+
+            if($sigResult == 2) {
+                return array("code"=>ResultCode::_999011_signatureOvertime,
+                    "message"=>"signature參數錯誤或誤差超過15分鐘");
+            }
+        }
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
+        {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=>"傳入參數不足或傳入參數格式錯誤");
+        }
+
+        $token = $request->header('token');
+        $uuid = $input["uuid"];
+
+        if(!self::chkUuidExist($uuid)) {
+            return array("code"=>ResultCode::_000911_uuidNotExist,
+                "message"=>"uuid不存在");
+        }
+
+        return self::verifyToken($uuid, $token);
+
+    }
+//rrs end
+
 }

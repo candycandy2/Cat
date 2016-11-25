@@ -14,14 +14,15 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 
                 this.successCallback = function(data) {
                     var resultcode = data['ResultCode'];
-                    
-                    if (resultcode == 1 || resultcode == 1906) {
-                        
+
+                    if (resultcode === "1" || resultcode === "001901" || resultcode === "001906") {
+
                         employeeData = {};
                         var dataContent = data['Content'];
                         var htmlContent = "";
                         var errorMsg = $("#errorMsg").clone();
-                        
+                        var errorMsg2 = $("#errorMsg2").clone();
+
                         for (var i=0; i<dataContent.length; i++){
                             var tempData = {};
 
@@ -31,7 +32,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             tempData["extnum"] = dataContent[i].Ext_No;
 
                             employeeData[i] = tempData;
-                            
+
                             var content = htmlContent
                                 + '<li>'
                                 +   '<div class="company">'
@@ -48,9 +49,10 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
 
                             htmlContent = content;
                         }
-                        
+
                         $("#employeeData").html("");
                         $("#employeeData").append(errorMsg);
+                        $("#employeeData").append(errorMsg2);
                         $("#employeeData").prepend($(htmlContent)).enhanceWithin();
                         $('#employeeData').listview('refresh');
 
@@ -63,13 +65,20 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             $.mobile.changePage('#viewDetailInfo');
                         });
 
-                        //data length over 10, show error msg
-                        if (dataContent.length >= 10) {
+                        //data length over 5, show error msg
+                        if (resultcode === "001906") {
                             $("#errorMsg").show();
+                            $("#errorMsg2").hide();
+                        } else if (resultcode === "001901") {
+                            $("#errorMsg2").show();
+                            $("#errorMsg").hide();
                         } else {
-                            $("#errorMsg").hide();                            
+                            $("#errorMsg").hide();
+                            $("#errorMsg2").hide();
                         }
 
+                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+                        getServerData();
                     }
 
                     loadingMask("hide");

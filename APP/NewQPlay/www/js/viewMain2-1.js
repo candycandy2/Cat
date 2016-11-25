@@ -17,54 +17,53 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         applist = responsecontent.app_list;
                         appmultilang = responsecontent.multi_lang;
                         
-                        $('#appcontent').html(""); // empty html content
-                        var carouselItem;
-                        
-                        var carousel_Settings = {
-                            touchDrag: false,
-                            mouseDrag: false,
-                            loop:false,
-                            nav:false,
-                            margin:0,
-                            responsive:{
-                                0:{
-                                    items:1
-                                },
-                                100:{
-                                    items:2
-                                },
-                                350:{
-                                    items:4
-                                }
-                            }
-                        };
-                        
+                        $('#appcontent').html("");
+
                         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
-                            var catetoryname = appcategorylist[categoryindex].app_category;
-                            $('#appcontent').append('<h4>' + catetoryname + '</h4>');
-                            $('#appcontent').append('<div class="owl-carousel owl-theme"' + 'id=qplayapplist' + categoryindex.toString() + '></div>');
-                            var owl = $("#qplayapplist"+ categoryindex.toString()), i = 0, textholder, booleanValue = false;
-                            //init carousel
-                            owl.owlCarousel(carousel_Settings);
-                          
+                            var catetoryName = appcategorylist[categoryindex].app_category;
+                            var catetoryID = appcategorylist[categoryindex].category_id;
+                            var content = "";
+                            var catetoryAPPCount = 0;
+
+                            content += '<h4 style="clear:both;">' + catetoryName + '</h4>';
+                            content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '">';
+
                             for (var appindex=0; appindex<applist.length; appindex++) {
-                                var appcategory = applist[appindex].app_category;
-                                if (appcategory == catetoryname){
+                                var appcategory = applist[appindex].app_category_id;
+
+                                if (appcategory == catetoryID){
+
+                                    catetoryAPPCount++;
+
+                                    //Multi Language
+                                    for (var i=0; i<appmultilang.length; i++) {
+                                        if (appmultilang[i].project_code == applist[appindex].app_code) {
+                                            if (appmultilang[i].lang == "zh-tw") {
+                                                var packagename = appmultilang[i].app_name;
+                                            }
+                                        }
+                                    }
+
                                     var appurl = applist[appindex].url;
                                     var appurlicon = applist[appindex].icon_url;
-                                    var packagename = applist[appindex].package_name;
-                              
-                                    carouselItem = "<div class=\"owl-item\"><a value=" + appindex.toString() + " id=\"application" + appindex.toString() + "\"  href=\"#appdetail2-2\"><img src=\"" + applist[appindex].icon_url + "\" style=\"width:50px;height:50px;\"></a><p style=\"font-size:0.8em;margin-top:0px;text-align:center;\">" + packagename.substr(5) + "</p></div>";
-                              
-                                    $("#qplayapplist"+ categoryindex.toString()).owlCarousel('add', carouselItem).owlCarousel('refresh');
-                              
-                                    // fix me !!!!
-                                    //if (packagename == "benq.qplay") {
-                                    //    app.changeLevel(applist[appindex].security_level);
-                                    //}
-                                } // if (appcategory == catetoryname)
-                            } // for appindex
-                        } // for categoryindex
+
+                                    content += "<div class='app-list-item'><a value=" + appindex.toString() + " id='application" + appindex.toString() + "'  href='#appdetail2-2'>";
+                                    content += "<img src='" + applist[appindex].icon_url + "' style='width:25vw;'></a>";
+                                    content += "<p class='app-list-name'>" + packagename + "</p></div>";
+                                }
+
+                                if (parseInt(appindex + 1, 10) == applist.length) {
+                                    content += '</div></div>';
+                                    $('#appcontent').append(content);
+                                }
+                            }
+
+                            //auto set with of qplayapplistContent
+                            var pageWidth = $("#viewMain2-1").width();
+                            //Add (APP width) and (Margin width)
+                            var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * 10);
+                            $("#qplayapplistContent" + categoryindex).css("width", catetoryAPPWidth + "px");
+                        }
 
                         $('a[id^="application"]').click(function(e) {
                             e.stopImmediatePropagation();
@@ -73,9 +72,9 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             selectAppIndex = this.getAttribute('value');
                             $.mobile.changePage('#viewAppDetail2-2');
                         });
-                    } // if (resultcode == 1)
-                    else {
-                        alert(data['message']);
+
+                    } else {
+
                     }
                 }; 
 
@@ -98,11 +97,12 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                     if (resultcode == 1) {
 
-                        $('#logoutConfirm').popup('close');
-
                         //clear data
                         appApiPath = "qplayApi";
                         qplayAppKey = "appqplay";
+
+                        //logout can not clear messagecontent
+                        var messagecontent = window.localStorage.getItem("messagecontent");
 
                         var loginData = {
                             versionName:         "",
@@ -126,8 +126,9 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         window.localStorage.clear();
 
-                        app.initialize();
+                        window.localStorage.setItem("messagecontent", messagecontent);
 
+                        app.initialize();
                     }
                 };
 
@@ -139,14 +140,11 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             }
 
             /********************************** page event *************************************/
-            $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
-                var appList = new QueryAppList();
-            });
-
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
                 if (loginData["msgDateFrom"] === true) {
                     var messageList = new QueryMessageList();
                 }
+                var appList = new QueryAppList();
             });
 
             $("#viewMain2-1").on("pageshow", function(event, ui) {
@@ -163,6 +161,10 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             });
 
             $("#logoutConfirm #confirm").on("click", function(){
+
+                $('#logoutConfirm').popup('close');
+                loadingMask("show");
+
                 var logout = new doLogOut();
             });
 

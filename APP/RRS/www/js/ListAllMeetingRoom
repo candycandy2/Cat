@@ -1,0 +1,156 @@
+{
+    "result_code": "1",
+    "message": "OK",
+    "token_valid": "1458884996",
+    "content": [{
+        "MeetingRoomID": "1",
+        "MeetingRoomName": "B01",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "1",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3451)白板;",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "2",
+        "MeetingRoomName": "B02",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "1",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "3",
+        "MeetingRoomName": "B03",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "2",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "4",
+        "MeetingRoomName": "B04",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "3",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "5",
+        "MeetingRoomName": "B05",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "4",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "6",
+        "MeetingRoomName": "B06",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "5",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "7",
+        "MeetingRoomName": "B07",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "6",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "8",
+        "MeetingRoomName": "B08",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "6",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "9",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "9",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "10",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "1",
+        "MeetingRoomFloor": "8",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "11",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "2",
+        "MeetingRoomFloor": "9",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "12",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "2",
+        "MeetingRoomFloor": "1",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "13",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "2",
+        "MeetingRoomFloor": "3",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "14",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "2",
+        "MeetingRoomFloor": "3",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }, {
+        "MeetingRoomID": "15",
+        "MeetingRoomName": "B10",
+        "MeetingRoomSite": "2",
+        "MeetingRoomFloor": "5",
+        "MeetingRoomPeople": "10",
+        "Equipment": "phone(3751)白板;電子白板;投影機",
+        "TimeCategory": "2",
+        "IsReserveMulti": "N",
+        "SystemTime": "2016-01-01 00:00:00.000"
+    }]
+}

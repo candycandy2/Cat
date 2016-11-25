@@ -42,6 +42,15 @@
                             <td><span style="color: red;">*</span></td>
                         </tr>
                         <tr>
+                            <td>{{trans('messages.VERSION_LOG')}}:</td>
+                            <td style="padding: 10px;">
+                                <textarea data-clear-btn="true" class="form-control" name="tbxVersionLog"
+                                       id="tbxVersionLog" value="" style="height: 100px;"/></textarea>
+                                <span style="color: red;" class="error" for="tbxVersionLog"></span>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                        </tr>
+                        <tr>
                             <td>{{trans('messages.FILE')}}:</td>
                             <td style="padding: 10px;">
                                 <span class="btn btn-primary btn-file">
@@ -84,18 +93,30 @@
                         <td><span style="color: red;">*</span></td>
                     </tr>
                     <tr>
-                        <td>{{trans('messages.FILE')}}:</td>
+                        <td>{{trans('messages.VERSION_NO')}}:</td>
                         <td style="padding: 10px;">
-                            <input type="text" class="form-control" data-clear-btn="true" name="tbxEditVersionUrl"
-                                   id="tbxEditVersionUrl" value="" disabled />
+                            <input type="text" data-clear-btn="true" class="form-control" name="tbxEditVersionNo"
+                                   id="tbxEditVersionNo" value=""/>
+                            <span style="color: red;" class="error" for="tbxEditVersionNo"></span>
                         </td>
+                        <td><span style="color: red;">*</span></td>
+                        </tr>
+                    <tr>
+                        <td>{{trans('messages.VERSION_LOG')}}:</td>
+                        <td style="padding: 10px;">
+                            <textarea data-clear-btn="true" class="form-control" name="tbxEditVersionLog"
+                                   id="tbxEditVersionLog" value="" style="height: 100px;"/></textarea>
+                            <span style="color: red;" class="error" for="tbxEditVersionLog"></span>
+                        </td>
+                        <td><span style="color: red;">*</span></td>
                     </tr>
                     <tr>
-                        <td>{{trans('messages.VERSION_STATUS')}}:</td>
+                        <td>{{trans('messages.VERSION_URL')}}:</td>
                         <td style="padding: 10px;">
-                            <input type="text" class="form-control" data-clear-btn="true" name="tbxEditVersionStatus"
-                                   id="tbxEditVersionStatus" value="" disabled/>
+                            <textarea type="text" class="form-control" data-clear-btn="true" name="tbxEditVersionUrl" id="tbxEditVersionUrl" value=""></textarea>
+                            <span style="color: red;" class="error" for="tbxEditVersionUrl"></span>
                         </td>
+                        <td><span style="color: red;">*</span></td>
                     </tr>
                     <input type="hidden"  id="hidVersionRowId" name="hidVersionRowId">
                     <input type="hidden"  id="hidDeviceType" name="hidDeviceType">
@@ -109,20 +130,63 @@
         </div>
     </div>
 </div>
-
+<div id="appNewExternalLinkDialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h1 class="modal-title" id="appNewExternalLinkDialogTitle">{{trans('messages.UPLOAD_NEW_EXTERNAL_LINK')}}</h1>
+            </div>
+            <div class="modal-body">
+                <form id="newAppVersionForm" source="" enctype='multipart/form-data' action="AppMaintain/saveAppVersion" method="post">
+                    <table style="width:100%">
+                        <tr>
+                            <td>{{trans('messages.VERSION_NAME')}}:</td>
+                            <td style="padding: 10px;">
+                                <input type="text" data-clear-btn="true" class="form-control" name="tbxExternalName"
+                                       id="tbxExternalName" value=""/>
+                                <span style="color: red;" class="error" for="tbxExternalName"></span>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('messages.VERSION_NO')}}:</td>
+                            <td style="padding: 10px;">
+                                <input type="text" data-clear-btn="true" class="form-control" name="tbxExternalNo"
+                                       id="tbxExternalNo" value=""/>
+                                <span style="color: red;" class="error" for="tbxExternalNo"></span>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('messages.VERSION_LOG')}}:</td>
+                            <td style="padding: 10px;">
+                                <textarea data-clear-btn="true" class="form-control" name="tbxExternalLog"
+                                       id="tbxExternalLog" value="" style="height: 100px;"/></textarea>
+                                <span style="color: red;" class="error" for="tbxExternalLog"></span>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                        </tr>
+                        <tr>
+                            <td>{{trans('messages.EXTERNAL_LINK')}}:</td>
+                            <td style="padding: 10px;">
+                                <input type="text" class="form-control" name="tbxExternalLink" id="tbxExternalLink">
+                                <span style="color: red;" class="error" for="tbxExternalLink"></span>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-danger" onclick="uploadNewExternalLink()">{{trans("messages.NEW")}}</button>
+                <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CANCEL")}}</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-
-var newAppVersion = function (device){
-
-        $('form').attr('device',device);
-        $dialogObj = $("#newAppVersionDialog");
-        $dialogObj.find('#versionFile').val("");
-        $dialogObj.find('.file-input-name').text("");
-        $dialogObj.find('input[type=text]').val("");
-        $dialogObj.find('span.error').html("");
-        $dialogObj.modal('show');
-    }
 
 function switchFormatter(value, row) {
     var status = (row.status == 'ready')?'success':'off';
@@ -130,23 +194,48 @@ function switchFormatter(value, row) {
 };
 
 function versionNameFormatter(value, row) {
-    return '<a href="#" class="editVersion" data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version="'+row.version_name+'" data-url="'+row.url+'" data-status="'+row.status+'"> '+ value +'</a>';
+    return '<a href="#" class="editVersion" data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version="'+row.version_name+'" data-url="'+row.download_url+'" data-external="'+row.external_app+'" data-log="'+row.version_log+'"> '+ value +'</a>';
 };
 
-var updateVersion = function(row_id, device_type, version_name, url, status){
-    var statusStr = (status == 'ready')?'Publish':'Unpublish';
-    $('#hidVersionRowId').val(row_id);
-    $('#hidDeviceType').val(device_type);
-    $('#tbxEditVersionName').val(version_name);
-    $('#tbxEditVersionUrl').val(url);
-    $('#tbxEditVersionStatus').val(statusStr);
-    $('#appVersionDialog').modal('show');
-    $('#appVersionDialog').find('span.error').html("");
+function createdDateFormatter(value, row){
+    return convertUTCToLocalDateTime(value);
+}
+
+function versionLogDateFormatter(value, row){
+    if( value !=null ){
+        var versionLog = value.replace(/\n/g,"<br />");
+       return versionLog;
+    }
+    return '-';   
+}
+
+function fileSizeFormatter(value, row){
+    return formatSizeUnits(value);
+}
+
+var newAppVersion = function (device){
+        $('form').attr('device',device);
+        $dialogObj = $("#newAppVersionDialog");
+        $dialogObj.find('#versionFile').val("");
+        $dialogObj.find('.file-input-name').text("");
+        $dialogObj.find('input[type=text]').val("");
+        $dialogObj.find('textarea').val("");
+        $dialogObj.find('span.error').html("");
+        $dialogObj.modal('show');
+}
+
+var newExternalLink = function (device){
+        $('form').attr('device',device);
+        $dialogObj = $("#appNewExternalLinkDialog");
+        $dialogObj.find('input[type=text]').val("");
+        $dialogObj.find('textarea').val("");
+        $dialogObj.find('span.error').html("");
+        $dialogObj.modal('show');
 }
 
 var EditAppVersion = function(){
 
-    var require = ['tbxEditVersionName'];
+    var require = ['tbxEditVersionName','tbxEditVersionNo','tbxEditVersionLog','tbxEditVersionUrl'];
     var errors = validRequired(require);
 
     $.each(errors,function(i, error){
@@ -159,7 +248,12 @@ var EditAppVersion = function(){
     var $gridList = (deviceType == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
     var currentData = $gridList.bootstrapTable('getData');
     var $gridEditVersionListObj = (deviceType == 'ios')?$("#gridIOSVersionList"):$("#gridAndroidVersionList");
-    currentData[$('#hidIndex').val()].version_name =  $('#tbxEditVersionName').val();
+    var targetRow = currentData[$('#hidIndex').val()];
+    targetRow.version_name =  $('#tbxEditVersionName').val();
+    targetRow.version_code =  $('#tbxEditVersionNo').val();
+    targetRow.version_log =  $('#tbxEditVersionLog').val();
+    targetRow.download_url =  $('#tbxEditVersionUrl').val();
+    targetRow.url =  $('#tbxEditVersionUrl').val();
     $gridList.bootstrapTable('load', currentData);
     $("#appVersionDialog").modal('hide');
 }
@@ -175,7 +269,7 @@ var clearError = function($target){
 
 var uploadNewVersion = function(){
     var device = $('#newAppVersionForm').attr('device');
-    var require = ['tbxVersionName','tbxVersionNo','versionFile'];
+    var require = ['tbxVersionName','tbxVersionNo','tbxVersionLog','versionFile'];
     var _validExtension = (device == 'ios')?'ipa':'apk';
     var errors = validRequired(require);
     var fileFackPath = $('input[name=versionFile]').val();
@@ -183,6 +277,7 @@ var uploadNewVersion = function(){
     
     var versionCode = $('input[name=tbxVersionNo]').val();
     var versionName = $('input[name=tbxVersionName]').val();
+    var versionLog = $('textarea[name=tbxVersionLog]').val();
 
     var $gridList = (device == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
     var currentData = $gridList.bootstrapTable('getData');
@@ -223,20 +318,88 @@ var uploadNewVersion = function(){
     if(errors.length > 0){
         return false;
     }
-
+   
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
     newVersion.state = "undefined";
     newVersion.status = 'cancel';
-    newVersion.updated_at = getFormattedDate();
+    newVersion.created_at = getUTCDateTime(new Date());
     newVersion.url = fileName;
     newVersion.version_code = versionCode;
     newVersion.version_name = versionName;
+    newVersion.version_log  = versionLog;
     newVersion.version_file = $('#versionFile')[0].files[0];
+    newVersion.size = $('#versionFile')[0].files[0].size;
+    //newVersion.size = formatFloat($('#versionFile')[0].files[0].size/1024/1024,2) + 'MB';
+    newVersion.external_app = 0;
     currentData.push(newVersion);
     $gridList.bootstrapTable('load', currentData);
     $("#newAppVersionDialog").modal('hide');
+}
+
+var uploadNewExternalLink = function(){
+    var device = $('#newAppVersionForm').attr('device');
+    var require = ['tbxExternalName','tbxExternalNo','tbxExternalLog','tbxExternalLink'];
+    var _validExtension = (device == 'ios')?'ipa':'apk';
+    var errors = validRequired(require);
+    
+    var externalNo = $('input[name=tbxExternalNo]').val();
+    var externalName = $('input[name=tbxExternalName]').val();
+    var externalLog = $('textarea[name=tbxExternalLog]').val();
+    var externalLink = $('input[name=tbxExternalLink]').val();
+
+    var $gridList = (device == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
+    var currentData = $gridList.bootstrapTable('getData');
+
+    var regNum = /^\d+$/;
+
+    if(externalNo!="" && !regNum.test(externalNo)){
+        var error = new Error;
+        error.field = 'tbxExternalNo';
+        error.msg = '{{trans('messages.VALIDATE_ACCEPT_NUMERIC')}}';
+        errors.push(error);
+    }
+
+    for(var j = 0; j < currentData.length; j++) {
+        if($.trim(currentData[j].version_code) == $.trim(externalNo)) {
+            var error = new Error;
+            error.field = 'tbxExternalNo';
+            error.msg = '{{trans('messages.ERR_VERSION_NO_DUPLICATE')}}';
+            errors.push(error);
+            break;
+        }
+    }
+    for(var j = 0; j < currentData.length; j++) {
+        if($.trim(currentData[j].version_name) == $.trim(externalName)) {
+            var error = new Error;
+            error.field = 'tbxExternalName';
+            error.msg = '{{trans('messages.ERR_VERSION_NAME_DUPLICATE')}}';
+            errors.push(error);
+            break;
+        }
+    }
+    $.each(errors,function(i, error){
+        $('span[for='+error.field+']').html(error.msg);
+    });
+
+    if(errors.length > 0){
+        return false;
+    }
+    var newVersion = new Object();
+    newVersion.device_type = device;
+    newVersion.download_url = externalLink;
+    newVersion.state = "undefined";
+    newVersion.status = 'cancel';
+    newVersion.created_at = getUTCDateTime(new Date());
+    newVersion.url = externalLink;
+    newVersion.version_code = externalNo;
+    newVersion.version_name = externalName;
+    newVersion.version_log  = externalLog;
+    newVersion.external_app = 1;
+    currentData.push(newVersion);
+    $gridList.bootstrapTable('load', currentData);
+    $("#appNewExternalLinkDialog").modal('hide');
 }
 
 var delAppVersion = function(device){
@@ -279,13 +442,6 @@ var delAppVersion = function(device){
      
 }
 
-function getFormattedDate() {
-    var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-    return str;
-}
-
 function getApkDownLoadPath(appId,deviceType,versionCode,fileName){
     var baseUrl = '{{url(\Config::get('app.upload_folder'))}}';
     var url =  baseUrl + '/' +  appId + '/apk/' +  deviceType + '/' + versionCode + '/' + fileName;    
@@ -299,6 +455,7 @@ $(function () {
     $('body').on('change','.file', function(){showUploadFileName($(this))});
     $('body').on('keypress','input[type=text]', function(){clearError($(this));});
     $('body').on('change','input[type=file]', function(){clearError($(this));});
+    $('body').on('change','textarea', function(){clearError($(this));});
     
     $('body').on('click','div.switch-success', function(){
         var index = $(this).parents('tr').data('index');
@@ -324,13 +481,20 @@ $(function () {
 
      $('body').on('click','.editVersion',function(e) {  
         $currentTarget = $(e.currentTarget);
-        var statusStr = ($currentTarget.data('status') == 'ready')?'Publish':'Unpublish';
+        var disabled = true;
+        
+        if($currentTarget.data('external') == 1){
+            disabled = false;
+        }
+
         $('#hidIndex').val($currentTarget.parent().parent().data('index'));
         $('#hidVersionRowId').val($currentTarget.data('rowid'));
         $('#hidDeviceType').val($currentTarget.data('device'));
-        $('#tbxEditVersionName').val($currentTarget.data('version'));
-        $('#tbxEditVersionUrl').val($currentTarget.data('url'));
-        $('#tbxEditVersionStatus').val(statusStr);
+        $('#tbxEditVersionName').val($currentTarget.data('version')).prop('disabled', disabled);
+        $('#tbxEditVersionNo').val($currentTarget.data('version')).prop('disabled', disabled);
+        $('#tbxEditVersionUrl').val($currentTarget.data('url')).prop('disabled', disabled);
+        $('#tbxEditVersionLog').val($currentTarget.data('log'));
+
         $('#appVersionDialog').modal('show');
         $('#appVersionDialog').find('span.error').html("");
     });

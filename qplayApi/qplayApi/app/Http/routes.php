@@ -31,6 +31,9 @@ Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
 Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
 Route::any('/v101/qplay/updateLastMessageTime', 'qplayController@updateLastMessageTime');
 Route::post('/v101/qplay/sendPushMessage', 'qplayController@sendPushMessage');
+//Smart Factory
+Route::any('/v101/qplay/isLogin', 'qplayController@isLogin');
+Route::any('/v101/qplay/logoutSmartFactory', 'qplayController@logoutSmartFactory');
 
 //Login Page
 Route::any('/qplayauth_register', function() {
@@ -45,6 +48,17 @@ Route::any('/v101/yellowpage/DeleteMyPhoneBook', 'yellowpageController@DeleteMyP
 Route::any('/v101/yellowpage/QueryMyPhoneBook', 'yellowpageController@QueryMyPhoneBook');
 Route::any('/v101/yellowpage/QueryCompanyData', 'yellowpageController@QueryCompanyData');
 
+
+
+//RRS
+Route::any('/v101/rrs/ListAllManager', 'rrsController@ListAllManager');
+Route::any('/v101/rrs/ListAllMeetingRoom', 'rrsController@ListAllMeetingRoom');
+Route::any('/v101/rrs/ListAllTime', 'rrsController@ListAllTime');
+Route::any('/v101/rrs/QueryMyReserve', 'rrsController@QueryMyReserve');
+Route::any('/v101/rrs/QueryReserveDetail', 'rrsController@QueryReserveDetail');
+Route::any('/v101/rrs/QuickReserve', 'rrsController@QuickReserve');
+Route::any('/v101/rrs/ReserveCancel', 'rrsController@ReserveCancel');
+Route::any('/v101/rrs/ReserveMeetingRoom', 'rrsController@ReserveMeetingRoom');
 
 //for Test
 Route::any('/test', function() {

@@ -67,10 +67,9 @@ $(document).one("pagecreate", "#viewInitial1-1", function(){
                         if (loginData['doLoginDataCallBack'] === true) {
                             getLoginDataCallBack();
                         } else {
-                            if (loginData["openMessage"] === true) {
+                            if (window.localStorage.getItem("openMessage") === "true") {
                                 $.mobile.changePage("#viewWebNews2-3-1");
                             } else {
-                                loginData["openMessage"] = true;
                                 $.mobile.changePage('#viewMain2-1');
                             }
                         }

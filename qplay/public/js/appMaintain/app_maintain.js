@@ -11,11 +11,27 @@ SaveAppDetail = function(){
     
      var unPublishStr = 'Unpublish';
      var appName = $('#txbAppName_'+jsDefaultLang).val();
+     var appKey = $('#txbAppKey').val();
      var newAandroidStatus = unPublishStr;
      var newIOSStatus = unPublishStr;
      var confirmSrt = "";
      var confirmTitleSrt = "";
-    
+     var qplayAppErr = [];
+         
+    if(appKey == 'appqplay'){
+        if($('#gridAndroidVersionList').find('div.switch-success').size() <= 0){
+            qplayAppErr.push('Android');
+        }
+        if($('#gridIOSVersionList').find('div.switch-success').size() <= 0){
+            qplayAppErr.push('IOS');
+        }
+
+        if(qplayAppErr.length > 0){
+            showMessageDialog(Messages.ERROR,Messages.ERR_QPLAY_MUST_PUBLISH.replace('%s',qplayAppErr.join("、")));
+            return false;
+        }
+    }
+
      $('#gridAndroidVersionList').find('div.switch-success').each(function(){
         newAandroidStatus = $(this).parent().data('name');
      });
@@ -80,6 +96,14 @@ SaveAppDetailToDB = function(){
     }
 }
 $(function () {
+    
+    $(document).ajaxStart(function(){
+        $( "#saveAppDetail" ).prop( "disabled", true );
+    });
+    $(document).ajaxComplete(function(){
+        $( "#saveAppDetail" ).prop( "disabled", false );
+    });
+
     for(var key in submitFormAry){       
        submitFormAry[key].validate({
             ignore: [],
@@ -104,6 +128,9 @@ $(function () {
                 },
                 errorCodeFile:{
                     accept:"json"
+                },
+                ddlAppCategory:{
+                    required:true
                 }
             }, 
             groups: {
@@ -130,6 +157,8 @@ $(function () {
                     // }
                 }else if($element.attr("name") == 'errorCodeFile' ){
                    $error.insertAfter($('input[name=errorCodeFile]').parent().next());
+                }else if($element.attr('name') == 'fileIconUpload'){
+                   $error.insertAfter($('.iconUpload'));
                 }else{
                     var langTag = $element.attr("name").split('_')[1];
                     var langStr = $('#ddlLang_'+langTag).find('a').text();
@@ -141,7 +170,6 @@ $(function () {
                // $('#appMaintainAlert').fadeIn('1500');
            },
            submitHandler: function (form) {
-
                 validate ++;
                 if(validate==submitFormAry.length){
                     var formData = new FormData();
@@ -153,18 +181,13 @@ $(function () {
                     if(typeof ($( '#fileIconUpload' )[0].files[0]) != "undefined"){
                         formData.append('fileIconUpload', $( '#fileIconUpload' )[0].files[0]);
                     }
-                    $('#screenShotForm').find('input[name^=iosScreenUpload_]').each(function(){      
-                        var iosFile = $(this).attr('id');
-                        $.each($( '#'+iosFile )[0].files, function(i, file) {
-                            formData.append(iosFile + '[]', file);
-                        });
+
+                    $.each(screenShotfileQueue,function(i,item){
+                          $.each(item, function(j, file) {
+                                formData.append(i + '[]', file);
+                          });
                     });
-                    $('#screenShotForm').find('input[name^=androidScreenUpload_]').each(function(){
-                        var androidFile = $(this).attr('id');
-                        $.each($( '#'+androidFile )[0].files, function(i, file) {
-                            formData.append(androidFile + '[]', file);
-                        });
-                    });
+
                     $('#screenShotForm').find('.imgLi').each(function(){
                         formData.append('insPic[]',$(this).data('lang')+'-'+$(this).data('device')+'-'+$(this).data('url'));
                     })
@@ -259,16 +282,31 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
-        if($('.icon-preview').length == 1 ){
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        if(androidPublishCnt + iosPublishCnt ==0){
+            return true;
+        }
+        if($('.icon-preview').length == 1 && $('.icon-preview').attr('src')!=""){
             return true;
         }
         return false;
     });
 
     jQuery.validator.addMethod("screenshot", function(value, element) {
-        if($(element).parent().parent().find('li.imgLi').length > 0 ){
-            return true;
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        var ios = new RegExp('^iosScreenUpload_');
+        var android = new RegExp('^androidScreenUpload_');
+        if($(element).parent().parent().find('li.imgLi').length == 0){
+           if(ios.test($(element).attr('name')) && iosPublishCnt == 0){
+                return true;
+           }
+           if(android.test($(element).attr('name')) && androidPublishCnt == 0){
+                return true;
+           }
+           return false;
         }
-        return false;
+        return true;
     });
 });

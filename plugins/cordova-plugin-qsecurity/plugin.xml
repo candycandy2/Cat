@@ -21,7 +21,7 @@
     <name>QSecurityPlugin</name>
     <description>QPlay QSecurity Plugin</description>
     <license>Apache 2.0</license>
-    <preference name="ENV" />
+    <preference name="SCHEME_SETTING"/>
     <keywords>cordova,qsecurity,policy</keywords>
     <engines>
         <engine name="cordova-android" version=">=4.0.0" />
@@ -49,13 +49,12 @@
         </config-file>
         <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
             <array>
+                $SCHEME_SETTING
                 <string>fb</string>
                 <string>twitter</string>
                 <string>itms-apps</string>
                 <string>tel</string>
                 <string>mailto</string>
-                <string>appqplay$ENV</string>
-                <string>appyellowpage$ENV</string>
             </array>
         </config-file>
         <header-file src="src/ios/QSecurityPlugin.h" />
