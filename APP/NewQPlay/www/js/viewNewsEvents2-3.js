@@ -80,6 +80,11 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     else {
                         
                     }
+
+                    if (callGetMessageList) {
+                        loadingMask("close");
+                        callGetMessageList = false;
+                    }
                 }; 
 
                 this.failCallback = function(data) {};
@@ -93,6 +98,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     apiGetMessageList(self.successCallback, self.failCallback);
+
+                    callGetMessageList = true;
                 }();
             }
 
@@ -117,6 +124,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
             $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {
                 tabChange();
+
+                if (callGetMessageList) {
+                    loadingMask("show");
+                }
             });
 
             /********************************** dom event *************************************/
