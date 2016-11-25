@@ -11,8 +11,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
                     
-                    if (resultcode == 1) {
-                        
+                    if (resultcode === 1) {
+
+                        loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
+
                         if (loginData["messagecontent"] === null) {
                             loginData["messagecontent"] = data['content'];
                             window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));

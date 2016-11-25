@@ -31,6 +31,7 @@ var loginData = {
 var queryData = {};
 var getDataFromServer = false;
 var popupID;
+var callHandleOpenURL = false;
 
 var app = {
     // Application Constructor
@@ -64,6 +65,9 @@ var app = {
 
         //[device] data ready to get on this step.
         readConfig();
+
+        //for touch overflow content Enabled
+        $.mobile.touchOverflowEnabled = true;
     },
     onGetRegistradionID: function (data){
         try {
@@ -145,22 +149,29 @@ function setWhiteList() {
     var self = this;
 
     this.successCallback = function() {
+        var doCheckStorageData = false;
 
         if (appKey !== qplayAppKey) {
             if (window.localStorage.getItem("openScheme") === "true") {
-                if (device.platform !== "iOS") {
+                if (callHandleOpenURL) {
                     return;
+                } else {
+                    doCheckStorageData = true;
                 }
-                window.localStorage.setItem("openScheme", false);
+            } else {
+                doCheckStorageData = true;
             }
+        } else {
+            doCheckStorageData = true;
+        }
+
+        if (doCheckStorageData) {
+            checkStorageData();
         }
 
         if (device.platform === "Android") {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
         }
-
-        //check data(token, token_value, ...) on web-storage
-        checkStorageData();
 
         if (device.platform === "iOS") {
             $('.page-header, .page-main').addClass('ios-fix-overlap');
@@ -231,6 +242,7 @@ function setWhiteList() {
     }();
 }
 
+//check data(token, token_value, ...) on web-storage
 function checkStorageData() {
     if (window.localStorage.length === 0) {
         getDataFromServer = true;
@@ -333,6 +345,9 @@ function getSecurityList() {
             getServerData();
         } else if (data['result_code'] === "000908") {
             //token invalid
+            getServerData();
+        } else if (data['result_code'] === "000911") {
+            //uuid not exist
             getServerData();
         } else {
             //fail
@@ -452,7 +467,9 @@ function readConfig() {
     }
 
     //Plugin-QSecurity
-    var whiteList = new setWhiteList();
+    setTimeout(function() {
+        var whiteList = new setWhiteList();
+    }, 1000);
 
     //Plugin-QPush
     if (appKey === qplayAppKey) {
@@ -498,6 +515,8 @@ function getLoginDataCallBack() {
 function handleOpenURL(url) {
 
     if (url !== "null") {
+
+        callHandleOpenURL = true;
 
         //parse URL parameter
         var tempURL = url.split("//");
