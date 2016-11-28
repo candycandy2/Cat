@@ -46,7 +46,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 //Auto resize appDetailPicListContent
                 var tempIMG = $(".detail-img-style")[0];
                 var imgWidth = tempIMG.clientWidth;
-                var picListContentWidth = imgWidth * piclist.length;
+                var picListContentWidth = (imgWidth + 2) * piclist.length;
                 $("#appDetailPicListContent").css("width", picListContentWidth + "px");
 
                 //Auto resize detail-description
