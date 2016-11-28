@@ -11,8 +11,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
                     
-                    if (resultcode == 1) {
-                        
+                    if (resultcode === 1) {
+
+                        loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
+
                         if (loginData["messagecontent"] === null) {
                             loginData["messagecontent"] = data['content'];
                             window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
@@ -78,6 +80,11 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     else {
                         
                     }
+
+                    if (callGetMessageList) {
+                        loadingMask("hide");
+                        callGetMessageList = false;
+                    }
                 }; 
 
                 this.failCallback = function(data) {};
@@ -91,6 +98,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     apiGetMessageList(self.successCallback, self.failCallback);
+
+                    callGetMessageList = true;
                 }();
             }
 
@@ -115,6 +124,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
             $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {
                 tabChange();
+
+                if (callGetMessageList) {
+                    loadingMask("show");
+                }
             });
 
             /********************************** dom event *************************************/

@@ -14,6 +14,7 @@ var selectAppIndex = 9999;
 var messageRowId = 9999;
 var msgDateFromType;
 var callBackURL;
+var callGetMessageList = false;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {

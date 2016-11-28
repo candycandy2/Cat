@@ -16,6 +16,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                     if (resultcode === "1") {
                         var dataContent = data['Content'];
+                        $('#Company').html('<option value="All Company">All Company</option>');
 
                         for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
                             var companyname = dataContent[i].CompanyName;
