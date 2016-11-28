@@ -11,6 +11,12 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
+    if (loginData.uuid.length === 0) {
+        var deviceUUID = device.uuid;
+    } else {
+        var deviceUUID = loginData.uuid;
+    }
+
     $.ajax({
         type: requestType,
         headers: {
@@ -21,7 +27,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'token': loginData.token,
             'push-token': loginData.pushToken
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + deviceUUID + queryStr,
         dataType: "json",
         data: queryData,
         cache: false,

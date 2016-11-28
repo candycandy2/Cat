@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -242,7 +242,8 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
+                //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
+		$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -479,7 +480,7 @@ class qplayController extends Controller
                         -> select() -> get();
 
                     //Unregister to Message Center
-                    $app_id = "b376539a868fdf5696228432";  //TODO 正式上线需要读配置
+                    $app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
                     $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
                         $args = array('App_id' => $app_id,
@@ -607,7 +608,8 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
+                //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
+		$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
@@ -2038,7 +2040,7 @@ SQL;
                 }
 
                 //Register to Message Center
-                $app_id = "b376539a868fdf5696228432";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
+                $app_id = "33938c8b001b601c1e647cbd";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置 
 //                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,
