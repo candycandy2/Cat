@@ -502,7 +502,7 @@ function infoMessage() {
 function getLoginDataCallBack() {
     var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
                       "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
-                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'];
+                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
     openAPP(callBackURL);
 
     getMessageList();
