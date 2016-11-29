@@ -73,8 +73,6 @@ var app = {
         try {
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = data;
-
-            var doPushToken = new sendPushToken();
         } catch(exception) {
             console.log(exception);
         }
@@ -304,6 +302,8 @@ function processStorageData(action, data) {
                 getLoginDataCallBack();
             }
             getMessageList();
+
+            var doPushToken = new sendPushToken();
         }
     }
 
