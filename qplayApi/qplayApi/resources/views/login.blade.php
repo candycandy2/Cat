@@ -110,7 +110,7 @@
                 showMessage("no device type received!");
                 return;
             }
-
+            ShowLoading();
             $.ajax({
                 url: "v101/qplay/isRegister?lang=en-us&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
@@ -130,10 +130,12 @@
                             registerAndLogin(userName, password, company, uuid, device_type);
                         }
                     } else {
+                        HideLoading();
                         showMessage(d.message);
                     }
                 },
                 error: function (e) {
+                    HideLoading();
                     showMessage(e);
                 }
             });
@@ -156,6 +158,7 @@
                     request.setRequestHeader("password", password);
                 },
                 success: function (d, status, xhr) {
+                    HideLoading();
                     if(d.result_code && d.result_code == 1) {
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
@@ -172,6 +175,7 @@
                     }
                 },
                 error: function (e) {
+                    HideLoading();
                     showMessage(e);
                 }
             });
@@ -194,6 +198,7 @@
                     request.setRequestHeader("password", password);
                 },
                 success: function (d, status, xhr) {
+                    HideLoading();
                     if(d.result_code && d.result_code == 1) {
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
@@ -211,6 +216,7 @@
 
                 },
                 error: function (e) {
+                    HideLoading();
                     showMessage(e);
                 }
             });
