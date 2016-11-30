@@ -34,13 +34,13 @@ cordova-plugin-statusbar 2.1.3 "StatusBar"
 ```
 
 目錄結構
-- /componentapp  …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
-- /TemplateCordovaAPP …之後會廢除, 改由componentapp取代
+- /componentapp         …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
 - /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
 - /APP                  …放置APP的地方,包括使用www+css+js的UI功能
 - /WEB                  …放置WEB的地方,Login, Download...
 - /qplay                …放置PHP Platform
 - /qplayApi             …放置PHP API
+- /Dailybuild           …放置CI的地方,Dailybuild
 
 ## Android BUILD
 1. 手動 sign apk，讓 build 出來的 apk 可以使用 adb install 安裝
