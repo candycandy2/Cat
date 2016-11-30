@@ -56,7 +56,6 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                         $("#newsDetailTitle").html(title);
                         $("#newsAuthor").html(author);
                         $("#newsContent").html(cleanHTML(messagetext));
-                        alert(cleanHTML(messagetext));
 
                         window.localStorage.getItem("openMessage") === "false";
                         loginData["openMessage"] = false;
