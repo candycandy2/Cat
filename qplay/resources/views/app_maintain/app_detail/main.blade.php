@@ -27,9 +27,9 @@ foreach ($appBasic as $key => $appData){
     $defaultLang = $appData->default_lang_row_id;
     $categoryId = $appData->app_category_row_id;
     $securityLevel = $appData->security_level;
+    $projectCode = $appData->project_code;
     $appKey =  $appData->app_key;
 }
-
 foreach ($enableRole as $role){
     $enableRoleArray[] = $role->role_row_id;
 }
@@ -93,6 +93,7 @@ var jsOriAndroidStatus = '{{$appStatus['android']['str']}}';
 var jsOriIOSStatus = '{{$appStatus['ios']['str']}}';
 var delPicArr = new Array();
 var delVersionArr = new Array();
+var projectCode = '{{$projectCode}}';
 
 var selectedChanged = function (row, $element) {
     if(typeof(row)!='undefined'){
