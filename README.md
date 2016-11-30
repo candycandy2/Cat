@@ -1,3 +1,5 @@
+![image001](https://cloud.githubusercontent.com/assets/1924451/20743151/9735df36-b70f-11e6-95d0-dd794b2d60bd.png)
+
 # 企業運作平台
 ## 讓開發安全可靠好用的APP變得很容易
 
