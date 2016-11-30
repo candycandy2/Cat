@@ -97,7 +97,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         timeStamp = timeStamp - (60 * 60 * 24 * 30);
                     }
 
-                    apiGetMessageList(self.successCallback, self.failCallback);
+                    QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, null);
 
                     callGetMessageList = true;
                 }();

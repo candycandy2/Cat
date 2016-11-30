@@ -32,6 +32,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
             /********************************** function *************************************/
             function QueryMessageDetail() {
                 var self = this;
+                var queryStr = "&message_send_row_id=" + messageRowId;
 
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
@@ -56,13 +57,11 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                         $("#newsDetailTitle").html(title);
                         $("#newsAuthor").html(author);
                         $("#newsContent").html(cleanHTML(messagetext));
-                        alert(cleanHTML(messagetext));
 
                         window.localStorage.getItem("openMessage") === "false";
                         loginData["openMessage"] = false;
 
-                    } // if (resultcode == 1)
-                    else {
+                    } else {
 
                     }
                 };
@@ -70,7 +69,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    getMessageDetail(self.successCallback, self.failCallback, messageRowId);
+                    QPlayAPI("POST", "getMessageDetail", self.successCallback, self.failCallback, null, queryStr);
                 }();
             }
 
