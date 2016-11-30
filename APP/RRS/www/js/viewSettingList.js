@@ -1,56 +1,80 @@
-$(document).one("pagecreate", "#viewSettingList", function() {
+$(document).one('pagecreate', '#viewSettingList', function() {
 
-        $("#viewSettingList").pagecontainer({
+        var roomSettingdata = {};
+        var htmlContent = '';
+
+        $('#viewSettingList').pagecontainer({
             create: function(event, ui) {
 
                 /********************************** function *************************************/
 
-                function queryQuickReserve() {
+                function querySettingList() {
 
-                    // var obj = new Object();
-                    // obj.id = "0001"
-                    // obj.title = "BenQ會議室";
-                    // obj.people = "none";
-                    // obj.time = "0830";
-                    // obj.floor = "1f,2f,3f";
+                    roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
 
-                    // localStorage.setItem('localData', JSON.stringify(obj));
+                    htmlContent = '';
 
-                    var data = JSON.parse(localStorage.getItem('localData'));
-                    var htmlContent = "";
-
-                    for (var i = 0, item; item = data['content'][i]; i++) {
-                        htmlContent
-                            += replace_str($('#setting').get(0).outerHTML, item);
+                    if (roomSettingdata != null) {
+                        // if (roomSettingdata.length != 0) {
+                        for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
+                            htmlContent += replaceStr($('#settingList').get(0).outerHTML, item);
+                        }
                     }
 
-                    $("#setting").remove();
-                    $("#default").after(htmlContent);
-
+                    $('#settingList').remove();
+                    $('#defaultSettingList').after(htmlContent);
                 }
 
                 /********************************** page event *************************************/
-                $("#viewSettingList").on("pagebeforeshow", function(event, ui) {
+                $('#viewSettingList').on('pagebeforeshow', function(event, ui) {
                     // loadingMask("show");
-                    queryQuickReserve();
+                    querySettingList();
                 });
 
                 /********************************** dom event *************************************/
-                function replace_str(content, item) {
+                $('body').on('click', '#settingDelete', function() {
+                    // $('#settingDelete a').on('click', function() {
+                    var id = $(this).attr('value');
+                    var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
+                    roomSettingdata.content =
+                        roomSettingdata.content.filter(function(item) {
+                            return item.id != id;
+                        });
+                    localStorage.setItem('roomSettingData', JSON.stringify(roomSettingdata));
+                    // querySettingList();
+                    $('#set-' + id).remove();
 
-                    var peopleStr = (item.people == 'none') ? "不限" : item.people;
-                    // var start_time = new Date(item.time);
-                    // var end_time = end_time.setMinutes(start_time.getMinutes() + 30);
-                    // var timeStr = (item.time == 'hour') ? "現在起一小時" : start_time + ' - ' + end_time;
-                    var floorStr = (item.floor == 'none') ? "不限" : item.floor;
+                });
+
+
+                function replaceStr(content, item) {
+
+                    var peopleStr = (item.people == 'none') ? '不限' : item.people + '人';
+                    var timeStr = '';
+                    if (item.time == 'none') {
+                        timeStr = '現在起一小時';
+                    } else {
+                        var sTimeStr = new Date(new Date().toDateString() + ' ' + item.time)
+                        sTimeStr.setMinutes(sTimeStr.getMinutes() + 30);
+                        var eTimeStr = sTimeStr.hhmm();
+                        timeStr = item.time + ' - ' + eTimeStr;
+                    }
+                    var floorStr = (item.floor == 'none') ? '不限' : item.floor;
 
                     return content
+                        .replace('settingList', 'set-'+item.id)
                         .replace('index', item.id)
                         .replace('title', item.title)
                         .replace('people', peopleStr)
-                        .replace('time', item.time)
+                        .replace('time', timeStr)
                         .replace('floor', floorStr);
                 }
+
+                Date.prototype.hhmm = function() {
+                    var hh = this.getHours().toString();
+                    var mm = this.getMinutes().toString();
+                    return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]);
+                };
             }
         });
 

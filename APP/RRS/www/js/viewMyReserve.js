@@ -1,14 +1,14 @@
-    $(document).one("pagecreate", "#viewMyReserve", function() {
+$(document).one('pagecreate', '#viewMyReserve', function() {
 
         var dict = {
-            "1": "(一)",
-            "2": "(二)",
-            "3": "(三)",
-            "4": "(四)",
-            "5": "(五)"
+            '1': '(一)',
+            '2': '(二)',
+            '3': '(三)',
+            '4': '(四)',
+            '5': '(五)'
         };
 
-        $("#viewMyReserve").pagecontainer({
+        $('#viewMyReserve').pagecontainer({
             create: function(event, ui) {
 
                 /********************************** function *************************************/
@@ -17,12 +17,12 @@
 
                     var self = this;
 
-                    this.successCallback = $.getJSON('../js/MyReserve', function(data) {
+                    this.successCallback = $.getJSON('js/QueryMyReserve', function(data) {
 
-                        if (data['result_code'] === "1") {
+                        if (data['result_code'] === '1') {
 
-                            var htmlContent_today = "";
-                            var htmlContent_other = "";
+                            var htmlContent_today = '';
+                            var htmlContent_other = '';
 
                             sortResults(data['content'], 'ReserveDate', 'asc');
 
@@ -30,17 +30,17 @@
                                 if (item.ReserveDate == new Date().yyyymmdd()) {
 
                                     htmlContent_today
-                                        += replace_str($('#today').get(0).outerHTML, item);
+                                        += replaceStr($('#today').get(0).outerHTML, item);
                                 } else {
                                     htmlContent_other
-                                        += replace_str($('#other-day').get(0).outerHTML, item);
+                                        += replaceStr($('#other-day').get(0).outerHTML, item);
                                 }
                             }
 
-                            $("#today").remove();
-                            $("#other-day").remove();
-                            $("#today-line").after(htmlContent_today);
-                            $("#other-day-line").after(htmlContent_other);
+                            $('#today').remove();
+                            $('#other-day').remove();
+                            $('#today-line').after(htmlContent_today);
+                            $('#other-day-line').after(htmlContent_other);
 
                         } else {
                             //ResultCode = 001901, [no data]
@@ -56,13 +56,13 @@
                 }
 
                 /********************************** page event *************************************/
-                $("#viewMyReserve").on("pagebeforeshow", function(event, ui) {
+                $('#viewMyReserve').on('pagebeforeshow', function(event, ui) {
                     // loadingMask("show");
                     queryMyReserve();
                 });
 
                 /********************************** dom event *************************************/
-                function replace_str(content, item) {
+                function replaceStr(content, item) {
 
                     // convert yyyymmdd to yyyy/mm/dd
                     var match = item.ReserveDate.match(/(\d{4})(\d{2})(\d{2})/);
@@ -70,7 +70,7 @@
 
                     // convert date format to mm/dd(day of week)
                     var d = new Date(newDateStr);
-                    var date_format =
+                    var dateFormat =
                         d.getMonth() + 1 + '/' +
                         d.getDate() +
                         dict[d.getDay()];
@@ -80,7 +80,7 @@
                         .replace('End', item.ReserveEndTime)
                         .replace('room', item.MeetingRoomName)
                         .replace('index', item.ReserveTraceAggID)
-                        .replace('date', date_format);
+                        .replace('date', dateFormat);
                 }
 
                 function sortResults(data, prop, asc) {
@@ -94,7 +94,7 @@
                     var yyyy = this.getFullYear().toString();
                     var mm = (this.getMonth() + 1).toString();
                     var dd = this.getDate().toString();
-                    return yyyy + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" + dd[0]);
+                    return yyyy + (mm[1] ? mm : '0' + mm[0]) + (dd[1] ? dd : '0' + dd[0]);
                 };
             }
         });
