@@ -1082,10 +1082,9 @@ SQL;
                 foreach ($appDataList as $appData)
                 {
                     $appUrl = $appData->url;
-                    $iconUrl = $appData->icon_url;
+                    $iconUrl = FilePath::getIconUrl($appData->app_id, $appData->icon_url);
                     if($appData->external_app == 0) {
                         $appUrl = FilePath::getApkDownloadUrl($appData->app_id, $device_type, $appData->version, $appData->url);
-                        $iconUrl = FilePath::getIconUrl($appData->app_id, $appData->icon_url);
                     }
                     $app = array('app_id'=>$appData->app_id,
                         'app_code'=>$appData->app_code,
