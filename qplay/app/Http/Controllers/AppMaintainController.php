@@ -308,7 +308,7 @@ class AppMaintainController extends Controller
                 -> select('h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
                             'h.security_level','h.icon_url','h.company_label','l.row_id','l.app_description' ,'l.app_name' ,
                             'l.lang_row_id','l.app_summary','lang.lang_desc' ,'lang.lang_code',
-                            'p.app_key')
+                            'p.app_key','p.project_code')
                 -> get();
 
          $appPic = \DB::table("qp_app_pic as pic")

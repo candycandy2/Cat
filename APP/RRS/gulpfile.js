@@ -45,12 +45,12 @@ if (env === "test") {
     appVersionDecorate = "Development";
 }
 
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appyellowpage" + appNameDecorate + "</string>";
+var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>apprrs" + appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appyellowpage' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
+                    '<widget id="com.qplay.apprrs' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
-                        '<name>YellowPage</name>' +
+                        '<name>RRS</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
                         '</description>' +
@@ -106,7 +106,7 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate,
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=apprrs' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist'
 ]));
@@ -118,7 +118,7 @@ gulp.task('copyAndroidImages', function() {
 
 gulp.task('copyIOSImages', function() {
     return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/',{overwrite: true}));
+        .pipe(gulp.dest('platforms/ios/rrs/Images.xcassets/',{overwrite: true}));
 });
 
 gulp.task('build', shell.task([

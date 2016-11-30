@@ -88,7 +88,7 @@
                                          </li>
                                         @endforeach
                                     @endif  
-                                    <li class="screen-upl-btn js-screen-file" @if($i >= 5)  style="display:none"   @endif id="iosScreenUpl_{{$appData->lang_row_id}}">
+                                    <li class="screen-upl-btn js-screen-file" @if($j >= 5)  style="display:none"   @endif id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
                                         <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
                                         <input type="file" accept=".jpeg,.jpg,.png" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
