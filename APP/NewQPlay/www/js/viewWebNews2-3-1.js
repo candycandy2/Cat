@@ -1,16 +1,41 @@
+$(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
-$(document).one("pagecreate", "#viewWebNews2-3-1", function(){
-    
+    function cleanHTML(input) {
+        // 1. remove line breaks / Mso classes
+        var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
+        var output = input.replace(stringStripper, ' ');
+        // 2. strip Word generated HTML comments
+        var commentSripper = new RegExp('<!--(.*?)-->', 'g');
+        var output = output.replace(commentSripper, '');
+        var tagStripper = new RegExp('<(/)*(meta|link|span|table|tbody|td|tr|body|div|strong|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+        // 3. remove tags leave content if any
+        output = output.replace(tagStripper, '');
+        // 4. Remove everything in between and including tags '<style(.)style(.)>'
+        var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+
+        for (var i = 0; i < badTags.length; i++) {
+            tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+            output = output.replace(tagStripper, '');
+        }
+        // 5. remove attributes ' style="..."'
+        var badAttributes = ['style', 'start'];
+        for (var i = 0; i < badAttributes.length; i++) {
+            var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+            output = output.replace(attributeStripper, '');
+        }
+        return output;
+    }
+
     $("#viewWebNews2-3-1").pagecontainer({
         create: function(event, ui) {
-            
+
             /********************************** function *************************************/
             function QueryMessageDetail() {
                 var self = this;
 
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
-                    
+
                     if (resultcode == 1) {
                         var responsecontent = data['content'];
                         /*
@@ -30,16 +55,16 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function(){
                         $("#newsDetailCreateTime").html(time.substr(0, 10));
                         $("#newsDetailTitle").html(title);
                         $("#newsAuthor").html(author);
-                        $("#newsContent").html(messagetext);
+                        $("#newsContent").html(cleanHTML(messagetext));
 
                         window.localStorage.getItem("openMessage") === "false";
                         loginData["openMessage"] = false;
 
                     } // if (resultcode == 1)
                     else {
-                        
+
                     }
-                }; 
+                };
 
                 this.failCallback = function(data) {};
 
@@ -47,7 +72,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function(){
                     getMessageDetail(self.successCallback, self.failCallback, messageRowId);
                 }();
             }
-            
+
             /********************************** page event *************************************/
             $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
                 var messageDetail = new QueryMessageDetail();
