@@ -27,45 +27,53 @@ h1 {
     margin-bottom: 5px;
 }
 
-#main-select .ui-block-a h3 {
+#newSettingSelect .ui-block-a h3 {
     text-align: center;
 }
 
-#main-select .ui-block-b div:first-child {
+#newSettingSelect .ui-block-b div:first-child {
     margin-left: 5%;
     margin-right: 5%;
 }
 
-#grid-select div.ui-bar {
+#newSettingFloor div.ui-bar {
     text-align: center;
     height: 3.5em;
 }
 
-#main-grid-select div.ui-bar {
+
+/*******Reserve use*******/
+
+#quickReserveDateSelect div.ui-bar {
+    text-align: center;
+    height: 3.5em;
+}
+
+#reserveDateSelect div.ui-bar {
     text-align: center;
     height: 3.5em;
     line-height: 3.5em;
     padding: 0.5em 0.5em !important;
 }
 
-#main-grid-select div.ui-bar span:nth-child(2) {
+#reserveDateSelect div.ui-bar span:nth-child(2) {
     font-size: large;
 }
 
-#noreserv div.ui-bar {
+#noreserve div.ui-bar {
     text-align: center;
     height: 3.5em;
     line-height: 1.5em;
 }
 
-#select-item div.ui-bar span:nth-child(1) {
+#reserveSelectItem div.ui-bar span:nth-child(1) {
     background: url(../img/select.png) no-repeat;
     display: inline-table;
     width: 16px;
     height: 16px;
 }
 
-#noreserv div.ui-bar span:nth-child(4) {
+#noreserve div.ui-bar span:nth-child(4) {
     font-size: small;
 }
 
@@ -94,6 +102,27 @@ h1 {
 .ui-content {
     padding-left: 0em !important;
     padding-right: 0em !important;
+}
+
+#container .ui-select {
+    margin-top: 0em !important;
+    margin-bottom: 0em !important;
+}
+
+#reserveSite-button.ui-btn {
+    padding: 0px !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: transparent !important;
+}
+
+#reserveSite-button.ui-btn-icon-right {
+    padding-right: 2.5em !important;
+}
+
+#reserveFloor-button.ui-btn {
+    background-color: transparent !important;
+    border-color: transparent !important;
 }
 
 
@@ -161,30 +190,34 @@ h1 {
     width: 50%;
 }
 
-#page-two {
+#pageTwo {
     text-align: center;
 }
 
-#setting-area {
+#reserveSettingArea {
     margin-top: 20%;
 }
 
-#setting-area a:link {
+#reserveSettingArea a:link {
     text-decoration: none;
     color: black;
 }
 
-#btn-area a {
+#reserveBtnArea {
+    padding-top: 10%;
+}
+
+#reserveBtnArea a {
     display: inline-block;
 }
 
-#icon-discribe {
+#iconDiscribe {
     text-align: center;
     margin-top: 3%;
     margin-bottom: 3%;
 }
 
-#icon-discribe > div {
+#iconDiscribe > div {
     width: 5%;
     height: 15px;
     display: inline-block;
@@ -192,12 +225,12 @@ h1 {
     border-color: gainsboro;
 }
 
-#icon-discribe > h3 {
+#iconDiscribe > h3 {
     display: inline-block;
     margin: 0;
 }
 
-#cntIcon {
+.cntIcon {
     width: 20%;
     height: 40%;
     position: absolute;
@@ -207,12 +240,21 @@ h1 {
     font-size: large;
 }
 
+.disable {
+    display: none !important;
+}
+
 
 /*color setting start*/
 
 .btn-benq {
     background-color: #471e86 !important;
     color: white !important;
+}
+
+.btn-benq-disable {
+    background-color: #e9e9e9 !important;
+    color: #666 !important;
 }
 
 .ui-benq-color {
@@ -360,10 +402,21 @@ div.scrollmenu a {
     border-color: #e4e4e4 !important;
 }
 
-div.scrollmenu a:hover {
+/*#scrollDate.scrollmenu a:hover {
+    background-color: #d6cadc;
+    color: black !important;
+}*/
+
+.hover {
     background-color: #d6cadc;
     color: black !important;
 }
+
+
+
+
+
+
 
 
 /*scrollmenu end*/
