@@ -73,8 +73,6 @@ var app = {
         try {
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = data;
-
-            var doPushToken = new sendPushToken();
         } catch(exception) {
             console.log(exception);
         }
@@ -304,6 +302,8 @@ function processStorageData(action, data) {
                 getLoginDataCallBack();
             }
             getMessageList();
+
+            var doPushToken = new sendPushToken();
         }
     }
 
@@ -502,7 +502,7 @@ function infoMessage() {
 function getLoginDataCallBack() {
     var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
                       "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
-                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'];
+                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
     openAPP(callBackURL);
 
     getMessageList();

@@ -11,14 +11,13 @@ SaveAppDetail = function(){
     
      var unPublishStr = 'Unpublish';
      var appName = $('#txbAppName_'+jsDefaultLang).val();
-     var appKey = $('#txbAppKey').val();
      var newAandroidStatus = unPublishStr;
      var newIOSStatus = unPublishStr;
      var confirmSrt = "";
      var confirmTitleSrt = "";
      var qplayAppErr = [];
          
-    if(appKey == 'appqplay'){
+    if(projectCode == '000'){
         if($('#gridAndroidVersionList').find('div.switch-success').size() <= 0){
             qplayAppErr.push('Android');
         }

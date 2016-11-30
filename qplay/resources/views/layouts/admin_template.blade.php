@@ -99,6 +99,12 @@ if(array_key_exists('with_msg_id', $input)) {
         .error{
             color: red;
         }
+        .head-version{
+            color: #d73925;
+            font-size: 20px;
+            line-height: 50px;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
     </style>
 </head>
 <body class="skin-blue fixed" data-spy="scroll" data-target="#scrollspy">
@@ -115,6 +121,9 @@ if(array_key_exists('with_msg_id', $input)) {
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
+            @if(strtolower(\Config::get('app.env')) != 'production')
+            <span class="head-version">{{\Config::get('app.version')}} - {{\Config::get('app.env')}}</span>
+            @endif
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">

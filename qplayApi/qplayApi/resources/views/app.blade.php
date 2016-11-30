@@ -7,10 +7,12 @@
 	<title>QPlay API</title>
 
 	<link href="{{ asset('/css/themes/default/jquery.mobile-1.4.5.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/QLoading.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/jquery-1.12.3.min.js') }}"></script>
 	<script src="{{ asset('/js/jquery.mobile-1.4.5.min.js') }}"></script>
 	<script src="{{ asset('/js/jquery.json.js') }}"></script>
 	<script src="{{ asset('/js/Math.uuid.js') }}"></script>
+	<script src="{{ asset('/js/QLoading.js') }}"></script>
 	<style>
 		body {
 			font-family: Arial;
