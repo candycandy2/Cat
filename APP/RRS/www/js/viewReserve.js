@@ -3,6 +3,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
     var roomSiteData = {};
     var roomData = {};
     var floorData = {};
+    var clickDateId = '';
+    var clickRomeId = '';
     var dict = {
         '1': '(一)',
         '2': '(二)',
@@ -10,6 +12,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
         '4': '(四)',
         '5': '(五)'
     };
+    var userName = 'kevin';
 
     $('#viewReserve').pagecontainer({
         create: function(event, ui) {
@@ -21,11 +24,72 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     default:
                         case 'tabOne':
 
-                    break;
+                        break;
                     case 'tabTwo':
-                        setListItem();
+                            setListItem();
                         break;
                 }
+            }
+
+            function getMettingStatus() {
+                $('#defaultTimeSelectId').nextAll().remove();
+                var arrClass = ['a', 'b', 'c', 'd'];
+                var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve'];
+                var htmlContent = '';
+                var j = 0;
+                for (var i = 0, item; item = timeBlockArr[i]; i++) {
+                    var classId = arrClass[j % 4];
+                    var reserveStr = 'ui-color-noreserve';
+                    var eName = '';
+                    for (var k = 0, arr; arr = reserveArr[k]; k++) {
+                        if (arr.detailInfo[4].value == item) {
+                            if (arr.detailInfo[2].value == userName) {
+                                reserveStr = 'ui-color-myreserve';
+                            } else {
+                                reserveStr = 'ui-color-reserve';
+                                var eName = '<a href="tel:' + arr.detailInfo[5].value + '" class="ui-link-inherit">' + arr.detailInfo[2].value + '</a>';
+
+                            }
+                        }
+                    }
+                    var replaceItem = ['time-' + i, item, eName, 'ui-block-' + classId, '', reserveStr];
+
+                    htmlContent
+                        += replaceStr($('#defaultTimeSelectId').get(0).outerHTML, originItem, replaceItem);
+                    j++;
+                }
+
+                $('#reserveDateSelect > div').append(htmlContent);
+            }
+
+
+            function getReserveData() {
+
+                var self = this;
+
+                this.successCallback = $.getJSON('js/QueryReserve', function(data) {
+
+                    if (data['result_code'] == '1') {
+
+                        for (var i = 0, item; item = data['content'][i]; i++) {
+
+                            var newReserve = new reserveObj(item.roomId, item.reserveDate);
+                            newReserve.addDetail('traceID', item.traceID);
+                            newReserve.addDetail('eName', item.eName);
+                            newReserve.addDetail('roomName', item.roomName);
+                            newReserve.addDetail('bTime', item.bTime);
+                            newReserve.addDetail('ext', item.ext);
+                            newReserve.addDetail('email', item.email);
+                            reserveArr.push(newReserve);
+
+                        }
+
+                        getMettingStatus();
+
+                    } else {
+                        //ResultCode = 001901, [no data]
+                    }
+                });
             }
 
             function queryAllFloor(location) {
@@ -66,6 +130,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                         //***
                         queryAllRoom('1');
+                        clickRomeId = $('#reserveRoom a:first-child').val();
                         $('#reserveRoom a:first-child').addClass('hover');
                         $('#reserveRoom a:first-child').parent().data("lastClicked", $('#reserveRoom a:first-child').attr('id'));
 
@@ -155,22 +220,26 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveDefault').remove();
                 $('#quickReserveDefault').after(htmlContentPageTwo);
                 $('#quickReserveDefault').remove();
+
+                clickDateId = $('#scrollDate a:first-child').val();
                 $('#scrollDate a:first-child').addClass('hover');
                 $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
             }
 
             /********************************** page event *************************************/
-            $('#viewReserve').on('pagebeforeshow', function(event, ui) { console.log('test');
+            $('#viewReserve').on('pagebeforeshow', function(event, ui) {
                 // loadingMask("show");
                 // dateListItem();
                 // queryAllFloor('1');
                 // queryReserve('tabOne');
             });
 
-            $('#viewReserve').on('pageshow', function(event, ui) { console.log('test');
+            $('#viewReserve').on('pageshow', function(event, ui) {
                 // loadingMask("show");
+                getTimeBlock();
                 dateListItem();
                 queryAllFloor('1');
+                getReserveData();
                 queryReserve('tabOne');
             });
 
@@ -210,20 +279,51 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', '#scrollDate .ui-link', function() {
+                clickDateId = $(this).val();
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
                 }
                 $(this).parent().data("lastClicked", this.id);
                 $(this).addClass('hover');
+
+                getMettingStatus();
+
             });
 
             $('body').on('click', '#reserveRoom .ui-link', function() {
+                clickRomeId = $(this).val();
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
                 }
                 $(this).parent().data("lastClicked", this.id);
                 $(this).addClass('hover');
+
+                getMettingStatus();
+
             });
+
+            $('body').on('click', 'div[id^=time]', function() {
+                if ($(this).hasClass('ui-color-myreserve')) {
+                    $('#reserveCancelAlert').popup('open');
+                } else if ($(this).hasClass('ui-color-noreserve') && !$(this).hasClass('reserveSelect')) {
+                    $(this).addClass('reserveSelect');
+                    $(this).addClass('reserveSelectIcon');
+                } else if ($(this).hasClass('reserveSelect')) {
+                    $(this).removeClass('reserveSelect');
+                    $(this).removeClass('reserveSelectIcon');
+                }
+            });
+
+            $("#reserveCancelAlert #cancel").on('click', function() {
+        
+                //$.mobile.changePage('#viewReserve');
+            });
+
+            $("#reserveCancelAlert #confirm").on('click', function() {
+                
+                $.mobile.changePage('#viewReserve');
+            });
+
 
             function replaceStr(content, originItem, replaceItem) {
                 $.each(originItem, function(index, value) {
