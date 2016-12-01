@@ -107,7 +107,9 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             $.each(selectedApps, function(i, app) {
                 addAppsList.push(app.app_name);
             });
-            showConfirmDialog("{{trans("messages.MSG_CONFIRM_ADD")}}", "{{trans("messages.MSG_CONFIRM_ADD_APPS_TO_CATEGORY")}}".replace("%s",'<span class="text-warning">' + htmlEscape($('#tdCategoryName').text()) + '</span>'),addAppsList.join('、'), function () {
+            var categoryNameStr = '<span class="text-warning">' + htmlEscape($('#tdCategoryName').text()) + '</span>';
+            var AppStr = '<span class="text-warning">' + addAppsList.join('、') + '</span>';
+            showConfirmDialog("{{trans("messages.MSG_CONFIRM_ADD")}}", "{{trans("messages.MSG_CONFIRM_ADD_APPS_TO_CATEGORY")}}".replace("%s",AppStr).replace("%l",categoryNameStr),"", function () {
                 hideConfirmDialog();
                 $.each(selectedApps, function(i, newApp) {
                     newApp.state = false;
