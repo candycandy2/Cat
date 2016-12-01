@@ -380,53 +380,50 @@ function getSecurityList() {
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
     successCallback =  successCallback || successCallback;
+    tokenValid = tokenValid || tokenValid;
     data =  data || data;
 
-    if (tokenValid !== undefined) {
+    //Success Result Code
+    //Yellowpage: 001901, 001902, 001903, 001904, 001905, 001906
 
-        //Success Result Code
-        //Yellowpage: 001901, 001902, 001903, 001904, 001905, 001906
+    resultCode = resultCode.toString();
 
-        resultCode = resultCode.toString();
+    if (resultCode === "1" || resultCode === "001901" || resultCode === "001902" || resultCode === "001903" 
+        || resultCode === "001904" || resultCode === "001905" || resultCode === "001906") {
 
-        if (resultCode === "1" || resultCode === "001901" || resultCode === "001902" || resultCode === "001903" 
-            || resultCode === "001904" || resultCode === "001905" || resultCode === "001906") {
+        var clientTimestamp = new Date().getTime();
+        clientTimestamp = clientTimestamp.toString().substr(0, 10);
 
-            var clientTimestamp = new Date().getTime();
-            clientTimestamp = clientTimestamp.toString().substr(0, 10);
-
-            if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
-                //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
-                if (appKey === qplayAppKey) {
-                    reNewToken();
-                } else {
-                    getServerData();
-                }
+        if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
+            //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
+            if (appKey === qplayAppKey) {
+                reNewToken();
             } else {
-                if (doInitialSuccess) {
-                    doInitialSuccess = false;
-                    initialSuccess();
-                } else {
-                    successCallback(data);
-                }
+                getServerData();
             }
-        } else if (resultCode === "000907") {
-            //token expired
-            getServerData();
-        } else if (resultCode === "000908") {
-            //token invalid
-            getServerData();
-        } else if (resultCode === "000911") {
-            //uuid not exist
-            getServerData();
-        } else if (resultCode === "000914") {
-            //User Account Suspended
-            getServerData();
+        } else {
+            if (doInitialSuccess) {
+                doInitialSuccess = false;
+                initialSuccess();
+            } else {
+                successCallback(data);
+            }
         }
-
+    } else if (resultCode === "000907") {
+        //token expired
+        getServerData();
+    } else if (resultCode === "000908") {
+        //token invalid
+        getServerData();
+    } else if (resultCode === "000911") {
+        //uuid not exist
+        getServerData();
+    } else if (resultCode === "000914") {
+        //User Account Suspended
+        getServerData();
     } else {
-        //checkAppVersion won't return token_valid
-        if (data["content"]["version_code"] != null) {
+        //[checkAppVersion] & [logout] won't return token_valid
+        if (typeof successCallback === "function") {
             successCallback(data);
         }
     }
