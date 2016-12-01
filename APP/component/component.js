@@ -391,24 +391,37 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
     if (resultCode === "1" || resultCode === "001901" || resultCode === "001902" || resultCode === "001903" 
         || resultCode === "001904" || resultCode === "001905" || resultCode === "001906") {
 
+        var doSuccessCallback = false;
         var clientTimestamp = new Date().getTime();
         clientTimestamp = clientTimestamp.toString().substr(0, 10);
 
-        if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
-            //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
-            if (appKey === qplayAppKey) {
-                reNewToken();
+        if (!isNaN(tokenValid)) {
+            if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
+                //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
+                if (appKey === qplayAppKey) {
+                    reNewToken();
+                } else {
+                    getServerData();
+                }
             } else {
-                getServerData();
+                if (doInitialSuccess) {
+                    doInitialSuccess = false;
+                    initialSuccess();
+                } else {
+                    doSuccessCallback = true;
+                }
             }
         } else {
-            if (doInitialSuccess) {
-                doInitialSuccess = false;
-                initialSuccess();
-            } else {
+            //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
+            doSuccessCallback = true;
+        }
+
+        if (doSuccessCallback) {
+            if (typeof successCallback === "function") {
                 successCallback(data);
             }
         }
+
     } else if (resultCode === "000907") {
         //token expired
         getServerData();
@@ -421,11 +434,6 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
     } else if (resultCode === "000914") {
         //User Account Suspended
         getServerData();
-    } else {
-        //[checkAppVersion] & [logout] won't return token_valid
-        if (typeof successCallback === "function") {
-            successCallback(data);
-        }
     }
 }
 
