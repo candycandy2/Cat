@@ -101,10 +101,11 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         appApiPath = "qplayApi";
                         qplayAppKey = "appqplay";
 
-                        //logout can not clear messagecontent
+                        //logout can not clear messagecontent / pushToken
                         var messagecontent = window.localStorage.getItem("messagecontent");
+                        var pushToken = window.localStorage.getItem("pushToken");
 
-                        var loginData = {
+                        loginData = {
                             versionName:         "",
                             versionCode:         "",
                             deviceType:          "",
@@ -127,6 +128,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         window.localStorage.clear();
 
                         window.localStorage.setItem("messagecontent", messagecontent);
+                        window.localStorage.setItem("pushToken", pushToken);
 
                         app.initialize();
                     }
