@@ -8,6 +8,7 @@
 var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
+var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 var loginData = {
     versionName:         "",
@@ -32,6 +33,7 @@ var queryData = {};
 var getDataFromServer = false;
 var popupID;
 var callHandleOpenURL = false;
+var doInitialSuccess = false;
 
 var app = {
     // Application Constructor
@@ -108,6 +110,8 @@ var app = {
 
 app.initialize();
 
+//According to the data [pageList] which set in index.js ,
+//add View template into index.html
 $(document).one("pagebeforecreate", function(){
 
     $(':mobile-pagecontainer').html("");
@@ -123,7 +127,8 @@ $(document).one("pagebeforecreate", function(){
 
 });
 
-
+//According to the data [pageList] which set in index.js ,
+//select the first data become the index page.
 $(document).one("pagecreate", "#"+pageList[0], function(){
     $(":mobile-pagecontainer").pagecontainer("change", $("#"+pageList[0]));
 });
@@ -322,6 +327,7 @@ function getServerData() {
     } else {
         window.localStorage.setItem("openScheme", true);
         openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
+        navigator.app.exitApp();
     }
 
 }
@@ -338,29 +344,16 @@ function getSecurityList() {
     var self = this;
 
     this.successCallback = function(data) {
-        if (data['result_code'] === 1) {
-            initialSuccess();
-        } else if (data['result_code'] === "000907") {
-            //token expired
-            getServerData();
-        } else if (data['result_code'] === "000908") {
-            //token invalid
-            getServerData();
-        } else if (data['result_code'] === "000911") {
-            //uuid not exist
-            getServerData();
-        } else {
-            //fail
-        }
+        doInitialSuccess = true;
+        checkTokenValid(data['result_code'], data['token_valid'], null, null);
     };
 
     this.failCallback = function(data) {};
 
     var __construct = function() {
 
-        var QPlaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
         var signatureTime = Math.round(new Date().getTime()/1000);
-        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), QPlaySecretKey);
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), qplaySecretKey);
         var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
 
         $.ajax({
@@ -381,6 +374,119 @@ function getSecurityList() {
 
     }();
 
+}
+
+//Check if Token Valid is less than 1 hour || expired || invalid || not exist
+function checkTokenValid(resultCode, tokenValid, successCallback, data) {
+
+    successCallback =  successCallback || successCallback;
+    tokenValid = tokenValid || tokenValid;
+    data =  data || data;
+
+    //Success Result Code
+    //Yellowpage: 001901, 001902, 001903, 001904, 001905, 001906
+
+    resultCode = resultCode.toString();
+
+    if (resultCode === "1" || resultCode === "001901" || resultCode === "001902" || resultCode === "001903" 
+        || resultCode === "001904" || resultCode === "001905" || resultCode === "001906") {
+
+        var doSuccessCallback = false;
+        var clientTimestamp = new Date().getTime();
+        clientTimestamp = clientTimestamp.toString().substr(0, 10);
+
+        if (!isNaN(tokenValid)) {
+            if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
+                //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
+                if (appKey === qplayAppKey) {
+                    reNewToken();
+                } else {
+                    getServerData();
+                }
+            } else {
+                if (doInitialSuccess) {
+                    doInitialSuccess = false;
+                    initialSuccess();
+                } else {
+                    doSuccessCallback = true;
+                }
+            }
+        } else {
+            //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
+            doSuccessCallback = true;
+        }
+
+        if (doSuccessCallback) {
+            if (typeof successCallback === "function") {
+                successCallback(data);
+            }
+        }
+
+    } else if (resultCode === "000907") {
+        //token expired
+        getServerData();
+    } else if (resultCode === "000908") {
+        //token invalid
+        getServerData();
+    } else if (resultCode === "000911") {
+        //uuid not exist
+        getServerData();
+    } else if (resultCode === "000914") {
+        //User Account Suspended
+        getServerData();
+    }
+}
+
+//re-new Token Valid
+function reNewToken() {
+    var self = this;
+
+    this.successCallback = function(data) {
+        var resultSuccess = false;
+        var resultcode = data['result_code'];
+        var newTokenValid = data['token_valid'];
+
+        if (resultcode == 1) {
+            loginData["token"] = data['content'].token;
+            loginData["token_valid"] = newTokenValid;
+
+            window.localStorage.setItem("token", data['content'].token);
+            window.localStorage.setItem("token_valid", newTokenValid);
+        } else {
+            //other case
+        }
+
+        if (doInitialSuccess) {
+            doInitialSuccess = false;
+            initialSuccess();
+        }
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+
+        var signatureTime = Math.round(new Date().getTime()/1000);
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), qplaySecretKey);
+        var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+
+        $.ajax({
+            type: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': qplayAppKey,
+                'Signature-Time': signatureTime,
+                'Signature': signatureInBase64,
+                'token': loginData.token
+            },
+            url: serverURL + "/qplayApi/public/index.php/v101/qplay/renewToken?lang=en-us&uuid=" + loginData.uuid,
+            dataType: "json",
+            cache: false,
+            success: self.successCallback,
+            fail: self.failCallback
+        });
+
+    }();
 }
 
 //Plugin-QPush
@@ -505,10 +611,8 @@ function getLoginDataCallBack() {
                       "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
     openAPP(callBackURL);
 
-    getMessageList();
-
     loginData['doLoginDataCallBack'] = false;
-    $.mobile.changePage('#viewMain2-1');
+    navigator.app.exitApp();
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
