@@ -71,12 +71,22 @@ var app = {
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
     },
-    onGetRegistradionID: function (data){
-        try {
+    onGetRegistradionID: function (data) {
+        if (data.length !== 0) {
+
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = data;
-        } catch(exception) {
-            console.log(exception);
+            window.localStorage.setItem("pushToken", data);
+            stopCheck();
+
+            //Plugin-QSecurity
+            //QPlay need to get PushToken in the first step, else cannot do any continue steps.
+            setTimeout(function() {
+                var whiteList = new setWhiteList();
+            }, 1000);
+
+        } else {
+           console.log("GetRegistradionID--------null");
         }
     },
     onOpenNotification: function(data) {
@@ -321,7 +331,8 @@ function getServerData() {
     if (appKey === qplayAppKey) {
         var args = [];
         args[0] = "initialSuccess"; //set in APP's index.js
-        args[1] = device.uuid;
+        //args[1] = device.uuid;    //return by cordova-plugin-device
+        args[1] = window.localStorage.getItem("pushToken");   //return by plugin QPush
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
@@ -384,13 +395,18 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
     data =  data || data;
 
     //Success Result Code
-    //Yellowpage: 001901, 001902, 001903, 001904, 001905, 001906
+    var codeArray = [
+        //All APP
+        "1",
+        //QPlay
+        "000913",
+        //Yellowpage
+        "001901", "001902", "001903", "001904", "001905", "001906"
+    ];
 
     resultCode = resultCode.toString();
 
-    if (resultCode === "1" || resultCode === "001901" || resultCode === "001902" || resultCode === "001903" 
-        || resultCode === "001904" || resultCode === "001905" || resultCode === "001906") {
-
+    if (codeArray.indexOf(resultCode) !== -1) {
         var doSuccessCallback = false;
         var clientTimestamp = new Date().getTime();
         clientTimestamp = clientTimestamp.toString().substr(0, 10);
@@ -490,18 +506,18 @@ function reNewToken() {
 }
 
 //Plugin-QPush
-function sendPushToken(data) {
+function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function(data) {
+    this.successCallback = function() {};
 
-    };
-
-    this.failCallback = function(data) {};
+    this.failCallback = function() {};
 
     var __construct = function() {
-        QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
+        if (loginData.token !== null && loginData.token.length !== 0) {
+            QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
+        }
     }();
 }
 
@@ -572,16 +588,39 @@ function readConfig() {
         document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
     }
 
-    //Plugin-QSecurity
-    setTimeout(function() {
-        var whiteList = new setWhiteList();
-    }, 1000);
-
     //Plugin-QPush
     if (appKey === qplayAppKey) {
-        //初始化JPush
-        window.plugins.QPushPlugin.init();
-        window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+
+        //If pushToken exist in Local Storage, don't need to get new one.
+        if (window.localStorage.getItem("pushToken") === null) {
+            //初始化JPush
+            window.plugins.QPushPlugin.init();
+
+            window.checkTimer = setInterval(function() {
+                window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+            }, 1000);
+
+            window.stopCheck = function() {
+                if (window.checkTimer != null) {
+                    clearInterval(window.checkTimer);
+                }
+            };
+        } else {
+            loginData["deviceType"] = device.platform;
+            loginData["pushToken"] = window.localStorage.getItem("pushToken");
+
+            //Plugin-QSecurity
+            setTimeout(function() {
+                var whiteList = new setWhiteList();
+            }, 1000);
+        }
+
+    } else {
+        //Plugin-QSecurity
+        //Other APP do not need PushToken
+        setTimeout(function() {
+            var whiteList = new setWhiteList();
+        }, 1000);
     }
 }
 
@@ -637,6 +676,8 @@ function handleOpenURL(url) {
             loginData['doLoginDataCallBack'] = true;
 
             if (device.platform === "iOS") {
+                //Because Scheme work different process between iOS / Android,
+                //iOS need to this step.
                 $.mobile.changePage('#viewInitial1-1');
                 var whiteList = new setWhiteList();
             }
