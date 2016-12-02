@@ -443,16 +443,10 @@ var delAppVersion = function(device){
                 hideConfirmDialog();
                 var currentData = $gridList.bootstrapTable('getData');
                 $.each(selectedVersion, function(i, version) {
-                    for(var j = 0; j < currentData.length; j++) {
-                        if(currentData[j].row_id == version.row_id) {
-                            delVersionArr.push(version.row_id);
-                            currentData.splice(j,1);
-                            break;
-                        }
-                    }
+                     var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
+                     currentData.splice(index,1);
+                     $gridList.bootstrapTable('load', currentData);
                 });
- 
-                $gridList.bootstrapTable('load', currentData);
                 $gridList.find('checkbox[name=btSelectItem]').each(function(){
                     $(this).prop('check',false);
                 });
