@@ -1,5 +1,10 @@
 /*override jQuery Mobile start*/
 
+a, a.popup-msg{
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
 .ui-btn {
     text-overflow: initial;
     margin-right: auto !important;
@@ -82,7 +87,7 @@ h1 {
     background-color: aqua !important;
 }
 
-.reserveSelectIcon span:nth-child(1){
+.reserveSelectIcon span:nth-child(1) {
     background: url(../img/select.png) no-repeat;
     display: inline-table;
     width: 16px;
@@ -110,6 +115,7 @@ h1 {
 .ui-radio label {
     text-align: center !important;
 }
+
 
 /*.ui-content {
     padding-left: 0em !important;
@@ -261,13 +267,14 @@ h1 {
 }
 
 .popup-msg {
-    height: 100px;
+    height: 20vh;
+    width: 70vw;
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
-    color: #FFF;
-    background-color: #4B0082;
+    color: #666;
+    background-color: #ddd;
     font-weight: bold;
 }
 
@@ -322,6 +329,7 @@ hr.ui-color-yellow {
 .ui-color-reserve > div {
     background-color: transparent;
 }
+
 
 /*.ui-color-reserveui-color-reserve {
     background-color: #e4e4e4;

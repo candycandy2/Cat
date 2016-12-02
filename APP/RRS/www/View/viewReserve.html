@@ -32,7 +32,7 @@
             </div>
             <div class="ui-content" id="pageOne">
                 <div id="scrollDate" class="scrollmenu">
-                    <a id="reserveDefault" href="#">ReserveDay<br />ReserveDict</a>
+                    <a id="reserveDefault" href="#" class="disable">ReserveDay<br />ReserveDict</a>
                 </div>
                 <div style="width: 25%;">
                     <select name="reserveFloor" id="reserveFloor">
@@ -43,7 +43,7 @@
                 <h3 style="padding-left:3%;">開始使用時間</h3>
                 <div id="reserveDateSelect" class="ui-margin-10">
                     <div class="ui-grid-c">
-                        <div id="defaultTimeSelectId" class="ui-block-a disable reserve">
+                        <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]">
                             <div class="ui-bar ui-bar-a ">
                                 <span></span>reserveTimeSelect[eName]
                             </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div id="quickReserveDateSelect">
                     <div class="ui-grid-d">
-                        <div id="quickReserveDefault" class="ui-block-a">
+                        <div id="quickReserveDefault" class="ui-block-a disable">
                             <div class="ui-bar ui-bar-a">quickReserveDay
                                 <br>quickReserveDict</div>
                         </div>
@@ -95,12 +95,22 @@
             </div>
         </div>
     </div>
-
+    <div data-role="popup" id="reserveCoordinationAlert" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <a href="#viewReserve" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <p id="msgContent"></p>
+            <p>
+                <a href="" class="ui-btn ui-btn-inline" id="mailto"></a>
+                <a href="" class="ui-btn ui-btn-inline" id="ext"></a>
+            </p>
+        </div>
+    </div>
     <div data-role="popup" id="reserveCancelAlert" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content popup-msg">
-            <p>是否取消預約此會議室?</p>
+            <a href="#viewReserve" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <p id="msgContent"></p>
             <p>
-                <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                <a href="#viewReserve" class="ui-btn ui-btn-inline" id="cancel">取消</a>
                 <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
             </p>
         </div>

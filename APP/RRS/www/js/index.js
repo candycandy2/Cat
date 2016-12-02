@@ -82,13 +82,22 @@ Date.prototype.hhmm = function() {
     return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]);
 };
 
+String.prototype.replaceAll = function(target, replacement) {
+  return this.split(target).join(replacement);
+};
+
+function addThirtyMins(time) {
+    var timeStr = new Date(new Date().toDateString() + ' ' + time)
+    timeStr.setMinutes(timeStr.getMinutes() + 30);
+    var result = timeStr.hhmm();
+    return result;
+}
+
 function getTimeBlock() {
     var startTime = '08:00';
     for (var i = 0; i < 20; i++) {
         if (i != 0) {
-            var sTimeStr = new Date(new Date().toDateString() + ' ' + startTime)
-            sTimeStr.setMinutes(sTimeStr.getMinutes() + 30);
-            startTime = sTimeStr.hhmm();
+            startTime = addThirtyMins(startTime);
         }
         timeBlockArr[i] = startTime;
     }
