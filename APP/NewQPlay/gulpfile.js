@@ -52,6 +52,7 @@ if (env === "test") {
 var schemeSetting = "<string>appqplay" + appNameDecorate + "</string>"
                     + "<string>appyellowpage" + appNameDecorate + "</string>"
                     + "<string>appcalendar" + appNameDecorate + "</string>"
+                    + "<string>apprrs" + appNameDecorate + "</string>"
                     + "<string>appscheme01" + appNameDecorate + "</string>"
                     + "<string>appscheme02" + appNameDecorate + "</string>"
                     + "<string>appscheme03" + appNameDecorate + "</string>"
