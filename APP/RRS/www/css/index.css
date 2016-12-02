@@ -1,5 +1,10 @@
 /*override jQuery Mobile start*/
 
+a, a.popup-msg{
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
 .ui-btn {
     text-overflow: initial;
     margin-right: auto !important;
@@ -60,7 +65,8 @@ h1 {
     font-size: large;
 }
 
-#noreserve div.ui-bar {
+
+/*#noreserve div.ui-bar {
     text-align: center;
     height: 3.5em;
     line-height: 1.5em;
@@ -75,6 +81,17 @@ h1 {
 
 #noreserve div.ui-bar span:nth-child(4) {
     font-size: small;
+}*/
+
+.reserveSelect div {
+    background-color: aqua !important;
+}
+
+.reserveSelectIcon span:nth-child(1) {
+    background: url(../img/select.png) no-repeat;
+    display: inline-table;
+    width: 16px;
+    height: 16px;
 }
 
 #navbar ul li a {
@@ -99,10 +116,11 @@ h1 {
     text-align: center !important;
 }
 
-.ui-content {
+
+/*.ui-content {
     padding-left: 0em !important;
     padding-right: 0em !important;
-}
+}*/
 
 #container .ui-select {
     margin-top: 0em !important;
@@ -123,6 +141,10 @@ h1 {
 #reserveFloor-button.ui-btn {
     background-color: transparent !important;
     border-color: transparent !important;
+}
+
+#reserveDateSelect div.ui-bar-a {
+    background-color: initial;
 }
 
 
@@ -244,6 +266,18 @@ h1 {
     display: none !important;
 }
 
+.popup-msg {
+    height: 20vh;
+    width: 70vw;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    background-color: #ddd;
+    font-weight: bold;
+}
+
 
 /*color setting start*/
 
@@ -285,12 +319,21 @@ hr.ui-color-yellow {
 }
 
 .ui-color-reserve {
-    background-color: #ffce44;
+    background-color: #e4e4e4 !important;
 }
 
-.ui-color-noreserve {
-    background-color: #e4e4e4;
+.ui-color-myreserve {
+    background-color: #ffce44 !important;
 }
+
+.ui-color-reserve > div {
+    background-color: transparent;
+}
+
+
+/*.ui-color-reserveui-color-reserve {
+    background-color: #e4e4e4;
+}*/
 
 
 /*color setting end*/
@@ -402,6 +445,7 @@ div.scrollmenu a {
     border-color: #e4e4e4 !important;
 }
 
+
 /*#scrollDate.scrollmenu a:hover {
     background-color: #d6cadc;
     color: black !important;
@@ -411,12 +455,6 @@ div.scrollmenu a {
     background-color: #d6cadc;
     color: black !important;
 }
-
-
-
-
-
-
 
 
 /*scrollmenu end*/
