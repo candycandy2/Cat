@@ -70,11 +70,6 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                         .replace('floor', floorStr);
                 }
 
-                Date.prototype.hhmm = function() {
-                    var hh = this.getHours().toString();
-                    var mm = this.getMinutes().toString();
-                    return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]);
-                };
             }
         });
 
