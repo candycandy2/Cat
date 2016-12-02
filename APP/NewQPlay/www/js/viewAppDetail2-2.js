@@ -25,6 +25,9 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 $("#appDetailAppName").html(appmultilang[multilangIndex].app_name);
                 $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
                 $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
+                var appSize = applist[selectAppIndex].size;
+                appSize = parseInt(appSize / 1024 / 1024, 10);
+                $("#appDetailAppSize").html(appSize + "M");
 
                 var appranking = applist[selectAppIndex].avg_score;
 
