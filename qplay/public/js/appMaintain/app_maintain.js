@@ -6,9 +6,9 @@ var submitFormAry = [$("#mainInfoForm"),
                      $('#customApiForm'),
                      $('#whistListForm')];
 
-function SubmitError(tab,name) {
+function SubmitError(tab,val) {
   this.tab = tab;
-  this.name = name;
+  this.val = val;
 }
 
 SaveAppDetail = function(){
@@ -67,6 +67,7 @@ var formSubmitcnt = 0;
 var errorTab = [];
 var errorLangIdArr = [];
 var errorLangId;
+var errorLanTab;
 SaveAppDetailToDB = function(){
     validate = 0;
     $("#mainInfoForm").find("input[name^=txbAppName_]").each(function(){
@@ -107,7 +108,6 @@ SaveAppDetailToDB = function(){
     errorLangIdArr = [];
 }
 $(function () {
-    var submitError = {tab:"",name:""};
     $(document).ajaxStart(function(){
         $( "#saveAppDetail" ).prop( "disabled", true );
     });
@@ -150,12 +150,8 @@ $(function () {
             },
             invalidHandler: function(e,validator) {
                 for (var i in validator.errorMap) {
-                    console.log(i);
-                    errorLangIdArr.push(i.split('_')[1]);
-                }
-                if(errorLangIdArr.length > 0){
-                    console.log(errorLangIdArr);
-                    errorLangId = errorLangIdArr[0];
+                    var lanError =  new SubmitError($('#' + i).parents('ul.tab-pane').attr('id'),i.split('_')[1]);
+                    errorLangIdArr.push(lanError);
                 }
                  var submitFormId = e.target.id;
                  var errorTabId = $('#' + submitFormId).parents('div.tab-pane').attr('id')
@@ -285,13 +281,16 @@ $(function () {
                     if(errorTab.length > 0 && formSubmitcnt == submitFormAry.length){
                         var errArr = [];
                         for (var i in errorTab) {
-                            errArr.push(errorTab[i].name);
+                            errArr.push(errorTab[i].val);
                         }
                         showMessageDialog(Messages.ERROR,Messages.MSG_SAVE_FAILED,errArr.join("<br/>"));
                         $('.nav-tabs a[href="#' + errorTab[0].tab + '"]').tab('show');
-                        if(typeof errorLangId != 'undefined'){
-                            console.log(errorLangId);
-                            switchToLangCotent(errorLangId);
+                       
+                        if(errorLangIdArr.length > 0){
+                            if(typeof errorLangIdArr[0].val != 'undefined'){
+                                $('.nav-tabs a[href="#' + errorLangIdArr[0].tab + '"]').tab('show');
+                                switchToLangCotent(errorLangIdArr[0].val);
+                            }
                         }
                     }
                     return false;
