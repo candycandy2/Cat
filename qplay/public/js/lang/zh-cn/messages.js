@@ -15,4 +15,5 @@ var Messages = {
     ERR_SCREENSHOT_FILE_LIMIT : '萤幕撷取画面仅能上传%s张，您选择了%l张',
     ERR_SCREENSHOT_SCALE_LIMIT : '档案大小，仅接受 %s * %langMap',
     ERR_QPLAY_MUST_PUBLISH : 'QPlay 必须要有一个发布版本，请将%s狀態设定为发布',
+    ERR_ILLEGAL_INSERT_HTML : '禁止插入html代码'
 }

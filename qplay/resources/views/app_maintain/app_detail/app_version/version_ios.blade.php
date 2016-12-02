@@ -26,7 +26,7 @@
         <th data-field="external_app" data-sortable="false" data-visible="false">externalApp</th>
         <th data-field="version_name" data-sortable="true" data-formatter = "versionNameFormatter">{{trans('messages.VERSION_NAME')}}</th>
         <th data-field="version_code"  data-sortable="true">{{trans('messages.VERSION_NO')}}</th>
-        <th data-field="version_log" data-sortable="false" data-visible="true">{{trans('messages.VERSION_LOG')}}</th>
+        <th data-field="version_log" data-sortable="false" data-visible="true" data-formatter="versionLogDateFormatter">{{trans('messages.VERSION_LOG')}}</th>
         <th data-field="download_url" data-sortable="true">{{trans('messages.VERSION_URL')}}</th>
         <th data-field="created_at" data-sortable="true" data-formatter="createdDateFormatter">{{trans('messages.UPLOAD_TIME')}}</th>
         <th data-field="size" data-formatter="fileSizeFormatter" data-sortable="true">{{trans('messages.FILE_SIZE')}}</th>

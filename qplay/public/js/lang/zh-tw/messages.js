@@ -15,4 +15,5 @@ var Messages = {
     ERR_SCREENSHOT_FILE_LIMIT : '螢幕擷取畫面僅能上傳%s張，您選擇了%l張',
     ERR_SCREENSHOT_SCALE_LIMIT : '檔案大小，僅接受 %s * %l',
     ERR_QPLAY_MUST_PUBLISH : 'QPlay 必須要有一個發佈版本，請將版本%s設定為發佈',
+    ERR_ILLEGAL_INSERT_HTML : '禁止插入html代碼'
 }
