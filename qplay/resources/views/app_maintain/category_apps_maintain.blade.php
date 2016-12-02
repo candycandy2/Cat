@@ -50,7 +50,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                     <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
                     <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
                     <th data-field="app_name" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
-                    <th data-field="updated_at" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
+                    <th data-field="updated_at" data-formatter="updateDateFormatter" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
                     <th data-field="released" data-sortable="true">{{trans("messages.RELEASED")}}</th>
                 </tr>
                 </thead>
@@ -66,6 +66,10 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             }
             return '<img src="' +'app/'+row.row_id+'/icon/'+row.icon_url + '" class="img-rounded"  width="90" height="90">';
         };
+
+        function updateDateFormatter(value, row){
+            return convertUTCToLocalDateTime(value);
+        }
 
         $(function () {
             
