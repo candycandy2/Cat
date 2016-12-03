@@ -73,6 +73,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             $.mobile.changePage('#viewAppDetail2-2');
                         });
 
+                        //For other APP doing update
+                        if (loginData['openAppDetailPage'] === true) {
+                            for (var appindex=0; appindex<applist.length; appindex++) {
+                                if (applist[appindex].package_name == "com.qplay." + openAppName) {
+                                    selectAppIndex = appindex;
+                                    $.mobile.changePage('#viewAppDetail2-2');
+                                }
+                             }
+                        }
+
                     } else {
 
                     }
@@ -89,7 +99,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             function doLogOut() {
                 var self = this;
 
-                //需要 User AD Account
+                //need User AD Account
                 var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
 
                 this.successCallback = function(data) {
@@ -120,8 +130,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             messagecontent:      null,
                             msgDateFrom:         null,
                             doLoginDataCallBack: false,
-                            callCheckAPPVer:     false,
-                            callQLogin:          false,
                             openMessage:         false
                         };
 
