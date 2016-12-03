@@ -32,6 +32,10 @@ body {
     padding-top: 70%;
 }
 
+.hide {
+    display: none;
+}
+
 /* override jQuery Mobile */
 .ui-field-contain {
     border: none;
@@ -81,4 +85,99 @@ body {
 .android-fix-btn-text-middle {
     position: relative;
     top: 2px;
+}
+
+/*Initial APP page*/
+#viewInitial {
+    height: 100%;
+}
+
+#viewInitial .main-initial {
+    text-align: center;
+}
+
+#initialQPlay {
+    margin-top: 28vh;
+}
+
+#initialQPlay .logo-initial {
+    width: 22%;
+}
+
+#initialQPlay .brand-initial-content {
+    position: absolute;
+    width: 100%;
+    bottom: 2%;
+}
+
+#initialQPlay .brand-initial {
+    height: 10vh;
+}
+
+#initialOther {
+    margin-top: 20vh;
+}
+
+#initialOther .logo-initial {
+    height: 11vh;
+}
+
+#initialAppName {
+    font-size: 6.5vh;
+    margin-top: 3vh;
+}
+
+#initialOther .app-logo-initial {
+    margin-top: 8vh;
+    width: 28vw;
+}
+
+#initialOther .brand-initial-content {
+    position: absolute;
+    width: 100%;
+    bottom: 2%;
+}
+
+#initialOther .brand-initial {
+    height: 10vh;
+}
+
+/*Update APP Version page*/
+#viewUpdateAppVersion {
+    height: 100%;
+}
+
+#viewUpdateAppVersion .main-updateAppVersion {
+    text-align: center;
+    padding-top: 28vh;
+}
+
+#viewUpdateAppVersion .logo-updateAppVersion {
+    width: 22%;
+}
+
+#viewUpdateAppVersion .text-updateAppVersion {
+    width: 75vw;
+    margin: 0 auto;
+    margin-top: 6.5vh;
+    overflow-wrap: break-word;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: auto;
+    text-align: left;
+}
+
+#viewUpdateAppVersion .button-updateAppVersion {
+    position: absolute;
+    left: 15%;
+    bottom: 6.5%;
+    width: 70vw;
+    height: auto;
+    padding: 2vh 0;
+    background-color: blueviolet;
+    color: #FFF;
+}
+
+#viewUpdateAppVersion .button-text-updateAppVersion {
+
 }

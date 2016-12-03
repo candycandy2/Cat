@@ -2,7 +2,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "";
-var pageList = ["viewInitial1-1", "viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e"; // QPlay app secret key
 
 var appcategorylist;
@@ -19,7 +19,6 @@ var callGetMessageList = false;
 window.initialSuccess = function(data) {
     if (data !== undefined) {
 
-        loginData['callQLogin'] = false;
         getDataFromServer = false;
         processStorageData("setLocalStorage", data);
 
@@ -35,12 +34,21 @@ window.initialSuccess = function(data) {
             }
         }
     } else {
-        setTimeout(function(){
-            var checkAppVer = new checkAppVersion();
-            loadingMask("show");
-        }, 2000);
 
-        var doPushToken = new sendPushToken();
+        if (loginData['doLoginDataCallBack'] === true) {
+            getLoginDataCallBack();
+        } else {
+
+            var doPushToken = new sendPushToken();
+            getMessageList();
+
+            if (window.localStorage.getItem("openMessage") === "true") {
+                $.mobile.changePage("#viewWebNews2-3-1");
+            } else {
+                $.mobile.changePage('#viewMain2-1');
+            }
+
+        }
     }
 
     //For test
