@@ -1,12 +1,14 @@
 /*global variable, function*/
-var appKeyOriginal = "appyellowpage";
+var appKeyOriginal = "apprrs";
 var appKey = "";
 var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetting"];
-var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
+var appSecretKey = "2e936812e205445490efb447da16ca13";
 
 // var myReserveData = {};
 // var employeeSelectedIndex;
 // var phonebookData = {};
+var arrReserve = [];
+var arrTimeBlock = [];
 var prevPageID;
 
 window.initialSuccess = function() {
@@ -72,4 +74,49 @@ Date.prototype.mmdd = function(symbol) {
     var mm = (this.getMonth() + 1).toString();
     var dd = this.getDate().toString();
     return (mm[1] ? mm : '0' + mm[0]) + symbol + (dd[1] ? dd : '0' + dd[0]);
+};
+
+Date.prototype.hhmm = function() {
+    var hh = this.getHours().toString();
+    var mm = this.getMinutes().toString();
+    return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]);
+};
+
+String.prototype.replaceAll = function(target, replacement) {
+  return this.split(target).join(replacement);
+};
+
+function addThirtyMins(time) {
+    var timeStr = new Date(new Date().toDateString() + ' ' + time)
+    timeStr.setMinutes(timeStr.getMinutes() + 30);
+    var result = timeStr.hhmm();
+    return result;
+}
+
+function getTimeBlock() {
+    var startTime = '08:00';
+    for (var i = 0; i < 20; i++) {
+        if (i != 0) {
+            startTime = addThirtyMins(startTime);
+        }
+        arrTimeBlock[i] = startTime;
+    }
+}
+
+function reserveObj(roomId, date) {
+    this.roomId = roomId;
+    this.date = date;
+    this.detailInfo = [];
+    this.addDetail = function(key, value) {
+        var detail = new reserveDetail(key, value);
+        this.detailInfo.push(detail);
+    };
+
+    this.addDetail();
+    return this;
+};
+
+function reserveDetail(key, value) {
+    this.key = key;
+    this.value = value;
 };
