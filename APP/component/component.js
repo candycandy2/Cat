@@ -79,7 +79,11 @@ var app = {
 
             var checkAppVer = new checkAppVersion();
         } else {
-           console.log("GetRegistradionID--------null");
+            console.log("GetRegistradionID--------null");
+
+            //Show viewGetQPush
+            $("#viewGetQPush").addClass("ui-page ui-page-theme-a ui-page-active");
+            $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
         }
     },
     onOpenNotification: function(data) {

@@ -142,6 +142,41 @@ body {
     height: 10vh;
 }
 
+/*APP Get QPsuh*/
+#viewGetQPush {
+    height: 100%;
+}
+
+#viewGetQPush .main-GetQPush {
+    text-align: center;
+    padding-top: 28vh;
+}
+
+#viewGetQPush .logo-GetQPush {
+    width: 22%;
+}
+
+#viewGetQPush .text-GetQPush {
+    width: 75vw;
+    margin: 0 auto;
+    margin-top: 6.5vh;
+    overflow-wrap: break-word;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: auto;
+    text-align: left;
+}
+
+#viewGetQPush .brand-GetQPush-content {
+    position: absolute;
+    width: 100%;
+    bottom: 2%;
+}
+
+#viewGetQPush .brand-GetQPush {
+    height: 10vh;
+}
+
 /*Update APP Version page*/
 #viewUpdateAppVersion {
     height: 100%;
