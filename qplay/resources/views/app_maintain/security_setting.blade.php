@@ -35,7 +35,7 @@ $menu_name = "APP_SECURITY_SETTING";
 		        <thead>
 		        <tr>
 		            <th data-field="state" data-checkbox="true"></th>
-		            <th data-field="ip" data-sortable="true" data-formatter="urlFormatter">{{trans('messages.BLOCK_IP')}}</th>
+		            <th data-field="ip" data-sortable="true" data-formatter="urlFormatter" data-search-formatter="false">{{trans('messages.BLOCK_IP')}}</th>
 		            <th data-field="description" data-sortable="false" data-formatter="">{{trans('messages.BLOCK_DESCRIPT')}}</th>
 		        </tr>
 		        </thead>

@@ -19,7 +19,7 @@
         <tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-            <th data-field="allow_url"  data-sortable="true" data-formatter="allowUrlFormatter">URL</th>
+            <th data-field="allow_url"  data-sortable="true" data-formatter="allowUrlFormatter" data-search-formatter="false">URL</th>
         </tr>
         </thead>
     </table>

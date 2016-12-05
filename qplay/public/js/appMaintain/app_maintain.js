@@ -20,6 +20,10 @@ SaveAppDetail = function(){
      var confirmSrt = "";
      var confirmTitleSrt = "";
      var qplayAppErr = [];
+
+     $('#gridWhiteList').bootstrapTable('resetSearch');
+     $('#gridAndroidVersionList').bootstrapTable('resetSearch');
+     $('#gridIOSVersionList').bootstrapTable('resetSearch');
          
     if(projectCode == '000'){
         if($('#gridAndroidVersionList').find('div.switch-success').size() <= 0){
