@@ -38,7 +38,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', '[msg]', '[ext]', '[email]'];
                 var htmlContent = '';
                 var j = 0;
-                for (var i = 0, item; item = timeBlockArr[i]; i++) {
+                for (var i = 0, item; item = arrTimeBlock[i]; i++) {
                     var classId = arrClass[j % 4];
                     var reserveStr = 'ui-color-noreserve';
                     var msg = '',
