@@ -95,6 +95,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="mailto:*" />' +
                         '<allow-intent href="geo:*" />' +
                         '<allow-intent href="appyellowpage' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprrs' + appNameDecorate + ':*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                         '</platform>' +
