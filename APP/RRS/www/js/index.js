@@ -1,14 +1,14 @@
 /*global variable, function*/
-var appKeyOriginal = "appyellowpage";
+var appKeyOriginal = "apprrs";
 var appKey = "";
 var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetting"];
-var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
+var appSecretKey = "2e936812e205445490efb447da16ca13";
 
 // var myReserveData = {};
 // var employeeSelectedIndex;
 // var phonebookData = {};
-var reserveArr = [];
-var timeBlockArr = [];
+var arrReserve = [];
+var arrTimeBlock = [];
 var prevPageID;
 
 window.initialSuccess = function() {
@@ -99,7 +99,7 @@ function getTimeBlock() {
         if (i != 0) {
             startTime = addThirtyMins(startTime);
         }
-        timeBlockArr[i] = startTime;
+        arrTimeBlock[i] = startTime;
     }
 }
 

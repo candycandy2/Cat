@@ -1,5 +1,6 @@
 
 /*global variable, function*/
+var initialAppName = "Yellow Page";
 var appKeyOriginal = "appyellowpage";
 var appKey = "";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
