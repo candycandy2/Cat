@@ -235,11 +235,17 @@ function checkAppVersion() {
             });
 
         } else if (resultcode == 000913) {
+
             // app is up to date
+            $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
+
         } else if (resultcode == 000915) {
+
             // app package name does not exist
+            $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
+
         } else {
 
         }
