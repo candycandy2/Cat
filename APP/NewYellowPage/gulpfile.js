@@ -76,7 +76,6 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
                         '</platform>' +
-                        '<plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
@@ -90,7 +89,7 @@ gulp.task('config', function(){
 //ex: gulp install --env test
 gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-splashscreen',
+  //'cordova plugin remove cordova-plugin-splashscreen',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
@@ -101,7 +100,7 @@ gulp.task('install', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-splashscreen',
+  //'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate,
@@ -115,8 +114,13 @@ gulp.task('copyAndroidImages', function() {
 });
 
 gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/',{overwrite: true}));
+    return gulp.src('Images/iOS/AppIcon.appiconset/*')
+        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+});
+
+gulp.task('copyIOSLaunchImages', function() {
+    return gulp.src('../component/LaunchImage.launchimage/*')
+        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([
@@ -145,6 +149,16 @@ gulp.task('componentJS', function() {
     return gulp.src('../component/*.js')
         .pipe(gulp.dest('www/js/'));
 });
+
+gulp.task('componentHTML', function() {
+    return gulp.src('../component/*.html')
+        .pipe(gulp.dest('www/View/'));
+});
+
+gulp.task('componentIMG', function() {
+    return gulp.src('../component/image/*')
+        .pipe(gulp.dest('www/img/component/'));
+});
 /*
 gulp.task('concat:js', function(){
     return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
@@ -152,15 +166,10 @@ gulp.task('concat:js', function(){
         .pipe(concat('app.min.js'))
         .pipe(gulp.dest('www/dist/js'));
 });
-
-gulp.task('default', ['concat:js', 'concat:css'], function(){
-    return gulp.src('www/src/index.html')
-        .pipe(gulp.dest('www/dist'));
-});
 */
 
 //ex: gulp --env test --vname 1.0.0.8 --vcode 8
 //remove petch task
-gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
+gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });

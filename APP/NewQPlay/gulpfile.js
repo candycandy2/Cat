@@ -149,8 +149,13 @@ gulp.task('copyAndroidImages', function() {
 });
 
 gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/iOS/**/*', { base: 'Images/iOS/' })
-        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/', { overwrite: true }));
+    return gulp.src('Images/iOS/AppIcon.appiconset/*')
+        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+});
+
+gulp.task('copyIOSLaunchImages', function() {
+    return gulp.src('../component/LaunchImage.launchimage/*')
+        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([
@@ -179,6 +184,16 @@ gulp.task('componentJS', function() {
     return gulp.src('../component/*.js')
         .pipe(gulp.dest('www/js/'));
 });
+
+gulp.task('componentHTML', function() {
+    return gulp.src('../component/*.html')
+        .pipe(gulp.dest('www/View/'));
+});
+
+gulp.task('componentIMG', function() {
+    return gulp.src('../component/image/*')
+        .pipe(gulp.dest('www/img/component/'));
+});
 /*
 gulp.task('concat:js', function(){
     return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
@@ -186,14 +201,9 @@ gulp.task('concat:js', function(){
         .pipe(concat('app.min.js'))
         .pipe(gulp.dest('www/dist/js'));
 });
-
-gulp.task('default', ['concat:js', 'concat:css'], function(){
-    return gulp.src('www/src/index.html')
-        .pipe(gulp.dest('www/dist'));
-});
 */
 
 //ex: gulp --env test --vname 1.0.0.8 --vcode 8
-gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
+gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });
