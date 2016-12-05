@@ -15,6 +15,7 @@ window.initialSuccess = function() {
 
     loadingMask("show");
 
+    $.mobile.changePage('#viewDataInput');
     var companyData = new QueryCompanyData();
 
     $("a[name=goPrevPage]").on("click", function(){
