@@ -55,10 +55,59 @@ window.initialSuccess = function(data) {
     //var unregisterTest = new unregister();
 }
 
+//Plugin-QPush, Now only QPLay need to set push-toekn
+function sendPushToken() {
+    var self = this;
+    var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
+
+    this.successCallback = function() {};
+
+    this.failCallback = function() {};
+
+    var __construct = function() {
+        if (loginData.token !== null && loginData.token.length !== 0) {
+            QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
+        }
+    }();
+}
+
+//re-new Token Valid
+function reNewToken() {
+    var self = this;
+
+    this.successCallback = function(data) {
+        var resultcode = data['result_code'];
+        var newToken = data['content'].token;
+        var newTokenValid = data['token_valid'];
+
+        if (resultcode == 1) {
+            loginData["token"] = newToken;
+            loginData["token_valid"] = newTokenValid;
+
+            window.localStorage.setItem("token", newToken);
+            window.localStorage.setItem("token_valid", newTokenValid);
+        } else {
+            //other case
+        }
+
+        if (doInitialSuccess) {
+            doInitialSuccess = false;
+            hideInitialPage();
+        }
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
+    }();
+}
+
 function getMessageList() {
     var messageList = new QueryMessageList();
 }
 
+//un-register [User with Mobile Device UUID]
 function unregister() {
 
     var self = this;
