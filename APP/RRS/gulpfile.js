@@ -108,6 +108,25 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-whitelist'
 ]));
 
+gulp.task('jenkinsinstall', shell.task([
+/*  'cordova plugin remove cordova-plugin-device',
+  'cordova plugin remove cordova-plugin-console',
+  'cordova plugin remove cordova-plugin-appversion',
+  'cordova plugin remove cordova-plugin-customurlscheme',
+  'cordova plugin remove cordova-plugin-qsecurity',
+  'cordova plugin remove cordova-plugin-whitelist',
+  'cordova platform rm ios',
+  'cordova platform rm android',
+*/  'cordova platform add ios',
+  'cordova platform add android',
+  'cordova plugin add cordova-plugin-device',
+  'cordova plugin add cordova-plugin-console',
+  'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=apprrs' + appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
+  'cordova plugin add cordova-plugin-whitelist'
+]));
+
 gulp.task('copyAndroidImages', function() {
     return gulp.src('Images/android/**/*', {base: 'Images/android/'})
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
