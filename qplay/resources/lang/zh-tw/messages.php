@@ -147,7 +147,7 @@ return [
     'MSG_CATEGORY_EXIST_APPS' => '無法刪除類別,類別下存在apps!',
     'MSG_DELETE_CATEGORY_FAILED' => '刪除類別失敗!',
     'MSG_CONFIRM_ADD'=>'確認加入?',
-    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'系統將調整APP類別 %s 加入',
+    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'確定將 %s 加入 %l 類別？',
 
     //Push Message
     'NEW_MESSAGE' => '新增訊息',

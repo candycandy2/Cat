@@ -8,7 +8,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             var doRefresh = false;
 
             /********************************** function *************************************/
-            function phoneBookListHTML(index, company, eName, cName) {
+            function phoneBookListHTML(index, company, eName, cName, extNo) {
                 return '<li>'
                         +   '<div class="company">'
                         +       '<p class="edit-checkbox">'
@@ -18,7 +18,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         +   '</div>'
                         +   '<div class="e-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
-                        +       '<p><a rel="external" href="tel:+012345678" style="color:red;">9999-9999</a></p>'
+                        +       '<p><a rel="external" href="tel:+012345678" style="color:red;">' + extNo + '</a></p>'
                         +   '</div>'
                         +   '<div class="c-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'
@@ -50,7 +50,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
                             phonebookData[i] = tempData;
 
-                            var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"]);
+                            var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"]);
                             htmlContent = content;
                         }
 
@@ -70,6 +70,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         getServerData();
                     } else {
                         //ResultCode = 001901, [no data]
+                        loadingMask("hide");
                     }
                 };
 
