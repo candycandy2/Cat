@@ -50,7 +50,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                     <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
                     <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
                     <th data-field="app_name" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
-                    <th data-field="updated_at" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
+                    <th data-field="updated_at" data-formatter="updateDateFormatter" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
                     <th data-field="released" data-sortable="true">{{trans("messages.RELEASED")}}</th>
                 </tr>
                 </thead>
@@ -66,6 +66,10 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             }
             return '<img src="' +'app/'+row.row_id+'/icon/'+row.icon_url + '" class="img-rounded"  width="90" height="90">';
         };
+
+        function updateDateFormatter(value, row){
+            return convertUTCToLocalDateTime(value);
+        }
 
         $(function () {
             
@@ -107,7 +111,9 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             $.each(selectedApps, function(i, app) {
                 addAppsList.push(app.app_name);
             });
-            showConfirmDialog("{{trans("messages.MSG_CONFIRM_ADD")}}", "{{trans("messages.MSG_CONFIRM_ADD_APPS_TO_CATEGORY")}}".replace("%s",'<span class="text-warning">' + htmlEscape($('#tdCategoryName').text()) + '</span>'),addAppsList.join('、'), function () {
+            var categoryNameStr = '<span class="text-warning">' + htmlEscape($('#tdCategoryName').text()) + '</span>';
+            var AppStr = '<span class="text-warning">' + addAppsList.join('、') + '</span>';
+            showConfirmDialog("{{trans("messages.MSG_CONFIRM_ADD")}}", "{{trans("messages.MSG_CONFIRM_ADD_APPS_TO_CATEGORY")}}".replace("%s",AppStr).replace("%l",categoryNameStr),"", function () {
                 hideConfirmDialog();
                 $.each(selectedApps, function(i, newApp) {
                     newApp.state = false;

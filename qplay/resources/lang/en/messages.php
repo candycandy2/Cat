@@ -147,7 +147,7 @@ return [
     'MSG_CATEGORY_EXIST_APPS' => 'Can\'t delete, exist apps!',
     'MSG_DELETE_CATEGORY_FAILED' => 'Delete category failed!',
     'MSG_CONFIRM_ADD'=>'Confirm to add?',
-    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'System will set the category %s to add',
+    'MSG_CONFIRM_ADD_APPS_TO_CATEGORY'=>'Confirm add %s to %l category?',
 
     //Push Message
     'NEW_MESSAGE' => 'New Message',

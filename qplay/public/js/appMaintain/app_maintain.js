@@ -6,6 +6,10 @@ var submitFormAry = [$("#mainInfoForm"),
                      $('#customApiForm'),
                      $('#whistListForm')];
 
+function SubmitError(tab,val) {
+  this.tab = tab;
+  this.val = val;
+}
 
 SaveAppDetail = function(){
     
@@ -16,6 +20,10 @@ SaveAppDetail = function(){
      var confirmSrt = "";
      var confirmTitleSrt = "";
      var qplayAppErr = [];
+
+     $('#gridWhiteList').bootstrapTable('resetSearch');
+     $('#gridAndroidVersionList').bootstrapTable('resetSearch');
+     $('#gridIOSVersionList').bootstrapTable('resetSearch');
          
     if(projectCode == '000'){
         if($('#gridAndroidVersionList').find('div.switch-success').size() <= 0){
@@ -59,6 +67,11 @@ SaveAppDetail = function(){
 }
 
 var validate = 0;
+var formSubmitcnt = 0;
+var errorTab = [];
+var errorLangIdArr = [];
+var errorLangId;
+var errorLanTab;
 SaveAppDetailToDB = function(){
     validate = 0;
     $("#mainInfoForm").find("input[name^=txbAppName_]").each(function(){
@@ -91,11 +104,14 @@ SaveAppDetailToDB = function(){
         });
     });
     for (var i=0 ; i < submitFormAry.length; i++) {
+        formSubmitcnt ++;
         submitFormAry[i].submit();
     }
+    formSubmitcnt = 0;
+    errorTab = [];
+    errorLangIdArr = [];
 }
 $(function () {
-    
     $(document).ajaxStart(function(){
         $( "#saveAppDetail" ).prop( "disabled", true );
     });
@@ -105,6 +121,7 @@ $(function () {
 
     for(var key in submitFormAry){       
        submitFormAry[key].validate({
+            focusInvalid: false,
             ignore: [],
             rules:{
                 chkCompany:{
@@ -135,42 +152,38 @@ $(function () {
             groups: {
                 setAppUser: "cbxRole cbxAllRole"
             },
+            invalidHandler: function(e,validator) {
+                for (var i in validator.errorMap) {
+                    var lanError =  new SubmitError($('#' + i).parents('ul.tab-pane').attr('id'),i.split('_')[1]);
+                    errorLangIdArr.push(lanError);
+                }
+                 var submitFormId = e.target.id;
+                 var errorTabId = $('#' + submitFormId).parents('div.tab-pane').attr('id')
+                 var errorTabName = $('.nav-tabs a[href="#'+errorTabId+'"]').text();
+                 var submitError = new SubmitError(errorTabId,errorTabName);
+                 errorTab = setErrorTab(errorTab,submitError);
+            },
             errorPlacement: function ($error, $element) {
                 validate =0;
                 $alert = $('#appMaintainAlert');
                 if($element.attr("name") == 'chkCompany'){
                     $error.insertAfter("#selNormal");
-                    //$alert.append('<p>角色設定:請選擇公司</p>');
-                }
-                else if($element.attr("name") == 'cbxRole' || $element.attr("name") == 'cbxAllRole'){
-                    $error.insertAfter("#selUserRole");
-                   // $alert.append('<p>角色設定:請選擇企業角色或加入用戶</p>');
+                }else if($element.attr("name") == 'cbxRole' || $element.attr("name") == 'cbxAllRole'){
+                   $error.insertAfter("#selUserRole");
                 }else if($element.hasClass('js-upl-addition')){
-                    $element.parent('li').after($error);
-                    var langTag = $element.attr("name").split('_')[1];
-                    var langStr = $('#ddlLang_'+langTag).find('a').text();
-                    // if($element.attr("name").search(/ios/) == 0){
-                    //     $alert.append('<p>'+langStr+'-IOS : '+$error.text()+'</p>');
-                    // }else if($element.attr("name").search(/android/) == 0){
-                    //     $alert.append('<p>'+langStr+'-Android : '+$error.text()+'</p>');
-                    // }
+                   $element.parent('li').after($error);
                 }else if($element.attr("name") == 'errorCodeFile' ){
                    $error.insertAfter($('input[name=errorCodeFile]').parent().next());
                 }else if($element.attr('name') == 'fileIconUpload'){
                    $error.insertAfter($('.iconUpload'));
                 }else{
-                    var langTag = $element.attr("name").split('_')[1];
-                    var langStr = $('#ddlLang_'+langTag).find('a').text();
-                    var labelName = $('.info-dymaic-content').find('label[for='+$element.attr("name")+']').text();
                     $error.insertAfter($element);
-                    //$alert.append('<p>'+langStr+'-'+labelName+' : '+$error.text()+'</p>');
                 }
-                showMessageDialog(Messages.ERROR,Messages.MSG_NOT_COMPLETE);
-               // $('#appMaintainAlert').fadeIn('1500');
            },
            submitHandler: function (form) {
                 validate ++;
                 if(validate==submitFormAry.length){
+                    var openTabId = $($('.nav-tabs .active').get(0)).children('a').attr('href').replace('#','');
                     var formData = new FormData();
                     formData.append('appId',jsAppRowId);
                     formData.append('defaultLang',jsDefaultLang);
@@ -251,23 +264,39 @@ $(function () {
                         data: formData,
                         processData: false,
                         success: function (d, status, xhr) {
-                            validate = 0
+                            validate = 0;
                             if(d.result_code == 1) {
                                  showMessageDialog(Messages.MESSAGE,Messages.MSG_OPERATION_SUCCESS);
                                 $('#messageDialog').find('button').click(function(){
-                                    location.reload();
+                                   // location.reload();
+                                   window.location.href = window.location.pathname+"?"+$.param({'app_row_id':jsAppRowId,'tab':openTabId});
                                 });
                             }else{
                                showMessageDialog(Messages.ERROR,d.message);
                             }
                         },
                         error: function (e) {
-                            validate = 0
+                            validate = 0;
                              showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
                         }
                     });
                      
                 }else{
+                    if(errorTab.length > 0 && formSubmitcnt == submitFormAry.length){
+                        var errArr = [];
+                        for (var i in errorTab) {
+                            errArr.push(errorTab[i].val);
+                        }
+                        showMessageDialog(Messages.ERROR,Messages.MSG_SAVE_FAILED,errArr.join("<br/>"));
+                        $('.nav-tabs a[href="#' + errorTab[0].tab + '"]').tab('show');
+                       
+                        if(errorLangIdArr.length > 0){
+                            if(typeof errorLangIdArr[0].val != 'undefined'){
+                                $('.nav-tabs a[href="#' + errorLangIdArr[0].tab + '"]').tab('show');
+                                switchToLangCotent(errorLangIdArr[0].val);
+                            }
+                        }
+                    }
                     return false;
                 }
             }
@@ -308,4 +337,27 @@ $(function () {
         }
         return true;
     });
+
+    function setErrorTab(errorTab,submitError){
+        var unique = true;
+        if(errorTab.length > 0){
+            for(var l = 0;l<errorTab.length;l++){
+                if(errorTab[l].tab == submitError.tab){
+                    unique = false;
+                    break;
+                }
+            }
+        }
+        if(unique){
+            errorTab.push(submitError);
+        }
+        return errorTab;
+    }
+
+    var targetTab = 'tab_content_info';
+    if(typeof $.getUrlVar('tab') != 'undefined' && $('.nav-tabs a[href="#' + $.getUrlVar('tab') + '"]').length > 0){
+       targetTab = $.getUrlVar('tab');
+    }
+    $('.nav-tabs a[href="#' + targetTab + '"]').tab('show');
+    
 });
