@@ -34,7 +34,7 @@
         }
 
         if(warning) {
-            $("#messageDialogWarningContent").text(warning);
+            $("#messageDialogWarningContent").html(warning);
         }
 
         $("#messageDialog").modal('show');

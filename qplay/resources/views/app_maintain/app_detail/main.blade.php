@@ -64,13 +64,13 @@ foreach ($enableRole as $role){
         </div>
     </div>
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#tab_content_info" data-toggle="tab">{{trans('messages.TAB_INFORMATION')}}</a></li>
+        <li role="presentation"><a href="#tab_content_info" data-toggle="tab">{{trans('messages.TAB_INFORMATION')}}</a></li>
         <li role="presentation"><a href="#tab_content_pic" data-toggle="tab">{{trans('messages.TAB_PIC_INFORMATION')}}</a></li>
         <li role="presentation"><a href="#tab_content_version" data-toggle="tab">{{trans('messages.TAB_VERSION_CONTROLL')}}</a></li>
         <li role="presentation"><a href="#tab_content_white_list" data-toggle="tab">{{trans('messages.TAB_WHITE_LIST_SETTING')}}</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab_content_info">
+        <div class="tab-pane fade" id="tab_content_info">
             @include($detail_path .'.info')
         </div> 
         <div class="tab-pane fade" id="tab_content_pic">

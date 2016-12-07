@@ -25,7 +25,7 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
         <tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="app_category" data-sortable="true" data-formatter="categoryNameFormatter" data-search-formatter="false">{{trans("messages.CATEGORY_NAME")}}</th>
-            <th data-field="app_count" data-sortable="false" data-searchable="false" data-formatter="appCountFormatter">{{trans("messages.CATEGORY_APP_COUNT")}}</th>
+            <th data-field="app_count" data-sortable="false" data-searchable="false" data-formatter="appCountFormatter" >{{trans("messages.CATEGORY_APP_COUNT")}}</th>
         </tr>
         </thead>
     </table>

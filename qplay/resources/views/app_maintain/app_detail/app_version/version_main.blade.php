@@ -121,6 +121,7 @@
                     <input type="hidden"  id="hidVersionRowId" name="hidVersionRowId">
                     <input type="hidden"  id="hidDeviceType" name="hidDeviceType">
                     <input type="hidden"  id="hidIndex" name="hidIndex">
+                    <input type="hidden"  id="hidUrl" name="hidUrl">
                 </table>
             </div>
             <div class="modal-footer">
@@ -194,7 +195,7 @@ function switchFormatter(value, row) {
 };
 
 function versionNameFormatter(value, row) {
-    return '<a href="#" class="editVersion" data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version="'+row.version_name+'" data-url="'+row.download_url+'" data-external="'+row.external_app+'" data-log="'+row.version_log+'"> '+ value +'</a>';
+    return '<a href="#" class="editVersion" data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version_name="'+row.version_name+'" data-version_code="'+row.version_code+'" data-download_url="'+row.download_url+'" data-external="'+row.external_app+'" data-log="'+row.version_log+'" data-url="'+row.url+'"> '+ value +'</a>';
 };
 
 function createdDateFormatter(value, row){
@@ -203,7 +204,7 @@ function createdDateFormatter(value, row){
 
 function versionLogDateFormatter(value, row){
     if( value !=null ){
-        var versionLog = value.replace(/\n/g,"<br />");
+        var versionLog = value.replace(new RegExp('\r?\n','g'), '<br />');
        return versionLog;
     }
     return '-';   
@@ -237,10 +238,20 @@ var EditAppVersion = function(){
 
     var require = ['tbxEditVersionName','tbxEditVersionNo','tbxEditVersionLog','tbxEditVersionUrl'];
     var errors = validRequired(require);
+    var editVersionLog = $('#tbxEditVersionLog').val();
+   
+
+    if(/<[a-z][\s\S]*>/i.test(editVersionLog)){
+        var error = new Error;
+        error.field = 'tbxEditVersionLog';
+        error.msg = Messages.ERR_ILLEGAL_INSERT_HTML;
+        errors.push(error);
+    }
 
     $.each(errors,function(i, error){
         $('span[for='+error.field+']').html(error.msg);
     });
+
     if(errors.length > 0){
         return false;
     }
@@ -253,7 +264,7 @@ var EditAppVersion = function(){
     targetRow.version_code =  $('#tbxEditVersionNo').val();
     targetRow.version_log =  $('#tbxEditVersionLog').val();
     targetRow.download_url =  $('#tbxEditVersionUrl').val();
-    targetRow.url =  $('#tbxEditVersionUrl').val();
+    targetRow.url =  $('#hidUrl').val();
     $gridList.bootstrapTable('load', currentData);
     $("#appVersionDialog").modal('hide');
 }
@@ -301,6 +312,13 @@ var uploadNewVersion = function(){
         errors.push(error);
     }
 
+    if(/<[a-z][\s\S]*>/i.test(versionLog)){
+        var error = new Error;
+        error.field = 'tbxVersionLog';
+        error.msg = Messages.ERR_ILLEGAL_INSERT_HTML;
+        errors.push(error);
+    }
+
     for(var j = 0; j < currentData.length; j++) {
         if($.trim(currentData[j].version_code) == $.trim(versionCode)) {
             var error = new Error;
@@ -310,6 +328,7 @@ var uploadNewVersion = function(){
             break;
         }
     }
+
 
     $.each(errors,function(i, error){
         $('span[for='+error.field+']').html(error.msg);
@@ -331,7 +350,6 @@ var uploadNewVersion = function(){
     newVersion.version_log  = versionLog;
     newVersion.version_file = $('#versionFile')[0].files[0];
     newVersion.size = $('#versionFile')[0].files[0].size;
-    //newVersion.size = formatFloat($('#versionFile')[0].files[0].size/1024/1024,2) + 'MB';
     newVersion.external_app = 0;
     currentData.push(newVersion);
     $gridList.bootstrapTable('load', currentData);
@@ -358,6 +376,13 @@ var uploadNewExternalLink = function(){
         var error = new Error;
         error.field = 'tbxExternalNo';
         error.msg = '{{trans('messages.VALIDATE_ACCEPT_NUMERIC')}}';
+        errors.push(error);
+    }
+
+    if(/<[a-z][\s\S]*>/i.test(externalLog)){
+        var error = new Error;
+        error.field = 'tbxExternalLog';
+        error.msg = Messages.ERR_ILLEGAL_INSERT_HTML;
         errors.push(error);
     }
 
@@ -418,16 +443,10 @@ var delAppVersion = function(device){
                 hideConfirmDialog();
                 var currentData = $gridList.bootstrapTable('getData');
                 $.each(selectedVersion, function(i, version) {
-                    for(var j = 0; j < currentData.length; j++) {
-                        if(currentData[j].row_id == version.row_id) {
-                            delVersionArr.push(version.row_id);
-                            currentData.splice(j,1);
-                            break;
-                        }
-                    }
+                     var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
+                     currentData.splice(index,1);
+                     $gridList.bootstrapTable('load', currentData);
                 });
- 
-                $gridList.bootstrapTable('load', currentData);
                 $gridList.find('checkbox[name=btSelectItem]').each(function(){
                     $(this).prop('check',false);
                 });
@@ -490,9 +509,10 @@ $(function () {
         $('#hidIndex').val($currentTarget.parent().parent().data('index'));
         $('#hidVersionRowId').val($currentTarget.data('rowid'));
         $('#hidDeviceType').val($currentTarget.data('device'));
-        $('#tbxEditVersionName').val($currentTarget.data('version')).prop('disabled', disabled);
-        $('#tbxEditVersionNo').val($currentTarget.data('version')).prop('disabled', disabled);
-        $('#tbxEditVersionUrl').val($currentTarget.data('url')).prop('disabled', disabled);
+        $('#hidUrl').val($currentTarget.data('url'));
+        $('#tbxEditVersionName').val($currentTarget.data('version_name')).prop('disabled', disabled);
+        $('#tbxEditVersionNo').val($currentTarget.data('version_code')).prop('disabled', disabled);
+        $('#tbxEditVersionUrl').val($currentTarget.data('download_url')).prop('disabled', disabled);
         $('#tbxEditVersionLog').val($currentTarget.data('log'));
 
         $('#appVersionDialog').modal('show');

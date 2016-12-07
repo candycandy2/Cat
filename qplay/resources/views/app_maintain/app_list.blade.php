@@ -17,9 +17,9 @@ $menu_name = "APP_MAINTAIN";
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
-            <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
-            <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
-            <th data-field="app_name" data-sortable="true" data-formatter="appEditFormatter">{{trans("messages.APP_NAME")}}</th>
+            <th data-field="row_id" data-sortable="false" data-visible="false" data-searchable="false">ID</th>
+            <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter" data-searchable="false">{{trans("messages.ICON")}}</th>
+            <th data-field="app_name" data-sortable="true" data-formatter="appEditFormatter" data-search-formatter="false">{{trans("messages.APP_NAME")}}</th>
             <th data-field="package_name" data-sortable="true">{{trans("messages.APP_PACKAGE_NAME")}}</th>
             <th data-field="updated_at" data-sortable="true" data-formatter="updateDateFormatter">{{trans("messages.LAST_UPDATED_DATE")}}</th>
             <th data-field="released" data-sortable="true">{{trans("messages.RELEASED")}}</th>

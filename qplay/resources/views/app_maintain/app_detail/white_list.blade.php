@@ -19,7 +19,7 @@
         <tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-            <th data-field="allow_url"  data-sortable="true" data-formatter="allowUrlFormatter">URL</th>
+            <th data-field="allow_url"  data-sortable="true" data-formatter="allowUrlFormatter" data-search-formatter="false">URL</th>
         </tr>
         </thead>
     </table>
@@ -38,13 +38,9 @@
             var selectedWhiteList = $gridList.bootstrapTable('getSelections');
             var currentData = $gridList.bootstrapTable('getData');
             $.each(selectedWhiteList, function(i, white) {
-                for(var j = 0; j < currentData.length; j++) {
-                    if(currentData[j].row_id == white.row_id) {
-                        currentData.splice(j,1);
-                        break;
-                    }
-                }
-                $gridList.bootstrapTable('load', currentData);
+               var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
+               currentData.splice(index,1);
+               $gridList.bootstrapTable('load', currentData);
             });
             $gridList.find('checkbox[name=btSelectItem]').each(function(){
                 $(this).prop('check',false);
