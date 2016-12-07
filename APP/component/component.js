@@ -235,11 +235,17 @@ function checkAppVersion() {
             });
 
         } else if (resultcode == 000913) {
+
             // app is up to date
+            $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
+
         } else if (resultcode == 000915) {
+
             // app package name does not exist
+            $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
+
         } else {
 
         }
@@ -533,54 +539,6 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //User Account Suspended
         getServerData();
     }
-}
-
-//re-new Token Valid
-function reNewToken() {
-    var self = this;
-
-    this.successCallback = function(data) {
-        var resultSuccess = false;
-        var resultcode = data['result_code'];
-        var newTokenValid = data['token_valid'];
-
-        if (resultcode == 1) {
-            loginData["token"] = data['content'].token;
-            loginData["token_valid"] = newTokenValid;
-
-            window.localStorage.setItem("token", data['content'].token);
-            window.localStorage.setItem("token_valid", newTokenValid);
-        } else {
-            //other case
-        }
-
-        if (doInitialSuccess) {
-            doInitialSuccess = false;
-            hideInitialPage();
-        }
-    };
-
-    this.failCallback = function(data) {};
-
-    var __construct = function() {
-        callQPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
-    }();
-}
-
-//Plugin-QPush, Now only QPLay need to set push-toekn
-function sendPushToken() {
-    var self = this;
-    var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
-
-    this.successCallback = function() {};
-
-    this.failCallback = function() {};
-
-    var __construct = function() {
-        if (loginData.token !== null && loginData.token.length !== 0) {
-            QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
-        }
-    }();
 }
 
 function getSignature(action, signatureTime) {
