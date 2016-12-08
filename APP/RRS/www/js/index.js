@@ -31,11 +31,17 @@ var dictSiteCategory = {
 
 window.initialSuccess = function() {
 
-    getAPIListAllMeetingRoom();
-    getAPIListAllTime();
+    //step1
+    getAPIListAllMeetingRoom();//async
+    getAPIListAllTime();//async
 
-    loadingMask("show");
+    loadingMask("show");//hide by change page event
 
+    //REVIEW by alan
+    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+    //step2 depend on step1 complete
+
+    //step2
     // $(this).ajaxComplete(function() {
     $.mobile.changePage('#viewReserve');
     // });
@@ -47,6 +53,14 @@ window.initialSuccess = function() {
 }
 
 function getAPIListAllMeetingRoom() {
+
+    //REVIEW by Alan 
+    //if (SystemTime not expire) PS: [7] day
+        //
+    //else
+        //get data by API
+        //keep SystemTime from API
+
     var self = this;
     var queryData = {};
 
@@ -56,7 +70,8 @@ function getAPIListAllMeetingRoom() {
         }
         else{
             //no data
-            
+            //TODO
+            //...
         }
     };
 
@@ -70,6 +85,14 @@ function getAPIListAllMeetingRoom() {
 }
 
 function getAPIListAllTime() {
+
+    //REVIEW by Alan 
+    //if (SystemTime not expire) PS: [7] day
+        //
+    //else
+        //get data by API
+        //keep SystemTime from API
+
     var self = this;
     var queryData = {};
 

@@ -111,6 +111,13 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function getReserveData(roomId, date) {
+                //REVIEW by Alan 
+                //if MeetingData exist && (LastReserveDataUpdateTime not expire) PS: [60] seconds
+                    //
+                //else
+                    //get data by API
+                    //keep LastReserveDataUpdateTime from API
+
                 var self = this;
                 this.successCallback = $.getJSON('js/QueryReserve', function(data) {
                     if (data['result_code'] == '1') {
