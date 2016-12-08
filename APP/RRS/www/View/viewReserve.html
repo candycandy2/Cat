@@ -1,13 +1,9 @@
-<div data-role="page" id="viewReserve" class="viewIndex">
+<div data-role="page" id="viewReserve">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title">
                 <select name="reserveSite" id="reserveSite">
-                    <option value="1">BQT/QTT</option>
-                    <option value="2">QTY</option>
-                    <option value="3">QTH</option>
-                    <option value="4">雙星</option>
                 </select>
             </div>
             <div id="center" class="ui-title"></div>
@@ -43,7 +39,7 @@
                 <h3 style="padding-left:3%;">開始使用時間</h3>
                 <div id="reserveDateSelect" class="ui-margin-10">
                     <div class="ui-grid-c">
-                        <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]">
+                        <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]" traceID="[traceID]">
                             <div class="ui-bar ui-bar-a ">
                                 <span></span>reserveTimeSelect[eName]
                             </div>
@@ -59,7 +55,7 @@
                     <div class="ui-color-noreserve"></div>
                     <h3>不可預約</h3>
                 </div>
-                <a href="#Reserve" class="btn-benq ui-btn ui-shadow ui-corner-all col-4">預約</a>
+                <a id="reserveBtn" href="#" class="btn-benq ui-btn ui-shadow ui-corner-all col-4">預約</a>
             </div>
             <div class="ui-content" id="pageTwo">
                 <div class="ui-margin-10">
@@ -95,7 +91,7 @@
             </div>
         </div>
     </div>
-    <div data-role="popup" id="reserveCoordinationAlert" data-overlay-theme="b" data-dismissible="false">
+    <!-- <div data-role="popup" id="reserveCoordinationAlert" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content popup-msg">
             <a href="#viewReserve" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
             <p id="msgContent"></p>
@@ -104,13 +100,13 @@
                 <a href="" class="ui-btn ui-btn-inline" id="ext"></a>
             </p>
         </div>
-    </div>
-    <div data-role="popup" id="reserveCancelAlert" data-overlay-theme="b" data-dismissible="false">
+    </div> -->
+    <div data-role="popup" id="PopupMsg" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content popup-msg">
             <a href="#viewReserve" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
             <p id="msgContent"></p>
             <p>
-                <a href="#viewReserve" class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
                 <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
             </p>
         </div>
