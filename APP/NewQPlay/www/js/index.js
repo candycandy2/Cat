@@ -10,11 +10,13 @@ var applist;
 var appmultilang;
 var loginjustdone;
 var messagecontent;
-var selectAppIndex = 9999;
-var messageRowId = 9999;
-var msgDateFromType;
+var selectAppIndex = 0;
+var messageArrIndex = 0;
+var messageRowId = 0;
+var msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 var callBackURL;
 var callGetMessageList = false;
+var messagePageShow = false;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
@@ -40,11 +42,15 @@ window.initialSuccess = function(data) {
         } else {
 
             var doPushToken = new sendPushToken();
-            getMessageList();
 
-            if (window.localStorage.getItem("openMessage") === "true") {
-                $.mobile.changePage("#viewWebNews2-3-1");
-            } else {
+            //If User first time to use QPlay, never get message data from server,
+            //don't call QueryMessageList() in background.
+            if (loginData["msgDateFrom"] !== null) {
+                var messageList = new QueryMessageList();
+                callGetMessageList = true;
+            }
+
+            if (window.localStorage.getItem("openMessage") !== "true") {
                 $.mobile.changePage('#viewMain2-1');
             }
 
@@ -103,8 +109,9 @@ function reNewToken() {
     }();
 }
 
-function getMessageList() {
-    var messageList = new QueryMessageList();
+function getTimestamp() {
+    var clientTimestamp = new Date().getTime();
+    return clientTimestamp = clientTimestamp.toString().substr(0, 10);
 }
 
 //un-register [User with Mobile Device UUID]
