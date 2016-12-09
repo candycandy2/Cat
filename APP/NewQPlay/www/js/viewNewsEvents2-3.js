@@ -114,6 +114,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     if (messagePageShow) {
                         loadingMask("hide");
                     }
+
+                    if (window.localStorage.getItem("openMessage") === "true") {
+                        $.mobile.changePage("#viewWebNews2-3-1");
+                    }
                 }; 
 
                 this.failCallback = function(data) {};

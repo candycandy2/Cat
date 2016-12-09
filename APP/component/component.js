@@ -94,13 +94,14 @@ var app = {
 
         if (loginData["openMessage"] === false) {
 
+            //Before open Message Detail Data, update Message List
+            var messageList = new QueryMessageList();
+            callGetMessageList = true;
+
+            //remember to open Message Detail Data
             loginData["openMessage"] = true;
             window.localStorage.setItem("openMessage", true);
             window.localStorage.setItem("messageRowId", messageRowId);
-
-            $.mobile.changePage("#viewWebNews2-3-1");
-        } else {
-            $.mobile.changePage("#viewWebNews2-3-1");
         }
     },
     onBackgoundNotification: function(data) {

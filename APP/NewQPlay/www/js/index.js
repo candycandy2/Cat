@@ -50,9 +50,7 @@ window.initialSuccess = function(data) {
                 callGetMessageList = true;
             }
 
-            if (window.localStorage.getItem("openMessage") === "true") {
-                $.mobile.changePage("#viewWebNews2-3-1");
-            } else {
+            if (window.localStorage.getItem("openMessage") !== "true") {
                 $.mobile.changePage('#viewMain2-1');
             }
 
