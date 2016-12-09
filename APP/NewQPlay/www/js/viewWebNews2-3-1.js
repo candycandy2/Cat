@@ -37,26 +37,16 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
 
-                    if (resultcode == 1) {
-                        var responsecontent = data['content'];
-                        /*
-                        if (responsecontent.message_type == "news") {
+                    if (resultcode === 1) {
 
-                        } else if (responsecontent.message_type == "event") {
+                        var content = data['content'];
 
-                        }
-                        */
-                        var title = responsecontent.message_title;
-                        var messagetext = responsecontent.message_text;
-                        var messagehtml = responsecontent.message_html;
-                        var rowid = responsecontent.message_send_row_id;
-                        var time = responsecontent.create_time;
-                        var author = responsecontent.create_user;
+                        updateReadEvent(content.message_type, "read");
 
-                        $("#newsDetailCreateTime").html(time.substr(0, 10));
-                        $("#newsDetailTitle").html(title);
-                        $("#newsAuthor").html(author);
-                        $("#newsContent").html(cleanHTML(messagetext));
+                        $("#newsDetailCreateTime").html(content.create_time.substr(0, 10));
+                        $("#newsDetailTitle").html(content.message_title);
+                        $("#newsAuthor").html(content.create_user);
+                        $("#newsContent").html(cleanHTML(content.message_text));
 
                         window.localStorage.getItem("openMessage") === "false";
                         loginData["openMessage"] = false;
@@ -73,6 +63,53 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                 }();
             }
 
+            window.updateReadEvent = function(type, status) {
+                var self = this;
+                var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
+
+                this.successCallback = function(data) {
+                    var doUpdateLocalStorage = false;
+
+                    if (type === "event") {
+                        var resultcode = data['result_code'];
+
+                        if (resultcode === 1) {
+                            doUpdateLocalStorage = true;
+                        } else if (resultcode === "000910") {
+                            //message not exist
+                        }
+                    } else if (type === "news") {
+                        doUpdateLocalStorage = true;
+                    }
+
+                    //Update [read / delete] status in Local Storage
+                    if (doUpdateLocalStorage) {
+                        if (status === "read") {
+                            messagecontent.message_list[messageArrIndex].read = "Y";
+                        } else if (status === "delete") {
+                            messagecontent.message_list[messageArrIndex].read = "D";
+                        }
+
+                        loginData["messagecontent"] = messagecontent;
+                        window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
+
+                        updateMessageList("closePopup");
+                    }
+                };
+
+                this.failCallback = function(data) {};
+
+                var __construct = function() {
+
+                    //[event] need to update [read / delete] status both in Server / Local Storage
+                    //[news] just update [read / delete] in Local Storage
+                    if (type === "event") {
+                        QPlayAPI("GET", "updateMessage", self.successCallback, self.failCallback, null, queryStr);
+                    } else if (type === "news") {
+                        this.successCallback();
+                    }
+                }();
+            };
             /********************************** page event *************************************/
             $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
                 var messageDetail = new QueryMessageDetail();
