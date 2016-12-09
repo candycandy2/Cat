@@ -23,7 +23,7 @@ var loginData = {
     emp_no:              "",
     loginid:             "",
     messagecontent:      null,
-    msgDateFrom:         null,
+    msgDateFrom:         null,  //timestamp, latest time of update message from server
     doLoginDataCallBack: false,
     openMessage:         false
 };
@@ -487,7 +487,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //All APP
         "1",
         //QPlay
-        "000913", "000915",
+        "000910", "000913", "000915",
         //Yellowpage
         "001901", "001902", "001903", "001904", "001905", "001906"
     ];
