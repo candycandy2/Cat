@@ -4,59 +4,39 @@
   "token_valid": "1458884996",
   "content": [
     {
-      "traceID": "100001",
-      "roomId": "r1",
-      "roomName": "t001",
-      "reserveDate": "20161201",
-      "bTime": "13:30",
-      "eTime": "15:00",
-      "eName": "kevin",
-      "ext": "1111",
-      "email": "aaa@gmail.com"
+      "BTime": "09:00",
+      "EMail": "Kevin.YW.Liu@gmail.com",
+      "Ext_No": "1111",
+      "Name_EN": "Kevin.YW.Liu",
+      "ReserveTraceID": "2932126"
     },
     {
-      "traceID": "100002",
-      "roomId": "r2",
-      "roomName": "t002",
-      "reserveDate": "20161201",
-      "bTime": "11:30",
-      "eTime": "12:00",
-      "eName": "joy",
-      "ext": "2222",
-      "email": "bbb@gmail.com"
+      "BTime": "09:30",
+      "EMail": "2222@gmail.com",
+      "Ext_No": "2222",
+      "Name_EN": "Alan",
+      "ReserveTraceID": "2932125"
     },
     {
-      "traceID": "100003",
-      "roomId": "r3",
-      "roomName": "t003",
-      "reserveDate": "20161201",
-      "bTime": "08:30",
-      "eTime": "09:00",
-      "eName": "mark",
-      "ext": "3333",
-      "email": "ccc@gmail.com"
+      "BTime": "11:30",
+      "EMail": "3333@gmail.com",
+      "Ext_No": "3333",
+      "Name_EN": "Cleo",
+      "ReserveTraceID": "2932124"
     },
     {
-      "traceID": "100004",
-      "roomId": "r4",
-      "roomName": "t004",
-      "reserveDate": "20161201",
-      "bTime": "10:30",
-      "eTime": "1:00",
-      "eName": "steven",
-      "ext": "4444",
-      "email": "ddd@gmail.com"
+      "BTime": "14:00",
+      "EMail": "4444@gmail.com",
+      "Ext_No": "4444",
+      "Name_EN": "Darren",
+      "ReserveTraceID": "2932123"
     },
     {
-      "traceID": "100005",
-      "roomId": "r5",
-      "roomName": "t005",
-      "reserveDate": "20161201",
-      "bTime": "12:30",
-      "eTime": "13:00",
-      "eName": "alan",
-      "ext": "5555",
-      "email": "eee@gmail.com"
+      "BTime": "16:30",
+      "EMail": "5555@gmail.com",
+      "Ext_No": "5555",
+      "Name_EN": "Steven",
+      "ReserveTraceID": "2932122"
     }
   ]
 }
