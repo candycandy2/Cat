@@ -1,5 +1,9 @@
 /*override jQuery Mobile*/
 
+#viewNewsEvents2-3 .ui-listview>.ui-li-static {
+    padding: 0;
+}
+
 #viewWebNews2-3-1 .ui-content {
     padding: 10px 0 0 0;
     background-color: #FFF;
@@ -9,20 +13,26 @@
     word-wrap: break-word !important;
 }
 
-#viewWebNews2-3-1 .Content_Content{
+#viewWebNews2-3-1 .Content_Content {
     word-wrap: break-word !important;
 }
 
-#viewWebNews2-3-1 .Content_Content img{
-    width: 80% !important;
-    height: 80% !important;
+#viewWebNews2-3-1 .Content_Content table {
+    border-collapse:collapse;
+    table-layout:fixed;
+    width:70% !important;
+}
+
+#viewWebNews2-3-1 .Content_Content table td {
+    border:solid 1px #fab;
+    width:70% !important;
+    word-wrap:break-word;
 }
 
 #viewAppDetail2-2 .ui-content {
     padding: 0;
     word-wrap: break-word !important;
 }
-
 
 /*new class*/
 
@@ -264,8 +274,8 @@
 }
 
 .Content_Content img {
-    width: 80vw !important;
-    height: 80vw !important;
+    width: 80% !important;
+    height: 80% !important;
 }
 
 #newsDetailTitle {
@@ -294,11 +304,4 @@ li,
 div {
     word-wrap: break-word !important;
 }
-
-img {
-    width: 50% !important;
-}
-
-table {border-collapse:collapse; table-layout:fixed; width:70% !important;}
-table td {border:solid 1px #fab; width:70% !important; word-wrap:break-word;}
 */
