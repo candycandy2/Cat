@@ -1,45 +1,53 @@
-﻿
-    <div data-role="page" id="viewSettingList">
-        <div class="ios-fix-overlap-div"></div>
-        <div data-role="header" data-position="fixed" class="page-header">
-            <div id="container" class="header-style">
-                <div id="left" class="ui-title">
-                    <a href="#viewReserve">返回</a></div>
-                <div id="center" class="ui-title">偏好設置</div>
-                <div id="right" class="ui-title">
-                    <a href="#viewNewSetting">新增</a></div>
-            </div>
-        </div>
-        <div data-role="main" class="page-main">
-            <div id="defaultSettingList" class="ui-btn ui-shadow ui-corner-all ui-margin-10">
-                <h2 class="ui-color-yellow ui-position-adjust">
-                        現在空的會議室 BQT/QTT</h2>
-                <hr class="ui-color-yellow col-95 ui-position-adjust" />
-                <div class="ui-grid-a ui-position-adjust">
-                    <div class="ui-block-a col-5">
-                        人數&nbsp;不限
-                    </div>
-                    <div class="ui-block-b col-5">
-                        時段&nbsp;現在起一小時
-                    </div>
-                </div>
-                <div class="ui-position-adjust">優先樓層&nbsp;不限</div>
-            </div>
-            <div id="settingList" class="ui-btn ui-shadow ui-corner-all ui-margin-10 ui-hasBtn disable">
-                <h2 class="ui-color-yellow ui-position-adjust">
-                        title</h2>
-                <a id="settingDelete" href="#" value="index" class="ui-btn ui-shadow ui-corner-all ui-delete-btn">刪除</a>
-                <hr class="ui-color-yellow col-95 ui-position-adjust" />
-                <div class="ui-grid-a ui-position-adjust">
-                    <div class="ui-block-a col-5">
-                        人數&nbsp;people
-                    </div>
-                    <div class="ui-block-b col-5">
-                        時段&nbsp;time
-                    </div>
-                </div>
-                <div class="ui-position-adjust">優先樓層&nbsp;floor</div>
-            </div>
+﻿<div data-role="page" id="viewSettingList">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div id="container" class="header-style">
+            <div id="left" class="ui-title">
+                <a href="#viewReserve">返回</a></div>
+            <div id="center" class="ui-title">偏好設置</div>
+            <div id="right" class="ui-title">
+                <a href="#viewNewSetting">新增</a></div>
         </div>
     </div>
-
+    <div data-role="main" class="page-main">
+        <div id="defaultSettingList" class="ui-btn ui-shadow ui-corner-all ui-margin-10">
+            <h2 class="ui-color-yellow ui-position-adjust">
+                        現在空的會議室 BQT/QTT</h2>
+            <hr class="ui-color-yellow col-95 ui-position-adjust" />
+            <div class="ui-grid-a ui-position-adjust">
+                <div class="ui-block-a col-5">
+                    人數&nbsp;不限
+                </div>
+                <div class="ui-block-b col-5">
+                    時段&nbsp;現在起一小時
+                </div>
+            </div>
+            <div class="ui-position-adjust">優先樓層&nbsp;不限</div>
+        </div>
+        <div id="settingList" class="ui-btn ui-shadow ui-corner-all ui-margin-10 ui-hasBtn disable">
+            <h2 class="ui-color-yellow ui-position-adjust">
+                        [title]&nbsp;[siteName]</h2>
+            <a id="settingDelete" href="#" value="[index]" class="ui-btn ui-shadow ui-corner-all ui-delete-btn">刪除</a>
+            <hr class="ui-color-yellow col-95 ui-position-adjust" />
+            <div class="ui-grid-a ui-position-adjust">
+                <div class="ui-block-a col-5">
+                    人數&nbsp;[people]
+                </div>
+                <div class="ui-block-b col-5">
+                    時段&nbsp;[time]
+                </div>
+            </div>
+            <div class="ui-position-adjust">優先樓層&nbsp;[floor]</div>
+        </div>
+    </div>
+    <div data-role="popup" id="settingListPopupMsg" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <p id="msgContent"></p>
+            <p>
+                <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-inline" id="confirm">確定</a>
+            </p>
+        </div>
+    </div>
+</div>
