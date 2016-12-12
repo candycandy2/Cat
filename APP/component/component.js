@@ -490,7 +490,9 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //QPlay
         "000910", "000913", "000915",
         //Yellowpage
-        "001901", "001902", "001903", "001904", "001905", "001906"
+        "001901", "001902", "001903", "001904", "001905", "001906",
+        //RRS
+        "002901", "002902", "002903", "002904", "002905", "002906", "002907"
     ];
 
     resultCode = resultCode.toString();
