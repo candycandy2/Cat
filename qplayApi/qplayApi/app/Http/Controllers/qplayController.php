@@ -1870,8 +1870,17 @@ SQL;
                             ['read_time'=>time(),
                                 'updated_at'=>$now,
                                 'updated_user'=>$user->row_id]);
+                }else if($status == 'delete' && $message_type == "event") {
+                    $now = date('Y-m-d H:i:s',time());
+                    $user = CommonUtil::getUserInfoByUUID($uuid);
+                    \DB::table("qp_user_message")
+                        -> where('user_row_id', '=', $userInfo->row_id)
+                        -> where('message_send_row_id', '=', $message_send_row_id)
+                        -> update(
+                            ['deleted_at'=>$now,                            
+                                'updated_at'=>$now,
+                                'updated_user'=>$user->row_id]);
                 }
-
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
