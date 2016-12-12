@@ -10,8 +10,12 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                 var listData;
                 if (prevPageID === "viewQueryResult") {
                     listData = employeeData;
+                    $("#startAdd").show();
+                    $("#startDelete").hide();
                 } else if (prevPageID === "viewPhonebook") {
                     listData = phonebookData;
+                    $("#startAdd").hide();
+                    $("#startDelete").show();
                 }
 
                 var self = this;
@@ -76,6 +80,12 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
             }
 
+            window.deletePheonBookFinished = function() {
+                $("#startAdd").show();
+                $("#startDelete").hide();
+                $('#askDeletePhonebook').popup('close');
+            };
+
             /********************************** page event *************************************/
             $("#viewDetailInfo").on("pagebeforeshow", function(event, ui){
                 loadingMask("show");
@@ -85,6 +95,10 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             /********************************** dom event *************************************/
             $("#addPhonebook").on("click", function(){
                 AddMyPhoneBook();
+            });
+
+            $("#deletePhonebook").on("click", function(){
+                deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
             });
         }
     });
