@@ -17,7 +17,10 @@
                     <p class="company-data">
                         <span class="company" id="companyName"><!--BenQHospital--></span>
                         <span class="star">
-                            <a href="#askAddPhonebook" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-icon-notext ui-icon-star"></a>
+                            <a id="startAdd" href="#askAddPhonebook" data-rel="popup" data-position-to="window" data-transition="pop" 
+                                class="ui-btn ui-btn-icon-notext ui-icon-star"></a>
+                            <a id="startDelete" href="#askDeletePhonebook" data-rel="popup" data-position-to="window" data-transition="pop" 
+                                class="ui-btn ui-btn-icon-notext ui-icon-star star-setted"></a>
                         </span>
                     </p>
                 </div>
@@ -95,6 +98,16 @@
             <p>
                 <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
                 <a href="#" class="ui-btn ui-btn-inline" id="addPhonebook">確定</a>
+            </p>
+        </div>
+    </div>
+
+    <div data-role="popup" id="askDeletePhonebook" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>確定要從我的電話簿刪除?</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="deletePhonebook">確定</a>
             </p>
         </div>
     </div>

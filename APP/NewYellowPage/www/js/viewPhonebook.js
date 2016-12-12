@@ -82,8 +82,8 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
             }
 
-            function deletePhoneBook(index) {
-                
+            window.deletePhoneBook = function(actionPage, index) {
+
                 var self = this;
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' +
                                 '<Delete_EmpID>' + phonebookData[index].employeeid + '</Delete_EmpID>' + 
@@ -91,8 +91,12 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001904") {
-                        if (doRefresh) {
-                            refreshMyPhonebookList();
+                        if (actionPage === "viewPhonebook") {
+                            if (doRefresh) {
+                                refreshMyPhonebookList();
+                            }
+                        } else if (actionPage === "viewDetailInfo") {
+                            deletePheonBookFinished();
                         }
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
@@ -106,7 +110,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
-            }
+            };
 
             function refreshMyPhonebookList() {
 
@@ -221,7 +225,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             doRefresh = true;
                         }
 
-                        deletePhoneBook(key);
+                        deletePhoneBook("viewPhonebook", key);
                     } else {
                         tempData["company"] = phonebookData[key].company;
                         tempData["ename"] = phonebookData[key].ename;
