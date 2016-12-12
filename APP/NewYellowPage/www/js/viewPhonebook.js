@@ -196,6 +196,11 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 $("#phonebookEditBtn").hide();
             });
 
+            $("#phonebookDelectAlert #cancel").on('click', function(){
+                $("#phonebookEditBtn").show();
+                $("#phonebookDelectAlert").popup('close');
+            });
+
             $("#phonebookDelectConfirm #cancel").on('click', function(){
                 $("#phonebookEditBtn").show();
                 $("#phonebookDelectConfirm").popup('close');
