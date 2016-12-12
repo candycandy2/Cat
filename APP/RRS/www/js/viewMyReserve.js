@@ -105,6 +105,18 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
             });
 
+            $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
+                $('div[for=noDataMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=successMsg] #confirm', function() {
+                $('div[for=successMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=failMsg] #confirm', function() {
+                $('div[for=failMsg]').popup('close');
+            });
+
             $('#myReserveBack').on('click', function() {
                 //to do 
                 //how to update veiwReserve

@@ -52,6 +52,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function getReserveData(roomId, date, data, type) {
+
                 arrReserve = [];
 
                 // if (data.length === 0) {
@@ -85,6 +86,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
 
                 getMettingStatus();
+
             }
 
             function getMettingStatus() {
@@ -95,9 +97,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var j = 0;
 
                 var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
-                filterTimeBlock.sort(function(a, b) {
-                    return new Date(new Date().toDateString() + ' ' + a.time) - new Date(new Date().toDateString() + ' ' + b.time);
-                });
 
                 for (var item in filterTimeBlock) {
                     var classId = arrClass[j % 4];
@@ -346,13 +345,18 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             //to do 
             //use on or one
-            $('#viewReserve').on('pagebeforeshow', function(event, ui) {
+            $('#viewReserve').one('pagebeforeshow', function(event, ui) {
 
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 siteCategoryID = dictSiteCategory[meetingRoomTreeData._root.children[0].data];
                 getFloorData('0');
                 dateList();
+
+            });
+
+            $('#viewReserve').on('pagebeforeshow', function(event, ui) {
+
                 settingList();
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId);
 
@@ -476,12 +480,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     $('#quickReserve').removeClass('btn-benq-disable');
                     $('#quickReserve').addClass('btn-benq');
                 }
+                $('#quickReserveMsgArea').addClass('disable');
             });
 
             $('#quickReserve').on('click', function() {
                 if (!$(this).hasClass('btn-benq-disable')) {
                     var arrSelectedValue = quickReserveSelectedValue.split('&');
                     var quickReserveDay = quickReserveClickDateID.replaceAll('two', '');
+
+                    //to do
+                    //default item no value 
+                    //<option id="1" value="1&amp;none&amp;none&amp;6,7,8,">111</option>
+                    //check api, site 是否可不限制
+
                     // getAPIQuickReserve(date, site, floor, people, time)
                     var doAPIQuickReserve = new getAPIQuickReserve(quickReserveDay, arrSelectedValue[0], arrSelectedValue[1].replaceAll('F', '').replace(/,\s*$/, ""), arrSelectedValue[2], arrSelectedValue[3]);
                 }

@@ -54,7 +54,9 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                 $('#set-' + clickDeleteID).hide('slow');
                 $('#set-' + clickDeleteID).remove();
 
+                $('div[for=deleteMsg]').popup('close');
             });
+
         }
     });
 

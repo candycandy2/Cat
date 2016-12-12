@@ -106,6 +106,10 @@ function getAPIListAllTime() {
                 }
             }
 
+            arrTimeBlock.sort(function(a, b) {
+                return new Date(new Date().toDateString() + ' ' + a.time) - new Date(new Date().toDateString() + ' ' + b.time);
+            });
+
             //save to local data
             localStorage.removeItem('allTimeLocalData');
             var jsonData = {};
@@ -230,7 +234,7 @@ function onBackKeyDown() {
     }
 }
 
-function popupMsg(id, attr,  content, btn1, btnIsDisable, btn2, href1, href2) {
+function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
     $('#' + id).attr('for', attr);
     $('#' + id + ' #msgContent').html(content);
     $('#' + id + ' #cancel').html(btn1);

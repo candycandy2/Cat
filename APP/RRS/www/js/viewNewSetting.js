@@ -162,6 +162,12 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 }
 
             });
+
+             $('body').on('click', 'div[for=validationMsg] #confirm', function() {
+
+                $('div[for=validationMsg]').popup('close');
+
+            });
         }
     });
 });
