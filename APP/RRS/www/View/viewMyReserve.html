@@ -3,13 +3,13 @@
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title">
-                <a href="#viewReserve">返回</a></div>
+                <a href="#" id="myReserveBack">返回</a></div>
             <div id="center" class="ui-title">我的預約</div>
             <div id="right" class="ui-title">&nbsp;</div>
         </div>
     </div>
     <div id="myReserve" data-role="main" class="page-main">
-        <h2 id="todayLine" style="padding-left:5%;">今天</h2>
+        <h2 id="todayLine" style="padding-left:5%;" class="disable">今天</h2>
         <div id="defaultToday" class="ui-btn ui-shadow ui-corner-all ui-margin-10 disable">
             <div class="ui-grid-b">
                 <div class="ui-block-a ui-padding-8 col-5">
@@ -25,12 +25,22 @@
         <div id="defaultOtherDay" class="ui-btn ui-shadow ui-corner-all ui-margin-10 disable">
             <div class="ui-grid-b">
                 <div class="ui-block-a ui-padding-8 col-5">
-                    <h1 class="ui-color-lightblue"><span>[date]</span><br>[begin] - [end]</h1>
+                    <h1 class="ui-color-lightblue"><span>[dateformate]</span><br>[begin] - [end]</h1>
                 </div>
                 <div class="ui-block-b col-3">
                     <h1 class="ui-color-lightblue"><span>&nbsp;</span><br>[room]</h1></div>
-                <div class="ui-block-c col-2"><a href="#" value="[value]" class="btn-benq ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
+                <div class="ui-block-c col-2"><a href="#" value="[value]" date="[date]" class="btn-benq ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
             </div>
+        </div>
+    </div>
+    <div data-role="popup" id="myReservePopupMsg" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <p id="msgContent"></p>
+            <p>
+                <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-inline" id="confirm">確定</a>
+            </p>
         </div>
     </div>
 </div>
