@@ -6,8 +6,8 @@ var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetti
 var appSecretKey = "2e936812e205445490efb447da16ca13";
 
 var prevPageID;
-var arrClickReserve = [];
 var arrReserve = [];
+var arrClickReserve = [];
 var arrTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
 var htmlContent = '';
@@ -132,7 +132,7 @@ function getAPIListAllTime() {
 function createReserveDetailLocalDate() {
     //save to local data
     localStorage.removeItem('reserveDetailLocalData');
-    var jsonData = {};
+    jsonData = {};
     localStorage.setItem('reserveDetailLocalData', JSON.stringify(jsonData));
 }
 
@@ -151,19 +151,21 @@ function getSiteData() {
 
 function ConverToTree(data) {
 
-    var siteData = uniqueData(data, 'MeetingRoomSite');
-    siteData.sort();
+    // var siteData = uniqueData(data, 'MeetingRoomSite');
+    // siteData.sort();
 
-    for (var i in siteData) {
+    // for (var i in siteData) {
 
-        meetingRoomTreeData.add(siteData[i], 'meetingRoom', meetingRoomTreeData.traverseDF);
-        var floorData = grepData(data, 'MeetingRoomSite', siteData[i])
+    for (var key in dictSite) {
+
+        meetingRoomTreeData.add(key, 'meetingRoom', meetingRoomTreeData.traverseDF);
+        var floorData = grepData(data, 'MeetingRoomSite', key)
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
         dfloorData.sort();
 
         for (var j in dfloorData) {
 
-            meetingRoomTreeData.add(dfloorData[j] + 'F', siteData[i], meetingRoomTreeData.traverseDF);
+            meetingRoomTreeData.add(dfloorData[j] + 'F', key, meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
             roomData.sort();
 
@@ -228,7 +230,8 @@ function onBackKeyDown() {
     }
 }
 
-function popupMsg(id, content, btn1, btnIsDisable, btn2, href1, href2) {
+function popupMsg(id, attr,  content, btn1, btnIsDisable, btn2, href1, href2) {
+    $('#' + id).attr('for', attr);
     $('#' + id + ' #msgContent').html(content);
     $('#' + id + ' #cancel').html(btn1);
     if (btnIsDisable == true) {
@@ -272,7 +275,6 @@ function timeblockObj(category, time, timeID) {
 
 // create reserve object 
 function reserveObj(roomId, date) {
-    this.lastUpdateTime = new Date();
     this.roomId = roomId;
     this.date = date;
     this.detailInfo = {};
@@ -282,4 +284,11 @@ function reserveObj(roomId, date) {
 
     this.addDetail();
     return this;
+};
+
+function reserveLocalDataObj(roomId, date, data) {
+    this.lastUpdateTime = new Date();
+    this.roomId = roomId;
+    this.date = date;
+    this.data = data;
 };

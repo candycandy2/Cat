@@ -1,6 +1,6 @@
 //qplayAPI - RRS
 
-function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
+function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCallback, queryData) {
 
     failCallback = failCallback || null;
     queryData = queryData || null;
@@ -26,8 +26,9 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         dataType: "json",
         data: queryData,
         cache: false,
+        async: asyncType,
         success: requestSuccess,
         fail: failCallback
     });
-    
+
 }

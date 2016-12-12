@@ -36,13 +36,14 @@ $(document).one('pagecreate', '#viewSettingList', function() {
 
             /********************************** dom event *************************************/
             $('body').on('click', '#settingDelete', function() {
-                
+
                 clickDeleteID = $(this).attr('value');
-                popupMsg('settingListPopupMsg', '是否確定刪除', '取消', false, '確定', '#', '#');
+                popupMsg('settingListPopupMsg', 'deleteMsg', '是否確定刪除', '取消', false, '確定', '#', '#');
 
             });
 
-            $('#settingListPopupMsg #confirm').on('click', function() {
+            // $('div[for=deleteMsg] #confirm').on('click', function() {
+            $('body').on('click', 'div[for=deleteMsg] #confirm', function() {
 
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
                 roomSettingdata.content = roomSettingdata.content.filter(function(item) {

@@ -158,7 +158,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $.mobile.changePage('#viewSettingList');
                     
                 } else {
-                    popupMsg('newSettingPpupMsg', validationResult[1], '', true, '確定', '#', '#');
+                    popupMsg('newSettingPpupMsg', 'validationMsg', validationResult[1], '', true, '確定', '#', '#');
                 }
 
             });
