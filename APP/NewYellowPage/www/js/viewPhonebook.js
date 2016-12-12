@@ -117,7 +117,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var htmlContent = "";
 
                 $.map(phonebookData, function(value, key) {
-                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname);
+                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum);
                     htmlContent = content;
                 });
 
@@ -194,6 +194,11 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 }
 
                 $("#phonebookEditBtn").hide();
+            });
+
+            $("#phonebookDelectAlert #cancel").on('click', function(){
+                $("#phonebookEditBtn").show();
+                $("#phonebookDelectAlert").popup('close');
             });
 
             $("#phonebookDelectConfirm #cancel").on('click', function(){
