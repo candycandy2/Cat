@@ -117,7 +117,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var htmlContent = "";
 
                 $.map(phonebookData, function(value, key) {
-                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname);
+                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum);
                     htmlContent = content;
                 });
 
