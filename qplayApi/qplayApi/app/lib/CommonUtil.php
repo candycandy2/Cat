@@ -10,6 +10,7 @@ namespace App\lib;
 
 use Request;
 use Illuminate\Support\Facades\Input;
+use JPush\Client as JPush;
 
 class CommonUtil
 {
@@ -364,6 +365,53 @@ class CommonUtil
             $result["info"] = $data["pns"];
         }
 
+        return $result;
+    }
+
+    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
+        $result = array();
+        $result["result"] = true;
+        $client = new JPush(env('App_id'), env('Secret_key'));
+        //$to = '101d855909488114957';
+        try {
+            $platform = array('ios', 'android');
+            $alert = $message;
+            $regId = $to;
+            $ios_notification = array(
+                'extras' => array(
+                    'message_row_id'=> $parameter
+                ),
+            );
+            $android_notification = array(
+                'extras' => array(
+                    'message_row_id'=> $parameter
+                ),
+            );
+            $content = $message;
+            $message = array(
+                'title' => $message,
+                'content_type' => 'text',
+                'extras' => array(
+                    'message_row_id'=> $parameter
+                ),
+            );
+            $time2live =  intval(env('time_to_live',"864000"));
+            $apnsFlag = env('apns_flag');
+            $options = array(
+                'time_to_live'=>$time2live,
+                'apns_production'=>$apnsFlag
+            );
+            $response = $client->push()->setPlatform($platform)
+                ->addRegistrationId($regId)
+                ->iosNotification($alert, $ios_notification)
+                ->androidNotification($alert, $android_notification)
+                ->message($content, $message)
+                ->options($options)
+            ->send();
+        } catch (Exception $e) {
+            $result["result"] = false;
+        }
+        $result["info"] = $response;
         return $result;
     }
 
