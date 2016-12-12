@@ -1,11 +1,15 @@
-//qplayAPI - YellowPage
+//qplayAPI - RRS
 
 function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
 
     failCallback = failCallback || null;
     queryData = queryData || null;
 
-    appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
+    function requestSuccess(data) {
+        checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
+    }
+
+    appSecretKey = "2e936812e205445490efb447da16ca13";
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
@@ -18,11 +22,11 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/yellowpage/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/index.php/v101/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,
         cache: false,
-        success: successCallback,
+        success: requestSuccess,
         fail: failCallback
     });
     

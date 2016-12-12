@@ -65,6 +65,10 @@ body {
     text-align: center;
 }
 
+.ui-tabs {
+    position: static;
+}
+
 /*Fix bug - iOS status bar overlapping App*/
 .ios-fix-overlap {
     margin-top: 20px;

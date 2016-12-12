@@ -18,7 +18,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         +   '</div>'
                         +   '<div class="e-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
-                        +       '<p><a rel="external" href="tel:+012345678" style="color:red;">' + extNo + '</a></p>'
+                        +       '<p><a rel="external" href="tel:' + index.toString() + '" style="color:red;">' + extNo + '</a></p>'
                         +   '</div>'
                         +   '<div class="c-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'

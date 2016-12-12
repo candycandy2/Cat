@@ -6,17 +6,34 @@
         <a href="#viewMain2-1" data-icon="back" class="ui-btn-left">
             <span>Back</span>
         </a>
-        <a href="#" data-icon="delete" class="ui-btn-right">
+        <a href="#" data-icon="delete" class="ui-btn-right" id="deleteMessage">
             <span>Delete</span>
         </a>
     </div>
 
     <div data-role="tabs">
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
+        <div data-role="footer" data-position="fixed" id="msgFooter">
+            <div data-role="navbar" id="navMessage">
                 <ul>
-                    <li><a id="navNews" href="#newspage2-3" class="ui-btn ui-btn-active" data-ajax="false">News</a></li>
-                    <li><a id="navEvents" href="#eventspage2-3b" class="ui-btn" data-ajax="false">Events</a></li>
+                    <li id="navNews" style="width:50%;">
+                        <a href="#newspage2-3" class="ui-btn ui-btn-active" data-ajax="false">
+                            News<span id="newNews" style="color:red; display:none;">*</span>
+                        </a>
+                    </li>
+                    <li id="navEvents" style="width:50%;">
+                        <a href="#eventspage2-3b" class="ui-btn" data-ajax="false">
+                            Events<span id="newEvents" style="color:red; display:none;">*</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div data-role="navbar" id="navDelete" style="display:none;">
+                <ul>
+                    <li id="delMsgBtn" style="width:100%;">
+                        <a href="#" class="ui-btn ui-btn-active" data-ajax="false">
+                            Delete
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -39,6 +56,28 @@
                     <p>2016/03/15 16:00</p>
                 </a></li>-->
             </ul>
+        </div>
+    </div>
+
+    <div data-role="popup" id="selectMsgDateFrom" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content" style="width:90%; height:200px;">
+            <label data-mini="true" for="month">Show news within 30 days.</label>
+            <input data-mini="true" type="radio" name="selectDateFrom" id="month" value="month" checked="checked">
+            <label data-mini="true" for="skip">Skip all historical news.</label>
+            <input data-mini="true" type="radio" name="selectDateFrom" id="skip" value="skip">
+            <p style="text-align:center;">
+                <a href="#" class="ui-btn ui-btn-inline" id="selectMsgDateFromOK">OK</a>
+            </p>
+        </div>
+    </div>
+
+    <div data-role="popup" id="deleteConfirm" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>Do you want to delete this news?</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" id="cancel">Cancel</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="yes">Yes</a>
+            </p>
         </div>
     </div>
 </div>
