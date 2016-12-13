@@ -124,6 +124,7 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-customurlscheme',
     'cordova plugin remove cordova-plugin-qsecurity',
     'cordova plugin remove cordova-plugin-whitelist',
+    'cordova plugin remove cordova-plugin-inappbrowser',
     'cordova platform rm ios',
     'cordova platform rm android',
     'cordova platform add ios',
@@ -136,7 +137,8 @@ gulp.task('install', shell.task([
     'cordova plugin add cordova-plugin-appversion',
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-    'cordova plugin add cordova-plugin-whitelist'
+    'cordova plugin add cordova-plugin-whitelist',
+    'cordova plugin add cordova-plugin-inappbrowser'
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
