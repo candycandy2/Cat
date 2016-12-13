@@ -231,7 +231,9 @@ function checkAppVersion() {
                 } else {
                     //Open QPlay > APP detail page
                     openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKeyOriginal);
-                    navigator.app.exitApp();
+                    if (device.platform === "Android") {
+                        navigator.app.exitApp();
+                    }
                 }
             });
 
@@ -450,7 +452,10 @@ function getServerData() {
     } else {
         window.localStorage.setItem("openScheme", true);
         openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
-        navigator.app.exitApp();
+
+        if (device.platform === "Android") {
+            navigator.app.exitApp();
+        }
     }
 
 }
@@ -659,7 +664,9 @@ function getLoginDataCallBack() {
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
-    navigator.app.exitApp();
+    if (device.platform === "Android") {
+        navigator.app.exitApp();
+    }
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
