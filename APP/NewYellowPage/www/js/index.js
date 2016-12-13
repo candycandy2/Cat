@@ -10,6 +10,7 @@ var employeeData = {};
 var employeeSelectedIndex;
 var phonebookData = {};
 var prevPageID;
+var doClearInputData = false;
 
 window.initialSuccess = function() {
 
@@ -40,6 +41,7 @@ function onBackKeyDown() {
 
     } else if (activePageID === "viewQueryResult") {
 
+        doClearInputData = false;
         $.mobile.changePage('#viewDataInput');
 
     } else if (activePageID === "viewDetailInfo") {
