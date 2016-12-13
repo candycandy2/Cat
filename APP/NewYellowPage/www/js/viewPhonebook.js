@@ -18,7 +18,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         +   '</div>'
                         +   '<div class="e-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
-                        +       '<p><a rel="external" href="tel:+012345678" style="color:red;">' + extNo + '</a></p>'
+                        +       '<p><a rel="external" href="tel:' + index.toString() + '" style="color:red;">' + extNo + '</a></p>'
                         +   '</div>'
                         +   '<div class="c-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'
@@ -82,8 +82,8 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
             }
 
-            function deletePhoneBook(index) {
-                
+            window.deletePhoneBook = function(actionPage, index) {
+
                 var self = this;
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' +
                                 '<Delete_EmpID>' + phonebookData[index].employeeid + '</Delete_EmpID>' + 
@@ -91,8 +91,12 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001904") {
-                        if (doRefresh) {
-                            refreshMyPhonebookList();
+                        if (actionPage === "viewPhonebook") {
+                            if (doRefresh) {
+                                refreshMyPhonebookList();
+                            }
+                        } else if (actionPage === "viewDetailInfo") {
+                            deletePheonBookFinished();
                         }
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
@@ -106,7 +110,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData);
                 }();
-            }
+            };
 
             function refreshMyPhonebookList() {
 
@@ -117,7 +121,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var htmlContent = "";
 
                 $.map(phonebookData, function(value, key) {
-                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname);
+                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum);
                     htmlContent = content;
                 });
 
@@ -196,6 +200,11 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 $("#phonebookEditBtn").hide();
             });
 
+            $("#phonebookDelectAlert #cancel").on('click', function(){
+                $("#phonebookEditBtn").show();
+                $("#phonebookDelectAlert").popup('close');
+            });
+
             $("#phonebookDelectConfirm #cancel").on('click', function(){
                 $("#phonebookEditBtn").show();
                 $("#phonebookDelectConfirm").popup('close');
@@ -216,7 +225,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             doRefresh = true;
                         }
 
-                        deletePhoneBook(key);
+                        deletePhoneBook("viewPhonebook", key);
                     } else {
                         tempData["company"] = phonebookData[key].company;
                         tempData["ename"] = phonebookData[key].ename;

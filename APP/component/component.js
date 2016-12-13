@@ -417,7 +417,12 @@ function processStorageData(action, data) {
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
             window.localStorage.setItem(key, value);
-            loginData[key] = value;
+        });
+
+        $.map(loginData, function(value, key) {
+            if (window.localStorage.getItem(key) !== null) {
+                loginData[key] = window.localStorage.getItem(key);
+            }
         });
 
         if (appKey === qplayAppKey) {

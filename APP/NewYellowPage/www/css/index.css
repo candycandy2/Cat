@@ -147,6 +147,10 @@
     display: inline-block;
 }
 
+#detailData .star-setted {
+    background-color: red;
+}
+
 .popup-msg {
     height: 100px;
     display: flex;
