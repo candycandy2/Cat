@@ -2,7 +2,7 @@ pwd
 cd APP/NewQPlay
 pwd
 
-dailyver=34
+dailyver=$BUILD_NUMBER
 
 gulp jenkinsinstall --env test
 gulp --env test --vname 1.0.0.$dailyver --vcode $dailyver
