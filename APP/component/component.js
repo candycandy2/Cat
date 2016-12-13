@@ -68,6 +68,10 @@ var app = {
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
+
+        if (device.platform === "iOS") {
+            $.mobile.hashListeningEnabled = false;
+        }
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
