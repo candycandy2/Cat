@@ -41,7 +41,9 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                             messagecontent = data['content'];
 
                             if (messagecontent.message_count !== 0) {
-                                for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++) {
+                                var messageindexStart = parseInt(messagecontent.message_count - 1, 10);
+
+                                for (var messageindex=messageindexStart; messageindex>=0; messageindex--) {
                                     var message = messagecontent.message_list[messageindex];
 
                                     localContent.message_count = parseInt(localContent.message_count + 1, 10);
