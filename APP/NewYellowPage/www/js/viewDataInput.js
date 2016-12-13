@@ -61,7 +61,10 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
             /********************************** page event *************************************/
             $("#viewDataInput").on("pagebeforeshow", function(event, ui) {
-                clearInputData();
+                if (doClearInputData) {
+                    clearInputData();
+                    doClearInputData = true;
+                }
             });
 
             /********************************** dom event *************************************/
