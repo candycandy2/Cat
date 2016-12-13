@@ -112,6 +112,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveDefault').before(htmlContentPageOne);
                 $('#quickReserveDefault').before(htmlContentPageTwo);
                 clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
+
+                $('div[id^=two]:first-child > div').addClass('ui-btn-active');
+                quickReserveClickDateID = $('div[id^=two]:first-child').attr('id');
+
+
                 $('#scrollDate a:first-child').addClass('hover');
                 $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
             }
@@ -237,24 +242,23 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     if (data['ResultCode'] === "002902") {
                         //Reservation Successful
+                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '預約成功', '', true, '確定', '#', '#');
+
                         if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId);
                         }
-                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '預約成功', '', true, '確定', '', '');
-
+                        
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
-                        popupMsg('reservePopupMsg', 'reserveFailMsg', '預約失敗，有人預約', '', true, '確定', '', '');
+                        popupMsg('reservePopupMsg', 'reserveFailMsg', '預約失敗，有人預約', '', true, '確定', '#', '#');
 
                     } else if (data['ResultCode'] === "002904") {
                         //Reservation Failed, Repeated a Reservation
-                        popupMsg('reservePopupMsg', 'reserveRepeatMsg', '預約失敗，重複預約', '', true, '確定', '', '');
+                        popupMsg('reservePopupMsg', 'reserveRepeatMsg', '預約失敗，重複預約', '', true, '確定', '#', '#');
                     }
 
                     if (page == 'pageTwo') {
-                        $('#quickReserveDateSelect div').find('.ui-bar').removeClass('ui-btn-active');
-                        $('#quickReserve').removeClass('btn-benq');
-                        $('#quickReserve').addClass('btn-benq-disable');
+                        $('#quickReserve').removeClass('disable');
                         $('#quickReserveMsgArea h2').html('');
                         $('#quickReserveMsgArea').addClass('disable');
                         $('#quickReserveCancel').addClass('disable');
@@ -299,12 +303,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var self = this;
                 var queryData = '<LayoutHeader><ReserveDate>' + date + '</ReserveDate><Site>' + site + '</Site><Floor>' + floor + '</Floor><People>' + people + '</People><ReserveTime>' + time + '</ReserveTime></LayoutHeader>';
 
+
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "1") {
                         //Successful
                         quickRserveCallBackData = data['Content'];
-                        //to do
-                        //return array???
                         $('#quickReserveMsgArea h2').html(quickRserveCallBackData[0].MeetingRoomName + '會議室可使用');
                         $('#quickReserveMsgArea').removeClass('disable');
                         $('#quickReserveCancel').removeClass('disable');
@@ -313,13 +316,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     } else if (data['ResultCode'] === "002907") {
                         //There are no meeting rooms
-                        //to do 
-                        //check this status???
                         $('#quickReserveMsgArea h2').html('沒有符合偏好的會議室');
                         $('#quickReserveMsgArea').removeClass('disable');
                         $('#quickReserve').removeClass('btn-benq');
                         $('#quickReserve').addClass('btn-benq-disable');
-
                     }
                 };
 
@@ -428,15 +428,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
             });
 
-            $('body').on('click', 'div[for=myReserveMsg] #confirm', function() {
-                var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
-            });
-
-            $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
-                $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
-                $('div[traceid=' + traceID + '] span').text('');
-            });
-
             $("#reserveBtn").on('click', function() {
                 var timeID = '';
                 for (var item in timeClick) {
@@ -459,15 +450,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $(this).addClass('ui-btn-active');
                 quickReserveClickDateID = $(this).parent().attr('id');
 
-                if ($('#quickReserveDateSelect div').find('.ui-bar').hasClass('ui-btn-active')) {
-                    $('#quickReserve').removeClass('btn-benq-disable');
-                    $('#quickReserve').addClass('btn-benq');
-                }
                 $('#quickReserveMsgArea').addClass('disable');
+                $('#quickReserveCancel').addClass('disable');
+                $('#quickReserveConfirm').addClass('disable');
+                $('#quickReserve').removeClass('disable');
+                $('#quickReserve').removeClass('btn-benq-disable');
+                $('#quickReserve').addClass('btn-benq');
             });
 
             $('#quickReserve').on('click', function() {
                 if (!$(this).hasClass('btn-benq-disable')) {
+                    if (quickReserveSelectedValue === '') {
+                        quickReserveSelectedValue = $('#defaultListItem').val();
+                    }
                     var arrSelectedValue = quickReserveSelectedValue.split('&');
                     var quickReserveDay = quickReserveClickDateID.replaceAll('two', '');
                     var quickRserveTime = arrSelectedValue[3];
@@ -508,10 +503,32 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#quickReserve').removeClass('disable');
             });
 
-            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm', function() {
+            $('body').on('click', 'div[for=myReserveMsg] #confirm', function() {
+                var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+            });
 
+            $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
+                $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
+                $('div[traceid=' + traceID + '] span').text('');
+                $('div[for=cancelSuccessMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm', function() {
                 $('div[for=reserveSuccessMsg]').popup('close');
             });
+
+            $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
+                $('div[for=reserveFailMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=reserveRepeatMsg] #confirm', function() {
+                $('div[for=reserveRepeatMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=cancelFailMsg] #confirm', function() {
+                $('div[for=cancelFailMsg]').popup('close');
+            });
+
         }
     });
 });

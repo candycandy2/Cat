@@ -28,6 +28,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             /********************************** page event *************************************/
             $('#viewNewSetting').one('pagebeforeshow', function(event, ui) {
+                siteIDforSetting = meetingRoomTreeData._root.children[0].data;
                 siteCategoryIDforSetting = dictSiteCategory[meetingRoomTreeData._root.children[0].data];
                 getFloorData('0');
             });
