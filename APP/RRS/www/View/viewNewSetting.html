@@ -32,11 +32,11 @@
         <h3 style="padding-left:5%;">人數</h3>
         <div class="ui-margin-10">
             <div id="newSettingPeople" data-role="controlgroup" data-type="horizontal" class="ui-radio-30">
-                <input type="radio" name="num" id="num-1" value="none" checked="checked">
+                <input type="radio" name="num" id="num-1" value="0" checked="checked">
                 <label for="num-1">不限</label>
-                <input type="radio" name="num" id="num-2" value="2">
+                <input type="radio" name="num" id="num-2" value="1">
                 <label for="num-2">2-8人</label>
-                <input type="radio" name="num" id="num-3" value="8">
+                <input type="radio" name="num" id="num-3" value="2">
                 <label for="num-3">8人以上</label>
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="ui-margin-10">
             <div id="newSettingTime" data-role="controlgroup" data-type="horizontal" class="ui-radio-50">
                 <input type="radio" name="setTime" id="setTime1" value="none" checked="checked">
-                <label for="setTime1">不限</label>
+                <label for="setTime1">現在起一小時</label>
                 <input type="radio" name="setTime" id="setTime2" value="setTime">
                 <label for="setTime2">指定時段</label>
             </div>
@@ -67,7 +67,7 @@
             <p id="msgContent"></p>
             <p>
                 <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-inline" id="confirm">確定</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
             </p>
         </div>
     </div>
