@@ -137,7 +137,8 @@ gulp.task('install', shell.task([
     'cordova plugin add cordova-plugin-whitelist'
 ]));
 
-gulp.task('jenkinsinstall', shell.task(['cordova platform add ios',
+gulp.task('jenkinsinstall', shell.task([
+    'cordova platform add ios',
     'cordova platform add android',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
