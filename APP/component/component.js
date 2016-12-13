@@ -68,6 +68,10 @@ var app = {
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
+
+        if (device.platform === "iOS") {
+            $.mobile.hashListeningEnabled = false;
+        }
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
@@ -227,7 +231,9 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function(){
                 if (appKey === qplayAppKey) {
-                    openAPP("https://qplaytest.benq.com/InstallQPlay/");
+                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'https://qplaytest.benq.com/InstallQPlay/\', \'_system\');"></a>');
+                    document.getElementById("updateLink").click();
+                    $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
                     openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKeyOriginal);

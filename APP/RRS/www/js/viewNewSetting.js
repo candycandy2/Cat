@@ -1,8 +1,9 @@
 $(document).one('pagecreate', '#viewNewSetting', function() {
 
     var seqClick = [];
-    var bTime = '';
+    var siteIDforSetting = '';
     var siteCategoryIDforSetting = '';
+    var selectTime = {};
 
     $('#viewNewSetting').pagecontainer({
         create: function(event, ui) {
@@ -25,32 +26,6 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 $('#floorDefault div').addClass('ui-btn-active');
             }
 
-            function getTimeID(sTime, eTime) {
-                var arrSelectTime = [];
-                var strTime = sTime;
-
-                do {
-                    arrSelectTime.push(strTime);
-                    strTime = addThirtyMins(strTime);
-                } while (strTime != eTime);
-
-                var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryIDforSetting);
-                filterTimeBlock.sort(function(a, b) {
-                    return new Date(new Date().toDateString() + ' ' + a.time) - new Date(new Date().toDateString() + ' ' + b.time);
-                });
-
-                var strTimeID = '';
-                for (var item in filterTimeBlock) {
-                    $.each(arrSelectTime, function(index, value) {
-                        if (value == filterTimeBlock[item].time) {
-                            strTimeID += filterTimeBlock[item].timeID + ',';
-                        }
-                    });
-                }
-
-                return strTimeID;
-            }
-
             /********************************** page event *************************************/
             $('#viewNewSetting').one('pagebeforeshow', function(event, ui) {
                 siteCategoryIDforSetting = dictSiteCategory[meetingRoomTreeData._root.children[0].data];
@@ -67,6 +42,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 seqClick = [];
                 $('#floorDefault div').removeClass('ui-btn-active');
                 $('#floorDefault').nextAll().remove();
+                siteIDforSetting = $(this).val();
                 siteCategoryIDforSetting = dictSiteCategory[$(this).val()];
                 getFloorData(this.selectedIndex);
             });
@@ -80,7 +56,14 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     bTime = passed.value;
                     var eTime = addThirtyMins(bTime);
                     $('label[for^=setTime2]').text(bTime + '-' + eTime);
+                    selectTime['bTime'] = bTime;
+                    selectTime['eTime'] = eTime;
                 }
+                // else if (passed.method == 'close') {
+                //     $("input[id=setTime1]").trigger('click');
+                //     $("label[for=setTime1]").addClass('ui-btn-active');
+                //     $("label[for=setTime2]").removeClass('ui-btn-active');
+                // }
             });
 
             // click floor button
@@ -123,25 +106,35 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 if (validationResult[0]) {
                     var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
 
-                    //to do
-                    var sTime = "09:00";
-                    var eTime = "10:30";
-
-                    var timeID = getTimeID(sTime, eTime);
                     var obj = new Object();
                     obj.id = (roomSettingdata == null) ? '1' : roomSettingdata['content'].length + 1;
                     obj.title = $('#newSettingTitle').val();
                     obj.site = $('#newSettingSite').val();
                     obj.siteName = $('#newSettingSite-button span').text();
                     obj.people = $("#newSettingPeople :radio:checked").val();
-                    obj.time = sTime + '~' + eTime;
-                    obj.timeID = timeID;
+
+                    if ($("#newSettingTime :radio:checked").val() === 'setTime') {
+                        obj.time = selectTime['bTime'] + '~' + selectTime['eTime'];
+                        obj.timeID = getTimeID(selectTime['bTime'], selectTime['eTime'], siteCategoryIDforSetting);
+                    } else {
+                        obj.time = 'none'
+                        obj.timeID = 'none';
+                    }
 
                     var strFloor = '';
                     $.each(seqClick, function(index, value) {
                         strFloor += value + ',';
                     });
-                    obj.floor = (strFloor == '') ? 'none' : strFloor;
+                    obj.floorName = strFloor;
+                    if (strFloor == '') {
+                        var index = findIndex(meetingRoomTreeData._root.children, siteIDforSetting);
+                        $.each(meetingRoomTreeData._root.children[index].children, function(index, value) {
+                            strFloor += value.data + ',';
+                        });
+                        obj.floorName = 'none';
+                    }
+                    obj.floor = strFloor.replaceAll('F', '');
+
 
                     var jsonData = {};
                     if (roomSettingdata == null) {
@@ -156,10 +149,16 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     localStorage.setItem('roomSettingData', JSON.stringify(jsonData));
 
                     $.mobile.changePage('#viewSettingList');
-                    
+
                 } else {
-                    popupMsg('newSettingPpupMsg', validationResult[1], '', true, '確定', '#', '#');
+                    popupMsg('newSettingPpupMsg', 'validationMsg', validationResult[1], '', true, '確定', '#', '#');
                 }
+
+            });
+
+            $('body').on('click', 'div[for=validationMsg] #confirm', function() {
+
+                $('div[for=validationMsg]').popup('close');
 
             });
         }
