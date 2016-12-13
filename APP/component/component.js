@@ -23,7 +23,7 @@ var loginData = {
     emp_no:              "",
     loginid:             "",
     messagecontent:      null,
-    msgDateFrom:         null,
+    msgDateFrom:         null,  //timestamp, latest time of update message from server
     doLoginDataCallBack: false,
     openMessage:         false
 };
@@ -94,13 +94,14 @@ var app = {
 
         if (loginData["openMessage"] === false) {
 
+            //Before open Message Detail Data, update Message List
+            var messageList = new QueryMessageList();
+            callGetMessageList = true;
+
+            //remember to open Message Detail Data
             loginData["openMessage"] = true;
             window.localStorage.setItem("openMessage", true);
             window.localStorage.setItem("messageRowId", messageRowId);
-
-            $.mobile.changePage("#viewWebNews2-3-1");
-        } else {
-            $.mobile.changePage("#viewWebNews2-3-1");
         }
     },
     onBackgoundNotification: function(data) {
@@ -416,7 +417,12 @@ function processStorageData(action, data) {
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
             window.localStorage.setItem(key, value);
-            loginData[key] = value;
+        });
+
+        $.map(loginData, function(value, key) {
+            if (window.localStorage.getItem(key) !== null) {
+                loginData[key] = window.localStorage.getItem(key);
+            }
         });
 
         if (appKey === qplayAppKey) {
@@ -487,9 +493,11 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //All APP
         "1",
         //QPlay
-        "000913", "000915",
+        "000910", "000913", "000915",
         //Yellowpage
-        "001901", "001902", "001903", "001904", "001905", "001906"
+        "001901", "001902", "001903", "001904", "001905", "001906",
+        //RRS
+        "002901", "002902", "002903", "002904", "002905", "002906", "002907"
     ];
 
     resultCode = resultCode.toString();

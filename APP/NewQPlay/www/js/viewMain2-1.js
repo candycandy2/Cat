@@ -86,6 +86,8 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                     } else {
 
                     }
+
+                    loadingMask("hide");
                 }; 
 
                 this.failCallback = function(data) {};
@@ -111,9 +113,10 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         appApiPath = "qplayApi";
                         qplayAppKey = "appqplay";
 
-                        //logout can not clear messagecontent / pushToken
+                        //logout can not clear messagecontent / pushToken / msgDateFrom
                         var messagecontent = window.localStorage.getItem("messagecontent");
                         var pushToken = window.localStorage.getItem("pushToken");
+                        var msgDateFrom = window.localStorage.getItem("msgDateFrom");
 
                         loginData = {
                             versionName:         "",
@@ -137,6 +140,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         window.localStorage.setItem("messagecontent", messagecontent);
                         window.localStorage.setItem("pushToken", pushToken);
+                        window.localStorage.setItem("msgDateFrom", msgDateFrom);
 
                         app.initialize();
                     }
@@ -151,26 +155,26 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
             /********************************** page event *************************************/
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
-                if (loginData["msgDateFrom"] === true) {
-                    var messageList = new QueryMessageList();
-                }
-                var appList = new QueryAppList();
+
             });
 
             $("#viewMain2-1").on("pageshow", function(event, ui) {
+                loadingMask("show");
+                var appList = new QueryAppList();
+
                 $('#logoutConfirm').popup('close');
             });
 
             /********************************** dom event *************************************/
-            $("#logout").on("click", function(){
+            $("#logout").on("click", function() {
                 $('#logoutConfirm').popup('open');
             });
 
-            $("#logoutConfirm #cancel").on("click", function(){
+            $("#logoutConfirm #cancel").on("click", function() {
                 $('#logoutConfirm').popup('close');
             });
 
-            $("#logoutConfirm #confirm").on("click", function(){
+            $("#logoutConfirm #confirm").on("click", function() {
 
                 $('#logoutConfirm').popup('close');
                 loadingMask("show");
@@ -178,21 +182,10 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 var logout = new doLogOut();
             });
 
-            $("#newseventspage").on("click", function(){
-                /*
-                if (loginData["msgDateFrom"] === null) {
-                    //var messageList = new QueryMessageList();
-                    $('#selectMsgDateFrom').popup('open');
-                }
-                */
+            $("#newseventspage").on("click", function() {
                 $.mobile.changePage('#viewNewsEvents2-3');
             });
-            /*
-            $("#selectMsgDateFrom").on("click", function(){
-                msgDateFromType = $('input[name=selectDateFrom]:checked').val();
-                var messageList = new QueryMessageList();
-            });
-            */
+
         }
     });
 
