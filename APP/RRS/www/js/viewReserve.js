@@ -240,15 +240,15 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId);
                         }
-                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '預約成功', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '預約成功', '', true, '確定', '', '');
 
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
-                        popupMsg('reservePopupMsg', 'reserveFailMsg', '預約失敗，有人預約', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'reserveFailMsg', '預約失敗，有人預約', '', true, '確定', '', '');
 
                     } else if (data['ResultCode'] === "002904") {
                         //Reservation Failed, Repeated a Reservation
-                        popupMsg('reservePopupMsg', 'reserveRepeatMsg', '預約失敗，重複預約', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'reserveRepeatMsg', '預約失敗，重複預約', '', true, '確定', '', '');
                     }
 
                     if (page == 'pageTwo') {
@@ -278,11 +278,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
-                        popupMsg('reservePopupMsg', 'cancelSuccessMsg', '取消預約成功', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'cancelSuccessMsg', '取消預約成功', '', true, '確定', '', '');
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('reservePopupMsg', 'cancelFailMsg', '取消預約失敗', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'cancelFailMsg', '取消預約失敗', '', true, '確定', '', '');
                     }
                 };
 
@@ -509,6 +509,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', 'div[for=reserveSuccessMsg] #confirm', function() {
+
                 $('div[for=reserveSuccessMsg]').popup('close');
             });
         }
