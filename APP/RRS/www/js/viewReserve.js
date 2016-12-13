@@ -21,8 +21,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
             function getFloorData(siteIndex) {
                 htmlContent = '';
                 siteIndex = siteIndex == '' ? '0' : siteIndex;
-                $('#reserveFloor').find('option').remove();
                 var originItemForFloor = ['FloorId', 'defaultFloorList', 'FloorName'];
+                $('#reserveFloor').find('option').remove();
 
                 for (var i = 0, item; item = meetingRoomTreeData._root.children[siteIndex].children[i]; i++) {
                     htmlContent += '<option id=' + item.data + ' value=' + item.data + '>' + item.data + '</option>';
@@ -51,42 +51,69 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveRoom a:first-child').parent().data("lastClicked", $('#reserveRoom a:first-child').attr('id'));
             }
 
-            function getReserveData(roomId, date, data, type) {
+            function settingList() {
+                htmlContent = '';
+                var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
+                $('option[id^=setList-]').remove();
 
-                arrReserve = [];
-
-                // if (data.length === 0) {
-                //     var newReserve = new reserveObj(roomId, date);
-                //     arrReserve.push(newReserve);
-
-                // } else {
-                for (var i = 0, item; item = data[i]; i++) {
-                    var newReserve = new reserveObj(roomId, date);
-                    newReserve.addDetail('traceID', item.ReserveTraceID);
-                    newReserve.addDetail('eName', item.EMail.substring(0, item.EMail.indexOf('@')));
-                    newReserve.addDetail('bTime', item.BTime);
-                    newReserve.addDetail('ext', item.Ext_No);
-                    newReserve.addDetail('email', item.EMail);
-
-                    arrReserve.push(newReserve);
-                }
-                // }
-
-                if (type === 'dataNotExist') {
-                    // reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
-                    // reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
-                    //     return item.roomId != roomId && item.date != date;
-                    // });
-                    // localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
-
-                    //save to local data
-                    var newReserveLocalDataObj = new reserveLocalDataObj(roomId, date, data);
-                    arrClickReserve.push(newReserveLocalDataObj);
-                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(arrClickReserve));
+                if (roomSettingdata != null) {
+                    for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
+                        var strValue = item.site + '&' + item.floor + '&' + item.people + '&' + item.timeID
+                        htmlContent += '<option id=setList-' + item.id + ' value=' + strValue + '>' + item.title + '</option>';
+                    }
                 }
 
-                getMettingStatus();
+                $('#defaultListItem').after(htmlContent);
 
+                var strDefaultSite = meetingRoomTreeData._root.children[0].data;
+                var strDefaultFloor = '';
+                $.each(meetingRoomTreeData._root.children[0].children, function(index, value) {
+                    strDefaultFloor += value.data + ',';
+                });
+                $('#defaultListItem').val(strDefaultSite + '&' + strDefaultFloor + '&0' + '&none');
+            }
+
+            function dateList() {
+                var addOneDate = new Date();
+                var htmlContentPageOne = '';
+                var htmlContentPageTwo = '';
+                var arrClass = ['a', 'b', 'c', 'd', 'e'];
+
+                var objDate = new Object()
+                objDate.date = '';
+                objDate.daysOfWeek = '';
+
+                var j = 0;
+                var originItemForPageOne = ['reserveDefault', 'ReserveDay', 'ReserveDict', 'disable'];
+                var originItemForPageTwo = ['quickReserveDefault', 'quickReserveDay', 'quickReserveDict', 'ui-block-a', 'disable'];
+
+                for (var i = 0; i < 14; i++) {
+                    if (i != 0) {
+                        addOneDate.addDays(1);
+                    }
+                    if (addOneDate.getDay() > 0 && addOneDate.getDay() < 6) {
+
+                        var classId = arrClass[j % 5];
+                        objDate.id = addOneDate.yyyymmdd('');
+                        objDate.date = addOneDate.mmdd('/');
+                        objDate.daysOfWeek = dictDayOfWeek[addOneDate.getDay()];
+
+                        var replaceItemForPageOne = ['one' + objDate.id, objDate.date, objDate.daysOfWeek, ''];
+                        var replaceItemForPageTwo = ['two' + objDate.id, objDate.date, objDate.daysOfWeek, 'ui-block-' + classId, ''];
+
+                        htmlContentPageOne
+                            += replaceStr($('#reserveDefault').get(0).outerHTML, originItemForPageOne, replaceItemForPageOne);
+                        htmlContentPageTwo
+                            += replaceStr($('#quickReserveDefault').get(0).outerHTML, originItemForPageTwo, replaceItemForPageTwo);
+                        j++;
+                    }
+                }
+
+                $('#reserveDefault').before(htmlContentPageOne);
+                $('#quickReserveDefault').before(htmlContentPageTwo);
+                clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
+                $('#scrollDate a:first-child').addClass('hover');
+                $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
             }
 
             function getMettingStatus() {
@@ -136,76 +163,51 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveDateSelect > div').append(htmlContent);
             }
 
-            function settingList() {
-                htmlContent = '';
-                var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
+            function getReserveData(roomId, date, data, type) {
 
-                if (roomSettingdata != null) {
-                    for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
-                        var strValue = item.site + '&' + item.floor + '&' + item.people + '&' + item.timeID
-                        htmlContent += '<option id=' + item.id + ' value=' + strValue + '>' + item.title + '</option>';
-                    }
+                arrReserve = [];
+                for (var i = 0, item; item = data[i]; i++) {
+                    var newReserve = new reserveObj(roomId, date);
+                    newReserve.addDetail('traceID', item.ReserveTraceID);
+                    newReserve.addDetail('eName', item.EMail.substring(0, item.EMail.indexOf('@')));
+                    newReserve.addDetail('bTime', item.BTime);
+                    newReserve.addDetail('ext', item.Ext_No);
+                    newReserve.addDetail('email', item.EMail);
+                    arrReserve.push(newReserve);
                 }
 
-                $('#defaultListItem').after(htmlContent);
-            }
-
-            function dateList() {
-                var addOneDate = new Date();
-                var htmlContentPageOne = '';
-                var htmlContentPageTwo = '';
-                var arrClass = ['a', 'b', 'c', 'd', 'e'];
-
-                var objDate = new Object()
-                objDate.date = '';
-                objDate.daysOfWeek = '';
-
-                var j = 0;
-                var originItemForPageOne = ['reserveDefault', 'ReserveDay', 'ReserveDict', 'disable'];
-                var originItemForPageTwo = ['quickReserveDefault', 'quickReserveDay', 'quickReserveDict', 'ui-block-a', 'disable'];
-
-                for (var i = 0; i < 14; i++) {
-                    if (i != 0) {
-                        addOneDate.addDays(1);
+                if (type === 'dataNotExist') {
+                    if (arrClickReserve.length != 0) {
+                        arrClickReserve = arrClickReserve.filter(function(item) {
+                            if (item.roomId == roomId && item.date == date) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        });
                     }
-                    if (addOneDate.getDay() > 0 && addOneDate.getDay() < 6) {
 
-                        var classId = arrClass[j % 5];
-                        objDate.id = addOneDate.yyyymmdd('');
-                        objDate.date = addOneDate.mmdd('/');
-                        objDate.daysOfWeek = dictDayOfWeek[addOneDate.getDay()];
-
-                        var replaceItemForPageOne = ['one' + objDate.id, objDate.date, objDate.daysOfWeek, ''];
-                        var replaceItemForPageTwo = ['two' + objDate.id, objDate.date, objDate.daysOfWeek, 'ui-block-' + classId, ''];
-
-                        htmlContentPageOne
-                            += replaceStr($('#reserveDefault').get(0).outerHTML, originItemForPageOne, replaceItemForPageOne);
-                        htmlContentPageTwo
-                            += replaceStr($('#quickReserveDefault').get(0).outerHTML, originItemForPageTwo, replaceItemForPageTwo);
-                        j++;
-                    }
+                    //save to local data
+                    var newReserveLocalDataObj = new reserveLocalDataObj(roomId, date, data);
+                    arrClickReserve.push(newReserveLocalDataObj);
+                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(arrClickReserve));
                 }
 
-                $('#reserveDefault').before(htmlContentPageOne);
-                $('#quickReserveDefault').before(htmlContentPageTwo);
-                clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
-                $('#scrollDate a:first-child').addClass('hover');
-                $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
+                getMettingStatus();
+
             }
 
             function getAPIQueryReserveDetail(roomId, date) {
-                var dataExist = false;
                 //local data exist
-                // reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
-
-                // for (var item in reserveDetailLocalData) {
-                //     var obj = reserveDetailLocalData[item];
-                //     if ((obj.roomId === roomId && obj.date === date) && !checkDataExpired(obj.lastUpdateTime, 3, 'mm')) {
-
-                //         getReserveData(roomId, date, obj.data, 'dataExist');
-                //         dataExist = true;
-                //     }
-                // }
+                var dataExist = false;
+                reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
+                for (var item in reserveDetailLocalData) {
+                    var obj = reserveDetailLocalData[item];
+                    if ((obj.roomId === roomId && obj.date === date) && !checkDataExpired(obj.lastUpdateTime, 1, 'mm')) {
+                        getReserveData(roomId, date, obj.data, 'dataExist');
+                        dataExist = true;
+                    }
+                }
 
                 if (!dataExist) {
                     var self = this;
@@ -236,26 +238,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     if (data['ResultCode'] === "002902") {
                         //Reservation Successful
                         if (page == 'pageOne') {
-
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId);
-
-                            //no return traceid
-
-                            // for (var item in timeClick) {
-                            //     $('#' + timeClick[item]).removeClass('reserveSelectIcon');
-                            //     $('#' + timeClick[item]).removeClass('reserveSelect');
-                            //     $('#' + timeClick[item]).addClass('ui-color-myreserve');
-                            //     $('#' + timeClick[item]).attr('ename', );
-                            //     $('#' + timeClick[item]).attr('traceid', );
-                            // }
-
-                            //to do 
-                            //add name to span
-                            //add traceid and email and ext info
-                            // ename="Kevin.YW.Liu" msg="20161212,B22,10:30-11:00,Kevin.YW.Liu" 
-                            // ext="8800-7056" email="Kevin.YW.Liu@BenQ.com" traceid="2932172"
-
-
                         }
                         popupMsg('reservePopupMsg', 'reserveSuccessMsg', '預約成功', '', true, '確定', '#', '#');
 
@@ -272,6 +255,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         $('#quickReserveDateSelect div').find('.ui-bar').removeClass('ui-btn-active');
                         $('#quickReserve').removeClass('btn-benq');
                         $('#quickReserve').addClass('btn-benq-disable');
+                        $('#quickReserveMsgArea h2').html('');
+                        $('#quickReserveMsgArea').addClass('disable');
+                        $('#quickReserveCancel').addClass('disable');
+                        $('#quickReserveConfirm').addClass('disable');
                     }
                 };
 
@@ -316,7 +303,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     if (data['ResultCode'] === "1") {
                         //Successful
                         quickRserveCallBackData = data['Content'];
-                        $('#quickReserveMsgArea h2').html(data['Content']['”MeetingRoomName”'] + '會議室可使用');
+                        //to do
+                        //return array???
+                        $('#quickReserveMsgArea h2').html(quickRserveCallBackData[0].MeetingRoomName + '會議室可使用');
                         $('#quickReserveMsgArea').removeClass('disable');
                         $('#quickReserveCancel').removeClass('disable');
                         $('#quickReserveConfirm').removeClass('disable');
@@ -324,6 +313,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     } else if (data['ResultCode'] === "002907") {
                         //There are no meeting rooms
+                        //to do 
+                        //check this status???
                         $('#quickReserveMsgArea h2').html('沒有符合偏好的會議室');
                         $('#quickReserveMsgArea').removeClass('disable');
                         $('#quickReserve').removeClass('btn-benq');
@@ -343,23 +334,18 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             /********************************** page event *************************************/
 
-            //to do 
-            //use on or one
             $('#viewReserve').one('pagebeforeshow', function(event, ui) {
-
+                //just first loading
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 siteCategoryID = dictSiteCategory[meetingRoomTreeData._root.children[0].data];
                 getFloorData('0');
                 dateList();
-
             });
 
             $('#viewReserve').on('pagebeforeshow', function(event, ui) {
-
                 settingList();
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId);
-
             });
 
             /********************************** dom event *************************************/
@@ -379,7 +365,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 clickSiteId = this.selectedIndex;
                 getFloorData(clickSiteId);
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId);
-
             });
 
             $('#reserveFloor').change(function() {
@@ -448,10 +433,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
-
                 $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
                 $('div[traceid=' + traceID + '] span').text('');
-
             });
 
             $("#reserveBtn").on('click', function() {
@@ -487,22 +470,46 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if (!$(this).hasClass('btn-benq-disable')) {
                     var arrSelectedValue = quickReserveSelectedValue.split('&');
                     var quickReserveDay = quickReserveClickDateID.replaceAll('two', '');
-
-                    //to do
-                    //default item no value 
-                    //<option id="1" value="1&amp;none&amp;none&amp;6,7,8,">111</option>
-                    //check api, site 是否可不限制
+                    var quickRserveTime = arrSelectedValue[3];
+                    if (quickRserveTime === 'none') {
+                        var nowTime = new Date();
+                        var nowTimeHour = nowTime.getHours();
+                        var nowTimeMins = nowTime.getMinutes();
+                        if (nowTimeMins >= 30) {
+                            nowTimeHour += 1;
+                            nowTimeMins = 0;
+                        } else {
+                            nowTimeMins = 30;
+                        }
+                        nowTime.setHours(nowTimeHour);
+                        nowTime.setMinutes(nowTimeMins);
+                        var sTime = nowTime.hhmm();
+                        var eTime = addThirtyMins(addThirtyMins(sTime));
+                        quickRserveTime = getTimeID(sTime, eTime, dictSiteCategory[arrSelectedValue[0]]);
+                    }
 
                     // getAPIQuickReserve(date, site, floor, people, time)
-                    var doAPIQuickReserve = new getAPIQuickReserve(quickReserveDay, arrSelectedValue[0], arrSelectedValue[1].replaceAll('F', '').replace(/,\s*$/, ""), arrSelectedValue[2], arrSelectedValue[3]);
+                    var doAPIQuickReserve = new getAPIQuickReserve(quickReserveDay, arrSelectedValue[0], arrSelectedValue[1].replace(/,\s*$/, ""), arrSelectedValue[2], quickRserveTime.replace(/,\s*$/, ""));
                 }
             });
 
             $("#quickReserveConfirm").on('click', function() {
-                clickRomeId = quickRserveCallBackData['“MeetingRoomID”'];
+                clickRomeId = quickRserveCallBackData[0].MeetingRoomID;
                 clickDateId = quickReserveClickDateID.replaceAll('two', '');
-                timeID = quickRserveCallBackData['”ReserveTimeID”'];
+                timeID = quickRserveCallBackData[0].ReserveTimeID;
                 var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageTwo', clickRomeId, clickDateId, timeID);
+            });
+
+            $("#quickReserveCancel").on('click', function() {
+                $('#quickReserveMsgArea h2').html('');
+                $('#quickReserveMsgArea').addClass('disable');
+                $('#quickReserveCancel').addClass('disable');
+                $('#quickReserveConfirm').addClass('disable');
+                $('#quickReserve').removeClass('disable');
+            });
+
+            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm', function() {
+                $('div[for=reserveSuccessMsg]').popup('close');
             });
         }
     });

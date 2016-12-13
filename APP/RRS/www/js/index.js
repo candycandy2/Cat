@@ -37,7 +37,7 @@ window.initialSuccess = function() {
     //get meetingroom last update time
     var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
 
-    if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 3, 'mm')) {
+    if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
         var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
         var doAPIListAllTime = new getAPIListAllTime();
     } else {
@@ -133,6 +133,29 @@ function getAPIListAllTime() {
     }();
 }
 
+function getTimeID(sTime, eTime, siteCategoryID) {
+    var arrSelectTime = [];
+    var strTime = sTime;
+
+    do {
+        arrSelectTime.push(strTime);
+        strTime = addThirtyMins(strTime);
+    } while (strTime != eTime);
+
+    var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
+
+    var strTimeID = '';
+    for (var item in filterTimeBlock) {
+        $.each(arrSelectTime, function(index, value) {
+            if (value == filterTimeBlock[item].time) {
+                strTimeID += filterTimeBlock[item].timeID + ',';
+            }
+        });
+    }
+
+    return strTimeID;
+}
+
 function createReserveDetailLocalDate() {
     //save to local data
     localStorage.removeItem('reserveDetailLocalData');
@@ -154,11 +177,6 @@ function getSiteData() {
 }
 
 function ConverToTree(data) {
-
-    // var siteData = uniqueData(data, 'MeetingRoomSite');
-    // siteData.sort();
-
-    // for (var i in siteData) {
 
     for (var key in dictSite) {
 

@@ -18,9 +18,9 @@ $(document).one('pagecreate', '#viewSettingList', function() {
 
                 if (roomSettingdata != null) {
                     for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
-                        var strPeople = (item.people == 'none') ? '不限' : (item.people == '2') ? '2~8人' : '8人以上';
+                        var strPeople = (item.people == '0') ? '不限' : (item.people == '1') ? '2~8人' : '8人以上';
                         var strTime = (item.time == 'none') ? "現在起一小時" : item.time;
-                        var strFloor = (item.floor == 'none') ? '不限' : item.floor;
+                        var strFloor = (item.floorName == 'none') ? '不限' : item.floorName;
                         var replaceItem = ['set-' + item.id, item.id, item.title, item.siteName, strPeople, strTime, strFloor, ''];
                         htmlContent += replaceStr($('#settingList').get(0).outerHTML, originItem, replaceItem);
                     }
