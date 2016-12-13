@@ -606,18 +606,25 @@ function readConfig() {
 
         //If pushToken exist in Local Storage, don't need to get new one.
         if (window.localStorage.getItem("pushToken") === null) {
-            //初始化JPush
-            window.plugins.QPushPlugin.init();
 
-            window.checkTimer = setInterval(function() {
-                window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
-            }, 1000);
+            //If simulator, can't get push token
+            if (device.isVirtual) {
+                app.onGetRegistradionID(device.uuid);
+            } else {
+                //初始化JPush
+                window.plugins.QPushPlugin.init();
 
-            window.stopCheck = function() {
-                if (window.checkTimer != null) {
-                    clearInterval(window.checkTimer);
-                }
-            };
+                window.checkTimer = setInterval(function() {
+                    window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                }, 1000);
+
+                window.stopCheck = function() {
+                    if (window.checkTimer != null) {
+                        clearInterval(window.checkTimer);
+                    }
+                };
+            }
+
         } else {
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = window.localStorage.getItem("pushToken");
