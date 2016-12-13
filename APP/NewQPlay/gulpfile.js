@@ -149,7 +149,8 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add cordova-plugin-appversion',
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-    'cordova plugin add cordova-plugin-whitelist'
+    'cordova plugin add cordova-plugin-whitelist',
+    'cordova plugin add cordova-plugin-inappbrowser'
 ]));
 
 gulp.task('patch', function() {
