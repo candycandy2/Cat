@@ -10,6 +10,7 @@ var employeeData = {};
 var employeeSelectedIndex;
 var phonebookData = {};
 var prevPageID;
+var doClearInputData = false;
 
 window.initialSuccess = function() {
 
@@ -40,6 +41,7 @@ function onBackKeyDown() {
 
     } else if (activePageID === "viewQueryResult") {
 
+        doClearInputData = false;
         $.mobile.changePage('#viewDataInput');
 
     } else if (activePageID === "viewDetailInfo") {
@@ -52,15 +54,16 @@ function onBackKeyDown() {
 
     } else if (activePageID === "viewPhonebook") {
 
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            //If User is doing edit phonebook, cancel edit mode.
-            if ($("#phonebookEditBtn").css("display") === "block") {
-                cancelEditMode();
-            } else {
-                $.mobile.changePage('#viewDataInput');
+        //If User is doing edit phonebook, cancel edit mode.
+        if ($("#phonebookEditBtn").css("display") === "block") {
+            cancelEditMode();
+        } else if (checkPopupShown()) {
+            if (popupID === "phonebookDelectAlert" || popupID === "phonebookDelectConfirm") {
+                $('#' + popupID).popup('close');
+                $("#phonebookEditBtn").show();
             }
+        } else {
+            $.mobile.changePage('#viewDataInput');
         }
 
     }

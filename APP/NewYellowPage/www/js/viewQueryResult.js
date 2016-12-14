@@ -66,7 +66,8 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         });
 
                         //data length over 5, show error msg
-                        if (resultcode === "001906") {
+                        //if (resultcode === "001906") {
+                        if (dataContent.length === 5) {
                             $("#errorMsg").show();
                             $("#errorMsg2").hide();
                         } else if (resultcode === "001901") {
@@ -97,6 +98,15 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 if (prevPageID !== null) {
                     loadingMask("show");
                     var employeeData = new QueryEmployeeData();
+                }
+            });
+
+            /********************************** dom event *************************************/
+            $("a[id^='button']").on("click", function(){
+                if ($(this).prop("id") === "buttonBack") {
+                    doClearInputData = false;
+                } else if ($(this).prop("id") === "buttonHome") {
+                    doClearInputData = true;
                 }
             });
         }

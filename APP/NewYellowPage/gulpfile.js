@@ -89,7 +89,6 @@ gulp.task('config', function(){
 //ex: gulp install --env test
 gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-device',
-  //'cordova plugin remove cordova-plugin-splashscreen',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
@@ -100,7 +99,6 @@ gulp.task('install', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  //'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate,
@@ -109,19 +107,9 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-/*  'cordova plugin remove cordova-plugin-device',
-  //'cordova plugin remove cordova-plugin-splashscreen',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
-  'cordova platform rm ios',
-  'cordova platform rm android',
-*/  'cordova platform add ios',
+  'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  //'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + appNameDecorate,

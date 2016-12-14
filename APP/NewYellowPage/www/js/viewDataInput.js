@@ -51,16 +51,25 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 }
             }
 
-            /********************************** page event *************************************/
-            $("#viewDataInput").one("pagebeforeshow", function(event, ui) {});
-
-            /********************************** dom event *************************************/
-            $("#cleanQuery").on("click", function() {
+            function clearInputData() {
                 var company = $("select#Company"); 
                 company[0].selectedIndex = 0; 
                 company.selectmenu("refresh");
 
                 $("#viewDataInput input[type=text]").val("");
+            }
+
+            /********************************** page event *************************************/
+            $("#viewDataInput").on("pagebeforeshow", function(event, ui) {
+                if (doClearInputData) {
+                    clearInputData();
+                    doClearInputData = true;
+                }
+            });
+
+            /********************************** dom event *************************************/
+            $("#cleanQuery").on("click", function() {
+                clearInputData();
             });
 
             $("#callQuery").on("click", function() {

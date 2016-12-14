@@ -118,12 +118,12 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-qlogin',
     'cordova plugin remove cordova-plugin-qpush',
     'cordova plugin remove cordova-plugin-device',
-    //'cordova plugin remove cordova-plugin-splashscreen',
     'cordova plugin remove cordova-plugin-console',
     'cordova plugin remove cordova-plugin-appversion',
     'cordova plugin remove cordova-plugin-customurlscheme',
     'cordova plugin remove cordova-plugin-qsecurity',
     'cordova plugin remove cordova-plugin-whitelist',
+    'cordova plugin remove cordova-plugin-inappbrowser',
     'cordova platform rm ios',
     'cordova platform rm android',
     'cordova platform add ios',
@@ -131,37 +131,26 @@ gulp.task('install', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
     'cordova plugin add cordova-plugin-device',
-    //'cordova plugin add cordova-plugin-splashscreen',
     'cordova plugin add cordova-plugin-console',
     'cordova plugin add cordova-plugin-appversion',
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-    'cordova plugin add cordova-plugin-whitelist'
+    'cordova plugin add cordova-plugin-whitelist',
+    'cordova plugin add cordova-plugin-inappbrowser'
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-/*    'cordova plugin remove cordova-plugin-qlogin',
-    'cordova plugin remove cordova-plugin-qpush',
-    'cordova plugin remove cordova-plugin-device',
-    //'cordova plugin remove cordova-plugin-splashscreen',
-    'cordova plugin remove cordova-plugin-console',
-    'cordova plugin remove cordova-plugin-appversion',
-    'cordova plugin remove cordova-plugin-customurlscheme',
-    'cordova plugin remove cordova-plugin-qsecurity',
-    'cordova plugin remove cordova-plugin-whitelist',
-    'cordova platform rm ios',
-    'cordova platform rm android',
-*/    'cordova platform add ios',
+    'cordova platform add ios',
     'cordova platform add android',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
     'cordova plugin add cordova-plugin-device',
-    //'cordova plugin add cordova-plugin-splashscreen',
     'cordova plugin add cordova-plugin-console',
     'cordova plugin add cordova-plugin-appversion',
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-    'cordova plugin add cordova-plugin-whitelist'
+    'cordova plugin add cordova-plugin-whitelist',
+    'cordova plugin add cordova-plugin-inappbrowser'
 ]));
 
 gulp.task('patch', function() {

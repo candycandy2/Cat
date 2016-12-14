@@ -17,7 +17,6 @@ hr {
     background-color: #d4d4d4;
     color: #d4d4d4/* IE6 */
 }
-
 h1 {
     font-size: 1.5em;
 }
@@ -127,21 +126,21 @@ h1 {
     margin-bottom: 0em !important;
 }
 
-#reserveSite-button.ui-btn {
-    padding: 0px !important;
+#reserveSite-button.ui-btn, #reserveFloor-button.ui-btn {
+    /*padding: 0px !important;*/
     background-color: transparent !important;
     border-color: transparent !important;
-    color: transparent !important;
+    /*color: transparent !important;*/
 }
 
 #reserveSite-button.ui-btn-icon-right {
     padding-right: 2.5em !important;
 }
 
-#reserveFloor-button.ui-btn {
+/*#reserveFloor-button.ui-btn {
     background-color: transparent !important;
     border-color: transparent !important;
-}
+}*/
 
 #reserveDateSelect div.ui-bar-a {
     background-color: initial;

@@ -68,6 +68,10 @@ var app = {
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
+
+        if (device.platform === "iOS") {
+            $.mobile.hashListeningEnabled = false;
+        }
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
@@ -227,11 +231,15 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function(){
                 if (appKey === qplayAppKey) {
-                    openAPP("https://qplaytest.benq.com/InstallQPlay/");
+                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'https://qplaytest.benq.com/InstallQPlay/\', \'_system\');"></a>');
+                    document.getElementById("updateLink").click();
+                    $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
                     openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKeyOriginal);
-                    navigator.app.exitApp();
+                    if (device.platform === "Android") {
+                        navigator.app.exitApp();
+                    }
                 }
             });
 
@@ -417,7 +425,12 @@ function processStorageData(action, data) {
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
             window.localStorage.setItem(key, value);
-            loginData[key] = value;
+        });
+
+        $.map(loginData, function(value, key) {
+            if (window.localStorage.getItem(key) !== null) {
+                loginData[key] = window.localStorage.getItem(key);
+            }
         });
 
         if (appKey === qplayAppKey) {
@@ -445,7 +458,10 @@ function getServerData() {
     } else {
         window.localStorage.setItem("openScheme", true);
         openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
-        navigator.app.exitApp();
+
+        if (device.platform === "Android") {
+            navigator.app.exitApp();
+        }
     }
 
 }
@@ -490,7 +506,9 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //QPlay
         "000910", "000913", "000915",
         //Yellowpage
-        "001901", "001902", "001903", "001904", "001905", "001906"
+        "001901", "001902", "001903", "001904", "001905", "001906",
+        //RRS
+        "002901", "002902", "002903", "002904", "002905", "002906", "002907"
     ];
 
     resultCode = resultCode.toString();
@@ -594,18 +612,25 @@ function readConfig() {
 
         //If pushToken exist in Local Storage, don't need to get new one.
         if (window.localStorage.getItem("pushToken") === null) {
-            //初始化JPush
-            window.plugins.QPushPlugin.init();
 
-            window.checkTimer = setInterval(function() {
-                window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
-            }, 1000);
+            //If simulator, can't get push token
+            if (device.isVirtual) {
+                app.onGetRegistradionID(device.uuid);
+            } else {
+                //初始化JPush
+                window.plugins.QPushPlugin.init();
 
-            window.stopCheck = function() {
-                if (window.checkTimer != null) {
-                    clearInterval(window.checkTimer);
-                }
-            };
+                window.checkTimer = setInterval(function() {
+                    window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                }, 1000);
+
+                window.stopCheck = function() {
+                    if (window.checkTimer != null) {
+                        clearInterval(window.checkTimer);
+                    }
+                };
+            }
+
         } else {
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = window.localStorage.getItem("pushToken");
@@ -652,7 +677,9 @@ function getLoginDataCallBack() {
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
-    navigator.app.exitApp();
+    if (device.platform === "Android") {
+        navigator.app.exitApp();
+    }
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
