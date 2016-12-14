@@ -49,7 +49,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
-                        popupMsg('myReservePopupMsg', '沒有您的預約資料', '', true, '返回預約頁面', '#', '#viewReserve');
+                        popupMsg('myReservePopupMsg', 'noDataMsg', '沒有您的預約資料', '', true, '返回預約頁面', '', '');
                     }
                 };
 
@@ -68,17 +68,14 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                 this.successCallback = function(data) {
 
-                    //to do
-                    //cant't into successCallback
-
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
-                        $('a[value=' + traceID + ']').hide('slow');
-                        popupMsg('myReservePopupMsg','取消預約成功', '', true, '確定', '#', '#');
+                        $('div[id^=def-' + traceID + ']').hide('slow');
+                        popupMsg('myReservePopupMsg', 'successMsg', '取消預約成功', '', true, '確定', '', '');
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('myReservePopupMsg','取消預約失敗', '', true, '確定', '#', '#');
+                        popupMsg('myReservePopupMsg', 'failMsg', '取消預約失敗', '', true, '確定', '', '');
                     }
                 };
 
@@ -101,11 +98,23 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             $('body').on('click', 'div[id^=def-] a', function() {
                 clickAggTarceID = $(this).attr('value');
                 clickReserveDate = $(this).attr('date');
-                popupMsg('myReservePopupMsg','確定取消預約', '', true, '確定', '#', '#');
+                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', '', true, '確定', '', '');
             });
 
-            $('#myReservePopupMsg #confirm').on('click', function() {
+            $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+            });
+
+            $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
+                $.mobile.changePage('#viewReserve');
+            });
+
+            $('body').on('click', 'div[for=successMsg] #confirm', function() {
+                $('div[for=successMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=failMsg] #confirm', function() {
+                $('div[for=failMsg]').popup('close');
             });
 
             $('#myReserveBack').on('click', function() {

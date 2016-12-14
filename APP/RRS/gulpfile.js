@@ -134,12 +134,12 @@ gulp.task('copyAndroidImages', function() {
 
 gulp.task('copyIOSImages', function() {
     return gulp.src('Images/iOS/AppIcon.appiconset/*')
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/RRS/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
 });
 
 gulp.task('copyIOSLaunchImages', function() {
     return gulp.src('../component/LaunchImage.launchimage/*')
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/RRS/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([
@@ -197,3 +197,6 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
 gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });
+// gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+
+// });
