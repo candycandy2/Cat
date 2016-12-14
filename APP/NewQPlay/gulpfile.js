@@ -219,7 +219,7 @@ gulp.task('concat:js', function(){
 });
 */
 
-//ex: gulp default
+//ex: gulp default --env test
 gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });
