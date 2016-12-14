@@ -261,7 +261,9 @@ function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
     $('#' + id + ' #msgContent').html(content);
     $('#' + id + ' #cancel').html(btn1);
     if (btnIsDisable == true) {
-        $('#' + id + ' #cancel').addClass('disable')
+        $('#' + id + ' #cancel').addClass('disable');
+    }else{
+        $('#' + id + ' #cancel').removeClass('disable');
     }
     $('#' + id + ' #confirm').html(btn2);
     $('#' + id + ' #cancel').attr('href', href1);

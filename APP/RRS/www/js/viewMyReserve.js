@@ -70,7 +70,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
-                        $('div[id^=def-' + traceID + ']').hide('slow');
+                        $('div[id^=def-' + traceID + ']').hide();
                         popupMsg('myReservePopupMsg', 'successMsg', '取消預約成功', '', true, '確定', '#', '#');
 
                     } else if (data['ResultCode'] === "002906") {
