@@ -47,6 +47,7 @@ if (env === "test") {
     appVersionDecorate = "Development";
     apiServerURL = "https://qplaydev.benq.com/";
     QPushAPPKey = "e343504d536ebce16b70167e";
+    patchFolder = "patchDev";
 }
 
 var schemeSetting = "<string>appqplay" + appNameDecorate + "</string>"

@@ -327,6 +327,8 @@ function setWhiteList() {
                     level: 2,
                     Navigations: [
                         "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -343,7 +345,9 @@ function setWhiteList() {
                         "https:*"
                     ],
                     Requests: [
-                        "https://qplaytest.benq.com/*"
+                        "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*"
                     ]
                 };
             } else {
@@ -351,6 +355,8 @@ function setWhiteList() {
                     level: 2,
                     Navigations: [
                         "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -365,7 +371,9 @@ function setWhiteList() {
                     ],*/
                     Intents: [],
                     Requests: [
-                        "https://qplaytest.benq.com/*"
+                        "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*"
                     ]
                 };
             }
