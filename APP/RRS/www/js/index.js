@@ -32,7 +32,7 @@ var dictSiteCategory = {
 };
 
 window.initialSuccess = function() {
-    loadingMask("show");
+    // loadingMask("show");
 
     //get meetingroom last update time
     var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
@@ -47,7 +47,7 @@ window.initialSuccess = function() {
     createReserveDetailLocalDate();
     getSiteData();
 
-    loadingMask("hide");
+    // loadingMask("hide");
 
     $.mobile.changePage('#viewReserve');
 
@@ -199,23 +199,27 @@ function ConverToTree(data) {
 }
 
 //filter data
-function grepData(data, pram, value) {
-    return $.grep(data, function(item, index) {
-        return item[pram] == value;
+function grepData(grepData, grepPram, grepValue) {
+    return $.grep(grepData, function(item, index) {
+        return item[grepPram] == grepValue;
     });
 }
 
 //distinct data
-function uniqueData(data, pram) {
-    return $.unique(data.map(function(item) {
-        return item[pram];
-    }));
+function uniqueData(uniqueData, uniquePram) {
+    var uniqueArray = [];
+    for (var i = 0, item; item = uniqueData[i]; i++) {
+        if (uniqueArray.indexOf(item[uniquePram]) === -1) {
+            uniqueArray.push(item[uniquePram]);
+        }
+    }
+    return uniqueArray;
 }
 
-function sortDataByKey(data, key, asc) {
-    data = data.sort(function(a, b) {
-        if (asc) return (a[key] > b[key]);
-        else return (b[key] > a[key]);
+function sortDataByKey(sortData, sortKey, asc) {
+    sortData = sortData.sort(function(a, b) {
+        if (asc) return (a[sortKey] > b[sortKey]);
+        else return (b[sortKey] > a[sortKey]);
     });
 }
 
@@ -257,7 +261,9 @@ function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
     $('#' + id + ' #msgContent').html(content);
     $('#' + id + ' #cancel').html(btn1);
     if (btnIsDisable == true) {
-        $('#' + id + ' #cancel').addClass('disable')
+        $('#' + id + ' #cancel').addClass('disable');
+    }else{
+        $('#' + id + ' #cancel').removeClass('disable');
     }
     $('#' + id + ' #confirm').html(btn2);
     $('#' + id + ' #cancel').attr('href', href1);
