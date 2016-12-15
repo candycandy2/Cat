@@ -1,7 +1,7 @@
 /*global variable, function*/
 var initialAppName = "RRS";
 var appKeyOriginal = "apprrs";
-var appKey = "";
+var appKey = "apprrs";
 var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetting"];
 var appSecretKey = "2e936812e205445490efb447da16ca13";
 
@@ -33,21 +33,6 @@ var dictSiteCategory = {
 
 window.initialSuccess = function() {
     // loadingMask("show");
-
-    //get meetingroom last update time
-    var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
-
-    if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
-        var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
-        var doAPIListAllTime = new getAPIListAllTime();
-    } else {
-        ConverToTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
-        arrTimeBlock = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
-    }
-    createReserveDetailLocalDate();
-    getSiteData();
-
-    // loadingMask("hide");
 
     $.mobile.changePage('#viewReserve');
 
@@ -262,7 +247,7 @@ function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
     $('#' + id + ' #cancel').html(btn1);
     if (btnIsDisable == true) {
         $('#' + id + ' #cancel').addClass('disable');
-    }else{
+    } else {
         $('#' + id + ' #cancel').removeClass('disable');
     }
     $('#' + id + ' #confirm').html(btn2);

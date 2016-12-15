@@ -1,7 +1,7 @@
 
 /*global variable*/
 var appKeyOriginal = "appqplay";
-var appKey = "";
+var appKey = "appqplay";
 var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e"; // QPlay app secret key
 
