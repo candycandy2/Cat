@@ -1,23 +1,28 @@
+git checkout master
+
 pwd
 cd APP/NewQPlay
 pwd
 
 dailyver=$BUILD_NUMBER
 
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
-gulp --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp default --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 
 cd ../NewYellowPage
 pwd
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
-gulp --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp default
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 
 cd ../RRS
 pwd
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
-gulp --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp default
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 
 cd ..
