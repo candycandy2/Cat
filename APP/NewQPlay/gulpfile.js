@@ -47,12 +47,17 @@ if (env === "test") {
     appVersionDecorate = "Development";
     apiServerURL = "https://qplaydev.benq.com/";
     QPushAPPKey = "e343504d536ebce16b70167e";
+    patchFolder = "patchDev";
 }
 
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string>"
-                    + "<string>appyellowpage" + appNameDecorate + "</string>"
+var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
+                    + "<string>appyellowpage"+appNameDecorate + "</string>"
                     + "<string>appcalendar" + appNameDecorate + "</string>"
-                    + "<string>apprrs" + appNameDecorate + "</string>"
+                    + "<string>apprrs"      + appNameDecorate + "</string>"
+                    + "<string>appaccounting"+appNameDecorate + "</string>"
+                    + "<string>appens"      + appNameDecorate + "</string>"
+                    + "<string>appeis"      + appNameDecorate + "</string>"
+                    + "<string>appleave"    + appNameDecorate + "</string>"
                     + "<string>appscheme01" + appNameDecorate + "</string>"
                     + "<string>appscheme02" + appNameDecorate + "</string>"
                     + "<string>appscheme03" + appNameDecorate + "</string>"
@@ -218,7 +223,7 @@ gulp.task('concat:js', function(){
 });
 */
 
-//ex: gulp --env test --vname 1.0.0.8 --vcode 8
-gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+//ex: gulp default --env test
+gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });

@@ -132,6 +132,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
             window.updateMessageList = function(action) {
                 action = action || null;
 
+                if (messagecontent === null) {
+                    return;
+                }
+
                 var newsListItems = "";
                 var eventListItems = "";
 
