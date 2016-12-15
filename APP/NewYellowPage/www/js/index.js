@@ -2,7 +2,7 @@
 /*global variable, function*/
 var initialAppName = "Yellow Page";
 var appKeyOriginal = "appyellowpage";
-var appKey = "";
+var appKey = "appyellowpage";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
 var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
 
@@ -10,6 +10,7 @@ var employeeData = {};
 var employeeSelectedIndex;
 var phonebookData = {};
 var prevPageID;
+var doClearInputData = false;
 
 window.initialSuccess = function() {
 
@@ -40,6 +41,7 @@ function onBackKeyDown() {
 
     } else if (activePageID === "viewQueryResult") {
 
+        doClearInputData = false;
         $.mobile.changePage('#viewDataInput');
 
     } else if (activePageID === "viewDetailInfo") {

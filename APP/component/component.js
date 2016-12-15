@@ -68,6 +68,10 @@ var app = {
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
+
+        if (device.platform === "iOS") {
+            $.mobile.hashListeningEnabled = false;
+        }
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
@@ -87,28 +91,55 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
-    //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
+        //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
 
         //If APP not open, check message after checkAppVersion()
         messageRowId = data.extras["Parameter"];
 
         if (loginData["openMessage"] === false) {
 
-            //Before open Message Detail Data, update Message List
-            var messageList = new QueryMessageList();
-            callGetMessageList = true;
+            //Check if not login
+            if (window.localStorage.getItem("loginid") !== null) {
+                //Before open Message Detail Data, update Message List
+
+                if (window.localStorage.getItem("msgDateFrom") === null) {
+
+                    $.mobile.changePage('#viewNewsEvents2-3');
+                } else {
+
+                    var messageList = new QueryMessageList();
+                    callGetMessageList = true;
+                }
+            }
 
             //remember to open Message Detail Data
             loginData["openMessage"] = true;
             window.localStorage.setItem("openMessage", true);
             window.localStorage.setItem("messageRowId", messageRowId);
+
         }
     },
     onBackgoundNotification: function(data) {
-    //Plugin-QPush > 添加後台收到通知后需要執行的內容
+        //Plugin-QPush > 添加後台收到通知后需要執行的內容
+        if (loginData["openMessage"] === false) {
+            if (window.localStorage.getItem("loginid") === null) {
+                //remember to open Message Detail Data
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("messageRowId", data.extras["Parameter"]);
+            }
+        }
     },
     onReceiveNotification: function(data) {
-    //Plugin-QPush > 添加前台收到通知后需要執行的內容
+        //Plugin-QPush > 添加前台收到通知后需要執行的內容
+        if (loginData["openMessage"] === false) {
+            if (window.localStorage.getItem("loginid") === null) {
+                //remember to open Message Detail Data
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("messageRowId", data.extras["Parameter"]);
+            }
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -227,11 +258,15 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function(){
                 if (appKey === qplayAppKey) {
-                    openAPP("https://qplaytest.benq.com/InstallQPlay/");
+                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'https://qplaytest.benq.com/InstallQPlay/\', \'_system\');"></a>');
+                    document.getElementById("updateLink").click();
+                    $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
                     openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKeyOriginal);
-                    navigator.app.exitApp();
+                    if (device.platform === "Android") {
+                        navigator.app.exitApp();
+                    }
                 }
             });
 
@@ -319,6 +354,8 @@ function setWhiteList() {
                     level: 2,
                     Navigations: [
                         "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -335,7 +372,9 @@ function setWhiteList() {
                         "https:*"
                     ],
                     Requests: [
-                        "https://qplaytest.benq.com/*"
+                        "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*"
                     ]
                 };
             } else {
@@ -343,6 +382,8 @@ function setWhiteList() {
                     level: 2,
                     Navigations: [
                         "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*",
                         "itms-services://*"
                     ],
                     /*Intents: [
@@ -357,7 +398,9 @@ function setWhiteList() {
                     ],*/
                     Intents: [],
                     Requests: [
-                        "https://qplaytest.benq.com/*"
+                        "https://qplaytest.benq.com/*",
+                        "https://qplaydev.benq.com/*",
+                        "https://qplay.benq.com/*"
                     ]
                 };
             }
@@ -450,7 +493,10 @@ function getServerData() {
     } else {
         window.localStorage.setItem("openScheme", true);
         openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
-        navigator.app.exitApp();
+
+        if (device.platform === "Android") {
+            navigator.app.exitApp();
+        }
     }
 
 }
@@ -583,7 +629,11 @@ function readConfig() {
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
         appKey = appKeyOriginal + "dev";
         serverURL = "https://qplaydev.benq.com"; // Development API Server
-        qplayAppKey = qplayAppKey + "test";
+        qplayAppKey = qplayAppKey + "dev";
+    }else {
+        appKey = appKeyOriginal + "";
+        serverURL = "https://qplay.benq.com"; // Production API Server
+        qplayAppKey = qplayAppKey + "";
     }
 
     //Plugin-QPush
@@ -601,18 +651,25 @@ function readConfig() {
 
         //If pushToken exist in Local Storage, don't need to get new one.
         if (window.localStorage.getItem("pushToken") === null) {
-            //初始化JPush
-            window.plugins.QPushPlugin.init();
 
-            window.checkTimer = setInterval(function() {
-                window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
-            }, 1000);
+            //If simulator, can't get push token
+            if (device.isVirtual) {
+                app.onGetRegistradionID(device.uuid);
+            } else {
+                //初始化JPush
+                window.plugins.QPushPlugin.init();
 
-            window.stopCheck = function() {
-                if (window.checkTimer != null) {
-                    clearInterval(window.checkTimer);
-                }
-            };
+                window.checkTimer = setInterval(function() {
+                    window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                }, 1000);
+
+                window.stopCheck = function() {
+                    if (window.checkTimer != null) {
+                        clearInterval(window.checkTimer);
+                    }
+                };
+            }
+
         } else {
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = window.localStorage.getItem("pushToken");
@@ -659,7 +716,9 @@ function getLoginDataCallBack() {
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
-    navigator.app.exitApp();
+    if (device.platform === "Android") {
+        navigator.app.exitApp();
+    }
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called

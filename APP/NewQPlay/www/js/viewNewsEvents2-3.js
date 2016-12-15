@@ -30,7 +30,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         var messageCount = data['content']['message_count'];
                         loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
 
-                        if (loginData["messagecontent"] === null) {
+                        if (loginData["messagecontent"].toString === "null") {
                             loginData["messagecontent"] = data['content'];
                             window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
 
@@ -41,7 +41,9 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                             messagecontent = data['content'];
 
                             if (messagecontent.message_count !== 0) {
-                                for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++) {
+                                var messageindexStart = parseInt(messagecontent.message_count - 1, 10);
+
+                                for (var messageindex=messageindexStart; messageindex>=0; messageindex--) {
                                     var message = messagecontent.message_list[messageindex];
 
                                     localContent.message_count = parseInt(localContent.message_count + 1, 10);
@@ -129,6 +131,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
             window.updateMessageList = function(action) {
                 action = action || null;
+
+                if (messagecontent === null) {
+                    return;
+                }
 
                 var newsListItems = "";
                 var eventListItems = "";

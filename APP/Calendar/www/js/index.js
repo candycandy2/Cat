@@ -1,7 +1,7 @@
 
 /*global variable, function*/
 var appKeyOriginal = "appcalendar";
-var appKey = "";
+var appKey = "appcalendar";
 var pageList = ["viewDataInput", "viewQueryResult"];
 var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
 

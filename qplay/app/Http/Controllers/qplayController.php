@@ -96,7 +96,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $LDAP_SERVER_IP = "LDAP://10.82.12.61";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = true;//TODO @ldap_bind($ldapConnect, $userId, $password);
@@ -257,7 +257,7 @@ class qplayController extends Controller
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
 
                 //Check user password with LDAP
-                $LDAP_SERVER_IP = "LDAP://BenQ.corp.com";
+                $LDAP_SERVER_IP = "LDAP://10.82.12.61";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
                 $bind = true; //TODO @ldap_bind($ldapConnect, $userId, $password);

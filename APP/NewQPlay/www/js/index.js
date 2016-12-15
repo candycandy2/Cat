@@ -1,7 +1,7 @@
 
 /*global variable*/
 var appKeyOriginal = "appqplay";
-var appKey = "";
+var appKey = "appqplay";
 var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e"; // QPlay app secret key
 
@@ -11,8 +11,8 @@ var appmultilang;
 var loginjustdone;
 var messagecontent;
 var selectAppIndex = 0;
-var messageArrIndex = 0;
-var messageRowId = 0;
+var messageArrIndex = null;
+var messageRowId = null;
 var msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 var callBackURL;
 var callGetMessageList = false;
@@ -25,15 +25,10 @@ window.initialSuccess = function(data) {
         processStorageData("setLocalStorage", data);
 
         if (loginData['doLoginDataCallBack'] === false) {
-            if (window.localStorage.getItem("openMessage") === "true") {
-                messageRowId = window.localStorage.getItem("messageRowId");
-                $.mobile.changePage("#viewWebNews2-3-1");
-            } else {
-                $.mobile.changePage('#viewMain2-1', {
-                    reloadPage: true
-                });
-                $.mobile.changePage('#viewMain2-1');
-            }
+            $.mobile.changePage('#viewMain2-1', {
+                reloadPage: true
+            });
+            $.mobile.changePage('#viewMain2-1');
         }
     } else {
 
@@ -52,6 +47,18 @@ window.initialSuccess = function(data) {
 
             if (window.localStorage.getItem("openMessage") !== "true") {
                 $.mobile.changePage('#viewMain2-1');
+            } else {
+                //If onOpenNotification, but not login.
+                //Atfer login, do onOpenNotification again.
+                messageRowId = window.localStorage.getItem("messageRowId");
+
+                //Before open Message Detail Data, update Message List
+                if (window.localStorage.getItem("msgDateFrom") === null) {
+                    $.mobile.changePage('#viewNewsEvents2-3');
+                } else {
+                    var messageList = new QueryMessageList();
+                    callGetMessageList = true;
+                }
             }
 
         }

@@ -9,6 +9,10 @@ APP/*/platforms/
 APP/*/plugins/
 APP/*/www/*/component.*
 
+APP/*/www/img/component/Logo.svg
+APP/*/www/img/component/QPlay_logo_noword.svg
+APP/*/www/img/component/QPlay_logo.svg
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
@@ -66,3 +70,5 @@ Thumbs.db
 
 
 WEB/InstallQPlay/sftp-config.json
+
+
