@@ -1,7 +1,7 @@
 /*global variable, function*/
 var initialAppName = "RRS";
 var appKeyOriginal = "apprrs";
-var appKey = "";
+var appKey = "apprrs";
 var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetting"];
 var appSecretKey = "2e936812e205445490efb447da16ca13";
 
