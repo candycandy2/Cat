@@ -602,7 +602,7 @@ function readConfig() {
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
         appKey = appKeyOriginal + "dev";
         serverURL = "https://qplaydev.benq.com"; // Development API Server
-        qplayAppKey = qplayAppKey + "test";
+        qplayAppKey = qplayAppKey + "dev";
     }
 
     //Plugin-QPush
