@@ -219,7 +219,7 @@ gulp.task('concat:js', function(){
 });
 */
 
-//ex: gulp --env test --vname 1.0.0.8 --vcode 8
-gulp.task('default', ['config', 'patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+//ex: gulp default --env test
+gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });

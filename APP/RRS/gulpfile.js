@@ -192,11 +192,11 @@ gulp.task('default', ['concat:js', 'concat:css'], function(){
 });
 */
 
-//ex: gulp --env test --vname 1.0.0.8 --vcode 8
+//ex: gulp default
 //remove petch task
-gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });
-// gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+// gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 // });
