@@ -630,6 +630,10 @@ function readConfig() {
         appKey = appKeyOriginal + "dev";
         serverURL = "https://qplaydev.benq.com"; // Development API Server
         qplayAppKey = qplayAppKey + "dev";
+    }else {
+        appKey = appKeyOriginal + "";
+        serverURL = "https://qplay.benq.com"; // Production API Server
+        qplayAppKey = qplayAppKey + "";
     }
 
     //Plugin-QPush
