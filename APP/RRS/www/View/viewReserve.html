@@ -50,7 +50,7 @@
                     <div class="ui-color-noreserve"></div>
                     <h3>不可預約</h3>
                 </div>
-                <a id="reserveBtn" href="#" class="btn-benq ui-btn ui-shadow ui-corner-all col-4">預約</a>
+                <a id="reserveBtn" href="#" class="btn-benq-disable ui-btn ui-shadow ui-corner-all col-4">預約</a>
             </div>
             <div class="ui-content" id="pageTwo">
                 <div class="ui-margin-10">
@@ -78,7 +78,7 @@
                 </div>
                 <div id="reserveBtnArea">
                     <a id="quickReserveCancel" href="#" class="disable btn-benq ui-btn ui-shadow ui-corner-all col-3">我再想想</a>
-                    <a id="quickReserve" href="#" class="btn-benq-disable ui-btn ui-shadow ui-corner-all col-3">立即預約</a>
+                    <a id="quickReserve" href="#" class="btn-benq ui-btn ui-shadow ui-corner-all col-3">立即預約</a>
                     <a id="quickReserveConfirm" href="#" class="disable btn-benq ui-btn ui-shadow ui-corner-all col-3">確定預約</a>
                 </div>
                 <div id="reserveSettingArea">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div data-role="popup" id="reservePopupMsg" data-overlay-theme="b" data-dismissible="false">
+    <div data-role="popup" data-history="false" id="reservePopupMsg" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content popup-msg">
             <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
             <p id="msgContent"></p>
