@@ -262,7 +262,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 inactiveNvrDiv = "eventspage2-3b";
             });
 
-            $("#viewNewsEvents2-3").one("pageshow", function(event, ui) {
+            $("#viewNewsEvents2-3").on("pageshow", function(event, ui) {
                 if (!callGetMessageList) {
                     if (loginData["msgDateFrom"] === null) {
                         loadingMask("hide");
