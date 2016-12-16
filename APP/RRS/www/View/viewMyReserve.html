@@ -17,7 +17,7 @@
                 <div class="ui-block-b col-3">
                     <h1 class="ui-benq-color">[room]</h1></div>
                 <div class="ui-block-c col-2">
-                    <a href="#" value="[value]" date="[date]" class="btn-benq ui-btn ui-shadow ui-corner-all">取消</a>
+                    <a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-benq ui-btn ui-shadow ui-corner-all">取消</a>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="ui-block-b col-3">
                     <h1 class="ui-color-lightblue"><span>&nbsp;</span><br>[room]</h1></div>
-                <div class="ui-block-c col-2"><a href="#" value="[value]" date="[date]" class="btn-benq ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
+                <div class="ui-block-c col-2"><a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-benq ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
             </div>
         </div>
     </div>
@@ -46,10 +46,10 @@
 
     <div data-role="popup" data-history="false" id="myReservePopupMsg" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="popup-msg1">
-            <h1>Confirm your action</h1>
-            <p id="msgContent"></p>
-            <button id="cancel">取消</button>
-            <button id="confirm">確定</button>
+            <h1 id="msgTitle"></h1>
+            <div id="msgContent"></div>
+            <button id="cancel"></button>
+            <button id="confirm"></button>
         </div>
     </div>
 </div>

@@ -56,7 +56,9 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('myReservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
                 };
 
                 var __construct = function() {
@@ -83,7 +85,9 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('myReservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
                 };
 
                 var __construct = function() {
@@ -101,7 +105,12 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             $('body').on('click', 'div[id^=def-] a', function() {
                 clickAggTarceID = $(this).attr('value');
                 clickReserveDate = $(this).attr('date');
-                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', '', true, '確定', '#', '#');
+                var clickReserveRoom = $(this).attr('room');
+                var clickReserveTime = $(this).attr('time');
+                var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
+                var strDate = arrDateString[2] + '/' + arrDateString[3];
+                var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr><tr><td>日期</td><td>' + strDate + '</td></tr><tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
+                popupMsg1('myReservePopupMsg', 'cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', true);
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
@@ -122,6 +131,14 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
             $('#myReserveBack').on('click', function() {
                 $.mobile.changePage('#viewReserve');
+            });
+
+            $('body').on('click', 'div[for=apiFailMsg] #confirm', function() {
+                $('div[for=apiFailMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for*=Msg] #cancel', function() {
+                $('div[for*=Msg]').popup('close');
             });
         }
     });
