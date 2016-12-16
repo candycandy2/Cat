@@ -480,8 +480,7 @@ class qplayController extends Controller
                         -> select() -> get();
 
                     //Unregister to Message Center
-					/*
-                    $app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
+                    /*$app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
                     $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
                         $args = array('App_id' => $app_id,
@@ -1266,7 +1265,7 @@ SQL;
         }
 
 
-        if(($appKey != "appqplay") &&($appKey != "appyellowpage") &&($appKey != "apprrs")) {
+        if(($appKey != "appqplaytest") &&($appKey != "appyellowpagetest") &&($appKey != "apprrstest")) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -1515,12 +1514,15 @@ left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where um.user_row_id = :uId1
 and qp_message.message_type = 'event'
+and qp_user_message.uuid = $uuid
+and qp_user_message.deleted_at <>'0000-00-00 00:00:00'
 and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
 select message_send_row_id from qp_user_message 
 where user_row_id = :uId2
+and uuid = $uuid
 and deleted_at = 0
 )
 union
@@ -1686,6 +1688,8 @@ and m.created_user = u2.row_id
 and um.message_send_row_id = ms.row_id
 and um.deleted_at = 0
 and um.user_row_id = $userId
+and um.uuid = $uuid
+and um.deleted_at <>'0000-00-00 00:00:00'
 SQL;
                 if($msg->message_type == 'news') {
 
@@ -1724,6 +1728,7 @@ select if(read_time > 0, 'Y', 'N') as 'read',
   from qp_user_message
 where message_send_row_id = :msgSendId
   and user_row_id = :userId
+  and uuid = $uuid
 SQL;
                         $userReadList = DB::select($sql, [':msgSendId'=>$message_send_row_id, ':userId'=>$userId]);
                         if(count($userReadList) > 0) {
@@ -1880,6 +1885,7 @@ SQL;
                             \DB::table("qp_user_message")
                                 -> where('user_row_id', '=', $userInfo->row_id)
                                 -> where('message_send_row_id', '=', $message_send_row_id)
+                                -> where('uuid', '=', $uuid)
                                 -> update(
                                     ['read_time'=>$nowTime,
                                         'updated_at'=>$now,
@@ -1890,6 +1896,7 @@ SQL;
                             ->leftJoin("qp_message_send","qp_message_send.row_id","=","qp_user_message.message_send_row_id")
                             ->leftJoin("qp_message","qp_message.row_id","=","qp_message_send.message_row_id")
                             -> where('qp_user_message.user_row_id', '=', $userInfo->row_id)
+                            -> where('qp_user_message.uuid', '=', $uuid)
                             -> where('qp_message.message_type', '=', $message_type)
                             -> select('qp_user_message.row_id') -> get();
                         foreach ($userMessageIdList as $rowId) {
@@ -1906,6 +1913,7 @@ SQL;
                         foreach ($messageSendIdList as $message_send_row_id) {
                             \DB::table("qp_user_message")
                                 -> where('user_row_id', '=', $userInfo->row_id)
+                                -> where('uuid', '=', $uuid)
                                 -> where('message_send_row_id', '=', $message_send_row_id)
                                 -> update(
                                     ['deleted_at'=>$now,
@@ -1917,6 +1925,7 @@ SQL;
                             ->leftJoin("qp_message_send","qp_message_send.row_id","=","qp_user_message.message_send_row_id")
                             ->leftJoin("qp_message","qp_message.row_id","=","qp_message_send.message_row_id")
                             -> where('qp_user_message.user_row_id', '=', $userInfo->row_id)
+                            -> where('qp_user_message.uuid', '=', $uuid)
                             -> where('qp_message.message_type', '=', $message_type)
                             -> select('qp_user_message.row_id') -> get();
                         foreach ($userMessageIdList as $rowId) {
@@ -2097,7 +2106,7 @@ SQL;
                 }
 
                 //Register to Message Center
-                $app_id = "33938c8b001b601c1e647cbd";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置 
+                /*$app_id = "33938c8b001b601c1e647cbd";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
 //                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,
@@ -2113,7 +2122,7 @@ SQL;
                     return response()->json(['result_code'=>ResultCode::_999999_unknownError,
                         'message'=>'Register to Message Center Failed!' . $result,
                         'content'=>$data]);
-                }
+                }*/
 
                 \DB::commit();
             } catch (Exception $e) {
@@ -2450,7 +2459,12 @@ SQL;
                                             'updated_at'=>$now
                                         ]);
                                     \DB::commit();
-                                    $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                                    //$result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>$result["info"]]);
+                                    $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                                        'message'=>'Send Push Message Successed',
+                                        'content'=>array('jsonContent'=>$countFlag,
+                                            'content'=>$content)//json_encode($jsonContent)
+                                    ]);
                                     CommonUtil::logApi("", $ACTION,
                                         response()->json(apache_response_headers()), $result);
                                     return $result;
@@ -2557,13 +2571,18 @@ SQL;
                                     if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
                                         continue;
                                     }
-                                    \DB::table("qp_user_message")
-                                        -> insertGetId([
-                                            'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
-                                            'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
-                                            'created_user'=>$userInfo->row_id,
-                                            'created_at'=>$now
-                                        ]);
+                                    foreach ($userInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insertGetId([
+                                                'project_row_id'=>$projectInfo->row_id,
+                                                'user_row_id'=>$destinationUserInfo->row_id,
+                                                'uuid'=>$uuid,
+                                                'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
+                                                'created_user'=>$userInfo->row_id,
+                                                'created_at'=>$now
+                                            ]);
+                                    }
+
                                     $hasSentUserIdList[] = $destinationUserInfo->row_id;
                                     $real_push_user_list[] = $destinationUserInfo->row_id;
                                 }
@@ -2595,13 +2614,17 @@ SQL;
                                         }
 
                                         if(!$hasSent) {
-                                            \DB::table("qp_user_message")
-                                                -> insertGetId([
-                                                    'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$userRowId,
-                                                    'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
-                                                    'created_user'=>$userInfo->row_id,
-                                                    'created_at'=>$now//, 'push_flag'=>'0'
-                                                ]);
+                                            foreach ($userInfo->uuidList as $uuid) {
+                                                \DB::table("qp_user_message")
+                                                    -> insertGetId([
+                                                        'project_row_id'=>$projectInfo->row_id,
+                                                        'user_row_id'=>$userRowId,
+                                                        'uuid'=>$uuid,
+                                                        'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
+                                                        'created_user'=>$userInfo->row_id,
+                                                        'created_at'=>$now//, 'push_flag'=>'0'
+                                                    ]);
+                                            }
                                             $hasSentUserIdList[] = $userRowId;
                                             $real_push_user_list[] = $userRowId;
                                         }
@@ -2621,8 +2644,10 @@ SQL;
                                     ->select("qp_push_token.push_token")
                                     ->get();
                                 if(count($userPushList) > 0 ) {
-                                    $to[$newCountFlag] = $userPushList[0]->push_token;
-                                    $newCountFlag ++;
+                                    foreach($userPushList as $tempUser){
+                                        $to[$newCountFlag] = $tempUser->push_token;
+                                        $newCountFlag ++;
+                                    }
                                 }
                             }
                             //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
@@ -2638,7 +2663,12 @@ SQL;
                                         'updated_at'=>$now
                                     ]);
                                 \DB::commit();
-                                $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                                //$result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>$result["info"]]);
+                                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                                    'message'=>'Send Push Message Successed',
+                                    'content'=>array('jsonContent'=>$newCountFlag,
+                                        'content'=>$content)//json_encode($jsonContent)
+                                ]);
                                 CommonUtil::logApi("", $ACTION,
                                     response()->json(apache_response_headers()), $result);
                                 return $result;

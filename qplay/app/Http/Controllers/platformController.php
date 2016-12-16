@@ -1693,18 +1693,40 @@ class platformController extends Controller
                     }
                 }
 
-                $to = "";
+                $to = [];
+                $newCountFlag = 0;
                 foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
-                        $to = $to.$userPushList[0]->login_id.";";
+                    $userPushList = \DB::table("qp_user")
+                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                        ->where("qp_user.row_id", "=", $uId)
+                        ->where("qp_user.status","=","Y")
+                        ->where("qp_user.resign","=","N")
+                        ->select("qp_push_token.push_token")
+                        ->get();
+                    if(count($userPushList) > 0 ) {
+                        foreach($userPushList as $tempUser){
+                            $to[$newCountFlag] = $tempUser->push_token;
+                            $newCountFlag ++;
+                        }
                     }
                 }
 
-                $result = CommonUtil::PushMessageWithMessageCenter($title, $to, $messageSendId);
+                //$result = CommonUtil::PushMessageWithMessageCenter($title, $to, $messageSendId);
+                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId);
                 if(!$result["result"]) {
-                    \DB::rollBack();
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                    //\DB::rollBack();
+                    //Update jpush_error_code
+                    \DB::table("qp_message_send")
+                        -> where(['row_id'=>$messageSendId])
+                        -> update([
+                            'jpush_error_code'=>$result["info"],
+                            'updated_user'=>\Auth::user()->login_id,
+                            'updated_at'=>$now
+                        ]);
+                    \DB::commit();
+                    //return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'send_id'=>$messageSendId, 'message_id'=>$messageId]);
                 }
                 \DB::commit();
 
@@ -1842,17 +1864,39 @@ class platformController extends Controller
                     }
                 }
 
-                $to = "";
+                $to = [];
+                $CountFlag = 0;
                 foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
-                        $to = $to.$userPushList[0]->login_id.";";
+                    $userPushList = \DB::table("qp_user")
+                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                        ->where("qp_user.row_id", "=", $uId)
+                        ->where("qp_user.status","=","Y")
+                        ->where("qp_user.resign","=","N")
+                        ->select("qp_push_token.push_token")
+                        ->get();
+                    if(count($userPushList) > 0 ) {
+                        foreach($userPushList as $tempUser){
+                            $to[$CountFlag] = $tempUser->push_token;
+                            $CountFlag ++;
+                        }
                     }
                 }
-                $result = CommonUtil::PushMessageWithMessageCenter($title, $to, $newMessageSendId);
+                //$result = CommonUtil::PushMessageWithMessageCenter($title, $to, $newMessageSendId);
+                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
                 if(!$result["result"]) {
-                    \DB::rollBack();
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                    //\DB::rollBack();
+                    //Update jpush_error_code
+                    \DB::table("qp_message_send")
+                        -> where(['row_id'=>$newMessageSendId])
+                        -> update([
+                            'jpush_error_code'=>$result["info"],
+                            'updated_user'=>\Auth::user()->row_id,
+                            'updated_at'=>$now
+                        ]);
+                    \DB::commit();
+                    //return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
                 }
 
                 \DB::commit();
@@ -1970,17 +2014,39 @@ class platformController extends Controller
                     }
                 }
 
-                $to = "";
+                $to = [];
+                $newCountFlag = 0;
                 foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
-                        $to = $to.$userPushList[0]->login_id.";";
+                        $userPushList = \DB::table("qp_user")
+                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                            ->where("qp_user.row_id", "=", $uId)
+                            ->where("qp_user.status","=","Y")
+                            ->where("qp_user.resign","=","N")
+                            ->select("qp_push_token.push_token")
+                            ->get();
+                        if(count($userPushList) > 0 ) {
+                            foreach($userPushList as $tempUser){
+                                $to[$newCountFlag] = $tempUser->push_token;
+                                $newCountFlag ++;
+                            }
+                        }
                     }
-                }
-                $result = CommonUtil::PushMessageWithMessageCenter($title, $to, $newMessageSendId);
+                //$result = CommonUtil::PushMessageWithMessageCenter($title, $to, $newMessageSendId);
+                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
                 if(!$result["result"]) {
-                    \DB::rollBack();
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                    //\DB::rollBack();
+                    //Update jpush_error_code
+                    \DB::table("qp_message_send")
+                        -> where(['row_id'=>$newMessageSendId])
+                        -> update([
+                            'jpush_error_code'=>$result["info"],
+                            'updated_user'=>\Auth::user()->login_id,
+                            'updated_at'=>$now
+                        ]);
+                    \DB::commit();
+                    //return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
                 }
 
                 \DB::commit();
