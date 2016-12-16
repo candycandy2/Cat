@@ -480,8 +480,7 @@ class qplayController extends Controller
                         -> select() -> get();
 
                     //Unregister to Message Center
-					/*
-                    $app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
+                    /*$app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
                     $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
                         $args = array('App_id' => $app_id,
@@ -1266,7 +1265,7 @@ SQL;
         }
 
 
-        if(($appKey != "appqplay") &&($appKey != "appyellowpage") &&($appKey != "apprrs")) {
+        if(($appKey != "appqplaytest") &&($appKey != "appyellowpagetest") &&($appKey != "apprrstest")) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -2097,7 +2096,7 @@ SQL;
                 }
 
                 //Register to Message Center
-                $app_id = "33938c8b001b601c1e647cbd";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置 
+                /*$app_id = "33938c8b001b601c1e647cbd";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
 //                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/RegisterDevice";
                 $args = array('App_id' => $app_id,
@@ -2113,7 +2112,7 @@ SQL;
                     return response()->json(['result_code'=>ResultCode::_999999_unknownError,
                         'message'=>'Register to Message Center Failed!' . $result,
                         'content'=>$data]);
-                }
+                }*/
 
                 \DB::commit();
             } catch (Exception $e) {
@@ -2450,7 +2449,12 @@ SQL;
                                             'updated_at'=>$now
                                         ]);
                                     \DB::commit();
-                                    $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                                    //$result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>$result["info"]]);
+                                    $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                                        'message'=>'Send Push Message Successed',
+                                        'content'=>array('jsonContent'=>$countFlag,
+                                            'content'=>$content)//json_encode($jsonContent)
+                                    ]);
                                     CommonUtil::logApi("", $ACTION,
                                         response()->json(apache_response_headers()), $result);
                                     return $result;
@@ -2621,8 +2625,10 @@ SQL;
                                     ->select("qp_push_token.push_token")
                                     ->get();
                                 if(count($userPushList) > 0 ) {
-                                    $to[$newCountFlag] = $userPushList[0]->push_token;
-                                    $newCountFlag ++;
+                                    foreach($userPushList as $tempUser){
+                                        $to[$newCountFlag] = $tempUser->push_token;
+                                        $newCountFlag ++;
+                                    }
                                 }
                             }
                             //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
@@ -2638,7 +2644,12 @@ SQL;
                                         'updated_at'=>$now
                                     ]);
                                 \DB::commit();
-                                $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
+                                //$result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>$result["info"]]);
+                                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                                    'message'=>'Send Push Message Successed',
+                                    'content'=>array('jsonContent'=>$newCountFlag,
+                                        'content'=>$content)//json_encode($jsonContent)
+                                ]);
                                 CommonUtil::logApi("", $ACTION,
                                     response()->json(apache_response_headers()), $result);
                                 return $result;
