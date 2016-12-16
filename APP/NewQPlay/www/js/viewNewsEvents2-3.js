@@ -65,18 +65,21 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                             window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
                         }
 
-                        //Check if there have a new message
-                        if (messageCount === 0) {
-                            $("#newMsg").hide();
-                        } else {
-                            $("#newMsg").show();
+                        //Check if there still have a unread message, then show [red star]
+                        $("#newMsg").hide();
+                        $("#newEvents").hide();
+                        $("#newNews").hide();
 
-                            for (var i=0; i<messageCount; i++) {
-                                if (data['content']['message_list'][i]['message_type'] === "event") {
+                        for (var i=0; i<messagecontent.message_count; i++) {
+                            if (messagecontent.message_list[i].read === "N") {
+
+                                if (messagecontent.message_list[i].message_type === "event") {
                                     $("#newEvents").show();
-                                } else if (data['content']['message_list'][i]['message_type'] === "news") {
+                                } else if (messagecontent.message_list[i].message_type === "news") {
                                     $("#newNews").show();
                                 }
+
+                                $("#newMsg").show();
                             }
                         }
 
@@ -259,7 +262,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 inactiveNvrDiv = "eventspage2-3b";
             });
 
-            $("#viewNewsEvents2-3").one("pageshow", function(event, ui) {
+            $("#viewNewsEvents2-3").on("pageshow", function(event, ui) {
                 if (!callGetMessageList) {
                     if (loginData["msgDateFrom"] === null) {
                         loadingMask("hide");
