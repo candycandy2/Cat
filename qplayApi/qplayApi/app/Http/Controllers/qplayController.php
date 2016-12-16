@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -480,6 +480,7 @@ class qplayController extends Controller
                         -> select() -> get();
 
                     //Unregister to Message Center
+					/*
                     $app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
                     $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
@@ -493,7 +494,7 @@ class qplayController extends Controller
                                 'message'=>'Unregister to Message Center Failed!' . $result,
                                 'content'=>$data]);
                         }
-                    }
+                    }*/
 
                     \DB::table("qp_push_token")
                         ->where("register_row_id", "=", $registerId)
