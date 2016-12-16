@@ -716,8 +716,11 @@ function getLoginDataCallBack() {
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
+
     if (device.platform === "Android") {
         navigator.app.exitApp();
+    } else {
+        $.mobile.changePage('#viewMain2-1');
     }
 }
 
