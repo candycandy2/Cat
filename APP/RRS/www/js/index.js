@@ -1,7 +1,7 @@
 /*global variable, function*/
 var initialAppName = "RRS";
 var appKeyOriginal = "apprrs";
-var appKey = "";
+var appKey = "apprrs";
 var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetting"];
 var appSecretKey = "2e936812e205445490efb447da16ca13";
 
@@ -168,12 +168,18 @@ function ConverToTree(data) {
         meetingRoomTreeData.add(key, 'meetingRoom', meetingRoomTreeData.traverseDF);
         var floorData = grepData(data, 'MeetingRoomSite', key)
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
+
+        //to do 
+        //sort by name of number
         dfloorData.sort();
 
         for (var j in dfloorData) {
 
             meetingRoomTreeData.add(dfloorData[j] + 'F', key, meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
+
+            //to do 
+            //sort by name of number
             roomData.sort();
 
             for (var k in roomData) {
@@ -253,6 +259,8 @@ function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
     $('#' + id + ' #confirm').html(btn2);
     $('#' + id + ' #cancel').attr('href', href1);
     $('#' + id + ' #confirm').attr('href', href2);
+    $('#' + id).removeClass();
+    $('#' + id + ' button').removeClass();
     $('#' + id).popup(); //initialize the popup
     $('#' + id).popup('open');
 }

@@ -1,6 +1,7 @@
 /*override jQuery Mobile start*/
 
-a, a.popup-msg{
+a,
+a.popup-msg {
     color: inherit !important;
     text-decoration: none !important;
 }
@@ -17,6 +18,7 @@ hr {
     background-color: #d4d4d4;
     color: #d4d4d4/* IE6 */
 }
+
 h1 {
     font-size: 1.5em;
 }
@@ -126,7 +128,8 @@ h1 {
     margin-bottom: 0em !important;
 }
 
-#reserveSite-button.ui-btn, #reserveFloor-button.ui-btn {
+#reserveSite-button.ui-btn,
+#reserveFloor-button.ui-btn {
     /*padding: 0px !important;*/
     background-color: transparent !important;
     border-color: transparent !important;
@@ -136,6 +139,7 @@ h1 {
 #reserveSite-button.ui-btn-icon-right {
     padding-right: 2.5em !important;
 }
+
 
 /*#reserveFloor-button.ui-btn {
     background-color: transparent !important;
@@ -457,6 +461,73 @@ div.scrollmenu a {
 
 
 /*scrollmenu end*/
+
+
+/*popup msg start*/
+
+.popup-msg1 {
+/*    position: absolute;
+    top: 50vh;
+    left: 50vw;*/
+    height: 20vh;
+    width: 80vw;
+    /*transform: translate(-50%, -50%);*/
+    background: #E2E2E2;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #E2E2E2;
+}
+
+.popup-msg1 h1 {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 1rem 1rem 0.5rem;
+}
+
+.popup-msg1 p {
+    text-align: center;
+    font-size: 1rem;
+    margin: 0 2rem 4.5rem;
+}
+
+.popup-msg1 button {
+    background: transparent;
+    border: none;
+    color: #1678E5;
+    height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.popup-msg1 button:nth-of-type(1) {
+    border-top: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
+    left: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.popup-msg1 button:nth-of-type(2) {
+    border-top: 1px solid #d4d4d4;
+    right: 0;
+    border-radius: 0 0 10px 0;
+}
+
+.popup-msg1 button:focus,
+.popup-msg1 button:hover {
+    font-weight: bold;
+    background: #EFEFEF;
+}
+
+.popup-msg1 button:active {
+    background: #D6D6D6;
+}
+
+
+/*popup msg end*/
 
 
 /*public area end*/
