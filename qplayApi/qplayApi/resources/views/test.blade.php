@@ -163,6 +163,8 @@ FORM;
 
         <input type="button" value="sendPushMessage" onclick="sendPushMessage()">
 
+        <input type="button" value="sendPushMessageWithHPushWebAPI" onclick="sendPushMessageWithJPushWebAPI()">
+
         <input type="button" value="updateLastMessageTime" onclick="updateLastMessageTime()">
         <br/><br/>
 
@@ -636,7 +638,7 @@ FORM;
                 contentType: "application/json",
                 data: mydataStr,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key", "appqplaytest");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "58169b8a895eb");
@@ -645,6 +647,42 @@ FORM;
                     alert(d.result_code + ": " + d.message);
                     $("#result_content").html("content: " + d.content.content + "<br/>"
                             + "jsonContent: " + d.content.jsonContent);
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+        }
+
+        var sendPushMessageWithJPushWebAPI = function () {
+            var mydata = {message_title: "SlB1c2ggV2ViIEFQSSBUZXN0",//"JPush Web API Test",
+                template_id:3,
+                message_type: "event",
+                message_text: "SlB1c2ggV2ViIEFQSSBUZXN0IE5ld3MgQm9keQ==", //"JPush Web API Test News Body",
+                message_html: "",
+                message_url:"",
+                message_source:"Oracle ERP",
+                source_user_id:"Qgroup\\Moses.Zhu",
+                destination_user_id:["Qgroup\\Moses.Zhu","Qgroup\\Sammi.Yao"],
+                destination_role_id:["Qisda/AIC0 RD"]
+            };
+            var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                url: "v101/qplay/sendPushMessage?lang=en-us&app_key=appqplay&need_push=Y",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                beforeSend:function (request) {
+                    request.setRequestHeader("app-key", "appqplaytest");
+                    request.setRequestHeader("signature", "Moses824");
+                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("token", "58169b8a895eb");
+                },
+                success: function (d, status, xhr) {
+                    alert(d.result_code + ": " + d.message);
+                    $("#result_content").html("content: " + d.content.content + "<br/>"
+                        + "jsonContent: " + d.content.jsonContent);
                 },
                 error: function (e) {
                     alert(e);
