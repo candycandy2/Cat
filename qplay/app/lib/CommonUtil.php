@@ -8,9 +8,11 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use Config;
 use DB;
 use Request;
 use Illuminate\Support\Facades\Input;
+use JPush\Client as JPush;
 
 class CommonUtil
 {
@@ -528,6 +530,67 @@ SQL;
             $result["info"] = $data["pns"];
         }
 
+        return $result;
+    }
+
+    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
+        $result = array();
+        $result["result"] = true;
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $platform = array('ios', 'android');
+            $alert = $message;
+            $regId = $to;
+            $ios_notification = array(
+                'sound' => 'default',
+                'badge' => '0',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $android_notification = array(
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $content = $message;
+            $message = array(
+                'title' => $message,
+                'content_type' => 'text',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $time2live =  Config::get('time_to_live',864000);
+            $apnsFlag = Config::get('apns_flag',true);
+            $options = array(
+                'time_to_live'=>$time2live,
+                'apns_production'=>$apnsFlag
+            );
+            $response = $client->push()->setPlatform($platform)
+                ->addRegistrationId($regId)
+                ->iosNotification($alert, $ios_notification)
+                ->androidNotification($alert, $android_notification)
+                ->message($content, $message)
+                ->options($options)
+                ->send();
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred";
+        }
         return $result;
     }
 
