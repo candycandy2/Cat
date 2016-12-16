@@ -28,15 +28,24 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     if (resultcode === 1) {
 
                         var messageCount = data['content']['message_count'];
-                        loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
+                        var messageContentIsNull = false;
 
-                        if (loginData["messagecontent"].toString === "null") {
+                        if (window.localStorage.getItem("messagecontent") === null) {
+                            //check data exit in Local Storage
+                            messageContentIsNull = true;
+                        } else if (window.localStorage.getItem("messagecontent") === "null") {
+                            //check data in Local Storage is null
+                            messageContentIsNull = true;
+                        }
+
+                        if (messageContentIsNull) {
                             loginData["messagecontent"] = data['content'];
                             window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
 
                             messagecontent = data['content'];
                         } else {
 
+                            loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
                             var localContent = JSON.parse(loginData["messagecontent"]);
                             messagecontent = data['content'];
 
