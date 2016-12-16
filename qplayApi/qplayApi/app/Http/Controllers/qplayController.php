@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -480,6 +480,7 @@ class qplayController extends Controller
                         -> select() -> get();
 
                     //Unregister to Message Center
+					/*
                     $app_id = "33938c8b001b601c1e647cbd";  //TODO 正式上线需要读配置
                     $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/UnregisterDevice";
                     foreach ($pushTokenList as $pushTokenInfo) {
@@ -493,7 +494,7 @@ class qplayController extends Controller
                                 'message'=>'Unregister to Message Center Failed!' . $result,
                                 'content'=>$data]);
                         }
-                    }
+                    }*/
 
                     \DB::table("qp_push_token")
                         ->where("register_row_id", "=", $registerId)
@@ -1798,7 +1799,7 @@ SQL;
 
         $token = $request->header('token');
         $uuid = $input["uuid"];
-        $message_send_row_id = $input["message_send_row_id"];
+        $message_send_row_id_str = $input["message_send_row_id"];
         $message_type = $input["message_type"];
         $status = $input["status"];
 
@@ -1833,54 +1834,100 @@ SQL;
             return $result;
         }
 
-        $msgSendList = \DB::table("qp_message_send")
-            -> where('row_id', "=", $message_send_row_id)
-            -> select('message_row_id')->get();
-        if(count($msgSendList) < 1 ) {
-            $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
-                'message'=>'此消息不存在',
-                'content'=>'']);
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
-            return $result;
-        }
-        $message_row_id = $msgSendList[0]->message_row_id;
-        $msgList = \DB::table("qp_message")
-            -> where('row_id', "=", $message_row_id)
-            -> select('row_id')->get();
-        if(count($msgList) < 1 ) {
-            $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
-                'message'=>'此消息不存在',
-                'content'=>'']);
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
-            return $result;
+        $updateAll = false;
+        $messageSendIdList = explode(',', $message_send_row_id_str);
+        if(strtolower($message_send_row_id_str) == "all") {
+            $updateAll = true;
+        } else {
+            foreach ($messageSendIdList as $message_send_row_id) {
+                $msgSendList = \DB::table("qp_message_send")
+                    -> where('row_id', "=", $message_send_row_id)
+                    -> select('message_row_id')->get();
+                if(count($msgSendList) < 1 ) {
+                    $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+                        'message'=>'此消息不存在',
+                        'content'=>'']);
+                    CommonUtil::logApi($userInfo->row_id, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
+                }
+                $message_row_id = $msgSendList[0]->message_row_id;
+                $msgList = \DB::table("qp_message")
+                    -> where('row_id', "=", $message_row_id)
+                    -> select('row_id')->get();
+                if(count($msgList) < 1 ) {
+                    $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+                        'message'=>'此消息不存在',
+                        'content'=>'']);
+                    CommonUtil::logApi($userInfo->row_id, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
+                }
+            }
         }
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
+
+            $nowTime = time();
+            $now = date('Y-m-d H:i:s',$nowTime);
+            $user = CommonUtil::getUserInfoByUUID($uuid);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                if($status == 'read' && $message_type == "event") { 
-                    $now = date('Y-m-d H:i:s',time());
-                    $user = CommonUtil::getUserInfoByUUID($uuid);
-                    \DB::table("qp_user_message")
-                        -> where('user_row_id', '=', $userInfo->row_id)
-                        -> where('message_send_row_id', '=', $message_send_row_id)
-                        -> update(
-                            ['read_time'=>time(),
-                                'updated_at'=>$now,
-                                'updated_user'=>$user->row_id]);
+                if($status == 'read' && $message_type == "event") {
+                    if(!$updateAll) {
+                        foreach ($messageSendIdList as $message_send_row_id) {
+                            \DB::table("qp_user_message")
+                                -> where('user_row_id', '=', $userInfo->row_id)
+                                -> where('message_send_row_id', '=', $message_send_row_id)
+                                -> update(
+                                    ['read_time'=>$nowTime,
+                                        'updated_at'=>$now,
+                                        'updated_user'=>$user->row_id]);
+                        }
+                    } else {
+                        $userMessageIdList = \DB::table("qp_user_message")
+                            ->leftJoin("qp_message_send","qp_message_send.row_id","=","qp_user_message.message_send_row_id")
+                            ->leftJoin("qp_message","qp_message.row_id","=","qp_message_send.message_row_id")
+                            -> where('qp_user_message.user_row_id', '=', $userInfo->row_id)
+                            -> where('qp_message.message_type', '=', $message_type)
+                            -> select('qp_user_message.row_id') -> get();
+                        foreach ($userMessageIdList as $rowId) {
+                            \DB::table("qp_user_message")
+                                -> where('row_id', '=', $rowId)
+                                -> update(
+                                    ['read_time'=>$nowTime,
+                                        'updated_at'=>$now,
+                                        'updated_user'=>$user->row_id]);
+                        }
+                    }
                 } else if($status == 'delete' && $message_type == "event") {
-                    $now = date('Y-m-d H:i:s',time());
-                    $user = CommonUtil::getUserInfoByUUID($uuid);
-                    \DB::table("qp_user_message")
-                        -> where('user_row_id', '=', $userInfo->row_id)
-                        -> where('message_send_row_id', '=', $message_send_row_id)
-                        -> update(
-                            ['deleted_at'=>$now,                            
-                                'updated_at'=>$now,
-                                'updated_user'=>$user->row_id]);
+                    if(!$updateAll) {
+                        foreach ($messageSendIdList as $message_send_row_id) {
+                            \DB::table("qp_user_message")
+                                -> where('user_row_id', '=', $userInfo->row_id)
+                                -> where('message_send_row_id', '=', $message_send_row_id)
+                                -> update(
+                                    ['deleted_at'=>$now,
+                                        'updated_at'=>$now,
+                                        'updated_user'=>$user->row_id]);
+                        }
+                    } else {
+                        $userMessageIdList = \DB::table("qp_user_message")
+                            ->leftJoin("qp_message_send","qp_message_send.row_id","=","qp_user_message.message_send_row_id")
+                            ->leftJoin("qp_message","qp_message.row_id","=","qp_message_send.message_row_id")
+                            -> where('qp_user_message.user_row_id', '=', $userInfo->row_id)
+                            -> where('qp_message.message_type', '=', $message_type)
+                            -> select('qp_user_message.row_id') -> get();
+                        foreach ($userMessageIdList as $rowId) {
+                            \DB::table("qp_user_message")
+                                -> where('row_id', '=', $rowId)
+                                -> update(
+                                    ['deleted_at'=>$now,
+                                        'updated_at'=>$now,
+                                        'updated_user'=>$user->row_id]);
+                        }
+                    }
                 }  
 
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
