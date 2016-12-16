@@ -1515,12 +1515,15 @@ left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where um.user_row_id = :uId1
 and qp_message.message_type = 'event'
+and qp_user_message.uuid = $uuid
+and qp_user_message.deleted_at <>'0000-00-00 00:00:00'
 and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
 select message_send_row_id from qp_user_message 
 where user_row_id = :uId2
+and uuid = $uuid
 and deleted_at = 0
 )
 union
@@ -1686,6 +1689,8 @@ and m.created_user = u2.row_id
 and um.message_send_row_id = ms.row_id
 and um.deleted_at = 0
 and um.user_row_id = $userId
+and um.uuid = $uuid
+and um.deleted_at <>'0000-00-00 00:00:00'
 SQL;
                 if($msg->message_type == 'news') {
 
@@ -1724,6 +1729,7 @@ select if(read_time > 0, 'Y', 'N') as 'read',
   from qp_user_message
 where message_send_row_id = :msgSendId
   and user_row_id = :userId
+  and uuid = $uuid
 SQL;
                         $userReadList = DB::select($sql, [':msgSendId'=>$message_send_row_id, ':userId'=>$userId]);
                         if(count($userReadList) > 0) {
@@ -1880,6 +1886,7 @@ SQL;
                             \DB::table("qp_user_message")
                                 -> where('user_row_id', '=', $userInfo->row_id)
                                 -> where('message_send_row_id', '=', $message_send_row_id)
+                                -> where('uuid', '=', $uuid)
                                 -> update(
                                     ['read_time'=>$nowTime,
                                         'updated_at'=>$now,
@@ -1890,6 +1897,7 @@ SQL;
                             ->leftJoin("qp_message_send","qp_message_send.row_id","=","qp_user_message.message_send_row_id")
                             ->leftJoin("qp_message","qp_message.row_id","=","qp_message_send.message_row_id")
                             -> where('qp_user_message.user_row_id', '=', $userInfo->row_id)
+                            -> where('qp_user_message.uuid', '=', $uuid)
                             -> where('qp_message.message_type', '=', $message_type)
                             -> select('qp_user_message.row_id') -> get();
                         foreach ($userMessageIdList as $rowId) {
@@ -1906,6 +1914,7 @@ SQL;
                         foreach ($messageSendIdList as $message_send_row_id) {
                             \DB::table("qp_user_message")
                                 -> where('user_row_id', '=', $userInfo->row_id)
+                                -> where('uuid', '=', $uuid)
                                 -> where('message_send_row_id', '=', $message_send_row_id)
                                 -> update(
                                     ['deleted_at'=>$now,
@@ -1917,6 +1926,7 @@ SQL;
                             ->leftJoin("qp_message_send","qp_message_send.row_id","=","qp_user_message.message_send_row_id")
                             ->leftJoin("qp_message","qp_message.row_id","=","qp_message_send.message_row_id")
                             -> where('qp_user_message.user_row_id', '=', $userInfo->row_id)
+                            -> where('qp_user_message.uuid', '=', $uuid)
                             -> where('qp_message.message_type', '=', $message_type)
                             -> select('qp_user_message.row_id') -> get();
                         foreach ($userMessageIdList as $rowId) {
@@ -2557,13 +2567,18 @@ SQL;
                                     if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
                                         continue;
                                     }
-                                    \DB::table("qp_user_message")
-                                        -> insertGetId([
-                                            'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$destinationUserInfo->row_id,
-                                            'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
-                                            'created_user'=>$userInfo->row_id,
-                                            'created_at'=>$now
-                                        ]);
+                                    foreach ($userInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insertGetId([
+                                                'project_row_id'=>$projectInfo->row_id,
+                                                'user_row_id'=>$destinationUserInfo->row_id,
+                                                'uuid'=>$uuid,
+                                                'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
+                                                'created_user'=>$userInfo->row_id,
+                                                'created_at'=>$now
+                                            ]);
+                                    }
+
                                     $hasSentUserIdList[] = $destinationUserInfo->row_id;
                                     $real_push_user_list[] = $destinationUserInfo->row_id;
                                 }
@@ -2595,13 +2610,17 @@ SQL;
                                         }
 
                                         if(!$hasSent) {
-                                            \DB::table("qp_user_message")
-                                                -> insertGetId([
-                                                    'project_row_id'=>$projectInfo->row_id, 'user_row_id'=>$userRowId,
-                                                    'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
-                                                    'created_user'=>$userInfo->row_id,
-                                                    'created_at'=>$now//, 'push_flag'=>'0'
-                                                ]);
+                                            foreach ($userInfo->uuidList as $uuid) {
+                                                \DB::table("qp_user_message")
+                                                    -> insertGetId([
+                                                        'project_row_id'=>$projectInfo->row_id,
+                                                        'user_row_id'=>$userRowId,
+                                                        'uuid'=>$uuid,
+                                                        'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
+                                                        'created_user'=>$userInfo->row_id,
+                                                        'created_at'=>$now//, 'push_flag'=>'0'
+                                                    ]);
+                                            }
                                             $hasSentUserIdList[] = $userRowId;
                                             $real_push_user_list[] = $userRowId;
                                         }
