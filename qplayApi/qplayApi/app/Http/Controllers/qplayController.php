@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -1232,6 +1232,7 @@ SQL;
         $uuid = $input['uuid'];
         $appKey = $input['app_key'];
 
+
         if(!$Verify->chkUuidExist($uuid)) {
             $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
@@ -1264,7 +1265,7 @@ SQL;
         }
 
 
-        if(($appKey != "appqplaytest") &&($appKey != "appyellowpagetest") &&($appKey != "apprrstest")) {
+        if(($appKey != "appqplay") &&($appKey != "appyellowpage") &&($appKey != "apprrs")) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -1860,7 +1861,7 @@ SQL;
         {
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                if($status == 'read' && $message_type == "event") {
+                if($status == 'read' && $message_type == "event") { 
                     $now = date('Y-m-d H:i:s',time());
                     $user = CommonUtil::getUserInfoByUUID($uuid);
                     \DB::table("qp_user_message")
@@ -1870,7 +1871,7 @@ SQL;
                             ['read_time'=>time(),
                                 'updated_at'=>$now,
                                 'updated_user'=>$user->row_id]);
-                }else if($status == 'delete' && $message_type == "event") {
+                } else if($status == 'delete' && $message_type == "event") {
                     $now = date('Y-m-d H:i:s',time());
                     $user = CommonUtil::getUserInfoByUUID($uuid);
                     \DB::table("qp_user_message")
@@ -1880,7 +1881,8 @@ SQL;
                             ['deleted_at'=>$now,                            
                                 'updated_at'=>$now,
                                 'updated_user'=>$user->row_id]);
-                }
+                }  
+
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
@@ -2372,20 +2374,35 @@ SQL;
                                 ]);
                             $countFlag = 0;
                             if($need_push == "Y") {
-                                $to = "";
+                                $to = [];
                                 foreach ($CompanyList as $company) {
-                                    $userList = \DB::table("qp_user")->where("company", "=", $company)->select()->get();
+                                    $userList = \DB::table("qp_user")
+                                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                                        ->where("qp_user.company", "=", $company)
+                                        ->where("qp_user.status","=","Y")
+                                        ->where("qp_user.resign","=","N")
+                                        ->select("qp_push_token.push_token")
+                                        ->get();
                                     foreach ($userList as $user) {
-                                        if($user->status == "Y" && $user->resign == "N") {
-                                            $to = $to.$user->login_id.";";
+                                            $to[$countFlag] = $user->push_token;
                                             $countFlag ++;
-                                        }
                                     }
                                 }
 
-                                $result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
+                                //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
+                                $result = CommonUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
                                 if(!$result["result"]) {
-                                    \DB::rollBack();
+                                    //\DB::rollBack();
+                                    //Update jpush_error_code
+                                    \DB::table("qp_message_send")
+                                        -> where(['row_id'=>$newMessageSendId])
+                                        -> update([
+                                            'jpush_error_code'=>$result["info"],
+                                            'updated_user'=>$userInfo->row_id,
+                                            'updated_at'=>$now
+                                        ]);
+                                    \DB::commit();
                                     $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
                                     CommonUtil::logApi("", $ACTION,
                                         response()->json(apache_response_headers()), $result);
@@ -2545,16 +2562,35 @@ SQL;
                                 }
                             }
 
-                            $to = "";
+                            $to = [];
+                            $newCountFlag = 0;
                             foreach ($real_push_user_list as $uId) {
-                                $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                                if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
-                                    $to = $to.$userPushList[0]->login_id.";";
+                                $userPushList = \DB::table("qp_user")
+                                    ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                                    ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                                    ->where("qp_user.row_id", "=", $uId)
+                                    ->where("qp_user.status","=","Y")
+                                    ->where("qp_user.resign","=","N")
+                                    ->select("qp_push_token.push_token")
+                                    ->get();
+                                if(count($userPushList) > 0 ) {
+                                    $to[$newCountFlag] = $userPushList[0]->push_token;
+                                    $newCountFlag ++;
                                 }
                             }
-                            $result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
+                            //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
+                            $result = CommonUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
                             if(!$result["result"]) {
-                                \DB::rollBack();
+                                //\DB::rollBack();
+                                //Update jpush_error_code
+                                \DB::table("qp_message_send")
+                                    -> where(['row_id'=>$newMessageSendId])
+                                    -> update([
+                                        'jpush_error_code'=>$result["info"],
+                                        'updated_user'=>$userInfo->row_id,
+                                        'updated_at'=>$now
+                                    ]);
+                                \DB::commit();
                                 $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
                                 CommonUtil::logApi("", $ACTION,
                                     response()->json(apache_response_headers()), $result);

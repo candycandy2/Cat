@@ -3,8 +3,6 @@
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title">
-                <select name="reserveSite" id="reserveSite">
-                </select>
             </div>
             <div id="center" class="ui-title"></div>
             <div id="right" class="ui-title">
@@ -13,20 +11,19 @@
     </div>
     <div data-role="main" class="page-main">
         <div data-role="tabs">
-            <div id="navbar" data-role="navbar">
-                <ul>
-                    <li>
-                        <a id="tabOne" href="#pageOne" class="ui-btn-active">
-                            <span style="font-size: larger;">一般預約</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="tabTwo" href="#pageTwo">
-                            <span style="font-size: larger;">快速預約</span></a>
-                    </li>
-                </ul>
+            <div class="ui-margin-10">
+                <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50">
+                    <input type="radio" name="tab" id="tab1" value="tab1" checked="checked">
+                    <label for="tab1">一般預約</label>
+                    <input type="radio" name="tab" id="tab2" value="tab2">
+                    <label for="tab2">快速預約</label>
+                </div>
             </div>
             <div class="ui-content" id="pageOne">
+                <div style="width: 35%;">
+                    <select name="reserveSite" id="reserveSite">
+                    </select>
+                </div>
                 <div id="scrollDate" class="scrollmenu">
                     <a id="reserveDefault" href="#" class="disable">ReserveDay<br />ReserveDict</a>
                 </div>
@@ -40,9 +37,7 @@
                 <div id="reserveDateSelect" class="ui-margin-10">
                     <div class="ui-grid-c">
                         <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]" traceID="[traceID]">
-                            <div class="ui-bar ui-bar-a ">
-                                <span></span>reserveTimeSelect[eName]
-                            </div>
+                            <div class="ui-bar ui-bar-a "><span></span>reserveTimeSelect<span>[eName]</span></div>
                         </div>
                     </div>
                 </div>
@@ -55,7 +50,7 @@
                     <div class="ui-color-noreserve"></div>
                     <h3>不可預約</h3>
                 </div>
-                <a id="reserveBtn" href="#" class="btn-benq ui-btn ui-shadow ui-corner-all col-4">預約</a>
+                <a id="reserveBtn" href="#" class="btn-benq-disable ui-btn ui-shadow ui-corner-all col-4">預約</a>
             </div>
             <div class="ui-content" id="pageTwo">
                 <div class="ui-margin-10">
@@ -65,7 +60,7 @@
                         </div>
                         <div class="ui-block-b col-8">
                             <select name="reserveSetting" id="reserveSetting">
-                                <option id="defaultListItem" value="emptyRoom">現在空的會議室</option>
+                                <option id="defaultListItem" value="">現在空的會議室</option>
                             </select>
                         </div>
                     </div>
@@ -78,12 +73,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="msgArea" class="disable ui-color-green">
-                    <h2>T121會議室可使用</h2>
+                <div id="quickReserveMsgArea" class="disable ui-color-green">
+                    <h2></h2>
                 </div>
                 <div id="reserveBtnArea">
                     <a id="quickReserveCancel" href="#" class="disable btn-benq ui-btn ui-shadow ui-corner-all col-3">我再想想</a>
-                    <a id="quickReserve" href="#" class="btn-benq-disable ui-btn ui-shadow ui-corner-all col-3">立即預約</a>
+                    <a id="quickReserve" href="#" class="btn-benq ui-btn ui-shadow ui-corner-all col-3">立即預約</a>
+                    <a id="quickReserveConfirm" href="#" class="disable btn-benq ui-btn ui-shadow ui-corner-all col-3">確定預約</a>
                 </div>
                 <div id="reserveSettingArea">
                     <a href="#viewSettingList">偏好設置</a>
@@ -91,22 +87,12 @@
             </div>
         </div>
     </div>
-    <!-- <div data-role="popup" id="reserveCoordinationAlert" data-overlay-theme="b" data-dismissible="false">
+    <div data-role="popup" data-history="false" id="reservePopupMsg" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content popup-msg">
-            <a href="#viewReserve" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
             <p id="msgContent"></p>
             <p>
-                <a href="" class="ui-btn ui-btn-inline" id="mailto"></a>
-                <a href="" class="ui-btn ui-btn-inline" id="ext"></a>
-            </p>
-        </div>
-    </div> -->
-    <div data-role="popup" id="PopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
-            <a href="#viewReserve" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-            <p id="msgContent"></p>
-            <p>
-                <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
                 <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
             </p>
         </div>

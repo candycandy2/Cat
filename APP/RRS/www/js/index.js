@@ -1,14 +1,16 @@
 /*global variable, function*/
 var initialAppName = "RRS";
 var appKeyOriginal = "apprrs";
-var appKey = "";
+var appKey = "apprrs";
 var pageList = ["viewReserve", "viewMyReserve", "viewSettingList", "viewNewSetting"];
 var appSecretKey = "2e936812e205445490efb447da16ca13";
 
 var prevPageID;
 var arrReserve = [];
+var arrClickReserve = [];
 var arrTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
+var htmlContent = '';
 var dictDayOfWeek = {
     '1': '(一)',
     '2': '(二)',
@@ -30,21 +32,9 @@ var dictSiteCategory = {
 };
 
 window.initialSuccess = function() {
+    // loadingMask("show");
 
-    //step1
-    getAPIListAllMeetingRoom();//async
-    getAPIListAllTime();//async
-
-    loadingMask("show");//hide by change page event
-
-    //REVIEW by alan
-    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-    //step2 depend on step1 complete
-
-    //step2
-    // $(this).ajaxComplete(function() {
     $.mobile.changePage('#viewReserve');
-    // });
 
     $("a[name=goPrevPage]").on("click", function() {
         $.mobile.changePage('#' + prevPageID);
@@ -53,25 +43,25 @@ window.initialSuccess = function() {
 }
 
 function getAPIListAllMeetingRoom() {
-
-    //REVIEW by Alan 
-    //if (SystemTime not expire) PS: [7] day
-        //
-    //else
-        //get data by API
-        //keep SystemTime from API
-
     var self = this;
     var queryData = {};
 
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
+
             ConverToTree(data['Content']);
-        }
-        else{
-            //no data
-            //TODO
-            //...
+
+            //save to local data
+            localStorage.removeItem('meetingRoomLocalData');
+            var jsonData = {};
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: data['Content']
+            };
+            localStorage.setItem('meetingRoomLocalData', JSON.stringify(jsonData));
+
+        } else {
+            console.log('APIListAllMeetingRoomMsg No Data!');
         }
     };
 
@@ -80,24 +70,17 @@ function getAPIListAllMeetingRoom() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData);
+        QPlayAPI("POST", false, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData);
     }();
 }
 
 function getAPIListAllTime() {
-
-    //REVIEW by Alan 
-    //if (SystemTime not expire) PS: [7] day
-        //
-    //else
-        //get data by API
-        //keep SystemTime from API
-
     var self = this;
     var queryData = {};
 
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
+
             for (var i = 0, item; item = data['Content'][i]; i++) {
                 var bTimeStr = new Date(new Date().toDateString() + ' ' + '08:00')
                 var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30')
@@ -107,9 +90,22 @@ function getAPIListAllTime() {
                     arrTimeBlock.push(newTimeBlock);
                 }
             }
-        }else{
-            //no data
 
+            arrTimeBlock.sort(function(a, b) {
+                return new Date(new Date().toDateString() + ' ' + a.time) - new Date(new Date().toDateString() + ' ' + b.time);
+            });
+
+            //save to local data
+            localStorage.removeItem('allTimeLocalData');
+            var jsonData = {};
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: arrTimeBlock
+            };
+            localStorage.setItem('allTimeLocalData', JSON.stringify(jsonData));
+
+        } else {
+            console.log('APIListAllTimeMsg No Data!');
         }
     };
 
@@ -118,35 +114,65 @@ function getAPIListAllTime() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", "ListAllTime", self.successCallback, self.failCallback, queryData);
+        QPlayAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData);
     }();
 }
 
-// function getTimeBlock() {
-//     var startTime = '08:00';
-//     for (var i = 0; i < 20; i++) {
-//         if (i != 0) {
-//             startTime = addThirtyMins(startTime);
-//         }
-//         dictTimeBlock[i] = startTime;
-//     }
-// }
+function getTimeID(sTime, eTime, siteCategoryID) {
+    var arrSelectTime = [];
+    var strTime = sTime;
+
+    do {
+        arrSelectTime.push(strTime);
+        strTime = addThirtyMins(strTime);
+    } while (strTime != eTime);
+
+    var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
+
+    var strTimeID = '';
+    for (var item in filterTimeBlock) {
+        $.each(arrSelectTime, function(index, value) {
+            if (value == filterTimeBlock[item].time) {
+                strTimeID += filterTimeBlock[item].timeID + ',';
+            }
+        });
+    }
+
+    return strTimeID;
+}
+
+function createReserveDetailLocalDate() {
+    //save to local data
+    localStorage.removeItem('reserveDetailLocalData');
+    jsonData = {};
+    localStorage.setItem('reserveDetailLocalData', JSON.stringify(jsonData));
+}
+
+function getSiteData() {
+    htmlContent = '';
+    for (var i = 0, item; item = meetingRoomTreeData._root.children[i]; i++) {
+        htmlContent += '<option value=' + item.data + '>' + dictSite[item.data] + '</option>';
+    }
+
+    $('#reserveSite').append(htmlContent);
+    $('#newSettingSite').append(htmlContent);
+    var firstNode = meetingRoomTreeData._root.children[0].data;
+    $('#reserveSite-button').find('span').text(dictSite[firstNode]);
+    $('#newSettingSite-button').find('span').text(dictSite[firstNode]);
+}
 
 function ConverToTree(data) {
 
-    var siteData = uniqueData(data, 'MeetingRoomSite');
-    siteData.sort();
+    for (var key in dictSite) {
 
-    for (var i in siteData) {
-
-        meetingRoomTreeData.add(siteData[i], 'meetingRoom', meetingRoomTreeData.traverseDF);
-        var floorData = grepData(data, 'MeetingRoomSite', siteData[i])
+        meetingRoomTreeData.add(key, 'meetingRoom', meetingRoomTreeData.traverseDF);
+        var floorData = grepData(data, 'MeetingRoomSite', key)
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
         dfloorData.sort();
 
         for (var j in dfloorData) {
 
-            meetingRoomTreeData.add(dfloorData[j] + 'F', siteData[i], meetingRoomTreeData.traverseDF);
+            meetingRoomTreeData.add(dfloorData[j] + 'F', key, meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
             roomData.sort();
 
@@ -158,17 +184,28 @@ function ConverToTree(data) {
 }
 
 //filter data
-function grepData(data, pram, value) {
-    return $.grep(data, function(item, index) {
-        return item[pram] == value;
+function grepData(grepData, grepPram, grepValue) {
+    return $.grep(grepData, function(item, index) {
+        return item[grepPram] == grepValue;
     });
 }
 
 //distinct data
-function uniqueData(data, pram) {
-    return $.unique(data.map(function(item) {
-        return item[pram];
-    }));
+function uniqueData(uniqueData, uniquePram) {
+    var uniqueArray = [];
+    for (var i = 0, item; item = uniqueData[i]; i++) {
+        if (uniqueArray.indexOf(item[uniquePram]) === -1) {
+            uniqueArray.push(item[uniquePram]);
+        }
+    }
+    return uniqueArray;
+}
+
+function sortDataByKey(sortData, sortKey, asc) {
+    sortData = sortData.sort(function(a, b) {
+        if (asc) return (a[sortKey] > b[sortKey]);
+        else return (b[sortKey] > a[sortKey]);
+    });
 }
 
 //[Android]Handle the back button
@@ -176,101 +213,71 @@ function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
 
-    if (activePageID === "viewReserve") {
+    if (checkPopupShown()) {
+        popupClose();
+    } else {
+        if (activePageID === "viewReserve") {
 
-        if (checkPopupShown()) {
+            if ($("#reserveTab :radio:checked").val() == 'tab1') {
+                navigator.app.exitApp();
+            } else {
+                $("input[id=tab1]").trigger('click');
+                $("label[for=tab1]").addClass('ui-btn-active');
+                $("label[for=tab2]").removeClass('ui-btn-active');
+            }
+
+        } else if (activePageID === "viewMyReserve") {
+
             $.mobile.changePage('#viewReserve');
-        } else {
-            navigator.app.exitApp();
+
+        } else if (activePageID === "viewSettingList") {
+
+            $.mobile.changePage('#viewReserve');
+
+        } else if (activePageID === "viewNewSetting") {
+
+            $.mobile.changePage('#viewSettingList');
         }
-
-    } else if (activePageID === "viewMyReserve") {
-
-        $.mobile.changePage('#viewMyReserve');
-
-    } else if (activePageID === "viewSettingList") {
-
-        // if (checkPopupShown()) {
-        //     $('#' + popupID).popup('close');
-        // } else {
-        //     $.mobile.changePage('#' + prevPageID);
-        // }
-
-    } else if (activePageID === "viewNewSetting") {
-
-        // if (checkPopupShown()) {
-        //     $('#' + popupID).popup('close');
-        // } else {
-        //     //If User is doing edit phonebook, cancel edit mode.
-        //     if ($("#phonebookEditBtn").css("display") === "block") {
-        //         cancelEditMode();
-        //     } else {
-        //         $.mobile.changePage('#viewDataInput');
-        //     }
-        // }
-
     }
 }
 
-Date.prototype.addDays = function(days) {
-    this.setDate(this.getDate() + parseInt(days));
-    return this;
-};
-
-Date.prototype.yyyymmdd = function(symbol) {
-    var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth() + 1).toString();
-    var dd = this.getDate().toString();
-    return yyyy + symbol + (mm[1] ? mm : '0' + mm[0]) + symbol + (dd[1] ? dd : '0' + dd[0]);
-};
-
-Date.prototype.mmdd = function(symbol) {
-    var mm = (this.getMonth() + 1).toString();
-    var dd = this.getDate().toString();
-    return (mm[1] ? mm : '0' + mm[0]) + symbol + (dd[1] ? dd : '0' + dd[0]);
-};
-
-Date.prototype.hhmm = function() {
-    var hh = this.getHours().toString();
-    var mm = this.getMinutes().toString();
-    return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]);
-};
-
-String.prototype.replaceAll = function(target, replacement) {
-    return this.split(target).join(replacement);
-};
-
-// convert yyyymmdd to [yyyy, mm, dd]
-function cutStringToArray(string, array) {
-    var strMatch = '';
-    $.each(array, function(index, value) {
-        strMatch += '(\\d{' + value + '})'; //like '/(\d{4})(\d{2})(\d{2})/'
-    });
-    var reg = new RegExp(strMatch);
-    var result = string.match(reg);
-    return result;
+function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
+    $('#' + id).attr('for', attr);
+    $('#' + id + ' #msgContent').html(content);
+    $('#' + id + ' #cancel').html(btn1);
+    if (btnIsDisable == true) {
+        $('#' + id + ' #cancel').addClass('disable');
+    } else {
+        $('#' + id + ' #cancel').removeClass('disable');
+    }
+    $('#' + id + ' #confirm').html(btn2);
+    $('#' + id + ' #cancel').attr('href', href1);
+    $('#' + id + ' #confirm').attr('href', href2);
+    $('#' + id).popup(); //initialize the popup
+    $('#' + id).popup('open');
 }
 
-function sortDataByKey(data, key, asc) {
-    data = data.sort(function(a, b) {
-        if (asc) return (a[key] > b[key]);
-        else return (b[key] > a[key]);
-    });
+function popupClose() {
+    var popupMsgID = $(".ui-popup-active")[0].children[0].id;
+    $('#' + popupMsgID).popup('close');
 }
 
-function replaceStr(content, originItem, replaceItem) {
-    $.each(originItem, function(index, value) {
-        content = content.replaceAll(value.toString(), replaceItem[index].toString())
-    });
-    return content;
+function inputValidation(str) {
+    //en or tw both one length
+    if (str.length > 8) {
+        return [false, '限制輸入8個字'];
+    } else if (str.length == 0) {
+        return [false, '您尚未輸入文字'];
+    } else {
+        return [true, ''];
+    }
 }
 
-function addThirtyMins(time) {
-    var timeStr = new Date(new Date().toDateString() + ' ' + time)
-    timeStr.setMinutes(timeStr.getMinutes() + 30);
-    var result = timeStr.hhmm();
-    return result;
-}
+// calculation string length of byte 
+// String.prototype.byteLength = function() {
+//     var arr = this.match(/[^\x00-\xff]/ig);
+//     return arr == null ? this.length : this.length + arr.length;
+// }
 
 // create timeblock object 
 function timeblockObj(category, time, timeID) {
@@ -292,92 +299,9 @@ function reserveObj(roomId, date) {
     return this;
 };
 
-// create tree structure for meeting room data
-function Node(data) {
+function reserveLocalDataObj(roomId, date, data) {
+    this.lastUpdateTime = new Date();
+    this.roomId = roomId;
+    this.date = date;
     this.data = data;
-    this.parent = null;
-    this.children = [];
-}
-
-function Tree(data) {
-    var node = new Node(data);
-    this._root = node;
-}
-
-Tree.prototype.traverseDF = function(callback) {
-
-    // this is a recurse and immediately-invoking function
-    (function recurse(currentNode) {
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(currentNode.children[i]);
-        }
-
-        callback(currentNode);
-
-    })(this._root);
-
 };
-
-Tree.prototype.contains = function(callback, traversal) {
-    traversal.call(this, callback);
-};
-
-Tree.prototype.add = function(data, toData, traversal) {
-    var child = new Node(data),
-        parent = null,
-        callback = function(node) {
-            if (node.data === toData) {
-                parent = node;
-            }
-        };
-
-    this.contains(callback, traversal);
-
-    if (parent) {
-        parent.children.push(child);
-        child.parent = parent;
-    } else {
-        throw new Error('Cannot add node to a non-existent parent.');
-    }
-};
-
-Tree.prototype.remove = function(data, fromData, traversal) {
-    var tree = this,
-        parent = null,
-        childToRemove = null,
-        index;
-
-    var callback = function(node) {
-        if (node.data === fromData) {
-            parent = node;
-        }
-    };
-
-    this.contains(callback, traversal);
-
-    if (parent) {
-        index = findIndex(parent.children, data);
-
-        if (index === undefined) {
-            throw new Error('Node to remove does not exist.');
-        } else {
-            childToRemove = parent.children.splice(index, 1);
-        }
-    } else {
-        throw new Error('Parent does not exist.');
-    }
-
-    return childToRemove;
-};
-
-function findIndex(arr, data) {
-    var index;
-
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].data === data) {
-            index = i;
-        }
-    }
-
-    return index;
-}
