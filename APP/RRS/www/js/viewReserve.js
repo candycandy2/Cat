@@ -229,7 +229,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     };
 
                     this.failCallback = function(data) {
-                        console.log('apiFailCallback');
+                        // console.log('apiFailCallback');
+                        loadingMask('hide');
+                        popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
                     };
 
                     var __construct = function() {
@@ -274,7 +276,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
                 };
 
                 var __construct = function() {
@@ -302,7 +306,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
                 };
 
                 var __construct = function() {
@@ -336,7 +342,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
                 };
 
                 var __construct = function() {
@@ -586,6 +594,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             $('body').on('click', 'div[for=noSelectTimeMsg] #confirm', function() {
                 $('div[for=noSelectTimeMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[for=apiFailMsg] #confirm', function() {
+                $('div[for=apiFailMsg]').popup('close');
             });
 
         }
