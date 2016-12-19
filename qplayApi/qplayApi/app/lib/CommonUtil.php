@@ -292,8 +292,36 @@ class CommonUtil
     }
 
     public static function getMessageContentByCode($messageCode) {
-        //TODO
-        return "";
+        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $project_id = self::getProjectInfo()->row_id;
+        $errorMessage = \DB::table('qp_error_code')
+            -> where('lang_row_id', '=', $lang_row_id)
+            -> where('error_code', '=', $messageCode)
+            -> where ('project_row_id','=',$project_id)
+            -> select("qp_error_code.error_desc")
+            ->get();
+        if(count($errorMessage) < 1) {
+            return "";
+        }
+        $result = $errorMessage[0]->error_desc;
+        return $result;
+    }
+
+    public static function getLanguageIdByName($lang) {
+        $lang = strtolower($lang);
+        $lang_row_id = 1;
+        switch ($lang) {
+            case "en-us":
+                $lang_row_id = 1;
+                break;
+            case "zh-cn":
+                $lang_row_id = 2;
+                break;
+            case "zh-tw":
+                $lang_row_id = 3;
+                break;
+        }
+        return $lang_row_id;
     }
 
     public static function getSecretKeyByAppKey($appKey) {
