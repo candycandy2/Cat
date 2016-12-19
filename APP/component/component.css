@@ -181,21 +181,21 @@ body {
     height: 10vh;
 }
 
-/*Update APP Version page*/
-#viewUpdateAppVersion {
+/*Update APP Version page / Not Signed In page */
+#viewUpdateAppVersion, #viewNotSignedIn {
     height: 100%;
 }
 
-#viewUpdateAppVersion .main-updateAppVersion {
+.main-updateAppVersion {
     text-align: center;
     padding-top: 28vh;
 }
 
-#viewUpdateAppVersion .logo-updateAppVersion {
+.logo-updateAppVersion {
     width: 22%;
 }
 
-#viewUpdateAppVersion .text-updateAppVersion {
+.text-updateAppVersion {
     width: 75vw;
     margin: 0 auto;
     margin-top: 6.5vh;
@@ -206,7 +206,7 @@ body {
     text-align: left;
 }
 
-#viewUpdateAppVersion .button-updateAppVersion {
+.button-updateAppVersion {
     position: absolute;
     left: 15%;
     bottom: 6.5%;
