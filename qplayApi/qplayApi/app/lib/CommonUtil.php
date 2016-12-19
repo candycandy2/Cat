@@ -108,6 +108,10 @@ class CommonUtil
         if(count($userList) < 1) {
             return null;
         }
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> select('uuid')->get();
 
         return $userList[0];
     }
