@@ -293,7 +293,11 @@ class CommonUtil
 
     public static function getMessageContentByCode($messageCode) {
         $lang_row_id = self::getLanguageIdByName($_GET['lang']);
-        $project_id = self::getProjectInfo()->row_id;
+        $project_id = self::getProjectInfo();
+        if ($project_id == null ||  count($project_id)<0){
+            return "";
+        }
+        $project_id =    $project_id->row_id;
         $errorMessage = \DB::table('qp_error_code')
             -> where('lang_row_id', '=', $lang_row_id)
             -> where('error_code', '=', $messageCode)
