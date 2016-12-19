@@ -1,0 +1,10 @@
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\bin\Debug\QPlayUserSyncService.exe.config
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.ProjectInstaller.resources
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.csproj.GenerateResource.Cache
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\bin\Debug\QPlayUserSyncService.exe
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\bin\Debug\QPlayUserSyncService.pdb
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\bin\Debug\ITS.Data.dll
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\bin\Debug\log4net.dll
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.exe
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.pdb
+F:\Workspace\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.csprojResolveAssemblyReference.cache
