@@ -1,0 +1,10 @@
+F:\Workspace\QPlayUserSyncService\Test\obj\x86\Debug\Test.csprojResolveAssemblyReference.cache
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\Test.exe.config
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\Test.exe
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\Test.pdb
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.exe
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\ITS.Data.dll
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\log4net.dll
+F:\Workspace\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.pdb
+F:\Workspace\QPlayUserSyncService\Test\obj\x86\Debug\Test.exe
+F:\Workspace\QPlayUserSyncService\Test\obj\x86\Debug\Test.pdb

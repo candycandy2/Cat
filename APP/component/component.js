@@ -32,6 +32,7 @@ var getDataFromServer = false;
 var popupID;
 var callHandleOpenURL = false;
 var doInitialSuccess = false;
+var checkTimerCount = 0;
 
 var app = {
     // Application Constructor
@@ -84,10 +85,16 @@ var app = {
             var checkAppVer = new checkAppVersion();
         } else {
             console.log("GetRegistradionID--------null");
+            checkTimerCount++;
 
             //Show viewGetQPush
             $("#viewGetQPush").addClass("ui-page ui-page-theme-a ui-page-active");
             $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+
+            if (checkTimerCount >= 30) {
+                $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
+                $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
+            }
         }
     },
     onOpenNotification: function(data) {
@@ -176,6 +183,12 @@ $(document).one("pagebeforecreate", function(){
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
         }
+
+        //viewNotSignedIn, Login Again
+        $("#LoginAgain").on("click", function() {
+            $("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            var checkAppVer = new checkAppVersion();
+        });
     }, "html");
 });
 /********************************** function *************************************/
@@ -220,7 +233,7 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
         data: queryData,
         cache: false,
         success: requestSuccess,
-        fail: failCallback
+        error: failCallback
     });
 }
 
@@ -296,19 +309,20 @@ function checkAppVersion() {
 }
 
 function hideInitialPage() {
-    loadingMask("show");
+    if (window.localStorage.getItem("firstInitial") === null) {
+        window.localStorage.setItem("firstInitial", "true");
+        doHideInitialPage = true;
+    }
 
-    setTimeout(function() {
-        $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
-        initialSuccess();
-        loadingMask("hide");
-    }, 3000);
+    $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+    initialSuccess();
 }
 
 //Plugin-QSecurity 
 function setWhiteList() {
 
     var self = this;
+    loadingMask("hide");
 
     this.successCallback = function() {
         var doCheckStorageData = false;

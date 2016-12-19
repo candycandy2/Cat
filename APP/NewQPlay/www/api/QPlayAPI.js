@@ -28,7 +28,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         data: queryData,
         cache: false,
         success: requestSuccess,
-        fail: failCallback
+        error: failCallback
     });
     
 }

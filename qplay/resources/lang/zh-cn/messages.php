@@ -53,6 +53,7 @@ return [
     'TITLE_SYS_GROUP_MAINTAIN' => '系统群组管理',
     'TITLE_SYS_PARAMETER_MAINTAIN' => '参数设置',
     'TITLE_SYS_PROJECT_MAINTAIN' => '专案管理',
+	'TITLE_SECRETARY_PUSH' => '秘书推播',
 
     //validate
     'VALIDATE_ACCEPT' => '仅接受',
@@ -289,5 +290,7 @@ return [
 	'ERR_ADMIN_GROUP_CAN_NOT_DELETE' => 'Administrator群组无法删除!',
 	'ERR_GROUP_CAN_NOT_NAMED_ADMIN' => 'Administrator是系统群组, 无法使用该名称!',
     'ERR_APP_CATEGORY_EXIST' => 'App 类别名称已经存在!',
-    'ERR_WRONG_TYPE'=>'请输入正确的 %s 格式!'
+    'ERR_WRONG_TYPE'=>'请输入正确的 %s 格式!',
+
+	'DESIGNATED'=>'指定人员'
 ];
