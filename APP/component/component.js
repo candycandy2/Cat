@@ -296,13 +296,13 @@ function checkAppVersion() {
 }
 
 function hideInitialPage() {
-    loadingMask("show");
+    if (window.localStorage.getItem("firstInitial") === null) {
+        window.localStorage.setItem("firstInitial", "true");
+        doHideInitialPage = true;
+    }
 
-    setTimeout(function() {
-        $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
-        initialSuccess();
-        loadingMask("hide");
-    }, 3000);
+    $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+    initialSuccess();
 }
 
 //Plugin-QSecurity 
