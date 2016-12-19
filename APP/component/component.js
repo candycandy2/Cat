@@ -220,7 +220,7 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
         data: queryData,
         cache: false,
         success: requestSuccess,
-        fail: failCallback
+        error: failCallback
     });
 }
 
