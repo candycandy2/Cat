@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use App\Http\Controllers\platformController;
 use Config;
 use DB;
 use Request;
@@ -436,6 +437,48 @@ SQL;
         }
 
         return $sendInfo;
+    }
+
+    public static function getSecretaryMessageSendInfo($messageSendId) {
+        $messageSendList = \DB::table('qp_message_send_pushonly')
+            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send_pushonly.created_user")
+            -> where('qp_message_send_pushonly.row_id', '=', $messageSendId)
+            -> select("qp_message_send_pushonly.*", "qp_user.login_id as source_user")->get();
+        if(count($messageSendList) < 1) {
+            return null;
+        }
+
+        $sendInfo = $messageSendList[0];
+
+        $messageList = \DB::table('qp_message')
+            -> where('row_id', '=', $sendInfo->message_row_id)
+            -> select()->get();
+        if(count($messageList) < 1) {
+            return null;
+        }
+
+        $sendInfo->message_info = $messageList[0];
+
+        $sendInfo->company_list = array();
+        $sendInfo->user_list = array();
+        if(trim($sendInfo->company_label) != '') {
+            $sendInfo->send_type = 'company';
+            $companyStr = $sendInfo->company_label;
+            $sendInfo->company_list = explode(";", $companyStr);
+        } else {
+            $sendInfo->send_type = 'designated';
+            $sendInfo->user_list = self::getSecretaryMessageDesignatedReceiver($messageSendId);
+        }
+
+        return $sendInfo;
+    }
+
+    public static function getSecretaryMessageDesignatedReceiver($messageSendId) {
+        $userList = \DB::table('qp_user_message_pushonly')
+            -> where('message_send_pushonly_row_id', '=', $messageSendId)
+            -> select()->get();
+
+        return $userList;
     }
 
     public static function getCategoryInfoByRowId($categoryId){
