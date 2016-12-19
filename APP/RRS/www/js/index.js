@@ -19,14 +19,14 @@ var dictDayOfWeek = {
     '5': '(五)'
 };
 var dictSite = {
-    '1': 'BQT/QTT',
-    '2': 'QTY',
+    '1': 'QTY',
+    '2': 'BQT/QTT',
     '43': '雙星',
     '100': 'QTH'
 };
 var dictSiteCategory = {
-    '1': '1',
-    '2': '2',
+    '1': '2',
+    '2': '1',
     '43': '2',
     '100': '8'
 };
@@ -291,45 +291,63 @@ function onBackKeyDown() {
     }
 }
 
-function popupMsg(id, attr, content, btn1, btnIsDisable, btn2, href1, href2) {
+//close onBackKeyDown
+function popupClose() {
+    var popupMsgID = $(".ui-popup-active")[0].children[0].id;
+    $('#' + popupMsgID).popup('close');
+}
+
+function popupSchemeMsg(id, attr, title, content, href1, href2) {
     $('#' + id).attr('for', attr);
+    $('#' + id + ' #msgTitle').html(title);
     $('#' + id + ' #msgContent').html(content);
-    $('#' + id + ' #cancel').html(btn1);
-    if (btnIsDisable == true) {
-        $('#' + id + ' #cancel').addClass('disable');
-    } else {
-        $('#' + id + ' #cancel').removeClass('disable');
-    }
-    $('#' + id + ' #confirm').html(btn2);
-    $('#' + id + ' #cancel').attr('href', href1);
-    $('#' + id + ' #confirm').attr('href', href2);
+    $('#' + id + ' #mail').attr('href', href1);
+    $('#' + id + ' #tel').attr('href', href2);
+    $('#' + id + ' > div').css('height', '30vh');
+    $('#' + id + ' > div > div').css('margin', '0 0 0 23vw');
+    $('#' + id).removeClass();
     $('#' + id).popup(); //initialize the popup
     $('#' + id).popup('open');
 }
 
-function popupMsg1(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig) {
+function popupMsg(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig) {
     $('#' + id).attr('for', attr);
     $('#' + id + ' #msgTitle').html(title);
     $('#' + id + ' #msgContent').html(content);
     $('#' + id + ' #cancel').html(btn1);
-    if (btnIsDisplay == true) {
-        $('#' + id + ' #cancel').removeClass('disable');
-    } else {
-        $('#' + id + ' #cancel').addClass('disable');
-    }
     $('#' + id + ' #confirm').html(btn2);
+
+    if (title == '') {
+        $('#' + id + ' > div > div').css('margin', '5vh 0 0 0');
+    } else {
+        $('#' + id + ' > div > div').css('margin', '0 0 0 23vw');
+    }
+
     if (popupIsBig == true) {
         $('#' + id + ' > div').css('height', '30vh');
+    } else {
+        $('#' + id + ' > div').css('height', '');
     }
+  
     $('#' + id).removeClass();
     $('#' + id + ' button').removeClass();
+    if (btnIsDisplay == true) {
+        $('#' + id + ' #cancel').removeClass('disable');
+        $('#' + id + ' #confirm').css('width', '50%');
+    } else {
+        $('#' + id + ' #cancel').addClass('disable');
+        $('#' + id + ' #confirm').css('width', '100%');
+    }
+    $('#' + id + ' #cancel').attr('onClick', 'popupCancelClose()')
+
     $('#' + id).popup(); //initialize the popup
     $('#' + id).popup('open');
 }
 
-function popupClose() {
-    var popupMsgID = $(".ui-popup-active")[0].children[0].id;
-    $('#' + popupMsgID).popup('close');
+function popupCancelClose() {
+    $('body').on('click', 'div[for*=Msg] #cancel', function() {
+        $('div[for*=Msg]').popup('close');
+    });
 }
 
 function inputValidation(str) {

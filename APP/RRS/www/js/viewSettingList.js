@@ -38,8 +38,7 @@ $(document).one('pagecreate', '#viewSettingList', function() {
             $('body').on('click', '#settingDelete', function() {
 
                 clickDeleteID = $(this).attr('value');
-                popupMsg('settingListPopupMsg', 'deleteMsg', '是否確定刪除', '取消', false, '確定', '#', '#');
-
+                popupMsg('settingListPopupMsg', 'deleteMsg', '', '是否確定刪除?', '取消', true, '確定', false);
             });
 
             // $('div[for=deleteMsg] #confirm').on('click', function() {
@@ -56,7 +55,6 @@ $(document).one('pagecreate', '#viewSettingList', function() {
 
                 $('div[for=deleteMsg]').popup('close');
             });
-
         }
     });
 

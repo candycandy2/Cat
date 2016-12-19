@@ -231,7 +231,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     this.failCallback = function(data) {
                         // console.log('apiFailCallback');
                         loadingMask('hide');
-                        popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
                     };
 
                     var __construct = function() {
@@ -249,7 +249,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     if (data['ResultCode'] === "002902") {
                         //Reservation Successful
-                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '預約成功', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '', '預約成功', '', false, '確定', false);
 
                         if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
@@ -257,11 +257,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
-                        popupMsg('reservePopupMsg', 'reserveFailMsg', '預約失敗，有人預約', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'reserveFailMsg', '', '預約失敗，有人預約', '', false, '確定', false);
 
                     } else if (data['ResultCode'] === "002904") {
                         //Reservation Failed, Repeated a Reservation
-                        popupMsg('reservePopupMsg', 'reserveRepeatMsg', '預約失敗，重複預約', '', true, '確定', '#', '#');
+                        popupMsg('reservePopupMsg', 'reserveFailMsg', '', '預約失敗，重複預約', '', false, '確定', false);
                     }
 
                     if (page == 'pageTwo') {
@@ -278,7 +278,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.failCallback = function(data) {
                     // console.log('apiFailCallback');
                     loadingMask('hide');
-                    popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
+                    popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -294,12 +294,12 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
-                        popupMsg('reservePopupMsg', 'cancelSuccessMsg', '取消預約成功', '', true, '確定', '', '');
+                        popupMsg('reservePopupMsg', 'cancelSuccessMsg', '', '取消預約成功', '', false, '確定', false);
                         var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('reservePopupMsg', 'cancelFailMsg', '取消預約失敗', '', true, '確定', '', '');
+                        popupMsg('reservePopupMsg', 'cancelFailMsg', '', '取消預約失敗', '', false, '確定', false);
                     }
 
                     loadingMask('hide');
@@ -308,7 +308,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.failCallback = function(data) {
                     // console.log('apiFailCallback');
                     loadingMask('hide');
-                    popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
+                    popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -344,7 +344,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.failCallback = function(data) {
                     // console.log('apiFailCallback');
                     loadingMask('hide');
-                    popupMsg('reservePopupMsg', 'apiFailMsg', queryData, '', true, '確定', '#', '#');
+                    popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -443,7 +443,12 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if ($(this).hasClass('ui-color-myreserve')) {
 
                     traceID = $(this).attr('traceID');
-                    popupMsg('reservePopupMsg', 'myReserveMsg', $(this).attr('msg'), '取消', false, '確定', '#', '#');
+                    var tempEname = $(this).attr('ename').substring(0, $(this).attr('ename').indexOf('.'));
+                    var arrMsgValue = $(this).attr('msg').split(',');
+                    var arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']);
+                    var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                    var msgContent = '<table><tr><td>會議室</td><td>' + arrMsgValue[1] + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + arrMsgValue[2] + '</td></tr></table>';
+                    popupMsg('reservePopupMsg', 'myReserveMsg', '是否取消預約', msgContent, '取消', true, '確定', true);
 
                 } else if ($(this).hasClass('ui-color-reserve')) {
 
@@ -451,10 +456,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     var arrMsgValue = $(this).attr('msg').split(',');
                     var arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']);
                     var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                    var msgContent = '<table><tr><td>會議室</td><td>' + arrMsgValue[1] + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + arrMsgValue[2] + '</td></tr></table>';
                     //ex: 會議室協調_12/01 T01 15:00-15:30
                     var tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                    popupMsg('reservePopupMsg', 'reserveMsg', $(this).attr('msg'), 'Mail To ' + tempEname, false, 'Call ' + tempEname, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'));
-                    $('div[for=reserveMsg] a:first-child').attr('data-rel', '');
+                    popupSchemeMsg('reservePopupSchemeMsg', 'reserveMsg', '會議室協調', msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'));
 
                 } else if ($(this).hasClass('ui-color-noreserve') && !$(this).hasClass('reserveSelect')) {
 
@@ -492,7 +497,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
 
                 if (timeID === '') {
-                    popupMsg('reservePopupMsg', 'noSelectTimeMsg', '您尚未選擇時間', '', true, '確定', '#', '#');
+                    popupMsg('reservePopupMsg', 'noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', false);
                 } else {
                     //replace end of comma
                     var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));

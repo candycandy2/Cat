@@ -41,13 +41,11 @@
         </div>
     </div>
     <div data-role="popup" data-history="false" id="settingListPopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
-            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-            <p id="msgContent"></p>
-            <p>
-                <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
-                <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
-            </p>
+        <div data-role="main" class="popup-msg1">
+            <h1 id="msgTitle"></h1>
+            <div id="msgContent"></div>
+            <button id="cancel"></button>
+            <button id="confirm"></button>
         </div>
     </div>
 </div>
