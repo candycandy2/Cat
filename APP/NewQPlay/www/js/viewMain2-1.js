@@ -88,6 +88,14 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                     }
 
                     loadingMask("hide");
+
+                    if (window.localStorage.getItem("firstInitial") === "true") {
+                        if (doHideInitialPage) {
+                            doHideInitialPage = false;
+                            refreshPage();
+                            window.localStorage.setItem("firstInitial", "false");
+                        }
+                    }
                 }; 
 
                 this.failCallback = function(data) {};
@@ -153,6 +161,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 }();
             }
 
+            function refreshPage() {
+                $.mobile.changePage('#viewMain2-1', {
+                    allowSamePageTransition : true,
+                    transition              : 'none',
+                    showLoadMsg             : false,
+                    reloadPage              : true
+                });
+
+                $.mobile.changePage('#viewMain2-1');
+            }
             /********************************** page event *************************************/
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
 
