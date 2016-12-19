@@ -140,8 +140,12 @@
     background-size: 100% auto;
 }
 
-.header-normal {
-    background-image: url(../img/header.svg);
+.header-service {
+    background-image: url(../img/header_service.svg);
+}
+
+.header-event {
+    background-image: url(../img/header_event.svg);
 }
 
 .header-left {

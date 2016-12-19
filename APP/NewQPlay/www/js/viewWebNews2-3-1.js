@@ -43,6 +43,20 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
                         updateReadEvent(content.message_type, "read");
 
+                        if (content.message_type === "news") {
+                            $(".notice-service").show();
+                            $(".notice-event").hide();
+
+                            $(".news-header").addClass("header-service");
+                            $(".news-header").removeClass("header-event");
+                        } else if (content.message_type === "event") {
+                            $(".notice-service").hide();
+                            $(".notice-event").show();
+
+                            $(".news-header").addClass("header-event");
+                            $(".news-header").removeClass("header-service");
+                        }
+
                         $("#newsDetailCreateTime").html(content.create_time.substr(0, 10));
                         $("#newsDetailTitle").html(content.message_title);
                         $("#newsAuthor").html(content.create_user);
