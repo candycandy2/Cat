@@ -146,21 +146,21 @@ body {
     height: 10vh;
 }
 
-/*APP Get QPsuh*/
-#viewGetQPush {
+/*APP Get QPsuh / Maintain */
+#viewGetQPush, #viewMaintain {
     height: 100%;
 }
 
-#viewGetQPush .main-GetQPush {
+.main-GetQPush {
     text-align: center;
     padding-top: 28vh;
 }
 
-#viewGetQPush .logo-GetQPush {
+.logo-GetQPush {
     width: 22%;
 }
 
-#viewGetQPush .text-GetQPush {
+.text-GetQPush {
     width: 75vw;
     margin: 0 auto;
     margin-top: 6.5vh;
@@ -171,13 +171,13 @@ body {
     text-align: left;
 }
 
-#viewGetQPush .brand-GetQPush-content {
+.brand-GetQPush-content {
     position: absolute;
     width: 100%;
     bottom: 2%;
 }
 
-#viewGetQPush .brand-GetQPush {
+.brand-GetQPush {
     height: 10vh;
 }
 
