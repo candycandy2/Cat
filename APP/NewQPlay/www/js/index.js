@@ -159,5 +159,9 @@ function onBackKeyDown() {
 
         $.mobile.changePage('#viewNewsEvents2-3');
 
+    } else if (activePageID === "viewNotSignedIn") {
+
+        navigator.app.exitApp();
+
     }
 }
