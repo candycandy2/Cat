@@ -50,13 +50,15 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
-                        popupMsg('myReservePopupMsg', 'noDataMsg', '沒有您的預約資料', '', true, '返回預約頁面', '#', '#');
+                        popupMsg('myReservePopupMsg', 'noDataMsg', '', '沒有您的預約資料', '', false, '確定', false);
                     }
                     loadingMask('hide');
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('myReservePopupMsg', 'apiFailMsg', '', queryData, '', true, '確定', false);
                 };
 
                 var __construct = function() {
@@ -73,17 +75,19 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
                         $('div[id^=def-' + traceID + ']').hide();
-                        popupMsg('myReservePopupMsg', 'successMsg', '取消預約成功', '', true, '確定', '#', '#');
+                        popupMsg('myReservePopupMsg', 'successMsg', '', '取消預約成功', '', false, '確定', false);
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('myReservePopupMsg', 'failMsg', '取消預約失敗', '', true, '確定', '#', '#');
+                        popupMsg('myReservePopupMsg', 'failMsg', '', '取消預約失敗', '', false, '確定', false);
                     }
                     loadingMask('hide');
                 };
 
                 this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    // console.log('apiFailCallback');
+                    loadingMask('hide');
+                    popupMsg('myReservePopupMsg', 'apiFailMsg', '', queryData, '', true, '確定', false);
                 };
 
                 var __construct = function() {
@@ -101,11 +105,19 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             $('body').on('click', 'div[id^=def-] a', function() {
                 clickAggTarceID = $(this).attr('value');
                 clickReserveDate = $(this).attr('date');
-                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', '', true, '確定', '#', '#');
+                var clickReserveRoom = $(this).attr('room');
+                var clickReserveTime = $(this).attr('time');
+                var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
+                var strDate = arrDateString[2] + '/' + arrDateString[3];
+                var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>'
+                                +'<tr><td>日期</td><td>' + strDate + '</td></tr>'
+                                +'<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
+                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', true);
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+                $('div[for=cancelMsg]').popup('close');
             });
 
             $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
@@ -123,6 +135,11 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             $('#myReserveBack').on('click', function() {
                 $.mobile.changePage('#viewReserve');
             });
+
+            $('body').on('click', 'div[for=apiFailMsg] #confirm', function() {
+                $('div[for=apiFailMsg]').popup('close');
+            });
+
         }
     });
 

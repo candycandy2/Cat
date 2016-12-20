@@ -20,3 +20,6 @@ function cutStringToArray(string, array) {
     var result = string.match(reg);
     return result;
 }
+
+
+
