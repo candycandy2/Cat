@@ -297,17 +297,17 @@ function popupClose() {
     $('#' + popupMsgID).popup('close');
 }
 
-function popupSchemeMsg(id, attr, title, content, href1, href2) {
-    $('#' + id).attr('for', attr);
-    $('#' + id + ' #msgTitle').html(title);
-    $('#' + id + ' #msgContent').html(content);
-    $('#' + id + ' #mail').attr('href', href1);
-    $('#' + id + ' #tel').attr('href', href2);
-    $('#' + id + ' > div').css('height', '30vh');
-    $('#' + id + ' > div > div').css('margin', '0 0 0 23vw');
-    $('#' + id).removeClass();
-    $('#' + id).popup(); //initialize the popup
-    $('#' + id).popup('open');
+function popupSchemeMsg(attr, title, content, href1, href2) {
+    $('#reservePopupSchemeMsg').attr('for', attr);
+    $('#reservePopupSchemeMsg #msgTitle').html(title);
+    $('#reservePopupSchemeMsg #msgContent').html(content);
+    $('#reservePopupSchemeMsg #mail').attr('href', href1);
+    $('#reservePopupSchemeMsg #tel').attr('href', href2);
+    $('#reservePopupSchemeMsg > div').css('height', '30vh');
+    $('#reservePopupSchemeMsg > div > div').css('margin', '0 0 0 23vw');
+    $('#reservePopupSchemeMsg').removeClass();
+    $('#reservePopupSchemeMsg').popup(); //initialize the popup
+    $('#reservePopupSchemeMsg').popup('open');
 }
 
 function popupMsg(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig) {
