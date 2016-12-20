@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use App\Http\Controllers\platformController;
 use Config;
 use DB;
 use Request;
@@ -368,8 +369,36 @@ SQL;
     }
 
     public static function getMessageContentByCode($messageCode) {
-        //TODO
-        return "";
+        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $project_id = self::getProjectInfo()->row_id;
+        $errorMessage = \DB::table('qp_error_code')
+            -> where('lang_row_id', '=', $lang_row_id)
+            -> where('error_code', '=', $messageCode)
+            -> where ('project_row_id','=',$project_id)
+            -> select("qp_error_code.error_desc")
+            ->get();
+        if(count($errorMessage) < 1) {
+            return "";
+        }
+        $result = $errorMessage[0]->error_desc;
+        return $result;
+    }
+
+    public static function getLanguageIdByName($lang) {
+        $lang = strtolower($lang);
+        $lang_row_id = 1;
+        switch ($lang) {
+            case "en-us":
+                $lang_row_id = 1;
+                break;
+            case "zh-cn":
+                $lang_row_id = 2;
+                break;
+            case "zh-tw":
+                $lang_row_id = 3;
+                break;
+        }
+        return $lang_row_id;
     }
 
     public static function getMessageInfo($messageId) {
@@ -436,6 +465,48 @@ SQL;
         }
 
         return $sendInfo;
+    }
+
+    public static function getSecretaryMessageSendInfo($messageSendId) {
+        $messageSendList = \DB::table('qp_message_send_pushonly')
+            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send_pushonly.created_user")
+            -> where('qp_message_send_pushonly.row_id', '=', $messageSendId)
+            -> select("qp_message_send_pushonly.*", "qp_user.login_id as source_user")->get();
+        if(count($messageSendList) < 1) {
+            return null;
+        }
+
+        $sendInfo = $messageSendList[0];
+
+        $messageList = \DB::table('qp_message')
+            -> where('row_id', '=', $sendInfo->message_row_id)
+            -> select()->get();
+        if(count($messageList) < 1) {
+            return null;
+        }
+
+        $sendInfo->message_info = $messageList[0];
+
+        $sendInfo->company_list = array();
+        $sendInfo->user_list = array();
+        if(trim($sendInfo->company_label) != '') {
+            $sendInfo->send_type = 'company';
+            $companyStr = $sendInfo->company_label;
+            $sendInfo->company_list = explode(";", $companyStr);
+        } else {
+            $sendInfo->send_type = 'designated';
+            $sendInfo->user_list = self::getSecretaryMessageDesignatedReceiver($messageSendId);
+        }
+
+        return $sendInfo;
+    }
+
+    public static function getSecretaryMessageDesignatedReceiver($messageSendId) {
+        $userList = \DB::table('qp_user_message_pushonly')
+            -> where('message_send_pushonly_row_id', '=', $messageSendId)
+            -> select()->get();
+
+        return $userList;
     }
 
     public static function getCategoryInfoByRowId($categoryId){
@@ -663,4 +734,5 @@ SQL;
         }
         return $projectId;
     }
+
 }

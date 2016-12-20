@@ -88,6 +88,14 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                     }
 
                     loadingMask("hide");
+
+                    if (window.localStorage.getItem("firstInitial") === "true") {
+                        if (doHideInitialPage) {
+                            doHideInitialPage = false;
+                            refreshPage();
+                            window.localStorage.setItem("firstInitial", "false");
+                        }
+                    }
                 }; 
 
                 this.failCallback = function(data) {};
@@ -116,7 +124,12 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         //logout can not clear messagecontent / pushToken / msgDateFrom
                         var messagecontent = window.localStorage.getItem("messagecontent");
                         var pushToken = window.localStorage.getItem("pushToken");
-                        var msgDateFrom = window.localStorage.getItem("msgDateFrom");
+                        var storeMsgDateFrom = false;
+
+                        if (window.localStorage.getItem("msgDateFrom") !== null) {
+                            var msgDateFrom = window.localStorage.getItem("msgDateFrom");
+                            storeMsgDateFrom = true;
+                        }
 
                         loginData = {
                             versionName:         "",
@@ -140,8 +153,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         window.localStorage.setItem("messagecontent", messagecontent);
                         window.localStorage.setItem("pushToken", pushToken);
-                        window.localStorage.setItem("msgDateFrom", msgDateFrom);
 
+                        if (storeMsgDateFrom) {
+                            window.localStorage.setItem("msgDateFrom", msgDateFrom);
+                        }
+
+                        $.mobile.changePage('#viewNotSignedIn');
+                        $("#viewMain2-1").removeClass("ui-page ui-page-active");
+                        $("#viewNotSignedIn").addClass("ui-page ui-page-active");
+
+                        loadingMask("hide");
                         app.initialize();
                     }
                 };
@@ -153,6 +174,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 }();
             }
 
+            function refreshPage() {
+                $.mobile.changePage('#viewMain2-1', {
+                    allowSamePageTransition : true,
+                    transition              : 'none',
+                    showLoadMsg             : false,
+                    reloadPage              : true
+                });
+
+                $.mobile.changePage('#viewMain2-1');
+            }
             /********************************** page event *************************************/
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
 
@@ -185,7 +216,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             $("#newseventspage").on("click", function() {
                 $.mobile.changePage('#viewNewsEvents2-3');
             });
-
         }
     });
 

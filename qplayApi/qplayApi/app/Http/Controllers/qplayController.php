@@ -2257,7 +2257,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyWithCustomerAppKey();
 
         $input = Input::get();
         $request = \Request::instance();

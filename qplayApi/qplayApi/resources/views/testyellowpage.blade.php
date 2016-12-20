@@ -22,12 +22,12 @@
         var QueryEmployeeData = function () {
             var param = "<LayoutHeader><Company>Qisda</Company><Name_CH></Name_CH><Name_EN>Steven</Name_EN><DeptCode></DeptCode><Ext_No></Ext_No></LayoutHeader>";
             $.ajax({
-                url: "v101/yellowpage/QueryEmployeeData?lang=en-us&uuid=chaosTest",
+                url: "v101/custom/yellowpage/QueryEmployeeData?lang=zh-cn&uuid=chaosTest",
                 type: "POST",
                 contentType: "application/json",
                 data:param,
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "yellowpage");
+                    request.setRequestHeader("app-key", "appyellowpagetest");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("token", "57a93c3dbee41");

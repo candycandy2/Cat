@@ -40,6 +40,9 @@ Route::any('/qplayauth_register', function() {
     return view("login");
 });
 
+//Custom
+Route::any('/v101/custom/{app}/{function}', 'customController@processRequest');
+
 //YellowPage
 Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
 Route::any('/v101/yellowpage/QueryEmployeeDataDetail', 'yellowpageController@QueryEmployeeDataDetail');
