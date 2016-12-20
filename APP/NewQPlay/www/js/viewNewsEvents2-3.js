@@ -134,6 +134,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 var newsListItems = "";
                 var eventListItems = "";
+                var countNews = 0;
+                var countEvents = 0;
 
                 for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++) {
 
@@ -175,8 +177,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                     if (message.message_type == "news") {
                         newsListItems += content;
+                        countNews++;
                     } else if (message.message_type == "event") {
                         eventListItems += content;
+                        countEvents++;
                     }
                 }
 
@@ -185,9 +189,38 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 $("#eventlistview").html(eventListItems);
                 $("#eventlistview").listview('refresh');
 
+                //If News or Events has no message, show [No News] [No Events]
+                if (countNews === 0) {
+                    $("#noNews").show();
+                } else {
+                    $("#noNews").hide();
+                }
+
+                if (countEvents === 0) {
+                    $("#noEvents").show();
+                } else {
+                    $("#noEvents").hide();
+                }
+
+                //If News or Events has no message, hide delete button
+                if (activeNvrBar === "navNews") {
+                    if (countNews === 0) {
+                        $("#deleteMessage").hide();
+                    } else {
+                        $("#deleteMessage").show();
+                    }
+                }
+
+                if (activeNvrBar === "navEvents") {
+                    if (countEvents === 0) {
+                        $("#deleteMessage").hide();
+                    } else {
+                        $("#deleteMessage").show();
+                    }
+                }
+
                 if (action === "closePopup") {
                     $('#deleteConfirm').popup('close');
-                    checkboxChange();
                     editModeChange();
                 }
 
@@ -270,11 +303,15 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     dispaly = "block";
                     btnStr = "Cancel";
                     btnBackDisplay = "none";
+                    $("input.msgDelCheckbox").prop("disabled", false);
                 }
 
+                $('#viewNewsEvents2-3 :checkbox').prop('checked', false);
                 $("input.msgDelCheckbox").css("display", dispaly);
                 $("#deleteMessage span").html(btnStr);
                 $("#messageListBack").css("display", btnBackDisplay);
+
+                checkboxChange();
             };
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
