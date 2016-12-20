@@ -28,3 +28,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .btn img{ width: 80%; height: auto;}
 .google img{ margin-top: 5%;}
 
+
+
+/* Landscape 這是拿橫的時候 */
+@media screen and (orientation:landscape)
+{
+
+.logo{ position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 13%; height: auto; margin: auto;}
+
+/*area*/
+.area-top{ height: 70%;}
+.area-bottom{ height:30%;}
+
+/*btn*/
+.btn{ height: 30%; text-align: center; float:left; width:49%;}
+.btn img{ width: 70%; height: auto;}
+.google img{ margin-top:0; float:right;margin-right:5%;}
+.appstore img{ margin-top:0; float:left; margin-left:5%;}
+}

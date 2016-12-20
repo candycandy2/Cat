@@ -41,7 +41,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
                         var content = data['content'];
 
-                        updateReadEvent(content.message_type, "read");
+                        updateReadDelete(content.message_type, "read");
 
                         if (content.message_type === "news") {
                             $(".notice-service").show();
@@ -79,7 +79,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                 }();
             }
 
-            window.updateReadEvent = function(type, status) {
+            window.updateReadDelete = function(type, status) {
                 var self = this;
                 var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
 
