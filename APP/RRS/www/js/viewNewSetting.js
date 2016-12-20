@@ -88,7 +88,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                         seqClick.push(id);
                         $('#floorDefault div').removeClass('ui-btn-active');
                         $(this).addClass('ui-btn-active');
-                        $(this).append('<div id=cntIcon' + id + ' class="btn-benq cntIcon"></div>');
+                        $(this).append('<div id=cntIcon' + id + ' class="cntIcon"></div>');
                     }
                 }
 
