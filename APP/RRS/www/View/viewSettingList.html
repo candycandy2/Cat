@@ -10,42 +10,44 @@
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <div id="defaultSettingList" class="ui-btn ui-shadow ui-corner-all ui-margin-10">
-            <h2 class="ui-color-yellow ui-position-adjust">
+        <div class="ui-margin-public">
+            <div id="defaultSettingList" class="ui-btn ui-shadow ui-corner-all ui-margin-public">
+                <h2 class="ui-color-yellow ui-position-adjust">
                         現在空的會議室 BQT/QTT</h2>
-            <hr class="ui-color-yellow col-95 ui-position-adjust" />
-            <div class="ui-grid-a ui-position-adjust">
-                <div class="ui-block-a col-5">
-                    人數&nbsp;不限
+                <hr class="ui-color-yellow col-95 ui-position-adjust" />
+                <div class="ui-grid-a ui-position-adjust">
+                    <div class="ui-block-a col-5">
+                        人數&nbsp;不限
+                    </div>
+                    <div class="ui-block-b col-5">
+                        時段&nbsp;現在起一小時
+                    </div>
                 </div>
-                <div class="ui-block-b col-5">
-                    時段&nbsp;現在起一小時
-                </div>
+                <div class="ui-position-adjust">優先樓層&nbsp;不限</div>
             </div>
-            <div class="ui-position-adjust">優先樓層&nbsp;不限</div>
-        </div>
-        <div id="settingList" class="ui-btn ui-shadow ui-corner-all ui-margin-10 ui-hasBtn disable">
-            <h2 class="ui-color-yellow ui-position-adjust">
+            <div id="settingList" class="ui-btn ui-shadow ui-corner-all ui-margin-public ui-hasBtn disable">
+                <h2 class="ui-color-yellow ui-position-adjust">
                         [title]&nbsp;[siteName]</h2>
-            <a id="settingDelete" href="#" value="[index]" class="ui-btn ui-shadow ui-corner-all ui-delete-btn">刪除</a>
-            <hr class="ui-color-yellow col-95 ui-position-adjust" />
-            <div class="ui-grid-a ui-position-adjust">
-                <div class="ui-block-a col-5">
-                    人數&nbsp;[people]
+                <a id="settingDelete" href="#" value="[index]" class="ui-btn ui-shadow ui-corner-all ui-delete-btn">刪除</a>
+                <hr class="ui-color-yellow col-95 ui-position-adjust" />
+                <div class="ui-grid-a ui-position-adjust">
+                    <div class="ui-block-a col-5">
+                        人數&nbsp;[people]
+                    </div>
+                    <div class="ui-block-b col-5">
+                        時段&nbsp;[time]
+                    </div>
                 </div>
-                <div class="ui-block-b col-5">
-                    時段&nbsp;[time]
-                </div>
+                <div class="ui-position-adjust">優先樓層&nbsp;[floor]</div>
             </div>
-            <div class="ui-position-adjust">優先樓層&nbsp;[floor]</div>
         </div>
-    </div>
-    <div data-role="popup" data-history="false" id="settingListPopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="popup-msg1">
-            <h1 id="msgTitle"></h1>
-            <div id="msgContent"></div>
-            <button id="cancel"></button>
-            <button id="confirm"></button>
+        <div data-role="popup" data-history="false" id="settingListPopupMsg" data-overlay-theme="b" data-dismissible="false">
+            <div data-role="main" class="popup-msg">
+                <h1 id="msgTitle"></h1>
+                <div id="msgContent"></div>
+                <button id="cancel"></button>
+                <button id="confirm"></button>
+            </div>
         </div>
     </div>
 </div>

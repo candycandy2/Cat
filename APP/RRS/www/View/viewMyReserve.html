@@ -9,32 +9,28 @@
         </div>
     </div>
     <div id="myReserve" data-role="main" class="page-main">
-        <h2 id="todayLine" style="padding-left:5%;" class="disable">今天</h2>
-        <div id="defaultToday" class="ui-btn ui-shadow ui-corner-all ui-margin-10 disable">
+        <h2 id="todayLine" style="margin: 3.5vh 0 0 3.5vw;">今天</h2>
+        <div id="defaultToday" class="ui-btn ui-shadow ui-corner-all ui-margin-public disable">
             <div class="ui-grid-b">
-                <div class="ui-block-a ui-padding-8 col-5">
-                    <h1 class="ui-benq-color">[begin] - [end]</h1></div>
-                <div class="ui-block-b col-3">
-                    <h1 class="ui-benq-color">[room]</h1></div>
+                <div class="ui-block-a col-8">
+                    <h1 class="ui-benq-color">[begin] - [end]&nbsp;[room]</h1></div>
                 <div class="ui-block-c col-2">
-                    <a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-benq ui-btn ui-shadow ui-corner-all">取消</a>
+                    <a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="ui-btn ui-shadow ui-corner-all">取消</a>
                 </div>
             </div>
         </div>
         <hr id="otherDayLine" class="col-95" style="margin:10px auto 10px auto;" />
-        <div id="defaultOtherDay" class="ui-btn ui-shadow ui-corner-all ui-margin-10 disable">
+        <div id="defaultOtherDay" class="btn-otherday ui-btn ui-shadow ui-corner-all ui-margin-public disable">
             <div class="ui-grid-b">
-                <div class="ui-block-a ui-padding-8 col-5">
-                    <h1 class="ui-color-lightblue"><span>[dateformate]</span><br>[begin] - [end]</h1>
+                <div class="ui-block-a col-8">
+                    <h1><span>[dateformate]</span><br>[begin] - [end]&nbsp;[room]</h1>
                 </div>
-                <div class="ui-block-b col-3">
-                    <h1 class="ui-color-lightblue"><span>&nbsp;</span><br>[room]</h1></div>
-                <div class="ui-block-c col-2"><a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-benq ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
+                <div class="ui-block-c col-2"><a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
             </div>
         </div>
     </div>
     <div data-role="popup" data-history="false" id="myReservePopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="popup-msg1">
+        <div data-role="main" class="popup-msg">
             <h1 id="msgTitle"></h1>
             <div id="msgContent"></div>
             <button id="cancel"></button>
