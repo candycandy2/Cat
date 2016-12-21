@@ -140,8 +140,12 @@
     background-size: 100% auto;
 }
 
-.header-normal {
-    background-image: url(../img/header.svg);
+.header-service {
+    background-image: url(../img/header_service.svg);
+}
+
+.header-event {
+    background-image: url(../img/header_event.svg);
 }
 
 .header-left {
@@ -156,6 +160,13 @@
     height: 100%;
     text-align: center;
     font-family: "Gill Sans MT";
+}
+
+.no-message {
+    color: #989898;
+    text-align: center;
+    margin-top: 40vh;
+    font-size: 2.9vh;
 }
 
 .priority-title {
@@ -298,10 +309,3 @@
 #viewAppDetail2-2 .top {
     padding-bottom: 0;
 }
-/*
-p,
-li,
-div {
-    word-wrap: break-word !important;
-}
-*/
