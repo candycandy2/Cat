@@ -53,6 +53,7 @@ return [
     'TITLE_SYS_GROUP_MAINTAIN' => '系統群組管理',
     'TITLE_SYS_PARAMETER_MAINTAIN' => '參數設置',
     'TITLE_SYS_PROJECT_MAINTAIN' => '专案管理',
+    'TITLE_SECRETARY_PUSH' => '秘書推播',
 
     //validate
     'VALIDATE_ACCEPT' => '僅接受',
@@ -289,5 +290,7 @@ return [
     'ERR_ADMIN_GROUP_CAN_NOT_DELETE' => 'Administrator群組無法刪除!',
     'ERR_GROUP_CAN_NOT_NAMED_ADMIN' => 'Administrator是系統群組, 無法使用該名稱!',
     'ERR_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
-    'ERR_WRONG_TYPE'=>'請輸入正確的 %s 格式!'
+    'ERR_WRONG_TYPE'=>'請輸入正確的 %s 格式!',
+
+    'DESIGNATED'=>'指定人員'
 ];

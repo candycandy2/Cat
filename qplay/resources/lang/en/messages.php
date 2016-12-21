@@ -53,6 +53,7 @@ return [
     'TITLE_SYS_GROUP_MAINTAIN' => 'System Group Maintain',
     'TITLE_SYS_PARAMETER_MAINTAIN' => 'Parameter Setting',
     'TITLE_SYS_PROJECT_MAINTAIN' => 'Project Maintain',
+    'TITLE_SECRETARY_PUSH' => 'Secretary Push',
 
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
@@ -289,5 +290,7 @@ return [
     'ERR_ADMIN_GROUP_CAN_NOT_DELETE' => 'Administrator group can\'t delete!',
     'ERR_GROUP_CAN_NOT_NAMED_ADMIN' => 'Administrator group is system group, user can not use this name!',
     'ERR_APP_CATEGORY_EXIST' => 'The app category name already exist!',
-    'ERR_WRONG_TYPE'=>'Please enter correct %s type!'
+    'ERR_WRONG_TYPE'=>'Please enter correct %s type!',
+
+    'DESIGNATED'=>'Designated'
 ];

@@ -183,6 +183,12 @@ $(document).one("pagebeforecreate", function(){
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
         }
+
+        //viewNotSignedIn, Login Again
+        $("#LoginAgain").on("click", function() {
+            $("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            var checkAppVer = new checkAppVersion();
+        });
     }, "html");
 });
 /********************************** function *************************************/
@@ -316,6 +322,7 @@ function hideInitialPage() {
 function setWhiteList() {
 
     var self = this;
+    loadingMask("hide");
 
     this.successCallback = function() {
         var doCheckStorageData = false;
