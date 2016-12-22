@@ -4,38 +4,6 @@
 /********** All CSS style which auto created by Cordova can be removed ***********/
 /*********************************************************************************/
 
-/* variable, function, style for All APP */
-body {
-    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
-    text-shadow: none;
-}
-
-.header-style {
-    overflow: hidden;
-    background-color: #4B0082;
-    color: white;
-    border-style: none;
-    font-size: 16px;
-    text-align: center;
-    line-height: 0;
-}
-
-.loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,0.4);
-    text-align: center;
-    padding-top: 70%;
-}
-
-.hide {
-    display: none;
-}
-
 /* override jQuery Mobile */
 .ui-field-contain {
     border: none;
@@ -67,6 +35,46 @@ body {
 
 .ui-tabs {
     position: static;
+}
+
+.ui-footer-fixed {
+    padding-bottom: 0px;
+}
+
+.ui-popup-container, .ui-popup {
+    width: 90%;
+}
+
+/* variable, function, style for All APP */
+body {
+    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
+    text-shadow: none;
+}
+
+.header-style {
+    overflow: hidden;
+    background-color: #4B0082;
+    color: white;
+    border-style: none;
+    font-size: 16px;
+    text-align: center;
+    line-height: 0;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    text-align: center;
+    padding-top: 70%;
+}
+
+.hide {
+    display: none;
 }
 
 /*Fix bug - iOS status bar overlapping App*/
