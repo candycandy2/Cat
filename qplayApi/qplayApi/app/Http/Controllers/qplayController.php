@@ -1232,7 +1232,6 @@ SQL;
         $uuid = $input['uuid'];
         $appKey = $input['app_key'];
 
-
         if(!$Verify->chkUuidExist($uuid)) {
             $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>'uuid不存在',
@@ -1265,7 +1264,7 @@ SQL;
         }
 
 
-        if(($appKey != "appqplaytest") &&($appKey != "appyellowpagetest") &&($appKey != "apprrstest")) {
+        if(Verify::chkAppKeyExist($appKey)) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
