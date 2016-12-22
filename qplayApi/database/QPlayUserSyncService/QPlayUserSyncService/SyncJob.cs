@@ -115,7 +115,7 @@ SET qp_user.login_id = qp_user_flower.login_name,
     qp_user.company = qp_user_flower.company,
     qp_user.department = qp_user_flower.dept_code,
     qp_user.status = qp_user_flower.active,
-    qp_user.resign = 'N',
+    qp_user.resign = UPPER('n'),
     qp_user.updated_at = now()
 WHERE qp_user_flower.active = 'Y'";
 
@@ -138,7 +138,7 @@ SET qp_user.login_id=qp_user_flower.login_name,
     qp_user.resign='Y',
     qp_user.deleted_at = CAST(unix_timestamp(DATE_ADD(qp_user_flower.dimission_date,INTERVAL 8 HOUR)) AS SIGNED),
     qp_user.updated_at = NOW()
-WHERE qp_user_flower.active = 'N'";
+WHERE qp_user_flower.active = UPPER('n')";
 
             _dbQPlay.FromSql(sql).ExecuteNonQuery();
         }        
