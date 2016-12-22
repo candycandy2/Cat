@@ -56,21 +56,20 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
                 $('option[id^=setList-]').remove();
 
+                var firstTitle = '';
                 if (roomSettingdata != null) {
+                    sortDataByKey(roomSettingdata.content, 'id', 'asc');
                     for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
                         var strValue = item.site + '&' + item.floor + '&' + item.people + '&' + item.timeID
                         htmlContent += '<option id=setList-' + item.id + ' value=' + strValue + '>' + item.title + '</option>';
+                        if (i == 0) {
+                            firstTitle = item.title;
+                        }
                     }
                 }
 
-                $('#defaultListItem').after(htmlContent);
-
-                var strDefaultSite = meetingRoomTreeData._root.children[0].data;
-                var strDefaultFloor = '';
-                $.each(meetingRoomTreeData._root.children[0].children, function(index, value) {
-                    strDefaultFloor += value.data + ',';
-                });
-                $('#defaultListItem').val(strDefaultSite + '&' + strDefaultFloor.replaceAll('F', '') + '&0' + '&none');
+                $('#reserveSetting').append(htmlContent);
+                $('#reserveSetting-button').find('span').text(firstTitle);
             }
 
             function dateList() {
@@ -170,7 +169,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function getReserveData(roomId, date, data, type) {
-
+                loadingMask("show");
                 arrReserve = [];
                 for (var i = 0, item; item = data[i]; i++) {
                     var newReserve = new reserveObj(roomId, date);
@@ -200,6 +199,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
 
                 getMettingStatus();
+                loadingMask("hide");
 
             }
 
@@ -369,6 +369,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 createReserveDetailLocalDate();
                 dateList();
                 getSiteData();
+                setDefaultSettingData();
 
                 siteCategoryID = dictSiteCategory[meetingRoomTreeData._root.children[0].data];
                 var defaultSiteClick = localStorage.getItem('defaultSiteClick');
