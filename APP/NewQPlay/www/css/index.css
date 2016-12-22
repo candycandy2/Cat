@@ -1,7 +1,27 @@
 /*override jQuery Mobile*/
 
+.ui-page .ui-header {
+    background-color: #492f7f;
+    color: #fff;
+    font-size: 2.9vh;
+}
+
 #viewNewsEvents2-3 .ui-listview>.ui-li-static {
     padding: 0;
+}
+
+#viewNewsEvents2-3 #navMessage .ui-btn {
+    background-color: #492f7f;
+    padding: 5px 1em;
+    border-width: 0px;
+}
+
+#viewNewsEvents2-3 #navDelete .ui-btn {
+    background-color: #0F0F0F;
+    color: #FFF;
+    font-size: 2.8vh;
+    height: 3vh;
+    border-width: 0px;
 }
 
 #viewWebNews2-3-1 .ui-content {
@@ -34,7 +54,7 @@
     word-wrap: break-word !important;
 }
 
-/*new class*/
+/*----------------------new class----------------------*/
 
 .initialMain {
     width: 100%;
@@ -49,6 +69,139 @@
     margin-bottom: 45%;
 }
 
+/* qplay button */
+.q-btn-header {
+    width: 6vw;
+    padding: 15% 3.7vw 0;
+}
+
+.q-btn-footer-icon {
+    width: 2.3vh;
+    margin-left: 20vw;
+    float: left;
+}
+
+.q-btn-footer-text {
+    font-size: 2.5vw;
+    padding-top: 5px;
+    clear: both;
+}
+
+.popup-div {
+    margin: 0 auto;
+}
+
+.popup-div .ui-content {
+    width: 90%;
+    height: auto;
+    padding: 10% 10% 0;
+}
+
+.popup-div .hr-style {
+    position: absolute;
+    width: 99%;
+    left: 0;
+    color: #D6D6D6;
+}
+
+.popup-div .bottom {
+    height: 10vh;
+}
+
+.popup-div .button-content {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    line-height: 3.5;
+    text-align: center;
+    color: #492E80;
+    font-size: 3.3vh;
+}
+
+.popup-div .button-content div {
+    float: left;
+    width: 49%;
+}
+
+.popup-div .button-content .vertical-line {
+    border-left: 1px solid #D6D6D6;
+    width: 1%;
+    height: 8.5vh;
+    margin-top: 1.5vh;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox] + label {
+    background: url('../img/checkbox.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=checkbox]:checked + label {
+    background: url('../img/checkbox_selected.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0px;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/radio.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/radio_selected.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 1.1;
+    padding-left: 21px;
+    width: 85%;
+    color: #0F0F0F;
+    font-size: 3vh;
+    height: 30px;
+}
+
+.overlap-label-checkbox {
+    position: absolute;
+    width: 7vw;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.delete-str {
+    margin-top:10%;
+    text-shadow: none;
+}
+
+/* app list / detail */
 .app-list-scroll-area {
     width: 100%;
     overflow-x: scroll;
@@ -111,7 +264,6 @@
 .detail-description {
     margin-bottom: 2%;
     width: auto !important;
-    text-align: center !important;
     overflow: scroll;
 }
 
@@ -134,14 +286,36 @@
     height: 31vh;
 }
 
+#viewAppDetail2-2 .page-main {
+    background-color: #FFF;
+}
+
+#viewAppDetail2-2 .bottom {
+    background-color: #f9f9f9;
+}
+
+#viewAppDetail2-2 .top,
+#viewAppDetail2-2 .bottom {
+    padding: 5%;
+}
+
+#viewAppDetail2-2 .top {
+    padding-bottom: 0;
+}
+
+/* message list / detail */
 .news-header {
     position: relative;
     width: auto;
     background-size: 100% auto;
 }
 
-.header-normal {
-    background-image: url(../img/header.svg);
+.header-service {
+    background-image: url(../img/header_service.svg);
+}
+
+.header-event {
+    background-image: url(../img/header_event.svg);
 }
 
 .header-left {
@@ -156,6 +330,13 @@
     height: 100%;
     text-align: center;
     font-family: "Gill Sans MT";
+}
+
+.no-message {
+    color: #989898;
+    text-align: center;
+    margin-top: 40vh;
+    font-size: 2.9vh;
 }
 
 .priority-title {
@@ -282,26 +463,103 @@
     color: #492582;
 }
 
-#viewAppDetail2-2 .page-main {
-    background-color: #FFF;
+.reddot-tab {
+    background-image: url(../img/reddot.png);
+    background-size: 1.5vw 1.5vw;
+    width: 1.5vw;
+    height: 1.5vw;
+    float: left;
+    margin-left: 3px;
 }
 
-#viewAppDetail2-2 .bottom {
-    background-color: #f9f9f9;
+.reddot-list {
+    background-image: url(../img/reddot.png);
+    background-size: 1.5vw 1.5vw;
+    width: 1.5vw;
+    height: 1.5vw;
 }
 
-#viewAppDetail2-2 .top,
-#viewAppDetail2-2 .bottom {
-    padding: 5%;
+.msg-del-checkbox-content {
+    float: left;
+    width: 7vw;
+    display: none;
 }
 
-#viewAppDetail2-2 .top {
-    padding-bottom: 0;
+.msg-del-checkbox {
+    margin-top: 80%;
+    padding-left: 30%;
 }
-/*
-p,
-li,
-div {
-    word-wrap: break-word !important;
+
+.msg-new-reddot-content {
+    float: left;
+    width: 2vw;
+    margin-left: 2vw;
+    padding-top: 13px;
 }
-*/
+
+.msg-list-content {
+    float: left;
+    width: 90vw;
+    margin-left: 1vw;
+}
+
+.msg-list-content-edit {
+    width: 83vw;
+}
+
+.msg-list-title {
+    color: #0f0f0f;
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative;
+    /* use this value to count block height */
+    line-height: 1.2em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 2.2em;
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+}
+
+.msg-list-title:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+}
+
+.msg-list-title:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    width: 1em;
+    /* set width and height */
+    height: 1em;
+    background: white;
+}
+
+.msg-list-time {
+    text-align: right;
+    font-size: 2.3vh;
+    color: #989898;
+}
+
+.del-msg-btn {
+    width: 100%;
+
+}
+
+.update-time {
+    color: #989898;
+    font-size: 2.3vh;
+    height: 6vh;
+    margin: -1em 0;
+}

@@ -1,13 +1,18 @@
 <!-- Start of news list page UI 2-3 -->
 <div data-role="page" id="viewNewsEvents2-3">
     <div class="ios-fix-overlap-div"></div>
-    <div data-role="header" data-position="fixed" class="ui-header ui-bar-a slideup page-header">
-        <h1>訊息中心</h1>
-        <a href="#viewMain2-1" data-icon="back" class="ui-btn-left">
-            <span>Back</span>
+    <div data-role="header" data-position="fixed" class="ui-header page-header">
+        <h1></h1>
+        <a href="#viewMain2-1" data-role="none" id="messageListBack">
+            <div class="q-btn-header">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
         </a>
-        <a href="#" data-icon="delete" class="ui-btn-right" id="deleteMessage">
-            <span>刪除</span>
+        <a href="#" data-role="none" class="ui-btn-right" style="display:none; text-decoration:none; color:#FFF;" id="deleteMessage">
+            <div class="q-btn-header">
+                <img id="deleteImg" src="img/component/delete_nav.png" width="100%" height="100%">
+            </div>
+            <span id="deleteStr" class="delete-str">Cancel</span>
         </a>
     </div>
 
@@ -17,19 +22,37 @@
                 <ul>
                     <li id="navNews" style="width:50%;">
                         <a href="#newspage2-3" class="ui-btn ui-btn-active" data-ajax="false">
-                            公告<span id="newNews" style="color:red; display:none;">*</span>
+                            <div>
+                                <div class="q-btn-footer-icon">
+                                    <img src="img/news_s_tab.png" width="100%" height="100%" class="active" style="display:block;">
+                                    <img src="img/news_d_tab.png" width="100%" height="100%" class="inactive" style="display:none;">
+                                </div>
+                                <div id="newNews" class="reddot-tab"></div>
+                            </div>
+                            <div class="q-btn-footer-text">
+                                News
+                            </div>
                         </a>
                     </li>
                     <li id="navEvents" style="width:50%;">
-                        <a href="#eventspage2-3b" class="ui-btn" data-ajax="false">
-                            通知<span id="newEvents" style="color:red; display:none;">*</span>
+                        <a href="#eventspage2-3b" class="ui-btn ui-btn-active" data-ajax="false">
+                            <div>
+                                <div class="q-btn-footer-icon">
+                                    <img src="img/event_s_tab.png" width="100%" height="100%" class="active" style="display:none;">
+                                    <img src="img/event_d_tab.png" width="100%" height="100%" class="inactive" style="display:block;">
+                                </div>
+                                <div id="newEvents" class="reddot-tab"></div>
+                            </div>
+                            <div class="q-btn-footer-text">
+                                Event
+                            </div>
                         </a>
                     </li>
                 </ul>
             </div>
             <div data-role="navbar" id="navDelete" style="display:none;">
                 <ul>
-                    <li id="delMsgBtn" style="width:100%;">
+                    <li id="delMsgBtn" class="del-msg-btn">
                         <a href="#" class="ui-btn ui-btn-active" data-ajax="false">
                             刪除
                         </a>
@@ -38,46 +61,64 @@
             </div>
         </div>
         <div id="newspage2-3" class="ui-content page-main">
+            <div id="updateTimeNews" class="update-time" style="display:none;">
+                Latest update: <span></span>
+            </div>
             <ul data-role="listview" id="newslistview">
+
             </ul>
+            <div id="noNews" class="no-message" style="display:none;">
+                No News
+            </div>
         </div>
         <div id="eventspage2-3b" class="ui-content page-main">
+            <div id="updateTimeEvents" class="update-time" style="display:none;">
+                Latest update: <span></span>
+            </div>
             <ul data-role="listview" id="eventlistview">
-                <!--<li><a href="#mainpage 2-1">
-                    <h2 style="white-space:pre-wrap;">[Qplay ¨t²Î³qª¾]¡GQplay ¨t²ÎºûÅ@¡A©ó 2016/5/10 22:00~23:00 ¼È°±ªA°È</h2>
-                    <p>2016/05/10 08:00</p>
-                </a></li>
-                <li><a href="#mainpage 2-1">
-                    <h2 style="white-space:pre-wrap;">[XXXX¨t²Î³qª¾]¡G²£«~OOOO¤w¹F®w¦s¤U­­</h2>
-                    <p>2016/03/30 17:00</p>
-                </a></li>
-                <li><a href="#mainpage 2-1">
-                    <h2 style="white-space:pre-wrap;">[XXXX¨t²Î³qª¾]¡GOOOOOO¬y¶q¤w¹F©Ó¸ü¤W­­</h2>
-                    <p>2016/03/15 16:00</p>
-                </a></li>-->
+
             </ul>
+            <div id="noEvents" class="no-message" style="display:none;">
+                No Events
+            </div>
         </div>
     </div>
 
-    <div data-role="popup" id="selectMsgDateFrom" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content" style="width:90%; height:200px;">
-            <label data-mini="true" for="month">重新載入30天歷史訊息</label>
-            <input data-mini="true" type="radio" name="selectDateFrom" id="month" value="month" checked="checked">
-            <label data-mini="true" for="skip">不載入歷史訊息</label>
-            <input data-mini="true" type="radio" name="selectDateFrom" id="skip" value="skip">
-            <p style="text-align:center;">
-                <a href="#" class="ui-btn ui-btn-inline" id="selectMsgDateFromOK">確定</a>
-            </p>
+    <div data-role="popup" data-history="false" id="selectMsgDateFrom" class="popup-div" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content">
+
+            <input type="radio" data-role="none" name="selectDateFrom" id="month" value='month' checked="checked">
+            <label data-role="none" class="overlap-label-icon"></label>
+            <label data-role="none" class="overlap-label-text" for="month">重新載入30天歷史訊息</label>
+
+            <input type="radio" data-role="none" name="selectDateFrom" id="skip" value='skip'>
+            <label data-role="none" class="overlap-label-icon"></label>
+            <label data-role="none" class="overlap-label-text" for="skip">不載入歷史訊息</label>
+
+            <hr class="hr-style">
+
+            <div class="bottom">
+                <div class="button-content">
+                    <span id="selectMsgDateFromOK">確定</span>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div data-role="popup" id="deleteConfirm" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
+    <div data-role="popup" data-history="false" id="deleteConfirm" class="popup-div" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content">
             <p>確定刪除公告嗎？</p>
-            <p>
-                <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
-                <a href="#" class="ui-btn ui-btn-inline" id="yes">確定</a>
-            </p>
+
+            <hr class="hr-style">
+
+            <div class="bottom">
+                <div class="button-content">
+                    <div id="cancel">Cancel</div>
+                    <div class="vertical-line">&nbsp;</div>
+                    <div id="yes">Delete</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

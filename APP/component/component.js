@@ -32,6 +32,7 @@ var getDataFromServer = false;
 var popupID;
 var callHandleOpenURL = false;
 var doInitialSuccess = false;
+var checkTimerCount = 0;
 
 var app = {
     // Application Constructor
@@ -84,35 +85,68 @@ var app = {
             var checkAppVer = new checkAppVersion();
         } else {
             console.log("GetRegistradionID--------null");
+            checkTimerCount++;
 
             //Show viewGetQPush
             $("#viewGetQPush").addClass("ui-page ui-page-theme-a ui-page-active");
             $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+
+            if (checkTimerCount >= 30) {
+                $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
+                $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
+            }
         }
     },
     onOpenNotification: function(data) {
-    //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
+        //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
 
         //If APP not open, check message after checkAppVersion()
         messageRowId = data.extras["Parameter"];
 
         if (loginData["openMessage"] === false) {
 
-            //Before open Message Detail Data, update Message List
-            var messageList = new QueryMessageList();
-            callGetMessageList = true;
+            //Check if not login
+            if (window.localStorage.getItem("loginid") !== null) {
+                //Before open Message Detail Data, update Message List
+
+                if (window.localStorage.getItem("msgDateFrom") === null) {
+
+                    $.mobile.changePage('#viewNewsEvents2-3');
+                } else {
+
+                    var messageList = new QueryMessageList();
+                    callGetMessageList = true;
+                }
+            }
 
             //remember to open Message Detail Data
             loginData["openMessage"] = true;
             window.localStorage.setItem("openMessage", true);
             window.localStorage.setItem("messageRowId", messageRowId);
+
         }
     },
     onBackgoundNotification: function(data) {
-    //Plugin-QPush > 添加後台收到通知后需要執行的內容
+        //Plugin-QPush > 添加後台收到通知后需要執行的內容
+        if (loginData["openMessage"] === false) {
+            if (window.localStorage.getItem("loginid") === null) {
+                //remember to open Message Detail Data
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("messageRowId", data.extras["Parameter"]);
+            }
+        }
     },
     onReceiveNotification: function(data) {
-    //Plugin-QPush > 添加前台收到通知后需要執行的內容
+        //Plugin-QPush > 添加前台收到通知后需要執行的內容
+        if (loginData["openMessage"] === false) {
+            if (window.localStorage.getItem("loginid") === null) {
+                //remember to open Message Detail Data
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("messageRowId", data.extras["Parameter"]);
+            }
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -149,6 +183,12 @@ $(document).one("pagebeforecreate", function(){
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
         }
+
+        //viewNotSignedIn, Login Again
+        $("#LoginAgain").on("click", function() {
+            $("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            var checkAppVer = new checkAppVersion();
+        });
     }, "html");
 });
 /********************************** function *************************************/
@@ -193,7 +233,7 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
         data: queryData,
         cache: false,
         success: requestSuccess,
-        fail: failCallback
+        error: failCallback
     });
 }
 
@@ -269,19 +309,20 @@ function checkAppVersion() {
 }
 
 function hideInitialPage() {
-    loadingMask("show");
+    if (window.localStorage.getItem("firstInitial") === null) {
+        window.localStorage.setItem("firstInitial", "true");
+        doHideInitialPage = true;
+    }
 
-    setTimeout(function() {
-        $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
-        initialSuccess();
-        loadingMask("hide");
-    }, 3000);
+    $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+    initialSuccess();
 }
 
 //Plugin-QSecurity 
 function setWhiteList() {
 
     var self = this;
+    loadingMask("hide");
 
     this.successCallback = function() {
         var doCheckStorageData = false;
@@ -580,7 +621,7 @@ function getSignature(action, signatureTime) {
 function loadingMask(action) {
     if (action === "show") {
         if ($(".loader").length === 0) {
-            $('<div class="loader"><img src="img/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
+            $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
         } else {
             $(".loader").show();
         }
@@ -603,6 +644,10 @@ function readConfig() {
         appKey = appKeyOriginal + "dev";
         serverURL = "https://qplaydev.benq.com"; // Development API Server
         qplayAppKey = qplayAppKey + "dev";
+    }else {
+        appKey = appKeyOriginal + "";
+        serverURL = "https://qplay.benq.com"; // Production API Server
+        qplayAppKey = qplayAppKey + "";
     }
 
     //Plugin-QPush
@@ -685,8 +730,11 @@ function getLoginDataCallBack() {
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
+
     if (device.platform === "Android") {
         navigator.app.exitApp();
+    } else {
+        $.mobile.changePage('#viewMain2-1');
     }
 }
 

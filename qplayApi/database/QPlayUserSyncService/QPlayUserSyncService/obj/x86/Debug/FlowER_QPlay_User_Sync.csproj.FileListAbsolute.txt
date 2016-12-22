@@ -1,0 +1,10 @@
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\bin\Debug\FlowER_QPlay_User_Sync.exe.config
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\bin\Debug\FlowER_QPlay_User_Sync.exe
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\bin\Debug\FlowER_QPlay_User_Sync.pdb
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\bin\Debug\ITS.Data.dll
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\bin\Debug\log4net.dll
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\obj\x86\Debug\FlowER_QPlay_User_Sync.exe
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\obj\x86\Debug\FlowER_QPlay_User_Sync.pdb
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\obj\x86\Debug\FlowER_QPlay_User_Sync.ProjectInstaller.resources
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\obj\x86\Debug\FlowER_QPlay_User_Sync.csproj.GenerateResource.Cache
+F:\Workspace\FlowER_QPlay_User_Sync\FlowER_QPlay_User_Sync\bin\Debug\QPlay_User_Sync.exe.config

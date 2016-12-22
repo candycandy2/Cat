@@ -88,7 +88,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                         seqClick.push(id);
                         $('#floorDefault div').removeClass('ui-btn-active');
                         $(this).addClass('ui-btn-active');
-                        $(this).append('<div id=cntIcon' + id + ' class="btn-benq cntIcon"></div>');
+                        $(this).append('<div id=cntIcon' + id + ' class="cntIcon"></div>');
                     }
                 }
 
@@ -152,15 +152,13 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $.mobile.changePage('#viewSettingList');
 
                 } else {
-                    popupMsg('newSettingPpupMsg', 'validationMsg', validationResult[1], '', true, '確定', '#', '#');
+                    popupMsg('newSettingPpupMsg', 'validationMsg', '', validationResult[1], '', false, '確定', false);
                 }
 
             });
 
             $('body').on('click', 'div[for=validationMsg] #confirm', function() {
-
                 $('div[for=validationMsg]').popup('close');
-
             });
         }
     });

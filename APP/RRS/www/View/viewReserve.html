@@ -9,92 +9,88 @@
                 <a href="#viewMyReserve">我的預約</a></div>
         </div>
     </div>
-    <div data-role="main" class="page-main">
+    <div data-role="main" class="page-main" style="line-height: initial !important;">
         <div data-role="tabs">
-            <div class="ui-margin-10">
-                <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50">
+            <div class="ui-margin-public">
+                <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
                     <input type="radio" name="tab" id="tab1" value="tab1" checked="checked">
                     <label for="tab1">一般預約</label>
                     <input type="radio" name="tab" id="tab2" value="tab2">
                     <label for="tab2">快速預約</label>
                 </div>
             </div>
-            <div class="ui-content" id="pageOne">
-                <div style="width: 35%;">
-                    <select name="reserveSite" id="reserveSite">
-                    </select>
-                </div>
+            <div class="ui-margin-public" id="pageOne">
+                <select name="reserveSite" id="reserveSite">
+                </select>
                 <div id="scrollDate" class="scrollmenu">
                     <a id="reserveDefault" href="#" class="disable">ReserveDay<br />ReserveDict</a>
                 </div>
-                <div style="width: 25%;">
-                    <select name="reserveFloor" id="reserveFloor">
-                    </select>
-                </div>
+                <select name="reserveFloor" id="reserveFloor">
+                </select>
                 <div id="reserveRoom" class="scrollmenu">
                 </div>
-                <h3 style="padding-left:3%;">開始使用時間</h3>
-                <div id="reserveDateSelect" class="ui-margin-10">
+                <div style="margin-top:3vh; font-size: 3.5vw;">
+                    <div class="inline">會議室使用時間：</div>
+                    <div class="inline circle ui-color-white"></div>
+                    <div class="inline">可預約</div>
+                    <div class="inline circle ui-color-reserve"></div>
+                    <div class="inline">不可預約</div>
+                    <div class="inline circle ui-color-myreserve"></div>
+                    <div class="inline">我的預約</div>
+                </div>
+                <div id="reserveDateSelect">
                     <div class="ui-grid-c">
                         <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]" traceID="[traceID]">
-                            <div class="ui-bar ui-bar-a "><span></span>reserveTimeSelect<span>[eName]</span></div>
+                            <div class="ui-bar">
+                                <div>reserveTimeSelect</div>
+                                <div class="circle-icon">[eName]</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="iconDiscribe">
-                    <div class="ui-color-free">
-                    </div>
-                    <h3>有空</h3>
-                    <div class="ui-color-reserve"></div>
-                    <h3>我的預約</h3>
-                    <div class="ui-color-noreserve"></div>
-                    <h3>不可預約</h3>
-                </div>
-                <a id="reserveBtn" href="#" class="btn-benq-disable ui-btn ui-shadow ui-corner-all col-4">預約</a>
+                <div id="reserveBtn" class="btn-disable radius-btn">預約</div>
             </div>
-            <div class="ui-content" id="pageTwo">
-                <div class="ui-margin-10">
-                    <div class="ui-grid-a">
-                        <div class="ui-block-a col-2">
-                            <h3>我要預約</h3>
-                        </div>
-                        <div class="ui-block-b col-8">
-                            <select name="reserveSetting" id="reserveSetting">
-                                <option id="defaultListItem" value="">現在空的會議室</option>
-                            </select>
-                        </div>
-                    </div>
+            <div class="ui-margin-public" id="pageTwo">
+                <select name="reserveSetting" id="reserveSetting">
+                    <option id="defaultListItem" value="">現在空的會議室</option>
+                </select>
+                <div style="margin-left:2vh; font-size: 4vw;text-align: left;">
+                    <div class="inline">預約日期：</div>
                 </div>
-                <div id="quickReserveDateSelect">
-                    <div class="ui-grid-d">
-                        <div id="quickReserveDefault" class="ui-block-a disable">
-                            <div class="ui-bar ui-bar-a">quickReserveDay
-                                <br>quickReserveDict</div>
-                        </div>
-                    </div>
+                <div id="quickReserveScrollDate" class="scrollmenu">
+                    <a id="quickReserveDefault" href="#" class="disable">quickReserveDay<br />quickReserveDict</a>
                 </div>
-                <div id="quickReserveMsgArea" class="disable ui-color-green">
-                    <h2></h2>
+                <div id="quickReserveMsgArea" class="disable quick-reserve-margin">
+                    <div class="inline quick-reserve-msg-icon"></div>
+                    <div class="inline"></div>
                 </div>
-                <div id="reserveBtnArea">
-                    <a id="quickReserveCancel" href="#" class="disable btn-benq ui-btn ui-shadow ui-corner-all col-3">我再想想</a>
-                    <a id="quickReserve" href="#" class="btn-benq ui-btn ui-shadow ui-corner-all col-3">立即預約</a>
-                    <a id="quickReserveConfirm" href="#" class="disable btn-benq ui-btn ui-shadow ui-corner-all col-3">確定預約</a>
+                <div style="margin-top:10vh;">
+                    <div id="quickReserve" class="radius-btn quick-reserve-confirm">立即預約</div>
+                    <div id="quickReserveConfirm" class="disable radius-btn quick-reserve-search">確定預約</div>
+                    <div id="quickReserveCancel" class="disable radius-btn btn-border quick-reserve-cancel">我再想想</div>
                 </div>
-                <div id="reserveSettingArea">
-                    <a href="#viewSettingList">偏好設置</a>
+                <div class="quick-reserve-margin">
+                    <div class="inline quick-reserve-setting-icon"></div>
+                    <div class="inline"><a href="#viewSettingList">偏好設置</a></div>
                 </div>
             </div>
         </div>
     </div>
-    <div data-role="popup" id="reservePopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
+    <div data-role="popup" data-history="false" id="reservePopupMsg" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="popup-msg">
+            <h1 id="msgTitle"></h1>
+            <div id="msgContent"></div>
+            <button id="cancel"></button>
+            <button id="confirm"></button>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" id="reservePopupSchemeMsg" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="popup-msg">
             <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-            <p id="msgContent"></p>
-            <p>
-                <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
-                <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
-            </p>
+            <h1 id="msgTitle"></h1>
+            <div id="msgContent"></div>
+            <a id="mail">傳送郵件</a>
+            <a id="tel">撥打電話</a>
         </div>
     </div>
 </div>

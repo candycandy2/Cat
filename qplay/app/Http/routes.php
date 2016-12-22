@@ -39,7 +39,12 @@ Route::any('/platform/getParameterList', 'platformController@getParameterList');
 Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
 Route::any('/platform/saveParameter', 'platformController@saveParameter');
 Route::any('/platform/getMessageList', 'platformController@getMessageList');
+Route::any('/platform/getSecretaryMessageList', 'platformController@getSecretaryMessageList');
+Route::any('/platform/pushSecretaryMessage', 'platformController@pushSecretaryMessage');
+Route::any('/platform/pushSecretaryMessageAgain', 'platformController@pushSecretaryMessageAgain');
+Route::any('/platform/getSecretaryMessageDesignatedReceiver', 'platformController@getSecretaryMessageDesignatedReceiver');
 Route::any('/platform/getMessageSendList', 'platformController@getMessageSendList');
+Route::any('/platform/getSecretaryMessageSendList', 'platformController@getSecretaryMessageSendList');
 Route::any('/platform/saveNewMessage', 'platformController@saveNewMessage');
 Route::any('/platform/saveUpdateMessage', 'platformController@saveUpdateMessage');
 Route::any('/platform/saveUpdateAndPushMessage', 'platformController@saveUpdateAndPushMessage');
@@ -111,6 +116,19 @@ Route::any('messagePushHistory', ['middleware' => 'auth', function() {
 Route::any('pushSendDetail', ['middleware' => 'auth', function() {
     return view("push_send_detail_message");
 }]);
+Route::any('secretaryPush', ['middleware' => 'auth', function() {
+    return view("secretary_push");
+}]);
+Route::any('secretaryPushNew', ['middleware' => 'auth', function() {
+    return view("secretary_push_new");
+}]);
+Route::any('secretaryPushHistory', ['middleware' => 'auth', function() {
+    return view("secretary_push_history");
+}]);
+Route::any('secretaryPushSendDetail', ['middleware' => 'auth', function() {
+    return view("secretary_push_send_detail");
+}]);
+
 Route::any('androidAppMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/android");
 }]);

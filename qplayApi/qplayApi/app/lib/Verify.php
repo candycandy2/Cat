@@ -94,6 +94,66 @@ class Verify
             "message"=>"");
     }
 
+    public static function verifyWithCustomerAppKey()
+    {
+        $request = Request::instance();
+        $input = Input::get();
+        $headerContentType = $request->header('Content-Type');
+        $headerAppKey = $request->header('App-Key');
+        $headerSignature = $request->header('Signature');
+        $headerSignatureTime = $request->header('Signature-Time');
+
+        //verify parameter count
+        if($headerContentType == null || $headerAppKey == null
+            || $headerSignature == null || $headerSignatureTime == null
+            || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=> "傳入參數不足或傳入參數格式錯誤");
+        }
+
+        if(!self::chkAppKeyExist($headerAppKey)) {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=> "app-key參數錯誤");
+        }
+
+        //verify language input
+        if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
+            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
+                "message"=>"lang參數錯誤 or 不存在");
+        }
+
+        //verify content-type
+        if (!stristr($headerContentType,'application/json')) {
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                "message"=>"Content-Type錯誤");
+        }
+
+        //TODO for test
+        if($headerSignature == "Moses824")
+        {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
+                "message"=>"");
+        }
+
+//        if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
+//            return array("code"=>ResultCode::_999011_signatureOvertime,
+//                "message"=>"signature參數錯誤或誤差超過15分鐘");
+
+        $sigResult = self::chkSignature($headerSignature, $headerSignatureTime);
+        if ($sigResult == 1) {
+            return array("code"=>ResultCode::_999008_signatureIsInvalid,
+                "message"=>"Signature驗證碼不正確");
+        }
+
+        if($sigResult == 2) {
+            return array("code"=>ResultCode::_999011_signatureOvertime,
+                "message"=>"signature參數錯誤或誤差超過15分鐘");
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
     public static function verifyToken($uuid, $token) {
         if($token == null || $uuid == null || trim($uuid) == "" || trim($token) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -118,8 +178,7 @@ class Verify
         $sessionList = DB::select($sql, []);
         if(count($sessionList) < 1)
         {
-            return array("code"=>ResultCode::_000908_tokenInvalid,
-                "message"=> "token已经失效");
+            return array("code"=>ResultCode::_000908_tokenInvalid,"message"=> "token已经失效");
         }
 
         $token_valid_date = $sessionList[0]->token_valid_date;
@@ -154,11 +213,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -173,11 +232,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserRowID($userRowId);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -193,11 +252,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserIDAndCompany($loginid, $company);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -213,11 +272,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserIDAndDomain($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -276,6 +335,7 @@ class Verify
 
     }
 
+    /*
     public static function chkSignatureYellowPage($signature, $signatureTime)
     {
         $nowTime = time();
@@ -464,5 +524,104 @@ class Verify
 
     }
 //rrs end
+    */
 
+//custom begin
+    public static function chkSignatureCustom($signature, $signatureTime,$appKey)
+    {
+        $nowTime = time();
+        $serverSignature = self::getSignatureCustom($signatureTime,$appKey);
+        if(strcmp($serverSignature, $signature) != 0) {
+            return 1; //不匹配
+        }
+
+        if(abs($nowTime - $signatureTime) > 900) {
+            return 2; //超?
+        }
+
+        return 3;
+    }
+
+    public static function getSignatureCustom($signatureTime,$appKey)
+    {
+        $key = CommonUtil::getSecretKeyByAppKey($appKey);
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
+        return $ServerSignature;
+    }
+
+    public static function verifyCustom() {
+        $request = Request::instance();
+        $input = Input::get();
+        $headerContentType = $request->header('Content-Type');
+        $headerAppKey = $request->header('App-Key');
+        $headerSignature = $request->header('Signature');
+        $headerSignatureTime = $request->header('Signature-Time');
+
+        //verify parameter count
+        if($headerContentType == null || $headerAppKey == null
+            || $headerSignature == null || $headerSignatureTime == null
+            || trim($headerContentType) == "" || trim($headerAppKey) == ""
+            || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=> "傳入參數不足或傳入參數格式錯誤");
+        }
+
+        //检查app_key是否存在
+        $keyExistedObj = \DB::table("qp_project")
+            -> where('app_key', '=', $headerAppKey)
+            -> select("qp_project.app_key")
+            ->get();
+
+        if(count($keyExistedObj)<1) {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=> "app-key參數錯誤");
+        }
+
+        //verify language input
+        if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
+            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
+                "message"=>"lang參數錯誤 or 不存在");
+        }
+
+        //verify content-type
+        if (!stristr($headerContentType,'application/json')) {
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                "message"=>"Content-Type錯誤");
+        }
+
+        //TODO for test
+        if($headerSignature == "Moses824")
+        {
+//            return array("code"=>ResultCode::_1_reponseSuccessful,
+//                "message"=>"");
+        } else {
+            $sigResult = self::chkSignatureCustom($headerSignature, $headerSignatureTime,$headerAppKey);
+            if ($sigResult == 1) {
+                return array("code"=>ResultCode::_999008_signatureIsInvalid,
+                    "message"=>"Signature驗證碼不正確");
+            }
+
+            if($sigResult == 2) {
+                return array("code"=>ResultCode::_999011_signatureOvertime,
+                    "message"=>"signature參數錯誤或誤差超過15分鐘");
+            }
+        }
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
+        {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=>"傳入參數不足或傳入參數格式錯誤");
+        }
+
+        $token = $request->header('token');
+        $uuid = $input["uuid"];
+
+        if(!self::chkUuidExist($uuid)) {
+            return array("code"=>ResultCode::_000911_uuidNotExist,
+                "message"=>"uuid不存在");
+        }
+        return self::verifyToken($uuid, $token);
+    }
+//custom end
 }

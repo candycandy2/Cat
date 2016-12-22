@@ -8,9 +8,14 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use JPush\Exceptions\APIConnectionException;
+use JPush\Exceptions\APIRequestException;
+use JPush\Exceptions\JPushException;
+use Mockery\CountValidator\Exception;
 use Request;
 use Illuminate\Support\Facades\Input;
 use JPush\Client as JPush;
+use Config;
 
 class CommonUtil
 {
@@ -103,6 +108,10 @@ class CommonUtil
         if(count($userList) < 1) {
             return null;
         }
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> select('uuid')->get();
 
         return $userList[0];
     }
@@ -283,8 +292,40 @@ class CommonUtil
     }
 
     public static function getMessageContentByCode($messageCode) {
-        //TODO
-        return "";
+        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $project_id = self::getProjectInfo();
+        if ($project_id == null ||  count($project_id)<0){
+            return "";
+        }
+        $project_id =    $project_id->row_id;
+        $errorMessage = \DB::table('qp_error_code')
+            -> where('lang_row_id', '=', $lang_row_id)
+            -> where('error_code', '=', $messageCode)
+            -> where ('project_row_id','=',$project_id)
+            -> select("qp_error_code.error_desc")
+            ->get();
+        if(count($errorMessage) < 1) {
+            return "";
+        }
+        $result = $errorMessage[0]->error_desc;
+        return $result;
+    }
+
+    public static function getLanguageIdByName($lang) {
+        $lang = strtolower($lang);
+        $lang_row_id = 1;
+        switch ($lang) {
+            case "en-us":
+                $lang_row_id = 1;
+                break;
+            case "zh-cn":
+                $lang_row_id = 2;
+                break;
+            case "zh-tw":
+                $lang_row_id = 3;
+                break;
+        }
+        return $lang_row_id;
     }
 
     public static function getSecretKeyByAppKey($appKey) {
@@ -371,20 +412,22 @@ class CommonUtil
     public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
         $result = array();
         $result["result"] = true;
-        $client = new JPush(env('App_id'), env('Secret_key'));
-        //$to = '101d855909488114957';
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         try {
             $platform = array('ios', 'android');
             $alert = $message;
             $regId = $to;
             $ios_notification = array(
+                'sound' => 'default',
+                'badge' => '0',
                 'extras' => array(
-                    'message_row_id'=> $parameter
+                    'Parameter'=> $parameter
                 ),
             );
             $android_notification = array(
                 'extras' => array(
-                    'message_row_id'=> $parameter
+                    'Parameter'=> $parameter
                 ),
             );
             $content = $message;
@@ -392,11 +435,11 @@ class CommonUtil
                 'title' => $message,
                 'content_type' => 'text',
                 'extras' => array(
-                    'message_row_id'=> $parameter
+                    'Parameter'=> $parameter
                 ),
             );
-            $time2live =  intval(env('time_to_live',"864000"));
-            $apnsFlag = env('apns_flag');
+            $time2live =  Config::get('time_to_live',864000);
+            $apnsFlag = Config::get('apns_flag',true);
             $options = array(
                 'time_to_live'=>$time2live,
                 'apns_production'=>$apnsFlag
@@ -408,10 +451,22 @@ class CommonUtil
                 ->message($content, $message)
                 ->options($options)
             ->send();
-        } catch (Exception $e) {
+        } catch (APIConnectionException $e) {
             $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred";
         }
-        $result["info"] = $response;
         return $result;
     }
 

@@ -50,10 +50,14 @@ if (env === "test") {
     patchFolder = "patchDev";
 }
 
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string>"
-                    + "<string>appyellowpage" + appNameDecorate + "</string>"
+var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
+                    + "<string>appyellowpage"+appNameDecorate + "</string>"
                     + "<string>appcalendar" + appNameDecorate + "</string>"
-                    + "<string>apprrs" + appNameDecorate + "</string>"
+                    + "<string>apprrs"      + appNameDecorate + "</string>"
+                    + "<string>appaccounting"+appNameDecorate + "</string>"
+                    + "<string>appens"      + appNameDecorate + "</string>"
+                    + "<string>appeis"      + appNameDecorate + "</string>"
+                    + "<string>appleave"    + appNameDecorate + "</string>"
                     + "<string>appscheme01" + appNameDecorate + "</string>"
                     + "<string>appscheme02" + appNameDecorate + "</string>"
                     + "<string>appscheme03" + appNameDecorate + "</string>"
