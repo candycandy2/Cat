@@ -621,7 +621,7 @@ function getSignature(action, signatureTime) {
 function loadingMask(action) {
     if (action === "show") {
         if ($(".loader").length === 0) {
-            $('<div class="loader"><img src="img/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
+            $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
         } else {
             $(".loader").show();
         }
