@@ -116,6 +116,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     if (window.localStorage.getItem("openMessage") === "true") {
+                        $.mobile.changePage('#viewWebNews2-3-1', {
+                            allowSamePageTransition : true,
+                            transition              : 'none',
+                            showLoadMsg             : false,
+                            reloadPage              : true
+                        });
                         $.mobile.changePage("#viewWebNews2-3-1");
                     }
                 }; 
