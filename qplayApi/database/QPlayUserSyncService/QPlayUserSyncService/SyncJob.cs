@@ -136,7 +136,7 @@ SET qp_user.login_id=qp_user_flower.login_name,
     qp_user.department=qp_user_flower.dept_code,
     qp_user.status=qp_user_flower.active,
     qp_user.resign='Y',
-    qp_user.deleted_at = CAST(unix_timestamp(DATE_ADD(qp_user_flower.dimission_date,INTERVAL 8 HOUR)) AS SIGNED),
+    qp_user.deleted_at = DATE_ADD(qp_user_flower.dimission_date,INTERVAL 8 HOUR),
     qp_user.updated_at = NOW()
 WHERE qp_user_flower.active = UPPER('n')";
 
