@@ -8,7 +8,6 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
             var activeNvrDiv = "";
             var inactiveNvrBar = "";
             var inactiveNvrDiv = "";
-            var delMsgActive = false;
 
             /********************************** function *************************************/
             window.QueryMessageList = function() {
@@ -85,21 +84,6 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                         updateMessageList();
 
-                        $('a.message-index').on("click", function(e) {
-                            e.stopImmediatePropagation();
-                            e.preventDefault();
-                            
-                            messageRowId = $(this)[0].getAttribute("value");
-                            messageArrIndex = $(this).parent().parent().val();
-                            //messageRowId = messagecontent.message_list[messageArrIndex].message_send_row_id;
-                            
-
-                            $.mobile.changePage("#viewWebNews2-3-1");
-                        });
-
-                        $("input.msgDelCheckbox").on("change", function() {
-                            checkboxChange($(this));
-                        });
                         /*
                         //jQuery Mobile swipe setting
                         $.event.special.swipe.scrollSupressionThreshold = (screen.availWidth) / 60;
@@ -150,6 +134,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 var newsListItems = "";
                 var eventListItems = "";
+                var countNews = 0;
+                var countEvents = 0;
 
                 for (var messageindex=0; messageindex<messagecontent.message_count; messageindex++) {
 
@@ -159,6 +145,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     var txt = message.message_txt;
                     var rowid = message.message_send_row_id;
                     var createTime = message.create_time;
+                    var displayTime = createTime.substring(0, parseInt(createTime.length - 3, 10));
                     var readStatus = "";
 
                     // [D] => It meanings this message was be deleted, don't need to show.
@@ -171,17 +158,21 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     var content = "<li value=" + messageindex.toString() + " class='msg-index'>" +
-                                    "<div style='float:left; width:7vw;'>" +
-                                        "<div style='margin-top:50%;'>" +
-                                            "<input type='checkbox' class='custom msgDelCheckbox' data-mini='true' value=" + rowid + " style='display:none;'>" +
+                                    "<div class='msg-del-checkbox-content'>" +
+                                        "<div class='msg-del-checkbox'>" +
+                                            "<input type='checkbox' class='custom msgDelCheckbox' data-mini='true' id='msgDelCheckbox" + rowid + "' value=" + rowid + ">" +
+                                            "<label data-role='none' class='overlap-label-icon'></label>" +
+                                            "<label data-role='none' class='overlap-label-checkbox' for='msgDelCheckbox" + rowid + "'></label>" +
                                             "<input type='hidden' id='msgType" + rowid + "' value='" + type + "'>" +
                                         "</div>" +
                                     "</div>" +
-                                    "<div style='float:left; width:91vw;'>" +
+                                    "<div class='msg-new-reddot-content'>" +
+                                        "<div class='reddot-list " + readStatus + "'></div>" +
+                                    "</div>" +
+                                    "<div class='msg-list-content'>" +
                                         "<a value=" + rowid + " class='message-index'>" +
-                                            "<span style='color:red; float:left;' class='" + readStatus + "'>*</span>" +
-                                            "<h2 style='white-space:pre-wrap;'>" + title + "</h2>" +
-                                            "<p>" + createTime + "</p>" +
+                                            "<p class='msg-list-title' style='white-space:pre-wrap; font-size:2.3vh;'>" + title + "</p>" +
+                                            "<p class='msg-list-time'>" + displayTime + "</p>" +
                                             "<div id='delIndex" + rowid + "' style='position:absolute; top:0px; right:0px; width:20%; height:100%; background-color:red; z-index:10; display:none;'>" +
                                                 "<p style='color:#FFF; text-align:center; margin:50% 0;'>Delete</p>" +
                                             "</div>" +
@@ -191,8 +182,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                     if (message.message_type == "news") {
                         newsListItems += content;
+                        countNews++;
                     } else if (message.message_type == "event") {
                         eventListItems += content;
+                        countEvents++;
                     }
                 }
 
@@ -201,10 +194,62 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 $("#eventlistview").html(eventListItems);
                 $("#eventlistview").listview('refresh');
 
+                $(".update-time span").html(new Date().toLocaleString());
+
+                //If News or Events has no message, show [No News] [No Events]
+                if (countNews === 0) {
+                    $("#noNews").show();
+                    $("#updateTimeNews").hide();
+                } else {
+                    $("#noNews").hide();
+                    $("#updateTimeNews").show();
+                }
+
+                if (countEvents === 0) {
+                    $("#noEvents").show();
+                    $("#updateTimeEvents").hide();
+                } else {
+                    $("#noEvents").hide();
+                    $("#updateTimeEvents").show();
+                }
+
+                //If News or Events has no message, hide delete button
+                if (activeNvrBar === "navNews") {
+                    if (countNews === 0) {
+                        $("#deleteMessage").hide();
+                    } else {
+                        $("#deleteMessage").show();
+                    }
+                }
+
+                if (activeNvrBar === "navEvents") {
+                    if (countEvents === 0) {
+                        $("#deleteMessage").hide();
+                    } else {
+                        $("#deleteMessage").show();
+                    }
+                }
+
                 if (action === "closePopup") {
                     $('#deleteConfirm').popup('close');
-                    checkboxChange();
+                    editModeChange();
                 }
+
+                $('a.message-index').on("click", function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+
+                    messageRowId = $(this)[0].getAttribute("value");
+                    messageArrIndex = $(this).parent().parent().val();
+
+                    $.mobile.changePage("#viewWebNews2-3-1");
+                });
+
+                $("input.msgDelCheckbox").on("change", function() {
+                    checkboxChange($(this));
+                });
+
+                $("#navMessage a").addClass("ui-btn-active");
             };
 
             function tabChange(action) {
@@ -218,7 +263,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     $("#" + activeNvrBar + " a").addClass("ui-btn-active");
                 } else {
                     $("#" + activeNvrBar).addClass("ui-btn-active");
-                    $("#" + inactiveNvrBar).removeClass("ui-btn-active");    
+                    $("#" + inactiveNvrBar).removeClass("ui-btn-active");
                 }
 
                 //Every time change tap, need to update message data
@@ -228,6 +273,16 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         var messageList = new QueryMessageList();
                     }
                 }
+
+                if (delMsgActive) {
+                    editModeChange();
+                }
+
+                //change footer image button
+                $("#" + activeNvrBar + " .active").css("display", "block");
+                $("#" + activeNvrBar + " .inactive").hide();
+                $("#" + inactiveNvrBar + " .active").hide();
+                $("#" + inactiveNvrBar + " .inactive").css("display", "block");
             }
 
             function checkboxChange(dom) {
@@ -248,12 +303,50 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 }
 
                 if (dom !== null) {
+
+                    if (checkedLength > 0) {
+                        $(".msg-del-checkbox .overlap-label-icon").css("opacity", "0.2");
+                    } else {
+                        $(".msg-del-checkbox .overlap-label-icon").css("opacity", "1");
+                    }
+
                     messageArrIndex = $(dom).parent().parent().parent().val();
 
                     $("input.msgDelCheckbox").prop("disabled", disabled);
+
                     $(dom).prop("disabled", false);
+                    $(dom).parent().children(".overlap-label-icon").css("opacity", "1");
                 }
             }
+
+            window.editModeChange = function () {
+                var dispaly = "none";
+                var btnStr = "Delete";
+                var btnBackDisplay = "block";
+
+                if (delMsgActive) {
+                    delMsgActive = false;
+                    $(".msg-list-content").removeClass("msg-list-content-edit");
+                    $('#deleteConfirm').popup('close');
+                } else {
+                    delMsgActive = true;
+                    dispaly = "block";
+                    btnStr = "Cancel";
+                    btnBackDisplay = "none";
+
+                    $("input.msgDelCheckbox").prop("disabled", false);
+                    $(".msg-del-checkbox .overlap-label-icon").css("opacity", "1");
+                    $(".msg-list-content").addClass("msg-list-content-edit");
+                }
+
+                $('#viewNewsEvents2-3 :checkbox').prop('checked', false);
+                $(".msg-del-checkbox-content").css("display", dispaly);
+                $("#deleteMessage #deleteImg").css("display", btnBackDisplay);
+                $("#deleteMessage #deleteStr").css("display", dispaly);
+                $("#messageListBack").css("display", btnBackDisplay);
+
+                checkboxChange();
+            };
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
                 activeNvrBar = "navNews";
@@ -290,7 +383,9 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 tabChange("setActive");
 
-                $("#deleteMessage span").html("Delete");
+                //$("#deleteMessage span").html("Delete");
+                $("#deleteMessage #deleteImg").css("display", "block");
+                $("#deleteMessage #deleteStr").css("display", "none");
                 $("#navMessage").show();
                 $("#navDelete").hide();
             });
@@ -332,19 +427,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
             });
 
             $("#deleteMessage").on("click", function() {
-                var dispaly = "none";
-                var btnStr = "Delete";
-
-                if (delMsgActive) {
-                    delMsgActive = false;
-                } else {
-                    delMsgActive = true;
-                    dispaly = "block";
-                    btnStr = "Cancel";
-                }
-
-                $("input.msgDelCheckbox").css("display", dispaly);
-                $("#deleteMessage span").html(btnStr);
+                editModeChange();
             });
 
             $("#delMsgBtn").on("click", function() {
@@ -360,7 +443,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 var msgType = $("#msgType" + msgIndex).val();
                 
                 messageRowId = msgIndex;
-                updateReadEvent(msgType, "delete");
+                updateReadDelete(msgType, "delete");
             });
         }
     });

@@ -432,13 +432,13 @@ class qplayController extends Controller
         if($userInfo == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
@@ -984,13 +984,13 @@ class qplayController extends Controller
         if($userInfo == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
@@ -1245,13 +1245,13 @@ SQL;
         if($userInfo == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
@@ -1367,13 +1367,13 @@ SQL;
         if($userInfo == null)
         {
             $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);
+                "message"=> "員工資訊錯誤"]);
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);
+                        "message"=> "員工資訊錯誤"]);
                 } else if($userStatus == 2) {
                     $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);
@@ -1627,13 +1627,13 @@ SQL;
         if($userInfo == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
@@ -1819,13 +1819,13 @@ SQL;
         if($userInfo == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
@@ -2008,13 +2008,13 @@ SQL;
         if($userInfo == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
@@ -2192,13 +2192,13 @@ SQL;
         if($userInfo == null)
         {
             $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);
+                "message"=> "員工資訊錯誤"]);
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);
+                        "message"=> "員工資訊錯誤"]);
                 } else if($userStatus == 2) {
                     $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);
@@ -2256,7 +2256,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyWithCustomerAppKey();
 
         $input = Input::get();
         $request = \Request::instance();
@@ -2746,13 +2746,13 @@ SQL;
         if($user == null)
         {
             $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                "message"=> "離職或是帳號資訊打錯"]);;
+                "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
                     $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> "離職或是帳號資訊打錯"]);;
+                        "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
                         "message"=> "账号已被停权"]);;
