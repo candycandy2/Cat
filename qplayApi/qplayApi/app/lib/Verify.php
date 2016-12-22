@@ -213,11 +213,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -232,11 +232,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserRowID($userRowId);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -252,11 +252,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserIDAndCompany($loginid, $company);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
@@ -272,11 +272,11 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserIDAndDomain($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"離職或是帳號資訊打錯");
+                "message"=>"員工資訊錯誤");
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
