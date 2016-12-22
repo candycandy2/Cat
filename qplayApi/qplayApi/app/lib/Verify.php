@@ -51,7 +51,7 @@ class Verify
                 "message"=> "傳入參數不足或傳入參數格式錯誤");
         }
 
-        if($headerAppKey != "appqplaytest") {
+        if($headerAppKey != CommonUtil::getContextAppKey()) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=> "app-key參數錯誤");
         }
@@ -507,12 +507,7 @@ class Verify
         }
 
         //检查app_key是否存在
-        $keyExistedObj = \DB::table("qp_project")
-            -> where('app_key', '=', $headerAppKey)
-            -> select("qp_project.app_key")
-            ->get();
-
-        if(count($keyExistedObj)<1) {
+        if(!self::chkAppKeyExist($headerAppKey)) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=> "app-key參數錯誤");
         }
