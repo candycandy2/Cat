@@ -355,6 +355,11 @@ function setWhiteList() {
         }
 
         $(".ui-title").on("taphold", function(){
+
+            //Set for iOS, control text select
+            document.documentElement.style.webkitTouchCallout = "none";
+            document.documentElement.style.webkitUserSelect = "none";
+
             infoMessage();
         });
     };
@@ -705,20 +710,22 @@ function readConfig() {
 
 //Taphold APP Header to show Version/AD/UUID
 function infoMessage() {
-    loadingMask("show");
+    $("#infoLoginid").html(loginData["loginid"]);
+    $("#infoUUID").html(loginData["uuid"]);
+    $("#infoVersionName").html(loginData["versionName"]);
+    $('#infoMsg').popup();
+    $('#infoMsg').show();
+    $('#infoMsg').popup('open');
 
-    var msg = '<div id="infoMsg" style="width:80%; height:30%; position:absolute; background-color:#000; color:#FFF; top:30%; left:10%; z-index:10000;">' +
-                '<p style="padding:0 5%">' + loginData["loginid"] + '</p>' +
-                '<p style="padding:0 5%">' + loginData["uuid"] + '</p>' +
-                '<p style="padding:0 5%">' + loginData["versionName"] + '</p>' +
-                '<p style="text-align:center;" id="closeInfoMsg">[ X ]</p>' +
-              '</div>';
-
-    $.mobile.pageContainer.append(msg);
+    setTimeout(function() {
+        //Set for iOS, control text select
+        document.documentElement.style.webkitTouchCallout = "default";
+        document.documentElement.style.webkitUserSelect = "auto";
+    }, 1000);
 
     $("#closeInfoMsg").on("click", function(){
-        $("#infoMsg").remove();
-        loadingMask("hide");
+        $('#infoMsg').popup('close');
+        $('#infoMsg').hide();
     });
 }
 

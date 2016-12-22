@@ -87,49 +87,6 @@
     clear: both;
 }
 
-.popup-div {
-    margin: 0 auto;
-}
-
-.popup-div .ui-content {
-    width: 90%;
-    height: auto;
-    padding: 10% 10% 0;
-}
-
-.popup-div .hr-style {
-    position: absolute;
-    width: 99%;
-    left: 0;
-    color: #D6D6D6;
-}
-
-.popup-div .bottom {
-    height: 10vh;
-}
-
-.popup-div .button-content {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    line-height: 3.5;
-    text-align: center;
-    color: #492E80;
-    font-size: 3.3vh;
-}
-
-.popup-div .button-content div {
-    float: left;
-    width: 49%;
-}
-
-.popup-div .button-content .vertical-line {
-    border-left: 1px solid #D6D6D6;
-    width: 1%;
-    height: 8.5vh;
-    margin-top: 1.5vh;
-}
-
 input[type=checkbox] {
     display: none;
 }
@@ -202,6 +159,19 @@ input[type=radio]:checked + label {
 }
 
 /* app list / detail */
+.app-list-category {
+    color: #0F0F0F;
+    font-size: 2.9vh;
+    display: inline-block;
+    line-height: 0;
+    margin-bottom: 2.5vh;
+}
+
+.app-list-hr {
+    color: #c7c6cb;
+    margin: 2.2vh 0 2.5vh;
+}
+
 .app-list-scroll-area {
     width: 100%;
     overflow-x: scroll;
@@ -211,12 +181,13 @@ input[type=radio]:checked + label {
 .app-list-item {
     width: 25vw;
     float: left;
-    margin-right: 10px;
+    margin-right: 3.7vw;
 }
 
 .app-list-name {
-    font-size: 0.8em;
-    margin-top: 0px;
+    color: #0F0F0F;
+    font-size: 2.4vh;
+    margin: 0;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
