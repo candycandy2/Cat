@@ -88,13 +88,13 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             });
 
             /********************************** dom event *************************************/
-            $("#InstallApp").click(function() {
-                if (selectAppIndex != 9999)
-                {
-                    window.open(applist[selectAppIndex].url, '_self', false);
+            $("#InstallApp").on("click", function() {
+                if (selectAppIndex != null) {
+                    $("body").append('<a id="downloadAPP" href="' + applist[selectAppIndex].url + '"></a>');
+                    document.getElementById("downloadAPP").click();
+                    $("#downloadAPP").remove();
                 }
             });
-            
         }
     });
 

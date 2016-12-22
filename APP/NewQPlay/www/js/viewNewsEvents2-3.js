@@ -65,7 +65,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         }
 
                         //Check if there still have a unread message, then show [red star]
-                        $("#newMsg").hide();
+                        $("#newsNav").show();
+                        $("#newsNoticeNav").hide();
                         $("#newEvents").hide();
                         $("#newNews").hide();
 
@@ -78,7 +79,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                                     $("#newNews").show();
                                 }
 
-                                $("#newMsg").show();
+                                $("#newsNav").hide();
+                                $("#newsNoticeNav").show();
                             }
                         }
 
