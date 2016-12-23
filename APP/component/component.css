@@ -4,38 +4,6 @@
 /********** All CSS style which auto created by Cordova can be removed ***********/
 /*********************************************************************************/
 
-/* variable, function, style for All APP */
-body {
-    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
-    text-shadow: none;
-}
-
-.header-style {
-    overflow: hidden;
-    background-color: #4B0082;
-    color: white;
-    border-style: none;
-    font-size: 16px;
-    text-align: center;
-    line-height: 0;
-}
-
-.loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,0.4);
-    text-align: center;
-    padding-top: 70%;
-}
-
-.hide {
-    display: none;
-}
-
 /* override jQuery Mobile */
 .ui-field-contain {
     border: none;
@@ -67,6 +35,46 @@ body {
 
 .ui-tabs {
     position: static;
+}
+
+.ui-footer-fixed {
+    padding-bottom: 0px;
+}
+
+.ui-popup-container, .ui-popup {
+    width: 90%;
+}
+
+/* variable, function, style for All APP */
+body {
+    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
+    text-shadow: none;
+}
+
+.header-style {
+    overflow: hidden;
+    background-color: #4B0082;
+    color: white;
+    border-style: none;
+    font-size: 16px;
+    text-align: center;
+    line-height: 0;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    text-align: center;
+    padding-top: 70%;
+}
+
+.hide {
+    display: none;
 }
 
 /*Fix bug - iOS status bar overlapping App*/
@@ -219,4 +227,63 @@ body {
 
 #viewUpdateAppVersion .button-text-updateAppVersion {
 
+}
+
+/*Popup Msg*/
+.popup-div {
+    margin: 0 auto;
+}
+
+.popup-div .ui-content {
+    width: 90%;
+    height: auto;
+    padding: 10% 10% 0;
+}
+
+.popup-div .hr-style {
+    position: absolute;
+    width: 99%;
+    left: 0;
+    color: #D6D6D6;
+}
+
+.popup-div .bottom {
+    height: 10vh;
+}
+
+.popup-div .button-content {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    line-height: 3.5;
+    text-align: center;
+    color: #492E80;
+    font-size: 3.3vh;
+}
+
+.popup-div .button-content div {
+    float: left;
+    width: 49%;
+}
+
+.popup-div .button-content .vertical-line {
+    border-left: 1px solid #D6D6D6;
+    width: 1%;
+    height: 8.5vh;
+    margin-top: 1.5vh;
+}
+
+.popup-info {
+    background-color: #fff;
+    border-color: #ddd;
+    color: #333;
+}
+
+.popup-info p {
+    margin: 0;
+}
+.popup-info #infoLoginid {
+    margin-left: -10%;
+    margin-bottom: 5%;
+    text-align: center;
 }

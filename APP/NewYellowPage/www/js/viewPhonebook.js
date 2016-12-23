@@ -39,6 +39,10 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         phonebookData = {};
                         var htmlContent = "";
 
+                        if(data['Content'].length !== 0) {
+                            $('#phonebookEdit').show();
+                        }
+
                         for (var i=0; i<data['Content'].length; i++) {
                             var tempData = {};
 
@@ -71,6 +75,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                     } else {
                         //ResultCode = 001901, [no data]
                         loadingMask("hide");
+                        $('#phonebookEdit').hide();
                     }
                 };
 

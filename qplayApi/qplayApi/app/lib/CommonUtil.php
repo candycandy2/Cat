@@ -591,4 +591,23 @@ class CommonUtil
         }
         return $ip;
     }
+
+    public static function getContextAppKey(){
+        $key = "appqplay";
+        $env = strtolower(Config::get('env'));
+        switch ($env)
+        {
+            case  "dev":
+                $key = $key + "dev";
+                break;
+            case  "test":
+                $key = $key + "test";
+                break;
+            case  "production":
+                break;
+            default :
+                break;
+        }
+        return $key;
+    }
 }
