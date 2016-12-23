@@ -288,7 +288,7 @@ function checkAppVersion() {
                     $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
-                    openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKeyOriginal);
+                    openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKey);
                     if (device.platform === "Android") {
                         navigator.app.exitApp();
                     }
