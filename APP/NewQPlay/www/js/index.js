@@ -17,6 +17,7 @@ var msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 var callBackURL;
 var callGetMessageList = false;
 var messagePageShow = false;
+var delMsgActive = false;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
@@ -151,9 +152,17 @@ function onBackKeyDown() {
             navigator.app.exitApp();
         }
 
-    } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2" || activePageID === "viewNewsEvents2-3") {
+    } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
 
         $.mobile.changePage('#viewMain2-1');
+
+    } else if (activePageID === "viewNewsEvents2-3") {
+
+        if (delMsgActive) {
+            editModeChange();
+        } else {
+            $.mobile.changePage('#viewMain2-1');
+        }
 
     } else if (activePageID === "viewWebNews2-3-1") {
 
