@@ -4,6 +4,11 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
     var siteIDforSetting = '';
     var siteCategoryIDforSetting = '';
     var selectTime = {};
+    var sTimeHr = 8;
+    var eTimeHr = 8;
+    var arrTimeMM = ['00', '30'];
+    var sTimeEven = 1;
+    var eTimeEven = 1;
 
     $('#viewNewSetting').pagecontainer({
         create: function(event, ui) {
@@ -117,9 +122,15 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             $('#setTime2').on('click', function() {
                 //$('#timeflip1').datebox('open');
-                
-                // $('#newSettingTimePickerPopup').popup(); 
-                // $('#newSettingTimePickerPopup').popup('open');
+                $('#sTimeHr').html(padLeft(sTimeHr.toString(), 2));
+                $('#sTimeMM').html(padLeft(arrTimeMM[0].toString(), 2));
+                $('#eTimeHr').html(padLeft(eTimeHr.toString(), 2));
+                $('#eTimeMM').html(padLeft(arrTimeMM[0].toString(), 2));
+                $('#newSettingTimePickerPopup #cancel').html('取消');
+                $('#newSettingTimePickerPopup #confirm').html('確定');
+                $('#newSettingTimePickerPopup').removeClass();
+                $('#newSettingTimePickerPopup').popup();
+                $('#newSettingTimePickerPopup').popup('open');
             });
 
             // $('#timeflip1').bind('datebox', function(e, passed) {
@@ -253,9 +264,60 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 $.mobile.changePage('#viewSettingList');
             });
 
-            // $('#newSettingTimePickerPopup #cancel').on('click', function() {
-            //    callscroll()
-            // });
+            $('#newSettingTimePickerPopup div[id=sTimeHrUp]').on('click', function() {
+                if (parseInt(sTimeHr) > 8) {
+                    $('.showMsg').removeClass('disable');
+                    $('.showMsg').delay(1500).fadeOut(400);
+
+                    sTimeHr = parseInt(sTimeHr) - 1;
+                    $('#sTimeHr').html(padLeft(sTimeHr.toString(), 2));
+                }
+            });
+
+            $('#newSettingTimePickerPopup div[id=sTimeHrDown]').on('click', function() {
+                if (parseInt(sTimeHr) < 17) {
+                    sTimeHr = parseInt(sTimeHr) + 1;
+                    $('#sTimeHr').html(padLeft(sTimeHr.toString(), 2));
+                }
+            });
+
+            $('#newSettingTimePickerPopup div[id=eTimeHrUp]').on('click', function() {
+                eTimeHr = parseInt(eTimeHr) - 1;
+                $('#eTimeHr').html(padLeft(eTimeHr.toString(), 2));
+            });
+
+            $('#newSettingTimePickerPopup div[id=eTimeHrDown]').on('click', function() {
+                eTimeHr = parseInt(eTimeHr) + 1;
+                $('#eTimeHr').html(padLeft(eTimeHr.toString(), 2));
+            });
+
+            $('#newSettingTimePickerPopup div[id=sTimeMMUp]').on('click', function() {
+                sTimeEven = sTimeEven % 2;
+                $('#sTimeMM').html(padLeft(arrTimeMM[sTimeEven].toString(), 2));
+                sTimeEven++;
+            });
+
+            $('#newSettingTimePickerPopup div[id=sTimeMMDown]').on('click', function() {
+                sTimeEven = sTimeEven % 2;
+                $('#sTimeMM').html(padLeft(arrTimeMM[sTimeEven].toString(), 2));
+                sTimeEven++;
+            });
+
+            $('#newSettingTimePickerPopup div[id=eTimeMMUp]').on('click', function() {
+                eTimeEven = eTimeEven % 2;
+                $('#eTimeMM').html(padLeft(arrTimeMM[eTimeEven].toString(), 2));
+                eTimeEven++;
+            });
+
+            $('#newSettingTimePickerPopup div[id=eTimeMMDown]').on('click', function() {
+                eTimeEven = eTimeEven % 2;
+                $('#eTimeMM').html(padLeft(arrTimeMM[eTimeEven].toString(), 2));
+                eTimeEven++;
+            });
+
+
+
+
 
         }
     });

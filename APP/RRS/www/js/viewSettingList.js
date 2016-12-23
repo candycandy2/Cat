@@ -38,6 +38,7 @@ $(document).one('pagecreate', '#viewSettingList', function() {
 
             /********************************** dom event *************************************/
             $('body').on('click', '#settingDelete', function() {
+                $('#viewSettingList').addClass('min-height-100');
                 clickDeleteID = $(this).attr('value');
                 popupMsg('settingListPopupMsg', 'deleteMsg', '', '是否確定刪除?', '取消', true, '確定', false);
             });

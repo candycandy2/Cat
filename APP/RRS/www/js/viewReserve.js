@@ -13,6 +13,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
     var quickRserveCallBackData = {};
     var timeClick = [];
     var reserveDetailLocalData = [];
+    var lastDateClick = '';
+    var lastRoomClick = '';
 
     $('#viewReserve').pagecontainer({
         create: function(event, ui) {
@@ -232,7 +234,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     this.failCallback = function(data) {
                         // console.log('apiFailCallback');
                         loadingMask('hide');
-                        popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
+                        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                     };
 
                     var __construct = function() {
@@ -252,9 +254,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         //Reservation Successful
                         popupMsg('reservePopupMsg', 'reserveSuccessMsg', '', '預約成功', '', false, '確定', false);
 
-                        if (page == 'pageOne') {
+                        //if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
-                        }
+                        //}
 
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
@@ -279,7 +281,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.failCallback = function(data) {
                     // console.log('apiFailCallback');
                     loadingMask('hide');
-                    popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
+                    popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -309,7 +311,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.failCallback = function(data) {
                     // console.log('apiFailCallback');
                     loadingMask('hide');
-                    popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
+                    popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -345,7 +347,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.failCallback = function(data) {
                     // console.log('apiFailCallback');
                     loadingMask('hide');
-                    popupMsg('reservePopupMsg', 'apiFailMsg', '', queryData, '', false, '確定', false);
+                    popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -418,8 +420,14 @@ $(document).one('pagecreate', '#viewReserve', function() {
             $('body').on('click', '#scrollDate .ui-link', function() {
                 if (!$(this).hasClass('hover')) {
                     clickDateId = $(this).attr('id').replaceAll('one', '');
+                    //to do
+                    // lastDateClick = $(this).parent().data("lastClicked");
+                    // $('#' + lastDateClick).removeClass('hover');
+
                     if ($(this).parent().data("lastClicked")) {
                         $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
+                    }else{
+                        $('#scrollDate .ui-link').removeClass('hover');
                     }
                     $(this).parent().data("lastClicked", this.id);
                     $(this).addClass('hover');
@@ -431,8 +439,14 @@ $(document).one('pagecreate', '#viewReserve', function() {
             $('body').on('click', '#reserveRoom .ui-link', function() {
                 if (!$(this).hasClass('hover')) {
                     clickRomeId = $(this).attr('id');
+                    //to do
+                    // lastRoomClick = $(this).parent().data("lastClicked");
+                    // $('#' + lastRoomClick).removeClass('hover');
+
                     if ($(this).parent().data("lastClicked")) {
                         $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
+                    }else{
+                        $('#reserveRoom .ui-link').removeClass('hover');
                     }
                     $(this).parent().data("lastClicked", this.id);
                     $(this).addClass('hover');
@@ -538,7 +552,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             $('#quickReserve').on('click', function() {
                 if (!$(this).hasClass('btn-disable')) {
                     if (quickReserveSelectedValue === '') {
-                        quickReserveSelectedValue = $('#defaultListItem').val();
+                        quickReserveSelectedValue = $('#reserveSetting option:first').val()
                     }
                     var arrSelectedValue = quickReserveSelectedValue.split('&');
                     var quickReserveDay = quickReserveClickDateID.replaceAll('two', '');
@@ -566,10 +580,22 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $("#quickReserveConfirm").on('click', function() {
+                //to do
+                $('#scrollDate a[id=one' + quickReserveClickDateID.replaceAll('two', '') + ']').parent().data("lastClicked", quickReserveClickDateID.replaceAll('two', ''));
+                $('#reserveRoom a[id=' + quickRserveCallBackData[0].MeetingRoomID + ']').parent().data("lastClicked", quickRserveCallBackData[0].MeetingRoomID);
+
+                // var lastDateClick = $('#scrollDate a[id=one' + quickReserveClickDateID.replaceAll('two', '') + ']').parent().data("lastClicked");
+                // var lastRoomClick = $('#reserveRoom a[id=' + quickRserveCallBackData[0].MeetingRoomID + ']').parent().data("lastClicked");
+                $('#scrollDate a[id^=one]').removeClass('hover');
+                $('#scrollDate a[id=one' + quickReserveClickDateID.replaceAll('two', '') + ']').addClass('hover');
+                $('#reserveRoom a').removeClass('hover');
+                $('#reserveRoom a[id=' + quickRserveCallBackData[0].MeetingRoomID + ']').addClass('hover');
+
                 clickRomeId = quickRserveCallBackData[0].MeetingRoomID;
                 clickDateId = quickReserveClickDateID.replaceAll('two', '');
                 timeID = quickRserveCallBackData[0].ReserveTimeID;
                 var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageTwo', clickRomeId, clickDateId, timeID);
+
             });
 
             $("#quickReserveCancel").on('click', function() {
