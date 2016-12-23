@@ -283,7 +283,7 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function(){
                 if (appKey === qplayAppKey) {
-                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'https://qplaytest.benq.com/InstallQPlay/\', \'_system\');"></a>');
+                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
                     document.getElementById("updateLink").click();
                     $("#updateLink").remove();
                 } else {
