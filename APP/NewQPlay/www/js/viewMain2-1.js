@@ -25,8 +25,11 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             var content = "";
                             var catetoryAPPCount = 0;
 
-                            content += '<h4 style="clear:both;">' + catetoryName + '</h4>';
-                            content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '">';
+                            if (categoryindex > 0) {
+                                content += '<hr class="app-list-hr">';
+                            }
+                            content += '<span class="app-list-category">' + catetoryName + '</span>';
+                            content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '" style="width:auto;">';
 
                             for (var appindex=0; appindex<applist.length; appindex++) {
                                 var appcategory = applist[appindex].app_category_id;
@@ -61,7 +64,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             //auto set with of qplayapplistContent
                             var pageWidth = $("#viewMain2-1").width();
                             //Add (APP width) and (Margin width)
-                            var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * 10);
+                            var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * (pageWidth * 0.04));
                             $("#qplayapplistContent" + categoryindex).css("width", catetoryAPPWidth + "px");
                         }
 
@@ -95,6 +98,8 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             refreshPage();
                             window.localStorage.setItem("firstInitial", "false");
                         }
+                    } else {
+                        $("#appcontent").show();
                     }
                 }; 
 
@@ -159,8 +164,8 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         }
 
                         $.mobile.changePage('#viewNotSignedIn');
-                        $("#viewMain2-1").removeClass("ui-page ui-page-active");
-                        $("#viewNotSignedIn").addClass("ui-page ui-page-active");
+                        $("#viewMain2-1").removeClass("ui-page-active");
+                        $("#viewNotSignedIn").addClass("ui-page-active");
 
                         loadingMask("hide");
                         app.initialize();
@@ -182,6 +187,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                     reloadPage              : true
                 });
 
+                $("#appcontent").hide();
                 $.mobile.changePage('#viewMain2-1');
             }
             /********************************** page event *************************************/

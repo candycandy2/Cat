@@ -65,7 +65,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         }
 
                         //Check if there still have a unread message, then show [red star]
-                        $("#newMsg").hide();
+                        $("#newsNav").show();
+                        $("#newsNoticeNav").hide();
                         $("#newEvents").hide();
                         $("#newNews").hide();
 
@@ -78,7 +79,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                                     $("#newNews").show();
                                 }
 
-                                $("#newMsg").show();
+                                $("#newsNav").hide();
+                                $("#newsNoticeNav").show();
                             }
                         }
 
@@ -114,6 +116,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     if (window.localStorage.getItem("openMessage") === "true") {
+                        $.mobile.changePage('#viewWebNews2-3-1', {
+                            allowSamePageTransition : true,
+                            transition              : 'none',
+                            showLoadMsg             : false,
+                            reloadPage              : true
+                        });
                         $.mobile.changePage("#viewWebNews2-3-1");
                     }
                 }; 
