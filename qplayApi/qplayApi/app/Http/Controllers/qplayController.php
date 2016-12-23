@@ -1518,7 +1518,7 @@ and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
 select message_send_row_id from qp_user_message 
-where user_row_id = :uId2
+where user_row_id = $userId
 and uuid = '$uuid'
 -- and deleted_at <>'0000-00-00 00:00:00'
 and deleted_at = 0
@@ -1540,7 +1540,7 @@ and m.created_user = u2.row_id
 order by ms.created_at desc
 SQL;
 
-                $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId]);
+                $r = DB::select($sql);
 
                 if($count_from >= 1) {
                     $r = array_slice($r, $count_from - 1, $count_to - $count_from + 1);
@@ -1940,7 +1940,7 @@ SQL;
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
-                    'content'=>array('message_send_row_id' => $message_send_row_id)
+                    'content'=>array('message_send_row_id' => $message_send_row_id_str)
                 ]);
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
