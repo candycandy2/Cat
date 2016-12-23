@@ -432,7 +432,7 @@ FORM;
                     request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "58169b8a895eb");
+                    request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
