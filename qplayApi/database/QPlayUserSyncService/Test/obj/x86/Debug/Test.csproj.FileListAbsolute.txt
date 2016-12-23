@@ -8,3 +8,13 @@ F:\Workspace\QPlayUserSyncService\Test\bin\Debug\log4net.dll
 F:\Workspace\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.pdb
 F:\Workspace\QPlayUserSyncService\Test\obj\x86\Debug\Test.exe
 F:\Workspace\QPlayUserSyncService\Test\obj\x86\Debug\Test.pdb
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\Test.exe.config
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\obj\x86\Debug\Test.exe
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\obj\x86\Debug\Test.pdb
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\Test.exe
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\Test.pdb
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.exe
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\ITS.Data.dll
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\log4net.dll
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.pdb
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\obj\x86\Debug\Test.csprojResolveAssemblyReference.cache
