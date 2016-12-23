@@ -11,13 +11,17 @@ var arrClickReserve = [];
 var arrTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
 var htmlContent = '';
+var clickEditSettingID = '';
 var dictDayOfWeek = {
     '1': '(一)',
     '2': '(二)',
     '3': '(三)',
     '4': '(四)',
-    '5': '(五)'
+    '5': '(五)',
+    '6': '(六)',
+    '0': '(日)'
 };
+var arrSite = ['2', '1', '43', '100'];
 var dictSite = {
     '1': 'QTY',
     '2': 'BQT/QTT',
@@ -65,14 +69,14 @@ function getAPIListAllMeetingRoom() {
         } else {
             // console.log('APIListAllMeetingRoomMsg No Data!');
             loadingMask('hide');
-            popupMsg('reservePopupMsg', 'apiFailMsg', 'APIListAllMeetingRoomMsg No Data!', '', true, '確定', '#', '#');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
     };
 
     this.failCallback = function(data) {
         // console.log('apiFailCallback');
         loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', 'getAPIListAllMeetingRoom', '', true, '確定', '#', '#');
+        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -114,14 +118,14 @@ function getAPIListAllTime() {
         } else {
             // console.log('APIListAllTimeMsg No Data!');
             loadingMask('hide');
-            popupMsg('reservePopupMsg', 'apiFailMsg', 'APIListAllTimeMsg No Data!', '', true, '確定', '#', '#');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
     };
 
     this.failCallback = function(data) {
         // console.log('apiFailCallback');
         loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', 'getAPIListAllTime', '', true, '確定', '#', '#');
+        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -172,12 +176,41 @@ function getSiteData() {
     $('#newSettingSite-button').find('span').text(dictSite[firstNode]);
 }
 
+function setDefaultSettingData() {
+
+    var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
+    if (roomSettingdata === null) {
+        var obj = new Object();
+        obj.id = '0';
+        obj.title = '現在空的會議室';
+        obj.site = '2';
+        obj.siteName = dictSite['2'];
+        obj.people = '0';
+        obj.time = 'none'
+        obj.timeID = 'none';
+        obj.floorName = 'none';
+        var strFloor = '';
+        var index = findIndex(meetingRoomTreeData._root.children, '2');
+        $.each(meetingRoomTreeData._root.children[index].children, function(index, value) {
+            strFloor += value.data + ',';
+        });
+        obj.floor = strFloor.replaceAll('F', '');
+
+        var jsonData = {};
+        jsonData = {
+            content: [obj]
+        };
+
+        localStorage.setItem('roomSettingData', JSON.stringify(jsonData));
+    }
+}
+
 function ConverToTree(data) {
 
-    for (var key in dictSite) {
+    for (var key in arrSite) {
 
-        meetingRoomTreeData.add(key, 'meetingRoom', meetingRoomTreeData.traverseDF);
-        var floorData = grepData(data, 'MeetingRoomSite', key)
+        meetingRoomTreeData.add(arrSite[key], 'meetingRoom', meetingRoomTreeData.traverseDF);
+        var floorData = grepData(data, 'MeetingRoomSite', arrSite[key])
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
         dfloorData.sort(function compareNumber(a, b) {
             return a - b;
@@ -185,7 +218,7 @@ function ConverToTree(data) {
 
         for (var j in dfloorData) {
 
-            meetingRoomTreeData.add(dfloorData[j] + 'F', key, meetingRoomTreeData.traverseDF);
+            meetingRoomTreeData.add(dfloorData[j] + 'F', arrSite[key], meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
             roomData.sort(cmpStringsWithNumbers);
 
@@ -328,7 +361,7 @@ function popupMsg(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig
     } else {
         $('#' + id + ' > div').css('height', '');
     }
-  
+
     $('#' + id).removeClass();
     $('#' + id + ' button').removeClass();
     if (btnIsDisplay == true) {
@@ -393,3 +426,62 @@ function reserveLocalDataObj(roomId, date, data) {
     this.date = date;
     this.data = data;
 };
+
+function padLeft(str,lenght){
+    if(str.length >= lenght)
+        return str;
+    else
+        return padLeft("0" +str,lenght);
+}
+
+
+// var panelsize = 60;
+// var step = 15;
+// var bAnimation = false;
+// var minValue = 0;
+
+// function animation(obj, isUpDown) {
+//     setTimeout(function() {
+//         var currentTop = parseInt($(obj).css("top"));
+
+//         if (isUpDown == 'down') {
+//             if (currentTop <= minValue) {
+//                 setTimeout(function() {
+//                     bAnimation = false;
+//                 });
+//                 return;
+//             }
+//         } else {
+//             if (currentTop >= minValue) {
+//                 setTimeout(function() {
+//                     bAnimation = false;
+//                 });
+//                 return;
+//             }
+//         }
+
+//         $(obj).css({ "top": currentTop - step });
+//         animation();
+//     });
+// }
+
+
+// function scrollUpDown(id, isUpDown) {
+//     if (bAnimation) return;
+//     var currentTop = parseInt($('#' + id).css("top"));
+
+//     if (isUpDown == 'down') { 
+//         minValue = currentTop - panelsize;
+//         step = 15;
+//     } else {
+//         minValue = currentTop + panelsize;
+//         step = -15;
+//     }
+
+//     if (parseInt(minValue) <= 0 && parseInt(minValue) >= parseInt(-300)) {
+//         animation($('#' + id), isUpDown);
+//     } else {
+//         minValue = 0;
+//         bAnimation = false;
+//     }
+// };

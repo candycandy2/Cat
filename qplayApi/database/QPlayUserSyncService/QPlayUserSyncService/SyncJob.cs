@@ -80,28 +80,24 @@ INSERT INTO qp_user (
 	resign,
 	created_user,
 	updated_user,
-	created_at,	
-	updated_at,
-	deleted_at
-) VALUES (
-	SELECT login_name,
+	created_at
+) 
+	SELECT login_name as login_id,
 				 emp_no,
 				 emp_name,
-				 email_account,
+				 mail_account as ext_no,
 				 ext_no,
-				 domain,
+				 domain as user_domain,
 				 company,
-				 dept_code,
-				 active,
-				 'Y',
-				 'SyncService',
-				 '',
-				 now(),
-				 '0000-00-00 00:00:00',
-				 '0000-00-00 00:00:00'
+				 dept_code as department,
+				 active as `status`,
+				 'Y' as resign,
+				 -1 as created_user,
+				 -1 as updated_user,
+				 now() as created_at
 	FROM qp_user_flower uf
  WHERE NOT EXISTS ( SELECT * FROM qp_user u WHERE u.emp_no = uf.emp_no )
-)";
+";
 
             _dbQPlay.FromSql(sql).ExecuteNonQuery();
         }
@@ -113,15 +109,15 @@ UPDATE qp_user
 INNER JOIN qp_user_flower ON qp_user.emp_no = qp_user_flower.emp_no
 SET qp_user.login_id = qp_user_flower.login_name,
     qp_user.emp_name = qp_user_flower.emp_name,
-    qp_user.email = qp_user_flower.email_account,
+    qp_user.email = qp_user_flower.mail_account,
     qp_user.ext_no = qp_user_flower.ext_no,
-    qp_user.user_domain = qp_user_flower.domain_code,
+    qp_user.user_domain = qp_user_flower.domain,
     qp_user.company = qp_user_flower.company,
     qp_user.department = qp_user_flower.dept_code,
     qp_user.status = qp_user_flower.active,
-    qp_user.resign = 'N',
+    qp_user.resign = UPPER('n'),
     qp_user.updated_at = now()
-WHERE qp_user_flower.status = 'Y'";
+WHERE qp_user_flower.active = 'Y'";
 
             _dbQPlay.FromSql(sql).ExecuteNonQuery();
         }
@@ -133,16 +129,16 @@ UPDATE qp_user
 INNER JOIN qp_user_flower ON qp_user.emp_no=qp_user_flower.emp_no
 SET qp_user.login_id=qp_user_flower.login_name,
     qp_user.emp_name=qp_user_flower.emp_name,
-    qp_user.email=qp_user_flower.email_account,
+    qp_user.email=qp_user_flower.mail_account,
     qp_user.ext_no=qp_user_flower.ext_no,
     qp_user.user_domain=qp_user_flower.domain,
     qp_user.company=qp_user_flower.company,
     qp_user.department=qp_user_flower.dept_code,
     qp_user.status=qp_user_flower.active,
     qp_user.resign='Y',
-    qp_user.deleted_at= DATE_ADD(qp_user_flower.dimission_date,INTERVAL 8 HOUR)
-    qp_user.updated_at=now()
-WHERE qp_user_flower.status = 'N'";
+    qp_user.deleted_at = DATE_ADD(qp_user_flower.dimission_date,INTERVAL 8 HOUR),
+    qp_user.updated_at = NOW()
+WHERE qp_user_flower.active = UPPER('n')";
 
             _dbQPlay.FromSql(sql).ExecuteNonQuery();
         }        
