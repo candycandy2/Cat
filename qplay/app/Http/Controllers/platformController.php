@@ -1723,7 +1723,7 @@ class platformController extends Controller
                                         -> insert([
                                             'project_row_id'=>1,
                                             'user_row_id'=>$userId,
-                                            'uuid'=>$uuid,
+                                            'uuid'=>$uuid->uuid,
                                             'message_send_row_id'=>$messageSendId,
                                             'created_user'=>\Auth::user()->row_id,
                                             'created_at'=>$now,
@@ -1743,7 +1743,7 @@ class platformController extends Controller
                                     -> insert([
                                         'project_row_id'=>1,
                                         'user_row_id'=>$userId,
-                                        'uuid'=>$uuid,
+                                        'uuid'=>$uuid->uuid,
                                         'message_send_row_id'=>$messageSendId,
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
@@ -1773,8 +1773,7 @@ class platformController extends Controller
                         }
                     }
                 }
-
-                //$result = CommonUtil::PushMessageWithMessageCenter($title, $to, $messageSendId);
+                
                 $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId);
                 if(!$result["result"]) {
                     //\DB::rollBack();
