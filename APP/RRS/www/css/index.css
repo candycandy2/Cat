@@ -483,7 +483,7 @@ div.scrollmenu a {
 .popup-msg {
     height: 20vh;
     width: 80vw;
-    background: #eee;
+    background: #eee !important;
     border-radius: 10px;
     padding: 0;
     margin: 0;
@@ -512,7 +512,7 @@ div.scrollmenu a {
 .popup-msg button {
     background: transparent;
     border: none;
-    color: #1678E5;
+    color: #1678E5 !important;
     height: 3rem;
     font-size: 1rem;
     width: 50%;
@@ -570,7 +570,6 @@ div.scrollmenu a {
     border-radius: 0 0 10px 0;
 }
 
-
 /*popup msg end*/
 
 
@@ -599,16 +598,19 @@ section {
     width: 10vw;
     height: 4vh;
     line-height: 4vh;
+    border: 0.6vw solid #ddd;
+    border-radius: 7px;
+    padding: 1vh 0 0 0;
 }
 
 .timepicker-icon-up {
     background: url(../img/up1.png) no-repeat;
-    background-size: 10vw 4vh;
+    background-size: 10vw 5vh;
 }
 
 .timepicker-icon-down {
     background: url(../img/down1.png) no-repeat;
-    background-size: 10vw 4vh;
+    background-size: 10vw 5vh;
 }
 
 #newSettingTimePickerPopup .popup-msg {
@@ -641,6 +643,7 @@ section {
 .min-height-100 {
     min-height: 100% !important;
 }
+
 
 /*.loader{
     margin-top: 100vh !important;
