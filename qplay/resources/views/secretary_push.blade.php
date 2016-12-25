@@ -5,7 +5,7 @@ $menu_name = "SECRETARY_PUSH";
 ?>
 @extends('layouts.admin_template')
 @section('content')
-    <div id="toolbar">
+    <div id="toolbar" style="display: none;">
         <a class="btn btn-primary" href="secretaryPushNew" id="btnNewMessage">
             {{trans("messages.NEW_MESSAGE")}}
         </a>
