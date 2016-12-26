@@ -4,6 +4,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
     var siteIDforSetting = '';
     var siteCategoryIDforSetting = '';
     var selectTime = {};
+    var arrTimeMM = ['00', '30'];
 
     $('#viewNewSetting').pagecontainer({
         create: function(event, ui) {
@@ -55,6 +56,8 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $('#newSettingTime input[id=setTime2]').prop("checked", "checked");
                     $('#newSettingTime label[for=setTime2]').text(editTime);
 
+                    selectTime['bTime'] = editTime.split('~')[0];
+                    selectTime['eTime'] = editTime.split('~')[1];
                 }
                 $('#newSettingTime input[id^=setTime]').checkboxradio("refresh");
                 if (editFloorName != 'none') {
@@ -81,6 +84,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 $('#newSettingPeople input[id^=num-]').checkboxradio("refresh");
                 $('#newSettingTime input[id=setTime1]').prop("checked", "checked");
                 $('#newSettingTime input[id^=setTime]').checkboxradio("refresh");
+                selectTime = {};
                 $('label[for^=setTime2]').text('指定時段');
                 $('#floorDefault div').addClass('ui-btn-active');
                 $.each(seqClick, function(index, value) {
@@ -88,6 +92,12 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 });
                 seqClick = [];
                 $('#newSettingFloor div[id^=cntIcon]').remove();
+            }
+
+            function showPopupAlert(content) {
+                $('.showMsg').html(content);
+                $('.showMsg').css('display', '');
+                $('.showMsg').delay(1000).fadeOut(400);
             }
 
             /********************************** page event *************************************/
@@ -117,9 +127,25 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             $('#setTime2').on('click', function() {
                 //$('#timeflip1').datebox('open');
-                
-                // $('#newSettingTimePickerPopup').popup(); 
-                // $('#newSettingTimePickerPopup').popup('open');
+
+                var setTimeStr = $('label[for^=setTime2]').text();
+                if(setTimeStr != '指定時段'){
+                    var arrTimeStr = setTimeStr.split('~');
+                    var arrSTimeHrMM = arrTimeStr[0].split(':');
+                    var arrETimeHrMM = arrTimeStr[1].split(':');
+
+                    $('div[tpye=s][for=hr]').html(arrSTimeHrMM[0].trim());
+                    $('div[tpye=s][for=mm]').html(arrSTimeHrMM[1].trim());
+                    $('div[tpye=e][for=hr]').html(arrETimeHrMM[0].trim());
+                    $('div[tpye=e][for=mm]').html(arrETimeHrMM[1].trim());
+
+                }
+
+                $('#newSettingTimePickerPopup #cancel').html('取消');
+                $('#newSettingTimePickerPopup #confirm').html('確定');
+                $('#newSettingTimePickerPopup').removeClass();
+                $('#newSettingTimePickerPopup').popup();
+                $('#newSettingTimePickerPopup').popup('open');
             });
 
             // $('#timeflip1').bind('datebox', function(e, passed) {
@@ -253,10 +279,67 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 $.mobile.changePage('#viewSettingList');
             });
 
-            // $('#newSettingTimePickerPopup #cancel').on('click', function() {
-            //    callscroll()
-            // });
+            $('#newSettingTimePickerPopup .timepicker-icon').on('click', function() {
 
+                var clickValue = $(this).attr('value');
+                var clickType = $(this).attr('type');
+                var clickFormate = $(this).attr('formate');
+
+                var tempHr = $('div[tpye=' + clickType + '][for=hr]').html();
+                var tempMM = $('div[tpye=' + clickType + '][for=mm]').html();
+                var tempStr = '';
+                var timeIndex = 0;
+                var checkTime = false;
+
+                if (clickFormate == 'hr') {
+                    if (clickValue == 'up') {
+                        tempStr = padLeft((parseInt(tempHr) - 1).toString(), 2);
+                    } else {
+                        tempStr = padLeft((parseInt(tempHr) + 1).toString(), 2);
+                    }
+                    if (parseInt(tempStr) < 8 || parseInt(tempStr) > 17) {
+                        checkTime = true;
+                    }
+                }
+
+                if (clickFormate == 'mm') {
+                    timeIndex = arrTimeMM.indexOf(tempMM);
+                    timeIndex = timeIndex == 0 ? 1 : 0;
+                    tempStr = arrTimeMM[timeIndex];
+                }
+
+                if (checkTime) {
+                    showPopupAlert('可設定時間為8點-17點');
+                } else {
+                    $('div[tpye=' + clickType + '][for=' + clickFormate + ']').html(tempStr);
+                }
+            });
+
+            $('body').on('click', '#newSettingTimePickerPopup #confirm', function() {
+                var bTime = $('div[tpye=s][for=hr]').html() + ':' + $('div[tpye=s][for=mm]').html();
+                var eTime = $('div[tpye=e][for=hr]').html() + ':' + $('div[tpye=e][for=mm]').html();
+                var bTimeToDate = new Date(new Date().toDateString() + ' ' + bTime);
+                var eTimeToDate = new Date(new Date().toDateString() + ' ' + eTime);
+                if (eTimeToDate < bTimeToDate) {
+                    showPopupAlert('結束時間不可小於開始時間');
+                } else {
+                    $('label[for^=setTime2]').text(bTime + '~' + eTime);
+                    selectTime['bTime'] = bTime;
+                    selectTime['eTime'] = eTime;
+                    $('#newSettingTimePickerPopup').popup('close');
+                }
+            });
+
+            $('body').on('click', '#newSettingTimePickerPopup #cancel', function() {
+                $('div[tpye=s][for=hr]').html('08');
+                $('div[tpye=s][for=mm]').html('00');
+                $('div[tpye=e][for=hr]').html('08');
+                $('div[tpye=e][for=mm]').html('30');
+                $('#newSettingTime input[id^=setTime]').removeAttr("checked");
+                $('#newSettingTime input[id=setTime1]').prop("checked", "checked");
+                $('#newSettingTime input[id^=setTime]').checkboxradio("refresh");
+                $('#newSettingTimePickerPopup').popup('close');
+            });
         }
     });
 });
