@@ -164,12 +164,17 @@ function getTimeID(sTime, eTime, siteCategoryID) {
     var arrSelectTime = [];
     var strTime = sTime;
 
+    // do {
+    //     arrSelectTime.push(strTime);
+    //     strTime = addThirtyMins(strTime);
+    //     var dStrTime = new Date(new Date().toDateString() + ' ' + strTime);
+    //     var dETime = new Date(new Date().toDateString() + ' ' + eTime);
+    // } while (dStrTime <= dETime);
+
     do {
         arrSelectTime.push(strTime);
         strTime = addThirtyMins(strTime);
-        var dStrTime = new Date(new Date().toDateString() + ' ' + strTime);
-        var dETime = new Date(new Date().toDateString() + ' ' + eTime);
-    } while (dStrTime <= dETime);
+    } while (strTime != eTime);
 
     //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
