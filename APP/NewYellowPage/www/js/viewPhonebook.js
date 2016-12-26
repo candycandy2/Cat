@@ -39,6 +39,10 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         phonebookData = {};
                         var htmlContent = "";
 
+                        if(data['Content'].length !== 0) {
+                            $('#phonebookEdit').show();
+                        }
+
                         for (var i=0; i<data['Content'].length; i++) {
                             var tempData = {};
 
@@ -71,6 +75,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                     } else {
                         //ResultCode = 001901, [no data]
                         loadingMask("hide");
+                        $('#phonebookEdit').hide();
                     }
                 };
 
@@ -131,6 +136,9 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
                 $("#phonebookDelectConfirm").popup('close');
                 doRefresh = false;
+                if(Object.keys(phonebookData).length === 0){
+                    $('#phonebookEdit').hide();
+                }
             }
 
             window.cancelEditMode = function() {
@@ -226,6 +234,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         }
 
                         deletePhoneBook("viewPhonebook", key);
+
                     } else {
                         tempData["company"] = phonebookData[key].company;
                         tempData["ename"] = phonebookData[key].ename;
@@ -236,6 +245,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         tempPhonebookData[key] = tempData;
                     }
                 });
+
             });
         }
     });

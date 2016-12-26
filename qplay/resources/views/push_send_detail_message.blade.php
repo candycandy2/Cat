@@ -79,7 +79,7 @@ $messageType = $sendInfo->message_info->message_type;
             <div class="form-group row" style="word-wrap:break-word;">
                 <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_SEND_HISTORY")}}:</label>
                 <div class="col-xs-10">
-                    {{$sendInfo->created_at}} &nbsp;&nbsp;&nbsp; {{$sendInfo->source_user}}
+                    <span id="js-sendDate">{{$sendInfo->created_at}}</span> &nbsp;&nbsp;&nbsp; {{$sendInfo->source_user}}
                 </div>
             </div>
         </div>
@@ -224,6 +224,8 @@ $messageType = $sendInfo->message_info->message_type;
     <script>
         $(function() {
             CheckRoleTableSelect();
+            var sendDate = $('#js-sendDate').text();
+            $('#js-sendDate').text(convertUTCToLocalDateTime(sendDate));
         });
 
         var msgVisible = '{{$messageInfo->visible}}';
@@ -328,6 +330,8 @@ $messageType = $sendInfo->message_info->message_type;
                 }
             });
         };
+
+       
     </script>
 @endsection
 
