@@ -19,7 +19,7 @@ var dictDayOfWeek = {
     '4': '(四)',
     '5': '(五)',
     '6': '(六)',
-    '7': '(日)'
+    '0': '(日)'
 };
 var arrSite = ['2', '1', '43', '100'];
 var dictSite = {
@@ -69,14 +69,14 @@ function getAPIListAllMeetingRoom() {
         } else {
             // console.log('APIListAllMeetingRoomMsg No Data!');
             loadingMask('hide');
-            popupMsg('reservePopupMsg', 'apiFailMsg', 'APIListAllMeetingRoomMsg No Data!', '', true, '確定', '#', '#');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
     };
 
     this.failCallback = function(data) {
         // console.log('apiFailCallback');
         loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', 'getAPIListAllMeetingRoom', '', true, '確定', '#', '#');
+        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -118,14 +118,14 @@ function getAPIListAllTime() {
         } else {
             // console.log('APIListAllTimeMsg No Data!');
             loadingMask('hide');
-            popupMsg('reservePopupMsg', 'apiFailMsg', 'APIListAllTimeMsg No Data!', '', true, '確定', '#', '#');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
     };
 
     this.failCallback = function(data) {
         // console.log('apiFailCallback');
         loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', 'getAPIListAllTime', '', true, '確定', '#', '#');
+        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -181,7 +181,7 @@ function setDefaultSettingData() {
     var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
     if (roomSettingdata === null) {
         var obj = new Object();
-        obj.id = '0';
+        obj.id = 0;
         obj.title = '現在空的會議室';
         obj.site = '2';
         obj.siteName = dictSite['2'];
@@ -427,63 +427,61 @@ function reserveLocalDataObj(roomId, date, data) {
     this.data = data;
 };
 
-
-var currentPanel = 1;
-var panelsize = 60;
-var step = 100;
-var interval = 100;
-var direction = 1;
-var bAnimation = false;
-var minValue = 0;
-
-function animation(obj) {
-    setTimeout(function() {
-        var currentTop = parseInt($(obj).css("top"));
-
-        if (direction < 0) {
-            if (currentTop <= minValue) {
-                setTimeout(function() {
-                    bAnimation = false;
-                }, interval);
-                return;
-            }
-        } else {
-            if (currentTop >= minValue) {
-                setTimeout(function() {
-                    bAnimation = false;
-                }, interval);
-                return;
-            }
-        }
-
-        $(obj).css({
-            "top": currentTop - step
-        });
-        animation();
-    }, 16);
+function padLeft(str,lenght){
+    if(str.length >= lenght)
+        return str;
+    else
+        return padLeft("0" +str,lenght);
 }
 
 
-function scrollUpDown(id, isUpDown) {
-    if (bAnimation) return;
-    var currentTop = parseInt($('#' + id).css("top"));
+// var panelsize = 60;
+// var step = 15;
+// var bAnimation = false;
+// var minValue = 0;
 
-    if (event.originalEvent.wheelDelta < 0) {
-        //down 
-        minValue = currentTop - panelsize;
-        step = 10;
-        direction = -1;
-    } else {
-        //up 
-        minValue = currentTop + panelsize;
-        step = -10;
-        direction = 1;
-    }
+// function animation(obj, isUpDown) {
+//     setTimeout(function() {
+//         var currentTop = parseInt($(obj).css("top"));
 
-    if (parseInt(minValue) <= 0 && parseInt(minValue) >= parseInt(-540)) {
-        animation($('#' + id));
-    } else {
-        minValue = 0;
-        bAnimation = false;
-    }
-};
+//         if (isUpDown == 'down') {
+//             if (currentTop <= minValue) {
+//                 setTimeout(function() {
+//                     bAnimation = false;
+//                 });
+//                 return;
+//             }
+//         } else {
+//             if (currentTop >= minValue) {
+//                 setTimeout(function() {
+//                     bAnimation = false;
+//                 });
+//                 return;
+//             }
+//         }
+
+//         $(obj).css({ "top": currentTop - step });
+//         animation();
+//     });
+// }
+
+
+// function scrollUpDown(id, isUpDown) {
+//     if (bAnimation) return;
+//     var currentTop = parseInt($('#' + id).css("top"));
+
+//     if (isUpDown == 'down') { 
+//         minValue = currentTop - panelsize;
+//         step = 15;
+//     } else {
+//         minValue = currentTop + panelsize;
+//         step = -15;
+//     }
+
+//     if (parseInt(minValue) <= 0 && parseInt(minValue) >= parseInt(-300)) {
+//         animation($('#' + id), isUpDown);
+//     } else {
+//         minValue = 0;
+//         bAnimation = false;
+//     }
+// };
