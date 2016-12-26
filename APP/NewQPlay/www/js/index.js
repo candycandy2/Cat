@@ -172,5 +172,9 @@ function onBackKeyDown() {
 
         navigator.app.exitApp();
 
+    } else {
+
+        navigator.app.exitApp();
+
     }
 }

@@ -329,7 +329,7 @@ class Verify
 
     public static function getSignature($signatureTime)
     {
-        $key = CommonUtil::getSecretKeyByAppKey("appqplaytest");
+        $key = CommonUtil::getSecretKeyByAppKey(CommonUtil::getContextAppKey());
         $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
 
