@@ -67,7 +67,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             }
 
             function getAPIMyReserveCancel(date, traceID) {
-                // loadingMask('show');
+                loadingMask('show');
                 var self = this;
                 var queryData = '<LayoutHeader><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTraceID></ReserveTraceID><ReserveTraceAggID>' + traceID + '</ReserveTraceAggID></LayoutHeader>';
 
@@ -81,7 +81,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                         //Cancel a Reservation Failed
                         popupMsg('myReservePopupMsg', 'failMsg', '', '取消預約失敗', '', false, '確定', false);
                     }
-                    // loadingMask('hide');
+                    loadingMask('hide');
                 };
 
                 this.failCallback = function(data) {

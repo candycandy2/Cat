@@ -181,7 +181,7 @@ function setDefaultSettingData() {
     var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
     if (roomSettingdata === null) {
         var obj = new Object();
-        obj.id = '0';
+        obj.id = 0;
         obj.title = '現在空的會議室';
         obj.site = '2';
         obj.siteName = dictSite['2'];
