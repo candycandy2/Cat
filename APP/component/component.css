@@ -266,8 +266,6 @@ body {
     font-size: 3.3vh;
 }
 
-body, input, select, textarea, button, .ui-btn
-
 .popup-div .button-content div {
     float: left;
     width: 49%;
