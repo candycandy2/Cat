@@ -104,10 +104,10 @@ function reNewToken() {
             //other case
         }
 
-        if (doInitialSuccess) {
+        //if (doInitialSuccess) {
             doInitialSuccess = false;
             hideInitialPage();
-        }
+        //}
     };
 
     this.failCallback = function(data) {};

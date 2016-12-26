@@ -18,7 +18,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         +   '</div>'
                         +   '<div class="e-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
-                        +       '<p><a rel="external" href="tel:' + index.toString() + '" style="color:red;">' + extNo + '</a></p>'
+                        +       '<p><a rel="external" href="tel:' + extNo + '" style="color:red;">' + extNo + '</a></p>'
                         +   '</div>'
                         +   '<div class="c-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'
@@ -136,6 +136,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
                 $("#phonebookDelectConfirm").popup('close');
                 doRefresh = false;
+
                 if(Object.keys(phonebookData).length === 0){
                     $('#phonebookEdit').hide();
                 }
@@ -166,6 +167,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                     $('#myPhonebookList .edit-checkbox').css('height','20px');
                     $('#viewPhonebook :checkbox').prop('checked', false);
                     $('#viewPhonebook #unselectAll').hide();
+                    $('#viewPhonebook #selectAll').show();
                } else {
                     cancelEditMode();
                }

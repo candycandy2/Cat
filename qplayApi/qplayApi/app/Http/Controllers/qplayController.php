@@ -911,7 +911,7 @@ class qplayController extends Controller
             }
 
             $versionLine = $versionList[0];
-            if($versionLine->version_code == $version_code)
+            if($versionLine->version_code <= $version_code)
             {
                 $result = response()->json(['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>'App version is Nearest',
