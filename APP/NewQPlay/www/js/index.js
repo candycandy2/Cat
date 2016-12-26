@@ -143,7 +143,7 @@ function unregister() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-console.log(activePage);
+
     if (activePageID === "viewMain2-1") {
 
         if (checkPopupShown()) {
