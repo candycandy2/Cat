@@ -40,7 +40,8 @@ $(document).one('pagecreate', '#viewSettingList', function() {
             $('body').on('click', '#settingDelete', function() {
                 $('#viewSettingList').addClass('min-height-100');
                 clickDeleteID = $(this).attr('value');
-                popupMsg('settingListPopupMsg', 'deleteMsg', '', '是否確定刪除?', '取消', true, '確定', false);
+                var strTitle = $(this).attr('title');
+                popupMsg('settingListPopupMsg', 'deleteMsg', '', '是否確定刪除[' + strTitle + ']?', '取消', true, '確定', false);
             });
 
             $('body').on('click', 'div[for=deleteMsg] #confirm', function() {

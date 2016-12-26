@@ -56,7 +56,6 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    // console.log('apiFailCallback');
                     loadingMask('hide');
                     popupMsg('myReservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
@@ -85,7 +84,6 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    // console.log('apiFailCallback');
                     loadingMask('hide');
                     popupMsg('myReservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
