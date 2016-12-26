@@ -37,7 +37,8 @@ function getUTCDateTime(date){
 }
 
 function getDateTime(date){
-    var month = FormatNumberLength(date.getMonth() + 1,2); //months from 1-12
+    
+    var month = FormatNumberLength(date.getMonth()+1,2); //months from 1-12
     var day = FormatNumberLength(date.getDate(),2);
     var year = FormatNumberLength(date.getFullYear(),2);
     var hours = FormatNumberLength(date.getHours(),2);
@@ -48,16 +49,26 @@ function getDateTime(date){
 }
 
 function convertUTCToLocalDateTime(UTCdate){
-   if(UTCdate == '0000-00-00 00:00:00'){
+    if(UTCdate == '0000-00-00 00:00:00'){
         return '-';
-   }
-   var date = new Date(UTCdate + ' AM UTC');
-   return getDateTime(date);
+    }
+    var dateArr = UTCdate.split(" ");
+    var dateStr = dateArr[0];
+    var timeStr = dateArr[1];
+    var dateArr = dateStr.split("-");
+    var timeArr = timeStr.split(":"); 
+    var date =  new Date(Date.UTC(dateArr[0], dateArr[1]-1, dateArr[2], timeArr[0], timeArr[1], timeArr[2]));
+    return getDateTime(date);
 }
 
 function convertLocalToUTCDateTime(dateTime){
-   var date = new Date(dateTime);
-   return getUTCDateTime(date);
+    var dateArr = dateTime.split(" ");
+    var dateStr = dateArr[0];
+    var timeStr = dateArr[1];
+    var dateArr = dateStr.split("-");
+    var timeArr = timeStr.split(":"); 
+    var date =  new Date(dateArr[0], dateArr[1]-1, dateArr[2], timeArr[0], timeArr[1], timeArr[2]);
+    return getUTCDateTime(date);
 }
 
 function formatFloat(num, pos)
