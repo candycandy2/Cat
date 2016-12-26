@@ -1264,7 +1264,7 @@ SQL;
         }
 
 
-        if(Verify::chkAppKeyExist($appKey)) {
+        if(!Verify::chkAppKeyExist($appKey)) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -2255,7 +2255,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyWithCustomerAppKey();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         $request = \Request::instance();
