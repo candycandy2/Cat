@@ -47,54 +47,69 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 $('#appDetailPicListContent').append(content);
 
-                //Auto resize appDetailPicListContent
-                var tempIMG = $(".detail-img-style")[0];
-                var imgWidth = tempIMG.clientWidth;
-                var picListContentWidth = (imgWidth + 2) * piclist.length;
-                $("#appDetailPicListContent").css("width", picListContentWidth + "px");
-
-                //Auto resize detail-description
-                pageHeight = (pageHeight === null) ? $("#viewAppDetail2-2").height() : pageHeight;
-                var pageHeaderHeight = $("#viewAppDetail2-2 .page-header").height();
-                var mainTopHeight = $("#viewAppDetail2-2 .page-main .top").height();
-                var mainRankHeight = $("#viewAppDetail2-2 .page-main .rank").height();
-                var appDetailPicListHeight = $("#viewAppDetail2-2 #appDetailPicList").height();
+                //Auto resize appDetailPicList
                 if (device.platform === "iOS") {
-                    var fixHeight = 40;
-                } else {
-                    var fixHeight = 20;
+                    var tempHeight = $("#appDetailPicList").height();
+                    $("#appDetailPicList").css("height", parseInt(tempHeight + 20 ,10) + "px");
+                    tempHeight = $("#appDetailPicListContent").height();
+                    $("#appDetailPicListContent").css("height", parseInt(tempHeight + 20 ,10) + "px");
                 }
 
-                var tempHeight = pageHeight - (mainTopHeight + mainRankHeight + pageHeaderHeight + appDetailPicListHeight + fixHeight);
-                $("#viewAppDetail2-2 .detail-description").css("height", tempHeight + "px");
+                //Auto resize appDetailPicListContent
+                var pageWidth = $("#viewAppDetail2-2").width();
+                var tempIMG = $(".detail-img-style")[0];
+                var imgWidth = tempIMG.clientWidth;
+                var picListContentWidth = (imgWidth + 2 + pageWidth * 0.037) * piclist.length;
+                $("#appDetailPicListContent").css("width", picListContentWidth + "px");
 
+                //detail-description, the text content can't over 3 lines,
+                //if text content is too long, show/hide open button
                 var appDescription = appmultilang[multilangIndex].app_description.replace(/\n/g,"<br>");
+                $("#appDetailAppDescription").css("height", "auto");
                 $("#appDetailAppDescription").html(appDescription);
 
+                var descriptionHeight = $("#appDetailAppDescription").height();
+                var textHeight = parseInt(window.screen.height * 0.024, 10);
+                var adjustHeight = textHeight * 3 - descriptionHeight;
+
+                if (descriptionHeight >= (textHeight * 3)) {
+                    $("#appDetailAppDescription").addClass("detail-description-ellipsis");
+                    $("#appDetailAppDescription").css("max-height", "3.4em");
+                    $(".detail-description-open").show();
+                } else {
+                    $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
+                    $("#appDetailAppDescription").css("max-height", "none");
+                    $(".detail-description-open").hide();
+
+                    $("#appDetailAppDescription").css("height", parseInt(descriptionHeight + adjustHeight, 10) + "px");
+                }
+
                 loadingMask("hide");
-
-                var __construct = function() {
-
-                }();
             }
 
             /********************************** page event *************************************/
-            $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
-                var appDetail = new displayAppDetail();
-            });
-
             $("#viewAppDetail2-2").on("pagebeforeshow", function(event, ui) {
                 loadingMask("show");
             });
 
+            $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
+                displayAppDetail();
+            });
+
             /********************************** dom event *************************************/
-            $("#InstallApp").click(function() {
-                if (selectAppIndex != 9999)
-                {
-                    window.open(applist[selectAppIndex].url, '_self', false);
+            $("#InstallApp").on("click", function() {
+                if (selectAppIndex != null) {
+                    $("body").append('<a id="downloadAPP" href="' + applist[selectAppIndex].url + '"></a>');
+                    document.getElementById("downloadAPP").click();
+                    $("#downloadAPP").remove();
                 }
             });
-            
+
+            $("#openDescription").on("click", function() {
+                $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
+                $("#appDetailAppDescription").css("max-height", "none");
+                $(".detail-description-open").hide();
+            });
         }
     });
 

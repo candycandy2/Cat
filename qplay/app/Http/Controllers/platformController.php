@@ -1716,15 +1716,19 @@ class platformController extends Controller
                             ->select()->get();
                         foreach ($userListInRole as $userInRole) {
                             $userId = $userInRole->user_row_id;
+                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
                             if(!in_array($userId, $insertedUserIdList)) {
-                                \DB::table("qp_user_message")
-                                    -> insert([
-                                        'project_row_id'=>1,
-                                        'user_row_id'=>$userId,
-                                        'message_send_row_id'=>$messageSendId,
-                                        'created_user'=>\Auth::user()->row_id,
-                                        'created_at'=>$now,
-                                    ]);
+                                foreach ($currentUserInfo->uuidList as $uuid) {
+                                    \DB::table("qp_user_message")
+                                        -> insert([
+                                            'project_row_id'=>1,
+                                            'user_row_id'=>$userId,
+                                            'uuid'=>$uuid->uuid,
+                                            'message_send_row_id'=>$messageSendId,
+                                            'created_user'=>\Auth::user()->row_id,
+                                            'created_at'=>$now,
+                                        ]);
+                                }
                                 array_push($insertedUserIdList, $userId);
                                 array_push($real_push_user_list, $userId);
                             }
@@ -1733,14 +1737,18 @@ class platformController extends Controller
 
                     foreach($userList as $userId) {
                         if(!in_array($userId, $insertedUserIdList)) {
-                            \DB::table("qp_user_message")
-                                -> insert([
-                                    'project_row_id'=>1,
-                                    'user_row_id'=>$userId,
-                                    'message_send_row_id'=>$messageSendId,
-                                    'created_user'=>\Auth::user()->row_id,
-                                    'created_at'=>$now,
-                                ]);
+                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                            foreach ($currentUserInfo->uuidList as $uuid) {
+                                \DB::table("qp_user_message")
+                                    -> insert([
+                                        'project_row_id'=>1,
+                                        'user_row_id'=>$userId,
+                                        'uuid'=>$uuid->uuid,
+                                        'message_send_row_id'=>$messageSendId,
+                                        'created_user'=>\Auth::user()->row_id,
+                                        'created_at'=>$now,
+                                    ]);
+                            }
                             array_push($insertedUserIdList, $userId);
                             array_push($real_push_user_list, $userId);
                         }
@@ -1765,8 +1773,7 @@ class platformController extends Controller
                         }
                     }
                 }
-
-                //$result = CommonUtil::PushMessageWithMessageCenter($title, $to, $messageSendId);
+                
                 $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId);
                 if(!$result["result"]) {
                     //\DB::rollBack();

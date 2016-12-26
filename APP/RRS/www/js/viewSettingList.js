@@ -17,6 +17,7 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                 htmlContent = '';
 
                 if (roomSettingdata != null) {
+                    sortDataByKey(roomSettingdata.content, 'id', 'asc');
                     for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
                         var strPeople = (item.people == '0') ? '不限' : (item.people == '1') ? '2~8人' : '8人以上';
                         var strTime = (item.time == 'none') ? "現在起一小時" : item.time;
@@ -26,7 +27,8 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                     }
                 }
 
-                $('#defaultSettingList').after(htmlContent);
+                $('#settingList').after(htmlContent);
+                $('div[value=0] > a').addClass('disable');
             }
 
             /********************************** page event *************************************/
@@ -36,12 +38,11 @@ $(document).one('pagecreate', '#viewSettingList', function() {
 
             /********************************** dom event *************************************/
             $('body').on('click', '#settingDelete', function() {
-
+                $('#viewSettingList').addClass('min-height-100');
                 clickDeleteID = $(this).attr('value');
                 popupMsg('settingListPopupMsg', 'deleteMsg', '', '是否確定刪除?', '取消', true, '確定', false);
             });
 
-            // $('div[for=deleteMsg] #confirm').on('click', function() {
             $('body').on('click', 'div[for=deleteMsg] #confirm', function() {
 
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
@@ -54,6 +55,13 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                 $('#set-' + clickDeleteID).remove();
 
                 $('div[for=deleteMsg]').popup('close');
+            });
+
+            $('body').on('click', 'div[id^=set-]', function(e) {
+                if (e.target.id != "settingDelete") {
+                    clickEditSettingID = $(this).attr('value');
+                    $.mobile.changePage('#viewNewSetting');
+                }
             });
         }
     });

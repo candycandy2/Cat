@@ -17,6 +17,21 @@ use JPush\Client as JPush;
 
 class CommonUtil
 {
+    public static function getUserInfoByRowId($userRowId) {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.row_id', '=', $userRowId)
+            -> select()->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> select('uuid')->get();
+
+        return $userList[0];
+    }
+
     public static function getUserInfoByUUID($uuid)
     {
         $userList = \DB::table('qp_user')
