@@ -16,7 +16,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 var originItem = ['不限', 'floorDefault', 'ui-block-a'];
                 htmlContent = '';
 
-                for (var i = 0, item; item = meetingRoomTreeData._root.children[siteIndex].children[i]; i++) {
+                for (var i = 0, item; item = meetingRoomData.children[siteIndex].children[i]; i++) {
                     var j = i % 3;
                     var replaceItem = [item.data, item.data, 'ui-block-' + arrClass[j]];
                     htmlContent
@@ -102,8 +102,8 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             /********************************** page event *************************************/
             $('#viewNewSetting').one('pagebeforeshow', function(event, ui) {
-                siteIDforSetting = meetingRoomTreeData._root.children[0].data;
-                siteCategoryIDforSetting = dictSiteCategory[meetingRoomTreeData._root.children[0].data];
+                siteIDforSetting = meetingRoomData.children[0].data;
+                siteCategoryIDforSetting = dictSiteCategory[meetingRoomData.children[0].data];
                 getFloorData('0');
                 setDefaultStatus();
             });
@@ -126,8 +126,6 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
             });
 
             $('#setTime2').on('click', function() {
-                //$('#timeflip1').datebox('open');
-
                 var setTimeStr = $('label[for^=setTime2]').text();
                 if(setTimeStr != '指定時段'){
                     var arrTimeStr = setTimeStr.split('~');
@@ -138,30 +136,15 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $('div[tpye=s][for=mm]').html(arrSTimeHrMM[1].trim());
                     $('div[tpye=e][for=hr]').html(arrETimeHrMM[0].trim());
                     $('div[tpye=e][for=mm]').html(arrETimeHrMM[1].trim());
-
                 }
 
                 $('#newSettingTimePickerPopup #cancel').html('取消');
-                $('#newSettingTimePickerPopup #confirm').html('確定');
+                $('#newSettingTimePickerPopup #confirm').html('設定時間');
                 $('#newSettingTimePickerPopup').removeClass();
+                $('#newSettingTimePickerPopup button').removeClass();
                 $('#newSettingTimePickerPopup').popup();
                 $('#newSettingTimePickerPopup').popup('open');
             });
-
-            // $('#timeflip1').bind('datebox', function(e, passed) {
-            //     if (passed.method == 'set') {
-            //         bTime = passed.value;
-            //         var eTime = addThirtyMins(bTime);
-            //         $('label[for^=setTime2]').text(bTime + '-' + eTime);
-            //         selectTime['bTime'] = bTime;
-            //         selectTime['eTime'] = eTime;
-            //     }
-            //     // else if (passed.method == 'close') {
-            //     //     $("input[id=setTime1]").trigger('click');
-            //     //     $("label[for=setTime1]").addClass('ui-btn-active');
-            //     //     $("label[for=setTime2]").removeClass('ui-btn-active');
-            //     // }
-            // });
 
             // click floor button
             $('body').on('click', '#newSettingFloor .ui-bar', function() {
@@ -227,7 +210,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
                     if ($("#newSettingTime :radio:checked").val() === 'setTime') {
                         obj.time = selectTime['bTime'] + '~' + selectTime['eTime'];
-                        obj.timeID = getTimeID(selectTime['bTime'], selectTime['eTime'], siteCategoryIDforSetting);
+                        obj.timeID = getTimeID(selectTime['bTime'], selectTime['eTime'], siteCategoryIDforSetting).replace(/,\s*$/, "");
                     } else {
                         obj.time = 'none'
                         obj.timeID = 'none';
@@ -237,15 +220,16 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $.each(seqClick, function(index, value) {
                         strFloor += value + ',';
                     });
-                    obj.floorName = strFloor;
+                    //replace end of comma
+                    obj.floorName = strFloor.replace(/,\s*$/, "");
                     if (strFloor == '') {
-                        var index = findIndex(meetingRoomTreeData._root.children, siteIDforSetting);
-                        $.each(meetingRoomTreeData._root.children[index].children, function(index, value) {
+                        var index = findIndex(meetingRoomData.children, siteIDforSetting);
+                        $.each(meetingRoomData.children[index].children, function(index, value) {
                             strFloor += value.data + ',';
                         });
                         obj.floorName = 'none';
                     }
-                    obj.floor = strFloor.replaceAll('F', '');
+                    obj.floor = strFloor.replaceAll('F', '').replace(/,\s*$/, "");
 
                     var jsonData = {};
                     if (roomSettingdata == null) {
