@@ -76,6 +76,8 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                         $("#newsAuthor").html(content.create_user);
                         $("#newsContent").html(cleanHTML(content.message_text));
 
+                        $(".content-bg").css("opacity", 1);
+
                         if (window.localStorage.getItem("openMessage") === "true") {
                             loginData["openMessage"] = false;
                             window.localStorage.setItem("openMessage", false);
@@ -151,6 +153,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
             };
             /********************************** page event *************************************/
             $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
+                $(".content-bg").css("opacity", 0);
                 var messageDetail = new QueryMessageDetail();
             });
 
