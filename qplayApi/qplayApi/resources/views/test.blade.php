@@ -422,7 +422,7 @@ FORM;
 
         var getMessageList = function () {
             $.ajax({
-                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest&date_from=0&date_to=9470030584&count_from=1&count_to=2&overwrite_timestamp=1",
+                url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest&overwrite_timestamp=0",
                 //url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest",
                 dataType: "json",
                 type: "POST",
@@ -432,7 +432,7 @@ FORM;
                     request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "58169b8a895eb");
+                    request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -463,7 +463,7 @@ FORM;
 
         var getMessageDetail = function () {
             $.ajax({
-                url: "v101/qplay/getMessageDetail?lang=en-us&uuid=chaosTest&message_send_row_id=19",
+                url: "v101/qplay/getMessageDetail?lang=en-us&uuid=chaosTest&message_send_row_id=262",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -472,7 +472,7 @@ FORM;
                     request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "58169b8a895eb");
+                    request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -499,7 +499,7 @@ FORM;
 
         var updateMessage = function () {
             $.ajax({
-                url: "v101/qplay/updateMessage?lang=en-us&uuid=chaosTest&message_send_row_id=19&message_type=event&status=read",
+                url: "v101/qplay/updateMessage?lang=en-us&uuid=chaosTest&message_send_row_id=19,257,261&message_type=event&status=read",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -508,7 +508,7 @@ FORM;
                     request.setRequestHeader("app-key", "appqplay");
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
-                    request.setRequestHeader("token", "57a93c3dbee41");
+                    request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
