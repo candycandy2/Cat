@@ -139,7 +139,7 @@ class Verify
 //            return array("code"=>ResultCode::_999011_signatureOvertime,
 //                "message"=>"signature參數錯誤或誤差超過15分鐘");
 
-        $sigResult = self::chkSignature($headerSignature, $headerSignatureTime);
+        $sigResult = self::getSignatureCustom($headerSignature, $headerSignatureTime,$headerAppKey);
         if ($sigResult == 1) {
             return array("code"=>ResultCode::_999008_signatureIsInvalid,
                 "message"=>"Signature驗證碼不正確");
