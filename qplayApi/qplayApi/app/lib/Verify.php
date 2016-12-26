@@ -139,7 +139,7 @@ class Verify
 //            return array("code"=>ResultCode::_999011_signatureOvertime,
 //                "message"=>"signature參數錯誤或誤差超過15分鐘");
 
-        $sigResult = self::chkSignature($headerSignature, $headerSignatureTime);
+        $sigResult = self::chkSignatureCustom($headerSignature, $headerSignatureTime,$headerAppKey);
         if ($sigResult == 1) {
             return array("code"=>ResultCode::_999008_signatureIsInvalid,
                 "message"=>"Signature驗證碼不正確");
@@ -329,7 +329,7 @@ class Verify
 
     public static function getSignature($signatureTime)
     {
-        $key = CommonUtil::getSecretKeyByAppKey("appqplaytest");
+        $key = CommonUtil::getSecretKeyByAppKey(CommonUtil::getContextAppKey());
         $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
 

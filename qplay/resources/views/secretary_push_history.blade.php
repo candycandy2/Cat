@@ -136,7 +136,7 @@ label {
         });
 
         var pushDateFormatter = function (value, row) {
-            return '<a href="secretaryPushSendDetail?message_id=' + {{$messageId}} + '&push_send_row_id=' + row.row_id + '">' + value + '</a>';
+            return '<a href="secretaryPushSendDetail?message_id=' + {{$messageId}} + '&push_send_row_id=' + row.row_id + '">' + convertUTCToLocalDateTime(value) + '</a>';
         };
 
         var oriVisible = '{{$messageInfo->visible}}';

@@ -33,6 +33,7 @@ var popupID;
 var callHandleOpenURL = false;
 var doInitialSuccess = false;
 var checkTimerCount = 0;
+var doHideInitialPage = false;
 
 var app = {
     // Application Constructor
@@ -198,7 +199,7 @@ $(document).one("pagebeforecreate", function(){
 
         //viewNotSignedIn, Login Again
         $("#LoginAgain").on("click", function() {
-            $("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
             var checkAppVer = new checkAppVersion();
         });
     }, "html");

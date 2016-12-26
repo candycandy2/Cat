@@ -10,7 +10,8 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
              function displayAppDetail() {
 
                 $("#appDetailIcon").attr("src", applist[selectAppIndex].icon_url); 
-                
+
+                //Find multilangIndex = "zh-tw"
                 for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
                     if ((applist[selectAppIndex].app_code == appmultilang[multilangIndex].project_code) &&
                         (appmultilang[multilangIndex].lang == "zh-tw"))
@@ -24,7 +25,25 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                     return;
                 }
 
-                $("#appDetailAppName").html(appmultilang[multilangIndex].app_name);
+                //APP Name substring
+                //zh-tw / zh-cn: string max length is 6
+                //en-us / other: string max length is 12
+                var language = navigator.language.toLowerCase();
+                var strLength;
+
+                if (language === "zh-tw" || language === "zh-cn") {
+                    strLength = 6;
+                } else {
+                    strLength = 12;
+                }
+
+                var appName = appmultilang[multilangIndex].app_name.substr(0, strLength);
+
+                if (appmultilang[multilangIndex].app_name.length > strLength) {
+                    appName += "...";
+                }
+
+                $("#appDetailAppName").html(appName);
                 $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
                 $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
                 var appSize =  new Number(applist[selectAppIndex].size / 1024.0 / 1024.0);
