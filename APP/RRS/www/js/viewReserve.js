@@ -250,9 +250,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     if (data['ResultCode'] === "002902") {
                         //Reservation Successful
                         popupMsg('reservePopupMsg', 'reserveSuccessMsg', '', '會議室預約成功', '', false, '確定', false);
-                        if (page == 'pageOne') {
+                        //if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
-                        }
+                        //}
                         
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
@@ -570,6 +570,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             $("#quickReserveConfirm").on('click', function() {
                 var quickClickRomeId = quickRserveCallBackData[0].MeetingRoomID;
                 var quickClickDateId = quickReserveClickDateID.replaceAll('two', '');
+
                 // $('#scrollDate a[id=one' + clickDateId + ']').parent().data("lastClicked", 'one' + clickDateId);
                 // $('#reserveRoom a[id=' + clickRomeId + ']').parent().data("lastClicked", clickRomeId);
                 // $('#scrollDate a[id^=one]').removeClass('hover');
