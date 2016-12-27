@@ -65,7 +65,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 99;
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.4);
@@ -239,7 +239,7 @@ body {
 }
 
 .popup-div .ui-content {
-    width: 90%;
+    width: 85%;
     height: auto;
     padding: 10% 10% 0;
     font-size: 3vh;
