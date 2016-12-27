@@ -843,7 +843,7 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         foreach ($input as $k=>$v) {
@@ -1206,7 +1206,7 @@ SQL;
     public function getSecurityList()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         $request = Request::instance();
