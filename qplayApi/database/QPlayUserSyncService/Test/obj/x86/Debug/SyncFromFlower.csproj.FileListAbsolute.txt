@@ -1,0 +1,10 @@
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\SyncFromFlower.exe.config
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\SyncFromFlower.exe
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\SyncFromFlower.pdb
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.exe
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\ITS.Data.dll
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\log4net.dll
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\bin\Debug\QPlayUserSyncService.pdb
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\obj\x86\Debug\SyncFromFlower.csprojResolveAssemblyReference.cache
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\obj\x86\Debug\SyncFromFlower.exe
+F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\Test\obj\x86\Debug\SyncFromFlower.pdb
