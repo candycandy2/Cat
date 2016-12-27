@@ -598,10 +598,10 @@ class CommonUtil
         switch ($env)
         {
             case  "dev":
-                $key = $key + "dev";
+                $key = $key."dev";
                 break;
             case  "test":
-                $key = $key + "test";
+                $key = $key."test";
                 break;
             case  "production":
                 break;
