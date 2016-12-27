@@ -95,7 +95,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
             }
 
             function showPopupAlert(content) {
-                $('.showMsg').html(content);
+                $('.showMsg > span').html(content);
                 $('.showMsg').css('display', '');
                 $('.showMsg').delay(1000).fadeOut(400);
             }
@@ -293,7 +293,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 }
 
                 if (checkTime) {
-                    showPopupAlert('可設定時間為8點-17點');
+                    showPopupAlert('可設定時間為08:00到17:30');
                 } else {
                     $('div[tpye=' + clickType + '][for=' + clickFormate + ']').html(tempStr);
                 }
