@@ -7,7 +7,6 @@ var appSecretKey = "2e936812e205445490efb447da16ca13";
 
 var prevPageID;
 var arrReserve = [];
-var arrClickReserve = [];
 var arrTimeBlockBySite = [];
 var arrOtherTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
@@ -39,6 +38,8 @@ var dictSiteCategory = {
 };
 
 window.initialSuccess = function() {
+    loadingMask('show');
+
     $.mobile.changePage('#viewReserve');
 
     $("a[name=goPrevPage]").on("click", function() {
@@ -72,11 +73,6 @@ function getAPIListAllMeetingRoom() {
             loadingMask('hide');
             popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
-    };
-
-    this.failCallback = function(data) {
-        loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -150,11 +146,6 @@ function getAPIListAllTime() {
         }
     };
 
-    this.failCallback = function(data) {
-        loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
-    };
-
     var __construct = function() {
         QPlayAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData);
     }();
@@ -164,17 +155,14 @@ function getTimeID(sTime, eTime, siteCategoryID) {
     var arrSelectTime = [];
     var strTime = sTime;
 
-    // do {
-    //     arrSelectTime.push(strTime);
-    //     strTime = addThirtyMins(strTime);
-    //     var dStrTime = new Date(new Date().toDateString() + ' ' + strTime);
-    //     var dETime = new Date(new Date().toDateString() + ' ' + eTime);
-    // } while (dStrTime <= dETime);
-
-    do {
+    if (sTime == eTime) {
         arrSelectTime.push(strTime);
-        strTime = addThirtyMins(strTime);
-    } while (strTime != eTime);
+    } else {
+        do {
+            arrSelectTime.push(strTime);
+            strTime = addThirtyMins(strTime);
+        } while (strTime != eTime);
+    }
 
     //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
@@ -205,7 +193,7 @@ function getTimeID(sTime, eTime, siteCategoryID) {
 function createReserveDetailLocalDate() {
     //save to local data
     localStorage.removeItem('reserveDetailLocalData');
-    jsonData = {};
+    jsonData = [];
     localStorage.setItem('reserveDetailLocalData', JSON.stringify(jsonData));
 }
 
