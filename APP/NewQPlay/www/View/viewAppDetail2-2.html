@@ -3,32 +3,49 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <h1></h1>
-        <a href="#viewMain2-1" data-icon="arrow-l" class="ui-btn-left">
-            <span>返回</span>
+        <a href="#viewMain2-1" data-role="none">
+            <div class="q-btn-header">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
         </a>
     </div>
 
-    <div data-role="main" class="ui-content page-main" id="appcontent">
+    <div data-role="main" class="ui-content page-main">
         <div class="top">
             <div class="appDetailIcon">
                 <img src="img/ypicon.png" id="appDetailIcon" width="100%" height="auto">
             </div>
             <div id="appDetailInfo" class="appDetailInfo">
-                <p id="appDetailAppName" class="appDetailAppName">Yellow Page</p>
-                <p id="appDetailAppSummary" >Find Employee Information</p>
-                <p id="appDetailAppVersion">V 1.0.2</p>
-                <p id="appDetailAppSize">20M</p>
-            </div>
-            <div class="install-btn-content">
-                <a href="#" data-role="button" data-inline="true" class="install-btn" id="InstallApp">下載</a>
+                <p id="appDetailAppName" class="appDetailAppName"></p>
+                <p id="appDetailRank" class="appDetailRank">
+                    <span class="star">@@@@@</span>
+                    <span class="score">(4.5)</span>
+                </p>
+                <div class="appDetailBottomLeft">
+                    <p class="appDetailAppVersion">
+                        <span class="title">Version</span>
+                        <span class="number" id="appDetailAppVersion"></span>
+                    </p>
+                    <p class="appDetailAppSize">
+                        <span class="title">Size</span>
+                        <span class="number" id="appDetailAppSize"></span>
+                    </p>
+                </div>
+                <div class="appDetailBottomRight">
+                    <div class="install-btn" id="InstallApp">下載</div>
+                </div>
             </div>
         </div>
         <div class="bottom">
-            <div class="detail-description" id="appDetailAppDescription">
-                <p>you can via RRS app to reserve conference room parking space of BQT or QTY</p>
-            </div>
-            <div class="rank">
-                <img src="img/rank4p5.png">
+            <div>
+                <div class="detail-description" id="appDetailAppDescription">
+
+                </div>
+                <div class="detail-description-open" style="display:none;">
+                    <div class="detail-description-open-btn" id="openDescription">
+                        更多
+                    </div>
+                </div>
             </div>
             <div id="appDetailPicList">
                 <div id="appDetailPicListContent"></div>

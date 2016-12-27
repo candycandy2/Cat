@@ -594,14 +594,14 @@ class CommonUtil
 
     public static function getContextAppKey(){
         $key = "appqplay";
-        $env = strtolower(Config::get('env'));
+        $env = strtolower(Config::get('app.env'));
         switch ($env)
         {
             case  "dev":
-                $key = $key + "dev";
+                $key = $key."dev";
                 break;
             case  "test":
-                $key = $key + "test";
+                $key = $key."test";
                 break;
             case  "production":
                 break;

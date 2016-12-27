@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QPlayUserSyncService", "QPlayUserSyncService\QPlayUserSyncService.csproj", "{EFF634F7-683D-47F0-A71A-7DD45D619B8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{4D38A2BB-67FF-4326-921A-2A5EAEE03AFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncFromFlower", "Test\SyncFromFlower.csproj", "{4D38A2BB-67FF-4326-921A-2A5EAEE03AFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

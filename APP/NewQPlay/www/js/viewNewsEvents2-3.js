@@ -65,7 +65,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         }
 
                         //Check if there still have a unread message, then show [red star]
-                        $("#newMsg").hide();
+                        $("#newsNav").show();
+                        $("#newsNoticeNav").hide();
                         $("#newEvents").hide();
                         $("#newNews").hide();
 
@@ -78,7 +79,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                                     $("#newNews").show();
                                 }
 
-                                $("#newMsg").show();
+                                $("#newsNav").hide();
+                                $("#newsNoticeNav").show();
                             }
                         }
 
@@ -114,6 +116,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     }
 
                     if (window.localStorage.getItem("openMessage") === "true") {
+                        $.mobile.changePage('#viewWebNews2-3-1', {
+                            allowSamePageTransition : true,
+                            transition              : 'none',
+                            showLoadMsg             : false,
+                            reloadPage              : true
+                        });
                         $.mobile.changePage("#viewWebNews2-3-1");
                     }
                 }; 
@@ -194,7 +202,11 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 $("#eventlistview").html(eventListItems);
                 $("#eventlistview").listview('refresh');
 
-                $(".update-time span").html(new Date().toLocaleString());
+                //Latest Update Time
+                var datetime = new Date();
+                var datetimeStr = datetime.getFullYear() + "/" + parseInt(datetime.getMonth() + 1, 10) + "/" + datetime.getUTCDate() + " " +
+                                  datetime.getHours() + ":" + datetime.getMinutes();
+                $(".update-time span").html(datetimeStr);
 
                 //If News or Events has no message, show [No News] [No Events]
                 if (countNews === 0) {

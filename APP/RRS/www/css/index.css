@@ -17,6 +17,10 @@ a {
     text-decoration: none !important;
 }
 
+.ui-title {
+    text-shadow: initial !important;
+}
+
 .ui-btn {
     text-overflow: initial;
     margin-right: auto !important;
@@ -84,6 +88,7 @@ a {
     background-color: initial;
 }
 
+
 /*override jQuery Mobile end*/
 
 
@@ -130,6 +135,7 @@ a {
     text-decoration: none;
     color: black;
 }
+
 
 /*--------------------------*/
 
@@ -266,9 +272,12 @@ div.circle {
 }
 
 .quick-reserve-setting-icon {
-    background: url(../img/select.png) no-repeat;
-    width: 5vw;
-    height: 2.5vh;
+    background: url(../img/setting.png) no-repeat;
+    width: 7vw;
+    height: 4.5vh;
+    background-size: 7vw 4.5vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
 }
 
 .cntIcon {
@@ -282,7 +291,9 @@ div.circle {
     background-color: #003399 !important;
 }
 
+
 /*new public area end*/
+
 
 /*new color setting start*/
 
@@ -343,7 +354,9 @@ hr.ui-color-yellow {
     background-color: #afc744 !important;
 }
 
+
 /*new color setting end*/
+
 
 /*new scrollmenu start*/
 
@@ -382,7 +395,9 @@ div.scrollmenu a {
     color: white !important;
 }
 
+
 /*new scrollmenu end*/
+
 
 /*new header start*/
 
@@ -411,6 +426,7 @@ div.scrollmenu a {
     float: right;
     margin: 0 5%;
 }
+
 
 /*new header end*/
 
@@ -457,14 +473,21 @@ div.scrollmenu a {
     width: 10% !important;
 }
 
+
 /*column width end*/
 
+
 /*popup msg start*/
+
+.ui-popup-container,
+.ui-popup {
+    width: initial !important;
+}
 
 .popup-msg {
     height: 20vh;
     width: 80vw;
-    background: #eee;
+    background: #eee !important;
     border-radius: 10px;
     padding: 0;
     margin: 0;
@@ -493,7 +516,7 @@ div.scrollmenu a {
 .popup-msg button {
     background: transparent;
     border: none;
-    color: #1678E5;
+    color: #1678E5 !important;
     height: 3rem;
     font-size: 1rem;
     width: 50%;
@@ -551,4 +574,82 @@ div.scrollmenu a {
     border-radius: 0 0 10px 0;
 }
 
+
 /*popup msg end*/
+
+
+/*.timepicker-main {
+        border: 0px;
+    width: 50px;
+    height: 30px;
+    overflow: hidden;
+}*/
+
+
+/*#sTimeHr {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    top: 0;
+    display: inline-block;
+}
+
+section {
+    height: 60px;
+    font-size: 
+}*/
+
+.timepicker-icon {
+    width: 10vw;
+    height: 4vh;
+    line-height: 4vh;
+    border: 0.6vw solid #ddd;
+    border-radius: 7px;
+    padding: 1vh 0 0 0;
+}
+
+.timepicker-icon-up {
+    background: url(../img/up.png) no-repeat;
+    background-size: 10vw 5vh;
+}
+
+.timepicker-icon-down {
+    background: url(../img/down.png) no-repeat;
+    background-size: 10vw 5vh;
+}
+
+#newSettingTimePickerPopup .popup-msg {
+    height: 30vh !important;
+}
+
+#newSettingTimePickerPopup .popup-msg div {
+    /*width: 12vw;*/
+    margin: 0 auto !important;
+    font-size: 6vw;
+}
+
+#newSettingTimePickerPopup .popup-msg table {
+    height: 23vh !important;
+    /*width: 75vw !important;*/
+    margin: 0 auto !important;
+}
+
+#newSettingTimePickerPopup .showMsg {
+    height: 3.5vh;
+    position: absolute;
+    text-align: center;
+    line-height: 3.5vh;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    font-size: 4.5vw !important;
+}
+
+.min-height-100 {
+    min-height: 100% !important;
+}
+
+
+/*.loader{
+    margin-top: 100vh !important;
+}*/

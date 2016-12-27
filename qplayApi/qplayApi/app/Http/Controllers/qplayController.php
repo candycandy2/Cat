@@ -843,7 +843,7 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         foreach ($input as $k=>$v) {
@@ -911,7 +911,7 @@ class qplayController extends Controller
             }
 
             $versionLine = $versionList[0];
-            if($versionLine->version_code == $version_code)
+            if($versionLine->version_code <= $version_code)
             {
                 $result = response()->json(['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>'App version is Nearest',
@@ -1206,7 +1206,7 @@ SQL;
     public function getSecurityList()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         $request = Request::instance();
@@ -1264,7 +1264,7 @@ SQL;
         }
 
 
-        if(Verify::chkAppKeyExist($appKey)) {
+        if(!Verify::chkAppKeyExist($appKey)) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -1280,13 +1280,14 @@ SQL;
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
                 $app_row_id = \DB::table("qp_app_head")
-                    -> join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                    -> join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
                     -> where('qp_project.app_key', "=", $appKey)
                     -> select('qp_app_head.row_id')
                     -> lists('qp_app_head.row_id');
 
                 $whitelist = \DB::table("qp_white_list")
-                    -> whereNull('deleted_at')
+//                    -> whereNull('deleted_at')
+		    -> where('deleted_at', "=", '0000-00-00 00:00:00')
                     -> where('app_row_id', "=", $app_row_id)
                     -> select('allow_url')
                     -> get();
@@ -1511,14 +1512,14 @@ from qp_message m
      from qp_message_send 
 left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
-where um.user_row_id = '$uuid'
+where um.user_row_id = $userId
 and qp_message.message_type = 'event'
 and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
 and UNIX_TIMESTAMP(qp_message_send.created_at) <= $date_to
 and qp_message_send.row_id in (
 select message_send_row_id from qp_user_message 
-where user_row_id = :uId2
+where user_row_id = $userId
 and uuid = '$uuid'
 -- and deleted_at <>'0000-00-00 00:00:00'
 and deleted_at = 0
@@ -1540,7 +1541,7 @@ and m.created_user = u2.row_id
 order by ms.created_at desc
 SQL;
 
-                $r = DB::select($sql, [':uId1'=>$userId, ':uId2'=>$userId]);
+                $r = DB::select($sql);
 
                 if($count_from >= 1) {
                     $r = array_slice($r, $count_from - 1, $count_to - $count_from + 1);
@@ -1687,7 +1688,6 @@ and um.message_send_row_id = ms.row_id
 and um.deleted_at = 0
 and um.user_row_id = $userId
 and um.uuid = '$uuid'
-and um.deleted_at <>'0000-00-00 00:00:00'
 SQL;
                 if($msg->message_type == 'news') {
 
@@ -1940,7 +1940,7 @@ SQL;
                 $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>'Call Service Successed',
                     'token_valid'=>$verifyResult["token_valid_date"],
-                    'content'=>array('message_send_row_id' => $message_send_row_id)
+                    'content'=>array('message_send_row_id' => $message_send_row_id_str)
                 ]);
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -2256,7 +2256,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyWithCustomerAppKey();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         $request = \Request::instance();
@@ -2574,7 +2574,7 @@ SQL;
                                             -> insertGetId([
                                                 'project_row_id'=>$projectInfo->row_id,
                                                 'user_row_id'=>$destinationUserInfo->row_id,
-                                                'uuid'=>$uuid,
+                                                'uuid'=>$uuid->uuid,
                                                 'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
                                                 'created_user'=>$userInfo->row_id,
                                                 'created_at'=>$now
@@ -2617,7 +2617,7 @@ SQL;
                                                     -> insertGetId([
                                                         'project_row_id'=>$projectInfo->row_id,
                                                         'user_row_id'=>$userRowId,
-                                                        'uuid'=>$uuid,
+                                                        'uuid'=>$uuid->uuid,
                                                         'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
                                                         'created_user'=>$userInfo->row_id,
                                                         'created_at'=>$now//, 'push_flag'=>'0'

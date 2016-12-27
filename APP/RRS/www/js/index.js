@@ -8,16 +8,23 @@ var appSecretKey = "2e936812e205445490efb447da16ca13";
 var prevPageID;
 var arrReserve = [];
 var arrClickReserve = [];
-var arrTimeBlock = [];
+var arrTimeBlockBySite = [];
+var arrOtherTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
+var meetingRoomData = {};
 var htmlContent = '';
+var clickEditSettingID = '';
 var dictDayOfWeek = {
     '1': '(一)',
     '2': '(二)',
     '3': '(三)',
     '4': '(四)',
-    '5': '(五)'
+    '5': '(五)',
+    '6': '(六)',
+    '0': '(日)'
 };
+var arrSite = ['2', '1', '43', '100'];
+var arrSiteCategory = ['1', '2', '8'];
 var dictSite = {
     '1': 'QTY',
     '2': 'BQT/QTT',
@@ -32,8 +39,6 @@ var dictSiteCategory = {
 };
 
 window.initialSuccess = function() {
-    // loadingMask("show");
-
     $.mobile.changePage('#viewReserve');
 
     $("a[name=goPrevPage]").on("click", function() {
@@ -65,14 +70,13 @@ function getAPIListAllMeetingRoom() {
         } else {
             // console.log('APIListAllMeetingRoomMsg No Data!');
             loadingMask('hide');
-            popupMsg('reservePopupMsg', 'apiFailMsg', 'APIListAllMeetingRoomMsg No Data!', '', true, '確定', '#', '#');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
     };
 
     this.failCallback = function(data) {
-        // console.log('apiFailCallback');
         loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', 'getAPIListAllMeetingRoom', '', true, '確定', '#', '#');
+        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -88,40 +92,67 @@ function getAPIListAllTime() {
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
 
+            var arrTimeBlock = [];
             for (var i = 0, item; item = data['Content'][i]; i++) {
-                var bTimeStr = new Date(new Date().toDateString() + ' ' + '08:00')
-                var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30')
-                var timeStr = new Date(new Date().toDateString() + ' ' + item.BTime)
+                var bTimeStr = new Date(new Date().toDateString() + ' ' + '08:00');
+                var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30');
+                var timeStr = new Date(new Date().toDateString() + ' ' + item.BTime);
+                var newTimeBlock = new timeblockObj(item.TimeCategory, item.BTime, item.TimeID);
                 if (timeStr >= bTimeStr && timeStr <= eTimeStr) {
-                    var newTimeBlock = new timeblockObj(item.TimeCategory, item.BTime, item.TimeID);
                     arrTimeBlock.push(newTimeBlock);
+                } else {
+                    arrOtherTimeBlock.push(newTimeBlock);
                 }
             }
 
-            arrTimeBlock.sort(function(a, b) {
-                return new Date(new Date().toDateString() + ' ' + a.time) - new Date(new Date().toDateString() + ' ' + b.time);
-            });
-
             //save to local data
-            localStorage.removeItem('allTimeLocalData');
             var jsonData = {};
+            var jsonChildData = {};
             jsonData = {
                 lastUpdateTime: new Date(),
-                content: arrTimeBlock
+                content: []
             };
+            localStorage.removeItem('allTimeLocalData');
             localStorage.setItem('allTimeLocalData', JSON.stringify(jsonData));
+            var allTimeLocalData = JSON.parse(localStorage.getItem('allTimeLocalData'));
+
+            for (var key in arrSiteCategory) {
+                var filterTimeBlock = grepData(arrTimeBlock, 'category', arrSiteCategory[key]);
+
+                filterTimeBlock.sort(function(a, b) {
+                    return new Date(new Date().toDateString() + ' ' + a.time) - new Date(new Date().toDateString() + ' ' + b.time);
+                });
+
+                jsonChildData = {
+                    siteCategoryID: arrSiteCategory[key],
+                    data: filterTimeBlock
+                };
+
+                allTimeLocalData.content.push(jsonChildData);
+                jsonData = allTimeLocalData;
+            }
+
+            localStorage.setItem('allTimeLocalData', JSON.stringify(jsonData));
+            arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: arrOtherTimeBlock
+            };
+            localStorage.removeItem('allOtherTimeLocalData');
+            localStorage.setItem('allOtherTimeLocalData', JSON.stringify(jsonData));
+
             loadingMask('hide');
         } else {
             // console.log('APIListAllTimeMsg No Data!');
             loadingMask('hide');
-            popupMsg('reservePopupMsg', 'apiFailMsg', 'APIListAllTimeMsg No Data!', '', true, '確定', '#', '#');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
     };
 
     this.failCallback = function(data) {
-        // console.log('apiFailCallback');
         loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', 'getAPIListAllTime', '', true, '確定', '#', '#');
+        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -133,12 +164,20 @@ function getTimeID(sTime, eTime, siteCategoryID) {
     var arrSelectTime = [];
     var strTime = sTime;
 
+    // do {
+    //     arrSelectTime.push(strTime);
+    //     strTime = addThirtyMins(strTime);
+    //     var dStrTime = new Date(new Date().toDateString() + ' ' + strTime);
+    //     var dETime = new Date(new Date().toDateString() + ' ' + eTime);
+    // } while (dStrTime <= dETime);
+
     do {
         arrSelectTime.push(strTime);
         strTime = addThirtyMins(strTime);
     } while (strTime != eTime);
 
-    var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
+    //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
+    var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
     var strTimeID = '';
     for (var item in filterTimeBlock) {
@@ -147,6 +186,17 @@ function getTimeID(sTime, eTime, siteCategoryID) {
                 strTimeID += filterTimeBlock[item].timeID + ',';
             }
         });
+    }
+    if (strTimeID == '') {
+        arrOtherTimeBlock = JSON.parse(localStorage.getItem('allOtherTimeLocalData'))['content'];
+        var filterOtherTimeBlock = grepData(arrOtherTimeBlock, 'category', siteCategoryID);
+        for (var item in filterOtherTimeBlock) {
+            $.each(arrSelectTime, function(index, value) {
+                if (value == filterOtherTimeBlock[item].time) {
+                    strTimeID += filterOtherTimeBlock[item].timeID + ',';
+                }
+            });
+        }
     }
 
     return strTimeID;
@@ -172,12 +222,40 @@ function getSiteData() {
     $('#newSettingSite-button').find('span').text(dictSite[firstNode]);
 }
 
+function setDefaultSettingData() {
+    var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
+    if (roomSettingdata === null) {
+        var obj = new Object();
+        obj.id = 0;
+        obj.title = '現在空的會議室';
+        obj.site = '2';
+        obj.siteName = dictSite['2'];
+        obj.people = '0';
+        obj.time = 'none'
+        obj.timeID = 'none';
+        obj.floorName = 'none';
+        var strFloor = '';
+        var index = findIndex(meetingRoomTreeData._root.children, '2');
+        $.each(meetingRoomTreeData._root.children[index].children, function(index, value) {
+            strFloor += value.data + ',';
+        });
+        obj.floor = strFloor.replaceAll('F', '');
+
+        var jsonData = {};
+        jsonData = {
+            content: [obj]
+        };
+
+        localStorage.setItem('roomSettingData', JSON.stringify(jsonData));
+    }
+}
+
 function ConverToTree(data) {
 
-    for (var key in dictSite) {
+    for (var key in arrSite) {
 
-        meetingRoomTreeData.add(key, 'meetingRoom', meetingRoomTreeData.traverseDF);
-        var floorData = grepData(data, 'MeetingRoomSite', key)
+        meetingRoomTreeData.add(arrSite[key], 'meetingRoom', meetingRoomTreeData.traverseDF);
+        var floorData = grepData(data, 'MeetingRoomSite', arrSite[key])
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
         dfloorData.sort(function compareNumber(a, b) {
             return a - b;
@@ -185,7 +263,7 @@ function ConverToTree(data) {
 
         for (var j in dfloorData) {
 
-            meetingRoomTreeData.add(dfloorData[j] + 'F', key, meetingRoomTreeData.traverseDF);
+            meetingRoomTreeData.add(dfloorData[j] + 'F', arrSite[key], meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
             roomData.sort(cmpStringsWithNumbers);
 
@@ -195,7 +273,6 @@ function ConverToTree(data) {
         }
     }
 }
-
 
 //filter data
 function grepData(grepData, grepPram, grepValue) {
@@ -328,7 +405,7 @@ function popupMsg(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig
     } else {
         $('#' + id + ' > div').css('height', '');
     }
-  
+
     $('#' + id).removeClass();
     $('#' + id + ' button').removeClass();
     if (btnIsDisplay == true) {
@@ -393,3 +470,10 @@ function reserveLocalDataObj(roomId, date, data) {
     this.date = date;
     this.data = data;
 };
+
+function padLeft(str, lenght) {
+    if (str.length >= lenght)
+        return str;
+    else
+        return padLeft("0" + str, lenght);
+}
