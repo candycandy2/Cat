@@ -56,7 +56,6 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    // console.log('apiFailCallback');
                     loadingMask('hide');
                     popupMsg('myReservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
@@ -75,6 +74,13 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
                         $('div[id^=def-' + traceID + ']').hide();
+                        //delete local data
+                        var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
+                        reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
+                            return item.date != date;
+                        });
+                        localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
+
                         popupMsg('myReservePopupMsg', 'successMsg', '', '取消預約成功', '', false, '確定', false);
 
                     } else if (data['ResultCode'] === "002906") {
@@ -85,7 +91,6 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 this.failCallback = function(data) {
-                    // console.log('apiFailCallback');
                     loadingMask('hide');
                     popupMsg('myReservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };

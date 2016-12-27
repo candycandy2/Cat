@@ -17,6 +17,10 @@ a {
     text-decoration: none !important;
 }
 
+.ui-title {
+    text-shadow: initial !important;
+}
+
 .ui-btn {
     text-overflow: initial;
     margin-right: auto !important;
@@ -570,6 +574,7 @@ div.scrollmenu a {
     border-radius: 0 0 10px 0;
 }
 
+
 /*popup msg end*/
 
 
@@ -604,12 +609,12 @@ section {
 }
 
 .timepicker-icon-up {
-    background: url(../img/up1.png) no-repeat;
+    background: url(../img/up.png) no-repeat;
     background-size: 10vw 5vh;
 }
 
 .timepicker-icon-down {
-    background: url(../img/down1.png) no-repeat;
+    background: url(../img/down.png) no-repeat;
     background-size: 10vw 5vh;
 }
 

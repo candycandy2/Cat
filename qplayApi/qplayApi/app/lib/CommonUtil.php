@@ -298,18 +298,12 @@ class CommonUtil
             return "";
         }
         $project_id =    $project_id->row_id;
-        \DB::enableQueryLog();
         $errorMessage = \DB::table('qp_error_code')
             -> where('lang_row_id', '=', $lang_row_id)
             -> where('error_code', '=', $messageCode)
             -> where ('project_row_id','=',$project_id)
             -> select("qp_error_code.error_desc")
             ->get();
-
-        $queries = \DB::getQueryLog();
-        $a = end($queries);
-        $tmp = str_replace('?', '"'.'%s'.'"', $a["query"]);
-        \Log::debug("sql:".$tmp,$a['bindings']);
         if(count($errorMessage) < 1) {
             return "";
         }
@@ -604,10 +598,10 @@ class CommonUtil
         switch ($env)
         {
             case  "dev":
-                $key = $key + "dev";
+                $key = $key."dev";
                 break;
             case  "test":
-                $key = $key + "test";
+                $key = $key."test";
                 break;
             case  "production":
                 break;

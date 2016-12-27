@@ -136,6 +136,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
 
                 $("#phonebookDelectConfirm").popup('close');
                 doRefresh = false;
+
                 if(Object.keys(phonebookData).length === 0){
                     $('#phonebookEdit').hide();
                 }
@@ -166,6 +167,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                     $('#myPhonebookList .edit-checkbox').css('height','20px');
                     $('#viewPhonebook :checkbox').prop('checked', false);
                     $('#viewPhonebook #unselectAll').hide();
+                    $('#viewPhonebook #selectAll').show();
                } else {
                     cancelEditMode();
                }

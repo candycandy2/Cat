@@ -33,6 +33,7 @@ var popupID;
 var callHandleOpenURL = false;
 var doInitialSuccess = false;
 var checkTimerCount = 0;
+var doHideInitialPage = false;
 
 var app = {
     // Application Constructor

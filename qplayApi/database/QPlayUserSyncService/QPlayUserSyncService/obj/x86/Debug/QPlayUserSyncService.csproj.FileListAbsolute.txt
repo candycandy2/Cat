@@ -17,4 +17,3 @@ F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\QPlayUserSyncSer
 F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.csproj.GenerateResource.Cache
 F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.exe
 F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.pdb
-F:\EnterpriseAPPPlatform\qplayApi\database\QPlayUserSyncService\QPlayUserSyncService\obj\x86\Debug\QPlayUserSyncService.csprojResolveAssemblyReference.cache
