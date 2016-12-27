@@ -44,9 +44,6 @@
                 <input type="radio" name="setTime" id="setTime2" value="setTime">
                 <label for="setTime2">指定時段</label>
             </div>
-            <!-- <div class="disable">
-                <input name="timeflip1" id="timeflip1" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "overrideTimeFormat": 24, "minuteStep": "30", "validHours" : [9,10,11,12,13,14,15,16,17]}' />
-            </div> -->
             <h3 style="margin: 2vh 0 1vh 5vw;">樓層</h3>
             <div id="newSettingFloor">
                 <div class="ui-grid-b">
@@ -65,24 +62,58 @@
             <button id="confirm"></button>
         </div>
     </div>
-    <!-- <div data-role="popup" data-history="false" id="newSettingTimePickerPopup" data-overlay-theme="b" data-dismissible="false">
+    <div data-role="popup" data-history="false" id="newSettingTimePickerPopup" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="popup-msg">
-            <div class="aaa">
-                <div id="wrap">
-                    <section>09:00</section>
-                    <section>10:00</section>
-                    <section>11:00 C</section>
-                    <section>12:00 D</section>
-                    <section>12:00 D</section>
-                    <section>12:00 D</section>
-                    <section>12:00 D</section>
-                    <section>12:00 D</section>
-                    <section>12:00 D</section>
-                    <section>12:00 D</section>
-                </div>
-            </div>
+            <div class="showMsg" style="display: none;"></div>
+            <table>
+                <tr>
+                    <td>
+                        <div value="up" type="s" formate="hr" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                    <td rowspan="3">&nbsp;：&nbsp;</td>
+                    <td>
+                        <div value="up" type="s" formate="mm" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                    <td rowspan="3">&nbsp;～&nbsp;</td>
+                    <td>
+                        <div value="up" type="e" formate="hr" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                    <td rowspan="3">&nbsp;：&nbsp;</td>
+                    <td>
+                        <div value="up" type="e" formate="mm" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div tpye="s" for="hr">08</div>
+                    </td>
+                    <td>
+                        <div tpye="s" for="mm">00</div>
+                    </td>
+                    <td>
+                        <div tpye="e" for="hr">08</div>
+                    </td>
+                    <td>
+                        <div tpye="e" for="mm">30</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div value="down" type="s" formate="hr" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                    <td>
+                        <div value="down" type="s" formate="mm" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                    <td>
+                        <div value="down" type="e" formate="hr" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                    <td>
+                        <div value="down" type="e" formate="mm" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                </tr>
+            </table>
             <button id="cancel"></button>
             <button id="confirm"></button>
         </div>
-    </div> -->
+    </div>
 </div>

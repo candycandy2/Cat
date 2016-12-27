@@ -234,10 +234,15 @@ body {
     margin: 0 auto;
 }
 
+.ui-mobile .popup-div label {
+    font-size: 3vh;
+}
+
 .popup-div .ui-content {
     width: 90%;
     height: auto;
     padding: 10% 10% 0;
+    font-size: 3vh;
 }
 
 .popup-div .hr-style {

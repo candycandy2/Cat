@@ -15,8 +15,8 @@ header{
 header h1{
 	color:#FFF;
 	text-align:center;
-	font-size:20px;
-	line-height:40px;
+	font-size:22px;
+	line-height:42px;
 	font-family:"微軟正黑體", "Arial";
 }
 
@@ -33,6 +33,7 @@ article h3{
 	font-weight:bold;
 	padding-top:10px;
 	padding-bottom:15px;
+	font-size:20px;
 }
 article p{
 	padding-bottom:15px;
