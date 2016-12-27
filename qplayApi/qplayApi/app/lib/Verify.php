@@ -563,7 +563,7 @@ class Verify
             || trim($headerContentType) == "" || trim($headerAppKey) == ""
             || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> "傳入參數不足或傳入參數格式錯誤");
+                "message"=> "vcustom傳入參數不足或傳入參數格式錯誤");
         }
 
         //检查app_key是否存在
@@ -602,21 +602,10 @@ class Verify
             }
         }
 
-        //通用api參數判斷
-        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
-        {
-            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=>"傳入參數不足或傳入參數格式錯誤");
-        }
+        //sendPushMessage專用不需UUID參數判斷
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
 
-        $token = $request->header('token');
-        $uuid = $input["uuid"];
-
-        if(!self::chkUuidExist($uuid)) {
-            return array("code"=>ResultCode::_000911_uuidNotExist,
-                "message"=>"uuid不存在");
-        }
-        return self::verifyToken($uuid, $token);
     }
 //custom end
 }

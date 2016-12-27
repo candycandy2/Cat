@@ -1280,13 +1280,14 @@ SQL;
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
                 $app_row_id = \DB::table("qp_app_head")
-                    -> join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                    -> join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
                     -> where('qp_project.app_key', "=", $appKey)
                     -> select('qp_app_head.row_id')
                     -> lists('qp_app_head.row_id');
 
                 $whitelist = \DB::table("qp_white_list")
-                    -> whereNull('deleted_at')
+//                    -> whereNull('deleted_at')
+		    -> where('deleted_at', "=", '0000-00-00 00:00:00')
                     -> where('app_row_id', "=", $app_row_id)
                     -> select('allow_url')
                     -> get();
