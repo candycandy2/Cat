@@ -873,7 +873,7 @@ function handleOpenURL(url) {
         if (device.platform === "iOS") {
             if (iOSDoAppInitialize) {
                 $.mobile.changePage('#viewInitial');
-                var checkAppVer = new checkAppVersion();
+                //var checkAppVer = new checkAppVersion();
             }
         }
 
