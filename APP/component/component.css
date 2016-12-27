@@ -65,7 +65,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 1000;
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.4);
@@ -234,10 +234,15 @@ body {
     margin: 0 auto;
 }
 
+.ui-mobile .popup-div label {
+    font-size: 3vh;
+}
+
 .popup-div .ui-content {
-    width: 90%;
+    width: 85%;
     height: auto;
     padding: 10% 10% 0;
+    font-size: 3vh;
 }
 
 .popup-div .hr-style {

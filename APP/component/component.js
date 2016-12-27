@@ -33,6 +33,9 @@ var popupID;
 var callHandleOpenURL = false;
 var doInitialSuccess = false;
 var checkTimerCount = 0;
+var doHideInitialPage = false;
+var initialNetworkDisconnected = false;
+var showNetworkDisconnected = false;
 
 var app = {
     // Application Constructor
@@ -60,6 +63,23 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        //Add Event to Check Network Status
+        if (device.platform === "iOS") {
+            window.addEventListener("offline", function(e) {
+                checkNetwork();
+            });
+
+            window.addEventListener("online", function(e) {
+                checkNetwork();
+            });
+        } else {
+            var connection = navigator.connection;
+            connection.addEventListener('typechange', checkNetwork);
+        }
+
+        //When open APP, need to check Network at first step
+        checkNetwork();
 
         //Set openMessage at first time
         if (window.localStorage.getItem("openMessage") === null) {
@@ -198,12 +218,55 @@ $(document).one("pagebeforecreate", function(){
 
         //viewNotSignedIn, Login Again
         $("#LoginAgain").on("click", function() {
-            $("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
             var checkAppVer = new checkAppVersion();
         });
     }, "html");
 });
 /********************************** function *************************************/
+
+function checkNetwork() {
+    //A. If the device's Network is disconnected, show dialog only once, before the network is connect again.
+    //B. If the device's Network is disconnected again, do step 1. again.
+
+    //Only Android can get this info, iOS can not!!
+    //connect.type:
+    //1. wifi
+    //2. cellular > 3G / 4G
+    //3. none
+
+    if (!navigator.onLine) {
+        //Network disconnected
+        loadingMask("hide");
+
+        var showMsg = false;
+
+        if (!initialNetworkDisconnected) {
+            showMsg = true;
+            initialNetworkDisconnected = true;
+        }
+
+        if (!showNetworkDisconnected) {
+            showMsg = true;
+            showNetworkDisconnected = true;
+        }
+
+        if (showMsg) {
+            $('#disconnectNetwork').popup();
+            $('#disconnectNetwork').show();
+            $('#disconnectNetwork').popup('open');
+
+            $("#closeDisconnectNetwork").on("click", function(){
+                $('#disconnectNetwork').popup('close');
+                $('#disconnectNetwork').hide();
+
+                showNetworkDisconnected = false;
+            });
+        }
+    } else {
+        //Network connected
+    }
+}
 
 //[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
 function checkPopupShown() {
@@ -810,7 +873,7 @@ function handleOpenURL(url) {
         if (device.platform === "iOS") {
             if (iOSDoAppInitialize) {
                 $.mobile.changePage('#viewInitial');
-                var checkAppVer = new checkAppVersion();
+                //var checkAppVer = new checkAppVersion();
             }
         }
 

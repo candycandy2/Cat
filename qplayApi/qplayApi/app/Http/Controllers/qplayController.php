@@ -843,7 +843,7 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         foreach ($input as $k=>$v) {
@@ -911,7 +911,7 @@ class qplayController extends Controller
             }
 
             $versionLine = $versionList[0];
-            if($versionLine->version_code == $version_code)
+            if($versionLine->version_code <= $version_code)
             {
                 $result = response()->json(['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>'App version is Nearest',
@@ -1206,7 +1206,7 @@ SQL;
     public function getSecurityList()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         $request = Request::instance();
@@ -1264,7 +1264,7 @@ SQL;
         }
 
 
-        if(Verify::chkAppKeyExist($appKey)) {
+        if(!Verify::chkAppKeyExist($appKey)) {
             $result = response()->json(['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>'app-key參數錯誤',
                 'content'=>'']);
@@ -1280,13 +1280,14 @@ SQL;
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
                 $app_row_id = \DB::table("qp_app_head")
-                    -> join("qp_project","project_row_id",  "=", "qp_project.row_id")
+                    -> join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
                     -> where('qp_project.app_key', "=", $appKey)
                     -> select('qp_app_head.row_id')
                     -> lists('qp_app_head.row_id');
 
                 $whitelist = \DB::table("qp_white_list")
-                    -> whereNull('deleted_at')
+//                    -> whereNull('deleted_at')
+		    -> where('deleted_at', "=", '0000-00-00 00:00:00')
                     -> where('app_row_id', "=", $app_row_id)
                     -> select('allow_url')
                     -> get();
@@ -2255,7 +2256,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyWithCustomerAppKey();
+        $verifyResult = $Verify->verifyCustom();
 
         $input = Input::get();
         $request = \Request::instance();

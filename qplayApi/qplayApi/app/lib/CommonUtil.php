@@ -438,8 +438,8 @@ class CommonUtil
                     'Parameter'=> $parameter
                 ),
             );
-            $time2live =  Config::get('time_to_live',864000);
-            $apnsFlag = Config::get('apns_flag',true);
+            $time2live =  Config::get('app.time_to_live',864000);
+            $apnsFlag = Config::get('app.apns_flag',true);
             $options = array(
                 'time_to_live'=>$time2live,
                 'apns_production'=>$apnsFlag
@@ -594,14 +594,14 @@ class CommonUtil
 
     public static function getContextAppKey(){
         $key = "appqplay";
-        $env = strtolower(Config::get('env'));
+        $env = strtolower(Config::get('app.env'));
         switch ($env)
         {
             case  "dev":
-                $key = $key + "dev";
+                $key = $key."dev";
                 break;
             case  "test":
-                $key = $key + "test";
+                $key = $key."test";
                 break;
             case  "production":
                 break;
