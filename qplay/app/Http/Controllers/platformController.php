@@ -2085,7 +2085,7 @@ class platformController extends Controller
                             'updated_at'=>$now
                         ]);
                     \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageSendId]);
                 }
 //                $result = array();
 //                $result["info"] = 1;
