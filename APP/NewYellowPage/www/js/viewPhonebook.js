@@ -70,8 +70,6 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             employeeSelectedIndex = $(this).attr("value");
                             $.mobile.changePage('#viewDetailInfo');
                         });
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
                     } else {
                         //ResultCode = 001901, [no data]
                         loadingMask("hide");

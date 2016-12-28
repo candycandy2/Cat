@@ -22,8 +22,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
                         }
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
                     }
                 };
 
