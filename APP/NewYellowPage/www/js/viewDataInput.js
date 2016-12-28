@@ -14,6 +14,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                     var resultcode = data['ResultCode'];
 
+
                     if (resultcode === "1") {
                         var dataContent = data['Content'];
                         $('#Company').html('<option value="All Company">All Company</option>');
@@ -22,6 +23,9 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
                         }
+
+                        QueryMyPhoneBook();
+
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
                     }
