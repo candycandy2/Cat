@@ -16,7 +16,7 @@ class customController extends Controller
         $verifyResult = $Verify->verifyCustom();//$verifyResult = ["code"=>ResultCode::_1_reponseSuccessful];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = CommonUtil::getApiCustomerUrl("$function");//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
+            $url = CommonUtil::getApiCustomerUrl($function);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
             return $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
         } else {
             return response()->json(array("ResultCode"=>$verifyResult["code"],
