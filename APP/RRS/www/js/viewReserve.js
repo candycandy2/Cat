@@ -384,6 +384,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 clickSiteId = this.selectedIndex;
                 getFloorData(clickSiteId);
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                timeClick = [];
             });
 
             $('#reserveFloor').change(function() {
@@ -392,6 +393,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveRoom a:first-child').parent().data("lastClicked", $('#reserveRoom a:first-child').attr('id'));
 
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                timeClick = [];
             });
 
             $('body').on('click', '#scrollDate .ui-link', function() {
@@ -409,6 +411,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $(this).addClass('hover');
 
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                timeClick = [];
                 //}
             });
 
@@ -427,6 +430,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $(this).addClass('hover');
 
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                timeClick = [];
                 //}
             });
 
@@ -488,18 +492,20 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $("#reserveBtn").on('click', function() {
-                var timeID = '';
-                for (var item in timeClick) {
-                    timeID += timeClick[item] + ',';
-                }
-
-                if (timeID === '') {
+                if ($(this).hasClass('btn-disable')) {
                     popupMsg('reservePopupMsg', 'noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', false);
                 } else {
-                    //replace end of comma
-                    var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                    $('#reserveBtn').removeClass('btn-benq');
-                    $('#reserveBtn').addClass('btn-disable');
+                    var timeID = '';
+                    for (var item in timeClick) {
+                        timeID += timeClick[item] + ',';
+                    }
+
+                    if (timeID != '') {
+                        //replace end of comma
+                        var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+                        $('#reserveBtn').removeClass('btn-benq');
+                        $('#reserveBtn').addClass('btn-disable');
+                    }
                 }
                 timeClick = [];
             });
