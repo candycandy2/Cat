@@ -13,7 +13,6 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         checkNetwork();
     }
 
-    appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
@@ -26,7 +25,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/yellowpage/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/yellowpage/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,
         cache: false,

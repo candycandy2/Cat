@@ -26,8 +26,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         + '</li>';
             }
 
-            function QueryMyPhoneBook() {
-                
+            window.QueryMyPhoneBook = function() {
                 var self = this;
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
 
@@ -70,8 +69,6 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             employeeSelectedIndex = $(this).attr("value");
                             $.mobile.changePage('#viewDetailInfo');
                         });
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
                     } else {
                         //ResultCode = 001901, [no data]
                         loadingMask("hide");
