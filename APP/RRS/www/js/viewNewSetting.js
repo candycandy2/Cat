@@ -277,9 +277,9 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
                 if (clickFormate == 'hr') {
                     if (clickValue == 'up') {
-                        tempStr = padLeft((parseInt(tempHr) - 1).toString(), 2);
-                    } else {
                         tempStr = padLeft((parseInt(tempHr) + 1).toString(), 2);
+                    } else {
+                        tempStr = padLeft((parseInt(tempHr) - 1).toString(), 2);
                     }
                     if (parseInt(tempStr) < 8 || parseInt(tempStr) > 17) {
                         checkTime = true;
