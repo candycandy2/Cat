@@ -273,18 +273,18 @@ div.circle {
 
 .quick-reserve-setting-icon {
     background: url(../img/setting.png) no-repeat;
-    width: 7vw;
-    height: 4.5vh;
-    background-size: 7vw 4.5vh;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
 
 .quick-reserve-setting-icon {
     background: url(../img/setting.png) no-repeat;
-    width: 7vw;
-    height: 4.5vh;
-    background-size: 7vw 4.5vh;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -300,6 +300,25 @@ div.circle {
     background-color: #003399 !important;
 }
 
+.setting-icon {
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.setting-back-icon {
+    background: url(../img/back_nav.png) no-repeat;
+}
+
+.setting-save-icon {
+    background: url(../img/save_nav.png) no-repeat;
+}
+
+.setting-add-icon {
+    background: url(../img/add_nav.png) no-repeat;
+}
 
 /*new public area end*/
 
