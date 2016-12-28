@@ -7,17 +7,8 @@ $push_send_row_id = -1;
 $tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
 $isCopy = false;
-$messageId = -1;
-$copyFromMessageInfo = null;
-if(array_key_exists("copy_from",$input)) {
-    $isCopy = true;
-    $copyFromMessageInfo = \App\lib\CommonUtil::getMessageInfo($input["copy_from"]);
-    $messageId = $copyFromMessageInfo->row_id;
-    //$push_send_row_id = $input["push_send_row_id"];
-    if(array_key_exists('from_history', $input) && $input["from_history"] == "Y") {
-        $fromHistory = true;
-    }
-}
+$messageId = $input["message_id"];
+$messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -37,14 +28,14 @@ if(array_key_exists("copy_from",$input)) {
                     <td>{{trans("messages.TEMPLATE_ID")}}:</td>
                     <td style="padding: 10px;">
                         <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled" >
-                            <option value="1" @if($isCopy && $copyFromMessageInfo->template_id == 1) selected="selected" @endif>1</option>
-                            <option value="2" @if($isCopy && $copyFromMessageInfo->template_id == 2) selected="selected" @endif>2</option>
-                            <option value="3" @if($isCopy && $copyFromMessageInfo->template_id == 3) selected="selected" @endif>3</option>
-                            <option value="4" @if($isCopy && $copyFromMessageInfo->template_id == 4) selected="selected" @endif>4</option>
-                            <option value="5" @if($isCopy && $copyFromMessageInfo->template_id == 5) selected="selected" @endif>5</option>
-                            <option value="6" @if($isCopy && $copyFromMessageInfo->template_id == 6) selected="selected" @endif>6</option>
-                            <option value="7" @if($isCopy && $copyFromMessageInfo->template_id == 7) selected="selected" @endif>7</option>
-                            <option value="8" @if($isCopy && $copyFromMessageInfo->template_id == 8) selected="selected" @endif>8</option>
+                            <option value="1" @if($messageInfo->template_id == 1) selected="selected" @endif>1</option>
+                            <option value="2" @if($messageInfo->template_id == 2) selected="selected" @endif>2</option>
+                            <option value="3" @if($messageInfo->template_id == 3) selected="selected" @endif>3</option>
+                            <option value="4" @if($messageInfo->template_id == 4) selected="selected" @endif>4</option>
+                            <option value="5" @if($messageInfo->template_id == 5) selected="selected" @endif>5</option>
+                            <option value="6" @if($messageInfo->template_id == 6) selected="selected" @endif>6</option>
+                            <option value="7" @if($messageInfo->template_id == 7) selected="selected" @endif>7</option>
+                            <option value="8" @if($messageInfo->template_id == 8) selected="selected" @endif>8</option>
                         </select>
                     </td>
                     <td><span style="color: red;">*</span></td>
@@ -63,7 +54,7 @@ if(array_key_exists("copy_from",$input)) {
                     <td>{{trans("messages.MESSAGE_TITLE")}}:</td>
                     <td style="padding: 10px;">
                         <input type="text" data-clear-btn="true" name="tbxTitle" class="form-control" placeholder="{{trans("messages.MSG_PUSH_TITLE_PLACEHOLDER")}}"
-                               id="tbxTitle" value="@if($isCopy){{$copyFromMessageInfo->message_title}}@endif" />
+                               id="tbxTitle" value="{{$messageInfo->message_title}}" />
                     </td>
                     <td><span style="color: red;">*</span></td>
                 </tr>
@@ -71,7 +62,7 @@ if(array_key_exists("copy_from",$input)) {
                     <td>{{trans("messages.MESSAGE_CONTENT")}}:</td>
                     <td style="padding: 10px;">
                         <textarea data-clear-btn="true" name="tbxContent" class="form-control col-lg-6 col-xs-6"
-                               id="tbxContent" value="" rows="3">@if($isCopy){{$copyFromMessageInfo->message_text}}@endif</textarea>
+                               id="tbxContent" value="" rows="3">{{$messageInfo->message_text}}</textarea>
                     </td>
                     <td><span style="color: red;">*</span></td>
                 </tr>
@@ -309,7 +300,6 @@ if(array_key_exists("copy_from",$input)) {
                 var mydata =
                 {
                     message_id: {{$messageId}},
-                    message_send_id: {{$push_send_row_id}},
                     sourcer: msgSourcer,
                     template_id: msgTemplateId,
                     type: 'news',

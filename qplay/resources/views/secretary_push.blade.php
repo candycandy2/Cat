@@ -35,7 +35,7 @@ $menu_name = "SECRETARY_PUSH";
         }
 
         function messageTitleFormatter(value, row) {
-            return '<a href="secretaryPushHistory?message_id=' + row.row_id + '">' + value + '</a>';
+            return '<a href="secretaryPushNew?message_id=' + row.row_id + '">' + value + '</a>';
         };
         
         function messageTypeFormatter(value, row) {
