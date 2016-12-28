@@ -7,20 +7,18 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             /********************************** function *************************************/
             function QueryEmployeeDataDetail() {
                 
-                var listData;
                 if (prevPageID === "viewQueryResult") {
-                    listData = employeeData;
                     $("#startAdd").show();
                     $("#startDelete").hide();
                 } else if (prevPageID === "viewPhonebook") {
-                    listData = phonebookData;
+                    employeeData = phonebookData;
                     $("#startAdd").hide();
                     $("#startDelete").show();
                 }
 
                 var self = this;
-                var queryData = '<LayoutHeader><Company>' + listData[employeeSelectedIndex].company + '</Company>' + 
-                                '<Name_EN>' + listData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
+                var queryData = '<LayoutHeader><Company>' + employeeData[employeeSelectedIndex].company + '</Company>' + 
+                                '<Name_EN>' + employeeData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
 
                 this.successCallback = function(data) {
                     var resultcode = data['ResultCode'];
