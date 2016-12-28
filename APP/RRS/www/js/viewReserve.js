@@ -197,7 +197,32 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                 getMettingStatus();
                 loadingMask("hide");
+            }
 
+            function reserveBtnDefaultStatus() {
+                $('#reserveBtn').removeClass('btn-benq');
+                $('#reserveBtn').addClass('btn-disable');
+                timeClick = [];
+            }
+
+            function quickReserveBtnDefaultStatus() {
+                $('#quickReserveMsgArea div:nth-child(2)').html('');
+                $('#quickReserveMsgArea div:nth-child(3)').html('');
+                $('#quickReserveMsgArea').addClass('disable');
+                $('#quickReserveCancel').addClass('disable');
+                $('#quickReserveConfirm').addClass('disable');
+                $('#quickReserve').removeClass('disable');
+                $('#quickReserve').removeClass('btn-disable');
+                $('#quickReserve').addClass('btn-benq');
+            }
+
+            function quickReserveBtnActiveStatus() {
+                $('#quickReserveMsgArea').removeClass('disable');
+                $('#quickReserveCancel').removeClass('disable');
+                $('#quickReserveConfirm').removeClass('disable');
+                $('#quickReserve').removeClass('btn-benq');
+                $('#quickReserve').addClass('btn-disable');
+                $('#quickReserve').addClass('disable');
             }
 
             function getAPIQueryReserveDetail(roomId, date, checkDataExist) {
@@ -256,12 +281,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     }
 
                     if (page == 'pageTwo') {
-                        $('#quickReserve').removeClass('disable');
-                        $('#quickReserveMsgArea div:nth-child(2)').html('');
-                        $('#quickReserveMsgArea div:nth-child(3)').html('');
-                        $('#quickReserveMsgArea').addClass('disable');
-                        $('#quickReserveCancel').addClass('disable');
-                        $('#quickReserveConfirm').addClass('disable');
+                        quickReserveBtnDefaultStatus();
                     }
 
                     loadingMask('hide');
@@ -307,10 +327,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         quickRserveCallBackData = data['Content'];
                         $('#quickReserveMsgArea div:nth-child(2)').html(quickRserveCallBackData[0].MeetingRoomName + '會議室可使用');
                         $('#quickReserveMsgArea div:nth-child(3)').html('預約時段為' + timeName);
-                        $('#quickReserveMsgArea').removeClass('disable');
-                        $('#quickReserveCancel').removeClass('disable');
-                        $('#quickReserveConfirm').removeClass('disable');
-                        $('#quickReserve').addClass('disable');
 
                     } else if (data['ResultCode'] === "002907") {
                         //There are no meeting rooms
@@ -318,10 +334,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         var strDate = arrCutString[2] + '/' + arrCutString[3];
                         $('#quickReserveMsgArea div:nth-child(2)').html(strDate + '沒有符合偏好的會議室');
                         $('#quickReserveMsgArea div:nth-child(3)').html('預約時段為' + timeName);
-                        $('#quickReserveMsgArea').removeClass('disable');
-                        $('#quickReserve').removeClass('btn-benq');
-                        $('#quickReserve').addClass('btn-disable');
+                        
                     }
+                    quickReserveBtnActiveStatus();
                     loadingMask('hide');
                 };
 
@@ -384,23 +399,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 clickSiteId = this.selectedIndex;
                 getFloorData(clickSiteId);
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-                timeClick = [];
+                reserveBtnDefaultStatus();
             });
 
             $('#reserveFloor').change(function() {
                 getRoomData(clickSiteId, this.selectedIndex);
                 $('#reserveRoom a:first-child').addClass('hover');
                 $('#reserveRoom a:first-child').parent().data("lastClicked", $('#reserveRoom a:first-child').attr('id'));
-
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-                timeClick = [];
+                reserveBtnDefaultStatus();
             });
 
             $('body').on('click', '#scrollDate .ui-link', function() {
                 //if (!$(this).hasClass('hover')) {
-                $('#reserveBtn').removeClass('btn-benq');
-                $('#reserveBtn').addClass('btn-disable');
-
                 clickDateId = $(this).attr('id').replaceAll('one', '');
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
@@ -409,17 +420,13 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
                 $(this).parent().data("lastClicked", this.id);
                 $(this).addClass('hover');
-
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-                timeClick = [];
+                reserveBtnDefaultStatus();
                 //}
             });
 
             $('body').on('click', '#reserveRoom .ui-link', function() {
                 //if (!$(this).hasClass('hover')) {
-                $('#reserveBtn').removeClass('btn-benq');
-                $('#reserveBtn').addClass('btn-disable');
-
                 clickRomeId = $(this).attr('id');
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
@@ -430,7 +437,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $(this).addClass('hover');
 
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-                timeClick = [];
+                reserveBtnDefaultStatus();
                 //}
             });
 
@@ -499,15 +506,12 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     for (var item in timeClick) {
                         timeID += timeClick[item] + ',';
                     }
-
                     if (timeID != '') {
                         //replace end of comma
                         var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                        $('#reserveBtn').removeClass('btn-benq');
-                        $('#reserveBtn').addClass('btn-disable');
                     }
                 }
-                timeClick = [];
+                reserveBtnDefaultStatus();
             });
 
             $('body').on('click', '#quickReserveScrollDate .ui-link', function() {
@@ -517,13 +521,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
                 $(this).parent().data("lastClicked", this.id);
                 $(this).addClass('hover');
-
-                $('#quickReserveMsgArea').addClass('disable');
-                $('#quickReserveCancel').addClass('disable');
-                $('#quickReserveConfirm').addClass('disable');
-                $('#quickReserve').removeClass('disable');
-                $('#quickReserve').removeClass('btn-disable');
-                $('#quickReserve').addClass('btn-benq');
+                quickReserveBtnDefaultStatus();
             });
 
             $('#quickReserve').on('click', function() {
@@ -571,12 +569,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $("#quickReserveCancel").on('click', function() {
-                $('#quickReserveMsgArea div:nth-child(2)').html('');
-                $('#quickReserveMsgArea div:nth-child(3)').html('');
-                $('#quickReserveMsgArea').addClass('disable');
-                $('#quickReserveCancel').addClass('disable');
-                $('#quickReserveConfirm').addClass('disable');
-                $('#quickReserve').removeClass('disable');
+                quickReserveBtnDefaultStatus();
             });
 
             $('body').on('click', 'div[for=myReserveMsg] #confirm', function() {
