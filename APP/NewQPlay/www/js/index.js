@@ -47,6 +47,12 @@ window.initialSuccess = function(data) {
             }
 
             if (window.localStorage.getItem("openMessage") !== "true") {
+                $.mobile.changePage('#viewMain2-1', {
+                    allowSamePageTransition : true,
+                    transition              : 'none',
+                    showLoadMsg             : false,
+                    reloadPage              : true
+                });
                 $.mobile.changePage('#viewMain2-1');
             } else {
                 //If onOpenNotification, but not login.
@@ -65,6 +71,7 @@ window.initialSuccess = function(data) {
         }
     }
 
+    iOSAppInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
 }

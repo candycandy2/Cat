@@ -843,7 +843,7 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyCustom();
+        $verifyResult = $Verify->verifyCustom(false);
 
         $input = Input::get();
         foreach ($input as $k=>$v) {
@@ -1206,7 +1206,7 @@ SQL;
     public function getSecurityList()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyCustom();
+        $verifyResult = $Verify->verifyCustom(true);
 
         $input = Input::get();
         $request = Request::instance();
@@ -1649,9 +1649,10 @@ SQL;
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $userId = $userInfo->row_id;
+            $company = $userInfo->company;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                $sql = 'select * from qp_message where row_id = (select message_row_id from qp_message_send where row_id = '.$message_send_row_id.')';
+                $sql = 'select * from qp_message where visible ="Y" and row_id = (select message_row_id from qp_message_send where row_id = '.$message_send_row_id.')';
                 $msgList = DB::select($sql, []);
                 if(count($msgList) == 0) {
                     $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
@@ -1685,7 +1686,7 @@ and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
 and um.message_send_row_id = ms.row_id
-and um.deleted_at = 0
+and um.deleted_at = '0000-00-00 00:00:00'
 and um.user_row_id = $userId
 and um.uuid = '$uuid'
 SQL;
@@ -1710,6 +1711,7 @@ and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
+and ms.company_label like '%$company%'
 SQL;
                 }
 
@@ -1743,11 +1745,17 @@ SQL;
                     CommonUtil::logApi($userInfo->row_id, $ACTION,
                         response()->json(apache_response_headers()), $result);
                     return $result;
-                } else {
+                } else /*no data need to show 000910 {
                     $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                         'message'=>'Call Service Successed',
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetailList
+                    ]);*/
+			 { //no data need to show 000910
+                    $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+                        'message'=>'消息不存在',
+                        'token_valid'=>$verifyResult["token_valid_date"],
+                        'content'=>''
                     ]);
                     CommonUtil::logApi($userInfo->row_id, $ACTION,
                         response()->json(apache_response_headers()), $result);
@@ -2256,7 +2264,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyCustom();
+        $verifyResult = $Verify->verifyCustom(false);
 
         $input = Input::get();
         $request = \Request::instance();
