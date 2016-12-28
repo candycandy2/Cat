@@ -38,8 +38,6 @@ var dictSiteCategory = {
 };
 
 window.initialSuccess = function() {
-    loadingMask('show');
-
     $.mobile.changePage('#viewReserve');
 
     $("a[name=goPrevPage]").on("click", function() {
@@ -113,6 +111,8 @@ function getAPIListAllTime() {
             var allTimeLocalData = JSON.parse(localStorage.getItem('allTimeLocalData'));
 
             for (var key in arrSiteCategory) {
+                //to do
+                //arrTimeBlock scrop 
                 var filterTimeBlock = grepData(arrTimeBlock, 'category', arrSiteCategory[key]);
 
                 filterTimeBlock.sort(function(a, b) {
