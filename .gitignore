@@ -75,3 +75,5 @@ WEB/InstallQPlay/sftp-config.json
 /qplay/.env
 *.log
 /qplay/public/*.log
+
+APP/*/www/img/component/*
