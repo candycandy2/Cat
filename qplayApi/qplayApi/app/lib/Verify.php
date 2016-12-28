@@ -603,7 +603,7 @@ class Verify
         }
 
         //sendPushMessage專用不需UUID參數判斷
-        if(!$needCheckUuid)
+        if($needCheckUuid)
         {
             $token = $request->header('token');
             $uuid = $input["uuid"];

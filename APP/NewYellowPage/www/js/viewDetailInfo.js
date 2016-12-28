@@ -46,8 +46,6 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                         $("#detailData #deptCode").html(data['Content'][0].DeptCode);
                         $("#detailData #extNo").html(data['Content'][0].Ext_No);
                         $("#detailData #eMail").html(data['Content'][0].EMail);
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
                     }
 
                     loadingMask("hide");

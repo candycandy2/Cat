@@ -26,8 +26,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                         QueryMyPhoneBook();
 
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
                     }
                 };
 
