@@ -26,8 +26,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         + '</li>';
             }
 
-            function QueryMyPhoneBook() {
-                
+            window.QueryMyPhoneBook = function() {
                 var self = this;
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
 

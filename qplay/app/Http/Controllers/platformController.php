@@ -1996,31 +1996,17 @@ class platformController extends Controller
             $title = $jsonContent['title'];
             $content = $jsonContent['content'];
             $receiver = $jsonContent['receiver'];
-            $from_history = "N";
-            if(key_exists("from_history", $jsonContent)) {
-                $from_history = $jsonContent['from_history'];
-            }
-            $newMessageId = -1;
-            if(key_exists("msg_id", $jsonContent)) {
-                $newMessageId = $jsonContent['msg_id'];
-            }
+            $message_id = $jsonContent['message_id'];
 
             $now = date('Y-m-d H:i:s',time());
             \DB::beginTransaction();
             try {
-                if($from_history != "Y") {
-                    $newMessageId = \DB::table("qp_message")
-                        -> insertGetId([
-                            'message_type'=>'news',
-                            'template_id' => $template_id,
-                            'message_title'=>$title,
-                            'message_text'=>$content,
-                            'message_source'=>$sourcer,
-                            'visible'=>'Y',
-                            'created_user'=>\Auth::user()->row_id,
-                            'created_at'=>$now,
-                        ]);
-                }
+//                \DB::table("qp_message")
+//                    -> update([
+//                        'message_title'=>$title,
+//                        'message_text'=>$content,
+//                        'created_at'=>$now,
+//                    ]);
 
                 $companyList = array();
                 $companyLabel = "";
@@ -2032,7 +2018,7 @@ class platformController extends Controller
                 }
                 $newMessageSendId = \DB::table("qp_message_send_pushonly")
                     -> insertGetId([
-                        'message_row_id'=>$newMessageId,
+                        'message_row_id'=>$message_id,
                         'source_user_row_id'=>\Auth::user()->row_id,
                         'company_label'=>$companyLabel,
                         'need_push'=>1,
@@ -2040,18 +2026,6 @@ class platformController extends Controller
                         'created_user'=>\Auth::user()->row_id,
                         'created_at'=>$now,
                     ]);
-                if($from_history != 'Y') { //让原推播功能正常
-                    \DB::table("qp_message_send")
-                        -> insertGetId([
-                            'message_row_id'=>$newMessageId,
-                            'source_user_row_id'=>\Auth::user()->row_id,
-                            'company_label'=>$companyLabel,
-                            'need_push'=>0,
-                            'push_flag'=>0,
-                            'created_user'=>\Auth::user()->row_id,
-                            'created_at'=>$now,
-                        ]);
-                }
 
                 $real_push_user_list = array();
                 if($receiver["type"] == "company") {
@@ -2111,12 +2085,13 @@ class platformController extends Controller
                             'updated_at'=>$now
                         ]);
                     \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageSendId]);
                 }
-
+//                $result = array();
+//                $result["info"] = 1;
                 \DB::commit();
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$message_id]);
             }catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);

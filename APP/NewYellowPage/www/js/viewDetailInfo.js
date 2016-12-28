@@ -29,6 +29,12 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                         if (prevPageID === "viewQueryResult") {
                             employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
+                            for(var i=0; i<Object.keys(phonebookData).length; i++) {
+                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[i].employeeid) {
+                                    $("#startAdd").hide();
+                                    $("#startDelete").show();
+                                }
+                            }
                         }
 
                         $("#detailData #companyName").html(data['Content'][0].Company);
