@@ -549,7 +549,7 @@ class Verify
         return $ServerSignature;
     }
 
-    public static function verifyCustom() {
+    public static function verifyCustom($needCheckUuid) {
         $request = Request::instance();
         $input = Input::get();
         $headerContentType = $request->header('Content-Type');
@@ -603,9 +603,21 @@ class Verify
         }
 
         //sendPushMessage專用不需UUID參數判斷
-        return array("code"=>ResultCode::_1_reponseSuccessful,
-            "message"=>"");
+        if(!$needCheckUuid)
+        {
+            $token = $request->header('token');
+            $uuid = $input["uuid"];
 
+            if(!self::chkUuidExist($uuid)) {
+                return array("code"=>ResultCode::_000911_uuidNotExist,
+                    "message"=>"uuid不存在");
+            }
+
+            return self::verifyToken($uuid, $token);
+        } else {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
+                "message"=>"");
+        }
     }
 //custom end
 }
