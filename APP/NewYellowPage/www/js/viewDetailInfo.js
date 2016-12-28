@@ -33,6 +33,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                                 if(employeeData[employeeSelectedIndex].employeeid === phonebookData[i].employeeid) {
                                     $("#startAdd").hide();
                                     $("#startDelete").show();
+                                    break;
                                 }
                             }
                         }
@@ -68,7 +69,9 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
-                        $.mobile.changePage('#viewPhonebook');
+                        $("#askAddPhonebook").popup('close');
+                        $("#startAdd").hide();
+                        $("#startDelete").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
                     } else {
