@@ -9,6 +9,10 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
     }
 
+    function requestError(data) {
+        checkNetwork();
+    }
+
     appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
@@ -26,8 +30,9 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         dataType: "json",
         data: queryData,
         cache: false,
+        timeout: 3000,
         success: requestSuccess,
-        error: failCallback
+        error: requestError
     });
     
 }
