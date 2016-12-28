@@ -71,6 +71,7 @@ window.initialSuccess = function(data) {
         }
     }
 
+    iOSAppInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
 }

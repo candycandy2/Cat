@@ -36,6 +36,7 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
+var iOSAppInitialFinish = false;
 
 var app = {
     // Application Constructor
@@ -870,8 +871,18 @@ function handleOpenURL(url) {
         if (device.platform === "iOS") {
             if (loginData['doLoginDataCallBack'] === true) {
                 $.mobile.changePage('#viewInitial');
+                var checkAppVer = new checkAppVersion();
+
+                if (window.localStorage.getItem("firstInitial") === null) {
+                    window.localStorage.setItem("firstInitial", "false");
+                }
             }
-            var checkAppVer = new checkAppVersion();
+
+            if (loginData['openAppDetailPage'] === true) {
+                if (iOSAppInitialFinish === true) {
+                    var checkAppVer = new checkAppVersion();
+                }
+            }
         }
 
     } else {
