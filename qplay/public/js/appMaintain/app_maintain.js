@@ -355,8 +355,8 @@ $(function () {
     }
 
     var targetTab = 'tab_content_info';
-    if(typeof $.getUrlVar('tab') != 'undefined' && $('.nav-tabs a[href="#' + $.getUrlVar('tab') + '"]').length > 0){
-       targetTab = $.getUrlVar('tab');
+    if(typeof getUrlVar('tab') != 'undefined' && $('.nav-tabs a[href="#' + getUrlVar('tab') + '"]').length > 0){
+       targetTab = getUrlVar('tab');
     }
     $('.nav-tabs a[href="#' + targetTab + '"]').tab('show');
     
