@@ -66,12 +66,22 @@ a {
     background-color: #0db6b7 !important;
 }
 
-.ui-controlgroup-controls {
+#viewNewSetting .ui-controlgroup-controls {
     width: 100%;
 }
 
 .ui-radio label {
     text-align: center !important;
+}
+
+#reserveSite-button {
+    padding: 0.5vh !important;
+    margin: 0.4vh 0 1.4vh 0 !important;
+}
+
+#reserveFloor-button {
+    padding: 0.5vh !important;
+    margin: 1.5vh 0 1.4vh 0 !important;
 }
 
 #reserveSite-button.ui-btn,
@@ -155,7 +165,8 @@ div.circle {
 }
 
 .ui-margin-public {
-    margin: 2.5vw !important;
+    margin: 1.8vw 2.7vw !important;
+    text-align: center;
 }
 
 #reserveTab > div > div.ui-radio label {
@@ -224,11 +235,10 @@ div.circle {
     border: 0px;
     background-color: #2a88bc;
     color: white;
-    width: 60vw;
+    width: 64vw;
     height: 5vh;
     text-align: center;
     padding-top: 1.5vh;
-    margin: 1vh auto;
     font-size: 4.5vw;
 }
 
