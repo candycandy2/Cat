@@ -98,6 +98,11 @@ a {
     background-color: initial;
 }
 
+#reserveSetting-button {
+    padding: 0.5vh !important;
+    margin: 2vh 0 2vh 0 !important;
+}
+
 
 /*override jQuery Mobile end*/
 
@@ -159,7 +164,7 @@ a {
 
 div.circle {
     width: 3vw;
-    height: 1.5vh;
+    height: 1.8vh;
     border-radius: 99em;
     border: 1px solid #ddd;
 }
@@ -272,21 +277,21 @@ div.circle {
 
 .quick-reserve-margin {
     text-align: center;
-    margin: 8vh auto 3vh auto;
+    margin: 4.5vh auto 3vh auto;
 }
 
 .quick-reserve-msg-icon {
     background: url(../img/select.png) no-repeat;
     width: 5vw;
-    height: 2.5vh;
-    background-size: 5vw 2.5vh;
+    height: 3vh;
+    background-size: 5vw 3vh;
 }
 
 .quick-reserve-warn-icon {
     background: url(../img/warn_icon.png) no-repeat;
     width: 5vw;
-    height: 2.5vh;
-    background-size: 5vw 2.5vh;
+    height: 3vh;
+    background-size: 5vw 3vh;
 }
 
 .quick-reserve-setting-icon {
