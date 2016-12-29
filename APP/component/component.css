@@ -5,6 +5,12 @@
 /*********************************************************************************/
 
 /* override jQuery Mobile */
+.ui-mobile .ui-page-active{
+    display: block;
+    overflow: visible;
+    /*overflow-x:hidden*/
+}
+
 .ui-field-contain {
     border: none;
     padding: 0 10px;
