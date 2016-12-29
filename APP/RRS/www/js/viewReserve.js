@@ -327,6 +327,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         quickRserveCallBackData = data['Content'];
                         $('#quickReserveMsgArea div:nth-child(2)').html(quickRserveCallBackData[0].MeetingRoomName + '會議室可使用');
                         $('#quickReserveMsgArea div:nth-child(3)').html('預約時段為' + timeName);
+                        $('#quickReserveMsgArea div:nth-child(1)').removeClass('quick-reserve-warn-icon');
+                        $('#quickReserveMsgArea div:nth-child(1)').addClass('quick-reserve-msg-icon');
+                        quickReserveBtnActiveStatus();
 
                     } else if (data['ResultCode'] === "002907") {
                         //There are no meeting rooms
@@ -334,9 +337,13 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         var strDate = arrCutString[2] + '/' + arrCutString[3];
                         $('#quickReserveMsgArea div:nth-child(2)').html(strDate + '沒有符合偏好的會議室');
                         $('#quickReserveMsgArea div:nth-child(3)').html('預約時段為' + timeName);
-                        
+                        $('#quickReserveMsgArea div:nth-child(1)').removeClass('quick-reserve-msg-icon');
+                        $('#quickReserveMsgArea div:nth-child(1)').addClass('quick-reserve-warn-icon');
+                        $('#quickReserveMsgArea').removeClass('disable');
+                        $('#quickReserve').removeClass('btn-benq');
+                        $('#quickReserve').addClass('btn-disable');
                     }
-                    quickReserveBtnActiveStatus();
+
                     loadingMask('hide');
                 };
 
@@ -535,12 +542,22 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         var nowTime = new Date();
                         var nowTimeHour = nowTime.getHours();
                         var nowTimeMins = nowTime.getMinutes();
-                        if (nowTimeMins >= 30) {
+                        if (nowTimeMins < 15) {
+                            nowTimeMins = 0;
+                        } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
+                            nowTimeMins = 30;
+                        } else if (nowTimeMins >= 45) {
                             nowTimeHour += 1;
                             nowTimeMins = 0;
-                        } else {
-                            nowTimeMins = 30;
                         }
+
+                        // if (nowTimeMins >= 30) {
+                        //     nowTimeHour += 1;
+                        //     nowTimeMins = 0;
+                        // } else {
+                        //     nowTimeMins = 30;
+                        // }
+
                         nowTime.setHours(nowTimeHour);
                         nowTime.setMinutes(nowTimeMins);
                         var sTime = nowTime.hhmm();
