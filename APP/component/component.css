@@ -5,6 +5,12 @@
 /*********************************************************************************/
 
 /* override jQuery Mobile */
+.ui-mobile .ui-page-active{
+    display: block;
+    overflow: visible;
+    /*overflow-x:hidden*/
+}
+
 .ui-field-contain {
     border: none;
     padding: 0 10px;
@@ -65,7 +71,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 99;
+    z-index: 1000;
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.4);

@@ -1,4 +1,9 @@
-﻿.QLoading_Cover_CSS
+﻿body
+{
+    font-family: Gill Sans MT, Microsoft YaHei;
+}
+
+.QLoading_Cover_CSS
 {
     background-color: #e3e3e3;
     position: absolute;
@@ -27,4 +32,99 @@
     height: 15px;
     border-width: 0px;
     vertical-align: middle;
+}
+
+#main_table
+{
+    width:90%;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+#main_table tr
+{
+    width: 100%;
+    max-width: 560px;
+    height: 40px;
+    vertical-align: middle;
+    border-bottom: 1px solid black;
+}
+td.control_icon_cell
+{
+    width: 50px;
+}
+
+td.control_cell table
+{
+    width: 100%;
+    text-align: left;
+}
+
+td.control_cell .ui-input-text
+{
+    margin-left: -5px;
+}
+
+td.control_cell .ui-select
+{
+    margin-left: -10px;
+}
+
+.control_icon
+{
+    max-height: 25px !important;
+    max-width: 25px !important;
+}
+
+.control_title
+{
+    color: #0f0f0f;
+    text-transform: uppercase;
+}
+
+#button_cell
+{
+    padding-top: 30px;
+    width: 70%;
+    margin: auto;
+}
+
+#info_cell
+{
+    padding-top: 10px;
+}
+
+.login_button
+{
+    width: 70%;
+    margin: auto;
+    text-shadow: 0 0 0 white;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 13px;
+    padding: 10px;
+}
+.login_control
+{
+    color: #989898;
+    text-align: left;
+    font-family: Gill Sans MT, Microsoft YaHei;
+    font-weight: normal;
+}
+
+#main_table .ui-btn
+{
+    border:none transparent;
+}
+
+#main_table .ui-input-text
+{
+    border:none transparent;
+}
+
+#main_table input
+{
+    border:none transparent;
 }
