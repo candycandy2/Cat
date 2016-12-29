@@ -13,7 +13,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
         checkNetwork();
     }
 
-    appSecretKey = "2e936812e205445490efb447da16ca13";
+    //appSecretKey = "2e936812e205445490efb447da16ca13";
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
@@ -26,7 +26,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,
         cache: false,

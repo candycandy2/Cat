@@ -36,6 +36,7 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
+var iOSAppInitialFinish = false;
 
 var app = {
     // Application Constructor
@@ -383,11 +384,6 @@ function checkAppVersion() {
 }
 
 function hideInitialPage() {
-    if (window.localStorage.getItem("firstInitial") === null) {
-        window.localStorage.setItem("firstInitial", "true");
-        doHideInitialPage = true;
-    }
-
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }
@@ -598,6 +594,10 @@ function openAPP(URL) {
     $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
     document.getElementById("schemeLink").click();
     $("#schemeLink").remove();
+
+    if (device.platform === "Android") {
+        navigator.app.exitApp();
+    }
 }
 
 //Plugin-QSecurity
@@ -816,9 +816,7 @@ function getLoginDataCallBack() {
 
     loginData['doLoginDataCallBack'] = false;
 
-    if (device.platform === "Android") {
-        navigator.app.exitApp();
-    } else {
+    if (device.platform === "iOS") {
         $.mobile.changePage('#viewMain2-1');
     }
 }
@@ -870,8 +868,14 @@ function handleOpenURL(url) {
         if (device.platform === "iOS") {
             if (loginData['doLoginDataCallBack'] === true) {
                 $.mobile.changePage('#viewInitial');
+                var checkAppVer = new checkAppVersion();
             }
-            var checkAppVer = new checkAppVersion();
+
+            if (loginData['openAppDetailPage'] === true) {
+                if (iOSAppInitialFinish === true) {
+                    var checkAppVer = new checkAppVersion();
+                }
+            }
         }
 
     } else {
