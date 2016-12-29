@@ -463,9 +463,12 @@ var delAppVersion = function(device){
 
 function getApkDownLoadPath(appId,deviceType,versionCode,fileName){
     var baseUrl = '{{url(\Config::get('app.upload_folder'))}}';
-    var url =  baseUrl + '/' +  appId + '/apk/' +  deviceType + '/' + versionCode + '/' + fileName;    
+    var url =  '';
     if(deviceType == 'ios'){
+        url =  baseUrl + '/' +  appId + '/apk/' +  deviceType + '/' + versionCode + '/' + 'manifest.plist';
         url = 'itms-services://?action=download-manifest&url=' + url;
+    }else{
+        url =  baseUrl + '/' +  appId + '/apk/' +  deviceType + '/' + versionCode + '/' + fileName;
     }
     return url;
 }
