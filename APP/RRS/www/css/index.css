@@ -1,24 +1,30 @@
 /*override jQuery Mobile start*/
 
-a, a.popup-msg{
-    color: inherit !important;
-    text-decoration: none !important;
-}
-
-.ui-btn {
-    text-overflow: initial;
-    margin-right: auto !important;
-    margin-left: auto !important;
-}
-
 hr {
     border: 0;
     height: 1px;
     background-color: #d4d4d4;
     color: #d4d4d4/* IE6 */
 }
+
 h1 {
-    font-size: 1.5em;
+    /*font-size: 1.5em;*/
+    font-size: 5.5vw;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.ui-title {
+    text-shadow: initial !important;
+}
+
+.ui-btn {
+    text-overflow: initial;
+    margin-right: auto !important;
+    margin-left: auto !important;
 }
 
 #myReserve .ui-block-a {
@@ -42,55 +48,8 @@ h1 {
 
 #newSettingFloor div.ui-bar {
     text-align: center;
-    height: 3.5em;
-}
-
-
-/*******Reserve use*******/
-
-#quickReserveDateSelect div.ui-bar {
-    text-align: center;
-    height: 3.5em;
-}
-
-#reserveDateSelect div.ui-bar {
-    text-align: center;
-    height: 3.5em;
-    line-height: 3.5em;
-    padding: 0.5em 0.5em !important;
-}
-
-#reserveDateSelect div.ui-bar span:nth-child(2) {
-    font-size: large;
-}
-
-
-/*#noreserve div.ui-bar {
-    text-align: center;
-    height: 3.5em;
-    line-height: 1.5em;
-}
-
-#reserveSelectItem div.ui-bar span:nth-child(1) {
-    background: url(../img/select.png) no-repeat;
-    display: inline-table;
-    width: 16px;
-    height: 16px;
-}
-
-#noreserve div.ui-bar span:nth-child(4) {
-    font-size: small;
-}*/
-
-.reserveSelect div {
-    background-color: aqua !important;
-}
-
-.reserveSelectIcon span:nth-child(1) {
-    background: url(../img/select.png) no-repeat;
-    display: inline-table;
-    width: 16px;
-    height: 16px;
+    height: 7vh;
+    line-height: 7vh;
 }
 
 #navbar ul li a {
@@ -98,13 +57,13 @@ h1 {
 }
 
 .ui-btn-active {
-    background-color: #d6cadc;
-    border-color: #d6cadc !important;
-    color: black !important;
+    background-color: #0db6b7;
+    border-color: #0db6b7 !important;
+    color: white !important;
 }
 
 .ui-controlgroup-controls label.ui-btn-active {
-    background-color: #d6cadc !important;
+    background-color: #0db6b7 !important;
 }
 
 .ui-controlgroup-controls {
@@ -115,32 +74,15 @@ h1 {
     text-align: center !important;
 }
 
-
-/*.ui-content {
-    padding-left: 0em !important;
-    padding-right: 0em !important;
-}*/
-
-#container .ui-select {
-    margin-top: 0em !important;
-    margin-bottom: 0em !important;
-}
-
-#reserveSite-button.ui-btn, #reserveFloor-button.ui-btn {
-    /*padding: 0px !important;*/
+#reserveSite-button.ui-btn,
+#reserveFloor-button.ui-btn {
     background-color: transparent !important;
     border-color: transparent !important;
-    /*color: transparent !important;*/
 }
 
 #reserveSite-button.ui-btn-icon-right {
     padding-right: 2.5em !important;
 }
-
-/*#reserveFloor-button.ui-btn {
-    background-color: transparent !important;
-    border-color: transparent !important;
-}*/
 
 #reserveDateSelect div.ui-bar-a {
     background-color: initial;
@@ -150,33 +92,7 @@ h1 {
 /*override jQuery Mobile end*/
 
 
-/*public area start*/
-
-#container {
-    width: 100%;
-    text-align: center;
-    line-height: 20px;
-}
-
-#container a:link {
-    text-decoration: none;
-    color: white;
-}
-
-#left {
-    float: left;
-    margin: 0 5%;
-}
-
-#center {
-    display: inline-block;
-    margin: 0 auto !important;
-}
-
-#right {
-    float: right;
-    margin: 0 5%;
-}
+/*new public area start*/
 
 .ui-margin-10 {
     margin: 3% !important;
@@ -215,95 +131,210 @@ h1 {
     text-align: center;
 }
 
-#reserveSettingArea {
-    margin-top: 20%;
-}
-
 #reserveSettingArea a:link {
     text-decoration: none;
     color: black;
 }
 
-#reserveBtnArea {
-    padding-top: 10%;
-}
 
-#reserveBtnArea a {
-    display: inline-block;
-}
-
-#iconDiscribe {
-    text-align: center;
-    margin-top: 3%;
-    margin-bottom: 3%;
-}
-
-#iconDiscribe > div {
-    width: 5%;
-    height: 15px;
-    display: inline-block;
-    border: 1px solid;
-    border-color: gainsboro;
-}
-
-#iconDiscribe > h3 {
-    display: inline-block;
-    margin: 0;
-}
-
-.cntIcon {
-    width: 20%;
-    height: 40%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    text-align: center;
-    font-size: large;
-}
+/*--------------------------*/
 
 .disable {
     display: none !important;
 }
 
-.popup-msg {
-    height: 20vh;
-    width: 70vw;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    color: #666;
-    background-color: #ddd;
-    font-weight: bold;
+.inline {
+    display: inline-block;
 }
 
+div.circle {
+    width: 3vw;
+    height: 1.5vh;
+    border-radius: 99em;
+    border: 1px solid #ddd;
+}
 
-/*color setting start*/
+.ui-margin-public {
+    margin: 2.5vw !important;
+}
 
-.btn-benq {
-    background-color: #471e86 !important;
+#reserveTab > div > div.ui-radio label {
+    line-height: 2vh !important;
+    height: 2vh !important;
+    border: 1px solid #2a88bc !important;
+}
+
+#reserveTab > div > div.ui-radio label.ui-btn-active {
+    background-color: #2a88bc !important;
     color: white !important;
 }
 
-.btn-benq-disable {
-    background-color: #e9e9e9 !important;
-    color: #666 !important;
+#reserveTab.ui-radio-50w div.ui-radio {
+    width: 46vw !important;
 }
 
-.ui-benq-color {
-    color: #471e86;
+#pageOne div.ui-select {
+    width: 30vw !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
+
+#pageTwo div.ui-select {
+    width: 45vw !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 3vh 0 3vh 0;
+}
+
+#reserveSite-button.ui-btn,
+#reserveFloor-button.ui-btn,
+#reserveSetting-button.ui-btn {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    /*padding-left: 0 !important;*/
+    text-align: left;
+}
+
+#reserveDateSelect div.ui-bar {
+    text-align: left;
+    height: 5.5vh;
+    border-style: solid;
+    border-color: #666;
+    border-width: 0px 1px 1px 0px;
+}
+
+#reserveDateSelect > div.ui-grid-c {
+    border-style: solid;
+    border-color: #666;
+    border-width: 1px 0px 0px 1px;
+}
+
+#reserveDateSelect div.ui-bar div:nth-child(1) {
+    font-size: 5vw;
+}
+
+#reserveDateSelect div.ui-bar div:nth-child(2) {
+    font-size: 3vw;
+}
+
+.radius-btn {
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border: 0px;
+    background-color: #2a88bc;
+    color: white;
+    width: 60vw;
+    height: 5vh;
+    text-align: center;
+    padding-top: 1.5vh;
+    margin: 1vh auto;
+    font-size: 4.5vw;
+}
+
+.circleIcon {
+    width: 6vw;
+    height: 3.5vh;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.iconSelect {
+    background: url(../img/circle1.png);
+    background-size: 4.5vw 3vh;
+    background-repeat: no-repeat;
+}
+
+.iconSelected {
+    background: url(../img/circle2.png);
+    background-size: 4.5vw 3vh;
+    background-repeat: no-repeat;
+}
+
+.btn-border {
+    background-color: white !important;
+    color: black !important;
+    border-width: 1px;
+    border-color: #2a88bc !important;
+    border-style: solid !important;
+}
+
+.quick-reserve-margin {
+    text-align: center;
+    margin: 8vh auto 3vh auto;
+}
+
+.quick-reserve-msg-icon {
+    background: url(../img/select.png) no-repeat;
+    width: 5vw;
+    height: 2.5vh;
+}
+
+.quick-reserve-setting-icon {
+    background: url(../img/setting.png) no-repeat;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.quick-reserve-setting-icon {
+    background: url(../img/setting.png) no-repeat;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.cntIcon {
+    width: 6vw;
+    height: 3.5vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    line-height: 3.5vh;
+    background-color: #003399 !important;
+}
+
+.setting-icon {
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.setting-back-icon {
+    background: url(../img/back_nav.png) no-repeat;
+}
+
+.setting-save-icon {
+    background: url(../img/save_nav.png) no-repeat;
+}
+
+.setting-add-icon {
+    background: url(../img/add_nav.png) no-repeat;
+}
+
+/*new public area end*/
+
+
+/*new color setting start*/
 
 .ui-color-lightblue {
-    color: #85c3f7;
+    background-color: #2a88bc;
+}
+
+.ui-color-white {
+    background-color: white;
 }
 
 .ui-color-yellow {
     color: #ffce43;
-}
-
-.ui-color-green {
-    color: #34823a;
 }
 
 hr.ui-color-yellow {
@@ -313,29 +344,119 @@ hr.ui-color-yellow {
     border-color: #ffce43 !important;
 }
 
-.ui-color-free {
-    background-color: white;
+.btn-benq {
+    /*background-color: #471e86 !important;*/
+    background-color: #2a88bc !important;
+    color: white !important;
+}
+
+.ui-benq-color {
+    color: #471e86;
+}
+
+
+/*.ui-color-green {
+    color: #34823a;
+}*/
+
+.btn-disable {
+    background-color: #ddd !important;
+    color: #666 !important;
+}
+
+.btn-otherday {
+    background-color: #ddd !important;
+    color: #666 !important;
+}
+
+.btn-otherday h1,
+#defaultToday h1 {
+    font-size: 5.5vw !important;
 }
 
 .ui-color-reserve {
-    background-color: #e4e4e4 !important;
+    background-color: #d4d4d4 !important;
 }
 
 .ui-color-myreserve {
-    background-color: #ffce44 !important;
-}
-
-.ui-color-reserve > div {
-    background-color: transparent;
+    background-color: #afc744 !important;
 }
 
 
-/*.ui-color-reserveui-color-reserve {
-    background-color: #e4e4e4;
-}*/
+/*new color setting end*/
 
 
-/*color setting end*/
+/*new scrollmenu start*/
+
+div.scrollmenu {
+    background-color: white;
+    overflow: auto;
+    white-space: nowrap;
+    display: flex;
+    border-style: solid;
+    border-width: 1px 0px 1px 1px;
+    box-shadow: 5px 1px 5px #666;
+    border-color: #666 !important;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border-style: solid;
+    border-width: 0px 1px 0px 0px;
+    border-color: #e4e4e4 !important;
+}
+
+#scrollDate a,
+#quickReserveScrollDate a {
+    padding: 1vh 6vw;
+}
+
+#reserveRoom a {
+    padding: 2vh 6vw;
+}
+
+.hover {
+    background-color: #0db6b7;
+    color: white !important;
+}
+
+
+/*new scrollmenu end*/
+
+
+/*new header start*/
+
+#container {
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+}
+
+#container a:link {
+    text-decoration: none;
+    color: white;
+}
+
+#left {
+    float: left;
+    margin: 0 5%;
+}
+
+#center {
+    display: inline-block;
+    margin: 0 auto !important;
+}
+
+#right {
+    float: right;
+    margin: 0 5%;
+}
+
+
+/*new header end*/
 
 
 /*column width start*/
@@ -384,79 +505,191 @@ hr.ui-color-yellow {
 /*column width end*/
 
 
-/*arrow_box start*/
+/*popup msg start*/
 
-.arrow_box {
-    position: relative !important;
-    background: #d6cadc !important;
+.ui-popup-container,
+.ui-popup {
+    width: initial !important;
 }
 
-.arrow_box:after,
-.arrow_box:before {
-    top: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
+.popup-msg {
+    height: 20vh;
+    width: 80vw;
+    background: #eee !important;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #E2E2E2;
 }
 
-.arrow_box:after {
-    border-color: rgba(136, 183, 213, 0);
-    border-top-color: #d6cadc;
-    border-width: 10px;
-    margin-left: -10px;
-}
-
-.arrow_box:before {
-    border-color: rgba(194, 225, 245, 0);
-    border-top-color: #d6cadc;
-    border-width: 16px;
-    margin-left: -16px;
-}
-
-
-/*arrow_box end*/
-
-
-/*scrollmenu start*/
-
-div.scrollmenu {
-    background-color: white;
-    overflow: auto;
-    white-space: nowrap;
-    display: flex;
-    border-style: groove;
-    border-width: 1px 0px 1px 0px;
-    border-color: #e4e4e4 !important;
-}
-
-div.scrollmenu a {
-    display: inline-block;
-    color: black !important;
+.popup-msg h1 {
     text-align: center;
-    padding: 15px 25px;
-    text-decoration: none;
-    border-style: groove;
-    border-width: 0px 1px 0px 0px;
-    border-color: #e4e4e4 !important;
+    font-size: 1.2rem;
+    margin: 1rem 1rem 0.5rem;
+}
+
+.popup-msg div {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.popup-msg div > table {
+    text-align: left;
+}
+
+.popup-msg div > td {
+    padding-right: 3vw;
+}
+
+.popup-msg button {
+    background: transparent;
+    border: none;
+    color: #1678E5 !important;
+    height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.popup-msg button:nth-of-type(1) {
+    border-top: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
+    left: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.popup-msg button:nth-of-type(2) {
+    border-top: 1px solid #d4d4d4;
+    right: 0;
+    border-radius: 0 0 10px 0;
+}
+
+.popup-msg a {
+    background: transparent;
+    border: none;
+    color: #1678E5 !important;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    font-weight: 100;
+}
+
+.popup-msg a:nth-of-type(1) {
+    left: initial;
+    height: 4vh;
+    width: 6vw;
+}
+
+.popup-msg a:nth-of-type(2) {
+    border-top: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
+    left: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.popup-msg a:nth-of-type(3) {
+    border-top: 1px solid #d4d4d4;
+    right: 0;
+    border-radius: 0 0 10px 0;
 }
 
 
-/*#scrollDate.scrollmenu a:hover {
-    background-color: #d6cadc;
-    color: black !important;
+/*popup msg end*/
+
+
+/*.timepicker-main {
+        border: 0px;
+    width: 50px;
+    height: 30px;
+    overflow: hidden;
 }*/
 
-.hover {
-    background-color: #d6cadc;
-    color: black !important;
+
+/*#sTimeHr {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    top: 0;
+    display: inline-block;
+}
+
+section {
+    height: 60px;
+    font-size: 
+}*/
+
+.timepicker-icon {
+    width: 10vw;
+    height: 4vh;
+    line-height: 4vh;
+    border: 0.6vw solid #ddd;
+    border-radius: 7px;
+    padding: 1vh 0 0 0;
+}
+
+.timepicker-icon-up {
+    background: url(../img/up.png) no-repeat;
+    background-size: 10vw 5vh;
+}
+
+.timepicker-icon-down {
+    background: url(../img/down.png) no-repeat;
+    background-size: 10vw 5vh;
+}
+
+.timepicker-warn-icon{
+    background: url(../img/warn_icon.png) no-repeat;
+    width: 6vw;
+    height: 3vh;
+    background-size: 6vw 3vh;
+    background-repeat: no-repeat;
+    /*vertical-align: middle;*/
+}
+
+#newSettingTimePickerPopup .popup-msg {
+    height: 30vh !important;
+}
+
+#newSettingTimePickerPopup .popup-msg div {
+    /*width: 12vw;*/
+    margin: 0 auto !important;
+    font-size: 6vw;
+}
+
+#newSettingTimePickerPopup .popup-msg table {
+    height: 23vh !important;
+    /*width: 75vw !important;*/
+    margin: 0 auto !important;
+}
+
+#newSettingTimePickerPopup .showMsg {
+    height: 3.5vh;
+    position: absolute;
+    text-align: center;
+    line-height: 3.5vh;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    font-size: 4.5vw !important;
+    bottom: -5vh;
+    background-color: transparent;
+    color: white;
+}
+
+.min-height-100 {
+    min-height: 100% !important;
 }
 
 
-/*scrollmenu end*/
-
-
-/*public area end*/
+/*.loader{
+    margin-top: 100vh !important;
+}*/

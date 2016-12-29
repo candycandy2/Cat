@@ -10,6 +10,10 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
     }
 
+    function requestError(data) {
+        checkNetwork();
+    }
+
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
@@ -23,12 +27,13 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'token': loginData.token,
             'push-token': loginData.pushToken
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
         cache: false,
+        timeout: 3000,
         success: requestSuccess,
-        fail: failCallback
+        error: requestError
     });
     
 }

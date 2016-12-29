@@ -8,19 +8,18 @@
     <div data-role="page">
         <div role="main" class="ui-content" style="text-align: center;">
             <img src="{{asset('/css/images/benq_logo.png')}}" style="width:25%; margin:20px;" />
-            <h3>Your device has been verified</h3>
+            <h3>帳號與設備驗證成功</h3>
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <img src="{{asset('/css/images/icon_ok.png')}}" style="200px; margin:20px;" />
-                <h4>The cancellation of the device,
-                    please contact with BenQ ITS</h4>
+                <h4>若要註銷設備，請聯絡 BenQ ITS</h4>
                 <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="start()">OK, I Know</button>
+                        onclick="start()">好，我知道了</button>
             </div>
         </div>
         <div data-role="popup" id="dlgMessage"
              data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:400px;">
             <div data-role="header" data-theme="a">
-                <h1>Error</h1>
+                <h1>錯誤</h1>
             </div>
             <div role="main" class="ui-content">
                 <p id="messageContainer"></p>

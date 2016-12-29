@@ -7,36 +7,77 @@
     ?>
     <div data-role="page" id="pageLogin">
         <div role="main" class="ui-content" style="text-align: center;">
-            <table style="margin:auto;">
+            <img src="{{asset('/css/images/login_logo.png')}}" style="width:16%;" />
+            <table id="main_table">
                 <tr>
-                    <td>
-                        <img src="{{asset('/css/images/benq_logo.png')}}" />
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/domain.png')}}" class="control_icon" />
                     </td>
-                    <td>
-                        <img src="{{asset('/css/images/qisda_logo.png')}}" />
+                    <td class="control_cell">
+                        <table>
+                            <tr>
+                                <td class="control_title">Domain</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="login_control" placeholder="Company" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false'>
+                                        <option value="BENQ" selected="selected">BenQ</option>
+                                        <option value="QGROUP">Qisda</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/username.png')}}" class="control_icon" />
+                    </td>
+                    <td class="control_cell">
+                        <table>
+                            <tr>
+                                <td class="control_title">UserName</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="login_control" type="text" data-clear-btn="false" name="tbxName" data-mini="true"
+                                           id="tbxName" value="" placeholder="帳號" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/password.png')}}" class="control_icon" />
+                    </td>
+                    <td class="control_cell">
+                        <table>
+                            <tr>
+                                <td class="control_title">Password</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="login_control" type="password" data-clear-btn="false" name="tbxPassword" data-mini="true"
+                                           id="tbxPassword" value="" placeholder="密碼" />
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>
-            <h1>QPlay Login</h1>
-            <div style="width:60%; margin: 0 auto; margin-top:40px;">
-                <input type="text" data-clear-btn="true" name="tbxName"
-                       id="tbxName" value="" placeholder="User Name" />
-                <input type="password" data-clear-btn="true" name="tbxPassword"
-                       id="tbxPassword" value="" placeholder="Password" />
-                <select placeholder="Company" name="ddlCompany" id="ddlCompany">
-                    <option value="BENQ" selected="selected">BenQ</option>
-                    <option value="QGROUP">Qisda</option>
-                </select>
-                <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="tryLogin()">Log In</button>
-                <button id="btnOriLogin" class="ui-btn ui-btn-corner-all" style="display:none;color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="oriLogin()">Origin Log In</button>
+            <div id="info_cell">if you've forgotten your password please contact with ITS</div>
+            <div id="button_cell">
+                <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font-family: Arial;"
+                        onclick="tryLogin()">Log in</button>
+                <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font-family: Arial;"
+                        onclick="oriLogin()">Origin Log in</button>
             </div>
         </div>
         <div data-role="popup" id="dlgMessage"
              data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:400px;">
             <div data-role="header" data-theme="a">
-                <h1>Error</h1>
+                <h1>錯誤</h1>
             </div>
             <div role="main" class="ui-content">
                 <p id="messageContainer"></p>
@@ -56,18 +97,19 @@
                     </td>
                 </tr>
             </table>
-            <h3>Your device has been verified</h3>
+            <h3>帳號與設備驗證成功</h3>
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <img src="{{asset('/css/images/icon_ok.png')}}" style="200px; margin:20px;" />
-                <h4>The cancellation of the device,
-                    please contact with BenQ ITS</h4>
+                <h4>若要註銷設備，請聯絡 BenQ ITS</h4>
                 <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="start()">OK, I Know</button>
+                        onclick="start()">好，我知道了</button>
             </div>
         </div>
     </div>
     <script>
         $(function () {
+            $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
+
             var showOriLogin = getQueryString("show_origin_login");
             if(showOriLogin && showOriLogin == "Y") {
                 $("#btnOriLogin").show();

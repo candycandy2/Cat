@@ -3,34 +3,32 @@
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title">
-                <a href="#viewSettingList">返回</a></div>
+                <a id="newSettingBack" href="#">返回</a></div>
             <div id="center" class="ui-title">偏好設置</div>
             <div id="right" class="ui-title">
                 <a id="newSettingSave" href="#">儲存</a></div>
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <div id="newSettingSelect" class="ui-margin-10 arrow_box">
-            <div class="ui-grid-a">
-                <div class="ui-block-a col-2">
-                    <h3>名稱</h3>
-                </div>
-                <div class="ui-block-b col-8">
-                    <input name="newSettingTitle" id="newSettingTitle" type="text" placeholder="請輸入" />
-                </div>
-                <div class="ui-block-a col-2">
-                    <h3>地點</h3>
-                </div>
-                <div class="ui-block-b col-8">
-                    <select name="newSettingSite" id="newSettingSite">
-                    </select>
+        <div class="ui-margin-public">
+            <div id="newSettingSelect">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a col-2">
+                        <h3>名稱</h3>
+                    </div>
+                    <div class="ui-block-b col-8">
+                        <input name="newSettingTitle" id="newSettingTitle" type="text" placeholder="請輸入" />
+                    </div>
+                    <div class="ui-block-a col-2">
+                        <h3>地點</h3>
+                    </div>
+                    <div class="ui-block-b col-8">
+                        <select name="newSettingSite" id="newSettingSite">
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div style="text-align:center;margin-top:15px;">
-            <h3>偏好選擇</h3></div>
-        <h3 style="padding-left:5%;">人數</h3>
-        <div class="ui-margin-10">
+            <h3 style="margin: 2vh 0 0 5vw;">人數</h3>
             <div id="newSettingPeople" data-role="controlgroup" data-type="horizontal" class="ui-radio-30">
                 <input type="radio" name="num" id="num-1" value="0" checked="checked">
                 <label for="num-1">不限</label>
@@ -39,36 +37,86 @@
                 <input type="radio" name="num" id="num-3" value="2">
                 <label for="num-3">8人以上</label>
             </div>
-        </div>
-        <h3 style="padding-left:5%;">時段</h3>
-        <div class="ui-margin-10">
+            <h3 style="margin: 2vh 0 0 5vw;">時段</h3>
             <div id="newSettingTime" data-role="controlgroup" data-type="horizontal" class="ui-radio-50">
                 <input type="radio" name="setTime" id="setTime1" value="none" checked="checked">
                 <label for="setTime1">現在起一小時</label>
                 <input type="radio" name="setTime" id="setTime2" value="setTime">
                 <label for="setTime2">指定時段</label>
             </div>
-        </div>
-        <div class="disable">
-            <input name="timeflip1" id="timeflip1" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "overrideTimeFormat": 24, "minuteStep": "30", "validHours" : [9,10,11,12,13,14,15,16,17]}' />
-        </div>
-        <h3 style="padding-left:5%;">樓層</h3>
-        <div id="newSettingFloor" class="ui-margin-10">
-            <div class="ui-grid-b">
-                <div id="floorDefault" class="ui-block-a" style="position: relative;">
-                    <div class="ui-bar ui-bar-a">不限</div>
+            <h3 style="margin: 2vh 0 1vh 5vw;">樓層</h3>
+            <div id="newSettingFloor">
+                <div class="ui-grid-b">
+                    <div id="floorDefault" class="ui-block-a" style="position: relative;">
+                        <div class="ui-bar ui-bar-a">不限</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div data-role="popup" id="newSettingPpupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
-            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-            <p id="msgContent"></p>
-            <p>
-                <a href="#" data-rel="back" data class="ui-btn ui-btn-inline" id="cancel">取消</a>
-                <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
-            </p>
+    <div data-role="popup" data-history="false" id="newSettingPopupMsg" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="popup-msg">
+            <h1 id="msgTitle"></h1>
+            <div id="msgContent"></div>
+            <button id="cancel"></button>
+            <button id="confirm"></button>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" id="newSettingTimePickerPopup" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="popup-msg">
+            <div class="showMsg" style="display: none;">
+                <div class="inline timepicker-warn-icon"></div>
+                <span class="inline"></span>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div value="up" type="s" formate="hr" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                    <td rowspan="3">&nbsp;：&nbsp;</td>
+                    <td>
+                        <div value="up" type="s" formate="mm" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                    <td rowspan="3">&nbsp;～&nbsp;</td>
+                    <td>
+                        <div value="up" type="e" formate="hr" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                    <td rowspan="3">&nbsp;：&nbsp;</td>
+                    <td>
+                        <div value="up" type="e" formate="mm" class="timepicker-icon timepicker-icon-up"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div tpye="s" for="hr">08</div>
+                    </td>
+                    <td>
+                        <div tpye="s" for="mm">00</div>
+                    </td>
+                    <td>
+                        <div tpye="e" for="hr">08</div>
+                    </td>
+                    <td>
+                        <div tpye="e" for="mm">30</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div value="down" type="s" formate="hr" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                    <td>
+                        <div value="down" type="s" formate="mm" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                    <td>
+                        <div value="down" type="e" formate="hr" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                    <td>
+                        <div value="down" type="e" formate="mm" class="timepicker-icon timepicker-icon-down"></div>
+                    </td>
+                </tr>
+            </table>
+            <button id="cancel"></button>
+            <button id="confirm"></button>
         </div>
     </div>
 </div>

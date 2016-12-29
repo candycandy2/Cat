@@ -1,7 +1,27 @@
 /*override jQuery Mobile*/
 
+.ui-page .ui-header {
+    background-color: #492f7f;
+    color: #fff;
+    font-size: 2.9vh;
+}
+
 #viewNewsEvents2-3 .ui-listview>.ui-li-static {
     padding: 0;
+}
+
+#viewNewsEvents2-3 #navMessage .ui-btn {
+    background-color: #492f7f;
+    padding: 5px 1em;
+    border-width: 0px;
+}
+
+#viewNewsEvents2-3 #navDelete .ui-btn {
+    background-color: #0F0F0F;
+    color: #FFF;
+    font-size: 2.8vh;
+    height: 3vh;
+    border-width: 0px;
 }
 
 #viewWebNews2-3-1 .ui-content {
@@ -34,7 +54,7 @@
     word-wrap: break-word !important;
 }
 
-/*new class*/
+/*----------------------new class----------------------*/
 
 .initialMain {
     width: 100%;
@@ -49,6 +69,109 @@
     margin-bottom: 45%;
 }
 
+/* qplay button */
+.q-btn-header {
+    width: 6vw;
+    padding: 15% 3.7vw 0;
+}
+
+.q-btn-footer-icon {
+    width: 2.3vh;
+    margin-left: 20vw;
+    float: left;
+}
+
+.q-btn-footer-text {
+    font-size: 2.5vw;
+    padding-top: 5px;
+    clear: both;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox] + label {
+    background: url('../img/checkbox.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=checkbox]:checked + label {
+    background: url('../img/checkbox_selected.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0px;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/radio.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/radio_selected.png') no-repeat;
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 1.1;
+    padding-left: 21px;
+    width: 85%;
+    color: #0F0F0F;
+    font-size: 3vh;
+    height: 30px;
+}
+
+.overlap-label-checkbox {
+    position: absolute;
+    width: 7vw;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.delete-str {
+    margin-top:10%;
+    text-shadow: none;
+}
+
+/* app list / detail */
+.app-list-category {
+    color: #0F0F0F;
+    font-size: 2.9vh;
+    display: inline-block;
+    line-height: 0;
+    margin-bottom: 2.5vh;
+}
+
+.app-list-hr {
+    color: #c7c6cb;
+    margin: 2.2vh 0 2.5vh;
+}
+
 .app-list-scroll-area {
     width: 100%;
     overflow-x: scroll;
@@ -58,12 +181,13 @@
 .app-list-item {
     width: 25vw;
     float: left;
-    margin-right: 10px;
+    margin-right: 3.7vw;
 }
 
 .app-list-name {
-    font-size: 0.8em;
-    margin-top: 0px;
+    color: #0F0F0F;
+    font-size: 2.4vh;
+    margin: 0;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -71,77 +195,207 @@
 }
 
 .appDetailIcon {
-    width: 25%;
-    height: 25%;
-    display: inline-block;
+    width: 25vw;
+    line-height: 1;
     float: left;
 }
 
 .appDetailInfo {
-    line-height: 6px;
     float: left;
-    margin-left: 10px;
+    margin-left: 3.7vw;
+    width: 65%;
 }
 
-.appDetailAppName {
-    font-size: 1.5em;
-    margin-top: 8px;
-    margin-bottom: 10px;
-    font-weight: bold;
+.appDetailInfo p{
+    margin: 0;
+    line-height: 1;
 }
 
-.install-btn-content {
-    clear: both;
-    width: 100%;
-    height: auto;
-    text-align: right;
+.appDetailInfo .appDetailAppName {
+    color: #0F0F0F;
+    font-size: 2.8vh;
+    margin-bottom: 0.3vh;
 }
 
-.install-btn {
-    width: 100px !important;
-    height: 10px !important;
-    text-align: center !important;
-    line-height: 10px !important;
-    color: white !important;
-    background-color: #28004D !important;
-    border-color: #28004D !important;
-    margin-top: 0px !important;
-}
-
-.detail-description {
-    margin-bottom: 2%;
-    width: auto !important;
-    text-align: center !important;
-    overflow: scroll;
-}
-
-.rank {
-    text-align: center;
-    margin-bottom: 5%;
+.appDetailInfo .appDetailRank {
+    height: 2.3vh;
+    margin-bottom: 4vh;
     opacity: 0;
 }
 
+.appDetailRank .star {
+    font-size: 2.5vw;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.appDetailRank .score {
+    font-size: 2.3vh;
+    color: #5C5C5C;
+}
+
+.appDetailInfo .appDetailRank {
+    height: 2.4vh;
+}
+
+.appDetailBottomLeft {
+    float: left;
+    width: 75%;
+}
+
+.appDetailAppVersion {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.appDetailAppVersion .title {
+    color: #0F0F0F;
+    font-size: 2.4vh;
+}
+
+.appDetailAppVersion .number {
+    color: #5C5C5C;
+    font-size: 2.3vh;
+}
+
+.appDetailInfo .appDetailAppSize {
+    height: 2.4vh;
+}
+
+.appDetailAppSize .title {
+    color: #0F0F0F;
+    font-size: 2.4vh;
+}
+
+.appDetailAppSize .number {
+    color: #5C5C5C;
+    font-size: 2.3vh;
+}
+
+.appDetailBottomRight {
+    float: left;
+    text-align: right;
+    width: 25%;
+    height: 4.8vh;
+}
+
+.install-btn {
+    background: url(../img/action_n_small_btn.png) no-repeat;
+    background-size: 100%;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20%;
+    color: #FFF;
+    font-size: 2.3vh;
+    text-shadow: none;
+    padding-top: 2%;
+}
+
+.detail-description {
+    color: #000;
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative;
+    /* use this value to count block height */
+    line-height: 1.2em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 3.4em;
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+    font-size: 2.4vh;
+}
+
+.detail-description-ellipsis:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 5vw;
+    width: 13vw;
+    padding-left: 1vw;
+    bottom: 0;
+    background-color: #FFF;
+}
+
+.detail-description-ellipsis:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    width: 1em;
+    /* set width and height */
+    height: 1em;
+    background: white;
+}
+
+.detail-description-open {
+    position: relative;
+    width: 10%;
+    top: -2.6vh;
+    left: 90%;
+    background-color: #FFF;
+    margin-bottom: -2.6vh;
+}
+
+.detail-description-open-btn {
+    background: url(../img/more_btn.png) no-repeat;
+    background-size: 10vw;
+    height: 3.5vh;
+    width: 10vw;
+    font-size: 2.3vh;
+    color: #5C5C5C;
+    text-align: center;
+    line-height: 1.5;
+}
+
 #appDetailPicList {
+    margin-top: 2.2vh;
     width: 100%;
-    height: 33vh;
+    height: 52vh;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
 }
 
 .detail-img-style {
     float: left;
-    width: 20vh;
-    height: 31vh;
+    width: 52vw;
+    height: 52vh;
+    margin-left: 3.7vw;
 }
 
+#viewAppDetail2-2 .page-main {
+    background-color: #FFF;
+}
+
+#viewAppDetail2-2 .top {
+    padding: 3.5vh 3.7vw 0;
+}
+
+#viewAppDetail2-2 .bottom {
+    clear: both;
+    padding: 4vh 3.7vw 6.5vh;
+}
+
+/* message list / detail */
 .news-header {
     position: relative;
     width: auto;
     background-size: 100% auto;
 }
 
-.header-normal {
-    background-image: url(../img/header.svg);
+.header-service {
+    background-image: url(../img/header_service.svg);
+}
+
+.header-event {
+    background-image: url(../img/header_event.svg);
 }
 
 .header-left {
@@ -156,6 +410,13 @@
     height: 100%;
     text-align: center;
     font-family: "Gill Sans MT";
+}
+
+.no-message {
+    color: #989898;
+    text-align: center;
+    margin-top: 40vh;
+    font-size: 2.9vh;
 }
 
 .priority-title {
@@ -282,26 +543,103 @@
     color: #492582;
 }
 
-#viewAppDetail2-2 .page-main {
-    background-color: #FFF;
+.reddot-tab {
+    background-image: url(../img/reddot.png);
+    background-size: 1.5vw 1.5vw;
+    width: 1.5vw;
+    height: 1.5vw;
+    float: left;
+    margin-left: 3px;
 }
 
-#viewAppDetail2-2 .bottom {
-    background-color: #f9f9f9;
+.reddot-list {
+    background-image: url(../img/reddot.png);
+    background-size: 1.5vw 1.5vw;
+    width: 1.5vw;
+    height: 1.5vw;
 }
 
-#viewAppDetail2-2 .top,
-#viewAppDetail2-2 .bottom {
-    padding: 5%;
+.msg-del-checkbox-content {
+    float: left;
+    width: 7vw;
+    display: none;
 }
 
-#viewAppDetail2-2 .top {
-    padding-bottom: 0;
+.msg-del-checkbox {
+    margin-top: 80%;
+    padding-left: 30%;
 }
-/*
-p,
-li,
-div {
-    word-wrap: break-word !important;
+
+.msg-new-reddot-content {
+    float: left;
+    width: 2vw;
+    margin-left: 2vw;
+    padding-top: 13px;
 }
-*/
+
+.msg-list-content {
+    float: left;
+    width: 90vw;
+    margin-left: 1vw;
+}
+
+.msg-list-content-edit {
+    width: 83vw;
+}
+
+.msg-list-title {
+    color: #0f0f0f;
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative;
+    /* use this value to count block height */
+    line-height: 1.2em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 2.2em;
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+}
+
+.msg-list-title:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+}
+
+.msg-list-title:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    width: 1em;
+    /* set width and height */
+    height: 1em;
+    background: white;
+}
+
+.msg-list-time {
+    text-align: right;
+    font-size: 2.3vh;
+    color: #989898;
+}
+
+.del-msg-btn {
+    width: 100%;
+
+}
+
+.update-time {
+    color: #989898;
+    font-size: 2.3vh;
+    height: 6vh;
+    margin: -1em 0;
+}

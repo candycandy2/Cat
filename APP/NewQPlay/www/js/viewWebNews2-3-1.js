@@ -41,15 +41,47 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
                         var content = data['content'];
 
-                        updateReadEvent(content.message_type, "read");
+                        updateReadDelete(content.message_type, "read");
+
+                        if (content.message_type === "news") {
+                            $(".notice-service").show();
+                            $(".notice-event").hide();
+
+                            $(".news-header").addClass("header-service");
+                            $(".news-header").removeClass("header-event");
+                        } else if (content.message_type === "event") {
+                            $(".notice-service").hide();
+                            $(".notice-event").show();
+
+                            $(".news-header").addClass("header-event");
+                            $(".news-header").removeClass("header-service");
+                        }
+
+                        if (content.message_type === "news") {
+                            $(".notice-service").show();
+                            $(".notice-event").hide();
+
+                            $(".news-header").addClass("header-service");
+                            $(".news-header").removeClass("header-event");
+                        } else if (content.message_type === "event") {
+                            $(".notice-service").hide();
+                            $(".notice-event").show();
+
+                            $(".news-header").addClass("header-event");
+                            $(".news-header").removeClass("header-service");
+                        }
 
                         $("#newsDetailCreateTime").html(content.create_time.substr(0, 10));
                         $("#newsDetailTitle").html(content.message_title);
                         $("#newsAuthor").html(content.create_user);
                         $("#newsContent").html(cleanHTML(content.message_text));
 
-                        window.localStorage.getItem("openMessage") === "false";
-                        loginData["openMessage"] = false;
+                        $(".content-bg").css("opacity", 1);
+
+                        if (window.localStorage.getItem("openMessage") === "true") {
+                            loginData["openMessage"] = false;
+                            window.localStorage.setItem("openMessage", false);
+                        }
 
                     } else {
 
@@ -63,7 +95,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                 }();
             }
 
-            window.updateReadEvent = function(type, status) {
+            window.updateReadDelete = function(type, status) {
                 var self = this;
                 var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
 
@@ -84,6 +116,15 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
                     //Update [read / delete] status in Local Storage
                     if (doUpdateLocalStorage) {
+
+                        if (messageArrIndex === null) {
+                            for (var i=0; i<messagecontent.message_list.length; i++) {
+                                if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId.toString()) {
+                                    messageArrIndex = i;
+                                }
+                            }
+                        }
+
                         if (status === "read") {
                             messagecontent.message_list[messageArrIndex].read = "Y";
                         } else if (status === "delete") {
@@ -112,6 +153,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
             };
             /********************************** page event *************************************/
             $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
+                $(".content-bg").css("opacity", 0);
                 var messageDetail = new QueryMessageDetail();
             });
 

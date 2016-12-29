@@ -8,12 +8,30 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use App\Http\Controllers\platformController;
+use Config;
 use DB;
 use Request;
 use Illuminate\Support\Facades\Input;
+use JPush\Client as JPush;
 
 class CommonUtil
 {
+    public static function getUserInfoByRowId($userRowId) {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.row_id', '=', $userRowId)
+            -> select()->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> select('uuid')->get();
+
+        return $userList[0];
+    }
+
     public static function getUserInfoByUUID($uuid)
     {
         $userList = \DB::table('qp_user')
@@ -366,8 +384,36 @@ SQL;
     }
 
     public static function getMessageContentByCode($messageCode) {
-        //TODO
-        return "";
+        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $project_id = self::getProjectInfo()->row_id;
+        $errorMessage = \DB::table('qp_error_code')
+            -> where('lang_row_id', '=', $lang_row_id)
+            -> where('error_code', '=', $messageCode)
+            -> where ('project_row_id','=',$project_id)
+            -> select("qp_error_code.error_desc")
+            ->get();
+        if(count($errorMessage) < 1) {
+            return "";
+        }
+        $result = $errorMessage[0]->error_desc;
+        return $result;
+    }
+
+    public static function getLanguageIdByName($lang) {
+        $lang = strtolower($lang);
+        $lang_row_id = 1;
+        switch ($lang) {
+            case "en-us":
+                $lang_row_id = 1;
+                break;
+            case "zh-cn":
+                $lang_row_id = 2;
+                break;
+            case "zh-tw":
+                $lang_row_id = 3;
+                break;
+        }
+        return $lang_row_id;
     }
 
     public static function getMessageInfo($messageId) {
@@ -434,6 +480,48 @@ SQL;
         }
 
         return $sendInfo;
+    }
+
+    public static function getSecretaryMessageSendInfo($messageSendId) {
+        $messageSendList = \DB::table('qp_message_send_pushonly')
+            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send_pushonly.created_user")
+            -> where('qp_message_send_pushonly.row_id', '=', $messageSendId)
+            -> select("qp_message_send_pushonly.*", "qp_user.login_id as source_user")->get();
+        if(count($messageSendList) < 1) {
+            return null;
+        }
+
+        $sendInfo = $messageSendList[0];
+
+        $messageList = \DB::table('qp_message')
+            -> where('row_id', '=', $sendInfo->message_row_id)
+            -> select()->get();
+        if(count($messageList) < 1) {
+            return null;
+        }
+
+        $sendInfo->message_info = $messageList[0];
+
+        $sendInfo->company_list = array();
+        $sendInfo->user_list = array();
+        if(trim($sendInfo->company_label) != '') {
+            $sendInfo->send_type = 'company';
+            $companyStr = $sendInfo->company_label;
+            $sendInfo->company_list = explode(";", $companyStr);
+        } else {
+            $sendInfo->send_type = 'designated';
+            $sendInfo->user_list = self::getSecretaryMessageDesignatedReceiver($messageSendId);
+        }
+
+        return $sendInfo;
+    }
+
+    public static function getSecretaryMessageDesignatedReceiver($messageSendId) {
+        $userList = \DB::table('qp_user_message_pushonly')
+            -> where('message_send_pushonly_row_id', '=', $messageSendId)
+            -> select()->get();
+
+        return $userList;
     }
 
     public static function getCategoryInfoByRowId($categoryId){
@@ -531,6 +619,67 @@ SQL;
         return $result;
     }
 
+    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
+        $result = array();
+        $result["result"] = true;
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $platform = array('ios', 'android');
+            $alert = $message;
+            $regId = $to;
+            $ios_notification = array(
+                'sound' => 'default',
+                'badge' => '0',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $android_notification = array(
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $content = $message;
+            $message = array(
+                'title' => $message,
+                'content_type' => 'text',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $time2live =  Config::get('app.time_to_live',864000);
+            $apnsFlag = Config::get('app.apns_flag',true);
+            $options = array(
+                'time_to_live'=>$time2live,
+                'apns_production'=>$apnsFlag
+            );
+            $response = $client->push()->setPlatform($platform)
+                ->addRegistrationId($regId)
+                ->iosNotification($alert, $ios_notification)
+                ->androidNotification($alert, $android_notification)
+                ->message($content, $message)
+                ->options($options)
+                ->send();
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred";
+        }
+        return $result;
+    }
+
     public static function getAllCategoryList(){
         $categoryList = \DB::table('qp_app_category')
             -> select('row_id', 'app_category')
@@ -600,4 +749,5 @@ SQL;
         }
         return $projectId;
     }
+
 }

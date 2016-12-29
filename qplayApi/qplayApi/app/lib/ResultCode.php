@@ -28,7 +28,7 @@ abstract class ResultCode
     const _999013_companyNotExist = '999014';  //company不存在
     const _999999_unknownError = '999999';  //其他未知錯誤
 
-    const _000901_userNotExistError = '000901';  //離職或是帳號資訊打錯
+    const _000901_userNotExistError = '000901';  //員工資訊錯誤
     const _000902_passwordError = '000902';  //密码错误
     const _000903_deviceHasRegistered = "000903"; //设备已经注册
     const _000904_loginUserNotMathRegistered = "000904"; //登录用户与设备认证时的用户不同

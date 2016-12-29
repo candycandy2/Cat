@@ -7,15 +7,16 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
             /********************************** function *************************************/
             function getAPIQueryMyReserve() {
+                loadingMask('show');
                 var self = this;
                 var today = new Date();
                 var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
 
                 this.successCallback = function(data) {
+                    $('div[id^=def-]').remove();
+
                     if (data['ResultCode'] === "1") {
                         //Successful
-                        $('div[id^=def-]').remove();
-
                         var htmlContent_today = '';
                         var htmlContent_other = '';
                         var originItem = ['default', '[begin]', '[end]', '[value]', '[room]', '[date]', '[dateformate]', 'disable'];
@@ -49,12 +50,9 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
-                        popupMsg('myReservePopupMsg', 'noDataMsg', '沒有您的預約資料', '', true, '返回預約頁面', '#', '#');
+                        popupMsg('myReservePopupMsg', 'noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', false);
                     }
-                };
-
-                this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    loadingMask('hide');
                 };
 
                 var __construct = function() {
@@ -63,24 +61,29 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             }
 
             function getAPIMyReserveCancel(date, traceID) {
+                loadingMask('show');
                 var self = this;
                 var queryData = '<LayoutHeader><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTraceID></ReserveTraceID><ReserveTraceAggID>' + traceID + '</ReserveTraceAggID></LayoutHeader>';
 
                 this.successCallback = function(data) {
-
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
                         $('div[id^=def-' + traceID + ']').hide();
-                        popupMsg('myReservePopupMsg', 'successMsg', '取消預約成功', '', true, '確定', '#', '#');
+
+                        //delete local data for refresh
+                        var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
+                        reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
+                            return item.date != date;
+                        });
+                        localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
+
+                        popupMsg('myReservePopupMsg', 'successMsg', '', '取消預約成功', '', false, '確定', false);
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('myReservePopupMsg', 'failMsg', '取消預約失敗', '', true, '確定', '#', '#');
+                        popupMsg('myReservePopupMsg', 'failMsg', '', '取消預約失敗', '', false, '確定', false);
                     }
-                };
-
-                this.failCallback = function(data) {
-                    console.log('apiFailCallback');
+                    loadingMask('hide');
                 };
 
                 var __construct = function() {
@@ -96,29 +99,29 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             /********************************** dom event *************************************/
 
             $('body').on('click', 'div[id^=def-] a', function() {
+                $('#viewMyReserve').addClass('min-height-100');
                 clickAggTarceID = $(this).attr('value');
                 clickReserveDate = $(this).attr('date');
-                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', '', true, '確定', '#', '#');
+                var clickReserveRoom = $(this).attr('room');
+                var clickReserveTime = $(this).attr('time');
+                var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
+                var strDate = arrDateString[2] + '/' + arrDateString[3];
+                var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
+                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', true);
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+                $('div[for=cancelMsg]').popup('close');
             });
 
-            $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
+            $('body').on('click', 'div[for=noDataMsg] #confirm, #myReserveBack', function() {
                 $.mobile.changePage('#viewReserve');
             });
 
-            $('body').on('click', 'div[for=successMsg] #confirm', function() {
-                $('div[for=successMsg]').popup('close');
-            });
-
-            $('body').on('click', 'div[for=failMsg] #confirm', function() {
-                $('div[for=failMsg]').popup('close');
-            });
-
-            $('#myReserveBack').on('click', function() {
-                $.mobile.changePage('#viewReserve');
+            $('body').on('click', 'div[for=successMsg] #confirm, div[for=failMsg] #confirm, div[for=apiFailMsg] #confirm', function() {
+                var msgForId = $(this).parent().parent().attr('for');
+                $('div[for=' + msgForId + ']').popup('close');
             });
         }
     });

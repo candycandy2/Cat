@@ -25,8 +25,11 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             var content = "";
                             var catetoryAPPCount = 0;
 
-                            content += '<h4 style="clear:both;">' + catetoryName + '</h4>';
-                            content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '">';
+                            if (categoryindex > 0) {
+                                content += '<hr class="app-list-hr">';
+                            }
+                            content += '<span class="app-list-category">' + catetoryName + '</span>';
+                            content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '" style="width:auto;">';
 
                             for (var appindex=0; appindex<applist.length; appindex++) {
                                 var appcategory = applist[appindex].app_category_id;
@@ -61,7 +64,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             //auto set with of qplayapplistContent
                             var pageWidth = $("#viewMain2-1").width();
                             //Add (APP width) and (Margin width)
-                            var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * 10);
+                            var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * (pageWidth * 0.04));
                             $("#qplayapplistContent" + categoryindex).css("width", catetoryAPPWidth + "px");
                         }
 
@@ -73,21 +76,14 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             $.mobile.changePage('#viewAppDetail2-2');
                         });
 
-                        //For other APP doing update
-                        if (loginData['openAppDetailPage'] === true) {
-                            for (var appindex=0; appindex<applist.length; appindex++) {
-                                if (applist[appindex].package_name == "com.qplay." + openAppName) {
-                                    selectAppIndex = appindex;
-                                    $.mobile.changePage('#viewAppDetail2-2');
-                                }
-                             }
-                        }
-
                     } else {
 
                     }
 
                     loadingMask("hide");
+
+                    $("#appcontent").show();
+                    openAppDetailCheck();
                 }; 
 
                 this.failCallback = function(data) {};
@@ -116,7 +112,12 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         //logout can not clear messagecontent / pushToken / msgDateFrom
                         var messagecontent = window.localStorage.getItem("messagecontent");
                         var pushToken = window.localStorage.getItem("pushToken");
-                        var msgDateFrom = window.localStorage.getItem("msgDateFrom");
+                        var storeMsgDateFrom = false;
+
+                        if (window.localStorage.getItem("msgDateFrom") !== null) {
+                            var msgDateFrom = window.localStorage.getItem("msgDateFrom");
+                            storeMsgDateFrom = true;
+                        }
 
                         loginData = {
                             versionName:         "",
@@ -140,8 +141,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         window.localStorage.setItem("messagecontent", messagecontent);
                         window.localStorage.setItem("pushToken", pushToken);
-                        window.localStorage.setItem("msgDateFrom", msgDateFrom);
 
+                        if (storeMsgDateFrom) {
+                            window.localStorage.setItem("msgDateFrom", msgDateFrom);
+                        }
+
+                        $.mobile.changePage('#viewNotSignedIn');
+                        $("#viewMain2-1").removeClass("ui-page-active");
+                        $("#viewNotSignedIn").addClass("ui-page-active");
+
+                        loadingMask("hide");
                         app.initialize();
                     }
                 };
@@ -153,6 +162,19 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 }();
             }
 
+            function openAppDetailCheck() {
+                //For other APP doing update
+                if (loginData['openAppDetailPage'] === true) {
+                    for (var appindex=0; appindex<applist.length; appindex++) {
+                        if (applist[appindex].package_name == "com.qplay." + openAppName) {
+                            selectAppIndex = appindex;
+                            $.mobile.changePage('#viewAppDetail2-2');
+
+                            loginData['openAppDetailPage'] = false;
+                        }
+                     }
+                }
+            }
             /********************************** page event *************************************/
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
 
@@ -185,7 +207,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
             $("#newseventspage").on("click", function() {
                 $.mobile.changePage('#viewNewsEvents2-3');
             });
-
         }
     });
 

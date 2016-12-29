@@ -4,39 +4,13 @@
 /********** All CSS style which auto created by Cordova can be removed ***********/
 /*********************************************************************************/
 
-/* variable, function, style for All APP */
-body {
-    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
-    text-shadow: none;
-}
-
-.header-style {
-    overflow: hidden;
-    background-color: #4B0082;
-    color: white;
-    border-style: none;
-    font-size: 16px;
-    text-align: center;
-    line-height: 0;
-}
-
-.loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,0.4);
-    text-align: center;
-    padding-top: 70%;
-}
-
-.hide {
-    display: none;
-}
-
 /* override jQuery Mobile */
+.ui-mobile .ui-page-active{
+    display: block;
+    overflow: visible;
+    /*overflow-x:hidden*/
+}
+
 .ui-field-contain {
     border: none;
     padding: 0 10px;
@@ -67,6 +41,46 @@ body {
 
 .ui-tabs {
     position: static;
+}
+
+.ui-footer-fixed {
+    padding-bottom: 0px;
+}
+
+.ui-popup-container, .ui-popup {
+    width: 90%;
+}
+
+/* variable, function, style for All APP */
+body {
+    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
+    text-shadow: none;
+}
+
+.header-style {
+    overflow: hidden;
+    background-color: #4B0082;
+    color: white;
+    border-style: none;
+    font-size: 16px;
+    text-align: center;
+    line-height: 0;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    text-align: center;
+    padding-top: 70%;
+}
+
+.hide {
+    display: none;
 }
 
 /*Fix bug - iOS status bar overlapping App*/
@@ -146,21 +160,21 @@ body {
     height: 10vh;
 }
 
-/*APP Get QPsuh*/
-#viewGetQPush {
+/*APP Get QPsuh / Maintain */
+#viewGetQPush, #viewMaintain {
     height: 100%;
 }
 
-#viewGetQPush .main-GetQPush {
+.main-GetQPush {
     text-align: center;
     padding-top: 28vh;
 }
 
-#viewGetQPush .logo-GetQPush {
+.logo-GetQPush {
     width: 22%;
 }
 
-#viewGetQPush .text-GetQPush {
+.text-GetQPush {
     width: 75vw;
     margin: 0 auto;
     margin-top: 6.5vh;
@@ -171,31 +185,31 @@ body {
     text-align: left;
 }
 
-#viewGetQPush .brand-GetQPush-content {
+.brand-GetQPush-content {
     position: absolute;
     width: 100%;
     bottom: 2%;
 }
 
-#viewGetQPush .brand-GetQPush {
+.brand-GetQPush {
     height: 10vh;
 }
 
-/*Update APP Version page*/
-#viewUpdateAppVersion {
+/*Update APP Version page / Not Signed In page */
+#viewUpdateAppVersion, #viewNotSignedIn {
     height: 100%;
 }
 
-#viewUpdateAppVersion .main-updateAppVersion {
+.main-updateAppVersion {
     text-align: center;
     padding-top: 28vh;
 }
 
-#viewUpdateAppVersion .logo-updateAppVersion {
+.logo-updateAppVersion {
     width: 22%;
 }
 
-#viewUpdateAppVersion .text-updateAppVersion {
+.text-updateAppVersion {
     width: 75vw;
     margin: 0 auto;
     margin-top: 6.5vh;
@@ -206,7 +220,7 @@ body {
     text-align: left;
 }
 
-#viewUpdateAppVersion .button-updateAppVersion {
+.button-updateAppVersion {
     position: absolute;
     left: 15%;
     bottom: 6.5%;
@@ -219,4 +233,68 @@ body {
 
 #viewUpdateAppVersion .button-text-updateAppVersion {
 
+}
+
+/*Popup Msg*/
+.popup-div {
+    margin: 0 auto;
+}
+
+.ui-mobile .popup-div label {
+    font-size: 3vh;
+}
+
+.popup-div .ui-content {
+    width: 85%;
+    height: auto;
+    padding: 10% 10% 0;
+    font-size: 3vh;
+}
+
+.popup-div .hr-style {
+    position: absolute;
+    width: 99%;
+    left: 0;
+    color: #D6D6D6;
+}
+
+.popup-div .bottom {
+    height: 10vh;
+}
+
+.popup-div .button-content {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    line-height: 3.5;
+    text-align: center;
+    color: #492E80;
+    font-size: 3.3vh;
+}
+
+.popup-div .button-content div {
+    float: left;
+    width: 49%;
+}
+
+.popup-div .button-content .vertical-line {
+    border-left: 1px solid #D6D6D6;
+    width: 1%;
+    height: 8.5vh;
+    margin-top: 1.5vh;
+}
+
+.popup-info {
+    background-color: #fff;
+    border-color: #ddd;
+    color: #333;
+}
+
+.popup-info p {
+    margin: 0;
+}
+.popup-info #infoLoginid {
+    margin-left: -10%;
+    margin-bottom: 5%;
+    text-align: center;
 }

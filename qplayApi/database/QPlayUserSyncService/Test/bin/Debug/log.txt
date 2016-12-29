@@ -1,0 +1,60 @@
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+SELECT   `qp_user_flower`.* FROM `qp_user_flower`
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+select * from qp_user_flower	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+select * from qp_user_flower
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+select * from qp_user_flower	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+select * from qp_user_flower
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+select * from qp_user_flower	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.GetTempDateList()
+select * from qp_user_flower
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower	
+
+SQL:--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower	
+
+SQL(4.0):--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower	
+
+SQL(4.0):--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower
+Text:	--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower	
+
+SQL(4.0):--Test.vshost.QPlayUserSyncService.SyncJob.ClearTemp()
+TRUNCATE TABLE qp_user_flower
