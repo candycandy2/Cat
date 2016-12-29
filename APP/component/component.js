@@ -223,6 +223,16 @@ $(document).one("pagebeforecreate", function(){
             var checkAppVer = new checkAppVersion();
         });
     }, "html");
+
+    //For APP scrolling in [Android 5], set CSS
+    $(document).on("pageshow", function() {
+        if (device.platform === "Android") {
+            var version = device.version.substr(0, 1);
+            if (version === "5") {
+                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            }
+        }
+    });
 });
 /********************************** function *************************************/
 
