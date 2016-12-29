@@ -21,7 +21,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                         var htmlContent_other = '';
                         var originItem = ['default', '[begin]', '[end]', '[value]', '[room]', '[date]', '[dateformate]', 'disable'];
 
-                        sortDataByKey(data['Content'], 'ReserveDate', 'asc');
+                        //sortDataByKey(data['Content'], 'ReserveDate', 'asc');
 
                         for (var i = 0, item; item = data['Content'][i]; i++) {
 

@@ -269,6 +269,14 @@ div.circle {
     background: url(../img/select.png) no-repeat;
     width: 5vw;
     height: 2.5vh;
+    background-size: 5vw 2.5vh;
+}
+
+.quick-reserve-warn-icon {
+    background: url(../img/warn_icon.png) no-repeat;
+    width: 5vw;
+    height: 2.5vh;
+    background-size: 5vw 2.5vh;
 }
 
 .quick-reserve-setting-icon {
@@ -319,6 +327,7 @@ div.circle {
 .setting-add-icon {
     background: url(../img/add_nav.png) no-repeat;
 }
+
 
 /*new public area end*/
 
@@ -646,7 +655,7 @@ section {
     background-size: 10vw 5vh;
 }
 
-.timepicker-warn-icon{
+.timepicker-warn-icon {
     background: url(../img/warn_icon.png) no-repeat;
     width: 6vw;
     height: 3vh;
