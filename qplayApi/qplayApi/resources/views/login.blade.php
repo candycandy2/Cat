@@ -18,7 +18,7 @@
             padding: 0;
         }
         .control_icon {
-            max-height: 6.8vw !important;       
+            max-height: 6.8vw !important;
             max-width: 6.8vw !important;
             margin-right: 6.6vw;
             display: inherit;
@@ -50,7 +50,7 @@
             color: #0f0f0f;
         }
         .login_control{
-            font:2.9vh "Arial";
+            font:2.9vh "Gill Sans MT";
         }
         ::-webkit-input-placeholder {
             font:2.9vh "Gill Sans MT";
@@ -74,7 +74,7 @@
         }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
-        <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
+        <div role="main" class="ui-content" style="text-align: center;margin: 8.6vh 8vw 0 8vw;">
             <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
             <table id="main_table">
                 <tr>
@@ -135,7 +135,7 @@
                 </tr>
             </table>
             <div style="margin-top: 1.8vh;">
-                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
+                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
                     <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
                             onclick="tryLogin()">登入</button>
