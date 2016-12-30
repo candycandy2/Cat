@@ -82,16 +82,8 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                     loadingMask("hide");
 
-                    if (window.localStorage.getItem("firstInitial") === "true") {
-                        if (doHideInitialPage) {
-                            doHideInitialPage = false;
-                            refreshPage();
-                            window.localStorage.setItem("firstInitial", "false");
-                        }
-                    } else {
-                        $("#appcontent").show();
-                        openAppDetailCheck();
-                    }
+                    $("#appcontent").show();
+                    openAppDetailCheck();
                 }; 
 
                 this.failCallback = function(data) {};
@@ -168,20 +160,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 var __construct = function() {
                     QPlayAPI("POST", "logout", self.successCallback, self.failCallback, null, queryStr);
                 }();
-            }
-
-            function refreshPage() {
-                $.mobile.changePage('#viewMain2-1', {
-                    allowSamePageTransition : true,
-                    transition              : 'none',
-                    showLoadMsg             : false,
-                    reloadPage              : true
-                });
-
-                $("#appcontent").hide();
-                $.mobile.changePage('#viewMain2-1');
-
-                openAppDetailCheck();
             }
 
             function openAppDetailCheck() {

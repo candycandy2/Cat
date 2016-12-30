@@ -15,7 +15,7 @@
 	<script src="{{ asset('/js/QLoading.js') }}"></script>
 	<style>
 		body {
-			font-family: Arial;
+			font-family: "Gill Sans MT",Arial;
 		}
 	</style>
 </head>

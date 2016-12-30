@@ -223,6 +223,16 @@ $(document).one("pagebeforecreate", function(){
             var checkAppVer = new checkAppVersion();
         });
     }, "html");
+
+    //For APP scrolling in [Android 5], set CSS
+    $(document).on("pageshow", function() {
+        if (device.platform === "Android") {
+            var version = device.version.substr(0, 1);
+            if (version === "5") {
+                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            }
+        }
+    });
 });
 /********************************** function *************************************/
 
@@ -384,11 +394,6 @@ function checkAppVersion() {
 }
 
 function hideInitialPage() {
-    if (window.localStorage.getItem("firstInitial") === null) {
-        window.localStorage.setItem("firstInitial", "true");
-        doHideInitialPage = true;
-    }
-
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }
@@ -599,6 +604,10 @@ function openAPP(URL) {
     $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
     document.getElementById("schemeLink").click();
     $("#schemeLink").remove();
+
+    if (device.platform === "Android") {
+        navigator.app.exitApp();
+    }
 }
 
 //Plugin-QSecurity
@@ -817,9 +826,7 @@ function getLoginDataCallBack() {
 
     loginData['doLoginDataCallBack'] = false;
 
-    if (device.platform === "Android") {
-        navigator.app.exitApp();
-    } else {
+    if (device.platform === "iOS") {
         $.mobile.changePage('#viewMain2-1');
     }
 }
@@ -872,10 +879,6 @@ function handleOpenURL(url) {
             if (loginData['doLoginDataCallBack'] === true) {
                 $.mobile.changePage('#viewInitial');
                 var checkAppVer = new checkAppVersion();
-
-                if (window.localStorage.getItem("firstInitial") === null) {
-                    window.localStorage.setItem("firstInitial", "false");
-                }
             }
 
             if (loginData['openAppDetailPage'] === true) {
