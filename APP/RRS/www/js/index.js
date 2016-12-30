@@ -36,6 +36,7 @@ var dictSiteCategory = {
     '43': '2',
     '100': '8'
 };
+var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
