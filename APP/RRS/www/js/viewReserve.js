@@ -41,7 +41,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveRoom').find('a').remove();
 
                 for (var i = 0, item; item = meetingRoomData.children[siteIndex].children[floorIndex].children[i]; i++) {
-                    htmlContent += '<a id=' + item.data.MeetingRoomID + ' value=' + item.data.MeetingRoomID + ' href="#" class="ui-link">' + item.data.MeetingRoomName + '</a>';
+                    if (arrLimitRoom.indexOf(item.data.MeetingRoomName) == -1) {
+                        htmlContent += '<a id=' + item.data.MeetingRoomID + ' value=' + item.data.MeetingRoomID + ' href="#" class="ui-link">' + item.data.MeetingRoomName + '</a>';
+                    }
                 }
 
                 $('#reserveRoom').append(htmlContent);
