@@ -421,7 +421,7 @@ div.scrollmenu {
     background-color: white;
     overflow: auto;
     white-space: nowrap;
-    display: flex;
+    /*display: flex;*/
     border-style: solid;
     border-width: 1px 0px 1px 1px;
     box-shadow: 5px 1px 5px #666;
