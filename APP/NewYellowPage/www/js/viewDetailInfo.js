@@ -45,9 +45,10 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                         $("#detailData #deptCode").html(data['Content'][0].DeptCode);
                         $("#detailData #extNo").html(data['Content'][0].Ext_No);
                         $("#detailData #eMail").html(data['Content'][0].EMail);
+
                     }
 
-                    loadingMask("hide");
+                    loadingMask("hide");                
                 };
 
                 this.failCallback = function(data) {};
@@ -107,5 +108,4 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             });
         }
     });
-
 });
