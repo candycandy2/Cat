@@ -1683,7 +1683,7 @@ class platformController extends Controller
                     -> update(
                         ['need_push'=>1,
                             'company_label'=>$companyLabel,
-                            'created_at'=>$now,
+                           // 'created_at'=>$now,
                             'updated_at'=>$now,
                             'updated_user'=>\Auth::user()->row_id]);
 
@@ -1778,7 +1778,7 @@ class platformController extends Controller
                         ->get();
                     if(count($userPushList) > 0 ) {
                         foreach($userPushList as $tempUser){
-                            $to[$newCountFlag] = $tempUser->push_token;
+                            $to[$newCountFlag] = $tempUser->push_token; 
                             $newCountFlag ++;
                         }
                     }
