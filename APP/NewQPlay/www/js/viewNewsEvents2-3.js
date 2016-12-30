@@ -204,8 +204,8 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 //Latest Update Time
                 var datetime = new Date();
-                var datetimeStr = datetime.getFullYear() + "/" + parseInt(datetime.getMonth() + 1, 10) + "/" + datetime.getUTCDate() + " " +
-                                  datetime.getHours() + ":" + datetime.getMinutes();
+                var datetimeStr = datetime.getFullYear() + "-" + parseInt(datetime.getMonth() + 1, 10) + "-" + datetime.getUTCDate() + " " +
+                                  addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
                 $(".update-time span").html(datetimeStr);
 
                 //If News or Events has no message, show [No News] [No Events]

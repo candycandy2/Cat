@@ -5,6 +5,14 @@
 /*********************************************************************************/
 
 /* override jQuery Mobile */
+body {
+    text-shadow: none;
+}
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+    text-shadow: none;
+}
+
 .ui-mobile .ui-page-active{
     display: block;
     overflow: visible;
