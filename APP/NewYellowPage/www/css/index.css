@@ -48,6 +48,11 @@
     font-size: 12px;
 }
 
+.ui-title {
+    text-shadow: initial !important;
+    line-height: 1;
+}
+
 /*new class*/
 .hide {
     display: none;
