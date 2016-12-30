@@ -129,6 +129,13 @@ function getTimestamp() {
     return clientTimestamp = clientTimestamp.toString().substr(0, 10);
 }
 
+function addZero(number) {
+    if (number < 10) {
+        number = "0" + number;
+    }
+    return number;
+}
+
 //un-register [User with Mobile Device UUID]
 function unregister() {
 
