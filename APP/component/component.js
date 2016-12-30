@@ -34,6 +34,9 @@ var callHandleOpenURL = false;
 var doInitialSuccess = false;
 var checkTimerCount = 0;
 var doHideInitialPage = false;
+var initialNetworkDisconnected = false;
+var showNetworkDisconnected = false;
+var iOSAppInitialFinish = false;
 
 var app = {
     // Application Constructor
@@ -61,6 +64,23 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+        //Add Event to Check Network Status
+        if (device.platform === "iOS") {
+            window.addEventListener("offline", function(e) {
+                checkNetwork();
+            });
+
+            window.addEventListener("online", function(e) {
+                checkNetwork();
+            });
+        } else {
+            var connection = navigator.connection;
+            connection.addEventListener('typechange', checkNetwork);
+        }
+
+        //When open APP, need to check Network at first step
+        checkNetwork();
 
         //Set openMessage at first time
         if (window.localStorage.getItem("openMessage") === null) {
@@ -203,8 +223,61 @@ $(document).one("pagebeforecreate", function(){
             var checkAppVer = new checkAppVersion();
         });
     }, "html");
+
+    //For APP scrolling in [Android 5], set CSS
+    $(document).on("pageshow", function() {
+        if (device.platform === "Android") {
+            var version = device.version.substr(0, 1);
+            if (version === "5") {
+                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            }
+        }
+    });
 });
 /********************************** function *************************************/
+
+function checkNetwork() {
+    //A. If the device's Network is disconnected, show dialog only once, before the network is connect again.
+    //B. If the device's Network is disconnected again, do step 1. again.
+
+    //Only Android can get this info, iOS can not!!
+    //connect.type:
+    //1. wifi
+    //2. cellular > 3G / 4G
+    //3. none
+
+    if (!navigator.onLine) {
+        //Network disconnected
+        loadingMask("hide");
+
+        var showMsg = false;
+
+        if (!initialNetworkDisconnected) {
+            showMsg = true;
+            initialNetworkDisconnected = true;
+        }
+
+        if (!showNetworkDisconnected) {
+            showMsg = true;
+            showNetworkDisconnected = true;
+        }
+
+        if (showMsg) {
+            $('#disconnectNetwork').popup();
+            $('#disconnectNetwork').show();
+            $('#disconnectNetwork').popup('open');
+
+            $("#closeDisconnectNetwork").on("click", function(){
+                $('#disconnectNetwork').popup('close');
+                $('#disconnectNetwork').hide();
+
+                showNetworkDisconnected = false;
+            });
+        }
+    } else {
+        //Network connected
+    }
+}
 
 //[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
 function checkPopupShown() {
@@ -227,21 +300,20 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
         checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
     }
 
-    var signatureTime = Math.round(new Date().getTime()/1000);
-    var hash = CryptoJS.HmacSHA256(signatureTime.toString(), qplaySecretKey);
-    var signatureInBase64 = CryptoJS.enc.Base64.stringify(hash);
+    var signatureTime = getSignature("getTime");
+    var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
     $.ajax({
         type: requestType,
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': qplayAppKey,
+            'App-Key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
             'token': loginData.token,
             'push-token': loginData.pushToken
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
         cache: false,
@@ -322,11 +394,6 @@ function checkAppVersion() {
 }
 
 function hideInitialPage() {
-    if (window.localStorage.getItem("firstInitial") === null) {
-        window.localStorage.setItem("firstInitial", "true");
-        doHideInitialPage = true;
-    }
-
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }
@@ -537,6 +604,10 @@ function openAPP(URL) {
     $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
     document.getElementById("schemeLink").click();
     $("#schemeLink").remove();
+
+    if (device.platform === "Android") {
+        navigator.app.exitApp();
+    }
 }
 
 //Plugin-QSecurity
@@ -755,9 +826,7 @@ function getLoginDataCallBack() {
 
     loginData['doLoginDataCallBack'] = false;
 
-    if (device.platform === "Android") {
-        navigator.app.exitApp();
-    } else {
+    if (device.platform === "iOS") {
         $.mobile.changePage('#viewMain2-1');
     }
 }
@@ -768,7 +837,6 @@ function handleOpenURL(url) {
     if (url !== "null") {
 
         callHandleOpenURL = true;
-        var iOSDoAppInitialize = false;
 
         //parse URL parameter
         var tempURL = url.split("//");
@@ -784,13 +852,12 @@ function handleOpenURL(url) {
         if (appKey === qplayAppKey && queryData["action"] === "getLoginData") {
 
             loginData['doLoginDataCallBack'] = true;
-            iOSDoAppInitialize = true;
 
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
             loginData['openAppDetailPage'] = true;
             openAppName = queryData["openAppName"];
-            iOSDoAppInitialize = true;
+
 
         } else if (queryData["action"] === "retrunLoginData") {
 
@@ -809,9 +876,15 @@ function handleOpenURL(url) {
         //Because Scheme work different process between iOS / Android,
         //iOS need to this step.
         if (device.platform === "iOS") {
-            if (iOSDoAppInitialize) {
+            if (loginData['doLoginDataCallBack'] === true) {
                 $.mobile.changePage('#viewInitial');
                 var checkAppVer = new checkAppVersion();
+            }
+
+            if (loginData['openAppDetailPage'] === true) {
+                if (iOSAppInitialFinish === true) {
+                    var checkAppVer = new checkAppVersion();
+                }
             }
         }
 

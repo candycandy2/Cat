@@ -76,31 +76,14 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             $.mobile.changePage('#viewAppDetail2-2');
                         });
 
-                        //For other APP doing update
-                        if (loginData['openAppDetailPage'] === true) {
-                            for (var appindex=0; appindex<applist.length; appindex++) {
-                                if (applist[appindex].package_name == "com.qplay." + openAppName) {
-                                    selectAppIndex = appindex;
-                                    $.mobile.changePage('#viewAppDetail2-2');
-                                }
-                             }
-                        }
-
                     } else {
 
                     }
 
                     loadingMask("hide");
 
-                    if (window.localStorage.getItem("firstInitial") === "true") {
-                        if (doHideInitialPage) {
-                            doHideInitialPage = false;
-                            refreshPage();
-                            window.localStorage.setItem("firstInitial", "false");
-                        }
-                    } else {
-                        $("#appcontent").show();
-                    }
+                    $("#appcontent").show();
+                    openAppDetailCheck();
                 }; 
 
                 this.failCallback = function(data) {};
@@ -179,16 +162,18 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 }();
             }
 
-            function refreshPage() {
-                $.mobile.changePage('#viewMain2-1', {
-                    allowSamePageTransition : true,
-                    transition              : 'none',
-                    showLoadMsg             : false,
-                    reloadPage              : true
-                });
+            function openAppDetailCheck() {
+                //For other APP doing update
+                if (loginData['openAppDetailPage'] === true) {
+                    for (var appindex=0; appindex<applist.length; appindex++) {
+                        if (applist[appindex].package_name == "com.qplay." + openAppName) {
+                            selectAppIndex = appindex;
+                            $.mobile.changePage('#viewAppDetail2-2');
 
-                $("#appcontent").hide();
-                $.mobile.changePage('#viewMain2-1');
+                            loginData['openAppDetailPage'] = false;
+                        }
+                     }
+                }
             }
             /********************************** page event *************************************/
             $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {

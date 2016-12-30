@@ -5,34 +5,146 @@
     $csrf_token = csrf_token();
 
     ?>
-    <div data-role="page" id="pageLogin">
-        <div role="main" class="ui-content" style="text-align: center;">
-            <table style="margin:auto;">
+    <style>
+        td{
+            padding:0;
+        }
+        .ui-icon-dropdown {
+            background:url({{asset('/css/images/dropdown_n.png')}}) no-repeat 0 0;
+            background-position: 98% 50%;
+            background-size: 4vw 1.2vh ;
+        }
+        .ui-content {
+            padding: 0;
+        }
+        .control_icon {
+            max-height: 6.8vw !important;
+            max-width: 6.8vw !important;
+            margin-right: 6.6vw;
+            display: inherit;
+        }
+        #main_table input {
+            font-size:2.9vh;
+        }
+        #button_cell {
+            width: 100%
+        }
+        #main_table {
+            margin: 17vh 0 1.8vh 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #main_table tr
+        {
+            border-bottom: 1px solid #333333;
+        }
+        #button_cell {
+            padding-top: 3vh;
+        }
+        #main_table > td {
+            height: 1.2em;
+        }
+        .control_title_text
+        {
+            font:2.6vh "Gill Sans MT";
+            color: #0f0f0f;
+        }
+        .login_control{
+            font:2.9vh "Gill Sans MT";
+        }
+        ::-webkit-input-placeholder {
+            font:2.9vh "Gill Sans MT";
+            color: #989898;
+            text-overflow: ellipsis;
+        }
+        :-moz-placeholder {
+            font:1em "Gill Sans MT";
+            color: #989898;!important;
+            text-overflow: ellipsis;
+        }
+        ::-moz-placeholder {
+            font:1em "Gill Sans MT";
+            color: #989898;!important;
+            text-overflow: ellipsis;
+        }
+        :-ms-input-placeholder {
+            font:1em "Gill Sans MT";
+            color: #989898;!important;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
+        <div role="main" class="ui-content" style="text-align: center;margin: 8.6vh 8vw 0 8vw;">
+            <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
+            <table id="main_table">
                 <tr>
-                    <td>
-                        <img src="{{asset('/css/images/benq_logo.png')}}" />
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/domain.png')}}" class="control_icon" />
                     </td>
-                    <td>
-                        <img src="{{asset('/css/images/qisda_logo.png')}}" />
+                    <td class="control_cell">
+                        <table>
+                            <!--<tr>
+                                <td class="control_title control_title_text">公司</td>
+                            </tr>-->
+                            <tr>
+                                <td>
+                                    <select class="login_control" placeholder="Company" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext">
+                                        <option value="BENQ" selected="selected">BenQ</option>
+                                        <option value="QGROUP">Qisda</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/username.png')}}" class="control_icon" />
+                    </td>
+                    <td class="control_cell">
+                        <table>
+                        <!--<tr>
+                                <td class="control_title control_title_text">帳號</td>
+                            </tr>-->
+                            <tr>
+                                <td>
+                                    <input class="login_control" type="text" data-clear-btn="false" name="tbxName" data-mini="true"
+                                           id="tbxName" value="" placeholder="帳號" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/password.png')}}" class="control_icon" />
+                    </td>
+                    <td class="control_cell">
+                        <table>
+                        <!--<tr>
+                                <td class="control_title control_title_text">密碼</td>
+                            </tr>-->
+                            <tr>
+                                <td>
+                                    <input class="login_control" type="password" data-clear-btn="false" name="tbxPassword" data-mini="true"
+                                           id="tbxPassword" value="" placeholder="密碼" />
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>
-            <h1>QPlay Login</h1>
-            <div style="width:60%; margin: 0 auto; margin-top:40px;">
-                <input type="text" data-clear-btn="true" name="tbxName"
-                       id="tbxName" value="" placeholder="帳號" />
-                <input type="password" data-clear-btn="true" name="tbxPassword"
-                       id="tbxPassword" value="" placeholder="密碼" />
-                <select placeholder="Company" name="ddlCompany" id="ddlCompany">
-                    <option value="BENQ" selected="selected">BenQ</option>
-                    <option value="QGROUP">Qisda</option>
-                </select>
-                <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="tryLogin()">登入</button>
-                <button id="btnOriLogin" class="ui-btn ui-btn-corner-all" style="display:none;color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="oriLogin()">Origin Log In</button>
+            <div style="margin-top: 1.8vh;">
+                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
+                <div id="button_cell">
+                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
+                            onclick="tryLogin()">登入</button>
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
+                            onclick="oriLogin()">登入</button>
+                </div>
             </div>
         </div>
+
         <div data-role="popup" id="dlgMessage"
              data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:400px;">
             <div data-role="header" data-theme="a">
@@ -46,27 +158,25 @@
 
     <div data-role="page" id="pageRegister">
         <div role="main" class="ui-content" style="text-align: center;">
-            <table style="margin:auto;">
-                <tr>
-                    <td>
-                        <img src="{{asset('/css/images/benq_logo.png')}}" />
-                    </td>
-                    <td>
-                        <img src="{{asset('/css/images/qisda_logo.png')}}" />
-                    </td>
-                </tr>
-            </table>
-            <h3>帳號與設備驗證成功</h3>
-            <div style="width:60%; margin: 0 auto; margin-top:40px;">
-                <img src="{{asset('/css/images/icon_ok.png')}}" style="200px; margin:20px;" />
-                <h4>若要註銷設備，請聯絡 BenQ ITS</h4>
-                <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
-                        onclick="start()">好，我知道了</button>
+            <div style="margin: 20vh auto 0 auto;">
+                <img src="{{asset('/css/images/verified_img.png')}}" style="width:15vh; margin:2vh 2vh 0 4.5vh;" />
+                <h3 style="color: #0f0f0f;font:3.3vh 'Gill Sans MT';margin-top:2vh;">帳號與設備驗證成功</h3>
+                
+        </div>
+        </div>
+        <div style="position:fixed;bottom: 0;padding:1em;left: 0;right: 0;">
+            <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;">若要註銷設備，請聯絡<a href="mailto:QPlay@BenQ.com">ITS</a></h4>
+            <div style="width: 78%;margin: 1vh auto 0 auto;">
+                <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
+                <button class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;"
+                    onclick="start()">好，我知道了</button>
             </div>
         </div>
     </div>
     <script>
         $(function () {
+            $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
+
             var showOriLogin = getQueryString("show_origin_login");
             if(showOriLogin && showOriLogin == "Y") {
                 $("#btnOriLogin").show();
@@ -95,7 +205,7 @@
             var password = $("#tbxPassword").val();
             var company = $("#ddlCompany").val();
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
-                showMessage("user name / password / company can not empty!");
+                showMessage("帳號 / 密碼 / 公司 不能為空 !");
                 return;
             }
 
@@ -117,7 +227,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key",<?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
@@ -148,7 +258,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key",<?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");

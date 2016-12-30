@@ -95,7 +95,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
             }
 
             function showPopupAlert(content) {
-                $('.showMsg').html(content);
+                $('.showMsg > span').html(content);
                 $('.showMsg').css('display', '');
                 $('.showMsg').delay(1000).fadeOut(400);
             }
@@ -277,9 +277,9 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
                 if (clickFormate == 'hr') {
                     if (clickValue == 'up') {
-                        tempStr = padLeft((parseInt(tempHr) - 1).toString(), 2);
-                    } else {
                         tempStr = padLeft((parseInt(tempHr) + 1).toString(), 2);
+                    } else {
+                        tempStr = padLeft((parseInt(tempHr) - 1).toString(), 2);
                     }
                     if (parseInt(tempStr) < 8 || parseInt(tempStr) > 17) {
                         checkTime = true;
@@ -293,7 +293,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 }
 
                 if (checkTime) {
-                    showPopupAlert('可設定時間為8點-17點');
+                    showPopupAlert('可設定時間為08:00到17:30');
                 } else {
                     $('div[tpye=' + clickType + '][for=' + clickFormate + ']').html(tempStr);
                 }

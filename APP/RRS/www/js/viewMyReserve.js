@@ -21,7 +21,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                         var htmlContent_other = '';
                         var originItem = ['default', '[begin]', '[end]', '[value]', '[room]', '[date]', '[dateformate]', 'disable'];
 
-                        sortDataByKey(data['Content'], 'ReserveDate', 'asc');
+                        //sortDataByKey(data['Content'], 'ReserveDate', 'asc');
 
                         for (var i = 0, item; item = data['Content'][i]; i++) {
 
@@ -55,11 +55,6 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                     loadingMask('hide');
                 };
 
-                this.failCallback = function(data) {
-                    loadingMask('hide');
-                    popupMsg('myReservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
-                };
-
                 var __construct = function() {
                     QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
                 }();
@@ -74,7 +69,8 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
                         $('div[id^=def-' + traceID + ']').hide();
-                        //delete local data
+
+                        //delete local data for refresh
                         var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
                         reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
                             return item.date != date;
@@ -88,11 +84,6 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                         popupMsg('myReservePopupMsg', 'failMsg', '', '取消預約失敗', '', false, '確定', false);
                     }
                     loadingMask('hide');
-                };
-
-                this.failCallback = function(data) {
-                    loadingMask('hide');
-                    popupMsg('myReservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
                 };
 
                 var __construct = function() {
@@ -124,26 +115,14 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 $('div[for=cancelMsg]').popup('close');
             });
 
-            $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
+            $('body').on('click', 'div[for=noDataMsg] #confirm, #myReserveBack', function() {
                 $.mobile.changePage('#viewReserve');
             });
 
-            $('body').on('click', 'div[for=successMsg] #confirm', function() {
-                $('div[for=successMsg]').popup('close');
+            $('body').on('click', 'div[for=successMsg] #confirm, div[for=failMsg] #confirm, div[for=apiFailMsg] #confirm', function() {
+                var msgForId = $(this).parent().parent().attr('for');
+                $('div[for=' + msgForId + ']').popup('close');
             });
-
-            $('body').on('click', 'div[for=failMsg] #confirm', function() {
-                $('div[for=failMsg]').popup('close');
-            });
-
-            $('#myReserveBack').on('click', function() {
-                $.mobile.changePage('#viewReserve');
-            });
-
-            $('body').on('click', 'div[for=apiFailMsg] #confirm', function() {
-                $('div[for=apiFailMsg]').popup('close');
-            });
-
         }
     });
 

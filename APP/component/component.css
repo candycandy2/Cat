@@ -5,6 +5,20 @@
 /*********************************************************************************/
 
 /* override jQuery Mobile */
+body {
+    text-shadow: none;
+}
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+    text-shadow: none;
+}
+
+.ui-mobile .ui-page-active{
+    display: block;
+    overflow: visible;
+    /*overflow-x:hidden*/
+}
+
 .ui-field-contain {
     border: none;
     padding: 0 10px;
@@ -65,7 +79,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 1000;
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.4);
@@ -239,7 +253,7 @@ body {
 }
 
 .popup-div .ui-content {
-    width: 90%;
+    width: 85%;
     height: auto;
     padding: 10% 10% 0;
     font-size: 3vh;

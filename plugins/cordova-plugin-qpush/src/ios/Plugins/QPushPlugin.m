@@ -118,7 +118,8 @@ static NSDictionary *_launchOptions = nil;
 +(void)setLaunchOptions:(NSDictionary *)theLaunchOptions{
     _launchOptions = theLaunchOptions;
     
-    [JPUSHService setDebugMode];
+    //Fix #13335
+    //[JPUSHService setDebugMode];
     
     [QPushPlugin registerForRemoteNotification];
     

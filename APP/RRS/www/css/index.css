@@ -17,6 +17,10 @@ a {
     text-decoration: none !important;
 }
 
+.ui-header-fixed {
+    padding-top: initial !important;
+}
+
 .ui-title {
     text-shadow: initial !important;
 }
@@ -66,12 +70,22 @@ a {
     background-color: #0db6b7 !important;
 }
 
-.ui-controlgroup-controls {
+#viewNewSetting .ui-controlgroup-controls {
     width: 100%;
 }
 
 .ui-radio label {
     text-align: center !important;
+}
+
+#reserveSite-button {
+    padding: 0.5vh !important;
+    margin: 0.4vh 0 1.4vh 0 !important;
+}
+
+#reserveFloor-button {
+    padding: 0.5vh !important;
+    margin: 1.5vh 0 1.4vh 0 !important;
 }
 
 #reserveSite-button.ui-btn,
@@ -86,6 +100,11 @@ a {
 
 #reserveDateSelect div.ui-bar-a {
     background-color: initial;
+}
+
+#reserveSetting-button {
+    padding: 0.5vh !important;
+    margin: 2vh 0 2vh 0 !important;
 }
 
 
@@ -149,13 +168,14 @@ a {
 
 div.circle {
     width: 3vw;
-    height: 1.5vh;
+    height: 1.8vh;
     border-radius: 99em;
     border: 1px solid #ddd;
 }
 
 .ui-margin-public {
-    margin: 2.5vw !important;
+    margin: 1.8vw 2.7vw !important;
+    /*text-align: center;*/
 }
 
 #reserveTab > div > div.ui-radio label {
@@ -201,6 +221,7 @@ div.circle {
     border-style: solid;
     border-color: #666;
     border-width: 0px 1px 1px 0px;
+    padding: .4em 2vw !important;
 }
 
 #reserveDateSelect > div.ui-grid-c {
@@ -224,17 +245,16 @@ div.circle {
     border: 0px;
     background-color: #2a88bc;
     color: white;
-    width: 60vw;
+    width: 64vw;
     height: 5vh;
     text-align: center;
     padding-top: 1.5vh;
-    margin: 1vh auto;
     font-size: 4.5vw;
 }
 
 .circleIcon {
     width: 6vw;
-    height: 3.5vh;
+    height: 3.3vh;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -242,13 +262,13 @@ div.circle {
 
 .iconSelect {
     background: url(../img/circle1.png);
-    background-size: 4.5vw 3vh;
+    background-size: 4.8vw 2.8vh;
     background-repeat: no-repeat;
 }
 
 .iconSelected {
     background: url(../img/circle2.png);
-    background-size: 4.5vw 3vh;
+    background-size: 4.8vw 2.8vh;
     background-repeat: no-repeat;
 }
 
@@ -262,20 +282,37 @@ div.circle {
 
 .quick-reserve-margin {
     text-align: center;
-    margin: 8vh auto 3vh auto;
+    margin: 4.5vh auto 3vh auto;
 }
 
 .quick-reserve-msg-icon {
     background: url(../img/select.png) no-repeat;
     width: 5vw;
-    height: 2.5vh;
+    height: 3vh;
+    background-size: 5vw 3vh;
+}
+
+.quick-reserve-warn-icon {
+    background: url(../img/warn_icon.png) no-repeat;
+    width: 5vw;
+    height: 3vh;
+    background-size: 5vw 3vh;
 }
 
 .quick-reserve-setting-icon {
     background: url(../img/setting.png) no-repeat;
-    width: 7vw;
-    height: 4.5vh;
-    background-size: 7vw 4.5vh;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.quick-reserve-setting-icon {
+    background: url(../img/setting.png) no-repeat;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -289,6 +326,26 @@ div.circle {
     text-align: center;
     line-height: 3.5vh;
     background-color: #003399 !important;
+}
+
+.setting-icon {
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.setting-back-icon {
+    background: url(../img/back_nav.png) no-repeat;
+}
+
+.setting-save-icon {
+    background: url(../img/save_nav.png) no-repeat;
+}
+
+.setting-add-icon {
+    background: url(../img/add_nav.png) no-repeat;
 }
 
 
@@ -618,6 +675,15 @@ section {
     background-size: 10vw 5vh;
 }
 
+.timepicker-warn-icon {
+    background: url(../img/warn_icon.png) no-repeat;
+    width: 6vw;
+    height: 3vh;
+    background-size: 6vw 3vh;
+    background-repeat: no-repeat;
+    /*vertical-align: middle;*/
+}
+
 #newSettingTimePickerPopup .popup-msg {
     height: 30vh !important;
 }
@@ -643,6 +709,9 @@ section {
     left: 0;
     right: 0;
     font-size: 4.5vw !important;
+    bottom: -5vh;
+    background-color: transparent;
+    color: white;
 }
 
 .min-height-100 {
