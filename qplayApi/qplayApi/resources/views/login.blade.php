@@ -6,10 +6,33 @@
 
     ?>
     <style>
+        td{
+            padding:0;
+        }
         .ui-icon-dropdown {
             background:url({{asset('/css/images/dropdown_n.png')}}) no-repeat 0 0;
             background-position: 98% 50%;
-            background-size: 2.5vh;
+            background-size: 4vw 1.2vh ;
+        }
+        .ui-content {
+            padding: 0;
+        }
+        .control_icon {
+            max-height: 6.8vw !important;       
+            max-width: 6.8vw !important;
+            margin-right: 6.6vw;
+            display: inherit;
+        }
+        #main_table input {
+            font-size:2.9vh;
+        }
+        #button_cell {
+            width: 100%
+        }
+        #main_table {
+            margin: 17vh 0 1.8vh 0;
+            border-collapse: collapse;
+            width: 100%;
         }
         #main_table tr
         {
@@ -27,7 +50,7 @@
             color: #0f0f0f;
         }
         .login_control{
-            font:2.9vh "Gill Sans MT";
+            font:2.9vh "Arial";
         }
         ::-webkit-input-placeholder {
             font:2.9vh "Gill Sans MT";
@@ -35,24 +58,24 @@
             text-overflow: ellipsis;
         }
         :-moz-placeholder {
-            font:2.9vh "Gill Sans MT";
+            font:1em "Gill Sans MT";
             color: #989898;!important;
             text-overflow: ellipsis;
         }
         ::-moz-placeholder {
-            font:2.9vh "Gill Sans MT";
+            font:1em "Gill Sans MT";
             color: #989898;!important;
             text-overflow: ellipsis;
         }
         :-ms-input-placeholder {
-            font:2.9vh "Gill Sans MT";
+            font:1em "Gill Sans MT";
             color: #989898;!important;
             text-overflow: ellipsis;
         }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
-        <div role="main" class="ui-content" style="text-align: center;margin-top: 5vh;">
-            <img src="{{asset('/css/images/login_logo.png')}}" style="width:16%;" />
+        <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
+            <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
             <table id="main_table">
                 <tr>
                     <td class="control_icon_cell">
@@ -60,9 +83,9 @@
                     </td>
                     <td class="control_cell">
                         <table>
-                            <tr>
+                            <!--<tr>
                                 <td class="control_title control_title_text">公司</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td>
                                     <select class="login_control" placeholder="Company" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext">
@@ -80,9 +103,9 @@
                     </td>
                     <td class="control_cell">
                         <table>
-                            <tr>
+                        <!--<tr>
                                 <td class="control_title control_title_text">帳號</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td>
                                     <input class="login_control" type="text" data-clear-btn="false" name="tbxName" data-mini="true"
@@ -98,9 +121,9 @@
                     </td>
                     <td class="control_cell">
                         <table>
-                            <tr>
+                        <!--<tr>
                                 <td class="control_title control_title_text">密碼</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td>
                                     <input class="login_control" type="password" data-clear-btn="false" name="tbxPassword" data-mini="true"
@@ -111,12 +134,12 @@
                     </td>
                 </tr>
             </table>
-            <div style="margin-top: 3vh;">
-                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
+            <div style="margin-top: 1.8vh;">
+                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
-                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;"
+                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
                             onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;"
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
                             onclick="oriLogin()">登入</button>
                 </div>
             </div>
@@ -204,7 +227,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key",<?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                 },
@@ -235,7 +258,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key",<?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
