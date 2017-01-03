@@ -24,7 +24,8 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
             'App-Key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
-            'token': loginData.token
+            'token': loginData.token,
+            'X-Requested-With': 'XMLHttpRequest'
         },
         url: serverURL + "/" + appApiPath + "/public/v101/custom/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
@@ -33,8 +34,8 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
         timeout: 3000,
         async: asyncType,
         success: requestSuccess,
-        error: requestError
+        error: requestError,
+        crossDomain: false
     });
-    
-}
 
+}
