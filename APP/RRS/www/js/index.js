@@ -37,6 +37,8 @@ var dictSiteCategory = {
     '100': '8'
 };
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
+var arrListAllManager = [];
+var arrMyReserveTime = [];
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -152,6 +154,68 @@ function getAPIListAllTime() {
     }();
 }
 
+function getAPIListAllManager() {
+    loadingMask('show');
+    var self = this;
+    var queryData = {};
+
+    this.successCallback = function(data) {
+        if (data['ResultCode'] === "1") {
+
+            arrListAllManager = data['Content'];
+
+            //save to local data
+            var jsonData = data['Content'];
+            localStorage.removeItem('listAllManager');
+            localStorage.setItem('listAllManager', JSON.stringify(jsonData));
+
+            loadingMask('hide');
+        } else {
+            loadingMask('hide');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
+        }
+    };
+
+    var __construct = function() {
+        QPlayAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData);
+    }();
+}
+
+function getAPIQueryMyReserveTime() {
+    loadingMask('show');
+    var self = this;
+    var today = new Date();
+    var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
+    arrMyReserveTime = [];
+    
+    this.successCallback = function(data) {
+        if (data['ResultCode'] === "1") {
+            //Successful
+            for (var i = 0, item; item = data['Content'][i]; i++) {
+                if (item.ReserveDate == new Date().yyyymmdd('')) {
+
+                    var strBeginTime = item.ReserveBeginTime;
+                    var strEndTime = item.ReserveEndTime;
+
+                    if (strBeginTime == strEndTime) {
+                        arrMyReserveTime.push(strBeginTime);
+                    } else {
+                        do {
+                            arrMyReserveTime.push(strBeginTime);
+                            strBeginTime = addThirtyMins(strBeginTime);
+                        } while (strBeginTime != strEndTime);
+                    }
+                }
+            }
+        }
+        loadingMask('hide');
+    };
+
+    var __construct = function() {
+        QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
+    }();
+}
+
 function getTimeID(sTime, eTime, siteCategoryID) {
     var arrSelectTime = [];
     var strTime = sTime;
@@ -191,7 +255,7 @@ function getTimeID(sTime, eTime, siteCategoryID) {
     return strTimeID;
 }
 
-function createReserveDetailLocalDate() {
+function setReserveDetailLocalDate() {
     //save to local data
     localStorage.removeItem('reserveDetailLocalData');
     jsonData = [];

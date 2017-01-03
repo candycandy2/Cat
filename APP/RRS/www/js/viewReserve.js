@@ -11,6 +11,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
     var quickReserveClickDateID = '';
     var quickRserveCallBackData = {};
     var timeClick = [];
+    var timeNameClick = [];
+    var tempTimeNameClick = '';
     var reserveDetailLocalData = [];
 
     $('#viewReserve').pagecontainer({
@@ -42,7 +44,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                 for (var i = 0, item; item = meetingRoomData.children[siteIndex].children[floorIndex].children[i]; i++) {
                     if (arrLimitRoom.indexOf(item.data.MeetingRoomName) == -1) {
-                        htmlContent += '<a id=' + item.data.MeetingRoomID + ' value=' + item.data.MeetingRoomID + ' href="#" class="ui-link">' + item.data.MeetingRoomName + '</a>';
+                        htmlContent += '<a id=' + item.data.MeetingRoomID + ' value=' + item.data.MeetingRoomID + ' href="#" class="ui-link" IsReserveMulti=' + item.data.IsReserveMulti + '>' + item.data.MeetingRoomName + '</a>';
                     }
                 }
 
@@ -75,7 +77,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveSetting-button').find('span').text(firstTitle);
             }
 
-            function dateList() {
+            function setDateList() {
                 var addOneDate = new Date();
                 var htmlContentPageOne = '';
                 var htmlContentPageTwo = '';
@@ -205,6 +207,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#reserveBtn').removeClass('btn-benq');
                 $('#reserveBtn').addClass('btn-disable');
                 timeClick = [];
+                timeNameClick = [];
             }
 
             function quickReserveBtnDefaultStatus() {
@@ -225,6 +228,29 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#quickReserve').removeClass('btn-benq');
                 $('#quickReserve').addClass('btn-disable');
                 $('#quickReserve').addClass('disable');
+            }
+
+            function checkReserveSameTime() {
+                var isReserveMulti = $('#' + clickRomeId).attr('IsReserveMulti');
+                var bResult = false;
+                var isExistInArray = false;
+
+                if (isReserveMulti === 'N') {
+                    bResult = true;
+                } else {
+                    if (arrMyReserveTime.length === 0) {
+                        bResult = true;
+                    } else {
+                        $.each(arrMyReserveTime, function(index, value) {
+                            if (timeNameClick.indexOf(value) != -1) {
+                                isExistInArray = true;
+                            }
+                        });
+                        bResult = !isExistInArray;
+                    }
+                }
+
+                return bResult;
             }
 
             function getAPIQueryReserveDetail(roomId, date, checkDataExist) {
@@ -271,6 +297,12 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         popupMsg('reservePopupMsg', 'reserveSuccessMsg', '', '會議室預約成功', '', false, '確定', false);
                         if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
+
+                            $.each(timeNameClick, function(index, value) {
+                                arrMyReserveTime.push(value);
+                            });
+
+                            reserveBtnDefaultStatus();
                         }
 
                     } else if (data['ResultCode'] === "002903") {
@@ -303,6 +335,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
                         popupMsg('reservePopupMsg', 'cancelSuccessMsg', '', '取消預約成功', '', false, '確定', false);
+
+                        var clickIndexOf = arrMyReserveTime.indexOf(tempTimeNameClick);
+                        arrMyReserveTime.splice(clickIndexOf, 1);
+
                         var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
 
                     } else if (data['ResultCode'] === "002906") {
@@ -363,14 +399,17 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
                     var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
                     var doAPIListAllTime = new getAPIListAllTime();
+                    var doAPIListAllManager = new getAPIListAllManager();
                 } else {
                     ConverToTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
                     arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+                    arrListAllManager = JSON.parse(localStorage.getItem('listAllManager'))['content'];
                 }
                 meetingRoomData = meetingRoomTreeData._root;
-                createReserveDetailLocalDate();
-                dateList();
+                setDateList();
                 getSiteData();
+                getAPIQueryMyReserveTime();
+                setReserveDetailLocalDate();
                 setDefaultSettingData();
 
                 siteCategoryID = dictSiteCategory[meetingRoomData.children[0].data];
@@ -467,17 +506,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     if (bMyReserve) {
                         traceID = $(this).attr('traceID');
+                        tempTimeNameClick = $(this).find('div > div:nth-child(1)').text();
                         popupMsg('reservePopupMsg', 'myReserveMsg', tempEname + '已預約', msgContent, '關閉', true, '取消預約', true);
                     } else {
                         //ex: 會議室協調_12/01 T01 15:00-15:30
                         var tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                        popupSchemeMsg('reserveMsg', tempEname + '已預約', msgContent, 'mailto:' + tempMailContent, 'tel:+' + $(this).attr('ext'));
+                        popupSchemeMsg('reserveMsg', tempEname + '已預約', msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'));
                     }
 
                 } else if (bNoReserve && !bReserveSelect) {
 
                     var timeBlockId = $(this).attr('id');
                     timeClick.push(timeBlockId);
+                    timeNameClick.push($(this).find('div > div:nth-child(1)').text());
 
                     $(this).addClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelect');
@@ -486,7 +527,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 } else if (bReserveSelect) {
 
                     var timeBlockId = $(this).attr('id');
-                    timeClick.splice(timeClick.indexOf(timeBlockId), 1);
+                    var clickIndexOf = timeClick.indexOf(timeBlockId);
+                    timeClick.splice(clickIndexOf, 1);
+                    timeNameClick.splice(clickIndexOf, 1);
 
                     $(this).removeClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelected');
@@ -515,12 +558,13 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     for (var item in timeClick) {
                         timeID += timeClick[item] + ',';
                     }
-                    if (timeID != '') {
+                    if (checkReserveSameTime()) {
                         //replace end of comma
                         var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+                    } else {
+                        popupMsg('reservePopupMsg', 'selectReserveSameTimeMsg', '', '您已重複預約此時段', '', false, '確定', false);
                     }
                 }
-                reserveBtnDefaultStatus();
             });
 
             $('body').on('click', '#quickReserveScrollDate .ui-link', function() {
@@ -602,7 +646,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('div[for=cancelSuccessMsg]').popup('close');
             });
 
-            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm', function() {
+            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm', function() {
                 var msgForId = $(this).parent().parent().attr('for');
                 $('div[for=' + msgForId + ']').popup('close');
             });
