@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV'),
 
     /*
     |--------------------------------------------------------------------------
@@ -149,10 +149,10 @@ return [
     |
     */
 
-    'App_id' => env('APP_ID','33938c8b001b601c1e647cbd'),
-    'Secret_key' => env('SECRET_KEY','aa15c71a5071f539240b5c83'),
-    'time_to_live' => env('TIME_TO_LIVE',864000),
-    'apns_flag' => env('APNS_FLAG',true),
+    'App_id' => env('APP_ID'),
+    'Secret_key' => env('SECRET_KEY'),
+    'time_to_live' => env('TIME_TO_LIVE'),
+    'apns_flag' => env('APNS_FLAG'),
     
     /*
     |--------------------------------------------------------------------------
