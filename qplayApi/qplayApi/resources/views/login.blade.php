@@ -298,7 +298,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key", <?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
