@@ -34,13 +34,13 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 var pattern;
                 var residue;
                 var empty = true;
-                var error = false;
                 var USERINPUT = {
                         CNAME      : 0,
                         ENAME      : 1,
                         DEPARTMENT : 2,
                         EXT        : 3
                 };
+
                 $("#viewDataInput input[type=text]").each(function(index, element) {
                     queryData = $(element).val();
                     if ($(element).val().length !== 0) {
@@ -48,13 +48,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                         switch(index){
                            
                             case USERINPUT.CNAME :
-                            /***********************************************************************
-                            1.開始查詢前，要判斷是否有特殊字元，有的話彈跳顯示視窗( 中文姓名不允許
-                            輸入特殊符號，但可輸入( . 和 - )符號。 )，並且無法進行查詢。
-
-                            2.開始查詢前，要判斷是否超過10個字，超過的話彈跳顯示視窗( 中文姓名超過10
-                            個字。 )，並且無法進行查詢。
-                            ************************************************************************/
                                 break;
                             case USERINPUT.ENAME :
                            
@@ -63,11 +56,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                                 break;
                             case USERINPUT.EXT :
-                            /************************************************************************
-                            1.判斷輸入值是否為10個數字(字元)，包含特殊符號 ( - )            (O) 
-                            2.判斷輸入值是否含有特殊字元，允許特殊符號( - )                 (O)
-                            3.去掉特殊符號( - ) ，是否為數字                                (O)
-                            *************************************************************************/
                                 pattern = /([^0-9\-]*)([0-9\-]*)([^0-9\-]*)/;
                                 residue = queryData.match(pattern);
                                 if(residue[1] === "" && residue[3] === "") {
@@ -76,25 +64,14 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                                     if(residue[2] === "") {
                                         /**/
                                     }else{
-                                        /*
-                                        ERROR!! the size of input is larger than 10 character.
-                                        */
-                                        error = true;
                                         empty = true;
                                     }
                                 }else{
-                                    /*
-                                    ERROR!! the input dosen't contain any special character.
-                                    */
-                                    error = true;
                                     empty = true;
                                 }
                         }
                     }
                 });
-                // if(error) {
-
-                // }
                 if (empty) {
                     $("#noQueryCondition").popup("open");
                 } else {
