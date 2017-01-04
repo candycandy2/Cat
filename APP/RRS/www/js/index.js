@@ -37,8 +37,15 @@ var dictSiteCategory = {
     '100': '8'
 };
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
-var arrListAllManager = [];
 var arrMyReserveTime = [];
+var dictRole = {
+    'system': '1',
+    'secretary': '2',
+    'super': '4'
+};
+var reserveDays = 14;
+var systemRole = '';
+var meetingRoomSiteByRole = '';
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -161,14 +168,20 @@ function getAPIListAllManager() {
 
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
-
-            arrListAllManager = data['Content'];
-
             //save to local data
-            var jsonData = data['Content'];
             localStorage.removeItem('listAllManager');
+            var jsonData = {};
+            for (var i = 0, item; item = data['Content'][i]; i++) {
+                if (item.EmpNo === loginData['emp_no']) {
+                    jsonData = {
+                        systemRole: item.SystemRole,
+                        meetingRoomSite: item.MeetingRoomSite
+                    };
+                    systemRole = item.SystemRole;
+                    meetingRoomSiteByRole = item.MeetingRoomSite;
+                }
+            }
             localStorage.setItem('listAllManager', JSON.stringify(jsonData));
-
             loadingMask('hide');
         } else {
             loadingMask('hide');
@@ -186,27 +199,52 @@ function getAPIQueryMyReserveTime() {
     var self = this;
     var today = new Date();
     var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
-    arrMyReserveTime = [];
-    
+
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
             //Successful
+
+            var jsonData = {};
+            var jsonChildData = {};
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: []
+            };
+            localStorage.removeItem('myReserveLocalData');
+            localStorage.setItem('myReserveLocalData', JSON.stringify(jsonData));
+            var myReserveLocalData = JSON.parse(localStorage.getItem('myReserveLocalData'));
+
             for (var i = 0, item; item = data['Content'][i]; i++) {
-                if (item.ReserveDate == new Date().yyyymmdd('')) {
 
-                    var strBeginTime = item.ReserveBeginTime;
-                    var strEndTime = item.ReserveEndTime;
+                var strBeginTime = item.ReserveBeginTime;
+                var strEndTime = item.ReserveEndTime;
 
-                    if (strBeginTime == strEndTime) {
-                        arrMyReserveTime.push(strBeginTime);
-                    } else {
-                        do {
-                            arrMyReserveTime.push(strBeginTime);
-                            strBeginTime = addThirtyMins(strBeginTime);
-                        } while (strBeginTime != strEndTime);
-                    }
+                if (strBeginTime == strEndTime) {
+                    jsonChildData = {
+                        date: item.ReserveDate,
+                        time: strBeginTime
+                    };
+
+                    myReserveLocalData.content.push(jsonChildData);
+
+                } else {
+                    do {
+                        jsonChildData = {
+                            date: item.ReserveDate,
+                            time: strBeginTime
+                        };
+
+                        myReserveLocalData.content.push(jsonChildData);
+
+                        strBeginTime = addThirtyMins(strBeginTime);
+                    } while (strBeginTime != strEndTime);
                 }
+
+                jsonData = myReserveLocalData;
+
             }
+
+            localStorage.setItem('myReserveLocalData', JSON.stringify(jsonData));
         }
         loadingMask('hide');
     };
@@ -523,10 +561,3 @@ function reserveLocalDataObj(roomId, date, data) {
     this.date = date;
     this.data = data;
 };
-
-function padLeft(str, lenght) {
-    if (str.length >= lenght)
-        return str;
-    else
-        return padLeft("0" + str, lenght);
-}
