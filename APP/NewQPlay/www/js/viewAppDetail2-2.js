@@ -28,6 +28,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 //APP Name substring
                 //zh-tw / zh-cn: string max length is 6
                 //en-us / other: string max length is 12
+                /*
                 var language = navigator.language.toLowerCase();
                 var strLength;
 
@@ -42,8 +43,8 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 if (appmultilang[multilangIndex].app_name.length > strLength) {
                     appName += "...";
                 }
-
-                $("#appDetailAppName").html(appName);
+                */
+                $("#appDetailAppName").html(appmultilang[multilangIndex].app_name);
                 $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
                 $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
                 var appSize =  new Number(applist[selectAppIndex].size / 1024.0 / 1024.0);
@@ -93,11 +94,17 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 if (descriptionHeight >= (textHeight * 3)) {
                     $("#appDetailAppDescription").addClass("detail-description-ellipsis");
-                    $("#appDetailAppDescription").css("max-height", "3.4em");
+                    $("#appDetailAppDescription").css({
+                        "max-height": "3.4em",
+                        "line-height": "1.2em"
+                    });
                     $(".detail-description-open").show();
                 } else {
                     $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
-                    $("#appDetailAppDescription").css("max-height", "none");
+                    $("#appDetailAppDescription").css({
+                        "max-height": "none",
+                        "line-height": "3.4vh"
+                    });
                     $(".detail-description-open").hide();
 
                     $("#appDetailAppDescription").css("height", parseInt(descriptionHeight + adjustHeight, 10) + "px");
@@ -126,7 +133,10 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
             $("#openDescription").on("click", function() {
                 $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
-                $("#appDetailAppDescription").css("max-height", "none");
+                $("#appDetailAppDescription").css({
+                    "max-height": "none",
+                    "line-height": "3.4vh"
+                });
                 $(".detail-description-open").hide();
             });
         }
