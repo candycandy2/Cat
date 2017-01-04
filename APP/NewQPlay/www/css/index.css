@@ -17,7 +17,7 @@
 }
 
 #viewNewsEvents2-3 #navDelete .ui-btn {
-    background-color: #0F0F0F;
+    background-color: #656565;
     color: #FFF;
     font-size: 2.8vh;
     height: 3vh;
@@ -76,8 +76,8 @@
 }
 
 .q-btn-footer-icon {
-    width: 2.3vh;
-    margin-left: 20vw;
+    width: 4.3vh;
+    margin-left: 18vw;
     float: left;
 }
 
@@ -93,20 +93,20 @@ input[type=checkbox] {
 
 input[type=checkbox] + label {
     background: url('../img/checkbox.png') no-repeat;
-    background-size: 16px 16px;
-    height: 16px;
-    width: 16px;
+    background-size: 6vw 6vw;
+    height: 6vw;
+    width: 6vw;
     display: inline-block;
     padding: 0 0 0 0;
 }
 
 input[type=checkbox]:checked + label {
     background: url('../img/checkbox_selected.png') no-repeat;
-    background-size: 16px 16px;
-    height: 16px;
-    width: 16px;
+    background-size: 6vw 6vw;
+    height: 6vw;
+    width: 6vw;
     display: inline-block;
-    padding: 0 0 0 0px;
+    padding: 0 0 0 0;
 }
 
 input[type=radio] {
@@ -115,18 +115,18 @@ input[type=radio] {
 
 input[type=radio] + label {
     background: url('../img/radio.png') no-repeat;
-    background-size: 16px 16px;
-    height: 16px;
-    width: 16px;
+    background-size: 6vw 6vw;
+    height: 6vw;
+    width: 6vw;
     display: inline-block;
     padding: 0 0 0 0;
 }
 
 input[type=radio]:checked + label {
     background: url('../img/radio_selected.png') no-repeat;
-    background-size: 16px 16px;
-    height: 16px;
-    width: 16px;
+    background-size: 6vw 6vw;
+    height: 6vw;
+    width: 6vw;
     display: inline-block;
     padding: 0 0 0 0;
 }
@@ -137,12 +137,12 @@ input[type=radio]:checked + label {
 }
 
 .overlap-label-text {
-    line-height: 1.1;
-    padding-left: 21px;
+    line-height: 1.2;
+    padding-left: 7vw;
     width: 85%;
     color: #0F0F0F;
     font-size: 3vh;
-    height: 30px;
+    height: 3.5vh;
 }
 
 .overlap-label-checkbox {
@@ -156,6 +156,7 @@ input[type=radio]:checked + label {
 .delete-str {
     margin-top:10%;
     text-shadow: none;
+    font-size: 2.8vh;
 }
 
 /* app list / detail */
@@ -203,7 +204,7 @@ input[type=radio]:checked + label {
 .appDetailInfo {
     float: left;
     margin-left: 3.7vw;
-    width: 65%;
+    width: 63.5vw;
 }
 
 .appDetailInfo p{
@@ -215,6 +216,9 @@ input[type=radio]:checked + label {
     color: #0F0F0F;
     font-size: 2.8vh;
     margin-bottom: 0.3vh;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .appDetailInfo .appDetailRank {
@@ -240,7 +244,7 @@ input[type=radio]:checked + label {
 
 .appDetailBottomLeft {
     float: left;
-    width: 75%;
+    width: 68%;
 }
 
 .appDetailAppVersion {
@@ -276,24 +280,25 @@ input[type=radio]:checked + label {
 .appDetailBottomRight {
     float: left;
     text-align: right;
-    width: 25%;
+    width: 32%;
     height: 4.8vh;
 }
 
 .install-btn {
-    background: url(../img/action_n_small_btn.png) no-repeat;
-    background-size: 100%;
+    width: 20vw;
+    height: 3.5vh;
+    border-radius: 25px;
+    background-color: #492F80;
     cursor: pointer;
     text-align: center;
-    margin-top: 20%;
     color: #FFF;
-    font-size: 2.3vh;
+    font-size: 2.4vh;
     text-shadow: none;
-    padding-top: 2%;
+    line-height: 1.5;
 }
 
 .detail-description {
-    color: #000;
+    color: #0f0f0f;
     /* hide text if it more than N lines  */
     overflow: hidden;
     /* for set '...' in absolute position */
@@ -304,8 +309,7 @@ input[type=radio]:checked + label {
     max-height: 3.4em;
     /* fix problem when last visible word doesn't adjoin right side  */
     text-align: justify;
-    margin-right: -1em;
-    padding-right: 1em;
+    margin-right: 0.5vw;
     font-size: 2.4vh;
 }
 
@@ -315,7 +319,7 @@ input[type=radio]:checked + label {
     /* absolute position */
     position: absolute;
     /* set position to right bottom corner of block */
-    right: 5vw;
+    right: 7vw;
     width: 13vw;
     padding-left: 1vw;
     bottom: 0;
@@ -339,7 +343,7 @@ input[type=radio]:checked + label {
     position: relative;
     width: 10%;
     top: -2.6vh;
-    left: 90%;
+    left: 88%;
     background-color: #FFF;
     margin-bottom: -2.6vh;
 }
@@ -357,7 +361,7 @@ input[type=radio]:checked + label {
 
 #appDetailPicList {
     margin-top: 2.2vh;
-    width: 100%;
+    width: 99%;
     height: 52vh;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
@@ -367,7 +371,7 @@ input[type=radio]:checked + label {
     float: left;
     width: 52vw;
     height: 52vh;
-    margin-left: 3.7vw;
+    margin-right: 3.7vw;
 }
 
 #viewAppDetail2-2 .page-main {
@@ -566,7 +570,7 @@ input[type=radio]:checked + label {
 }
 
 .msg-del-checkbox {
-    margin-top: 80%;
+    margin-top: 70%;
     padding-left: 30%;
 }
 
