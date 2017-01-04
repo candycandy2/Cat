@@ -21,91 +21,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="qplayController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
+      <file leaf-file-name="login.blade.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/login.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="1249" column="33" lean-forward="true" selection-start-line="1249" selection-start-column="33" selection-end-line="1249" selection-end-column="33" />
+            <state relative-caret-position="126">
+              <caret line="158" column="51" lean-forward="true" selection-start-line="158" selection-start-column="51" selection-end-line="158" selection-end-column="51" />
               <folding>
-                <element signature="e#40#63#0#PHP" expanded="true" />
-                <marker date="1482745937233" expanded="true" signature="43048:43129" ph="select * fro... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="43727:45113" ph="select disti... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="44529:44769" ph="select row_i... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="44578:44768" ph="select app_r... qp_role_app" />
-                <marker date="1482745937233" expanded="true" signature="44636:44693" ph="select role_... qp_user_role" />
-                <marker date="1482745937233" expanded="true" signature="44777:44955" ph="select row_i... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="44826:44881" ph="select app_r... qp_user_app" />
-                <marker date="1482745937233" expanded="true" signature="44962:45083" ph="select row_i... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="45290:46288" ph="select disti... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="45965:46138" ph="select row_i... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="46015:46137" ph="select app_r... qp_role_app" />
-                <marker date="1482745937233" expanded="true" signature="46075:46136" ph="select role_... qp_user_role" />
-                <marker date="1482745937233" expanded="true" signature="46146:46256" ph="select row_i... qp_app_head" />
-                <marker date="1482745937233" expanded="true" signature="46196:46255" ph="select app_r... qp_user_app" />
-                <marker date="1482745937233" expanded="true" signature="49181:49300" ph="select row_i... qp_app_category" />
-                <marker date="1482745937233" expanded="true" signature="50133:50581" ph="select line.... qp_app_line" />
-                <marker date="1482745937233" expanded="true" signature="66263:67846" ph="select ms.ro... qp_message" />
-                <marker date="1482745937233" expanded="true" signature="66590:67271" ph="select disti... qp_message_send" />
-                <marker date="1482745937233" expanded="true" signature="67113:67269" ph="select messa... qp_user_message" />
-                <marker date="1482745937233" expanded="true" signature="67278:67688" ph="select disti... qp_message_send" />
-                <marker date="1482745937233" expanded="true" signature="72477:72601" ph="select * fro... qp_message" />
-                <marker date="1482745937233" expanded="true" signature="72518:72576" ph="select messa... qp_message_send" />
-                <marker date="1482745937233" expanded="true" signature="73242:73899" ph="select m.row... qp_message" />
-                <marker date="1482745937233" expanded="true" signature="74011:74542" ph="select disti... qp_message" />
-                <marker date="1482745937233" expanded="true" signature="74915:75088" ph="select if(re... qp_user_message" />
-                <marker date="1482745937233" expanded="true" signature="119402:119532" ph="select * fro... qp_user" />
-                <marker date="1482745937233" expanded="true" signature="119441:119498" ph="select user_... qp_user_role" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Verify.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/lib/Verify.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="302" column="27" lean-forward="false" selection-start-line="302" selection-start-column="27" selection-end-line="302" selection-end-column="27" />
-              <folding>
-                <element signature="e#111#123#0#PHP" expanded="true" />
-                <element signature="e#767#3156#0#PHP" expanded="false" />
-                <element signature="e#5576#7849#0#PHP" expanded="false" />
-                <element signature="e#7855#8547#0#PHP" expanded="false" />
-                <element signature="e#8553#9233#0#PHP" expanded="false" />
-                <element signature="e#9239#9953#0#PHP" expanded="false" />
-                <element signature="e#9959#10669#0#PHP" expanded="false" />
-                <element signature="e#10675#11027#0#PHP" expanded="false" />
-                <element signature="e#11348#11715#0#PHP" expanded="false" />
-                <element signature="e#11721#11990#0#PHP" expanded="false" />
-                <element signature="e#11996#18702#0#PHP" expanded="false" />
-                <element signature="e#18723#19118#0#PHP" expanded="false" />
-                <element signature="e#19124#19383#0#PHP" expanded="false" />
-                <marker date="1482745937171" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommonUtil.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/lib/CommonUtil.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5437">
-              <caret line="293" column="66" lean-forward="false" selection-start-line="293" selection-start-column="66" selection-end-line="293" selection-end-column="66" />
-              <folding>
-                <element signature="e#1139#1752#0#PHP" expanded="false" />
-                <element signature="e#1758#2237#0#PHP" expanded="false" />
-                <element signature="e#2243#2620#0#PHP" expanded="false" />
-                <element signature="e#2626#3113#0#PHP" expanded="false" />
-                <element signature="e#3119#3813#0#PHP" expanded="false" />
-                <element signature="e#3819#4416#0#PHP" expanded="false" />
-                <element signature="e#4422#5381#0#PHP" expanded="false" />
-                <element signature="e#5387#6408#0#PHP" expanded="false" />
-                <element signature="e#6414#7443#0#PHP" expanded="false" />
-                <element signature="e#7449#8479#0#PHP" expanded="false" />
-                <element signature="e#8485#8789#0#PHP" expanded="false" />
-                <element signature="e#9040#9789#0#PHP" expanded="false" />
-                <element signature="e#13152#15485#0#PHP" expanded="false" />
-                <element signature="e#15491#15605#0#PHP" expanded="false" />
-                <element signature="e#16207#16615#0#PHP" expanded="false" />
+                <element signature="e#1872#6281#0#HTML" expanded="false" />
+                <element signature="e#6327#6405#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -167,9 +90,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="y" value="8" />
-    <option name="width" value="1296" />
-    <option name="height" value="1000" />
+    <option name="x" value="-78" />
+    <option name="y" value="18" />
+    <option name="width" value="1278" />
+    <option name="height" value="960" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -208,25 +132,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="storage" />
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="logs" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="storage" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -240,72 +150,14 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Http" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="qplayApi" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Http" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Controllers" />
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -463,20 +315,21 @@
       <workItem from="1482724312671" duration="3168000" />
       <workItem from="1482730952425" duration="4835000" />
       <workItem from="1482743409499" duration="2676000" />
+      <workItem from="1483515296838" duration="31000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="191046000" />
+    <option name="totallyTimeSpent" value="191077000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="8" width="1296" height="1000" extended-state="0" />
+    <frame x="-78" y="18" width="1278" height="960" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20681459" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28361583" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28402367" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -554,33 +407,33 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#40#63#0#PHP" expanded="true" />
-            <marker date="1482745937233" expanded="true" signature="43048:43129" ph="select * fro... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="43727:45113" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44529:44769" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44578:44768" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="44636:44693" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="44777:44955" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44826:44881" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="44962:45083" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45290:46288" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45965:46138" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46015:46137" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="46075:46136" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="46146:46256" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46196:46255" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="49181:49300" ph="select row_i... qp_app_category" />
-            <marker date="1482745937233" expanded="true" signature="50133:50581" ph="select line.... qp_app_line" />
-            <marker date="1482745937233" expanded="true" signature="66263:67846" ph="select ms.ro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="66590:67271" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="67113:67269" ph="select messa... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="67278:67688" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="72477:72601" ph="select * fro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="72518:72576" ph="select messa... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="73242:73899" ph="select m.row... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74011:74542" ph="select disti... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74915:75088" ph="select if(re... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="119402:119532" ph="select * fro... qp_user" />
-            <marker date="1482745937233" expanded="true" signature="119441:119498" ph="select user_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="43007:43088" ph="select * fro... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="43686:45072" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44488:44728" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44537:44727" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="44595:44652" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="44736:44914" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44785:44840" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="44921:45042" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45249:46247" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45924:46097" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45974:46096" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="46034:46095" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="46105:46215" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="46155:46214" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="49140:49259" ph="select row_i... qp_app_category" />
+            <marker date="1483514539303" expanded="true" signature="50092:50540" ph="select line.... qp_app_line" />
+            <marker date="1483514539303" expanded="true" signature="66303:67886" ph="select ms.ro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="66630:67311" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="67153:67309" ph="select messa... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="67318:67728" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="72560:72701" ph="select * fro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="72618:72676" ph="select messa... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="73342:74019" ph="select m.row... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="74131:74701" ph="select disti... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="75074:75247" ph="select if(re... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="119914:120044" ph="select * fro... qp_user" />
+            <marker date="1483514539303" expanded="true" signature="119953:120010" ph="select user_... qp_user_role" />
           </folding>
         </state>
       </provider>
@@ -603,7 +456,7 @@
             <element signature="e#11996#18702#0#PHP" expanded="false" />
             <element signature="e#18723#19118#0#PHP" expanded="false" />
             <element signature="e#19124#19383#0#PHP" expanded="false" />
-            <marker date="1482745937171" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
+            <marker date="1483514539322" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
           </folding>
         </state>
       </provider>
@@ -635,33 +488,33 @@
           <caret line="1056" column="69" lean-forward="false" selection-start-line="1056" selection-start-column="69" selection-end-line="1056" selection-end-column="69" />
           <folding>
             <element signature="e#40#63#0#PHP" expanded="true" />
-            <marker date="1482745937233" expanded="true" signature="43048:43129" ph="select * fro... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="43727:45113" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44529:44769" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44578:44768" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="44636:44693" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="44777:44955" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44826:44881" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="44962:45083" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45290:46288" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45965:46138" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46015:46137" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="46075:46136" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="46146:46256" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46196:46255" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="49181:49300" ph="select row_i... qp_app_category" />
-            <marker date="1482745937233" expanded="true" signature="50133:50581" ph="select line.... qp_app_line" />
-            <marker date="1482745937233" expanded="true" signature="66263:67846" ph="select ms.ro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="66590:67271" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="67113:67269" ph="select messa... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="67278:67688" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="72477:72601" ph="select * fro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="72518:72576" ph="select messa... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="73242:73899" ph="select m.row... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74011:74542" ph="select disti... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74915:75088" ph="select if(re... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="119402:119532" ph="select * fro... qp_user" />
-            <marker date="1482745937233" expanded="true" signature="119441:119498" ph="select user_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="43007:43088" ph="select * fro... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="43686:45072" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44488:44728" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44537:44727" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="44595:44652" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="44736:44914" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44785:44840" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="44921:45042" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45249:46247" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45924:46097" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45974:46096" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="46034:46095" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="46105:46215" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="46155:46214" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="49140:49259" ph="select row_i... qp_app_category" />
+            <marker date="1483514539303" expanded="true" signature="50092:50540" ph="select line.... qp_app_line" />
+            <marker date="1483514539303" expanded="true" signature="66303:67886" ph="select ms.ro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="66630:67311" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="67153:67309" ph="select messa... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="67318:67728" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="72560:72701" ph="select * fro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="72618:72676" ph="select messa... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="73342:74019" ph="select m.row... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="74131:74701" ph="select disti... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="75074:75247" ph="select if(re... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="119914:120044" ph="select * fro... qp_user" />
+            <marker date="1483514539303" expanded="true" signature="119953:120010" ph="select user_... qp_user_role" />
           </folding>
         </state>
       </provider>
@@ -684,7 +537,7 @@
             <element signature="e#11996#18702#0#PHP" expanded="false" />
             <element signature="e#18723#19118#0#PHP" expanded="false" />
             <element signature="e#19124#19383#0#PHP" expanded="false" />
-            <marker date="1482745937171" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
+            <marker date="1483514539322" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
           </folding>
         </state>
       </provider>
@@ -709,33 +562,33 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#40#63#0#PHP" expanded="true" />
-            <marker date="1482745937233" expanded="true" signature="43048:43129" ph="select * fro... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="43727:45113" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44529:44769" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44578:44768" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="44636:44693" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="44777:44955" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44826:44881" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="44962:45083" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45290:46288" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45965:46138" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46015:46137" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="46075:46136" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="46146:46256" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46196:46255" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="49181:49300" ph="select row_i... qp_app_category" />
-            <marker date="1482745937233" expanded="true" signature="50133:50581" ph="select line.... qp_app_line" />
-            <marker date="1482745937233" expanded="true" signature="66263:67846" ph="select ms.ro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="66590:67271" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="67113:67269" ph="select messa... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="67278:67688" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="72477:72601" ph="select * fro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="72518:72576" ph="select messa... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="73242:73899" ph="select m.row... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74011:74542" ph="select disti... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74915:75088" ph="select if(re... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="119402:119532" ph="select * fro... qp_user" />
-            <marker date="1482745937233" expanded="true" signature="119441:119498" ph="select user_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="43007:43088" ph="select * fro... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="43686:45072" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44488:44728" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44537:44727" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="44595:44652" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="44736:44914" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44785:44840" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="44921:45042" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45249:46247" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45924:46097" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45974:46096" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="46034:46095" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="46105:46215" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="46155:46214" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="49140:49259" ph="select row_i... qp_app_category" />
+            <marker date="1483514539303" expanded="true" signature="50092:50540" ph="select line.... qp_app_line" />
+            <marker date="1483514539303" expanded="true" signature="66303:67886" ph="select ms.ro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="66630:67311" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="67153:67309" ph="select messa... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="67318:67728" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="72560:72701" ph="select * fro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="72618:72676" ph="select messa... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="73342:74019" ph="select m.row... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="74131:74701" ph="select disti... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="75074:75247" ph="select if(re... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="119914:120044" ph="select * fro... qp_user" />
+            <marker date="1483514539303" expanded="true" signature="119953:120010" ph="select user_... qp_user_role" />
           </folding>
         </state>
       </provider>
@@ -758,7 +611,7 @@
             <element signature="e#11996#18702#0#PHP" expanded="false" />
             <element signature="e#18723#19118#0#PHP" expanded="false" />
             <element signature="e#19124#19383#0#PHP" expanded="false" />
-            <marker date="1482745937171" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
+            <marker date="1483514539322" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
           </folding>
         </state>
       </provider>
@@ -783,33 +636,33 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#40#63#0#PHP" expanded="true" />
-            <marker date="1482745937233" expanded="true" signature="43048:43129" ph="select * fro... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="43727:45113" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44529:44769" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44578:44768" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="44636:44693" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="44777:44955" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44826:44881" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="44962:45083" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45290:46288" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45965:46138" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46015:46137" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="46075:46136" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="46146:46256" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46196:46255" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="49181:49300" ph="select row_i... qp_app_category" />
-            <marker date="1482745937233" expanded="true" signature="50133:50581" ph="select line.... qp_app_line" />
-            <marker date="1482745937233" expanded="true" signature="66263:67846" ph="select ms.ro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="66590:67271" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="67113:67269" ph="select messa... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="67278:67688" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="72477:72601" ph="select * fro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="72518:72576" ph="select messa... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="73242:73899" ph="select m.row... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74011:74542" ph="select disti... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74915:75088" ph="select if(re... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="119402:119532" ph="select * fro... qp_user" />
-            <marker date="1482745937233" expanded="true" signature="119441:119498" ph="select user_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="43007:43088" ph="select * fro... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="43686:45072" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44488:44728" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44537:44727" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="44595:44652" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="44736:44914" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44785:44840" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="44921:45042" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45249:46247" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45924:46097" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45974:46096" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="46034:46095" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="46105:46215" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="46155:46214" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="49140:49259" ph="select row_i... qp_app_category" />
+            <marker date="1483514539303" expanded="true" signature="50092:50540" ph="select line.... qp_app_line" />
+            <marker date="1483514539303" expanded="true" signature="66303:67886" ph="select ms.ro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="66630:67311" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="67153:67309" ph="select messa... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="67318:67728" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="72560:72701" ph="select * fro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="72618:72676" ph="select messa... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="73342:74019" ph="select m.row... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="74131:74701" ph="select disti... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="75074:75247" ph="select if(re... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="119914:120044" ph="select * fro... qp_user" />
+            <marker date="1483514539303" expanded="true" signature="119953:120010" ph="select user_... qp_user_role" />
           </folding>
         </state>
       </provider>
@@ -921,20 +774,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/login.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="109" column="63" lean-forward="false" selection-start-line="109" selection-start-column="63" selection-end-line="109" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/.env" />
     <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1013,16 +853,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="40" column="46" lean-forward="false" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
-          <folding>
-            <element signature="e#1650#2356#0#PHP" expanded="false" />
-            <element signature="e#2362#2912#0#PHP" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/lib/CommonUtil.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5437">
+        <state relative-caret-position="448">
           <caret line="293" column="66" lean-forward="false" selection-start-line="293" selection-start-column="66" selection-end-line="293" selection-end-column="66" />
           <folding>
             <element signature="e#1139#1752#0#PHP" expanded="false" />
@@ -1037,9 +874,6 @@
             <element signature="e#7449#8479#0#PHP" expanded="false" />
             <element signature="e#8485#8789#0#PHP" expanded="false" />
             <element signature="e#9040#9789#0#PHP" expanded="false" />
-            <element signature="e#13152#15485#0#PHP" expanded="false" />
-            <element signature="e#15491#15605#0#PHP" expanded="false" />
-            <element signature="e#16207#16615#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1062,7 +896,7 @@
             <element signature="e#11996#18702#0#PHP" expanded="false" />
             <element signature="e#18723#19118#0#PHP" expanded="false" />
             <element signature="e#19124#19383#0#PHP" expanded="false" />
-            <marker date="1482745937171" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
+            <marker date="1483514539322" expanded="true" signature="6324:6587" ph="select disti... qp_session" />
           </folding>
         </state>
       </provider>
@@ -1070,36 +904,47 @@
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/qplayController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="319">
-          <caret line="1249" column="33" lean-forward="true" selection-start-line="1249" selection-start-column="33" selection-end-line="1249" selection-end-column="33" />
+          <caret line="1249" column="33" lean-forward="false" selection-start-line="1249" selection-start-column="33" selection-end-line="1249" selection-end-column="33" />
           <folding>
             <element signature="e#40#63#0#PHP" expanded="true" />
-            <marker date="1482745937233" expanded="true" signature="43048:43129" ph="select * fro... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="43727:45113" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44529:44769" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44578:44768" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="44636:44693" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="44777:44955" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="44826:44881" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="44962:45083" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45290:46288" ph="select disti... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="45965:46138" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46015:46137" ph="select app_r... qp_role_app" />
-            <marker date="1482745937233" expanded="true" signature="46075:46136" ph="select role_... qp_user_role" />
-            <marker date="1482745937233" expanded="true" signature="46146:46256" ph="select row_i... qp_app_head" />
-            <marker date="1482745937233" expanded="true" signature="46196:46255" ph="select app_r... qp_user_app" />
-            <marker date="1482745937233" expanded="true" signature="49181:49300" ph="select row_i... qp_app_category" />
-            <marker date="1482745937233" expanded="true" signature="50133:50581" ph="select line.... qp_app_line" />
-            <marker date="1482745937233" expanded="true" signature="66263:67846" ph="select ms.ro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="66590:67271" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="67113:67269" ph="select messa... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="67278:67688" ph="select disti... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="72477:72601" ph="select * fro... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="72518:72576" ph="select messa... qp_message_send" />
-            <marker date="1482745937233" expanded="true" signature="73242:73899" ph="select m.row... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74011:74542" ph="select disti... qp_message" />
-            <marker date="1482745937233" expanded="true" signature="74915:75088" ph="select if(re... qp_user_message" />
-            <marker date="1482745937233" expanded="true" signature="119402:119532" ph="select * fro... qp_user" />
-            <marker date="1482745937233" expanded="true" signature="119441:119498" ph="select user_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="43007:43088" ph="select * fro... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="43686:45072" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44488:44728" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44537:44727" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="44595:44652" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="44736:44914" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="44785:44840" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="44921:45042" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45249:46247" ph="select disti... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45924:46097" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="45974:46096" ph="select app_r... qp_role_app" />
+            <marker date="1483514539303" expanded="true" signature="46034:46095" ph="select role_... qp_user_role" />
+            <marker date="1483514539303" expanded="true" signature="46105:46215" ph="select row_i... qp_app_head" />
+            <marker date="1483514539303" expanded="true" signature="46155:46214" ph="select app_r... qp_user_app" />
+            <marker date="1483514539303" expanded="true" signature="49140:49259" ph="select row_i... qp_app_category" />
+            <marker date="1483514539303" expanded="true" signature="50092:50540" ph="select line.... qp_app_line" />
+            <marker date="1483514539303" expanded="true" signature="66303:67886" ph="select ms.ro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="66630:67311" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="67153:67309" ph="select messa... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="67318:67728" ph="select disti... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="72560:72701" ph="select * fro... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="72618:72676" ph="select messa... qp_message_send" />
+            <marker date="1483514539303" expanded="true" signature="73342:74019" ph="select m.row... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="74131:74701" ph="select disti... qp_message" />
+            <marker date="1483514539303" expanded="true" signature="75074:75247" ph="select if(re... qp_user_message" />
+            <marker date="1483514539303" expanded="true" signature="119914:120044" ph="select * fro... qp_user" />
+            <marker date="1483514539303" expanded="true" signature="119953:120010" ph="select user_... qp_user_role" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/login.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="158" column="51" lean-forward="true" selection-start-line="158" selection-start-column="51" selection-end-line="158" selection-end-column="51" />
+          <folding>
+            <element signature="e#1872#6281#0#HTML" expanded="false" />
+            <element signature="e#6327#6405#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

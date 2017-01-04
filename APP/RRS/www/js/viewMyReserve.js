@@ -112,6 +112,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+                var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
                 $('div[for=cancelMsg]').popup('close');
             });
 
