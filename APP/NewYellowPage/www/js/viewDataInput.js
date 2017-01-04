@@ -51,7 +51,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 company.selectmenu("refresh");
 
                 $("#viewDataInput input[type=text]").val("");
-                $("#viewDataInput input[type=number]").val("");
             }
 
             /********************************** page event *************************************/
