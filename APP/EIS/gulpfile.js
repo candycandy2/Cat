@@ -79,26 +79,22 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
-//ex: gulp config --env test --vname 1.0.0.124 --vcode 124
-//gulp config --env dev --vname 1.0.0.124 --vcode 124
 gulp.task('config', function(){
     fs.writeFile('config.xml', configContent);
 });
 
 /*-------------------------------------------------------------------------------------------------*/
-
-//ex: gulp install --env test
-//gulp install --env dev
+//ex: gulp install --env test   
 gulp.task('install', shell.task([
-/*   'cordova plugin remove cordova-plugin-device',
+  'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
   'cordova platform rm ios',
-  'cordova platform rm android', */
-   'cordova platform add ios', 
+  'cordova platform rm android', 
+  'cordova platform add ios', 
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
@@ -181,6 +177,6 @@ gulp.task('concat:js', function(){
 
 //ex: gulp default
 //remove petch task
-gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });

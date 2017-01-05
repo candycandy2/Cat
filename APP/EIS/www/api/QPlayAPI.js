@@ -1,5 +1,5 @@
-//qplayAPI - YellowPage
-
+//qplayAPI - YellowPage 
+//TODO: need to chang for EIS
 function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
 
     failCallback = failCallback || null;
@@ -13,7 +13,6 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         checkNetwork();
     }
 
-    appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
