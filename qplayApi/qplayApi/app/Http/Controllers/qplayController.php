@@ -2076,6 +2076,7 @@ SQL;
                     'content'=>'']);
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
+                \DB::table("qp_register")-> where('row_id', "=", $registerId)->delete();
                 return $result;
             }
 
@@ -2394,7 +2395,7 @@ SQL;
                         $companyStr = "";
                         foreach ($CompanyList as $company) {
                             if(!CommonUtil::checkCompanyExist(trim($company))) {
-                                $result = response()->json(['result_code'=>ResultCode::_999013_companyNotExist,
+                                $result = response()->json(['result_code'=>ResultCode::_999014_companyNotExist,
                                     'message'=>"company不存在",
                                     'content'=>'']);
                                 CommonUtil::logApi("", $ACTION,
