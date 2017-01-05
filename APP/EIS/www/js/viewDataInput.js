@@ -11,7 +11,9 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                 this.successCallback = function(data) {
                     loadingMask("hide");
+
                     var resultcode = data['ResultCode'];
+
                     if (resultcode === "1") {
                         var dataContent = data['Content'];
                         $('#Company').html('<option value="All Company">All Company</option>');
@@ -20,25 +22,29 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
                         }
-                        QueryMyPhoneBook();
+                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+                        getServerData();
                     }
                 };
+
                 this.failCallback = function(data) {};
+
                 var __construct = function() {
                     QPlayAPI("POST", "QueryCompanyData", self.successCallback, self.failCallback);
                 }();
+
             };
 
             function checkInputData() {
-                var queryData;
-                var empty = true;
-                $("#viewDataInput input[type=text]").each(function(index, element) {
-                    queryData = $(element).val();
+                var emptyData = true;
+
+                $("#viewDataInput input[type=text]").each(function(index, element){
                     if ($(element).val().length !== 0) {
-                        empty = false;
+                        emptyData = false;
                     }
                 });
-                if (empty) {
+
+                if (emptyData) {
                     $("#noQueryCondition").popup("open");
                 } else {
                     $.mobile.changePage('#viewQueryResult');
@@ -46,8 +52,8 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             }
 
             function clearInputData() {
-                var company = $("select#Company");
-                company[0].selectedIndex = 0;
+                var company = $("select#Company"); 
+                company[0].selectedIndex = 0; 
                 company.selectmenu("refresh");
 
                 $("#viewDataInput input[type=text]").val("");
@@ -71,26 +77,14 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 checkInputData();
             });
 
-            $('#viewDataInput').keydown(function(event) {
+            $('#viewDataInput').keypress(function(event) {
                 if (event.keyCode === 13) {
-                    /* keyCode of 'Enter' key is 13 */
+                    // keyCode of 'Enter' key is 13
                     checkInputData();
                 }
             });
 
-            $("#ExtNum").keyup(function(event) {
-                var pattern = /([^0-9\-]*)[0-9\-]*([^0-9\-]*)/;
-                var char = event.currentTarget.value;
-                var maxlength = $("#ExtNum").data('maxlength');
-                var residue = char.match(pattern);
-                if(residue[1] !== "" || residue[2] !== "") {
-                    $("#ExtNum").val($("#ExtNum").val().replace(residue[1],""));
-                    $("#ExtNum").val($("#ExtNum").val().replace(residue[2],""));
-                }
-                if($("#ExtNum").val().length > maxlength - 1 && (event.key) !== "Backspace") {
-                    $("#ExtNum").val($("#ExtNum").val().substring(0, 10));   
-                }
-            });
         }
     });
+
 });
