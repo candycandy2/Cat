@@ -31,45 +31,11 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
             function checkInputData() {
                 var queryData;
-                var pattern;
-                var residue;
                 var empty = true;
-                var USERINPUT = {
-                        CNAME      : 0,
-                        ENAME      : 1,
-                        DEPARTMENT : 2,
-                        EXT        : 3
-                };
-
                 $("#viewDataInput input[type=text]").each(function(index, element) {
                     queryData = $(element).val();
                     if ($(element).val().length !== 0) {
                         empty = false;
-                        switch(index){
-                           
-                            case USERINPUT.CNAME :
-                                break;
-                            case USERINPUT.ENAME :
-                           
-                                break;
-                            case USERINPUT.DEPARTMENT :
-
-                                break;
-                            case USERINPUT.EXT :
-                                pattern = /([^0-9\-]*)([0-9\-]*)([^0-9\-]*)/;
-                                residue = queryData.match(pattern);
-                                if(residue[1] === "" && residue[3] === "") {
-                                    pattern = /([0-9\-]{0,10})([0-9\-]*)/;
-                                    residue = queryData.match(pattern);
-                                    if(residue[2] === "") {
-                                        /**/
-                                    }else{
-                                        empty = true;
-                                    }
-                                }else{
-                                    empty = true;
-                                }
-                        }
                     }
                 });
                 if (empty) {
@@ -105,14 +71,26 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 checkInputData();
             });
 
-            $('#viewDataInput').keypress(function(event) {
+            $('#viewDataInput').keydown(function(event) {
                 if (event.keyCode === 13) {
-                    // keyCode of 'Enter' key is 13
+                    /* keyCode of 'Enter' key is 13 */
                     checkInputData();
                 }
             });
 
+            $("#ExtNum").keyup(function(event) {
+                var pattern = /([^0-9\-]*)[0-9\-]*([^0-9\-]*)/;
+                var char = event.currentTarget.value;
+                var maxlength = $("#ExtNum").data('maxlength');
+                var residue = char.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#ExtNum").val($("#ExtNum").val().replace(residue[1],""));
+                    $("#ExtNum").val($("#ExtNum").val().replace(residue[2],""));
+                }
+                if($("#ExtNum").val().length > maxlength - 1 && (event.key) !== "Backspace") {
+                    $("#ExtNum").val($("#ExtNum").val().substring(0, 10));   
+                }
+            });
         }
     });
-
 });
