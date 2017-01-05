@@ -1,0 +1,53 @@
+<!-- Start of viewPhonebook -->
+<div data-role="page" id="viewPhonebook">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#" class="ui-btn ui-icon-edit ui-btn-icon-left ui-btn-icon-notext ui-btn-b" id="phonebookEdit"></a>
+        <div class="header-style">
+            <h4>我的電話簿</h4>
+        </div>
+        <a href="#viewDataInput" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+
+        <div class="ui-grid-c q-result-grid" data-position="fixed">
+            <div class="ui-block-a company"><div class="ui-bar ui-bar-a">公司</div></div>
+            <div class="ui-block-b e-name"><div class="ui-bar ui-bar-a">英文名字</div></div>
+            <div class="ui-block-c c-name"><div class="ui-bar ui-bar-a">中文名字</div></div>
+        </div>
+    </div>
+
+    <div data-role="main" class="page-main">
+        <ul data-role="listview" data-icon="false" class="q-result-grid" id="myPhonebookList">
+        </ul>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b" id="phonebookEditBtn" class="hide">
+        <div data-role="navbar" data-iconpos="top" class="custom-navbar">
+            <ul>
+                <li>
+                    <a href="#" data-icon="check" id="selectAll">選擇全部</a>
+                    <a href="#" data-icon="check" id="unselectAll">取消全部</a>
+                </li>
+                <li><a href="#" data-rel="popup" data-position-to="window" data-transition="pop" data-icon="delete" id="phoneDelete">刪除聯絡人</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div data-role="popup" data-history="false" id="phonebookDelectAlert" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>請選擇要刪除的聯絡人!</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
+            </p>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" id="phonebookDelectConfirm" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>是否刪除選擇的聯絡人?</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" id="cancel">取消</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="confirm">確定</a>
+            </p>
+        </div>
+    </div>
+
+</div>
