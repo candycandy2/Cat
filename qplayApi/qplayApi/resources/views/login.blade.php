@@ -76,6 +76,9 @@
     <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
         <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
             <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
+            @if (Config::get('app.env')!='production')
+                <div style="color: red; font-size:5vh">● {{Config::get('app.env')}} ●</div>
+            @endif
             <table id="main_table">
                 <tr>
                     <td class="control_icon_cell">
@@ -137,9 +140,9 @@
             <div style="margin-top: 1.8vh;">
                 <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
-                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
+                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
                 </div>
             </div>

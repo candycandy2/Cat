@@ -136,6 +136,18 @@ function addZero(number) {
     return number;
 }
 
+function openNewMessage() {
+    messageRowId = window.localStorage.getItem("messageRowId");
+
+    //Before open Message Detail Data, update Message List
+    if (window.localStorage.getItem("msgDateFrom") === null) {
+        $.mobile.changePage('#viewNewsEvents2-3');
+    } else {
+        var messageList = new QueryMessageList();
+        callGetMessageList = true;
+    }
+}
+
 //un-register [User with Mobile Device UUID]
 function unregister() {
 
