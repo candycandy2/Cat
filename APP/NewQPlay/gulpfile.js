@@ -101,6 +101,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="geo:*" />' +
                         '<allow-intent href="appyellowpage' + appNameDecorate + ':*" />' +
                         '<allow-intent href="apprrs' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeis' + appNameDecorate + ':*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                         '</platform>' +
