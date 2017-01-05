@@ -37,7 +37,6 @@ var dictSiteCategory = {
     '100': '8'
 };
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
-var arrMyReserveTime = [];
 var dictRole = {
     'system': '1',
     'secretary': '2',
@@ -46,6 +45,7 @@ var dictRole = {
 var reserveDays = 14;
 var systemRole = '';
 var meetingRoomSiteByRole = '';
+var myReserveLocalData = [];
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -171,15 +171,20 @@ function getAPIListAllManager() {
             //save to local data
             localStorage.removeItem('listAllManager');
             var jsonData = {};
+            var bResult = false;
             for (var i = 0, item; item = data['Content'][i]; i++) {
-                if (item.EmpNo === loginData['emp_no']) {
+                if (item.EmpNo.trim() === loginData['emp_no']) {
                     jsonData = {
                         systemRole: item.SystemRole,
                         meetingRoomSite: item.MeetingRoomSite
                     };
                     systemRole = item.SystemRole;
                     meetingRoomSiteByRole = item.MeetingRoomSite;
+                    bResult = true;
                 }
+            }
+            if (!bResult) {
+                jsonData = 'normal';
             }
             localStorage.setItem('listAllManager', JSON.stringify(jsonData));
             loadingMask('hide');
@@ -201,50 +206,38 @@ function getAPIQueryMyReserveTime() {
     var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
 
     this.successCallback = function(data) {
+        var jsonData = [];
+        myReserveLocalData = jsonData;
+
         if (data['ResultCode'] === "1") {
             //Successful
-
-            var jsonData = {};
-            var jsonChildData = {};
-            jsonData = {
-                lastUpdateTime: new Date(),
-                content: []
-            };
-            localStorage.removeItem('myReserveLocalData');
-            localStorage.setItem('myReserveLocalData', JSON.stringify(jsonData));
-            var myReserveLocalData = JSON.parse(localStorage.getItem('myReserveLocalData'));
-
             for (var i = 0, item; item = data['Content'][i]; i++) {
-
                 var strBeginTime = item.ReserveBeginTime;
                 var strEndTime = item.ReserveEndTime;
+                var searchRoomNode = searchTree(meetingRoomData, item.MeetingRoomName);
+                var searchSiteNode = searchRoomNode.parent.parent.data;
 
                 if (strBeginTime == strEndTime) {
-                    jsonChildData = {
+                    jsonData = {
+                        site: searchSiteNode,
                         date: item.ReserveDate,
                         time: strBeginTime
                     };
-
-                    myReserveLocalData.content.push(jsonChildData);
+                    myReserveLocalData.push(jsonData);
 
                 } else {
                     do {
-                        jsonChildData = {
+                        jsonData = {
+                            site: searchSiteNode,
                             date: item.ReserveDate,
                             time: strBeginTime
                         };
 
-                        myReserveLocalData.content.push(jsonChildData);
-
+                        myReserveLocalData.push(jsonData);
                         strBeginTime = addThirtyMins(strBeginTime);
                     } while (strBeginTime != strEndTime);
                 }
-
-                jsonData = myReserveLocalData;
-
             }
-
-            localStorage.setItem('myReserveLocalData', JSON.stringify(jsonData));
         }
         loadingMask('hide');
     };
