@@ -37,8 +37,15 @@ var dictSiteCategory = {
     '100': '8'
 };
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
-var arrListAllManager = [];
-var arrMyReserveTime = [];
+var dictRole = {
+    'system': '1',
+    'secretary': '2',
+    'super': '4'
+};
+var reserveDays = 14;
+var systemRole = '';
+var meetingRoomSiteByRole = '';
+var myReserveLocalData = [];
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -161,14 +168,25 @@ function getAPIListAllManager() {
 
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
-
-            arrListAllManager = data['Content'];
-
             //save to local data
-            var jsonData = data['Content'];
             localStorage.removeItem('listAllManager');
+            var jsonData = {};
+            var bResult = false;
+            for (var i = 0, item; item = data['Content'][i]; i++) {
+                if (item.EmpNo.trim() === loginData['emp_no']) {
+                    jsonData = {
+                        systemRole: item.SystemRole,
+                        meetingRoomSite: item.MeetingRoomSite
+                    };
+                    systemRole = item.SystemRole;
+                    meetingRoomSiteByRole = item.MeetingRoomSite;
+                    bResult = true;
+                }
+            }
+            if (!bResult) {
+                jsonData = 'normal';
+            }
             localStorage.setItem('listAllManager', JSON.stringify(jsonData));
-
             loadingMask('hide');
         } else {
             loadingMask('hide');
@@ -186,25 +204,38 @@ function getAPIQueryMyReserveTime() {
     var self = this;
     var today = new Date();
     var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
-    arrMyReserveTime = [];
-    
+
     this.successCallback = function(data) {
+        var jsonData = [];
+        myReserveLocalData = jsonData;
+
         if (data['ResultCode'] === "1") {
             //Successful
             for (var i = 0, item; item = data['Content'][i]; i++) {
-                if (item.ReserveDate == new Date().yyyymmdd('')) {
+                var strBeginTime = item.ReserveBeginTime;
+                var strEndTime = item.ReserveEndTime;
+                var searchRoomNode = searchTree(meetingRoomData, item.MeetingRoomName);
+                var searchSiteNode = searchRoomNode.parent.parent.data;
 
-                    var strBeginTime = item.ReserveBeginTime;
-                    var strEndTime = item.ReserveEndTime;
+                if (strBeginTime == strEndTime) {
+                    jsonData = {
+                        site: searchSiteNode,
+                        date: item.ReserveDate,
+                        time: strBeginTime
+                    };
+                    myReserveLocalData.push(jsonData);
 
-                    if (strBeginTime == strEndTime) {
-                        arrMyReserveTime.push(strBeginTime);
-                    } else {
-                        do {
-                            arrMyReserveTime.push(strBeginTime);
-                            strBeginTime = addThirtyMins(strBeginTime);
-                        } while (strBeginTime != strEndTime);
-                    }
+                } else {
+                    do {
+                        jsonData = {
+                            site: searchSiteNode,
+                            date: item.ReserveDate,
+                            time: strBeginTime
+                        };
+
+                        myReserveLocalData.push(jsonData);
+                        strBeginTime = addThirtyMins(strBeginTime);
+                    } while (strBeginTime != strEndTime);
                 }
             }
         }
@@ -523,10 +554,3 @@ function reserveLocalDataObj(roomId, date, data) {
     this.date = date;
     this.data = data;
 };
-
-function padLeft(str, lenght) {
-    if (str.length >= lenght)
-        return str;
-    else
-        return padLeft("0" + str, lenght);
-}
