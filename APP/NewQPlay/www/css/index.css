@@ -24,7 +24,7 @@
     border-width: 0px;
 }
 
-#viewWebNews2-3-1 .ui-content {
+#viewWebNews2-3-1 .ui-content.page-main {
     padding: 10px 0 0 0;
     background-color: #FFF;
 }
