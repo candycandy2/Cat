@@ -37,14 +37,18 @@ var dictSiteCategory = {
     '100': '8'
 };
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
-var dictRole = {
+var dictRoleForDays = {
     'system': '1',
     'secretary': '2',
     'super': '4'
 };
 var reserveDays = 14;
-var systemRole = '';
-var meetingRoomSiteByRole = '';
+
+var roleForDays = '';
+var siteForDays = '';
+var roleForLimitTime = '';
+var siteForLimitTime = '';
+
 var myReserveLocalData = [];
 
 window.initialSuccess = function() {
@@ -172,17 +176,36 @@ function getAPIListAllManager() {
             localStorage.removeItem('listAllManager');
             var jsonData = {};
             var bResult = false;
+
+            //to do change to dictionary
+            var arrRoleForDays = [];
+            var arrRoleForLimitTime = [];
             for (var i = 0, item; item = data['Content'][i]; i++) {
+                console.log(item);
                 if (item.EmpNo.trim() === loginData['emp_no']) {
-                    jsonData = {
-                        systemRole: item.SystemRole,
-                        meetingRoomSite: item.MeetingRoomSite
-                    };
-                    systemRole = item.SystemRole;
-                    meetingRoomSiteByRole = item.MeetingRoomSite;
+
+                    if (item.SystemRole == '4') {
+                        arrRoleForLimitTime.push();
+                    } else {
+                        arrRoleForDays.push();
+                    }
+
+                    // jsonData = {
+                    //     systemRole: item.SystemRole,
+                    //     meetingRoomSite: item.MeetingRoomSite
+                    // };
+                    // systemRole = item.SystemRole;
+                    // meetingRoomSiteByRole = item.MeetingRoomSite;
+
                     bResult = true;
                 }
             }
+
+            // roleForDays = JSON.parse(localStorage.getItem('listAllManager'))['roleForDays'];
+            // siteForDays = JSON.parse(localStorage.getItem('listAllManager'))['siteForDays'];
+            // roleForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['roleForLimitTime'];
+            // siteForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['siteForLimitTime'];
+
             if (!bResult) {
                 jsonData = 'normal';
             }

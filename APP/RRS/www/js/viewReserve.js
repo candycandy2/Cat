@@ -243,18 +243,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var isReserveMulti = $('#' + clickRomeId).attr('IsReserveMulti');
                 var bResult = false;
                 var isExistInArray = false;
+                var selectedSite = $('#reserveSite').find(":selected").val();
 
-                if (systemRole == dictRole['super'] || isReserveMulti === 'N') {
+                if ((roleForLimitTime == dictRole['super'] && siteForLimitTime == selectedSite) || isReserveMulti === 'N') {
                     bResult = true;
                 } else {
-                    myReserveLocalData = myReserveLocalData.filter(function(item) {
+                    var myReserveFilterData = myReserveLocalData.filter(function(item) {
                         return item.date == date;
                     });
 
-                    if (myReserveLocalData.length === 0) {
+                    if (myReserveFilterData.length === 0) {
                         bResult = true;
                     } else {
-                        $.each(myReserveLocalData, function(index, value) {
+                        $.each(myReserveFilterData, function(index, value) {
                             if (timeNameClick.indexOf(value.time) != -1) {
                                 isExistInArray = true;
                             }
@@ -267,7 +268,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function setRoleAndDateList(site) {
-                if (systemRole == dictRole['system'] || (systemRole == dictRole['super'] && meetingRoomSiteByRole == site) || (systemRole == dictRole['secretary'] && meetingRoomSiteByRole == site)) {
+                if (roleForDays == dictRole['system'] || (roleForDays == dictRole['secretary'] && siteForDays == site)) {
                     reserveDays = 120;
                 } else {
                     reserveDays = 14;
@@ -438,8 +439,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 } else {
                     ConverToTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
                     arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
-                    systemRole = JSON.parse(localStorage.getItem('listAllManager'))['systemRole'];
-                    meetingRoomSiteByRole = JSON.parse(localStorage.getItem('listAllManager'))['meetingRoomSite'];
+                    roleForDays = JSON.parse(localStorage.getItem('listAllManager'))['roleForDays'];
+                    siteForDays = JSON.parse(localStorage.getItem('listAllManager'))['siteForDays'];
+                    roleForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['roleForLimitTime'];
+                    siteForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['siteForLimitTime'];
                 }
                 var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
                 meetingRoomData = meetingRoomTreeData._root;
@@ -695,6 +698,20 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
                 $('div[for=reserveFailMsg]').popup('close');
             });
+
+            // $('body').on('click', 'div[id=ggg]', function() {
+            //     var activePage = $.mobile.activePage.attr("id");
+            //     //$( ":mobile-pagecontainer" ).pagecontainer("change", "#" + activePage, {  reload : true, allowSamePageTransition : true, transition : "none" });
+            //     //location.reload();
+            //     //$.mobile.changePage('#viewReserve');
+            //     //$.mobile.loadPage('#viewReserve');
+
+            //     $.mobile.changePage('#viewReserve', {
+            //         changeHash: true,
+            //         reloadPage: true,
+            //         dataUrl: '#viewReserve'
+            //     });
+            // });
         }
     });
 });
