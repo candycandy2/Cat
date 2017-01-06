@@ -88,3 +88,17 @@ function findIndex(arr, data) {
 
     return index;
 }
+
+function searchTree(element, matchingTitle){
+     if(element.data == matchingTitle || element.data.MeetingRoomName == matchingTitle){
+          return element;
+     }else if (element.children != null){
+          var i;
+          var result = null;
+          for(i=0; result == null && i < element.children.length; i++){
+               result = searchTree(element.children[i], matchingTitle);
+          }
+          return result;
+     }
+     return null;
+}

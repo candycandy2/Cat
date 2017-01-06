@@ -49,7 +49,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 var company = $("select#Company");
                 company[0].selectedIndex = 0;
                 company.selectmenu("refresh");
-
                 $("#viewDataInput input[type=text]").val("");
             }
 
@@ -78,18 +77,52 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 }
             });
 
+            $("#CName").keyup(function(event) {
+                var pattern = /([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)[\u4E00-\u9FFF\u3400-\u4DB5\-\.]*([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)/;
+                var maxlength = $("#CName").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#CName").val($("#CName").val().replace(residue[1], ""));
+                    $("#CName").val($("#CName").val().replace(residue[2], ""));
+                }
+                if($("#CName").val().length > maxlength - 1)
+                    $("#CName").val($("#CName").val().substring(0, maxlength));
+            });
+
+            $("#EName").keyup(function(event) {
+                var pattern = /([^a-zA-Z\-\.]*)[a-zA-Z\-\.]*([^a-zA-Z\-\.]*)/;
+                var maxlength = $("#EName").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#EName").val($("#EName").val().replace(residue[1], ""));
+                    $("#EName").val($("#EName").val().replace(residue[2], ""));
+                }
+                if($("#EName").val().length > maxlength - 1)
+                    $("#EName").val($("#EName").val().substring(0, maxlength));
+            });
+
+            $("#Department").keyup(function(event) {
+                var pattern = /([^a-zA-Z0-9\-]*)[a-zA-Z0-9\-]*([^a-zA-Z0-9\-]*)/;
+                var maxlength = $("#Department").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#Department").val($("#Department").val().replace(residue[1],""));
+                    $("#Department").val($("#Department").val().replace(residue[2], ""));
+                }
+                if($("#Department").val().length > maxlength - 1)
+                    $("#Department").val($("#Department").val().substring(0, maxlength));
+            });
+
             $("#ExtNum").keyup(function(event) {
                 var pattern = /([^0-9\-]*)[0-9\-]*([^0-9\-]*)/;
-                var char = event.currentTarget.value;
                 var maxlength = $("#ExtNum").data('maxlength');
-                var residue = char.match(pattern);
+                var residue = event.currentTarget.value.match(pattern);
                 if(residue[1] !== "" || residue[2] !== "") {
-                    $("#ExtNum").val($("#ExtNum").val().replace(residue[1],""));
-                    $("#ExtNum").val($("#ExtNum").val().replace(residue[2],""));
+                    $("#ExtNum").val($("#ExtNum").val().replace(residue[1], ""));
+                    $("#ExtNum").val($("#ExtNum").val().replace(residue[2], ""));
                 }
-                if($("#ExtNum").val().length > maxlength - 1 && (event.key) !== "Backspace") {
-                    $("#ExtNum").val($("#ExtNum").val().substring(0, 10));   
-                }
+                if($("#ExtNum").val().length > maxlength - 1)
+                    $("#ExtNum").val($("#ExtNum").val().substring(0, maxlength));   
             });
         }
     });
