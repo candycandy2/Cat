@@ -124,18 +124,44 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                     //Update [read / delete] status in Local Storage
                     if (doUpdateLocalStorage) {
 
-                        if (messageArrIndex === null) {
-                            for (var i=0; i<messagecontent.message_list.length; i++) {
-                                if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId.toString()) {
-                                    messageArrIndex = i;
-                                }
-                            }
+                        //Single / Multiple message update check
+                        var singleMessage = true;
+
+                        if (messageRowId.indexOf(",") !== -1) {
+                            singleMessage = false;
                         }
 
-                        if (status === "read") {
-                            messagecontent.message_list[messageArrIndex].read = "Y";
-                        } else if (status === "delete") {
-                            messagecontent.message_list[messageArrIndex].read = "D";
+                        if (singleMessage) {
+                            if (messageArrIndex === null) {
+                                for (var i=0; i<messagecontent.message_list.length; i++) {
+                                    if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId.toString()) {
+                                        messageArrIndex = i;
+                                    }
+                                }
+                            }
+
+                            if (status === "read") {
+                                messagecontent.message_list[messageArrIndex].read = "Y";
+                            } else if (status === "delete") {
+                                messagecontent.message_list[messageArrIndex].read = "D";
+                            }
+                        } else {
+                            var messageRowIdArr = messageRowId.split(",");
+
+                            for (var i=0; i<messageRowIdArr.length; i++) {
+
+                                for (var j=0; j<messagecontent.message_list.length; j++) {
+                                    if (messagecontent.message_list[j].message_send_row_id.toString() === messageRowIdArr[i]) {
+                                        messageArrIndex = j;
+                                    }
+                                }
+
+                                if (status === "read") {
+                                    messagecontent.message_list[messageArrIndex].read = "Y";
+                                } else if (status === "delete") {
+                                    messagecontent.message_list[messageArrIndex].read = "D";
+                                }
+                            }
                         }
 
                         loginData["messagecontent"] = messagecontent;
