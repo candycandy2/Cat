@@ -12,7 +12,6 @@ function Tree(data) {
 }
 
 Tree.prototype.traverseDF = function(callback) {
-
     // this is a recurse and immediately-invoking function
     (function recurse(currentNode) {
         for (var i = 0, length = currentNode.children.length; i < length; i++) {
@@ -22,7 +21,6 @@ Tree.prototype.traverseDF = function(callback) {
         callback(currentNode);
 
     })(this._root);
-
 };
 
 Tree.prototype.contains = function(callback, traversal) {
@@ -73,18 +71,31 @@ Tree.prototype.remove = function(data, fromData, traversal) {
     } else {
         throw new Error('Parent does not exist.');
     }
-
     return childToRemove;
 };
 
+//search one level
 function findIndex(arr, data) {
     var index;
-
     for (var i = 0; i < arr.length; i++) {
         if (arr[i].data === data) {
             index = i;
         }
     }
-
     return index;
+}
+
+//recusive search all tree node
+function searchTree(element, searchName){
+     if(element.data == searchName || element.data.MeetingRoomName == searchName){
+          return element;
+     }else if (element.children != null){
+          var i;
+          var result = null;
+          for(i=0; result == null && i < element.children.length; i++){
+               result = searchTree(element.children[i], searchName);
+          }
+          return result;
+     }
+     return null;
 }

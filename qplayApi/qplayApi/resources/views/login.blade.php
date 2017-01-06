@@ -76,6 +76,9 @@
     <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
         <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
             <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
+            @if (Config::get('app.env')!='production')
+                <div style="color: red; font-size:5vh">● {{Config::get('app.env')}} ●</div>
+            @endif
             <table id="main_table">
                 <tr>
                     <td class="control_icon_cell">
@@ -137,9 +140,9 @@
             <div style="margin-top: 1.8vh;">
                 <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
-                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
+                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;"
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
                 </div>
             </div>
@@ -156,19 +159,19 @@
         </div>
     </div>
 
-    <div data-role="page" id="pageRegister">
+    <div data-role="page" id="pageRegister" style="background: linear-gradient(to bottom, #f2f2f3, #ffffff 50%, #f2f2f3);">
         <div role="main" class="ui-content" style="text-align: center;">
-            <div style="margin: 20vh auto 0 auto;">
-                <img src="{{asset('/css/images/verified_img.png')}}" style="width:15vh; margin:2vh 2vh 0 4.5vh;" />
-                <h3 style="color: #0f0f0f;font:3.3vh 'Gill Sans MT';margin-top:2vh;">帳號與設備驗證成功</h3>
+            <div style="margin: 24vh auto 0 auto;">
+                <img src="{{asset('/css/images/verified_img.png')}}" style="height:12vh; margin:0vh 2vh 4vh 4.5vh;" />
+                <h3 style="color: #0f0f0f;font:3.3vh 'Gill Sans MT';margin-top:0;">帳號與設備驗證成功</h3>
                 
         </div>
         </div>
-        <div style="position:fixed;bottom: 0;padding:1em;left: 0;right: 0;">
-            <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;">若要註銷設備，請聯絡<a href="mailto:QPlay@BenQ.com">ITS</a></h4>
-            <div style="width: 78%;margin: 1vh auto 0 auto;">
+        <div style="position:fixed;bottom: 0;padding:1em 1em 6.6vh 1em;left: 0;right: 0;">
+            <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';margin: 0 auto;text-align: center;">若要註銷設備，請聯絡<a href="mailto:QPlay@BenQ.com">ITS</a></h4>
+            <div style="margin: 2vh auto 0 auto;">
                 <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;"
+                <button class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
                     onclick="start()">好，我知道了</button>
             </div>
         </div>
@@ -298,7 +301,7 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", "appqplay");
+                    request.setRequestHeader("app-key", <?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
                     request.setRequestHeader("signature", "Moses824");
                     request.setRequestHeader("signature-time", "1000000000");
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");

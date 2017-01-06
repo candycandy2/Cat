@@ -59,9 +59,13 @@ body {
     width: 90%;
 }
 
+body, input, select, textarea, button, .ui-btn {
+    font-family: "Arial", "微軟中黑體";
+}
+
 /* variable, function, style for All APP */
 body {
-    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
+    font-family: "Arial", "微軟中黑體";
     text-shadow: none;
 }
 
@@ -235,7 +239,8 @@ body {
     width: 70vw;
     height: auto;
     padding: 2vh 0;
-    background-color: blueviolet;
+    border-radius: 25px;
+    background-color: #492f80;
     color: #FFF;
 }
 
