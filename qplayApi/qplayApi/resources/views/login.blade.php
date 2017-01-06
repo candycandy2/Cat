@@ -171,7 +171,7 @@
             <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';margin: 0 auto;text-align: center;">若要註銷設備，請聯絡<a href="mailto:QPlay@BenQ.com">ITS</a></h4>
             <div style="margin: 2vh auto 0 auto;">
                 <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;width: 64vw;"
+                <button class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
                     onclick="start()">好，我知道了</button>
             </div>
         </div>
