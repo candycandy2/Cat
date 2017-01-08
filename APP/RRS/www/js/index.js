@@ -43,12 +43,10 @@ var dictRoleForDays = {
     'super': '4'
 };
 var reserveDays = 14;
-
 var roleForDays = '';
-var siteForDays = '';
+var siteForDays = [];
 var roleForLimitTime = '';
-var siteForLimitTime = '';
-
+var siteForLimitTime = [];
 var myReserveLocalData = [];
 
 window.initialSuccess = function() {
@@ -175,42 +173,63 @@ function getAPIListAllManager() {
             //save to local data
             localStorage.removeItem('listAllManager');
             var jsonData = {};
+            var jsonChildData = {};
             var bResult = false;
+            var templistAllManager = {};
+            var tempContent = [];
 
-            //to do change to dictionary
-            var arrRoleForDays = [];
-            var arrRoleForLimitTime = [];
+            templistAllManager = {
+                roleForDays: '',
+                siteForDays: [],
+                roleForLimitTime: '',
+                siteForLimitTime: []
+            };
+
             for (var i = 0, item; item = data['Content'][i]; i++) {
-                console.log(item);
                 if (item.EmpNo.trim() === loginData['emp_no']) {
-
-                    if (item.SystemRole == '4') {
-                        arrRoleForLimitTime.push();
+                    if (item.SystemRole == dictRole['super']) {
+                        roleForLimitTime = dictRole['super'];
+                        siteForLimitTime.push(item.MeetingRoomSite);
                     } else {
-                        arrRoleForDays.push();
+                        //item.SystemRole = 1 or 2
+                        jsonChildData = {
+                            roleForDays: item.SystemRole,
+                            siteForDays: item.MeetingRoomSite
+                        };
+                        tempContent.push(jsonChildData);
                     }
-
-                    // jsonData = {
-                    //     systemRole: item.SystemRole,
-                    //     meetingRoomSite: item.MeetingRoomSite
-                    // };
-                    // systemRole = item.SystemRole;
-                    // meetingRoomSiteByRole = item.MeetingRoomSite;
-
                     bResult = true;
                 }
             }
 
-            // roleForDays = JSON.parse(localStorage.getItem('listAllManager'))['roleForDays'];
-            // siteForDays = JSON.parse(localStorage.getItem('listAllManager'))['siteForDays'];
-            // roleForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['roleForLimitTime'];
-            // siteForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['siteForLimitTime'];
+            if (bResult) {
+                var temp = tempContent.filter(function(item) {
+                    return item.roleForDays == dictRole['system'];
+                });
 
-            if (!bResult) {
+                if (temp == null) {
+                    roleForDays = dictRole['secretary'];
+                    for (var item in tempContent) {
+                        siteForDays.push(tempContent[item].MeetingRoomSite);
+                    }
+                } else {
+                    roleForDays = dictRole['system'];
+                    siteForDays.push('0'); 
+                }
+
+                templistAllManager.roleForDays = roleForDays;
+                templistAllManager.siteForDays = siteForDays;
+                templistAllManager.roleForLimitTime = roleForLimitTime;
+                templistAllManager.siteForLimitTime = siteForLimitTime;
+                jsonData = templistAllManager;
+
+            } else {
                 jsonData = 'normal';
             }
+
             localStorage.setItem('listAllManager', JSON.stringify(jsonData));
             loadingMask('hide');
+
         } else {
             loadingMask('hide');
             popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
