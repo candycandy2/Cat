@@ -11,23 +11,20 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
 
     function requestError(data) {
         checkNetwork();
-        if (data.statusText == 'timeout') {
-            // this.tryCount++;
-            // if (this.tryCount <= this.retryLimit) {
-            //     //try again
-            //     $.ajax(this);
-            //     return;
-            // }            
-            // return;
+        if (data.statusText == 'timeout' || data.status == 500) {
+            
+            console.log(data.statusText + '/' + data.status);
+            loadingMask('hide');
 
-            // loadingMask('hide');
-            // var activePage = $.mobile.activePage.attr("id");
-            // $('#' + activePage).trigger('create');
-
-            //$('#' + activePage).listview('refresh');
-            //$.mobile.changePage('#' + activePage);
-            //$(":mobile-pagecontainer").pagecontainer('change', '#' + activePage, { reload: true });
-            //$(":mobile-pagecontainer").pagecontainer("change", "#storeMainPage", {  reload : true, allowSamePageTransition : true, transition : "none" });
+            var activePage = $.mobile.activePage.attr("id");
+            $.mobile.changePage(
+                '#' + activePage, {
+                    allowSamePageTransition: true,
+                    transition: 'none',
+                    showLoadMsg: false,
+                    reloadPage: false
+                }
+            );
         }
     }
 

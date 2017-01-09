@@ -66,7 +66,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 loadingMask('show');
                 var self = this;
                 var queryData = '<LayoutHeader><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTraceID></ReserveTraceID><ReserveTraceAggID>' + traceID + '</ReserveTraceAggID></LayoutHeader>';
-
+                
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
@@ -115,7 +115,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
-                var searchRoomNode = searchTree(meetingRoomData, clickReserveRoom);
+                var searchRoomNode = searchTree(meetingRoomData, clickReserveRoom, 'MeetingRoomName');
                 var searchSiteNode = searchRoomNode.parent.parent.data;
 
                 for (var i = 0; i < myReserveLocalData.length; i++) {

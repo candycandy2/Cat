@@ -244,8 +244,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var bResult = false;
                 var isExistInArray = false;
                 var selectedSite = $('#reserveSite').find(":selected").val();
+                var isSuperRole = searchTree(roleData, dictRole['super'], '');
+                var inLimitSite = searchTree(isSuperRole, selectedSite, '');
 
-                if ((roleForLimitTime == dictRole['super'] && siteForLimitTime.indexOf(selectedSite) == -1) || isReserveMulti === 'N') {
+                if ((isSuperRole != null && inLimitSite != null) || isReserveMulti === 'N') {
                     bResult = true;
                 } else {
                     var myReserveFilterData = myReserveLocalData.filter(function(item) {
@@ -268,7 +270,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function setRoleAndDateList(site) {
-                if (roleForDays == dictRole['system'] || (roleForDays == dictRole['secretary'] && siteForDays.indexOf(site) != -1)) {
+                var isSystemRole = searchTree(roleData, dictRole['system'], '');
+                var isSecretaryRole = searchTree(roleData, dictRole['secretary'], '');
+                var inLimitSite = searchTree(isSecretaryRole, site, '');
+
+                if (isSystemRole != null || (isSecretaryRole != null && inLimitSite != null)) {
                     reserveDays = 120;
                 } else {
                     reserveDays = 14;
@@ -426,6 +432,16 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }();
             }
 
+            function refreshPage() {
+                jQuery.mobile.pageContainer.pagecontainer('change', window.location.href, {
+                    allowSamePageTransition: true,
+                    transition: 'none',
+                    reloadPage: true
+                        // 'reload' parameter not working yet: //github.com/jquery/jquery-mobile/issues/7406
+                });
+            }
+
+
             /********************************** page event *************************************/
 
             $('#viewReserve').one('pagebeforeshow', function(event, ui) {
@@ -435,17 +451,25 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
                     var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
                     var doAPIListAllTime = new getAPIListAllTime();
+                } else {
+                    ConverToMeetingTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
+                    arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+                }
+
+                var listAllManager = JSON.parse(localStorage.getItem('listAllManager'));
+                if (listAllManager === null || checkDataExpired(listAllManager['lastUpdateTime'], 3, 'ss')) {
                     var doAPIListAllManager = new getAPIListAllManager();
                 } else {
-                    ConverToTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
-                    arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
-                    roleForDays = JSON.parse(localStorage.getItem('listAllManager'))['roleForDays'];
-                    siteForDays = JSON.parse(localStorage.getItem('listAllManager'))['siteForDays'];
-                    roleForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['roleForLimitTime'];
-                    siteForLimitTime = JSON.parse(localStorage.getItem('listAllManager'))['siteForLimitTime'];
+                    var tempContent = JSON.parse(localStorage.getItem('listAllManager'))['content'];
+                    if (tempContent != 'normal') {
+                        ConverToRoleTree(JSON.parse(localStorage.getItem('listAllManager'))['content']);
+                    }
                 }
-                var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
+
                 meetingRoomData = meetingRoomTreeData._root;
+                roleData = roleTreeData._root;
+
+                var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
                 setRoleAndDateList(meetingRoomData.children[0].data); //default site = 2(BQT/QTT)
                 getSiteData();
                 setReserveDetailLocalDate();
@@ -456,8 +480,14 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if (defaultSiteClick === null) {
                     getFloorData('0');
                 } else {
-                    $("#reserveSite").val(defaultSiteClick).change();
+                    //$("#reserveSite").val(defaultSiteClick).change();
+                    $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
+                    siteCategoryID = dictSiteCategory[defaultSiteClick];
+                    clickSiteId = $("#reserveSite option:selected").index();
+                    $('#reserveSite-button').find('span').text($("#reserveSite option:selected").text());
+                    getFloorData(clickSiteId);
                 }
+
                 $('#pageOne').show();
                 $('#pageTwo').hide();
             });
@@ -698,20 +728,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
                 $('div[for=reserveFailMsg]').popup('close');
             });
-
-            // $('body').on('click', 'div[id=ggg]', function() {
-            //     var activePage = $.mobile.activePage.attr("id");
-            //     //$( ":mobile-pagecontainer" ).pagecontainer("change", "#" + activePage, {  reload : true, allowSamePageTransition : true, transition : "none" });
-            //     //location.reload();
-            //     //$.mobile.changePage('#viewReserve');
-            //     //$.mobile.loadPage('#viewReserve');
-
-            //     $.mobile.changePage('#viewReserve', {
-            //         changeHash: true,
-            //         reloadPage: true,
-            //         dataUrl: '#viewReserve'
-            //     });
-            // });
         }
     });
 });

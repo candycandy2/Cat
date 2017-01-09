@@ -86,16 +86,23 @@ function findIndex(arr, data) {
 }
 
 //recusive search all tree node
-function searchTree(element, searchName){
-     if(element.data == searchName || element.data.MeetingRoomName == searchName){
-          return element;
-     }else if (element.children != null){
-          var i;
-          var result = null;
-          for(i=0; result == null && i < element.children.length; i++){
-               result = searchTree(element.children[i], searchName);
-          }
-          return result;
-     }
-     return null;
+function searchTree(element, searchName, type) {
+    if (element == null) {
+        return null;
+    }
+    var data = element.data;
+    if (typeof(data) == 'object') {
+        data = element.data[type];
+    }
+    if (data == searchName) {
+        return element;
+    } else if (element.children != null) {
+        var i;
+        var result = null;
+        for (i = 0; result == null && i < element.children.length; i++) {
+            result = searchTree(element.children[i], searchName, type);
+        }
+        return result;
+    }
+    return null;
 }
