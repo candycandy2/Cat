@@ -2074,24 +2074,34 @@ class platformController extends Controller
                         }
                     }
                 }
-
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
+                $messageSendRowId = DB::table("qp_message_send")
+                    ->join("qp_message_send_pushonly","qp_message_send_pushonly.message_row_id","=","qp_message_send.message_row_id")
+                    ->join('qp_message', function($join)
+                    {
+                        $join->on("qp_message.row_id","=","qp_message_send_pushonly.message_row_id")
+                            ->on("qp_message.row_id","=","qp_message_send.message_row_id");
+                    })
+                    ->where("qp_message_send_pushonly.row_id","=",$newMessageSendId)
+                    ->select("qp_message_send.row_id")
+                    ->get();
+                $messageSendRowId =$messageSendRowId[0]->row_id;
+                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
-                        -> where(['row_id'=>$newMessageSendId])
+                        -> where('row_id',"=",$messageSendRowId)
                         -> update([
                             'jpush_error_code'=>$result["info"],
                             'updated_user'=>\Auth::user()->row_id,
                             'updated_at'=>$now
                         ]);
                     \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageSendId]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$messageSendRowId, 'message_id'=>$messageSendRowId]);
                 }
 //                $result = array();
 //                $result["info"] = 1;
                 \DB::commit();
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$message_id]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$messageSendRowId, 'message_id'=>$message_id]);
             }catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
@@ -2307,7 +2317,7 @@ class platformController extends Controller
                                 'created_at'=>$now,
                             ]);
 
-                        array_push($real_push_user_list, $userId);
+                        array_push($real_push_user_list, $user-> row_id);
                     }
                 }
 
@@ -2331,25 +2341,34 @@ class platformController extends Controller
                 }
 
                 $title = $sourceMessageSendInfo->message_info->message_title;
-
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
+                $messageSendRowId = DB::table("qp_message_send")
+                    ->join("qp_message_send_pushonly","qp_message_send_pushonly.message_row_id","=","qp_message_send.message_row_id")
+                    ->join('qp_message', function($join)
+                    {
+                        $join->on("qp_message.row_id","=","qp_message_send_pushonly.message_row_id")
+                            ->on("qp_message.row_id","=","qp_message_send.message_row_id");
+                    })
+                    ->where("qp_message_send_pushonly.row_id","=",$newMessageSendId)
+                    ->select("qp_message_send.row_id")
+                    ->get();
+                $messageSendRowId =$messageSendRowId[0]->row_id;
+                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
+                $newMessageId = $sourceMessageSendInfo->message_info->row_id;
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
-                        -> where(['row_id'=>$newMessageSendId])
+                        -> where('row_id',"=",$newMessageSendId)
                         -> update([
                             'jpush_error_code'=>$result["info"],
                             'updated_user'=>\Auth::user()->row_id,
                             'updated_at'=>$now
                         ]);
                     \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
+                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$messageSendRowId, 'message_id'=>$newMessageId]);
                 }
-
-                $newMessageId = $sourceMessageSendInfo->message_info->row_id;
 
                 \DB::commit();
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$messageSendRowId, 'message_id'=>$newMessageId]);
             }catch (\Exception $e) {
                 \DB::rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e]);
