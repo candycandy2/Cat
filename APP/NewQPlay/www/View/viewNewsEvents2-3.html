@@ -12,7 +12,7 @@
             <div class="q-btn-header">
                 <img id="deleteImg" src="img/component/delete_nav.png" width="100%" height="100%">
             </div>
-            <span id="deleteStr" class="delete-str">Cancel</span>
+            <span id="deleteStr" class="delete-str">取消</span>
         </a>
     </div>
 
@@ -52,8 +52,14 @@
             </div>
             <div data-role="navbar" id="navDelete" style="display:none;">
                 <ul>
-                    <li id="delMsgBtn" class="del-msg-btn">
+                    <li class="del-msg-btn">
                         <a href="#" class="ui-btn ui-btn-active" data-ajax="false">
+                            <span id="selectMsgAll">選擇全部</span>
+                            <span id="cancelMsgAll" style="display:none;">取消全部</span>
+                        </a>
+                    </li>
+                    <li id="delMsgBtn" class="del-msg-btn">
+                        <a href="#" class="ui-btn ui-btn-active btn-disabled" data-ajax="false">
                             刪除
                         </a>
                     </li>
@@ -114,9 +120,9 @@
 
             <div class="bottom">
                 <div class="button-content">
-                    <div id="cancel">Cancel</div>
+                    <div id="cancel">取消</div>
                     <div class="vertical-line">&nbsp;</div>
-                    <div id="yes">Delete</div>
+                    <div id="yes">刪除</div>
                 </div>
             </div>
         </div>

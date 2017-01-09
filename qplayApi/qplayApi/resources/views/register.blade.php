@@ -12,7 +12,7 @@
             <div style="width:60%; margin: 0 auto; margin-top:40px;">
                 <img src="{{asset('/css/images/icon_ok.png')}}" style="200px; margin:20px;" />
                 <h4>若要註銷設備，請聯絡 BenQ ITS</h4>
-                <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;"
+                <button class="ui-btn ui-btn-corner-all" style="color:white;background-color: #3c3c75;font-family: Arial;text-shadow: none;"
                         onclick="start()">好，我知道了</button>
             </div>
         </div>

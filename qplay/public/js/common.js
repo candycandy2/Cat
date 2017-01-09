@@ -107,8 +107,8 @@ function formatSizeUnits(bytes)
     return bytes;
 }
 
-$.extend({
-  getUrlVars: function(){
+function getUrlVar(name){
+
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     for(var i = 0; i < hashes.length; i++)
@@ -117,9 +117,7 @@ $.extend({
       vars.push(hash[0]);
       vars[hash[0]] = hash[1];
     }
-    return vars;
-  },
-  getUrlVar: function(name){
-    return $.getUrlVars()[name];
-  }
-});
+
+    return vars[name];
+
+}
