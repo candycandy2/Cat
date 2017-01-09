@@ -284,7 +284,7 @@ class qplayController extends Controller
                 {
                     $token = uniqid();  //生成token
                     $nowTimestamp = time();
-                    $token_valid = $nowTimestamp + (2 * 86400);
+                    $token_valid = $nowTimestamp + (7 * 86400);
                     $now = date('Y-m-d H:i:s',$nowTimestamp);
 
                     \DB::table("qp_register")->insert([
@@ -633,7 +633,7 @@ class qplayController extends Controller
 
                 $token = uniqid();  //生成token
                 $nowTimestamp = time();
-                $token_valid = $nowTimestamp + (2 * 86400);
+                $token_valid = $nowTimestamp + (7 * 86400);
                 $now = date('Y-m-d H:i:s',$nowTimestamp);
                 try
                 {
@@ -2225,7 +2225,7 @@ SQL;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $token = uniqid();
-                $token_valid = time() + (2 * 86400);
+                $token_valid = time() + (7 * 86400);
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 $now = date('Y-m-d H:i:s',time());
                 $user = CommonUtil::getUserInfoByUUID($uuid);
