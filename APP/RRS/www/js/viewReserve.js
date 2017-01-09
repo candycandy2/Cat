@@ -245,7 +245,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var isExistInArray = false;
                 var selectedSite = $('#reserveSite').find(":selected").val();
 
-                if ((roleForLimitTime == dictRole['super'] && siteForLimitTime == selectedSite) || isReserveMulti === 'N') {
+                if ((roleForLimitTime == dictRole['super'] && siteForLimitTime.indexOf(selectedSite) == -1) || isReserveMulti === 'N') {
                     bResult = true;
                 } else {
                     var myReserveFilterData = myReserveLocalData.filter(function(item) {
@@ -268,7 +268,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function setRoleAndDateList(site) {
-                if (roleForDays == dictRole['system'] || (roleForDays == dictRole['secretary'] && siteForDays == site)) {
+                if (roleForDays == dictRole['system'] || (roleForDays == dictRole['secretary'] && siteForDays.indexOf(site) != -1)) {
                     reserveDays = 120;
                 } else {
                     reserveDays = 14;
