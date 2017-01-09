@@ -940,7 +940,9 @@ function handleOpenURL(url) {
         if (device.platform === "iOS") {
             if (loginData['doLoginDataCallBack'] === true) {
                 $.mobile.changePage('#viewInitial');
-                var checkAppVer = new checkAppVersion();
+                if (iOSAppInitialFinish === true) {
+                    var checkAppVer = new checkAppVersion();
+                }
             }
 
             if (loginData['openAppDetailPage'] === true) {
