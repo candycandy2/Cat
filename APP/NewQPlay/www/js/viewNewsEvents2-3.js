@@ -301,34 +301,59 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 dom =  dom || null;
 
                 var checkedLength = $("input.msgDelCheckbox:checked").length;
-                var disabled = false;
+                var messageType;
+                var messageTypeCount = 0;
+
+                if (activeNvrBar === "navEvents") {
+                    messageType = "event";
+                } else if (activeNvrBar === "navNews") {
+                    messageType = "news";
+                }
+
+                for (var i=0; i<messagecontent.message_count; i++) {
+                    if (messagecontent.message_list[i].message_type === messageType) {
+                        if (messagecontent.message_list[i].read !== "D") {
+                            messageTypeCount++;
+                        }
+                    }
+                }
+
+                if (checkedLength === messageTypeCount) {
+                    $("#selectMsgAll").hide();
+                    $("#cancelMsgAll").show();
+                } else {
+                    $("#selectMsgAll").show();
+                    $("#cancelMsgAll").hide();
+                }
 
                 if (checkedLength > 0) {
-                    disabled = true;
-                    $("#navMessage").hide();
-                    $("#navDelete").show();
-                    $("#msgFooter").css("position", "fixed");
+                    $("#delMsgBtn a").removeClass("btn-disabled");
                 } else {
-                    $("#navMessage").show();
-                    $("#navDelete").hide();
-                    $("#msgFooter").css("position", "fixed");
+                    $("#delMsgBtn a").addClass("btn-disabled");
                 }
 
                 if (dom !== null) {
-
-                    if (checkedLength > 0) {
-                        $(".msg-del-checkbox .overlap-label-icon").css("opacity", "0.2");
-                    } else {
-                        $(".msg-del-checkbox .overlap-label-icon").css("opacity", "1");
-                    }
-
                     messageArrIndex = $(dom).parent().parent().parent().val();
-
-                    $("input.msgDelCheckbox").prop("disabled", disabled);
-
-                    $(dom).prop("disabled", false);
-                    $(dom).parent().children(".overlap-label-icon").css("opacity", "1");
                 }
+            }
+
+            function messageSelectCancelAll(action) {
+                var messageList;
+                var checked;
+
+                if (activeNvrBar === "navEvents") {
+                    messageList = "eventlistview";
+                } else if (activeNvrBar === "navNews") {
+                    messageList = "newslistview";
+                }
+
+                if (action === "select") {
+                    checked = true;
+                } else if (action === "cancel") {
+                    checked = false;
+                }
+
+                $('#' + messageList + ' :checkbox').prop('checked', checked);
             }
 
             window.editModeChange = function () {
@@ -340,6 +365,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     delMsgActive = false;
                     $(".msg-list-content").removeClass("msg-list-content-edit");
                     $('#deleteConfirm').popup('close');
+
+                    $("#navMessage").show();
+                    $("#navDelete").hide();
+                    $("#msgFooter").css("position", "fixed");
                 } else {
                     delMsgActive = true;
                     dispaly = "block";
@@ -349,6 +378,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     $("input.msgDelCheckbox").prop("disabled", false);
                     $(".msg-del-checkbox .overlap-label-icon").css("opacity", "1");
                     $(".msg-list-content").addClass("msg-list-content-edit");
+
+                    $("#navMessage").hide();
+                    $("#navDelete").show();
+                    $("#msgFooter").css("position", "fixed");
                 }
 
                 $('#viewNewsEvents2-3 :checkbox').prop('checked', false);
@@ -395,7 +428,6 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 tabChange("setActive");
 
-                //$("#deleteMessage span").html("Delete");
                 $("#deleteMessage #deleteImg").css("display", "block");
                 $("#deleteMessage #deleteStr").css("display", "none");
                 $("#navMessage").show();
@@ -442,8 +474,20 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 editModeChange();
             });
 
+            $("#selectMsgAll").on("click", function() {
+                messageSelectCancelAll("select");
+                checkboxChange();
+            });
+
+            $("#cancelMsgAll").on("click", function() {
+                messageSelectCancelAll("cancel");
+                checkboxChange();
+            });
+
             $("#delMsgBtn").on("click", function() {
-                $('#deleteConfirm').popup('open');
+                if (!$("#delMsgBtn a").is(".btn-disabled")) {
+                    $('#deleteConfirm').popup('open');
+                }
             });
 
             $("#deleteConfirm #cancel").on("click", function() {
@@ -451,10 +495,29 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
             });
 
             $("#deleteConfirm #yes").on("click", function() {
-                var msgIndex = $("input.msgDelCheckbox:checked").val();
-                var msgType = $("#msgType" + msgIndex).val();
-                
-                messageRowId = msgIndex;
+                var messageList;
+                var msgIndex;
+                var msgIndexList;
+                var msgType;
+
+                if (activeNvrBar === "navEvents") {
+                    messageList = "eventlistview";
+                } else if (activeNvrBar === "navNews") {
+                    messageList = "newslistview";
+                }
+
+                $('#' + messageList + ' :checkbox:checked').each(function(index, element){
+                    msgIndex = $(element).val();
+
+                    if (index === 0) {
+                        msgIndexList = msgIndex;
+                        msgType = $("#msgType" + msgIndexList).val();
+                    } else {
+                        msgIndexList += "," + msgIndex;
+                    }
+                });
+
+                messageRowId = msgIndexList;
                 updateReadDelete(msgType, "delete");
             });
         }

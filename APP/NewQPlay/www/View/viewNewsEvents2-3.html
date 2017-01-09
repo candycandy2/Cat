@@ -52,8 +52,14 @@
             </div>
             <div data-role="navbar" id="navDelete" style="display:none;">
                 <ul>
-                    <li id="delMsgBtn" class="del-msg-btn">
+                    <li class="del-msg-btn">
                         <a href="#" class="ui-btn ui-btn-active" data-ajax="false">
+                            <span id="selectMsgAll">選擇全部</span>
+                            <span id="cancelMsgAll" style="display:none;">取消全部</span>
+                        </a>
+                    </li>
+                    <li id="delMsgBtn" class="del-msg-btn">
+                        <a href="#" class="ui-btn ui-btn-active btn-disabled" data-ajax="false">
                             刪除
                         </a>
                     </li>
