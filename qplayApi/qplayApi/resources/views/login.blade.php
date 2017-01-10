@@ -225,6 +225,20 @@
                 showMessage("no device type received!");
                 return;
             }
+
+            var loginIdPattern = /\w+([-+.]\w+)*$/;
+            if(!loginIdPattern.test(userName))
+　　　　　　{
+　　　　　　　showMessage(" 請確認帳號輸入正確 !");
+　　　　　　　return;
+　　　　　　}
+            var chinesePattern = /[^\x00-\xff]/;
+            if(chinesePattern.test(password))
+　　　　　　{
+　　　　　　　showMessage(" 請確認密碼輸入正確 !");
+　　　　　　　return;
+　　　　　　}
+
             ShowLoading();
             $.ajax({
                 url: "v101/qplay/isRegister?lang=en-us&uuid=" + uuid,//Math.uuid(),
@@ -251,12 +265,28 @@
                 },
                 error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
+                    if($.trim(e.responseText) == '' && e.statusText == 'error'){
+                        showMessage(" 請檢查網路狀態 !");
+                        return;
+                    }
                     showMessage(thrownError);
                 }
             });
         }
         
         var login = function (loginId, password, domain, uuid) {
+            var loginIdPattern = /\w+([-+.]\w+)*$/;
+            if(!loginIdPattern.test(loginId))
+　　　　　　{
+　　　　　　　showMessage(" 請確認帳號輸入正確 !");
+　　　　　　　return;
+　　　　　　}
+            var chinesePattern = /[^\x00-\xff]/;
+            if(chinesePattern.test(password))
+　　　　　　{
+　　　　　　　showMessage(" 請確認密碼輸入正確 !");
+　　　　　　　return;
+　　　　　　}
             $.ajax({
                 url: "v101/qplay/login?lang=en-us&uuid=" +uuid,//Math.uuid(),
                 dataType: "json",
@@ -291,12 +321,28 @@
                 },
                 error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
+                    if($.trim(e.responseText) == '' && e.statusText == 'error'){
+                        showMessage(" 請檢查網路狀態 !");
+                        return;
+                    }
                     showMessage(thrownError);
                 }
             });
         }
         
         var registerAndLogin = function (loginId, password, domain, uuid, device_type) {
+            var loginIdPattern = /\w+([-+.]\w+)*$/;
+            if(!loginIdPattern.test(loginId))
+　　　　　　{
+　　　　　　　showMessage(" 請確認帳號輸入正確 !");
+　　　　　　　return;
+　　　　　　}
+            var chinesePattern = /[^\x00-\xff]/;
+            if(chinesePattern.test(password))
+　　　　　　{
+　　　　　　　showMessage(" 請確認密碼輸入正確 !");
+　　　　　　　return;
+　　　　　　}
             $.ajax({
                 url: "v101/qplay/register?lang=en-us&device_type=" + device_type + "&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
@@ -332,6 +378,10 @@
                 },
                 error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
+                    if($.trim(e.responseText) == '' && e.statusText == 'error'){
+                        showMessage(" 請檢查網路狀態 !");
+                        return;
+                    }
                     showMessage(thrownError);
                 }
             });
