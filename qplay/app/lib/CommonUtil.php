@@ -622,6 +622,7 @@ SQL;
     public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
         $result = array();
         $result["result"] = true;
+        $result["info"] = "success";
         $response = null;
         $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         try {
