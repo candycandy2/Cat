@@ -44,24 +44,24 @@ Route::any('/qplayauth_register', function() {
 Route::any('/v101/custom/{app}/{function}', 'customController@processRequest');
 
 //YellowPage
-Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
+/*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
 Route::any('/v101/yellowpage/QueryEmployeeDataDetail', 'yellowpageController@QueryEmployeeDataDetail');
 Route::any('/v101/yellowpage/AddMyPhoneBook', 'yellowpageController@AddMyPhoneBook');
 Route::any('/v101/yellowpage/DeleteMyPhoneBook', 'yellowpageController@DeleteMyPhoneBook');
 Route::any('/v101/yellowpage/QueryMyPhoneBook', 'yellowpageController@QueryMyPhoneBook');
-Route::any('/v101/yellowpage/QueryCompanyData', 'yellowpageController@QueryCompanyData');
+Route::any('/v101/yellowpage/QueryCompanyData', 'yellowpageController@QueryCompanyData');*/
 
 
 
 //RRS
-Route::any('/v101/rrs/ListAllManager', 'rrsController@ListAllManager');
+/*Route::any('/v101/rrs/ListAllManager', 'rrsController@ListAllManager');
 Route::any('/v101/rrs/ListAllMeetingRoom', 'rrsController@ListAllMeetingRoom');
 Route::any('/v101/rrs/ListAllTime', 'rrsController@ListAllTime');
 Route::any('/v101/rrs/QueryMyReserve', 'rrsController@QueryMyReserve');
 Route::any('/v101/rrs/QueryReserveDetail', 'rrsController@QueryReserveDetail');
 Route::any('/v101/rrs/QuickReserve', 'rrsController@QuickReserve');
 Route::any('/v101/rrs/ReserveCancel', 'rrsController@ReserveCancel');
-Route::any('/v101/rrs/ReserveMeetingRoom', 'rrsController@ReserveMeetingRoom');
+Route::any('/v101/rrs/ReserveMeetingRoom', 'rrsController@ReserveMeetingRoom');*/
 
 //for Test
 Route::any('/test', function() {

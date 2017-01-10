@@ -47,6 +47,12 @@ window.initialSuccess = function(data) {
             }
 
             if (window.localStorage.getItem("openMessage") !== "true") {
+                $.mobile.changePage('#viewMain2-1', {
+                    allowSamePageTransition : true,
+                    transition              : 'none',
+                    showLoadMsg             : false,
+                    reloadPage              : true
+                });
                 $.mobile.changePage('#viewMain2-1');
             } else {
                 //If onOpenNotification, but not login.
@@ -65,6 +71,7 @@ window.initialSuccess = function(data) {
         }
     }
 
+    iOSAppInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
 }
@@ -120,6 +127,25 @@ function reNewToken() {
 function getTimestamp() {
     var clientTimestamp = new Date().getTime();
     return clientTimestamp = clientTimestamp.toString().substr(0, 10);
+}
+
+function addZero(number) {
+    if (number < 10) {
+        number = "0" + number;
+    }
+    return number;
+}
+
+function openNewMessage() {
+    messageRowId = window.localStorage.getItem("messageRowId");
+
+    //Before open Message Detail Data, update Message List
+    if (window.localStorage.getItem("msgDateFrom") === null) {
+        $.mobile.changePage('#viewNewsEvents2-3');
+    } else {
+        var messageList = new QueryMessageList();
+        callGetMessageList = true;
+    }
 }
 
 //un-register [User with Mobile Device UUID]

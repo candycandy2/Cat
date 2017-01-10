@@ -622,6 +622,7 @@ SQL;
     public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
         $result = array();
         $result["result"] = true;
+        $result["info"] = "success";
         $response = null;
         $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         try {
@@ -648,8 +649,8 @@ SQL;
                     'Parameter'=> $parameter
                 ),
             );
-            $time2live =  Config::get('time_to_live',864000);
-            $apnsFlag = Config::get('apns_flag',true);
+            $time2live =  Config::get('app.time_to_live',864000);
+            $apnsFlag = Config::get('app.apns_flag',true);
             $options = array(
                 'time_to_live'=>$time2live,
                 'apns_production'=>$apnsFlag

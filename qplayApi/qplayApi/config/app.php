@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,8 +39,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
-    'upload_folder' => env('APP_UPLOAD_FOLDER', 'app'),
+    'url' => env('APP_URL'),
+    'upload_folder' => env('APP_UPLOAD_FOLDER'),
     'app_file_url' => env('APP_FILE_SERVER_URL'),
 
     /*
@@ -111,6 +111,24 @@ return [
     */
 
     'log' => env('APP_LOG', 'single'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Push Parameters
+    |--------------------------------------------------------------------------
+    |
+    | Parameters used in JPush Web API
+    | apns_flag:如果目标平台为 iOS 平台 需要在 options 中通过 apns_production 字段来设定推送环境。
+    |           True 表示推送生产环境，False 表示要推送开发环境； 如果不指定则为推送生产环境。
+    | time_to_live:推送当前用户不在线时，为该用户保留多长时间的离线消息，以便其上线时再次推送。
+    |              默认 86400 （1 天），最长 10 天。设置为 0 表示不保留离线消息，只有推送当前在线的用户可以收到。
+    |
+    */
+
+    'App_id' => env('APP_ID'),
+    'Secret_key' => env('SECRET_KEY'),
+    'time_to_live' => env('TIME_TO_LIVE'),
+    'apns_flag' => env('APNS_FLAG'),
 
     /*
     |--------------------------------------------------------------------------
@@ -204,21 +222,5 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-    ],
-    /*
-    |--------------------------------------------------------------------------
-    | Push Parameters
-    |--------------------------------------------------------------------------
-    |
-    | Parameters used in JPush Web API
-    | apns_flag:如果目标平台为 iOS 平台 需要在 options 中通过 apns_production 字段来设定推送环境。
-    |           True 表示推送生产环境，False 表示要推送开发环境； 如果不指定则为推送生产环境。
-    | time_to_live:推送当前用户不在线时，为该用户保留多长时间的离线消息，以便其上线时再次推送。
-    |              默认 86400 （1 天），最长 10 天。设置为 0 表示不保留离线消息，只有推送当前在线的用户可以收到。
-    |
-    */
-    'App_id'=>'33938c8b001b601c1e647cbd',
-    'Secret_key'=>'aa15c71a5071f539240b5c83',
-    'time_to_live'=>864000,
-    'apns_flag'=>true,
+    ]
 ];

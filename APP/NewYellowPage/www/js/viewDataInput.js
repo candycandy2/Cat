@@ -11,9 +11,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
 
                 this.successCallback = function(data) {
                     loadingMask("hide");
-
                     var resultcode = data['ResultCode'];
-
                     if (resultcode === "1") {
                         var dataContent = data['Content'];
                         $('#Company').html('<option value="All Company">All Company</option>');
@@ -22,29 +20,25 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
                         }
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
+                        QueryMyPhoneBook();
                     }
                 };
-
                 this.failCallback = function(data) {};
-
                 var __construct = function() {
                     QPlayAPI("POST", "QueryCompanyData", self.successCallback, self.failCallback);
                 }();
-
             };
 
             function checkInputData() {
-                var emptyData = true;
-
-                $("#viewDataInput input[type=text]").each(function(index, element){
+                var queryData;
+                var empty = true;
+                $("#viewDataInput input[type=text]").each(function(index, element) {
+                    queryData = $(element).val();
                     if ($(element).val().length !== 0) {
-                        emptyData = false;
+                        empty = false;
                     }
                 });
-
-                if (emptyData) {
+                if (empty) {
                     $("#noQueryCondition").popup("open");
                 } else {
                     $.mobile.changePage('#viewQueryResult');
@@ -52,10 +46,9 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             }
 
             function clearInputData() {
-                var company = $("select#Company"); 
-                company[0].selectedIndex = 0; 
+                var company = $("select#Company");
+                company[0].selectedIndex = 0;
                 company.selectmenu("refresh");
-
                 $("#viewDataInput input[type=text]").val("");
             }
 
@@ -77,14 +70,60 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 checkInputData();
             });
 
-            $('#viewDataInput').keypress(function(event) {
+            $('#viewDataInput').keydown(function(event) {
                 if (event.keyCode === 13) {
-                    // keyCode of 'Enter' key is 13
+                    /* keyCode of 'Enter' key is 13 */
                     checkInputData();
                 }
             });
 
+            $("#CName").keyup(function(event) {
+                var pattern = /([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)[\u4E00-\u9FFF\u3400-\u4DB5\-\.]*([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)/;
+                var maxlength = $("#CName").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#CName").val($("#CName").val().replace(residue[1], ""));
+                    $("#CName").val($("#CName").val().replace(residue[2], ""));
+                }
+                if($("#CName").val().length > maxlength - 1)
+                    $("#CName").val($("#CName").val().substring(0, maxlength));
+            });
+
+            $("#EName").keyup(function(event) {
+                var pattern = /([^a-zA-Z\-\.]*)[a-zA-Z\-\.]*([^a-zA-Z\-\.]*)/;
+                var maxlength = $("#EName").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#EName").val($("#EName").val().replace(residue[1], ""));
+                    $("#EName").val($("#EName").val().replace(residue[2], ""));
+                }
+                if($("#EName").val().length > maxlength - 1)
+                    $("#EName").val($("#EName").val().substring(0, maxlength));
+            });
+
+            $("#Department").keyup(function(event) {
+                var pattern = /([^a-zA-Z0-9\-]*)[a-zA-Z0-9\-]*([^a-zA-Z0-9\-]*)/;
+                var maxlength = $("#Department").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#Department").val($("#Department").val().replace(residue[1],""));
+                    $("#Department").val($("#Department").val().replace(residue[2], ""));
+                }
+                if($("#Department").val().length > maxlength - 1)
+                    $("#Department").val($("#Department").val().substring(0, maxlength));
+            });
+
+            $("#ExtNum").keyup(function(event) {
+                var pattern = /([^0-9\-]*)[0-9\-]*([^0-9\-]*)/;
+                var maxlength = $("#ExtNum").data('maxlength');
+                var residue = event.currentTarget.value.match(pattern);
+                if(residue[1] !== "" || residue[2] !== "") {
+                    $("#ExtNum").val($("#ExtNum").val().replace(residue[1], ""));
+                    $("#ExtNum").val($("#ExtNum").val().replace(residue[2], ""));
+                }
+                if($("#ExtNum").val().length > maxlength - 1)
+                    $("#ExtNum").val($("#ExtNum").val().substring(0, maxlength));   
+            });
         }
     });
-
 });

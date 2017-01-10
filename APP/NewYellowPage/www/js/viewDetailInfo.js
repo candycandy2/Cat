@@ -7,20 +7,18 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             /********************************** function *************************************/
             function QueryEmployeeDataDetail() {
                 
-                var listData;
                 if (prevPageID === "viewQueryResult") {
-                    listData = employeeData;
                     $("#startAdd").show();
                     $("#startDelete").hide();
                 } else if (prevPageID === "viewPhonebook") {
-                    listData = phonebookData;
+                    employeeData = phonebookData;
                     $("#startAdd").hide();
                     $("#startDelete").show();
                 }
 
                 var self = this;
-                var queryData = '<LayoutHeader><Company>' + listData[employeeSelectedIndex].company + '</Company>' + 
-                                '<Name_EN>' + listData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
+                var queryData = '<LayoutHeader><Company>' + employeeData[employeeSelectedIndex].company + '</Company>' + 
+                                '<Name_EN>' + employeeData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
 
                 this.successCallback = function(data) {
                     var resultcode = data['ResultCode'];
@@ -29,6 +27,13 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                         if (prevPageID === "viewQueryResult") {
                             employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
+                            for(var i=0; i<Object.keys(phonebookData).length; i++) {
+                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[i].employeeid) {
+                                    $("#startAdd").hide();
+                                    $("#startDelete").show();
+                                    break;
+                                }
+                            }
                         }
 
                         $("#detailData #companyName").html(data['Content'][0].Company);
@@ -40,11 +45,10 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                         $("#detailData #deptCode").html(data['Content'][0].DeptCode);
                         $("#detailData #extNo").html(data['Content'][0].Ext_No);
                         $("#detailData #eMail").html(data['Content'][0].EMail);
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
+
                     }
 
-                    loadingMask("hide");
+                    loadingMask("hide");                
                 };
 
                 this.failCallback = function(data) {};
@@ -64,7 +68,9 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
-                        $.mobile.changePage('#viewPhonebook');
+                        $("#askAddPhonebook").popup('close');
+                        $("#startAdd").hide();
+                        $("#startDelete").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
                     } else {
@@ -102,5 +108,4 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             });
         }
     });
-
 });

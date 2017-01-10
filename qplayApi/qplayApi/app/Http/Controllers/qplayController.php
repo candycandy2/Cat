@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -284,7 +284,7 @@ class qplayController extends Controller
                 {
                     $token = uniqid();  //生成token
                     $nowTimestamp = time();
-                    $token_valid = $nowTimestamp + (2 * 86400);
+                    $token_valid = $nowTimestamp + (7 * 86400);
                     $now = date('Y-m-d H:i:s',$nowTimestamp);
 
                     \DB::table("qp_register")->insert([
@@ -580,7 +580,7 @@ class qplayController extends Controller
                         .'&message='
                         .'Device Not Registered');
                     $result = response()->json(['result_code'=>ResultCode::_000905_deviceNotRegistered,
-                        'message'=>'Device Not Registered',
+                        'message'=>'設備未註冊',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
                     CommonUtil::logApi("", $ACTION,
                         response()->json(apache_response_headers()), $result);
@@ -595,7 +595,7 @@ class qplayController extends Controller
                         $finalUrl = urlencode($redirect_uri.'?result_code='
                             .ResultCode::_000904_loginUserNotMathRegistered
                             .'&message='
-                            .'User Not Match Device');
+                            .'使用者與設備不符');
                         $result = response()->json(['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                             'message'=>'User Not Match Device',
                             'content'=>array("redirect_uri"=>$finalUrl)]);
@@ -612,7 +612,7 @@ class qplayController extends Controller
 		$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                 $userId = $domain . "\\" . $loginid;
                 $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-                $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
+               $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
                 if(!$bind)
                 {
                     $finalUrl = urlencode($redirect_uri.'?result_code='
@@ -620,7 +620,7 @@ class qplayController extends Controller
                         .'&message='
                         .'Password Error');
                     $result = response()->json(['result_code'=>ResultCode::_000902_passwordError,
-                        'message'=>'Password Error',
+                        'message'=>'密碼錯誤',
                         'content'=>array("redirect_uri"=>$finalUrl)]);
                     CommonUtil::logApi($user->row_id, $ACTION,
                         response()->json(apache_response_headers()), $result);
@@ -633,7 +633,7 @@ class qplayController extends Controller
 
                 $token = uniqid();  //生成token
                 $nowTimestamp = time();
-                $token_valid = $nowTimestamp + (2 * 86400);
+                $token_valid = $nowTimestamp + (7 * 86400);
                 $now = date('Y-m-d H:i:s',$nowTimestamp);
                 try
                 {
@@ -683,7 +683,7 @@ class qplayController extends Controller
                         .'Call Service Error');
                     $status_code = ResultCode::_999999_unknownError;
                     $result = response()->json(['result_code'=>$status_code,
-                        'message'=>'Call Service Error',
+                        'message'=>'請聯絡ITS',
                         'token_valid'=>$token_valid,
                         'content'=>array("redirect_uri"=>$finalUrl)]);
                     CommonUtil::logApi($user->row_id, $ACTION,
@@ -843,7 +843,7 @@ class qplayController extends Controller
     public function checkAppVersion()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyCustom();
+        $verifyResult = $Verify->verifyCustom(false);
 
         $input = Input::get();
         foreach ($input as $k=>$v) {
@@ -1206,7 +1206,7 @@ SQL;
     public function getSecurityList()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyCustom();
+        $verifyResult = $Verify->verifyCustom(true);
 
         $input = Input::get();
         $request = Request::instance();
@@ -1513,6 +1513,7 @@ from qp_message m
 left join qp_user_message um on um.message_send_row_id = qp_message_send.row_id
 left join qp_message on qp_message.row_id = qp_message_send.message_row_id
 where um.user_row_id = $userId
+and um.uuid = '$uuid'
 and qp_message.message_type = 'event'
 and qp_message.visible = 'Y'
 and UNIX_TIMESTAMP(qp_message_send.created_at) >= $date_from
@@ -1649,9 +1650,10 @@ SQL;
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $userId = $userInfo->row_id;
+            $company = $userInfo->company;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                $sql = 'select * from qp_message where row_id = (select message_row_id from qp_message_send where row_id = '.$message_send_row_id.')';
+                $sql = 'select * from qp_message where visible ="Y" and row_id = (select message_row_id from qp_message_send where row_id = '.$message_send_row_id.')';
                 $msgList = DB::select($sql, []);
                 if(count($msgList) == 0) {
                     $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
@@ -1685,7 +1687,7 @@ and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
 and um.message_send_row_id = ms.row_id
-and um.deleted_at = 0
+and um.deleted_at = '0000-00-00 00:00:00'
 and um.user_row_id = $userId
 and um.uuid = '$uuid'
 SQL;
@@ -1710,6 +1712,7 @@ and m.visible = 'Y'
 and ms.row_id = $message_send_row_id
 and ms.source_user_row_id = u1.row_id
 and m.created_user = u2.row_id
+and ms.company_label like '%$company%'
 SQL;
                 }
 
@@ -1743,11 +1746,17 @@ SQL;
                     CommonUtil::logApi($userInfo->row_id, $ACTION,
                         response()->json(apache_response_headers()), $result);
                     return $result;
-                } else {
+                } else /*no data need to show 000910 {
                     $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                         'message'=>'Call Service Successed',
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetailList
+                    ]);*/
+			 { //no data need to show 000910
+                    $result = response()->json(['result_code'=>ResultCode::_000910_messageNotExist,
+                        'message'=>'消息不存在',
+                        'token_valid'=>$verifyResult["token_valid_date"],
+                        'content'=>''
                     ]);
                     CommonUtil::logApi($userInfo->row_id, $ACTION,
                         response()->json(apache_response_headers()), $result);
@@ -2068,6 +2077,7 @@ SQL;
                     'content'=>'']);
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
+                \DB::table("qp_register")-> where('row_id', "=", $registerId)->delete();
                 return $result;
             }
 
@@ -2215,7 +2225,7 @@ SQL;
             $verifyResult = $Verify->verifyToken($uuid, $token);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $token = uniqid();
-                $token_valid = time() + (2 * 86400);
+                $token_valid = time() + (7 * 86400);
                 $userInfo = CommonUtil::getUserInfoByUUID($uuid);
                 $now = date('Y-m-d H:i:s',time());
                 $user = CommonUtil::getUserInfoByUUID($uuid);
@@ -2256,7 +2266,7 @@ SQL;
     public function sendPushMessage()
     {
         $Verify = new Verify();
-        $verifyResult = $Verify->verifyCustom();
+        $verifyResult = $Verify->verifyCustom(false);
 
         $input = Input::get();
         $request = \Request::instance();
@@ -2386,7 +2396,7 @@ SQL;
                         $companyStr = "";
                         foreach ($CompanyList as $company) {
                             if(!CommonUtil::checkCompanyExist(trim($company))) {
-                                $result = response()->json(['result_code'=>ResultCode::_999013_companyNotExist,
+                                $result = response()->json(['result_code'=>ResultCode::_999014_companyNotExist,
                                     'message'=>"company不存在",
                                     'content'=>'']);
                                 CommonUtil::logApi("", $ACTION,

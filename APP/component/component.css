@@ -5,6 +5,20 @@
 /*********************************************************************************/
 
 /* override jQuery Mobile */
+body {
+    text-shadow: none;
+}
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+    text-shadow: none;
+}
+
+.ui-mobile .ui-page-active{
+    display: block;
+    overflow: visible;
+    /*overflow-x:hidden*/
+}
+
 .ui-field-contain {
     border: none;
     padding: 0 10px;
@@ -45,9 +59,13 @@
     width: 90%;
 }
 
+body, input, select, textarea, button, .ui-btn {
+    font-family: "Arial", "微軟中黑體";
+}
+
 /* variable, function, style for All APP */
 body {
-    font-family: "Gill Sans MT", "微軟正黑體", "Arial";
+    font-family: "Arial", "微軟中黑體";
     text-shadow: none;
 }
 
@@ -65,7 +83,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 99;
+    z-index: 1000;
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.4);
@@ -221,7 +239,8 @@ body {
     width: 70vw;
     height: auto;
     padding: 2vh 0;
-    background-color: blueviolet;
+    border-radius: 25px;
+    background-color: #492f80;
     color: #FFF;
 }
 

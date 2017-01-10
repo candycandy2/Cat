@@ -7,7 +7,6 @@ var appSecretKey = "2e936812e205445490efb447da16ca13";
 
 var prevPageID;
 var arrReserve = [];
-var arrClickReserve = [];
 var arrTimeBlockBySite = [];
 var arrOtherTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
@@ -37,6 +36,16 @@ var dictSiteCategory = {
     '43': '2',
     '100': '8'
 };
+var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
+var dictRole = {
+    'system': '1',
+    'secretary': '2',
+    'super': '4'
+};
+var reserveDays = 14;
+var systemRole = '';
+var meetingRoomSiteByRole = '';
+var myReserveLocalData = [];
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -72,11 +81,6 @@ function getAPIListAllMeetingRoom() {
             loadingMask('hide');
             popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
         }
-    };
-
-    this.failCallback = function(data) {
-        loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
     };
 
     var __construct = function() {
@@ -117,6 +121,8 @@ function getAPIListAllTime() {
             var allTimeLocalData = JSON.parse(localStorage.getItem('allTimeLocalData'));
 
             for (var key in arrSiteCategory) {
+                //to do
+                //arrTimeBlock scrop 
                 var filterTimeBlock = grepData(arrTimeBlock, 'category', arrSiteCategory[key]);
 
                 filterTimeBlock.sort(function(a, b) {
@@ -150,13 +156,94 @@ function getAPIListAllTime() {
         }
     };
 
-    this.failCallback = function(data) {
-        loadingMask('hide');
-        popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
+    var __construct = function() {
+        QPlayAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData);
+    }();
+}
+
+function getAPIListAllManager() {
+    loadingMask('show');
+    var self = this;
+    var queryData = {};
+
+    this.successCallback = function(data) {
+        if (data['ResultCode'] === "1") {
+            //save to local data
+            localStorage.removeItem('listAllManager');
+            var jsonData = {};
+            var bResult = false;
+            for (var i = 0, item; item = data['Content'][i]; i++) {
+                if (item.EmpNo.trim() === loginData['emp_no']) {
+                    jsonData = {
+                        systemRole: item.SystemRole,
+                        meetingRoomSite: item.MeetingRoomSite
+                    };
+                    systemRole = item.SystemRole;
+                    meetingRoomSiteByRole = item.MeetingRoomSite;
+                    bResult = true;
+                }
+            }
+            if (!bResult) {
+                jsonData = 'normal';
+            }
+            localStorage.setItem('listAllManager', JSON.stringify(jsonData));
+            loadingMask('hide');
+        } else {
+            loadingMask('hide');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
+        }
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData);
+        QPlayAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData);
+    }();
+}
+
+function getAPIQueryMyReserveTime() {
+    loadingMask('show');
+    var self = this;
+    var today = new Date();
+    var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
+
+    this.successCallback = function(data) {
+        var jsonData = [];
+        myReserveLocalData = jsonData;
+
+        if (data['ResultCode'] === "1") {
+            //Successful
+            for (var i = 0, item; item = data['Content'][i]; i++) {
+                var strBeginTime = item.ReserveBeginTime;
+                var strEndTime = item.ReserveEndTime;
+                var searchRoomNode = searchTree(meetingRoomData, item.MeetingRoomName);
+                var searchSiteNode = searchRoomNode.parent.parent.data;
+
+                if (strBeginTime == strEndTime) {
+                    jsonData = {
+                        site: searchSiteNode,
+                        date: item.ReserveDate,
+                        time: strBeginTime
+                    };
+                    myReserveLocalData.push(jsonData);
+
+                } else {
+                    do {
+                        jsonData = {
+                            site: searchSiteNode,
+                            date: item.ReserveDate,
+                            time: strBeginTime
+                        };
+
+                        myReserveLocalData.push(jsonData);
+                        strBeginTime = addThirtyMins(strBeginTime);
+                    } while (strBeginTime != strEndTime);
+                }
+            }
+        }
+        loadingMask('hide');
+    };
+
+    var __construct = function() {
+        QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
     }();
 }
 
@@ -164,17 +251,14 @@ function getTimeID(sTime, eTime, siteCategoryID) {
     var arrSelectTime = [];
     var strTime = sTime;
 
-    // do {
-    //     arrSelectTime.push(strTime);
-    //     strTime = addThirtyMins(strTime);
-    //     var dStrTime = new Date(new Date().toDateString() + ' ' + strTime);
-    //     var dETime = new Date(new Date().toDateString() + ' ' + eTime);
-    // } while (dStrTime <= dETime);
-
-    do {
+    if (sTime == eTime) {
         arrSelectTime.push(strTime);
-        strTime = addThirtyMins(strTime);
-    } while (strTime != eTime);
+    } else {
+        do {
+            arrSelectTime.push(strTime);
+            strTime = addThirtyMins(strTime);
+        } while (strTime != eTime);
+    }
 
     //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
@@ -202,10 +286,10 @@ function getTimeID(sTime, eTime, siteCategoryID) {
     return strTimeID;
 }
 
-function createReserveDetailLocalDate() {
+function setReserveDetailLocalDate() {
     //save to local data
     localStorage.removeItem('reserveDetailLocalData');
-    jsonData = {};
+    jsonData = [];
     localStorage.setItem('reserveDetailLocalData', JSON.stringify(jsonData));
 }
 
@@ -470,10 +554,3 @@ function reserveLocalDataObj(roomId, date, data) {
     this.date = date;
     this.data = data;
 };
-
-function padLeft(str, lenght) {
-    if (str.length >= lenght)
-        return str;
-    else
-        return padLeft("0" + str, lenght);
-}

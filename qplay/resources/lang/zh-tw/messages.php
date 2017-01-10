@@ -52,7 +52,7 @@ return [
     'TITLE_SYS_MENU_MAINTAIN' => '選單維護',
     'TITLE_SYS_GROUP_MAINTAIN' => '系統群組管理',
     'TITLE_SYS_PARAMETER_MAINTAIN' => '參數設置',
-    'TITLE_SYS_PROJECT_MAINTAIN' => '专案管理',
+    'TITLE_SYS_PROJECT_MAINTAIN' => '專案管理',
     'TITLE_SECRETARY_PUSH' => '秘書推播',
 
     //validate
