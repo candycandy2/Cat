@@ -45,8 +45,6 @@ abstract class ResultCode
     const _000916_titleLengthTooLong = "000916"; //标题栏位太长
     const _000917_roleNotExist = "000917"; //角色不存在
     const _000918_dataIncomplete = "000918"; //数据不完整
-    
-    const _000920_updateTagToJpushFailed = "000920"; //向JPush更新tag信息失败
 
 
     //TODO 以下为各系统扩展
