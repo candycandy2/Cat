@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\lib\CommonUtil;
 use App\lib\FilePath;
+use App\lib\PushUtil;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 use Request;
@@ -2091,8 +2092,7 @@ SQL;
             $user = CommonUtil::getUserInfoByUUID($uuid);
             \DB::beginTransaction();
             try {
-                if(count($existPushToken) > 0)
-                {
+                if(count($existPushToken) > 0) {
                     \DB::table("qp_push_token")
                         -> where('register_row_id', "=", $registerId)
                         -> where('project_row_id', "=", $projectId)
@@ -2101,9 +2101,7 @@ SQL;
                             'push_token'=>$pushToken,
                             'updated_at'=>$now,
                             'updated_user'=>$user->row_id,]);
-                }
-                else
-                {
+                } else {
                     \DB::table("qp_push_token")->insert([
                         'register_row_id'=>$registerId,
                         'project_row_id'=>$projectId,
@@ -2113,24 +2111,19 @@ SQL;
                         'device_type'=>$deviceType]);
                 }
 
-                //Register to Message Center
-                /*$app_id = "33938c8b001b601c1e647cbd";//"293a09f63dd77abea15f42c3";  //TODO 正式上线需要读配置
-//                $url = "http://10.85.17.209/MessageCenterWebService/MessageService.asmx/RegisterDevice";
-                $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/RegisterDevice";
-                $args = array('App_id' => $app_id,
-                    'Tenant_id' => '00000000-0000-0000-0000-000000000000',
-                    'Provider' => 'JPush',
-                    'Client_id' => $pushToken,
-                    'User_Name' => $user->login_id,
-                    'Badge_number' => '0');
-                $data["register"] = json_encode($args);
-                $result = CommonUtil::doPost($url, $data);
-                if(!str_contains($result, "true")) {
+                //Register to JPush Tag
+                $tag = PushUtil::GetTagByUserInfo($userInfo);
+                $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
+                if(!$pushResult["result"]) {
                     \DB::rollBack();
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>'Register to Message Center Failed!' . $result,
-                        'content'=>$data]);
-                }*/
+                    $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                        'message'=>'add tag to JPush failed',
+                        'content'=>''
+                    ]);
+                    CommonUtil::logApi("", $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return $result;
+                }
 
                 \DB::commit();
             } catch (Exception $e) {
@@ -2440,22 +2433,26 @@ SQL;
                             if($need_push == "Y") {
                                 $to = [];
                                 foreach ($CompanyList as $company) {
-                                    $userList = \DB::table("qp_user")
-                                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                                        ->where("qp_user.company", "=", $company)
-                                        ->where("qp_user.status","=","Y")
-                                        ->where("qp_user.resign","=","N")
-                                        ->select("qp_push_token.push_token")
-                                        ->get();
-                                    foreach ($userList as $user) {
-                                            $to[$countFlag] = $user->push_token;
-                                            $countFlag ++;
+                                    for ($i = 1; $i <= 6; $i++) {
+                                        $to[$countFlag] = strtoupper($company).$i;
+                                        $countFlag ++;
                                     }
+//                                    $userList = \DB::table("qp_user")
+//                                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+//                                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+//                                        ->where("qp_user.company", "=", $company)
+//                                        ->where("qp_user.status","=","Y")
+//                                        ->where("qp_user.resign","=","N")
+//                                        ->select("qp_push_token.push_token")
+//                                        ->get();
+//                                    foreach ($userList as $user) {
+//                                            $to[$countFlag] = $user->push_token;
+//                                            $countFlag ++;
+//                                    }
                                 }
 
                                 //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
-                                $result = CommonUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
+                                $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
                                 if(!$result["result"]) {
                                     //\DB::rollBack();
                                     //Update jpush_error_code
@@ -2659,7 +2656,7 @@ SQL;
                                 }
                             }
                             //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
-                            $result = CommonUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
+                            $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
                             if(!$result["result"]) {
                                 //\DB::rollBack();
                                 //Update jpush_error_code
