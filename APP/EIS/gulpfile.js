@@ -84,7 +84,7 @@ gulp.task('config', function(){
 });
 
 /*-------------------------------------------------------------------------------------------------*/
-//ex: gulp install --env test   
+//ex: gulp install --env test
 gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-console',
@@ -93,8 +93,8 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
   'cordova platform rm ios',
-  'cordova platform rm android', 
-  'cordova platform add ios', 
+  'cordova platform rm android',
+  'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
@@ -105,8 +105,8 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-  'cordova platform add ios',
-  'cordova platform add android',
+  'cordova platform add ios@4.3.1',
+  'cordova platform add android@6.0.0',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
@@ -178,5 +178,9 @@ gulp.task('componentJS', function(){
 //ex: gulp default
 //remove petch task
 gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+
+});
+
+gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });

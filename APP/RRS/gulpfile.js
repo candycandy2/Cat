@@ -109,16 +109,8 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-/*  'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
-  'cordova platform rm ios',
-  'cordova platform rm android',
-*/  'cordova platform add ios',
-  'cordova platform add android',
+  'cordova platform add ios@4.3.1',
+  'cordova platform add android@6.0.0',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
@@ -193,3 +185,6 @@ gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages
 
 });
 
+gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+
+});
