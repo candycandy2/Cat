@@ -232,8 +232,8 @@
 　　　　　　　showMessage(" 請確認帳號輸入正確 !");
 　　　　　　　return;
 　　　　　　}
-            var pwdPattern = /(?=.*\d)(?=.*\W+)(?=.*[a-zA-Z])(?!.*\n).*$/;
-            if(!pwdPattern.test(password))
+            var chinesePattern = /[^\x00-\xff]/;
+            if(chinesePattern.test(password))
 　　　　　　{
 　　　　　　　showMessage(" 請確認密碼輸入正確 !");
 　　　　　　　return;
@@ -281,8 +281,8 @@
 　　　　　　　showMessage(" 請確認帳號輸入正確 !");
 　　　　　　　return;
 　　　　　　}
-            var pwdPattern = /(?=.*\d)(?=.*\W+)(?=.*[a-zA-Z])(?!.*\n).*$/;
-            if(!pwdPattern.test(password))
+            var chinesePattern = /[^\x00-\xff]/;
+            if(chinesePattern.test(password))
 　　　　　　{
 　　　　　　　showMessage(" 請確認密碼輸入正確 !");
 　　　　　　　return;
@@ -337,8 +337,8 @@
 　　　　　　　showMessage(" 請確認帳號輸入正確 !");
 　　　　　　　return;
 　　　　　　}
-            var pwdPattern = /(?=.*\d)(?=.*\W+)(?=.*[a-zA-Z])(?!.*\n).*$/;
-            if(!pwdPattern.test(password))
+            var chinesePattern = /[^\x00-\xff]/;
+            if(chinesePattern.test(password))
 　　　　　　{
 　　　　　　　showMessage(" 請確認密碼輸入正確 !");
 　　　　　　　return;
