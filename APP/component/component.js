@@ -729,18 +729,26 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         getServerData();
     } else if (resultCode === "000914") {
         //User Account Suspended
-        getServerData();
+        openAPIError("suspended");
     } else {
         //Other API Result code, show [Please contact ITS]
         var resultCodeStart = resultCode.substr(0, 3);
 
         if (resultCodeStart === "999") {
-            openAPIError();
+            openAPIError("error");
         }
     }
 }
 
-function openAPIError() {
+function openAPIError(type) {
+    if (type === "error") {
+        $("#APIError_1").show();
+        $("#APIError_2").hide();
+    } else {
+        $("#APIError_1").hide();
+        $("#APIError_2").show();
+    }
+
     $('#APIError').popup();
     $('#APIError').show();
     $('#APIError').popup('open');
