@@ -1,3 +1,8 @@
+
+/****************************************************************************************/
+/********************************** String function *************************************/
+/****************************************************************************************/
+
 //string function
 function replaceStr(content, originItem, replaceItem) {
     $.each(originItem, function(index, value) {
@@ -27,6 +32,3 @@ function padLeft(str, lenght) {
     else
         return padLeft("0" + str, lenght);
 }
-
-
-

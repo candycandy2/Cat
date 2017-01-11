@@ -1,5 +1,7 @@
 
+/************************************************************************************************/
 /********************************** APP Process JS function *************************************/
+/************************************************************************************************/
 
 function callQPlayAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
 
@@ -177,4 +179,3 @@ function getMessageID(data) {
         messageRowId = data.extras["Parameter"];
     }
 }
-/********************************** General JS function *************************************/
