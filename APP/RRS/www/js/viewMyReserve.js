@@ -1,6 +1,8 @@
 $(document).one('pagecreate', '#viewMyReserve', function() {
     var clickAggTarceID = '';
     var clickReserveDate = '';
+    var clickReserveRoom = '';
+    var tempTimeNameClick = '';
 
     $('#viewMyReserve').pagecontainer({
         create: function(event, ui) {
@@ -102,16 +104,27 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 $('#viewMyReserve').addClass('min-height-100');
                 clickAggTarceID = $(this).attr('value');
                 clickReserveDate = $(this).attr('date');
-                var clickReserveRoom = $(this).attr('room');
+                clickReserveRoom = $(this).attr('room');
                 var clickReserveTime = $(this).attr('time');
                 var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
                 var strDate = arrDateString[2] + '/' + arrDateString[3];
+                tempTimeNameClick = clickReserveTime.split('-')[0];
                 var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
                 popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', true);
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+                var searchRoomNode = searchTree(meetingRoomData, clickReserveRoom);
+                var searchSiteNode = searchRoomNode.parent.parent.data;
+
+                for (var i = 0; i < myReserveLocalData.length; i++) {
+                    if (myReserveLocalData[i].time == tempTimeNameClick && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
+                        myReserveLocalData.splice(i, 1);
+                        i--;
+                    }
+                };
+
                 $('div[for=cancelMsg]').popup('close');
             });
 

@@ -77,3 +77,11 @@ WEB/InstallQPlay/sftp-config.json
 /qplay/public/*.log
 
 APP/*/www/img/component/*
+/qplay/.env
+/qplay/public/.htaccess
+vendor
+storage
+storage
+/qplayApi/qplayApi/public/.htaccess
+/qplayApi/qplayApi/public/jpush.log
+.idea

@@ -99,8 +99,32 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="sms:*" />' +
                         '<allow-intent href="mailto:*" />' +
                         '<allow-intent href="geo:*" />' +
-                        '<allow-intent href="appyellowpage' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="apprrs' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appyellowpage'+appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprrs' +      appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeis' +      appNameDecorate + ':*" />' +
+                        '<allow-intent href="appcalendar' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appens' +      appNameDecorate + ':*" />' +
+                        '<allow-intent href="appaccounting'+appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme01' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme02' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme03' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme04' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme05' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme06' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme07' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme08' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme09' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme10' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme11' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme12' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme13' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme14' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme15' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme16' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme17' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme18' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme19' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme20' + appNameDecorate + ':*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                         '</platform>' +
@@ -145,8 +169,8 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-    'cordova platform add ios',
-    'cordova platform add android',
+    'cordova platform add ios@4.3.1',
+    'cordova platform add android@6.0.0',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
     'cordova plugin add cordova-plugin-device',
@@ -199,12 +223,12 @@ gulp.task('concat:css', ['less'], function(){
         .pipe(gulp.dest('www/dist/css'));
 });
 */
-
+/*
 gulp.task('componentJS', function() {
     return gulp.src('../component/*.js')
         .pipe(gulp.dest('www/js/'));
 });
-
+*/
 gulp.task('componentHTML', function() {
     return gulp.src('../component/*.html')
         .pipe(gulp.dest('www/View/'));
@@ -214,16 +238,20 @@ gulp.task('componentIMG', function() {
     return gulp.src('../component/image/*')
         .pipe(gulp.dest('www/img/component/'));
 });
-/*
-gulp.task('concat:js', function(){
-    return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
-        .pipe(uglify())
-        .pipe(concat('app.min.js'))
-        .pipe(gulp.dest('www/dist/js'));
+
+gulp.task('componentJS', function(){
+    return gulp.src(['../component/component.js','../component/function.js'])
+        //.pipe(uglify())
+        //.pipe(concat('app.min.js'))
+        .pipe(concat('APP.js'))
+        .pipe(gulp.dest('www/js/'));
 });
-*/
 
 //ex: gulp default --env test
 gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+
+});
+
+gulp.task('jenkinsdefault', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
