@@ -2437,18 +2437,6 @@ SQL;
                                         $to[$countFlag] = strtoupper($company).$i;
                                         $countFlag ++;
                                     }
-//                                    $userList = \DB::table("qp_user")
-//                                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-//                                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-//                                        ->where("qp_user.company", "=", $company)
-//                                        ->where("qp_user.status","=","Y")
-//                                        ->where("qp_user.resign","=","N")
-//                                        ->select("qp_push_token.push_token")
-//                                        ->get();
-//                                    foreach ($userList as $user) {
-//                                            $to[$countFlag] = $user->push_token;
-//                                            $countFlag ++;
-//                                    }
                                 }
 
                                 //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
