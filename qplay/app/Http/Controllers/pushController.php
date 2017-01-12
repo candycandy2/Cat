@@ -701,7 +701,7 @@ class pushController extends Controller
                         -> where(['row_id'=>$newMessageSendId])
                         -> update([
                             'jpush_error_code'=>$result["info"],
-                            'updated_user'=>\Auth::user()->login_id,
+                            'updated_user'=>\Auth::user()->row_id,
                             'updated_at'=>$now
                         ]);
                 }
