@@ -17,6 +17,15 @@ use JPush\Client as JPush;
 
 class CommonUtil
 {
+    public static function setLanguage() {
+        //date_default_timezone_set('UTC');
+        //date_default_timezone_set('PRC');
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
+    }
+
     public static function getUserInfoByRowId($userRowId) {
         $userList = \DB::table('qp_user')
             -> where('qp_user.row_id', '=', $userRowId)
@@ -27,6 +36,7 @@ class CommonUtil
         $userList[0] -> uuidList = array();
         $userList[0] -> uuidList = \DB::table('qp_register')
             -> where('user_row_id', '=', $userList[0]->row_id)
+            -> where('status', '=', 'A')
             -> select('uuid')->get();
 
         return $userList[0];
@@ -572,115 +582,6 @@ SQL;
         return $langList;
     }
 
-    public static function doPost($url, $data){//file_get_content
-        $postdata = http_build_query($data);
-
-        $opts = array('http' =>
-            array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
-                'content' => $postdata
-            )
-        );
-        $context = stream_context_create($opts);
-        $result = file_get_contents($url, false, $context);
-        return $result;
-    }
-
-    public static function PushMessageWithMessageCenter($message, $to, $parameter='') {
-        $jpush_app_id = "33938c8b001b601c1e647cbd";//"1dd3ebb8bb12f1895b4a5e25";  //TODO
-        $id = strtoupper(md5(uniqid(rand(),true)));
-        $args = array('Id' => $id,
-            'TenantId' => '00000000-0000-0000-0000-000000000000',
-            'AppId' => $jpush_app_id,
-            'To' => $to,
-            'Message' => $message,
-            'Sound' => 'default',
-            'Badge' => '0',
-            'Timing' => '1900-01-01 00:00:00.000',
-            'Expire' => '2099-12-31 00:00:00.000',
-            'Status' => 'W',
-            'To_Type' => 'NONE',
-            'Parameter' => $parameter,
-            'CreatedDate' => date('Y-m-d H:i:s',time()));
-        $url = "http://58.210.86.182/MessageCenterWebService/MessageService.asmx/SendPNS"; //TODO http://aic0-s2.qgroup.corp.com/War/MessageCenter/MessageService.asmx
-        $data["pns"] = json_encode($args);
-        $response = self::doPost($url, $data);
-
-        $result = array();
-        if(str_contains($response, "true")) {
-            $result["result"] = true;
-            $result["info"] = $data["pns"];
-        } else {
-            $result["result"] = false;
-            $result["info"] = $data["pns"];
-        }
-
-        return $result;
-    }
-
-    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '') {
-        $result = array();
-        $result["result"] = true;
-        $result["info"] = "success";
-        $response = null;
-        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
-        try {
-            $platform = array('ios', 'android');
-            $alert = $message;
-            $regId = $to;
-            $ios_notification = array(
-                'sound' => 'default',
-                'badge' => '0',
-                'extras' => array(
-                    'Parameter'=> $parameter
-                ),
-            );
-            $android_notification = array(
-                'extras' => array(
-                    'Parameter'=> $parameter
-                ),
-            );
-            $content = $message;
-            $message = array(
-                'title' => $message,
-                'content_type' => 'text',
-                'extras' => array(
-                    'Parameter'=> $parameter
-                ),
-            );
-            $time2live =  Config::get('app.time_to_live',864000);
-            $apnsFlag = Config::get('app.apns_flag',true);
-            $options = array(
-                'time_to_live'=>$time2live,
-                'apns_production'=>$apnsFlag
-            );
-            $response = $client->push()->setPlatform($platform)
-                ->addRegistrationId($regId)
-                ->iosNotification($alert, $ios_notification)
-                ->androidNotification($alert, $android_notification)
-                ->message($content, $message)
-                ->options($options)
-                ->send();
-        } catch (APIConnectionException $e) {
-            $result["result"] = false;
-            $result["info"] = "APIConnection Exception occurred";
-        }catch (APIRequestException $e) {
-            $result["result"] = false;
-            $result["info"] = "APIRequest Exception occurred";
-        }catch (JPushException $e) {
-            $result["result"] = false;
-            $result["info"] = "JPush Exception occurred";
-        }catch (\ErrorException $e) {
-            $result["result"] = false;
-            $result["info"] = "Error Exception occurred";
-        }catch (\Exception $e){
-            $result["result"] = false;
-            $result["info"] = "Exception occurred";
-        }
-        return $result;
-    }
-
     public static function getAllCategoryList(){
         $categoryList = \DB::table('qp_app_category')
             -> select('row_id', 'app_category')
@@ -691,7 +592,6 @@ SQL;
         }
         return null;
     }
-
 
     public static function getAppRoleByAppId($appId){
         $enableRole = \DB::table('qp_role_app')

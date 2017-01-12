@@ -152,11 +152,6 @@ gulp.task('concat:css', ['less'], function(){
 });
 */
 
-gulp.task('componentJS', function() {
-    return gulp.src('../component/*.js')
-        .pipe(gulp.dest('www/js/'));
-});
-
 gulp.task('componentHTML', function() {
     return gulp.src('../component/*.html')
         .pipe(gulp.dest('www/View/'));
@@ -166,14 +161,24 @@ gulp.task('componentIMG', function() {
     return gulp.src('../component/image/*')
         .pipe(gulp.dest('www/img/component/'));
 });
-/*
-gulp.task('concat:js', function(){
-    return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
-        .pipe(uglify())
-        .pipe(concat('app.min.js'))
-        .pipe(gulp.dest('www/dist/js'));
+
+gulp.task('functionJS', function() {
+    return gulp.src('../component/function/*.js')
+        .pipe(concat('function.js'))
+        .pipe(gulp.dest('../component/'));
 });
-*/
+
+gulp.task('appJS', ['functionJS'], function(){
+    return gulp.src(['../component/component.js','../component/function.js'])
+        //.pipe(uglify())
+        //.pipe(concat('app.min.js'))
+        .pipe(concat('APP.js'))
+        .pipe(gulp.dest('www/js/'));
+});
+
+gulp.task('componentJS', ['appJS'], shell.task([
+    'rm ../component/function.js'
+]));
 
 //ex: gulp default
 //remove petch task
