@@ -729,7 +729,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         getServerData();
     } else if (resultCode === "000914") {
         //User Account Suspended
-        getServerData();
+        openAPIError();
     } else {
         //Other API Result code, show [Please contact ITS]
         var resultCodeStart = resultCode.substr(0, 3);
