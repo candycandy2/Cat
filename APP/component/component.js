@@ -671,11 +671,13 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
     data =  data || data;
 
     //Success Result Code
+    //even though some result code != 1, but it still means the result is success,
+    //need to check the token_valid
     var codeArray = [
         //All APP
         "1",
         //QPlay
-        "000910", "000913", "000915",
+        "000910", "000913", "000915", "000910", "000919",
         //Yellowpage
         "001901", "001902", "001903", "001904", "001905", "001906",
         //RRS
@@ -729,7 +731,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //User Account Suspended
         getServerData();
     } else {
-        //Other API Result code
+        //Other API Result code, show [Please contact ITS]
         var resultCodeStart = resultCode.substr(0, 3);
 
         if (resultCodeStart === "999") {
@@ -761,7 +763,7 @@ function getSignature(action, signatureTime) {
 function loadingMask(action) {
     if (action === "show") {
         if ($(".loader").length === 0) {
-            $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
+            $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
         } else {
             $(".loader").show();
         }
@@ -938,7 +940,9 @@ function handleOpenURL(url) {
         if (device.platform === "iOS") {
             if (loginData['doLoginDataCallBack'] === true) {
                 $.mobile.changePage('#viewInitial');
-                var checkAppVer = new checkAppVersion();
+                if (iOSAppInitialFinish === true) {
+                    var checkAppVer = new checkAppVersion();
+                }
             }
 
             if (loginData['openAppDetailPage'] === true) {

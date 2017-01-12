@@ -91,7 +91,7 @@
                             </tr>-->
                             <tr>
                                 <td>
-                                    <select class="login_control" placeholder="Company" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext">
+                                    <select class="login_control" placeholder="Company" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f;">
                                         <option value="BENQ" selected="selected">BenQ</option>
                                         <option value="QGROUP">Qisda</option>
                                     </select>
@@ -179,7 +179,10 @@
     <script>
         $(function () {
             $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
-
+            $("#tbxName").parent().css("background-color","transparent");
+            $("#tbxPassword").parent().css("background-color","transparent");
+            $("#ddlCompany").parent().css("background-color","transparent");
+            
             var showOriLogin = getQueryString("show_origin_login");
             if(showOriLogin && showOriLogin == "Y") {
                 $("#btnOriLogin").show();
@@ -246,9 +249,9 @@
                         showMessage(d.message);
                     }
                 },
-                error: function (e) {
+                error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
-                    showMessage(e);
+                    showMessage(thrownError);
                 }
             });
         }
@@ -286,9 +289,9 @@
                         showMessage(d.result_code + ": " + d.message);
                     }
                 },
-                error: function (e) {
+                error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
-                    showMessage(e);
+                    showMessage(thrownError);
                 }
             });
         }
@@ -327,9 +330,9 @@
                     }
 
                 },
-                error: function (e) {
+                error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
-                    showMessage(e);
+                    showMessage(thrownError);
                 }
             });
         }
