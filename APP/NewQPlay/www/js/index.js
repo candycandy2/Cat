@@ -18,6 +18,8 @@ var callBackURL;
 var callGetMessageList = false;
 var messagePageShow = false;
 var delMsgActive = false;
+var checkAPPKey;
+var checkAPPKeyInstalled = false;
 
 window.initialSuccess = function(data) {
     if (data !== undefined) {
@@ -71,7 +73,7 @@ window.initialSuccess = function(data) {
         }
     }
 
-    iOSAppInitialFinish = true;
+    appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
 }
@@ -146,6 +148,32 @@ function openNewMessage() {
         var messageList = new QueryMessageList();
         callGetMessageList = true;
     }
+}
+
+//Check if APP is installed
+function checkAPPInstalled(callback) {
+
+    callback = callback || null;
+
+    var scheme;
+
+    if (device.platform === 'iOS') {
+        scheme = checkAPPKey + '://';
+    } else if (device.platform === 'Android') {
+        scheme = 'com.qplay.' + checkAPPKey;
+    }
+
+    appAvailability.check(
+        scheme,       //URI Scheme or Package Name
+        function() {  //Success callback
+            checkAPPKeyInstalled = true;
+            callback(true);
+        },
+        function() {  //Error callback
+            checkAPPKeyInstalled = false;
+            callback(false);
+        }
+    );
 }
 
 //un-register [User with Mobile Device UUID]
