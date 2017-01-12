@@ -109,16 +109,8 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-/*  'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
-  'cordova platform rm ios',
-  'cordova platform rm android',
-*/  'cordova platform add ios',
-  'cordova platform add android',
+  'cordova platform add ios@4.3.1',
+  'cordova platform add android@6.0.0',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
@@ -164,11 +156,6 @@ gulp.task('concat:css', ['less'], function(){
 });
 */
 
-gulp.task('componentJS', function() {
-    return gulp.src('../component/*.js')
-        .pipe(gulp.dest('www/js/'));
-});
-
 gulp.task('componentHTML', function() {
     return gulp.src('../component/*.html')
         .pipe(gulp.dest('www/View/'));
@@ -178,19 +165,24 @@ gulp.task('componentIMG', function() {
     return gulp.src('../component/image/*')
         .pipe(gulp.dest('www/img/component/'));
 });
-/*
-gulp.task('concat:js', function(){
-    return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
-        .pipe(uglify())
-        .pipe(concat('app.min.js'))
-        .pipe(gulp.dest('www/dist/js'));
+
+gulp.task('functionJS', function() {
+    return gulp.src('../component/function/*.js')
+        .pipe(concat('function.js'))
+        .pipe(gulp.dest('../component/'));
 });
 
-gulp.task('default', ['concat:js', 'concat:css'], function(){
-    return gulp.src('www/src/index.html')
-        .pipe(gulp.dest('www/dist'));
+gulp.task('appJS', ['functionJS'], function(){
+    return gulp.src(['../component/component.js','../component/function.js'])
+        //.pipe(uglify())
+        //.pipe(concat('app.min.js'))
+        .pipe(concat('APP.js'))
+        .pipe(gulp.dest('www/js/'));
 });
-*/
+
+gulp.task('componentJS', ['appJS'], shell.task([
+    'rm ../component/function.js'
+]));
 
 //ex: gulp default --env test
 //remove patch task
@@ -198,3 +190,6 @@ gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages
 
 });
 
+gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+
+});
