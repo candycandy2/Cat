@@ -111,6 +111,7 @@ class CommonUtil
         $userList[0] -> uuidList = array();
         $userList[0] -> uuidList = \DB::table('qp_register')
             -> where('user_row_id', '=', $userList[0]->row_id)
+            -> where('status', '=', 'A')
             -> select('uuid')->get();
 
         return $userList[0];
