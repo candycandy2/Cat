@@ -2695,7 +2695,7 @@ SQL;
         }
 
         //For Log
-        $ACTION = 'sendPushMessage';
+        $ACTION = 'updateLastMessageTime';
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('last_update_time', $input)

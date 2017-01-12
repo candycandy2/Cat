@@ -1,14 +1,26 @@
 @include("layouts.lang")
 <?php
 use Illuminate\Support\Facades\Input;
-$menu_name = "SECRETARY_PUSH";
+$menu_name = "PUSH_SERVER";
 $input = Input::get();
 $messageInfo = null;
 $messageId = $input["message_id"];
 $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
+$needPushFlag = 'N';
+if(count($messageInfo->send_list) == 0) {
+    $needPushFlag = 'Y';
+}
 
 $msgTitle = str_replace(array("\r","\n"), ' ', $messageInfo->message_title);
 $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
+
+$pushSendRowId = -1;
+foreach ($messageInfo->send_list as $sendItem) {
+    if($sendItem->need_push == 0) {
+        $needPushFlag = 'Y';
+        $pushSendRowId = $sendItem->row_id;
+    }
+}
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -36,12 +48,12 @@ label {
                             </div>
                         </td>
                         <td style="padding: 5px;">
-                            <a type="button" class="btn btn-primary" href="secretaryPushNew?copy_from={{$messageId}}">
+                            <a type="button" class="btn btn-primary" href="newMessage?copy_from={{$messageId}}">
                                 {{trans("messages.COPY_MESSAGE")}}
                             </a>
                         </td>
                         <td style="padding: 5px;">
-                            <a type="button" class="btn btn-default" href="secretaryPush">
+                            <a type="button" class="btn btn-default" href="push">
                                 {{trans("messages.RETURN")}}
                             </a>
                         </td>
@@ -113,7 +125,7 @@ label {
             <br/><br/>
 
             <table id="gridSendList" class="bootstrapTable" data-toggle="table"
-                   data-url="platform/getSecretaryMessageSendList?message_id={{$messageId}}" data-height="298" data-pagination="true"
+                   data-url="push/getMessageSendList?message_id={{$messageId}}" data-height="298" data-pagination="true"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                    data-show-toggle="true"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -133,10 +145,13 @@ label {
     <script>
         $(function() {
             $('#switchVisible').on('switch-change', SaveMessageVisible);
+            @if($needPushFlag == 'Y')
+                window.location.href = "updateMessage?message_id={{$messageId}}&push_send_row_id={{$pushSendRowId}}";
+            @endif
         });
 
         var pushDateFormatter = function (value, row) {
-            return '<a href="secretaryPushSendDetail?message_id=' + {{$messageId}} + '&push_send_row_id=' + row.row_id + '">' + convertUTCToLocalDateTime(value) + '</a>';
+            return '<a href="pushSendDetail?message_id=' + {{$messageId}} + '&push_send_row_id=' + row.row_id + '">' + convertUTCToLocalDateTime(value) + '</a>';
         };
 
         var oriVisible = '{{$messageInfo->visible}}';
@@ -162,7 +177,7 @@ label {
 
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
-                    url: "platform/saveMessageVisible",
+                    url: "push/saveMessageVisible",
                     dataType: "json",
                     type: "POST",
                     contentType: "application/json",

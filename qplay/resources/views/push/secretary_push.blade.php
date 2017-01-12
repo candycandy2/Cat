@@ -1,18 +1,18 @@
 @include("layouts.lang")
 <?php
-$menu_name = "PUSH_SERVER";
+$menu_name = "SECRETARY_PUSH";
 
 ?>
 @extends('layouts.admin_template')
 @section('content')
-    <div id="toolbar">
-        <a class="btn btn-primary" href="newMessage" id="btnNewMessage">
+    <div id="toolbar" style="display: none;">
+        <a class="btn btn-primary" href="secretaryPushNew" id="btnNewMessage">
             {{trans("messages.NEW_MESSAGE")}}
         </a>
     </div>
 
     <table id="gridMessageList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbar"
-           data-url="platform/getMessageList" data-height="398" data-pagination="true"
+           data-url="push/getSecretaryMessageList" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -22,7 +22,7 @@ $menu_name = "PUSH_SERVER";
             <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
             <th data-field="message_type" data-sortable="true" data-formatter="messageTypeFormatter">{{trans("messages.MESSAGE_TYPE")}}</th>
             <th data-field="message_title" data-sortable="true" data-formatter="messageTitleFormatter" data-search-formatter="false" data-width="600px" data-class="grid_long_column">{{trans("messages.MESSAGE_TITLE")}}</th>
-            <th data-field="created_at" data-sortable="true" data-formatter="createdDateFormatter" >{{trans("messages.CREATED_DATE")}}</th>
+            <th data-field="created_at" data-sortable="true" data-formatter="createdDateFormatter">{{trans("messages.CREATED_DATE")}}</th>
             <th data-field="created_user" data-sortable="true">{{trans("messages.MESSAGE_CREATED_USER")}}</th>
             <th data-field="visible" data-sortable="true">{{trans("messages.PUBLISH_STATUS")}}</th>
         </tr>
@@ -33,8 +33,9 @@ $menu_name = "PUSH_SERVER";
         function createdDateFormatter(value, row){
             return convertUTCToLocalDateTime(value);
         }
+
         function messageTitleFormatter(value, row) {
-            return '<a href="messagePushHistory?message_id=' + row.row_id + '">' + value + '</a>';
+            return '<a href="secretaryPushNew?message_id=' + row.row_id + '">' + value + '</a>';
         };
         
         function messageTypeFormatter(value, row) {
