@@ -310,7 +310,7 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
 
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
-                    url: "platform/pushSecretaryMessage",
+                    url: "push/pushSecretaryMessage",
                     dataType: "json",
                     type: "POST",
                     contentType: "application/json",
