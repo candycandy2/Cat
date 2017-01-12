@@ -16,25 +16,27 @@ namespace JPushProxy
         private JPushClient mPushClient;
         private DeviceClient mDeviceClient;
         private PushPayload mPayload;
+
+        private JPushLogger.JPushLogger mLogger;
         public JPushProxy()
         {
             string appKey = ConfigurationManager.AppSettings.Get("jpush_app_key");
             string masterSecret = ConfigurationManager.AppSettings.Get("jpush_master_secret");
             mPushClient = new JPushClient(appKey, masterSecret);
             mDeviceClient = new DeviceClient(appKey, masterSecret);
+            mLogger = new JPushLogger.JPushLogger();
         }
 
-        public bool RemoveTag(string registration_id, string tag)
+        public bool RemoveTags(string registration_id, HashSet<String> tags)
         {
-            HashSet<String> tagHashsetRemove = new HashSet<string>();
-            tagHashsetRemove.Add(tag);
             DefaultResult result = null;
-            try {
+            try
+            {
                 result = mDeviceClient.updateDevice(registration_id,
                                                        "",
                                                        "",
                                                        new HashSet<string>(),
-                                                       tagHashsetRemove
+                                                       tags
                                                        );
             }
             catch (APIRequestException e)
@@ -46,7 +48,7 @@ namespace JPushProxy
                 return false;
             }
 
-            if(result.isResultOK())
+            if (result != null && result.isResultOK())
             {
                 return true;
             }
@@ -54,7 +56,12 @@ namespace JPushProxy
             return false;
         }
 
-        public static HashSet<String> TAG_HASHSET_REMOVE = new HashSet<string> { TAG_NO };
+        public bool RemoveTag(string registration_id, string tag)
+        {
+            HashSet<String> tagHashsetRemove = new HashSet<string>();
+            tagHashsetRemove.Add(tag);
 
+            return RemoveTags(registration_id, tagHashsetRemove);            
+        }
     }
 }
