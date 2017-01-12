@@ -17,6 +17,15 @@ use JPush\Client as JPush;
 
 class CommonUtil
 {
+    public static function setLanguage() {
+        //date_default_timezone_set('UTC');
+        //date_default_timezone_set('PRC');
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
+    }
+
     public static function getUserInfoByRowId($userRowId) {
         $userList = \DB::table('qp_user')
             -> where('qp_user.row_id', '=', $userRowId)
@@ -27,6 +36,7 @@ class CommonUtil
         $userList[0] -> uuidList = array();
         $userList[0] -> uuidList = \DB::table('qp_register')
             -> where('user_row_id', '=', $userList[0]->row_id)
+            -> where('status', '=', 'A')
             -> select('uuid')->get();
 
         return $userList[0];
