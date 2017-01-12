@@ -71,7 +71,9 @@ class EventService
            if(isset($xml->related_event_row_id[0]) && $xml->related_event_row_id[0]!=""){
                 $this->eventRepository->bindRelatedEvent($eventId,$xml->related_event_row_id[0]);
            }
-           $this->sendPushMessageToEventUser($eventId, $data, 'update');
+           $result = $this->sendPushMessageToEventUser($eventId, $data, 'update');
+           
+           return $result;
    }
 
    public function getEventList($eventType, $empNo){

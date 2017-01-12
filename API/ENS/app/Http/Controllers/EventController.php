@@ -254,18 +254,8 @@ class EventController extends Controller
                     return $result;
                 }
             }
-            $this->eventService->updateEvent($xml);
-           // $updateField = array('event_type_parameter_value',
-           //                        'event_title','event_desc',
-           //                        'estimated_complete_date',
-           //                        'related_event_row_id');
-
-           // $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
-           // $this->eventRepository->updateEventById($eventId,$data);
-           
-           // if(isset($xml->related_event_row_id[0]) && $xml->related_event_row_id[0]!=""){
-           //      $this->eventRepository->bindRelatedEvent($eventId,$xml->related_event_row_id[0]);
-           // }
+            
+            $pushResult = $this->eventService->updateEvent($xml);
 
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
