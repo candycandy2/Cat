@@ -519,7 +519,7 @@ class pushController extends Controller
                                             'created_user'=>\Auth::user()->row_id,
                                             'created_at'=>$now,
                                         ]);
-                                    array_push($event_push_token_liet,$uuid->uuid);
+                                    array_push($event_push_token_list,$uuid->uuid);
                                 }
                                 array_push($insertedUserIdList, $userId);
                                 array_push($real_push_user_list, $userId);
@@ -540,7 +540,7 @@ class pushController extends Controller
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
                                     ]);
-                                array_push($event_push_token_liet,$uuid->uuid);
+                                array_push($event_push_token_list,$uuid->uuid);
                             }
                             array_push($insertedUserIdList, $userId);
                             array_push($real_push_user_list, $userId);
@@ -774,13 +774,6 @@ class pushController extends Controller
             $now = date('Y-m-d H:i:s',time());
             \DB::beginTransaction();
             try {
-//                \DB::table("qp_message")
-//                    -> update([
-//                        'message_title'=>$title,
-//                        'message_text'=>$content,
-//                        'created_at'=>$now,
-//                    ]);
-
                 $companyList = array();
                 $companyLabel = "";
                 if($receiver["type"] == "company") {
@@ -801,37 +794,28 @@ class pushController extends Controller
                     ]);
 
                 $real_push_user_list = array();
-                if($receiver["type"] == "company") {
-//                    foreach ($companyList as $company) {
-//                        $userList = \DB::table("qp_user")
-//                            ->where("company", "=", $company)
-//                            ->select()->get();
-//                        foreach ($userList as $user) {
-//                            $userId = $user -> row_id;
-//                            if(!in_array($userId, $real_push_user_list)) {
-//                                array_push($real_push_user_list, $userId);
-//                            }
-//                        }
-//                    }
-                } else {
+                $push_token_list = array();
+                if($receiver["type"] != "company") {
                     $userList = $receiver["user_list"];
                     foreach($userList as $userId) {
-                        \DB::table("qp_user_message_pushonly")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'user_row_id'=>$userId,
-                                'message_send_pushonly_row_id'=>$newMessageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-
+                        $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                        foreach ($currentUserInfo->uuidList as $uuid) {
+                            \DB::table("qp_user_message_pushonly")
+                                -> insert([
+                                    'project_row_id'=>1,
+                                    'user_row_id'=>$userId,
+                                    'uuid'=>$uuid->uuid,
+                                    'message_send_pushonly_row_id'=>$newMessageSendId,
+                                    'created_user'=>\Auth::user()->row_id,
+                                    'created_at'=>$now,
+                                ]);
+                            array_push($push_token_list,$uuid->uuid);
+                        }
                         array_push($real_push_user_list, $userId);
                     }
                 }
 
-                $to = [];
-                $CountFlag = 0;
-                $messageSendRowId = DB::table("qp_message_send")
+                $messageSendRowIdList = DB::table("qp_message_send")
                     ->join("qp_message_send_pushonly","qp_message_send_pushonly.message_row_id","=","qp_message_send.message_row_id")
                     ->join('qp_message', function($join)
                     {
@@ -841,35 +825,17 @@ class pushController extends Controller
                     ->where("qp_message_send_pushonly.row_id","=",$newMessageSendId)
                     ->select("qp_message_send.row_id")
                     ->get();
-
+                $messageSendRowId = $messageSendRowIdList[0]->row_id;
                 if($receiver["type"] == "company") {
+                    $tag_list = array();
                     foreach ($companyList as $company) {
                         for ($i = 1; $i <= 6; $i++) {
-                            $to[$CountFlag] = strtoupper($company) . $i;
-                            $CountFlag++;
+                            array_push($tag_list, strtoupper($company) . $i);
                         }
                     }
-                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId, true);
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $tag_list, $messageSendRowId, true);
                 } else {
-                    foreach ($real_push_user_list as $uId) {
-                        $userPushList = \DB::table("qp_user")
-                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                            ->where("qp_user.row_id", "=", $uId)
-                            ->where("qp_user.status","=","Y")
-                            ->where("qp_user.resign","=","N")
-                            ->select("qp_push_token.push_token")
-                            ->get();
-                        if(count($userPushList) > 0 ) {
-                            foreach($userPushList as $tempUser){
-                                $to[$CountFlag] = $tempUser->push_token;
-                                $CountFlag ++;
-                            }
-                        }
-                    }
-
-                    $messageSendRowId =$messageSendRowId[0]->row_id;
-                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $push_token_list, $messageSendRowId);
                 }
 
                 if(!$result["result"]) {
@@ -880,11 +846,8 @@ class pushController extends Controller
                             'updated_user'=>\Auth::user()->row_id,
                             'updated_at'=>$now
                         ]);
-                    \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$messageSendRowId, 'message_id'=>$messageSendRowId]);
                 }
-//                $result = array();
-//                $result["info"] = 1;
+
                 \DB::commit();
 
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$messageSendRowId, 'message_id'=>$message_id]);
