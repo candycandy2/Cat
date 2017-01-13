@@ -64,21 +64,24 @@ class EventRepository
             ->get();
     }
 
-    public function getEventList($eventType, $empNo){
-        return $this->event
-            ->where('en_user_event.emp_no', '=', (string)$empNo)
-            ->where('event_type_parameter_value', '=', $eventType)
-            ->join( 'en_user_event', 'en_event.row_id', '=', 'en_user_event.event_row_id')
-            ->select($this->eventField)
-            ->get();
+    public function getEventList($empNo, $eventType, $eventStatus){
+        $result = $this->event->where('en_user_event.emp_no', '=', (string)$empNo)
+                 ->where('event_type_parameter_value', '=', $eventType)
+                 ->join( 'en_user_event', 'en_event.row_id', '=', 'en_user_event.event_row_id');
+        if($eventType!=""){
+            $result->where('event_type_parameter_value', '=', $eventType);
+        }
+        if($eventStatus!=""){
+            $result->where('event_status', '=', $eventStatus);
+        }
+        return $result->orderByRaw(DB::raw("event_status,en_event.updated_at,en_event.created_at desc"))
+             ->select($this->eventField)
+             ->get();
     }
 
-    public function getUnrelatedEventList($eventType, $empNo){
+    public function getUnrelatedEventList($empNo){
         return $this->event
-            ->where('en_user_event.emp_no', '=', (string)$empNo)
-            ->where('event_type_parameter_value', '=', $eventType)
             ->where('related_event_row_id', '=', 0)
-            ->join( 'en_user_event', 'en_event.row_id', '=', 'en_user_event.event_row_id')
             ->select($this->eventField)
             ->get();
     }
