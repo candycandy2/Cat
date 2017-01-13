@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -442,7 +442,7 @@ class qplayController extends Controller
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -994,7 +994,7 @@ class qplayController extends Controller
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -1255,7 +1255,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -1378,7 +1378,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);
                 } else if($userStatus == 2) {
                     $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);
+                        "message"=> "帳號已被停權"]);
                 }
             }
 
@@ -1639,7 +1639,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -1838,7 +1838,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -2027,7 +2027,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -2204,7 +2204,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);
                 } else if($userStatus == 2) {
                     $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);
+                        "message"=> "帳號已被停權"]);
                 }
             }
 
@@ -2735,7 +2735,7 @@ SQL;
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
                     $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
