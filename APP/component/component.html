@@ -89,7 +89,8 @@
          data-overlay-theme="b" data-dismissible="false" style="display:none; z-index:999;">
         <div data-role="main" class="ui-content">
             <p>
-                系統錯誤，請聯絡 ITS!
+                <span id="APIError_1">系統錯誤，請聯絡 ITS</span>
+                <span id="APIError_2">使用者已被停權，請聯絡 ITS</span>
             </p>
 
             <hr class="hr-style">
@@ -112,7 +113,8 @@
     <div data-role="main" class="main-GetQPush">
         <img class="logo-GetQPush" src="img/component/QPlay_logo.svg"/>
         <div class="text-GetQPush">
-            服務連線中
+            服務連線中...
+            <br>第一次登入需要取得認證, 請耐心等候
         </div>
         <div class="brand-GetQPush-content">
             <img class="brand-GetQPush" src="img/component/Logo.svg"/>
@@ -165,5 +167,15 @@
         <div class="button-updateAppVersion" id="LoginAgain">
             <div class="button-text-updateAppVersion">Login</div>
         </div>
+    </div>
+</div>
+
+<!-- Start of viewPopupMsg -->
+<div data-role="popup" data-history="false" id="viewPopupMsg" data-overlay-theme="b" data-dismissible="false" class="hide">
+    <div data-role="main" class="popup-msg">
+        <h1 id="msgTitle"><img id="titleImg" src="" class="hide"><span></span></h1>
+        <div id="msgContent"></div>
+        <button id="cancel"></button>
+        <button id="confirm"></button>
     </div>
 </div>

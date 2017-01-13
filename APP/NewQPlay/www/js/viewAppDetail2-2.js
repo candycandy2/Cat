@@ -7,9 +7,15 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             var pageHeight = null;
 
             /********************************** function *************************************/
-             function displayAppDetail() {
+             function displayAppDetailStep1() {
 
                 $("#appDetailIcon").attr("src", applist[selectAppIndex].icon_url); 
+
+                //Check if APP is installed
+                var packageName = applist[selectAppIndex].package_name;
+                var packageNameArr = packageName.split(".");
+                checkAPPKey = packageNameArr[2];
+                checkAPPInstalled(displayAppDetailStep2);
 
                 //Find multilangIndex = "zh-tw"
                 for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
@@ -110,6 +116,23 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                     $("#appDetailAppDescription").css("height", parseInt(descriptionHeight + adjustHeight, 10) + "px");
                 }
 
+            }
+
+            window.displayAppDetailStep2 = function(installed) {
+                //Check APP Install need process time, so need this step
+
+                $("#InstallApp span").hide();
+
+                if (installed) {
+                    if (loginData['updateApp']) {
+                        $("#InstallApp #InstallAppStr03").show();
+                    } else {
+                        $("#InstallApp #InstallAppStr02").show();
+                    }
+                } else {
+                    $("#InstallApp #InstallAppStr01").show();
+                }
+
                 loadingMask("hide");
             }
 
@@ -119,15 +142,26 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             });
 
             $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
-                displayAppDetail();
+                displayAppDetailStep1();
             });
 
             /********************************** dom event *************************************/
-            $("#InstallApp").on("click", function() {
+            $("#InstallApp #InstallAppStr01").on("click", function() {
                 if (selectAppIndex != null) {
-                    $("body").append('<a id="downloadAPP" href="' + applist[selectAppIndex].url + '"></a>');
-                    document.getElementById("downloadAPP").click();
-                    $("#downloadAPP").remove();
+                    openAPP(applist[selectAppIndex].url);
+                }
+            });
+
+            $("#InstallApp #InstallAppStr02").on("click", function() {
+                var schemeURL = checkAPPKey + createAPPSchemeURL();
+                openAPP(schemeURL);
+            });
+
+            $("#InstallApp #InstallAppStr03").on("click", function() {
+                //1. Open Other APP, do checkAppVersion, need to update, then click button to open QPlay
+                //2. In this case, show [update] in button
+                if (selectAppIndex != null) {
+                    openAPP(applist[selectAppIndex].url);
                 }
             });
 
