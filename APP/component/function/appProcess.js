@@ -122,10 +122,6 @@ function openAPP(URL) {
     $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
     document.getElementById("schemeLink").click();
     $("#schemeLink").remove();
-
-    if (device.platform === "Android") {
-        navigator.app.exitApp();
-    }
 }
 
 //If API is error, open Dialog
