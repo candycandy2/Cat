@@ -71,7 +71,7 @@
     height: 5.7VH;
     margin-top: 0px;
     padding: 0;
-    line-height: 36px;
+    line-height: 6VH;
 }
 
 #name-tel{
@@ -161,6 +161,7 @@
 /**********************  viewDetialInfo  **********************/
 #detial-name-title{
     margin-left: 3.7VW;
+    margin-top: 2.9VH;
 }
 
 #detial-name-title .detial-name{
@@ -171,7 +172,6 @@
 #detial-name-title #eName{
     font-family:Arial; 
     font-size:3VH;
-    margin-top: 2.9VH;
 }
 
 #detial-name-title #cName{
