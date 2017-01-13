@@ -6,7 +6,7 @@
   },
   {
     "term": "ids_001",
-    "definition": "hh",
+    "definition": "hh%D %S %TIME",
     "comment": ""
   }
 ]
