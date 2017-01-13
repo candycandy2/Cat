@@ -80,6 +80,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
+//ex: gulp config --env test --vname 1.0.0.8 --vcode 8
 gulp.task('config', function(){
     fs.writeFile('config.xml', configContent);
 });
