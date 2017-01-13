@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
-use App\Services\ParameterService;
 use App\Services\BasicInfoService;
 use App\Services\UserService;
 use App\Services\EventService;
@@ -17,19 +16,17 @@ class EventController extends Controller
 {
 
     protected $eventService;
-    protected $parameterService;
     protected $basicInfoService;
     protected $userService;
     protected $eventRepository;
     protected $pushService;
 
-    const EVENT_TYPE = 1;
+    const EVENT_TYPE = 'event_type';
 
-    public function __construct(EventRepository $eventRepository, EventService $eventService, ParameterService $parameterService, BasicInfoService $basicInfoService, UserService $userService)
+    public function __construct(EventRepository $eventRepository, EventService $eventService, BasicInfoService $basicInfoService, UserService $userService)
     {
         $this->eventRepository = $eventRepository;
         $this->eventService = $eventService;
-        $this->parameterService = $parameterService;
         $this->basicInfoService = $basicInfoService;
         $this->userService = $userService;
     }
@@ -50,7 +47,16 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             $data = $this->arrangeInsertData($xml);
 
-            $parameterMap = $this->parameterService->getParameterMapByType(self::EVENT_TYPE);
+            if((!isset($data['lang']) || $data['lang']=="")||
+                (!isset($data['need_push']) || $data['need_push']=="")||
+                (!isset($data['app_key']) || $data['app_key']=="")){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            $parameterMap =  CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+
             if(!in_array($data['event_type_parameter_value'],array_keys($parameterMap))){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"事件類型不存在",
@@ -94,8 +100,14 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
             }
+
+            $queryParam =  array(
+                'lang' => $data['lang'],
+                'need_push' =>  $data['need_push'],
+                'app_key' =>  $data['app_key']
+                );
             
-            $eventId = $this->eventService->newEvent($data);
+            $eventId = $this->eventService->newEvent($data, $queryParam);
             
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
@@ -123,22 +135,27 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             
             $empNo = (string)$xml->emp_no[0];
-            $eventType = $xml->event_type_parameter_value[0];
-            $eventStatus = $xml->event_status[0];
+            $eventType = (string)$xml->event_type_parameter_value[0];
+            $eventStatus = (string)$xml->event_status[0];
 
-            if(!isset($eventType) || trim($eventType) == "" ){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                'Message'=>"欄位格式錯誤",
-                'Content'=>""]);
+            if(isset($eventType) && $eventType!=""){
+                $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+                if(!in_array($eventType,array_keys($parameterMap))){
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                    'Message'=>'事件類型錯誤',
+                    'Content'=>'']);
+                }
             }
-            $typeInfo = CommonUtil::getParameterTypeInfoById($eventType);
-            if(count($typeInfo) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                'Message'=>'事件類型錯誤',
-                'Content'=>'']);
+            if(isset($eventStatus) && $eventStatus!=""){
+                $validStatusArr = array('0','1');
+                if(!in_array($eventStatus,$validStatusArr)){
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+                }
             }
 
-            $eventList = $this->eventService->getEventList($eventType, $empNo);
+            $eventList = $this->eventService->getEventList($empNo, $eventType, $eventStatus);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -168,7 +185,7 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             
             $empNo = (string)$xml->emp_no[0];
-            $eventId = $xml->event_row_id[0];
+            $eventId = (string)$xml->event_row_id[0];
 
             if(!isset($eventId) || $eventId == "" || preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
@@ -207,7 +224,10 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
 
             $empNo = (string)$xml->emp_no[0];
-            $eventId = $xml->event_row_id[0];
+            $eventId = (string)$xml->event_row_id[0];
+            $lang = (string)$xml->lang[0];
+            $needPush = (string)$xml->need_push[0];
+            $appKey = (string)$xml->app_key[0];
           
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array("admin", $userAuthList)){
@@ -215,6 +235,13 @@ class EventController extends Controller
                     'Message'=>"權限不足",
                     'Content'=>""]);
             }
+
+            if((!isset($lang) || $lang=="")||(!isset($needPush ) || $needPush =="")|| (!isset($appKey) || $appKey=="")){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
             if(!isset($eventId) || trim($eventId) == "" || preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
@@ -228,8 +255,8 @@ class EventController extends Controller
                 'Content'=>'']);
             }
 
-            if(isset($xml->event_type_parameter_value[0]) && $xml->event_type_parameter_value[0]!=""){
-             $parameterMap = $this->parameterService->getParameterMapByType(self::EVENT_TYPE);
+            if(isset($xml->event_type_parameter_value[0]) && trim((string)$xml->event_type_parameter_value[0])!=""){
+             $parameterMap =  CommonUtil::getParameterMapByType(self::EVENT_TYPE);
                 if(!in_array($xml->event_type_parameter_value[0],array_keys($parameterMap))){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                         'Message'=>"事件類型不存在",
@@ -237,7 +264,7 @@ class EventController extends Controller
                 }
             }
 
-            if(isset($xml->estimated_complete_date[0]) && trim($xml->estimated_complete_date[0])!=""){
+            if(isset($xml->estimated_complete_date[0]) && trim((string)$xml->estimated_complete_date[0])!=""){
                 if( preg_match("/^[1-9][0-9]*$/", $xml->estimated_complete_date[0]) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
@@ -245,7 +272,7 @@ class EventController extends Controller
                 }
             }
 
-            if(isset($xml->related_event_row_id[0]) && trim($xml->related_event_row_id[0])!=""){
+            if(isset($xml->related_event_row_id[0]) && trim((string)$xml->related_event_row_id[0])!=""){
                 $verifyResult = $Verify->checkRelatedEvent($xml->related_event_row_id[0], $this->eventService);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
@@ -299,16 +326,16 @@ class EventController extends Controller
                 'Content'=>'']);
             }
             
-            if( (!isset($xml->read_time[0]) || trim($xml->read_time[0])=="") && 
-                (!isset($xml->event_status[0]) || trim($xml->event_status[0])=="") ){
+            if( (!isset($xml->read_time[0]) || trim((string)$xml->read_time[0])=="") && 
+                (!isset($xml->event_status[0]) || trim((string)$xml->event_status[0])=="") ){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
 
 
-            if(isset($xml->read_time[0]) && trim($xml->read_time[0])!=""){
-                if( preg_match("/^[1-9][0-9]*$/", $xml->read_time[0]) == 0){
+            if(isset($xml->read_time[0]) && trim((string)$xml->read_time[0])!=""){
+                if( preg_match("/^[1-9][0-9]*$/", (string)$xml->read_time[0]) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
@@ -318,7 +345,7 @@ class EventController extends Controller
 
             }
 
-            if(isset($xml->event_status[0]) && trim($xml->event_status[0])!=""){
+            if(isset($xml->event_status[0]) && trim((string)$xml->event_status[0])!=""){
                 $userAuthList = $this->userService->getUserRoleList($empNo);
                 if(!in_array("admin", $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
@@ -362,8 +389,8 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             
             $empNo = (string)$xml->emp_no[0];
-            $eventType = $xml->event_type_parameter_value[0];
-            $eventStatus = $xml->event_status[0];
+            $eventType = (string)$xml->event_type_parameter_value[0];
+            $eventStatus = (string)$xml->event_status[0];
 
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array("admin", $userAuthList)){
@@ -372,20 +399,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if(!isset($eventType) || $eventType == "" ){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-            }
-
-            $typeInfo = CommonUtil::getParameterTypeInfoById($eventType);
-            if(count($typeInfo) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                'Message'=>'事件類型錯誤',
-                'Content'=>'']);
-            }
-
-            $eventList = $this->eventService->getUnrelatedEventList($eventType, $empNo);
+            $eventList = $this->eventService->getUnrelatedEventList(self::EVENT_TYPE, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -404,6 +418,9 @@ class EventController extends Controller
     private function arrangeInsertData($xml){
 
         $data = [];
+        $data['lang'] = (string)$xml->lang[0];
+        $data['need_push'] = (string)$xml->need_push[0];
+        $data['app_key'] = (string)$xml->app_key[0];
         $data['event_type_parameter_value'] = (string)$xml->event_type_parameter_value[0];
         $data['event_title'] = (string)$xml->event_title[0];
         $data['event_desc'] = (string)$xml->event_desc[0];
