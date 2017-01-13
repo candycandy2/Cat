@@ -117,7 +117,7 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 gulp.task('copyAndroidImages', function() {
-    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/android/'})
+    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/Launch_icon/android/'})
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
 });
 
