@@ -7,13 +7,8 @@ $push_send_row_id = $input["push_send_row_id"];
 $messageId = $input["message_id"];
 $tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
-for($i = 0; $i < count($allCompanyRoleList); $i++) {
-    $allCompanyRoleList[$i]->company = strtolower($allCompanyRoleList[$i]->company);
-}
 $sendInfo = \App\lib\CommonUtil::getMessageSendInfo($push_send_row_id);
-for($i = 0; $i < count($sendInfo->company_list); $i++) {
-    $sendInfo->company_list[$i] = strtolower($sendInfo->company_list[$i]);
-}
+
 $messageInfo = $sendInfo->message_info;
 $messageType = $sendInfo->message_info->message_type;
 ?>
@@ -153,7 +148,7 @@ $messageType = $sendInfo->message_info->message_type;
             @endforeach
 
             <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-                   data-url="platform/getSingleEventMessageReceiver?message_send_row_id={{$push_send_row_id}}" data-height="398" data-pagination="true"
+                   data-url="push/getSingleEventMessageReceiver?message_send_row_id={{$push_send_row_id}}" data-height="398" data-pagination="true"
                    data-show-refresh="false" data-row-style="rowStyle" data-search="false"
                    data-show-toggle="false"  data-sortable="false"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -292,7 +287,7 @@ $messageType = $sendInfo->message_info->message_type;
 
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
-                    url: "platform/pushMessageImmediatelyAgain",
+                    url: "push/pushMessageImmediatelyAgain",
                     dataType: "json",
                     type: "POST",
                     contentType: "application/json",
