@@ -36,7 +36,7 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
-var iOSAppInitialFinish = false;
+var appInitialFinish = false;
 var messageRowId;
 
 /********************************** Corodva APP initial *************************************/
@@ -464,9 +464,6 @@ function checkAppVersion() {
                 } else {
                     //Open QPlay > APP detail page
                     openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKey);
-                    if (device.platform === "Android") {
-                        navigator.app.exitApp();
-                    }
                 }
             });
 
@@ -685,12 +682,11 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        window.localStorage.setItem("openScheme", true);
-        openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
-
-        if (device.platform === "Android") {
-            navigator.app.exitApp();
+        if (window.localStorage.getItem("openScheme") !== "true") {
+            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
         }
+
+        window.localStorage.setItem("openScheme", true);
     }
 
 }
@@ -715,18 +711,20 @@ function getSecurityList() {
 
 }
 
+function createAPPSchemeURL() {
+    return "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
+           "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
+           "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
+}
+
 //Return Login Data from QPlay
 function getLoginDataCallBack() {
-    var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
-                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
-                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
+    var callBackURL = queryData["callbackApp"] + createAPPSchemeURL();
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
 
-    if (device.platform === "iOS") {
-        $.mobile.changePage('#viewMain2-1');
-    }
+    $.mobile.changePage('#viewMain2-1');
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
@@ -754,6 +752,7 @@ function handleOpenURL(url) {
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
             loginData['openAppDetailPage'] = true;
+            loginData['updateApp'] = true;
             openAppName = queryData["openAppName"];
 
 
@@ -771,20 +770,18 @@ function handleOpenURL(url) {
             hideInitialPage();
         }
 
-        //Because Scheme work different process between iOS / Android,
-        //iOS need to this step.
-        if (device.platform === "iOS") {
-            if (loginData['doLoginDataCallBack'] === true) {
-                $.mobile.changePage('#viewInitial');
-                if (iOSAppInitialFinish === true) {
-                    var checkAppVer = new checkAppVersion();
-                }
+        //Because Scheme work different process between [APP is in action or background] / [APP is not open],
+        //[APP is in action or background] need to following step.
+        if (loginData['doLoginDataCallBack'] === true) {
+            $.mobile.changePage('#viewInitial');
+            if (appInitialFinish === true) {
+                var checkAppVer = new checkAppVersion();
             }
+        }
 
-            if (loginData['openAppDetailPage'] === true) {
-                if (iOSAppInitialFinish === true) {
-                    var checkAppVer = new checkAppVersion();
-                }
+        if (loginData['openAppDetailPage'] === true) {
+            if (appInitialFinish === true) {
+                var checkAppVer = new checkAppVersion();
             }
         }
 

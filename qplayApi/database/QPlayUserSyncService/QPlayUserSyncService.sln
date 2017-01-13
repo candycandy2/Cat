@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncFromFlower", "SyncFromF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPushProxy", "JPushProxy\JPushProxy.csproj", "{96FA8ABF-469D-4467-A534-0DD7D40B9E2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPushLogger", "JPushLogger\JPushLogger.csproj", "{799589E2-A1FC-4D85-AFD1-FD429EE60034}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{96FA8ABF-469D-4467-A534-0DD7D40B9E2C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{96FA8ABF-469D-4467-A534-0DD7D40B9E2C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{96FA8ABF-469D-4467-A534-0DD7D40B9E2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
