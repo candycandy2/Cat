@@ -11,21 +11,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
 
     function requestError(data) {
         checkNetwork();
-        if (data.statusText == 'timeout' || data.status == 500) {
-            
-            console.log(data.statusText + '/' + data.status);
-            loadingMask('hide');
-
-            var activePage = $.mobile.activePage.attr("id");
-            $.mobile.changePage(
-                '#' + activePage, {
-                    allowSamePageTransition: true,
-                    transition: 'none',
-                    showLoadMsg: false,
-                    reloadPage: false
-                }
-            );
-        }
+        refreshPage(data);
     }
 
     //appSecretKey = "2e936812e205445490efb447da16ca13";
@@ -41,8 +27,6 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        // tryCount: 0,
-        // retryLimit: 3,
         url: serverURL + "/" + appApiPath + "/public/v101/custom/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,

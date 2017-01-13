@@ -383,6 +383,11 @@ function ConverToRoleTree(data) {
     }
 }
 
+//use dictionary value get key
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
 //filter data
 function grepData(grepData, grepPram, grepValue) {
     return $.grep(grepData, function(item, index) {
@@ -490,50 +495,10 @@ function popupSchemeMsg(attr, title, content, href1, href2) {
     $('#reservePopupSchemeMsg #mail').attr('href', href1);
     $('#reservePopupSchemeMsg #tel').attr('href', href2);
     $('#reservePopupSchemeMsg > div').css('height', '30vh');
-    $('#reservePopupSchemeMsg > div > div').css('margin', '0 0 0 23vw');
     $('#reservePopupSchemeMsg').removeClass();
     $('#reservePopupSchemeMsg').popup(); //initialize the popup
+    $('#reservePopupSchemeMsg').show();
     $('#reservePopupSchemeMsg').popup('open');
-}
-
-function popupMsg(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig) {
-    $('#' + id).attr('for', attr);
-    $('#' + id + ' #msgTitle').html(title);
-    $('#' + id + ' #msgContent').html(content);
-    $('#' + id + ' #cancel').html(btn1);
-    $('#' + id + ' #confirm').html(btn2);
-
-    if (title == '') {
-        $('#' + id + ' > div > div').css('margin', '5vh 0 0 0');
-    } else {
-        $('#' + id + ' > div > div').css('margin', '0 0 0 23vw');
-    }
-
-    if (popupIsBig == true) {
-        $('#' + id + ' > div').css('height', '30vh');
-    } else {
-        $('#' + id + ' > div').css('height', '');
-    }
-
-    $('#' + id).removeClass();
-    $('#' + id + ' button').removeClass();
-    if (btnIsDisplay == true) {
-        $('#' + id + ' #cancel').removeClass('disable');
-        $('#' + id + ' #confirm').css('width', '50%');
-    } else {
-        $('#' + id + ' #cancel').addClass('disable');
-        $('#' + id + ' #confirm').css('width', '100%');
-    }
-    $('#' + id + ' #cancel').attr('onClick', 'popupCancelClose()')
-
-    $('#' + id).popup(); //initialize the popup
-    $('#' + id).popup('open');
-}
-
-function popupCancelClose() {
-    $('body').on('click', 'div[for*=Msg] #cancel', function() {
-        $('div[for*=Msg]').popup('close');
-    });
 }
 
 function inputValidation(str) {
@@ -544,6 +509,22 @@ function inputValidation(str) {
         return [false, '您尚未輸入文字'];
     } else {
         return [true, ''];
+    }
+}
+
+function refreshPage(data) {
+    if (data.statusText == 'timeout' || data.status == 500) {
+        console.log('timeout or 500 error');
+        loadingMask('hide');
+        var activePage = $.mobile.activePage.attr("id");
+        $.mobile.changePage(
+            '#' + activePage, {
+                allowSamePageTransition: true,
+                transition: 'none',
+                showLoadMsg: false,
+                reloadPage: false
+            }
+        );
     }
 }
 

@@ -52,7 +52,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
-                        popupMsg('myReservePopupMsg', 'noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', false);
+                        popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', '');
                     }
                     loadingMask('hide');
                 };
@@ -79,11 +79,11 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                         });
                         localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
 
-                        popupMsg('myReservePopupMsg', 'successMsg', '', '取消預約成功', '', false, '確定', false);
+                        popupMsg('successMsg', '', '取消預約成功', '', false, '確定', '');
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('myReservePopupMsg', 'failMsg', '', '取消預約失敗', '', false, '確定', false);
+                        popupMsg('failMsg', '', '取消預約失敗', '', false, '確定', '');
                     }
                     loadingMask('hide');
                 };
@@ -110,7 +110,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 var strDate = arrDateString[2] + '/' + arrDateString[3];
                 tempTimeNameClick = clickReserveTime.split('-')[0];
                 var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
-                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', true);
+                popupMsg('cancelMsg', '確定取消預約?', msgContent, '取消', true, '確定', 'warn_icon.png');
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
