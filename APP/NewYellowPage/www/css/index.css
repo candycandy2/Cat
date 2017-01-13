@@ -110,7 +110,7 @@
 
 .q-result-grid > li div {
     float: left;
-    display: flex;
+    /*display: flex;*/
     flex-flow: column wrap;
     justify-content: center;
     overflow-wrap: break-word;
