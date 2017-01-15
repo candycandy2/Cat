@@ -24,7 +24,10 @@ a {
 }
 
 .ui-header-fixed {
+    /*padding-top: initial !important;*/
     padding-top: initial !important;
+    /*    top: 0 !important;
+    margin-top: initial !important;*/
 }
 
 .ui-title {
@@ -48,19 +51,20 @@ a {
     margin-bottom: 5px;
 }
 
-#newSettingSelect .ui-block-a h3 {
+/*#newSettingSelect .ui-block-a h3 {
     text-align: center;
 }
 
 #newSettingSelect .ui-block-b div:first-child {
     margin-left: 5%;
     margin-right: 5%;
-}
+}*/
 
 #newSettingFloor div.ui-bar {
     text-align: center;
     height: 7vh;
     line-height: 7vh;
+    font-weight: initial;
 }
 
 #navbar ul li a {
@@ -104,22 +108,24 @@ a {
     padding-left: 8%;
 }
 
-.ui-position-adjust {
+
+/*.ui-position-adjust {
     text-align: left;
     margin-left: 3%;
     margin-bottom: 3%;
-}
+}*/
 
 .ui-hasBtn h2 {
     display: inline-block;
     float: left;
 }
 
-.ui-delete-btn {
+
+/*.ui-delete-btn {
     margin: 3%;
     padding: 5px 20px 5px 20px;
     float: right;
-}
+}*/
 
 .ui-radio-30 div.ui-radio {
     width: 33%;
@@ -140,6 +146,14 @@ a {
 
 
 /*--------------------------*/
+
+.app-font {
+    font-size: 2.8vh;
+}
+
+.app-font-small {
+    font-size: 2.5vh;
+}
 
 .disable {
     display: none !important;
@@ -213,6 +227,10 @@ div.circle {
     font-size: 3vw;
 }
 
+.title-icon {
+    height: 2.7vh;
+}
+
 .radius-btn {
     border-radius: 40px;
     -moz-border-radius: 40px;
@@ -253,6 +271,61 @@ div.circle {
     border-width: 1px;
     border-color: #2a88bc !important;
     border-style: solid !important;
+}
+
+.btn-myreserve {
+    border-radius: 40px;
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    color: white;
+    width: 22vw;
+    height: 4.5vh;
+    line-height: 5vh;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    display: inline-block;
+}
+
+.myreserve-margin {
+    font-size: 2.8vh;
+    margin: 1.7vh 4.8vw;
+}
+
+.myreserve-height {
+    height: 10.7vh;
+    line-height: 10.7vh;
+}
+
+
+/*.settinglist-height {
+    height: 16vh;
+}*/
+
+.setting-delete {
+    position: absolute;
+    right: 6vw;
+    display: inline-block;
+    width: 22vw;
+    height: 4vh;
+    line-height: 4.5vh;
+    margin-top: -0.5vh;
+}
+
+.setting-img {
+    height: 2.5vh;
+    margin-left: 2vw;
+}
+
+.div-radius {
+    border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .quick-reserve-margin {
@@ -300,7 +373,7 @@ div.circle {
     right: 0;
     text-align: center;
     line-height: 3.5vh;
-    background-color: #003399 !important;
+    background-color: #142433 !important;
 }
 
 .setting-icon {
@@ -337,15 +410,28 @@ div.circle {
     background-color: white;
 }
 
-.ui-color-yellow {
-    color: #ffce43;
-}
 
-hr.ui-color-yellow {
+/*.ui-color-yellow {
+    color: #ffce43;
+}*/
+
+
+/*hr.ui-color-yellow {
     border: 0 !important;
     height: 1px !important;
     background-color: #ffce43 !important;
     border-color: #ffce43 !important;
+}*/
+
+hr.ui-color-white {
+    border: 0 !important;
+    height: 1px !important;
+    background-color: white !important;
+    border-color: white !important;
+}
+
+hr.ui-color-green {
+    background-color: #6bbfcf;
 }
 
 .btn-benq {
@@ -379,6 +465,22 @@ hr.ui-color-yellow {
 
 .ui-color-myreserve {
     background-color: #afc744 !important;
+}
+
+.ui-linear-gradient-gary {
+    background: -webkit-linear-gradient(#a1a3a5, #747679);
+    background: -o-linear-gradient(#a1a3a5, #747679);
+    background: -moz-linear-gradient(#a1a3a5, #747679);
+    background: linear-gradient(#a1a3a5, #747679);
+    color: white !important;
+}
+
+.ui-linear-gradient-green {
+    background: -webkit-linear-gradient(#009cb5, #056c92);
+    background: -o-linear-gradient(#009cb5, #056c92);
+    background: -moz-linear-gradient(#009cb5, #056c92);
+    background: linear-gradient(#009cb5, #056c92);
+    color: white !important;
 }
 
 
@@ -432,12 +534,14 @@ div.scrollmenu a {
 #container {
     width: 100%;
     text-align: center;
-    line-height: 20px;
+    /*line-height: 20px;*/
 }
 
-#container a:link {
+#container a:link,
+#container span {
     text-decoration: none;
     color: white;
+    line-height: 20px;
 }
 
 #left {

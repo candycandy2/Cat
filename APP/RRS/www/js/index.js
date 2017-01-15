@@ -385,7 +385,7 @@ function ConverToRoleTree(data) {
 
 //use dictionary value get key
 function getKeyByValue(object, value) {
-  return Object.keys(object).find(key => object[key] === value);
+    return Object.keys(object).find(key => object[key] === value);
 }
 
 //filter data
@@ -509,6 +509,17 @@ function inputValidation(str) {
         return [false, '您尚未輸入文字'];
     } else {
         return [true, ''];
+    }
+}
+
+function calSelectWidth(obj) {
+    $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
+    if (obj.attr('id') == 'reserveFloor') {
+        obj.css('width', $('#tmp_option_width').outerWidth() + 28);
+    } else if (obj.attr('id') == 'reserveSite' || obj.attr('id') == 'newSettingSite') {
+        obj.css('width', $('#tmp_option_width').outerWidth() + 35);
+    } else if (obj.attr('id') == 'reserveSetting') {
+        obj.css('width', $('#tmp_option_width').outerWidth() + 45);
     }
 }
 

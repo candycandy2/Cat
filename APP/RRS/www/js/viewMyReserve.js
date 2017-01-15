@@ -47,7 +47,13 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                             }
                         }
 
-                        $('#todayLine').after(htmlContent_today);
+                        if(htmlContent_today == ''){
+                            $('#todayLine').addClass('disable');
+                        }else{
+                            $('#todayLine').removeClass('disable');
+                            $('#todayLine').after(htmlContent_today);
+                        }
+                        
                         $('#otherDayLine').after(htmlContent_other);
 
                     } else if (data['ResultCode'] === "002901") {
