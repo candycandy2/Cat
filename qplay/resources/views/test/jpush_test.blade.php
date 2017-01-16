@@ -30,6 +30,9 @@ $menu_name = "JPUSH_TEST";
                value="GetTags" />Get Tags &nbsp;&nbsp;
         <input type="radio" name="radioGroupApis" id="rdoIsDeviceInTag"
                value="IsDeviceInTag" />Is Device In Tag &nbsp;&nbsp;
+        <input type="radio" name="radioGroupApis" id="rdoAddDevicesToTag"
+               value="AddDevicesToTag" />Is Device In Tag &nbsp;&nbsp;
+
     </fieldset>
 
     <fieldset>
@@ -77,7 +80,7 @@ $menu_name = "JPUSH_TEST";
             if(result == "Success") {
                 resultClass = "resultSuccess";
             }
-            $("#apiResult").removeClass("resultSuccess resultError").addClass(resultClass).html("<h3>" + result + "</h3>" + content);
+            $("#apiResult").removeClass("resultSuccess resultError").addClass(resultClass).html("<h3>" + result + "</h3>" + $.toJSON(content));
         }
 
     </script>

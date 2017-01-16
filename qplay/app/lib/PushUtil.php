@@ -281,4 +281,32 @@ class PushUtil
         }
         return $result;
     }
+
+    public static function AddDevicesToTag($registrationId, $tag) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->addDevicesToTag($tag, $registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
 }
