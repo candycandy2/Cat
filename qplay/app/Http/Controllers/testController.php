@@ -30,6 +30,9 @@ class testController extends Controller
                 case "IsDeviceInTag":
                     $result = PushUtil::IsDeviceInTag($registrationId, $tag);
                     break;
+                case "AddDevicesToTag":
+                    $result = PushUtil::AddDevicesToTag($registrationId, $tag);
+                    break;
                 default:
                     break;
             }
