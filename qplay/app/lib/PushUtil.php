@@ -176,7 +176,7 @@ class PushUtil
         try {
             $device = $client->device();
             if(!$device->isDeviceInTag($registrationId, $tag)) {
-                $device->addTags($registrationId, $tag);
+                $device->addDevicesToTag($tag, $registrationId);
             }
         } catch (APIConnectionException $e) {
             $result["result"] = false;

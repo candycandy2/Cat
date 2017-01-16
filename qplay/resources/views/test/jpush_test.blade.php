@@ -31,7 +31,7 @@ $menu_name = "JPUSH_TEST";
         <input type="radio" name="radioGroupApis" id="rdoIsDeviceInTag"
                value="IsDeviceInTag" />Is Device In Tag &nbsp;&nbsp;
         <input type="radio" name="radioGroupApis" id="rdoAddDevicesToTag"
-               value="AddDevicesToTag" />Is Device In Tag &nbsp;&nbsp;
+               value="AddDevicesToTag" />Add Devices To Tag &nbsp;&nbsp;
 
     </fieldset>
 
