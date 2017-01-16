@@ -3,6 +3,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
     var SiteData = {};
     var roomData = {};
     var floorData = {};
+    var defaultSiteClick = '';
     var clickSiteId = '';
     var siteCategoryID = '';
     var clickDateId = '';
@@ -31,9 +32,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
 
                 $('#reserveFloor').append(htmlContent);
-                //var firstNode = meetingRoomData.children[siteIndex].children[0].data;
-                //$('#reserveFloor-button').find('span').text(firstNode);
-
                 $("#reserveFloor option:first").attr("selected", "selected");
                 getRoomData(siteIndex, '0');
             }
@@ -61,24 +59,17 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
                 $('option[id^=setList-]').remove();
 
-                //var firstTitle = '';
                 if (roomSettingdata != null) {
                     sortDataByKey(roomSettingdata.content, 'id', 'asc');
                     for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
                         var strValue = item.site + '&' + item.floor + '&' + item.people + '&' + item.timeID;
                         htmlContent += '<option id=setList-' + item.id + ' value=' + strValue + ' floorName=' + item.floorName + ' time=' + item.time + '>' + item.title + '</option>';
-                        // if (i == 0) {
-                        //     firstTitle = item.title;
-                        // }
                     }
                 }
 
                 $('#reserveSetting').append(htmlContent);
-                //$('#reserveSetting-button').find('span').text(firstTitle);
-
                 $("#reserveSetting option:first").attr("selected", "selected");
 
-                //to do aaa
                 setSettingArea();
                 quickReserveBtnDefaultStatus();
             }
@@ -140,7 +131,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]'];
                 var j = 0;
 
-                //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
                 var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
                 for (var item in filterTimeBlock) {
@@ -226,7 +216,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function setSettingArea() {
-                //to do aaa
                 var strValue = $('#reserveSetting').find(":selected").val();
                 var arrValue = strValue.split('&');
                 var strSite = dictSite[arrValue[0]];
@@ -492,11 +481,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }();
             }
 
-            /********************************** page event *************************************/
-
-            $('#viewReserve').one('pagebeforeshow', function(event, ui) {
-                //just first loading
-                //get meetingroom last update time
+            function checkLocalDataExpired() {
                 var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
                 if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
                     var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
@@ -519,23 +504,37 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 meetingRoomData = meetingRoomTreeData._root;
                 roleData = roleTreeData._root;
 
-                var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
-                getSiteData();
-
-                var defaultSiteClick = localStorage.getItem('defaultSiteClick');
+                defaultSiteClick = localStorage.getItem('defaultSiteClick');
                 if (defaultSiteClick === null) {
                     defaultSiteClick = meetingRoomData.children[0].data; //default site = 2(BQT/QTT)
                 }
+            }
+
+            function getInitialData() {
+                getSiteData();
                 $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
                 clickSiteId = $("#reserveSite option:selected").index();
                 siteCategoryID = dictSiteCategory[defaultSiteClick];
-
                 getFloorData(clickSiteId);
+            }
+
+            function setInitialData() {
                 setRoleAndDateList(defaultSiteClick);
                 var selectedFllor = $('#reserveFloor').find(":selected").val();
                 setAlertLimitRoom(defaultSiteClick, selectedFllor);
                 setReserveDetailLocalDate();
                 setDefaultSettingData();
+            }
+
+            /********************************** page event *************************************/
+
+            $('#viewReserve').one('pagebeforeshow', function(event, ui) {
+                //just first loading
+                //get meetingroom last update time
+                checkLocalDataExpired();
+                var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
+                getInitialData();
+                setInitialData();
 
                 $('#pageOne').show();
                 $('#pageTwo').hide();
