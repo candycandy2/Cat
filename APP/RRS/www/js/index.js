@@ -263,7 +263,6 @@ function getTimeID(sTime, eTime, siteCategoryID) {
         } while (strTime != eTime);
     }
 
-    //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
     var strTimeID = '';
