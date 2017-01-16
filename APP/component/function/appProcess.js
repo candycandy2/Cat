@@ -179,12 +179,12 @@ function getMessageID(data) {
 //create popup message
 function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
     $('#viewPopupMsg').attr('for', attr);
-    $('#viewPopupMsg #msgTitle > span').html(title);
+    $('#viewPopupMsg #titleText').text(title);
     $('#viewPopupMsg #msgContent').html(content);
     $('#viewPopupMsg #titleImg').attr('src', '');
     $('#viewPopupMsg #titleImg').addClass('hide');
-    $('#viewPopupMsg #cancel').html(btn1);
-    $('#viewPopupMsg #confirm').html(btn2);
+    $('#viewPopupMsg #cancel').text(btn1);
+    $('#viewPopupMsg #confirm').text(btn2);
 
     if(titleImg != ''){
         $('#viewPopupMsg #titleImg').attr('src', 'img/' + titleImg);
