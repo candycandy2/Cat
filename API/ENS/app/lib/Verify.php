@@ -58,7 +58,7 @@ class Verify
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
 
-        if(!isset($xml->emp_no[0])){
+        if(!isset($xml->emp_no[0]) || (string)$xml->emp_no[0] == "" ){
              return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=>"傳入參數不足或傳入參數格式錯誤");
         }
