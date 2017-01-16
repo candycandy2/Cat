@@ -2,7 +2,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
     var clickAggTarceID = '';
     var clickReserveDate = '';
     var clickReserveRoom = '';
-    var tempTimeNameClick = '';
+    var arrTempTimeNameClick = [];
 
     $('#viewMyReserve').pagecontainer({
         create: function(event, ui) {
@@ -47,13 +47,13 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                             }
                         }
 
-                        if(htmlContent_today == ''){
+                        if (htmlContent_today == '') {
                             $('#todayLine').addClass('disable');
-                        }else{
+                        } else {
                             $('#todayLine').removeClass('disable');
                             $('#todayLine').after(htmlContent_today);
                         }
-                        
+
                         $('#otherDayLine').after(htmlContent_other);
 
                     } else if (data['ResultCode'] === "002901") {
@@ -72,7 +72,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 loadingMask('show');
                 var self = this;
                 var queryData = '<LayoutHeader><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTraceID></ReserveTraceID><ReserveTraceAggID>' + traceID + '</ReserveTraceAggID></LayoutHeader>';
-                
+
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
@@ -114,7 +114,19 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 var clickReserveTime = $(this).attr('time');
                 var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
                 var strDate = arrDateString[2] + '/' + arrDateString[3];
-                tempTimeNameClick = clickReserveTime.split('-')[0];
+
+                var sTime = clickReserveTime.split('-')[0];
+                var eTime = clickReserveTime.split('-')[1];
+                var strTime = sTime;
+                if (sTime == eTime) {
+                    arrTempTimeNameClick.push(strTime);
+                } else {
+                    do {
+                        arrTempTimeNameClick.push(strTime);
+                        strTime = addThirtyMins(strTime);
+                    } while (strTime != eTime);
+                }
+
                 var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
                 popupMsg('cancelMsg', '確定取消預約?', msgContent, '取消', true, '確定', 'warn_icon.png');
             });
@@ -125,10 +137,12 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 var searchSiteNode = searchRoomNode.parent.parent.data;
 
                 for (var i = 0; i < myReserveLocalData.length; i++) {
-                    if (myReserveLocalData[i].time == tempTimeNameClick && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
-                        myReserveLocalData.splice(i, 1);
-                        i--;
-                    }
+                    $.each(arrTempTimeNameClick, function(index, value) {
+                        if (myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
+                            myReserveLocalData.splice(i, 1);
+                            i--;
+                        }
+                    });
                 };
 
                 $('div[for=cancelMsg]').popup('close');

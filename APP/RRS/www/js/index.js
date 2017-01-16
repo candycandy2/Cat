@@ -384,9 +384,18 @@ function ConverToRoleTree(data) {
 }
 
 //use dictionary value get key
-function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
-}
+// function getKeyByValue(object, value) {
+//     return Object.keys(object).find(key => object[key] === value);
+// }
+
+// Object.prototype.getKeyByValue = function(value){
+//   for(var key in this){
+//     if(this[key] == value){
+//       return key;
+//     }
+//   }
+//   return null;
+// };
 
 //filter data
 function grepData(grepData, grepPram, grepValue) {
@@ -526,6 +535,7 @@ function calSelectWidth(obj) {
 function refreshPage(data) {
     if (data.statusText == 'timeout' || data.status == 500) {
         console.log('timeout or 500 error');
+        var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
         loadingMask('hide');
         var activePage = $.mobile.activePage.attr("id");
         $.mobile.changePage(

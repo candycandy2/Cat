@@ -14,6 +14,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
     var timeNameClick = [];
     var tempTimeNameClick = '';
     var reserveDetailLocalData = [];
+    var bReserveCancelConfirm = false;
 
     $('#viewReserve').pagecontainer({
         create: function(event, ui) {
@@ -221,6 +222,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
                 timeClick = [];
                 timeNameClick = [];
+                bReserveCancelConfirm = false;
             }
 
             function setSettingArea() {
@@ -293,14 +295,14 @@ $(document).one('pagecreate', '#viewReserve', function() {
             function setAlertLimitRoom(site, floor) {
                 $("#alertLimitRoomMsg").addClass('disable');
                 $("#alertLimitRoomMsg").html('');
-                if (site == getKeyByValue(dictSite, 'QTY')) {
+                if (site == '1') {
                     $("#alertLimitRoomMsg").removeClass('disable');
                     if (floor == '3F') {
                         $("#alertLimitRoomMsg").html('A30、E31會議室請使用PC預約');
                     } else if (floor == '7F') {
                         $("#alertLimitRoomMsg").html('A70、B71會議室請使用PC預約');
                     }
-                } else if (site == getKeyByValue(dictSite, 'BQT/QTT') && floor == '1F') {
+                } else if (site == '2' && floor == '1F') {
                     $("#alertLimitRoomMsg").removeClass('disable');
                     $("#alertLimitRoomMsg").html('T00、T13會議室請使用PC預約');
                 }
@@ -360,20 +362,41 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     if (data['ResultCode'] === "002902") {
                         //Reservation Successful
-                        popupMsg('reserveSuccessMsg', '', '會議室預約成功', '', false, '確定', '');
+                        var arrCutString = cutStringToArray(date, ['4', '2', '2']);
+                        var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                        var roomName = '';
+                        var timeName = '';
+                        if (page == 'pageOne') {
+                            roomName = $('#reserveRoom').find('.hover').text();
+                            for (var item in timeClick) {
+                                var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
+                                var eTime = addThirtyMins(sTime);
+                                timeName += sTime + '-' + eTime + '<br />';
+                            }
+                        } else {
+                            roomName = $('#quickReserveMsgArea div:nth-child(2)').html().replaceAll('會議室可使用', '');
+                            roomName = roomName.substring(0, roomName.indexOf('(') - 1);
+                            timeName = $('#quickReserveMsgArea div:nth-child(3)').html().replaceAll('預約時段為', '');
+                        }
+
+                        var msgContent = '<table><tr><td>會議室</td><td>' + roomName + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + timeName + '</td></tr></table>';
+                        popupMsg('reserveSuccessMsg', '會議室預約成功', msgContent, '', false, '確定', 'select.png');
                         if (page == 'pageOne') {
                             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
 
-                            var jsonData = [];
-                            var selectedSite = $('#reserveSite').find(":selected").val();
-                            $.each(timeNameClick, function(index, value) {
-                                jsonData = {
-                                    site: selectedSite,
-                                    date: clickDateId,
-                                    time: value
-                                };
-                                myReserveLocalData.push(jsonData);
-                            });
+                            var isReserveMulti = $('#' + roomId).attr('IsReserveMulti');
+                            if (isReserveMulti != 'N') {
+                                var jsonData = [];
+                                var selectedSite = $('#reserveSite').find(":selected").val();
+                                $.each(timeNameClick, function(index, value) {
+                                    jsonData = {
+                                        site: selectedSite,
+                                        date: clickDateId,
+                                        time: value
+                                    };
+                                    myReserveLocalData.push(jsonData);
+                                });
+                            }
 
                             reserveBtnDefaultStatus();
                         }
@@ -507,7 +530,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 clickSiteId = $("#reserveSite option:selected").index();
                 siteCategoryID = dictSiteCategory[defaultSiteClick];
 
-                getFloorData(clickSiteId);  
+                getFloorData(clickSiteId);
                 setRoleAndDateList(defaultSiteClick);
                 var selectedFllor = $('#reserveFloor').find(":selected").val();
                 setAlertLimitRoom(defaultSiteClick, selectedFllor);
@@ -752,8 +775,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', 'div[for=myReserveMsg] #confirm', function() {
-                $('div[for=myReserveMsg]').popup('close');
-                var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+                if (bReserveCancelConfirm == true) {
+                    $('div[for=myReserveMsg]').popup('close');
+                    var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+                } else {
+                    $('div[for=myReserveMsg] span[id=titleText]').text('確定取消預約？');
+                    $('div[for=myReserveMsg] button[id=confirm]').html('取消');
+                    $('div[for=myReserveMsg] button[id=cancel]').html('不取消');
+                    bReserveCancelConfirm = true;
+                }
+            });
+
+            $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
+                bReserveCancelConfirm = false;
             });
 
             $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
