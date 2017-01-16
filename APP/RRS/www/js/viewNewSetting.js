@@ -43,7 +43,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
                 $("#newSettingSite").val(editSite).change();
                 $('#newSettingSite option[value=' + editSite + ']').prop('selected', true);
-                $("#newSettingSite").selectmenu("refresh");
+                //$("#newSettingSite").selectmenu("refresh");
 
                 $('#newSettingPeople input[id^=num-]').removeAttr("checked");
                 $('#newSettingPeople input[value=' + editPeople + ']').prop("checked", "checked");
@@ -80,6 +80,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             function setDefaultStatus() {
                 $('#newSettingTitle').val('');
+                $("#newSettingSite option:first").attr("selected", "selected");
                 $('#newSettingPeople input[value=0]').prop("checked", "checked");
                 $('#newSettingPeople input[id^=num-]').checkboxradio("refresh");
                 $('#newSettingTime input[id=setTime1]').prop("checked", "checked");
@@ -115,6 +116,10 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 }
             });
 
+            $('#viewNewSetting').on('pageshow', function(event, ui) {
+                calSelectWidth($('#newSettingSite'));
+            });
+
             /********************************** dom event *************************************/
             $('#newSettingSite').change(function() {
                 seqClick = [];
@@ -123,11 +128,12 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 siteIDforSetting = $(this).val();
                 siteCategoryIDforSetting = dictSiteCategory[$(this).val()];
                 getFloorData(this.selectedIndex);
+                calSelectWidth($(this));
             });
 
             $('#setTime2').on('click', function() {
                 var setTimeStr = $('label[for^=setTime2]').text();
-                if(setTimeStr != '指定時段'){
+                if (setTimeStr != '指定時段') {
                     var arrTimeStr = setTimeStr.split('~');
                     var arrSTimeHrMM = arrTimeStr[0].split(':');
                     var arrETimeHrMM = arrTimeStr[1].split(':');
@@ -205,7 +211,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     }
                     obj.title = $('#newSettingTitle').val();
                     obj.site = $('#newSettingSite').val();
-                    obj.siteName = $('#newSettingSite-button span').text();
+                    obj.siteName = $('#newSettingSite').find(":selected").text();
                     obj.people = $("#newSettingPeople :radio:checked").val();
 
                     if ($("#newSettingTime :radio:checked").val() === 'setTime') {
@@ -248,7 +254,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $.mobile.changePage('#viewSettingList');
 
                 } else {
-                    popupMsg('validationMsg', '', validationResult[1], '', false, '確定','');
+                    popupMsg('validationMsg', '', validationResult[1], '', false, '確定', '');
                 }
 
             });

@@ -319,17 +319,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 setDateList();
             }
 
-            function calSelectWidth(obj) {
-                $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
-                if (obj.attr('id') == 'reserveFloor') {
-                    obj.css('width', $('#tmp_option_width').outerWidth() + 28);
-                } else if (obj.attr('id') == 'reserveSite') {
-                    obj.css('width', $('#tmp_option_width').outerWidth() + 35);
-                } else {
-                    obj.css('width', $('#tmp_option_width').outerWidth() + 42);
-                }
-            }
-
             function getAPIQueryReserveDetail(roomId, date, checkDataExist) {
                 //local data exist
                 var dataExist = false;
@@ -560,8 +549,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 siteCategoryID = dictSiteCategory[$(this).val()];
                 clickSiteId = this.selectedIndex;
                 var selectedSite = $('#reserveSite').find(":selected").val();
-                $("#reserveFloor option:first").attr("selected", "selected");
-                var selectedFllor = $('#reserveFloor').find(":selected").val();
+                var selectedFllor = $("#reserveFloor option:first").val();
                 setAlertLimitRoom(selectedSite, selectedFllor);
                 setRoleAndDateList(selectedSite);
                 getFloorData(clickSiteId);

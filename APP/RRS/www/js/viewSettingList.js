@@ -28,7 +28,7 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                 }
 
                 $('#settingList').after(htmlContent);
-                $('div[value=0] > a').addClass('disable');
+                $('div[value=0] a').addClass('disable');
             }
 
             /********************************** page event *************************************/
