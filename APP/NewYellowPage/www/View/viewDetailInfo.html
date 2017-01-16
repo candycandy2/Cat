@@ -1,92 +1,71 @@
 <!-- Start of detail_info_page -->
 <div data-role="page" id="viewDetailInfo">
     <div class="ios-fix-overlap-div"></div>
-    <div data-role="header" data-position="fixed" class="page-header">
-        <a href="#" name="goPrevPage" class="ui-btn ui-icon-back ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a href="#" name="goPrevPage" class="ui-btn head-btn">
+            <img src="img/component/back_nav.png" style="width:6VW;">
+        </a>
         <div class="header-style"><h4 class="ui-title">詳細資料</h4></div>
-        <a href="#viewDataInput" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+        <a href="#viewDataInput" class="ui-btn head-btn">
+            <img src="img/component/home_nav.png" style="width:6VW;">
+        </a>
     </div>
 
-    <div data-role="main" class="ui-content page-main">
-        <ul data-role="listview" data-icon="false" class="q-result-grid" id="detailData">
-            <li>
-                <div class="item-name">
-                    <p>公司</p>
+    <div id="detial-name-title">
+        <div class="detial-name" id="eName"><!--  english name  --></div>
+        <div class="detial-name" id="cName"><!-- chinese name --></div>
+        <a id="addStar" href="#askAddPhonebook" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn star">
+            <img src="img/component/favorite_d.png" style="width:7.5VW;">
+        </a>
+        <a id="deleteStar" href="#askDeletePhonebook" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn star">
+            <img src="img/component/favorite_s.png" style="width:7.5VW;">
+        </a>
+    </div>
+
+    <div data-role="main" class="ui-content">
+        <ul data-role="listview" data-icon="false" id="detail-data" style="margin-top: 2VH;">
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">分機</p>
+                    <p id="extNo" class="item-content"><!--8100-6162--></p>
                 </div>
-                <div class="item-content">
-                    <p class="company-data">
-                        <span class="company" id="companyName"><!--BenQHospital--></span>
-                        <span class="star">
-                            <a id="startAdd" href="#askAddPhonebook" data-rel="popup" data-position-to="window" data-transition="pop" 
-                                class="ui-btn ui-btn-icon-notext ui-icon-star"></a>
-                            <a id="startDelete" href="#askDeletePhonebook" data-rel="popup" data-position-to="window" data-transition="pop" 
-                                class="ui-btn ui-btn-icon-notext ui-icon-star star-setted"></a>
-                        </span>
+            </li>
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">公司</p>
+                    <p class="company-data item-content">
+                        <span class="company" id="companyName"></span>
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-name">
-                    <p>英文姓名</p>
-                </div>
-                <div class="item-content">
-                    <p id="eName"><!--Giaqwersas.Lee.Rqedasde--></p>
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">部門</p> 
+                    <p id="dept" class="item-content"></p>
                 </div>
             </li>
-            <li>
-                <div class="item-name">
-                    <p>中文姓名</p>
-                </div>
-                <div class="item-content">
-                    <p id="cName"><!--張先生--></p>
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">部門名稱</p>
+                    <p id="deptCode" class="item-content"></p>
                 </div>
             </li>
-            <li>
-                <div class="item-name">
-                    <p>工號</p>
-                </div>
-                <div class="item-content">
-                    <p id="employeeID"><!--0806022--></p>
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">專業區</p>
+                    <p id="sideCode" class="item-content"><!--NMH--></p>
                 </div>
             </li>
-            <li>
-                <div class="item-name">
-                    <p>專業區</p>
-                </div>
-                <div class="item-content">
-                    <p id="sideCode"><!--NMH--></p>
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">工號</p>
+                    <p id="employeeID" class="item-content"><!--0806022--></p>
                 </div>
             </li>
-            <li>
-                <div class="item-name">
-                    <p>部門</p>
-                </div>
-                <div class="item-content">
-                    <p id="dept"></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>部門名稱</p>
-                </div>
-                <div class="item-content">
-                    <p id="deptCode"></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>分機</p>
-                </div>
-                <div class="item-content">
-                    <p id="extNo"><!--8100-6162--></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>E-mail</p>
-                </div>
-                <div class="item-content">
-                    <p id="eMail"><!--WEQESDF.QWQESFSFS@BenQ.com--></p>
+            <li class="liststyle">
+                <div>
+                    <p class="item-name">E-mail</p>
+                    <p id="eMail" class="item-content"><!--WEQESDF.QWQESFSFS@BenQ.com--></p>
                 </div>
             </li>
         </ul>
