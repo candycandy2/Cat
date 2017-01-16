@@ -9,21 +9,15 @@ use Config;
 class Push
 {    
 
-    public function sendPushMessage($from, Array $to, $title, $text)
+    public function sendPushMessage($from, Array $to, $title, $text, $queryParam)
     {
             $signatureTime = time();
             $apiFunction = 'sendPushMessage';
-            $queryParam = array(
-                'lang' => 'en-us',
-                'need_push' => 'N',
-                'app_key' => 'appqplaydev'
-                );
             $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
             $header = array('Content-Type: application/json',
                         'App-Key: appqplaydev',
                         'Signature-Time: '.$signatureTime,
-                        'Signature: '.CommonUtil::getSignature($signatureTime),
-                        'token: 585ba4ab27976');
+                        'Signature: '.CommonUtil::getSignature($signatureTime));
             $data = array(
                         'template_id' =>'1',
                         'message_title' => $title,
