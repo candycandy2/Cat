@@ -3,38 +3,36 @@
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title">
-                <a href="" id="myReserveBack">返回</a></div>
-            <div id="center" class="ui-title">我的預約</div>
+                <a href="" id="myReserveBack"><img src="img/back_nav.png" class="title-icon" /></a>
+            </div>
+            <div id="center" class="ui-title"><span>我的預約</span></div>
             <div id="right" class="ui-title">&nbsp;</div>
         </div>
     </div>
     <div id="myReserve" data-role="main" class="page-main">
-        <h2 id="todayLine" style="margin: 3.5vh 0 0 3.5vw;">今天</h2>
-        <div id="defaultToday" class="ui-btn ui-shadow ui-corner-all ui-margin-public disable">
-            <div class="ui-grid-b">
-                <div class="ui-block-a col-8">
-                    <h1 class="ui-benq-color">[begin] - [end]&nbsp;[room]</h1></div>
-                <div class="ui-block-c col-2">
-                    <a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="ui-btn ui-shadow ui-corner-all">取消</a>
+        <div id="todayLine" style="margin: 3.5vh 0 0 3.5vw;font-size: 2.8vh;">今天：</div>
+        <div id="defaultToday" class="div-radius btn-otherday ui-linear-gradient-green ui-margin-public disable">
+            <div class="ui-grid-a">
+                <div class="ui-block-a col-7">
+                    <div class="myreserve-margin"><span>[begin] - [end]</span>
+                        <br>[room]</div>
+                </div>
+                <div class="ui-block-b col-3 myreserve-height">
+                    <a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">刪除</a>
                 </div>
             </div>
         </div>
         <hr id="otherDayLine" class="col-95" style="margin:10px auto 10px auto;" />
-        <div id="defaultOtherDay" class="btn-otherday ui-btn ui-shadow ui-corner-all ui-margin-public disable">
-            <div class="ui-grid-b">
-                <div class="ui-block-a col-8">
-                    <h1><span>[dateformate]</span><br>[begin] - [end]&nbsp;[room]</h1>
+        <div id="defaultOtherDay" class="div-radius btn-otherday ui-linear-gradient-gary ui-margin-public disable">
+            <div class="ui-grid-a">
+                <div class="ui-block-a col-7">
+                    <div class="myreserve-margin"><span>[dateformate]&nbsp;[begin] - [end]</span>
+                        <br>[room]</div>
                 </div>
-                <div class="ui-block-c col-2"><a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="ui-btn ui-shadow ui-corner-all" style="margin-top:15px;">取消</a></div>
+                <div class="ui-block-b col-3 myreserve-height">
+                    <a href="#" room="[room]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">刪除</a>
+                </div>
             </div>
-        </div>
-    </div>
-    <div data-role="popup" data-history="false" id="myReservePopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="popup-msg">
-            <h1 id="msgTitle"></h1>
-            <div id="msgContent"></div>
-            <button id="cancel"></button>
-            <button id="confirm"></button>
         </div>
     </div>
 </div>
