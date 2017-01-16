@@ -17,6 +17,7 @@ class EventService
     protected $userRepository;
     protected $push;
 
+    const EVENT_TYPE = 'event_type';
     //private $empNo;
 
     public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push)
@@ -29,7 +30,7 @@ class EventService
     }
 
 
-    public function newEvent(Array $data){
+    public function newEvent(Array $data, Array $queryParam){
 
        $eventId = $this->eventRepository->saveEvent($data);
 
@@ -39,8 +40,8 @@ class EventService
        $uniqueTask = $this->getUniqueTask($data['basicList']);       
        $this->insertTask($eventId, $uniqueTask, $data['created_user'], $now);
 
-       if(isset($data['event_type_parameter_value'])){
-            $this->eventRepository->bindRelatedEvent($eventId,$data['event_type_parameter_value']);
+       if(isset($data['related_event_row_id'])){
+            $this->eventRepository->bindRelatedEvent($eventId,$data['related_event_row_id']);
        }
 
        $taskInfo = $this->taskRepository->getTaskByEventId($eventId);
@@ -53,7 +54,7 @@ class EventService
 
        $this->eventRepository->updateReadTime($eventId, $data['created_user']);
 
-       $this->sendPushMessageToEventUser($eventId, $data, 'new');
+       $this->sendPushMessageToEventUser($eventId, $data, $queryParam, 'new');
 
        return $eventId;
    }
@@ -64,21 +65,26 @@ class EventService
                                   'event_title','event_desc',
                                   'estimated_complete_date',
                                   'related_event_row_id');
-
            $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
+           $queryParam =  array(
+                'lang' => (string)$xml->lang[0],
+                'need_push' => (string)$xml->need_push[0],
+                'app_key' => (string)$xml->app_key[0]
+                );
+           
            $this->eventRepository->updateEventById($eventId,$data);
            
            if(isset($xml->related_event_row_id[0]) && $xml->related_event_row_id[0]!=""){
                 $this->eventRepository->bindRelatedEvent($eventId,$xml->related_event_row_id[0]);
            }
-           $result = $this->sendPushMessageToEventUser($eventId, $data, 'update');
+           $result = $this->sendPushMessageToEventUser($eventId, $data, $queryParam, 'update');
            
            return $result;
    }
 
-   public function getEventList($eventType, $empNo){
-        $oraEventList = $this->eventRepository->getEventList($eventType, $empNo);
-        $parameterMap = CommonUtil::getParameterMapByType($eventType);
+   public function getEventList($empNo, $eventType, $eventStatus){
+        $oraEventList = $this->eventRepository->getEventList($empNo, $eventType, $eventStatus);
+        $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
        
         $eventList = [];
         foreach ($oraEventList as $event) {
@@ -92,10 +98,10 @@ class EventService
           return $eventList;
    }
 
-   public function getUnrelatedEventList($eventType, $empNo){
+   public function getUnrelatedEventList($empNo){
     
-        $oraEventList = $this->eventRepository->getUnrelatedEventList($eventType, $empNo);
-        $parameterMap = CommonUtil::getParameterMapByType($eventType);
+        $oraEventList = $this->eventRepository->getUnrelatedEventList($empNo);
+        $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
        
         $eventList = [];
         foreach ($oraEventList as $event) {
@@ -266,7 +272,7 @@ class EventService
         $item['event_desc'] = $event->event_desc;
         $item['estimated_complete_date'] = $event->estimated_complete_date;
         $item['related_event_row_id'] = $event->related_event_row_id;
-        $item['event_status'] = ($event->event_status == 0)?'未完成':'已完成';
+        $item['event_status'] = ($event->event_status == 0)?'未完成':'完成';
         $userInfo = $this->userRepository->getUserInfoByEmpNO(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];
@@ -275,15 +281,16 @@ class EventService
         return $item;
    }
 
-   private function sendPushMessageToEventUser($eventId, $data, $scenario = 'new'){
+   private function sendPushMessageToEventUser($eventId, $data, $queryParam, $scenario = 'new'){
        $empNo = ($scenario == 'new')?$data['created_user']:$data['updated_user'];
        $to = $this->getPushUserListByEvent($eventId);
        $from = $this->getPushUserListByEmpNoArr(array( $empNo))[0];
        $title = base64_encode($data['event_title']);
        $text = base64_encode($data['event_desc']);
        //TODO append ENS event link
-       $pushResult = $this->push->sendPushMessage($from, $to, $title, $text);
+       $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
        $result = json_decode($pushResult);
+       var_dump($result );exit();
        return $result;
    }
 
