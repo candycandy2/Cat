@@ -10,8 +10,12 @@
 .ui-content {
     overflow-x: visible;
     padding: 0px;
+    padding-left: 3.7VW;
 }
 
+.header-style {
+    background-color: #492f7f;
+}
 .ui-content .ui-listview {
     margin: 0px;
 }
@@ -25,7 +29,7 @@
     width: 80%;
 }
 
-#detailData .ui-btn {
+#detail-data .ui-btn {
     border: none;
 }
 
@@ -51,16 +55,49 @@
 .ui-title {
     text-shadow: initial !important;
     line-height: 1;
- }
-
+}
 
 /*new class*/
+#viewQueryResult{
+    background-color: #f8f9f9;
+}
+
+#viewDetailInfo{
+    background-color: white;   
+}
+
+#vice-header{
+    background-color: #f8f9f9;
+    height: 5.7VH;
+    margin-top: 0px;
+    padding: 0;
+    line-height: 6VH;
+}
+
+#name-tel{
+    font-family:Arial;
+    color:#666667;
+    margin-left: 3.7VW !important;
+    font-size: 2.3VH;
+    font-weight: bold;
+}
+
 .hide {
     display: none;
 }
 
-.page-header a {
-    margin-top: 6px;
+.head-btn{
+    background-color: initial !important;
+    border-style: none;
+    left: initial !important;
+    margin-left: 3.7VW !important;
+    margin-right: 3.7VW !important;
+    margin-top: 8px !important;
+    padding: 0px;
+}
+
+.page-header {
+    height : 40px !important;
 }
 
 #viewIndex .ui-content > div{
@@ -73,7 +110,7 @@
 
 .q-result-grid > li div {
     float: left;
-    display: flex;
+    /*display: flex;*/
     flex-flow: column wrap;
     justify-content: center;
     overflow-wrap: break-word;
@@ -90,13 +127,14 @@
 .q-result-grid a {
     text-decoration: none;
 }
-
-.q-result-grid .error-msg {
-    color: #FFF;
-    background-color: red;
+.error-msg {
+    background-color: #f8f9f9;
+    color: #eb2326;
+    font-size: 2.3VH;
+    font-family: Microsoft JhengHei;
+    margin-top: 4.3VH;
     text-align: center;
     width: 100%;
-    font-weight: bold;
 }
 
 #employeeData.q-result-grid > li div {
@@ -120,6 +158,61 @@
     width: 30%;
 }
 
+/**********************  viewDetialInfo  **********************/
+#detial-name-title{
+    margin-left: 3.7VW;
+    margin-top: 2.9VH;
+}
+
+#detial-name-title .detial-name{
+    color:#0f0f0f;
+    width: 100VW;
+}
+
+#detial-name-title #eName{
+    font-family:Arial; 
+    font-size:3VH;
+}
+
+#detial-name-title #cName{
+    font-family:Microsoft JhengHei; 
+    font-size:2.9VH;
+    margin-top: 0.4VH;
+}
+
+#detial-name-title .star{
+    border-style:none;
+    float:right; 
+    margin-top:-35px; 
+    margin-right:8VW; 
+    padding: 0;
+}
+
+#detail-data .liststyle{
+    border-width:1px;
+    border-style:none; 
+    border-bottom-style:solid;
+    border-bottom-color:#989898;
+}
+
+#detail-data .item-name{ 
+    color: #666667;
+    font-size: 2.1VH;
+    font-family: Arial, Microsoft JhengHei;
+    margin-top: 1.9VH;
+    margin-bottom: 0VH;
+    width: 100VW;
+}
+
+#detail-data .item-content{
+    color: #2d87ba;
+    font-size: 2.5VH;
+    font-family: Arial, Microsoft JhengHei;
+    margin-top: 0.3VH;
+    margin-bottom: 0.8VH;
+    width: 100VW;
+}
+
 #detailData.q-result-grid > li div {
     height: 50px;
 }
@@ -128,15 +221,6 @@
     margin: 0px 5px;
     font-size: 14px;
     font-weight: bold;
-}
-
-#detailData .item-name {
-    width: 30%;
-}
-
-#detailData .item-content {
-    width: 70%;
-    color: blue;
 }
 
 #detailData .company-data {
@@ -151,10 +235,6 @@
 
 #detailData .star {
     display: inline-block;
-}
-
-#detailData .star-setted {
-    background-color: red;
 }
 
 .popup-msg {

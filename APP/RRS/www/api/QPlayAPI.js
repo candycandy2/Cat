@@ -10,7 +10,8 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
     }
 
     function requestError(data) {
-        checkNetwork();
+        checkNetwork(data);
+        refreshPage(data);
     }
 
     //appSecretKey = "2e936812e205445490efb447da16ca13";
@@ -24,18 +25,15 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
             'App-Key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
-            'token': loginData.token,
-            'X-Requested-With': 'XMLHttpRequest'
+            'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/v101/custom/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,
         cache: false,
         timeout: 3000,
         async: asyncType,
         success: requestSuccess,
-        error: requestError,
-        crossDomain: false
+        error: requestError
     });
-
 }

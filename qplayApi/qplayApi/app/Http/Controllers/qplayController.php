@@ -432,17 +432,17 @@ class qplayController extends Controller
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -984,17 +984,17 @@ class qplayController extends Controller
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -1245,17 +1245,17 @@ SQL;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -1368,17 +1368,17 @@ SQL;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);
                 } else if($userStatus == 2) {
-                    $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);
+                    $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);
                 }
             }
 
@@ -1629,17 +1629,17 @@ SQL;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -1828,17 +1828,17 @@ SQL;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -2017,17 +2017,17 @@ SQL;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 
@@ -2194,17 +2194,17 @@ SQL;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
         if($userInfo == null)
         {
-            $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);
                 } else if($userStatus == 2) {
-                    $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);
+                    $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);
                 }
             }
 
@@ -2354,7 +2354,7 @@ SQL;
                 $domain = explode('\\', $sourceUseId)[0];
                 $verifyResult = $Verify->verifyUserByUserIDAndDomain($userid, $domain);
                 if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                    $userInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
+                    $sourceUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
 
                     $projectInfo = CommonUtil::getProjectInfoAppKey($app_key);
                     if($projectInfo == null) {
@@ -2384,7 +2384,8 @@ SQL;
                     $message_source = $jsonContent['message_source'];
                     $now = date('Y-m-d H:i:s',time());
 
-                    if(strtolower($jsonContent['message_type']) == "news") {  //News
+                    if($message_type == "news")
+                    {  //News
                         $CompanyList = $jsonContent['destination_user_id'];
                         $companyStr = "";
                         foreach ($CompanyList as $company) {
@@ -2415,15 +2416,15 @@ SQL;
                                     'message_type'=>$message_type, 'message_title'=>$message_title,
                                     'message_text'=>$message_text, 'message_html'=>$message_html,
                                     'message_url'=>$message_url, 'message_source'=>$message_source,
-                                    'created_user'=>$userInfo->row_id,
+                                    'created_user'=>$sourceUserInfo->row_id,
                                     'created_at'=>$now,
                                 ]);
 
                             $newMessageSendId = \DB::table("qp_message_send")
                                 -> insertGetId([
                                     'message_row_id'=>$newMessageId,
-                                    'source_user_row_id'=>$userInfo->row_id,
-                                    'created_user'=>$userInfo->row_id,
+                                    'source_user_row_id'=>$sourceUserInfo->row_id,
+                                    'created_user'=>$sourceUserInfo->row_id,
                                     'created_at'=>$now,
                                     'need_push'=>$need_push_db,
                                     'company_label'=>$companyStr,
@@ -2439,24 +2440,20 @@ SQL;
                                     }
                                 }
 
-                                //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
                                 $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
                                 if(!$result["result"]) {
-                                    //\DB::rollBack();
-                                    //Update jpush_error_code
                                     \DB::table("qp_message_send")
                                         -> where(['row_id'=>$newMessageSendId])
                                         -> update([
                                             'jpush_error_code'=>$result["info"],
-                                            'updated_user'=>$userInfo->row_id,
+                                            'updated_user'=>$sourceUserInfo->row_id,
                                             'updated_at'=>$now
                                         ]);
                                     \DB::commit();
-                                    //$result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>$result["info"]]);
                                     $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
                                         'message'=>'Send Push Message Successed',
                                         'content'=>array('jsonContent'=>$countFlag,
-                                            'content'=>$content)//json_encode($jsonContent)
+                                            'content'=>$content)
                                     ]);
                                     CommonUtil::logApi("", $ACTION,
                                         response()->json(apache_response_headers()), $result);
@@ -2482,7 +2479,8 @@ SQL;
                                 response()->json(apache_response_headers()), $result);
                             return $result;
                         }
-                    } else {  //Event
+                    }
+                    else {  //Event
                         $destinationUserIdList = $jsonContent['destination_user_id'];
                         $destinationUserInfoList = array();
                         foreach ($destinationUserIdList as $destinationUserId)
@@ -2543,15 +2541,15 @@ SQL;
                                     'message_type'=>$message_type, 'message_title'=>$message_title,
                                     'message_text'=>$message_text, 'message_html'=>$message_html,
                                     'message_url'=>$message_url, 'message_source'=>$message_source,
-                                    'created_user'=>$userInfo->row_id,
+                                    'created_user'=>$sourceUserInfo->row_id,
                                     'created_at'=>$now,
                                 ]);
 
                             $newMessageSendId = \DB::table("qp_message_send")
                                 -> insertGetId([
                                     'message_row_id'=>$newMessageId,
-                                    'source_user_row_id'=>$userInfo->row_id,
-                                    'created_user'=>$userInfo->row_id,
+                                    'source_user_row_id'=>$sourceUserInfo->row_id,
+                                    'created_user'=>$sourceUserInfo->row_id,
                                     'created_at'=>$now,
                                     'need_push'=>$need_push_db,
                                     'push_flag'=>'0'
@@ -2559,112 +2557,99 @@ SQL;
 
                             $hasSentUserIdList = array();
                             $real_push_user_list = array();
-                            if($message_type == "event") {
-                                foreach ($destinationUserInfoList as $destinationUserInfo) {
-                                    if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
-                                        continue;
-                                    }
-                                    foreach ($userInfo->uuidList as $uuid) {
-                                        \DB::table("qp_user_message")
-                                            -> insertGetId([
-                                                'project_row_id'=>$projectInfo->row_id,
-                                                'user_row_id'=>$destinationUserInfo->row_id,
-                                                'uuid'=>$uuid->uuid,
-                                                'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0','need_push'=>'1',//'need_push'=>$need_push,
-                                                'created_user'=>$userInfo->row_id,
-                                                'created_at'=>$now
-                                            ]);
-                                    }
 
-                                    $hasSentUserIdList[] = $destinationUserInfo->row_id;
-                                    $real_push_user_list[] = $destinationUserInfo->row_id;
+                            foreach ($destinationUserInfoList as $destinationUserInfo) {
+                                if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
+                                    continue;
                                 }
+                                foreach ($destinationUserInfo->uuidList as $uuid) {
+                                    \DB::table("qp_user_message")
+                                        -> insertGetId([
+                                            'project_row_id'=>$projectInfo->row_id,
+                                            'user_row_id'=>$destinationUserInfo->row_id,
+                                            'uuid'=>$uuid->uuid,
+                                            'message_send_row_id'=>$newMessageSendId,
+                                            'created_user'=>$sourceUserInfo->row_id,
+                                            'created_at'=>$now
+                                        ]);
+                                }
+
+                                $hasSentUserIdList[] = $destinationUserInfo->row_id;
+                                $real_push_user_list[] = $destinationUserInfo->row_id;
                             }
 
                             foreach ($destinationRoleInfoList as $destinationRoleInfo) {
                                 \DB::table("qp_role_message")
                                     -> insertGetId([
                                         'project_row_id'=>$projectInfo->row_id, 'role_row_id'=>$destinationRoleInfo->row_id,
-                                        'message_send_row_id'=>$newMessageSendId, //,'push_flag'=>'0', 'need_push'=>'1',//'need_push'=>$need_push,
-                                        'created_user'=>$userInfo->row_id,
+                                        'message_send_row_id'=>$newMessageSendId,
+                                        'created_user'=>$sourceUserInfo->row_id,
                                         'created_at'=>$now
                                     ]);
 
-                                if($message_type == "event") {
-                                    $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$destinationRoleInfo->row_id.' )';
-                                    $userInRoleList = DB::select($sql, []);
-                                    foreach ($userInRoleList as $userRoleInfo) {
-                                        $userRowId = $userRoleInfo->row_id;
-                                        $hasSent = false;
-                                        foreach ($destinationUserInfoList as $destinationUserInfo){
-                                            if($destinationUserInfo->row_id == $userRowId) {
-                                                $hasSent = true;
-                                                break;
-                                            }
-                                        }
-                                        if(in_array($userRowId, $hasSentUserIdList)) {
-                                            $hasSent = true;
-                                        }
+                                $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$destinationRoleInfo->row_id.' )';
+                                $userInRoleList = DB::select($sql, []);
+                                foreach ($userInRoleList as $userRoleInfo) {
+                                    $userRowId = $userRoleInfo->row_id;
 
-                                        if(!$hasSent) {
-                                            foreach ($userInfo->uuidList as $uuid) {
-                                                \DB::table("qp_user_message")
-                                                    -> insertGetId([
-                                                        'project_row_id'=>$projectInfo->row_id,
-                                                        'user_row_id'=>$userRowId,
-                                                        'uuid'=>$uuid->uuid,
-                                                        'message_send_row_id'=>$newMessageSendId, // 'need_push'=>'1',//'need_push'=>$need_push,
-                                                        'created_user'=>$userInfo->row_id,
-                                                        'created_at'=>$now//, 'push_flag'=>'0'
-                                                    ]);
-                                            }
-                                            $hasSentUserIdList[] = $userRowId;
-                                            $real_push_user_list[] = $userRowId;
+                                    if(!in_array($userRowId, $hasSentUserIdList)) {
+                                        $thisUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
+                                        foreach ($thisUserInfo->uuidList as $uuid) {
+                                            \DB::table("qp_user_message")
+                                                -> insertGetId([
+                                                    'project_row_id'=>$projectInfo->row_id,
+                                                    'user_row_id'=>$userRowId,
+                                                    'uuid'=>$uuid->uuid,
+                                                    'message_send_row_id'=>$newMessageSendId,
+                                                    'created_user'=>$sourceUserInfo->row_id,
+                                                    'created_at'=>$now
+                                                ]);
                                         }
+                                        $hasSentUserIdList[] = $userRowId;
+                                        $real_push_user_list[] = $userRowId;
                                     }
                                 }
                             }
 
-                            $to = [];
-                            $newCountFlag = 0;
-                            foreach ($real_push_user_list as $uId) {
-                                $userPushList = \DB::table("qp_user")
-                                    ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                                    ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                                    ->where("qp_user.row_id", "=", $uId)
-                                    ->where("qp_user.status","=","Y")
-                                    ->where("qp_user.resign","=","N")
-                                    ->select("qp_push_token.push_token")
-                                    ->get();
-                                if(count($userPushList) > 0 ) {
-                                    foreach($userPushList as $tempUser){
-                                        $to[$newCountFlag] = $tempUser->push_token;
-                                        $newCountFlag ++;
+                            if($need_push == "Y") {
+                                $to = [];
+                                $newCountFlag = 0;
+                                foreach ($real_push_user_list as $uId) {
+                                    $userPushList = \DB::table("qp_user")
+                                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                                        ->where("qp_user.row_id", "=", $uId)
+                                        ->where("qp_user.status","=","Y")
+                                        ->where("qp_user.resign","=","N")
+                                        ->select("qp_push_token.push_token")
+                                        ->get();
+                                    if(count($userPushList) > 0 ) {
+                                        foreach($userPushList as $tempUser){
+                                            $to[$newCountFlag] = $tempUser->push_token;
+                                            $newCountFlag ++;
+                                        }
                                     }
                                 }
-                            }
-                            //$result = CommonUtil::PushMessageWithMessageCenter($message_title, $to, $newMessageSendId);
-                            $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
-                            if(!$result["result"]) {
-                                //\DB::rollBack();
-                                //Update jpush_error_code
-                                \DB::table("qp_message_send")
-                                    -> where(['row_id'=>$newMessageSendId])
-                                    -> update([
-                                        'jpush_error_code'=>$result["info"],
-                                        'updated_user'=>$userInfo->row_id,
-                                        'updated_at'=>$now
+
+                                $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
+                                if(!$result["result"]) {
+                                    \DB::table("qp_message_send")
+                                        -> where(['row_id'=>$newMessageSendId])
+                                        -> update([
+                                            'jpush_error_code'=>$result["info"],
+                                            'updated_user'=>$sourceUserInfo->row_id,
+                                            'updated_at'=>$now
+                                        ]);
+                                    \DB::commit();
+                                    $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                                        'message'=>'Send Push Message Successed',
+                                        'content'=>array('jsonContent'=>$newCountFlag,
+                                            'content'=>$content)
                                     ]);
-                                \DB::commit();
-                                //$result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>$result["info"]]);
-                                $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
-                                    'message'=>'Send Push Message Successed',
-                                    'content'=>array('jsonContent'=>$newCountFlag,
-                                        'content'=>$content)//json_encode($jsonContent)
-                                ]);
-                                CommonUtil::logApi("", $ACTION,
-                                    response()->json(apache_response_headers()), $result);
-                                return $result;
+                                    CommonUtil::logApi("", $ACTION,
+                                        response()->json(apache_response_headers()), $result);
+                                    return $result;
+                                }
                             }
 
                             \DB::commit();
@@ -2710,7 +2695,7 @@ SQL;
         }
 
         //For Log
-        $ACTION = 'sendPushMessage';
+        $ACTION = 'updateLastMessageTime';
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || !array_key_exists('last_update_time', $input)
@@ -2740,17 +2725,17 @@ SQL;
         $user = CommonUtil::getUserInfoByUUID($uuid);
         if($user == null)
         {
-            $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+            $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                 "message"=> "員工資訊錯誤"]);;
             $userId = CommonUtil::getUserIdByUUID($uuid);
             if($userId != null) {
                 $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
                 if($userStatus == 1) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000901_userNotExistError,
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000901_userNotExistError,
                         "message"=> "員工資訊錯誤"]);;
                 } else if($userStatus == 2) {
-                    $result = $result = response()->json(["code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> "账号已被停权"]);;
+                    $result = $result = response()->json(["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> "帳號已被停權"]);;
                 }
             }
 

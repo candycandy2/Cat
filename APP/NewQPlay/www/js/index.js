@@ -5,16 +5,23 @@ var appKey = "appqplay";
 var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e"; // QPlay app secret key
 
+//viewMain2
 var appcategorylist;
 var applist;
 var appmultilang;
-var loginjustdone;
+var appVersionRecord = {};
+checkAPPVersionRecord("initial");
+
+//viewAppDetail2-2
+var checkAPPKey;
+var checkAPPKeyInstalled = false;
+
+//viewNewsEvents
 var messagecontent;
 var selectAppIndex = 0;
 var messageArrIndex = null;
 var messageRowId = null;
 var msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
-var callBackURL;
 var callGetMessageList = false;
 var messagePageShow = false;
 var delMsgActive = false;
@@ -71,7 +78,7 @@ window.initialSuccess = function(data) {
         }
     }
 
-    iOSAppInitialFinish = true;
+    appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
 }
@@ -146,6 +153,67 @@ function openNewMessage() {
         var messageList = new QueryMessageList();
         callGetMessageList = true;
     }
+}
+
+//Cehck APP version record
+function checkAPPVersionRecord(action) {
+    if (action === "initial") {
+
+        if (window.localStorage.getItem("appVersionRecord") !== null) {
+            var tempData = window.localStorage.getItem("appVersionRecord");
+            appVersionRecord = JSON.parse(tempData);
+        }
+
+    } else if (action === "updateFromAPI") {
+
+        window.localStorage.setItem("appVersionRecord", JSON.stringify(appVersionRecord));
+        var tempData = window.localStorage.getItem("appVersionRecord");
+
+    } else if (action === "updateFromScheme") {
+
+        var tempData = window.localStorage.getItem("appVersionRecord");
+        appVersionRecord = JSON.parse(tempData);
+        appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = queryData["versionCode"];
+
+        window.localStorage.setItem("appVersionRecord", JSON.stringify(appVersionRecord));
+
+    }
+}
+
+//Check if APP is installed
+function checkAPPInstalled(callback) {
+
+    callback = callback || null;
+
+    var scheme;
+
+    if (device.platform === 'iOS') {
+        scheme = checkAPPKey + '://';
+    } else if (device.platform === 'Android') {
+        scheme = 'com.qplay.' + checkAPPKey;
+    }
+
+    appAvailability.check(
+        scheme,       //URI Scheme or Package Name
+        function() {  //Success callback
+
+            var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
+            var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
+
+            if (latest_version === installed_version) {
+                loginData['updateApp'] = false;
+            } else {
+                loginData['updateApp'] = true;
+            }
+
+            checkAPPKeyInstalled = true;
+            callback(true);
+        },
+        function() {  //Error callback
+            checkAPPKeyInstalled = false;
+            callback(false);
+        }
+    );
 }
 
 //un-register [User with Mobile Device UUID]
