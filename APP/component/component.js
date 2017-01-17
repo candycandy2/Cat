@@ -463,7 +463,7 @@ function checkAppVersion() {
                     $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
-                    openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKey);
+                    openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
                 }
             });
 
@@ -683,7 +683,7 @@ function getServerData() {
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
         if (window.localStorage.getItem("openScheme") !== "true") {
-            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
+            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
         }
 
         window.localStorage.setItem("openScheme", true);
@@ -749,12 +749,17 @@ function handleOpenURL(url) {
 
             loginData['doLoginDataCallBack'] = true;
 
+            //APP version record
+            checkAPPVersionRecord("updateFromScheme");
+
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
             loginData['openAppDetailPage'] = true;
             loginData['updateApp'] = true;
-            openAppName = queryData["openAppName"];
+            openAppName = queryData["callbackApp"];
 
+            //APP version record
+            checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
 
