@@ -54,6 +54,8 @@ return [
     'TITLE_SYS_PARAMETER_MAINTAIN' => 'Parameter Setting',
     'TITLE_SYS_PROJECT_MAINTAIN' => 'Project Maintain',
     'TITLE_SECRETARY_PUSH' => 'Secretary Push',
+    'TITLE_DEVELOPER_ZONE' => 'Developer Zone',
+    'TITLE_APP_KEY_MANAGER' => 'App-Key Manager',
 
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
@@ -197,6 +199,7 @@ return [
     'NEW_APP' => 'New App',
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
+    'SECRET_KEY' => 'Secret Key',
     'DEFAULT_LANG' => 'Default language',
     'SELECT_APP_KEY' => 'Select App Key',
     'APP_SUMMARY' => 'App Summary',

@@ -54,6 +54,8 @@ return [
     'TITLE_SYS_PARAMETER_MAINTAIN' => '参数设置',
     'TITLE_SYS_PROJECT_MAINTAIN' => '专案管理',
 	'TITLE_SECRETARY_PUSH' => '秘书推播',
+    'TITLE_DEVELOPER_ZONE' => '开发人员专区',
+    'TITLE_APP_KEY_MANAGER' => 'App金钥管理',
 
     //validate
     'VALIDATE_ACCEPT' => '仅接受',
@@ -197,6 +199,7 @@ return [
     'NEW_APP' => '新增应用程式',
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
+    'SECRET_KEY' => 'Secret Key',
     'DEFAULT_LANG' => '预设语言',
     'SELECT_APP_KEY' => '选择App Key',
     'APP_SUMMARY'=>'App 摘要',
