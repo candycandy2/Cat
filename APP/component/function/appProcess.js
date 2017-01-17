@@ -72,9 +72,11 @@ function checkNetwork(data) {
         //----Network connected
         //Maybe these following situation happened.
         //1. status = 200, request succeed, but timeout 3000
-        if (data.status !== 200) {
-            showMsg = true;
-            showNetworkDisconnected = true;
+        if (data !== null) {
+            if (data.status !== 200) {
+                showMsg = true;
+                showNetworkDisconnected = true;
+            }
         }
     }
 
