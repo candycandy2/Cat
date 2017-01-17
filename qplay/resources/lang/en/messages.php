@@ -292,5 +292,7 @@ return [
     'ERR_APP_CATEGORY_EXIST' => 'The app category name already exist!',
     'ERR_WRONG_TYPE'=>'Please enter correct %s type!',
 
-    'DESIGNATED'=>'Designated'
+    'DESIGNATED'=>'Designated',
+    'MESSAGE_SCHEDULE_PUSH'=>'Schedule',
+    'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'Reserve push time must be some time in the future!'
 ];
