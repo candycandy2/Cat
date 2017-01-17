@@ -176,7 +176,7 @@ class PushUtil
         try {
             $device = $client->device();
             if(!$device->isDeviceInTag($registrationId, $tag)) {
-                $device->addTags($registrationId, $tag);
+                $device->addDevicesToTag($tag, $registrationId);
             }
         } catch (APIConnectionException $e) {
             $result["result"] = false;
@@ -193,6 +193,119 @@ class PushUtil
         }catch (\Exception $e){
             $result["result"] = false;
             $result["info"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    //JPush API Proxy
+    public static function GetDevices($registrationId) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->getDevices($registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function GetTags() {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->getTags();
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function IsDeviceInTag($registrationId, $tag) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->isDeviceInTag($registrationId, $tag);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function AddDevicesToTag($registrationId, $tag) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->addDevicesToTag($tag, $registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
         }
         return $result;
     }

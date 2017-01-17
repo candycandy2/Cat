@@ -2,7 +2,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
     var clickAggTarceID = '';
     var clickReserveDate = '';
     var clickReserveRoom = '';
-    var tempTimeNameClick = '';
+    var arrTempTimeNameClick = [];
 
     $('#viewMyReserve').pagecontainer({
         create: function(event, ui) {
@@ -47,12 +47,18 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                             }
                         }
 
-                        $('#todayLine').after(htmlContent_today);
+                        if (htmlContent_today == '') {
+                            $('#todayLine').addClass('disable');
+                        } else {
+                            $('#todayLine').removeClass('disable');
+                            $('#todayLine').after(htmlContent_today);
+                        }
+
                         $('#otherDayLine').after(htmlContent_other);
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
-                        popupMsg('myReservePopupMsg', 'noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', false);
+                        popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', '');
                     }
                     loadingMask('hide');
                 };
@@ -79,11 +85,11 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                         });
                         localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
 
-                        popupMsg('myReservePopupMsg', 'successMsg', '', '取消預約成功', '', false, '確定', false);
+                        popupMsg('successMsg', '', '取消預約成功', '', false, '確定', '');
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('myReservePopupMsg', 'failMsg', '', '取消預約失敗', '', false, '確定', false);
+                        popupMsg('failMsg', '', '取消預約失敗', '', false, '確定', '');
                     }
                     loadingMask('hide');
                 };
@@ -108,21 +114,35 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 var clickReserveTime = $(this).attr('time');
                 var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
                 var strDate = arrDateString[2] + '/' + arrDateString[3];
-                tempTimeNameClick = clickReserveTime.split('-')[0];
+
+                var sTime = clickReserveTime.split('-')[0];
+                var eTime = clickReserveTime.split('-')[1];
+                var strTime = sTime;
+                if (sTime == eTime) {
+                    arrTempTimeNameClick.push(strTime);
+                } else {
+                    do {
+                        arrTempTimeNameClick.push(strTime);
+                        strTime = addThirtyMins(strTime);
+                    } while (strTime != eTime);
+                }
+
                 var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
-                popupMsg('myReservePopupMsg', 'cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', true);
+                popupMsg('cancelMsg', '確定取消預約?', msgContent, '取消', true, '確定', 'warn_icon.png');
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
                 var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
-                var searchRoomNode = searchTree(meetingRoomData, clickReserveRoom);
+                var searchRoomNode = searchTree(meetingRoomData, clickReserveRoom, 'MeetingRoomName');
                 var searchSiteNode = searchRoomNode.parent.parent.data;
 
                 for (var i = 0; i < myReserveLocalData.length; i++) {
-                    if (myReserveLocalData[i].time == tempTimeNameClick && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
-                        myReserveLocalData.splice(i, 1);
-                        i--;
-                    }
+                    $.each(arrTempTimeNameClick, function(index, value) {
+                        if (myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
+                            myReserveLocalData.splice(i, 1);
+                            i--;
+                        }
+                    });
                 };
 
                 $('div[for=cancelMsg]').popup('close');

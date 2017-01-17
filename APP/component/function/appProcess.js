@@ -175,3 +175,43 @@ function getMessageID(data) {
         messageRowId = data.extras["Parameter"];
     }
 }
+
+//create popup message
+function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
+    $('#viewPopupMsg').attr('for', attr);
+    $('#viewPopupMsg #titleText').text(title);
+    $('#viewPopupMsg #msgContent').html(content);
+    $('#viewPopupMsg #titleImg').attr('src', '');
+    $('#viewPopupMsg #titleImg').addClass('hide');
+    $('#viewPopupMsg #cancel').text(btn1);
+    $('#viewPopupMsg #confirm').text(btn2);
+
+    if(titleImg != ''){
+        $('#viewPopupMsg #titleImg').attr('src', 'img/' + titleImg);
+        $('#viewPopupMsg #titleImg').removeClass('hide');
+    }
+
+    $('#viewPopupMsg').removeClass();
+    $('#viewPopupMsg button').removeClass();
+    if (btnIsDisplay == true) {
+        $('#viewPopupMsg #cancel').removeClass('disable');
+        $('#viewPopupMsg #confirm').css('width', '50%');
+        $('#viewPopupMsg #confirm').css('position', 'absolute');
+    } else {
+        $('#viewPopupMsg #cancel').addClass('disable');
+        $('#viewPopupMsg #confirm').css('width', '100%');
+        $('#viewPopupMsg #confirm').css('position', 'initial');
+    }
+    $('#viewPopupMsg #cancel').attr('onClick', 'popupCancelClose()');
+
+    $('#viewPopupMsg').popup(); //initialize the popup
+    $('#viewPopupMsg').show();
+    $('#viewPopupMsg').popup('open');
+}
+
+function popupCancelClose() {
+    $('body').on('click', 'div[for*=Msg] #cancel', function() {
+        $('div[for*=Msg]').popup('close');
+    });
+}
+
