@@ -11,7 +11,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
     }
 
     function requestError(data) {
-        checkNetwork();
+        checkNetwork(data);
     }
 
     var signatureTime = getSignature("getTime");
