@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\lib\CommonUtil;
+use App\lib\PushUtil;
 use App\lib\ResultCode;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
@@ -1696,17 +1697,17 @@ class platformController extends Controller
 
                 $real_push_user_list = array();
                 if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
+//                    foreach ($companyList as $company) {
+//                        $userList = \DB::table("qp_user")
+//                            ->where("company", "=", $company)
+//                            ->select()->get();
+//                        foreach ($userList as $user) {
+//                            $userId = $user -> row_id;
+//                            if(!in_array($userId, $real_push_user_list)) {
+//                                array_push($real_push_user_list, $userId);
+//                            }
+//                        }
+//                    }
                 } else {
                     $roleList = $receiver["role_list"];
                     $userList = $receiver["user_list"];
@@ -1767,24 +1768,36 @@ class platformController extends Controller
 
                 $to = [];
                 $newCountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$newCountFlag] = $tempUser->push_token; 
-                            $newCountFlag ++;
+
+                if($receiver["type"] == "news") {
+                    foreach ($companyList as $company) {
+                        for ($i = 1; $i <= 6; $i++) {
+                            $to[$newCountFlag] = strtoupper($company) . $i;
+                            $newCountFlag++;
                         }
                     }
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId, true);
+                } else {
+                    foreach ($real_push_user_list as $uId) {
+                        $userPushList = \DB::table("qp_user")
+                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                            ->where("qp_user.row_id", "=", $uId)
+                            ->where("qp_user.status","=","Y")
+                            ->where("qp_user.resign","=","N")
+                            ->select("qp_push_token.push_token")
+                            ->get();
+                        if(count($userPushList) > 0 ) {
+                            foreach($userPushList as $tempUser){
+                                $to[$newCountFlag] = $tempUser->push_token;
+                                $newCountFlag ++;
+                            }
+                        }
+                    }
+
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId);
                 }
 
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId);
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
                         -> where(['row_id'=>$messageSendId])
@@ -1867,17 +1880,17 @@ class platformController extends Controller
 
                 $real_push_user_list = array();
                 if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
+//                    foreach ($companyList as $company) {
+//                        $userList = \DB::table("qp_user")
+//                            ->where("company", "=", $company)
+//                            ->select()->get();
+//                        foreach ($userList as $user) {
+//                            $userId = $user -> row_id;
+//                            if(!in_array($userId, $real_push_user_list)) {
+//                                array_push($real_push_user_list, $userId);
+//                            }
+//                        }
+//                    }
                 } else {
                     $roleList = $receiver["role_list"];
                     $userList = $receiver["user_list"];
@@ -1938,23 +1951,34 @@ class platformController extends Controller
 
                 $to = [];
                 $CountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$CountFlag] = $tempUser->push_token;
-                            $CountFlag ++;
+                if($receiver["type"] == "news") {
+                    foreach ($companyList as $company) {
+                        for ($i = 1; $i <= 6; $i++) {
+                            $to[$CountFlag] = strtoupper($company) . $i;
+                            $CountFlag++;
                         }
                     }
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId, true);
+                } else { //news send by company tag
+                    foreach ($real_push_user_list as $uId) {
+                        $userPushList = \DB::table("qp_user")
+                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                            ->where("qp_user.row_id", "=", $uId)
+                            ->where("qp_user.status","=","Y")
+                            ->where("qp_user.resign","=","N")
+                            ->select("qp_push_token.push_token")
+                            ->get();
+                        if(count($userPushList) > 0 ) {
+                            foreach($userPushList as $tempUser){
+                                $to[$CountFlag] = $tempUser->push_token;
+                                $CountFlag ++;
+                            }
+                        }
+                    }
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
                 }
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
+
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
                         -> where(['row_id'=>$newMessageSendId])
@@ -2029,17 +2053,17 @@ class platformController extends Controller
 
                 $real_push_user_list = array();
                 if($receiver["type"] == "company") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
+//                    foreach ($companyList as $company) {
+//                        $userList = \DB::table("qp_user")
+//                            ->where("company", "=", $company)
+//                            ->select()->get();
+//                        foreach ($userList as $user) {
+//                            $userId = $user -> row_id;
+//                            if(!in_array($userId, $real_push_user_list)) {
+//                                array_push($real_push_user_list, $userId);
+//                            }
+//                        }
+//                    }
                 } else {
                     $userList = $receiver["user_list"];
                     foreach($userList as $userId) {
@@ -2058,22 +2082,6 @@ class platformController extends Controller
 
                 $to = [];
                 $CountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$CountFlag] = $tempUser->push_token;
-                            $CountFlag ++;
-                        }
-                    }
-                }
                 $messageSendRowId = DB::table("qp_message_send")
                     ->join("qp_message_send_pushonly","qp_message_send_pushonly.message_row_id","=","qp_message_send.message_row_id")
                     ->join('qp_message', function($join)
@@ -2084,8 +2092,37 @@ class platformController extends Controller
                     ->where("qp_message_send_pushonly.row_id","=",$newMessageSendId)
                     ->select("qp_message_send.row_id")
                     ->get();
-                $messageSendRowId =$messageSendRowId[0]->row_id;
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
+
+                if($receiver["type"] == "company") {
+                    foreach ($companyList as $company) {
+                        for ($i = 1; $i <= 6; $i++) {
+                            $to[$CountFlag] = strtoupper($company) . $i;
+                            $CountFlag++;
+                        }
+                    }
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId, true);
+                } else {
+                    foreach ($real_push_user_list as $uId) {
+                        $userPushList = \DB::table("qp_user")
+                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                            ->where("qp_user.row_id", "=", $uId)
+                            ->where("qp_user.status","=","Y")
+                            ->where("qp_user.resign","=","N")
+                            ->select("qp_push_token.push_token")
+                            ->get();
+                        if(count($userPushList) > 0 ) {
+                            foreach($userPushList as $tempUser){
+                                $to[$CountFlag] = $tempUser->push_token;
+                                $CountFlag ++;
+                            }
+                        }
+                    }
+
+                    $messageSendRowId =$messageSendRowId[0]->row_id;
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
+                }
+
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
                         -> where('row_id',"=",$messageSendRowId)
@@ -2152,17 +2189,17 @@ class platformController extends Controller
                 $real_push_user_list = array();
 
                 if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
+//                    foreach ($companyList as $company) {
+//                        $userList = \DB::table("qp_user")
+//                            ->where("company", "=", $company)
+//                            ->select()->get();
+//                        foreach ($userList as $user) {
+//                            $userId = $user -> row_id;
+//                            if(!in_array($userId, $real_push_user_list)) {
+//                                array_push($real_push_user_list, $userId);
+//                            }
+//                        }
+//                    }
 
                 } else {
                     $roleList = $receiver["role_list"];
@@ -2216,7 +2253,16 @@ class platformController extends Controller
 
                 $to = [];
                 $newCountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
+                if($receiver["type"] == "news") {
+                    foreach ($companyList as $company) {
+                        for ($i = 1; $i <= 6; $i++) {
+                            $to[$newCountFlag] = strtoupper($company) . $i;
+                            $newCountFlag++;
+                        }
+                    }
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId, true);
+                } else {
+                    foreach ($real_push_user_list as $uId) {
                         $userPushList = \DB::table("qp_user")
                             ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
                             ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
@@ -2232,7 +2278,9 @@ class platformController extends Controller
                             }
                         }
                     }
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
+                }
+
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
                         -> where(['row_id'=>$newMessageSendId])
@@ -2294,17 +2342,17 @@ class platformController extends Controller
 
                 $real_push_user_list = array();
                 if($sourceMessageSendInfo->send_type == "company") {
-                    foreach ($sourceMessageSendInfo->company_list as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
+//                    foreach ($sourceMessageSendInfo->company_list as $company) {
+//                        $userList = \DB::table("qp_user")
+//                            ->where("company", "=", $company)
+//                            ->select()->get();
+//                        foreach ($userList as $user) {
+//                            $userId = $user -> row_id;
+//                            if(!in_array($userId, $real_push_user_list)) {
+//                                array_push($real_push_user_list, $userId);
+//                            }
+//                        }
+//                    }
                 } else {
                     $userList = CommonUtil::getSecretaryMessageDesignatedReceiver($message_send_id);
                     foreach($userList as $user) {
@@ -2323,24 +2371,9 @@ class platformController extends Controller
 
                 $to = [];
                 $CountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$CountFlag] = $tempUser->push_token;
-                            $CountFlag ++;
-                        }
-                    }
-                }
 
                 $title = $sourceMessageSendInfo->message_info->message_title;
+                $newMessageId = $sourceMessageSendInfo->message_info->row_id;
                 $messageSendRowId = DB::table("qp_message_send")
                     ->join("qp_message_send_pushonly","qp_message_send_pushonly.message_row_id","=","qp_message_send.message_row_id")
                     ->join('qp_message', function($join)
@@ -2352,8 +2385,37 @@ class platformController extends Controller
                     ->select("qp_message_send.row_id")
                     ->get();
                 $messageSendRowId =$messageSendRowId[0]->row_id;
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
-                $newMessageId = $sourceMessageSendInfo->message_info->row_id;
+
+                if($sourceMessageSendInfo->send_type == "company") {
+                    foreach ($sourceMessageSendInfo->company_list as $company) {
+                        for ($i = 1; $i <= 6; $i++) {
+                            $to[$CountFlag] = strtoupper($company) . $i;
+                            $CountFlag++;
+                        }
+                    }
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId, true);
+                } else {
+                    foreach ($real_push_user_list as $uId) {
+                        $userPushList = \DB::table("qp_user")
+                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
+                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                            ->where("qp_user.row_id", "=", $uId)
+                            ->where("qp_user.status","=","Y")
+                            ->where("qp_user.resign","=","N")
+                            ->select("qp_push_token.push_token")
+                            ->get();
+                        if(count($userPushList) > 0 ) {
+                            foreach($userPushList as $tempUser){
+                                $to[$CountFlag] = $tempUser->push_token;
+                                $CountFlag ++;
+                            }
+                        }
+                    }
+
+                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendRowId);
+                }
+
+
                 if(!$result["result"]) {
                     \DB::table("qp_message_send")
                         -> where('row_id',"=",$newMessageSendId)
