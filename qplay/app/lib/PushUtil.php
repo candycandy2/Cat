@@ -134,6 +134,87 @@ class PushUtil
         return $result;
     }
 
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
+        $result = array();
+        $result["result"] = true;
+        $result["info"] = "success";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $platform = array('ios', 'android');
+            $alert = $message;
+            $ios_notification = array(
+                'sound' => 'default',
+                'badge' => '0',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $android_notification = array(
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $content = $message;
+            $scheduleName = $message;
+            $message = array(
+                'title' => $message,
+                'content_type' => 'text',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $time2live =  Config::get('app.time_to_live',864000);
+            $apnsFlag = Config::get('app.apns_flag',true);
+            $options = array(
+                'time_to_live'=>$time2live,
+                'apns_production'=>$apnsFlag
+            );
+            if($send_by_tag) {
+                $payload = $client->push()
+                    ->addAllAudience()
+                    ->setPlatform($platform)
+                    ->iosNotification($alert, $ios_notification)
+                    ->androidNotification($alert, $android_notification)
+                    ->message($content, $message)
+                    ->options($options)
+                    ->addTag($to) //以Tag发送
+                    ->build();
+            } else {
+                $payload = $client->push()
+                    ->addAllAudience()
+                    ->setPlatform($platform)
+                    ->iosNotification($alert, $ios_notification)
+                    ->androidNotification($alert, $android_notification)
+                    ->message($content, $message)
+                    ->options($options)
+                    ->addRegistrationId($to)  //以注册ID发送
+                    ->build();
+            }
+
+            $schedule = $client->schedule();
+            $trigger = array();
+            array_push($trigger, $schedule_datetime);
+            $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred";
+        }
+        return $result;
+    }
+
     public static function GetTagByUserInfo($userInfo) {
         $company = strtoupper($userInfo->company);
         $firstLetter = substr($userInfo->login_id, 0, 1);
@@ -176,7 +257,7 @@ class PushUtil
         try {
             $device = $client->device();
             if(!$device->isDeviceInTag($registrationId, $tag)) {
-                $device->addTags($registrationId, $tag);
+                $device->addDevicesToTag($tag, $registrationId);
             }
         } catch (APIConnectionException $e) {
             $result["result"] = false;
@@ -193,6 +274,204 @@ class PushUtil
         }catch (\Exception $e){
             $result["result"] = false;
             $result["info"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    //JPush API Proxy
+    public static function GetDevices($registrationId) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->getDevices($registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function GetTags() {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->getTags();
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function IsDeviceInTag($registrationId, $tag) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->isDeviceInTag($registrationId, $tag);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function AddDevicesToTag($registrationId, $tag) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["content"] = $device->addDevicesToTag($tag, $registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    public static function CreateSingleSchedule($scheduleName, $scheduleTime, $message, $to, $parameter = '', $send_by_tag = false) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $platform = array('ios', 'android');
+            $alert = $message;
+            $ios_notification = array(
+                'sound' => 'default',
+                'badge' => '0',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $android_notification = array(
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $content = $message;
+            $message = array(
+                'title' => $message,
+                'content_type' => 'text',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $time2live =  Config::get('app.time_to_live',864000);
+            $apnsFlag = Config::get('app.apns_flag',true);
+            $options = array(
+                'time_to_live'=>$time2live,
+                'apns_production'=>$apnsFlag
+            );
+
+            if($send_by_tag) {
+                $payload = $client->push()
+                    ->addAllAudience()
+                    ->setPlatform($platform)
+                    ->iosNotification($alert, $ios_notification)
+                    ->androidNotification($alert, $android_notification)
+                    ->message($content, $message)
+                    ->options($options)
+                    ->addTag($to) //以Tag发送
+                    ->build();
+            } else {
+                $payload = $client->push()
+                    ->addAllAudience()
+                    ->setPlatform($platform)
+                    ->iosNotification($alert, $ios_notification)
+                    ->androidNotification($alert, $android_notification)
+                    ->message($content, $message)
+                    ->options($options)
+                    ->addRegistrationId($to)  //以注册ID发送
+                    ->build();
+            }
+
+            $schedule = $client->schedule();
+            $trigger = array();
+            if(!is_array($scheduleTime)) {
+                array_push($trigger, $scheduleTime);
+            } else {
+                $trigger = $scheduleTime;
+            }
+            $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred";
         }
         return $result;
     }

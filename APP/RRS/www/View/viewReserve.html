@@ -1,3 +1,4 @@
+<span id="tmp_option_width" class="hidden"></span>
 <div data-role="page" id="viewReserve">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="ui-title page-header">
@@ -20,13 +21,16 @@
                 </div>
             </div>
             <div class="ui-margin-public" id="pageOne">
-                <select name="reserveSite" id="reserveSite">
+                <select name="reserveSite" id="reserveSite" data-role="none" class="dropdown-icon" style="margin-bottom: 1vh;">
                 </select>
                 <div id="scrollDate" class="scrollmenu">
                     <a id="reserveDefault" href="#" class="disable">ReserveDay<br />ReserveDict</a>
                 </div>
-                <select name="reserveFloor" id="reserveFloor">
+                <select name="reserveFloor" id="reserveFloor" data-role="none" class="dropdown-icon inline" style="margin-top: 1.8vh;margin-bottom: 1vh;">
                 </select>
+                <div class="inline word-mid">
+                    <div id="alertLimitRoomMsg" class="disable inline word-warp"></div>
+                </div>
                 <div id="reserveRoom" class="scrollmenu">
                 </div>
                 <div style="margin: 3vh 0 0.5vh 0; font-size: 3.5vw;text-align: left;">
@@ -50,12 +54,29 @@
                         </div>
                     </div>
                 </div>
-                <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 2.7vh auto;">預約</div>
+                <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 2.7vh auto;margin-bottom: 0;">預約</div>
             </div>
             <div class="ui-margin-public" id="pageTwo">
-                <select name="reserveSetting" id="reserveSetting">
-                </select>
-                <div style="font-size: 4vw;text-align: left;">
+                <div id="reserveSettingArea" class="settingArea">
+                    <select name="reserveSetting" id="reserveSetting" data-role="none" class="dropdown-icon">
+                    </select>
+                    <hr style="padding: 0px;margin-bottom: 1.3vh;margin-top: 0.8vh;" />
+                    <div class="ui-grid-a" style="margin: 1.5vw;word-wrap: break-word;font-size: 2.3vh;">
+                        <div class="ui-block-a col-5">
+                            <span id="settingAreaSite"></span>
+                        </div>
+                        <div class="ui-block-b col-5">
+                            <span id="settingAreaPeople" style="padding-left: 3vw;display: block;"></span>
+                        </div>
+                        <div class="ui-block-a col-5">
+                            <span id="settingAreaTime"></span>
+                        </div>
+                        <div class="ui-block-b col-5">
+                            <span id="settingAreaFloor" style="padding-left: 3vw;display: block;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size: 2.3vh;text-align: left;">
                     <div class="inline">預約日期：</div>
                 </div>
                 <div id="quickReserveScrollDate" class="scrollmenu">
@@ -73,17 +94,9 @@
                 </div>
                 <div class="quick-reserve-margin">
                     <div class="inline quick-reserve-setting-icon"></div>
-                    <div class="inline"><a href="#viewSettingList">偏好設置</a></div>
+                    <div class="inline"><a href="#viewSettingList" style="font-weight: inherit;">偏好設置</a></div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div data-role="popup" data-history="false" id="reservePopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="popup-msg">
-            <h1 id="msgTitle"></h1>
-            <div id="msgContent"></div>
-            <button id="cancel"></button>
-            <button id="confirm"></button>
         </div>
     </div>
     <div data-role="popup" data-history="false" id="reservePopupSchemeMsg" data-overlay-theme="b" data-dismissible="false">

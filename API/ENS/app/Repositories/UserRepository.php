@@ -1,0 +1,52 @@
+<?php
+namespace App\Repositories;
+
+use Doctrine\Common\Collections\Collection;
+use App\Model\EN_User;
+use App\Model\EN_Usergroup;
+use DB;
+
+class UserRepository
+{
+    /** @var User Inject En_User model */
+    protected $user;
+    protected $userGroup;
+    /**
+     * UserRepository constructor.
+     * @param User $user
+     */
+    public function __construct(EN_User $user, EN_Usergroup $userGroup)
+    {
+        $this->user = $user;
+         $this->userGroup = $userGroup;
+    }
+
+    /**
+     * get User group by employee No.
+     * @param  string $empNo employee No.
+     * @return Collection
+     */
+    public function getUserAuth($empNo){
+
+        return $this->user
+            ->where('en_usergroup.emp_no', '=', (string)$empNo)
+            ->join( 'en_usergroup', 'en_user.emp_no', '=', 'en_usergroup.emp_no')
+            ->select('usergroup')
+            ->get();
+
+    }
+
+    public function getUserInfoByEmpNO(Array $empNoArr){
+         return $this->user
+         ->whereIn('emp_no', $empNoArr)
+         ->select('row_id','login_id','ext_no','email','emp_no','user_domain')
+         ->get();
+    }
+
+
+    public function getSuperUser(){
+        return $this->userGroup
+         ->select('emp_no')
+         ->get();
+    }
+}

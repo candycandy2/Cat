@@ -4,7 +4,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
     $("#viewDataInput").pagecontainer({
         create: function(event, ui) {
             
-            /********************************** function *************************************/
+            /****************************************************** function ********************************************************/
             window.QueryCompanyData = function() {
                 
                 var self = this;
@@ -15,7 +15,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                     if (resultcode === "1") {
                         var dataContent = data['Content'];
                         $('#Company').html('<option value="All Company">All Company</option>');
-
                         for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
                             var companyname = dataContent[i].CompanyName;
                             $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
@@ -34,9 +33,8 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 var empty = true;
                 $("#viewDataInput input[type=text]").each(function(index, element) {
                     queryData = $(element).val();
-                    if ($(element).val().length !== 0) {
+                    if ($(element).val().length !== 0)
                         empty = false;
-                    }
                 });
                 if (empty) {
                     $("#noQueryCondition").popup("open");
@@ -52,7 +50,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 $("#viewDataInput input[type=text]").val("");
             }
 
-            /********************************** page event *************************************/
+            /******************************************************* page event *******************************************************/
             $("#viewDataInput").on("pagebeforeshow", function(event, ui) {
                 if (doClearInputData) {
                     clearInputData();
@@ -60,7 +58,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 }
             });
 
-            /********************************** dom event *************************************/
+            /******************************************************** dom event *******************************************************/
             $("#cleanQuery").on("click", function() {
                 clearInputData();
             });
@@ -71,12 +69,12 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             });
 
             $('#viewDataInput').keydown(function(event) {
-                if (event.keyCode === 13) {
-                    /* keyCode of 'Enter' key is 13 */
+                /* keyCode of 'Enter' key is 13 */
+                if (event.keyCode === 13)
                     checkInputData();
-                }
             });
 
+            /***********************************************  Validation of input data  ***********************************************/
             $("#CName").keyup(function(event) {
                 var pattern = /([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)[\u4E00-\u9FFF\u3400-\u4DB5\-\.]*([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)/;
                 var maxlength = $("#CName").data('maxlength');

@@ -72,6 +72,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="*:*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
+                            '<preference name="AndroidLaunchMode" value="singleTask"/>' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
@@ -120,12 +121,12 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 gulp.task('copyAndroidImages', function() {
-    return gulp.src('Images/android/**/*', {base: 'Images/android/'})
+    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/Launch_icon/android/'})
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
 });
 
 gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/iOS/AppIcon.appiconset/*')
+    return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
         .pipe(gulp.dest('platforms/ios/RRS/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
 });
 
@@ -155,12 +156,7 @@ gulp.task('concat:css', ['less'], function(){
         .pipe(gulp.dest('www/dist/css'));
 });
 */
-/*
-gulp.task('componentJS', function() {
-    return gulp.src('../component/*.js')
-        .pipe(gulp.dest('www/js/'));
-});
-*/
+
 gulp.task('componentHTML', function() {
     return gulp.src('../component/*.html')
         .pipe(gulp.dest('www/View/'));
@@ -171,13 +167,23 @@ gulp.task('componentIMG', function() {
         .pipe(gulp.dest('www/img/component/'));
 });
 
-gulp.task('componentJS', function(){
+gulp.task('functionJS', function() {
+    return gulp.src('../component/function/*.js')
+        .pipe(concat('function.js'))
+        .pipe(gulp.dest('../component/'));
+});
+
+gulp.task('appJS', ['functionJS'], function(){
     return gulp.src(['../component/component.js','../component/function.js'])
         //.pipe(uglify())
         //.pipe(concat('app.min.js'))
         .pipe(concat('APP.js'))
         .pipe(gulp.dest('www/js/'));
 });
+
+gulp.task('componentJS', ['appJS'], shell.task([
+    'rm ../component/function.js'
+]));
 
 //ex: gulp default --env test
 //remove patch task
