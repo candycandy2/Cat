@@ -27,7 +27,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/v101/custom/rrs/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,
         cache: false,
