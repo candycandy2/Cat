@@ -25,7 +25,8 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/index.php/v101/yellowpage/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/yellowpage/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        //url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
         dataType: "json",
         data: queryData,
         cache: false,
