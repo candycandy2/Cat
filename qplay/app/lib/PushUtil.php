@@ -191,8 +191,7 @@ class PushUtil
             }
 
             $schedule = $client->schedule();
-            $trigger = array();
-            array_push($trigger, $schedule_datetime);
+            $trigger = array("time"=>date("Y-m-dd H:i:s",$schedule_datetime));
             $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
         } catch (APIConnectionException $e) {
             $result["result"] = false;
