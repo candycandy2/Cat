@@ -65,7 +65,6 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
-                        $("#askAddPhonebook").popup('close');
                         $("#addStar").hide();
                         $("#deleteStar").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
@@ -86,7 +85,6 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             window.deletePheonBookFinished = function() {
                 $("#addStar").show();
                 $("#deleteStar").hide();
-                $('#askDeletePhonebook').popup('close');
             };
 
             /********************************** page event *************************************/
@@ -96,12 +94,30 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             });
 
             /********************************** dom event *************************************/
-            $("#addPhonebook").on("click", function(){
-                AddMyPhoneBook();
+            $("#addStar").on("click", function(){
+                popupMsg("askAddPhonebook", "確定要加到我的電話簿?", "", "取消", true, "確定", "");
             });
 
-            $("#deletePhonebook").on("click", function(){
+            $("#deleteStar").on("click", function(){
+                popupMsg("askDeletePhonebook", "確定要從我的電話簿刪除?", "", "取消", true, "確定", "");
+            });
+
+            $('body').on('click', 'div[for=askAddPhonebook] #confirm', function() {
+                AddMyPhoneBook();
+                $("#viewPopupMsg").popup("close");
+            });
+
+            $('body').on('click', 'div[for=askDeletePhonebook] #confirm', function() {
                 deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
+                $("#viewPopupMsg").popup("close");
+            });
+        
+            $('body').on('click', 'div[for=askAddPhonebook] #cancel', function() {
+                $("#viewPopupMsg").popup("close");
+            });
+
+            $('body').on('click', 'div[for=askDeletePhonebook] #cancel', function() {
+                $("#viewPopupMsg").popup("close");
             });
         }
     });
