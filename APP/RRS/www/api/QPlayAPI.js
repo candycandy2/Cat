@@ -11,7 +11,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
 
     function requestError(data) {
         checkNetwork();
-        //refreshPage(data);
+        refreshPage(data);
     }
 
     //appSecretKey = "2e936812e205445490efb447da16ca13";
