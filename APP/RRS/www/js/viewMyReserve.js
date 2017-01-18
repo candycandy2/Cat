@@ -140,7 +140,10 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                     $.each(arrTempTimeNameClick, function(index, value) {
                         if (myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
                             myReserveLocalData.splice(i, 1);
-                            i--;
+                            i = i - 1;
+                            if(i < 0){
+                                i = 0;
+                            }
                         }
                     });
                 };
