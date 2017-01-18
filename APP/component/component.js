@@ -416,35 +416,11 @@ function readConfig() {
         $("#initialQPlay").removeClass("hide");
         $("#initialOther").remove();
     } else {
-        var doCheckAppVer = false;
+        var checkAppVer = new checkAppVersion();
 
-        //Check if the APP is finished update, running the latest code.
-        if (window.localStorage.getItem("versionCode") === null) {
-            //No, this is the first time to open this APP.
-            window.localStorage.setItem("versionCode", loginData["versionCode"]);
-
-            doCheckAppVer = true;
-        } else {
-            var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
-            var nowVersionCode = parseInt(loginData["versionCode"], 10);
-
-            if (nowVersionCode > oldVersionCode) {
-                //Yes, APP is just finished update.
-                getServerData();
-                window.localStorage.setItem("versionCode", loginData["versionCode"]);
-            } else {
-                //No, APP does not have update.
-                doCheckAppVer = true;
-            }
-        }
-
-        if (doCheckAppVer) {
-            var checkAppVer = new checkAppVersion();
-
-            //set initial page dispaly
-            $("#initialOther").removeClass("hide");
-            $("#initialQPlay").remove();
-        }
+        //set initial page dispaly
+        $("#initialOther").removeClass("hide");
+        $("#initialQPlay").remove();
     }
 }
 
@@ -487,7 +463,7 @@ function checkAppVersion() {
                     $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
-                    openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
+                    openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKey);
                 }
             });
 
@@ -620,7 +596,14 @@ function setWhiteList() {
                 };
             }
 
-            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            //Sometimes window.plugins.qsecurity.setWhiteList() won't work correctly,
+            //both self.successCallback & self.failCallback won't be call.
+            //So, we need to call self.successCallback() directly.
+            if (loginData['doLoginDataCallBack'] === true || loginData['openAppDetailPage'] === true) {
+                self.successCallback();
+            } else {
+                window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            }
         } else {
             self.successCallback();
         }
@@ -707,7 +690,7 @@ function getServerData() {
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
         if (window.localStorage.getItem("openScheme") !== "true") {
-            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
+            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
         }
 
         window.localStorage.setItem("openScheme", true);
@@ -773,17 +756,12 @@ function handleOpenURL(url) {
 
             loginData['doLoginDataCallBack'] = true;
 
-            //APP version record
-            checkAPPVersionRecord("updateFromScheme");
-
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
             loginData['openAppDetailPage'] = true;
             loginData['updateApp'] = true;
-            openAppName = queryData["callbackApp"];
+            openAppName = queryData["openAppName"];
 
-            //APP version record
-            checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
 

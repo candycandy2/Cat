@@ -13,10 +13,6 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
         checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
     }
 
-    function requestError(data) {
-        checkNetwork(data);
-    }
-
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
@@ -34,16 +30,13 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
         dataType: "json",
         data: queryData,
         cache: false,
-        timeout: 3000,
         success: requestSuccess,
-        error: requestError
+        error: failCallback
     });
 }
 
 //Check Mobile Device Network Status
-function checkNetwork(data) {
-
-    data =  data || null;
+function checkNetwork() {
     //A. If the device's Network is disconnected, show dialog only once, before the network is connect again.
     //B. If the device's Network is disconnected again, do step 1. again.
 
@@ -52,11 +45,12 @@ function checkNetwork(data) {
     //1. wifi
     //2. cellular > 3G / 4G
     //3. none
-    var showMsg = false;
 
     if (!navigator.onLine) {
-        //----Network disconnected
+        //Network disconnected
         loadingMask("hide");
+
+        var showMsg = false;
 
         if (!initialNetworkDisconnected) {
             showMsg = true;
@@ -68,29 +62,20 @@ function checkNetwork(data) {
             showNetworkDisconnected = true;
         }
 
-    } else {
-        //----Network connected
-        //Maybe these following situation happened.
-        //1. status = 200, request succeed, but timeout 3000
-        if (data !== null) {
-            if (data.status !== 200) {
-                showMsg = true;
-                showNetworkDisconnected = true;
-            }
+        if (showMsg) {
+            $('#disconnectNetwork').popup();
+            $('#disconnectNetwork').show();
+            $('#disconnectNetwork').popup('open');
+
+            $("#closeDisconnectNetwork").on("click", function(){
+                $('#disconnectNetwork').popup('close');
+                $('#disconnectNetwork').hide();
+
+                showNetworkDisconnected = false;
+            });
         }
-    }
-
-    if (showMsg) {
-        $('#disconnectNetwork').popup();
-        $('#disconnectNetwork').show();
-        $('#disconnectNetwork').popup('open');
-
-        $("#closeDisconnectNetwork").on("click", function(){
-            $('#disconnectNetwork').popup('close');
-            $('#disconnectNetwork').hide();
-
-            showNetworkDisconnected = false;
-        });
+    } else {
+        //Network connected
     }
 }
 
@@ -225,8 +210,8 @@ function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
 }
 
 function popupCancelClose() {
-    $('body').on('click', 'div[for*=Msg] #cancel', function() {
-        $('div[for*=Msg]').popup('close');
+    $('body').on('click', '#viewPopupMsg #cancel', function() {
+        $('#viewPopupMsg').popup('close');
     });
 }
 

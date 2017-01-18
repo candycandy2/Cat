@@ -80,15 +80,15 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
                         $("#viewWebNews2-3-1 .page-main").css("opacity", 1);
 
-                        if (window.localStorage.getItem("openMessage") === "true") {
-                            loginData["openMessage"] = false;
-                            window.localStorage.setItem("openMessage", false);
-                        }
-
                     } else if (resultcode === "000910") {
                         //Message was be deleted in server
                         messageExist = false;
                         updateReadDelete("all", "delete");
+                    }
+
+                    if (window.localStorage.getItem("openMessage") === "true") {
+                        loginData["openMessage"] = false;
+                        window.localStorage.setItem("openMessage", false);
                     }
                 };
 
