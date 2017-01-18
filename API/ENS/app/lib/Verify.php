@@ -40,7 +40,7 @@ class Verify
         $input = Input::get();
         $headerContentType = $request->header('Content-Type');
         
-        if($headerContentType == null || trim($headerContentType) != "application/json") {
+        if($headerContentType == null || (trim($headerContentType) != "application/json" && trim($headerContentType) != "application/x-www-form-urlencoded")) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
                 "message"=> "Content-Type錯誤");
         }
