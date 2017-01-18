@@ -3,7 +3,6 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
     $("#viewDetailInfo").pagecontainer({
         create: function(event, ui) {
-            
             /********************************** function *************************************/
             function QueryEmployeeDataDetail() {
                 
@@ -28,7 +27,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                         if (prevPageID === "viewQueryResult") {
                             employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
                             for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[i].employeeid) {
+                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
                                     $("#addStar").hide();
                                     $("#deleteStar").show();
                                     break;
@@ -65,6 +64,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
+                        QueryMyPhoneBook();
                         $("#addStar").hide();
                         $("#deleteStar").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
@@ -108,15 +108,8 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             });
 
             $('body').on('click', 'div[for=askDeletePhonebook] #confirm', function() {
-                deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
-                $("#viewPopupMsg").popup("close");
-            });
-        
-            $('body').on('click', 'div[for=askAddPhonebook] #cancel', function() {
-                $("#viewPopupMsg").popup("close");
-            });
-
-            $('body').on('click', 'div[for=askDeletePhonebook] #cancel', function() {
+                // deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
+                deletePhoneBook("viewDetailInfo", employeeData[employeeSelectedIndex].employeeid);
                 $("#viewPopupMsg").popup("close");
             });
         }

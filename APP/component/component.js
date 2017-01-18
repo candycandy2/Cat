@@ -620,7 +620,14 @@ function setWhiteList() {
                 };
             }
 
-            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            //Sometimes window.plugins.qsecurity.setWhiteList() won't work correctly,
+            //both self.successCallback & self.failCallback won't be call.
+            //So, we need to call self.successCallback() directly.
+            if (loginData['doLoginDataCallBack'] === true || loginData['openAppDetailPage'] === true) {
+                self.successCallback();
+            } else {
+                window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            }
         } else {
             self.successCallback();
         }
