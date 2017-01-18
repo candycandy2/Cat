@@ -416,11 +416,35 @@ function readConfig() {
         $("#initialQPlay").removeClass("hide");
         $("#initialOther").remove();
     } else {
-        var checkAppVer = new checkAppVersion();
+        var doCheckAppVer = false;
 
-        //set initial page dispaly
-        $("#initialOther").removeClass("hide");
-        $("#initialQPlay").remove();
+        //Check if the APP is finished update, running the latest code.
+        if (window.localStorage.getItem("versionCode") === null) {
+            //No, this is the first time to open this APP.
+            window.localStorage.setItem("versionCode", loginData["versionCode"]);
+
+            doCheckAppVer = true;
+        } else {
+            var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
+            var nowVersionCode = parseInt(loginData["versionCode"], 10);
+
+            if (nowVersionCode > oldVersionCode) {
+                //Yes, APP is just finished update.
+                getServerData();
+                window.localStorage.setItem("versionCode", loginData["versionCode"]);
+            } else {
+                //No, APP does not have update.
+                doCheckAppVer = true;
+            }
+        }
+
+        if (doCheckAppVer) {
+            var checkAppVer = new checkAppVersion();
+
+            //set initial page dispaly
+            $("#initialOther").removeClass("hide");
+            $("#initialQPlay").remove();
+        }
     }
 }
 

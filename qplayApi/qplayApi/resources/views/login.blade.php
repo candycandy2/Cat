@@ -177,6 +177,9 @@
         </div>
     </div>
     <script>
+        var loginIdPattern = /\w+([-+.]\w+)*$/;
+        var chinesePattern = /[^\x00-\xff]/;
+
         $(function () {
             $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
             $("#tbxName").parent().css("background-color","transparent");
@@ -226,13 +229,13 @@
                 return;
             }
 
-            var loginIdPattern = /\w+([-+.]\w+)*$/;
+           
             if(!loginIdPattern.test(userName))
 　　　　　　{
 　　　　　　　showMessage(" 請確認帳號輸入正確 !");
 　　　　　　　return;
 　　　　　　}
-            var chinesePattern = /[^\x00-\xff]/;
+           
             if(chinesePattern.test(password))
 　　　　　　{
 　　　　　　　showMessage(" 請確認密碼輸入正確 !");
@@ -275,13 +278,13 @@
         }
         
         var login = function (loginId, password, domain, uuid) {
-            var loginIdPattern = /\w+([-+.]\w+)*$/;
+            
             if(!loginIdPattern.test(loginId))
 　　　　　　{
 　　　　　　　showMessage(" 請確認帳號輸入正確 !");
 　　　　　　　return;
 　　　　　　}
-            var chinesePattern = /[^\x00-\xff]/;
+            
             if(chinesePattern.test(password))
 　　　　　　{
 　　　　　　　showMessage(" 請確認密碼輸入正確 !");
@@ -331,13 +334,13 @@
         }
         
         var registerAndLogin = function (loginId, password, domain, uuid, device_type) {
-            var loginIdPattern = /\w+([-+.]\w+)*$/;
+            
             if(!loginIdPattern.test(loginId))
 　　　　　　{
 　　　　　　　showMessage(" 請確認帳號輸入正確 !");
 　　　　　　　return;
 　　　　　　}
-            var chinesePattern = /[^\x00-\xff]/;
+            
             if(chinesePattern.test(password))
 　　　　　　{
 　　　　　　　showMessage(" 請確認密碼輸入正確 !");
