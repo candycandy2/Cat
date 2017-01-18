@@ -111,14 +111,6 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                 deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
                 $("#viewPopupMsg").popup("close");
             });
-        
-            $('body').on('click', 'div[for=askAddPhonebook] #cancel', function() {
-                $("#viewPopupMsg").popup("close");
-            });
-
-            $('body').on('click', 'div[for=askDeletePhonebook] #cancel', function() {
-                $("#viewPopupMsg").popup("close");
-            });
         }
     });
 });
