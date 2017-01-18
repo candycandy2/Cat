@@ -97,3 +97,17 @@ cp $appfolder/RRS/platforms/iOS/build/device/RRS.ipa $binfolder/RRS.ipa
 # ------ copy source code ------
 rm -Rf ~/Documents/QPlayProduct/QPlayProduct/
 cp -R ~/.jenkins/workspace/QPlayProduct ~/Documents/QPlayProduct/QPlayProduct/
+
+# ------ copy file for mail attach ------
+#attachfolder=~/.jenkins/workspace/QPlayProduct/1.0.0.$dailyver
+#mkdir $attachfolder
+#cp $binfolder/* $attachfolder
+
+# ------ commit modified files ------
+#cd ..
+#pwd
+#git add NewQPlay/config.xml
+#git add NewYellowPage/config.xml
+#git add RRS/config.xml
+#git commit -m "v1.0.0.$dailyver[Product]"
+#git push
