@@ -550,7 +550,9 @@ class pushController extends Controller
                         }
                     }
                 }
-
+//                if($is_schedule) {
+//                    return date("Y-m-d H:i:s",$schedule_datetime / 1000);
+//                }
                 if($receiver["type"] == "news") {
                     $news_push_token_list = [];
                     foreach ($companyList as $company) {

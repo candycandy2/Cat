@@ -24,7 +24,7 @@ cd ../NewYellowPage
 pwd
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp default
+gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="fd574cdf-cd7b-4349-9559-f0e07713dcc7" --packageType="enterprise"
 
@@ -33,7 +33,7 @@ cd ../RRS
 pwd
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp default
+gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="44988572-ef5e-401f-bc12-f5bd91958e1a" --packageType="enterprise"
 
@@ -42,7 +42,7 @@ cd ../EIS
 pwd
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp default
+gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="be22e920-9a9c-4b52-a484-f56724f40540" --packageType="enterprise"
 
