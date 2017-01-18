@@ -1,4 +1,4 @@
-/*override jQuery Mobile start*/
+/********************************** override jQuery Mobile *************************************/
 
 hr {
     border: 0;
@@ -85,25 +85,6 @@ a {
     background-color: initial;
 }
 
-
-/*override jQuery Mobile end*/
-
-
-/*new public area start*/
-
-.ui-margin-10 {
-    margin: 3% !important;
-}
-
-.ui-padding-8 {
-    padding-left: 8%;
-}
-
-.ui-hasBtn h2 {
-    display: inline-block;
-    float: left;
-}
-
 .ui-radio-30 div.ui-radio {
     width: 33%;
 }
@@ -112,43 +93,9 @@ a {
     width: 50%;
 }
 
-#pageTwo {
-    text-align: center;
-}
-
 #reserveSettingArea a:link {
     text-decoration: none;
     color: black;
-}
-
-
-/*--------------------------*/
-
-.app-font {
-    font-size: 2.8vh;
-}
-
-.app-font-small {
-    font-size: 2.5vh;
-}
-
-.disable {
-    display: none !important;
-}
-
-.inline {
-    display: inline-block;
-}
-
-div.circle {
-    width: 3vw;
-    height: 1.8vh;
-    border-radius: 99em;
-    border: 1px solid #ddd;
-}
-
-.ui-margin-public {
-    margin: 1.8vw 2.7vw !important;
 }
 
 #reserveTab > div > div.ui-radio label {
@@ -201,6 +148,52 @@ div.circle {
 
 #reserveDateSelect div.ui-bar div:nth-child(2) {
     font-size: 3vw;
+}
+
+/********************************** public area *************************************/
+
+.ui-margin-10 {
+    margin: 3% !important;
+}
+
+.ui-padding-8 {
+    padding-left: 8%;
+}
+
+.ui-hasBtn h2 {
+    display: inline-block;
+    float: left;
+}
+
+#pageTwo {
+    text-align: center;
+}
+
+.app-font {
+    font-size: 2.8vh;
+}
+
+.app-font-small {
+    font-size: 2.5vh;
+}
+
+.disable {
+    display: none !important;
+}
+
+.inline {
+    display: inline-block;
+}
+
+div.circle {
+    width: 3vw;
+    height: 1.8vh;
+    border-radius: 99em;
+    border: 1px solid #ddd;
+}
+
+.ui-margin-public {
+    margin: 1.8vw 2.7vw !important;
 }
 
 .title-icon {
@@ -420,10 +413,6 @@ div.circle {
     background-repeat: no-repeat;
     -webkit-appearance: none;
 }
-
-
-/*new public area end*/
-
 
 /********************************** color setting *************************************/
 
