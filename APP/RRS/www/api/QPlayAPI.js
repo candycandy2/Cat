@@ -10,7 +10,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
     }
 
     function requestError(data) {
-        checkNetwork(data);
+        checkNetwork();
         refreshPage(data);
     }
 

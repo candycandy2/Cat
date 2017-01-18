@@ -150,6 +150,7 @@ a {
     font-size: 3vw;
 }
 
+
 /********************************** public area *************************************/
 
 .ui-margin-10 {
@@ -414,6 +415,7 @@ div.circle {
     -webkit-appearance: none;
 }
 
+
 /********************************** color setting *************************************/
 
 .ui-color-lightblue {
@@ -535,6 +537,7 @@ div.scrollmenu a {
     text-decoration: none;
     color: white;
     line-height: 20px;
+    letter-spacing: 1px;
 }
 
 #left {
