@@ -292,5 +292,7 @@ return [
     'ERR_APP_CATEGORY_EXIST' => 'App 类别名称已经存在!',
     'ERR_WRONG_TYPE'=>'请输入正确的 %s 格式!',
 
-	'DESIGNATED'=>'指定人员'
+	'DESIGNATED'=>'指定人员',
+	'MESSAGE_SCHEDULE_PUSH'=>'定时推送',
+	'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'预定推播时间必须是未来的某个时间!'
 ];
