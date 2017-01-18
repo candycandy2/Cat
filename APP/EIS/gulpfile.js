@@ -70,6 +70,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="*:*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
+                            '<preference name="AndroidLaunchMode" value="singleTask"/>' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
@@ -79,6 +80,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
+//ex: gulp config --env test --vname 1.0.0.8 --vcode 8
 gulp.task('config', function(){
     fs.writeFile('config.xml', configContent);
 });
@@ -116,12 +118,12 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 gulp.task('copyAndroidImages', function() {
-    return gulp.src('Images/android/**/*', {base: 'Images/android/'})
+    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/Launch_icon/android/'})
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
 });
 
 gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/iOS/AppIcon.appiconset/*')
+    return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
         .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
 });
 

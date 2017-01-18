@@ -112,6 +112,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | QPlay Api Serer
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the qply api server settings for your application.
+    |
+    */
+    'qplay_api_server' => env('QPLAY_API_SERVER'),
+    
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
@@ -120,9 +130,6 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
-   
-    'qplay_api_server' => env('QPLAY_API_SERVER'),
-
     'providers' => [
 
         /*

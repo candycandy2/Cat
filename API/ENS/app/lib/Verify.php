@@ -40,7 +40,7 @@ class Verify
         $input = Input::get();
         $headerContentType = $request->header('Content-Type');
         
-        if($headerContentType == null || trim($headerContentType) != "application/json") {
+        if($headerContentType == null || (trim($headerContentType) != "application/json" && trim($headerContentType) != "application/x-www-form-urlencoded")) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
                 "message"=> "Content-Type錯誤");
         }
@@ -58,7 +58,7 @@ class Verify
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
 
-        if(!isset($xml->emp_no[0])){
+        if(!isset($xml->emp_no[0]) || (string)$xml->emp_no[0] == "" ){
              return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=>"傳入參數不足或傳入參數格式錯誤");
         }

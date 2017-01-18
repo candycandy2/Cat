@@ -292,5 +292,7 @@ return [
     'ERR_APP_CATEGORY_EXIST' => 'App 類別名稱已經存在!',
     'ERR_WRONG_TYPE'=>'請輸入正確的 %s 格式!',
 
-    'DESIGNATED'=>'指定人員'
+    'DESIGNATED'=>'指定人員',
+    'MESSAGE_SCHEDULE_PUSH'=>'定時推送',
+    'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'預定推播時間必須是未來的某個時間!'
 ];
