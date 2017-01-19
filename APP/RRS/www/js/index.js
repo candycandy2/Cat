@@ -251,19 +251,26 @@ function getAPIQueryMyReserveTime() {
     }();
 }
 
-function getTimeID(sTime, eTime, siteCategoryID) {
-    var arrSelectTime = [];
+function getSTimeToETime(sTime, eTime) {
+    var arrResult = [];
     var strTime = sTime;
 
     if (sTime == eTime) {
-        arrSelectTime.push(strTime);
+        arrResult.push(strTime);
     } else {
         do {
-            arrSelectTime.push(strTime);
+            arrResult.push(strTime);
             strTime = addThirtyMins(strTime);
         } while (strTime != eTime);
     }
 
+    return arrResult;
+}
+
+
+function getTimeID(sTime, eTime, siteCategoryID) {
+
+    var arrSelectTime = getSTimeToETime(sTime, eTime);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
     var strTimeID = '';
@@ -382,6 +389,32 @@ function ConverToRoleTree(data) {
         roleTreeData.remove('role2', 'role', roleTreeData.traverseDF);
     }
 }
+
+function getOneHour() {
+    var nowTime = new Date();
+    var nowTimeHour = nowTime.getHours();
+    var nowTimeMins = nowTime.getMinutes();
+
+    if (nowTimeMins < 15) {
+        nowTimeMins = 0;
+    } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
+        nowTimeMins = 30;
+    } else if (nowTimeMins >= 45) {
+        nowTimeHour += 1;
+        nowTimeMins = 0;
+    }
+
+    nowTime.setHours(nowTimeHour);
+    nowTime.setMinutes(nowTimeMins);
+    var sTime = nowTime.hhmm();
+    var eTime = addThirtyMins(addThirtyMins(sTime));
+    var dictResult = {};
+    dictResult['sTime'] = sTime;
+    dictResult['eTime'] = eTime;
+
+    return dictResult;
+}
+
 
 //use dictionary value get key
 // function getKeyByValue(object, value) {
