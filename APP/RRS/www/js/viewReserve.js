@@ -628,6 +628,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             $('#viewReserve').on('pagebeforeshow', function(event, ui) {
                 settingList();
+                var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
+                var arrSelectedValue = quickReserveSelectedValue.split('&');
+                var quickReserveSelectedSite = arrSelectedValue[0];
+                setRole(quickReserveSelectedSite);
+                setDateList('quick');
                 reserveBtnDefaultStatus();
                 if (isReloadPage == true) {
                     var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
