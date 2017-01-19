@@ -37,7 +37,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                         empty = false;
                 });
                 if (empty) {
-                    $("#noQueryCondition").popup("open");
+                    popupMsg("noQueryCondition", "請輸入查詢條件", "", "", false, "關閉", "");
                 } else {
                     $.mobile.changePage('#viewQueryResult');
                 }
@@ -68,11 +68,15 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 checkInputData();
             });
 
-            $('#viewDataInput').keydown(function(event) {
-                /* keyCode of 'Enter' key is 13 */
-                if (event.keyCode === 13)
-                    checkInputData();
+            $('body').on('click', 'div[for=noQueryCondition] #confirm', function() {
+                    $("#viewPopupMsg").popup("close");
             });
+
+            // $('#viewDataInput').keydown(function(event) {
+            //     /* keyCode of 'Enter' key is 13 */
+            //     if (event.keyCode === 13)
+            //         checkInputData();
+            // });
 
             /***********************************************  Validation of input data  ***********************************************/
             $("#CName").keyup(function(event) {
