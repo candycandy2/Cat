@@ -259,11 +259,33 @@ $(document).one("pagebeforecreate", function(){
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
+
         if (device.platform === "Android") {
             var version = device.version.substr(0, 1);
             if (version === "5") {
                 $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
             }
+        }
+
+        //For some APP Page, if page's header has second level [button / title],
+        //auto resize the margin-top of page-main.
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
+
+        if (activePageID.length !== 0) {
+
+            var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+            var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+            var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+            if (device.platform === "iOS") {
+                mainMarginTop = mainMarginTop + 20;
+            }
+
+            $(".page-main").css({
+                "margin-top": mainMarginTop + "px"
+            });
+
         }
     });
 });
@@ -546,7 +568,7 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header, .page-main').addClass('ios-fix-overlap');
+            $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
 
