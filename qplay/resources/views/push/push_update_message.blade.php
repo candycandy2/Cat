@@ -598,7 +598,7 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
                     content: msgContent,
                     receiver: msgReceiver,
                     is_schedule: msgIsSchedule,
-                    schedule_datetime: msgScheduleDate.getTime()
+                    schedule_datetime: msgScheduleDate
                 };
 
                 var mydataStr = $.toJSON(mydata);

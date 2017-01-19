@@ -87,16 +87,10 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             window.deletePhoneBook = function(actionPage, index) {
 
                 var self = this;
-                var company;
-                for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                    if(index === phonebookData[i].employeeid) {
-                        company = phonebookData[i].company
-                        break;
-                    }
-                }
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' +
-                                '<Delete_EmpID>' + index + '</Delete_EmpID>' + 
-                                '<Delete_Company>' + company + '</Delete_Company></LayoutHeader>';
+                                '<Delete_EmpID>' + phonebookData[index].employeeid + '</Delete_EmpID>' + 
+                                '<Delete_Company>' + phonebookData[index].company + '</Delete_Company></LayoutHeader>';
+
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001904") {
                         if (actionPage === "viewPhonebook") {
@@ -136,7 +130,10 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 $("#myPhonebookList").html(htmlContent).enhanceWithin();
                 $('#myPhonebookList').listview('refresh');
                 loadingMask("hide");
+
+                $("#phonebookDelectConfirm").popup('close');
                 doRefresh = false;
+
                 if(Object.keys(phonebookData).length === 0){
                     $('#phonebookEdit').hide();
                 }
@@ -202,17 +199,25 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
 
                 if (checkboxCheckedCount === 0) {
-                    popupMsg("phonebookSelectAlert", "請選擇要刪除的聯絡人!", "", "", false, "取消", "");
+                    $('#phonebookDelectAlert').popup('open');
                 } else {
-                    popupMsg("phonebookDeleteConfirm", "是否刪除選擇的聯絡人?", "", "取消", true, "確定", "");
+                    $('#phonebookDelectConfirm').popup('open');
                 }
+
+                $("#phonebookEditBtn").hide();
             });
 
-            $('body').on('click', 'div[for=phonebookSelectAlert] #confirm', function() {
-                $("#viewPopupMsg").popup("close");
+            $("#phonebookDelectAlert #cancel").on('click', function(){
+                $("#phonebookEditBtn").show();
+                $("#phonebookDelectAlert").popup('close');
             });
 
-            $('body').on('click', 'div[for=phonebookDeleteConfirm] #confirm', function() {
+            $("#phonebookDelectConfirm #cancel").on('click', function(){
+                $("#phonebookEditBtn").show();
+                $("#phonebookDelectConfirm").popup('close');
+            });
+
+            $("#phonebookDelectConfirm #confirm").on('click', function(){
                 var doDeleteCount = 0;
                 var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
                 loadingMask("show");
@@ -239,9 +244,9 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                         tempPhonebookData[key] = tempData;
                     }
                 });
-                $("#viewPopupMsg").popup("close");
-                $('#phonebookEditBtn').hide();
+
             });
         }
     });
+    
 });

@@ -28,19 +28,11 @@ class customController extends Controller
     public function GetData($url, $tokenValid) {
         $content = file_get_contents('php://input');
         $data["strXml"] = $content;
-        $data = json_encode($data);
-        $result = $this->post($url, $data);
+        $result = $this->post2($url, $data);
 
-        libxml_use_internal_errors(true);
         $xml = simplexml_load_string($result);
-        if($xml){
-            $json = json_decode($xml);
-        }else{
-            $json = json_decode($result);
-        }
-        if(isset($json->d)){
-            $json =  json_decode($json->d);    
-        }
+        $json = json_decode($xml);
+
         $resultCode = $json->ResultCode;
         $resultContent = "";
         if(property_exists($json, 'Content')) {
@@ -81,8 +73,6 @@ class customController extends Controller
         if($post_data != ''){
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_HEADER, false);

@@ -42,7 +42,6 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                                     //APP version record
                                     if (appVersionRecord[applist[appindex].package_name] === undefined) {
                                         appVersionRecord[applist[appindex].package_name] = {};
-                                        appVersionRecord[applist[appindex].package_name]["installed_version"] = applist[appindex].app_version.toString();
                                     }
                                     appVersionRecord[applist[appindex].package_name]["latest_version"] = applist[appindex].app_version.toString();
 

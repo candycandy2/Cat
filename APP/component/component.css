@@ -103,7 +103,7 @@ body {
 .ios-fix-overlap-div {
     height: 20px;
     width: 100%;
-    position: fixed;
+    /*position: fixed;*/
     top: 0;
     left: 0;
     z-index: 999;
@@ -388,4 +388,3 @@ body {
     position: absolute;
     right: 0;
 }
-

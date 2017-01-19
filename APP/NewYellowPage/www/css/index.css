@@ -237,7 +237,7 @@
     display: inline-block;
 }
 
-/*.popup-msg {
+.popup-msg {
     height: 100px;
     display: flex;
     flex-flow: column wrap;
@@ -246,11 +246,11 @@
     color: #FFF;
     background-color: #4B0082;
     font-weight: bold;
-}*/
+}
 
-/*.popup-msg .ui-btn {
+.popup-msg .ui-btn {
     padding: 5px 10px;
     background-color: #28004D;
     border: none;
     color: #FFF;
-}*/
+}
