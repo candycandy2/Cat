@@ -17,21 +17,35 @@ class testController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $api = $jsonContent['Api'];
-            $registrationId = $jsonContent['RegistrationId'];
-            $tag = $jsonContent['Tag'];
+
             $result = (['result_code'=>ResultCode::_999999_unknownError, 'content'=>'Api not exists!']);
             switch($api) {
                 case "GetDevices":
+                    $registrationId = $jsonContent['RegistrationId'];
                     $result = PushUtil::GetDevices($registrationId);
                     break;
                 case "GetTags":
                     $result = PushUtil::GetTags();
                     break;
                 case "IsDeviceInTag":
+                    $registrationId = $jsonContent['RegistrationId'];
+                    $tag = $jsonContent['Tag'];
                     $result = PushUtil::IsDeviceInTag($registrationId, $tag);
                     break;
                 case "AddDevicesToTag":
+                    $registrationId = $jsonContent['RegistrationId'];
+                    $tag = $jsonContent['Tag'];
                     $result = PushUtil::AddDevicesToTag($registrationId, $tag);
+                    break;
+                case "CreateSingleSchedule":
+                    $registrationId = $jsonContent['RegistrationId'];
+                    $scheduleTime = $jsonContent['ScheduleTime'];
+                    $scheduleName = $jsonContent['ScheduleName'];
+                    $message = $jsonContent['Message'];
+                    $result = PushUtil::CreateSingleSchedule($scheduleName, $scheduleTime, $message, $registrationId);
+                    break;
+                case "GetSchedules":
+                    $result = PushUtil::GetSchedules();
                     break;
                 default:
                     break;
