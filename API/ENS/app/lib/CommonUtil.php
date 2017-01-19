@@ -105,12 +105,6 @@ class CommonUtil
             // //設定header
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            
-            $proxy = 'proxyt2.benq.corp.com:3128';
-            $proxyauth = 'cleo.w.chan:1234qwe:1';
-            curl_setopt($curl, CURLOPT_PROXY, $proxy);     // PROXY details with port
-            curl_setopt($curl, CURLOPT_PROXYUSERPWD, $proxyauth); // Use if proxy have username and password
-
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
