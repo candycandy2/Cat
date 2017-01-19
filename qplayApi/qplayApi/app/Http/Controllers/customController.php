@@ -30,13 +30,8 @@ class customController extends Controller
         $data["strXml"] = $content;
         $result = $this->post2($url, $data);
 
-        libxml_use_internal_errors(true);
         $xml = simplexml_load_string($result);
-        if($xml){
-            $json = json_decode($xml);
-        }else{
-            $json = json_decode($result);
-        }
+        $json = json_decode($xml);
 
         $resultCode = $json->ResultCode;
         $resultContent = "";
