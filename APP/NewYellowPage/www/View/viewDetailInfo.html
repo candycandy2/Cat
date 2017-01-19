@@ -14,11 +14,11 @@
     <div id="detial-name-title">
         <div class="detial-name" id="eName"><!--  english name  --></div>
         <div class="detial-name" id="cName"><!-- chinese name --></div>
-        <a id="addStar" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn star">
-            <img src="img/favorite_d.png" style="width:7.5VW;">
+        <a id="addStar" href="#askAddPhonebook" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn star">
+            <img src="img/component/favorite_d.png" style="width:7.5VW;">
         </a>
-        <a id="deleteStar" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn star">
-            <img src="img/favorite_s.png" style="width:7.5VW;">
+        <a id="deleteStar" href="#askDeletePhonebook" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn star">
+            <img src="img/component/favorite_s.png" style="width:7.5VW;">
         </a>
     </div>
 
@@ -69,5 +69,25 @@
                 </div>
             </li>
         </ul>
+    </div>
+
+    <div data-role="popup" data-history="false" id="askAddPhonebook" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>確定要加到我的電話簿?</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="addPhonebook">確定</a>
+            </p>
+        </div>
+    </div>
+
+    <div data-role="popup" data-history="false" id="askDeletePhonebook" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content popup-msg">
+            <p>確定要從我的電話簿刪除?</p>
+            <p>
+                <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
+                <a href="#" class="ui-btn ui-btn-inline" id="deletePhonebook">確定</a>
+            </p>
+        </div>
     </div>
 </div>

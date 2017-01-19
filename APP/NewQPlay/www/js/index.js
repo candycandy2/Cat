@@ -167,6 +167,7 @@ function checkAPPVersionRecord(action) {
     } else if (action === "updateFromAPI") {
 
         window.localStorage.setItem("appVersionRecord", JSON.stringify(appVersionRecord));
+        var tempData = window.localStorage.getItem("appVersionRecord");
 
     } else if (action === "updateFromScheme") {
 

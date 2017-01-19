@@ -47,7 +47,6 @@ var dictRole = {
 };
 var reserveDays = 14;
 var myReserveLocalData = [];
-var isReloadPage = false;
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -523,18 +522,20 @@ function inputValidation(str) {
 
 function calSelectWidth(obj) {
     $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
-    var pxWidth = $('#tmp_option_width').outerWidth();
-    var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
-    obj.css('width', vwWidth + 'vw');
+    if (obj.attr('id') == 'reserveFloor') {
+        obj.css('width', $('#tmp_option_width').outerWidth() + 28);
+    } else if (obj.attr('id') == 'reserveSite' || obj.attr('id') == 'newSettingSite') {
+        obj.css('width', $('#tmp_option_width').outerWidth() + 35);
+    } else if (obj.attr('id') == 'reserveSetting') {
+        obj.css('width', $('#tmp_option_width').outerWidth() + 45);
+    }
 }
 
 function refreshPage(data) {
-    // || data.status == 500
-    if (data.statusText == 'timeout') {
+    if (data.statusText == 'timeout' || data.status == 500) {
         console.log('timeout or 500 error');
         var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
         loadingMask('hide');
-        isReloadPage = true;
         var activePage = $.mobile.activePage.attr("id");
         $.mobile.changePage(
             '#' + activePage, {

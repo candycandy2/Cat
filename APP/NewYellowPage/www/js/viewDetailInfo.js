@@ -3,6 +3,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
     $("#viewDetailInfo").pagecontainer({
         create: function(event, ui) {
+            
             /********************************** function *************************************/
             function QueryEmployeeDataDetail() {
                 
@@ -27,7 +28,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                         if (prevPageID === "viewQueryResult") {
                             employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
                             for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[i].employeeid) {
                                     $("#addStar").hide();
                                     $("#deleteStar").show();
                                     break;
@@ -64,7 +65,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
-                        QueryMyPhoneBook();
+                        $("#askAddPhonebook").popup('close');
                         $("#addStar").hide();
                         $("#deleteStar").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
@@ -85,6 +86,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             window.deletePheonBookFinished = function() {
                 $("#addStar").show();
                 $("#deleteStar").hide();
+                $('#askDeletePhonebook').popup('close');
             };
 
             /********************************** page event *************************************/
@@ -94,23 +96,12 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             });
 
             /********************************** dom event *************************************/
-            $("#addStar").on("click", function(){
-                popupMsg("askAddPhonebook", "確定要加到我的電話簿?", "", "取消", true, "確定", "");
-            });
-
-            $("#deleteStar").on("click", function(){
-                popupMsg("askDeletePhonebook", "確定要從我的電話簿刪除?", "", "取消", true, "確定", "");
-            });
-
-            $('body').on('click', 'div[for=askAddPhonebook] #confirm', function() {
+            $("#addPhonebook").on("click", function(){
                 AddMyPhoneBook();
-                $("#viewPopupMsg").popup("close");
             });
 
-            $('body').on('click', 'div[for=askDeletePhonebook] #confirm', function() {
-                // deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
-                deletePhoneBook("viewDetailInfo", employeeData[employeeSelectedIndex].employeeid);
-                $("#viewPopupMsg").popup("close");
+            $("#deletePhonebook").on("click", function(){
+                deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
             });
         }
     });

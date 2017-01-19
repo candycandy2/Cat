@@ -66,6 +66,25 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
                     </td>
                     <td><span style="color: red;">*</span></td>
                 </tr>
+                <tr>
+                    <td style="width: 120px;">{{trans("messages.MESSAGE_SCHEDULE_PUSH")}}:</td>
+                    <td style="padding: 10px;">
+                        <input type="checkbox" id="cbxSchedule" onchange="return ChangeIsSchedule();"/>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr id="rowScheduleDatetime" style="display: none;">
+                    <td></td>
+                    <td style="padding-left: 10px;">
+                        <div class="input-group date form_datetime" data-date="" data-date-format="yyyy-MM-dd hh:ii" data-link-format="yyyy-mm-dd hh:ii"
+                             data-link-field="tbxScheduleDate" >
+                            <input class="form-control" size="16" type="text" value="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="tbxScheduleDateTime" value="" /><br/>
+                    </td>
+                    <td></td>
+                </tr>
             </table>
         </div>
 
@@ -170,6 +189,15 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
             }
         };
 
+        var ChangeIsSchedule = function () {
+            if($("#cbxSchedule").is(":checked")) {
+                $("#rowScheduleDatetime").fadeIn();
+                $('.form_datetime').datetimepicker("setDate", new Date());
+            } else {
+                $("#rowScheduleDatetime").fadeOut();
+            }
+        };
+
         $(function() {
             ChangeType();
             $('#gridUserList').on('check.bs.table', selectedUserChanged);
@@ -178,6 +206,16 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
             $('#gridUserList').on('uncheck-all.bs.table', selectedUserChanged);
             $('#gridUserList').on('load-success.bs.table', selectedUserChanged);
 
+            $('.form_datetime').datetimepicker({
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                format: "yyyy-mm-dd hh:ii"
+            });
         });
         
         var selectedUserChanged = function () {
@@ -255,6 +293,13 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
             var msgTitle = $("#tbxTitle").val();
             var msgContent = $("#tbxContent").val();
             var msgTemplateId = $("#ddlTemplateID").val();
+            var msgIsSchedule = $("#cbxSchedule").is(":checked");
+            var msgScheduleDate = $('.form_datetime').datetimepicker("getDate");
+            if(msgIsSchedule && msgScheduleDate < (new Date())) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE")}}");
+                return false;
+            }
+
             var msgReceiver = new Object();
             if(msgTitle == "" || msgContent == "" || msgTemplateId == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
@@ -305,7 +350,9 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
                     type: 'news',
                     title: msgTitle,
                     content: msgContent,
-                    receiver: msgReceiver
+                    receiver: msgReceiver,
+                    is_schedule: msgIsSchedule,
+                    schedule_datetime: msgScheduleDate.getTime()
                 };
 
                 var mydataStr = $.toJSON(mydata);
