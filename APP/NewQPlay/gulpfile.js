@@ -176,14 +176,14 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova platform add android@6.0.0',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
-    'cordova plugin add cordova-plugin-device@1.1.4',
-    'cordova plugin add cordova-plugin-console@1.0.5',
-    'cordova plugin add cordova-plugin-appversion@1.0.0',
-    'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appqplay' + appNameDecorate,
+    'cordova plugin add cordova-plugin-device',
+    'cordova plugin add cordova-plugin-console',
+    'cordova plugin add cordova-plugin-appversion',
+    'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-    'cordova plugin add cordova-plugin-whitelist@1.3.1',
-    'cordova plugin add cordova-plugin-inappbrowser@1.6.1',
-    'cordova plugin add cordova-plugin-appavailability@0.4.2'
+    'cordova plugin add cordova-plugin-whitelist',
+    'cordova plugin add cordova-plugin-inappbrowser',
+    'cordova plugin add cordova-plugin-appavailability'
 ]));
 
 gulp.task('patch', function() {
