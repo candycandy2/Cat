@@ -58,8 +58,8 @@ class EventController extends Controller
             $parameterMap =  CommonUtil::getParameterMapByType(self::EVENT_TYPE);
 
             if(!in_array($data['event_type_parameter_value'],array_keys($parameterMap))){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"事件類型不存在",
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
+                    'Message'=>"事件類型錯誤",
                     'Content'=>""]);
             }
 
@@ -71,15 +71,15 @@ class EventController extends Controller
             if(isset($data['related_event_row_id']) && trim($data['related_event_row_id'])!=""){
                 if(!is_numeric($data['related_event_row_id'])){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"關聯事件欄位格式錯誤",
+                    'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
                 }
  
                 $event = $this->eventService->getRelatedEventById($data['related_event_row_id']);
 
                 if(is_null($event) || count($event) == 0){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
-                    'Message'=>"查無關連事件資料，或事件已被關聯",
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014911_relatedEventStatusError,
+                    'Message'=>"關聯事件狀態異常",
                     'Content'=>""]);
                 }
 
@@ -141,7 +141,7 @@ class EventController extends Controller
             if(isset($eventType) && $eventType!=""){
                 $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
                 if(!in_array($eventType,array_keys($parameterMap))){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
                     'Message'=>'事件類型錯誤',
                     'Content'=>'']);
                 }
@@ -258,8 +258,8 @@ class EventController extends Controller
             if(isset($xml->event_type_parameter_value[0]) && trim((string)$xml->event_type_parameter_value[0])!=""){
              $parameterMap =  CommonUtil::getParameterMapByType(self::EVENT_TYPE);
                 if(!in_array($xml->event_type_parameter_value[0],array_keys($parameterMap))){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                        'Message'=>"事件類型不存在",
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
+                        'Message'=>"事件類型錯誤",
                         'Content'=>""]);
                 }
             }
