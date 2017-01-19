@@ -172,7 +172,6 @@ class PushUtil
             );
             if($send_by_tag) {
                 $payload = $client->push()
-                    ->addAllAudience()
                     ->setPlatform($platform)
                     ->iosNotification($alert, $ios_notification)
                     ->androidNotification($alert, $android_notification)
@@ -182,7 +181,6 @@ class PushUtil
                     ->build();
             } else {
                 $payload = $client->push()
-                    ->addAllAudience()
                     ->setPlatform($platform)
                     ->iosNotification($alert, $ios_notification)
                     ->androidNotification($alert, $android_notification)
@@ -193,24 +191,23 @@ class PushUtil
             }
 
             $schedule = $client->schedule();
-            $trigger = array();
-            array_push($trigger, $schedule_datetime);
+            $trigger = array("time"=>date("Y-m-d H:i:s",$schedule_datetime / 1000));
             $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
         } catch (APIConnectionException $e) {
             $result["result"] = false;
-            $result["info"] = "APIConnection Exception occurred";
+            $result["info"] = "APIConnection Exception occurred:".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result"] = false;
-            $result["info"] = "APIRequest Exception occurred";
+            $result["info"] = "APIRequest Exception occurred:".$e->getMessage();
         }catch (JPushException $e) {
             $result["result"] = false;
-            $result["info"] = "JPush Exception occurred";
+            $result["info"] = "JPush Exception occurred:".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result"] = false;
-            $result["info"] = "Error Exception occurred";
+            $result["info"] = "Error Exception occurred:".$e->getMessage();
         }catch (\Exception $e){
             $result["result"] = false;
-            $result["info"] = "Exception occurred";
+            $result["info"] = "Exception occurred:".$e->getMessage();
         }
         return $result;
     }
