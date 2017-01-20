@@ -450,8 +450,9 @@ function uniqueData(uniqueData, uniquePram) {
 
 function sortDataByKey(sortData, sortKey, asc) {
     sortData = sortData.sort(function(a, b) {
-        if (asc) return (a[sortKey] > b[sortKey]);
-        else return (b[sortKey] > a[sortKey]);
+        var x = a[sortKey];
+        var y = b[sortKey];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
