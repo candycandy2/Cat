@@ -43,7 +43,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
                 $("#newSettingSite").val(editSite).change();
                 $('#newSettingSite option[value=' + editSite + ']').prop('selected', true);
-                $("#newSettingSite").selectmenu("refresh");
+                //$("#newSettingSite").selectmenu("refresh");
 
                 $('#newSettingPeople input[id^=num-]').removeAttr("checked");
                 $('#newSettingPeople input[value=' + editPeople + ']').prop("checked", "checked");
@@ -80,6 +80,9 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             function setDefaultStatus() {
                 $('#newSettingTitle').val('');
+                var defaultSite = $("#newSettingSite option:first").val();
+                $("#newSettingSite").val(defaultSite).change();
+                $("#newSettingSite option:first").attr("selected", "selected");
                 $('#newSettingPeople input[value=0]').prop("checked", "checked");
                 $('#newSettingPeople input[id^=num-]').checkboxradio("refresh");
                 $('#newSettingTime input[id=setTime1]').prop("checked", "checked");
@@ -105,14 +108,20 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 siteIDforSetting = meetingRoomData.children[0].data;
                 siteCategoryIDforSetting = dictSiteCategory[meetingRoomData.children[0].data];
                 getFloorData('0');
-                setDefaultStatus();
+                //setDefaultStatus();
             });
 
             $('#viewNewSetting').on('pagebeforeshow', function(event, ui) {
                 seqClick = [];
                 if (clickEditSettingID != '') {
                     changeEditStatus();
+                }else{
+                    setDefaultStatus();
                 }
+            });
+
+            $('#viewNewSetting').on('pageshow', function(event, ui) {
+                calSelectWidth($('#newSettingSite'));
             });
 
             /********************************** dom event *************************************/
@@ -123,11 +132,12 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 siteIDforSetting = $(this).val();
                 siteCategoryIDforSetting = dictSiteCategory[$(this).val()];
                 getFloorData(this.selectedIndex);
+                calSelectWidth($(this));
             });
 
             $('#setTime2').on('click', function() {
                 var setTimeStr = $('label[for^=setTime2]').text();
-                if(setTimeStr != '指定時段'){
+                if (setTimeStr != '指定時段') {
                     var arrTimeStr = setTimeStr.split('~');
                     var arrSTimeHrMM = arrTimeStr[0].split(':');
                     var arrETimeHrMM = arrTimeStr[1].split(':');
@@ -205,7 +215,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     }
                     obj.title = $('#newSettingTitle').val();
                     obj.site = $('#newSettingSite').val();
-                    obj.siteName = $('#newSettingSite-button span').text();
+                    obj.siteName = $('#newSettingSite').find(":selected").text();
                     obj.people = $("#newSettingPeople :radio:checked").val();
 
                     if ($("#newSettingTime :radio:checked").val() === 'setTime') {
@@ -248,7 +258,7 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                     $.mobile.changePage('#viewSettingList');
 
                 } else {
-                    popupMsg('newSettingPopupMsg', 'validationMsg', '', validationResult[1], '', false, '確定', false);
+                    popupMsg('validationMsg', '', validationResult[1], '', false, '確定', '');
                 }
 
             });
