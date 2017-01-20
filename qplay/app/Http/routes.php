@@ -72,10 +72,6 @@ Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersio
 Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
 Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintainAppList');
 
-//Developer Zone
-Route::any('/developer/getProjectList', 'developerController@getProjectList');
-Route::any('/developer/getCustomApiList', 'developerController@getCustomApiList');
-
 Route::any('auth/login', function() {
     return view("auth/login");
 });
@@ -179,12 +175,6 @@ Route::any('projectMaintain', ['middleware' => 'auth', function() {
 }]);
 Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/project_detail_maintain");
-}]);
-Route::any('appKeyManager', ['middleware' => 'auth', function() {
-    return view("developer_zone/app_key_manager");
-}]);
-Route::any('customApiMaintain', ['middleware' => 'auth', function() {
-    return view("developer_zone/custom_api_maintain");
 }]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {

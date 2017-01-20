@@ -54,8 +54,7 @@ return [
     'TITLE_SYS_PARAMETER_MAINTAIN' => '參數設置',
     'TITLE_SYS_PROJECT_MAINTAIN' => '專案管理',
     'TITLE_SECRETARY_PUSH' => '秘書推播',
-    'TITLE_DEVELOPER_ZONE' => '開發人員專區',
-    'TITLE_APP_KEY_MANAGER' => 'App金鑰管理',
+
     //validate
     'VALIDATE_ACCEPT' => '僅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '僅接受數字',
@@ -198,7 +197,6 @@ return [
     'NEW_APP' => '新增應用程式',
     'APP_PACKAGE_NAME' => 'Package Name',
     'APP_KEY' => 'App Key',
-    'SECRET_KEY' => 'Secret Key',
     'DEFAULT_LANG' => '預設語言',
     'SELECT_APP_KEY' => '選擇App Key',
     'APP_SUMMARY'=>'App 摘要',
