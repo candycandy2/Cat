@@ -257,9 +257,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function checkReserveSameTime(date, type) {
-                //to do aaa
                 var bResult = false;
                 var isExistInArray = false;
+
                 var isReserveMulti = '';
                 var selectedSite = '';
                 var isSuperRole = '';
@@ -281,22 +281,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     var arrSelectedValue = quickReserveSelectedValue.split('&');
                     selectedSite = arrSelectedValue[0];
                     inLimitSite = searchTree(isSuperRole, selectedSite, '');
-
-                    var quickReserveSelectedTime = $('#reserveSetting').find(":selected").attr('time');
-                    var sTime = '';
-                    var eTime = '';
-
-                    if (quickReserveSelectedTime == 'none') {
-                        var dictOneHourTime = getOneHour();
-                        sTime = dictOneHourTime['sTime'];
-                        eTime = dictOneHourTime['eTime'];
-                    } else {
-                        var arrQuickReserveSelectedTime = quickReserveSelectedTime.split('~');
-                        sTime = arrQuickReserveSelectedTime[0];
-                        eTime = arrQuickReserveSelectedTime[1];
-                    }
-
-                    var arrTemp = getSTimeToETime(sTime, eTime);
+                    var dictTemp = getQuickReserveSelectedTime();
+                    var arrTemp = getSTimeToETime(dictTemp['sTime'], dictTemp['eTime']);
                 }
 
                 if ((isSuperRole != null && inLimitSite != null) || isReserveMulti === 'N') {
@@ -349,6 +335,28 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
             }
 
+            function getQuickReserveSelectedTime() {
+                var quickReserveSelectedTime = $('#reserveSetting').find(":selected").attr('time');
+                var sTime = '';
+                var eTime = '';
+                var dictResult = {};
+
+                if (quickReserveSelectedTime == 'none') {
+                    var dictOneHourTime = getOneHour();
+                    sTime = dictOneHourTime['sTime'];
+                    eTime = dictOneHourTime['eTime'];
+                } else {
+                    var arrQuickReserveSelectedTime = quickReserveSelectedTime.split('~');
+                    sTime = arrQuickReserveSelectedTime[0];
+                    eTime = arrQuickReserveSelectedTime[1];
+                }
+
+                dictResult['sTime'] = sTime;
+                dictResult['eTime'] = eTime;
+
+                return dictResult;
+            }
+
             function getAPIQueryReserveDetail(roomId, date, checkDataExist) {
                 //local data exist
                 var dataExist = false;
@@ -396,6 +404,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         var timeName = '';
                         if (page == 'pageOne') {
                             roomName = $('#reserveRoom').find('.hover').text();
+                            //reserve continuous time block, display one time block  
                             var arrTempTime = [];
                             for (var item in timeClick) {
                                 var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
@@ -442,22 +451,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
                             var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
                             var arrSelectedValue = quickReserveSelectedValue.split('&');
                             selectedSite = arrSelectedValue[0];
-
-                            var quickReserveSelectedTime = $('#reserveSetting').find(":selected").attr('time');
-                            var sTime = '';
-                            var eTime = '';
-
-                            if (quickReserveSelectedTime == 'none') {
-                                var dictOneHourTime = getOneHour();
-                                sTime = dictOneHourTime['sTime'];
-                                eTime = dictOneHourTime['eTime'];
-                            } else {
-                                var arrQuickReserveSelectedTime = quickReserveSelectedTime.split('~');
-                                sTime = arrQuickReserveSelectedTime[0];
-                                eTime = arrQuickReserveSelectedTime[1];
-                            }
-
-                            var arrTemp = getSTimeToETime(sTime, eTime);
+                            var dictTemp = getQuickReserveSelectedTime();
+                            var arrTemp = getSTimeToETime(dictTemp['sTime'], dictTemp['eTime']);
                             quickReserveBtnDefaultStatus();
                         }
 
@@ -506,9 +501,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                         var selectedSite = $('#reserveSite').find(":selected").val();
                         for (var i = 0; i < myReserveLocalData.length; i++) {
-                            if (myReserveLocalData[i].time == tempTimeNameClick && myReserveLocalData[i].date == date && myReserveLocalData[i].site == selectedSite) {
+                            if (myReserveLocalData.length != 0 && myReserveLocalData[i].time == tempTimeNameClick && myReserveLocalData[i].date == date && myReserveLocalData[i].site == selectedSite) {
                                 myReserveLocalData.splice(i, 1);
-                                i--;
+                                i = i - 1;
+                                i = i < 0 ? 0 : i;
                             }
                         };
 
@@ -537,7 +533,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     if (data['ResultCode'] === "1") {
                         //Successful
                         quickRserveCallBackData = data['Content'];
-                        //to do aaa
                         $('#quickReserveMsgArea div:nth-child(2)').html(quickRserveCallBackData[0].MeetingRoomName + '會議室可使用');
                         $('#quickReserveMsgArea div:nth-child(3)').html('預約時段為' + timeName);
                         $('#quickReserveMsgArea div:nth-child(1)').removeClass('quick-reserve-warn-icon');
@@ -616,7 +611,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             $('#viewReserve').one('pagebeforeshow', function(event, ui) {
                 //just first loading
-                //get meetingroom last update time
+                //get last update time check date expired
                 checkLocalDataExpired();
                 var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
                 getInitialData();
@@ -690,7 +685,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', '#scrollDate .ui-link', function() {
-                //if (!$(this).hasClass('hover')) {
                 clickDateId = $(this).attr('id').replaceAll('one', '');
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
@@ -701,11 +695,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $(this).addClass('hover');
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 reserveBtnDefaultStatus();
-                //}
             });
 
             $('body').on('click', '#reserveRoom .ui-link', function() {
-                //if (!$(this).hasClass('hover')) {
                 clickRomeId = $(this).attr('id');
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
@@ -717,7 +709,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 reserveBtnDefaultStatus();
-                //}
             });
 
             $('body').on('click', 'div[id^=time]', function() {
@@ -886,8 +877,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
-                var msgForId = $(this).parent().parent().attr('for');
-                $('div[for=' + msgForId + ']').popup('close');
+                // var msgForId = $(this).parent().parent().attr('for');
+                // $('div[for=' + msgForId + ']').popup('close');
+                $('#viewPopupMsg').popup('close');
             });
 
             $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {

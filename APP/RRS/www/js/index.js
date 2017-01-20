@@ -415,7 +415,6 @@ function getOneHour() {
     return dictResult;
 }
 
-
 //use dictionary value get key
 // function getKeyByValue(object, value) {
 //     return Object.keys(object).find(key => object[key] === value);
@@ -456,6 +455,7 @@ function sortDataByKey(sortData, sortKey, asc) {
     });
 }
 
+//comparing & sorting string with number ex:sorting T01, T02, T03...
 (function() {
     var reParts = /\d+|\D+/g;
     var reDigit = /\d/;
@@ -558,6 +558,7 @@ function inputValidation(str) {
 function calSelectWidth(obj) {
     $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
     var pxWidth = $('#tmp_option_width').outerWidth();
+    //px conver to vw
     var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
     obj.css('width', vwWidth + 'vw');
 }
