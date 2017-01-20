@@ -85,7 +85,6 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             }
 
             window.deletePhoneBook = function(actionPage, index) {
-
                 var self = this;
                 var company;
                 for(var i=0; i<Object.keys(phonebookData).length; i++) {
@@ -227,7 +226,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                             doRefresh = true;
                         }
 
-                        deletePhoneBook("viewPhonebook", key);
+                        deletePhoneBook("viewPhonebook", phonebookData[key].employeeid);
 
                     } else {
                         tempData["company"] = phonebookData[key].company;

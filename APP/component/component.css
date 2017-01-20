@@ -63,6 +63,11 @@ body, input, select, textarea, button, .ui-btn {
     font-family: "Arial", "微軟中黑體";
 }
 
+.ui-title {
+    text-shadow: none !important;
+    line-height: 1;
+}
+
 /* variable, function, style for All APP */
 body {
     font-family: "Arial", "微軟中黑體";
@@ -103,7 +108,7 @@ body {
 .ios-fix-overlap-div {
     height: 20px;
     width: 100%;
-    /*position: fixed;*/
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 999;
@@ -388,4 +393,3 @@ body {
     position: absolute;
     right: 0;
 }
-

@@ -47,6 +47,7 @@ var dictRole = {
 };
 var reserveDays = 14;
 var myReserveLocalData = [];
+var isReloadPage = false;
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -250,19 +251,26 @@ function getAPIQueryMyReserveTime() {
     }();
 }
 
-function getTimeID(sTime, eTime, siteCategoryID) {
-    var arrSelectTime = [];
+function getSTimeToETime(sTime, eTime) {
+    var arrResult = [];
     var strTime = sTime;
 
     if (sTime == eTime) {
-        arrSelectTime.push(strTime);
+        arrResult.push(strTime);
     } else {
         do {
-            arrSelectTime.push(strTime);
+            arrResult.push(strTime);
             strTime = addThirtyMins(strTime);
         } while (strTime != eTime);
     }
 
+    return arrResult;
+}
+
+
+function getTimeID(sTime, eTime, siteCategoryID) {
+
+    var arrSelectTime = getSTimeToETime(sTime, eTime);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
     var strTimeID = '';
@@ -382,6 +390,32 @@ function ConverToRoleTree(data) {
     }
 }
 
+function getOneHour() {
+    var nowTime = new Date();
+    var nowTimeHour = nowTime.getHours();
+    var nowTimeMins = nowTime.getMinutes();
+
+    if (nowTimeMins < 15) {
+        nowTimeMins = 0;
+    } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
+        nowTimeMins = 30;
+    } else if (nowTimeMins >= 45) {
+        nowTimeHour += 1;
+        nowTimeMins = 0;
+    }
+
+    nowTime.setHours(nowTimeHour);
+    nowTime.setMinutes(nowTimeMins);
+    var sTime = nowTime.hhmm();
+    var eTime = addThirtyMins(addThirtyMins(sTime));
+    var dictResult = {};
+    dictResult['sTime'] = sTime;
+    dictResult['eTime'] = eTime;
+
+    return dictResult;
+}
+
+
 //use dictionary value get key
 // function getKeyByValue(object, value) {
 //     return Object.keys(object).find(key => object[key] === value);
@@ -416,8 +450,9 @@ function uniqueData(uniqueData, uniquePram) {
 
 function sortDataByKey(sortData, sortKey, asc) {
     sortData = sortData.sort(function(a, b) {
-        if (asc) return (a[sortKey] > b[sortKey]);
-        else return (b[sortKey] > a[sortKey]);
+        var x = a[sortKey];
+        var y = b[sortKey];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
@@ -522,20 +557,18 @@ function inputValidation(str) {
 
 function calSelectWidth(obj) {
     $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
-    if (obj.attr('id') == 'reserveFloor') {
-        obj.css('width', $('#tmp_option_width').outerWidth() + 28);
-    } else if (obj.attr('id') == 'reserveSite' || obj.attr('id') == 'newSettingSite') {
-        obj.css('width', $('#tmp_option_width').outerWidth() + 35);
-    } else if (obj.attr('id') == 'reserveSetting') {
-        obj.css('width', $('#tmp_option_width').outerWidth() + 45);
-    }
+    var pxWidth = $('#tmp_option_width').outerWidth();
+    var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
+    obj.css('width', vwWidth + 'vw');
 }
 
 function refreshPage(data) {
-    if (data.statusText == 'timeout' || data.status == 500) {
-        console.log('timeout or 500 error');
+    // || data.status == 500
+    if (data.statusText == 'timeout') {
+        console.log('timeout');
         var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
         loadingMask('hide');
+        isReloadPage = true;
         var activePage = $.mobile.activePage.attr("id");
         $.mobile.changePage(
             '#' + activePage, {

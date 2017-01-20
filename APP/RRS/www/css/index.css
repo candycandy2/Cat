@@ -364,7 +364,6 @@ div.circle {
     min-height: 100% !important;
 }
 
-
 /*.loader{
     margin-top: 100vh !important;
 }*/
@@ -535,6 +534,7 @@ div.scrollmenu a {
     text-decoration: none;
     color: white;
     line-height: 20px;
+    letter-spacing: 1px;
 }
 
 #left {

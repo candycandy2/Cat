@@ -71,6 +71,25 @@ $messageType = $sendInfo->message_info->message_type;
                   <pre>{{$messageInfo->message_text}}</pre>
               </div>
             </div>
+
+            <div class="form-group row">
+                <label for="tbxMessageTitle" class="col-xs-2">{{trans("messages.MESSAGE_SCHEDULE_PUSH")}}:</label>
+                <div class="col-xs-10">
+                    <input type="checkbox" id="cbxSchedule" onchange="return ChangeIsSchedule();"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="tbxMessageTitle" class="col-xs-2"> </label>
+                <div class="col-xs-10" id="rowScheduleDatetime" style="display: none;">
+                    <div class="input-group date form_datetime" data-date="" data-date-format="yyyy-MM-dd hh:ii" data-link-format="yyyy-mm-dd hh:ii"
+                         data-link-field="tbxScheduleDate" >
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <input type="hidden" id="tbxScheduleDateTime" value="" /><br/>
+                </div>
+            </div>
+
             <div class="form-group row" style="word-wrap:break-word;">
                 <label for="tbxMessageContent" class="col-xs-2">{{trans("messages.MESSAGE_SEND_HISTORY")}}:</label>
                 <div class="col-xs-10">
@@ -221,6 +240,17 @@ $messageType = $sendInfo->message_info->message_type;
             CheckRoleTableSelect();
             var sendDate = $('#js-sendDate').text();
             $('#js-sendDate').text(convertUTCToLocalDateTime(sendDate));
+
+            $('.form_datetime').datetimepicker({
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                format: "yyyy-mm-dd hh:ii"
+            });
         });
 
         var msgVisible = '{{$messageInfo->visible}}';
@@ -228,6 +258,13 @@ $messageType = $sendInfo->message_info->message_type;
         var SendAgain = function () {
             if(msgVisible.toUpperCase() != 'Y') {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_MESSAGE_INVISIBLE")}}");
+                return false;
+            }
+
+            var msgIsSchedule = $("#cbxSchedule").is(":checked");
+            var msgScheduleDate = $('.form_datetime').datetimepicker("getDate");
+            if(msgIsSchedule && msgScheduleDate < (new Date())) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE")}}");
                 return false;
             }
 
@@ -282,7 +319,9 @@ $messageType = $sendInfo->message_info->message_type;
                 var mydata =
                 {
                     message_id: {{$messageInfo->row_id}},
-                    receiver: msgReceiver
+                    receiver: msgReceiver,
+                    is_schedule: msgIsSchedule,
+                    schedule_datetime: msgScheduleDate.getTime()
                 };
 
                 var mydataStr = $.toJSON(mydata);
@@ -326,7 +365,14 @@ $messageType = $sendInfo->message_info->message_type;
             });
         };
 
-       
+        var ChangeIsSchedule = function () {
+            if($("#cbxSchedule").is(":checked")) {
+                $("#rowScheduleDatetime").fadeIn();
+                $('.form_datetime').datetimepicker("setDate", new Date());
+            } else {
+                $("#rowScheduleDatetime").fadeOut();
+            }
+        };
     </script>
 @endsection
 
