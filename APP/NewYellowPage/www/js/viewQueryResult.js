@@ -34,16 +34,19 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             employeeData[i] = tempData;
 
                             var content = htmlContent
-                                + '<li>'
-                                +   '<div class="company">'
-                                +       '<p>' + tempData["company"] + '</p>'
+                                + '<li style="border-width:1px; border-style:none; border-bottom-style:solid; border-bottom-color:#989898;">'
+                                +   '<div id="name" style="width:53.4VW">'
+                                +       '<p style="margin-top:2VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#0f0f0f; font-family:Arial; font-size:2.6VH;">' + tempData["ename"] + '</a></p>'
+                                +       '<p style="margin-bottom:1VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#666; font-family:Microsoft JhengHei; font-size:2.3VH; font-weight: normal;">' + tempData["cname"] + '</a></p>'
                                 +   '</div>'
-                                +   '<div class="e-name">'
-                                +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + tempData["ename"] + '</a></p>'
-                                +       '<p><a rel="external" href="tel:' + tempData["extnum"] + '" style="color:red;">' + tempData["extnum"] + '</a></p>'
+                                +   '<div style="margin-right:1.9VW; line-height:10VH">'
+                                +       '<img src = "img/phone.png" style="width:3.5VW; height:2VH;">'
                                 +   '</div>'
-                                +   '<div class="c-name">'
-                                +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + tempData["cname"] + '</a></p>'
+                                +   '<div style="margin-right:6VW; line-height:10VH">'
+                                +       '<p><a rel="external" href="tel:' + tempData["extnum"] + '" style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + tempData["extnum"] + '</a></p>'
+                                +   '</div>'
+                                +   '<div style="float:right; margin-right:3.8VW; line-height:12VH">'
+                                +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/info.png" style="width:6.4VW; height:3.7VH;"></a>'
                                 +   '</div>'
                                 + '</li>';
 
@@ -51,8 +54,6 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         }
 
                         $("#employeeData").html("");
-                        $("#employeeData").append(errorMsg);
-                        $("#employeeData").append(errorMsg2);
                         $("#employeeData").prepend($(htmlContent)).enhanceWithin();
                         $('#employeeData').listview('refresh');
 
@@ -65,8 +66,8 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             $.mobile.changePage('#viewDetailInfo');
                         });
 
-                        //data length over 5, show error msg
-                        //if (resultcode === "001906") {
+                        /*   data length over 5, show error msg
+                             if (resultcode === "001906") {     */
                         if (dataContent.length === 5) {
                             $("#errorMsg").show();
                             $("#errorMsg2").hide();

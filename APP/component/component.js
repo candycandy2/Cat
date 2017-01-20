@@ -259,11 +259,33 @@ $(document).one("pagebeforecreate", function(){
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
+
         if (device.platform === "Android") {
             var version = device.version.substr(0, 1);
             if (version === "5") {
                 $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
             }
+        }
+
+        //For some APP Page, if page's header has second level [button / title],
+        //auto resize the margin-top of page-main.
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
+
+        if (activePageID.length !== 0) {
+
+            var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+            var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+            var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+            if (device.platform === "iOS") {
+                mainMarginTop = mainMarginTop + 20;
+            }
+
+            $(".page-main").css({
+                "margin-top": mainMarginTop + "px"
+            });
+
         }
     });
 });
@@ -416,11 +438,35 @@ function readConfig() {
         $("#initialQPlay").removeClass("hide");
         $("#initialOther").remove();
     } else {
-        var checkAppVer = new checkAppVersion();
+        var doCheckAppVer = false;
 
-        //set initial page dispaly
-        $("#initialOther").removeClass("hide");
-        $("#initialQPlay").remove();
+        //Check if the APP is finished update, running the latest code.
+        if (window.localStorage.getItem("versionCode") === null) {
+            //No, this is the first time to open this APP.
+            window.localStorage.setItem("versionCode", loginData["versionCode"]);
+
+            doCheckAppVer = true;
+        } else {
+            var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
+            var nowVersionCode = parseInt(loginData["versionCode"], 10);
+
+            if (nowVersionCode > oldVersionCode) {
+                //Yes, APP is just finished update.
+                getServerData();
+                window.localStorage.setItem("versionCode", loginData["versionCode"]);
+            } else {
+                //No, APP does not have update.
+                doCheckAppVer = true;
+            }
+        }
+
+        if (doCheckAppVer) {
+            var checkAppVer = new checkAppVersion();
+
+            //set initial page dispaly
+            $("#initialOther").removeClass("hide");
+            $("#initialQPlay").remove();
+        }
     }
 }
 
@@ -463,7 +509,7 @@ function checkAppVersion() {
                     $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
-                    openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKey);
+                    openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
                 }
             });
 
@@ -522,7 +568,7 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header, .page-main').addClass('ios-fix-overlap');
+            $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
 
@@ -596,7 +642,14 @@ function setWhiteList() {
                 };
             }
 
-            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            //Sometimes window.plugins.qsecurity.setWhiteList() won't work correctly,
+            //both self.successCallback & self.failCallback won't be call.
+            //So, we need to call self.successCallback() directly.
+            if (loginData['doLoginDataCallBack'] === true || loginData['openAppDetailPage'] === true) {
+                self.successCallback();
+            } else {
+                window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            }
         } else {
             self.successCallback();
         }
@@ -683,7 +736,7 @@ function getServerData() {
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
         if (window.localStorage.getItem("openScheme") !== "true") {
-            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
+            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
         }
 
         window.localStorage.setItem("openScheme", true);
@@ -749,12 +802,17 @@ function handleOpenURL(url) {
 
             loginData['doLoginDataCallBack'] = true;
 
+            //APP version record
+            checkAPPVersionRecord("updateFromScheme");
+
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
             loginData['openAppDetailPage'] = true;
             loginData['updateApp'] = true;
-            openAppName = queryData["openAppName"];
+            openAppName = queryData["callbackApp"];
 
+            //APP version record
+            checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
 
