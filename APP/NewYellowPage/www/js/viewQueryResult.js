@@ -42,7 +42,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                                 +   '<div style="margin-right:1.9VW; line-height:10VH">'
                                 +       '<img src = "img/phone.png" style="width:3.5VW; height:2VH;">'
                                 +   '</div>'
-                                +   '<div style="margin-right:6VW; line-height:10VH">'
+                                +   '<div style="margin-right:6VW; line-height:10VH; width: 21VW;">'
                                 +       '<p><a rel="external" href="tel:' + tempData["extnum"] + '" style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + tempData["extnum"] + '</a></p>'
                                 +   '</div>'
                                 +   '<div style="float:right; margin-right:3.8VW; line-height:12VH">'
