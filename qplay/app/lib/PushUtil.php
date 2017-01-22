@@ -287,19 +287,19 @@ class PushUtil
             $result["content"] = $device->getDevices($registrationId);
         } catch (APIConnectionException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIConnection Exception occurred";
+            $result["content"] = "APIConnection Exception occurred".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIRequest Exception occurred";
+            $result["content"] = "APIRequest Exception occurred".$e->getMessage();
         }catch (JPushException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "JPush Exception occurred";
+            $result["content"] = "JPush Exception occurred".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Error Exception occurred";
+            $result["content"] = "Error Exception occurred".$e->getMessage();
         }catch (\Exception $e){
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Exception occurred";
+            $result["content"] = "Exception occurred".$e->getMessage();
         }
         return $result;
     }
@@ -315,19 +315,19 @@ class PushUtil
             $result["content"] = $device->getTags();
         } catch (APIConnectionException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIConnection Exception occurred";
+            $result["content"] = "APIConnection Exception occurred".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIRequest Exception occurred";
+            $result["content"] = "APIRequest Exception occurred".$e->getMessage();
         }catch (JPushException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "JPush Exception occurred";
+            $result["content"] = "JPush Exception occurred".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Error Exception occurred";
+            $result["content"] = "Error Exception occurred".$e->getMessage();
         }catch (\Exception $e){
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Exception occurred";
+            $result["content"] = "Exception occurred".$e->getMessage();
         }
         return $result;
     }
@@ -343,19 +343,19 @@ class PushUtil
             $result["content"] = $device->isDeviceInTag($registrationId, $tag);
         } catch (APIConnectionException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIConnection Exception occurred";
+            $result["content"] = "APIConnection Exception occurred".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIRequest Exception occurred";
+            $result["content"] = "APIRequest Exception occurred".$e->getMessage();
         }catch (JPushException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "JPush Exception occurred";
+            $result["content"] = "JPush Exception occurred".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Error Exception occurred";
+            $result["content"] = "Error Exception occurred".$e->getMessage();
         }catch (\Exception $e){
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Exception occurred";
+            $result["content"] = "Exception occurred".$e->getMessage();
         }
         return $result;
     }
@@ -371,24 +371,24 @@ class PushUtil
             $result["content"] = $device->addDevicesToTag($tag, $registrationId);
         } catch (APIConnectionException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIConnection Exception occurred";
+            $result["content"] = "APIConnection Exception occurred".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIRequest Exception occurred";
+            $result["content"] = "APIRequest Exception occurred".$e->getMessage();
         }catch (JPushException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "JPush Exception occurred";
+            $result["content"] = "JPush Exception occurred".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Error Exception occurred";
+            $result["content"] = "Error Exception occurred".$e->getMessage();
         }catch (\Exception $e){
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Exception occurred";
+            $result["content"] = "Exception occurred".$e->getMessage();
         }
         return $result;
     }
 
-    public static function CreateSingleSchedule($scheduleName, $scheduleTime, $message, $to, $parameter = '', $send_by_tag = false) {
+    public static function CreateSingleSchedule($scheduleName, $scheduleTime, $message, $to, $parameter = '') {
         $result = array();
         $result["result_code"] = ResultCode::_1_reponseSuccessful;
         $result["content"] = "";
@@ -424,51 +424,61 @@ class PushUtil
                 'apns_production'=>$apnsFlag
             );
 
-            if($send_by_tag) {
-                $payload = $client->push()
-                    ->addAllAudience()
-                    ->setPlatform($platform)
-                    ->iosNotification($alert, $ios_notification)
-                    ->androidNotification($alert, $android_notification)
-                    ->message($content, $message)
-                    ->options($options)
-                    ->addTag($to) //以Tag发送
-                    ->build();
-            } else {
-                $payload = $client->push()
-                    ->addAllAudience()
-                    ->setPlatform($platform)
-                    ->iosNotification($alert, $ios_notification)
-                    ->androidNotification($alert, $android_notification)
-                    ->message($content, $message)
-                    ->options($options)
-                    ->addRegistrationId($to)  //以注册ID发送
-                    ->build();
-            }
+            $payload = $client->push()
+                ->setPlatform($platform)
+                ->iosNotification($alert, $ios_notification)
+                ->androidNotification($alert, $android_notification)
+                ->message($content, $message)
+                ->options($options)
+                ->addRegistrationId($to)  //以注册ID发送
+                ->build();
 
             $schedule = $client->schedule();
-            $trigger = array();
-            if(!is_array($scheduleTime)) {
-                array_push($trigger, $scheduleTime);
-            } else {
-                $trigger = $scheduleTime;
-            }
+            $trigger = array("time"=>date("Y-m-d H:i:s",$scheduleTime / 1000));
             $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
         } catch (APIConnectionException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIConnection Exception occurred";
+            $result["content"] = "APIConnection Exception occurred".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "APIRequest Exception occurred";
+            $result["content"] = "APIRequest Exception occurred".$e->getMessage();
         }catch (JPushException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "JPush Exception occurred";
+            $result["content"] = "JPush Exception occurred".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Error Exception occurred";
+            $result["content"] = "Error Exception occurred".$e->getMessage();
         }catch (\Exception $e){
             $result["result_code"] = ResultCode::_999999_unknownError;
-            $result["content"] = "Exception occurred";
+            $result["content"] = "Exception occurred".$e->getMessage();
+        }
+        return $result;
+    }
+
+    public static function GetSchedules($page = 1) {
+        $result = array();
+        $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        $result["content"] = "";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $schedule = $client->schedule();
+            $result["content"] = $schedule->getSchedules($page);
+        } catch (APIConnectionException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIConnection Exception occurred".$e->getMessage();
+        }catch (APIRequestException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "APIRequest Exception occurred".$e->getMessage();
+        }catch (JPushException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "JPush Exception occurred".$e->getMessage();
+        }catch (\ErrorException $e) {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Error Exception occurred".$e->getMessage();
+        }catch (\Exception $e){
+            $result["result_code"] = ResultCode::_999999_unknownError;
+            $result["content"] = "Exception occurred".$e->getMessage();
         }
         return $result;
     }
