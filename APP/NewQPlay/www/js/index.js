@@ -44,7 +44,10 @@ window.initialSuccess = function(data) {
             getLoginDataCallBack();
         } else {
 
-            var doPushToken = new sendPushToken();
+            //If simulator, don't do sendPushToken
+            if (!device.isVirtual) {
+                var doPushToken = new sendPushToken();
+            }
 
             //If User first time to use QPlay, never get message data from server,
             //don't call QueryMessageList() in background.
