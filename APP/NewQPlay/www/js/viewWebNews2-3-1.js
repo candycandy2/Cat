@@ -34,6 +34,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
             /********************************** function *************************************/
             function QueryMessageDetail() {
                 var self = this;
+
                 var queryStr = "&message_send_row_id=" + messageRowId;
 
                 this.successCallback = function(data) {
@@ -101,6 +102,7 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
             window.updateReadDelete = function(type, status) {
                 var self = this;
+
                 var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
 
                 this.successCallback = function(data) {
@@ -127,6 +129,8 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                         //Single / Multiple message update check
                         var singleMessage = true;
 
+                        messageRowId = messageRowId.toString();
+
                         if (messageRowId.indexOf(",") !== -1) {
                             singleMessage = false;
                         }
@@ -134,16 +138,18 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                         if (singleMessage) {
                             if (messageArrIndex === null) {
                                 for (var i=0; i<messagecontent.message_list.length; i++) {
-                                    if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId.toString()) {
+                                    if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId) {
                                         messageArrIndex = i;
                                     }
                                 }
                             }
 
-                            if (status === "read") {
-                                messagecontent.message_list[messageArrIndex].read = "Y";
-                            } else if (status === "delete") {
-                                messagecontent.message_list[messageArrIndex].read = "D";
+                            if (messageArrIndex !== null) {
+                                if (status === "read") {
+                                    messagecontent.message_list[messageArrIndex].read = "Y";
+                                } else if (status === "delete") {
+                                    messagecontent.message_list[messageArrIndex].read = "D";
+                                }
                             }
                         } else {
                             var messageRowIdArr = messageRowId.split(",");
@@ -156,16 +162,19 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
                                     }
                                 }
 
-                                if (status === "read") {
-                                    messagecontent.message_list[messageArrIndex].read = "Y";
-                                } else if (status === "delete") {
-                                    messagecontent.message_list[messageArrIndex].read = "D";
+                                if (messageArrIndex !== null) {
+                                    if (status === "read") {
+                                        messagecontent.message_list[messageArrIndex].read = "Y";
+                                    } else if (status === "delete") {
+                                        messagecontent.message_list[messageArrIndex].read = "D";
+                                    }
                                 }
                             }
                         }
 
                         loginData["messagecontent"] = messagecontent;
                         window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
+                        messageArrIndex = null;
 
                         updateMessageList("closePopup");
                     }

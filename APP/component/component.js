@@ -152,8 +152,14 @@ var app = {
 
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else {
-                    var messageList = new QueryMessageList();
-                    callGetMessageList = true;
+                    if (window.localStorage.getItem("uuid") !== null) {
+                        loginData["uuid"] = window.localStorage.getItem("uuid");
+                        loginData["token"] = window.localStorage.getItem("token");
+                        loginData["pushToken"] = window.localStorage.getItem("pushToken");
+
+                        var messageList = new QueryMessageList();
+                        callGetMessageList = true;
+                    }
                 }
             }
         }
@@ -196,14 +202,14 @@ var app = {
                 $('#iOSGetNewMessage').show();
                 $('#iOSGetNewMessage').popup('open');
 
-                $("#openNewMessage").on("click", function(){
+                $("#openNewMessage").one("click", function(){
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
                     openNewMessage();
                 });
 
-                $("#cancelNewMessage").on("click", function(){
+                $("#cancelNewMessage").one("click", function(){
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
