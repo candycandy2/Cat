@@ -189,7 +189,7 @@ function checkAPPVersionRecord(action) {
 }
 
 //Check if APP is installed
-function checkAPPInstalled(callback) {
+function checkAPPInstalled(callback, page) {
 
     callback = callback || null;
 
@@ -207,24 +207,34 @@ function checkAPPInstalled(callback) {
         appAvailability.check(
             scheme,       //URI Scheme or Package Name
             function() {  //Success callback
-                var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
-                var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
 
-                if (latest_version === installed_version) {
-                    loginData['updateApp'] = false;
-                } else {
-                    loginData['updateApp'] = true;
+                if (page === "appDetail") {
+                    var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
+                    var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
+
+                    if (latest_version === installed_version) {
+                        loginData['updateApp'] = false;
+                    } else {
+                        loginData['updateApp'] = true;
+                    }
+
+                    callback(true);
+                } else if (page === "appList") {
+                    callback(true);
                 }
 
                 checkAPPKeyInstalled = true;
-                callback(true);
-
                 stopTestAPPInstalled();
             },
             function() {  //Error callback
-                checkAPPKeyInstalled = false;
-                callback(false);
 
+                if (page === "appDetail") {
+                    callback(false);
+                } else if (page === "appList") {
+                    callback(false);
+                }
+
+                checkAPPKeyInstalled = false;
                 stopTestAPPInstalled();
             }
         );
