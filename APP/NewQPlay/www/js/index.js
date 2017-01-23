@@ -175,7 +175,13 @@ function checkAPPVersionRecord(action) {
 
         var tempData = window.localStorage.getItem("appVersionRecord");
         appVersionRecord = JSON.parse(tempData);
-        appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = queryData["versionCode"];
+
+        //For old APP Version
+        if (queryData["versionCode"] !== undefined) {
+            appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = queryData["versionCode"];
+        } else {
+            appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = "1";
+        }
 
         window.localStorage.setItem("appVersionRecord", JSON.stringify(appVersionRecord));
 

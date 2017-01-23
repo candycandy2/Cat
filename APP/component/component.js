@@ -815,7 +815,14 @@ function handleOpenURL(url) {
 
             loginData['openAppDetailPage'] = true;
             loginData['updateApp'] = true;
-            openAppName = queryData["callbackApp"];
+
+            //For old APP Version
+            if (queryData["callbackApp"] === undefined) {
+                openAppName = queryData["openAppName"];
+                queryData["callbackApp"] = queryData["openAppName"];
+            } else {
+                openAppName = queryData["callbackApp"];
+            }
 
             //APP version record
             checkAPPVersionRecord("updateFromScheme");
