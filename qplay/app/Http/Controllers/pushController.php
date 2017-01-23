@@ -607,6 +607,9 @@ class pushController extends Controller
             $message_id = $jsonContent['message_id'];
             $receiver = $jsonContent['receiver'];
 
+            $is_schedule = $jsonContent['is_schedule'];
+            $schedule_datetime = $jsonContent['schedule_datetime'];
+
             $now = date('Y-m-d H:i:s',time());
             \DB::beginTransaction();
             try {
@@ -702,9 +705,17 @@ class pushController extends Controller
                             array_push($news_push_token_list, strtoupper($company) . $i);
                         }
                     }
-                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $news_push_token_list, $newMessageSendId, true);
+                    if($is_schedule) {
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $news_push_token_list, $newMessageSendId, true);
+                    } else {
+                        $result = PushUtil::PushMessageWithJPushWebAPI($title, $news_push_token_list, $newMessageSendId, true);
+                    }
                 } else {
-                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $event_push_token_list, $newMessageSendId);
+                    if($is_schedule) {
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $event_push_token_list, $newMessageSendId);
+                    } else {
+                        $result = PushUtil::PushMessageWithJPushWebAPI($title, $event_push_token_list, $newMessageSendId);
+                    }
                 }
 
                 if(!$result["result"]) {
@@ -782,6 +793,9 @@ class pushController extends Controller
             $receiver = $jsonContent['receiver'];
             $message_id = $jsonContent['message_id'];
 
+            $is_schedule = $jsonContent['is_schedule'];
+            $schedule_datetime = $jsonContent['schedule_datetime'];
+
             $now = date('Y-m-d H:i:s',time());
             \DB::beginTransaction();
             try {
@@ -844,9 +858,17 @@ class pushController extends Controller
                             array_push($tag_list, strtoupper($company) . $i);
                         }
                     }
-                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $tag_list, $messageSendRowId, true);
+                    if($is_schedule) {
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $tag_list, $newMessageSendId, true);
+                    } else {
+                        $result = PushUtil::PushMessageWithJPushWebAPI($title, $tag_list, $messageSendRowId, true);
+                    }
                 } else {
-                    $result = PushUtil::PushMessageWithJPushWebAPI($title, $push_token_list, $messageSendRowId);
+                    if($is_schedule) {
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $push_token_list, $newMessageSendId);
+                    } else {
+                        $result = PushUtil::PushMessageWithJPushWebAPI($title, $push_token_list, $messageSendRowId);
+                    }
                 }
 
                 if(!$result["result"]) {

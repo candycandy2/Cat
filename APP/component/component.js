@@ -152,8 +152,14 @@ var app = {
 
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else {
-                    var messageList = new QueryMessageList();
-                    callGetMessageList = true;
+                    if (window.localStorage.getItem("uuid") !== null) {
+                        loginData["uuid"] = window.localStorage.getItem("uuid");
+                        loginData["token"] = window.localStorage.getItem("token");
+                        loginData["pushToken"] = window.localStorage.getItem("pushToken");
+
+                        var messageList = new QueryMessageList();
+                        callGetMessageList = true;
+                    }
                 }
             }
         }
@@ -196,14 +202,14 @@ var app = {
                 $('#iOSGetNewMessage').show();
                 $('#iOSGetNewMessage').popup('open');
 
-                $("#openNewMessage").on("click", function(){
+                $("#openNewMessage").one("click", function(){
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
                     openNewMessage();
                 });
 
-                $("#cancelNewMessage").on("click", function(){
+                $("#cancelNewMessage").one("click", function(){
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
@@ -259,11 +265,33 @@ $(document).one("pagebeforecreate", function(){
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
+
         if (device.platform === "Android") {
             var version = device.version.substr(0, 1);
             if (version === "5") {
                 $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
             }
+        }
+
+        //For some APP Page, if page's header has second level [button / title],
+        //auto resize the margin-top of page-main.
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
+
+        if (activePageID.length !== 0) {
+
+            var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+            var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+            var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+            if (device.platform === "iOS") {
+                mainMarginTop = mainMarginTop + 20;
+            }
+
+            $(".page-main").css({
+                "margin-top": mainMarginTop + "px"
+            });
+
         }
     });
 });
@@ -546,7 +574,7 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header, .page-main').addClass('ios-fix-overlap');
+            $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
 
@@ -620,7 +648,14 @@ function setWhiteList() {
                 };
             }
 
-            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            //Sometimes window.plugins.qsecurity.setWhiteList() won't work correctly,
+            //both self.successCallback & self.failCallback won't be call.
+            //So, we need to call self.successCallback() directly.
+            if (loginData['doLoginDataCallBack'] === true || loginData['openAppDetailPage'] === true) {
+                self.successCallback();
+            } else {
+                window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            }
         } else {
             self.successCallback();
         }

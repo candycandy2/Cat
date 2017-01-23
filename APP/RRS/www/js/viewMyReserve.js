@@ -138,9 +138,10 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
 
                 for (var i = 0; i < myReserveLocalData.length; i++) {
                     $.each(arrTempTimeNameClick, function(index, value) {
-                        if (myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
+                        if (myReserveLocalData.length != 0 && myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
                             myReserveLocalData.splice(i, 1);
-                            i--;
+                            i = i - 1;
+                            i = i < 0 ? 0 : i;
                         }
                     });
                 };

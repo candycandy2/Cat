@@ -209,11 +209,11 @@ function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
     $('#viewPopupMsg').removeClass();
     $('#viewPopupMsg button').removeClass();
     if (btnIsDisplay == true) {
-        $('#viewPopupMsg #cancel').removeClass('disable');
+        $('#viewPopupMsg #cancel').removeClass('hide');
         $('#viewPopupMsg #confirm').css('width', '50%');
         $('#viewPopupMsg #confirm').css('position', 'absolute');
     } else {
-        $('#viewPopupMsg #cancel').addClass('disable');
+        $('#viewPopupMsg #cancel').addClass('hide');
         $('#viewPopupMsg #confirm').css('width', '100%');
         $('#viewPopupMsg #confirm').css('position', 'initial');
     }
@@ -225,8 +225,8 @@ function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
 }
 
 function popupCancelClose() {
-    $('body').on('click', 'div[for*=Msg] #cancel', function() {
-        $('div[for*=Msg]').popup('close');
+    $('body').on('click', '#viewPopupMsg #cancel', function() {
+        $('#viewPopupMsg').popup('close');
     });
 }
 

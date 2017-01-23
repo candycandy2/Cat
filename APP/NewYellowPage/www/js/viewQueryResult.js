@@ -29,7 +29,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             tempData["company"] = dataContent[i].Company;
                             tempData["ename"] = dataContent[i].Name_EN;
                             tempData["cname"] = dataContent[i].Name_CH;
-                            tempData["extnum"] = dataContent[i].Ext_No;
+                            tempData["extnum"] = dataContent[i].Ext_No.match(/^([0-9X\-]{0,9})/)[1];
 
                             employeeData[i] = tempData;
 
@@ -40,13 +40,13 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                                 +       '<p style="margin-bottom:1VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#666; font-family:Microsoft JhengHei; font-size:2.3VH; font-weight: normal;">' + tempData["cname"] + '</a></p>'
                                 +   '</div>'
                                 +   '<div style="margin-right:1.9VW; line-height:10VH">'
-                                +       '<img src = "img/component/phone.png" style="width:3.5VW; height:2VH;">'
+                                +       '<img src = "img/phone.png" style="width:3.5VW; height:2VH;">'
                                 +   '</div>'
-                                +   '<div style="margin-right:6VW; line-height:10VH">'
+                                +   '<div style="margin-right:6VW; line-height:10VH; width: 21VW;">'
                                 +       '<p><a rel="external" href="tel:' + tempData["extnum"] + '" style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + tempData["extnum"] + '</a></p>'
                                 +   '</div>'
                                 +   '<div style="float:right; margin-right:3.8VW; line-height:12VH">'
-                                +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/component/info.png" style="width:6.4VW; height:3.7VH;"></a>'
+                                +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/info.png" style="width:6.4VW; height:3.7VH;"></a>'
                                 +   '</div>'
                                 + '</li>';
 
