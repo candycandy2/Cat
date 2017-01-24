@@ -26,9 +26,11 @@ function cutStringToArray(string, array) {
     return result;
 }
 
-function padLeft(str, lenght) {
-    if (str.length >= lenght)
+function padLeft(str, length) {
+    str = str.toString();
+
+    if (str.length >= length)
         return str;
     else
-        return padLeft("0" + str, lenght);
+        return padLeft("0" + str, length);
 }

@@ -3,7 +3,9 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
     
     $("#viewMain2-1").pagecontainer({
         create: function(event, ui) {
-            
+
+            var tempVersionArrData;
+            var tempVersionData;
             /********************************** function *************************************/
             function QueryAppList() {
                 var self = this;
@@ -42,6 +44,11 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                                     //APP version record
                                     if (appVersionRecord[applist[appindex].package_name] === undefined) {
                                         appVersionRecord[applist[appindex].package_name] = {};
+
+                                        //For old APP Version
+                                        checkAPPInstalled(checkAPPOldVersion, "appList");
+                                        tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];
+                                        tempVersionData = applist[appindex].app_version.toString();
                                     }
                                     appVersionRecord[applist[appindex].package_name]["latest_version"] = applist[appindex].app_version.toString();
 
@@ -104,6 +111,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                 }();
 
             }
+
+            window.checkAPPOldVersion = function(oldVersionExist) {
+                if (oldVersionExist) {
+                    tempVersionArrData = "1";
+                } else {
+                    tempVersionArrData = tempVersionData;
+                }
+
+                checkAPPVersionRecord("updateFromAPI");
+            };
 
             function doLogOut() {
                 var self = this;

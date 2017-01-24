@@ -80,6 +80,8 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
 
             function setDefaultStatus() {
                 $('#newSettingTitle').val('');
+                var defaultSite = $("#newSettingSite option:first").val();
+                $("#newSettingSite").val(defaultSite).change();
                 $("#newSettingSite option:first").attr("selected", "selected");
                 $('#newSettingPeople input[value=0]').prop("checked", "checked");
                 $('#newSettingPeople input[id^=num-]').checkboxradio("refresh");
@@ -106,13 +108,15 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
                 siteIDforSetting = meetingRoomData.children[0].data;
                 siteCategoryIDforSetting = dictSiteCategory[meetingRoomData.children[0].data];
                 getFloorData('0');
-                setDefaultStatus();
+                //setDefaultStatus();
             });
 
             $('#viewNewSetting').on('pagebeforeshow', function(event, ui) {
                 seqClick = [];
                 if (clickEditSettingID != '') {
                     changeEditStatus();
+                }else{
+                    setDefaultStatus();
                 }
             });
 

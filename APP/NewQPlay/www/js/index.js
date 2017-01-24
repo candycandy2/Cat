@@ -44,7 +44,10 @@ window.initialSuccess = function(data) {
             getLoginDataCallBack();
         } else {
 
-            var doPushToken = new sendPushToken();
+            //If simulator, don't do sendPushToken
+            if (!device.isVirtual) {
+                var doPushToken = new sendPushToken();
+            }
 
             //If User first time to use QPlay, never get message data from server,
             //don't call QueryMessageList() in background.
@@ -167,13 +170,18 @@ function checkAPPVersionRecord(action) {
     } else if (action === "updateFromAPI") {
 
         window.localStorage.setItem("appVersionRecord", JSON.stringify(appVersionRecord));
-        var tempData = window.localStorage.getItem("appVersionRecord");
 
     } else if (action === "updateFromScheme") {
 
         var tempData = window.localStorage.getItem("appVersionRecord");
         appVersionRecord = JSON.parse(tempData);
-        appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = queryData["versionCode"];
+
+        //For old APP Version
+        if (queryData["versionCode"] !== undefined) {
+            appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = queryData["versionCode"];
+        } else {
+            appVersionRecord["com.qplay." + queryData["callbackApp"]]["installed_version"] = "1";
+        }
 
         window.localStorage.setItem("appVersionRecord", JSON.stringify(appVersionRecord));
 
@@ -181,7 +189,7 @@ function checkAPPVersionRecord(action) {
 }
 
 //Check if APP is installed
-function checkAPPInstalled(callback) {
+function checkAPPInstalled(callback, page) {
 
     callback = callback || null;
 
@@ -193,27 +201,57 @@ function checkAPPInstalled(callback) {
         scheme = 'com.qplay.' + checkAPPKey;
     }
 
-    appAvailability.check(
-        scheme,       //URI Scheme or Package Name
-        function() {  //Success callback
+    window.testAPPInstalledCount = 0;
 
-            var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
-            var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
+    window.testAPPInstalled = setInterval(function() {
+        appAvailability.check(
+            scheme,       //URI Scheme or Package Name
+            function() {  //Success callback
 
-            if (latest_version === installed_version) {
-                loginData['updateApp'] = false;
-            } else {
-                loginData['updateApp'] = true;
+                if (page === "appDetail") {
+                    var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
+                    var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
+
+                    if (latest_version === installed_version) {
+                        loginData['updateApp'] = false;
+                    } else {
+                        loginData['updateApp'] = true;
+                    }
+
+                    callback(true);
+                } else if (page === "appList") {
+                    callback(true);
+                }
+
+                checkAPPKeyInstalled = true;
+                stopTestAPPInstalled();
+            },
+            function() {  //Error callback
+
+                if (page === "appDetail") {
+                    callback(false);
+                } else if (page === "appList") {
+                    callback(false);
+                }
+
+                checkAPPKeyInstalled = false;
+                stopTestAPPInstalled();
             }
+        );
 
-            checkAPPKeyInstalled = true;
-            callback(true);
-        },
-        function() {  //Error callback
-            checkAPPKeyInstalled = false;
-            callback(false);
+        testAPPInstalledCount++;
+
+        if (testAPPInstalledCount === 3) {
+            stopTestAPPInstalled();
+            location.reload();
         }
-    );
+    }, 1000);
+
+    window.stopTestAPPInstalled = function() {
+        if (window.testAPPInstalled != null) {
+            clearInterval(window.testAPPInstalled);
+        }
+    };
 }
 
 //un-register [User with Mobile Device UUID]

@@ -28,6 +28,20 @@ Date.prototype.hhmm = function() {
     return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]);
 };
 
+Date.prototype.TimeZoneConvert = function() {
+    //[this & return] format=> "2017-01-20 09:23:28"
+    var timeZoneOffset = new Date().getTimezoneOffset();
+    var timeZoneFixHour = timeZoneOffset / -60;
+    var timeZoneFixSecond = timeZoneFixHour * 60 * 60;
+
+    var dateStrTimestamp = this / 1000;
+    var fixedDateStrTimestamp = dateStrTimestamp + timeZoneFixSecond;
+    var fixedDateStr = new Date(fixedDateStrTimestamp * 1000);
+
+    return fixedDateStr.getFullYear() + "-" + padLeft(parseInt(fixedDateStr.getMonth() + 1, 10), 2) + "-" + fixedDateStr.getUTCDate() + " " +
+    padLeft(fixedDateStr.getHours(), 2) + ":" + padLeft(fixedDateStr.getMinutes(), 2) + ":" + padLeft(fixedDateStr.getSeconds(), 2);
+};
+
 function addThirtyMins(time) {
     var timeStr = new Date(new Date().toDateString() + ' ' + time)
     timeStr.setMinutes(timeStr.getMinutes() + 30);
@@ -67,4 +81,10 @@ function checkDataExpired(time, num, pram) {
     } else {
         return false;
     }
+}
+
+function dateFormatYMD (date) {
+    //"2017-01-20 09:23:28" is Invalid Date Format in iOS,
+    //need to change into "2017/01/20 09:23:28"
+    return date.replace(/-/g,'/');
 }

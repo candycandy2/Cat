@@ -116,7 +116,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     }
                 }
 
-                //to do aaa
                 if (type == 'reserve') {
                     $('#reserveDefault').before(htmlContentPageOne);
                     clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
@@ -267,6 +266,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var inLimitSite = '';
                 var arrTemp = [];
 
+                isSuperRole = searchTree(roleData, dictRole['super'], '');
+
                 if (type == 'reserve') {
                     isReserveMulti = $('#' + clickRomeId).attr('IsReserveMulti');
                     selectedSite = $('#reserveSite').find(":selected").val();
@@ -278,54 +279,31 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     isReserveMulti = findRoomIdNode.data.IsReserveMulti;
                     var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
                     var arrSelectedValue = quickReserveSelectedValue.split('&');
-                    var quickReserveSelectedSite = arrSelectedValue[0];
-                    inLimitSite = searchTree(isSuperRole, quickReserveSelectedSite, '');
+                    selectedSite = arrSelectedValue[0];
+                    inLimitSite = searchTree(isSuperRole, selectedSite, '');
 
                     var quickReserveSelectedTime = $('#reserveSetting').find(":selected").attr('time');
                     var sTime = '';
                     var eTime = '';
 
                     if (quickReserveSelectedTime == 'none') {
-                        var nowTime = new Date();
-                        var nowTimeHour = nowTime.getHours();
-                        var nowTimeMins = nowTime.getMinutes();
-                        if (nowTimeMins < 15) {
-                            nowTimeMins = 0;
-                        } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
-                            nowTimeMins = 30;
-                        } else if (nowTimeMins >= 45) {
-                            nowTimeHour += 1;
-                            nowTimeMins = 0;
-                        }
-
-                        nowTime.setHours(nowTimeHour);
-                        nowTime.setMinutes(nowTimeMins);
-                        sTime = nowTime.hhmm();
-                        eTime = addThirtyMins(addThirtyMins(sTime));
+                        var dictOneHourTime = getOneHour();
+                        sTime = dictOneHourTime['sTime'];
+                        eTime = dictOneHourTime['eTime'];
                     } else {
                         var arrQuickReserveSelectedTime = quickReserveSelectedTime.split('~');
                         sTime = arrQuickReserveSelectedTime[0];
                         eTime = arrQuickReserveSelectedTime[1];
                     }
 
-                    var strTime = sTime;
-                    if (sTime == eTime) {
-                        arrTemp.push(strTime);
-                    } else {
-                        do {
-                            arrTemp.push(strTime);
-                            strTime = addThirtyMins(strTime);
-                        } while (strTime != eTime);
-                    }
+                    var arrTemp = getSTimeToETime(sTime, eTime);
                 }
-
-                isSuperRole = searchTree(roleData, dictRole['super'], '');
 
                 if ((isSuperRole != null && inLimitSite != null) || isReserveMulti === 'N') {
                     bResult = true;
                 } else {
                     var myReserveFilterData = myReserveLocalData.filter(function(item) {
-                        return item.date == date;
+                        return item.date == date && item.site == selectedSite;
                     });
 
                     if (myReserveFilterData.length === 0) {
@@ -359,7 +337,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
             }
 
-            function setRoleAndDateList(site) {
+            function setRole(site) {
                 var isSystemRole = searchTree(roleData, dictRole['system'], '');
                 var isSecretaryRole = searchTree(roleData, dictRole['secretary'], '');
                 var inLimitSite = searchTree(isSecretaryRole, site, '');
@@ -449,9 +427,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         var msgContent = '<table><tr><td>會議室</td><td>' + roomName + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + timeName + '</td></tr></table>';
                         popupMsg('reserveSuccessMsg', '會議室預約成功', msgContent, '', false, '確定', 'select.png');
 
-
-                        //to do aaa ******************************
-
                         var isReserveMulti = '';
                         var selectedSite = '';
                         var arrTemp = [];
@@ -473,38 +448,16 @@ $(document).one('pagecreate', '#viewReserve', function() {
                             var eTime = '';
 
                             if (quickReserveSelectedTime == 'none') {
-                                var nowTime = new Date();
-                                var nowTimeHour = nowTime.getHours();
-                                var nowTimeMins = nowTime.getMinutes();
-                                if (nowTimeMins < 15) {
-                                    nowTimeMins = 0;
-                                } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
-                                    nowTimeMins = 30;
-                                } else if (nowTimeMins >= 45) {
-                                    nowTimeHour += 1;
-                                    nowTimeMins = 0;
-                                }
-
-                                nowTime.setHours(nowTimeHour);
-                                nowTime.setMinutes(nowTimeMins);
-                                sTime = nowTime.hhmm();
-                                eTime = addThirtyMins(addThirtyMins(sTime));
+                                var dictOneHourTime = getOneHour();
+                                sTime = dictOneHourTime['sTime'];
+                                eTime = dictOneHourTime['eTime'];
                             } else {
                                 var arrQuickReserveSelectedTime = quickReserveSelectedTime.split('~');
                                 sTime = arrQuickReserveSelectedTime[0];
                                 eTime = arrQuickReserveSelectedTime[1];
                             }
 
-                            var strTime = sTime;
-                            if (sTime == eTime) {
-                                arrTemp.push(strTime);
-                            } else {
-                                do {
-                                    arrTemp.push(strTime);
-                                    strTime = addThirtyMins(strTime);
-                                } while (strTime != eTime);
-                            }
-
+                            var arrTemp = getSTimeToETime(sTime, eTime);
                             quickReserveBtnDefaultStatus();
                         }
 
@@ -521,11 +474,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
                                 myReserveLocalData.push(jsonData);
                             });
                         }
-                        //to do aaa ******************************
-
 
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
+                        reserveBtnDefaultStatus();
+                        var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, date, false);
                         popupMsg('reserveFailMsg', '已被預約', '哇！慢了一步～已被預約', '', false, '確定', 'warn_icon.png');
 
                     } else if (data['ResultCode'] === "002904") {
@@ -650,7 +603,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function setInitialData() {
-                setRoleAndDateList(defaultSiteClick);
+                setRole(defaultSiteClick);
                 setDateList('reserve');
                 setDateList('quick');
                 var selectedFllor = $('#reserveFloor').find(":selected").val();
@@ -675,6 +628,11 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             $('#viewReserve').on('pagebeforeshow', function(event, ui) {
                 settingList();
+                var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
+                var arrSelectedValue = quickReserveSelectedValue.split('&');
+                var quickReserveSelectedSite = arrSelectedValue[0];
+                setRole(quickReserveSelectedSite);
+                setDateList('quick');
                 reserveBtnDefaultStatus();
                 if (isReloadPage == true) {
                     var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
@@ -696,6 +654,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if ($("#reserveTab :radio:checked").val() == 'tab1') {
                     $('#pageOne').show();
                     $('#pageTwo').hide();
+                    reserveBtnDefaultStatus();
                     var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 } else {
                     $('#pageOne').hide();
@@ -708,22 +667,22 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 localStorage.setItem('defaultSiteClick', $(this).val());
                 siteCategoryID = dictSiteCategory[$(this).val()];
                 clickSiteId = this.selectedIndex;
+                getFloorData(clickSiteId);
                 var selectedSite = $('#reserveSite').find(":selected").val();
                 var selectedFllor = $("#reserveFloor option:first").val();
-                setAlertLimitRoom(selectedSite, selectedFllor);
-                setRoleAndDateList(selectedSite);
+                setRole(selectedSite);
+                setAlertLimitRoom(selectedSite, selectedFllor); //after getFloorData
                 setDateList('reserve');
-                getFloorData(clickSiteId);
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 reserveBtnDefaultStatus();
             });
 
             $('#reserveFloor').change(function() {
                 calSelectWidth($(this));
+                getRoomData(clickSiteId, this.selectedIndex);
                 var selectedSite = $('#reserveSite').find(":selected").val();
                 var selectedFllor = $('#reserveFloor').find(":selected").val();
                 setAlertLimitRoom(selectedSite, selectedFllor);
-                getRoomData(clickSiteId, this.selectedIndex);
                 $('#reserveRoom a:first-child').addClass('hover');
                 $('#reserveRoom a:first-child').parent().data("lastClicked", $('#reserveRoom a:first-child').attr('id'));
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
@@ -845,7 +804,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
                 var arrSelectedValue = quickReserveSelectedValue.split('&');
                 var quickReserveSelectedSite = arrSelectedValue[0];
-                setRoleAndDateList(quickReserveSelectedSite);
+                setRole(quickReserveSelectedSite);
                 setDateList('quick');
                 quickReserveBtnDefaultStatus();
             });
@@ -868,24 +827,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     var quickReserveDay = quickReserveClickDateID.replaceAll('two', '');
                     var quickRserveTime = arrSelectedValue[3];
                     if (quickRserveTime === 'none') {
-                        var nowTime = new Date();
-                        var nowTimeHour = nowTime.getHours();
-                        var nowTimeMins = nowTime.getMinutes();
-                        if (nowTimeMins < 15) {
-                            nowTimeMins = 0;
-                        } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
-                            nowTimeMins = 30;
-                        } else if (nowTimeMins >= 45) {
-                            nowTimeHour += 1;
-                            nowTimeMins = 0;
-                        }
-
-                        nowTime.setHours(nowTimeHour);
-                        nowTime.setMinutes(nowTimeMins);
-                        var sTime = nowTime.hhmm();
-                        var eTime = addThirtyMins(addThirtyMins(sTime));
-                        quickRserveTime = getTimeID(sTime, eTime, dictSiteCategory[arrSelectedValue[0]]);
-                        quickReserveSelectedTime = sTime + '~' + eTime;
+                        var dictOneHourTime = getOneHour();
+                        quickRserveTime = getTimeID(dictOneHourTime['sTime'], dictOneHourTime['eTime'], dictSiteCategory[arrSelectedValue[0]]);
+                        quickReserveSelectedTime = dictOneHourTime['sTime'] + '~' + dictOneHourTime['eTime'];
                     }
 
                     if (quickRserveTime === '') {
