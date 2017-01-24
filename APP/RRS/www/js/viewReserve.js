@@ -416,6 +416,8 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
                         var roomName = '';
                         var timeName = '';
+                        var findRoomIdNode = {};
+
                         if (page == 'pageOne') {
                             roomName = $('#reserveRoom').find('.hover').text();
                             //reserve continuous time block, display one time block  
@@ -442,8 +444,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                                 timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '<br />';
                             }
                         } else {
-                            roomName = $('#quickReserveMsgArea div:nth-child(2)').html().replaceAll('會議室可使用', '');
-                            roomName = roomName.substring(0, roomName.indexOf('('));
+                            findRoomIdNode = searchTree(meetingRoomData, quickRserveCallBackData[0].MeetingRoomID, 'MeetingRoomID');
+                            // roomName = $('#quickReserveMsgArea div:nth-child(2)').html().replaceAll('會議室可使用', '');
+                            // roomName = roomName.substring(0, roomName.indexOf('('));
+                            roomName = findRoomIdNode.data.MeetingRoomName;
                             timeName = $('#quickReserveMsgArea div:nth-child(3)').html().replaceAll('預約時段為', '');
                         }
 
@@ -460,7 +464,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                             arrTemp = timeNameClick;
                             reserveBtnDefaultStatus();
                         } else if (page == 'pageTwo') {
-                            var findRoomIdNode = searchTree(meetingRoomData, quickRserveCallBackData[0].MeetingRoomID, 'MeetingRoomID');
                             isReserveMulti = findRoomIdNode.data.IsReserveMulti;
                             var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
                             var arrSelectedValue = quickReserveSelectedValue.split('&');
@@ -586,7 +589,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
 
                 var doAPIListAllManager = new getAPIListAllManager();
-                
+
                 // var listAllManager = JSON.parse(localStorage.getItem('listAllManager'));
                 // if (listAllManager === null || checkDataExpired(listAllManager['lastUpdateTime'], 3, 'ss')) {
                 //     var doAPIListAllManager = new getAPIListAllManager();
@@ -802,7 +805,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                         //replace end of comma
                         var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
                     } else {
-                        popupMsg('selectReserveSameTimeMsg', '重複預約', '您已重複預約' + dictTemp['room'] + '時段', '', false, '確定', 'warn_icon.png');
+                        popupMsg('selectReserveSameTimeMsg', '重複預約', '該時段已預約' + dictTemp['room'], '', false, '確定', 'warn_icon.png');
                     }
                 }
             });
@@ -865,7 +868,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     });
                     localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
                 } else {
-                    popupMsg('selectReserveSameTimeMsg', '重複預約', '您已重複預約' + dictTemp['room'] + '時段', '', false, '確定', 'warn_icon.png');
+                    popupMsg('selectReserveSameTimeMsg', '重複預約', '該時段已預約' + dictTemp['room'], '', false, '確定', 'warn_icon.png');
                 }
             });
 
