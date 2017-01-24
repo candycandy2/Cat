@@ -462,12 +462,12 @@ function readConfig() {
             if (appKey.indexOf("rrs") !== -1) {
                 if (appEnvironment.length === 0) {
                     //Production
-                    if (versionCode > 23 && versionCode <= 232) {
+                    if (versionCode > 23 && versionCode <= 234) {
                         getServerData();
                     }
                 } else if (appEnvironment === "test") {
                     //Staging
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 }
@@ -476,12 +476,12 @@ function readConfig() {
             if (appKey.indexOf("yellowpage") !== -1) {
                 if (appEnvironment.length === 0) {
                     //Production
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 } else if (appEnvironment === "test") {
                     //Staging
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 }
