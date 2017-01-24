@@ -3,7 +3,7 @@
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
-var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
+var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate",];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
 
 var htmlContent = "";
@@ -27,7 +27,7 @@ window.initialSuccess = function() {
 
     // loadingMask("show");
 
-    $.mobile.changePage('#viewHitRate');
+    $.mobile.changePage('#viewMoHitRate_0');
     // var companyData = new QueryCompanyData();
 
     // $("a[name=goPrevPage]").on("click", function(){
