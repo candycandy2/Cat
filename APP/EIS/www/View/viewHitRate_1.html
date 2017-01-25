@@ -1,0 +1,65 @@
+<!-- Start of viewQueryResult -->
+<div data-role="page" id="viewHitRate_1"> 
+
+   <div class="ios-fix-overlap-div"></div>
+   <div data-role="header"  data-position="fixed" class="page-header">
+	
+		<a id="buttonSelect" href="#myPanelviewDataInputhit"   
+			class="ui-btn ui-icon-bars ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+		<div class="header-style"><h4 class="ui-title">Hit Rate</h4>
+	</div>			
+    </div>
+    <div data-role="main" class="ui-content page-main ui-grid-e"  >
+	<div data-role="tabs"> 
+		<div data-role="navbar" style=" border-radius:5px height:10VH;margin-top:0VH" data-iconpos="bottom" data-role="none">
+        <ul>
+          <li><a href="#fragment-1" class="ui-btn-active" >This month</a></li> 
+          <li><a href="#fragment-2"   					  >Last month</a></li>
+          <li><a href="#fragment-3"                       >YTD</a></li>
+        </ul>
+        </div>
+		
+		<div  style="text-align:center"> 
+			<p>Dec.2016</p>		
+		</div>
+		
+        <div id="fragment-1">
+			<p>This is the 'One'</p>			
+		</div>
+		<div id="fragment-2">
+			<p>This is the 'Two'</p>
+		</div>
+		<div id="fragment-3">
+			<p>This is the 'Three'</p>
+		</div>
+    </div>
+	
+	<ul data-role="listview" data-icon="false" class="q-result-grid" id="employeeData" style=" margin-top:2VH">
+        <li style="height:18VW" >  
+			<div class="name"   style="width:33% ;text-align:center;">
+				<p><a  name="detailIndex" style="color:black;font-size:110%; ">Actual Value</a></p>
+				<p><a  name="detailIndex" style="color:black; font-size:4VH;">71,976 </a></p>
+      			
+			</div>
+			<div class="name2"  style="width:33%;text-align:center;" >
+				<p><a name="detailIndex" style="color:black; font-size:110%;">Budget Hit Rate</a></p>
+				<p><a name="detailIndex" style="color:red;   font-size:4VH;">78,23%</a></p>
+      			 
+			</div>
+			<div class="name3"  style="width:33%;text-align:center;">
+				<p><a name="detailIndex" style="color:black; font-size:110%;">YoY Growth</a></p>
+				<p><a name="detailIndex" style="color:green; font-size:4VH;">+0.27%</a></p>
+      		</div>
+		</li>
+	</ul>
+	
+		<div><img src="img/line2.png" style ="height:50VW"></div> 
+		
+			
+		<div data-role="panel" id="myPanelviewDataInputhit"  data-display="overlay"> 
+			<h2>按我按我</h2>
+			<p>這邊可以close喔~。</p>
+			<a href="#viewQueryResult" data-rel="close" class="ui-btn ui-btn-inline">Close Panel</a>
+		</div> 
+</div>
+</div>

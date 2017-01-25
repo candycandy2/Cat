@@ -29,7 +29,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             tempData["company"] = dataContent[i].Company;
                             tempData["ename"] = dataContent[i].Name_EN;
                             tempData["cname"] = dataContent[i].Name_CH;
-                            tempData["extnum"] = dataContent[i].Ext_No;
+                            tempData["extnum"] = dataContent[i].Ext_No.match(/^([0-9X\-]{0,9})/)[1];
 
                             employeeData[i] = tempData;
 

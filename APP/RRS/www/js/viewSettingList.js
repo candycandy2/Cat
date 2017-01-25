@@ -45,7 +45,6 @@ $(document).one('pagecreate', '#viewSettingList', function() {
             });
 
             $('body').on('click', 'div[for=deleteMsg] #confirm', function() {
-
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
                 roomSettingdata.content = roomSettingdata.content.filter(function(item) {
                     return item.id != clickDeleteID;

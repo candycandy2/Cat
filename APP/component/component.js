@@ -9,6 +9,7 @@ var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
+var appEnvironment = "";
 
 var loginData = {
     versionName:         "",
@@ -152,8 +153,14 @@ var app = {
 
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else {
-                    var messageList = new QueryMessageList();
-                    callGetMessageList = true;
+                    if (window.localStorage.getItem("uuid") !== null) {
+                        loginData["uuid"] = window.localStorage.getItem("uuid");
+                        loginData["token"] = window.localStorage.getItem("token");
+                        loginData["pushToken"] = window.localStorage.getItem("pushToken");
+
+                        var messageList = new QueryMessageList();
+                        callGetMessageList = true;
+                    }
                 }
             }
         }
@@ -196,14 +203,14 @@ var app = {
                 $('#iOSGetNewMessage').show();
                 $('#iOSGetNewMessage').popup('open');
 
-                $("#openNewMessage").on("click", function(){
+                $("#openNewMessage").one("click", function(){
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
                     openNewMessage();
                 });
 
-                $("#cancelNewMessage").on("click", function(){
+                $("#cancelNewMessage").one("click", function(){
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
@@ -376,14 +383,17 @@ function readConfig() {
 
     //according to the versionName, change the appKey
     if (loginData["versionName"].indexOf("Staging") !== -1) {
+        appEnvironment = "test";
         appKey = appKeyOriginal + "test";
         serverURL = "https://qplaytest.benq.com"; // Staging API Server
         qplayAppKey = qplayAppKey + "test";
     } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        appEnvironment = "dev";
         appKey = appKeyOriginal + "dev";
         serverURL = "https://qplaydev.benq.com"; // Development API Server
         qplayAppKey = qplayAppKey + "dev";
     }else {
+        appEnvironment = "";
         appKey = appKeyOriginal + "";
         serverURL = "https://qplay.benq.com"; // Production API Server
         qplayAppKey = qplayAppKey + "";
@@ -444,6 +454,38 @@ function readConfig() {
         if (window.localStorage.getItem("versionCode") === null) {
             //No, this is the first time to open this APP.
             window.localStorage.setItem("versionCode", loginData["versionCode"]);
+
+            var versionCode = parseInt(loginData["versionCode"], 10);
+            //For old APP Version
+            //
+            //RRS
+            if (appKey.indexOf("rrs") !== -1) {
+                if (appEnvironment.length === 0) {
+                    //Production
+                    if (versionCode > 23 && versionCode <= 234) {
+                        getServerData();
+                    }
+                } else if (appEnvironment === "test") {
+                    //Staging
+                    if (versionCode > 226 && versionCode <= 234) {
+                        getServerData();
+                    }
+                }
+            }
+            //Yellowpage
+            if (appKey.indexOf("yellowpage") !== -1) {
+                if (appEnvironment.length === 0) {
+                    //Production
+                    if (versionCode > 226 && versionCode <= 234) {
+                        getServerData();
+                    }
+                } else if (appEnvironment === "test") {
+                    //Staging
+                    if (versionCode > 226 && versionCode <= 234) {
+                        getServerData();
+                    }
+                }
+            }
 
             doCheckAppVer = true;
         } else {
@@ -809,7 +851,14 @@ function handleOpenURL(url) {
 
             loginData['openAppDetailPage'] = true;
             loginData['updateApp'] = true;
-            openAppName = queryData["callbackApp"];
+
+            //For old APP Version
+            if (queryData["callbackApp"] === undefined) {
+                openAppName = queryData["openAppName"];
+                queryData["callbackApp"] = queryData["openAppName"];
+            } else {
+                openAppName = queryData["callbackApp"];
+            }
 
             //APP version record
             checkAPPVersionRecord("updateFromScheme");
