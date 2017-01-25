@@ -33,6 +33,7 @@ a {
 .ui-title {
     text-shadow: initial !important;
     font-size: 2.8vh !important;
+    border: 0;
 }
 
 .ui-btn {
@@ -150,6 +151,7 @@ a {
     font-size: 3vw;
 }
 
+
 /********************************** public area *************************************/
 
 .ui-margin-10 {
@@ -183,6 +185,7 @@ a {
 
 .inline {
     display: inline-block;
+    vertical-align: middle;
 }
 
 div.circle {
@@ -364,6 +367,7 @@ div.circle {
     min-height: 100% !important;
 }
 
+
 /*.loader{
     margin-top: 100vh !important;
 }*/
@@ -412,6 +416,7 @@ div.circle {
     background-repeat: no-repeat;
     -webkit-appearance: none;
 }
+
 
 /********************************** color setting *************************************/
 
