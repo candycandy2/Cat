@@ -258,19 +258,19 @@ class PushUtil
             }
         } catch (APIConnectionException $e) {
             $result["result"] = false;
-            $result["info"] = "APIConnection Exception occurred";
+            $result["info"] = "APIConnection Exception occurred".$e->getMessage();
         }catch (APIRequestException $e) {
             $result["result"] = false;
-            $result["info"] = "APIRequest Exception occurred";
+            $result["info"] = "APIRequest Exception occurred".$e->getMessage();
         }catch (JPushException $e) {
             $result["result"] = false;
-            $result["info"] = "JPush Exception occurred";
+            $result["info"] = "JPush Exception occurred".$e->getMessage();
         }catch (\ErrorException $e) {
             $result["result"] = false;
-            $result["info"] = "Error Exception occurred";
+            $result["info"] = "Error Exception occurred".$e->getMessage();
         }catch (\Exception $e){
             $result["result"] = false;
-            $result["info"] = "Exception occurred";
+            $result["info"] = "Exception occurred".$e->getMessage();
         }
         return $result;
     }
