@@ -1,3 +1,8 @@
+.ui-panel-inner { 
+  	padding: 0 !important;
+  	margin-top: 0.1VH !important;
+}
+
 .page-header .menu-btn{
 	background-color: initial !important;
 	border-style: none;
@@ -5,20 +10,37 @@
 	margin-top: 1VH !important;
 }
 
-.ui-panel-inner { 
-  	padding: 0 !important;
-  	margin-right: -0.4VW !important;
-	margin-top: -2.1VH !important;
-}
-
+/********************************************** mypanel *********************************************/
 #mypanel #panel-header{
-	font-size: 4VW; 
-	font-family:Arial; 
+	background-color: #4c4c4c;
 	color:#fff; 
-	background-color: #4c4c4c; 
+	font-size: 4VW;
+	font-family:Arial;
 	height:7.3VH;
 }
 
 #mypanel .panel-text{
 	margin-left:3.7VW;
+}
+
+#mypanel #panel-sub-header{
+	background-color: #503f81;
+	color:#fff;
+	font-size: 4VW;
+	font-family: Arial;
+	height:6.8VH;
+}
+
+#mypanel .panel-content{
+	background-color: #f6f6f6;
+	color:#0f0f0f;
+	font-size: 3.8VW;
+	font-family: Arial;
+	height:6.8VH;
+}
+
+#mypanel #underscore{
+	border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
 }
