@@ -11,34 +11,37 @@
   	</div>
 
   	<div data-role="main" class="ui-content page-main">
-  		<div id="test" style="height:60VH;"></div>
-    	<div data-role="tabs" class="ui-tabs page-tabs" id="pa">
-			<div data-role="navbar" data-iconpos="bottom" data-role="none">
-        		<ul>
-          			<li><a class="tabs-title" href="#fragment-1">This Month</a></li> 
-          			<li><a class="tabs-title" href="#fragment-2">Last Month</a></li>
-          			<li><a class="tabs-title" href="#fragment-3">YTD</a></li>
-        		</ul>
-        	</div>
-        	<div class="page-date">	
-				<span>Dec.2016</span>
-			</div>
+    	<form>
+			<fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
+				<input type="radio" name="radio-choice-h-2" id="tab-1" checked="checked">
+			    <label for="tab-1" class="tabs-title">This Month</label>
 
-			<div class="fragment" id="fragment-1">
-				<div class="highcharts" style="height:60VH; background-color: #ccffff"></div>
-				<div class="allitem"></div>
-			</div>
-		
-			<div class="fragment" id="fragment-2">
-				<div class="highcharts" style="height:60VH; background-color: #ccffcc"></div>
-				<div class="allitem"></div>
-			</div>
-		
-			<div class="fragment" id="fragment-3">
-				<div class="highcharts" style="height:60VH; background-color: #ffff66"></div>
-				<div class="allitem"></div>
-			</div>
-        </div>
+			    <input type="radio" name="radio-choice-h-2" id="tab-2">
+			    <label for="tab-2" class="tabs-title label-style">Last Month</label>
+			    
+			    <input type="radio" name="radio-choice-h-2" id="tab-3">
+			    <label for="tab-3" class="tabs-title">YTD</label>
+			</fieldset>
+		</form>
+			
+    	<div class="page-date">	
+			<span>Dec.2016</span>
+		</div>
+		<div class="fragment" id="fragment-1">
+			<div class="highcharts" id="highcharts-1" style="height:60VH"></div>
+			<div class="alldata"></div>
+		</div>
+	
+<!-- 		<div class="fragment" id="fragment-2">
+			<div class="highcharts" style="height:60VH; background-color: #ccffcc"></div>
+			<div class="alldata"></div>
+		</div>
+	
+		<div class="fragment" id="fragment-3">
+			<div class="highcharts" style="height:60VH; background-color: #ffff66"></div>
+			<div class="alldata"></div>
+		</div> -->
+        
 	</div>
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false">

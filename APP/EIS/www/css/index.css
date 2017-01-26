@@ -1,13 +1,27 @@
 .ui-content{
 	padding: 0px;
 }
-.ui-tabs{
-	padding: 0px;
-}
 
 .ui-panel-inner { 
   	padding: 0 !important;
   	margin-top: 0.1VH !important;
+}
+
+.ui-controlgroup-controls {
+	-webkit-border-radius: 8px;
+}
+
+.ui-radio {
+	width:30.86VW;
+}
+
+.page-tabs > div > div > label {
+	border: 1px solid #2b87ba !important;
+}
+
+.page-tabs > div > div > label.label-style {
+	border-left-style: none !important;
+	border-right-style: none !important;
 }
 
 .page-header .menu-btn{
@@ -23,15 +37,18 @@
 
 #viewHitRate .page-tabs{
 	margin-top: 1.8VH;
+	margin-bottom: 0VH;
 	margin-right: 3.7VW;
 	margin-left: 3.7VW;
+	text-align: center;
 }
 
 #viewHitRate .tabs-title{
 	height: 5VH;
-	font-size: 2.2VH;
+	font-size: 2.5VH;
 	font-family: Arial;
 	line-height: 5.6VH;
+	text-align: center;
 	padding: 0px;
 }
 
