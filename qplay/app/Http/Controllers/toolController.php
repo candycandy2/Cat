@@ -12,7 +12,7 @@ use DB;
 class toolController extends Controller
 {
     public function syncJpushTags() {
-        $result = ['result_code'=>ResultCode::_1_reponseSuccessful, 'content'=>''];
+        $result = ['result_code'=>ResultCode::_1_reponseSuccessful, 'content'=>array()];
 
         $userList = \DB::table("qp_user") 
             -> where('status', '=', 'Y')
@@ -38,9 +38,9 @@ class toolController extends Controller
                     $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
                     if(!$pushResult["result"]) {
                         $result["result_code"] = ResultCode::_999999_unknownError;
-                        $result["content"] .= $pushToken . "-" . $tag ."-Error-".$pushResult["info"].";";
+                        $result["content"][] = ["push_token"=>$pushToken, "tag"=>$tag, "result"=>$pushResult["info"]];
                     }else{
-                        $result["content"] .= $pushToken . "-" . $tag ."-Success-".$pushResult["info"].";";
+                        $result["content"][] = ["push_token"=>$pushToken, "tag"=>$tag, "result"=>$pushResult["info"]];
                     }
                 }
             }
