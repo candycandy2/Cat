@@ -7,10 +7,20 @@ use App\lib\PushUtil;
 use App\lib\ResultCode;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use DB;
+use App\Services\ProjectService;
 
 class platformController extends Controller
-{
+{   
+
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     public function process()
     {
         
@@ -1236,6 +1246,8 @@ class platformController extends Controller
 
         $projectList = \DB::table("qp_project")
             -> select()
+            -> where('created_user','=',\Auth::user()->row_id)
+            -> orwhere('project_pm','=',\Auth::user()->login_id)
             -> orderBy("project_code")
             -> get();
         foreach ($projectList as $project) {
@@ -1247,6 +1259,7 @@ class platformController extends Controller
             if(count($appList) > 0) {
                 foreach ($appList as $appInfo) {
                     $appId = $appInfo->row_id;
+                     $project->app_row_id =  $appId;
                     $appVersionList = \DB::table("qp_app_version")
                         -> where("app_row_id", "=", $appId)
                         -> where("status", "=", "ready")
@@ -1321,7 +1334,7 @@ class platformController extends Controller
         return null;
     }
 
-    public function saveProject() {
+    public function saveProject(Request $request) {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
             return null;
@@ -1333,43 +1346,80 @@ class platformController extends Controller
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
-            $action = $jsonContent['action'];
-            $project_id = $jsonContent['project_id'];
-            $project_code = $jsonContent['project_code'];
-            $app_key = $jsonContent['app_key'];
-            $project_pm = $jsonContent['project_pm'];
-            $project_description = $jsonContent['project_description'];
-            $project_memo = $jsonContent['project_memo'];
+            $action = $jsonContent['hidAction'];
+            $project_id = $jsonContent['hidProjectId'];
+            $app_key = $jsonContent['txbAppKey'];
+            $project_pm = $jsonContent['tbxProjectPM'];
+            $project_description = $jsonContent['tbxProjectDescription'];
+           
+             $validator = \Validator::make($request->all(), [
+                'txbAppKey' => 'required|regex:/^[a-z]*$/|max:50',
+                'tbxProjectPM' => 'required|is_user_exist',
+                'tbxProjectDescription' => 'require'
+            ]);
 
-            //Check pm exist
-            $pmList = \DB::table("qp_user") -> where('login_id', '=', $project_pm) ->select() ->get();
-            if(count($pmList) <= 0) {
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_PM_NOT_EXIST")]);
+            if ($validator->fails()) {
+             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,'message'=>$validator->messages()], 200);
             }
-
             \DB::beginTransaction();
 
             $now = date('Y-m-d H:i:s',time());
             if($action == "N") { //New
-                $existList = \DB::table("qp_project")->where("project_code", '=', $project_code)->select()->get();
-                if(count($existList) > 0) {
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_CODE_EXIST")]);
-                }
+                
                 $existList = \DB::table("qp_project")->where("app_key", '=', $app_key)->select()->get();
                 if(count($existList) > 0) {
                     return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_APP_KEY_EXIST")]);
                 }
+                $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
+                $dbArr = CommonUtil::getAllEnv();
+                //foreach ($dbArr as $key => $env) {
+                   $db_production = \DB::connection('mysql_production');
+                   $db_test = \DB::connection('mysql_test');
+                   $db_dev = \DB::connection('mysql_dev');
+                   $app_key = CommonUtil::getContextAppKey($env,$app_key);
 
-                $newProjectId = \DB::table("qp_project")
-                    -> insertGetId([
-                        'project_code'=>$project_code,
-                        'app_key' => $app_key,
-                        'project_description' => $project_description,
-                        'project_memo' => $project_memo,
-                        'project_pm' => $project_pm,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
+                   $newProjectId =  $this->projectService->newProject($db_production, $app_key, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+
+                   $this->projectService->newProject($db_test, $app_key, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+
+                   $this->projectService->newProject($app_key, $app_key, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                //}
+                
+                //return response()->json(['result_code'=>$result]);
+                // $newProjectId = \DB::table("qp_project")
+                //     -> insertGetId([
+                //         'project_code'=>$project_code,
+                //         'app_key' => $app_key,
+                //         'project_description' => $project_description,
+                //         'project_memo' => $project_memo,
+                //         'project_pm' => $project_pm,
+                //         'created_user'=>\Auth::user()->row_id,
+                //         'created_at'=>$now,
+                //     ]);
+                // //new App
+                // $newAppRowId = \DB::table("qp_app_head")
+                //             -> insertGetId(
+                //                 [   'project_row_id'=> $newProjectId,
+                //                     'package_name'=>\Config::get('app.app_package').'.'.$app_key,
+                //                     'default_lang_row_id'=>3,
+                //                     'icon_url'=>'',
+                //                     'security_level'=>3,
+                //                     'created_at'=>$now,
+                //                     'created_user'=>\Auth::user()->row_id]);
+                // if(isset($newAppRowId)){
+                //  \DB::table("qp_app_line")
+                //             -> insert(
+                //                 [   'app_row_id'=> $newAppRowId,
+                //                     'lang_row_id'=>3,
+                //                     'app_name'=>$app_key,
+                //                     'app_summary'=>'',
+                //                     'app_description'=>'',
+                //                     'created_at'=>$now,
+                //                     'updated_at'=>$now,
+                //                     'created_user'=>\Auth::user()->row_id,
+                //                     'updated_user'=>\Auth::user()->row_id]);
+                //         }
+
             } else if($action == "U") { //Edit
                 $existList = \DB::table("qp_project")->where("project_code", '=', $project_code)->select()->get();
                 if(count($existList) > 0) {
@@ -1403,7 +1453,7 @@ class platformController extends Controller
 
             \DB::commit();
             if($action == "N") {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'new_project_id'=>$newProjectId]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'new_project_id'=>$newProjectId,]);
             } else {
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
             }

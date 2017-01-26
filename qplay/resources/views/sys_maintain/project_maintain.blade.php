@@ -8,7 +8,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         <button type="button" class="btn btn-danger" style="display: none;" onclick="deleteProject()" id="btnDeleteProject">
             {{trans("messages.DELETE")}}
         </button>
-        <a class="btn btn-primary" href="projectDetailMaintain?action=N" id="btnNewProject">
+        <a class="btn btn-primary" onclick="newProject()" id="btnNewProject">
             {{trans("messages.NEW")}}
         </a>
     </div>
@@ -23,17 +23,103 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
-            <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
-            <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
-            <th data-field="project_description" data-sortable="true" data-width="600px" data-class="grid_long_column">{{trans("messages.PROJECT_DESCRIPTION")}}</th>
-            <th data-field="project_pm" data-sortable="true" >{{trans("messages.PROJECT_PM")}}</th>
+            <th data-field="app_key" data-sortable="true" data-width="20%">{{trans("messages.APP_KEY")}}</th>
+            <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-width="10%" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
+            <th data-field="secret_key" data-sortable="true">Secret Key</th>
+            <th data-field="project_pm" data-sortable="true">{{trans("messages.PROJECT_PM")}}</th>
+            <th data-field="app_row_id" data-sortable="false" data-formatter="customApiFormatter" >Custom Api</th>
+            <th data-field="row_id" data-sortable="false"   data-width="10%" data-formatter="sendAgainFormatter" >Send To Me</th>
         </tr>
         </thead>
     </table>
 
+@section('dialog_content')
+    <div id="newProjectDialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h1 class="modal-title" id="newProjectDialogTitle">New App Key</h1>
+                </div>
+                <div class="modal-body">
+                    <form id="appKeyForm" name="appKeyForm">
+                        <table  width="100%">
+                            <tr>
+                                <td>{{trans("messages.APP_KEY")}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" data-clear-btn="true" class="form-control" name="txbAppKey"
+                                           id="txbAppKey" value="" onchange="toLower(this)"/>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.PROJECT_PM")}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" data-clear-btn="true" class="form-control" name="tbxProjectPM"
+                                           id="tbxProjectPM" value=""/>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.PROJECT_DESCRIPTION")}}:</td>
+                                <td style="padding: 10px;">
+                                    <textarea class="form-control" name="tbxProjectDescription"
+                                           id="tbxProjectDescription" value=""></textarea>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td colspan = "2">
+                                    <p>Please input the project name you want to applied.</br>
+                                    1.Only allowed to fill in the English alphabet.</br>
+                                    2.The character is non-sentitive, Capital letters will be
+                                    converted to lowercase English letters.</p>
+                                </td>
+                            </tr>
+                            <input type="text" name="hidAction" id="hidAction">
+                            <input type="text" name="hidProjectId" id="hidProjectId">
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-danger" onclick="saveNewProject()">{{trans("messages.SAVE")}}</button>
+                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
     <script>
+        function customApiFormatter(value, row) {
+            return '<a class="btn btn-default" href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '">Maintain</a>';
+        };
+
+        function sendAgainFormatter(value, row) {
+            return '<a class="btn btn-success" href="appDetailMaintain?app_row_id=' + row.app_row_id + '">Send Again</a>';
+        };
         function projectCodeFormatter(value, row) {
             return '<a href="projectDetailMaintain?action=U&project_id=' + row.row_id + '">' + value + '</a>';
+        };
+
+        var toLower = function (c) {
+            $(c).val($(c).val().toLowerCase());
+        };
+
+        var saveNewProject = function(){
+            $form = $("#appKeyForm");
+            $form.find("#hidAction").val("N");
+            $form.submit();
+        };
+
+        var newProject = function() {
+            $("#txbAppKey").val("");
+            $("#tbxProjectPM").val("");
+            $("#tbxProjectDescription").val("");
+            $("#hidAction").val("");
+            $("#hidProjectId").val("");
+            $("#newProjectDialog").find('label.error').hide();
+            $("#newProjectDialog").modal('show');
         };
 
         var deleteProject = function() {
@@ -84,14 +170,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             });
         };
 
-        $(function() {
-            $('#gridProjectList').on('check.bs.table', selectedChanged);
-            $('#gridProjectList').on('uncheck.bs.table', selectedChanged);
-            $('#gridProjectList').on('check-all.bs.table', selectedChanged);
-            $('#gridProjectList').on('uncheck-all.bs.table', selectedChanged);
-            $('#gridProjectList').on('load-success.bs.table', selectedChanged);
-        });
-
         var selectedChanged = function (row, $element) {
             var selectedProjects = $("#gridProjectList").bootstrapTable('getSelections');
             if(selectedProjects.length > 0) {
@@ -104,6 +182,73 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                 });
             }
         }
+
+
+        $(function() {
+            $('#gridProjectList').on('check.bs.table', selectedChanged);
+            $('#gridProjectList').on('uncheck.bs.table', selectedChanged);
+            $('#gridProjectList').on('check-all.bs.table', selectedChanged);
+            $('#gridProjectList').on('uncheck-all.bs.table', selectedChanged);
+            $('#gridProjectList').on('load-success.bs.table', selectedChanged);
+
+
+            $("#appKeyForm").validate({
+                // rules:{
+                //     txbAppKey:{
+                //         required:true
+                //     },
+                //     tbxProjectPM:{
+                //         required:true
+                //     },
+                //     tbxProjectDescription:{
+                //         required:true
+                //     }
+                    
+                // }, 
+                submitHandler: function(form) {
+                    var mydata =
+                    {
+                        hidAction: $("#hidAction").val(),
+                        hidProjectId: $("#hidProjectId").val(),
+                        txbAppKey: $("#txbAppKey").val(),
+                        tbxProjectPM: $("#tbxProjectPM").val(),
+                        tbxProjectDescription: $("#tbxProjectDescription").val(),
+                    };
+                    var mydataStr = $.toJSON(mydata);
+
+                    $.ajax({
+                        url: "platform/saveProject",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: mydataStr,
+                        success: function (d, status, xhr) {
+                            if(d.result_code != 1) {
+                                $('label.error').remove();
+                                if(d.result_code == '999001'){
+                                    for(var key in d.message){
+                                            $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
+                                    }
+                                }
+                                return false;
+                            }  else {
+                                if(pageAction == "N") {
+                                    pageAction = "U";
+                                    projectId = d.new_project_id;
+                                }
+                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            }
+                        },
+                        error: function (e) {
+                              showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        
 
     </script>
 @endsection

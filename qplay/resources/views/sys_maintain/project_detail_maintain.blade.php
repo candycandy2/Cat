@@ -91,8 +91,6 @@ if($action == "U") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
             }
-
-            appKey = "app" + appKey;
             var mydata =
             {
                 action: pageAction,

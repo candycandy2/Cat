@@ -92,6 +92,7 @@
                             <th data-field="api_action" data-sortable="false" data-formatter="customApiActionFormatter">{{trans('messages.CUSTOM_API_ACTION')}}</th>
                             <th data-field="api_version" data-sortable="false">{{trans('messages.CUSTOM_API_VERSION')}}</th>
                             <th data-field="api_url" data-sortable="false">{{trans('messages.CUSTOM_API_URL')}}</th>
+                            
                         </tr>
                         </thead>
                     </table>

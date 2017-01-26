@@ -58,7 +58,7 @@ foreach ($enableRole as $role){
             <button type="button" id="saveAppDetail" class="btn btn-primary" onclick="SaveAppDetail()" style="display: none">
                 {{trans("messages.SAVE")}}
             </button>
-            <a type="button" class="btn btn-default" href="AppMaintain">
+            <a type="button" class="btn btn-default" id="goBack">
                 {{trans("messages.RETURN")}}
             </a>
         </div>
@@ -147,6 +147,13 @@ function validRequired(fieldList){
 }
 
 $(function () {
+    $('#goBack').click(function(){
+        if(getUrlVar('source') == 'develop'){
+            window.location='{{asset('projectMaintain')}}';
+        }else{
+            window.location='{{asset('AppMaintain')}}';
+        }
+    });
     $('.bootstrapTable').on('check.bs.table', selectedChanged);
     $('.bootstrapTable').on('uncheck.bs.table', selectedChanged);
     $('.bootstrapTable').on('check-all.bs.table', selectedChanged);
