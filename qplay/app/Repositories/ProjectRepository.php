@@ -10,7 +10,7 @@ class ProjectRepository
 
     public function insertProject($db, $appKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
         $secretKey = hash('md5', CommonUtil::generateRandomString());
-        $newProjectId = $db->table("qp_project")
+        $newProjectId = \DB::connection($db)->table("qp_project")
         -> insertGetId([
             'project_code'=>$projectCode,
             'secret_key'=>$secretKey,

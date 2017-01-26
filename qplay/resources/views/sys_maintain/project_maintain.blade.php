@@ -110,6 +110,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             $form = $("#appKeyForm");
             $form.find("#hidAction").val("N");
             $form.submit();
+            $("#newProjectDialog").modal('hide');
         };
 
         var newProject = function() {
@@ -215,34 +216,32 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                         tbxProjectDescription: $("#tbxProjectDescription").val(),
                     };
                     var mydataStr = $.toJSON(mydata);
-
-                    $.ajax({
-                        url: "platform/saveProject",
-                        dataType: "json",
-                        type: "POST",
-                        contentType: "application/json",
-                        data: mydataStr,
-                        success: function (d, status, xhr) {
-                            if(d.result_code != 1) {
-                                $('label.error').remove();
-                                if(d.result_code == '999001'){
-                                    for(var key in d.message){
-                                            $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
-                                    }
-                                }
-                                return false;
-                            }  else {
-                                if(pageAction == "N") {
-                                    pageAction = "U";
-                                    projectId = d.new_project_id;
-                                }
-                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            }
-                        },
-                        error: function (e) {
-                              showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                        }
-                    });
+                  $("#gridProjectList").bootstrapTable('refresh');
+                    // $.ajax({
+                    //     url: "platform/saveProject",
+                    //     dataType: "json",
+                    //     type: "POST",
+                    //     contentType: "application/json",
+                    //     data: mydataStr,
+                    //     success: function (d, status, xhr) {
+                    //         if(d.result_code != 1) {
+                    //             $('label.error').remove();
+                    //             if(d.result_code == '999001'){
+                    //                 for(var key in d.message){
+                    //                         $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
+                    //                 }
+                    //             }
+                    //             return false;
+                    //         }  else {
+                    //             $("#newProjectDialog").hide();
+                    //             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                    //             $("#gridProjectList").bootstrapTable('refresh');
+                    //         }
+                    //     },
+                    //     error: function (e) {
+                    //           showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                    //     }
+                    // });
                 }
             });
 

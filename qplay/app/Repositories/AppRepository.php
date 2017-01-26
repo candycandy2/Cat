@@ -8,7 +8,7 @@ class AppRepository
 
     public function insertAppHead($db, $projectId, $appKey, $createdAt, $createdUser){
 
-         $newAppRowId = \DB::table("qp_app_head")
+         $newAppRowId = \DB::connection($db)->table("qp_app_head")
             -> insertGetId(
                 [   'project_row_id'=> $projectId,
                     'package_name'=>\Config::get('app.app_package').'.'.$appKey,
@@ -21,7 +21,7 @@ class AppRepository
     }
 
     public function insertAppLine($db, $appRowId, $appKey, $createdAt, $createdUser){
-        \DB::table("qp_app_line")
+        \DB::connection($db)->table("qp_app_line")
             -> insert(
                 [   'app_row_id'=> $appRowId,
                     'lang_row_id'=>3,

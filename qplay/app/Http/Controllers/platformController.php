@@ -1355,7 +1355,7 @@ class platformController extends Controller
              $validator = \Validator::make($request->all(), [
                 'txbAppKey' => 'required|regex:/^[a-z]*$/|max:50',
                 'tbxProjectPM' => 'required|is_user_exist',
-                'tbxProjectDescription' => 'require'
+                'tbxProjectDescription' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -1373,16 +1373,15 @@ class platformController extends Controller
                 $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
                 $dbArr = CommonUtil::getAllEnv();
                 //foreach ($dbArr as $key => $env) {
-                   $db_production = \DB::connection('mysql_production');
-                   $db_test = \DB::connection('mysql_test');
-                   $db_dev = \DB::connection('mysql_dev');
-                   $app_key = CommonUtil::getContextAppKey($env,$app_key);
+                //                
+                   $newProjectId =  $this->projectService->newProject('mysql_production', 
+                    CommonUtil::getContextAppKey('production',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-                   $newProjectId =  $this->projectService->newProject($db_production, $app_key, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                   $this->projectService->newProject('mysql_test',
+                    CommonUtil::getContextAppKey('test',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-                   $this->projectService->newProject($db_test, $app_key, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
-
-                   $this->projectService->newProject($app_key, $app_key, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                   $this->projectService->newProject('mysql_dev',
+                    CommonUtil::getContextAppKey('dev',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
                 //}
                 
                 //return response()->json(['result_code'=>$result]);
@@ -1453,7 +1452,7 @@ class platformController extends Controller
 
             \DB::commit();
             if($action == "N") {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'new_project_id'=>$newProjectId,]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
             } else {
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
             }
