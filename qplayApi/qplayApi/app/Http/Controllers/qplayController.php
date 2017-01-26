@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -2282,6 +2282,14 @@ SQL;
                 response()->json(apache_response_headers()), $result);
             return $result;
         }
+        
+        $isSchedule = false;
+        $push_time_utc = 0;
+        if(array_key_exists('app_key', $input))
+        {
+            $isSchedule = true;
+            $push_time_utc = trim($input["push_time_utc"]);
+        }
 
         $app_key = $input["app_key"];
         $need_push = trim(strtoupper($input["need_push"]));
@@ -2440,7 +2448,13 @@ SQL;
                                     }
                                 }
 
-                                $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
+
+                                if($isSchedule) {
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId, true);
+                                } else {
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
+                                }
+
                                 if(!$result["result"]) {
                                     \DB::table("qp_message_send")
                                         -> where(['row_id'=>$newMessageSendId])
@@ -2631,7 +2645,11 @@ SQL;
                                     }
                                 }
 
-                                $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
+                                if($isSchedule) {
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId);
+                                } else {
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
+                                }
                                 if(!$result["result"]) {
                                     \DB::table("qp_message_send")
                                         -> where(['row_id'=>$newMessageSendId])

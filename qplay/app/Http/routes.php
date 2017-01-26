@@ -124,13 +124,6 @@ Route::any('secretaryPush', ['middleware' => 'auth', function() {
 Route::any('secretaryPushNew', ['middleware' => 'auth', function() {
     return view("push/secretary_push_new");
 }]);
-//
-//Route::any('secretaryPushHistory', ['middleware' => 'auth', function() {
-//    return view("secretary_push_history");
-//}]);
-//Route::any('secretaryPushSendDetail', ['middleware' => 'auth', function() {
-//    return view("secretary_push_send_detail");
-//}]);
 
 Route::any('androidAppMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/android");
@@ -178,8 +171,17 @@ Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
 }]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {
-    //App::setLocale($lang);
     Session::set('lang', $lang);
     return redirect()->to(urldecode($uri));
 });
+
+Route::any('testJpush', ['middleware' => 'auth', function() {
+    return view("test/jpush_test");
+}]);
+Route::any('test/jpushTest', 'testController@jpushTest');
+
+Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
+    return view("tool/sync_jpush_tags_tool");
+}]);
+Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 

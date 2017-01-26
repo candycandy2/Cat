@@ -109,12 +109,12 @@ gulp.task('install', shell.task([
 gulp.task('jenkinsinstall', shell.task([
   'cordova platform add ios@4.3.1',
   'cordova platform add android@6.0.0',
-  'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-console',
-  'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appeis' + appNameDecorate,
+  'cordova plugin add cordova-plugin-device@1.1.4',
+  'cordova plugin add cordova-plugin-console@1.0.5',
+  'cordova plugin add cordova-plugin-appversion@1.0.0',
+  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appeis' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist'
+  'cordova plugin add cordova-plugin-whitelist@1.3.1'
 ]));
 
 gulp.task('copyAndroidImages', function() {
@@ -124,12 +124,12 @@ gulp.task('copyAndroidImages', function() {
 
 gulp.task('copyIOSImages', function() {
     return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/EIS/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
 });
 
 gulp.task('copyIOSLaunchImages', function() {
     return gulp.src('../component/LaunchImage.launchimage/*')
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/EIS/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([

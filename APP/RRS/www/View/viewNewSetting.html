@@ -1,34 +1,36 @@
 <div data-role="page" id="viewNewSetting">
     <div class="ios-fix-overlap-div"></div>
-    <div data-role="header" data-position="fixed" class="page-header">
+    <div data-role="header" data-position="fixed" class="ui-title page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title">
-                <a id="newSettingBack" href="#">返回</a></div>
-            <div id="center" class="ui-title">偏好設置</div>
+                <a id="newSettingBack" href="#"><img src="img/back_nav.png" class="title-icon" /></a>
+            </div>
+            <div id="center" class="ui-title"><span>偏好設置</span></div>
             <div id="right" class="ui-title">
-                <a id="newSettingSave" href="#">儲存</a></div>
+                <a id="newSettingSave" href="#"><img src="img/save_nav.png" class="title-icon" /></a>
+            </div>
         </div>
     </div>
-    <div data-role="main" class="page-main">
+    <div data-role="main" class="page-main" style="font-size: 2.8vh;">
         <div class="ui-margin-public">
-            <div id="newSettingSelect">
+            <div id="newSettingSelect" style="margin-bottom: 1.5vh;">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-2">
-                        <h3>名稱</h3>
+                        <span style="line-height: 10vh;margin-left: 5vw;">名稱:</span>
                     </div>
                     <div class="ui-block-b col-8">
                         <input name="newSettingTitle" id="newSettingTitle" type="text" placeholder="請輸入" />
                     </div>
                     <div class="ui-block-a col-2">
-                        <h3>地點</h3>
+                        <span style="line-height: 7vh;margin-left: 5vw;">地點:</span>
                     </div>
-                    <div class="ui-block-b col-8">
-                        <select name="newSettingSite" id="newSettingSite">
+                    <div class="ui-block-b col-8" style="line-height: 7vh;">
+                        <select name="newSettingSite" id="newSettingSite" data-role="none" class="dropdown-icon">
                         </select>
                     </div>
                 </div>
             </div>
-            <h3 style="margin: 2vh 0 0 5vw;">人數</h3>
+            <span style="margin: 2vh 0 0 5vw;">人數:</span>
             <div id="newSettingPeople" data-role="controlgroup" data-type="horizontal" class="ui-radio-30">
                 <input type="radio" name="num" id="num-1" value="0" checked="checked">
                 <label for="num-1">不限</label>
@@ -37,14 +39,14 @@
                 <input type="radio" name="num" id="num-3" value="2">
                 <label for="num-3">8人以上</label>
             </div>
-            <h3 style="margin: 2vh 0 0 5vw;">時段</h3>
+            <span style="margin: 2vh 0 0 5vw;">時段:</span>
             <div id="newSettingTime" data-role="controlgroup" data-type="horizontal" class="ui-radio-50">
                 <input type="radio" name="setTime" id="setTime1" value="none" checked="checked">
                 <label for="setTime1">現在起一小時</label>
                 <input type="radio" name="setTime" id="setTime2" value="setTime">
                 <label for="setTime2">指定時段</label>
             </div>
-            <h3 style="margin: 2vh 0 1vh 5vw;">樓層</h3>
+            <span style="margin: 2vh 0 1vh 5vw;">樓層:</span>
             <div id="newSettingFloor">
                 <div class="ui-grid-b">
                     <div id="floorDefault" class="ui-block-a" style="position: relative;">
@@ -52,14 +54,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div data-role="popup" data-history="false" id="newSettingPopupMsg" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="popup-msg">
-            <h1 id="msgTitle"></h1>
-            <div id="msgContent"></div>
-            <button id="cancel"></button>
-            <button id="confirm"></button>
         </div>
     </div>
     <div data-role="popup" data-history="false" id="newSettingTimePickerPopup" data-overlay-theme="b" data-dismissible="false">

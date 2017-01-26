@@ -15,7 +15,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                 var packageName = applist[selectAppIndex].package_name;
                 var packageNameArr = packageName.split(".");
                 checkAPPKey = packageNameArr[2];
-                checkAPPInstalled(displayAppDetailStep2);
+                checkAPPInstalled(displayAppDetailStep2, "appDetail");
 
                 //Find multilangIndex = "zh-tw"
                 for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
@@ -121,7 +121,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             window.displayAppDetailStep2 = function(installed) {
                 //Check APP Install need process time, so need this step
 
-                $("#InstallApp span").hide();
+                $("#InstallApp .InstallAppStr").hide();
 
                 if (installed) {
                     if (loginData['updateApp']) {

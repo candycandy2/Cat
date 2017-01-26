@@ -47,11 +47,12 @@ class CommonUtil
     }
 
 
-    public static function getParameterMapByType($parameterTypeId){
+    public static function getParameterMapByType($parameterTyp){
        
        $res = \DB::table('en_parameter')
-             ->where('parameter_type_row_id', $parameterTypeId)
+             ->where('en_parameter_type.parameter_type_name', $parameterTyp)
              ->select('parameter_name','parameter_value')
+             ->join('en_parameter_type','en_parameter.parameter_type_row_id','=','en_parameter_type.row_id')
              ->get();
       
        $parameterMap = [];
@@ -71,7 +72,7 @@ class CommonUtil
 
 
     public static function arrangeUpdateDataFromXml($xml, $updateField){
-         $data = array('updated_user'=>$xml->emp_no[0]);
+         $data = array('updated_user'=>(string)$xml->emp_no[0]);
          foreach ( $updateField as $column) {
              if(isset($xml->$column[0]) && $xml->$column[0]!=""){
                 $data[$column] = (string)$xml->$column[0];
@@ -104,12 +105,6 @@ class CommonUtil
             // //設定header
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            
-            $proxy = 'proxyt2.benq.corp.com:3128';
-            $proxyauth = 'cleo.w.chan:1234qwe:1';
-            curl_setopt($curl, CURLOPT_PROXY, $proxy);     // PROXY details with port
-            curl_setopt($curl, CURLOPT_PROXYUSERPWD, $proxyauth); // Use if proxy have username and password
-
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 

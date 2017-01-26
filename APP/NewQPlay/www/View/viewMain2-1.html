@@ -2,7 +2,9 @@
 <div data-role="page" id="viewMain2-1">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
-        <h1><img src="img/qplay_word.svg" width="60%" height="60%"></h1>
+        <div class="header-style">
+            <h1 class="ui-title"><img src="img/qplay_word.svg" width="60%" height="60%"></h1>
+        </div>
         <a href="#" data-role="none" id="newseventspage">
             <div class="q-btn-header">
                 <img id="newsNav" src="img/news_nav.png" width="100%" height="100%">
@@ -22,15 +24,24 @@
 
     <div data-role="popup" data-history="false" id="logoutConfirm" class="popup-div" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content">
-            <p>確定登出嗎？</p>
+            <p>
+                <!--確定登出嗎？-->
+                <span class="langStr" data-id="str_043"></span>
+            </p>
 
             <hr class="hr-style">
 
             <div class="bottom">
                 <div class="button-content">
-                    <div id="cancel">取消</div>
+                    <div id="cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="str_023"></span>
+                    </div>
                     <div class="vertical-line">&nbsp;</div>
-                    <div id="confirm">確認</div>
+                    <div id="confirm">
+                        <!--確認-->
+                        <span class="langStr" data-id="str_016"></span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -88,7 +88,7 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
                 <tr>
                     <td>{{trans("messages.PUSH_TYPE")}}:</td>
                     <td style="padding: 10px;">
-                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" onchange="ChangeType()" >
+                        <select class="select2-close-mask form-control" name="ddlType" id="ddlType" onchange="return ChangeType()" >
                             <option value="event"
                                     @if($messageInfo->message_type=='event')
                                     selected="selected"
@@ -116,6 +116,25 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
                                id="tbxContent" value="" rows="3">{{$messageInfo->message_text}}</textarea>
                     </td>
                     <td><span style="color: red;">*</span></td>
+                </tr>
+                <tr>
+                    <td style="width: 120px;">{{trans("messages.MESSAGE_SCHEDULE_PUSH")}}:</td>
+                    <td style="padding: 10px;">
+                        <input type="checkbox" id="cbxSchedule" onchange="return ChangeIsSchedule();"/>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr id="rowScheduleDatetime" style="display: none;">
+                    <td></td>
+                    <td style="padding-left: 10px;">
+                        <div class="input-group date form_datetime" data-date="" data-date-format="yyyy-MM-dd hh:ii" data-link-format="yyyy-mm-dd hh:ii"
+                             data-link-field="tbxScheduleDate" >
+                            <input class="form-control" size="16" type="text" value="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="tbxScheduleDateTime" value="" /><br/>
+                    </td>
+                    <td></td>
                 </tr>
             </table>
         </div>
@@ -257,6 +276,8 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
         </div>
     </div>
 
+    <style>
+    </style>
     <script>
         var ChangeType = function () {
             var currentType = $("#ddlType").val();
@@ -268,6 +289,16 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
                 $("#regionTypeEvent").fadeOut(500, function() {
                     $("#regionTypeNews").fadeIn(500);
                 });
+            }
+            return false;
+        };
+
+        var ChangeIsSchedule = function () {
+            if($("#cbxSchedule").is(":checked")) {
+                $("#rowScheduleDatetime").fadeIn();
+                $('.form_datetime').datetimepicker("setDate", new Date());
+            } else {
+                $("#rowScheduleDatetime").fadeOut();
             }
         };
 
@@ -281,6 +312,17 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
             $('#gridUserList').on('load-success.bs.table', selectedUserChanged);
 
             CheckRoleTableSelect();
+
+            $('.form_datetime').datetimepicker({
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                format: "yyyy-mm-dd hh:ii"
+            });
         });
         
         var selectedUserChanged = function () {
@@ -481,8 +523,16 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
             var msgContent = $("#tbxContent").val();
             var msgTemplateId = $("#ddlTemplateID").val();
             var msgReceiver = new Object();
+            var msgIsSchedule = $("#cbxSchedule").is(":checked");
+            var msgScheduleDate = $('.form_datetime').datetimepicker("getDate");
+
             if(msgTitle == "" || msgContent == "" || msgTemplateId == "") {
                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+
+            if(msgIsSchedule && msgScheduleDate < (new Date())) {
+                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE")}}");
                 return false;
             }
 
@@ -546,7 +596,9 @@ $msgTitle = str_replace(array("\r","\n"), ' ', $msgTitle);
                     type: msgType,
                     title: msgTitle,
                     content: msgContent,
-                    receiver: msgReceiver
+                    receiver: msgReceiver,
+                    is_schedule: msgIsSchedule,
+                    schedule_datetime: msgScheduleDate.getTime()
                 };
 
                 var mydataStr = $.toJSON(mydata);

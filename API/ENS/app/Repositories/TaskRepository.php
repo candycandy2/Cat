@@ -38,7 +38,7 @@ class TaskRepository
     public function getTaskDetailByEventId($eventId){
          $result = $this->task
             ->leftJoin( 'en_user', 'en_user.emp_no', '=', 'en_task.close_task_emp_no')
-            ->select('en_task.row_id as task_row_id','event_row_id','task_function','task_location','task_status',
+            ->select('en_task.row_id as task_row_id','task_function','task_location','task_status',
                 'close_task_emp_no','close_task_date',
                 DB::raw("CONCAT(login_id,'\\\\',user_domain) as close_task_date"))
             ->where('event_row_id','=',$eventId)

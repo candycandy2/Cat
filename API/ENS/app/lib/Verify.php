@@ -58,7 +58,7 @@ class Verify
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
 
-        if(!isset($xml->emp_no[0])){
+        if(!isset($xml->emp_no[0]) || (string)$xml->emp_no[0] == "" ){
              return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=>"傳入參數不足或傳入參數格式錯誤");
         }
@@ -92,13 +92,13 @@ class Verify
         
         if( preg_match("/^[1-9][0-9]*$/", $relatedId) == 0){
              return array('code'=>ResultCode::_014905_fieldFormatError,
-            'message'=>"關聯事件欄位格式錯誤");
+            'message'=>"欄位格式錯誤");
         }
 
         $event = $eventService->getRelatedEventById($relatedId);
         if(is_null($event) || count($event) == 0){
-             return array('code'=>ResultCode::_014904_noEventData,
-            'message'=>"查無關連事件資料，或事件已被關聯");
+             return array('code'=>ResultCode::_014911_relatedEventStatusError,
+            'message'=>"關聯事件狀態異常");
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,

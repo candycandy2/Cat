@@ -38,10 +38,23 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         }
 
                         if (messageContentIsNull) {
-                            loginData["messagecontent"] = data['content'];
-                            window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
 
                             messagecontent = data['content'];
+
+                            //Update datetime according to local timezone
+                            var messageindexLength = parseInt(messagecontent.message_count - 1, 10);
+
+                            for (var messageindex=0; messageindex<messageindexLength; messageindex++) {
+                                var message = messagecontent.message_list[messageindex];
+                                var tempDate = dateFormatYMD(message.create_time);
+                                var createTime = new Date(tempDate);
+                                var createTimeConvert = createTime.TimeZoneConvert();
+                                message.create_time = createTimeConvert;
+                            }
+
+                            window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
+                            loginData["messagecontent"] = messagecontent;
+
                         } else {
 
                             loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
@@ -53,6 +66,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                                 for (var messageindex=messageindexStart; messageindex>=0; messageindex--) {
                                     var message = messagecontent.message_list[messageindex];
+
+                                    //Update datetime according to local timezone
+                                    var tempDate = dateFormatYMD(message.create_time);
+                                    var createTime = new Date(tempDate);
+                                    var createTimeConvert = createTime.TimeZoneConvert();
+                                    message.create_time = createTimeConvert;
 
                                     localContent.message_count = parseInt(localContent.message_count + 1, 10);
                                     localContent.message_list.unshift(message);
@@ -206,7 +225,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 var datetime = new Date();
                 var datetimeStr = datetime.getFullYear() + "-" + parseInt(datetime.getMonth() + 1, 10) + "-" + datetime.getUTCDate() + " " +
                                   addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
-                $(".update-time span").html(datetimeStr);
+                $(".update-time .update-time-str").html(datetimeStr);
 
                 //If News or Events has no message, show [No News] [No Events]
                 if (countNews === 0) {

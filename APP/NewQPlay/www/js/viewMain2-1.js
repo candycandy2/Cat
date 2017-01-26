@@ -3,7 +3,9 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
     
     $("#viewMain2-1").pagecontainer({
         create: function(event, ui) {
-            
+
+            var tempVersionArrData;
+            var tempVersionData;
             /********************************** function *************************************/
             function QueryAppList() {
                 var self = this;
@@ -12,11 +14,13 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                     var resultcode = data['result_code'];
                     
                     if (resultcode == 1) {
+
+                        //record APP all data
                         var responsecontent = data['content'];
                         appcategorylist = responsecontent.app_category_list;
                         applist = responsecontent.app_list;
                         appmultilang = responsecontent.multi_lang;
-                        
+
                         $('#appcontent').html("");
 
                         for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
@@ -32,9 +36,21 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '" style="width:auto;">';
 
                             for (var appindex=0; appindex<applist.length; appindex++) {
+
                                 var appcategory = applist[appindex].app_category_id;
 
-                                if (appcategory == catetoryID){
+                                if (appcategory == catetoryID) {
+
+                                    //APP version record
+                                    if (appVersionRecord[applist[appindex].package_name] === undefined) {
+                                        appVersionRecord[applist[appindex].package_name] = {};
+
+                                        //For old APP Version
+                                        checkAPPInstalled(checkAPPOldVersion, "appList");
+                                        tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];
+                                        tempVersionData = applist[appindex].app_version.toString();
+                                    }
+                                    appVersionRecord[applist[appindex].package_name]["latest_version"] = applist[appindex].app_version.toString();
 
                                     catetoryAPPCount++;
 
@@ -68,6 +84,8 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                             $("#qplayapplistContent" + categoryindex).css("width", catetoryAPPWidth + "px");
                         }
 
+                        checkAPPVersionRecord("updateFromAPI");
+
                         $('a[id^="application"]').click(function(e) {
                             e.stopImmediatePropagation();
                             e.preventDefault();
@@ -94,6 +112,16 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
             }
 
+            window.checkAPPOldVersion = function(oldVersionExist) {
+                if (oldVersionExist) {
+                    tempVersionArrData = "1";
+                } else {
+                    tempVersionArrData = tempVersionData;
+                }
+
+                checkAPPVersionRecord("updateFromAPI");
+            };
+
             function doLogOut() {
                 var self = this;
 
@@ -109,9 +137,10 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                         appApiPath = "qplayApi";
                         qplayAppKey = "appqplay";
 
-                        //logout can not clear messagecontent / pushToken / msgDateFrom
+                        //logout can not clear messagecontent / pushToken / msgDateFrom / appVersionRecord
                         var messagecontent = window.localStorage.getItem("messagecontent");
                         var pushToken = window.localStorage.getItem("pushToken");
+                        var appVersionRecord = window.localStorage.getItem("appVersionRecord");
                         var storeMsgDateFrom = false;
 
                         if (window.localStorage.getItem("msgDateFrom") !== null) {
@@ -141,6 +170,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                         window.localStorage.setItem("messagecontent", messagecontent);
                         window.localStorage.setItem("pushToken", pushToken);
+                        window.localStorage.setItem("appVersionRecord", appVersionRecord);
 
                         if (storeMsgDateFrom) {
                             window.localStorage.setItem("msgDateFrom", msgDateFrom);

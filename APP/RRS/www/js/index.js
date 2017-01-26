@@ -11,6 +11,8 @@ var arrTimeBlockBySite = [];
 var arrOtherTimeBlock = [];
 var meetingRoomTreeData = new Tree('meetingRoom');
 var meetingRoomData = {};
+var roleTreeData = new Tree('role');
+var roleData = {};
 var htmlContent = '';
 var clickEditSettingID = '';
 var dictDayOfWeek = {
@@ -24,6 +26,7 @@ var dictDayOfWeek = {
 };
 var arrSite = ['2', '1', '43', '100'];
 var arrSiteCategory = ['1', '2', '8'];
+var arrRole = ['1', '2', '4'];
 var dictSite = {
     '1': 'QTY',
     '2': 'BQT/QTT',
@@ -38,14 +41,13 @@ var dictSiteCategory = {
 };
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
 var dictRole = {
-    'system': '1',
-    'secretary': '2',
-    'super': '4'
+    'system': 'role1',
+    'secretary': 'role2',
+    'super': 'role4'
 };
 var reserveDays = 14;
-var systemRole = '';
-var meetingRoomSiteByRole = '';
 var myReserveLocalData = [];
+var isReloadPage = false;
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewReserve');
@@ -64,7 +66,7 @@ function getAPIListAllMeetingRoom() {
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
 
-            ConverToTree(data['Content']);
+            ConverToMeetingTree(data['Content']);
 
             //save to local data
             localStorage.removeItem('meetingRoomLocalData');
@@ -171,23 +173,25 @@ function getAPIListAllManager() {
             //save to local data
             localStorage.removeItem('listAllManager');
             var jsonData = {};
-            var bResult = false;
-            for (var i = 0, item; item = data['Content'][i]; i++) {
-                if (item.EmpNo.trim() === loginData['emp_no']) {
-                    jsonData = {
-                        systemRole: item.SystemRole,
-                        meetingRoomSite: item.MeetingRoomSite
-                    };
-                    systemRole = item.SystemRole;
-                    meetingRoomSiteByRole = item.MeetingRoomSite;
-                    bResult = true;
-                }
+
+            var tempContent = data['Content'].filter(function(item) {
+                return item.EmpNo.trim() === loginData['emp_no'];
+            });
+
+            if (tempContent.length == 0) {
+                tempContent = 'normal';
+            } else {
+                ConverToRoleTree(tempContent);
             }
-            if (!bResult) {
-                jsonData = 'normal';
-            }
+
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: tempContent
+            };
+
             localStorage.setItem('listAllManager', JSON.stringify(jsonData));
             loadingMask('hide');
+
         } else {
             loadingMask('hide');
             popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
@@ -214,11 +218,12 @@ function getAPIQueryMyReserveTime() {
             for (var i = 0, item; item = data['Content'][i]; i++) {
                 var strBeginTime = item.ReserveBeginTime;
                 var strEndTime = item.ReserveEndTime;
-                var searchRoomNode = searchTree(meetingRoomData, item.MeetingRoomName);
+                var searchRoomNode = searchTree(meetingRoomData, item.MeetingRoomName, 'MeetingRoomName');
                 var searchSiteNode = searchRoomNode.parent.parent.data;
 
                 if (strBeginTime == strEndTime) {
                     jsonData = {
+                        room: item.MeetingRoomName,
                         site: searchSiteNode,
                         date: item.ReserveDate,
                         time: strBeginTime
@@ -228,6 +233,7 @@ function getAPIQueryMyReserveTime() {
                 } else {
                     do {
                         jsonData = {
+                            room: item.MeetingRoomName,
                             site: searchSiteNode,
                             date: item.ReserveDate,
                             time: strBeginTime
@@ -247,20 +253,26 @@ function getAPIQueryMyReserveTime() {
     }();
 }
 
-function getTimeID(sTime, eTime, siteCategoryID) {
-    var arrSelectTime = [];
+function getSTimeToETime(sTime, eTime) {
+    var arrResult = [];
     var strTime = sTime;
 
     if (sTime == eTime) {
-        arrSelectTime.push(strTime);
+        arrResult.push(strTime);
     } else {
         do {
-            arrSelectTime.push(strTime);
+            arrResult.push(strTime);
             strTime = addThirtyMins(strTime);
         } while (strTime != eTime);
     }
 
-    //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
+    return arrResult;
+}
+
+
+function getTimeID(sTime, eTime, siteCategoryID) {
+
+    var arrSelectTime = getSTimeToETime(sTime, eTime);
     var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
     var strTimeID = '';
@@ -334,7 +346,8 @@ function setDefaultSettingData() {
     }
 }
 
-function ConverToTree(data) {
+function ConverToMeetingTree(data) {
+    //level 1 = Site, level 2 = Floor, level 3 = Room Detail Info
 
     for (var key in arrSite) {
 
@@ -358,6 +371,70 @@ function ConverToTree(data) {
     }
 }
 
+function ConverToRoleTree(data) {
+    //level 1 = Role, level 2 = Site
+
+    for (var key in arrRole) {
+        var roleData = grepData(data, 'SystemRole', arrRole[key]);
+        var droleData = uniqueData(roleData, 'SystemRole');
+
+        if (droleData.length != 0) {
+            roleTreeData.add('role' + arrRole[key], 'role', roleTreeData.traverseDF);
+        }
+
+        for (var j in roleData) {
+            roleTreeData.add(roleData[j].MeetingRoomSite, 'role' + arrRole[key], roleTreeData.traverseDF);
+        }
+    }
+
+    //if include role1 and role2, just keep role1 data
+    var searchRole1 = searchTree(roleTreeData._root, 'role1', '');
+    var searchRole2 = searchTree(roleTreeData._root, 'role2', '');
+    if (searchRole1 != null && searchRole2 != null) {
+        //remove all role2 node
+        roleTreeData.remove('role2', 'role', roleTreeData.traverseDF);
+    }
+}
+
+function getOneHour() {
+    var nowTime = new Date();
+    var nowTimeHour = nowTime.getHours();
+    var nowTimeMins = nowTime.getMinutes();
+
+    if (nowTimeMins < 15) {
+        nowTimeMins = 0;
+    } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
+        nowTimeMins = 30;
+    } else if (nowTimeMins >= 45) {
+        nowTimeHour += 1;
+        nowTimeMins = 0;
+    }
+
+    nowTime.setHours(nowTimeHour);
+    nowTime.setMinutes(nowTimeMins);
+    var sTime = nowTime.hhmm();
+    var eTime = addThirtyMins(addThirtyMins(sTime));
+    var dictResult = {};
+    dictResult['sTime'] = sTime;
+    dictResult['eTime'] = eTime;
+
+    return dictResult;
+}
+
+//use dictionary value get key
+// function getKeyByValue(object, value) {
+//     return Object.keys(object).find(key => object[key] === value);
+// }
+
+// Object.prototype.getKeyByValue = function(value){
+//   for(var key in this){
+//     if(this[key] == value){
+//       return key;
+//     }
+//   }
+//   return null;
+// };
+
 //filter data
 function grepData(grepData, grepPram, grepValue) {
     return $.grep(grepData, function(item, index) {
@@ -378,11 +455,13 @@ function uniqueData(uniqueData, uniquePram) {
 
 function sortDataByKey(sortData, sortKey, asc) {
     sortData = sortData.sort(function(a, b) {
-        if (asc) return (a[sortKey] > b[sortKey]);
-        else return (b[sortKey] > a[sortKey]);
+        var x = a[sortKey];
+        var y = b[sortKey];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
+//comparing & sorting string with number ex:sorting T01, T02, T03...
 (function() {
     var reParts = /\d+|\D+/g;
     var reDigit = /\d/;
@@ -465,50 +544,10 @@ function popupSchemeMsg(attr, title, content, href1, href2) {
     $('#reservePopupSchemeMsg #mail').attr('href', href1);
     $('#reservePopupSchemeMsg #tel').attr('href', href2);
     $('#reservePopupSchemeMsg > div').css('height', '30vh');
-    $('#reservePopupSchemeMsg > div > div').css('margin', '0 0 0 23vw');
     $('#reservePopupSchemeMsg').removeClass();
     $('#reservePopupSchemeMsg').popup(); //initialize the popup
+    $('#reservePopupSchemeMsg').show();
     $('#reservePopupSchemeMsg').popup('open');
-}
-
-function popupMsg(id, attr, title, content, btn1, btnIsDisplay, btn2, popupIsBig) {
-    $('#' + id).attr('for', attr);
-    $('#' + id + ' #msgTitle').html(title);
-    $('#' + id + ' #msgContent').html(content);
-    $('#' + id + ' #cancel').html(btn1);
-    $('#' + id + ' #confirm').html(btn2);
-
-    if (title == '') {
-        $('#' + id + ' > div > div').css('margin', '5vh 0 0 0');
-    } else {
-        $('#' + id + ' > div > div').css('margin', '0 0 0 23vw');
-    }
-
-    if (popupIsBig == true) {
-        $('#' + id + ' > div').css('height', '30vh');
-    } else {
-        $('#' + id + ' > div').css('height', '');
-    }
-
-    $('#' + id).removeClass();
-    $('#' + id + ' button').removeClass();
-    if (btnIsDisplay == true) {
-        $('#' + id + ' #cancel').removeClass('disable');
-        $('#' + id + ' #confirm').css('width', '50%');
-    } else {
-        $('#' + id + ' #cancel').addClass('disable');
-        $('#' + id + ' #confirm').css('width', '100%');
-    }
-    $('#' + id + ' #cancel').attr('onClick', 'popupCancelClose()')
-
-    $('#' + id).popup(); //initialize the popup
-    $('#' + id).popup('open');
-}
-
-function popupCancelClose() {
-    $('body').on('click', 'div[for*=Msg] #cancel', function() {
-        $('div[for*=Msg]').popup('close');
-    });
 }
 
 function inputValidation(str) {
@@ -519,6 +558,33 @@ function inputValidation(str) {
         return [false, '您尚未輸入文字'];
     } else {
         return [true, ''];
+    }
+}
+
+function calSelectWidth(obj) {
+    $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
+    var pxWidth = $('#tmp_option_width').outerWidth();
+    //px conver to vw
+    var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
+    obj.css('width', vwWidth + 'vw');
+}
+
+function refreshPage(data) {
+    // || data.status == 500
+    if (data.statusText == 'timeout') {
+        console.log('timeout');
+        var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
+        loadingMask('hide');
+        isReloadPage = true;
+        var activePage = $.mobile.activePage.attr("id");
+        $.mobile.changePage(
+            '#' + activePage, {
+                allowSamePageTransition: true,
+                transition: 'none',
+                showLoadMsg: false,
+                reloadPage: false
+            }
+        );
     }
 }
 
