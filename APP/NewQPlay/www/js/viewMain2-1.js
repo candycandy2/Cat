@@ -12,7 +12,7 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                 this.successCallback = function(data) {
                     var resultcode = data['result_code'];
-                    
+
                     if (resultcode == 1) {
 
                         //record APP all data
@@ -58,13 +58,27 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
 
                                     catetoryAPPCount++;
 
-                                    //Multi Language
-                                    for (var i=0; i<appmultilang.length; i++) {
-                                        if (appmultilang[i].project_code == applist[appindex].app_code) {
-                                            if (appmultilang[i].lang == "zh-tw") {
-                                                var packagename = appmultilang[i].app_name;
+                                    //Find the specific language of APP Name to display,
+                                    //if can not find the language to match the browser language,
+                                    //display the default language: zh-tw
+                                    var packagename = null;
+                                    var defaultAPPName = null;
+
+                                    for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
+                                        if (applist[appindex].app_code == appmultilang[multilangIndex].project_code) {
+                                            //match browser language
+                                            if (appmultilang[multilangIndex].lang == browserLanguage) {
+                                                packagename = appmultilang[multilangIndex].app_name;
+                                            }
+                                            //match default language: zh-tw
+                                            if (appmultilang[multilangIndex].lang == "zh-tw") {
+                                                defaultAPPName = appmultilang[multilangIndex].app_name;
                                             }
                                         }
+                                    }
+
+                                    if (packagename == null) {
+                                        packagename = defaultAPPName;
                                     }
 
                                     var appurl = applist[appindex].url;
