@@ -546,7 +546,7 @@ class qplayController extends Controller
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
         $loginid = $request->header('loginid');
-        $password = $request->header('password');
+        $password = urldecode($request->header('password'));
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || $redirect_uri == null
