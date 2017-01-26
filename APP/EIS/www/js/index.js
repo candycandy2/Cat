@@ -16,7 +16,7 @@ var panel = htmlContent
         +       '<span class="panel-text" style="line-height:7.5VH;">Hit Rate</span>'
         +   '</div>'
         +   '<div id="panel-sub-header">'
-        +        '<span class="panel-text" style="line-height:7.5VH;">Monthly Hit Rate Trend</span>'
+        +        '<span class="panel-text" href="#viewMonthlyHitRate" style="line-height:7.5VH;">Monthly Hit Rate Trend</span>'
         +   '</div>'
         +   '<div class="panel-content" id="underscore">'
         +        '<span class="panel-text" style="line-height:7.5VH;">YTD Hit Rate Trend</span>'
@@ -27,7 +27,7 @@ window.initialSuccess = function() {
 
     // loadingMask("show");
 
-    $.mobile.changePage('#viewMoHitRate_0');
+    $.mobile.changePage('#viewHitRate');
     // var companyData = new QueryCompanyData();
 
     // $("a[name=goPrevPage]").on("click", function(){
