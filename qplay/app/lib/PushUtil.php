@@ -253,7 +253,7 @@ class PushUtil
         $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         try {
             $device = $client->device();
-            $device->addDevicesToTag($tag, $registrationId);
+            $result["info"] = $device->addDevicesToTag($tag, $registrationId);
         } catch (APIConnectionException $e) {
             $result["result"] = false;
             $result["info"] = "APIConnection Exception occurred".$e->getMessage();
