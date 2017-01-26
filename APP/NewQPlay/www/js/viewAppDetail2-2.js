@@ -121,7 +121,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             window.displayAppDetailStep2 = function(installed) {
                 //Check APP Install need process time, so need this step
 
-                $("#InstallApp span").hide();
+                $("#InstallApp .InstallAppStr").hide();
 
                 if (installed) {
                     if (loginData['updateApp']) {

@@ -32,7 +32,7 @@ namespace JPushLogger.Entity
 		private int? _Result;
 		private string _Error_Message;
 		private string _Error_Detail;
-		private DateTime _Created_At = 0000-00-00 00:00:00;
+		private DateTime _Created_At = new DateTime();
 		/// <summary>
 		/// auto_increment
 		/// </summary>
@@ -232,7 +232,7 @@ namespace JPushLogger.Entity
 			/// <summary>
 			/// 
 			/// </summary>
-			public readonly static Field Parameter = new Field("parameter","qp_jpush_log",DbType.String,,"parameter");
+			public readonly static Field Parameter = new Field("parameter","qp_jpush_log",DbType.String,255,"parameter");
 			/// <summary>
 			/// 
 			/// </summary>
@@ -244,11 +244,11 @@ namespace JPushLogger.Entity
 			/// <summary>
 			/// 
 			/// </summary>
-			public readonly static Field Error_Detail = new Field("error_detail","qp_jpush_log",DbType.String,,"error_detail");
+			public readonly static Field Error_Detail = new Field("error_detail","qp_jpush_log",DbType.String,255,"error_detail");
 			/// <summary>
 			/// on update CURRENT_TIMESTAMP
 			/// </summary>
-			public readonly static Field Created_At = new Field("created_at","qp_jpush_log",DbType.Binary,,"on update CURRENT_TIMESTAMP");
+			public readonly static Field Created_At = new Field("created_at","qp_jpush_log",DbType.Binary,0,"on update CURRENT_TIMESTAMP");
 		}
 		#endregion
 

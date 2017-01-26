@@ -5,6 +5,7 @@ using System.Text;
 using ITS.Data;
 using QPlayUserSyncService.Entity;
 using QPlayUserSyncService.DTO;
+using System.Configuration;
 
 namespace QPlayUserSyncService
 {
@@ -53,7 +54,8 @@ namespace QPlayUserSyncService
 
         private List<Am_Employee_Qplay> GetFlowerUserDataList()
         {
-            string sql = "select * from gbpm.am_employee_qplay";
+            string viewName = ConfigurationManager.AppSettings.Get("flower_user_view_name");
+            string sql = "select * from " + viewName;
             return _dbFlowER.FromSql(sql).ToList<Am_Employee_Qplay>();
         }        
 
