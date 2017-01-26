@@ -46,6 +46,10 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
                                         appVersionRecord[applist[appindex].package_name] = {};
 
                                         //For old APP Version
+                                        var packageName = applist[appindex].package_name;
+                                        var packageNameArr = packageName.split(".");
+                                        checkAPPKey = packageNameArr[2];
+
                                         checkAPPInstalled(checkAPPOldVersion, "appList");
                                         tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];
                                         tempVersionData = applist[appindex].app_version.toString();
