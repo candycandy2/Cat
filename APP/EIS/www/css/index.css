@@ -1,3 +1,10 @@
+.ui-content{
+	padding: 0px;
+}
+.ui-tabs{
+	padding: 0px;
+}
+
 .ui-panel-inner { 
   	padding: 0 !important;
   	margin-top: 0.1VH !important;
@@ -10,6 +17,41 @@
 	margin-top: 1VH !important;
 }
 
+#viewHitRate .page-main{
+	background-color: #fff;
+}
+
+#viewHitRate .page-tabs{
+	margin-top: 1.8VH;
+	margin-right: 3.7VW;
+	margin-left: 3.7VW;
+}
+
+#viewHitRate .tabs-title{
+	height: 5VH;
+	font-size: 2.2VH;
+	font-family: Arial;
+	line-height: 5.6VH;
+	padding: 0px;
+}
+
+#viewHitRate .page-date{
+	margin-top: 2VH;
+	font-family: Arial;
+	font-size: 2.5VH;
+	color: #0f0f0f;
+	text-align:center
+}
+
+#viewHitRate .fragment{
+
+}
+
+
+/*#viewHitRate .allitem{
+	background-color: #f2f2f3;
+	height: 30VH;
+}*/
 /********************************************** mypanel *********************************************/
 #mypanel #panel-header{
 	background-color: #4c4c4c;
