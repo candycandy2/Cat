@@ -38,9 +38,9 @@ class toolController extends Controller
                     $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
                     if(!$pushResult["result"]) {
                         $result["result_code"] = ResultCode::_999999_unknownError;
-                        $result["content"] .= $pushToken . "-" . $tag ."-Error".$pushResult["info"].";";
+                        $result["content"] .= $pushToken . "-" . $tag ."-Error-".$pushResult["info"].";";
                     }else{
-                        $result["content"] .= $pushToken . "-" . $tag ."-Success;";
+                        $result["content"] .= $pushToken . "-" . $tag ."-Success-".$pushResult["info"].";";
                     }
                 }
             }
