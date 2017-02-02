@@ -10,6 +10,7 @@ var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
+var browserLanguage;
 var langStr = {};
 
 var loginData = {
@@ -235,7 +236,7 @@ $(document).one("pagebeforecreate", function(){
     //Browser default language, according to the mobile device language setting
     //navigator.language: en-US / zh-CN / zh-TW
     //Set language string in langStr.
-    var browserLanguage = navigator.language.toLowerCase();
+    browserLanguage = navigator.language.toLowerCase();
 
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
         for (var i=0; i<data.length; i++) {
