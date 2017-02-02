@@ -10,6 +10,8 @@ var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
+var browserLanguage;
+var langStr = {};
 
 var loginData = {
     versionName:         "",
@@ -231,6 +233,17 @@ app.initialize();
 /********************************** jQuery Mobile Event *************************************/
 $(document).one("pagebeforecreate", function(){
 
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //Set language string in langStr.
+    browserLanguage = navigator.language.toLowerCase();
+
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        for (var i=0; i<data.length; i++) {
+            langStr[data[i].term] = data[i].definition;
+        }
+    });
+
     $(':mobile-pagecontainer').html("");
 
     //According to the data [pageList] which set in index.js ,
@@ -262,15 +275,28 @@ $(document).one("pagebeforecreate", function(){
             //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
             var checkAppVer = new checkAppVersion();
         });
+
+        //After all template load finished, processing language string
+        $(".langStr").each(function(index, element){
+            var id = $(element).data("id");
+
+            $(".langStr[data-id='" + id + "']").each(function(index, element){
+                $(this).html(langStr[id]);
+            });
+        });
+
     }, "html");
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
 
         if (device.platform === "Android") {
+            $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            $(".ui-header-fixed").css("position", "fixed");
+
             var version = device.version.substr(0, 1);
-            if (version === "5") {
-                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            if (version === "6") {
+                $(".ui-footer-fixed").css("position", "fixed");
             }
         }
 
@@ -462,12 +488,12 @@ function readConfig() {
             if (appKey.indexOf("rrs") !== -1) {
                 if (appEnvironment.length === 0) {
                     //Production
-                    if (versionCode > 23 && versionCode <= 232) {
+                    if (versionCode > 23 && versionCode <= 234) {
                         getServerData();
                     }
                 } else if (appEnvironment === "test") {
                     //Staging
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 }
@@ -476,12 +502,12 @@ function readConfig() {
             if (appKey.indexOf("yellowpage") !== -1) {
                 if (appEnvironment.length === 0) {
                     //Production
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 } else if (appEnvironment === "test") {
                     //Staging
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 }
@@ -615,7 +641,6 @@ function setWhiteList() {
         }
 
         $(".ui-title").on("taphold", function(){
-
             //Set for iOS, control text select
             document.documentElement.style.webkitTouchCallout = "none";
             document.documentElement.style.webkitUserSelect = "none";

@@ -12,7 +12,10 @@
             <div class="q-btn-header">
                 <img id="deleteImg" src="img/component/delete_nav.png" width="100%" height="100%">
             </div>
-            <span id="deleteStr" class="delete-str">取消</span>
+            <span id="deleteStr" class="delete-str">
+                <!--取消-->
+                <span class="langStr" data-id="str_038"></span>
+            </span>
         </a>
     </div>
 
@@ -54,13 +57,20 @@
                 <ul>
                     <li class="del-msg-btn">
                         <a href="#" class="ui-btn ui-btn-active" data-ajax="false">
-                            <span id="selectMsgAll">選擇全部</span>
-                            <span id="cancelMsgAll" style="display:none;">取消全部</span>
+                            <span id="selectMsgAll">
+                                <!--選擇全部-->
+                                <span class="langStr" data-id="str_035"></span>
+                            </span>
+                            <span id="cancelMsgAll" style="display:none;">
+                                <!--取消全部-->
+                                <span class="langStr" data-id="str_036"></span>
+                            </span>
                         </a>
                     </li>
                     <li id="delMsgBtn" class="del-msg-btn">
                         <a href="#" class="ui-btn ui-btn-active btn-disabled" data-ajax="false">
-                            刪除
+                            <!--刪除-->
+                            <span class="langStr" data-id="str_037"></span>
                         </a>
                     </li>
                 </ul>
@@ -68,44 +78,63 @@
         </div>
         <div id="newspage2-3" class="ui-content page-main">
             <div id="updateTimeNews" class="update-time" style="display:none;">
-                Latest update: <span></span>
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
             </div>
             <ul data-role="listview" id="newslistview">
 
             </ul>
             <div id="noNews" class="no-message" style="display:none;">
-                No News
+                <!--No News-->
+                <span class="langStr" data-id="str_031"></span>
             </div>
         </div>
         <div id="eventspage2-3b" class="ui-content page-main">
             <div id="updateTimeEvents" class="update-time" style="display:none;">
-                Latest update: <span></span>
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
             </div>
             <ul data-role="listview" id="eventlistview">
 
             </ul>
             <div id="noEvents" class="no-message" style="display:none;">
-                No Events
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
             </div>
         </div>
     </div>
 
     <div data-role="popup" data-history="false" id="selectMsgDateFrom" class="popup-div" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content">
-
-            <input type="radio" data-role="none" name="selectDateFrom" id="month" value='month' checked="checked">
-            <label data-role="none" class="overlap-label-icon"></label>
-            <label data-role="none" class="overlap-label-text" for="month">重新載入30天歷史訊息</label>
-
-            <input type="radio" data-role="none" name="selectDateFrom" id="skip" value='skip'>
-            <label data-role="none" class="overlap-label-icon"></label>
-            <label data-role="none" class="overlap-label-text" for="skip">不載入歷史訊息</label>
+            <p>
+                <input type="radio" data-role="none" name="selectDateFrom" id="month" value='month' checked="checked">
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="month">
+                    <!--重新載入30天歷史訊息-->
+                    <span class="langStr" data-id="str_033"></span>
+                </label>
+            </p>
+            <p>
+                <input type="radio" data-role="none" name="selectDateFrom" id="skip" value='skip'>
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="skip">
+                    <!--不載入歷史訊息-->
+                    <span class="langStr" data-id="str_034"></span>
+                </label>
+            </p>
 
             <hr class="hr-style">
 
             <div class="bottom">
                 <div class="button-content">
-                    <span id="selectMsgDateFromOK">確定</span>
+                    <span id="selectMsgDateFromOK">
+                        <!--確定-->
+                        <span class="langStr" data-id="str_016"></span>
+                    </span>
                 </div>
             </div>
 
@@ -114,15 +143,24 @@
 
     <div data-role="popup" data-history="false" id="deleteConfirm" class="popup-div" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content">
-            <p>確定刪除公告嗎？</p>
+            <p>
+                <!--確定刪除公告嗎？-->
+                <span class="langStr" data-id="str_042"></span>
+            </p>
 
             <hr class="hr-style">
 
             <div class="bottom">
                 <div class="button-content">
-                    <div id="cancel">取消</div>
+                    <div id="cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="str_023"></span>
+                    </div>
                     <div class="vertical-line">&nbsp;</div>
-                    <div id="yes">刪除</div>
+                    <div id="yes">
+                        <!--刪除-->
+                        <span class="langStr" data-id="str_037"></span>
+                    </div>
                 </div>
             </div>
         </div>
