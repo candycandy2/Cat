@@ -25,6 +25,10 @@ class ProjectService
         return $projectId;
     }
 
+    public function updateProject($db, $projectCode, $projectDescription, $projectMemo, $projectPm, $updatedUser, $updatedAt){
+        $this->projectRepository->updateProject($db, $projectCode, $projectDescription, $projectMemo, $projectPm, $updatedUser, $updatedAt);
+    }
+
     public function getProjectCode($db){
         $newProjectCode = 0;
         $maxProjectCode = $db->table("qp_project")->max('project_code');

@@ -20,15 +20,14 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
-            <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
             <th data-field="app_key" data-sortable="true" data-width="20%">{{trans("messages.APP_KEY")}}</th>
             <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-width="10%" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
             <th data-field="secret_key" data-sortable="true">Secret Key</th>
             <th data-field="project_pm" data-sortable="true">{{trans("messages.PROJECT_PM")}}</th>
-            <th data-field="app_row_id" data-sortable="false" data-formatter="customApiFormatter" >Custom Api</th>
-            <th data-field="row_id" data-sortable="false"   data-width="10%" data-formatter="sendAgainFormatter" >Send To Me</th>
+            <th data-field="app_row_id" data-sortable="false" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
+            <th data-field="row_id" data-sortable="false"   data-width="10%" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_TO_ME")}}</th>
         </tr>
         </thead>
     </table>
@@ -42,7 +41,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                     <h1 class="modal-title" id="newProjectDialogTitle">New App Key</h1>
                 </div>
                 <div class="modal-body">
-                    <form id="appKeyForm" name="appKeyForm">
+                    <form id="projectForm" name="projectForm">
                         <table  width="100%">
                             <tr>
                                 <td>{{trans("messages.APP_KEY")}}:</td>
@@ -76,8 +75,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                                     converted to lowercase English letters.</p>
                                 </td>
                             </tr>
-                            <input type="text" name="hidAction" id="hidAction">
-                            <input type="text" name="hidProjectId" id="hidProjectId">
                         </table>
                     </form>
                 </div>
@@ -91,15 +88,15 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
 @endsection
 
     <script>
-        function customApiFormatter(value, row) {
-            return '<a class="btn btn-default" href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '">Maintain</a>';
+        function appMaintainFormatter(value, row) {
+            return '<a class="btn btn-default" href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '">{{trans("messages.ACTION_MAINTAIN")}}</a>';
         };
 
         function sendAgainFormatter(value, row) {
-            return '<a class="btn btn-success" href="appDetailMaintain?app_row_id=' + row.app_row_id + '">Send Again</a>';
+            return '<a class="btn btn-success" href="appDetailMaintain?app_row_id=' + row.app_row_id + '">{{trans("messages.ACTION_SEND")}}</a>';
         };
         function projectCodeFormatter(value, row) {
-            return '<a href="projectDetailMaintain?action=U&project_id=' + row.row_id + '">' + value + '</a>';
+            return '<a href="projectDetailMaintain?project_id=' + row.row_id + '">' + value + '</a>';
         };
 
         var toLower = function (c) {
@@ -107,18 +104,14 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         };
 
         var saveNewProject = function(){
-            $form = $("#appKeyForm");
-            $form.find("#hidAction").val("N");
+            $form = $("#projectForm");
             $form.submit();
-            $("#newProjectDialog").modal('hide');
         };
 
         var newProject = function() {
             $("#txbAppKey").val("");
             $("#tbxProjectPM").val("");
             $("#tbxProjectDescription").val("");
-            $("#hidAction").val("");
-            $("#hidProjectId").val("");
             $("#newProjectDialog").find('label.error').hide();
             $("#newProjectDialog").modal('show');
         };
@@ -160,8 +153,8 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                         if(d.result_code != 1) {
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
-                            $("#gridProjectList").bootstrapTable('refresh');
                             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            $("#gridProjectList").bootstrapTable('refresh');
                         }
                     },
                     error: function (e) {
@@ -193,55 +186,51 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             $('#gridProjectList').on('load-success.bs.table', selectedChanged);
 
 
-            $("#appKeyForm").validate({
-                // rules:{
-                //     txbAppKey:{
-                //         required:true
-                //     },
-                //     tbxProjectPM:{
-                //         required:true
-                //     },
-                //     tbxProjectDescription:{
-                //         required:true
-                //     }
-                    
-                // }, 
+            $("#projectForm").validate({
+                rules:{
+                    txbAppKey:{
+                        required:true
+                    },
+                    tbxProjectPM:{
+                        required:true
+                    }
+                },
                 submitHandler: function(form) {
                     var mydata =
                     {
-                        hidAction: $("#hidAction").val(),
-                        hidProjectId: $("#hidProjectId").val(),
                         txbAppKey: $("#txbAppKey").val(),
                         tbxProjectPM: $("#tbxProjectPM").val(),
                         tbxProjectDescription: $("#tbxProjectDescription").val(),
                     };
                     var mydataStr = $.toJSON(mydata);
                   $("#gridProjectList").bootstrapTable('refresh');
-                    // $.ajax({
-                    //     url: "platform/saveProject",
-                    //     dataType: "json",
-                    //     type: "POST",
-                    //     contentType: "application/json",
-                    //     data: mydataStr,
-                    //     success: function (d, status, xhr) {
-                    //         if(d.result_code != 1) {
-                    //             $('label.error').remove();
-                    //             if(d.result_code == '999001'){
-                    //                 for(var key in d.message){
-                    //                         $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
-                    //                 }
-                    //             }
-                    //             return false;
-                    //         }  else {
-                    //             $("#newProjectDialog").hide();
-                    //             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                    //             $("#gridProjectList").bootstrapTable('refresh');
-                    //         }
-                    //     },
-                    //     error: function (e) {
-                    //           showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-                    //     }
-                    // });
+                    $.ajax({
+                        url: "platform/newProject",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: mydataStr,
+                        success: function (d, status, xhr) {
+                            if(d.result_code != 1) {
+                                $('label.error').remove();
+                                if(d.result_code == '999001'){
+                                    for(var key in d.message){
+                                            $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
+                                    }
+                                }else{
+                                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                                }
+                                return false;
+                            }  else {
+                                $("#newProjectDialog").modal('hide');
+                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                                $("#gridProjectList").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function (e) {
+                              showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                        }
+                    });
                 }
             });
 

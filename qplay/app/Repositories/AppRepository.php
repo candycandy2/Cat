@@ -5,7 +5,15 @@ use DB;
 
 class AppRepository
 {
-
+    /**
+     * [insertAppHead description]
+     * @param  String $db          datasource
+     * @param  String $projectId   qp_project.row_id
+     * @param  String $appKey      appKey
+     * @param  Date   $createdAt   創建時間
+     * @param  String $createdUser 創建人
+     * @return Int                 新增資料的row_id
+     */
     public function insertAppHead($db, $projectId, $appKey, $createdAt, $createdUser){
 
          $newAppRowId = \DB::connection($db)->table("qp_app_head")

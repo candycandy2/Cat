@@ -53,7 +53,8 @@ Route::any('/push/pushSecretaryMessage', 'pushController@pushSecretaryMessage');
 
 Route::any('/platform/getProjectList', 'platformController@getProjectList');
 Route::any('/platform/deleteProject', 'platformController@deleteProject');
-Route::any('/platform/saveProject', 'platformController@saveProject');
+Route::any('/platform/newProject', 'platformController@newProject');
+Route::any('/platform/updateProject', 'platformController@updateProject');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');

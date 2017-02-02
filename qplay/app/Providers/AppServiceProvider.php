@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Validator;
 use DB;
+use App\lib\CommonUtil;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,14 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
             return false;
+        });
+
+        Validator::extend('is_app_key_unique', function($attribute, $value, $parameters, $validator) {
+            $existList = \DB::connection('mysql_production')->table("qp_project")->where("app_key", '=', CommonUtil::getContextAppKey('test',$value))->select()->get();
+            if(count($existList) > 0) {
+                return false;
+            }
+            return true;
         });
     }
 
