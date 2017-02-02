@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "最后更新 [yyyy/mm/dd hh:mm]",
+    "definition": "最后更新",
     "context": "",
     "term_plural": "",
     "reference": "",
