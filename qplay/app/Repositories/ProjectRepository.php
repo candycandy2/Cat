@@ -19,7 +19,7 @@ class ProjectRepository
      * @param  String $projectDescription 專案描述
      * @param  String $projectPm          專案PM
      * @param  Strgin $createdUser        創建者
-     * @param  Date $createdAt            創建時間
+     * @param  Strgin $createdAt          創建時間
      * @return int                        the app_row_id that you inserted
      */
     public function insertProject($db, $appKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){

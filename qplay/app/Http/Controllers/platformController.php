@@ -1334,6 +1334,11 @@ class platformController extends Controller
         return null;
     }
 
+    /**
+     * 新增專案
+     * @param  Request $request  Form Post Request
+     * @return json   
+     */
     public function newProject(Request $request) {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -1387,6 +1392,11 @@ class platformController extends Controller
         return null;
     }
 
+    /**
+     * 更新專案
+     * @param  Request $request Form Post Request
+     * @return json
+     */
     public function updateProject(Request $request) {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {

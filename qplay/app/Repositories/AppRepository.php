@@ -1,4 +1,8 @@
 <?php
+/**
+ * App 的Resository
+ * @author  Cleo.W.Chan cleo.w.chan@benq.com
+ */
 namespace App\Repositories;
 
 use DB;
@@ -6,11 +10,11 @@ use DB;
 class AppRepository
 {
     /**
-     * [insertAppHead description]
+     * 寫入qp_app_head 資料表
      * @param  String $db          datasource
      * @param  String $projectId   qp_project.row_id
      * @param  String $appKey      appKey
-     * @param  Date   $createdAt   創建時間
+     * @param  String $createdAt   創建時間
      * @param  String $createdUser 創建人
      * @return Int                 新增資料的row_id
      */
@@ -28,6 +32,14 @@ class AppRepository
         return $newAppRowId;
     }
 
+    /**
+     * 寫入qp_app_lint資料表
+     * @param  String $db          datasource
+     * @param  Int    $appRowId    qp_app_head.row_id
+     * @param  String $appKey      app_key
+     * @param  String $createdAt   創建時間
+     * @param  String $createdUser 創建人
+     */
     public function insertAppLine($db, $appRowId, $appKey, $createdAt, $createdUser){
         \DB::connection($db)->table("qp_app_line")
             -> insert(
