@@ -39,6 +39,7 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
+var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
 
