@@ -71,11 +71,17 @@ function checkNetwork(data) {
     } else {
         //----Network connected
         //Maybe these following situation happened.
-        //1. status = 200, request succeed, but timeout 3000
         if (data !== null) {
+            //1. status = 200, request succeed, but timeout 3000
             if (data.status !== 200) {
                 showMsg = true;
                 showNetworkDisconnected = true;
+            }
+            //2. status = timeout (Network status display ["canceled"])
+            if (data.statusText === "timeout") {
+                showMsg = true;
+                showNetworkDisconnected = true;
+                reStartAPP = true;
             }
         }
     }
@@ -90,6 +96,11 @@ function checkNetwork(data) {
             $('#disconnectNetwork').hide();
 
             showNetworkDisconnected = false;
+
+            if (reStartAPP) {
+                reStartAPP = false;
+                location.reload();
+            }
         });
     }
 }
