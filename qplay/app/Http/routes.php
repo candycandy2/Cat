@@ -180,5 +180,8 @@ Route::any('testJpush', ['middleware' => 'auth', function() {
 }]);
 Route::any('test/jpushTest', 'testController@jpushTest');
 
-
+Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
+    return view("tool/sync_jpush_tags_tool");
+}]);
+Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 

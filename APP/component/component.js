@@ -10,6 +10,8 @@ var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
+var browserLanguage;
+var langStr = {};
 
 var loginData = {
     versionName:         "",
@@ -37,6 +39,7 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
+var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
 
@@ -244,33 +247,37 @@ $(document).one("pagebeforecreate", function(){
         }(value));
     });
 
-    //add component view template into index.html
-    $.get("View/component.html", function(data) {
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-        $.mobile.pageContainer.append(data);
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-        //Set viewInitial become the inde page
-        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
-
-        //If is other APP, set APP name in initial page
-        if (appKey !== qplayAppKey) {
-            $("#initialAppName").html(initialAppName);
-        }
-
-        //viewNotSignedIn, Login Again
-        $("#LoginAgain").on("click", function() {
-            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var checkAppVer = new checkAppVersion();
-        });
-    }, "html");
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        //language string exist
+        getLanguageString();
+    })
+    .fail(function() {
+        //language string does not exist
+        browserLanguage = "zh-tw";
+        getLanguageString();
+    });
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
-
         if (device.platform === "Android") {
+            $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            $(".ui-header-fixed").css("position", "fixed");
+
             var version = device.version.substr(0, 1);
-            if (version === "5") {
-                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            if (version === "6") {
+                $(".ui-footer-fixed").css("position", "fixed");
             }
         }
 
@@ -615,7 +622,6 @@ function setWhiteList() {
         }
 
         $(".ui-title").on("taphold", function(){
-
             //Set for iOS, control text select
             document.documentElement.style.webkitTouchCallout = "none";
             document.documentElement.style.webkitUserSelect = "none";

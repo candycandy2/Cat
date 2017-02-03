@@ -211,7 +211,7 @@
 
         var tryLogin = function () {
             var userName = $("#tbxName").val();
-            var password = $("#tbxPassword").val();
+            var password = encodeURI($("#tbxPassword").val());
             var company = $("#ddlCompany").val();
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
                 showMessage("帳號 / 密碼 / 公司 不能為空 !");
