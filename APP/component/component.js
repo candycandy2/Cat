@@ -234,17 +234,6 @@ app.initialize();
 /********************************** jQuery Mobile Event *************************************/
 $(document).one("pagebeforecreate", function(){
 
-    //Browser default language, according to the mobile device language setting
-    //navigator.language: en-US / zh-CN / zh-TW
-    //Set language string in langStr.
-    browserLanguage = navigator.language.toLowerCase();
-
-    $.getJSON("string/" + browserLanguage + ".json", function(data) {
-        for (var i=0; i<data.length; i++) {
-            langStr[data[i].term] = data[i].definition;
-        }
-    });
-
     $(':mobile-pagecontainer').html("");
 
     //According to the data [pageList] which set in index.js ,
@@ -258,39 +247,30 @@ $(document).one("pagebeforecreate", function(){
         }(value));
     });
 
-    //add component view template into index.html
-    $.get("View/component.html", function(data) {
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-        $.mobile.pageContainer.append(data);
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-        //Set viewInitial become the inde page
-        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
-
-        //If is other APP, set APP name in initial page
-        if (appKey !== qplayAppKey) {
-            $("#initialAppName").html(initialAppName);
-        }
-
-        //viewNotSignedIn, Login Again
-        $("#LoginAgain").on("click", function() {
-            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var checkAppVer = new checkAppVersion();
-        });
-
-        //After all template load finished, processing language string
-        $(".langStr").each(function(index, element){
-            var id = $(element).data("id");
-
-            $(".langStr[data-id='" + id + "']").each(function(index, element){
-                $(this).html(langStr[id]);
-            });
-        });
-
-    }, "html");
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        //language string exist
+        getLanguageString();
+    })
+    .fail(function() {
+        //language string does not exist
+        browserLanguage = "zh-tw";
+        getLanguageString();
+    });
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
-
         if (device.platform === "Android") {
             $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
             $(".ui-header-fixed").css("position", "fixed");
