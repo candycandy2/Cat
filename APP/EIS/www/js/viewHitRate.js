@@ -1,15 +1,18 @@
-$(document).one("pagebeforecreate", function(){
+$(document).one("pagebeforecreate", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
 
-    $(document).on("pageshow", function(){
+    $(document).on("pageshow", function() {
 		var chart;
-		$(document).ready(function(){
+		$(document).ready(function() {
 			chart = new Highcharts.Chart({
         		chart: {
-        			renderTo: 'highcharts-1',
+        			renderTo: 'highcharts',
             		type: 'column'
         		},
+				title: {
+        			text: ''
+    			},
         		xAxis: {
 			    	categories: [
 			        	'BQA',
@@ -23,7 +26,7 @@ $(document).one("pagebeforecreate", function(){
 				yAxis: {
 			    	min: 0,
 			    	title: {
-			        	text: 'Rainfall (mm)'
+			        	text: ''
 			    	}
 				},
 				tooltip: {
@@ -53,17 +56,49 @@ $(document).one("pagebeforecreate", function(){
 	});
 });
 
+
+
 $(document).one("pagecreate", "#viewHitRate", function(){
 
     $("#viewHitRate").pagecontainer({
         create: function(event, ui) {
+        	$(".fragment-1").show();
+			$(".fragment-2").hide();
+			$(".fragment-3").hide();
         }
     });
 
+    $("#mypanel #panel-sub-header").on("click", function(){
+    	$("#viewHitRate").hide();
+    	$("#viewMonthlyHitRate").show();
+    	$("#mypanel").panel("close");
+    });
 
+    $(".page-tabs #tab-1").on("click", function(){
+    	$(".fragment-1").show();
+		$(".fragment-2").hide();
+		$(".fragment-3").hide();
+    });
 
+    $(".page-tabs #tab-2").on("click", function(){
+    	$(".fragment-1").hide();
+		$(".fragment-2").show();
+		$(".fragment-3").hide();
+	});
 
+    $(".page-tabs #tab-3").on("click", function(){
+    	$(".fragment-1").hide();
+		$(".fragment-2").hide();
+		$(".fragment-3").show();
+	});
+
+	$(".viewIndex").on( "swiperight", function(event){
+		if($(".ui-page-active").jqmData("panel") !== "open"){
+			$("#mypanel").panel( "open");
+		}
+	});
 
     $(".menu-btn").on("click", function(){
+    	$("#mypanel").panel("open");
     });
 });

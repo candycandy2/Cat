@@ -12,14 +12,14 @@ var panel = htmlContent
         +   '<div id="panel-header">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Sales Analysis</span>'
         +   '</div>'
-        +   '<div class="panel-content">'   
+        +   '<div class="panel-content" id="panel-header-content">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Hit Rate</span>'
         +   '</div>'
         +   '<div id="panel-sub-header">'
-        +        '<span class="panel-text" href="#viewMonthlyHitRate" style="line-height:7.5VH;">Monthly Hit Rate Trend</span>'
+        +       '<span class="panel-text" style="line-height:7.5VH;">Monthly Hit Rate Trend</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="underscore">'
-        +        '<span class="panel-text" style="line-height:7.5VH;">YTD Hit Rate Trend</span>'
+        +   '<div class="panel-content" id="panel-sub-header-content">'
+        +       '<span class="panel-text" style="line-height:7.5VH;">YTD Hit Rate Trend</span>'
         +   '</div>'
         +'</div>';
 
