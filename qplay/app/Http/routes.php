@@ -55,6 +55,7 @@ Route::any('/platform/getProjectList', 'platformController@getProjectList');
 Route::any('/platform/deleteProject', 'platformController@deleteProject');
 Route::any('/platform/newProject', 'platformController@newProject');
 Route::any('/platform/updateProject', 'platformController@updateProject');
+Route::any('/platform/sendProjectInformation', 'platformController@sendProjectInformation');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');

@@ -58,4 +58,25 @@ class ProjectRepository
         ]);
     }
 
+    /**
+     * 用appKey取得專案資訊
+     * @param  String $appKey appKey
+     * @return mixed          取得資料回傳Data Object,若查無資料則回傳null
+     */
+    public static function getProjectInfoByAppKey($appKey)
+    {
+        $projectList = \DB::table('qp_project')
+            -> where('app_key', '=', $appKey)
+            -> select('row_id',
+                    'secret_key',
+                    'project_code',
+                    'project_pm',
+                    'project_memo',
+                    'project_description')->get();
+        if(count($projectList) < 1) {
+            return null;
+        }
+
+        return $projectList[0];
+    }
 } 

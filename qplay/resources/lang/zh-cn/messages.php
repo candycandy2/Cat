@@ -274,8 +274,8 @@ return [
 	'PROJECT_MEMO' => 'Memo',
     'APP_MAINTAIN' => 'App 维护',
     'ACTION_MAINTAIN' => '维护',
-    'SEND_TO_ME' => '取得详细资讯',
-    'ACTION_SEND' => '取得',
+    'SEND_TO_ME' => '寄送详细资讯',
+    'ACTION_SEND' => '再寄一次',
 	'MSG_CONFIRM_DELETE_PROJECT' => '确认删除所选专案?',
 
 	'ERR_EXIST_ROLE' => '角色在当前公司内已存在!',

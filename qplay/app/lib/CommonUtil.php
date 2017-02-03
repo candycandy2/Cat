@@ -126,14 +126,16 @@ class CommonUtil
         return $userList[0];
     }
 
-    public static function getUserInfoJustByUserID($loginId, $domain)
+    public static function getUserInfoJustByUserID($loginId, $domain=null)
     {
-        $userList = \DB::table('qp_user')
+        $query = \DB::table('qp_user')
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
-            -> where('qp_user.login_id', '=', $loginId)
-            -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')->get();
+            -> where('qp_user.login_id', '=', $loginId);
+        if(!is_null($domain)){
+            $query -> where('qp_user.user_domain', '=', $domain);
+        }
+         $userList= $query -> select('qp_user.row_id','emp_no','email')->get();
         if(count($userList) < 1) {
             return null;
         }

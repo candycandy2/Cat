@@ -10,15 +10,17 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use DB;
 use App\Services\ProjectService;
+use App\Repositories\ProjectRepository;
 
 class platformController extends Controller
 {   
 
     protected $projectService;
 
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, ProjectRepository $projectRepository)
     {
         $this->projectService = $projectService;
+        $this->projectRepository = $projectRepository;
     }
 
     public function process()
@@ -1354,9 +1356,10 @@ class platformController extends Controller
             $app_key = $jsonContent['txbAppKey'];
             $project_pm = $jsonContent['tbxProjectPM'];
             $project_description = $jsonContent['tbxProjectDescription'];
-
+            $mailTo = array(\Auth::user()->email);
             \DB::beginTransaction();
              try{
+
                 $now = date('Y-m-d H:i:s',time());
                 $validator = \Validator::make($request->all(), [
                 'txbAppKey' => 'required|regex:/^[a-z]*$/|max:50|is_app_key_unique',
@@ -1379,11 +1382,23 @@ class platformController extends Controller
                $this->projectService->newProject('mysql_dev',
                 CommonUtil::getContextAppKey('dev',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-                \DB::commit();
+               \DB::commit();
+
+               //send project information
+               $pm = CommonUtil::getUserInfoJustByUserID($project_pm);
+               $envAppKey =  CommonUtil::getContextAppKey(\Config::get('app.env'),$app_key);
+
+               array_push($mailTo,$pm->email);
+               $mailTo = array_unique($mailTo);
+               $projectInfo = $this->projectRepository->getProjectInfoByAppKey($envAppKey);
+               $secretKey =  $projectInfo->secret_key;
+                
+               $this->projectService->sendProjectInformation('mysql_test', $mailTo, $envAppKey, $secretKey);
+                   
             }catch (\Exception $e) {
 
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+               return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
            
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
@@ -1444,6 +1459,44 @@ class platformController extends Controller
 
         }
 
+        return null;
+    }
+
+    public function sendProjectInformation(Request $request){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+         $validator = \Validator::make($request->all(), [
+            'appKey' => 'required|regex:/^[a-z]*$/|max:50|is_app_key_unique',
+            ]);
+        
+        CommonUtil::setLanguage();
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $app_key = $jsonContent['appKey'];
+            
+            try{
+                
+                $mailTo = array(\Auth::user()->email);
+                $projecyInfo = $this->projectRepository->getProjectInfoByAppKey($app_key);
+                $pm = CommonUtil::getUserInfoJustByUserID($projecyInfo->project_pm);
+                array_push($mailTo,$pm->email);
+                $mailTo = array_unique($mailTo);
+
+                $this->projectService->sendProjectInformation('mysql_test', $mailTo, $app_key, $projecyInfo->secret_key);
+
+            }catch (\Exception $e) {    
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            }
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
         return null;
     }
 }

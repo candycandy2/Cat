@@ -47,7 +47,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                                 <td>{{trans("messages.APP_KEY")}}:</td>
                                 <td style="padding: 10px;">
                                     <input type="text" data-clear-btn="true" class="form-control" name="txbAppKey"
-                                           id="txbAppKey" value="" onchange="toLower(this)"/>
+                                           id="txbAppKey" value=""  maxlength="50" onchange="toLower(this)"/>
                                 </td>
                                 <td><span style="color: red;">*</span></td>
                             </tr>
@@ -93,7 +93,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         };
 
         function sendAgainFormatter(value, row) {
-            return '<a class="btn btn-success" href="appDetailMaintain?app_row_id=' + row.app_row_id + '">{{trans("messages.ACTION_SEND")}}</a>';
+            return '<a class="btn btn-success" onclick="sendProjectInformation(\''+row.app_key+'\')">{{trans("messages.ACTION_SEND")}}</a>';
         };
         function projectCodeFormatter(value, row) {
             return '<a href="projectDetailMaintain?project_id=' + row.row_id + '">' + value + '</a>';
@@ -177,6 +177,33 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             }
         }
 
+        var sendProjectInformation = function(appKey){
+            var mydata =
+                    {
+                        appKey:appKey,   
+                    };
+                    var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                        url: "platform/sendProjectInformation",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: mydataStr,
+                        success: function (d, status, xhr) {
+                            if(d.result_code != 1) {
+                                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                                return false;
+                            }  else {
+                                $("#newProjectDialog").modal('hide');
+                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                                $("#gridProjectList").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function (e) {
+                              showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                        }
+                    });
+        }
 
         $(function() {
             $('#gridProjectList').on('check.bs.table', selectedChanged);
@@ -189,7 +216,8 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             $("#projectForm").validate({
                 rules:{
                     txbAppKey:{
-                        required:true
+                        required:true,
+                        maxlength: 50
                     },
                     tbxProjectPM:{
                         required:true
