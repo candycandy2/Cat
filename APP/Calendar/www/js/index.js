@@ -3,7 +3,7 @@
 var appKeyOriginal = "appcalendar";
 var appKey = "appcalendar";
 var pageList = ["viewDataInput", "viewQueryResult"];
-var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
+var appSecretKey = "b995b55664772ba4784628c0993e3074";
 
 var employeeData = {};
 var employeeSelectedIndex;
