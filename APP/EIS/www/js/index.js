@@ -36,7 +36,6 @@ window.initialSuccess = function() {
     // });
 
 }
-
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
