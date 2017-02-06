@@ -12,6 +12,7 @@ var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
 var browserLanguage;
 var langStr = {};
+var logFileName;
 
 var loginData = {
     versionName:         "",
@@ -104,6 +105,13 @@ var app = {
         if (device.platform === "iOS") {
             $.mobile.hashListeningEnabled = false;
         }
+
+        //Log -
+        //get now year + month
+        var now = new Date();
+        logFileName = now.getFullYear().toString() + padLeft(parseInt(now.getMonth() + 1, 10).toString(), 2);
+        //console.log(cordova.file);
+        LogFile.checkOldFile();
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
