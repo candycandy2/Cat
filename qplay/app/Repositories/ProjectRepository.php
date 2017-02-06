@@ -15,6 +15,7 @@ class ProjectRepository
      * 寫入qplay 專案表 qp_project
      * @param  String $db                 datasource
      * @param  String $appKey             appKey
+     * @param  String $secretKey          secretKey 0-9A-za-z 32位元亂數
      * @param  String $projectCode        專案代碼
      * @param  String $projectDescription 專案描述
      * @param  String $projectPm          專案PM
@@ -22,8 +23,8 @@ class ProjectRepository
      * @param  Strgin $createdAt          創建時間
      * @return int                        the app_row_id that you inserted
      */
-    public function insertProject($db, $appKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
-        $secretKey = hash('md5', CommonUtil::generateRandomString());
+    public function insertProject($db, $appKey, $secretKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
+        
         $newProjectId = \DB::connection($db)->table("qp_project")
         -> insertGetId([
             'project_code'=>$projectCode,

@@ -24,6 +24,7 @@ class ProjectService
      * 新增專案
      * @param  String $db                 datasource
      * @param  String $appKey             app_key
+     * @param  String $secretKey          secretKey 0-9A-za-z 32位元亂數
      * @param  String $projectCode        專案代碼(三位數代碼 ex: 000,001,002)
      * @param  String $projectDescription 專案描述
      * @param  String $projectPm          專案PM
@@ -31,9 +32,9 @@ class ProjectService
      * @param  Strgin $createdAt          創建時間
      * @return Int                        新增的project_row_id
      */
-    public function newProject($db, $appKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
+    public function newProject($db, $appKey, $secretKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
 
-        $projectId = $this->projectRepository->insertProject($db, $appKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt);
+        $projectId = $this->projectRepository->insertProject($db, $appKey, $secretKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt);
         $appRowId = $this->appRepository->insertAppHead($db, $projectId, $appKey, $createdAt, $createdUser);
         $this->appRepository->insertAppLine($db, $appRowId, $appKey, $createdAt, $createdUser);
         return $projectId;

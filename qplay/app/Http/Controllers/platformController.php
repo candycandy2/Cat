@@ -1371,16 +1371,17 @@ class platformController extends Controller
                 }
                
                 $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
+                $secretKey = hash('md5', CommonUtil::generateRandomString());
                 $dbArr = CommonUtil::getAllEnv();
            
                $newProjectId =  $this->projectService->newProject('mysql_production', 
-                CommonUtil::getContextAppKey('production',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                CommonUtil::getContextAppKey('production',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
                $this->projectService->newProject('mysql_test',
-                CommonUtil::getContextAppKey('test',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                CommonUtil::getContextAppKey('test',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
                $this->projectService->newProject('mysql_dev',
-                CommonUtil::getContextAppKey('dev',$app_key), $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                CommonUtil::getContextAppKey('dev',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
                \DB::commit();
 
