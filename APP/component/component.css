@@ -68,6 +68,8 @@ body, input, select, textarea, button, .ui-btn {
     line-height: 1;
 }
 
+.ui-title>div{ font-size: 5vw; font-weight: normal; pointer-events: none;}
+
 /* variable, function, style for All APP */
 body {
     font-family: "Arial", "微軟中黑體";
