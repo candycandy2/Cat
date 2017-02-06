@@ -64,7 +64,9 @@
 
 }
 
-
+ul {
+	list-style-type: none;
+}
 /*#viewHitRate .allitem{
 	background-color: #f2f2f3;
 	height: 30VH;
