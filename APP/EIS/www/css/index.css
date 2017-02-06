@@ -67,6 +67,45 @@
 ul {
 	list-style-type: none;
 }
+
+.item{
+	height: 5.9VH;
+}
+
+.data {
+	border:0.1px;
+    border-style: solid;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+ 	border-color: #000;
+    float: right;
+    margin-top: -3.8VH;
+    margin-right: 9VW;
+}
+
+.AS{
+	margin-left: 7VW;
+}
+
+.HR{
+	margin-left: 8VW;
+}
+
+.YR{
+	margin-left: 11VW;
+	margin-right: 10VW
+}
+
+#total{
+	border:0.3px;
+    border-style: solid;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+ 	border-color: #323232;
+ 	background-color: #c6c6c6;
+}
 /*#viewHitRate .allitem{
 	background-color: #f2f2f3;
 	height: 30VH;
