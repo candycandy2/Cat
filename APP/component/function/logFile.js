@@ -23,7 +23,7 @@ var LogFile = {
         var nowDate = new Date();
         var old = nowDate.setMonth(nowDate.getMonth() - 2);
         var oldDate = new Date(old);
-        var oldFile = oldDate.getFullYear().toString() + parseInt(oldDate.getMonth() + 1, 10).toString();
+        var oldFile = oldDate.yyyymm("");
 
         this.removeFile(oldFile);
     },
@@ -107,8 +107,9 @@ var LogFile = {
                         "Log": dataArr[2]
                     }
                 }
-
+                //console.log(logObj);
                 var logJSON = JSON.stringify(logObj);
+                //console.log(logJSON);
 
                 //new log content
                 var dataObj = new Blob([logJSON], { type: 'text/plain' });

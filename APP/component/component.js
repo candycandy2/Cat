@@ -109,7 +109,7 @@ var app = {
         //Log -
         //get now year + month
         var now = new Date();
-        logFileName = now.getFullYear().toString() + padLeft(parseInt(now.getMonth() + 1, 10).toString(), 2);
+        logFileName = now.yyyymm("");
         //console.log(cordova.file);
         LogFile.checkOldFile();
     },
