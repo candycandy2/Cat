@@ -16,6 +16,12 @@ Date.prototype.yyyymmdd = function(symbol) {
     return yyyy + symbol + (mm[1] ? mm : '0' + mm[0]) + symbol + (dd[1] ? dd : '0' + dd[0]);
 };
 
+Date.prototype.yyyymm = function(symbol) {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth() + 1).toString();
+    return yyyy + symbol + (mm[1] ? mm : '0' + mm[0]);
+};
+
 Date.prototype.mmdd = function(symbol) {
     var mm = (this.getMonth() + 1).toString();
     var dd = this.getDate().toString();
