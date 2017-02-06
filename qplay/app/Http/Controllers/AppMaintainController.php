@@ -434,7 +434,7 @@ class AppMaintainController extends Controller
         $appRowId = $input["app_row_id"];
         $customApiList = \DB::table("qp_app_custom_api")
                 -> where('app_row_id', '=', $appRowId)
-                -> select('row_id', 'api_version', 'api_action', 'api_url')
+                -> select('row_id', 'api_version', 'api_action', 'api_url','app_key')
                 -> get();
 
         return response()->json($customApiList);

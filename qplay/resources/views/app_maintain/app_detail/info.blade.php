@@ -89,10 +89,11 @@
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
                             <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
-                            <th data-field="api_action" data-sortable="false" data-formatter="customApiActionFormatter">{{trans('messages.CUSTOM_API_ACTION')}}</th>
-                            <th data-field="api_version" data-sortable="false">{{trans('messages.CUSTOM_API_VERSION')}}</th>
-                            <th data-field="api_url" data-sortable="false">{{trans('messages.CUSTOM_API_URL')}}</th>
-                            
+                            <th data-field="app_key" data-sortable="false" data-visible="false">AppKey</th>
+                            <th data-field="api_action" data-sortable="false" data-formatter="customApiActionFormatter" data-class="grid_warp_column" data-width="200px">{{trans('messages.CUSTOM_API_ACTION')}}</th>
+                            <th data-field="api_version" data-sortable="false" data-class="grid_warp_column">{{trans('messages.CUSTOM_API_VERSION')}}</th>
+                            <th data-field="api_url" data-sortable="false" data-class="grid_warp_column">{{trans('messages.CUSTOM_API_URL')}}</th>
+                            <th data-field="api_action" data-sortable="false" data-formatter="qplayCustomApiUrlFormatter" data-class="grid_warp_column">QPlay Custom API URl</th>
                         </tr>
                         </thead>
                     </table>
@@ -516,6 +517,10 @@
 
     function customApiActionFormatter(value, row){
         return '<a href="#" class="editCustomApi" data-rowid="'+ row.row_id  +'"> '+ value +'</a>';
+    }
+
+    function qplayCustomApiUrlFormatter(value, row){
+        return '{{\Config::get('app.api_url')}}' + '/qplayApi/public/'+row.api_version+'/custom/'+row.app_key+'/' + value;
     }
 
     var deleteCustomApi = function() {

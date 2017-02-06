@@ -97,6 +97,9 @@ if(array_key_exists('with_msg_id', $input)) {
             overflow:hidden;
             text-overflow:ellipsis;
         }
+        td.grid_warp_column {
+            word-break:break-all;
+        }
         .error{
             color: red;
         }

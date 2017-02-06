@@ -22,12 +22,12 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         <tr>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
-            <th data-field="app_key" data-sortable="true" data-width="20%">{{trans("messages.APP_KEY")}}</th>
-            <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-width="10%" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
-            <th data-field="secret_key" data-sortable="true">Secret Key</th>
+            <th data-field="project_code" data-align="center" data-sortable="true" data-width="50px" data-formatter="editProjectFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
+            <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
+            <th data-field="secret_key" data-sortable="true" data-class="grid_warp_column">Secret Key</th>
             <th data-field="project_pm" data-sortable="true">{{trans("messages.PROJECT_PM")}}</th>
-            <th data-field="app_row_id" data-sortable="false" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
-            <th data-field="row_id" data-sortable="false"   data-width="10%" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_TO_ME")}}</th>
+            <th data-field="app_row_id" data-sortable="false" data-width="200px" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
+            <th data-field="row_id" data-sortable="false" data-width="200px" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_TO_ME")}}</th>
         </tr>
         </thead>
     </table>
@@ -89,13 +89,13 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
 
     <script>
         function appMaintainFormatter(value, row) {
-            return '<a class="btn btn-default" href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '">{{trans("messages.ACTION_MAINTAIN")}}</a>';
+            return '<a href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{trans("messages.ACTION_MAINTAIN")}}</a>';
         };
 
         function sendAgainFormatter(value, row) {
-            return '<a class="btn btn-success" onclick="sendProjectInformation(\''+row.app_key+'\')">{{trans("messages.ACTION_SEND")}}</a>';
+            return '<a onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
         };
-        function projectCodeFormatter(value, row) {
+        function editProjectFormatter(value, row) {
             return '<a href="projectDetailMaintain?project_id=' + row.row_id + '">' + value + '</a>';
         };
 

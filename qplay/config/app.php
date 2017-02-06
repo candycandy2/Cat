@@ -52,6 +52,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'api_url' => env('API_URL'),
     
     'upload_folder' => env('APP_UPLOAD_FOLDER', 'app'),
 
