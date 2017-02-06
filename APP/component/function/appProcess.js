@@ -51,6 +51,13 @@ function callQPlayAPI(requestType, requestAction, successCallback, failCallback,
 
     function requestSuccess(data) {
         checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
+
+        var dataArr = [
+            "Call API",
+            requestAction,
+            data['result_code']
+        ];
+        LogFile.createAndWriteFile(dataArr);
     }
 
     function requestError(data) {
@@ -93,6 +100,7 @@ function checkNetwork(data) {
     //2. cellular > 3G / 4G
     //3. none
     var showMsg = false;
+    var logMsg = "";
 
     if (!navigator.onLine) {
         //----Network disconnected
@@ -108,6 +116,7 @@ function checkNetwork(data) {
             showNetworkDisconnected = true;
         }
 
+        logMsg = "Network disconnected";
     } else {
         //----Network connected
         //Maybe these following situation happened.
@@ -116,12 +125,14 @@ function checkNetwork(data) {
             if (data.status !== 200) {
                 showMsg = true;
                 showNetworkDisconnected = true;
+                logMsg = "Network status=200, timeout";
             }
             //2. status = timeout (Network status display ["canceled"])
             if (data.statusText === "timeout") {
                 showMsg = true;
                 showNetworkDisconnected = true;
                 reStartAPP = true;
+                logMsg = "Network status=canceled, timeout";
             }
         }
     }
@@ -142,6 +153,15 @@ function checkNetwork(data) {
                 location.reload();
             }
         });
+    }
+
+    if (logMsg.length > 0) {
+        var dataArr = [
+            "Network Error",
+            "",
+            logMsg
+        ];
+        LogFile.createAndWriteFile(dataArr);
     }
 }
 
