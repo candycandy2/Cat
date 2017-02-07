@@ -1,3 +1,29 @@
+.ui-content{
+	padding: 0px;
+}
+
+.ui-panel-inner { 
+  	padding: 0 !important;
+  	margin-top: 0.1VH !important;
+}
+
+.ui-controlgroup-controls {
+	-webkit-border-radius: 8px;
+}
+
+.ui-radio {
+	width:30.86VW;
+}
+
+.page-tabs > div > div > label {
+	border: 1px solid #2b87ba !important;
+}
+
+.page-tabs > div > div > label.label-style {
+	border-left-style: none !important;
+	border-right-style: none !important;
+}
+
 .page-header .menu-btn{
 	background-color: initial !important;
 	border-style: none;
@@ -5,20 +31,116 @@
 	margin-top: 1VH !important;
 }
 
-.ui-panel-inner { 
-  	padding: 0 !important;
-  	margin-right: -0.4VW !important;
-	margin-top: -2.1VH !important;
+#viewHitRate .page-main{
+	background-color: #fff;
 }
 
+#viewHitRate .page-tabs{
+	margin-top: 1.8VH;
+	margin-bottom: 0VH;
+	margin-right: 3.7VW;
+	margin-left: 3.7VW;
+	text-align: center;
+}
+
+#viewHitRate .tabs-title{
+	height: 5VH;
+	font-size: 2.5VH;
+	font-family: Arial;
+	line-height: 5.6VH;
+	text-align: center;
+	padding: 0px;
+}
+
+#viewHitRate .page-date{
+	margin-top: 2VH;
+	font-family: Arial;
+	font-size: 2.5VH;
+	color: #0f0f0f;
+	text-align:center
+}
+
+#viewHitRate .fragment{
+
+}
+
+ul {
+	list-style-type: none;
+}
+
+.item{
+	height: 5.9VH;
+}
+
+.data {
+	border:0.1px;
+    border-style: solid;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+ 	border-color: #000;
+    float: right;
+    margin-top: -3.8VH;
+    margin-right: 9VW;
+}
+
+.AS{
+	margin-left: 7VW;
+}
+
+.HR{
+	margin-left: 8VW;
+}
+
+.YR{
+	margin-left: 11VW;
+	margin-right: 10VW
+}
+
+#total{
+	border:0.3px;
+    border-style: solid;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+ 	border-color: #323232;
+ 	background-color: #c6c6c6;
+}
+/*#viewHitRate .allitem{
+	background-color: #f2f2f3;
+	height: 30VH;
+}*/
+/********************************************** mypanel *********************************************/
 #mypanel #panel-header{
-	font-size: 4VW; 
-	font-family:Arial; 
+	background-color: #4c4c4c;
 	color:#fff; 
-	background-color: #4c4c4c; 
+	font-size: 4VW;
+	font-family:Arial;
 	height:7.3VH;
 }
 
 #mypanel .panel-text{
 	margin-left:3.7VW;
+}
+
+#mypanel #panel-sub-header{
+	background-color: #503f81;
+	color:#fff;
+	font-size: 4VW;
+	font-family: Arial;
+	height:6.8VH;
+}
+
+#mypanel .panel-content{
+	background-color: #f6f6f6;
+	color:#0f0f0f;
+	font-size: 3.8VW;
+	font-family: Arial;
+	height:6.8VH;
+}
+
+#mypanel #panel-sub-header-content{
+	border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
 }

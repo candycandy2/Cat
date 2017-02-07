@@ -13,7 +13,7 @@ git push origin --tags
 # ------ build QPlay ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp default --env dev
+gulp default --env dev 
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 
 # cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="1bf5dd25-17b1-466d-85f3-1bcc21371cfd" --developmentTeam="BenQ Corporation" --packageType="enterprise"
@@ -35,7 +35,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="44988572-ef5e-401f-bc12-f5bd91958e1a" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="64ae12f1-1cc3-45dc-9fc3-5ad7da41f655" --packageType="enterprise"
 
 # ------ build EIS ------
 cd ../EIS
@@ -73,9 +73,11 @@ cp $binfolder/* $attachfolder
 # ------ coomit modifind files ------
 cd ..
 pwd
+git pull
 git add NewQPlay/config.xml
 git add NewYellowPage/config.xml
 git add RRS/config.xml
 git add EIS/config.xml
 git commit -m "v1.0.0.$dailyver[Develop]"
 git push
+
