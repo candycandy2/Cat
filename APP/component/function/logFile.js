@@ -76,6 +76,7 @@ var LogFile = {
         });
     },
     readFile: function(fileEntry, dataArr, isAppend) {
+
         fileEntry.file(function (file) {
             var reader = new FileReader();
 
@@ -99,12 +100,13 @@ var LogFile = {
                     }
                 } else {
                     //data is not empty
-                    var logObj = JSON.parse(this.result);
+                    var resultData = LogFile.logDataFormat(this.result);
+                    var logObj = JSON.parse(resultData);
 
                     logObj[nowTimestamp] = {
-                        "Action": dataArr[0],
-                        "API": dataArr[1],
-                        "Log": dataArr[2]
+                        "Action": dataArr[0].toString(),
+                        "API": dataArr[1].toString(),
+                        "Log": dataArr[2].toString()
                     }
                 }
                 //console.log(logObj);
@@ -136,6 +138,16 @@ var LogFile = {
         }, LogFile.onErrorLoadFile);
     },
     logDataFormat: function(dataStr) {
-        return dataStr + "\n";
+        //return dataStr + "\n";
+        var tempDataTrim = dataStr.trim();
+        var tempDataLastChar = tempDataTrim.substring( parseInt(tempDataTrim.length - 1, 10) );
+        var jsonData = dataStr;
+
+        if (tempDataLastChar === ",") {
+            var tempData = tempDataTrim.substring( 0, parseInt(tempDataTrim.length - 1, 10) );
+            jsonData = tempData + "}";
+        }
+
+        return jsonData;
     }
 };

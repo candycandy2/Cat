@@ -11,7 +11,7 @@ function QPlayAPI(requestType, asyncType, requestAction, successCallback, failCa
         var dataArr = [
             "Call API",
             requestAction,
-            data['result_code']
+            ""
         ];
         LogFile.createAndWriteFile(dataArr);
     }
