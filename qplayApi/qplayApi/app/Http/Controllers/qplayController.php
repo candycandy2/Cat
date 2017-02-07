@@ -1039,7 +1039,7 @@ class qplayController extends Controller
                         . $userInfo->row_id
                         . ") union select row_id from qp_app_head where row_id in ("
                         . $companyAppIdStr
-                        . ")) and version_code is not null";
+                        . ")) and version_code is not null order by h.sequence desc, h.created_at desc";
                     //return response()->json(['sql'=>$sql]);
                     $appDataList = DB::select($sql);
                 } else {
@@ -1063,6 +1063,7 @@ select row_id from qp_app_head where row_id in (
 	select app_row_id from qp_user_app where user_row_id = :id2))
 	
 and version_code is not null
+order by h.sequence desc, h.created_at desc
 SQL;
 
 
@@ -1122,7 +1123,7 @@ SQL;
 
                 $categoryDataList = array();
                 if(strlen($categoryIdListStr) > 0) {
-                    $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
+                    $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ') order by sequence desc, created_at desc';
                     $categoryDataList = DB::select($sql);
                 }
 
