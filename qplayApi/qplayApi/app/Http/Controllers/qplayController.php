@@ -2577,6 +2577,15 @@ SQL;
                                 if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
                                     continue;
                                 }
+                                if(count($destinationUserInfo->uuidList) == 0) {
+                                    \DB::rollBack();
+                                    $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                                        'message'=>"接收推播的用户uuid不存在",
+                                        'content'=>'']);
+                                    CommonUtil::logApi("", $ACTION,
+                                        response()->json(apache_response_headers()), $result);
+                                    return $result;
+                                }
                                 foreach ($destinationUserInfo->uuidList as $uuid) {
                                     \DB::table("qp_user_message")
                                         -> insertGetId([
@@ -2609,6 +2618,15 @@ SQL;
 
                                     if(!in_array($userRowId, $hasSentUserIdList)) {
                                         $thisUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
+//                                        if(count($thisUserInfo->uuidList) == 0) {
+//                                            \DB::rollBack();
+//                                            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+//                                                'message'=>"接收推播的用户uuid不存在",
+//                                                'content'=>'']);
+//                                            CommonUtil::logApi("", $ACTION,
+//                                                response()->json(apache_response_headers()), $result);
+//                                            return $result;
+//                                        }
                                         foreach ($thisUserInfo->uuidList as $uuid) {
                                             \DB::table("qp_user_message")
                                                 -> insertGetId([
