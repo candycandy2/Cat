@@ -44,7 +44,7 @@ Date.prototype.TimeZoneConvert = function() {
     var fixedDateStrTimestamp = dateStrTimestamp + timeZoneFixSecond;
     var fixedDateStr = new Date(fixedDateStrTimestamp * 1000);
 
-    return fixedDateStr.getFullYear() + "-" + padLeft(parseInt(fixedDateStr.getMonth() + 1, 10), 2) + "-" + fixedDateStr.getUTCDate() + " " +
+    return fixedDateStr.getFullYear() + "-" + padLeft(parseInt(fixedDateStr.getMonth() + 1, 10), 2) + "-" + padLeft(fixedDateStr.getUTCDate(), 2) + " " +
     padLeft(fixedDateStr.getHours(), 2) + ":" + padLeft(fixedDateStr.getMinutes(), 2) + ":" + padLeft(fixedDateStr.getSeconds(), 2);
 };
 
