@@ -93,7 +93,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         };
 
         function sendAgainFormatter(value, row) {
-            return '<a onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            return '<a href="#" onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
         };
         function editProjectFormatter(value, row) {
             return '<a href="projectDetailMaintain?project_id=' + row.row_id + '">' + value + '</a>';
