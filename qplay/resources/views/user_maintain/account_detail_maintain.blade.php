@@ -339,10 +339,6 @@ foreach ($oriMenuList as $menu) {
 
         var SaveUser = function () {
             var groupID = $("#ddlGroup").val();
-            if(groupID == "") {
-                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.ERR_MUST_CHOOSE_GROUP")}}");
-                return;
-            }
 
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
                 hideConfirmDialog();

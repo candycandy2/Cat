@@ -12,6 +12,7 @@ var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
 var browserLanguage;
 var langStr = {};
+var logFileName;
 
 var loginData = {
     versionName:         "",
@@ -104,6 +105,13 @@ var app = {
         if (device.platform === "iOS") {
             $.mobile.hashListeningEnabled = false;
         }
+
+        //Log -
+        //get now year + month
+        var now = new Date();
+        logFileName = now.yyyymm("");
+        //console.log(cordova.file);
+        LogFile.checkOldFile();
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
@@ -235,6 +243,17 @@ app.initialize();
 $(document).one("pagebeforecreate", function(){
 
     $(':mobile-pagecontainer').html("");
+
+    //According to the data [pageList] which set in index.js ,
+    //add Page JS into index.html
+    $.map(pageList, function(value, key) {
+        (function(pageID){
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.src = "js/" + pageID + ".js";
+            $("head").append(s);
+        }(value));
+    });
 
     //According to the data [pageList] which set in index.js ,
     //add View template into index.html

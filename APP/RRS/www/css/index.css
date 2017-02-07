@@ -30,12 +30,6 @@ a {
     padding-top: initial !important;
 }
 
-.ui-title {
-    text-shadow: initial !important;
-    font-size: 2.8vh !important;
-    border: 0;
-}
-
 .ui-btn {
     text-overflow: initial;
     margin-right: auto !important;
@@ -153,6 +147,13 @@ a {
 
 
 /********************************** public area *************************************/
+
+.ui-title-btn {
+    text-shadow: none !important;
+    font-size: 2.8vh !important;
+    border: 0;
+    padding-top: 1.5vh;
+}
 
 .ui-margin-10 {
     margin: 3% !important;
