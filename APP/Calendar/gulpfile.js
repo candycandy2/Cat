@@ -144,7 +144,7 @@ gulp.task('build', shell.task([
 ]))
 
 gulp.task('componentCSS', function() {
-    return gulp.src('../component/*.css')
+    return gulp.src('../component/css/*.css')
         .pipe(gulp.dest('www/css/'));
 });
 /*
@@ -171,6 +171,11 @@ gulp.task('componentIMG', function() {
         .pipe(gulp.dest('www/img/component/'));
 });
 
+gulp.task('libJS', function() {
+    return gulp.src('../component/lib/*')
+        .pipe(gulp.dest('www/js/lib/'));
+});
+
 gulp.task('functionJS', function() {
     return gulp.src('../component/function/*.js')
         .pipe(concat('function.js'))
@@ -185,7 +190,7 @@ gulp.task('appJS', ['functionJS'], function(){
         .pipe(gulp.dest('www/js/'));
 });
 
-gulp.task('componentJS', ['appJS'], shell.task([
+gulp.task('componentJS', ['libJS', 'appJS'], shell.task([
     'rm ../component/function.js'
 ]));
 
