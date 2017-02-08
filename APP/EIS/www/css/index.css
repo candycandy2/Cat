@@ -34,13 +34,11 @@
 	margin-top: 1VH !important;
 }
 
-
-/******************************************** viewHitRate *******************************************/
-#viewHitRate .page-main{
+.page-main{
 	background-color: #fff;
 }
 
-#viewHitRate .page-tabs{
+.page-main .page-tabs{
 	margin-top: 1.8VH;
 	margin-bottom: 0VH;
 	margin-right: 3.7VW;
@@ -48,7 +46,7 @@
 	text-align: center;
 }
 
-#viewHitRate .tabs-title{
+.page-main .tabs-title{
 	height: 5VH;
 	font-size: 2.5VH;
 	font-family: Arial;
@@ -58,7 +56,7 @@
 	padding: 0px;
 }
 
-#viewHitRate .page-date{
+.page-main .page-date{
 	margin-top: 2VH;
 	font-family: Arial;
 	font-size: 2.5VH;
@@ -66,6 +64,7 @@
 	text-align:center
 }
 
+/******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
 	background-color: #f2f2f3;
 	display: -webkit-flex;

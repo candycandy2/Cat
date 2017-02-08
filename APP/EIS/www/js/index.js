@@ -3,7 +3,8 @@
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
-var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate",];
+// var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
+var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
 
 var htmlContent = "";
