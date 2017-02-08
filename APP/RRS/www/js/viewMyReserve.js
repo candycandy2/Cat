@@ -64,7 +64,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -95,7 +95,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -154,8 +154,9 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
             });
 
             $('body').on('click', 'div[for=successMsg] #confirm, div[for=failMsg] #confirm, div[for=apiFailMsg] #confirm', function() {
-                var msgForId = $(this).parent().parent().attr('for');
-                $('div[for=' + msgForId + ']').popup('close');
+                // var msgForId = $(this).parent().parent().attr('for');
+                // $('div[for=' + msgForId + ']').popup('close');
+                $('#viewPopupMsg').popup('close');
             });
         }
     });

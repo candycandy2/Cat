@@ -1,170 +1,219 @@
-
-.custom-navbar ul li a {
-    background: #4B0082 !important; 
-    color: white !important;
-    border-style: none;
-    font-size: large !important;
+/********************************************* overwrite ********************************************/
+.ui-content{
+	padding: 0px;
 }
 
-/*override jQuery Mobile*/
-.ui-content {
-    overflow-x: visible;
-    padding: 0px;
+.ui-panel-inner { 
+  	padding: 0 !important;
+  	margin-top: 0.1VH !important;
 }
 
-.ui-content .ui-listview {
-    margin: 0px;
+.ui-controlgroup-controls {
+	-webkit-border-radius: 8px;
 }
 
-.ui-listview > .ui-li-static {
-    padding: 0px;
-    white-space: normal;
+.ui-radio {
+	width:30.86VW;
 }
 
-.ui-popup-container {
-    width: 80%;
+.page-tabs > div > div > label {
+	border: 1px solid #2b87ba !important;
 }
 
-#detailData .ui-btn {
-    border: none;
+.page-tabs > div > div > label.label-style {
+	border-left-style: none !important;
+	border-right-style: none !important;
 }
 
-#myPhonebookList .ui-checkbox input {
-    width: 14px;
-    height: 14px;
-    margin: 0px;
-    margin: 0 auto;
+
+/******************************************** common use ********************************************/
+.page-header .menu-btn{
+	background-color: initial !important;
+	border-style: none;
+	padding:0px;
+	margin-top: 1VH !important;
 }
 
-#myPhonebookList .ui-checkbox {
-    margin: 0px;
-    top: 5px;
-    left: 35%;
-    display: none;
+
+/******************************************** viewHitRate *******************************************/
+#viewHitRate .page-main{
+	background-color: #fff;
 }
 
-#myPhonebookList p {
-    margin: 0px 2px;
-    font-size: 12px;
+#viewHitRate .page-tabs{
+	margin-top: 1.8VH;
+	margin-bottom: 0VH;
+	margin-right: 3.7VW;
+	margin-left: 3.7VW;
+	text-align: center;
 }
 
-/*new class*/
-.hide {
-    display: none;
+#viewHitRate .tabs-title{
+	height: 5VH;
+	font-size: 2.5VH;
+	font-family: Arial;
+	font-weight: 500;
+	line-height: 5.6VH;
+	text-align: center;
+	padding: 0px;
 }
 
-.page-header a {
-    margin-top: 6px;
+#viewHitRate .page-date{
+	margin-top: 2VH;
+	font-family: Arial;
+	font-size: 2.5VH;
+	color: #0f0f0f;
+	text-align:center
 }
 
-#viewIndex .ui-content > div{
-    float: left;
+#viewHitRate #data-title-bar{
+	background-color: #f2f2f3;
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	height: 5.8VH;
 }
 
-.q-result-grid {
-    text-align: center;
+#viewHitRate .data-title{
+	width: 26.6VW;
+	text-align: center;
+	border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #000;
+    font-weight: 400;
+    font-size: 2VH;
 }
 
-.q-result-grid > li div {
-    float: left;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    overflow-wrap: break-word;
+#viewHitRate .data-title > p{
+	height: 2.4VH;
+	margin: 0;
+	font-family: Arial;
 }
 
-.q-result-grid > li p {
-    width: 95%;
-    font-weight: normal;
-    white-space: normal;
-    text-overflow: clip;
-    overflow: auto;
+
+#viewHitRate ul {
+	list-style-type: none;
 }
 
-.q-result-grid a {
-    text-decoration: none;
+#viewHitRate ul > li {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	height: 5.8VH;
 }
 
-.q-result-grid .error-msg {
-    color: #FFF;
-    background-color: red;
-    text-align: center;
-    width: 100%;
-    font-weight: bold;
+#viewHitRate .dataContainer{
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	width: 79.7VW;
+	margin-left: 2.5VW;
+	padding-bottom: 1VH;
+	padding-top: 1VH;
 }
 
-#employeeData.q-result-grid > li div {
-    height: 60px;
+#viewHitRate .row {	
+	border-width: 1px;
+	border-style: none;
+	border-bottom-style: solid;
+	border-bottom-color: #989898;
 }
 
-#employeeData p {
-    margin: 0px 2px;
-    font-size: 12px;
+#viewHitRate .AS{
+	color: #0f0f0f;
+	margin-left: 2VW;
+	text-align: center;
+	width: 20VW;
+	font-weight: bold;
+	display: inline-block;
 }
 
-.q-result-grid .company{
-    width: 30%;
+#viewHitRate .HR{
+	color: #fff;
+	margin-left: 9VW;
+	text-align: center;
+	width: 19VW;
+	background-color: #ee3839;
+	border-radius: 3.5px;
+	display: inline-block;
 }
 
-.q-result-grid .e-name{
-    width: 40%;
+#viewHitRate .YR{
+	color: #fff;
+	margin-left: 7VW;
+	text-align: center;
+	width: 19VW;
+	background-color: #48af56;
+	border-radius: 3.5px;
+	display: inline-block;
 }
 
-.q-result-grid .c-name{
-    width: 30%;
+#viewHitRate .data{
+	font-size: 2.2VH;
+	padding-top: 0.7VH;
+	font-weight: 900;
 }
 
-#detailData.q-result-grid > li div {
-    height: 50px;
+#viewHitRate .total-data{
+	font-size: 2.2VH;
+	padding-top: 0.9VH;
+	font-weight: 900;
 }
 
-#detailData p {
-    margin: 0px 5px;
-    font-size: 14px;
-    font-weight: bold;
+#viewHitRate .column{
+	font-size: 2.3VH;
+	padding-top: 1.6VH;
+	width: 10VW;
 }
 
-#detailData .item-name {
-    width: 30%;
+#viewHitRate #total {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	background-color: #c6c6c6;
+	border-style: none;
+	border-top-style: solid;
+	border-top-color: #323232;
+	border-top-width: 1.2px;
 }
 
-#detailData .item-content {
-    width: 70%;
-    color: blue;
+/**************************************** viewMonthlyHitRate ****************************************/
+
+
+
+
+
+/****************************************** viewYTDHitRate ******************************************/
+
+
+
+/********************************************** mypanel *********************************************/
+#mypanel #panel-header{
+	background-color: #4c4c4c;
+	color:#fff; 
+	font-size: 4VW;
+	font-family:Arial;
+	height:7.3VH;
 }
 
-#detailData .company-data {
-    display: flex;
+#mypanel .panel-text{
+	margin-left:3.7VW;
 }
 
-#detailData .company {
-    display: inline-block;
-    width: 80%;
-    padding-top: 2px;
+#mypanel #panel-sub-header{
+	background-color: #503f81;
+	color:#fff;
+	font-size: 4VW;
+	font-family: Arial;
+	height:6.8VH;
 }
 
-#detailData .star {
-    display: inline-block;
+#mypanel .panel-content{
+	background-color: #f6f6f6;
+	color:#0f0f0f;
+	font-size: 3.8VW;
+	font-family: Arial;
+	height:6.8VH;
 }
 
-#detailData .star-setted {
-    background-color: red;
-}
-
-.popup-msg {
-    height: 100px;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    color: #FFF;
-    background-color: #4B0082;
-    font-weight: bold;
-}
-
-.popup-msg .ui-btn {
-    padding: 5px 10px;
-    background-color: #28004D;
-    border: none;
-    color: #FFF;
+#mypanel #panel-sub-header-content{
+	border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
 }

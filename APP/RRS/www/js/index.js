@@ -86,7 +86,7 @@ function getAPIListAllMeetingRoom() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -159,7 +159,7 @@ function getAPIListAllTime() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -199,7 +199,7 @@ function getAPIListAllManager() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -223,6 +223,7 @@ function getAPIQueryMyReserveTime() {
 
                 if (strBeginTime == strEndTime) {
                     jsonData = {
+                        room: item.MeetingRoomName,
                         site: searchSiteNode,
                         date: item.ReserveDate,
                         time: strBeginTime
@@ -232,6 +233,7 @@ function getAPIQueryMyReserveTime() {
                 } else {
                     do {
                         jsonData = {
+                            room: item.MeetingRoomName,
                             site: searchSiteNode,
                             date: item.ReserveDate,
                             time: strBeginTime
@@ -247,7 +249,7 @@ function getAPIQueryMyReserveTime() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -345,6 +347,7 @@ function setDefaultSettingData() {
 }
 
 function ConverToMeetingTree(data) {
+    //level 1 = Site, level 2 = Floor, level 3 = Room Detail Info
 
     for (var key in arrSite) {
 
@@ -369,6 +372,8 @@ function ConverToMeetingTree(data) {
 }
 
 function ConverToRoleTree(data) {
+    //level 1 = Role, level 2 = Site
+
     for (var key in arrRole) {
         var roleData = grepData(data, 'SystemRole', arrRole[key]);
         var droleData = uniqueData(roleData, 'SystemRole');
@@ -383,8 +388,9 @@ function ConverToRoleTree(data) {
     }
 
     //if include role1 and role2, just keep role1 data
-    var searchRoleNode = searchTree(roleTreeData._root, 'role1', '');
-    if (searchRoleNode != null) {
+    var searchRole1 = searchTree(roleTreeData._root, 'role1', '');
+    var searchRole2 = searchTree(roleTreeData._root, 'role2', '');
+    if (searchRole1 != null && searchRole2 != null) {
         //remove all role2 node
         roleTreeData.remove('role2', 'role', roleTreeData.traverseDF);
     }
@@ -414,7 +420,6 @@ function getOneHour() {
 
     return dictResult;
 }
-
 
 //use dictionary value get key
 // function getKeyByValue(object, value) {
@@ -456,6 +461,7 @@ function sortDataByKey(sortData, sortKey, asc) {
     });
 }
 
+//comparing & sorting string with number ex:sorting T01, T02, T03...
 (function() {
     var reParts = /\d+|\D+/g;
     var reDigit = /\d/;
@@ -558,6 +564,7 @@ function inputValidation(str) {
 function calSelectWidth(obj) {
     $("#tmp_option_width").html($('#' + obj.attr('id') + ' option:selected').text());
     var pxWidth = $('#tmp_option_width').outerWidth();
+    //px conver to vw
     var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
     obj.css('width', vwWidth + 'vw');
 }

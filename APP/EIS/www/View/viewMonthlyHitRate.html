@@ -1,114 +1,27 @@
-<!-- Start of detail_info_page -->
-<div data-role="page" id="viewDetailInfo">
+<!-- Beginning of viewMonthlyHitRate -->
+<div data-role="page" id="viewMonthlyHitRate" class="viewIndex">
     <div class="ios-fix-overlap-div"></div>
+
     <div data-role="header" data-position="fixed" class="page-header">
-        <a href="#" name="goPrevPage" class="ui-btn ui-icon-back ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
-        <div class="header-style"><h4>詳細資料</h4></div>
-        <a href="#viewDataInput" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-icon-notext ui-btn-b"></a>
+        <a class ="menu-btn" href="#mypanel">
+            <img src="img/humb.png" style="width:6VW;">
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title">Monthly Hit Rate Trend</h1>
+        </div>
     </div>
 
     <div data-role="main" class="ui-content page-main">
-        <ul data-role="listview" data-icon="false" class="q-result-grid" id="detailData">
+        <div><h>Dec. 2016</h></div>
+        <div></div>
+        <div>
             <li>
-                <div class="item-name">
-                    <p>公司</p>
-                </div>
-                <div class="item-content">
-                    <p class="company-data">
-                        <span class="company" id="companyName"><!--BenQHospital--></span>
-                        <span class="star">
-                            <a id="startAdd" href="#askAddPhonebook" data-rel="popup" data-position-to="window" data-transition="pop" 
-                                class="ui-btn ui-btn-icon-notext ui-icon-star"></a>
-                            <a id="startDelete" href="#askDeletePhonebook" data-rel="popup" data-position-to="window" data-transition="pop" 
-                                class="ui-btn ui-btn-icon-notext ui-icon-star star-setted"></a>
-                        </span>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>英文姓名</p>
-                </div>
-                <div class="item-content">
-                    <p id="eName"><!--Giaqwersas.Lee.Rqedasde--></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>中文姓名</p>
-                </div>
-                <div class="item-content">
-                    <p id="cName"><!--張先生--></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>工號</p>
-                </div>
-                <div class="item-content">
-                    <p id="employeeID"><!--0806022--></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>專業區</p>
-                </div>
-                <div class="item-content">
-                    <p id="sideCode"><!--NMH--></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>部門</p>
-                </div>
-                <div class="item-content">
-                    <p id="dept"></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>部門名稱</p>
-                </div>
-                <div class="item-content">
-                    <p id="deptCode"></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>分機</p>
-                </div>
-                <div class="item-content">
-                    <p id="extNo"><!--8100-6162--></p>
-                </div>
-            </li>
-            <li>
-                <div class="item-name">
-                    <p>E-mail</p>
-                </div>
-                <div class="item-content">
-                    <p id="eMail"><!--WEQESDF.QWQESFSFS@BenQ.com--></p>
-                </div>
-            </li>
-        </ul>
-    </div>
 
-    <div data-role="popup" data-history="false" id="askAddPhonebook" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
-            <p>確定要加到我的電話簿?</p>
-            <p>
-                <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
-                <a href="#" class="ui-btn ui-btn-inline" id="addPhonebook">確定</a>
-            </p>
+            </li>
         </div>
     </div>
 
-    <div data-role="popup" data-history="false" id="askDeletePhonebook" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content popup-msg">
-            <p>確定要從我的電話簿刪除?</p>
-            <p>
-                <a href="#" class="ui-btn ui-btn-inline" data-rel="back">取消</a>
-                <a href="#" class="ui-btn ui-btn-inline" id="deletePhonebook">確定</a>
-            </p>
-        </div>
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+        <h1>Page Footer</h1>
     </div>
 </div>

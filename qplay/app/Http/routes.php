@@ -75,6 +75,9 @@ Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintain
 Route::any('auth/login', function() {
     return view("auth/login");
 });
+Route::any('404', function() {
+    return view("404");
+});
 
 Route::any('auth/login_process', 'AuthController@authenticate');
 Route::any('auth/logout', 'AuthController@logout');
@@ -180,5 +183,8 @@ Route::any('testJpush', ['middleware' => 'auth', function() {
 }]);
 Route::any('test/jpushTest', 'testController@jpushTest');
 
-
+Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
+    return view("tool/sync_jpush_tags_tool");
+}]);
+Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 

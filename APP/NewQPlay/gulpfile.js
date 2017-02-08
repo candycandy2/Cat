@@ -128,11 +128,13 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
+                            '<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
+                            '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                     '</widget>';
 
@@ -155,6 +157,7 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-whitelist',
     'cordova plugin remove cordova-plugin-inappbrowser',
     'cordova plugin remove cordova-plugin-appavailability',
+    'cordova plugin remove cordova-plugin-file',
     'cordova platform rm ios',
     'cordova platform rm android',
     'cordova platform add ios',
@@ -168,7 +171,8 @@ gulp.task('install', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add cordova-plugin-whitelist',
     'cordova plugin add cordova-plugin-inappbrowser',
-    'cordova plugin add cordova-plugin-appavailability'
+    'cordova plugin add cordova-plugin-appavailability',
+    'cordova plugin add cordova-plugin-file'
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
@@ -183,7 +187,8 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add cordova-plugin-whitelist@1.3.1',
     'cordova plugin add cordova-plugin-inappbrowser@1.6.1',
-    'cordova plugin add cordova-plugin-appavailability@0.4.2'
+    'cordova plugin add cordova-plugin-appavailability@0.4.2',
+    'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
 gulp.task('patch', function() {
@@ -211,7 +216,7 @@ gulp.task('build', shell.task([
 ]))
 
 gulp.task('componentCSS', function() {
-    return gulp.src('../component/*.css')
+    return gulp.src('../component/css/*.css')
         .pipe(gulp.dest('www/css/'));
 });
 /*
@@ -238,6 +243,11 @@ gulp.task('componentIMG', function() {
         .pipe(gulp.dest('www/img/component/'));
 });
 
+gulp.task('libJS', function() {
+    return gulp.src('../component/lib/*')
+        .pipe(gulp.dest('www/js/lib/'));
+});
+
 gulp.task('functionJS', function() {
     return gulp.src('../component/function/*.js')
         .pipe(concat('function.js'))
@@ -252,7 +262,7 @@ gulp.task('appJS', ['functionJS'], function(){
         .pipe(gulp.dest('www/js/'));
 });
 
-gulp.task('componentJS', ['appJS'], shell.task([
+gulp.task('componentJS', ['libJS', 'appJS'], shell.task([
     'rm ../component/function.js'
 ]));
 

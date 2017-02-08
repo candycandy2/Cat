@@ -3,41 +3,44 @@
 /********************************** APP Process JS function *************************************/
 /************************************************************************************************/
 
-function callQPlayAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
+function getLanguageString() {
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        for (var i=0; i<data.length; i++) {
+            langStr[data[i].term] = data[i].definition;
+        }
 
-    failCallback =  failCallback || null;
-    queryData = queryData || null;
-    queryStr = queryStr || "";
-
-    function requestSuccess(data) {
-        checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
-    }
-
-    function requestError(data) {
-        checkNetwork(data);
-    }
-
-    var signatureTime = getSignature("getTime");
-    var signatureInBase64 = getSignature("getInBase64", signatureTime);
-
-    $.ajax({
-        type: requestType,
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': appKey,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'token': loginData.token,
-            'push-token': loginData.pushToken
-        },
-        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
-        dataType: "json",
-        data: queryData,
-        cache: false,
-        timeout: 3000,
-        success: requestSuccess,
-        error: requestError
+        addConponentView();
     });
+}
+
+function addConponentView() {
+    //add component view template into index.html
+    $.get("View/component.html", function(data) {
+        $.mobile.pageContainer.append(data);
+
+        //Set viewInitial become the index page
+        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
+
+        //If is other APP, set APP name in initial page
+        if (appKey !== qplayAppKey) {
+            $("#initialAppName").html(initialAppName);
+        }
+
+        //viewNotSignedIn, Login Again
+        $("#LoginAgain").on("click", function() {
+            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            var checkAppVer = new checkAppVersion();
+        });
+
+        //After all template load finished, processing language string
+        $(".langStr").each(function(index, element){
+            var id = $(element).data("id");
+
+            $(".langStr[data-id='" + id + "']").each(function(index, element){
+                $(this).html(langStr[id]);
+            });
+        });
+    }, "html");
 }
 
 //Check Mobile Device Network Status
@@ -53,6 +56,7 @@ function checkNetwork(data) {
     //2. cellular > 3G / 4G
     //3. none
     var showMsg = false;
+    var logMsg = "";
 
     if (!navigator.onLine) {
         //----Network disconnected
@@ -68,14 +72,23 @@ function checkNetwork(data) {
             showNetworkDisconnected = true;
         }
 
+        logMsg = "Network disconnected";
     } else {
         //----Network connected
         //Maybe these following situation happened.
-        //1. status = 200, request succeed, but timeout 3000
         if (data !== null) {
+            //1. status = 200, request succeed, but timeout 3000
             if (data.status !== 200) {
                 showMsg = true;
                 showNetworkDisconnected = true;
+                logMsg = "Network status=200, timeout";
+            }
+            //2. status = timeout (Network status display ["canceled"])
+            if (data.statusText === "timeout") {
+                showMsg = true;
+                showNetworkDisconnected = true;
+                reStartAPP = true;
+                logMsg = "Network status=canceled, timeout";
             }
         }
     }
@@ -90,7 +103,21 @@ function checkNetwork(data) {
             $('#disconnectNetwork').hide();
 
             showNetworkDisconnected = false;
+
+            if (reStartAPP) {
+                reStartAPP = false;
+                location.reload();
+            }
         });
+    }
+
+    if (logMsg.length > 0) {
+        var dataArr = [
+            "Network Error",
+            "",
+            logMsg
+        ];
+        LogFile.createAndWriteFile(dataArr);
     }
 }
 
