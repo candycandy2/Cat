@@ -887,11 +887,26 @@ class qplayController extends Controller
             }
             $app_row_id = $appRowIdList[0]->row_id;
 
+            $allVersionList = \DB::table("qp_app_version")
+                -> where('app_row_id', "=", $app_row_id)
+                -> where('device_type', '=', $device_type)
+                -> select('version_code', 'url')->get();
+            if(count($allVersionList) < 1)
+            {
+                $result = response()->json(['result_code'=>ResultCode::_999015_haveNoAppVersion,
+                    'message'=>'未上傳app',
+                    'content'=>'']);
+                CommonUtil::logApi("", $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
+            }
+
             $versionList = \DB::table("qp_app_version")
                 -> where('app_row_id', "=", $app_row_id)
                 -> where('device_type', '=', $device_type)
                 -> where('status', '=', 'ready')
                 -> select('version_code', 'url')->get();
+
             if(count($versionList) < 1)
             {
                 $result = response()->json(['result_code'=>ResultCode::_999012_appOffTheShelf,
@@ -901,6 +916,7 @@ class qplayController extends Controller
                     response()->json(apache_response_headers()), $result);
                 return $result;
             }
+
             if(count($versionList) > 1)
             {
                 $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
@@ -1039,7 +1055,7 @@ class qplayController extends Controller
                         . $userInfo->row_id
                         . ") union select row_id from qp_app_head where row_id in ("
                         . $companyAppIdStr
-                        . ")) and version_code is not null";
+                        . ")) and version_code is not null order by h.sequence desc, h.created_at desc";
                     //return response()->json(['sql'=>$sql]);
                     $appDataList = DB::select($sql);
                 } else {
@@ -1063,6 +1079,7 @@ select row_id from qp_app_head where row_id in (
 	select app_row_id from qp_user_app where user_row_id = :id2))
 	
 and version_code is not null
+order by h.sequence desc, h.created_at desc
 SQL;
 
 
@@ -1122,7 +1139,7 @@ SQL;
 
                 $categoryDataList = array();
                 if(strlen($categoryIdListStr) > 0) {
-                    $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ')';
+                    $sql = 'select row_id as category_id, app_category, sequence from qp_app_category where row_id in ( ' . $categoryIdListStr . ') order by sequence desc, created_at desc';
                     $categoryDataList = DB::select($sql);
                 }
 
@@ -2576,6 +2593,15 @@ SQL;
                                 if(in_array($destinationUserInfo->row_id, $hasSentUserIdList)) {
                                     continue;
                                 }
+                                if(count($destinationUserInfo->uuidList) == 0) {
+                                    \DB::rollBack();
+                                    $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+                                        'message'=>"接收推播的用户uuid不存在",
+                                        'content'=>'']);
+                                    CommonUtil::logApi("", $ACTION,
+                                        response()->json(apache_response_headers()), $result);
+                                    return $result;
+                                }
                                 foreach ($destinationUserInfo->uuidList as $uuid) {
                                     \DB::table("qp_user_message")
                                         -> insertGetId([
@@ -2608,6 +2634,15 @@ SQL;
 
                                     if(!in_array($userRowId, $hasSentUserIdList)) {
                                         $thisUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
+//                                        if(count($thisUserInfo->uuidList) == 0) {
+//                                            \DB::rollBack();
+//                                            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
+//                                                'message'=>"接收推播的用户uuid不存在",
+//                                                'content'=>'']);
+//                                            CommonUtil::logApi("", $ACTION,
+//                                                response()->json(apache_response_headers()), $result);
+//                                            return $result;
+//                                        }
                                         foreach ($thisUserInfo->uuidList as $uuid) {
                                             \DB::table("qp_user_message")
                                                 -> insertGetId([

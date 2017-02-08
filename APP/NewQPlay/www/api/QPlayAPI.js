@@ -8,6 +8,13 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
 
     function requestSuccess(data) {
         checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
+
+        var dataArr = [
+            "Call API",
+            requestAction,
+            data['result_code']
+        ];
+        LogFile.createAndWriteFile(dataArr);
     }
 
     function requestError(data) {

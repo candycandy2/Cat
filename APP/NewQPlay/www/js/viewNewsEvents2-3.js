@@ -223,7 +223,7 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 //Latest Update Time
                 var datetime = new Date();
-                var datetimeStr = datetime.getFullYear() + "-" + parseInt(datetime.getMonth() + 1, 10) + "-" + datetime.getUTCDate() + " " +
+                var datetimeStr = datetime.getFullYear() + "-" + padLeft(parseInt(datetime.getMonth() + 1, 10), 2) + "-" + padLeft(datetime.getUTCDate(), 2) + " " +
                                   addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
                 $(".update-time .update-time-str").html(datetimeStr);
 
