@@ -71,17 +71,17 @@ $(document).one("pagecreate", "#viewHitRate", function(){
             });
 		
 
-            $(".page-tabs #tab-1").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-1").on("click", function(){
             	chart.series[0].setData(a, true);
             	chart.series[1].setData(a, true);	
             });
 
-            $(".page-tabs #tab-2").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-2").on("click", function(){
             	chart.series[0].setData(b, true);
             	chart.series[1].setData(b, true);
             });
 
-            $(".page-tabs #tab-3").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-3").on("click", function(){
             	chart.series[0].setData(c, true);
             	chart.series[1].setData(c, true);
             });

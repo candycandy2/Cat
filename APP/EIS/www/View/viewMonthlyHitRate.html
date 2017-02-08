@@ -1,23 +1,37 @@
 <!-- Beginning of viewMonthlyHitRate -->
 <div data-role="page" id="viewMonthlyHitRate" class="viewIndex">
     <div class="ios-fix-overlap-div"></div>
-
-    <div data-role="header" data-position="fixed" class="page-header">
-        <a class ="menu-btn" href="#mypanel">
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn">
             <img src="img/humb.png" style="width:6VW;">
         </a>
         <div class="header-style">
-            <h1 class="ui-title">Monthly Hit Rate Trend</h1>
+            <h1 class="ui-title" style="width:47VW; margin:0 28VW;">Monthly Hit Rate Trend</h1>
         </div>
     </div>
 
     <div data-role="main" class="ui-content page-main">
-        <div><h>Dec. 2016</h></div>
-        <div></div>
-        <div>
-            <li>
+        <form >
+            <fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-1" checked="checked">
+                <label for="viewMonthlyHitRate-tab-1" class="tabs-title">Quantity</label>
+        
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-2">
+                <label for="viewMonthlyHitRate-tab-2" class="tabs-title label-style">Amount</label>
+        
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-3">
+                <label for="viewMonthlyHitRate-tab-3" class="tabs-title">ASP</label>
+            </fieldset>
+        </form>
 
-            </li>
+        <div class="page-date"> 
+            <span>Dec.2016</span>
+        </div>
+
+        <div class="hc-fragment" id="hc-canvas" style="height:38VH;">
+        </div>
+
+        <div style="background-color: #f2f2f3;">
         </div>
     </div>
 
