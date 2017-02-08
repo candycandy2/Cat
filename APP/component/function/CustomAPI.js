@@ -1,9 +1,11 @@
-//qplayAPI - YellowPage
+//Custom API
 
-function QPlayAPI(requestType, requestAction, successCallback, failCallback, queryData) {
+function CustomAPI(requestType, asyncType, requestAction, successCallback, failCallback, queryData, queryStr) {
+    //queryStr: start with [&], ex: &account=test&pwd=123
 
     failCallback = failCallback || null;
     queryData = queryData || null;
+    queryStr = queryStr || "";
 
     function requestSuccess(data) {
         checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
@@ -11,7 +13,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         var dataArr = [
             "Call API",
             requestAction,
-            ""
+            data['ResultCode']
         ];
         LogFile.createAndWriteFile(dataArr);
     }
@@ -32,9 +34,10 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
+        async: asyncType,
         cache: false,
         timeout: 3000,
         success: requestSuccess,
