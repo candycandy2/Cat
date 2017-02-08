@@ -887,11 +887,26 @@ class qplayController extends Controller
             }
             $app_row_id = $appRowIdList[0]->row_id;
 
+            $allVersionList = \DB::table("qp_app_version")
+                -> where('app_row_id', "=", $app_row_id)
+                -> where('device_type', '=', $device_type)
+                -> select('version_code', 'url')->get();
+            if(count($allVersionList) < 1)
+            {
+                $result = response()->json(['result_code'=>ResultCode::_999015_haveNoAppVersion,
+                    'message'=>'未上傳app',
+                    'content'=>'']);
+                CommonUtil::logApi("", $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return $result;
+            }
+
             $versionList = \DB::table("qp_app_version")
                 -> where('app_row_id', "=", $app_row_id)
                 -> where('device_type', '=', $device_type)
                 -> where('status', '=', 'ready')
                 -> select('version_code', 'url')->get();
+
             if(count($versionList) < 1)
             {
                 $result = response()->json(['result_code'=>ResultCode::_999012_appOffTheShelf,
@@ -901,6 +916,7 @@ class qplayController extends Controller
                     response()->json(apache_response_headers()), $result);
                 return $result;
             }
+
             if(count($versionList) > 1)
             {
                 $result = response()->json(['result_code'=>ResultCode::_999999_unknownError,
