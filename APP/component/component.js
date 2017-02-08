@@ -600,7 +600,7 @@ function checkAppVersion() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
@@ -826,7 +826,7 @@ function getSecurityList() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
     }();
 
 }

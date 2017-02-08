@@ -30,7 +30,7 @@ $(document).one("pagecreate", "#viewDataInput", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "QueryCompanyData", self.successCallback, self.failCallback);
+                    CustomAPI("POST", true, "QueryCompanyData", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             };
