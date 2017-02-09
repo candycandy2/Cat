@@ -1,6 +1,6 @@
 
-$(document).one("pagecreate", "#viewMain2-1", function(){
-    
+//$(document).one("pagecreate", "#viewMain2-1", function(){
+
     $("#viewMain2-1").pagecontainer({
         create: function(event, ui) {
 
@@ -258,4 +258,4 @@ $(document).one("pagecreate", "#viewMain2-1", function(){
         }
     });
 
-});
+//});

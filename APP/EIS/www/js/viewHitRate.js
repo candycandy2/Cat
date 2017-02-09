@@ -1,9 +1,9 @@
-$(document).one("pagebeforecreate", function() {
-    $.mobile.pageContainer.prepend(panel);
-    $("#mypanel").panel().enhanceWithin();
-});
+//$(document).one("pagebeforecreate", function() {
+    //$.mobile.pageContainer.prepend(panel);
+    //$("#mypanel").panel().enhanceWithin();
+//});
 
-$(document).one("pagecreate", "#viewHitRate", function(){
+//$(document).one("pagecreate", "#viewHitRate", function(){
 	var chart;
 	var a = [49.9, 71.5, 106.4, 129.2, 144.0];
 	var b = [33, 74, 121, 101.5, 89.1];
@@ -87,7 +87,7 @@ $(document).one("pagecreate", "#viewHitRate", function(){
             });
 		}
     });
-
+    /*
     $("#mypanel #panel-header-content").on("click", function(){
     	$("#viewHitRate").show();
     	$("#viewMonthlyHitRate").hide();
@@ -112,7 +112,7 @@ $(document).one("pagecreate", "#viewHitRate", function(){
 	$(".menu-btn").on("click", function(){
 		$("#mypanel").panel("open");
     });
-
+    */
     $("#viewHitRate").on( "swiperight", function(event){
 		if($(".ui-page-active").jqmData("panel") !== "open"){
             $("#mypanel").panel( "open");
@@ -175,4 +175,4 @@ $(document).one("pagecreate", "#viewHitRate", function(){
 	// 		});
 	// 	});
 	// }
-});
+//});

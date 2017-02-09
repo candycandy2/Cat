@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewQueryResult", function(){
+//$(document).one("pagecreate", "#viewQueryResult", function(){
 
     $("#viewQueryResult").pagecontainer({
         create: function(event, ui) {
@@ -112,4 +112,4 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
         }
     });
 
-});
+//});

@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewReserve', function() {
+//$(document).one('pagecreate', '#viewReserve', function() {
 
     var SiteData = {};
     var roomData = {};
@@ -910,4 +910,4 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
         }
     });
-});
+//});
