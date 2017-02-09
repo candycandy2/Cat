@@ -77,6 +77,9 @@ Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintain
 Route::any('auth/login', function() {
     return view("auth/login");
 });
+Route::any('404', function() {
+    return view("404");
+});
 
 Route::any('auth/login_process', 'AuthController@authenticate');
 Route::any('auth/logout', 'AuthController@logout');

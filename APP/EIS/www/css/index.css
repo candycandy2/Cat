@@ -1,3 +1,4 @@
+/********************************************* overwrite ********************************************/
 .ui-content{
 	padding: 0px;
 }
@@ -24,6 +25,8 @@
 	border-right-style: none !important;
 }
 
+
+/******************************************** common use ********************************************/
 .page-header .menu-btn{
 	background-color: initial !important;
 	border-style: none;
@@ -31,15 +34,11 @@
 	margin-top: 1VH !important;
 }
 
-
-
-
-
-#viewHitRate .page-main{
+.page-main{
 	background-color: #fff;
 }
 
-#viewHitRate .page-tabs{
+.page-main .page-tabs{
 	margin-top: 1.8VH;
 	margin-bottom: 0VH;
 	margin-right: 3.7VW;
@@ -47,16 +46,17 @@
 	text-align: center;
 }
 
-#viewHitRate .tabs-title{
+.page-main .tabs-title{
 	height: 5VH;
 	font-size: 2.5VH;
 	font-family: Arial;
+	font-weight: 500;
 	line-height: 5.6VH;
 	text-align: center;
 	padding: 0px;
 }
 
-#viewHitRate .page-date{
+.page-main .page-date{
 	margin-top: 2VH;
 	font-family: Arial;
 	font-size: 2.5VH;
@@ -64,11 +64,12 @@
 	text-align:center
 }
 
+/******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
 	background-color: #f2f2f3;
 	display: -webkit-flex;
 	flex-flow: row wrap;
-	height: 5.5VH;
+	height: 5.8VH;
 }
 
 #viewHitRate .data-title{
@@ -77,10 +78,12 @@
 	border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: #000;
+    font-weight: 400;
+    font-size: 2VH;
 }
 
 #viewHitRate .data-title > p{
-	height: 3VH;
+	height: 2.4VH;
 	margin: 0;
 	font-family: Arial;
 }
@@ -93,7 +96,7 @@
 #viewHitRate ul > li {
 	display: -webkit-flex;
 	flex-flow: row wrap;
-	height: 5.5VH;
+	height: 5.8VH;
 }
 
 #viewHitRate .dataContainer{
@@ -143,12 +146,19 @@
 
 #viewHitRate .data{
 	font-size: 2.2VH;
-	padding-top: 0.2VH;
+	padding-top: 0.7VH;
+	font-weight: 900;
+}
+
+#viewHitRate .total-data{
+	font-size: 2.2VH;
+	padding-top: 0.9VH;
+	font-weight: 900;
 }
 
 #viewHitRate .column{
 	font-size: 2.3VH;
-	padding-top: 1.2VH;
+	padding-top: 1.6VH;
 	width: 10VW;
 }
 
@@ -161,6 +171,15 @@
 	border-top-color: #323232;
 	border-top-width: 1.2px;
 }
+
+/**************************************** viewMonthlyHitRate ****************************************/
+
+
+
+
+
+/****************************************** viewYTDHitRate ******************************************/
+
 
 
 /********************************************** mypanel *********************************************/
