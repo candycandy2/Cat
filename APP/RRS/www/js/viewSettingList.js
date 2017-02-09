@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewSettingList', function() {
+//$(document).one('pagecreate', '#viewSettingList', function() {
 
     var roomSettingdata = {};
     var htmlContent = '';
@@ -66,4 +66,4 @@ $(document).one('pagecreate', '#viewSettingList', function() {
         }
     });
 
-});
+//});
