@@ -13,35 +13,4 @@
             });
         }
     });
-    /*
-    $("#mypanel #panel-header-content").on("click", function(){
-        $("#viewHitRate").show();
-        $("#viewMonthlyHitRate").hide();
-        $("#viewYTDHitRate").hide();
-        $("#mypanel").panel("close");
-    });
-
-    $("#mypanel #panel-sub-header").on("click", function(){
-        $("#viewHitRate").hide();
-        $("#viewMonthlyHitRate").show();
-        $("#viewYTDHitRate").hide();
-        $("#mypanel").panel("close");
-    });
-
-    $("#mypanel #panel-sub-header-content").on("click", function(){
-        $("#viewHitRate").hide();
-        $("#viewMonthlyHitRate").hide();
-        $("#viewYTDHitRate").show();
-        $("#mypanel").panel("close");
-    });
-
-	$(".menu-btn").on("click", function(){
-		$("#mypanel").panel("open");
-    });
-    */
-    $("#viewMonthlyHitRate").on( "swiperight", function(event){
-        if($(".ui-page-active").jqmData("panel") !== "open"){
-            $("#mypanel").panel( "open");
-        }
-    });
 //});

@@ -32,6 +32,7 @@
 	border-style: none;
 	padding:0px;
 	margin-top: 1VH !important;
+	margin-left: 1.5VW;
 }
 
 .page-main{
@@ -173,10 +174,65 @@
 }
 
 /**************************************** viewMonthlyHitRate ****************************************/
+#viewMonthlyHitRate #title-container {
+	border-style: none;
+	border-bottom-style: solid;
+	border-bottom-color: #989898;
+	border-bottom-width: 0.1VH;
+	margin: 3.2VW 3.7VW 3.2VW 3.7VW;
+	padding-bottom: 1.8VH;
+}
+
+#viewMonthlyHitRate #title-container > div {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+}
 
 
+#viewMonthlyHitRate #title-container > div > div {
+	text-align: center;
+}
 
+#viewMonthlyHitRate #title-container > div > div > p {
+	margin: 0;
+}
 
+div.scrollmenu {
+	background-color: #fbfdfd;
+	overflow: auto;
+	text-align: center;
+	border-style: solid;
+	border-width: 1px;
+	white-space: nowrap;
+	box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.3);
+	/*box-shadow: inset 0px 0px 20px 10px rgba(0, 0, 0, 0.6);*/
+}
+
+div.scrollmenu a {
+	display: inline-block;
+	padding: 2VH 7VW;
+	background-color: #fbfdfd;
+	color: #0f0f0f;
+	font-family: Arial;
+	font-size: 2.8VH;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 1px 0px 1px 1px;
+	border-color: #e4e4e4 !important;
+	width: 9VW;
+	text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+    background-color: #0fb6b7;
+    color: #fff !important;
+    margin:0;
+}
+
+/*.hover {
+    background-color: #0db6b7;
+    color: white !important;
+}*/
 
 /****************************************** viewYTDHitRate ******************************************/
 
