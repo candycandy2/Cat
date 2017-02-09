@@ -1,4 +1,4 @@
-$(document).one("pagecreate", "#viewDataInput", function() {
+//$(document).one("pagecreate", "#viewDataInput", function() {
 
     $("#menu").on("click", function() {
         $("#img1").attr("src","img/2016_meal_1121-1.png");
@@ -10,4 +10,4 @@ $(document).one("pagecreate", "#viewDataInput", function() {
         $("#img2").attr("src","img/");
     });
 
-});
+//});

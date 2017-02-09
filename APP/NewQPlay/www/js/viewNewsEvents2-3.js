@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewNewsEvents2-3", function(){
+//$(document).one("pagecreate", "#viewNewsEvents2-3", function(){
     
     $("#viewNewsEvents2-3").pagecontainer({
         create: function(event, ui) {
@@ -542,4 +542,4 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
         }
     });
 
-});
+//});

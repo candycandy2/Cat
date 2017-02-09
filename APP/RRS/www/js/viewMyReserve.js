@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewMyReserve', function() {
+//$(document).one('pagecreate', '#viewMyReserve', function() {
     var clickAggTarceID = '';
     var clickReserveDate = '';
     var clickReserveRoom = '';
@@ -161,4 +161,4 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
         }
     });
 
-});
+//});
