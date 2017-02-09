@@ -3,8 +3,6 @@ $(document).one("pagebeforecreate", function() {
     $("#mypanel").panel().enhanceWithin();
 });
 
-
-
 $(document).one("pagecreate", "#viewHitRate", function(){
 	var chart;
 	var a = [49.9, 71.5, 106.4, 129.2, 144.0];
@@ -12,13 +10,9 @@ $(document).one("pagecreate", "#viewHitRate", function(){
 	var c = [20, 68.9, 56.6, 81.3, 103.4];
 
 	var htmlContent = "";
-	var highchart = '<div id="highcharts" style="height:40VH;"></div>';
+	var highchart = '<div id="highcharts" style="height:38VH;"></div>';
 	$("#hc-canvas").html("");
 	$("#hc-canvas").prepend($(highchart)).enhanceWithin();
-	
-	// drawHighcharts(b, b);
-	// chart.series[0].setData(a, true);
-	// chart.series[1].setData(a, true);
 
     $("#viewHitRate").pagecontainer({
         create: function(event, ui) {
@@ -77,17 +71,17 @@ $(document).one("pagecreate", "#viewHitRate", function(){
             });
 		
 
-            $(".page-tabs #tab-1").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-1").on("click", function(){
             	chart.series[0].setData(a, true);
             	chart.series[1].setData(a, true);	
             });
 
-            $(".page-tabs #tab-2").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-2").on("click", function(){
             	chart.series[0].setData(b, true);
             	chart.series[1].setData(b, true);
             });
 
-            $(".page-tabs #tab-3").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-3").on("click", function(){
             	chart.series[0].setData(c, true);
             	chart.series[1].setData(c, true);
             });
@@ -96,7 +90,7 @@ $(document).one("pagecreate", "#viewHitRate", function(){
 
     $("#mypanel #panel-header-content").on("click", function(){
     	$("#viewHitRate").show();
-    	$("#viewMonthlyHitRate").show();
+    	$("#viewMonthlyHitRate").hide();
     	$("#viewYTDHitRate").hide();
     	$("#mypanel").panel("close");
     });

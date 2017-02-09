@@ -50,7 +50,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
@@ -75,7 +75,7 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "AddMyPhoneBook", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "AddMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
