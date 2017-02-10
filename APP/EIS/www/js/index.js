@@ -25,6 +25,7 @@ var panel = htmlContent
         +'</div>';
 
 $(document).one("pagebeforeshow", function() {
+
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
 
@@ -51,6 +52,12 @@ $(document).one("pagebeforeshow", function() {
 
     $(".menu-btn").on("click", function(){
         $("#mypanel").panel("open");
+    });
+
+     $(this).on( "swiperight", function(event){
+        if($(".ui-page-active").jqmData("panel") !== "open"){
+            $("#mypanel").panel( "open");
+        }
     });
 });
 
