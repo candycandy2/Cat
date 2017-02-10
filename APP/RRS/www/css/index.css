@@ -1,4 +1,4 @@
-/*override jQuery Mobile start*/
+/********************************** override jQuery Mobile *************************************/
 
 hr {
     border: 0;
@@ -8,7 +8,6 @@ hr {
 }
 
 h1 {
-    /*font-size: 1.5em;*/
     font-size: 5.5vw;
 }
 
@@ -17,12 +16,18 @@ a {
     text-decoration: none !important;
 }
 
-.ui-header-fixed {
-    padding-top: initial !important;
+.ios-fix-overlap-div {
+    display: initial !important;
 }
 
-.ui-title {
-    text-shadow: initial !important;
+.hidden {
+    visibility: hidden;
+    position: absolute;
+    display: block;
+}
+
+.ui-header-fixed {
+    padding-top: initial !important;
 }
 
 .ui-btn {
@@ -41,19 +46,11 @@ a {
     margin-bottom: 5px;
 }
 
-#newSettingSelect .ui-block-a h3 {
-    text-align: center;
-}
-
-#newSettingSelect .ui-block-b div:first-child {
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
 #newSettingFloor div.ui-bar {
     text-align: center;
     height: 7vh;
     line-height: 7vh;
+    font-weight: initial;
 }
 
 #navbar ul li a {
@@ -76,66 +73,11 @@ a {
 
 .ui-radio label {
     text-align: center !important;
-}
-
-#reserveSite-button {
-    padding: 0.5vh !important;
-    margin: 0.4vh 0 1.4vh 0 !important;
-}
-
-#reserveFloor-button {
-    padding: 0.5vh !important;
-    margin: 1.5vh 0 1.4vh 0 !important;
-}
-
-#reserveSite-button.ui-btn,
-#reserveFloor-button.ui-btn {
-    background-color: transparent !important;
-    border-color: transparent !important;
-}
-
-#reserveSite-button.ui-btn-icon-right {
-    padding-right: 2.5em !important;
+    font-size: 2.8vh;
 }
 
 #reserveDateSelect div.ui-bar-a {
     background-color: initial;
-}
-
-#reserveSetting-button {
-    padding: 0.5vh !important;
-    margin: 2vh 0 2vh 0 !important;
-}
-
-
-/*override jQuery Mobile end*/
-
-
-/*new public area start*/
-
-.ui-margin-10 {
-    margin: 3% !important;
-}
-
-.ui-padding-8 {
-    padding-left: 8%;
-}
-
-.ui-position-adjust {
-    text-align: left;
-    margin-left: 3%;
-    margin-bottom: 3%;
-}
-
-.ui-hasBtn h2 {
-    display: inline-block;
-    float: left;
-}
-
-.ui-delete-btn {
-    margin: 3%;
-    padding: 5px 20px 5px 20px;
-    float: right;
 }
 
 .ui-radio-30 div.ui-radio {
@@ -146,36 +88,9 @@ a {
     width: 50%;
 }
 
-#pageTwo {
-    text-align: center;
-}
-
 #reserveSettingArea a:link {
     text-decoration: none;
     color: black;
-}
-
-
-/*--------------------------*/
-
-.disable {
-    display: none !important;
-}
-
-.inline {
-    display: inline-block;
-}
-
-div.circle {
-    width: 3vw;
-    height: 1.8vh;
-    border-radius: 99em;
-    border: 1px solid #ddd;
-}
-
-.ui-margin-public {
-    margin: 1.8vw 2.7vw !important;
-    /*text-align: center;*/
 }
 
 #reserveTab > div > div.ui-radio label {
@@ -197,6 +112,7 @@ div.circle {
     width: 30vw !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+    display: inline-block;
 }
 
 #pageTwo div.ui-select {
@@ -204,15 +120,6 @@ div.circle {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding: 3vh 0 3vh 0;
-}
-
-#reserveSite-button.ui-btn,
-#reserveFloor-button.ui-btn,
-#reserveSetting-button.ui-btn {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    /*padding-left: 0 !important;*/
-    text-align: left;
 }
 
 #reserveDateSelect div.ui-bar {
@@ -236,6 +143,65 @@ div.circle {
 
 #reserveDateSelect div.ui-bar div:nth-child(2) {
     font-size: 3vw;
+}
+
+
+/********************************** public area *************************************/
+
+.ui-title-btn {
+    text-shadow: none !important;
+    font-size: 2.8vh !important;
+    border: 0;
+    padding-top: 1.5vh;
+}
+
+.ui-margin-10 {
+    margin: 3% !important;
+}
+
+.ui-padding-8 {
+    padding-left: 8%;
+}
+
+.ui-hasBtn h2 {
+    display: inline-block;
+    float: left;
+}
+
+#pageTwo {
+    text-align: center;
+}
+
+.app-font {
+    font-size: 2.8vh;
+}
+
+.app-font-small {
+    font-size: 2.5vh;
+}
+
+.disable {
+    display: none !important;
+}
+
+.inline {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.circle {
+    width: 3vw;
+    height: 1.8vh;
+    border-radius: 99em;
+    border: 1px solid #ddd;
+}
+
+.ui-margin-public {
+    margin: 1.8vw 2.7vw !important;
+}
+
+.title-icon {
+    height: 2.7vh;
 }
 
 .radius-btn {
@@ -278,6 +244,56 @@ div.circle {
     border-width: 1px;
     border-color: #2a88bc !important;
     border-style: solid !important;
+}
+
+.btn-myreserve {
+    border-radius: 40px;
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    color: white;
+    width: 22vw;
+    height: 4.5vh;
+    line-height: 5vh;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    display: inline-block;
+}
+
+.myreserve-margin {
+    font-size: 2.8vh;
+    margin: 1.7vh 4.8vw;
+}
+
+.myreserve-height {
+    height: 10.7vh;
+    line-height: 10.7vh;
+}
+
+.setting-delete {
+    position: absolute;
+    right: 6vw;
+    display: inline-block;
+    width: 22vw;
+    height: 4vh;
+    line-height: 4.5vh;
+    margin-top: -0.5vh;
+}
+
+.setting-img {
+    height: 2.5vh;
+    margin-left: 2vw;
+}
+
+.div-radius {
+    border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .quick-reserve-margin {
@@ -325,7 +341,7 @@ div.circle {
     right: 0;
     text-align: center;
     line-height: 3.5vh;
-    background-color: #003399 !important;
+    background-color: #142433 !important;
 }
 
 .setting-icon {
@@ -348,11 +364,62 @@ div.circle {
     background: url(../img/add_nav.png) no-repeat;
 }
 
+.min-height-100 {
+    min-height: 100% !important;
+}
 
-/*new public area end*/
+
+/*.loader{
+    margin-top: 100vh !important;
+}*/
+
+.word-mid {
+    position: absolute;
+    height: 8.5vh;
+    text-align: left;
+    line-height: 8.5vh;
+    vertical-align: middle;
+    margin-left: 3.3vw;
+}
+
+.word-warp {
+    white-space: pre-line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 20px;
+    max-height: 40px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    vertical-align: middle;
+    color: red;
+    font-size: 2.3vh;
+}
+
+.settingArea {
+    border-radius: 3px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 3px;
+    font-size: 2.8vh;
+    text-align: left;
+    padding: 1.5vh 2.4vw;
+    border: 1px solid #aaa;
+    margin-top: 3.2vh;
+    margin-bottom: 5.6vh;
+}
+
+.dropdown-icon {
+    outline: none;
+    padding: 5px;
+    font-size: 2.8vh;
+    border: 0;
+    background: url('../img/dropdown.png') right transparent;
+    background-size: 4vw 1.7vh;
+    background-repeat: no-repeat;
+    -webkit-appearance: none;
+}
 
 
-/*new color setting start*/
+/********************************** color setting *************************************/
 
 .ui-color-lightblue {
     background-color: #2a88bc;
@@ -362,19 +429,18 @@ div.circle {
     background-color: white;
 }
 
-.ui-color-yellow {
-    color: #ffce43;
-}
-
-hr.ui-color-yellow {
+hr.ui-color-white {
     border: 0 !important;
     height: 1px !important;
-    background-color: #ffce43 !important;
-    border-color: #ffce43 !important;
+    background-color: white !important;
+    border-color: white !important;
+}
+
+hr.ui-color-green {
+    background-color: #6bbfcf;
 }
 
 .btn-benq {
-    /*background-color: #471e86 !important;*/
     background-color: #2a88bc !important;
     color: white !important;
 }
@@ -382,11 +448,6 @@ hr.ui-color-yellow {
 .ui-benq-color {
     color: #471e86;
 }
-
-
-/*.ui-color-green {
-    color: #34823a;
-}*/
 
 .btn-disable {
     background-color: #ddd !important;
@@ -411,11 +472,24 @@ hr.ui-color-yellow {
     background-color: #afc744 !important;
 }
 
+.ui-linear-gradient-gary {
+    background: -webkit-linear-gradient(#a1a3a5, #747679);
+    background: -o-linear-gradient(#a1a3a5, #747679);
+    background: -moz-linear-gradient(#a1a3a5, #747679);
+    background: linear-gradient(#a1a3a5, #747679);
+    color: white !important;
+}
 
-/*new color setting end*/
+.ui-linear-gradient-green {
+    background: -webkit-linear-gradient(#009cb5, #056c92);
+    background: -o-linear-gradient(#009cb5, #056c92);
+    background: -moz-linear-gradient(#009cb5, #056c92);
+    background: linear-gradient(#009cb5, #056c92);
+    color: white !important;
+}
 
 
-/*new scrollmenu start*/
+/********************************** scrollmenu *************************************/
 
 div.scrollmenu {
     background-color: white;
@@ -424,8 +498,9 @@ div.scrollmenu {
     /*display: flex;*/
     border-style: solid;
     border-width: 1px 0px 1px 1px;
-    box-shadow: 5px 1px 5px #666;
+    box-shadow: 5px 1px 3px #666;
     border-color: #666 !important;
+    margin: 0 -2vw 0 0 !important;
 }
 
 div.scrollmenu a {
@@ -453,20 +528,19 @@ div.scrollmenu a {
 }
 
 
-/*new scrollmenu end*/
-
-
-/*new header start*/
+/********************************** new header *************************************/
 
 #container {
     width: 100%;
     text-align: center;
-    line-height: 20px;
 }
 
-#container a:link {
+#container a:link,
+#container span {
     text-decoration: none;
     color: white;
+    line-height: 20px;
+    letter-spacing: 1px;
 }
 
 #left {
@@ -485,10 +559,7 @@ div.scrollmenu a {
 }
 
 
-/*new header end*/
-
-
-/*column width start*/
+/********************************** column width *************************************/
 
 .col-95 {
     width: 95% !important;
@@ -531,69 +602,21 @@ div.scrollmenu a {
 }
 
 
-/*column width end*/
+/********************************** popup msg *************************************/
 
-
-/*popup msg start*/
-
-.ui-popup-container,
-.ui-popup {
+#reservePopupSchemeMsg-popup,
+#reservePopupSchemeMsg,
+#newSettingTimePickerPopup-popup,
+#newSettingTimePickerPopup {
     width: initial !important;
+    border-width: 0px !important;
+    border-style: initial !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
 }
 
-.popup-msg {
-    height: 20vh;
-    width: 80vw;
-    background: #eee !important;
-    border-radius: 10px;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid #E2E2E2;
-}
-
-.popup-msg h1 {
-    text-align: center;
-    font-size: 1.2rem;
-    margin: 1rem 1rem 0.5rem;
-}
-
-.popup-msg div {
-    text-align: center;
-    font-size: 1rem;
-}
-
-.popup-msg div > table {
-    text-align: left;
-}
-
-.popup-msg div > td {
-    padding-right: 3vw;
-}
-
-.popup-msg button {
-    background: transparent;
-    border: none;
-    color: #1678E5 !important;
-    height: 3rem;
-    font-size: 1rem;
-    width: 50%;
-    position: absolute;
-    bottom: 0;
-    cursor: pointer;
-    outline: none;
-}
-
-.popup-msg button:nth-of-type(1) {
-    border-top: 1px solid #d4d4d4;
-    border-right: 1px solid #d4d4d4;
-    left: 0;
-    border-radius: 0 0 0 10px;
-}
-
-.popup-msg button:nth-of-type(2) {
-    border-top: 1px solid #d4d4d4;
-    right: 0;
-    border-radius: 0 0 10px 0;
+#reservePopupSchemeMsg #msgContent {
+    margin: 0 auto;
 }
 
 .popup-msg a {
@@ -632,29 +655,7 @@ div.scrollmenu a {
 }
 
 
-/*popup msg end*/
-
-
-/*.timepicker-main {
-        border: 0px;
-    width: 50px;
-    height: 30px;
-    overflow: hidden;
-}*/
-
-
-/*#sTimeHr {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    top: 0;
-    display: inline-block;
-}
-
-section {
-    height: 60px;
-    font-size: 
-}*/
+/********************************** timepicker *************************************/
 
 .timepicker-icon {
     width: 10vw;
@@ -681,22 +682,15 @@ section {
     height: 3vh;
     background-size: 6vw 3vh;
     background-repeat: no-repeat;
-    /*vertical-align: middle;*/
-}
-
-#newSettingTimePickerPopup .popup-msg {
-    height: 30vh !important;
 }
 
 #newSettingTimePickerPopup .popup-msg div {
-    /*width: 12vw;*/
     margin: 0 auto !important;
     font-size: 6vw;
 }
 
 #newSettingTimePickerPopup .popup-msg table {
     height: 23vh !important;
-    /*width: 75vw !important;*/
     margin: 0 auto !important;
 }
 
@@ -713,12 +707,3 @@ section {
     background-color: transparent;
     color: white;
 }
-
-.min-height-100 {
-    min-height: 100% !important;
-}
-
-
-/*.loader{
-    margin-top: 100vh !important;
-}*/

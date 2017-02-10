@@ -1,19 +1,18 @@
 
-$(document).one("pagecreate", "#viewDetailInfo", function(){
+//$(document).one("pagecreate", "#viewDetailInfo", function(){
 
     $("#viewDetailInfo").pagecontainer({
         create: function(event, ui) {
-            
             /********************************** function *************************************/
             function QueryEmployeeDataDetail() {
                 
                 if (prevPageID === "viewQueryResult") {
-                    $("#startAdd").show();
-                    $("#startDelete").hide();
+                    $("#addStar").show();
+                    $("#deleteStar").hide();
                 } else if (prevPageID === "viewPhonebook") {
                     employeeData = phonebookData;
-                    $("#startAdd").hide();
-                    $("#startDelete").show();
+                    $("#addStar").hide();
+                    $("#deleteStar").show();
                 }
 
                 var self = this;
@@ -28,33 +27,30 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                         if (prevPageID === "viewQueryResult") {
                             employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
                             for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[i].employeeid) {
-                                    $("#startAdd").hide();
-                                    $("#startDelete").show();
+                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                                    $("#addStar").hide();
+                                    $("#deleteStar").show();
                                     break;
                                 }
                             }
                         }
-
-                        $("#detailData #companyName").html(data['Content'][0].Company);
-                        $("#detailData #eName").html(data['Content'][0].Name_EN);
-                        $("#detailData #cName").html(data['Content'][0].Name_CH);
-                        $("#detailData #employeeID").html(data['Content'][0].EmployeeID);
-                        $("#detailData #sideCode").html(data['Content'][0].SiteCode);
-                        $("#detailData #dept").html(data['Content'][0].Dept);
-                        $("#detailData #deptCode").html(data['Content'][0].DeptCode);
-                        $("#detailData #extNo").html(data['Content'][0].Ext_No);
-                        $("#detailData #eMail").html(data['Content'][0].EMail);
-
+                        $("#detial-name-title #eName").html(data['Content'][0].Name_EN);
+                        $("#detial-name-title #cName").html(data['Content'][0].Name_CH);
+                        $("#detail-data #companyName").html(data['Content'][0].Company);
+                        $("#detail-data #employeeID").html(data['Content'][0].EmployeeID);
+                        $("#detail-data #sideCode").html(data['Content'][0].SiteCode);
+                        $("#detail-data #dept").html(data['Content'][0].Dept);
+                        $("#detail-data #deptCode").html(data['Content'][0].DeptCode);
+                        $("#detail-data #extNo").html(data['Content'][0].Ext_No);
+                        $("#detail-data #eMail").html(data['Content'][0].EMail);
                     }
-
                     loadingMask("hide");                
                 };
 
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
@@ -68,9 +64,9 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
-                        $("#askAddPhonebook").popup('close');
-                        $("#startAdd").hide();
-                        $("#startDelete").show();
+                        QueryMyPhoneBook();
+                        $("#addStar").hide();
+                        $("#deleteStar").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
                     } else {
@@ -81,15 +77,14 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "AddMyPhoneBook", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "AddMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
 
             window.deletePheonBookFinished = function() {
-                $("#startAdd").show();
-                $("#startDelete").hide();
-                $('#askDeletePhonebook').popup('close');
+                $("#addStar").show();
+                $("#deleteStar").hide();
             };
 
             /********************************** page event *************************************/
@@ -99,13 +94,24 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
             });
 
             /********************************** dom event *************************************/
-            $("#addPhonebook").on("click", function(){
-                AddMyPhoneBook();
+            $("#addStar").on("click", function(){
+                popupMsg("askAddPhonebook", "確定要加到我的電話簿?", "", "取消", true, "確定", "");
             });
 
-            $("#deletePhonebook").on("click", function(){
-                deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
+            $("#deleteStar").on("click", function(){
+                popupMsg("askDeletePhonebook", "確定要從我的電話簿刪除?", "", "取消", true, "確定", "");
+            });
+
+            $('body').on('click', 'div[for=askAddPhonebook] #confirm', function() {
+                AddMyPhoneBook();
+                $("#viewPopupMsg").popup("close");
+            });
+
+            $('body').on('click', 'div[for=askDeletePhonebook] #confirm', function() {
+                // deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
+                deletePhoneBook("viewDetailInfo", employeeData[employeeSelectedIndex].employeeid);
+                $("#viewPopupMsg").popup("close");
             });
         }
     });
-});
+//});

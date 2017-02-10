@@ -1,0 +1,410 @@
+[
+  {
+    "term": "str_001",
+    "definition": "Waiting for the permission of push message, then you can start to use QPlay.",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_002",
+    "definition": "Please allow Qplay push notification for enjoying the full service",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_003",
+    "definition": "Retry",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_004",
+    "definition": "System is being maintained please try later!",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_005",
+    "definition": "Please update App version for enjoying the full service",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_006",
+    "definition": "Update App",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_007",
+    "definition": "Network is disconnected please check the connection!",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_008",
+    "definition": "QPlay Download failed!",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_009",
+    "definition": "BenQ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_010",
+    "definition": "Qisda",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_011",
+    "definition": "Username (eg:Sunny.CK.Lin)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_012",
+    "definition": "Passward",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_013",
+    "definition": "If you've forgotten your password please contact with ITS",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_014",
+    "definition": "Log In",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_015",
+    "definition": "Incorrect employee Info  ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_016",
+    "definition": "OK",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_017",
+    "definition": "Username did not match with the verifier.\nThe cancellation of the device, please contact with ITS.  ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_018",
+    "definition": "Your device has been verified ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_019",
+    "definition": "The cancellation of the device, please contact with ITS ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_020",
+    "definition": "Ok, I Know ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_021",
+    "definition": "Download",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_022",
+    "definition": "Install",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_023",
+    "definition": "Cancel",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_024",
+    "definition": "install failed!",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": "[app name] install failed!"
+  },
+  {
+    "term": "str_025",
+    "definition": "install successfully",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": "[app name] install successfully"
+  },
+  {
+    "term": "str_026",
+    "definition": "Open",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_027",
+    "definition": "Update",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_028",
+    "definition": "News",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_029",
+    "definition": "Event",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_030",
+    "definition": "Latest  update",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": "Latest update [yyyy/mm/dd hh:mm]"
+  },
+  {
+    "term": "str_031",
+    "definition": "No News",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_032",
+    "definition": "No Events",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_033",
+    "definition": "Show news within 30 days",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_034",
+    "definition": "Skip all historical news",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_035",
+    "definition": "Select all                                   ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_036",
+    "definition": "Celect all     ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_037",
+    "definition": "Delete",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_038",
+    "definition": "Cancel",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_039",
+    "definition": "Do you want to delete this news?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_040",
+    "definition": "OK",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_041",
+    "definition": "Cancel",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_042",
+    "definition": "Do you want to delete this event?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_043",
+    "definition": "logout now?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_044",
+    "definition": " You have logged out.\n Please log in again.",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_045",
+    "definition": "Login",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_046",
+    "definition": "New messages",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_047",
+    "definition": "Close",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_048",
+    "definition": "System error, please contact with ITS.  ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_049",
+    "definition": "This account has been disabled,  please contact with ITS.  ",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_050",
+    "definition": "This news has been removed.",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_051",
+    "definition": "More",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }
+]

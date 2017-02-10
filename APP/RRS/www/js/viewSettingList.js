@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewSettingList', function() {
+//$(document).one('pagecreate', '#viewSettingList', function() {
 
     var roomSettingdata = {};
     var htmlContent = '';
@@ -22,13 +22,13 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                         var strPeople = (item.people == '0') ? '不限' : (item.people == '1') ? '2~8人' : '8人以上';
                         var strTime = (item.time == 'none') ? "現在起一小時" : item.time;
                         var strFloor = (item.floorName == 'none') ? '不限' : item.floorName;
-                        var replaceItem = ['set-' + item.id, item.id, item.title, item.siteName, strPeople, strTime, strFloor, ''];
+                        var replaceItem = ['set-' + item.id, item.id, item.title, item.siteName, strPeople, strTime, strFloor.replaceAll(',', ', '), ''];
                         htmlContent += replaceStr($('#settingList').get(0).outerHTML, originItem, replaceItem);
                     }
                 }
 
                 $('#settingList').after(htmlContent);
-                $('div[value=0] > a').addClass('disable');
+                $('div[value=0] a').addClass('disable');
             }
 
             /********************************** page event *************************************/
@@ -41,11 +41,10 @@ $(document).one('pagecreate', '#viewSettingList', function() {
                 $('#viewSettingList').addClass('min-height-100');
                 clickDeleteID = $(this).attr('value');
                 var strTitle = $(this).attr('title');
-                popupMsg('settingListPopupMsg', 'deleteMsg', '', '確定刪除' + strTitle + '?', '取消', true, '確定', false);
+                popupMsg('deleteMsg', '', '確定刪除' + strTitle + '?', '取消', true, '確定','');
             });
 
             $('body').on('click', 'div[for=deleteMsg] #confirm', function() {
-
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
                 roomSettingdata.content = roomSettingdata.content.filter(function(item) {
                     return item.id != clickDeleteID;
@@ -67,4 +66,4 @@ $(document).one('pagecreate', '#viewSettingList', function() {
         }
     });
 
-});
+//});

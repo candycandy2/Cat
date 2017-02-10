@@ -37,6 +37,18 @@ class AuthController extends Controller
 
         if (Auth::attempt(['login_id' => $loginid, 'status' => 'Y', 'resign' => 'N', 'password' => $password, 'user_domain'=>$domain], $remember)) {
             \Session::set('lang', $lang);
+
+            //Check user password with LDAP
+            //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
+            $LDAP_SERVER_IP = "LDAP://10.82.12.61";
+            $userId = $domain . "\\" . $loginid;
+            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+            $bind = @ldap_bind($ldapConnect, $userId, $password);
+            if(!$bind)
+            {
+                $data['errormsg'] = "Login Failed";
+                return \Redirect::to('auth/login')->with($data);
+            }
             // 认证通过...
             //return Auth::id();
             //return redirect()->intended('dashboard');

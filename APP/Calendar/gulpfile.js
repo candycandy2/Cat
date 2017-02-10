@@ -70,11 +70,14 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="*:*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
+                            '<preference name="AndroidLaunchMode" value="singleTask"/>' +
+                            '<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
+                            '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
@@ -90,33 +93,50 @@ gulp.task('config', function(){
 //ex: gulp install --env test
 gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-splashscreen',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android',
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appcalendar' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist'
+  'cordova plugin add cordova-plugin-whitelist',
+  'cordova plugin add cordova-plugin-file'
+]));
+
+gulp.task('jenkinsinstall', shell.task([
+  'cordova platform add ios@4.3.1',
+  'cordova platform add android@6.0.0',
+  'cordova plugin add cordova-plugin-device@1.1.4',
+  'cordova plugin add cordova-plugin-console@1.0.5',
+  'cordova plugin add cordova-plugin-appversion@1.0.0',
+  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appyellowpage' + appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
+  'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
 gulp.task('copyAndroidImages', function() {
-    return gulp.src('Images/android/**/*', {base: 'Images/android/'})
+    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/Launch_icon/android/'})
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
 });
 
 gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/iOS/**/*', {base: 'Images/iOS/'})
-        .pipe(gulp.dest('platforms/ios/Calendar/Images.xcassets/',{overwrite: true}));
+    return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
+        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+});
+
+gulp.task('copyIOSLaunchImages', function() {
+    return gulp.src('../component/LaunchImage.launchimage/*')
+        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([
@@ -124,7 +144,7 @@ gulp.task('build', shell.task([
 ]))
 
 gulp.task('componentCSS', function() {
-    return gulp.src('../component/*.css')
+    return gulp.src('../component/css/*.css')
         .pipe(gulp.dest('www/css/'));
 });
 /*
@@ -141,26 +161,54 @@ gulp.task('concat:css', ['less'], function(){
 });
 */
 
-gulp.task('componentJS', function() {
-    return gulp.src('../component/*.js')
+gulp.task('componentHTML', function() {
+    return gulp.src('../component/*.html')
+        .pipe(gulp.dest('www/View/'));
+});
+
+gulp.task('componentIMG', function() {
+    return gulp.src('../component/image/*')
+        .pipe(gulp.dest('www/img/component/'));
+});
+
+gulp.task('libJS', function() {
+    return gulp.src('../component/lib/*')
+        .pipe(gulp.dest('www/js/lib/'));
+});
+
+gulp.task('functionJS', function() {
+    return gulp.src('../component/function/*.js')
+        .pipe(concat('function.js'))
+        .pipe(gulp.dest('../component/'));
+});
+
+gulp.task('appJS', ['functionJS'], function(){
+    return gulp.src(['../component/component.js','../component/function.js'])
+        //.pipe(uglify())
+        //.pipe(concat('app.min.js'))
+        .pipe(concat('APP.js'))
         .pipe(gulp.dest('www/js/'));
 });
-/*
-gulp.task('concat:js', function(){
-    return gulp.src(['www/src/js/config.js','src/js/hello.js','src/js/main.js'])
-        .pipe(uglify())
-        .pipe(concat('app.min.js'))
-        .pipe(gulp.dest('www/dist/js'));
+
+gulp.task('commonString', function() {
+    return gulp.src('../component/string/*')
+        .pipe(gulp.dest('www/string/'));
 });
 
-gulp.task('default', ['concat:js', 'concat:css'], function(){
-    return gulp.src('www/src/index.html')
-        .pipe(gulp.dest('www/dist'));
+gulp.task('String', ['commonString'], function() {
+    return gulp.src('string/*')
+        .pipe(gulp.dest('www/string/'));
 });
-*/
 
-//ex: gulp --env test --vname 1.0.0.8 --vcode 8
-//remove petch task
-gulp.task('default', ['config', 'copyAndroidImages', 'copyIOSImages', 'componentCSS', 'componentJS', 'build'], function(){
+gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
+    'rm ../component/function.js'
+]));
+
+//ex: gulp default
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+
+});
+
+gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });

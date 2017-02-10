@@ -9,6 +9,10 @@ var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
+var appEnvironment = "";
+var browserLanguage;
+var langStr = {};
+var logFileName;
 
 var loginData = {
     versionName:         "",
@@ -36,8 +40,11 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
-var iOSAppInitialFinish = false;
+var reStartAPP = false;
+var appInitialFinish = false;
+var messageRowId;
 
+/********************************** Corodva APP initial *************************************/
 var app = {
     // Application Constructor
     initialize: function() {
@@ -53,9 +60,7 @@ var app = {
         */
 
         //For release
-
         this.bindEvents();
-
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -88,7 +93,7 @@ var app = {
             window.localStorage.setItem("openMessage", false);
         }
 
-        //[Android]Handle the back button, set in index.js
+        //[Android] Handle the back button, set in index.js
         document.addEventListener("backbutton", onBackKeyDown, false);
 
         //[device] data ready to get on this step.
@@ -100,6 +105,13 @@ var app = {
         if (device.platform === "iOS") {
             $.mobile.hashListeningEnabled = false;
         }
+
+        //Log -
+        //get now year + month
+        var now = new Date();
+        logFileName = now.yyyymm("");
+        //console.log(cordova.file);
+        LogFile.checkOldFile();
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
@@ -125,11 +137,10 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
-
         //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
         var doOpenMessage = false;
         //If APP not open, check message after checkAppVersion()
-        messageRowId = data.extras["Parameter"];
+        getMessageID(data);
 
         if (window.localStorage.getItem("openMessage") === "false") {
 
@@ -153,8 +164,14 @@ var app = {
 
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else {
-                    var messageList = new QueryMessageList();
-                    callGetMessageList = true;
+                    if (window.localStorage.getItem("uuid") !== null) {
+                        loginData["uuid"] = window.localStorage.getItem("uuid");
+                        loginData["token"] = window.localStorage.getItem("token");
+                        loginData["pushToken"] = window.localStorage.getItem("pushToken");
+
+                        var messageList = new QueryMessageList();
+                        callGetMessageList = true;
+                    }
                 }
             }
         }
@@ -162,22 +179,55 @@ var app = {
     onBackgoundNotification: function(data) {
         //Plugin-QPush > 添加後台收到通知后需要執行的內容
         if (window.localStorage.getItem("openMessage") === "false") {
+            getMessageID(data);
+
             if (window.localStorage.getItem("loginid") === null) {
                 //remember to open Message Detail Data
                 loginData["openMessage"] = true;
                 window.localStorage.setItem("openMessage", true);
-                window.localStorage.setItem("messageRowId", data.extras["Parameter"]);
+                window.localStorage.setItem("messageRowId", messageRowId);
             }
         }
     },
     onReceiveNotification: function(data) {
         //Plugin-QPush > 添加前台收到通知后需要執行的內容
         if (window.localStorage.getItem("openMessage") === "false") {
+            getMessageID(data);
+
             if (window.localStorage.getItem("loginid") === null) {
                 //remember to open Message Detail Data
+
                 loginData["openMessage"] = true;
                 window.localStorage.setItem("openMessage", true);
-                window.localStorage.setItem("messageRowId", data.extras["Parameter"]);
+                window.localStorage.setItem("messageRowId", messageRowId);
+            }
+
+            //While open APP in iOS, when get new message, iOS will not show message dialog in status bar,
+            //need to do it by Javscript
+            if (device.platform === "iOS") {
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("messageRowId", messageRowId);
+
+                $("#newMessageTitle").html(data.aps["alert"]);
+                $('#iOSGetNewMessage').popup();
+                $('#iOSGetNewMessage').show();
+                $('#iOSGetNewMessage').popup('open');
+
+                $("#openNewMessage").one("click", function(){
+                    $('#iOSGetNewMessage').popup('close');
+                    $('#iOSGetNewMessage').hide();
+
+                    openNewMessage();
+                });
+
+                $("#cancelNewMessage").one("click", function(){
+                    $('#iOSGetNewMessage').popup('close');
+                    $('#iOSGetNewMessage').hide();
+
+                    loginData["openMessage"] = false;
+                    window.localStorage.setItem("openMessage", false);
+                });
             }
         }
     },
@@ -189,9 +239,32 @@ var app = {
 
 app.initialize();
 
+/********************************** jQuery Mobile Event *************************************/
 $(document).one("pagebeforecreate", function(){
 
     $(':mobile-pagecontainer').html("");
+
+    //According to the data [pageList] which set in index.js ,
+    //add Page JS into index.html
+    $.map(pageList, function(value, key) {
+        (function(pageID){
+            /*
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.src = "js/" + pageID + ".js";
+            $("head").append(s);
+            */
+
+            var script = document.createElement("script");
+            // onload fires even when script fails loads with an error.
+            //script.onload = onload;
+            // onerror fires for malformed URLs.
+            //script.onerror = onerror;
+            script.type = "text/javascript";
+            script.src = "js/" + pageID + ".js";
+            document.head.appendChild(script);
+        }(value));
+    });
 
     //According to the data [pageList] which set in index.js ,
     //add View template into index.html
@@ -204,125 +277,279 @@ $(document).one("pagebeforecreate", function(){
         }(value));
     });
 
-    //add component view template into index.html
-    $.get("View/component.html", function(data) {
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-        $.mobile.pageContainer.append(data);
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-        //Set viewInitial become the inde page
-        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        //language string exist
+        getLanguageString();
+    })
+    .fail(function() {
+        //language string does not exist
+        browserLanguage = "zh-tw";
+        getLanguageString();
+    });
 
-        //If is other APP, set APP name in initial page
-        if (appKey !== qplayAppKey) {
-            $("#initialAppName").html(initialAppName);
-        }
-
-        //viewNotSignedIn, Login Again
-        $("#LoginAgain").on("click", function() {
-            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var checkAppVer = new checkAppVersion();
-        });
-    }, "html");
-
-    //For APP scrolling in [Android 5], set CSS
+    //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
         if (device.platform === "Android") {
+            $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            $(".ui-header-fixed").css("position", "fixed");
+
             var version = device.version.substr(0, 1);
-            if (version === "5") {
-                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            if (version === "6") {
+                $(".ui-footer-fixed").css("position", "fixed");
             }
+        }
+
+        //For some APP Page, if page's header has second level [button / title],
+        //auto resize the margin-top of page-main.
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
+
+        if (activePageID.length !== 0) {
+
+            var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+            var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+            var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+            if (device.platform === "iOS") {
+                mainMarginTop = mainMarginTop + 20;
+            }
+
+            $(".page-main").css({
+                "margin-top": mainMarginTop + "px"
+            });
+
         }
     });
 });
-/********************************** function *************************************/
 
-function checkNetwork() {
-    //A. If the device's Network is disconnected, show dialog only once, before the network is connect again.
-    //B. If the device's Network is disconnected again, do step 1. again.
+/********************************** QPlay APP function *************************************/
 
-    //Only Android can get this info, iOS can not!!
-    //connect.type:
-    //1. wifi
-    //2. cellular > 3G / 4G
-    //3. none
+//Check if Token Valid is less than 1 hour || expired || invalid || not exist
+function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
-    if (!navigator.onLine) {
-        //Network disconnected
-        loadingMask("hide");
+    successCallback =  successCallback || successCallback;
+    tokenValid = tokenValid || tokenValid;
+    data =  data || data;
 
-        var showMsg = false;
+    //Success Result Code
+    //even though some result code != 1, but it still means the result is success,
+    //need to check the token_valid
+    var codeArray = [
+        //All APP
+        "1",
+        //QPlay
+        "000910", "000913", "000915", "000910", "000919",
+        //Yellowpage
+        "001901", "001902", "001903", "001904", "001905", "001906",
+        //RRS
+        "002901", "002902", "002903", "002904", "002905", "002906", "002907"
+    ];
 
-        if (!initialNetworkDisconnected) {
-            showMsg = true;
-            initialNetworkDisconnected = true;
+    resultCode = resultCode.toString();
+
+    if (codeArray.indexOf(resultCode) !== -1) {
+        var doSuccessCallback = false;
+        var clientTimestamp = new Date().getTime();
+        clientTimestamp = clientTimestamp.toString().substr(0, 10);
+
+        if (!isNaN(tokenValid)) {
+            if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
+                //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
+                if (appKey === qplayAppKey) {
+                    reNewToken();
+                } else {
+                    getServerData();
+                }
+            } else {
+                if (doInitialSuccess) {
+                    doInitialSuccess = false;
+                    hideInitialPage();
+                } else {
+                    doSuccessCallback = true;
+                }
+            }
+        } else {
+            //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
+            doSuccessCallback = true;
         }
 
-        if (!showNetworkDisconnected) {
-            showMsg = true;
-            showNetworkDisconnected = true;
+        if (doSuccessCallback) {
+            if (typeof successCallback === "function") {
+                successCallback(data);
+            }
         }
 
-        if (showMsg) {
-            $('#disconnectNetwork').popup();
-            $('#disconnectNetwork').show();
-            $('#disconnectNetwork').popup('open');
-
-            $("#closeDisconnectNetwork").on("click", function(){
-                $('#disconnectNetwork').popup('close');
-                $('#disconnectNetwork').hide();
-
-                showNetworkDisconnected = false;
-            });
-        }
+    } else if (resultCode === "000907") {
+        //token expired
+        getServerData();
+    } else if (resultCode === "000908") {
+        //token invalid
+        getServerData();
+    } else if (resultCode === "000911") {
+        //uuid not exist
+        getServerData();
+    } else if (resultCode === "000914") {
+        //User Account Suspended
+        openAPIError("suspended");
     } else {
-        //Network connected
+        //Other API Result code, show [Please contact ITS]
+        var resultCodeStart = resultCode.substr(0, 3);
+
+        if (resultCodeStart === "999") {
+            openAPIError("error");
+        }
     }
 }
 
-//[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
-function checkPopupShown() {
-    if ($(".ui-popup-active").length > 0) {
-        popupID = $(".ui-popup-active")[0].children[0].id;
-        return true;
+function readConfig() {
+
+    loginData["versionName"] = AppVersion.version;
+    loginData["versionCode"] = AppVersion.build;
+
+    //according to the versionName, change the appKey
+    if (loginData["versionName"].indexOf("Staging") !== -1) {
+        appEnvironment = "test";
+        appKey = appKeyOriginal + "test";
+        serverURL = "https://qplaytest.benq.com"; // Staging API Server
+        qplayAppKey = qplayAppKey + "test";
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        appEnvironment = "dev";
+        appKey = appKeyOriginal + "dev";
+        serverURL = "https://qplaydev.benq.com"; // Development API Server
+        qplayAppKey = qplayAppKey + "dev";
+    }else {
+        appEnvironment = "";
+        appKey = appKeyOriginal + "";
+        serverURL = "https://qplay.benq.com"; // Production API Server
+        qplayAppKey = qplayAppKey + "";
+    }
+
+    //Plugin-QPush
+    if (appKey === qplayAppKey) {
+        //後台打开通知
+        document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
+        //後台收到通知
+        document.addEventListener('qpush.backgoundNotification', app.onBackgoundNotification, false);
+        //前台收到通知
+        document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
+    }
+
+    //QPlay need to get PushToken in the first step, else cannot do any continue steps.
+    if (appKey === qplayAppKey) {
+
+        //Every Time after Device Ready, need to do QPush init()
+        //If simulator, can't get push token
+        if (!device.isVirtual) {
+            //初始化JPush
+            window.plugins.QPushPlugin.init();
+        }
+
+        //If pushToken exist in Local Storage, don't need to get new one.
+        if (window.localStorage.getItem("pushToken") === null) {
+
+            //If simulator, can't get push token
+            if (device.isVirtual) {
+                app.onGetRegistradionID(device.uuid);
+            } else {
+                window.checkTimer = setInterval(function() {
+                    window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                }, 1000);
+
+                window.stopCheck = function() {
+                    if (window.checkTimer != null) {
+                        clearInterval(window.checkTimer);
+                    }
+                };
+            }
+
+        } else {
+            loginData["deviceType"] = device.platform;
+            loginData["pushToken"] = window.localStorage.getItem("pushToken");
+
+            var checkAppVer = new checkAppVersion();
+        }
+
+        //set initial page dispaly
+        $("#initialQPlay").removeClass("hide");
+        $("#initialOther").remove();
     } else {
-        popupID = "";
-        return false;
+        var doCheckAppVer = false;
+
+        //Check if the APP is finished update, running the latest code.
+        if (window.localStorage.getItem("versionCode") === null) {
+            //No, this is the first time to open this APP.
+            window.localStorage.setItem("versionCode", loginData["versionCode"]);
+
+            var versionCode = parseInt(loginData["versionCode"], 10);
+            //For old APP Version
+            //
+            //RRS
+            if (appKey.indexOf("rrs") !== -1) {
+                if (appEnvironment.length === 0) {
+                    //Production
+                    if (versionCode > 23 && versionCode <= 234) {
+                        getServerData();
+                    }
+                } else if (appEnvironment === "test") {
+                    //Staging
+                    if (versionCode > 226 && versionCode <= 234) {
+                        getServerData();
+                    }
+                }
+            }
+            //Yellowpage
+            if (appKey.indexOf("yellowpage") !== -1) {
+                if (appEnvironment.length === 0) {
+                    //Production
+                    if (versionCode > 226 && versionCode <= 234) {
+                        getServerData();
+                    }
+                } else if (appEnvironment === "test") {
+                    //Staging
+                    if (versionCode > 226 && versionCode <= 234) {
+                        getServerData();
+                    }
+                }
+            }
+
+            doCheckAppVer = true;
+        } else {
+            var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
+            var nowVersionCode = parseInt(loginData["versionCode"], 10);
+
+            if (nowVersionCode > oldVersionCode) {
+                //Yes, APP is just finished update.
+                getServerData();
+                window.localStorage.setItem("versionCode", loginData["versionCode"]);
+            } else {
+                //No, APP does not have update.
+                doCheckAppVer = true;
+            }
+        }
+
+        if (doCheckAppVer) {
+            var checkAppVer = new checkAppVersion();
+
+            //set initial page dispaly
+            $("#initialOther").removeClass("hide");
+            $("#initialQPlay").remove();
+        }
     }
 }
 
-function callQPlayAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
-
-    failCallback =  failCallback || null;
-    queryData = queryData || null;
-    queryStr = queryStr || "";
-
-    function requestSuccess(data) {
-        checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
-    }
-
-    var signatureTime = getSignature("getTime");
-    var signatureInBase64 = getSignature("getInBase64", signatureTime);
-
-    $.ajax({
-        type: requestType,
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': appKey,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'token': loginData.token,
-            'push-token': loginData.pushToken
-        },
-        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
-        dataType: "json",
-        data: queryData,
-        cache: false,
-        success: requestSuccess,
-        error: failCallback
-    });
-}
-
-//check APP version
+//API Check APP Version
 function checkAppVersion() {
     var self = this;
     var queryStr = "&package_name=com.qplay." + appKey + "&device_type=" + device.platform + "&version_code=" + loginData["versionCode"];
@@ -361,10 +588,7 @@ function checkAppVersion() {
                     $("#updateLink").remove();
                 } else {
                     //Open QPlay > APP detail page
-                    openAPP(qplayAppKey + "://action=openAppDetailPage&openAppName=" + appKey);
-                    if (device.platform === "Android") {
-                        navigator.app.exitApp();
-                    }
+                    openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
                 }
             });
 
@@ -380,8 +604,6 @@ function checkAppVersion() {
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
 
-        } else {
-
         }
 
     }
@@ -389,13 +611,8 @@ function checkAppVersion() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
     }();
-}
-
-function hideInitialPage() {
-    $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
-    initialSuccess();
 }
 
 //Plugin-QSecurity 
@@ -430,12 +647,11 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header, .page-main').addClass('ios-fix-overlap');
+            $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
 
         $(".ui-title").on("taphold", function(){
-
             //Set for iOS, control text select
             document.documentElement.style.webkitTouchCallout = "none";
             document.documentElement.style.webkitUserSelect = "none";
@@ -504,7 +720,14 @@ function setWhiteList() {
                 };
             }
 
-            window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            //Sometimes window.plugins.qsecurity.setWhiteList() won't work correctly,
+            //both self.successCallback & self.failCallback won't be call.
+            //So, we need to call self.successCallback() directly.
+            if (loginData['doLoginDataCallBack'] === true || loginData['openAppDetailPage'] === true) {
+                self.successCallback();
+            } else {
+                window.plugins.qsecurity.setWhiteList(securityList, self.successCallback, self.failCallback);
+            }
         } else {
             self.successCallback();
         }
@@ -590,24 +813,13 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        window.localStorage.setItem("openScheme", true);
-        openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData");
-
-        if (device.platform === "Android") {
-            navigator.app.exitApp();
+        if (window.localStorage.getItem("openScheme") !== "true") {
+            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
         }
+
+        window.localStorage.setItem("openScheme", true);
     }
 
-}
-
-function openAPP(URL) {
-    $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
-    document.getElementById("schemeLink").click();
-    $("#schemeLink").remove();
-
-    if (device.platform === "Android") {
-        navigator.app.exitApp();
-    }
 }
 
 //Plugin-QSecurity
@@ -625,210 +837,25 @@ function getSecurityList() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
     }();
 
 }
 
-//Check if Token Valid is less than 1 hour || expired || invalid || not exist
-function checkTokenValid(resultCode, tokenValid, successCallback, data) {
-
-    successCallback =  successCallback || successCallback;
-    tokenValid = tokenValid || tokenValid;
-    data =  data || data;
-
-    //Success Result Code
-    var codeArray = [
-        //All APP
-        "1",
-        //QPlay
-        "000910", "000913", "000915",
-        //Yellowpage
-        "001901", "001902", "001903", "001904", "001905", "001906",
-        //RRS
-        "002901", "002902", "002903", "002904", "002905", "002906", "002907"
-    ];
-
-    resultCode = resultCode.toString();
-
-    if (codeArray.indexOf(resultCode) !== -1) {
-        var doSuccessCallback = false;
-        var clientTimestamp = new Date().getTime();
-        clientTimestamp = clientTimestamp.toString().substr(0, 10);
-
-        if (!isNaN(tokenValid)) {
-            if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
-                //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
-                if (appKey === qplayAppKey) {
-                    reNewToken();
-                } else {
-                    getServerData();
-                }
-            } else {
-                if (doInitialSuccess) {
-                    doInitialSuccess = false;
-                    hideInitialPage();
-                } else {
-                    doSuccessCallback = true;
-                }
-            }
-        } else {
-            //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
-            doSuccessCallback = true;
-        }
-
-        if (doSuccessCallback) {
-            if (typeof successCallback === "function") {
-                successCallback(data);
-            }
-        }
-
-    } else if (resultCode === "000907") {
-        //token expired
-        getServerData();
-    } else if (resultCode === "000908") {
-        //token invalid
-        getServerData();
-    } else if (resultCode === "000911") {
-        //uuid not exist
-        getServerData();
-    } else if (resultCode === "000914") {
-        //User Account Suspended
-        getServerData();
-    }
-}
-
-function getSignature(action, signatureTime) {
-  if (action === "getTime") {
-    return Math.round(new Date().getTime()/1000);
-  } else {
-    var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
-    return CryptoJS.enc.Base64.stringify(hash);
-  }
-}
-
-function loadingMask(action) {
-    if (action === "show") {
-        if ($(".loader").length === 0) {
-            $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">Loading....</div></div>').appendTo("body");
-        } else {
-            $(".loader").show();
-        }
-    } else if (action === "hide") {
-        $(".loader").hide();
-    }
-}
-
-function readConfig() {
-
-    loginData["versionName"] = AppVersion.version;
-    loginData["versionCode"] = AppVersion.build;
-
-    //according to the versionName, change the appKey
-    if (loginData["versionName"].indexOf("Staging") !== -1) {
-        appKey = appKeyOriginal + "test";
-        serverURL = "https://qplaytest.benq.com"; // Staging API Server
-        qplayAppKey = qplayAppKey + "test";
-    } else if (loginData["versionName"].indexOf("Development") !== -1) {
-        appKey = appKeyOriginal + "dev";
-        serverURL = "https://qplaydev.benq.com"; // Development API Server
-        qplayAppKey = qplayAppKey + "dev";
-    }else {
-        appKey = appKeyOriginal + "";
-        serverURL = "https://qplay.benq.com"; // Production API Server
-        qplayAppKey = qplayAppKey + "";
-    }
-
-    //Plugin-QPush
-    if (appKey === qplayAppKey) {
-        //後台打开通知
-        document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
-        //後台收到通知
-        document.addEventListener('qpush.backgoundNotification', app.onBackgoundNotification, false);
-        //前台收到通知
-        document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
-    }
-
-    //QPlay need to get PushToken in the first step, else cannot do any continue steps.
-    if (appKey === qplayAppKey) {
-
-        //Every Time after Device Ready, need to do QPush init()
-        //If simulator, can't get push token
-        if (!device.isVirtual) {
-            //初始化JPush
-            window.plugins.QPushPlugin.init();
-        }
-
-        //If pushToken exist in Local Storage, don't need to get new one.
-        if (window.localStorage.getItem("pushToken") === null) {
-
-            //If simulator, can't get push token
-            if (device.isVirtual) {
-                app.onGetRegistradionID(device.uuid);
-            } else {
-                window.checkTimer = setInterval(function() {
-                    window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
-                }, 1000);
-
-                window.stopCheck = function() {
-                    if (window.checkTimer != null) {
-                        clearInterval(window.checkTimer);
-                    }
-                };
-            }
-
-        } else {
-            loginData["deviceType"] = device.platform;
-            loginData["pushToken"] = window.localStorage.getItem("pushToken");
-
-            var checkAppVer = new checkAppVersion();
-        }
-
-        //set initial page dispaly
-        $("#initialQPlay").removeClass("hide");
-        $("#initialOther").remove();
-    } else {
-        var checkAppVer = new checkAppVersion();
-
-        //set initial page dispaly
-        $("#initialOther").removeClass("hide");
-        $("#initialQPlay").remove();
-    }
-}
-
-//Taphold APP Header to show Version/AD/UUID
-function infoMessage() {
-    $("#infoLoginid").html(loginData["loginid"]);
-    $("#infoUUID").html(loginData["uuid"]);
-    $("#infoVersionName").html(loginData["versionName"]);
-    $('#infoMsg').popup();
-    $('#infoMsg').show();
-    $('#infoMsg').popup('open');
-
-    setTimeout(function() {
-        //Set for iOS, control text select
-        document.documentElement.style.webkitTouchCallout = "default";
-        document.documentElement.style.webkitUserSelect = "auto";
-    }, 1000);
-
-    $("#closeInfoMsg").on("click", function(){
-        $('#infoMsg').popup('close');
-        $('#infoMsg').hide();
-    });
+function createAPPSchemeURL() {
+    return "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
+           "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
+           "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
 }
 
 //Return Login Data from QPlay
 function getLoginDataCallBack() {
-    var callBackURL = queryData["callbackApp"] + "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
-                      "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
-                      "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
+    var callBackURL = queryData["callbackApp"] + createAPPSchemeURL();
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
 
-    if (device.platform === "iOS") {
-        $.mobile.changePage('#viewMain2-1');
-    }
+    $.mobile.changePage('#viewMain2-1');
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
@@ -853,11 +880,24 @@ function handleOpenURL(url) {
 
             loginData['doLoginDataCallBack'] = true;
 
+            //APP version record
+            checkAPPVersionRecord("updateFromScheme");
+
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
             loginData['openAppDetailPage'] = true;
-            openAppName = queryData["openAppName"];
+            loginData['updateApp'] = true;
 
+            //For old APP Version
+            if (queryData["callbackApp"] === undefined) {
+                openAppName = queryData["openAppName"];
+                queryData["callbackApp"] = queryData["openAppName"];
+            } else {
+                openAppName = queryData["callbackApp"];
+            }
+
+            //APP version record
+            checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
 
@@ -873,18 +913,18 @@ function handleOpenURL(url) {
             hideInitialPage();
         }
 
-        //Because Scheme work different process between iOS / Android,
-        //iOS need to this step.
-        if (device.platform === "iOS") {
-            if (loginData['doLoginDataCallBack'] === true) {
-                $.mobile.changePage('#viewInitial');
+        //Because Scheme work different process between [APP is in action or background] / [APP is not open],
+        //[APP is in action or background] need to following step.
+        if (loginData['doLoginDataCallBack'] === true) {
+            $.mobile.changePage('#viewInitial');
+            if (appInitialFinish === true) {
                 var checkAppVer = new checkAppVersion();
             }
+        }
 
-            if (loginData['openAppDetailPage'] === true) {
-                if (iOSAppInitialFinish === true) {
-                    var checkAppVer = new checkAppVersion();
-                }
+        if (loginData['openAppDetailPage'] === true) {
+            if (appInitialFinish === true) {
+                var checkAppVer = new checkAppVersion();
             }
         }
 

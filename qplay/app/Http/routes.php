@@ -38,20 +38,19 @@ Route::any('/platform/saveParameterType', 'platformController@saveParameterType'
 Route::any('/platform/getParameterList', 'platformController@getParameterList');
 Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
 Route::any('/platform/saveParameter', 'platformController@saveParameter');
-Route::any('/platform/getMessageList', 'platformController@getMessageList');
-Route::any('/platform/getSecretaryMessageList', 'platformController@getSecretaryMessageList');
-Route::any('/platform/pushSecretaryMessage', 'platformController@pushSecretaryMessage');
-Route::any('/platform/pushSecretaryMessageAgain', 'platformController@pushSecretaryMessageAgain');
-Route::any('/platform/getSecretaryMessageDesignatedReceiver', 'platformController@getSecretaryMessageDesignatedReceiver');
-Route::any('/platform/getMessageSendList', 'platformController@getMessageSendList');
-Route::any('/platform/getSecretaryMessageSendList', 'platformController@getSecretaryMessageSendList');
-Route::any('/platform/saveNewMessage', 'platformController@saveNewMessage');
-Route::any('/platform/saveUpdateMessage', 'platformController@saveUpdateMessage');
-Route::any('/platform/saveUpdateAndPushMessage', 'platformController@saveUpdateAndPushMessage');
-Route::any('/platform/pushMessageImmediately', 'platformController@pushMessageImmediately');
-Route::any('/platform/pushMessageImmediatelyAgain', 'platformController@pushMessageImmediatelyAgain');
-Route::any('/platform/getSingleEventMessageReceiver', 'platformController@getSingleEventMessageReceiver');
-Route::any('/platform/saveMessageVisible', 'platformController@saveMessageVisible');
+
+//push
+Route::any('/push/getMessageList', 'pushController@getMessageList');
+Route::any('/push/saveNewMessage', 'pushController@saveNewMessage');
+Route::any('/push/getMessageSendList', 'pushController@getMessageSendList');
+Route::any('/push/saveMessageVisible', 'pushController@saveMessageVisible');
+Route::any('/push/pushMessageImmediatelyAgain', 'pushController@pushMessageImmediatelyAgain');
+Route::any('/push/saveUpdateMessage', 'pushController@saveUpdateMessage');
+Route::any('/push/saveUpdateAndPushMessage', 'pushController@saveUpdateAndPushMessage');
+Route::any('/push/getSingleEventMessageReceiver', 'pushController@getSingleEventMessageReceiver');
+Route::any('/push/getSecretaryMessageList', 'pushController@getSecretaryMessageList');
+Route::any('/push/pushSecretaryMessage', 'pushController@pushSecretaryMessage');
+
 Route::any('/platform/getProjectList', 'platformController@getProjectList');
 Route::any('/platform/deleteProject', 'platformController@deleteProject');
 Route::any('/platform/saveProject', 'platformController@saveProject');
@@ -75,6 +74,9 @@ Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintain
 
 Route::any('auth/login', function() {
     return view("auth/login");
+});
+Route::any('404', function() {
+    return view("404");
 });
 
 Route::any('auth/login_process', 'AuthController@authenticate');
@@ -100,33 +102,30 @@ Route::any('roleUsersMaintain', ['middleware' => 'auth', function() {
 Route::any('about', ['middleware' => 'auth', function() {
     return view("about");
 }]);
-Route::any('push', ['middleware' => 'auth', function() {
-    return view("push");
-}]);
 
-Route::any('newMessage', ['middleware' => 'auth', function() {
-    return view("push_new_message");
+//push views
+Route::any('push', ['middleware' => 'auth', function() {
+    return view("push/push");
 }]);
-Route::any('updateMessage', ['middleware' => 'auth', function() {
-    return view("push_update_message");
+Route::any('newMessage', ['middleware' => 'auth', function() {
+    return view("push/push_new_message");
 }]);
 Route::any('messagePushHistory', ['middleware' => 'auth', function() {
-    return view("push_history");
+    return view("push/push_history");
 }]);
 Route::any('pushSendDetail', ['middleware' => 'auth', function() {
-    return view("push_send_detail_message");
+    return view("push/push_send_detail_message");
 }]);
+Route::any('updateMessage', ['middleware' => 'auth', function() {
+    return view("push/push_update_message");
+}]);
+
+//secretary push views
 Route::any('secretaryPush', ['middleware' => 'auth', function() {
-    return view("secretary_push");
+    return view("push/secretary_push");
 }]);
 Route::any('secretaryPushNew', ['middleware' => 'auth', function() {
-    return view("secretary_push_new");
-}]);
-Route::any('secretaryPushHistory', ['middleware' => 'auth', function() {
-    return view("secretary_push_history");
-}]);
-Route::any('secretaryPushSendDetail', ['middleware' => 'auth', function() {
-    return view("secretary_push_send_detail");
+    return view("push/secretary_push_new");
 }]);
 
 Route::any('androidAppMaintain', ['middleware' => 'auth', function() {
@@ -175,8 +174,17 @@ Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
 }]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {
-    //App::setLocale($lang);
     Session::set('lang', $lang);
     return redirect()->to(urldecode($uri));
 });
+
+Route::any('testJpush', ['middleware' => 'auth', function() {
+    return view("test/jpush_test");
+}]);
+Route::any('test/jpushTest', 'testController@jpushTest');
+
+Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
+    return view("tool/sync_jpush_tags_tool");
+}]);
+Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 

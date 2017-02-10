@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\lib\CommonUtil;
+use App\lib\PushUtil;
 use App\lib\ResultCode;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
@@ -10,15 +11,6 @@ use DB;
 
 class platformController extends Controller
 {
-    private function setLanguage() {
-        //date_default_timezone_set('UTC');
-        //date_default_timezone_set('PRC');
-        \App::setLocale("en-us");
-        if(\Session::has('lang') && \Session::get("lang") != "") {
-            \App::setLocale(\Session::get("lang"));
-        }
-    }
-
     public function process()
     {
         
@@ -30,7 +22,7 @@ class platformController extends Controller
         {
             return null;
         }
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
@@ -46,7 +38,7 @@ class platformController extends Controller
         {
             return null;
         }
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $rowIdListWithoutGroup = array();
         $userWithoutGroupList = \DB::table("qp_user_group")
@@ -73,7 +65,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $roleList = \DB::table("qp_role")
             -> select()
@@ -96,7 +88,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -126,7 +118,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -208,7 +200,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -233,7 +225,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -284,7 +276,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $input = Input::get();
         $roleId = $input["role_id"];
@@ -299,7 +291,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -332,7 +324,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $rootMenuList = \DB::table("qp_menu")
             -> where("parent_id", "=", "0")
@@ -384,7 +376,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $input = Input::get();
         $menuId = $input["menu_id"];
@@ -398,7 +390,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -432,7 +424,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -550,7 +542,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -586,7 +578,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -831,7 +823,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $groupList = \DB::table("qp_group")
             -> select()
@@ -852,7 +844,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -883,7 +875,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -963,7 +955,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1032,7 +1024,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $input = Input::get();
         $groupId = $input["group_id"];
@@ -1047,7 +1039,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $typeList = \DB::table("qp_parameter_type")
             -> select()
@@ -1063,7 +1055,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1100,7 +1092,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1141,7 +1133,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
 //        select p.row_id, p.parameter_name, p.parameter_value, t.parameter_type_name from qp_parameter p
 //left join qp_parameter_type t on t.row_id = p.parameter_type_row_id
@@ -1161,7 +1153,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1187,7 +1179,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -1233,1230 +1225,14 @@ class platformController extends Controller
 
         return null;
     }
-
-    public function getMessageList() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $messageList = array();
-        if(\Auth::user()->isAdmin()) {
-            $messageList = \DB::table("qp_message")
-                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
-                -> select("qp_message.row_id", "qp_message.message_type",
-                    "qp_message.message_title", "qp_user.login_id as created_user",
-                    "qp_message.created_at", "qp_message.visible")
-                -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
-                -> get();
-        } else {
-            $messageList = \DB::table("qp_message")
-                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
-                -> select("qp_message.row_id", "qp_message.message_type",
-                    "qp_message.message_title", "qp_user.login_id as created_user",
-                    "qp_message.created_at", "qp_message.visible")
-                -> where("qp_user.row_id", "=", \Auth::user()->row_id)
-                -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
-                -> get();
-        }
-
-        return response()->json($messageList);
-    }
-
-    public function getSecretaryMessageList() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $messageList = array();
-        if(\Auth::user()->isAdmin()) {
-            $messageList = \DB::table("qp_message")
-                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
-                -> where('qp_message.message_type', '=', 'news')
-                -> select("qp_message.row_id", "qp_message.message_type",
-                    "qp_message.message_title", "qp_user.login_id as created_user",
-                    "qp_message.created_at", "qp_message.visible")
-                -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
-                -> get();
-        } else {
-            $messageList = \DB::table("qp_message")
-                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
-                -> select("qp_message.row_id", "qp_message.message_type",
-                    "qp_message.message_title", "qp_user.login_id as created_user",
-                    "qp_message.created_at", "qp_message.visible")
-                -> where("qp_user.row_id", "=", \Auth::user()->row_id)
-                -> where('qp_message.message_type', '=', 'news')
-                -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
-                -> get();
-        }
-
-        return response()->json($messageList);
-    }
-
-    public function getMessageSendList() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $input = Input::get();
-        $message_id = $input["message_id"];
-
-        $sendList = \DB::table("qp_message_send")
-            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send.created_user")
-            -> where('qp_message_send.message_row_id', '=', $message_id)
-            -> select("qp_message_send.row_id", "qp_message_send.created_at", "qp_user.login_id as source_user")
-            -> orderBy("qp_message_send.created_at", "desc")
-            -> get();
-
-        return $sendList;
-    }
-
-    public function getSecretaryMessageSendList() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $input = Input::get();
-        $message_id = $input["message_id"];
-
-        $sendList = \DB::table("qp_message_send_pushonly")
-            -> leftJoin("qp_user", "qp_user.row_id", "=", "qp_message_send_pushonly.created_user")
-            -> where('qp_message_send_pushonly.message_row_id', '=', $message_id)
-            -> select("qp_message_send_pushonly.row_id", "qp_message_send_pushonly.created_at", "qp_user.login_id as source_user")
-            -> orderBy("qp_message_send_pushonly.created_at", "desc")
-            -> get();
-
-        return $sendList;
-    }
-
-    public function saveNewMessage() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $sourcer = $jsonContent['sourcer'];
-            $template_id = $jsonContent['template_id'];
-            $type = $jsonContent['type'];
-            $title = $jsonContent['title'];
-            $content = $jsonContent['content'];
-            $receiver = $jsonContent['receiver'];
-            $from_history = $jsonContent['from_history'];
-            $newMessageId = $jsonContent['msg_id'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-                if($from_history != "Y") {
-                    $newMessageId = \DB::table("qp_message")
-                        -> insertGetId([
-                            'message_type'=>$type,
-                            'template_id' => $template_id,
-                            'message_title'=>$title,
-                            'message_text'=>$content,
-                            'message_source'=>$sourcer,
-                            'visible'=>'Y',
-                            'created_user'=>\Auth::user()->row_id,
-                            'created_at'=>$now,
-                        ]);
-                }
-
-                $companyList = $receiver["company_list"];
-                $companyLabel = "";
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $companyLabel = $companyLabel.$company.";";
-                    }
-                }
-                $newMessageSendId = \DB::table("qp_message_send")
-                    -> insertGetId([
-                        'message_row_id'=>$newMessageId,
-                        'source_user_row_id'=>\Auth::user()->row_id,
-                        'company_label'=>$companyLabel,
-                        'need_push'=>0,
-                        'push_flag'=>0,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
-
-                $real_push_user_list = array();
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-                } else {
-                    $roleList = $receiver["role_list"];
-                    $userList = $receiver["user_list"];
-
-                    $insertedUserIdList = array();
-                    foreach($roleList as $roleId) {
-                        \DB::table("qp_role_message")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'role_row_id'=>$roleId,
-                                'message_send_row_id'=>$newMessageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-                        $userListInRole = \DB::table("qp_user_role")
-                            ->where("role_row_id", "=", $roleId)
-                            ->select()->get();
-                        foreach ($userListInRole as $userInRole) {
-                            $userId = $userInRole->user_row_id;
-                            if(!in_array($userId, $insertedUserIdList)) {
-                                $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$newMessageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-
-                    foreach($userList as $userId) {
-                        if(!in_array($userId, $insertedUserIdList)) {
-                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                            foreach ($currentUserInfo->uuidList as $uuid) {
-                                \DB::table("qp_user_message")
-                                    -> insert([
-                                        'project_row_id'=>1,
-                                        'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
-                                        'message_send_row_id'=>$newMessageSendId,
-                                        'created_user'=>\Auth::user()->row_id,
-                                        'created_at'=>$now,
-                                    ]);
-                            }
-                            array_push($insertedUserIdList, $userId);
-                            array_push($real_push_user_list, $userId);
-                        }
-                    }
-                }
-
-                $to = "";
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
-                        $to = $to.$userPushList[0]->login_id.";";
-                    }
-                }
-
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
-            }
-        }
-    }
-
-    public function saveUpdateMessage() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $sourcer = $jsonContent['sourcer'];
-            $template_id = $jsonContent['template_id'];
-            $type = $jsonContent['type'];
-            $title = $jsonContent['title'];
-            $content = $jsonContent['content'];
-            $receiver = $jsonContent['receiver'];
-            $messageId = $jsonContent['message_id'];
-            $messageSendId = $jsonContent['message_send_id'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-                \DB::table("qp_message")
-                    -> where('row_id', '=', $messageId)
-                    -> update(
-                        ['message_type'=>$type,
-                            'template_id' => $template_id,
-                            'message_title'=>$title,
-                            'message_text'=>$content,
-                            'message_source'=>$sourcer,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-                $companyList = $receiver["company_list"];
-                $companyLabel = "";
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $companyLabel = $companyLabel.$company.";";
-                    }
-                }
-                \DB::table("qp_message_send")
-                    -> where('row_id', '=', $messageSendId)
-                    -> update([
-                        'company_label'=>$companyLabel,
-                        'updated_user'=>\Auth::user()->row_id,
-                        'updated_at'=>$now,
-                    ]);
-
-                \DB::table("qp_role_message")
-                    -> where('message_send_row_id', '=', $messageSendId)
-                    -> delete();
-                \DB::table("qp_user_message")
-                    -> where('message_send_row_id', '=', $messageSendId)
-                    -> delete();
-
-                $real_push_user_list = array();
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-                } else {
-                    $roleList = $receiver["role_list"];
-                    $userList = $receiver["user_list"];
-
-                    $insertedUserIdList = array();
-                    foreach($roleList as $roleId) {
-                        \DB::table("qp_role_message")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'role_row_id'=>$roleId,
-                                'message_send_row_id'=>$messageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-                        $userListInRole = \DB::table("qp_user_role")
-                            ->where("role_row_id", "=", $roleId)
-                            ->select()->get();
-                        foreach ($userListInRole as $userInRole) {
-                            $userId = $userInRole->user_row_id;
-                            if(!in_array($userId, $insertedUserIdList)) {
-                                $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$messageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-
-                    foreach($userList as $userId) {
-                        if(!in_array($userId, $insertedUserIdList)) {
-                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                            foreach ($currentUserInfo->uuidList as $uuid) {
-                                \DB::table("qp_user_message")
-                                    -> insert([
-                                        'project_row_id'=>1,
-                                        'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
-                                        'message_send_row_id'=>$messageSendId,
-                                        'created_user'=>\Auth::user()->row_id,
-                                        'created_at'=>$now,
-                                    ]);
-                            }
-                            array_push($insertedUserIdList, $userId);
-                            array_push($real_push_user_list, $userId);
-                        }
-                    }
-                }
-
-                $to = "";
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")->where("row_id", "=", $uId)->select()->get();
-                    if(count($userPushList) > 0 && $userPushList[0]->status == "Y" && $userPushList[0]->resign == "N") {
-                        $to = $to.$userPushList[0]->login_id.";";
-                    }
-                }
-
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'send_id'=>$messageSendId, 'message_id'=>$messageId]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
-            }
-        }
-    }
-
-    public function saveUpdateAndPushMessage() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $sourcer = $jsonContent['sourcer'];
-            $template_id = $jsonContent['template_id'];
-            $type = $jsonContent['type'];
-            $title = $jsonContent['title'];
-            $content = $jsonContent['content'];
-            $receiver = $jsonContent['receiver'];
-            $messageId = $jsonContent['message_id'];
-            $messageSendId = $jsonContent['message_send_id'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-                \DB::table("qp_message")
-                    -> where('row_id', '=', $messageId)
-                    -> update(
-                        ['message_type'=>$type,
-                            'template_id' => $template_id,
-                            'message_title'=>$title,
-                            'message_text'=>$content,
-                            'message_source'=>$sourcer,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-
-                $companyList = $receiver["company_list"];
-                $companyLabel = "";
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $companyLabel = $companyLabel.$company.";";
-                    }
-                }
-
-                \DB::table("qp_message_send")
-                    -> where('row_id', '=', $messageSendId)
-                    -> update(
-                        ['need_push'=>1,
-                            'company_label'=>$companyLabel,
-                           // 'created_at'=>$now,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-
-                \DB::table("qp_role_message")
-                    -> where('message_send_row_id', '=', $messageSendId)
-                    -> delete();
-                \DB::table("qp_user_message")
-                    -> where('message_send_row_id', '=', $messageSendId)
-                    -> delete();
-
-                $real_push_user_list = array();
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-                } else {
-                    $roleList = $receiver["role_list"];
-                    $userList = $receiver["user_list"];
-
-                    $insertedUserIdList = array();
-                    foreach($roleList as $roleId) {
-                        \DB::table("qp_role_message")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'role_row_id'=>$roleId,
-                                'message_send_row_id'=>$messageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-                        $userListInRole = \DB::table("qp_user_role")
-                            ->where("role_row_id", "=", $roleId)
-                            ->select()->get();
-                        foreach ($userListInRole as $userInRole) {
-                            $userId = $userInRole->user_row_id;
-                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                            if(!in_array($userId, $insertedUserIdList)) {
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$messageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-
-                    foreach($userList as $userId) {
-                        if(!in_array($userId, $insertedUserIdList)) {
-                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                            foreach ($currentUserInfo->uuidList as $uuid) {
-                                \DB::table("qp_user_message")
-                                    -> insert([
-                                        'project_row_id'=>1,
-                                        'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
-                                        'message_send_row_id'=>$messageSendId,
-                                        'created_user'=>\Auth::user()->row_id,
-                                        'created_at'=>$now,
-                                    ]);
-                            }
-                            array_push($insertedUserIdList, $userId);
-                            array_push($real_push_user_list, $userId);
-                        }
-                    }
-                }
-
-                $to = [];
-                $newCountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$newCountFlag] = $tempUser->push_token; 
-                            $newCountFlag ++;
-                        }
-                    }
-                }
-
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $messageSendId);
-                if(!$result["result"]) {
-                    \DB::table("qp_message_send")
-                        -> where(['row_id'=>$messageSendId])
-                        -> update([
-                            'jpush_error_code'=>$result["info"],
-                            'updated_user'=>\Auth::user()->login_id,
-                            'updated_at'=>$now
-                        ]);
-                    \DB::commit();
-
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'send_id'=>$messageSendId, 'message_id'=>$messageId]);
-                }
-
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'send_id'=>$messageSendId, 'message_id'=>$messageId]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
-            }
-        }
-    }
-
-    public function pushMessageImmediately() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $sourcer = $jsonContent['sourcer'];
-            $template_id = $jsonContent['template_id'];
-            $type = $jsonContent['type'];
-            $title = $jsonContent['title'];
-            $content = $jsonContent['content'];
-            $receiver = $jsonContent['receiver'];
-            $from_history = $jsonContent['from_history'];
-            $newMessageId = $jsonContent['msg_id'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-                if($from_history != "Y") {
-                    $newMessageId = \DB::table("qp_message")
-                        -> insertGetId([
-                            'message_type'=>$type,
-                            'template_id' => $template_id,
-                            'message_title'=>$title,
-                            'message_text'=>$content,
-                            'message_source'=>$sourcer,
-                            'visible'=>'Y',
-                            'created_user'=>\Auth::user()->row_id,
-                            'created_at'=>$now,
-                        ]);
-                }
-
-                $companyList = $receiver["company_list"];
-                $companyLabel = "";
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $companyLabel = $companyLabel.$company.";";
-                    }
-                }
-                $newMessageSendId = \DB::table("qp_message_send")
-                    -> insertGetId([
-                        'message_row_id'=>$newMessageId,
-                        'source_user_row_id'=>\Auth::user()->row_id,
-                        'company_label'=>$companyLabel,
-                        'need_push'=>1,
-                        'push_flag'=>0,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
-
-                $real_push_user_list = array();
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-                } else {
-                    $roleList = $receiver["role_list"];
-                    $userList = $receiver["user_list"];
-
-                    $insertedUserIdList = array();
-                    foreach($roleList as $roleId) {
-                        \DB::table("qp_role_message")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'role_row_id'=>$roleId,
-                                'message_send_row_id'=>$newMessageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-                        $userListInRole = \DB::table("qp_user_role")
-                            ->where("role_row_id", "=", $roleId)
-                            ->select()->get();
-                        foreach ($userListInRole as $userInRole) {
-                            $userId = $userInRole->user_row_id;
-                            if(!in_array($userId, $insertedUserIdList)) {
-                                $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$newMessageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-
-                    foreach($userList as $userId) {
-                        if(!in_array($userId, $insertedUserIdList)) {
-                            $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                            foreach ($currentUserInfo->uuidList as $uuid) {
-                                \DB::table("qp_user_message")
-                                    -> insert([
-                                        'project_row_id'=>1,
-                                        'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
-                                        'message_send_row_id'=>$newMessageSendId,
-                                        'created_user'=>\Auth::user()->row_id,
-                                        'created_at'=>$now,
-                                    ]);
-                            }
-                            array_push($insertedUserIdList, $userId);
-                            array_push($real_push_user_list, $userId);
-                        }
-                    }
-                }
-
-                $to = [];
-                $CountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$CountFlag] = $tempUser->push_token;
-                            $CountFlag ++;
-                        }
-                    }
-                }
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
-                if(!$result["result"]) {
-                    \DB::table("qp_message_send")
-                        -> where(['row_id'=>$newMessageSendId])
-                        -> update([
-                            'jpush_error_code'=>$result["info"],
-                            'updated_user'=>\Auth::user()->row_id,
-                            'updated_at'=>$now
-                        ]);
-                    \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
-                }
-
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
-            }
-        }
-    }
-
-    public function pushSecretaryMessage() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $sourcer = $jsonContent['sourcer'];
-            $template_id = $jsonContent['template_id'];
-            $type = $jsonContent['type'];
-            $title = $jsonContent['title'];
-            $content = $jsonContent['content'];
-            $receiver = $jsonContent['receiver'];
-            $message_id = $jsonContent['message_id'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-//                \DB::table("qp_message")
-//                    -> update([
-//                        'message_title'=>$title,
-//                        'message_text'=>$content,
-//                        'created_at'=>$now,
-//                    ]);
-
-                $companyList = array();
-                $companyLabel = "";
-                if($receiver["type"] == "company") {
-                    $companyList = $receiver["company_list"];
-                    foreach ($companyList as $company) {
-                        $companyLabel = $companyLabel.$company.";";
-                    }
-                }
-                $newMessageSendId = \DB::table("qp_message_send_pushonly")
-                    -> insertGetId([
-                        'message_row_id'=>$message_id,
-                        'source_user_row_id'=>\Auth::user()->row_id,
-                        'company_label'=>$companyLabel,
-                        'need_push'=>1,
-                        'push_flag'=>0,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
-
-                $real_push_user_list = array();
-                if($receiver["type"] == "company") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-                } else {
-                    $userList = $receiver["user_list"];
-                    foreach($userList as $userId) {
-                        \DB::table("qp_user_message_pushonly")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'user_row_id'=>$userId,
-                                'message_send_pushonly_row_id'=>$newMessageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-
-                        array_push($real_push_user_list, $userId);
-                    }
-                }
-
-                $to = [];
-                $CountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$CountFlag] = $tempUser->push_token;
-                            $CountFlag ++;
-                        }
-                    }
-                }
-
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
-                if(!$result["result"]) {
-                    \DB::table("qp_message_send")
-                        -> where(['row_id'=>$newMessageSendId])
-                        -> update([
-                            'jpush_error_code'=>$result["info"],
-                            'updated_user'=>\Auth::user()->row_id,
-                            'updated_at'=>$now
-                        ]);
-                    \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageSendId]);
-                }
-//                $result = array();
-//                $result["info"] = 1;
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$message_id]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e->getMessage().$e->getTraceAsString()]);
-            }
-        }
-    }
-
-    public function pushMessageImmediatelyAgain() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $message_id = $jsonContent['message_id'];
-            $receiver = $jsonContent['receiver'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-                $title = \DB::table("qp_message")->where("row_id", "=", $message_id)->select()->get()[0]->message_title;
-
-                $companyList = $receiver["company_list"];
-                $companyLabel = "";
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $companyLabel = $companyLabel.$company.";";
-                    }
-                }
-
-                $newMessageSendId = \DB::table("qp_message_send")
-                    -> insertGetId([
-                        'message_row_id'=>$message_id,
-                        'source_user_row_id'=>\Auth::user()->row_id,
-                        'company_label'=>$companyLabel,
-                        'need_push'=>1,
-                        'push_flag'=>0,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
-
-                $real_push_user_list = array();
-
-                if($receiver["type"] == "news") {
-                    foreach ($companyList as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-
-                } else {
-                    $roleList = $receiver["role_list"];
-                    $userList = $receiver["user_list"];
-
-                    $insertedUserIdList = array();
-                    foreach($roleList as $roleId) {
-                        \DB::table("qp_role_message")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'role_row_id'=>$roleId,
-                                'message_send_row_id'=>$newMessageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-                        $userListInRole = \DB::table("qp_user_role")
-                            ->where("role_row_id", "=", $roleId)
-                            ->select()->get();
-                        foreach ($userListInRole as $userInRole) {
-                            $userId = $userInRole->user_row_id;
-                            if(!in_array($userId, $insertedUserIdList)) {
-                                \DB::table("qp_user_message")
-                                    -> insert([
-                                        'project_row_id'=>1,
-                                        'user_row_id'=>$userId,
-                                        'message_send_row_id'=>$newMessageSendId,
-                                        'created_user'=>\Auth::user()->row_id,
-                                        'created_at'=>$now,
-                                    ]);
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-
-                    foreach($userList as $userId) {
-                        if(!in_array($userId, $insertedUserIdList)) {
-                            \DB::table("qp_user_message")
-                                -> insert([
-                                    'project_row_id'=>1,
-                                    'user_row_id'=>$userId,
-                                    'message_send_row_id'=>$newMessageSendId,
-                                    'created_user'=>\Auth::user()->row_id,
-                                    'created_at'=>$now,
-                                ]);
-                            array_push($insertedUserIdList, $userId);
-                            array_push($real_push_user_list, $userId);
-                        }
-                    }
-                }
-
-                $to = [];
-                $newCountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                        $userPushList = \DB::table("qp_user")
-                            ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                            ->where("qp_user.row_id", "=", $uId)
-                            ->where("qp_user.status","=","Y")
-                            ->where("qp_user.resign","=","N")
-                            ->select("qp_push_token.push_token")
-                            ->get();
-                        if(count($userPushList) > 0 ) {
-                            foreach($userPushList as $tempUser){
-                                $to[$newCountFlag] = $tempUser->push_token;
-                                $newCountFlag ++;
-                            }
-                        }
-                    }
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
-                if(!$result["result"]) {
-                    \DB::table("qp_message_send")
-                        -> where(['row_id'=>$newMessageSendId])
-                        -> update([
-                            'jpush_error_code'=>$result["info"],
-                            'updated_user'=>\Auth::user()->login_id,
-                            'updated_at'=>$now
-                        ]);
-                    \DB::commit();
-                    //return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$result["info"]]);
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-                }
-
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e]);
-            }
-        }
-    }
-
-    public function pushSecretaryMessageAgain() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $message_send_id = $jsonContent['message_send_id'];
-
-            $now = date('Y-m-d H:i:s',time());
-            \DB::beginTransaction();
-            try {
-                $sourceMessageSendInfo = CommonUtil::getSecretaryMessageSendInfo($message_send_id);
-
-                $companyLabel = "";
-                if($sourceMessageSendInfo->send_type == "company") {
-                    $companyLabel = $sourceMessageSendInfo->company_label;
-                }
-
-                $newMessageSendId = \DB::table("qp_message_send_pushonly")
-                    -> insertGetId([
-                        'message_row_id'=>$sourceMessageSendInfo->message_info->row_id,
-                        'source_user_row_id'=>\Auth::user()->row_id,
-                        'company_label'=>$companyLabel,
-                        'need_push'=>1,
-                        'push_flag'=>0,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
-
-                $real_push_user_list = array();
-                if($sourceMessageSendInfo->send_type == "company") {
-                    foreach ($sourceMessageSendInfo->company_list as $company) {
-                        $userList = \DB::table("qp_user")
-                            ->where("company", "=", $company)
-                            ->select()->get();
-                        foreach ($userList as $user) {
-                            $userId = $user -> row_id;
-                            if(!in_array($userId, $real_push_user_list)) {
-                                array_push($real_push_user_list, $userId);
-                            }
-                        }
-                    }
-                } else {
-                    $userList = CommonUtil::getSecretaryMessageDesignatedReceiver($message_send_id);
-                    foreach($userList as $user) {
-                        \DB::table("qp_user_message_pushonly")
-                            -> insert([
-                                'project_row_id'=>1,
-                                'user_row_id'=>$user->user_row_id,
-                                'message_send_pushonly_row_id'=>$newMessageSendId,
-                                'created_user'=>\Auth::user()->row_id,
-                                'created_at'=>$now,
-                            ]);
-
-                        array_push($real_push_user_list, $userId);
-                    }
-                }
-
-                $to = [];
-                $CountFlag = 0;
-                foreach ($real_push_user_list as $uId) {
-                    $userPushList = \DB::table("qp_user")
-                        ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
-                        ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
-                        ->where("qp_user.row_id", "=", $uId)
-                        ->where("qp_user.status","=","Y")
-                        ->where("qp_user.resign","=","N")
-                        ->select("qp_push_token.push_token")
-                        ->get();
-                    if(count($userPushList) > 0 ) {
-                        foreach($userPushList as $tempUser){
-                            $to[$CountFlag] = $tempUser->push_token;
-                            $CountFlag ++;
-                        }
-                    }
-                }
-
-                $title = $sourceMessageSendInfo->message_info->message_title;
-
-                $result = CommonUtil::PushMessageWithJPushWebAPI($title, $to, $newMessageSendId);
-                if(!$result["result"]) {
-                    \DB::table("qp_message_send")
-                        -> where(['row_id'=>$newMessageSendId])
-                        -> update([
-                            'jpush_error_code'=>$result["info"],
-                            'updated_user'=>\Auth::user()->row_id,
-                            'updated_at'=>$now
-                        ]);
-                    \DB::commit();
-                    return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
-                }
-
-                $newMessageId = $sourceMessageSendInfo->message_info->row_id;
-
-                \DB::commit();
-
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful, 'message'=>"From MessageCenter:" .$result["info"], 'send_id'=>$newMessageSendId, 'message_id'=>$newMessageId]);
-            }catch (\Exception $e) {
-                \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>$e]);
-            }
-        }
-    }
-
-    public function getSingleEventMessageReceiver() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $input = Input::get();
-        $messageSendId = $input["message_send_row_id"];
-
-        $userList = \DB::table('qp_user_message')
-            -> where('message_send_row_id', '=', $messageSendId)
-            -> select()->get();
-
-        $roleList = \DB::table('qp_role_message')
-            -> where('message_send_row_id', '=', $messageSendId)
-            -> select()->get();
-
-        $userIdListInRole = array();
-        $userIdListNotInRole = array();
-
-        foreach ($roleList as $role) {
-            $role_id = $role->role_row_id;
-            $userRoleList = \DB::table('qp_user_role')
-                -> where('role_row_id', '=', $role_id)
-                -> select()->get();
-            foreach ($userRoleList as $userRole) {
-                array_push($userIdListInRole, $userRole->user_row_id);
-            }
-        }
-
-        foreach ($userList as $user) {
-            $user_id = $user->user_row_id;
-            if(!in_array($user_id, $userIdListInRole)) {
-                array_push($userIdListNotInRole, $user_id);
-            }
-        }
-
-        return \DB::table('qp_user')->whereIn("row_id", $userIdListNotInRole)->select()->get();
-    }
-
-    public function getSecretaryMessageDesignatedReceiver() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $input = Input::get();
-        $messageSendId = $input["message_send_row_id"];
-
-        $userList = CommonUtil::getSecretaryMessageDesignatedReceiver($messageSendId);
-
-        $userIdList = array();
-        foreach ($userList as $user) {
-            $user_id = $user->user_row_id;
-            array_push($userIdList, $user_id);
-        }
-
-        return \DB::table('qp_user')->whereIn("row_id", $userIdList)->select()->get();
-    }
-
-    public function saveMessageVisible() {
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $this->setLanguage();
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $message_id = $jsonContent['message_id'];
-            $visible = $jsonContent['visible'];
-
-            \DB::table("qp_message")
-                -> where('row_id', '=', $message_id)
-                -> update(
-                    ['visible' => $visible,
-                        'updated_at'=>$now,
-                        'updated_user'=>\Auth::user()->row_id]);
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
+    
     public function getProjectList() {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $projectList = \DB::table("qp_project")
             -> select()
@@ -2494,7 +1270,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -2551,7 +1327,7 @@ class platformController extends Controller
             return null;
         }
 
-        $this->setLanguage();
+        CommonUtil::setLanguage();
 
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);

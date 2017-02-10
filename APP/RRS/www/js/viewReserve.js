@@ -1,8 +1,9 @@
-$(document).one('pagecreate', '#viewReserve', function() {
+//$(document).one('pagecreate', '#viewReserve', function() {
 
     var SiteData = {};
     var roomData = {};
     var floorData = {};
+    var defaultSiteClick = '';
     var clickSiteId = '';
     var siteCategoryID = '';
     var clickDateId = '';
@@ -11,7 +12,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
     var quickReserveClickDateID = '';
     var quickRserveCallBackData = {};
     var timeClick = [];
+    var timeNameClick = [];
+    var selectMyReserveTime = '';
     var reserveDetailLocalData = [];
+    var bReserveCancelConfirm = false;
 
     $('#viewReserve').pagecontainer({
         create: function(event, ui) {
@@ -28,9 +32,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 }
 
                 $('#reserveFloor').append(htmlContent);
-                var firstNode = meetingRoomData.children[siteIndex].children[0].data;
-                $('#reserveFloor-button').find('span').text(firstNode);
-
+                $("#reserveFloor option:first").attr("selected", "selected");
                 getRoomData(siteIndex, '0');
             }
 
@@ -42,7 +44,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                 for (var i = 0, item; item = meetingRoomData.children[siteIndex].children[floorIndex].children[i]; i++) {
                     if (arrLimitRoom.indexOf(item.data.MeetingRoomName) == -1) {
-                        htmlContent += '<a id=' + item.data.MeetingRoomID + ' value=' + item.data.MeetingRoomID + ' href="#" class="ui-link">' + item.data.MeetingRoomName + '</a>';
+                        htmlContent += '<a id=' + item.data.MeetingRoomID + ' value=' + item.data.MeetingRoomID + ' href="#" class="ui-link" IsReserveMulti=' + item.data.IsReserveMulti + '>' + item.data.MeetingRoomName + '</a>';
                     }
                 }
 
@@ -53,29 +55,32 @@ $(document).one('pagecreate', '#viewReserve', function() {
             }
 
             function settingList() {
-                //to do
-                //popup setting detail
                 htmlContent = '';
                 var roomSettingdata = JSON.parse(localStorage.getItem('roomSettingData'));
                 $('option[id^=setList-]').remove();
 
-                var firstTitle = '';
                 if (roomSettingdata != null) {
                     sortDataByKey(roomSettingdata.content, 'id', 'asc');
                     for (var i = 0, item; item = roomSettingdata['content'][i]; i++) {
-                        var strValue = item.site + '&' + item.floor + '&' + item.people + '&' + item.timeID
-                        htmlContent += '<option id=setList-' + item.id + ' value=' + strValue + ' time=' + item.time + '>' + item.title + '</option>';
-                        if (i == 0) {
-                            firstTitle = item.title;
-                        }
+                        var strValue = item.site + '&' + item.floor + '&' + item.people + '&' + item.timeID;
+                        htmlContent += '<option id=setList-' + item.id + ' value=' + strValue + ' floorName=' + item.floorName + ' time=' + item.time + '>' + item.title + '</option>';
                     }
                 }
 
                 $('#reserveSetting').append(htmlContent);
-                $('#reserveSetting-button').find('span').text(firstTitle);
+                $("#reserveSetting option:first").attr("selected", "selected");
+
+                setSettingArea();
+                quickReserveBtnDefaultStatus();
             }
 
-            function dateList() {
+            function setDateList(type) {
+                if (type == 'reserve') {
+                    $('#scrollDate a[id^=one]').remove();
+                } else if (type == 'quick') {
+                    $('#quickReserveScrollDate a[id^=two]').remove();
+                }
+
                 var addOneDate = new Date();
                 var htmlContentPageOne = '';
                 var htmlContentPageTwo = '';
@@ -89,7 +94,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var originItemForPageOne = ['reserveDefault', 'ReserveDay', 'ReserveDict', 'disable'];
                 var originItemForPageTwo = ['quickReserveDefault', 'quickReserveDay', 'quickReserveDict', 'ui-block-a', 'disable'];
 
-                for (var i = 0; i < 14; i++) {
+                for (var i = 0; i < reserveDays; i++) {
                     if (i != 0) {
                         addOneDate.addDays(1);
                     }
@@ -111,15 +116,17 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     }
                 }
 
-                $('#reserveDefault').before(htmlContentPageOne);
-                $('#quickReserveDefault').before(htmlContentPageTwo);
-                clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
-                quickReserveClickDateID = $('#quickReserveScrollDate a:first-child').attr('id').replaceAll('one', '');
-
-                $('#scrollDate a:first-child').addClass('hover');
-                $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
-                $('#quickReserveScrollDate a:first-child').addClass('hover');
-                $('#quickReserveScrollDate a:first-child').parent().data("lastClicked", $('#quickReserveScrollDate a:first-child').attr('id'));
+                if (type == 'reserve') {
+                    $('#reserveDefault').before(htmlContentPageOne);
+                    clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
+                    $('#scrollDate a:first-child').addClass('hover');
+                    $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
+                } else if (type == 'quick') {
+                    $('#quickReserveDefault').before(htmlContentPageTwo);
+                    quickReserveClickDateID = $('#quickReserveScrollDate a:first-child').attr('id').replaceAll('one', '');
+                    $('#quickReserveScrollDate a:first-child').addClass('hover');
+                    $('#quickReserveScrollDate a:first-child').parent().data("lastClicked", $('#quickReserveScrollDate a:first-child').attr('id'));
+                }
             }
 
             function getMettingStatus() {
@@ -129,7 +136,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]'];
                 var j = 0;
 
-                //var filterTimeBlock = grepData(arrTimeBlock, 'category', siteCategoryID);
                 var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
 
                 for (var item in filterTimeBlock) {
@@ -204,7 +210,30 @@ $(document).one('pagecreate', '#viewReserve', function() {
             function reserveBtnDefaultStatus() {
                 $('#reserveBtn').removeClass('btn-benq');
                 $('#reserveBtn').addClass('btn-disable');
+                if ($('div[id^=time]').hasClass('hover')) {
+                    $('div[id^=time]').removeClass('hover');
+                    $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                    $(this).find('div:nth-child(2)').addClass('iconSelect');
+                }
                 timeClick = [];
+                timeNameClick = [];
+                bReserveCancelConfirm = false;
+            }
+
+            function setSettingArea() {
+                var strValue = $('#reserveSetting').find(":selected").val();
+                var arrValue = strValue.split('&');
+                var strSite = dictSite[arrValue[0]];
+                var strPeople = (arrValue[2] == '0') ? '不限' : (arrValue[2] == '1') ? '2~8人' : '8人以上';
+                var strTime = $('#reserveSetting').find(":selected").attr('time');
+                strTime = (strTime == 'none') ? "現在起一小時" : strTime;
+                var strFloorName = $('#reserveSetting').find(":selected").attr('floorName');
+                strFloorName = (strFloorName == 'none') ? '不限' : strFloorName;
+
+                $('#settingAreaSite').text('地點: ' + strSite);
+                $('#settingAreaPeople').text('人數: ' + strPeople);
+                $('#settingAreaTime').text('時段: ' + strTime);
+                $('#settingAreaFloor').text('樓層: ' + strFloorName.replaceAll(',', ', '));
             }
 
             function quickReserveBtnDefaultStatus() {
@@ -225,6 +254,121 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('#quickReserve').removeClass('btn-benq');
                 $('#quickReserve').addClass('btn-disable');
                 $('#quickReserve').addClass('disable');
+            }
+
+            function checkReserveSameTime(date, type) {
+                var dictResult = {};
+                var isExistInArray = false;
+
+                var isReserveMulti = '';
+                var selectedSite = '';
+                var isSuperRole = '';
+                var inLimitSite = '';
+                var arrTemp = [];
+
+                isSuperRole = searchTree(roleData, dictRole['super'], '');
+
+                if (type == 'reserve') {
+                    isReserveMulti = $('#' + clickRomeId).attr('IsReserveMulti');
+                    selectedSite = $('#reserveSite').find(":selected").val();
+                    inLimitSite = searchTree(isSuperRole, selectedSite, '');
+                    arrTemp = timeNameClick;
+
+                } else if (type == 'quick') {
+                    var findRoomIdNode = searchTree(meetingRoomData, quickRserveCallBackData[0].MeetingRoomID, 'MeetingRoomID');
+                    isReserveMulti = findRoomIdNode.data.IsReserveMulti;
+                    var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
+                    var arrSelectedValue = quickReserveSelectedValue.split('&');
+                    selectedSite = arrSelectedValue[0];
+                    inLimitSite = searchTree(isSuperRole, selectedSite, '');
+                    var dictTemp = getQuickReserveSelectedTime();
+                    var arrTemp = getSTimeToETime(dictTemp['sTime'], dictTemp['eTime']);
+                }
+
+                if ((isSuperRole != null && inLimitSite != null) || isReserveMulti === 'N') {
+                    dictResult['result'] = true;
+                } else {
+                    var myReserveFilterData = myReserveLocalData.filter(function(item) {
+                        return item.date == date && item.site == selectedSite;
+                    });
+
+                    if (myReserveFilterData.length === 0) {
+                        dictResult['result'] = true;
+                    } else {
+                        $.each(myReserveFilterData, function(index, value) {
+                            if (arrTemp.indexOf(value.time) != -1) {
+                                isExistInArray = true;
+                                dictResult['room'] = value.room;
+                            }
+                        });
+                        dictResult['result'] = !isExistInArray;
+                    }
+                }
+
+                return dictResult;
+            }
+
+            function setAlertLimitRoom(site, floor) {
+                $("#alertLimitRoomMsg").addClass('disable');
+                $("#alertLimitRoomMsg").html('');
+                if (site == '1') { //QTY
+                    $("#alertLimitRoomMsg").removeClass('disable');
+                    if (floor == '3F') {
+                        $("#alertLimitRoomMsg").html('A30、E31會議室請使用PC預約');
+                    } else if (floor == '7F') {
+                        $("#alertLimitRoomMsg").html('A70、B71會議室請使用PC預約');
+                    }
+                } else if (site == '2' && floor == '1F') { //BQT/QTT
+                    $("#alertLimitRoomMsg").removeClass('disable');
+                    $("#alertLimitRoomMsg").html('T00、T13會議室請使用PC預約');
+                }
+            }
+
+            function setRole(site) {
+                var isSystemRole = searchTree(roleData, dictRole['system'], '');
+                var isSecretaryRole = searchTree(roleData, dictRole['secretary'], '');
+                var inLimitSite = searchTree(isSecretaryRole, site, '');
+
+                //BQT/QTT、QTY = 120 Days、QTH = 90 Days、雙星 = 56 Days
+                if (isSystemRole != null) {
+                    reserveDays = 120;
+                } else if (isSecretaryRole != null && inLimitSite != null) {
+                    switch (inLimitSite.data) {
+                        case '100': //QTH
+                            reserveDays = 90;
+                            break;
+                        case '43': //雙星
+                            reserveDays = 56;
+                            break;
+                        default:
+                            reserveDays = 120;
+                            break;
+                    }
+                } else {
+                    reserveDays = 14;
+                }
+            }
+
+            function getQuickReserveSelectedTime() {
+                var quickReserveSelectedTime = $('#reserveSetting').find(":selected").attr('time');
+                var sTime = '';
+                var eTime = '';
+                var dictResult = {};
+
+                if (quickReserveSelectedTime == 'none') {
+                    var dictOneHourTime = getOneHour();
+                    sTime = dictOneHourTime['sTime'];
+                    eTime = dictOneHourTime['eTime'];
+                } else {
+                    var arrQuickReserveSelectedTime = quickReserveSelectedTime.split('~');
+                    sTime = arrQuickReserveSelectedTime[0];
+                    eTime = arrQuickReserveSelectedTime[1];
+                }
+
+                dictResult['sTime'] = sTime;
+                dictResult['eTime'] = eTime;
+
+                return dictResult;
             }
 
             function getAPIQueryReserveDetail(roomId, date, checkDataExist) {
@@ -254,7 +398,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     };
 
                     var __construct = function() {
-                        QPlayAPI("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, queryData);
+                        CustomAPI("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, queryData, "");
                     }();
                 }
             }
@@ -268,29 +412,98 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     if (data['ResultCode'] === "002902") {
                         //Reservation Successful
-                        popupMsg('reservePopupMsg', 'reserveSuccessMsg', '', '會議室預約成功', '', false, '確定', false);
+                        var arrCutString = cutStringToArray(date, ['4', '2', '2']);
+                        var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                        var roomName = '';
+                        var timeName = '';
+                        var findRoomIdNode = {};
+
                         if (page == 'pageOne') {
-                            var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
+                            roomName = $('#reserveRoom').find('.hover').text();
+                            //reserve continuous time block, display one time block  
+                            var arrTempTime = [];
+                            for (var item in timeClick) {
+                                var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
+                                var eTime = addThirtyMins(sTime);
+                                arrTempTime.push(sTime);
+                                arrTempTime.push(eTime);
+                            }
+
+                            //ex:[08:00, 08:30, 08:30, 09:00] convert to [08:00, 09:00]
+                            var arrUniqueTime = [];
+                            for (var item in arrTempTime) {
+                                var index = arrUniqueTime.indexOf(arrTempTime[item]);
+                                if (index === -1) {
+                                    arrUniqueTime.push(arrTempTime[item]);
+                                } else {
+                                    arrUniqueTime.splice(index, 1);
+                                }
+                            }
+
+                            for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
+                                timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '<br />';
+                            }
+                        } else {
+                            findRoomIdNode = searchTree(meetingRoomData, quickRserveCallBackData[0].MeetingRoomID, 'MeetingRoomID');
+                            // roomName = $('#quickReserveMsgArea div:nth-child(2)').html().replaceAll('會議室可使用', '');
+                            // roomName = roomName.substring(0, roomName.indexOf('('));
+                            roomName = findRoomIdNode.data.MeetingRoomName;
+                            timeName = $('#quickReserveMsgArea div:nth-child(3)').html().replaceAll('預約時段為', '');
+                        }
+
+                        var msgContent = '<table><tr><td>會議室</td><td>' + roomName + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + timeName + '</td></tr></table>';
+                        popupMsg('reserveSuccessMsg', '會議室預約成功', msgContent, '', false, '確定', 'select.png');
+
+                        var isReserveMulti = '';
+                        var selectedSite = '';
+                        var arrTemp = [];
+
+                        if (page == 'pageOne') {
+                            isReserveMulti = $('#' + roomId).attr('IsReserveMulti');
+                            selectedSite = $('#reserveSite').find(":selected").val();
+                            arrTemp = timeNameClick;
+                            reserveBtnDefaultStatus();
+                        } else if (page == 'pageTwo') {
+                            isReserveMulti = findRoomIdNode.data.IsReserveMulti;
+                            var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
+                            var arrSelectedValue = quickReserveSelectedValue.split('&');
+                            selectedSite = arrSelectedValue[0];
+                            var dictTemp = getQuickReserveSelectedTime();
+                            var arrTemp = getSTimeToETime(dictTemp['sTime'], dictTemp['eTime']);
+                            quickReserveBtnDefaultStatus();
+                        }
+
+                        var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, date, false);
+
+                        if (isReserveMulti != 'N') {
+                            var jsonData = [];
+                            $.each(arrTemp, function(index, value) {
+                                jsonData = {
+                                    room: roomName,
+                                    site: selectedSite,
+                                    date: date,
+                                    time: value
+                                };
+                                myReserveLocalData.push(jsonData);
+                            });
                         }
 
                     } else if (data['ResultCode'] === "002903") {
                         //Reservation Failed, Someone Made a Reservation
-                        popupMsg('reservePopupMsg', 'reserveFailMsg', '', '預約失敗，有人預約', '', false, '確定', false);
+                        reserveBtnDefaultStatus();
+                        var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, date, false);
+                        popupMsg('reserveFailMsg', '已被預約', '哇！慢了一步～已被預約', '', false, '確定', 'warn_icon.png');
 
                     } else if (data['ResultCode'] === "002904") {
                         //Reservation Failed, Repeated a Reservation
-                        popupMsg('reservePopupMsg', 'reserveFailMsg', '', '預約失敗，重複預約', '', false, '確定', false);
-                    }
-
-                    if (page == 'pageTwo') {
-                        quickReserveBtnDefaultStatus();
+                        popupMsg('reserveFailMsg', '', '預約失敗，重複預約', '', false, '確定', '');
                     }
 
                     loadingMask('hide');
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "ReserveMeetingRoom", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "ReserveMeetingRoom", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -302,19 +515,30 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "002905") {
                         //Cancel a Reservation Successful
-                        popupMsg('reservePopupMsg', 'cancelSuccessMsg', '', '取消預約成功', '', false, '確定', false);
+                        popupMsg('cancelSuccessMsg', '', '取消預約成功', '', false, '確定', '');
+
+                        var selectedSite = $('#reserveSite').find(":selected").val();
+                        for (var i = 0; i < myReserveLocalData.length; i++) {
+                            if (myReserveLocalData.length != 0 && myReserveLocalData[i].time == selectMyReserveTime && myReserveLocalData[i].date == date && myReserveLocalData[i].site == selectedSite) {
+                                myReserveLocalData.splice(i, 1);
+                                i = i - 1;
+                                i = i < 0 ? 0 : i;
+                            }
+                        };
+
                         var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
+                        reserveBtnDefaultStatus();
 
                     } else if (data['ResultCode'] === "002906") {
                         //Cancel a Reservation Failed
-                        popupMsg('reservePopupMsg', 'cancelFailMsg', '', '取消預約失敗', '', false, '確定', false);
+                        popupMsg('cancelFailMsg', '', '取消預約失敗', '', false, '確定', '');
                     }
 
                     loadingMask('hide');
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -350,43 +574,93 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "QuickReserve", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QuickReserve", self.successCallback, self.failCallback, queryData, "");
                 }();
+            }
+
+            function checkLocalDataExpired() {
+                var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
+                if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
+                    var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
+                    var doAPIListAllTime = new getAPIListAllTime();
+                } else {
+                    ConverToMeetingTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
+                    arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+                }
+
+                var doAPIListAllManager = new getAPIListAllManager();
+
+                // var listAllManager = JSON.parse(localStorage.getItem('listAllManager'));
+                // if (listAllManager === null || checkDataExpired(listAllManager['lastUpdateTime'], 3, 'ss')) {
+                //     var doAPIListAllManager = new getAPIListAllManager();
+                // } else {
+                //     var tempContent = JSON.parse(localStorage.getItem('listAllManager'))['content'];
+                //     if (tempContent != 'normal') {
+                //         ConverToRoleTree(JSON.parse(localStorage.getItem('listAllManager'))['content']);
+                //     }
+                // }
+
+                meetingRoomData = meetingRoomTreeData._root;
+                roleData = roleTreeData._root;
+
+                defaultSiteClick = localStorage.getItem('defaultSiteClick');
+                if (defaultSiteClick === null) {
+                    defaultSiteClick = meetingRoomData.children[0].data; //default site = 2(BQT/QTT)
+                }
+            }
+
+            function getInitialData() {
+                getSiteData();
+                $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
+                clickSiteId = $("#reserveSite option:selected").index();
+                siteCategoryID = dictSiteCategory[defaultSiteClick];
+                getFloorData(clickSiteId);
+            }
+
+            function setInitialData() {
+                setRole(defaultSiteClick);
+                setDateList('reserve');
+                //setDateList('quick');
+                var selectedFllor = $('#reserveFloor').find(":selected").val();
+                setAlertLimitRoom(defaultSiteClick, selectedFllor);
+                setReserveDetailLocalDate();
+                setDefaultSettingData();
             }
 
             /********************************** page event *************************************/
 
             $('#viewReserve').one('pagebeforeshow', function(event, ui) {
                 //just first loading
-                //get meetingroom last update time
-                var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
-                if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
-                    var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
-                    var doAPIListAllTime = new getAPIListAllTime();
-                } else {
-                    ConverToTree(JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content']);
-                    arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
-                }
-                meetingRoomData = meetingRoomTreeData._root;
-                createReserveDetailLocalDate();
-                dateList();
-                getSiteData();
-                setDefaultSettingData();
+                //get last update time check date expired
+                checkLocalDataExpired();
+                var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
+                getInitialData();
+                setInitialData();
 
-                siteCategoryID = dictSiteCategory[meetingRoomData.children[0].data];
-                var defaultSiteClick = localStorage.getItem('defaultSiteClick');
-                if (defaultSiteClick === null) {
-                    getFloorData('0');
-                } else {
-                    $("#reserveSite").val(defaultSiteClick).change();
-                }
                 $('#pageOne').show();
                 $('#pageTwo').hide();
             });
 
             $('#viewReserve').on('pagebeforeshow', function(event, ui) {
                 settingList();
-                var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
+                var arrSelectedValue = quickReserveSelectedValue.split('&');
+                var quickReserveSelectedSite = arrSelectedValue[0];
+                setRole(quickReserveSelectedSite);
+                setDateList('quick');
+                reserveBtnDefaultStatus();
+                if (isReloadPage == true) {
+                    var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
+                    isReloadPage = false;
+                } else {
+                    var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                }
+            });
+
+            $('#viewReserve').on('pageshow', function(event, ui) {
+                calSelectWidth($('#reserveSite'));
+                calSelectWidth($('#reserveFloor'));
+                calSelectWidth($('#reserveSetting'));
             });
 
             /********************************** dom event *************************************/
@@ -395,6 +669,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 if ($("#reserveTab :radio:checked").val() == 'tab1') {
                     $('#pageOne').show();
                     $('#pageTwo').hide();
+                    reserveBtnDefaultStatus();
                     var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 } else {
                     $('#pageOne').hide();
@@ -403,16 +678,26 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('#reserveSite').change(function() {
+                calSelectWidth($(this));
                 localStorage.setItem('defaultSiteClick', $(this).val());
                 siteCategoryID = dictSiteCategory[$(this).val()];
                 clickSiteId = this.selectedIndex;
                 getFloorData(clickSiteId);
+                var selectedSite = $('#reserveSite').find(":selected").val();
+                var selectedFllor = $("#reserveFloor option:first").val();
+                setRole(selectedSite);
+                setAlertLimitRoom(selectedSite, selectedFllor); //after getFloorData
+                setDateList('reserve');
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 reserveBtnDefaultStatus();
             });
 
             $('#reserveFloor').change(function() {
+                calSelectWidth($(this));
                 getRoomData(clickSiteId, this.selectedIndex);
+                var selectedSite = $('#reserveSite').find(":selected").val();
+                var selectedFllor = $('#reserveFloor').find(":selected").val();
+                setAlertLimitRoom(selectedSite, selectedFllor);
                 $('#reserveRoom a:first-child').addClass('hover');
                 $('#reserveRoom a:first-child').parent().data("lastClicked", $('#reserveRoom a:first-child').attr('id'));
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
@@ -420,7 +705,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', '#scrollDate .ui-link', function() {
-                //if (!$(this).hasClass('hover')) {
                 clickDateId = $(this).attr('id').replaceAll('one', '');
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
@@ -431,11 +715,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $(this).addClass('hover');
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 reserveBtnDefaultStatus();
-                //}
             });
 
             $('body').on('click', '#reserveRoom .ui-link', function() {
-                //if (!$(this).hasClass('hover')) {
                 clickRomeId = $(this).attr('id');
                 if ($(this).parent().data("lastClicked")) {
                     $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
@@ -447,7 +729,6 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
                 reserveBtnDefaultStatus();
-                //}
             });
 
             $('body').on('click', 'div[id^=time]', function() {
@@ -467,17 +748,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
                     if (bMyReserve) {
                         traceID = $(this).attr('traceID');
-                        popupMsg('reservePopupMsg', 'myReserveMsg', tempEname + '已預約', msgContent, '關閉', true, '取消預約', true);
+                        selectMyReserveTime = $(this).find('div > div:nth-child(1)').text();
+                        popupMsg('myReserveMsg', tempEname + '已預約', msgContent, '關閉', true, '取消預約', 'select.png');
                     } else {
                         //ex: 會議室協調_12/01 T01 15:00-15:30
                         var tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                        popupSchemeMsg('reserveMsg', tempEname + '已預約', msgContent, 'mailto:' + tempMailContent, 'tel:+' + $(this).attr('ext'));
+                        popupSchemeMsg('reserveMsg', tempEname + '已預約', msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), 'select.png');
                     }
 
                 } else if (bNoReserve && !bReserveSelect) {
 
                     var timeBlockId = $(this).attr('id');
                     timeClick.push(timeBlockId);
+                    timeNameClick.push($(this).find('div > div:nth-child(1)').text());
 
                     $(this).addClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelect');
@@ -486,7 +769,9 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 } else if (bReserveSelect) {
 
                     var timeBlockId = $(this).attr('id');
-                    timeClick.splice(timeClick.indexOf(timeBlockId), 1);
+                    var clickIndexOf = timeClick.indexOf(timeBlockId);
+                    timeClick.splice(clickIndexOf, 1);
+                    timeNameClick.splice(clickIndexOf, 1);
 
                     $(this).removeClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelected');
@@ -509,18 +794,31 @@ $(document).one('pagecreate', '#viewReserve', function() {
 
             $("#reserveBtn").on('click', function() {
                 if ($(this).hasClass('btn-disable')) {
-                    popupMsg('reservePopupMsg', 'noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', false);
+                    popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
                 } else {
                     var timeID = '';
                     for (var item in timeClick) {
                         timeID += timeClick[item] + ',';
                     }
-                    if (timeID != '') {
+                    var dictTemp = checkReserveSameTime(clickDateId, 'reserve');
+                    if (dictTemp['result']) {
                         //replace end of comma
                         var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+                    } else {
+                        popupMsg('selectReserveSameTimeMsg', '重複預約', '該時段已預約' + dictTemp['room'], '', false, '確定', 'warn_icon.png');
                     }
                 }
-                reserveBtnDefaultStatus();
+            });
+
+            $('#reserveSetting').change(function() {
+                calSelectWidth($(this));
+                setSettingArea();
+                var quickReserveSelectedValue = $('#reserveSetting').find(":selected").val();
+                var arrSelectedValue = quickReserveSelectedValue.split('&');
+                var quickReserveSelectedSite = arrSelectedValue[0];
+                setRole(quickReserveSelectedSite);
+                setDateList('quick');
+                quickReserveBtnDefaultStatus();
             });
 
             $('body').on('click', '#quickReserveScrollDate .ui-link', function() {
@@ -541,50 +839,37 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     var quickReserveDay = quickReserveClickDateID.replaceAll('two', '');
                     var quickRserveTime = arrSelectedValue[3];
                     if (quickRserveTime === 'none') {
-                        var nowTime = new Date();
-                        var nowTimeHour = nowTime.getHours();
-                        var nowTimeMins = nowTime.getMinutes();
-                        if (nowTimeMins < 15) {
-                            nowTimeMins = 0;
-                        } else if (nowTimeMins >= 15 && nowTimeMins < 45) {
-                            nowTimeMins = 30;
-                        } else if (nowTimeMins >= 45) {
-                            nowTimeHour += 1;
-                            nowTimeMins = 0;
-                        }
-
-                        // if (nowTimeMins >= 30) {
-                        //     nowTimeHour += 1;
-                        //     nowTimeMins = 0;
-                        // } else {
-                        //     nowTimeMins = 30;
-                        // }
-
-                        nowTime.setHours(nowTimeHour);
-                        nowTime.setMinutes(nowTimeMins);
-                        var sTime = nowTime.hhmm();
-                        var eTime = addThirtyMins(addThirtyMins(sTime));
-                        quickRserveTime = getTimeID(sTime, eTime, dictSiteCategory[arrSelectedValue[0]]);
-                        quickReserveSelectedTime = sTime + '~' + eTime;
+                        var dictOneHourTime = getOneHour();
+                        quickRserveTime = getTimeID(dictOneHourTime['sTime'], dictOneHourTime['eTime'], dictSiteCategory[arrSelectedValue[0]]);
+                        quickReserveSelectedTime = dictOneHourTime['sTime'] + '~' + dictOneHourTime['eTime'];
                     }
 
-                    // getAPIQuickReserve(date, site, floor, people, time)
-                    var doAPIQuickReserve = new getAPIQuickReserve(quickReserveDay, arrSelectedValue[0], arrSelectedValue[1].replace(/,\s*$/, ""), arrSelectedValue[2], quickRserveTime.replace(/,\s*$/, ""), quickReserveSelectedTime);
+                    if (quickRserveTime === '') {
+                        popupMsg('noTimeIdMsg', '', '沒有符合條件的時段', '', false, '確定', '');
+                    } else {
+                        // getAPIQuickReserve(date, site, floor, people, time)
+                        var doAPIQuickReserve = new getAPIQuickReserve(quickReserveDay, arrSelectedValue[0], arrSelectedValue[1].replace(/,\s*$/, ""), arrSelectedValue[2], quickRserveTime.replace(/,\s*$/, ""), quickReserveSelectedTime);
+                    }
                 }
             });
 
             $("#quickReserveConfirm").on('click', function() {
-                var quickClickRomeId = quickRserveCallBackData[0].MeetingRoomID;
                 var quickClickDateId = quickReserveClickDateID.replaceAll('two', '');
-                timeID = quickRserveCallBackData[0].ReserveTimeID;
-                var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageTwo', quickClickRomeId, quickClickDateId, timeID);
+                var dictTemp = checkReserveSameTime(quickClickDateId, 'quick');
+                if (dictTemp['result']) {
+                    var quickClickRomeId = quickRserveCallBackData[0].MeetingRoomID;
+                    timeID = quickRserveCallBackData[0].ReserveTimeID;
+                    var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageTwo', quickClickRomeId, quickClickDateId, timeID);
 
-                //delete local data for refresh
-                var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
-                reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
-                    return item.date != quickClickDateId;
-                });
-                localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
+                    //delete local data for refresh
+                    var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
+                    reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
+                        return item.date != quickClickDateId;
+                    });
+                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
+                } else {
+                    popupMsg('selectReserveSameTimeMsg', '重複預約', '該時段已預約' + dictTemp['room'], '', false, '確定', 'warn_icon.png');
+                }
             });
 
             $("#quickReserveCancel").on('click', function() {
@@ -592,8 +877,19 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
 
             $('body').on('click', 'div[for=myReserveMsg] #confirm', function() {
-                $('div[for=myReserveMsg]').popup('close');
-                var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+                if (bReserveCancelConfirm == true) {
+                    $('div[for=myReserveMsg]').popup('close');
+                    var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+                } else {
+                    $('div[for=myReserveMsg] span[id=titleText]').text('確定取消預約？');
+                    $('div[for=myReserveMsg] button[id=confirm]').html('取消');
+                    $('div[for=myReserveMsg] button[id=cancel]').html('不取消');
+                    bReserveCancelConfirm = true;
+                }
+            });
+
+            $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
+                bReserveCancelConfirm = false;
             });
 
             $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
@@ -602,9 +898,10 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 $('div[for=cancelSuccessMsg]').popup('close');
             });
 
-            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm', function() {
-                var msgForId = $(this).parent().parent().attr('for');
-                $('div[for=' + msgForId + ']').popup('close');
+            $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
+                // var msgForId = $(this).parent().parent().attr('for');
+                // $('div[for=' + msgForId + ']').popup('close');
+                $('#viewPopupMsg').popup('close');
             });
 
             $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
@@ -613,4 +910,4 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
         }
     });
-});
+//});

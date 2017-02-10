@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewNewsEvents2-3", function(){
+//$(document).one("pagecreate", "#viewNewsEvents2-3", function(){
     
     $("#viewNewsEvents2-3").pagecontainer({
         create: function(event, ui) {
@@ -38,10 +38,23 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                         }
 
                         if (messageContentIsNull) {
-                            loginData["messagecontent"] = data['content'];
-                            window.localStorage.setItem("messagecontent", JSON.stringify(data['content']));
 
                             messagecontent = data['content'];
+
+                            //Update datetime according to local timezone
+                            var messageindexLength = parseInt(messagecontent.message_count - 1, 10);
+
+                            for (var messageindex=0; messageindex<messageindexLength; messageindex++) {
+                                var message = messagecontent.message_list[messageindex];
+                                var tempDate = dateFormatYMD(message.create_time);
+                                var createTime = new Date(tempDate);
+                                var createTimeConvert = createTime.TimeZoneConvert();
+                                message.create_time = createTimeConvert;
+                            }
+
+                            window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
+                            loginData["messagecontent"] = messagecontent;
+
                         } else {
 
                             loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
@@ -53,6 +66,12 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                                 for (var messageindex=messageindexStart; messageindex>=0; messageindex--) {
                                     var message = messagecontent.message_list[messageindex];
+
+                                    //Update datetime according to local timezone
+                                    var tempDate = dateFormatYMD(message.create_time);
+                                    var createTime = new Date(tempDate);
+                                    var createTimeConvert = createTime.TimeZoneConvert();
+                                    message.create_time = createTimeConvert;
 
                                     localContent.message_count = parseInt(localContent.message_count + 1, 10);
                                     localContent.message_list.unshift(message);
@@ -204,9 +223,9 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 //Latest Update Time
                 var datetime = new Date();
-                var datetimeStr = datetime.getFullYear() + "-" + parseInt(datetime.getMonth() + 1, 10) + "-" + datetime.getUTCDate() + " " +
+                var datetimeStr = datetime.getFullYear() + "-" + padLeft(parseInt(datetime.getMonth() + 1, 10), 2) + "-" + padLeft(datetime.getUTCDate(), 2) + " " +
                                   addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
-                $(".update-time span").html(datetimeStr);
+                $(".update-time .update-time-str").html(datetimeStr);
 
                 //If News or Events has no message, show [No News] [No Events]
                 if (countNews === 0) {
@@ -301,34 +320,59 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 dom =  dom || null;
 
                 var checkedLength = $("input.msgDelCheckbox:checked").length;
-                var disabled = false;
+                var messageType;
+                var messageTypeCount = 0;
+
+                if (activeNvrBar === "navEvents") {
+                    messageType = "event";
+                } else if (activeNvrBar === "navNews") {
+                    messageType = "news";
+                }
+
+                for (var i=0; i<messagecontent.message_count; i++) {
+                    if (messagecontent.message_list[i].message_type === messageType) {
+                        if (messagecontent.message_list[i].read !== "D") {
+                            messageTypeCount++;
+                        }
+                    }
+                }
+
+                if (checkedLength === messageTypeCount) {
+                    $("#selectMsgAll").hide();
+                    $("#cancelMsgAll").show();
+                } else {
+                    $("#selectMsgAll").show();
+                    $("#cancelMsgAll").hide();
+                }
 
                 if (checkedLength > 0) {
-                    disabled = true;
-                    $("#navMessage").hide();
-                    $("#navDelete").show();
-                    $("#msgFooter").css("position", "fixed");
+                    $("#delMsgBtn a").removeClass("btn-disabled");
                 } else {
-                    $("#navMessage").show();
-                    $("#navDelete").hide();
-                    $("#msgFooter").css("position", "fixed");
+                    $("#delMsgBtn a").addClass("btn-disabled");
                 }
 
                 if (dom !== null) {
-
-                    if (checkedLength > 0) {
-                        $(".msg-del-checkbox .overlap-label-icon").css("opacity", "0.2");
-                    } else {
-                        $(".msg-del-checkbox .overlap-label-icon").css("opacity", "1");
-                    }
-
                     messageArrIndex = $(dom).parent().parent().parent().val();
-
-                    $("input.msgDelCheckbox").prop("disabled", disabled);
-
-                    $(dom).prop("disabled", false);
-                    $(dom).parent().children(".overlap-label-icon").css("opacity", "1");
                 }
+            }
+
+            function messageSelectCancelAll(action) {
+                var messageList;
+                var checked;
+
+                if (activeNvrBar === "navEvents") {
+                    messageList = "eventlistview";
+                } else if (activeNvrBar === "navNews") {
+                    messageList = "newslistview";
+                }
+
+                if (action === "select") {
+                    checked = true;
+                } else if (action === "cancel") {
+                    checked = false;
+                }
+
+                $('#' + messageList + ' :checkbox').prop('checked', checked);
             }
 
             window.editModeChange = function () {
@@ -340,6 +384,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     delMsgActive = false;
                     $(".msg-list-content").removeClass("msg-list-content-edit");
                     $('#deleteConfirm').popup('close');
+
+                    $("#navMessage").show();
+                    $("#navDelete").hide();
+                    $("#msgFooter").css("position", "fixed");
                 } else {
                     delMsgActive = true;
                     dispaly = "block";
@@ -349,6 +397,10 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                     $("input.msgDelCheckbox").prop("disabled", false);
                     $(".msg-del-checkbox .overlap-label-icon").css("opacity", "1");
                     $(".msg-list-content").addClass("msg-list-content-edit");
+
+                    $("#navMessage").hide();
+                    $("#navDelete").show();
+                    $("#msgFooter").css("position", "fixed");
                 }
 
                 $('#viewNewsEvents2-3 :checkbox').prop('checked', false);
@@ -395,7 +447,6 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
                 tabChange("setActive");
 
-                //$("#deleteMessage span").html("Delete");
                 $("#deleteMessage #deleteImg").css("display", "block");
                 $("#deleteMessage #deleteStr").css("display", "none");
                 $("#navMessage").show();
@@ -442,8 +493,20 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
                 editModeChange();
             });
 
+            $("#selectMsgAll").on("click", function() {
+                messageSelectCancelAll("select");
+                checkboxChange();
+            });
+
+            $("#cancelMsgAll").on("click", function() {
+                messageSelectCancelAll("cancel");
+                checkboxChange();
+            });
+
             $("#delMsgBtn").on("click", function() {
-                $('#deleteConfirm').popup('open');
+                if (!$("#delMsgBtn a").is(".btn-disabled")) {
+                    $('#deleteConfirm').popup('open');
+                }
             });
 
             $("#deleteConfirm #cancel").on("click", function() {
@@ -451,13 +514,32 @@ $(document).one("pagecreate", "#viewNewsEvents2-3", function(){
             });
 
             $("#deleteConfirm #yes").on("click", function() {
-                var msgIndex = $("input.msgDelCheckbox:checked").val();
-                var msgType = $("#msgType" + msgIndex).val();
-                
-                messageRowId = msgIndex;
+                var messageList;
+                var msgIndex;
+                var msgIndexList;
+                var msgType;
+
+                if (activeNvrBar === "navEvents") {
+                    messageList = "eventlistview";
+                } else if (activeNvrBar === "navNews") {
+                    messageList = "newslistview";
+                }
+
+                $('#' + messageList + ' :checkbox:checked').each(function(index, element){
+                    msgIndex = $(element).val();
+
+                    if (index === 0) {
+                        msgIndexList = msgIndex;
+                        msgType = $("#msgType" + msgIndexList).val();
+                    } else {
+                        msgIndexList += "," + msgIndex;
+                    }
+                });
+
+                messageRowId = msgIndexList;
                 updateReadDelete(msgType, "delete");
             });
         }
     });
 
-});
+//});

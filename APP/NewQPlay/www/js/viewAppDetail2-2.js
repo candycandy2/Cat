@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewAppDetail2-2", function(){
+//$(document).one("pagecreate", "#viewAppDetail2-2", function(){
     
     $("#viewAppDetail2-2").pagecontainer({
         create: function(event, ui) {
@@ -7,27 +7,43 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             var pageHeight = null;
 
             /********************************** function *************************************/
-             function displayAppDetail() {
+             function displayAppDetailStep1() {
 
                 $("#appDetailIcon").attr("src", applist[selectAppIndex].icon_url); 
 
-                //Find multilangIndex = "zh-tw"
+                //Check if APP is installed
+                var packageName = applist[selectAppIndex].package_name;
+                var packageNameArr = packageName.split(".");
+                checkAPPKey = packageNameArr[2];
+                checkAPPInstalled(displayAppDetailStep2, "appDetail");
+
+                //Find the specific language to display,
+                //if can not find the language to match the browser language,
+                //display the default language: zh-tw
+                var languageIndex;
+                var zhTWIndex;
+
                 for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
-                    if ((applist[selectAppIndex].app_code == appmultilang[multilangIndex].project_code) &&
-                        (appmultilang[multilangIndex].lang == "zh-tw"))
-                    {
-                        break;
+                    if (applist[selectAppIndex].app_code == appmultilang[multilangIndex].project_code) {
+                        //match browser language
+                        if (appmultilang[multilangIndex].lang == browserLanguage) {
+                            languageIndex = multilangIndex;
+                        }
+                        //match default language: zh-tw
+                        if (appmultilang[multilangIndex].lang == "zh-tw") {
+                            zhTWIndex = multilangIndex;
+                        }
                     }
                 }
 
-                if (multilangIndex > appmultilang.length) {
-                    console.log("find multilang error!!!");
-                    return;
+                if (languageIndex == null) {
+                    languageIndex = zhTWIndex;
                 }
 
                 //APP Name substring
                 //zh-tw / zh-cn: string max length is 6
                 //en-us / other: string max length is 12
+                /*
                 var language = navigator.language.toLowerCase();
                 var strLength;
 
@@ -37,14 +53,14 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
                     strLength = 12;
                 }
 
-                var appName = appmultilang[multilangIndex].app_name.substr(0, strLength);
+                var appName = appmultilang[languageIndex].app_name.substr(0, strLength);
 
-                if (appmultilang[multilangIndex].app_name.length > strLength) {
+                if (appmultilang[languageIndex].app_name.length > strLength) {
                     appName += "...";
                 }
-
-                $("#appDetailAppName").html(appName);
-                $("#appDetailAppSummary").html(appmultilang[multilangIndex].app_summary);
+                */
+                $("#appDetailAppName").html(appmultilang[languageIndex].app_name);
+                $("#appDetailAppSummary").html(appmultilang[languageIndex].app_summary);
                 $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
                 var appSize =  new Number(applist[selectAppIndex].size / 1024.0 / 1024.0);
                 $("#appDetailAppSize").html(appSize.toFixed(2) + " M");
@@ -53,7 +69,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 var platform = device.platform.toLowerCase();
                 var content = "";
-                var piclist = appmultilang[multilangIndex].pic_list;
+                var piclist = appmultilang[languageIndex].pic_list;
                 var indexNow = 0;
 
                 $('#appDetailPicListContent').html("");
@@ -83,7 +99,7 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 //detail-description, the text content can't over 3 lines,
                 //if text content is too long, show/hide open button
-                var appDescription = appmultilang[multilangIndex].app_description.replace(/\n/g,"<br>");
+                var appDescription = appmultilang[languageIndex].app_description.replace(/\n/g,"<br>");
                 $("#appDetailAppDescription").css("height", "auto");
                 $("#appDetailAppDescription").html(appDescription);
 
@@ -93,14 +109,37 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
 
                 if (descriptionHeight >= (textHeight * 3)) {
                     $("#appDetailAppDescription").addClass("detail-description-ellipsis");
-                    $("#appDetailAppDescription").css("max-height", "3.4em");
+                    $("#appDetailAppDescription").css({
+                        "max-height": "3.4em",
+                        "line-height": "1.2em"
+                    });
                     $(".detail-description-open").show();
                 } else {
                     $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
-                    $("#appDetailAppDescription").css("max-height", "none");
+                    $("#appDetailAppDescription").css({
+                        "max-height": "none",
+                        "line-height": "3.4vh"
+                    });
                     $(".detail-description-open").hide();
 
                     $("#appDetailAppDescription").css("height", parseInt(descriptionHeight + adjustHeight, 10) + "px");
+                }
+
+            }
+
+            window.displayAppDetailStep2 = function(installed) {
+                //Check APP Install need process time, so need this step
+
+                $("#InstallApp .InstallAppStr").hide();
+
+                if (installed) {
+                    if (loginData['updateApp']) {
+                        $("#InstallApp #InstallAppStr03").show();
+                    } else {
+                        $("#InstallApp #InstallAppStr02").show();
+                    }
+                } else {
+                    $("#InstallApp #InstallAppStr01").show();
                 }
 
                 loadingMask("hide");
@@ -112,24 +151,38 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
             });
 
             $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
-                displayAppDetail();
+                displayAppDetailStep1();
             });
 
             /********************************** dom event *************************************/
-            $("#InstallApp").on("click", function() {
+            $("#InstallApp #InstallAppStr01").on("click", function() {
                 if (selectAppIndex != null) {
-                    $("body").append('<a id="downloadAPP" href="' + applist[selectAppIndex].url + '"></a>');
-                    document.getElementById("downloadAPP").click();
-                    $("#downloadAPP").remove();
+                    openAPP(applist[selectAppIndex].url);
+                }
+            });
+
+            $("#InstallApp #InstallAppStr02").on("click", function() {
+                var schemeURL = checkAPPKey + createAPPSchemeURL();
+                openAPP(schemeURL);
+            });
+
+            $("#InstallApp #InstallAppStr03").on("click", function() {
+                //1. Open Other APP, do checkAppVersion, need to update, then click button to open QPlay
+                //2. In this case, show [update] in button
+                if (selectAppIndex != null) {
+                    openAPP(applist[selectAppIndex].url);
                 }
             });
 
             $("#openDescription").on("click", function() {
                 $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
-                $("#appDetailAppDescription").css("max-height", "none");
+                $("#appDetailAppDescription").css({
+                    "max-height": "none",
+                    "line-height": "3.4vh"
+                });
                 $(".detail-description-open").hide();
             });
         }
     });
 
-});
+//});

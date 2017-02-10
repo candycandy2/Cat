@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\Input;
 $oriMenuList = Auth::user()->getMenuList();
 $menuList = array();
 $breadList = ['Home'];
+$exist = false;
+$showTitle = true;
+if($menu_name == 404) {
+    $exist = true;
+    $showTitle = false;
+}
 foreach ($oriMenuList as $menu) {
     if($menu->pId == 0) {
         $menu->subMenuList = array();
         if($menu->Name == $menu_name) {
+            $exist = true;
             $menu->Active = true;
             array_push($breadList, trans('messages.TITLE_'.$menu->Name));
         } else {
@@ -24,6 +31,7 @@ foreach ($oriMenuList as $menu) {
             if($submenu->pId == $menu->Id) {
                 array_push($menu->subMenuList, $submenu);
                 if($submenu->Name == $menu_name) {
+                    $exist = true;
                     $submenu->Active = true;
                     $menu->Active = true;
                     if(!in_array(trans('messages.TITLE_'.$menu->Name), $breadList)) {
@@ -37,6 +45,8 @@ foreach ($oriMenuList as $menu) {
         }
     }
 }
+
+
 
 $title = trans('messages.TITLE_'.$menu_name);
 $withMessage = false;
@@ -60,6 +70,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bootstrap/css/bootstrap-datetimepicker.css') }}" rel="stylesheet">
     <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -196,7 +207,7 @@ if(array_key_exists('with_msg_id', $input)) {
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <h1>
-                {{$title}}
+                @if($showTitle){{$title}}@endif
             </h1>
             <ol class="breadcrumb">
                 <i class="fa fa-dashboard"></i>&nbsp;
@@ -240,6 +251,7 @@ if(array_key_exists('with_msg_id', $input)) {
 {{--<script src="../bootstrap/js/bootstrap.min.js"></script>--}}
 <script src="{{ asset('/bootstrap/js/bootstrap-table.js') }}"></script>
 <script src="{{ asset('/bootstrap/js/bootstrap-switch.js') }}"></script>
+<script src="{{ asset('/bootstrap/js/bootstrap-datetimepicker.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('/plugins/fastclick/fastclick.min.js') }}"></script>
 {{--<script src="../plugins/fastclick/fastclick.min.js"></script>--}}
@@ -394,6 +406,10 @@ if(array_key_exists('with_msg_id', $input)) {
         current.formatAllRows = target.formatAllRows;
     };
     $(function() {
+        @if(!$exist)
+                window.location.href = "404";
+        @endif
+
         @if($withMessage)
         showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.".$withMsgId)}}");
         @endif

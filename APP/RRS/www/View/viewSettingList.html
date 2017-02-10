@@ -2,37 +2,41 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
-            <div id="left" class="ui-title">
-                <a href="#viewReserve">返回</a></div>
-            <div id="center" class="ui-title">偏好設置</div>
-            <div id="right" class="ui-title">
-                <a href="#viewNewSetting">新增</a></div>
+            <div id="left" class="ui-title-btn">
+                <a href="#viewReserve"><img src="img/back_nav.png" class="title-icon" /></a>
+            </div>
+            <div id="center" class="ui-title"><span>偏好設置</span></div>
+            <div id="right" class="ui-title-btn">
+                <a href="#viewNewSetting"><img src="img/add_nav.png" class="title-icon" /></a>
+            </div>
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <div class="ui-margin-public">
-            <div id="settingList" value="[index]" class="ui-btn ui-shadow ui-corner-all ui-margin-public ui-hasBtn disable">
-                <h2 class="ui-color-yellow ui-position-adjust">
-                        [title]&nbsp;[siteName]</h2>
-                <a id="settingDelete" href="#" value="[index]" title="[title]" class="ui-btn ui-shadow ui-corner-all ui-delete-btn">刪除</a>
-                <hr class="ui-color-yellow col-95 ui-position-adjust" />
-                <div class="ui-grid-a ui-position-adjust">
-                    <div class="ui-block-a col-5">
-                        人數&nbsp;[people]
-                    </div>
-                    <div class="ui-block-b col-5">
-                        時段&nbsp;[time]
-                    </div>
+        <div style="height: 1vh;"></div>
+        <div id="settingList" value="[index]" class="app-font div-radius ui-linear-gradient-green ui-margin-public ui-hasBtn disable">
+            <div style="line-height: 5vh;margin-left: 2.4vw;">
+                <span class="inline">[title]</span>
+                <div class="inline" style="position: absolute;right: 8vw;">
+                    <span>[siteName]</span>
+                    <img src="img/detail.png" class="setting-img" />
                 </div>
-                <div class="ui-position-adjust">優先樓層&nbsp;[floor]</div>
             </div>
-        </div>
-        <div data-role="popup" data-history="false" id="settingListPopupMsg" data-overlay-theme="b" data-dismissible="false">
-            <div data-role="main" class="popup-msg">
-                <h1 id="msgTitle"></h1>
-                <div id="msgContent"></div>
-                <button id="cancel"></button>
-                <button id="confirm"></button>
+            <hr class="ui-color-green col-95" style="margin: 0 auto;" />
+            <div class="app-font-small ui-grid-a" style="margin: 1vh 2.4vw 0;">
+                <div class="ui-block-a col-5">
+                    人數&nbsp;[people]
+                </div>
+                <div class="ui-block-b col-5" style="text-align: right;padding-right: 3.5vw;">
+                    時段&nbsp;[time]
+                </div>
+            </div>
+            <div class="app-font-small ui-grid-a" style="margin: 1.6vh 2.4vw 0;padding-bottom: 1.6vh;">
+                <div class="ui-block-a col-7">
+                    <div>優先樓層&nbsp;[floor]</div>
+                </div>
+                <div class="ui-block-b col-3">
+                    <a id="settingDelete" href="#" value="[index]" title="[title]" class="ui-delete-btn btn-myreserve setting-delete">刪除</a>
+                </div>
             </div>
         </div>
     </div>

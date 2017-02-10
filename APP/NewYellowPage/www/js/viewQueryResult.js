@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewQueryResult", function(){
+//$(document).one("pagecreate", "#viewQueryResult", function(){
 
     $("#viewQueryResult").pagecontainer({
         create: function(event, ui) {
@@ -21,7 +21,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         var dataContent = data['Content'];
                         var htmlContent = "";
                         var errorMsg = $("#errorMsg").clone();
-                        var errorMsg2 = $("#errorMsg2").clone();
+                        var errorMsg2 = $("#errorMsg2").clone(), telString = "";
 
                         for (var i=0; i<dataContent.length; i++){
                             var tempData = {};
@@ -29,21 +29,32 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             tempData["company"] = dataContent[i].Company;
                             tempData["ename"] = dataContent[i].Name_EN;
                             tempData["cname"] = dataContent[i].Name_CH;
-                            tempData["extnum"] = dataContent[i].Ext_No;
+                            tempData["extnum"] = dataContent[i].Ext_No.match(/^([0-9X\-]{0,9})/)[1];
+                            tempData["mvpn"] = dataContent[i].Mvpn;
+
+                            if (tempData["mvpn"] === ""){
+                                telString = "href='tel:" + tempData["extnum"] + "'";
+                            }
+                            else{
+                                telString = "class='mvpnPop" + "' data-mvpnnum = " + tempData["mvpn"] + " data-extnum = " + tempData["extnum"] + " ";
+                            }
 
                             employeeData[i] = tempData;
 
                             var content = htmlContent
-                                + '<li>'
-                                +   '<div class="company">'
-                                +       '<p>' + tempData["company"] + '</p>'
+                                + '<li style="border-width:1px; border-style:none; border-bottom-style:solid; border-bottom-color:#989898;">'
+                                +   '<div id="name" style="width:53.4VW">'
+                                +       '<p style="margin-top:2VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#0f0f0f; font-family:Arial; font-size:2.6VH;">' + tempData["ename"] + '</a></p>'
+                                +       '<p style="margin-bottom:1VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#666; font-family:Microsoft JhengHei; font-size:2.3VH; font-weight: normal;">' + tempData["cname"] + '</a></p>'
                                 +   '</div>'
-                                +   '<div class="e-name">'
-                                +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + tempData["ename"] + '</a></p>'
-                                +       '<p><a rel="external" href="tel:' + tempData["extnum"] + '" style="color:red;">' + tempData["extnum"] + '</a></p>'
+                                +   '<div style="margin-right:1.9VW; line-height:10VH">'
+                                +       '<img src = "img/phone.png" style="width:3.5VW; height:2VH;">'
                                 +   '</div>'
-                                +   '<div class="c-name">'
-                                +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + tempData["cname"] + '</a></p>'
+                                +   '<div style="margin-right:6VW; line-height:10VH; width: 21VW;">'
+                                +       '<p><a rel="external"' + telString + 'style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + tempData["extnum"] + '</a></p>'
+                                +   '</div>'
+                                +   '<div style="float:right; margin-right:3.8VW; line-height:12VH">'
+                                +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/info.png" style="width:6.4VW; height:3.7VH;"></a>'
                                 +   '</div>'
                                 + '</li>';
 
@@ -51,8 +62,6 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                         }
 
                         $("#employeeData").html("");
-                        $("#employeeData").append(errorMsg);
-                        $("#employeeData").append(errorMsg2);
                         $("#employeeData").prepend($(htmlContent)).enhanceWithin();
                         $('#employeeData').listview('refresh');
 
@@ -65,8 +74,8 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                             $.mobile.changePage('#viewDetailInfo');
                         });
 
-                        //data length over 5, show error msg
-                        //if (resultcode === "001906") {
+                        /*   data length over 5, show error msg
+                             if (resultcode === "001906") {     */
                         if (dataContent.length === 5) {
                             $("#errorMsg").show();
                             $("#errorMsg2").hide();
@@ -86,7 +95,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "QueryEmployeeData", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
@@ -107,7 +116,23 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                     doClearInputData = true;
                 }
             });
+
+            // popup window, if the employee has mvpn num
+            $(document).on('click', '.mvpnPop', function(){
+                var tempNum = '', tempMvpn = $(this).data('mvpnnum'), tempExt = $(this).data('extnum');
+                $('#numSelectPopupWindow').popup('open');
+                $('#numSelectPopupWindow').find('li').each(function(){
+                    if ($(this).index() === 0) tempNum = tempExt;
+                    else tempNum = tempMvpn;
+                    $(this).find('span').html("<a href='tel:" + tempNum + "' style='text-decoration: none; font-weight: normal;'>" + tempNum + "</a>");
+                });
+            });
+
+            $('#numPopupCloseBtn').on('click', function(){
+                $('#numSelectPopupWindow').popup('close');
+            });
         }
     });
 
-});
+//});
+

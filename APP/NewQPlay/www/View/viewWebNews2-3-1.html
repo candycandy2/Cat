@@ -2,7 +2,7 @@
 <div data-role="page" id="viewWebNews2-3-1">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="ui-header page-header">
-        <h1></h1>
+        <div class="header-style"><h1 class="ui-title">&nbsp;</h1></div>
         <a href="#viewNewsEvents2-3" data-role="none">
             <div class="q-btn-header">
                 <img src="img/component/back_nav.png" width="100%" height="100%">
@@ -66,5 +66,22 @@
             </div>
         </div>
         <div class="footer-bottom"></div>
+    </div>
+
+    <div data-role="popup" data-history="false" id="messageNotExist" class="popup-div" data-overlay-theme="b" data-dismissible="false">
+        <div data-role="main" class="ui-content">
+            <p>此訊息已被管理者移除</p>
+
+            <hr class="hr-style">
+
+            <div class="bottom">
+                <div class="button-content">
+                    <span id="confirmMessageNotExist">
+                        <!--確定-->
+                        <span class="langStr" data-id="str_016"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -25,7 +25,8 @@ abstract class ResultCode
     const _999011_signatureOvertime = '999011';  //signature參數錯誤或誤差超過15分鐘
     const _999012_appOffTheShelf = '999012';  //app已经下架
     const _999013_pushTokenUsed = '999013';  //push token已经使用
-    const _999013_companyNotExist = '999014';  //company不存在
+    const _999014_companyNotExist = '999014';  //company不存在
+    const _999015_haveNoAppVersion = "999015"; //未上傳app
     const _999999_unknownError = '999999';  //其他未知錯誤
 
     const _000901_userNotExistError = '000901';  //員工資訊錯誤
@@ -45,6 +46,8 @@ abstract class ResultCode
     const _000916_titleLengthTooLong = "000916"; //标题栏位太长
     const _000917_roleNotExist = "000917"; //角色不存在
     const _000918_dataIncomplete = "000918"; //数据不完整
+
+    const _000920_updateTagToJpushFailed = "000920"; //向JPush更新tag信息失败
 
 
     //TODO 以下为各系统扩展
