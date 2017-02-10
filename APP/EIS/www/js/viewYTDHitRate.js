@@ -1,9 +1,9 @@
-$(document).one("pagebeforecreate", function(){
-    $.mobile.pageContainer.prepend(panel);
-    $("#mypanel").panel().enhanceWithin();
-});
+//$(document).one("pagebeforecreate", function(){
+    //$.mobile.pageContainer.prepend(panel);
+    //$("#mypanel").panel().enhanceWithin();
+//});
 
-$(document).one("pagecreate", "#viewYTDHitRate", function(){
+//$(document).one("pagecreate", "#viewYTDHitRate", function(){
     
     $("#viewYTDHitRate").pagecontainer({
         create: function(event, ui) {
@@ -13,4 +13,4 @@ $(document).one("pagecreate", "#viewYTDHitRate", function(){
             });
         }
     });
-});
+//});

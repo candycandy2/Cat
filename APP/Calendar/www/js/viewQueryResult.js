@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewQueryResult", function(){
+//$(document).one("pagecreate", "#viewQueryResult", function(){
 
 
-});
+//});

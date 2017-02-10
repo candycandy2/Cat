@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewPhonebook", function(){
+//$(document).one("pagecreate", "#viewPhonebook", function(){
     
     $("#viewPhonebook").pagecontainer({
         create: function(event, ui) {
@@ -252,4 +252,4 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
         }
     });
     
-});
+//});

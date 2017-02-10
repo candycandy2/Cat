@@ -185,19 +185,19 @@
   },
   {
     "term": "str_024",
-    "definition": "[app name] install failed!",
+    "definition": "install failed!",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[app name] install failed!"
   },
   {
     "term": "str_025",
-    "definition": "[app name]  install successfully",
+    "definition": "install successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[app name] install successfully"
   },
   {
     "term": "str_026",
@@ -233,11 +233,11 @@
   },
   {
     "term": "str_030",
-    "definition": "Latest  update [yyyy/mm/dd hh:mm]",
+    "definition": "Latest  update",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Latest update [yyyy/mm/dd hh:mm]"
   },
   {
     "term": "str_031",
