@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewDetailInfo", function(){
+//$(document).one("pagecreate", "#viewDetailInfo", function(){
 
     $("#viewDetailInfo").pagecontainer({
         create: function(event, ui) {
@@ -103,4 +103,4 @@ $(document).one("pagecreate", "#viewDetailInfo", function(){
         }
     });
 
-});
+//});

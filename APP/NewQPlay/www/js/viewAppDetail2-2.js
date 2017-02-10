@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewAppDetail2-2", function(){
+//$(document).one("pagecreate", "#viewAppDetail2-2", function(){
     
     $("#viewAppDetail2-2").pagecontainer({
         create: function(event, ui) {
@@ -185,4 +185,4 @@ $(document).one("pagecreate", "#viewAppDetail2-2", function(){
         }
     });
 
-});
+//});

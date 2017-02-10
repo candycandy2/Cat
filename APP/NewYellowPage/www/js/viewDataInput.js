@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewDataInput", function(){
+//$(document).one("pagecreate", "#viewDataInput", function(){
     
     $("#viewDataInput").pagecontainer({
         create: function(event, ui) {
@@ -128,4 +128,4 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             });
         }
     });
-});
+//});

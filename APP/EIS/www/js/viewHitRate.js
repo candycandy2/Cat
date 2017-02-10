@@ -1,7 +1,7 @@
-$(document).one("pagebeforecreate", function() {
-    $.mobile.pageContainer.prepend(panel);
-    $("#mypanel").panel().enhanceWithin();
-});
+//$(document).one("pagebeforecreate", function() {
+    //$.mobile.pageContainer.prepend(panel);
+    //$("#mypanel").panel().enhanceWithin();
+//});
 
 $(document).one("pagecreate", "#viewHitRate", function(){
 	var chart;
@@ -9,19 +9,14 @@ $(document).one("pagecreate", "#viewHitRate", function(){
 	var b = [33, 74, 121, 101.5, 89.1];
 	var c = [20, 68.9, 56.6, 81.3, 103.4];
 
-	var htmlContent = "";
-	var highchart = '<div id="highcharts" style="height:38VH;"></div>';
-	$("#hc-canvas").html("");
-	$("#hc-canvas").prepend($(highchart)).enhanceWithin();
-
     $("#viewHitRate").pagecontainer({
         create: function(event, ui) {
 			
 			/********************************** page event *************************************/
-            $("#viewHitRate").on("pagebeforeshow", function(event, ui){
+            $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
 				chart = new Highcharts.Chart({
 	        		chart: {
-	        			renderTo: 'highcharts',
+	        			renderTo: 'hc-canvas',
 	            		type: 'column'
 	        		},
 					title: {
@@ -61,62 +56,31 @@ $(document).one("pagecreate", "#viewHitRate", function(){
 				    	}
 					},
 					series: [{
-				    	name: 'Budget AMT'
-				    
+				    	name: 'Budget AMT',
+				    	data: [1, 1, 1, 1, 1]
 					},{
-						name: 'Actual AMT'
-				    	
+						name: 'Actual AMT',
+				    	data: [2, 2, 2, 2, 2]
 					}]
 				});
             });
 		
 
-            $(".page-tabs #tab-1").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-1").on("click", function(){
             	chart.series[0].setData(a, true);
-            	chart.series[1].setData(a, true);	
+            	chart.series[1].setData(a, true);
             });
 
-            $(".page-tabs #tab-2").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-2").on("click", function(){
             	chart.series[0].setData(b, true);
             	chart.series[1].setData(b, true);
             });
 
-            $(".page-tabs #tab-3").on("click", function(){
+            $(".page-tabs #viewHitRate-tab-3").on("click", function(){
             	chart.series[0].setData(c, true);
             	chart.series[1].setData(c, true);
             });
 		}
-    });
-
-    $("#mypanel #panel-header-content").on("click", function(){
-    	$("#viewHitRate").show();
-    	$("#viewMonthlyHitRate").hide();
-    	$("#viewYTDHitRate").hide();
-    	$("#mypanel").panel("close");
-    });
-
-	$("#mypanel #panel-sub-header").on("click", function(){
-    	$("#viewHitRate").hide();
-    	$("#viewMonthlyHitRate").show();
-    	$("#viewYTDHitRate").hide();
-    	$("#mypanel").panel("close");
-    });
-
-    $("#mypanel #panel-sub-header-content").on("click", function(){
-    	$("#viewHitRate").hide();
-    	$("#viewMonthlyHitRate").hide();
-    	$("#viewYTDHitRate").show();
-    	$("#mypanel").panel("close");
-    });
-
-	$(".menu-btn").on("click", function(){
-		$("#mypanel").panel("open");
-    });
-
-    $("#viewHitRate").on( "swiperight", function(event){
-		if($(".ui-page-active").jqmData("panel") !== "open"){
-            $("#mypanel").panel( "open");
-        }
     });
 
 	// function drawHighcharts(BAMT, AAMT) {

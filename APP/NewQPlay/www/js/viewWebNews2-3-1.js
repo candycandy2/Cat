@@ -1,4 +1,4 @@
-$(document).one("pagecreate", "#viewWebNews2-3-1", function() {
+//$(document).one("pagecreate", "#viewWebNews2-3-1", function() {
 
     function cleanHTML(input) {
         // 1. remove line breaks / Mso classes
@@ -285,4 +285,4 @@ $(document).one("pagecreate", "#viewWebNews2-3-1", function() {
         }
     });
 
-});
+//});

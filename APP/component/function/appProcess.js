@@ -6,10 +6,16 @@
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
         for (var i=0; i<data.length; i++) {
-            langStr[data[i].term] = data[i].definition;
+            langStr[data[i].term] = data[i].definition.trim();
         }
 
-        addConponentView();
+        $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
+            for (var i=0; i<data.length; i++) {
+                langStr[data[i].term] = data[i].definition.trim();
+            }
+
+            addConponentView();
+        });
     });
 }
 
@@ -37,7 +43,9 @@ function addConponentView() {
             var id = $(element).data("id");
 
             $(".langStr[data-id='" + id + "']").each(function(index, element){
-                $(this).html(langStr[id]);
+                if (langStr[id] !== undefined) {
+                    $(this).html(langStr[id]);
+                }
             });
         });
     }, "html");
