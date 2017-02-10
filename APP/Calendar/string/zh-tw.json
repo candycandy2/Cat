@@ -1,7 +1,7 @@
 [
   {
     "term": "str_001",
-    "definition": "Waiting for the permission of push message, then you can start to use QPlay.",
+    "definition": "服務連線中",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "Please allow Qplay push notification for enjoying the full service",
+    "definition": "QPlay提供即時訊息推播服務，請允許通知體驗完整功能",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "Retry",
+    "definition": "重試一次",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "System is being maintained please try later!",
+    "definition": "系統維護中，請稍後再試",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "Please update App version for enjoying the full service",
+    "definition": "請更新應用程式以立即體驗新功能、獲得改善效能和錯誤修正",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "Update App",
+    "definition": "更新應用程式",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -49,7 +49,7 @@
   },
   {
     "term": "str_007",
-    "definition": "Network is disconnected please check the connection!",
+    "definition": "連線失敗，請確認網路連線狀態",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -57,7 +57,7 @@
   },
   {
     "term": "str_008",
-    "definition": "QPlay Download failed!",
+    "definition": "下載失敗",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "Username (eg:Sunny.CK.Lin)",
+    "definition": "帳號 ( 例：Sunny.CK.Lin )",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "Passward",
+    "definition": "密碼",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "If you've forgotten your password please contact with ITS",
+    "definition": "忘記密碼請聯絡 ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "Log In",
+    "definition": "登入",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "Incorrect employee Info  ",
+    "definition": "員工資訊錯誤",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -121,7 +121,7 @@
   },
   {
     "term": "str_016",
-    "definition": "OK",
+    "definition": "確定",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "Username did not match with the verifier.\nThe cancellation of the device, please contact with ITS.  ",
+    "definition": "非設備註冊用戶\n若要註銷設備，請聯絡 ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "Your device has been verified ",
+    "definition": "帳號與設備驗證成功",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "The cancellation of the device, please contact with ITS ",
+    "definition": "若要註銷設備，請聯絡ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "Ok, I Know ",
+    "definition": "好，我知道了",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "str_021",
-    "definition": "Download",
+    "definition": "下載",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "Install",
+    "definition": "安裝",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "Cancel",
+    "definition": "取消",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,23 +185,23 @@
   },
   {
     "term": "str_024",
-    "definition": "install failed!",
+    "definition": "安裝失敗",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": "[app name] install failed!"
+    "comment": "[app name] 安裝失敗"
   },
   {
     "term": "str_025",
-    "definition": "install successfully",
+    "definition": "安裝成功",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": "[app name] install successfully"
+    "comment": "[app name] 安裝成功"
   },
   {
     "term": "str_026",
-    "definition": "Open",
+    "definition": "開啟",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "Update",
+    "definition": "更新",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "News",
+    "definition": "公告",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "Event",
+    "definition": "通知",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,15 +233,15 @@
   },
   {
     "term": "str_030",
-    "definition": "Latest  update",
+    "definition": "最後更新",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": "Latest update [yyyy/mm/dd hh:mm]"
+    "comment": "最後更新 [yyyy/mm/dd hh:mm]"
   },
   {
     "term": "str_031",
-    "definition": "No News",
+    "definition": "沒有公告",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "No Events",
+    "definition": "沒有通知",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "Show news within 30 days",
+    "definition": "重新載入30天歷史訊息",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "Skip all historical news",
+    "definition": "不載入歷史訊息",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "Select all                                   ",
+    "definition": "選擇全部",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "Celect all     ",
+    "definition": "取消全部",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "Delete",
+    "definition": "刪除",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "Cancel",
+    "definition": "取消",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "Do you want to delete this news?",
+    "definition": "確定刪除公告嗎？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "str_040",
-    "definition": "OK",
+    "definition": "確定",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "Cancel",
+    "definition": "取消",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "Do you want to delete this event?",
+    "definition": "確定刪除通知嗎？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "logout now?",
+    "definition": "確定登出嗎？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "str_044",
-    "definition": " You have logged out.\n Please log in again.",
+    "definition": "已登出，請重新登入",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "Login",
+    "definition": "登入",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "New messages",
+    "definition": "新訊息",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "Close",
+    "definition": "關閉",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "str_048",
-    "definition": "System error, please contact with ITS.  ",
+    "definition": "系統錯誤，請聯絡 ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "str_049",
-    "definition": "This account has been disabled,  please contact with ITS.  ",
+    "definition": "使用者已被停權，請聯絡 ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "This news has been removed.",
+    "definition": "此訊息已被管理者移除",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "str_051",
-    "definition": "More",
+    "definition": "更多",
     "context": "",
     "term_plural": "",
     "reference": "",

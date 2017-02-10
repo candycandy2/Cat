@@ -185,19 +185,19 @@
   },
   {
     "term": "str_024",
-    "definition": "[app name] 安裝失敗",
+    "definition": "安裝失敗",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[app name] 安裝失敗"
   },
   {
     "term": "str_025",
-    "definition": "[app name] 安裝成功",
+    "definition": "安裝成功",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[app name] 安裝成功"
   },
   {
     "term": "str_026",
@@ -233,11 +233,11 @@
   },
   {
     "term": "str_030",
-    "definition": "最後更新 [yyyy/mm/dd hh:mm]",
+    "definition": "最後更新",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "最後更新 [yyyy/mm/dd hh:mm]"
   },
   {
     "term": "str_031",
