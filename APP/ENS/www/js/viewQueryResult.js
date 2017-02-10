@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewQueryResult", function(){
+//$(document).one("pagecreate", "#viewQueryResult", function(){
 
     $("#viewQueryResult").pagecontainer({
         create: function(event, ui) {
@@ -88,7 +88,7 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "QueryEmployeeData", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
@@ -112,4 +112,4 @@ $(document).one("pagecreate", "#viewQueryResult", function(){
         }
     });
 
-});
+//});

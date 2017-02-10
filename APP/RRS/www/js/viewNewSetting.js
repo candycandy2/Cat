@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewNewSetting', function() {
+//$(document).one('pagecreate', '#viewNewSetting', function() {
 
     var seqClick = [];
     var siteIDforSetting = '';
@@ -336,4 +336,4 @@ $(document).one('pagecreate', '#viewNewSetting', function() {
             });
         }
     });
-});
+//});

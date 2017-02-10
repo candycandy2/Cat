@@ -86,7 +86,7 @@ function getAPIListAllMeetingRoom() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -159,7 +159,7 @@ function getAPIListAllTime() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "ListAllTime", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -199,7 +199,7 @@ function getAPIListAllManager() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 
@@ -249,7 +249,7 @@ function getAPIQueryMyReserveTime() {
     };
 
     var __construct = function() {
-        QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
+        CustomAPI("POST", false, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
     }();
 }
 

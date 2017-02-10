@@ -13,14 +13,14 @@
   	<div data-role="main" class="ui-content page-main">
     	<form>
 			<fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
-				<input type="radio" name="radio-choice-h-2" id="tab-1" checked="checked">
-			    <label for="tab-1" class="tabs-title">This Month</label>
+				<input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-1" checked="checked">
+			    <label for="viewHitRate-tab-1" class="tabs-title">This Month</label>
 
-			    <input type="radio" name="radio-choice-h-2" id="tab-2">
-			    <label for="tab-2" class="tabs-title label-style">Last Month</label>
+			    <input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-2">
+			    <label for="viewHitRate-tab-2" class="tabs-title label-style">Last Month</label>
 			    
-			    <input type="radio" name="radio-choice-h-2" id="tab-3">
-			    <label for="tab-3" class="tabs-title">YTD</label>
+			    <input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-3">
+			    <label for="viewHitRate-tab-3" class="tabs-title">YTD</label>
 			</fieldset>
 		</form>
 
@@ -28,79 +28,80 @@
 			<span>Dec.2016</span>
 		</div>
 
-		<div class="hc-fragment" id="hc-canvas" style="height:40VH;">
+		<div class="hc-fragment" id="hc-canvas" style="height:38VH;">
 		</div>
 
-		<div style="height:5VH; margin-left: 5VW;">
+		<div id="data-title-bar">
+			<div class="data-title" style="margin-left: 16VW;">
+				<p style="margin-top: 0.7VH;">Adj Sales</p>
+				<p>(USD$M)</p>
+			</div>
+			<div class="data-title" style="padding-top: 1.7VH;">
+				<p>Hit Rate</p>
+			</div>
+			<div class="data-title" style="padding-top: 1.7VH;">
+				<p>YOY Rate</p>
+			</div>
 		</div>
-		
-		<div style="background-color: #f2f2f3">
-			<ul id="alldata" style="padding-left: 0px; margin-top: 0px; ">
-				<li class="item">
-					<div>
-						<span style="margin-left: 3.7VW;">BQA</span>
-					</div>
-					<div class="data">
-						<span class="AS">13.29</span>
-						<span class="HR">100.79%</span>
-						<span class="YR">70.46</span>
+
+		<div style="background-color: #f2f2f3;">
+			<ul style="padding-left: 0px; margin: 0px 3.7VW; ">
+				<li>
+					<div class="column"><span>BQA</span></div>
+					<div class="dataContainer row">
+						<div class="AS data"><span>13.29</span></div>
+						<div class="HR data"><span>100.79%</span></div>
+						<div class="YR data"><span>70.46%</span></div>
 					</div>
 				</li>
-				<li class="item">
-					<div>
-						<span style="margin-left: 3.7VW;">BQC</span>
-					</div>
-					<div class="data">
-						<span class="AS">13.29</span>
-						<span class="HR">100.79%</span>
-						<span class="YR">70.46</span>
-					</div>
-				</li>
-				<li class="item">
-					<div>
-						<span style="margin-left: 3.7VW;">BQE</span>
-					</div>
-					<div class="data">
-						<span class="AS">13.29</span>
-						<span class="HR">100.79%</span>
-						<span class="YR">70.46</span>
+				
+				<li>
+					<div class="column"><span>BQC</span></div>
+					<div class="dataContainer row">
+						<div class="AS data"><span>6.9</span></div>
+						<div class="HR data"><span>100.79%</span></div>
+						<div class="YR data"><span>30.42%</span></div>
 					</div>
 				</li>
-				<li class="item">
-					<div>
-						<span style="margin-left: 3.7VW;">BQL</span>
-					</div>
-					<div class="data">
-						<span class="AS">13.29</span>
-						<span class="HR">100.79%</span>
-						<span class="YR">70.46</span>
-					</div>
-				</li>
-				<li class="item">
-					<div>
-						<span style="margin-left: 3.7VW;">BQP</span>
-					</div>
-					<div class="data">
-						<span class="AS">13.29</span>
-						<span class="HR">100.79%</span>
-						<span class="YR">70.46</span>
+
+				<li>
+					<div class="column"><span>BQE</span></div>
+					<div class="dataContainer row">
+						<div class="AS data"><span>7.27</span></div>
+						<div class="HR data"><span>151.79%</span></div>
+						<div class="YR data"><span>80.46%</span></div>
 					</div>
 				</li>
-				<li class="item" id="total">
-					<div>
-						<span style="margin-left: 3.7VW;">Total</span>
-					</div>
-					<div style="float: right; margin-top: -3VH; margin-right: 9VW;">
-						<span class="AS">13.29</span>
-						<span class="HR">100.79%</span>
-						<span class="YR">70.46</span>
+
+				<li>
+					<div class="column"><span>BQL</span></div>
+					<div class="dataContainer row">
+						<div class="AS data"><span>11.24</span></div>
+						<div class="HR data"><span>120.79%</span></div>
+						<div class="YR data"><span>51.46%</span></div>
 					</div>
 				</li>
+
+				<li>
+					<div class="column"><span>BQP</span></div>
+					<div class="dataContainer">
+						<div class="AS data"><span>9.19</span></div>
+						<div class="HR data"><span>51.22%</span></div>
+						<div class="YR data"><span>71%</span></div>
+					</div>
+				</li>
+
+				<div id="total" style="height:6.1VH;">
+					<div style="font-weight: bold; width:10VW; padding-top: 1.8VH; font-size:2.4VH;"><span>Total</span></div>
+					<div class="dataContainer">
+						<div class="AS total-data"><span>15.91</span></div>
+						<div class="HR total-data"><span>100.79%</span></div>
+						<div class="YR total-data"><span>70.46%</span></div>
+					</div>
+				</div>
 			</ul>
 		</div>
-        
 	</div>
-
-	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false" style="height:1.8VH; background-color: #f2f2f3; border-top-style:none">
   	</div> 
 </div>
