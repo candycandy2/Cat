@@ -65,18 +65,18 @@
   },
   {
     "term": "com_024",
-    "definition": "[app name] 安裝失敗",
+    "definition": "安裝失敗",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[app name] 安裝失敗"
   },
   {
     "term": "com_025",
-    "definition": "[app name] 安裝成功",
+    "definition": "安裝成功",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[app name] 安裝成功"
   }
 ]
