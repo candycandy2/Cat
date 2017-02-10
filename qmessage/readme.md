@@ -1,27 +1,438 @@
-# Laravel PHP Framework
+# QMessage Web API
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+## Part Ⅰ.  Restful API
+### User API
+#### 1. Register
+##### Resuest
+```
+POST /v101/qmessage/register 
+{"username":"user1"}
+```
+##### Request Params
+ 1. allows a-z,A-Z,0-9,-.@
+ 2. begin with a-z,A-Z,0-9
+##### Response
+```json
+{
+    "ResultCode":1,
+    "Message":"Success",
+    "Content":[{"username":"user1"}]
+}
+```
+##### Response Data
+ 1. 1 Success,return username in 'Content'
+ 2. 998001 username is empty or invalid
+ 3. 998002 call Jmessage API failed,check details in 'Content'
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+### Group API
+#### 1. Add Group
+##### Resuest
+```
+POST /v101/qmessage/group/add 
+{ "owner":"Sammi.Yao","members":["Moses.zhu"],"desc":"Test Group From API"}
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+##### Request Params
+ 1. owner,members must exist 
+ 2. members should **NOT** contain owner
 
-## Official Documentation
+##### Response
+```json
+{
+    "ResultCode": 1,
+    "Message": "Success",
+    "Content": {
+        "gid": 21059495,
+        "owner_username": "Sammi.Yao",
+        "name": "9B1F51DD-74CB-985C-8030-40663530B3E3",
+        "desc": "Test Group From API",
+        "members_username": [
+            "Moses.zhu"
+        ],
+        "max_member_count": 500
+    }
+}
+```
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+##### Response Data
+ 1. 1 Success,return group id(gid),group name(gname) in 'Content'
+ 2. 998002 call Jmessage API failed,check details in 'Content'
+ 3. 998003 owner is empty or invalid
+ 4. 998004 member list is empty or invalid;
 
-## Contributing
+#### 2. Delete Group
+##### Resuest
+```
+POST /v101/qmessage/group/delete 
+{ "gid":20798373}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+##### Request Params
+ 1. gid should be a number
 
-## Security Vulnerabilities
+##### Response
+```json
+{
+    "ResultCode":1,
+    "Message":"Success"
+}
+````
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+##### Response Data
+ 1. 1 Success,delete group success
+ 2. 998002 call Jmessage API failed,check details in 'Content'
+ 3. 998005 gid is empty or invalid
 
-## License
+#### 3. List Group
+##### Resuest
+```
+POST /v101/qmessage/group/list 
+{ "username":"Moses.zhu"}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+##### Request Params
+ 1. return groups which 'username' belongs to
+ 2. username must exist 
+
+##### Response
+```json
+{
+    "ResultCode": 1,
+    "Message": "Success",
+    "Content": [
+        {
+            "gid": 21059495,
+            "mtime": "2017-02-07 10:03:53",
+            "desc": "Test Group From API",
+            "ctime": "2017-02-07 10:03:53",
+            "max_member_count": 500,
+            "name": "9B1F51DD-74CB-985C-8030-40663530B3E3"
+        }
+    ]
+}
+```
+
+##### Response Data
+ 1. 1 Success,return groups info in Content(Array)
+ 2. 998002 call Jmessage API failed,check details in 'Content'
+
+### Group Members API
+#### 1. Add Group Members
+##### Resuest
+```
+POST /v101/qmessage/group/members/add 
+{ "gid":20798373,"usernames":["UserA"]}
+```
+
+##### Request Params
+ 1. 'gid' should be a number
+ 2. 'usernames' should be an array 
+
+##### Response
+```json
+{
+    "ResultCode":1,
+    "Message":"Success"
+}
+```
+
+##### Response Data
+ 1. 1 Success,add group members success
+ 2. 998002 call Jmessage API failed,check details in 'Content'
+ 3. 998004 member list is empty or invalid;
+ 4. 998005 gid is empty or invalid
+
+#### 2. Delete Group Members
+##### Resuest
+```
+POST /v101/qmessage/group/members/delete 
+{ "gid":20798373,"usernames":["UserA","UserB"]}
+```
+
+##### Request Params
+ 1. 'gid' should be a number
+ 2. 'usernames' should be an array 
+
+##### Response
+```json
+{
+    "ResultCode":1,
+    "Message":"Success"
+}
+```
+
+##### Response Data
+ 1. 1 Success,delete group members success
+ 2. 998002 call Jmessage API failed,check details in 'Content'
+ 3. 998004 member list is empty or invalid;
+ 4. 998005 gid is empty or invalid
+
+#### 3. List Group Members
+##### Resuest
+```
+POST /v101/qmessage/group/members/delete 
+{ "gid":20798373}
+```
+
+##### Request Params
+ 1. 'gid' should be a number
+
+##### Response
+```json
+{
+    "ResultCode": 1,
+    "Message": "Success",
+    "Content": [
+        {
+            "ctime": "2017-02-07 10:03:53",
+            "username": "Moses.zhu",
+            "flag": 0
+        },
+        {
+            "ctime": "2017-02-07 10:03:53",
+            "username": "Sammi.Yao",
+            "flag": 1
+        }
+    ]
+}
+```
+
+##### Response Data
+ 1. 1 Success,return group members info in 'Content'
+ 2. 998002 call Jmessage API failed,check details in 'Content'
+ 3. 998005 gid is empty or invalid
+
+### Message History API
+#### 1. Get History List
+##### Resuest
+```
+POST /v101/qmessage/history/list 
+{"gid":19454745,"count":2,"cursor":"236013547"}
+```
+
+##### Request Params
+ 1. 'gid' should be a number
+ 2. 'count' refers to total you want get
+ 3. 'cursor' is a anchor which is used to tell server where to return message history
+ 4. 'cursor' will be return in every response unless no message history exists
+ 5.  if 'cursor' is empty, server will return the latest history messge
+
+##### Response
+```json
+{
+    "cursor": "236008426",
+    "count": 2,
+    "msgList": [
+        {
+            "ctime": 1486437274517,
+            "msg_type": "text",
+            "from_id": "Sammi.Yao",
+            "target_id": "21059495",
+            "content": "Test Message",
+            "extras": ""
+        },
+        {
+            "ctime": 1485913579323,
+            "msg_type": "image",
+            "from_id": "Moses.zhu",
+            "target_id": "19454745",
+            "content": "../upload/170201014620print.png",
+            "extras": {
+                "fname": "print.png",
+                "fsize": 1057,
+                "format": "png",
+                "npath": "qiniu/image/j/F68182C7B100EE12B7427F5B969A6F7F"
+            }
+        }
+    ]
+}
+```
+
+##### Response Data
+ 1. 'cursor' represents the anchor of the oldest message in this request
+ 2. 'count' represents the actual total in this response
+ 3. 'msgList' is an array contains all details including:<br>
+    (1)'ctime': time which message was created<br>
+    (2)'msg_type': text or image<br>
+    (3)'from_id' : who sended<br>
+    (4)'target_id': to which group<br>
+    (5)'content': for 'text',it's plain text;for image,it's an url<br>
+    (6)'extras':for 'text',it's empty,for image,it contains image name(fname),image size(fsize),image format(format),jmessage url(npath)<br>
+
+## Part Ⅱ. JS Plugin for Client
+
+### Step 1. Reference
+```html
+<script src="jmessage-sdk-web-2.1.0.min.js"></script>
+<script src="qmessage.js"></script>
+```
+
+### Step 2. Init
+```js
+var opts = {
+    'username':username,
+    'eventHandler': eventHandler,
+    'messageHandler': messageHandler
+};
+msgController = window.QMessage(opts);
+```
+1. username: string,current user
+2. eventHandler:function,trigger when event received,1 parameter,like:
+```js
+{
+    "gid": 20798373,
+    "from_username": "",
+    "from_appkey": "",
+    "to_usernames": [
+        "Sammi.Yao",
+        "Moses.zhu",
+        "UserA"
+    ],
+    "description": "",
+    "rid": 85499936,
+    "from_uid": 0,
+    "event_id": 85499936,
+    "event_type": 9,
+    "extra": 0,
+    "ctime": 1486434053,
+    "event": "event_notification",
+    "return_code": 0
+}
+```
+3. messageHandler:function,trigger when message received,1 parameter,like:
+```js
+{
+    "uid": 18436948,
+    "messages": [
+        {
+            "ctime_ms": 1486089409817,
+            "from_gid": 20798373,
+            "msg_type": 4,
+            "ctime": 1486089409,
+            "msg_id": 237540677,
+            "msg_level": 0,
+            "from_uid": 19259602,
+            "content": {
+                "from_type": "user",
+                "from_id": "Sammi.Yao",
+                "set_from_name": 0,
+                "target_name": "923F78FB-7BA9-74A9-DF61-51571D2C4918",
+                "create_time": 1486089409664,
+                "target_type": "group",
+                "msg_body": {
+                    "text": "Test Text"
+                },
+                "from_platform": "web",
+                "msg_type": "text",
+                "target_id": "20798373",
+                "from_name": "Sammi.Yao",
+                "version": 1
+            }
+        }
+    ],
+    "rid": 237540677,
+    "event": "msg_sync"
+}
+```
+
+### Step 3. Send Text/Image
+#### SendText(gid,gname,text,success,error)
+1. gid:group id
+2. gname: group name
+3. text: message to be sended
+4. success: callback function on success ,1 parameter
+5. error: callback function on error ,1 parameter
+##### 
+##### Example
+```js
+if(msgController.isInited){
+    msgController.SendText(gid,gname,text,function(successResult){
+
+    }, function(errorResult){
+        
+    });
+}
+```
+successResult:
+```js
+{
+    "result": {
+        "target_gid": 21059495,
+        "code": 0,
+        "event": "send_group_msg",
+        "msg_id": 240733833,
+        "message": "success",
+        "username": "Sammi.Yao"
+    },
+    "content": {
+        "version": 1,
+        "target_type": "group",
+        "from_platform": "web",
+        "target_id": "21059495",
+        "target_name": "9B1F51DD-74CB-985C-8030-40663530B3E3",
+        "from_id": "Sammi.Yao",
+        "create_time": 1486449744851,
+        "msg_type": "text",
+        "msg_body": {
+            "text": "Test Text"
+        }
+    }
+}
+```
+
+#### SendImage(gid,gname,text,success,error)
+1. gid:group id
+2. gname: group name
+3. fid: html element id(```<input type="file"/>```) which refers image to be sended
+4. success: callback function on success ,1 parameter
+5. error: callback function on error ,1 parameter
+##### Example
+```js
+if(msgController.isInited){
+    msgController.SendImage(gid,gname,fid,function(successResult){
+
+    }, function(errorResult){
+        
+    });
+}
+```
+successResult:
+```js
+{
+    "result": {
+        "target_gid": 21059495,
+        "code": 0,
+        "event": "send_group_msg",
+        "msg_id": 240726586,
+        "message": "success",
+        "username": "Sammi.Yao"
+    },
+    "content": {
+        "version": 1,
+        "target_type": "group",
+        "from_platform": "web",
+        "target_id": "21059495",
+        "target_name": "9B1F51DD-74CB-985C-8030-40663530B3E3",
+        "from_id": "Sammi.Yao",
+        "create_time": 1486449322433,
+        "msg_type": "image",
+        "msg_body": {
+            "media_id": "qiniu/image/j/2213A1717E9CAA481BC294ED77D29714",
+            "media_crc32": 2482590675,
+            "width": 20,
+            "height": 20,
+            "format": "png",
+            "fsize": 863
+        },
+        "fname": "slider_handle.png"
+    }
+}
+```
+
+
+### Step 4. Close
+```js
+if (msgController.isInited) {
+    msgController.close();
+}
+```
