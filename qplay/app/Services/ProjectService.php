@@ -7,6 +7,8 @@ namespace App\Services;
 
 use App\Repositories\ProjectRepository;
 use App\Repositories\AppRepository;
+use Mail;
+use Config;
 
 class ProjectService
 {   
@@ -69,31 +71,25 @@ class ProjectService
     }
 
     /**
-     *寄送專案資訊
+     * 寄送專案資訊
      * @param  Array  $mailTo  收件人
      * @param  String $appKey  AppKey
-     * 
+     * @param  String $secretKey SecretKey
      */
-    public function sendProjectInformation($db, Array $mailTo, $appKey, $secretKey){
-        
-        $to =implode(";",$mailTo);
-        $subject = "[QPlay] ".$appKey." Information";
-        $msg = "Dear Customer,
-                Thank you for applying the app key.
-                Now you can start to develop your own APP via
-                below app-key and secretkey.
-                app-key:".$appKey."
-                secretKey:".$secretKey."
-                For the Custom API usage, please refer to
-                attached specification file, it will instruct you how
-                to let your own APP call your system webservice
-                via QPlay custom API gateway.
-                If you have any question, please contact to
-                QPlay@BenQ.com.
-                Thank you.
-                QPlay service team.";
-        $headers = "From: QPlay@BenQ.com";
-        var_dump($msg);exit();
-        //mail("$to", "$subject", "$msg", "$headers");
+    public function sendProjectInformation(Array $mailTo, $appKey, $secretKey){
+        $data = array(
+                    'appKey'    =>$appKey,
+                    'secretKey' =>$secretKey,
+                    'mailTo'    =>$mailTo,
+                    'mailFrom'  =>array('name'      =>Config::get('app.mail_name'),
+                                        'address'  =>Config::get('app.mail_address'))
+                );
+
+        Mail::send('emails.appkey_information', $data, function ($message) use ($data){
+            $message->from($data['mailFrom']['address'], $data['mailFrom']['name']);
+            $message->to($data['mailTo']);
+            $message->subject("[QPlay] ".$data['appKey']." Information");
+            $message->getSwiftMessage();
+        });
     }
 }

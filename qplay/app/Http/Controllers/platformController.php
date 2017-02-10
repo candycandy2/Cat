@@ -1363,7 +1363,8 @@ class platformController extends Controller
                 $now = date('Y-m-d H:i:s',time());
                 $validator = \Validator::make($request->all(), [
                 'txbAppKey' => 'required|regex:/^[a-z]*$/|max:50|is_app_key_unique',
-                'tbxProjectPM' => 'required|is_user_exist'
+                'tbxProjectPM' => 'required|is_user_exist',
+                'tbxProjectDescription' => 'required'
                 ]);
 
                 if ($validator->fails()) {
@@ -1394,7 +1395,7 @@ class platformController extends Controller
                $projectInfo = $this->projectRepository->getProjectInfoByAppKey($envAppKey);
                $secretKey =  $projectInfo->secret_key;
                 
-               $this->projectService->sendProjectInformation('mysql_test', $mailTo, $envAppKey, $secretKey);
+               $this->projectService->sendProjectInformation($mailTo, $envAppKey, $secretKey);
                    
             }catch (\Exception $e) {
 
@@ -1463,6 +1464,11 @@ class platformController extends Controller
         return null;
     }
 
+    /**
+     * 寄送專案資訊給PM以及申請人
+     * @param  Request $request form post request
+     * @return json
+     */
     public function sendProjectInformation(Request $request){
 
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -1491,9 +1497,9 @@ class platformController extends Controller
                 array_push($mailTo,$pm->email);
                 $mailTo = array_unique($mailTo);
 
-                $this->projectService->sendProjectInformation('mysql_test', $mailTo, $app_key, $projecyInfo->secret_key);
-
-            }catch (\Exception $e) {    
+                $this->projectService->sendProjectInformation($mailTo, $app_key, $projecyInfo->secret_key);
+            
+            } catch (\Exception $e) {    
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);

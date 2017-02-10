@@ -79,7 +79,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="saveNewProject()">{{trans("messages.SAVE")}}</button>
+                    <button type="button"  id="saveNewProjectBtn" class="btn btn-danger" onclick="saveNewProject()">{{trans("messages.SAVE")}}</button>
                     <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
                 </div>
             </div>
@@ -178,6 +178,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         }
 
         var sendProjectInformation = function(appKey){
+            console.log(this);
             var mydata =
                     {
                         appKey:appKey,   
@@ -221,9 +222,13 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                     },
                     tbxProjectPM:{
                         required:true
+                    },
+                    tbxProjectDescription:{
+                        required:true
                     }
                 },
                 submitHandler: function(form) {
+                    $("#saveNewProjectBtn").addClass('disabled');
                     var mydata =
                     {
                         txbAppKey: $("#txbAppKey").val(),
@@ -239,6 +244,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                         contentType: "application/json",
                         data: mydataStr,
                         success: function (d, status, xhr) {
+                            $("#saveNewProjectBtn").removeClass('disabled');
                             if(d.result_code != 1) {
                                 $('label.error').remove();
                                 if(d.result_code == '999001'){
@@ -256,6 +262,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                             }
                         },
                         error: function (e) {
+                              $("#saveNewProjectBtn").removeClass('disabled');
                               showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                         }
                     });
