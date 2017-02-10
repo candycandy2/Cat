@@ -1,4 +1,3 @@
-
 /*global variable, function*/
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
@@ -30,23 +29,26 @@ $(document).one("pagebeforeshow", function() {
     $("#mypanel").panel().enhanceWithin();
 
     $("#mypanel #panel-header-content").on("click", function(){
-        $("#viewHitRate").show();
-        $("#viewMonthlyHitRate").hide();
-        $("#viewYTDHitRate").hide();
+        // $("#viewHitRate").show();
+        // $("#viewMonthlyHitRate").hide();
+        // $("#viewYTDHitRate").hide();
+        $.mobile.changePage("#viewHitRate");
         $("#mypanel").panel("close");
     });
 
     $("#mypanel #panel-sub-header").on("click", function(){
-        $("#viewHitRate").hide();
-        $("#viewMonthlyHitRate").show();
-        $("#viewYTDHitRate").hide();
+        // $("#viewHitRate").hide();
+        // $("#viewMonthlyHitRate").show();
+        // $("#viewYTDHitRate").hide();
+        $.mobile.changePage("#viewMonthlyHitRate");
         $("#mypanel").panel("close");
     });
 
     $("#mypanel #panel-sub-header-content").on("click", function(){
-        $("#viewHitRate").hide();
-        $("#viewMonthlyHitRate").hide();
-        $("#viewYTDHitRate").show();
+        // $("#viewHitRate").hide();
+        // $("#viewMonthlyHitRate").hide();
+        // $("#viewYTDHitRate").show();
+        $.mobile.changePage("#viewYTDHitRate");
         $("#mypanel").panel("close");
     });
 
@@ -54,7 +56,7 @@ $(document).one("pagebeforeshow", function() {
         $("#mypanel").panel("open");
     });
 
-     $(this).on( "swiperight", function(event){
+    $("#viewHitRate").on( "swiperight", function(event){
         if($(".ui-page-active").jqmData("panel") !== "open"){
             $("#mypanel").panel( "open");
         }
