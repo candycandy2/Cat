@@ -8,14 +8,14 @@ $("#viewHitRate").pagecontainer({
 		
 
     	$("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-    		console.log("a");
+    		
     	});
 
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
 			chart = new Highcharts.Chart ({
 				chart: {
-					renderTo: 'hc-canvas',
+					renderTo: 'viewHitRate-hc-canvas',
 		    		type: 'column'
 				},
 				title: {
@@ -62,6 +62,9 @@ $("#viewHitRate").pagecontainer({
 			    	data: [2, 2, 2, 2, 2]
 				}]
 			});
+
+			loadingMask("hide");
+			
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function(){

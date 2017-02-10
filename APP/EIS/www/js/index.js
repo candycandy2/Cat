@@ -32,6 +32,7 @@ $(document).one("pagebeforeshow", function() {
         // $("#viewHitRate").show();
         // $("#viewMonthlyHitRate").hide();
         // $("#viewYTDHitRate").hide();
+        loadingMask("show");
         $.mobile.changePage("#viewHitRate");
         $("#mypanel").panel("close");
     });
@@ -40,6 +41,7 @@ $(document).one("pagebeforeshow", function() {
         // $("#viewHitRate").hide();
         // $("#viewMonthlyHitRate").show();
         // $("#viewYTDHitRate").hide();
+        loadingMask("show");
         $.mobile.changePage("#viewMonthlyHitRate");
         $("#mypanel").panel("close");
     });
@@ -48,6 +50,7 @@ $(document).one("pagebeforeshow", function() {
         // $("#viewHitRate").hide();
         // $("#viewMonthlyHitRate").hide();
         // $("#viewYTDHitRate").show();
+        loadingMask("show");
         $.mobile.changePage("#viewYTDHitRate");
         $("#mypanel").panel("close");
     });
@@ -65,7 +68,7 @@ $(document).one("pagebeforeshow", function() {
 
 window.initialSuccess = function() {
 
-    // loadingMask("show");
+    loadingMask("show");
 
     $.mobile.changePage('#viewHitRate');
     // var companyData = new QueryCompanyData();
