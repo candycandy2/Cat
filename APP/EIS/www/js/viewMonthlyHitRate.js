@@ -41,6 +41,9 @@ $("#viewMonthlyHitRate").pagecontainer({
         				borderWidth: 0
         			}
         		},
+        		exporting: {
+        			enabled: false
+        		},
         		series: [{
         			name: '2014 Actual QTY',
         			type: 'column',
