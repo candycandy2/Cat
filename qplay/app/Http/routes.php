@@ -81,12 +81,10 @@ Route::any('404', function() {
     return view("404");
 });
 
+Route::any('/', 'AuthController@checkLogin');
+Route::any('auth/checkLogin', 'AuthController@checkLogin');
 Route::any('auth/login_process', 'AuthController@authenticate');
 Route::any('auth/logout', 'AuthController@logout');
-
-Route::any('/', ['middleware' => 'auth', function() {
-    return view("user_maintain/account_maintain");
-}]);
 
 Route::any('accountMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/account_maintain");
