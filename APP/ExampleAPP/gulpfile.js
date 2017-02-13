@@ -42,13 +42,15 @@ if (env === "test") {
     appNameDecorate = "dev";
     appVersionDecorate = "Development";
 }
-
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appens" + appNameDecorate + "</string>";
+//set scheme name appXXXX, XXXX should in lowercase.
+var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appexample" + appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appens' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
+                    //set app id = com.qplay.appXXXX, XXXX should in lowercase.
+                    '<widget id="com.qplay.appexample' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
-                        '<name>ENS</name>' +
+                        //set APP Name
+                        '<name>Example</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
                         '</description>' +
@@ -109,7 +111,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appens' + appNameDecorate,
+  //set scheme name appXXXX, XXXX should in lowercase.
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appexample' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-file'
@@ -121,7 +124,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-device@1.1.4',
   'cordova plugin add cordova-plugin-console@1.0.5',
   'cordova plugin add cordova-plugin-appversion@1.0.0',
-  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appens' + appNameDecorate,
+  //set scheme name appXXXX, XXXX should in lowercase.
+  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appexample' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
   'cordova plugin add cordova-plugin-file@4.3.1'
