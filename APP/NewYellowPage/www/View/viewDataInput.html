@@ -17,7 +17,7 @@
         </div>
         <div class="ui-field-contain">
             <label for="CName-title"><h4>中文姓名</h4></label>
-            <input data-maxlength="10" name="CName" id="CName" type="text" />
+            <input data-maxlength="10" name="CName" id="CName" type="text" onkeyup="this.value=this.value.replace(/[^\W]/g,'')" maxlength="10" />
         </div>
         <div class="ui-field-contain">
             <label for="EName-title"><h4>英文姓名</h4></label>
