@@ -1,7 +1,7 @@
 [
   {
     "term": "str_001",
-    "definition": "ªA°È³s½u¤¤",
+    "definition": "æœå‹™é€£ç·šä¸­",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "QPlay´£¨Ñ§Y®É°T®§±À¼½ªA°È¡A½Ğ¤¹³\³qª¾ÅéÅç§¹¾ã¥\¯à",
+    "definition": "QPlayæä¾›å³æ™‚è¨Šæ¯æ¨æ’­æœå‹™ï¼Œè«‹å…è¨±é€šçŸ¥é«”é©—å®Œæ•´åŠŸèƒ½",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "­«¸Õ¤@¦¸",
+    "definition": "é‡è©¦ä¸€æ¬¡",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "¨t²ÎºûÅ@¤¤¡A½Ğµy«á¦A¸Õ",
+    "definition": "ç³»çµ±ç¶­è­·ä¸­ï¼Œè«‹ç¨å¾Œå†è©¦",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "½Ğ§ó·sÀ³¥Îµ{¦¡¥H¥ß§YÅéÅç·s¥\¯à¡BÀò±o§ïµ½®Ä¯à©M¿ù»~­×¥¿",
+    "definition": "è«‹æ›´æ–°æ‡‰ç”¨ç¨‹å¼ä»¥ç«‹å³é«”é©—æ–°åŠŸèƒ½ã€ç²å¾—æ”¹å–„æ•ˆèƒ½å’ŒéŒ¯èª¤ä¿®æ­£",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "§ó·sÀ³¥Îµ{¦¡",
+    "definition": "æ›´æ–°æ‡‰ç”¨ç¨‹å¼",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -49,7 +49,7 @@
   },
   {
     "term": "str_007",
-    "definition": "³s½u¥¢±Ñ¡A½Ğ½T»{ºô¸ô³s½uª¬ºA",
+    "definition": "é€£ç·šå¤±æ•—ï¼Œè«‹ç¢ºèªç¶²è·¯é€£ç·šç‹€æ…‹",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -57,7 +57,7 @@
   },
   {
     "term": "str_008",
-    "definition": "¤U¸ü¥¢±Ñ",
+    "definition": "ä¸‹è¼‰å¤±æ•—",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "±b¸¹ ( ¨Ò¡GSunny.CK.Lin )",
+    "definition": "å¸³è™Ÿ ( ä¾‹ï¼šSunny.CK.Lin )",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "±K½X",
+    "definition": "å¯†ç¢¼",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "§Ñ°O±K½X½ĞÁpµ¸ ITS",
+    "definition": "å¿˜è¨˜å¯†ç¢¼è«‹è¯çµ¡ ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "µn¤J",
+    "definition": "ç™»å…¥",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "­û¤u¸ê°T¿ù»~",
+    "definition": "å“¡å·¥è³‡è¨ŠéŒ¯èª¤",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -121,7 +121,7 @@
   },
   {
     "term": "str_016",
-    "definition": "½T©w",
+    "definition": "ç¢ºå®š",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "«D³]³Æµù¥U¥Î¤á\n­Y­nµù¾P³]³Æ¡A½ĞÁpµ¸ ITS",
+    "definition": "éè¨­å‚™è¨»å†Šç”¨æˆ¶\nè‹¥è¦è¨»éŠ·è¨­å‚™ï¼Œè«‹è¯çµ¡ ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "±b¸¹»P³]³ÆÅçÃÒ¦¨¥\",
+    "definition": "å¸³è™Ÿèˆ‡è¨­å‚™é©—è­‰æˆåŠŸ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "­Y­nµù¾P³]³Æ¡A½ĞÁpµ¸ITS",
+    "definition": "è‹¥è¦è¨»éŠ·è¨­å‚™ï¼Œè«‹è¯çµ¡ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "¦n¡A§Úª¾¹D¤F",
+    "definition": "å¥½ï¼Œæˆ‘çŸ¥é“äº†",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "str_021",
-    "definition": "¤U¸ü",
+    "definition": "ä¸‹è¼‰",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "¦w¸Ë",
+    "definition": "å®‰è£",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "¨ú®ø",
+    "definition": "å–æ¶ˆ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,23 +185,23 @@
   },
   {
     "term": "str_024",
-    "definition": "¦w¸Ë¥¢±Ñ",
+    "definition": "å®‰è£å¤±æ•—",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": "[app name] ¦w¸Ë¥¢±Ñ"
+    "comment": "[app name] å®‰è£å¤±æ•—"
   },
   {
     "term": "str_025",
-    "definition": "¦w¸Ë¦¨¥\",
+    "definition": "å®‰è£æˆåŠŸ",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": "[app name] ¦w¸Ë¦¨¥\"
+    "comment": "[app name] å®‰è£æˆåŠŸ"
   },
   {
     "term": "str_026",
-    "definition": "¶}±Ò",
+    "definition": "é–‹å•Ÿ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "§ó·s",
+    "definition": "æ›´æ–°",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "¤½§i",
+    "definition": "å…¬å‘Š",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "³qª¾",
+    "definition": "é€šçŸ¥",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,15 +233,15 @@
   },
   {
     "term": "str_030",
-    "definition": "³Ì«á§ó·s",
+    "definition": "æœ€å¾Œæ›´æ–°",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": "³Ì«á§ó·s [yyyy/mm/dd hh:mm]"
+    "comment": "æœ€å¾Œæ›´æ–° [yyyy/mm/dd hh:mm]"
   },
   {
     "term": "str_031",
-    "definition": "¨S¦³¤½§i",
+    "definition": "æ²’æœ‰å…¬å‘Š",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "¨S¦³³qª¾",
+    "definition": "æ²’æœ‰é€šçŸ¥",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "­«·s¸ü¤J30¤Ñ¾ú¥v°T®§",
+    "definition": "é‡æ–°è¼‰å…¥30å¤©æ­·å²è¨Šæ¯",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "¤£¸ü¤J¾ú¥v°T®§",
+    "definition": "ä¸è¼‰å…¥æ­·å²è¨Šæ¯",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "¿ï¾Ü¥ş³¡",
+    "definition": "é¸æ“‡å…¨éƒ¨",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "¨ú®ø¥ş³¡",
+    "definition": "å–æ¶ˆå…¨éƒ¨",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "§R°£",
+    "definition": "åˆªé™¤",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "¨ú®ø",
+    "definition": "å–æ¶ˆ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "½T©w§R°£¤½§i¶Ü¡H",
+    "definition": "ç¢ºå®šåˆªé™¤å…¬å‘Šå—ï¼Ÿ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "str_040",
-    "definition": "½T©w",
+    "definition": "ç¢ºå®š",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "¨ú®ø",
+    "definition": "å–æ¶ˆ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "½T©w§R°£³qª¾¶Ü¡H",
+    "definition": "ç¢ºå®šåˆªé™¤é€šçŸ¥å—ï¼Ÿ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "½T©wµn¥X¶Ü¡H",
+    "definition": "ç¢ºå®šç™»å‡ºå—ï¼Ÿ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "str_044",
-    "definition": "¤wµn¥X¡A½Ğ­«·sµn¤J",
+    "definition": "å·²ç™»å‡ºï¼Œè«‹é‡æ–°ç™»å…¥",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "µn¤J",
+    "definition": "ç™»å…¥",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "·s°T®§",
+    "definition": "æ–°è¨Šæ¯",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "Ãö³¬",
+    "definition": "é—œé–‰",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "str_048",
-    "definition": "¨t²Î¿ù»~¡A½ĞÁpµ¸ ITS",
+    "definition": "ç³»çµ±éŒ¯èª¤ï¼Œè«‹è¯çµ¡ ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "str_049",
-    "definition": "¨Ï¥ÎªÌ¤w³Q°±Åv¡A½ĞÁpµ¸ ITS",
+    "definition": "ä½¿ç”¨è€…å·²è¢«åœæ¬Šï¼Œè«‹è¯çµ¡ ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "¦¹°T®§¤w³QºŞ²zªÌ²¾°£",
+    "definition": "æ­¤è¨Šæ¯å·²è¢«ç®¡ç†è€…ç§»é™¤",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "str_051",
-    "definition": "§ó¦h",
+    "definition": "æ›´å¤š",
     "context": "",
     "term_plural": "",
     "reference": "",
