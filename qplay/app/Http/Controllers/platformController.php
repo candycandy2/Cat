@@ -1246,11 +1246,13 @@ class platformController extends Controller
 
         CommonUtil::setLanguage();
 
-        $projectList = \DB::table("qp_project")
+        $query = \DB::table("qp_project");
+            if(!\Auth::user()->isAppAdmin()){
+               $query -> where('created_user','=',\Auth::user()->row_id);
+               $query -> orwhere('project_pm','=',\Auth::user()->login_id);
+            }
+            $projectList =  $query-> orderBy("project_code")
             -> select()
-            -> where('created_user','=',\Auth::user()->row_id)
-            -> orwhere('project_pm','=',\Auth::user()->login_id)
-            -> orderBy("project_code")
             -> get();
         foreach ($projectList as $project) {
             $project->with_app = "N";

@@ -5,12 +5,12 @@
                 <label class="control-label col-sm-2"></label>
                 <div class="col-sm-10 js-lang-tool-bar" id="langToolBar">
                     <span class="label-hint" id="hintInfo"></span>
-                    <div class="btn-group js-switch-lang-btn"  id="btnLagSwitchController" style="display:@if (count($appBasic) <= 1) none @endif">
+                    <div class="btn-group js-switch-lang-btn"  id="btnLagSwitchController" style="display:@if (count($appLine) <= 1) none @endif">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{trans('messages.BTN_LANGUAGE')}}<span class="badge js-lang-count"  style="margin-left: 5px;padding: 2px 5px;" ></span><span class="caret" style="margin-left: 5px"></span></button>
                         
                         <ul class="dropdown-menu js-switchLang" role="menu"  data-source="hintInfo" id="switchLang">
                             
-                                @foreach ($appBasic as $appData)
+                                @foreach ($appLine as $appData)
                                 <li class="js-switch-lang" id="ddlLang_{{$appData->lang_row_id}}" data-toggle="{{$appData->lang_row_id}}"><a href="#">{{$appData->lang_desc}} {{$appData->lang_code}}</a></li>
                                 @endforeach
                             
@@ -35,11 +35,11 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="appKey">App Key</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="txbAppKey" value="{{$appData->app_key}}" disabled>
+                    <input type="text" class="form-control" id="txbAppKey" value="{{$appKey}}" disabled>
                 </div>
             </div>
             <div class="info-dymaic-content">
-                @foreach ($appBasic as $appData)
+                @foreach ($appLine as $appData)
                 <div class="lang js-lang-{{$appData->lang_row_id}}">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="txbAppName_{{$appData->lang_row_id}}">{{trans('messages.APP_NAME')}}</label>
@@ -519,7 +519,7 @@
     }
 
     function qplayCustomApiUrlFormatter(value, row){
-        return '{{\Config::get('app.api_url')}}' + '/qplayApi/public/'+row.api_version+'/custom/{{$appData->app_key}}/' + value;
+        return '{{\Config::get('app.api_url')}}' + '/qplayApi/public/'+row.api_version+'/custom/{{$appKey}}/' + value;
     }
 
     var deleteCustomApi = function() {

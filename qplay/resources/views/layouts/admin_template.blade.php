@@ -26,10 +26,10 @@ foreach ($oriMenuList as $menu) {
         } else {
             $menu->Active = false;
         }
-        array_push($menuList, $menu);
+        $menuList[$menu->sequence] = $menu;
         foreach ($oriMenuList as $submenu) {
             if($submenu->pId == $menu->Id) {
-                array_push($menu->subMenuList, $submenu);
+                $menu->subMenuList[$submenu->sequence] = $submenu;
                 if($submenu->Name == $menu_name) {
                     $exist = true;
                     $submenu->Active = true;
@@ -43,10 +43,10 @@ foreach ($oriMenuList as $menu) {
                 }
             }
         }
+        ksort($menu->subMenuList);
     }
 }
-
-
+ksort($menuList);
 
 $title = trans('messages.TITLE_'.$menu_name);
 $withMessage = false;
