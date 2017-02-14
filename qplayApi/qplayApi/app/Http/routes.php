@@ -41,7 +41,7 @@ Route::any('/qplayauth_register', function() {
 });
 
 //Custom
-Route::any('/v101/custom/{app}/{function}', 'customController@processRequest');
+Route::any('/{api_version}/custom/{app_key}/{function}', 'customController@processRequest');
 
 //YellowPage
 /*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
