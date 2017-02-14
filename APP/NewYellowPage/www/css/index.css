@@ -189,6 +189,7 @@
 #detial-name-title #eName{
     font-family:Arial; 
     font-size:3VH;
+    padding-top: 3%;
 }
 
 #detial-name-title #cName{
@@ -229,6 +230,9 @@
     margin-bottom: 0.8VH;
     width: 100VW;
 }
+
+#detail-data .item-content a{ text-decoration: none; font-weight: normal;}
+#detail-data .item-content a:visited{ color: #2d87ba;}
 
 #detailData.q-result-grid > li div {
     height: 50px;
