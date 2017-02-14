@@ -1375,8 +1375,7 @@ class platformController extends Controller
                
                 $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
                 $secretKey = hash('md5', CommonUtil::generateRandomString());
-                $dbArr = CommonUtil::getAllEnv();
-           
+                
                $newProjectId =  $this->projectService->newProject('mysql_production', 
                 CommonUtil::getContextAppKey('production',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
