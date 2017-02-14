@@ -54,6 +54,9 @@ $("#viewHitRate").pagecontainer({
 			        	borderWidth: 0
 			    	}
 				},
+				exporting: {
+					enabled: false
+				},
 				series: [{
 			    	name: 'Budget AMT',
 			    	data: [1, 1, 1, 1, 1] 

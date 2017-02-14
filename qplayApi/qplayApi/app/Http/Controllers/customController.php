@@ -11,17 +11,30 @@ use App\Http\Requests;
 
 class customController extends Controller
 {
-    public function processRequest($app,$function){
+    public function processRequest($api_version,$app_key,$action){
+        //Check version/appkey/action in Url first
+        if (!CommonUtil::checkCustomApiUrl($api_version,$app_key,$action)){
+            $result = response()->json(['result_code'=>ResultCode::_000921_customAPINotExisted,
+                'message'=>'custom api不存在，檢查url中的version,appkey,action！',
+                'content'=>'']);
+            CommonUtil::logCustomApi($api_version,$app_key,$action,
+                response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+
         $Verify = new Verify();
         $verifyResult = $Verify->verifyCustom(true);//$verifyResult = ["code"=>ResultCode::_1_reponseSuccessful];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = CommonUtil::getApiCustomerUrl($function);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
+            $url = CommonUtil::getApiCustomerUrl($action);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
             return $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
         } else {
-            return response()->json(array("ResultCode"=>$verifyResult["code"],
+            $result = response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
                 "Content"=>""));
+            CommonUtil::logCustomApi($api_version,$app_key,$action,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 
