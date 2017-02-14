@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewMyReserve', function() {
+//$(document).one('pagecreate', '#viewMyReserve', function() {
     var clickAggTarceID = '';
     var clickReserveDate = '';
     var clickReserveRoom = '';
@@ -64,7 +64,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -95,7 +95,7 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -161,4 +161,4 @@ $(document).one('pagecreate', '#viewMyReserve', function() {
         }
     });
 
-});
+//});

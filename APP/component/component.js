@@ -248,10 +248,21 @@ $(document).one("pagebeforecreate", function(){
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
         (function(pageID){
+            /*
             var s = document.createElement("script");
             s.type = "text/javascript";
             s.src = "js/" + pageID + ".js";
             $("head").append(s);
+            */
+
+            var script = document.createElement("script");
+            // onload fires even when script fails loads with an error.
+            //script.onload = onload;
+            // onerror fires for malformed URLs.
+            //script.onerror = onerror;
+            script.type = "text/javascript";
+            script.src = "js/" + pageID + ".js";
+            document.head.appendChild(script);
         }(value));
     });
 
@@ -600,7 +611,7 @@ function checkAppVersion() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
@@ -826,7 +837,7 @@ function getSecurityList() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
     }();
 
 }

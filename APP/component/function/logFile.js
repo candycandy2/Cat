@@ -21,7 +21,8 @@ var LogFile = {
         //if exist, delete it.
         //ex: now is 2017/03, if 2017/01 exist, delete it, only remian 2017/03, 2017/02
         var nowDate = new Date();
-        var old = nowDate.setMonth(nowDate.getMonth() - 2);
+        //var old = nowDate.setMonth(nowDate.getMonth() - 2);
+        var old = nowDate.setMonth(nowDate.getMonth());
         var oldDate = new Date(old);
         var oldFile = oldDate.yyyymm("");
 
@@ -34,6 +35,7 @@ var LogFile = {
         //[2]: Log
 
         //persistent data stored
+        /*
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (file) {
 
             //console.log('open file: ' + file.name);
@@ -48,6 +50,7 @@ var LogFile = {
             }, LogFile.onErrorCreateFile);
 
         }, LogFile.onErrorLoadFile);
+        */
     },
     writeFile: function(fileEntry, dataObj, isAppend) {
         fileEntry.createWriter(function (fileWriter) {

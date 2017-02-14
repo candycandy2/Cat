@@ -1,5 +1,5 @@
 
-$(document).one("pagecreate", "#viewPhonebook", function(){
+//$(document).one("pagecreate", "#viewPhonebook", function(){
     
     $("#viewPhonebook").pagecontainer({
         create: function(event, ui) {
@@ -79,7 +79,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
                 }();
 
             }
@@ -115,7 +115,7 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("POST", "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
                 }();
             };
 
@@ -243,4 +243,4 @@ $(document).one("pagecreate", "#viewPhonebook", function(){
             });
         }
     });
-});
+//});

@@ -190,7 +190,17 @@ gulp.task('appJS', ['functionJS'], function(){
         .pipe(gulp.dest('www/js/'));
 });
 
-gulp.task('componentJS', ['libJS', 'appJS'], shell.task([
+gulp.task('commonString', function() {
+    return gulp.src('../component/string/*')
+        .pipe(gulp.dest('www/string/'));
+});
+
+gulp.task('String', ['commonString'], function() {
+    return gulp.src('string/*')
+        .pipe(gulp.dest('www/string/'));
+});
+
+gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
     'rm ../component/function.js'
 ]));
 

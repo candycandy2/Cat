@@ -136,6 +136,84 @@ class PushUtil
         return $result;
     }
 
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
+        $result = array();
+        $result["result"] = true;
+        $result["info"] = "success";
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $platform = array('ios', 'android');
+            $alert = $message;
+            $ios_notification = array(
+                'sound' => 'default',
+                'badge' => '0',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $android_notification = array(
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $content = $message;
+            $scheduleName = $message;
+            $message = array(
+                'title' => $message,
+                'content_type' => 'text',
+                'extras' => array(
+                    'Parameter'=> $parameter
+                ),
+            );
+            $time2live =  Config::get('app.time_to_live',864000);
+            $apnsFlag = Config::get('app.apns_flag',true);
+            $options = array(
+                'time_to_live'=>$time2live,
+                'apns_production'=>$apnsFlag
+            );
+            if($send_by_tag) {
+                $payload = $client->push()
+                    ->setPlatform($platform)
+                    ->iosNotification($alert, $ios_notification)
+                    ->androidNotification($alert, $android_notification)
+                    ->message($content, $message)
+                    ->options($options)
+                    ->addTag($to) //以Tag发送
+                    ->build();
+            } else {
+                $payload = $client->push()
+                    ->setPlatform($platform)
+                    ->iosNotification($alert, $ios_notification)
+                    ->androidNotification($alert, $android_notification)
+                    ->message($content, $message)
+                    ->options($options)
+                    ->addRegistrationId($to)  //以注册ID发送
+                    ->build();
+            }
+
+            $schedule = $client->schedule();
+            $trigger = array("time"=>date("Y-m-d H:i:s",$schedule_datetime / 1000));
+            $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred:".$e->getMessage();
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred:".$e->getMessage();
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred:".$e->getMessage();
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred:".$e->getMessage();
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred:".$e->getMessage();
+        }
+        return $result;
+    }
+
     public static function GetTagByUserInfo($userInfo) {
         $company = strtoupper($userInfo->company);
         $firstLetter = substr($userInfo->login_id, 0, 1);
