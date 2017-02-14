@@ -1,9 +1,9 @@
-
 /*global variable, function*/
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
-var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate",];
+// var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
+var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
 
 var htmlContent = "";
@@ -23,9 +23,58 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 
+$(document).one("pagebeforeshow", function() {
+
+    $.mobile.pageContainer.prepend(panel);
+    $("#mypanel").panel().enhanceWithin();
+
+    $("#mypanel #panel-header-content").on("click", function(){
+        // $("#viewHitRate").show();
+        // $("#viewMonthlyHitRate").hide();
+        // $("#viewYTDHitRate").hide();
+        if($.mobile.activePage[0].id !== "viewHitRate") {
+            loadingMask("show");
+            $.mobile.changePage("#viewHitRate");
+        }
+        $("#mypanel").panel("close");
+    });
+
+    $("#mypanel #panel-sub-header").on("click", function(){
+        // $("#viewHitRate").hide();
+        // $("#viewMonthlyHitRate").show();
+        // $("#viewYTDHitRate").hide();
+        if($.mobile.activePage[0].id !== "viewMonthlyHitRate") {
+            loadingMask("show");
+            $.mobile.changePage("#viewMonthlyHitRate");
+        }
+        $("#mypanel").panel("close");
+    });
+
+    $("#mypanel #panel-sub-header-content").on("click", function(){
+        // $("#viewHitRate").hide();
+        // $("#viewMonthlyHitRate").hide();
+        // $("#viewYTDHitRate").show();
+        if($.mobile.activePage[0].id !== "viewYTDHitRate") {
+            loadingMask("show");
+            $.mobile.changePage("#viewYTDHitRate");
+        }
+        $("#mypanel").panel("close");
+    });
+
+    $(".menu-btn").on("click", function(){
+        $("#mypanel").panel("open");
+    });
+
+    $("#viewHitRate").on( "swiperight", function(event){
+        if($(".ui-page-active").jqmData("panel") !== "open"){
+            $("#mypanel").panel( "open");
+        }
+    });
+});
+
 window.initialSuccess = function() {
 
-    // loadingMask("show");
+    loadingMask("show");
 
     $.mobile.changePage('#viewHitRate');
     // var companyData = new QueryCompanyData();
@@ -36,7 +85,6 @@ window.initialSuccess = function() {
     // });
 
 }
-
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");

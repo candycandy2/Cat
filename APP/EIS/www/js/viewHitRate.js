@@ -1,19 +1,27 @@
-$(document).one("pagebeforecreate", function() {
-    $.mobile.pageContainer.prepend(panel);
-    $("#mypanel").panel().enhanceWithin();
+var chart;
+var a = [1, 1, 1, 1, 1];
+var b = [2, 2, 2, 2, 2];
+var c = [3, 3, 3, 3, 3];
 
-    $(document).on("pageshow", function() {
-		var chart;
-		$(document).ready(function() {
-			chart = new Highcharts.Chart({
-        		chart: {
-        			renderTo: 'highcharts',
-            		type: 'column'
-        		},
+$("#viewHitRate").pagecontainer({
+    create: function(event, ui) {
+		
+
+    	$("#viewHitRate").on("pagebeforeshow", function(event, ui) {
+    		
+    	});
+
+		/********************************** page event *************************************/
+        $("#viewHitRate").on("pageshow", function(event, ui) {
+			chart = new Highcharts.Chart ({
+				chart: {
+					renderTo: 'viewHitRate-hc-canvas',
+		    		type: 'column'
+				},
 				title: {
-        			text: ''
-    			},
-        		xAxis: {
+					text: '' 
+				},
+				xAxis: {
 			    	categories: [
 			        	'BQA',
 			       		'BQC',
@@ -29,6 +37,9 @@ $(document).one("pagebeforecreate", function() {
 			        	text: ''
 			    	}
 				},
+				credits: {
+					enabled: false
+				},
 				tooltip: {
 			    	headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
 			    	pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
@@ -43,62 +54,35 @@ $(document).one("pagebeforecreate", function() {
 			        	borderWidth: 0
 			    	}
 				},
+				exporting: {
+					enabled: false
+				},
 				series: [{
 			    	name: 'Budget AMT',
-			    	data: [49.9, 71.5, 106.4, 129.2, 144.0]
+			    	data: [1, 1, 1, 1, 1] 
 				},{
 					name: 'Actual AMT',
-			    	data: [69, 64.5, 126.4, 119.2, 104.0]
-				}
-				]
+			    	data: [2, 2, 2, 2, 2]
+				}]
 			});
-		});
-	});
-});
 
+			loadingMask("hide");
+			
+        });
 
+        $(".page-tabs #viewHitRate-tab-1").on("click", function(){
+        	chart.series[0].setData(a, true);
+        	chart.series[1].setData(a, true);
+        });
 
-$(document).one("pagecreate", "#viewHitRate", function(){
+        $(".page-tabs #viewHitRate-tab-2").on("click", function(){
+        	chart.series[0].setData(b, true);
+        	chart.series[1].setData(b, true);
+        });
 
-    $("#viewHitRate").pagecontainer({
-        create: function(event, ui) {
-        	$(".fragment-1").show();
-			$(".fragment-2").hide();
-			$(".fragment-3").hide();
-        }
-    });
-
-    $("#mypanel #panel-sub-header").on("click", function(){
-    	$("#viewHitRate").hide();
-    	$("#viewMonthlyHitRate").show();
-    	$("#mypanel").panel("close");
-    });
-
-    $(".page-tabs #tab-1").on("click", function(){
-    	$(".fragment-1").show();
-		$(".fragment-2").hide();
-		$(".fragment-3").hide();
-    });
-
-    $(".page-tabs #tab-2").on("click", function(){
-    	$(".fragment-1").hide();
-		$(".fragment-2").show();
-		$(".fragment-3").hide();
-	});
-
-    $(".page-tabs #tab-3").on("click", function(){
-    	$(".fragment-1").hide();
-		$(".fragment-2").hide();
-		$(".fragment-3").show();
-	});
-
-	$(".viewIndex").on( "swiperight", function(event){
-		if($(".ui-page-active").jqmData("panel") !== "open"){
-			$("#mypanel").panel( "open");
-		}
-	});
-
-    $(".menu-btn").on("click", function(){
-    	$("#mypanel").panel("open");
-    });
+        $(".page-tabs #viewHitRate-tab-3").on("click", function(){
+        	chart.series[0].setData(c, true);
+        	chart.series[1].setData(c, true);
+        });
+	}
 });

@@ -1,27 +1,82 @@
 <!-- Beginning of viewMonthlyHitRate -->
 <div data-role="page" id="viewMonthlyHitRate" class="viewIndex">
     <div class="ios-fix-overlap-div"></div>
-
-    <div data-role="header" data-position="fixed" class="page-header">
-        <a class ="menu-btn" href="#mypanel">
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn">
             <img src="img/humb.png" style="width:6VW;">
         </a>
         <div class="header-style">
-            <h1 class="ui-title">Monthly Hit Rate Trend</h1>
+            <h1 class="ui-title" style="width:47VW; margin:0 28VW;">Monthly Hit Rate Trend</h1>
         </div>
     </div>
 
     <div data-role="main" class="ui-content page-main">
-        <div><h>Dec. 2016</h></div>
-        <div></div>
-        <div>
-            <li>
+        <form >
+            <fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-1" checked="checked">
+                <label for="viewMonthlyHitRate-tab-1" class="tabs-title">Quantity</label>
+        
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-2">
+                <label for="viewMonthlyHitRate-tab-2" class="tabs-title label-style">Amount</label>
+        
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-3">
+                <label for="viewMonthlyHitRate-tab-3" class="tabs-title">ASP</label>
+            </fieldset>
+        </form>
 
-            </li>
+        <div class="page-date"> 
+            <span>Dec.2016</span>
         </div>
+
+        <div id="title-container">
+            <div id="title">
+                <div style="width: 25VW; font-size:2.6VH; margin-left: 2.3VW;">
+                    <p>Actual Value</p>
+                </div>
+                <div style="width: 31VW; font-size:2.6VH; margin-left: 4VW">
+                    <p>Budget Hit Rate</p>
+                </div>
+                <div style="width: 24VW; font-size:2.6VH; margin-left: 4VW; margin-right: 2.3VW">
+                    <p>YOY Growth</p>
+                </div>
+            </div>
+            <div id="title-content" style="margin-top: 1.3VH;">
+                <div style="width: 25VW; font-size:2.6VH; margin-left: 2.3VW">
+                    <p>71,976</p>
+                </div>
+                <div style="width: 31VW; font-size:2.6VH; margin-left: 4VW;">
+                    <p>78.23%</p>
+                </div>
+                <div style="width: 24VW; font-size:2.6VH; margin-left: 4VW; margin-right: 2.3VW">
+                    <p>+0.27%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hc-fragment" id="viewMonthlyHitRate-hc-canvas" style="height:43.5VH;">
+        </div>
+
+        <div style="margin-left: 3.7VW; margin-top: 3.5VH;">
+            <div id="c" class="scrollmenu" data-role="none">
+                <a>ALL</a>
+                <a>BQA</a>
+                <a>BQC</a>
+                <a>BQE</a>
+                <a>BQL</a>
+                <a>BQP</a>
+            </div>
+            <div id="b" class="scrollmenu"  data-role="none" style="margin-top: 1.5VH">
+                <a>ALL</a>
+                <a>LCD</a>
+                <a>PRJ</a>
+                <a>PDP</a>
+                <a>LTV</a>
+                <a>GGP</a>
+            </div>
+        </div>
+
     </div>
 
     <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-        <h1>Page Footer</h1>
     </div>
 </div>
