@@ -47,6 +47,9 @@ $("#viewYTDHitRate").pagecontainer({
 			        	borderWidth: 0
 			    	}
 				},
+				exporting: {
+					enabled: false
+				},
 				series: [{
 			    	name: 'Budget QTY',
 			    	type: 'column',

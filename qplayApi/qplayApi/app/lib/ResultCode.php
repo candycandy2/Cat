@@ -48,7 +48,7 @@ abstract class ResultCode
     const _000918_dataIncomplete = "000918"; //数据不完整
 
     const _000920_updateTagToJpushFailed = "000920"; //向JPush更新tag信息失败
-
+    const _000921_customAPINotExisted = "000921"; //调用customAPI的Url参数有错
 
     //TODO 以下为各系统扩展
 }
