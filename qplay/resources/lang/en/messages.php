@@ -272,6 +272,10 @@ return [
     'PROJECT_DESCRIPTION' => 'Project Description',
     'PROJECT_PM' => 'PM',
     'PROJECT_MEMO' => 'Memo',
+    'APP_MAINTAIN' => 'App Maintain',
+    'ACTION_MAINTAIN' => 'Maintain',
+    'SEND_TO_ME' => 'Send To Me',
+    'ACTION_SEND' => 'Send Again',
     'MSG_CONFIRM_DELETE_PROJECT' => 'Confirm to delete project?',
 
     'ERR_EXIST_ROLE' => 'Same role exist in this company!',
