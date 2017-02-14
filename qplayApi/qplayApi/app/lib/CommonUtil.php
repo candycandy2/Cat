@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use DB;
 use JPush\Exceptions\APIConnectionException;
 use JPush\Exceptions\APIRequestException;
 use JPush\Exceptions\JPushException;
@@ -439,11 +440,36 @@ class CommonUtil
     }
 
     public static function logApi($userId, $action, $responseHeader, $responseBody) {
-        $version = self::getApiVersionFromUrl();
-        $appKey = self::getAppKeyFromHeader();
-        if($appKey == null) {
-            $appKey = "";
-        }
+    $version = self::getApiVersionFromUrl();
+    $appKey = self::getAppKeyFromHeader();
+    if($appKey == null) {
+        $appKey = "";
+    }
+    $now = date('Y-m-d H:i:s',time());
+    $ip = self::getIP();
+    $url_parameter = $_SERVER["QUERY_STRING"];
+    $request_header = response()->json(apache_request_headers());
+    $request_body = self::prepareJSON(file_get_contents('php://input'));
+
+    \DB::table("qp_api_log")
+        -> insert([
+            'user_row_id'=>$userId,
+            'app_key'=>$appKey,
+            'api_version'=>$version,
+            'action'=>$action,
+            'ip'=>$ip,
+            'url_parameter'=>$url_parameter,
+            'request_header'=>$request_header,
+            'request_body'=>$request_body,
+            'request_header'=>$request_header,
+            'request_body'=>$request_body,
+            'response_header'=>$responseHeader,
+            'response_body'=>$responseBody,
+            'created_at'=>$now,
+        ]);
+}
+
+    public static function logCustomApi($version,$appKey,$action, $responseHeader, $responseBody) {
         $now = date('Y-m-d H:i:s',time());
         $ip = self::getIP();
         $url_parameter = $_SERVER["QUERY_STRING"];
@@ -452,7 +478,7 @@ class CommonUtil
 
         \DB::table("qp_api_log")
             -> insert([
-                'user_row_id'=>$userId,
+                'user_row_id'=>' ',
                 'app_key'=>$appKey,
                 'api_version'=>$version,
                 'action'=>$action,
@@ -460,12 +486,20 @@ class CommonUtil
                 'url_parameter'=>$url_parameter,
                 'request_header'=>$request_header,
                 'request_body'=>$request_body,
-                'request_header'=>$request_header,
-                'request_body'=>$request_body,
                 'response_header'=>$responseHeader,
                 'response_body'=>$responseBody,
                 'created_at'=>$now,
             ]);
+    }
+
+    public static function checkCustomApiUrl($version,$appKey,$action){
+        $result = DB::table('qp_app_custom_api')
+            -> where('app_key', '=', $appKey)
+            -> where('api_version', '=', $version)
+            -> where('api_action', '=', $action)
+            -> select('qp_app_custom_api.app_row_id')
+            -> get();
+        return count($result) > 0;
     }
 
     public static function getIP() {
