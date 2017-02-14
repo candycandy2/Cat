@@ -7,10 +7,22 @@ use App\lib\PushUtil;
 use App\lib\ResultCode;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use DB;
+use App\Services\ProjectService;
+use App\Repositories\ProjectRepository;
 
 class platformController extends Controller
-{
+{   
+
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService, ProjectRepository $projectRepository)
+    {
+        $this->projectService = $projectService;
+        $this->projectRepository = $projectRepository;
+    }
+
     public function process()
     {
         
@@ -1234,9 +1246,13 @@ class platformController extends Controller
 
         CommonUtil::setLanguage();
 
-        $projectList = \DB::table("qp_project")
+        $query = \DB::table("qp_project");
+            if(!\Auth::user()->isAppAdmin()){
+               $query -> where('created_user','=',\Auth::user()->row_id);
+               $query -> orwhere('project_pm','=',\Auth::user()->login_id);
+            }
+            $projectList =  $query-> orderBy("project_code")
             -> select()
-            -> orderBy("project_code")
             -> get();
         foreach ($projectList as $project) {
             $project->with_app = "N";
@@ -1247,6 +1263,7 @@ class platformController extends Controller
             if(count($appList) > 0) {
                 foreach ($appList as $appInfo) {
                     $appId = $appInfo->row_id;
+                     $project->app_row_id =  $appId;
                     $appVersionList = \DB::table("qp_app_version")
                         -> where("app_row_id", "=", $appId)
                         -> where("status", "=", "ready")
@@ -1321,7 +1338,12 @@ class platformController extends Controller
         return null;
     }
 
-    public function saveProject() {
+    /**
+     * 新增專案
+     * @param  Request $request  Form Post Request
+     * @return json   
+     */
+    public function newProject(Request $request) {
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
             return null;
@@ -1333,83 +1355,157 @@ class platformController extends Controller
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
-            $action = $jsonContent['action'];
-            $project_id = $jsonContent['project_id'];
-            $project_code = $jsonContent['project_code'];
-            $app_key = $jsonContent['app_key'];
-            $project_pm = $jsonContent['project_pm'];
-            $project_description = $jsonContent['project_description'];
-            $project_memo = $jsonContent['project_memo'];
+            $app_key = $jsonContent['txbAppKey'];
+            $project_pm = $jsonContent['tbxProjectPM'];
+            $project_description = $jsonContent['tbxProjectDescription'];
+            $mailTo = array(\Auth::user()->email);
+            \DB::beginTransaction();
+             try{
 
-            //Check pm exist
-            $pmList = \DB::table("qp_user") -> where('login_id', '=', $project_pm) ->select() ->get();
-            if(count($pmList) <= 0) {
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_PM_NOT_EXIST")]);
+                $now = date('Y-m-d H:i:s',time());
+                $validator = \Validator::make($request->all(), [
+                'txbAppKey' => 'required|regex:/^[a-z]*$/|max:50|is_app_key_unique',
+                'tbxProjectPM' => 'required|is_user_exist',
+                'tbxProjectDescription' => 'required'
+                ]);
+
+                if ($validator->fails()) {
+                 return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,'message'=>$validator->messages()], 200);
+                }
+               
+                $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
+                $secretKey = hash('md5', CommonUtil::generateRandomString());
+                $dbArr = CommonUtil::getAllEnv();
+           
+               $newProjectId =  $this->projectService->newProject('mysql_production', 
+                CommonUtil::getContextAppKey('production',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+
+               $this->projectService->newProject('mysql_test',
+                CommonUtil::getContextAppKey('test',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+
+               $this->projectService->newProject('mysql_dev',
+                CommonUtil::getContextAppKey('dev',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+
+               \DB::commit();
+
+               //send project information
+               $pm = CommonUtil::getUserInfoJustByUserID($project_pm);
+               $envAppKey =  CommonUtil::getContextAppKey(\Config::get('app.env'),$app_key);
+
+               array_push($mailTo,$pm->email);
+               $mailTo = array_unique($mailTo);
+               $projectInfo = $this->projectRepository->getProjectInfoByAppKey($envAppKey);
+               $secretKey =  $projectInfo->secret_key;
+                
+               $this->projectService->sendProjectInformation($mailTo, $envAppKey, $secretKey);
+                   
+            }catch (\Exception $e) {
+
+                \DB::rollBack();
+               return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
+           
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
 
+        return null;
+    }
+
+    /**
+     * 更新專案
+     * @param  Request $request Form Post Request
+     * @return json
+     */
+    public function updateProject(Request $request) {
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        CommonUtil::setLanguage();
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            
+            $jsonContent = json_decode($content, true);
+            $projectCode = $jsonContent['projectCode'];
+            $project_pm = $jsonContent['tbxProjectPM'];
+            $project_description = $jsonContent['tbxProjectDescription'];
+            $project_memo = $jsonContent['tbxProjectMemo'];
+               
             \DB::beginTransaction();
 
-            $now = date('Y-m-d H:i:s',time());
-            if($action == "N") { //New
-                $existList = \DB::table("qp_project")->where("project_code", '=', $project_code)->select()->get();
-                if(count($existList) > 0) {
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_CODE_EXIST")]);
-                }
-                $existList = \DB::table("qp_project")->where("app_key", '=', $app_key)->select()->get();
-                if(count($existList) > 0) {
-                    return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_APP_KEY_EXIST")]);
-                }
+            try{
 
-                $newProjectId = \DB::table("qp_project")
-                    -> insertGetId([
-                        'project_code'=>$project_code,
-                        'app_key' => $app_key,
-                        'project_description' => $project_description,
-                        'project_memo' => $project_memo,
-                        'project_pm' => $project_pm,
-                        'created_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                    ]);
-            } else if($action == "U") { //Edit
-                $existList = \DB::table("qp_project")->where("project_code", '=', $project_code)->select()->get();
-                if(count($existList) > 0) {
-                    foreach ($existList as $existProject) {
-                        if($existProject->row_id != $project_id) {
-                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_PROJECT_CODE_EXIST")]);
-                        }
-                    }
-                }
-                $existList = \DB::table("qp_project")->where("app_key", '=', $app_key)->select()->get();
-                if(count($existList) > 0) {
-                    foreach ($existList as $existProject) {
-                        if($existProject->row_id != $project_id) {
-                            return response()->json(['result_code'=>ResultCode::_999999_unknownError,'message'=>trans("messages.ERR_APP_KEY_EXIST")]);
-                        }
-                    }
-                }
+                $now = date('Y-m-d H:i:s',time());
+                $validator = \Validator::make($request->all(), [
+                'projectCode'           => 'required',
+                'tbxProjectPM'          => 'required|is_user_exist',
+                'tbxProjectDescription' => 'required'
+                ]);
 
-                \DB::table("qp_project")
-                    ->where("row_id", "=", $project_id)
-                    -> update([
-                        'project_code'=>$project_code,
-                        'app_key' => $app_key,
-                        'project_description' => $project_description,
-                        'project_memo' => $project_memo,
-                        'project_pm' => $project_pm,
-                        'updated_user'=>\Auth::user()->row_id,
-                        'updated_at'=>$now,
-                    ]);
+                if ($validator->fails()) {
+                 return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,'message'=>$validator->messages()], 200);
+                }
+                $this->projectService->updateProject('mysql_production', $projectCode, $project_description, $project_memo, $project_pm, \Auth::user()->row_id, $now);
+                $this->projectService->updateProject('mysql_test', $projectCode, $project_description, $project_memo, $project_pm, \Auth::user()->row_id, $now);
+                $this->projectService->updateProject('mysql_dev', $projectCode, $project_description, $project_memo, $project_pm, \Auth::user()->row_id, $now);
+
+                \DB::commit();
+
+            }catch (\Exception $e) {
+
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
-
-            \DB::commit();
-            if($action == "N") {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'new_project_id'=>$newProjectId]);
-            } else {
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
 
         }
 
+        return null;
+    }
+
+    /**
+     * 寄送專案資訊給PM以及申請人
+     * @param  Request $request form post request
+     * @return json
+     */
+    public function sendProjectInformation(Request $request){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+         $validator = \Validator::make($request->all(), [
+            'appKey' => 'required|regex:/^[a-z]*$/|max:50|is_app_key_unique',
+            ]);
+        
+        CommonUtil::setLanguage();
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $app_key = $jsonContent['appKey'];
+            
+            try{
+                
+                $mailTo = array(\Auth::user()->email);
+                $projecyInfo = $this->projectRepository->getProjectInfoByAppKey($app_key);
+                $pm = CommonUtil::getUserInfoJustByUserID($projecyInfo->project_pm);
+                array_push($mailTo,$pm->email);
+                $mailTo = array_unique($mailTo);
+
+                $this->projectService->sendProjectInformation($mailTo, $app_key, $projecyInfo->secret_key);
+            
+            } catch (\Exception $e) {    
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            }
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+        }
         return null;
     }
 }
