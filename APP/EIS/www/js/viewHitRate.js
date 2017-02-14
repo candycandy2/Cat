@@ -1,22 +1,34 @@
 var chart;
-var a = [1, 1, 1, 1, 1];
-var b = [2, 2, 2, 2, 2];
-var c = [3, 3, 3, 3, 3];
+var a = [1000, 1000, 1000, 1000, 1000];
+var b = [2000, 2000, 2000, 2000, 2000];
+var c = [3000, 3000, 3000, 3000, 3000];
 
-$("#viewHitRate").pagecontainer({
+$("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
-		
+    	
+    	window.a = function() {
+    		var queryData = "<LayoutHeader><StartYearMonth>2014/12</StartYearMonth><EndYearMonth>2014/12</EndYearMonth></LayoutHeader>";
+    	
+	    	this.successCallback = function(data) {
+	    		console.log(data);
+	    	};
 
-    	$("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-    		
-    	});
+	    	this.failCallback = function(data) {};
+
+			var _cobns = function() {
+				CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
+			}();
+		};
+    	// $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
+    	// });
 
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
 			chart = new Highcharts.Chart ({
 				chart: {
 					renderTo: 'viewHitRate-hc-canvas',
-		    		type: 'column'
+					marginTop: 30,
+					marginLeft: 50
 				},
 				title: {
 					text: '' 
@@ -32,10 +44,22 @@ $("#viewHitRate").pagecontainer({
 			    	crosshair: true
 				},
 				yAxis: {
-			    	min: 0,
-			    	title: {
-			        	text: ''
-			    	}
+        			title: {
+        				text: '(USD$M)',
+        				align: 'high',
+        				rotation: 0,
+        				offset: 0,
+        				x: 5,
+        				y: -11
+        			},
+        			min: 0,
+        			tickInterval: 500
+        		},
+				legend: {
+					align: 'left',
+					float: true,
+					x: -13,
+					y: 10
 				},
 				credits: {
 					enabled: false
@@ -59,10 +83,14 @@ $("#viewHitRate").pagecontainer({
 				},
 				series: [{
 			    	name: 'Budget AMT',
-			    	data: [1, 1, 1, 1, 1] 
+			    	type: 'column',
+			    	color: '#0AB5B6',
+			    	data: [1000, 1000, 1000, 1000, 1000]
 				},{
 					name: 'Actual AMT',
-			    	data: [2, 2, 2, 2, 2]
+					type: 'column',
+					color: '#F4A143',
+			    	data: [1500, 1500, 1500, 1500, 1500]
 				}]
 			});
 

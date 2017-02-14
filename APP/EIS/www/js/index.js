@@ -2,7 +2,6 @@
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
-// var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
 
@@ -29,9 +28,6 @@ $(document).one("pagebeforeshow", function() {
     $("#mypanel").panel().enhanceWithin();
 
     $("#mypanel #panel-header-content").on("click", function(){
-        // $("#viewHitRate").show();
-        // $("#viewMonthlyHitRate").hide();
-        // $("#viewYTDHitRate").hide();
         if($.mobile.activePage[0].id !== "viewHitRate") {
             loadingMask("show");
             $.mobile.changePage("#viewHitRate");
@@ -40,9 +36,6 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #panel-sub-header").on("click", function(){
-        // $("#viewHitRate").hide();
-        // $("#viewMonthlyHitRate").show();
-        // $("#viewYTDHitRate").hide();
         if($.mobile.activePage[0].id !== "viewMonthlyHitRate") {
             loadingMask("show");
             $.mobile.changePage("#viewMonthlyHitRate");
@@ -51,9 +44,6 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #panel-sub-header-content").on("click", function(){
-        // $("#viewHitRate").hide();
-        // $("#viewMonthlyHitRate").hide();
-        // $("#viewYTDHitRate").show();
         if($.mobile.activePage[0].id !== "viewYTDHitRate") {
             loadingMask("show");
             $.mobile.changePage("#viewYTDHitRate");
@@ -83,7 +73,7 @@ window.initialSuccess = function() {
     //     $.mobile.changePage('#' + prevPageID);
     //     prevPageID = null;
     // });
-
+    a();
 }
 //[Android]Handle the back button
 function onBackKeyDown() {
