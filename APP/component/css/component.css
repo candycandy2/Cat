@@ -76,6 +76,9 @@ body {
     text-shadow: none;
 }
 
+// disable ‘hold to copy’ on all elements
+body *{ -webkit-user-select: none;}
+
 .header-style {
     overflow: hidden;
     background-color: #4B0082;
