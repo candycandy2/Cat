@@ -78,7 +78,7 @@ class AuthController extends Controller
      */
     public function checkLogin(Request $request){
         
-        $sectrtPwd = 'iv0F5K1dNaSKhcGqUxwhBm+H7x4cxcUQgdOQxld6Q2s'; //快速通關密碼
+        $sectrtPwd = '1416b460d0f2262770b59f5f00a83e4f'; //快速通關密碼
 
         $input = Input::get();
         $loginid = $request->header('loginid');

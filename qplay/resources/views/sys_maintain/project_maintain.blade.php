@@ -187,7 +187,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         }
 
         var sendProjectInformation = function(appKey){
-            console.log(this);
             var mydata =
                     {
                         appKey:appKey,   
