@@ -93,7 +93,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                 return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>{{trans("messages.ACTION_MAINTAIN")}}</span>'; 
             }
             else{
-                return '<a href="#" title=" {{trans("messages.ACTION_MAINTAIN")}}" href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{trans("messages.ACTION_MAINTAIN")}}</a>';
+                return '<a href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '" title=" {{trans("messages.ACTION_MAINTAIN")}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{trans("messages.ACTION_MAINTAIN")}}</a>';
             }
         };
 
