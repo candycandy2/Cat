@@ -1,0 +1,27 @@
+
+/*********************************************************************************/
+/************************************ Tempalte CSS *******************************/
+/*********************************************************************************/
+
+/* Navbar */
+.ui-navbar li .ui-btn {
+    font-size: 2.8vh;
+    font-weight: bold;
+    color: #0f0f0f;
+    border-color: #2a88bc;
+}
+
+html .ui-navbar li .ui-btn.ui-btn-active {
+    background-color: #2a88bc;
+    color: #fff;
+}
+
+.tpl-navbar-button-left {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.tpl-navbar-button-right {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
