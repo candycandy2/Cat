@@ -18,36 +18,29 @@ class AuthController extends Controller
     /**
      * 登入流程
      */
-    public function authenticate()
+    public function authenticate(Request $request)
     {
         $input = Input::get();
-        if(!isset($input["loginid"]) || ($input["loginid"]) == ""){
-            $data['errormsg'] = "Login id is Require";
+        $validator = \Validator::make($request->all(), [
+            'loginid'   => 'required',
+            'password'  => 'required',
+            'domain'    => 'required',
+            'lang'      => 'required'
+        ]);
+        if ($validator->fails()) {
+            $data['errormsg'] ='loginid / password / domain / lang can not empty!';
             return \Redirect::to('auth/login')->with($data);
         }
-        if(!isset($input["password"]) || ($input["password"]) == ""){
-            $data['errormsg'] = "Password is Require";
-            return \Redirect::to('auth/login')->with($data);
-        }
-        if(!isset($input["domain"]) || ($input["domain"]) == ""){
-            $data['errormsg'] = "Domain is Require";
-            return \Redirect::to('auth/login')->with($data);
-        }
-        if(!isset($input["lang"]) || ($input["lang"]) == ""){
-            $data['errormsg'] = "lang is Require";
-            return \Redirect::to('auth/login')->with($data);
-        }
-       
+
         $loginid = $input["loginid"];
         $password = $input["password"];
         $domain = $input["domain"];
         $lang = $input["lang"];
         $remember = false;
-
-        if(array_key_exists("remember", $input)) {
+        if (array_key_exists("remember", $input)) {
             $remember = $input["remember"];
         }
-        //TODO real login
+
         $verify = new Verify();
         $result = $verify->verifyUserByUserID($loginid, $domain);
         if($result["code"] != ResultCode::_1_reponseSuccessful)
@@ -62,7 +55,7 @@ class AuthController extends Controller
         $userId = $domain . "\\" . $loginid;
         $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
         $bind = @ldap_bind($ldapConnect, $userId, $password);
-        if(!$bind)
+        if (!$bind)
         {
             $data['errormsg'] = "帳號或密碼錯誤";
             return \Redirect::to('auth/login')->with($data);
