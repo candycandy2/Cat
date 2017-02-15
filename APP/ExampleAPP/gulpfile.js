@@ -114,8 +114,8 @@ gulp.task('install', shell.task([
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appexample' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist',
-  'cordova plugin add cordova-plugin-file'
+  'cordova plugin add cordova-plugin-whitelist'//,
+  //'cordova plugin add cordova-plugin-file'
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
@@ -127,8 +127,8 @@ gulp.task('jenkinsinstall', shell.task([
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appexample' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1',
-  'cordova plugin add cordova-plugin-file@4.3.1'
+  'cordova plugin add cordova-plugin-whitelist@1.3.1'//,
+  //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
 gulp.task('copyAndroidImages', function() {
@@ -150,8 +150,9 @@ gulp.task('build', shell.task([
     'cordova build ios --debug --device --buildConfig=build.json',
 ]))
 
-gulp.task('componentCSS', function() {
-    return gulp.src('../component/css/*.css')
+gulp.task('componentCSS', function(){
+    return gulp.src(['../component/css/component.css','../component/css/template.css'])
+        .pipe(concat('APP.css'))
         .pipe(gulp.dest('www/css/'));
 });
 /*
@@ -168,10 +169,21 @@ gulp.task('concat:css', ['less'], function(){
 });
 */
 
-gulp.task('componentHTML', function() {
-    return gulp.src('../component/*.html')
+gulp.task('templateHTML', function() {
+    return gulp.src('../component/template/*.html')
+        .pipe(concat('template.html'))
+        .pipe(gulp.dest('../component/'));
+});
+
+gulp.task('appHTML', ['templateHTML'], function(){
+    return gulp.src(['../component/component.html','../component/template.html'])
+        .pipe(concat('APP.html'))
         .pipe(gulp.dest('www/View/'));
 });
+
+gulp.task('componentHTML', ['appHTML'], shell.task([
+    'rm ../component/template.html'
+]));
 
 gulp.task('componentIMG', function() {
     return gulp.src('../component/image/*')
