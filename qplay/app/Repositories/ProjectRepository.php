@@ -25,7 +25,7 @@ class ProjectRepository
      */
     public function insertProject($db, $appKey, $secretKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
         
-        /*$newProjectId = \DB::connection($db)->table("qp_project")
+        $newProjectId = \DB::connection($db)->table("qp_project")
         -> insertGetId([
             'project_code'=>$projectCode,
             'secret_key'=>$secretKey,
@@ -34,14 +34,8 @@ class ProjectRepository
             'project_pm' => $projectPm,
             'created_user'=>$createdUser,
             'created_at'=>$createdAt,
-        ]);*/
-        $sql = "INSERT INTO qp_project (`project_code`,`app_key`) 
-                SELECT ?,? FROM DUAL
-                WHERE NOT EXISTS (
-                    SELECT row_id FROM `qp_project` WHERE `project_code` = ? or ? = 'appcleoo'
-                ) LIMIT 1";
-        $result = \DB::connection($db)->insert($sql, [$appKey, $projectCode]);
-        var_dump($result);exit();
+        ]);
+
         return $newProjectId;
     }
 
