@@ -25,27 +25,23 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
-    this.networkConnectCallback = function(data){
-        $.ajax({
-            type: requestType,
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'App-Key': appKey,
-                'Signature-Time': signatureTime,
-                'Signature': signatureInBase64,
-                'token': loginData.token
-            },
-            url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
-            dataType: "json",
-            data: queryData,
-            async: asyncType,
-            cache: false,
-            timeout: 3000,
-            success: requestSuccess,
-            error: requestError
-        });
-    }
-
-    checkNetwork(null, self.networkConnectCallback);
+    $.ajax({
+        type: requestType,
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'App-Key': appKey,
+            'Signature-Time': signatureTime,
+            'Signature': signatureInBase64,
+            'token': loginData.token
+        },
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        dataType: "json",
+        data: queryData,
+        async: asyncType,
+        cache: false,
+        timeout: 3000,
+        success: requestSuccess,
+        error: requestError
+    });
     
 }

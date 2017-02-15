@@ -54,10 +54,9 @@ function addConponentView() {
 }
 
 //Check Mobile Device Network Status
-function checkNetwork(data, callback) {
+function checkNetwork(data) {
 
     data =  data || null;
-    callback = callback || null;
     //A. If the device's Network is disconnected, show dialog only once, before the network is connect again.
     //B. If the device's Network is disconnected again, do step 1. again.
 
@@ -110,8 +109,6 @@ function checkNetwork(data, callback) {
                 location.reload();
             }
             isDisConnect = false;
-            if (callback != null)
-                callback();
         }
     }
 
