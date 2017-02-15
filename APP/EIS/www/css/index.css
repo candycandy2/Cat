@@ -202,31 +202,33 @@ div.scrollmenu {
 	overflow: auto;
 	text-align: center;
 	border-style: solid;
-	border-width: 1px;
+	border-width: 0.5px;
+	border-color: #1e1e2f;
 	white-space: nowrap;
-	box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
 	/*box-shadow: inset 0px 0px 20px 10px rgba(0, 0, 0, 0.6);*/
 }
 
 div.scrollmenu a {
 	display: inline-block;
-	padding: 2VH 7VW;
+	padding: 1.8VH 5.8VW 1.6VH 5.8VW;
 	background-color: #fbfdfd;
 	color: #0f0f0f;
 	font-family: Arial;
 	font-size: 2.8VH;
 	font-weight: bold;
 	border-style: solid;
-	border-width: 1px 0px 1px 1px;
+	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
 	width: 9VW;
 	text-decoration: none;
+	margin-left: -1.4VW;
 }
 
 div.scrollmenu a:hover {
     background-color: #0fb6b7;
     color: #fff !important;
-    margin:0;
+    margin-left: -1.4VW;
 }
 
 /*.hover {
@@ -235,7 +237,28 @@ div.scrollmenu a:hover {
 }*/
 
 /****************************************** viewYTDHitRate ******************************************/
+#viewYTDHitRate #title-container {
+	border-style: none;
+	border-bottom-style: solid;
+	border-bottom-color: #989898;
+	border-bottom-width: 0.1VH;
+	margin: 3.2VW 3.7VW 3.2VW 3.7VW;
+	padding-bottom: 1.8VH;
+}
 
+#viewYTDHitRate #title-container > div {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+}
+
+
+#viewYTDHitRate #title-container > div > div {
+	text-align: center;
+}
+
+#viewYTDHitRate #title-container > div > div > p {
+	margin: 0;
+}
 
 
 /********************************************** mypanel *********************************************/
