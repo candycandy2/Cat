@@ -73,13 +73,13 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
-                            '<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
+                            //'<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
-                            '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
+                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
