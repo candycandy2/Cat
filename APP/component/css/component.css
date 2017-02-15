@@ -5,11 +5,17 @@
 /*********************************************************************************/
 
 /* override jQuery Mobile */
-body {
-    text-shadow: none;
-}
-
-.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+.ui-page-theme-a .ui-btn.ui-btn-active, html .ui-bar-a .ui-btn.ui-btn-active, 
+html .ui-body-a .ui-btn.ui-btn-active, html body .ui-group-theme-a .ui-btn.ui-btn-active, 
+html head+body .ui-btn.ui-btn-a.ui-btn-active, .ui-page-theme-a .ui-checkbox-on:after, 
+html .ui-bar-a .ui-checkbox-on:after, html .ui-body-a .ui-checkbox-on:after, 
+html body .ui-group-theme-a .ui-checkbox-on:after, .ui-btn.ui-checkbox-on.ui-btn-a:after, 
+.ui-page-theme-a .ui-flipswitch-active, html .ui-bar-a .ui-flipswitch-active, 
+html .ui-body-a .ui-flipswitch-active, html body .ui-group-theme-a .ui-flipswitch-active, 
+html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active, .ui-page-theme-a .ui-slider-track .ui-btn-active, 
+html .ui-bar-a .ui-slider-track .ui-btn-active, html .ui-body-a .ui-slider-track .ui-btn-active, 
+html body .ui-group-theme-a .ui-slider-track .ui-btn-active, html body div.ui-slider-track.ui-body-a .ui-btn-active,
+.ui-title, .ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
     text-shadow: none;
 }
 
@@ -64,20 +70,30 @@ body, input, select, textarea, button, .ui-btn {
 }
 
 .ui-title {
-    text-shadow: none !important;
     line-height: 1;
 }
 
-.ui-title>div{ font-size: 5vw; font-weight: normal; pointer-events: none;}
-
-/* variable, function, style for All APP */
-body {
-    font-family: "Arial", "微軟中黑體";
-    text-shadow: none;
+.ui-title > div { 
+    font-size: 5vw;
+    font-weight: normal;
+    pointer-events: none;
 }
 
-// disable ‘hold to copy’ on all elements
-body *{ -webkit-user-select: none;}
+.ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, 
+html body .ui-group-theme-a .ui-btn:focus, html head+body .ui-btn.ui-btn-a:focus, 
+.ui-page-theme-a .ui-focus, html .ui-bar-a .ui-focus, html .ui-body-a .ui-focus, 
+html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html head+body .ui-body-a.ui-focus {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+/* variable, function, style for All APP */
+
+/* disable ‘hold to copy’ on all elements */
+body *{ 
+    -webkit-user-select: none;
+}
 
 .header-style {
     overflow: hidden;
