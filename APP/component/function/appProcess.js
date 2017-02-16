@@ -181,6 +181,7 @@ function checkPopupShown() {
 
 //Hide APP initial page
 function hideInitialPage() {
+alert("hideInitialPage");
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }
