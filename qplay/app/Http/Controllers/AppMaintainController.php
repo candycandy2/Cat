@@ -314,7 +314,8 @@ class AppMaintainController extends Controller
         }
 
         if(!\Auth::user()->isAppAdmin()){
-            if($appMain->created_user!=\Auth::user()->row_id && $appMain->project_pm!=\Auth::user()->row_id){
+            if($appMain->created_user!=\Auth::user()->row_id &&
+             strtolower($appMain->project_pm)!=strtolower(\Auth::user()->login_id)){
                 abort(404); 
             }
         }

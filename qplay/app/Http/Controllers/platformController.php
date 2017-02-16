@@ -1374,21 +1374,26 @@ class platformController extends Controller
                 }
                
                 $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
+                
+                if(is_null($projectCode)){
+                      \Log::error('newProjectError :There might have project code not 3 digit number in DB.');
+                      return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+                }
+                
                 $secretKey = hash('md5', CommonUtil::generateRandomString());
-                $dbArr = CommonUtil::getAllEnv();
-           
-               $newProjectId =  $this->projectService->newProject('mysql_production', 
+                
+                $newProjectId =  $this->projectService->newProject('mysql_production', 
                 CommonUtil::getContextAppKey('production',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-               $this->projectService->newProject('mysql_test',
+                $this->projectService->newProject('mysql_test',
                 CommonUtil::getContextAppKey('test',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-               $this->projectService->newProject('mysql_dev',
+                $this->projectService->newProject('mysql_dev',
                 CommonUtil::getContextAppKey('dev',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-               \DB::commit();
+                \DB::commit();
 
-               //send project information
+                //send project information
                $pm = CommonUtil::getUserInfoJustByUserID($project_pm);
                $envAppKey =  CommonUtil::getContextAppKey(\Config::get('app.env'),$app_key);
 
@@ -1396,9 +1401,9 @@ class platformController extends Controller
                $mailTo = array_unique($mailTo);
                $projectInfo = $this->projectRepository->getProjectInfoByAppKey($envAppKey);
                $secretKey =  $projectInfo->secret_key;
-                
-               $this->projectService->sendProjectInformation($mailTo, $envAppKey, $secretKey);
-                   
+               $projectCode =  $projectInfo->project_code;
+               $this->projectService->sendProjectInformation($mailTo, $envAppKey, $secretKey, $projectCode);
+
             }catch (\Exception $e) {
 
                 \DB::rollBack();
@@ -1494,12 +1499,13 @@ class platformController extends Controller
             try{
                 
                 $mailTo = array(\Auth::user()->email);
-                $projecyInfo = $this->projectRepository->getProjectInfoByAppKey($app_key);
-                $pm = CommonUtil::getUserInfoJustByUserID($projecyInfo->project_pm);
+                $projectInfo = $this->projectRepository->getProjectInfoByAppKey($app_key);
+                $pm = CommonUtil::getUserInfoJustByUserID($projectInfo->project_pm);
                 array_push($mailTo,$pm->email);
                 $mailTo = array_unique($mailTo);
-
-                $this->projectService->sendProjectInformation($mailTo, $app_key, $projecyInfo->secret_key);
+                $secretKey =  $projectInfo->secret_key;
+                $projectCode =  $projectInfo->project_code;
+                $this->projectService->sendProjectInformation($mailTo, $app_key, $secretKey, $projectCode);
             
             } catch (\Exception $e) {    
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
