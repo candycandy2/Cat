@@ -73,13 +73,13 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
-                            '<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
+                            //'<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
-                            '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
+                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
@@ -99,7 +99,7 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
-  'cordova plugin remove cordova-plugin-file',
+  //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android',
   'cordova platform add ios',
@@ -109,8 +109,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=apprrs' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist',
-  'cordova plugin add cordova-plugin-file'
+  'cordova plugin add cordova-plugin-whitelist'//,
+  //'cordova plugin add cordova-plugin-file'
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
@@ -121,8 +121,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-appversion@1.0.0',
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=apprrs' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1',
-  'cordova plugin add cordova-plugin-file@4.3.1'
+  'cordova plugin add cordova-plugin-whitelist@1.3.1'//,
+  //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
 gulp.task('copyAndroidImages', function() {
@@ -144,10 +144,17 @@ gulp.task('build', shell.task([
     'cordova build ios --debug --device --buildConfig=build.json',
 ]))
 
-gulp.task('componentCSS', function() {
-    return gulp.src('../component/css/*.css')
+gulp.task('appCSS', function(){
+    return gulp.src(['../component/css/component.css','../component/css/template.css'])
+        .pipe(concat('APP.css'))
         .pipe(gulp.dest('www/css/'));
 });
+
+gulp.task('componentCSS', ['appCSS'], function() {
+    return gulp.src('../component/css/jquery.mobile-1.4.5.min.css')
+        .pipe(gulp.dest('www/css/'));
+});
+
 /*
 gulp.task('less',function(){
     return gulp.src('www/src/css/*.less')
@@ -162,10 +169,21 @@ gulp.task('concat:css', ['less'], function(){
 });
 */
 
-gulp.task('componentHTML', function() {
-    return gulp.src('../component/*.html')
+gulp.task('templateHTML', function() {
+    return gulp.src('../component/template/*.html')
+        .pipe(concat('template.html'))
+        .pipe(gulp.dest('../component/'));
+});
+
+gulp.task('appHTML', ['templateHTML'], function(){
+    return gulp.src(['../component/component.html','../component/template.html'])
+        .pipe(concat('APP.html'))
         .pipe(gulp.dest('www/View/'));
 });
+
+gulp.task('componentHTML', ['appHTML'], shell.task([
+    'rm ../component/template.html'
+]));
 
 gulp.task('componentIMG', function() {
     return gulp.src('../component/image/*')
@@ -205,9 +223,8 @@ gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
     'rm ../component/function.js'
 ]));
 
-//ex: gulp default --env test
-//remove patch task
-gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+//ex: gulp default
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 

@@ -7,8 +7,8 @@
 
 APP/*/platforms/
 APP/*/plugins/
+APP/*/www/*/APP.*
 APP/*/www/*/component.*
-APP/*/www/*/APP.js
 APP/*/www/css/jquery.mobile-1.4.5.min.css
 APP/*/www/js/lib
 APP/*/www/string/

@@ -4,7 +4,6 @@ var appKeyOriginal = "appeis";
 var appKey = "appeis";
 var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
-
 var htmlContent = "";
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
@@ -21,6 +20,11 @@ var panel = htmlContent
         +       '<span class="panel-text" style="line-height:7.5VH;">YTD Hit Rate Trend</span>'
         +   '</div>'
         +'</div>';
+var time = new Date(Date.now());
+var startYearMonth = "2013/01";
+var eisdata = {};
+var endYearMonth, currentYear, currentMonth;
+
 
 $(document).one("pagebeforeshow", function() {
 
@@ -65,55 +69,13 @@ $(document).one("pagebeforeshow", function() {
 window.initialSuccess = function() {
 
     loadingMask("show");
-
+    currentYear = time.getFullYear();
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1) ;
+    ROSummary();
     $.mobile.changePage('#viewHitRate');
-    // var companyData = new QueryCompanyData();
-
-    // $("a[name=goPrevPage]").on("click", function(){
-    //     $.mobile.changePage('#' + prevPageID);
-    //     prevPageID = null;
-    // });
-    a();
 }
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-
-    // if (activePageID === "viewDataInput") {
-
-    //     if (checkPopupShown()) {
-    //         $.mobile.changePage('#viewDataInput');
-    //     } else {
-    //         navigator.app.exitApp();
-    //     }
-
-    // } else if (activePageID === "viewQueryResult") {
-
-    //     doClearInputData = false;
-    //     $.mobile.changePage('#viewDataInput');
-
-    // } else if (activePageID === "viewDetailInfo") {
-
-    //     if (checkPopupShown()) {
-    //         $('#' + popupID).popup('close');
-    //     } else {
-    //         $.mobile.changePage('#' + prevPageID);
-    //     }
-
-    // } else if (activePageID === "viewPhonebook") {
-
-    //     //If User is doing edit phonebook, cancel edit mode.
-    //     if ($("#phonebookEditBtn").css("display") === "block") {
-    //         cancelEditMode();
-    //     } else if (checkPopupShown()) {
-    //         if (popupID === "phonebookDelectAlert" || popupID === "phonebookDelectConfirm") {
-    //             $('#' + popupID).popup('close');
-    //             $("#phonebookEditBtn").show();
-    //         }
-    //     } else {
-    //         $.mobile.changePage('#viewDataInput');
-    //     }
-
-    // }
 }

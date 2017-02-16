@@ -23,7 +23,7 @@ function getLanguageString() {
 
 function addConponentView() {
     //add component view template into index.html
-    $.get("View/component.html", function(data) {
+    $.get("View/APP.html", function(data) {
         $.mobile.pageContainer.append(data);
 
         //Set viewInitial become the index page
@@ -181,6 +181,7 @@ function checkPopupShown() {
 
 //Hide APP initial page
 function hideInitialPage() {
+//alert("hideInitialPage");
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }

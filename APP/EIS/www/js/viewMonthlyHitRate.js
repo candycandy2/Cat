@@ -44,11 +44,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         			x: -7,
         			y: 13
         		},
+        		credits: {
+					enabled: false
+				},
         		tooltip: {
         			shared: true
-        		},
-        		credits: {
-        			enabled: false
         		},
         		plotOptions: {
         			column: {
