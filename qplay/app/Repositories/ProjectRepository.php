@@ -35,6 +35,7 @@ class ProjectRepository
             'created_user'=>$createdUser,
             'created_at'=>$createdAt,
         ]);
+
         return $newProjectId;
     }
 

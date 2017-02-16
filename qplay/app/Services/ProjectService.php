@@ -59,12 +59,19 @@ class ProjectService
     /**
      * 取得專案代碼
      * @param  String $db datasource
-     * @return String     不重複專案代碼(三位數代碼 ex: 000,001,002)
+     * @return mix     不重複專案代碼(三位數代碼 ex: 000,001,002);失敗回傳null
      */
     public function getProjectCode($db){
         $newProjectCode = 0;
         $maxProjectCode = $db->table("qp_project")->max('project_code');
+        $pattern = '/\d{3}/';
+        
         if(!is_null($maxProjectCode)){
+            
+            if(!(preg_match($pattern, $maxProjectCode))){
+                return null;
+            }
+
             $newProjectCode = (int)$maxProjectCode + 1;
         }
         return trim(sprintf("%'.03d\n", $newProjectCode));
@@ -75,14 +82,16 @@ class ProjectService
      * @param  Array  $mailTo  收件人
      * @param  String $appKey  AppKey
      * @param  String $secretKey SecretKey
+     * @param  String $projectCode  App Code 專案代碼
      */
-    public function sendProjectInformation(Array $mailTo, $appKey, $secretKey){
+    public function sendProjectInformation(Array $mailTo, $appKey, $secretKey, $projectCode){
         $data = array(
-                    'appKey'    =>$appKey,
-                    'secretKey' =>$secretKey,
-                    'mailTo'    =>$mailTo,
-                    'mailFrom'  =>array('name'      =>Config::get('app.mail_name'),
-                                        'address'  =>Config::get('app.mail_address'))
+                    'appKey'        =>$appKey,
+                    'secretKey'     =>$secretKey,
+                    'projectCode'   =>$projectCode,
+                    'mailTo'        =>$mailTo,
+                    'mailFrom'      =>array('name' =>Config::get('app.mail_name'),
+                                            'address'  =>Config::get('app.mail_address'))
                 );
 
         Mail::send('emails.appkey_information', $data, function ($message) use ($data){
