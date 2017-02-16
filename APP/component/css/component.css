@@ -91,7 +91,7 @@ html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html h
 /* variable, function, style for All APP */
 
 /* disable ‘hold to copy’ on all elements */
-body *{ -webkit-user-select: none;}
+body *:not(input){ -webkit-user-select: none;}
 
 .header-style {
     overflow: hidden;
