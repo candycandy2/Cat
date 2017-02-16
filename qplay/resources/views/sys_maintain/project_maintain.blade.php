@@ -8,7 +8,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         <button type="button" class="btn btn-danger" style="display: none;" onclick="deleteProject()" id="btnDeleteProject">
             {{trans("messages.DELETE")}}
         </button>
-        <a class="btn btn-primary" href="projectDetailMaintain?action=N" id="btnNewProject">
+        <a class="btn btn-primary" onclick="newProject()" id="btnNewProject">
             {{trans("messages.NEW")}}
         </a>
     </div>
@@ -20,20 +20,109 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
-            <th data-field="state" data-checkbox="true"></th>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
-            <th data-field="project_code" data-sortable="true" data-formatter="projectCodeFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
+            <th data-field="project_code" data-align="center" data-sortable="true" data-width="50px" data-formatter="editProjectFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
             <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
-            <th data-field="project_description" data-sortable="true" data-width="600px" data-class="grid_long_column">{{trans("messages.PROJECT_DESCRIPTION")}}</th>
-            <th data-field="project_pm" data-sortable="true" >{{trans("messages.PROJECT_PM")}}</th>
+            <th data-field="secret_key" data-sortable="true" data-class="grid_warp_column">Secret Key</th>
+            <th data-field="project_pm" data-sortable="true">{{trans("messages.PROJECT_PM")}}</th>
+            <th data-field="app_row_id" data-sortable="false" data-width="200px" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
+            <th data-field="row_id" data-sortable="false" data-width="200px" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_TO_ME")}}</th>
         </tr>
         </thead>
     </table>
 
+@section('dialog_content')
+    <div id="newProjectDialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h1 class="modal-title" id="newProjectDialogTitle">New App Key</h1>
+                </div>
+                <div class="modal-body">
+                    <form id="projectForm" name="projectForm">
+                        <table  width="100%">
+                            <tr>
+                                <td>{{trans("messages.APP_KEY")}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" data-clear-btn="true" class="form-control" name="txbAppKey"
+                                           id="txbAppKey" value=""  maxlength="50" onchange="toLower(this)"/>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.PROJECT_PM")}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" data-clear-btn="true" class="form-control" name="tbxProjectPM"
+                                           id="tbxProjectPM" value=""/>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.PROJECT_DESCRIPTION")}}:</td>
+                                <td style="padding: 10px;">
+                                    <textarea class="form-control" name="tbxProjectDescription"
+                                           id="tbxProjectDescription" value=""></textarea>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td colspan = "2">
+                                    <p>Please input the project name you want to applied.</br>
+                                    1.Only allowed to fill in the English alphabet.</br>
+                                    2.The character is non-sentitive, Capital letters will be
+                                    converted to lowercase English letters.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  id="saveNewProjectBtn" class="btn btn-danger" onclick="saveNewProject()">{{trans("messages.SAVE")}}</button>
+                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
     <script>
-        function projectCodeFormatter(value, row) {
-            return '<a href="projectDetailMaintain?action=U&project_id=' + row.row_id + '">' + value + '</a>';
+        function appMaintainFormatter(value, row) {
+            if(typeof(row.app_row_id) == 'undefined' ){
+                return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>{{trans("messages.ACTION_MAINTAIN")}}</span>'; 
+            }
+            else{
+                return '<a href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '" title=" {{trans("messages.ACTION_MAINTAIN")}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{trans("messages.ACTION_MAINTAIN")}}</a>';
+            }
+        };
+
+        function sendAgainFormatter(value, row) {
+            if(typeof(row.app_row_id) == 'undefined' ){
+                return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{trans("messages.SEND_TO_ME")}}</span>'; 
+            }else{
+            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            }
+        };
+        function editProjectFormatter(value, row) {
+            return '<a href="projectDetailMaintain?project_id=' + row.row_id + '">' + value + '</a>';
+        };
+
+        var toLower = function (c) {
+            $(c).val($(c).val().toLowerCase());
+        };
+
+        var saveNewProject = function(){
+            $form = $("#projectForm");
+            $form.submit();
+        };
+
+        var newProject = function() {
+            $("#txbAppKey").val("");
+            $("#tbxProjectPM").val("");
+            $("#tbxProjectDescription").val("");
+            $("#newProjectDialog").find('label.error').hide();
+            $("#newProjectDialog").modal('show');
         };
 
         var deleteProject = function() {
@@ -73,8 +162,8 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                         if(d.result_code != 1) {
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
-                            $("#gridProjectList").bootstrapTable('refresh');
                             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            $("#gridProjectList").bootstrapTable('refresh');
                         }
                     },
                     error: function (e) {
@@ -83,14 +172,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                 });
             });
         };
-
-        $(function() {
-            $('#gridProjectList').on('check.bs.table', selectedChanged);
-            $('#gridProjectList').on('uncheck.bs.table', selectedChanged);
-            $('#gridProjectList').on('check-all.bs.table', selectedChanged);
-            $('#gridProjectList').on('uncheck-all.bs.table', selectedChanged);
-            $('#gridProjectList').on('load-success.bs.table', selectedChanged);
-        });
 
         var selectedChanged = function (row, $element) {
             var selectedProjects = $("#gridProjectList").bootstrapTable('getSelections');
@@ -104,6 +185,101 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                 });
             }
         }
+
+        var sendProjectInformation = function(appKey){
+            var mydata =
+                    {
+                        appKey:appKey,   
+                    };
+                    var mydataStr = $.toJSON(mydata);
+            $.ajax({
+                        url: "platform/sendProjectInformation",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: mydataStr,
+                        success: function (d, status, xhr) {
+                            if(d.result_code != 1) {
+                                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                                return false;
+                            }  else {
+                                $("#newProjectDialog").modal('hide');
+                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                                $("#gridProjectList").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function (e) {
+                              showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                        }
+                    });
+        }
+
+        $(function() {
+            $('#gridProjectList').on('check.bs.table', selectedChanged);
+            $('#gridProjectList').on('uncheck.bs.table', selectedChanged);
+            $('#gridProjectList').on('check-all.bs.table', selectedChanged);
+            $('#gridProjectList').on('uncheck-all.bs.table', selectedChanged);
+            $('#gridProjectList').on('load-success.bs.table', selectedChanged);
+
+
+            $("#projectForm").validate({
+                rules:{
+                    txbAppKey:{
+                        required:true,
+                        maxlength: 50
+                    },
+                    tbxProjectPM:{
+                        required:true
+                    },
+                    tbxProjectDescription:{
+                        required:true
+                    }
+                },
+                submitHandler: function(form) {
+                    $("#saveNewProjectBtn").addClass('disabled');
+                    var mydata =
+                    {
+                        txbAppKey: $("#txbAppKey").val(),
+                        tbxProjectPM: $("#tbxProjectPM").val(),
+                        tbxProjectDescription: $("#tbxProjectDescription").val(),
+                    };
+                    var mydataStr = $.toJSON(mydata);
+                  $("#gridProjectList").bootstrapTable('refresh');
+                    $.ajax({
+                        url: "platform/newProject",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: mydataStr,
+                        success: function (d, status, xhr) {
+                            $("#saveNewProjectBtn").removeClass('disabled');
+                            if(d.result_code != 1) {
+                                $('label.error').remove();
+                                if(d.result_code == '999001'){
+                                    for(var key in d.message){
+                                            $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
+                                    }
+                                }else{
+                                    showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                                }
+                                return false;
+                            }  else {
+                                $("#newProjectDialog").modal('hide');
+                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                                $("#gridProjectList").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function (e) {
+                              $("#saveNewProjectBtn").removeClass('disabled');
+                              showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        
 
     </script>
 @endsection

@@ -8,18 +8,18 @@
                     <div style="margin: 10px" class="text-muted">(512 * 512)</div>
                     <?= $src = ""?>
                     <div class="imgLi"
-                        @if(!isset($appBasic[0]->icon_url) || $appBasic[0]->icon_url=="")
+                        @if(!isset($appMain->icon_url) || $appMain->icon_url=="")
                             style="display:none"
                         @else
-                            <?=$src = \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appBasic[0]->icon_url);?>
+                            <?=$src = \App\lib\FilePath::getIconUrl(app('request')->input('app_row_id'),$appMain->icon_url);?>
                         @endif
                     >
-                        <img class="icon-preview" data-url="{{$appBasic[0]->icon_url}}" src="{{$src}}">
+                        <img class="icon-preview" data-url="{{$appMain->icon_url}}" src="{{$src}}">
                         <img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/>
                     </div>
                  
                     <div class="iconUpload"
-                        @if(isset($appBasic[0]->icon_url) && $appBasic[0]->icon_url!="")
+                        @if(isset($appMain->icon_url) && $appMain->icon_url!="")
                             style="display:none"
                         @endif
                     >
@@ -47,7 +47,7 @@
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{trans('messages.BTN_LANGUAGE')}}<span class="badge js-lang-count"  style="margin-left: 5px;padding: 2px 5px;" ></span><span class="caret" style="margin-left: 5px"></span></button>
                                 <ul class="dropdown-menu js-switchLang" role="menu"  data-source="hintPic" id="switchPicLang">
                             
-                                @foreach ($appBasic as $appData)
+                                @foreach ($appLine as $appData)
                                 <li class="js-switch-lang" id="ddlPicLang_{{$appData->lang_row_id}}" data-toggle="{{$appData->lang_row_id}}"><a href="#">{{$appData->lang_desc}} {{$appData->lang_code}}</a></li>
                                 @endforeach
                             
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="pic-dymaic-content">
-                        @foreach ($appBasic as $appData)
+                        @foreach ($appLine as $appData)
                         <div class="lang js-lang-{{$appData->lang_row_id}}">
                             <ul class="nav nav-tabs">
                                 <li role="presentation" class="active"><a href="#tab_android_{{$appData->lang_row_id}}" data-toggle="tab">Android</a></li>

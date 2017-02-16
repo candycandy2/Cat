@@ -36,6 +36,11 @@
     <script src="{{ asset('/oss/html5shiv.min.js') }}"></script>
     <script src="{{ asset('/oss/respond.min.js') }}"></script>
     <![endif]-->
+    <style>
+        .error{
+            color:red;
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -46,7 +51,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="login_process" method="post">
+        <form action="login_process" method="post" id="loginForm">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="User Name" id="loginid" name="loginid" value="{{ old('loginid') }}">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -97,12 +102,35 @@
 <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('/plugins/iCheck/icheck.min.js') }}"></script>
+<!---validator-->
+<script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
+
 <script>
     $(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
+        });
+
+        $("#loginForm").validate({
+          rules:{
+            loginid:{
+                required:true,
+            },
+            password:{
+                required:true
+            },
+            domain:{
+                required:true
+            },
+            lang:{
+                required:true
+            }
+          },
+          errorPlacement:function(error, element){
+                error.appendTo(element.parent('div'));
+          }
         });
     });
 </script>

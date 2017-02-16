@@ -272,7 +272,12 @@ return [
 	'PROJECT_DESCRIPTION' => '专案描述',
 	'PROJECT_PM' => 'PM',
 	'PROJECT_MEMO' => 'Memo',
+    'APP_MAINTAIN' => 'App 维护',
+    'ACTION_MAINTAIN' => '维护',
+    'SEND_TO_ME' => '寄送详细资讯',
+    'ACTION_SEND' => '再寄一次',
 	'MSG_CONFIRM_DELETE_PROJECT' => '确认删除所选专案?',
+    'MSG_NO_CREATED_APP' => '尚未建立App',
 
 	'ERR_EXIST_ROLE' => '角色在当前公司内已存在!',
 	'ERR_GROUP_NAME_EXIST' => '群组名称已存在!',
