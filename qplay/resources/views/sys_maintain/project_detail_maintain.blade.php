@@ -3,64 +3,62 @@
 use Illuminate\Support\Facades\Input;
 $menu_name = "SYS_PROJECT_MAINTAIN";
 $input = Input::get();
-$action = $input["action"];
 $projectId = "";
 $projectInfo = null;
-if($action == "U") {
-    $projectId = $input["project_id"];
-    $projectInfo = \App\lib\CommonUtil::getProjectInfoById($projectId);
-}
+$projectId = $input["project_id"];
+$projectInfo = \App\lib\CommonUtil::getProjectInfoById($projectId);
 ?>
 @extends('layouts.admin_template')
 @section('content')
     <div class="row">
         <div class="col-lg-6 col-xs-6">
             <table style="width: 100%">
-                <tr>
-                    <td>{{trans("messages.PROJECT_CODE")}}:</td>
-                    <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxProjectCode" class="form-control"
-                               id="tbxProjectCode" value="@if($action == "U"){{$projectInfo->project_code}}@endif"/>
-                    </td>
-                    <td><span style="color: red;">*</span></td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.APP_KEY")}}:</td>
-                    <td style="padding: 10px;">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td>app</td>
-                                <td>
-                                    <input type="text" data-clear-btn="true" name="tbxAppKey" class="form-control" onchange="toLower(this)"
-                                           id="tbxAppKey" value="@if($action == "U" && strpos($projectInfo->app_key, "app") == 0){{substr($projectInfo->app_key,3)}}@endif"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td><span style="color: red;">*</span></td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.PROJECT_DESCRIPTION")}}:</td>
-                    <td style="padding: 10px;">
-                        <textarea type="text" data-clear-btn="true" name="tbxProjectDescription" class="form-control"
-                               id="tbxProjectDescription">@if($action == "U"){{$projectInfo->project_description}}@endif</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.PROJECT_MEMO")}}:</td>
-                    <td style="padding: 10px;">
-                        <textarea type="text" data-clear-btn="true" name="tbxProjectMemo" class="form-control"
-                                  id="tbxProjectMemo">@if($action == "U"){{$projectInfo->project_memo}}@endif</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{trans("messages.PROJECT_PM")}}:</td>
-                    <td style="padding: 10px;">
-                        <input type="text" data-clear-btn="true" name="tbxProjectPM" class="form-control"
-                               id="tbxProjectPM" value="@if($action == "U"){{$projectInfo->project_pm}}@endif"/>
-                    </td>
-                    <td><span style="color: red;">*</span></td>
-                </tr>
+                <form id="projectForm" name="projectForm">
+                    <tr>
+                        <td>{{trans("messages.PROJECT_CODE")}}:</td>
+                        <td style="padding: 10px;">
+                            <input type="text" data-clear-btn="true" name="tbxProjectCode" class="form-control"
+                                   id="tbxProjectCode" value="{{$projectInfo->project_code}}" disabled />
+                        </td>
+                        <td><span style="color: red;">*</span></td>
+                    </tr>
+                    <tr>
+                        <td>{{trans("messages.APP_KEY")}}:</td>
+                        <td style="padding: 10px;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <input type="text" data-clear-btn="true" name="tbxAppKey" class="form-control"
+                                               id="tbxAppKey" value="{{$projectInfo->app_key}}" disabled/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td><span style="color: red;">*</span></td>
+                    </tr>
+                    <tr>
+                        <td>{{trans("messages.PROJECT_DESCRIPTION")}}:</td>
+                        <td style="padding: 10px;">
+                            <textarea type="text" data-clear-btn="true" name="tbxProjectDescription" class="form-control"
+                                   id="tbxProjectDescription">{{$projectInfo->project_description}}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{trans("messages.PROJECT_MEMO")}}:</td>
+                        <td style="padding: 10px;">
+                            <textarea type="text" data-clear-btn="true" name="tbxProjectMemo" class="form-control"
+                                      id="tbxProjectMemo">{{$projectInfo->project_memo}}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{trans("messages.PROJECT_PM")}}:</td>
+                        <td style="padding: 10px;">
+                            <input type="text" data-clear-btn="true" name="tbxProjectPM" class="form-control"
+                                   id="tbxProjectPM" value="{{$projectInfo->project_pm}}"/>
+                        </td>
+                        <td><span style="color: red;">*</span></td>
+                    </tr>
+                </form>
             </table>
         </div>
 
@@ -77,56 +75,66 @@ if($action == "U") {
     </div>
 
     <script>
-        var toLower = function (c) {
-            $(c).val($(c).val().toLowerCase());
-        };
-
-        var pageAction = '{{$action}}';
         var projectId = '{{$projectId}}';
         var SaveProject = function() {
-            var projectCode = $("#tbxProjectCode").val();
-            var appKey = $("#tbxAppKey").val();
-            var projectPM = $("#tbxProjectPM").val();
-            if(projectCode == "" || appKey == "" || projectPM == "") {
-                showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
-                return false;
-            }
+             $form = $("#projectForm");
+             $form.submit();
+        };
 
-            appKey = "app" + appKey;
-            var mydata =
-            {
-                action: pageAction,
-                project_id: projectId,
-                project_code: projectCode,
-                app_key: appKey,
-                project_pm: projectPM,
-                project_description: $("#tbxProjectDescription").val(),
-                project_memo: $("#tbxProjectMemo").val()
-            };
+         $(function() {
 
-            var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "platform/saveProject",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: mydataStr,
-                success: function (d, status, xhr) {
-                    if(d.result_code != 1) {
-                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
-                    }  else {
-                        if(pageAction == "N") {
-                            pageAction = "U";
-                            projectId = d.new_project_id;
-                        }
-                        showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+             $("#projectForm").validate({
+                rules:{
+                    tbxProjectPM:{
+                        required:true
                     }
                 },
-                error: function (e) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                submitHandler: function(form) {
+                    var projectCode = $("#tbxProjectCode").val();
+                    var appKey = $("#tbxAppKey").val();
+                    var projectPM = $("#tbxProjectPM").val();
+                    var mydata =
+                    {
+                        projectId:projectId,
+                        projectCode:projectCode,
+                        txbAppKey: appKey,
+                        tbxProjectPM: projectPM,
+                        tbxProjectDescription: $("#tbxProjectDescription").val(),
+                        tbxProjectMemo:  $("#tbxProjectMemo").val()
+                    };
+
+                    var mydataStr = $.toJSON(mydata);
+                    $.ajax({
+                        url: "platform/updateProject",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: mydataStr,
+                        success: function (d, status, xhr) {
+                            if(d.result_code != 1) {
+                                
+                                $('label.error').remove();
+                                        if(d.result_code == '999001'){
+                                            for(var key in d.message){
+                                                    $('#' + key).after('<label for="' + key + '" generated="true" class="error" style="display: inline-block;">' + d.message[key] + '</label>');
+                                            }
+                                        }else{
+                                            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                                        }
+                                return false;
+                            }  else {
+                                projectId = d.new_project_id;
+                                showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            }
+                        },
+                        error: function (e) {
+                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                        }
+                    });
                 }
             });
-        };
+
+         });
     </script>
 @endsection
 

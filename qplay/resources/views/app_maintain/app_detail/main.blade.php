@@ -7,7 +7,9 @@ $version_path   = $detail_path.'.app_version';
 $appStatus =  \App\lib\CommonUtil::getAppVersionStatus(app('request')->input('app_row_id'));
 $tempFlag = 0;
 $lang = array();
-$appBasic = $data['appBasic'];
+
+$appMain = $data['appMain'];
+$appLine = $data['appLine'];
 $langList = $data['langList'];
 $categoryList = $data['categoryList'];
 $picData =  $data['picData'];
@@ -22,13 +24,14 @@ $securityLevel = 3;
 $default = 0;
 $allowLangList=[];
 
-foreach ($appBasic as $key => $appData){
+$defaultLang = $appMain->default_lang_row_id;
+$categoryId = $appMain->app_category_row_id;
+$securityLevel = $appMain->security_level;
+$projectCode = $appMain->project_code;
+$appKey =  $appMain->app_key;
+
+foreach ($appLine as $key => $appData){
     $allowLangList[$appData->lang_row_id]=$appData->lang_desc.' '.$appData->lang_code;
-    $defaultLang = $appData->default_lang_row_id;
-    $categoryId = $appData->app_category_row_id;
-    $securityLevel = $appData->security_level;
-    $projectCode = $appData->project_code;
-    $appKey =  $appData->app_key;
 }
 foreach ($enableRole as $role){
     $enableRoleArray[] = $role->role_row_id;
@@ -58,7 +61,7 @@ foreach ($enableRole as $role){
             <button type="button" id="saveAppDetail" class="btn btn-primary" onclick="SaveAppDetail()" style="display: none">
                 {{trans("messages.SAVE")}}
             </button>
-            <a type="button" class="btn btn-default" href="AppMaintain">
+            <a type="button" class="btn btn-default" id="goBack">
                 {{trans("messages.RETURN")}}
             </a>
         </div>
@@ -147,6 +150,13 @@ function validRequired(fieldList){
 }
 
 $(function () {
+    $('#goBack').click(function(){
+        if(getUrlVar('source') == 'develop'){
+            window.location='{{asset('projectMaintain')}}';
+        }else{
+            window.location='{{asset('AppMaintain')}}';
+        }
+    });
     $('.bootstrapTable').on('check.bs.table', selectedChanged);
     $('.bootstrapTable').on('uncheck.bs.table', selectedChanged);
     $('.bootstrapTable').on('check-all.bs.table', selectedChanged);

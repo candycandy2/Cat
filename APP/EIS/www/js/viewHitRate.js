@@ -1,14 +1,40 @@
-var chart;
-var a = [1, 1, 1, 1, 1];
-var b = [2, 2, 2, 2, 2];
-var c = [3, 3, 3, 3, 3];
+var chart, queryData;
+var budgetAMT = {};
+var actualAMT = {};
 
-$("#viewHitRate").pagecontainer({
+$("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
-		
+    	
+    	window.ROSummary = function() {
+			endYearMonth = currentYear + "/" + currentMonth;
+    		queryData =   "<LayoutHeader><StartYearMonth>"
+    					+ startYearMonth
+    					+ "</StartYearMonth><EndYearMonth>"
+    					+ endYearMonth
+    					+ "</EndYearMonth></LayoutHeader>";
+
+	    	this.successCallback = function(data) {
+	    		var length = data["Content"]["DataList"].length;
+	    		var year, month, rosite;  
+	    		for(var i=0; i<length; i++) {
+	    			year = data["Content"]["DataList"][i]["YEAR"];
+	    			month = data["Content"]["DataList"][i]["MONTH"];
+	    			rosite = data["Content"]["DataList"][i]["RO_SITE"];
+	    			// eisdata[year] = {};
+	    			// eisdata[year][month] = {};
+	    			// eisdata[year][month][rosite] = "1";
+	    		}
+	    	};
+
+	    	this.failCallback = function(data) {};
+
+			var _cobns = function() {
+				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, queryData, "");
+			}();
+		};
 
     	$("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-    		
+    		console.log("a");
     	});
 
 		/********************************** page event *************************************/
@@ -16,7 +42,8 @@ $("#viewHitRate").pagecontainer({
 			chart = new Highcharts.Chart ({
 				chart: {
 					renderTo: 'viewHitRate-hc-canvas',
-		    		type: 'column'
+					marginTop: 30,
+					marginLeft: 50
 				},
 				title: {
 					text: '' 
@@ -32,10 +59,22 @@ $("#viewHitRate").pagecontainer({
 			    	crosshair: true
 				},
 				yAxis: {
-			    	min: 0,
-			    	title: {
-			        	text: ''
-			    	}
+        			title: {
+        				text: '(USD$M)',
+        				align: 'high',
+        				rotation: 0,
+        				offset: 0,
+        				x: 5,
+        				y: -11
+        			},
+        			min: 0,
+        			tickInterval: 500
+        		},
+				legend: {
+					align: 'left',
+					float: true,
+					x: -13,
+					y: 10
 				},
 				credits: {
 					enabled: false
@@ -59,28 +98,33 @@ $("#viewHitRate").pagecontainer({
 				},
 				series: [{
 			    	name: 'Budget AMT',
-			    	data: [1, 1, 1, 1, 1] 
+			    	type: 'column',
+			    	color: '#0AB5B6',
+			    	data: [1000, 1000, 1000, 1000, 1000]
 				},{
 					name: 'Actual AMT',
-			    	data: [2, 2, 2, 2, 2]
+					type: 'column',
+					color: '#F4A143',
+			    	data: [1500, 1500, 1500, 1500, 1500]
 				}]
 			});
-
 			loadingMask("hide");
-			
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function(){
+        	var a = [1000, 1000, 1000, 1000, 1000];
         	chart.series[0].setData(a, true);
         	chart.series[1].setData(a, true);
         });
 
         $(".page-tabs #viewHitRate-tab-2").on("click", function(){
+        	var b = [2000, 2000, 2000, 2000, 2000];
         	chart.series[0].setData(b, true);
         	chart.series[1].setData(b, true);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function(){
+        	var c = [3000, 3000, 3000, 3000, 3000];
         	chart.series[0].setData(c, true);
         	chart.series[1].setData(c, true);
         });
