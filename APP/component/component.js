@@ -111,7 +111,7 @@ var app = {
         var now = new Date();
         logFileName = now.yyyymm("");
         //console.log(cordova.file);
-        LogFile.checkOldFile();
+        //LogFile.checkOldFile();
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
