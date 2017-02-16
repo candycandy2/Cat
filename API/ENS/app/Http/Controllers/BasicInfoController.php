@@ -21,7 +21,10 @@ class BasicInfoController extends Controller
     {
         $this->basicInfoService = $basicInfoService;
     }
-
+    /**
+     * 取得地點等基本資訊
+     * @return json
+     */
     public function getBasicInfo(){
         try{
             $Verify = new Verify();
