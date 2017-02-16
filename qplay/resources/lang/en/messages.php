@@ -277,6 +277,7 @@ return [
     'SEND_TO_ME' => 'Send To Me',
     'ACTION_SEND' => 'Send Again',
     'MSG_CONFIRM_DELETE_PROJECT' => 'Confirm to delete project?',
+    'MSG_NO_CREATED_APP' => 'No created App',
 
     'ERR_EXIST_ROLE' => 'Same role exist in this company!',
     'ERR_GROUP_NAME_EXIST' => 'Group name exist!',

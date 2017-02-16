@@ -1,26 +1,41 @@
-var chart;
-var a = [1000, 1000, 1000, 1000, 1000];
-var b = [2000, 2000, 2000, 2000, 2000];
-var c = [3000, 3000, 3000, 3000, 3000];
+var chart, queryData;
+var budgetAMT = {};
+var actualAMT = {};
 
 $("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
     	
-    	window.a = function() {
-    		var queryData = "<LayoutHeader><StartYearMonth>2014/12</StartYearMonth><EndYearMonth>2014/12</EndYearMonth></LayoutHeader>";
-    	
+    	window.ROSummary = function() {
+			endYearMonth = currentYear + "/" + currentMonth;
+    		queryData =   "<LayoutHeader><StartYearMonth>"
+    					+ startYearMonth
+    					+ "</StartYearMonth><EndYearMonth>"
+    					+ endYearMonth
+    					+ "</EndYearMonth></LayoutHeader>";
+
 	    	this.successCallback = function(data) {
-	    		console.log(data);
+	    		var length = data["Content"]["DataList"].length;
+	    		var year, month, rosite;  
+	    		for(var i=0; i<length; i++) {
+	    			year = data["Content"]["DataList"][i]["YEAR"];
+	    			month = data["Content"]["DataList"][i]["MONTH"];
+	    			rosite = data["Content"]["DataList"][i]["RO_SITE"];
+	    			// eisdata[year] = {};
+	    			// eisdata[year][month] = {};
+	    			// eisdata[year][month][rosite] = "1";
+	    		}
 	    	};
 
 	    	this.failCallback = function(data) {};
 
 			var _cobns = function() {
-				CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
+				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, queryData, "");
 			}();
 		};
-    	// $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-    	// });
+
+    	$("#viewHitRate").on("pagebeforeshow", function(event, ui) {
+    		console.log("a");
+    	});
 
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
@@ -93,22 +108,23 @@ $("#viewHitRate").pagecontainer ({
 			    	data: [1500, 1500, 1500, 1500, 1500]
 				}]
 			});
-
 			loadingMask("hide");
-			
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function(){
+        	var a = [1000, 1000, 1000, 1000, 1000];
         	chart.series[0].setData(a, true);
         	chart.series[1].setData(a, true);
         });
 
         $(".page-tabs #viewHitRate-tab-2").on("click", function(){
+        	var b = [2000, 2000, 2000, 2000, 2000];
         	chart.series[0].setData(b, true);
         	chart.series[1].setData(b, true);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function(){
+        	var c = [3000, 3000, 3000, 3000, 3000];
         	chart.series[0].setData(c, true);
         	chart.series[1].setData(c, true);
         });

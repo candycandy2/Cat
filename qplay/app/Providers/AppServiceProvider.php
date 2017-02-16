@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('is_app_key_unique', function($attribute, $value, $parameters, $validator) {
-            $existList = \DB::connection('mysql_production')->table("qp_project")->where("app_key", '=', CommonUtil::getContextAppKey('test',$value))->select()->get();
+            $existList = \DB::connection('mysql_production')->table("qp_project")->where("app_key", '=', CommonUtil::getContextAppKey('production',$value))->select()->get();
             if(count($existList) > 0) {
                 return false;
             }

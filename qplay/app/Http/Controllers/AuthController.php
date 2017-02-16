@@ -18,41 +18,51 @@ class AuthController extends Controller
     /**
      * 登入流程
      */
-    public function authenticate()
+    public function authenticate(Request $request)
     {
         $input = Input::get();
+        $validator = \Validator::make($request->all(), [
+            'loginid'   => 'required',
+            'password'  => 'required',
+            'domain'    => 'required',
+            'lang'      => 'required'
+        ]);
+        if ($validator->fails()) {
+            $data['errormsg'] ='loginid / password / domain / lang can not empty!';
+            return \Redirect::to('auth/login')->with($data);
+        }
+
         $loginid = $input["loginid"];
         $password = $input["password"];
         $domain = $input["domain"];
         $lang = $input["lang"];
         $remember = false;
-        if(array_key_exists("remember", $input)) {
+        if (array_key_exists("remember", $input)) {
             $remember = $input["remember"];
         }
-        //TODO real login
+
         $verify = new Verify();
         $result = $verify->verifyUserByUserID($loginid, $domain);
         if($result["code"] != ResultCode::_1_reponseSuccessful)
         {
-            //return $result["message"];
             $data['errormsg'] = $result["message"];
+            return \Redirect::to('auth/login')->with($data);
+        }
+
+        //Check user password with LDAP
+        //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
+        $LDAP_SERVER_IP = "LDAP://10.82.12.61";
+        $userId = $domain . "\\" . $loginid;
+        $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+        $bind = @ldap_bind($ldapConnect, $userId, $password);
+        if (!$bind)
+        {
+            $data['errormsg'] = "帳號或密碼錯誤";
             return \Redirect::to('auth/login')->with($data);
         }
 
         if (Auth::attempt(['login_id' => $loginid, 'status' => 'Y', 'resign' => 'N', 'password' => $password, 'user_domain'=>$domain], $remember)) {
             \Session::set('lang', $lang);
-
-            //Check user password with LDAP
-            //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
-            $LDAP_SERVER_IP = "LDAP://10.82.12.61";
-            $userId = $domain . "\\" . $loginid;
-            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-            $bind = @ldap_bind($ldapConnect, $userId, $password);
-            if(!$bind)
-            {
-                $data['errormsg'] = "Login Failed";
-                return \Redirect::to('auth/login')->with($data);
-            }
             // 认证通过...
             return redirect()->to($this->getRdirectUrl());
         } else {
@@ -78,7 +88,7 @@ class AuthController extends Controller
      */
     public function checkLogin(Request $request){
         
-        $sectrtPwd = 'iv0F5K1dNaSKhcGqUxwhBm+H7x4cxcUQgdOQxld6Q2s'; //快速通關密碼
+        $sectrtPwd = '1416b460d0f2262770b59f5f00a83e4f'; //快速通關密碼
 
         $input = Input::get();
         $loginid = $request->header('loginid');

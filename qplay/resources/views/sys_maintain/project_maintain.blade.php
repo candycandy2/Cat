@@ -89,11 +89,20 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
 
     <script>
         function appMaintainFormatter(value, row) {
-            return '<a href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{trans("messages.ACTION_MAINTAIN")}}</a>';
+            if(typeof(row.app_row_id) == 'undefined' ){
+                return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>{{trans("messages.ACTION_MAINTAIN")}}</span>'; 
+            }
+            else{
+                return '<a href="appDetailMaintain?source=develop&app_row_id=' + row.app_row_id + '" title=" {{trans("messages.ACTION_MAINTAIN")}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> {{trans("messages.ACTION_MAINTAIN")}}</a>';
+            }
         };
 
         function sendAgainFormatter(value, row) {
-            return '<a href="#" onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            if(typeof(row.app_row_id) == 'undefined' ){
+                return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{trans("messages.SEND_TO_ME")}}</span>'; 
+            }else{
+            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            }
         };
         function editProjectFormatter(value, row) {
             return '<a href="projectDetailMaintain?project_id=' + row.row_id + '">' + value + '</a>';
@@ -178,7 +187,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         }
 
         var sendProjectInformation = function(appKey){
-            console.log(this);
             var mydata =
                     {
                         appKey:appKey,   
