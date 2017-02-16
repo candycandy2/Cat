@@ -374,6 +374,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
                 }
             } else {
                 if (doInitialSuccess) {
+alert("doInitialSuccess--true");
                     doInitialSuccess = false;
                     hideInitialPage();
                 } else {
@@ -557,7 +558,7 @@ function checkAppVersion() {
     loadingMask("show");
 
     this.successCallback = function(data) {
-
+alert("checkAppVersion");
         var resultcode = data['result_code'];
 
         if (resultcode == 1 || resultcode == 000915) {
@@ -623,7 +624,7 @@ function setWhiteList() {
 
     this.successCallback = function() {
         var doCheckStorageData = false;
-
+alert("setWhiteList");
         if (appKey !== qplayAppKey) {
             if (window.localStorage.getItem("openScheme") === "true") {
                 if (callHandleOpenURL) {
@@ -736,6 +737,7 @@ function setWhiteList() {
 
 //check data(token, token_value, ...) on web-storage
 function checkStorageData() {
+alert("checkStorageData");
     if (window.localStorage.length === 0) {
         getDataFromServer = true;
     } else {
@@ -772,6 +774,7 @@ function processStorageData(action, data) {
 
         return checkLoginDataExist;
     } else if (action === "checkSecurityList") {
+alert("checkSecurityList");
         $.map(loginData, function(value, key) {
             if (window.localStorage.getItem(key) !== null) {
                 loginData[key] = window.localStorage.getItem(key);
@@ -830,6 +833,7 @@ function getSecurityList() {
     var queryStr = "&app_key=" + appKey;
 
     this.successCallback = function(data) {
+alert("getSecurityList");
         doInitialSuccess = true;
         checkTokenValid(data['result_code'], data['token_valid'], null, null);
     };
@@ -850,7 +854,9 @@ function createAPPSchemeURL() {
 
 //Return Login Data from QPlay
 function getLoginDataCallBack() {
+alert("getLoginDataCallBack");
     var callBackURL = queryData["callbackApp"] + createAPPSchemeURL();
+alert(callBackURL);
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
@@ -860,7 +866,8 @@ function getLoginDataCallBack() {
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
 function handleOpenURL(url) {
-
+alert("handleOpenURL");
+alert(url);
     if (url !== "null") {
 
         callHandleOpenURL = true;
@@ -877,7 +884,7 @@ function handleOpenURL(url) {
         });
 
         if (appKey === qplayAppKey && queryData["action"] === "getLoginData") {
-
+alert("getLoginData");
             loginData['doLoginDataCallBack'] = true;
 
             //APP version record
@@ -900,7 +907,7 @@ function handleOpenURL(url) {
             checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
-
+alert("retrunLoginData");
             window.localStorage.setItem("openScheme", false);
 
             $.map(queryData, function(value, key) {
@@ -917,7 +924,9 @@ function handleOpenURL(url) {
         //[APP is in action or background] need to following step.
         if (loginData['doLoginDataCallBack'] === true) {
             $.mobile.changePage('#viewInitial');
+alert("----1");
             if (appInitialFinish === true) {
+alert("----2");
                 var checkAppVer = new checkAppVersion();
             }
         }

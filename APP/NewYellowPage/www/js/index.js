@@ -13,7 +13,7 @@ var prevPageID;
 var doClearInputData = false;
 
 window.initialSuccess = function() {
-
+alert("initialSuccess");
     loadingMask("show");
 
     $.mobile.changePage('#viewDataInput');
