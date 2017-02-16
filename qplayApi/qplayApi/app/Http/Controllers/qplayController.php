@@ -2302,7 +2302,7 @@ SQL;
         
         $isSchedule = false;
         $push_time_utc = 0;
-        if(array_key_exists('app_key', $input))
+        if(array_key_exists('push_time_utc', $input))
         {
             $isSchedule = true;
             $push_time_utc = trim($input["push_time_utc"]);
