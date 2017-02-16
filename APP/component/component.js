@@ -866,7 +866,8 @@ alert(callBackURL);
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
 function handleOpenURL(url) {
-
+alert("handleOpenURL");
+alert(url);
     if (url !== "null") {
 
         callHandleOpenURL = true;
