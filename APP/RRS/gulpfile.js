@@ -144,9 +144,14 @@ gulp.task('build', shell.task([
     'cordova build ios --debug --device --buildConfig=build.json',
 ]))
 
-gulp.task('componentCSS', function(){
+gulp.task('appCSS', function(){
     return gulp.src(['../component/css/component.css','../component/css/template.css'])
         .pipe(concat('APP.css'))
+        .pipe(gulp.dest('www/css/'));
+});
+
+gulp.task('componentCSS', ['appCSS'], function() {
+    return gulp.src('../component/css/jquery.mobile-1.4.5.min.css')
         .pipe(gulp.dest('www/css/'));
 });
 
