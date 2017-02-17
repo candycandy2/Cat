@@ -79,18 +79,6 @@
             // });
 
             /***********************************************  Validation of input data  ***********************************************/
-            $("#CName").keyup(function(event) {
-                var pattern = /([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)[\u4E00-\u9FFF\u3400-\u4DB5\-\.]*([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)/;
-                var maxlength = $("#CName").data('maxlength');
-                var residue = event.currentTarget.value.match(pattern);
-                if(residue[1] !== "" || residue[2] !== "") {
-                    $("#CName").val($("#CName").val().replace(residue[1], ""));
-                    $("#CName").val($("#CName").val().replace(residue[2], ""));
-                }
-                if($("#CName").val().length > maxlength - 1)
-                    $("#CName").val($("#CName").val().substring(0, maxlength));
-            });
-
             $("#EName").keyup(function(event) {
                 var pattern = /([^a-zA-Z\-\.]*)[a-zA-Z\-\.]*([^a-zA-Z\-\.]*)/;
                 var maxlength = $("#EName").data('maxlength');

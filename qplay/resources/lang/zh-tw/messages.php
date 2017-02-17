@@ -272,7 +272,12 @@ return [
     'PROJECT_DESCRIPTION' => '專案描述',
     'PROJECT_PM' => 'PM',
     'PROJECT_MEMO' => 'Memo',
+    'APP_MAINTAIN' => 'App 維護',
+    'ACTION_MAINTAIN' => '維護',
+    'SEND_TO_ME' => '寄送詳細資訊',
+    'ACTION_SEND' => '再寄一次',
     'MSG_CONFIRM_DELETE_PROJECT' => '確認刪除所選專案?',
+    'MSG_NO_CREATED_APP' => '尚未建立App',
 
     'ERR_EXIST_ROLE' => '角色在當前公司內已存在!',
     'ERR_GROUP_NAME_EXIST' => '群組名稱已存在!',

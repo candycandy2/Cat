@@ -290,7 +290,6 @@ class EventService
        //TODO append ENS event link
        $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
        $result = json_decode($pushResult);
-       var_dump($result );exit();
        return $result;
    }
 

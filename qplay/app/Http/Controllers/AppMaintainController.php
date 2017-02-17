@@ -298,36 +298,54 @@ class AppMaintainController extends Controller
         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
+
         $data = array();
         $appRowId = $input["app_row_id"];
-        $appBasic = \DB::table("qp_app_head as h")
+        $appMain = \DB::table("qp_app_head as h")
                 -> join('qp_project as p', 'h.project_row_id', '=', 'p.row_id')
-                -> join('qp_app_line as l', 'h.row_id', '=', 'l.app_row_id')
-                -> join('qp_language as lang', 'l.lang_row_id', '=', 'lang.row_id')
                 -> where('h.row_id', '=', $appRowId)
-                -> select('h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
-                            'h.security_level','h.icon_url','h.company_label','l.row_id','l.app_description' ,'l.app_name' ,
-                            'l.lang_row_id','l.app_summary','lang.lang_desc' ,'lang.lang_code',
-                            'p.app_key','p.project_code')
-                -> get();
+                ->select('p.app_key','p.project_code','p.created_user','p.project_pm',
+                         'h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
+                        'h.security_level','h.icon_url','h.company_label')
+                ->first();
 
-         $appPic = \DB::table("qp_app_pic as pic")
+        if(count($appMain) == 0){
+            abort(404);
+        }
+
+        if(!\Auth::user()->isAppAdmin()){
+            if($appMain->created_user!=\Auth::user()->row_id &&
+             strtolower($appMain->project_pm)!=strtolower(\Auth::user()->login_id)){
+                abort(404); 
+            }
+        }
+
+        $appLine = \DB::table("qp_app_line as l")
+                -> join('qp_language as lang', 'l.lang_row_id', '=', 'lang.row_id')
+                -> where('l.app_row_id', '=', $appRowId)
+                -> select('l.row_id','l.app_description' ,'l.app_name' ,'l.lang_row_id', 'l.app_summary',
+                        'lang.lang_desc' ,'lang.lang_code')
+                ->get();
+
+        $picData=[];
+        $appPic = \DB::table("qp_app_pic as pic")
                 -> join('qp_app_head as h', 'h.row_id', '=', 'pic.app_row_id')
                 -> join('qp_project as p', 'h.project_row_id', '=', 'p.row_id')
                 -> join('qp_language as lang', 'pic.lang_row_id', '=', 'lang.row_id')
                 -> where('pic.app_row_id', '=', $appRowId)
                 -> select('pic.row_id','pic.pic_url','pic.lang_row_id','pic.pic_type')
                 -> get();
-        $picData = array();
+
         foreach ($appPic  as $value) {
              $picData[$value->lang_row_id][$value->pic_type][$value->row_id]=$value->pic_url;
         }
         $data['picData']        = $picData;
-        $data['appBasic']       = $appBasic;
+        $data['appMain']        = $appMain;
+        $data['appLine']        = $appLine;
         $data['langList']       = CommonUtil::getLangList();
         $data['categoryList']   = CommonUtil::getAllCategoryList();
-        $data['errorCode']      = $this->getErrorCode($appBasic[0]->project_row_id,$appRowId);
-        $data['company_label']  = ($appBasic[0]->company_label == "")?null:explode(';',$appBasic[0]->company_label);
+        $data['errorCode']      = $this->getErrorCode($appMain->project_row_id,$appRowId);
+        $data['company_label']  = ($appMain->company_label == "")?null:explode(';',$appMain->company_label);
 
         return view("app_maintain/app_detail/main")->with('data',$data);
     }
@@ -434,7 +452,7 @@ class AppMaintainController extends Controller
         $appRowId = $input["app_row_id"];
         $customApiList = \DB::table("qp_app_custom_api")
                 -> where('app_row_id', '=', $appRowId)
-                -> select('row_id', 'api_version', 'api_action', 'api_url')
+                -> select('row_id', 'api_version', 'api_action', 'api_url','app_key')
                 -> get();
 
         return response()->json($customApiList);
@@ -824,11 +842,15 @@ class AppMaintainController extends Controller
             $appsList = \DB::table("qp_app_head as h")
                 -> join('qp_project as p','h.project_row_id', '=', 'p.row_id')
                 -> where(function($query) use ($categoryId,$op){
-            
+            if(!\Auth::user()->isAppAdmin()){
+               $query -> where('p.created_user','=',\Auth::user()->row_id);
+               $query-> orwhere('p.project_pm','=',\Auth::user()->login_id);
+            }
             if(isset($categoryId) && is_numeric($categoryId) && isset($op))
 
                 $query->where('h.app_category_row_id', $op, $categoryId);
             })
+           
             -> select('h.row_id','h.package_name','h.icon_url',
                         'h.app_category_row_id','h.default_lang_row_id',
                         'h.updated_at','h.created_at')

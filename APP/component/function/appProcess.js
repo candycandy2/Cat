@@ -2,6 +2,8 @@
 /************************************************************************************************/
 /********************************** APP Process JS function *************************************/
 /************************************************************************************************/
+var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
+    isDisConnect = false;                   // check if disconnect
 
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
@@ -21,7 +23,7 @@ function getLanguageString() {
 
 function addConponentView() {
     //add component view template into index.html
-    $.get("View/component.html", function(data) {
+    $.get("View/APP.html", function(data) {
         $.mobile.pageContainer.append(data);
 
         //Set viewInitial become the index page
@@ -80,6 +82,8 @@ function checkNetwork(data) {
             showNetworkDisconnected = true;
         }
 
+        isDisConnect = true;
+
         logMsg = "Network disconnected";
     } else {
         //----Network connected
@@ -99,6 +103,13 @@ function checkNetwork(data) {
                 logMsg = "Network status=canceled, timeout";
             }
         }
+        // reload page when network is back and the page is initial one
+        else{
+            if (isDisConnect && $('#viewInitial').css('display') === 'block'){
+                location.reload();
+            }
+            isDisConnect = false;
+        }
     }
 
     if (showMsg) {
@@ -106,17 +117,24 @@ function checkNetwork(data) {
         $('#disconnectNetwork').show();
         $('#disconnectNetwork').popup('open');
 
-        $("#closeDisconnectNetwork").on("click", function(){
-            $('#disconnectNetwork').popup('close');
-            $('#disconnectNetwork').hide();
+        // closeDisconnectNetwork click event should init only once
+        if (!closeDisconnectNetworkInit){
+            $("#closeDisconnectNetwork").on("click", function(){
+                $('#disconnectNetwork').popup('close');
+                $('#disconnectNetwork').hide();
 
-            showNetworkDisconnected = false;
+                showNetworkDisconnected = false;
+                setTimeout(function(){
+                    checkNetwork();
+                }, 500);
 
-            if (reStartAPP) {
-                reStartAPP = false;
-                location.reload();
-            }
-        });
+                if (reStartAPP) {
+                    reStartAPP = false;
+                    location.reload();
+                }
+            });
+            closeDisconnectNetworkInit = true;
+        }
     }
 
     if (logMsg.length > 0) {
@@ -163,6 +181,7 @@ function checkPopupShown() {
 
 //Hide APP initial page
 function hideInitialPage() {
+//alert("hideInitialPage");
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }

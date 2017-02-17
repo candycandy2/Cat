@@ -41,7 +41,7 @@
                         $("#detail-data #sideCode").html(data['Content'][0].SiteCode);
                         $("#detail-data #dept").html(data['Content'][0].Dept);
                         $("#detail-data #deptCode").html(data['Content'][0].DeptCode);
-                        $("#detail-data #extNo").html(data['Content'][0].Ext_No);
+                        $("#detail-data #extNo").html("<a href='tel:" + data['Content'][0].Ext_No + "'>" + data['Content'][0].Ext_No + "</a>");
                         $("#detail-data #eMail").html(data['Content'][0].EMail);
                     }
                     loadingMask("hide");                

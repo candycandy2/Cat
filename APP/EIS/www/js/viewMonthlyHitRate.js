@@ -1,6 +1,5 @@
 var chart;
 
-
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
         /********************************** page event *************************************/
@@ -12,28 +11,44 @@ $("#viewMonthlyHitRate").pagecontainer({
         	chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
+        			marginBottom: 80,
+        			marginTop: 20,
+        			marginLeft: 55
         		},
         		title: {
         			text: ''
         		},
         		xAxis: {
         			title: {
-        				text: '(Mth)'	
+        				text: '(Mth)',
+        				align: 'high'	
         			},
         			tickInterval: 1,
         			crosshair: true
         		},
         		yAxis: {
-        			min: 0,
         			title: {
-        				text: '(USD$K)'
-        			}
+        				text: '(USD$M)',
+        				align: 'high',
+        				rotation: 0,
+        				offset: 0,
+        				x: 6,
+        				y: -11
+        			},
+        			min: 0,
+        			tickInterval: 500
         		},
-        		tooltip: {
-        			shared: true
+        		legend: {
+        			align: 'left',
+        			float: true,
+        			x: -7,
+        			y: 13
         		},
         		credits: {
-        			enabled: false
+					enabled: false
+				},
+        		tooltip: {
+        			shared: true
         		},
         		plotOptions: {
         			column: {
@@ -41,25 +56,33 @@ $("#viewMonthlyHitRate").pagecontainer({
         				borderWidth: 0
         			}
         		},
+        		exporting: {
+        			enabled: false
+        		},
         		series: [{
         			name: '2014 Actual QTY',
         			type: 'column',
-        			data: [56.12, 90.4, 33.9, 92.2, 79.4, 84.3, 79.1, 70.2, 69.4, 59.8, 60.5, 12],
+        			color: '#0AB5B6',
+        			data: [1912, 2904, 3390, 2922, 2794, 1843, 2791, 2702, 2694, 1598, 2605, 3120],
         			pointStart: 1
         		}, {
         			name: '2015 Actual QTY',
         			type: 'column',
-        			data: [63.4, 78.2, 85.1, 112, 91, 101, 99.1, 21.7, 78.1, 66.9, 12.21, 21.5],
+        			color: '#F4A143',
+        			data: [2634, 1782, 1851, 2112, 3910, 1010, 1991, 2217, 2781, 3669, 1221, 2150],
         			pointStart: 1
         		}, {
         			name: '2016 Actual QTY',
         			type: 'column',
-        			data: [86, 72.6, 71.1, 60.1, 57.7, 49.6, 90.1, 66.1, 12.4, 71.2, 55, 41.2],
+        			color: '#824E9F',
+        			data: [2700, 2806, 711, 601, 577, 496, 901, 661, 1249, 712, 3600, 912],
         			pointStart: 1
         		}, {
         			name: '2016 Actual Budget',
-        			type: 'spline',
-        			data: [91, 88, 52, 125, 48, 90, 72, 59, 34, 108, 111, 92],
+        			type: 'line',
+        			color: '#134A8C',
+        			lineWidth: 1,
+        			data: [910, 1880, 1520, 1250, 1680, 1090, 3520, 2590, 3400, 3080, 1110, 2220],
         			pointStart: 1
         		}]
         	});

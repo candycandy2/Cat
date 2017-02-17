@@ -52,6 +52,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'api_url' => env('API_URL'),
     
     'upload_folder' => env('APP_UPLOAD_FOLDER', 'app'),
 
@@ -153,7 +155,19 @@ return [
     'Secret_key' => env('SECRET_KEY'),
     'time_to_live' => env('TIME_TO_LIVE'),
     'apns_flag' => env('APNS_FLAG'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mail Parameters
+    |--------------------------------------------------------------------------
+    | 後台發信參數設定
+    | sender:寄件人
+    | from:寄件人信箱
+     */
     
+    'mail_name' => env('MAIL_USERNAME'),
+    'mail_address'   => env('MAIL_USER_MAIL_ADDRESS'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

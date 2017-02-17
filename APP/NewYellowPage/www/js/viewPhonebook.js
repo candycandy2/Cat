@@ -110,6 +110,7 @@
                     } else {
                         //ResultCode = 001905, [fail]
                     }
+                    QueryMyPhoneBook();
                 };
 
                 this.failCallback = function(data) {};
