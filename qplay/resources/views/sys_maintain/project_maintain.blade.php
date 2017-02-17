@@ -38,16 +38,17 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="newProjectDialogTitle">New App Key</h1>
+                    <h1 class="modal-title" id="newProjectDialogTitle">{{trans('messages.APPLY_APP_KEY')}}</h1>
                 </div>
                 <div class="modal-body">
                     <form id="projectForm" name="projectForm">
                         <table  width="100%">
                             <tr>
                                 <td>{{trans("messages.APP_KEY")}}:</td>
+
                                 <td style="padding: 10px;">
                                     <input type="text" data-clear-btn="true" class="form-control" name="txbAppKey"
-                                           id="txbAppKey" value=""  maxlength="50" onchange="toLower(this)"/>
+                                           id="txbAppKey" value=""  maxlength="50" onchange="toLower(this)" placeholder="{{trans('messages.HINT_APP_KEY')}}" />
                                 </td>
                                 <td><span style="color: red;">*</span></td>
                             </tr>
@@ -55,7 +56,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                                 <td>{{trans("messages.PROJECT_PM")}}:</td>
                                 <td style="padding: 10px;">
                                     <input type="text" data-clear-btn="true" class="form-control" name="tbxProjectPM"
-                                           id="tbxProjectPM" value=""/>
+                                           id="tbxProjectPM" value="" placeholder="{{trans('messages.HINT_PROJECT_PM')}}" />
                                 </td>
                                 <td><span style="color: red;">*</span></td>
                             </tr>
@@ -63,17 +64,12 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                                 <td>{{trans("messages.PROJECT_DESCRIPTION")}}:</td>
                                 <td style="padding: 10px;">
                                     <textarea class="form-control" name="tbxProjectDescription"
-                                           id="tbxProjectDescription" value=""></textarea>
+                                           id="tbxProjectDescription" value="" placeholder="{{trans('messages.HINT_PROJECT_DESC')}}"></textarea>
                                 </td>
                                 <td><span style="color: red;">*</span></td>
                             </tr>
                             <tr>
-                                <td colspan = "2">
-                                    <p>Please input the project name you want to applied.</br>
-                                    1.Only allowed to fill in the English alphabet.</br>
-                                    2.The character is non-sentitive, Capital letters will be
-                                    converted to lowercase English letters.</p>
-                                </td>
+                             
                             </tr>
                         </table>
                     </form>
@@ -101,7 +97,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             if(typeof(row.app_row_id) == 'undefined' ){
                 return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{trans("messages.SEND_TO_ME")}}</span>'; 
             }else{
-            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\',\''+row.project_pm+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
             }
         };
         function editProjectFormatter(value, row) {
@@ -186,13 +182,21 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             }
         }
 
-        var sendProjectInformation = function(appKey){
-            var mydata =
+        var sendProjectInformation = function(appKey,projectPM){
+            var receiver = new Array();
+            receiver.push(projectPM);
+            if(projectPM != '{{Auth::user()->login_id}}'){
+                    receiver.push('{{Auth::user()->login_id}}');
+            }
+            
+            showConfirmDialog("{{trans('messages.MSG_CONFIRM_SEND_EMAIL')}}", "{{trans('messages.MSG_COMFIRM_SEND_TO_RECIVER')}}", receiver.join('<br>'), function () {
+                hideConfirmDialog();
+                var mydata =
                     {
                         appKey:appKey,   
                     };
                     var mydataStr = $.toJSON(mydata);
-            $.ajax({
+                 $.ajax({
                         url: "platform/sendProjectInformation",
                         dataType: "json",
                         type: "POST",
@@ -211,7 +215,10 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                         error: function (e) {
                               showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                         }
-                    });
+                 });            
+            });
+      
+            
         }
 
         $(function() {
@@ -220,13 +227,18 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             $('#gridProjectList').on('check-all.bs.table', selectedChanged);
             $('#gridProjectList').on('uncheck-all.bs.table', selectedChanged);
             $('#gridProjectList').on('load-success.bs.table', selectedChanged);
-
+            
+           
+            jQuery.validator.addMethod("appKeyFormat",function(value, element, regexpr) {
+                    return regexpr.test(value);
+            });
 
             $("#projectForm").validate({
                 rules:{
                     txbAppKey:{
                         required:true,
-                        maxlength: 50
+                        maxlength: 50,
+                        appKeyFormat:/^[a-z]+$/,
                     },
                     tbxProjectPM:{
                         required:true
@@ -276,7 +288,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                     });
                 }
             });
-
         });
 
         

@@ -25,6 +25,7 @@ return [
     'MSG_OPERATION_FAILED' => 'Operation Failed!',
     'MSG_CONFIRM_SAVE' => 'Confirm to Save?',
     'MSG_CONFIRM_COPY' => 'Confirm to Copy?',
+    'MSG_CONFIRM_SEND_EMAIL'=>'Confirm to Send Email',
     'MSG_REQUIRED_FIELD_MISSING' => 'Required field missing!',
     'MSG_CONFIRM_LOGOUT' => 'Confirm to logout?',
     'MSG_REQUIRED_FIELD' => 'This field is required.',
@@ -268,16 +269,23 @@ return [
     'ERR_VERSION_NAME_DUPLICATE' => 'Version Name. can not de duplicated',
 
     //Project Maintain
-    'PROJECT_CODE' => 'Project Code',
-    'PROJECT_DESCRIPTION' => 'Project Description',
+    'PROJECT_CODE' => 'App Code',
+    'PROJECT_DESCRIPTION' => 'App Description',
     'PROJECT_PM' => 'PM',
     'PROJECT_MEMO' => 'Memo',
     'APP_MAINTAIN' => 'App Maintain',
     'ACTION_MAINTAIN' => 'Maintain',
     'SEND_TO_ME' => 'Send To Me',
     'ACTION_SEND' => 'Send Again',
+    'APPLY_APP_KEY' => 'Applying APP Key',
+    'FIELD_DESCRIPTION'=>'Field Description',
+
     'MSG_CONFIRM_DELETE_PROJECT' => 'Confirm to delete project?',
     'MSG_NO_CREATED_APP' => 'No created App',
+    'MSG_COMFIRM_SEND_TO_RECIVER'=>'The system will send a letter to the following recipients, confirm the send?',
+    'HINT_APP_KEY'=>'Please input the project abbreviation name  ex:flower',
+    'HINT_PROJECT_PM'=>'Please input the PM’s AD account ex:Steven.Yan',
+    'HINT_PROJECT_DESC'=>'Please input the purpose of this App',
 
     'ERR_EXIST_ROLE' => 'Same role exist in this company!',
     'ERR_GROUP_NAME_EXIST' => 'Group name exist!',
