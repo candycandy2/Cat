@@ -110,13 +110,13 @@
                     } else {
                         //ResultCode = 001905, [fail]
                     }
+                    QueryMyPhoneBook();
                 };
 
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
                     CustomAPI("POST", true, "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
-                    QueryMyPhoneBook();
                 }();
             };
 
