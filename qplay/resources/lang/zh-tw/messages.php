@@ -275,7 +275,7 @@ return [
     'PROJECT_MEMO' => '備註',
     'APP_MAINTAIN' => 'App 維護',
     'ACTION_MAINTAIN' => '維護',
-    'SEND_TO_ME' => '寄送詳細資訊',
+    'SEND_EMAIL' => '寄送詳細資訊',
     'ACTION_SEND' => '再寄一次',
     'APPLY_APP_KEY' => '申請App Key',
     'FIELD_DESCRIPTION'=>'欄位說明',
