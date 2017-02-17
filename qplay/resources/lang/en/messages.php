@@ -275,7 +275,7 @@ return [
     'PROJECT_MEMO' => 'Memo',
     'APP_MAINTAIN' => 'App Maintain',
     'ACTION_MAINTAIN' => 'Maintain',
-    'SEND_TO_ME' => 'Send To Me',
+    'SEND_EMAIL' => 'Send Email',
     'ACTION_SEND' => 'Send Again',
     'APPLY_APP_KEY' => 'Applying APP Key',
     'FIELD_DESCRIPTION'=>'Field Description',

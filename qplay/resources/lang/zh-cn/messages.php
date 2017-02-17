@@ -275,7 +275,7 @@ return [
 	'PROJECT_MEMO' => '备注',
     'APP_MAINTAIN' => 'App 维护',
     'ACTION_MAINTAIN' => '维护',
-    'SEND_TO_ME' => '寄送详细资讯',
+    'SEND_EMAIL' => '寄送详细资讯',
     'ACTION_SEND' => '再寄一次',
     'APPLY_APP_KEY' => '申请APP Key',
     'FIELD_DESCRIPTION'=>'字段说明',

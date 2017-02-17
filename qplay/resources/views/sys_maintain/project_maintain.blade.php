@@ -29,7 +29,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             <th data-field="secret_key" data-sortable="true" data-class="grid_warp_column">Secret Key</th>
             <th data-field="project_pm" data-sortable="true">{{trans("messages.PROJECT_PM")}}</th>
             <th data-field="app_row_id" data-sortable="false" data-width="200px" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
-            <th data-field="row_id" data-sortable="false" data-width="200px" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_TO_ME")}}</th>
+            <th data-field="row_id" data-sortable="false" data-width="200px" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_EMAIL")}}</th>
         </tr>
         </thead>
     </table>
@@ -97,9 +97,9 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
 
         function sendAgainFormatter(value, row) {
             if(typeof(row.app_row_id) == 'undefined' ){
-                return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{trans("messages.SEND_TO_ME")}}</span>'; 
+                return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{trans("messages.SEND_EMAIL")}}</span>'; 
             }else{
-            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\',\''+row.pm_email+'\',\''+row.created_user_email+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            return '<a href="#" title=" {{trans("messages.SEND_EMAIL")}}"onclick="sendProjectInformation(\''+row.app_key+'\',\''+row.pm_email+'\',\''+row.created_user_email+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_EMAIL")}}</a>';
             }
         };
         function editProjectFormatter(value, row) {
