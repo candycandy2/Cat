@@ -54,7 +54,7 @@ var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
                     + "<string>appyellowpage"+appNameDecorate + "</string>"
                     + "<string>appcalendar" + appNameDecorate + "</string>"
                     + "<string>apprrs"      + appNameDecorate + "</string>"
-                    + "<string>appaccounting"+appNameDecorate + "</string>"
+                    + "<string>appaccountingrate"+appNameDecorate + "</string>"
                     + "<string>appens"      + appNameDecorate + "</string>"
                     + "<string>appeis"      + appNameDecorate + "</string>"
                     + "<string>appleave"    + appNameDecorate + "</string>"
@@ -104,7 +104,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appeis' +      appNameDecorate + ':*" />' +
                         '<allow-intent href="appcalendar' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appens' +      appNameDecorate + ':*" />' +
-                        '<allow-intent href="appaccounting'+appNameDecorate + ':*" />' +
+                        '<allow-intent href="appaccountingrate'+appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + appNameDecorate + ':*" />' +

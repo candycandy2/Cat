@@ -27,7 +27,7 @@ var messagePageShow = false;
 var delMsgActive = false;
 
 window.initialSuccess = function(data) {
-alert("initialSuccess");
+//alert("initialSuccess");
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -40,9 +40,9 @@ alert("initialSuccess");
             $.mobile.changePage('#viewMain2-1');
         }
     } else {
-alert("----3");
+//alert("----3");
         if (loginData['doLoginDataCallBack'] === true) {
-alert("----4");
+//alert("----4");
             getLoginDataCallBack();
         } else {
 
