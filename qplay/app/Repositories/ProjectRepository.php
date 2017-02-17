@@ -65,7 +65,7 @@ class ProjectRepository
      * @param  String $appKey appKey
      * @return mixed          取得資料回傳Data Object,若查無資料則回傳null
      */
-    public static function getProjectInfoByAppKey($appKey)
+    public function getProjectInfoByAppKey($appKey)
     {
         $projectList = \DB::table('qp_project')
             -> where('app_key', '=', $appKey)
