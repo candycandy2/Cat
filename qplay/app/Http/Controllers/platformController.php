@@ -1276,8 +1276,12 @@ class platformController extends Controller
                     }
                 }
             }
-        }
 
+            $pm = CommonUtil::getUserInfoJustByUserID($project->project_pm);
+            $createUser = CommonUtil::getUserInfoByRowId($project->created_user);
+            $project->pm_email = (!is_null($pm))?$pm->email:"";
+            $project->created_user_email = (!is_null($createUser))?$createUser->email:"";
+        }
         return response()->json($projectList);
     }
 
@@ -1495,17 +1499,12 @@ class platformController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $app_key = $jsonContent['appKey'];
-            
+            $receiver = $jsonContent['receiver'];
             try{
-                
-                $mailTo = array(\Auth::user()->email);
                 $projectInfo = $this->projectRepository->getProjectInfoByAppKey($app_key);
-                $pm = CommonUtil::getUserInfoJustByUserID($projectInfo->project_pm);
-                array_push($mailTo,$pm->email);
-                $mailTo = array_unique($mailTo);
                 $secretKey =  $projectInfo->secret_key;
                 $projectCode =  $projectInfo->project_code;
-                $this->projectService->sendProjectInformation($mailTo, $app_key, $secretKey, $projectCode);
+                $this->projectService->sendProjectInformation($receiver, $app_key, $secretKey, $projectCode);
             
             } catch (\Exception $e) {    
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);

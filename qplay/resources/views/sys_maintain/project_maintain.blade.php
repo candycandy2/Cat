@@ -22,6 +22,8 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         <tr>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
+            <th data-field="created_user_email" data-visible="true">createdUserEmail</th>
+            <th data-field="pm_email" data-visible="true">pmEmail</th>
             <th data-field="project_code" data-align="center" data-sortable="true" data-width="50px" data-formatter="editProjectFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
             <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
             <th data-field="secret_key" data-sortable="true" data-class="grid_warp_column">Secret Key</th>
@@ -97,7 +99,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             if(typeof(row.app_row_id) == 'undefined' ){
                 return '<span class="text-muted" title="{{trans("messages.MSG_NO_CREATED_APP")}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>{{trans("messages.SEND_TO_ME")}}</span>'; 
             }else{
-            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\',\''+row.project_pm+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
+            return '<a href="#" title=" {{trans("messages.SEND_TO_ME")}}"onclick="sendProjectInformation(\''+row.app_key+'\',\''+row.pm_email+'\',\''+row.created_user_email+'\')"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{trans("messages.SEND_TO_ME")}}</a>';
             }
         };
         function editProjectFormatter(value, row) {
@@ -182,20 +184,22 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             }
         }
 
-        var sendProjectInformation = function(appKey,projectPM){
+        var sendProjectInformation = function(appKey,pmEmail,CreateUserEmail){
+            
             var receiver = new Array();
-            receiver.push(projectPM);
-            if(projectPM != '{{Auth::user()->login_id}}'){
-                    receiver.push('{{Auth::user()->login_id}}');
+            receiver.push(pmEmail);
+            if(pmEmail.toLowerCase() != CreateUserEmail.toLowerCase()){
+                    receiver.push(CreateUserEmail);
             }
             
             showConfirmDialog("{{trans('messages.MSG_CONFIRM_SEND_EMAIL')}}", "{{trans('messages.MSG_COMFIRM_SEND_TO_RECIVER')}}", receiver.join('<br>'), function () {
                 hideConfirmDialog();
                 var mydata =
                     {
-                        appKey:appKey,   
+                        appKey:appKey,
+                        receiver:receiver 
                     };
-                    var mydataStr = $.toJSON(mydata);
+                var mydataStr = $.toJSON(mydata);
                  $.ajax({
                         url: "platform/sendProjectInformation",
                         dataType: "json",
@@ -220,7 +224,6 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
       
             
         }
-
         $(function() {
             $('#gridProjectList').on('check.bs.table', selectedChanged);
             $('#gridProjectList').on('uncheck.bs.table', selectedChanged);
@@ -294,4 +297,3 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
 
     </script>
 @endsection
-
