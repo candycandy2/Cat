@@ -22,8 +22,8 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
         <tr>
             <th data-field="row_id" data-visible="false" data-searchable="false">ID</th>
             <th data-field="with_app" data-visible="false">WithApp</th>
-            <th data-field="created_user_email" data-visible="true">createdUserEmail</th>
-            <th data-field="pm_email" data-visible="true">pmEmail</th>
+            <th data-field="created_user_email" data-visible="false">createdUserEmail</th>
+            <th data-field="pm_email" data-visible="false">pmEmail</th>
             <th data-field="project_code" data-align="center" data-sortable="true" data-width="50px" data-formatter="editProjectFormatter" data-search-formatter="false">{{trans("messages.PROJECT_CODE")}}</th>
             <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
             <th data-field="secret_key" data-sortable="true" data-class="grid_warp_column">Secret Key</th>
