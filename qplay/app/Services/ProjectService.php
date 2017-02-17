@@ -7,6 +7,7 @@ namespace App\Services;
 
 use App\Repositories\ProjectRepository;
 use App\Repositories\AppRepository;
+use App\lib\FilePath;
 use Mail;
 use Config;
 
@@ -85,6 +86,7 @@ class ProjectService
      * @param  String $projectCode  App Code 專案代碼
      */
     public function sendProjectInformation(Array $mailTo, $appKey, $secretKey, $projectCode){
+       
         $data = array(
                     'appKey'        =>$appKey,
                     'secretKey'     =>$secretKey,
@@ -98,6 +100,7 @@ class ProjectService
             $message->from($data['mailFrom']['address'], $data['mailFrom']['name']);
             $message->to($data['mailTo']);
             $message->subject("[QPlay] ".$data['appKey']." Information");
+            $message->attach(FilePath::getDocPath('CustomApi','Custom_API_Sample_1.1.2_20170216.pdf'));
             $message->getSwiftMessage();
         });
     }
