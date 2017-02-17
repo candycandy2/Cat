@@ -15,7 +15,11 @@ html .ui-body-a .ui-flipswitch-active, html body .ui-group-theme-a .ui-flipswitc
 html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active, .ui-page-theme-a .ui-slider-track .ui-btn-active, 
 html .ui-bar-a .ui-slider-track .ui-btn-active, html .ui-body-a .ui-slider-track .ui-btn-active, 
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active, html body div.ui-slider-track.ui-body-a .ui-btn-active,
-.ui-title, .ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+.ui-title, .ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper,
+.ui-page-theme-a .ui-btn, html .ui-bar-a .ui-btn, html .ui-body-a .ui-btn, 
+html body .ui-group-theme-a .ui-btn, html head+body .ui-btn.ui-btn-a, .ui-page-theme-a .ui-btn:visited, 
+html .ui-bar-a .ui-btn:visited, html .ui-body-a .ui-btn:visited, html body .ui-group-theme-a .ui-btn:visited, 
+html head+body .ui-btn.ui-btn-a:visited {
     text-shadow: none;
 }
 
