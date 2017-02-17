@@ -116,6 +116,7 @@
 
                 var __construct = function() {
                     CustomAPI("POST", true, "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
+                    QueryMyPhoneBook();
                 }();
             };
 
