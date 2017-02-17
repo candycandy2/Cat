@@ -1,40 +1,66 @@
-var chart, queryData;
-var budgetAMT = {};
-var actualAMT = {};
-
+var chart, thisYear, thisMonth;
+var hcBudgetAMT = [];
+var hcActualAMT = [];
 $("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
     	
     	window.ROSummary = function() {
-			endYearMonth = currentYear + "/" + currentMonth;
-    		queryData =   "<LayoutHeader><StartYearMonth>"
-    					+ startYearMonth
-    					+ "</StartYearMonth><EndYearMonth>"
-    					+ endYearMonth
-    					+ "</EndYearMonth></LayoutHeader>";
-
+		
 	    	this.successCallback = function(data) {
-	    		var length = data["Content"]["DataList"].length;
-	    		var year, month, rosite;  
-	    		for(var i=0; i<length; i++) {
-	    			year = data["Content"]["DataList"][i]["YEAR"];
-	    			month = data["Content"]["DataList"][i]["MONTH"];
-	    			rosite = data["Content"]["DataList"][i]["RO_SITE"];
-	    			// eisdata[year] = {};
-	    			// eisdata[year][month] = {};
-	    			// eisdata[year][month][rosite] = "1";
-	    		}
+	    		callBackData = data["Content"]["DataList"];
+	    		length = callBackData.length;
+	    		thisYear = callBackData[length-1]["YEAR"];
+	    		thisMonth = callBackData[length-1]["MONTH"];
+	    		$(".page-date").text(monTable[thisMonth]+thisYear);
+	    		convertData(data);
+	    		getHighcahrtsData(thisYear, thisMonth);
 	    	};
 
-	    	this.failCallback = function(data) {};
+	    	this.failCallback = function(data) {
+	    		console.log("api misconnected");
+	    	};
 
-			var _cobns = function() {
+			var _construct = function() {
 				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, queryData, "");
 			}();
 		};
 
+    	function convertData(data) {
+    		var month;
+    		var rosite = 0;
+	    	for(var i=data["Content"]["DataList"][0]["YEAR"]; i<=data["Content"]["DataList"][length-1]["YEAR"]; i++) {
+	    		eisdata[i] = {};
+	    		month = (i == data["Content"]["DataList"][length-1]["YEAR"]) ? (data["Content"]["DataList"][length-1]["MONTH"]) : 12;  
+	    		for(var j=1; j<=month; j++) {
+	    			eisdata[i][j] = {};
+	    			for(var k=0; k<5 && rosite<length; k++) {
+	    				eisdata[i][j][data["Content"]["DataList"][rosite]["RO_SITE"]] = 
+	    						[data["Content"]["DataList"][rosite]["BUDGET_AMT"], data["Content"]["DataList"][rosite]["ACTUAL_ADJ_AMT"]];
+	    				rosite++;
+	    			}
+	    		}
+	    	}
+    	}
+
+    	function calBudget_AMT() {
+    		
+    	}
+
+    	function calActual_AMT() {
+    		
+    	}
+
+    	function getHighcahrtsData(year, month) {
+    		var a = 0;
+    		for(var i in eisdata[year][month]) {
+    			hcBudgetAMT[a] = (Number(eisdata[year][month][i][0]));
+    			hcActualAMT[a] = (Number(eisdata[year][month][i][1]));
+    			a++;
+    		}
+    	}
+
     	$("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-    		console.log("a");
+			// getHighcahrtsData();    		
     	});
 
 		/********************************** page event *************************************/
@@ -68,7 +94,7 @@ $("#viewHitRate").pagecontainer ({
         				y: -11
         			},
         			min: 0,
-        			tickInterval: 500
+        			tickInterval: 1000
         		},
 				legend: {
 					align: 'left',
@@ -82,7 +108,7 @@ $("#viewHitRate").pagecontainer ({
 				tooltip: {
 			    	headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
 			    	pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-			        	'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+			        	'<td style="padding:0"><b>{point.y:.1f} $M</b></td></tr>',
 			    	footerFormat: '</table>',
 			    	shared: false,
 			    	useHTML: true
@@ -100,33 +126,31 @@ $("#viewHitRate").pagecontainer ({
 			    	name: 'Budget AMT',
 			    	type: 'column',
 			    	color: '#0AB5B6',
-			    	data: [1000, 1000, 1000, 1000, 1000]
+			    	data: hcBudgetAMT
 				},{
 					name: 'Actual AMT',
 					type: 'column',
 					color: '#F4A143',
-			    	data: [1500, 1500, 1500, 1500, 1500]
+			    	data: hcActualAMT
 				}]
 			});
 			loadingMask("hide");
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function(){
-        	var a = [1000, 1000, 1000, 1000, 1000];
-        	chart.series[0].setData(a, true);
-        	chart.series[1].setData(a, true);
+        	getHighcahrtsData(thisYear, thisMonth);
+        	chart.series[0].setData(hcBudgetAMT, true);
+        	chart.series[1].setData(hcActualAMT, true);
         });
 
         $(".page-tabs #viewHitRate-tab-2").on("click", function(){
-        	var b = [2000, 2000, 2000, 2000, 2000];
-        	chart.series[0].setData(b, true);
-        	chart.series[1].setData(b, true);
+        	getHighcahrtsData(thisYear, thisMonth-1);
+        	chart.series[0].setData(hcBudgetAMT, true);
+        	chart.series[1].setData(hcActualAMT, true);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function(){
-        	var c = [3000, 3000, 3000, 3000, 3000];
-        	chart.series[0].setData(c, true);
-        	chart.series[1].setData(c, true);
+    		
         });
 	}
 });
