@@ -36,7 +36,7 @@ var monTable = {
     '12' : "Dec.",
 };
 var eisdata = {};
-var currentYear, currentMonth, queryData, callBackData, length;
+var currentYear, currentMonth, queryData, callbackData, length;
 
 
 $(document).one("pagebeforeshow", function() {
