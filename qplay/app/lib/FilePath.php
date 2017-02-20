@@ -67,4 +67,8 @@ class FilePath
          return url(\Config::get('app.upload_folder')).'/'.$appRowId.'/'.'error_code'.'/'.$fileName;
     }
 
+    public static function getDocPath($docCat,$fileName){
+        return base_path('public'. DIRECTORY_SEPARATOR .'doc'). DIRECTORY_SEPARATOR .$docCat. DIRECTORY_SEPARATOR.$fileName;    
+    }
+
 }

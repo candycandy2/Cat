@@ -91,9 +91,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
-    @if(App::getLocale()!='en-us')
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
-    @endif
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

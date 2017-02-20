@@ -34,6 +34,21 @@
                                 }
                             }
                         }
+
+                        // check has more than one ext num or not
+                        if (data['Content'][0].Ext_No.indexOf(';')>0){
+                            telString = " class='chooseNumPop extNumMore'" + ' ';
+                            for (var i = 0; i < data['Content'][0].Ext_No.match(';').length+1; i++){
+                                telString += "data-extnum" + (i+1) + "=" + data['Content'][0].Ext_No.split(';')[i] + ' ';
+                            }
+                            telString += 'data-extnum=' + data['Content'][0].Ext_No + '>' + data['Content'][0].Ext_No.split(';')[0];
+                            extTmpNum = data['Content'][0].Ext_No.split(';')[0];
+                        }
+                        else{
+                            telString = " href='tel:" + data['Content'][0].Ext_No + "'>" + data['Content'][0].Ext_No;
+                            extTmpNum = data['Content'][0].Ext_No;
+                        }
+
                         $("#detial-name-title #eName").html(data['Content'][0].Name_EN);
                         $("#detial-name-title #cName").html(data['Content'][0].Name_CH);
                         $("#detail-data #companyName").html(data['Content'][0].Company);
@@ -41,8 +56,9 @@
                         $("#detail-data #sideCode").html(data['Content'][0].SiteCode);
                         $("#detail-data #dept").html(data['Content'][0].Dept);
                         $("#detail-data #deptCode").html(data['Content'][0].DeptCode);
-                        $("#detail-data #extNo").html("<a href='tel:" + data['Content'][0].Ext_No + "'>" + data['Content'][0].Ext_No + "</a>");
+                        $("#detail-data #extNo").html("<a" + telString + "</a>");
                         $("#detail-data #eMail").html(data['Content'][0].EMail);
+
                     }
                     loadingMask("hide");                
                 };
