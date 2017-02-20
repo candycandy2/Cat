@@ -849,8 +849,10 @@ class AppMaintainController extends Controller
             -> get();
 
             foreach ($appsList as $index => $app) {
-                if($app->p_created_user!=\Auth::user()->row_id && $app->pm!=\Auth::user()->login_id){
-                        unset($appsList[$index]);
+                if(!\Auth::user()->isAppAdmin()){
+                    if($app->p_created_user!=\Auth::user()->row_id && $app->pm!=\Auth::user()->login_id){
+                            unset($appsList[$index]);
+                    }
                 }
                 $appLineInfo = \DB::table('qp_app_line')
                     ->where('app_row_id', '=', $app->row_id)
