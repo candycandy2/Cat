@@ -1,7 +1,7 @@
 <?php
 namespace App\lib;
 use App\Services\EventService;
-
+use App\Repositories\EventRepository;
 /**
  * 
  * User: Cleo.W.Chan
@@ -106,4 +106,12 @@ class Verify
     } 
     
 
+    public function isEventClosed($eventId, EventRepository $eventRepository){
+        $event = $eventRepository->getEventDetail($eventId);
+        if($event->event_status == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

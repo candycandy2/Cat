@@ -82,7 +82,7 @@ class EventRepository
     /**
      * 取回不包含自己且尚未被關聯的事件
      * @param  int $currentEventId 目前事件
-     * @return mix queryResult
+     * @return mix
      */
     public function getUnrelatedEventList($currentEventId){
         return $this->event
@@ -92,12 +92,17 @@ class EventRepository
             ->get();
     }
 
+    /**
+     * 取得事件內容
+     * @param  int $eventId event_row_id
+     * @return mix
+     */
     public function getEventDetail($eventId){
        
         return $this->event
             ->where('row_id', '=', $eventId)
             ->select($this->eventField)
-            ->get();
+            ->first();
     }
 
     public function getUserByEventId($eventId){
@@ -137,5 +142,4 @@ class EventRepository
         ->where('emp_no', $empNo)
         ->update($updateData);
     }
-
 }

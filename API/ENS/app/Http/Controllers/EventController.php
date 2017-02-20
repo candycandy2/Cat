@@ -9,6 +9,7 @@ use App\Services\BasicInfoService;
 use App\Services\UserService;
 use App\Services\EventService;
 use App\Repositories\EventRepository;
+use App\Repositories\TaskRepository;
 use Illuminate\Support\Facades\Input;
 use DB;
 
@@ -21,14 +22,13 @@ class EventController extends Controller
     protected $eventRepository;
     protected $pushService;
 
-    const EVENT_TYPE = 'event_type';
-
-    public function __construct(EventRepository $eventRepository, EventService $eventService, BasicInfoService $basicInfoService, UserService $userService)
+    public function __construct(EventRepository $eventRepository, EventService $eventService, BasicInfoService $basicInfoService, UserService $userService, TaskRepository $taskRepository)
     {
         $this->eventRepository = $eventRepository;
         $this->eventService = $eventService;
         $this->basicInfoService = $basicInfoService;
         $this->userService = $userService;
+        $this->taskRepository = $taskRepository;
     }
 
     public function newEvent(){
@@ -58,7 +58,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            $parameterMap =  CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+            $parameterMap =  CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
 
             if(!in_array($data['event_type_parameter_value'],array_keys($parameterMap))){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
@@ -142,7 +142,7 @@ class EventController extends Controller
             $eventStatus = (string)$xml->event_status[0];
 
             if(isset($eventType) && $eventType!=""){
-                $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+                $parameterMap = CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
                 if(!in_array($eventType,array_keys($parameterMap))){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
                     'Message'=>'事件類型錯誤',
@@ -261,7 +261,7 @@ class EventController extends Controller
             }
 
             if(isset($xml->event_type_parameter_value[0]) && trim((string)$xml->event_type_parameter_value[0])!=""){
-             $parameterMap =  CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+             $parameterMap =  CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
                 if(!in_array($xml->event_type_parameter_value[0],array_keys($parameterMap))){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
                         'Message'=>"事件類型錯誤",
@@ -408,6 +408,7 @@ class EventController extends Controller
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
+
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
@@ -429,7 +430,6 @@ class EventController extends Controller
         }
 
     }
-
 
     private function arrangeInsertData($xml){
 

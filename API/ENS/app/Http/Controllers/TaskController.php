@@ -5,21 +5,19 @@ namespace App\Http\Controllers;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
-use App\Repositories\TaskRepository;
 use Illuminate\Support\Facades\Input;
 
-class TaskController extends Controller
+class TaskController extends EventController
 {
 
-    protected  $taskRepository;
-
-    public function __construct(TaskRepository $taskRepository)
-    {
-        $this->taskRepository = $taskRepository;
-    }
-
+    /**
+     * 更新Task狀態
+     * @return json
+     */
     public function updateTaskStatus(){
         
+        $allow_user = 'admin';
+
         try{
 
             $Verify = new Verify();
@@ -33,39 +31,46 @@ class TaskController extends Controller
 
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
-
-            if(!isset($xml->task_row_id[0]) || $xml->task_row_id[0] == "" ){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                'Message'=>"必填欄位缺失",
-                'Content'=>""]);
-            }
-
-            if(!isset($xml->task_status[0]) || $xml->task_status[0] == "" ){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                'Message'=>"必填欄位缺失",
-                'Content'=>""]);
-            }
-
             $empNo = (string)$xml->emp_no[0];
-            $taskId = $xml->task_row_id[0];
+            $taskStatus = (string)$xml->task_status[0];
+            $taskId = (string)$xml->task_row_id[0];
 
-            $taskData = $this->taskRepository->getTaskById($taskId);
+            if(trim($taskId) == "" || trim($taskStatus) == "" ){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                'Message'=>"必填欄位缺失",
+                'Content'=>""]);
+            }
+
+            if($taskStatus != $this->eventService::STATUS_FINISHED && $taskStatus != $this->eventService::STATUS_UNFINISHED){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014914_taskStatusCodeError,
+                'Message'=>"任務狀態碼錯誤",
+                'Content'=>""]);
+            }
+
+            
+            $taskData = $this->eventService->getTaskById($taskId);
             if(count($taskData) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014909_noTaskData,
                 'Message'=>"查無Task資料",
                 'Content'=>""]);
             }
 
-            $res = $this->taskRepository->getUserByTaskId($taskId);
-            if(count($res) == 0){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
-                'Message'=>"權限不足",
+            if($Verify->isEventClosed($taskData->event_row_id, $this->eventRepository)){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014910_eventClosed,
+                'Message'=>"無法編輯已完成事件",
                 'Content'=>""]);
             }
 
-            $data = CommonUtil::arrangeUpdateDataFromXml($xml, array('task_status'));
-            $resutlt = $this->taskRepository->updateTaskById($taskId,$data);
-
+            $checkRes = $this->eventService->checkUpdateTaskAuth($taskId, $empNo);
+            $userAuthList = $this->userService->getUserRoleList($empNo);
+            if(!$checkRes && !in_array($allow_user, $userAuthList)){
+                  return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
+                'Message'=>"權限不足",
+                'Content'=>""]);
+            }
+           
+            $data = $this->getUpdataStatusData($taskStatus, $xml);
+            $resutlt = $this->eventService->updateTaskById($taskId,$data);
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                         'Content'=>""]);
         } catch (Exception $e){
@@ -74,5 +79,27 @@ class TaskController extends Controller
            
         }
 
+    }
+
+    /**
+     * 取得更新狀態資料
+     * @param  int    $taskStatus task狀態 (0:未完成 | 1:已完成)
+     * @param  string $xml request data 
+     * @return Array       更新資料Array
+     */
+    private function getUpdataStatusData($taskStatus, $xml){
+        $data = [];
+
+        $data = CommonUtil::arrangeUpdateDataFromXml($xml, array('task_status'));
+             
+        if($taskStatus == $this->eventService::STATUS_UNFINISHED){
+                $data['close_task_emp_no'] = "";
+                $data['close_task_date'] = 0;
+        }else{
+                $data['close_task_emp_no'] = (string)$xml->emp_no[0];
+                $data['close_task_date'] = time();
+        }
+
+        return $data;
     }
 }

@@ -70,7 +70,12 @@ class CommonUtil
              ->get();
     }
 
-
+    /**
+     * 依欲更新欄位取得資料結構
+     * @param  String $xml         requestData
+     * @param  [type] $updateField [description]
+     * @return [type]              [description]
+     */
     public static function arrangeUpdateDataFromXml($xml, $updateField){
          $data = array('updated_user'=>(string)$xml->emp_no[0]);
          foreach ( $updateField as $column) {

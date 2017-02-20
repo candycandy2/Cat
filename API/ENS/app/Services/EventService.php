@@ -18,7 +18,8 @@ class EventService
     protected $push;
 
     const EVENT_TYPE = 'event_type';
-    //private $empNo;
+    const STATUS_FINISHED = 1;
+    const STATUS_UNFINISHED = 0;
 
     public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push)
     {
@@ -120,7 +121,7 @@ class EventService
          $evenDetail = [];
 
          if(count($this->eventRepository->getEventDetail($eventId)) > 0 ){
-             $evenDetail = $this->eventRepository->getEventDetail($eventId)[0];
+             $evenDetail = $this->eventRepository->getEventDetail($eventId);
              $evenDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
              $evenDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
              $evenDetail['user_event'] = $this->getEventUserDetail($eventId);
@@ -201,8 +202,28 @@ class EventService
         return $this->eventRepository->getRelatedEventById($eventId);
    }
 
-   public function updateTaskById($taskId){
-        return $this->taskRepository->updateTaskById($taskId);
+   public function updateTaskById($taskId, Array $data){
+        return $this->taskRepository->updateTaskById($taskId, $data);
+   }
+
+   public function getUserByTaskId($taskId){
+        return $this->taskRepository->getUserByTaskId($taskId);
+   }
+
+   public function getTaskById($taskId){
+        return $this->taskRepository->getTaskById($taskId);
+   }
+   
+   public function checkUpdateTaskAuth($taskId, $empNo){
+
+        $res = count($this->taskRepository->getIsTaskOwner($taskId, $empNo));
+
+        if($res > 0){
+            return true;
+        }else{
+            return false;
+        }
+        return true;
    }
 
    private function getUniqueTask($basicList){

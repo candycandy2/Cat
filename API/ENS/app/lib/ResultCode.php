@@ -58,4 +58,6 @@ abstract class ResultCode
     const _014910_eventClosed = "014910";  //事件已經完成
     const _014911_relatedEventStatusError = "014911";  //关联事件状态异常
     const _014912_eventTypeError = "014912";  //事件类型错误
+    const _014913_eventStatusCodeError = "014913";  //事件狀態碼錯誤
+    const _014914_taskStatusCodeError = "014914";  //任務状态码错误   
 }
