@@ -79,8 +79,14 @@ class EventRepository
              ->get();
     }
 
-    public function getUnrelatedEventList($empNo){
+    /**
+     * 取回不包含自己且尚未被關聯的事件
+     * @param  int $currentEventId 目前事件
+     * @return mix queryResult
+     */
+    public function getUnrelatedEventList($currentEventId){
         return $this->event
+            ->where('row_id', '<>', $currentEventId)
             ->where('related_event_row_id', '=', 0)
             ->select($this->eventField)
             ->get();

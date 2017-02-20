@@ -98,17 +98,21 @@ class EventService
           return $eventList;
    }
 
-   public function getUnrelatedEventList($empNo){
+   /**
+    * 取得尚未被關聯的事件，並格式化部分資料
+    * @param  [type] $currentEventId [description]
+    * @return [type]                 [description]
+    */
+   public function getUnrelatedEventList($currentEventId){
     
-        $oraEventList = $this->eventRepository->getUnrelatedEventList($empNo);
+        $oraEventList = $this->eventRepository->getUnrelatedEventList($currentEventId);
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
-       
         $eventList = [];
         foreach ($oraEventList as $event) {
            $item = $this->arrangeEventList($event, $parameterMap);
            $eventList[] = $item;                
         }
-          return $eventList;
+        return $eventList;
    }
 
    public function getEventDetail($eventId){
@@ -263,6 +267,12 @@ class EventService
         $this->eventRepository->saveUserEvent($userEventData);
    }
 
+   /**
+    * 格式化事件相關資料，並組合創建人資訊
+    * @param  Object $event        event object
+    * @param  Array  $parameterMap 事件類型對應表(緊急|一般)
+    * @return Array
+    */
    private function arrangeEventList($event,  $parameterMap){
         $item = [];
         $item['event_row_id'] = $event->event_row_id;

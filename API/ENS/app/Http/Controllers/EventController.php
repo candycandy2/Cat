@@ -32,6 +32,9 @@ class EventController extends Controller
     }
 
     public function newEvent(){
+
+         $allow_user = "admin";
+
          \DB::beginTransaction();
          try{
 
@@ -86,7 +89,7 @@ class EventController extends Controller
             }
 
             $userAuthList = $this->userService->getUserRoleList($data['created_user']);
-            if(!in_array("admin", $userAuthList)){
+            if(!in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
                     'Content'=>""]);
@@ -211,6 +214,8 @@ class EventController extends Controller
 
     public function updateEvent(){
 
+        $allow_user = "admin";
+
         try{
             $Verify = new Verify();
             $verifyResult = $Verify->verify();
@@ -230,7 +235,7 @@ class EventController extends Controller
             $appKey = (string)$xml->app_key[0];
           
             $userAuthList = $this->userService->getUserRoleList($empNo);
-            if(!in_array("admin", $userAuthList)){
+            if(!in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
                     'Content'=>""]);
@@ -297,6 +302,8 @@ class EventController extends Controller
     }
 
     public function updateEventStatus(){
+        
+        $allow_user = "admin";
 
         try{
             $Verify = new Verify();
@@ -347,7 +354,7 @@ class EventController extends Controller
 
             if(isset($xml->event_status[0]) && trim((string)$xml->event_status[0])!=""){
                 $userAuthList = $this->userService->getUserRoleList($empNo);
-                if(!in_array("admin", $userAuthList)){
+                if(!in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
                         'Content'=>""]);
@@ -373,8 +380,13 @@ class EventController extends Controller
     }
 
     
-
+    /**
+     * 取得未關聯事件列表
+     * @return json
+     */
     public function getUnrelatedEventList(){
+        
+        $allow_user = "admin";
 
          try{
             $Verify = new Verify();
@@ -389,21 +401,25 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             
             $empNo = (string)$xml->emp_no[0];
-            $eventType = (string)$xml->event_type_parameter_value[0];
-            $eventStatus = (string)$xml->event_status[0];
 
+            $currentEventId = (string)$xml->event_row_id[0];
+            if(!isset($currentEventId) || trim($currentEventId) == ""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+            }
             $userAuthList = $this->userService->getUserRoleList($empNo);
-            if(!in_array("admin", $userAuthList)){
-                  return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
+            if(!in_array($allow_user, $userAuthList)){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
                     'Content'=>""]);
             }
 
-            $eventList = $this->eventService->getUnrelatedEventList(self::EVENT_TYPE, $empNo);
+            $eventList = $this->eventService->getUnrelatedEventList($currentEventId);
             if(count($eventList) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
-                'Message'=>'查無事件資料',
-                'Content'=>'']);
+                return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
+                    'Message'=>'查無事件資料',
+                    'Content'=>'']);
             }
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);

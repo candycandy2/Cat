@@ -102,14 +102,12 @@ class CommonUtil
             }
 
             // Optional Authentication:
-            // //設定header
+            //設定header
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
-            //$result = curl_exec($curl);
-            //
             if( ! $result = curl_exec($curl)) 
             { 
                 trigger_error(curl_error($curl)); 
@@ -124,7 +122,6 @@ class CommonUtil
         {
             $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
             return $ServerSignature;
-
         }
 
 }
