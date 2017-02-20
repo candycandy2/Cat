@@ -91,22 +91,58 @@ $("#viewHitRate").pagecontainer ({
     	function showData(tab) {
     		var index = 0;
     		if(tab == "thisMonth") {
-    			for(var ro in thisMonthData) { 
-    				$("#" + ro + " .AS span").text(thisMonthActualAMT[index++]);
-    				$("#" + ro + " .HR span").text(thisMonthData[ro]["BudgetHitRate"]);
-    				$("#" + ro + " .YR span").text(thisMonthData[ro]["YOYGrowth"]);
+    			for(var ro in thisMonthData) {
+    				$("#" + ro + " .AS span").text(thisMonthActualAMT[index++] / Math.pow(10, 6));
+    				$("#" + ro + " .HR span").text(thisMonthData[ro]["BudgetHitRate"] * 100);
+    				$("#" + ro + " .YR span").text(thisMonthData[ro]["YOYGrowth"] * 100);	
+    				if ((thisMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+    					$("#" + ro + " .HR").css('background', '#ee3839');
+    				}else if((thisMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
+    					$("#" + ro + " .HR").css('background', '#48af56');
+    				}else{
+    					$("#" + ro + " .HR").css('background', '#e6be20');
+    				}
+    				if((thisMonthData[ro]["YOYGrowth"] * 100) < 0 ) {
+    					$("#" + ro + " .YR").css('background', '#ee3839');
+    				}else{
+    					$("#" + ro + " .YR").css('background', '#48af56');
+    				}
     			}
     		}else if(tab == "lastMonth") {
     			for(var ro in lastMonthData) { 
-    				$("#" + ro + " .AS span").text(lastMonthActualAMT[index++]);
-    				$("#" + ro + " .HR span").text(lastMonthData[ro]["BudgetHitRate"]);
-    				$("#" + ro + " .YR span").text(lastMonthData[ro]["YOYGrowth"]);
-    			}
+    				$("#" + ro + " .AS span").text(lastMonthActualAMT[index++] / Math.pow(10, 6));
+    				$("#" + ro + " .HR span").text(lastMonthData[ro]["BudgetHitRate"] * 100);
+    				$("#" + ro + " .YR span").text(lastMonthData[ro]["YOYGrowth"] * 100);
+	    			if ((lastMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+	    				$("#" + ro + " .HR").css('background', '#ee3839');
+	    			}else if((lastMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
+	    				$("#" + ro + " .HR").css('background', '#48af56');
+	    			}else{
+	    				$("#" + ro + " .HR").css('background', '#e6be20');
+	    			}
+	    			if((lastMonthData[ro]["YOYGrowth"] * 100) < 0 ) {
+    					$("#" + ro + " .YR").css('background', '#ee3839');
+    				}else{
+    					$("#" + ro + " .YR").css('background', '#48af56');
+    				}
+	    		}
     		}else if(tab == "YTD") {
     			for(var ro in ytdData) { 
-    				$("#" + ro + " .AS span").text(YTDActualAMT[index++]);
-    				$("#" + ro + " .HR span").text(ytdData[ro]["BudgetHitRate"]);
-    				$("#" + ro + " .YR span").text(ytdData[ro]["YOYGrowth"]);
+    				$("#" + ro + " .AS span").text(YTDActualAMT[index++] / Math.pow(10, 6));
+    				$("#" + ro + " .HR span").text(ytdData[ro]["BudgetHitRate"] * 100);
+    				$("#" + ro + " .YR span").text(ytdData[ro]["YOYGrowth"] * 100);
+    				if ((ytdData[ro]["BudgetHitRate"] * 100) < 90) {
+	    				$("#" + ro + " .HR").css('background', '#ee3839');
+	    			}else if((ytdData[ro]["BudgetHitRate"] * 100) >= 100) {
+	    				$("#" + ro + " .HR").css('background', '#48af56');
+	    			}else{
+	    				$("#" + ro + " .HR").css('background', '#e6be20');
+	    			}
+	    			if((ytdData[ro]["YOYGrowth"] * 100) < 0 ) {
+    					$("#" + ro + " .YR").css('background', '#ee3839');
+    				}else{
+    					$("#" + ro + " .YR").css('background', '#48af56');
+    				}
     			}
     		}
     	}
