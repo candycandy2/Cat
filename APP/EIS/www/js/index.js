@@ -77,6 +77,7 @@ $(document).one("pagebeforeshow", function() {
             $("#mypanel").panel( "open");
         }
     });
+    zoomBtnInit();
 });
 
 window.initialSuccess = function() {
@@ -97,9 +98,29 @@ window.initialSuccess = function() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
+
     if($(".ui-page-active").jqmData("panel") === "open"){
         $("#mypanel").panel( "close");
     }else{
         /*leave this app*/
     }
+}
+
+function zoomBtnInit(){
+    var screenWidth = $('html').width(), screenHeight = $('html').height(), tmp = 0;
+    $('.zoomInBtn').on('click', function(){
+        $('body').addClass('ui-landscape');
+        $('.hc-fragment').css({'height': 'auto'});
+        $('.zoomBtn').css({'right': -(screenHeight-$('.chartArea').width()-$('.viewIndex').css('padding-top').replace('px', '')-
+            $('.viewIndex').css('padding-bottom').replace('px', ''))/$('.chartArea').width()*100 + '%'});
+        chart.legend.update({ itemStyle: {fontSize: 14}});
+        chart.setSize(screenHeight*0.9, screenWidth*0.85, doAnimation = true);
+    });
+    $('.zoomOutBtn').on('click', function(){
+        $('body').removeClass('ui-landscape');
+        $('.hc-fragment').css({'height': '38vh'});
+        $('.zoomBtn').css({'right': '4%'});
+        chart.legend.update({ itemStyle: {fontSize: 12}});
+        chart.setSize($('.hc-fragment').width(), $('.hc-fragment').height(), doAnimation = true);        
+    });
 }
