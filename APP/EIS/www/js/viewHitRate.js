@@ -26,7 +26,7 @@ $("#viewHitRate").pagecontainer ({
 	    		getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
 	    		getHighcahrtsData(thisYear, thisMonth-1, "ACTUAL_ADJ_AMT", lastMonthActualAMT);
 	    		
-	    		for(var i in eisdata[year][month]) {
+	    		for(var i in eisdata[thisYear][thisMonth]) {
     				thisMonthData[i] = {};
     				lastMonthData[i] = {};
     				YTDData = {};
@@ -79,6 +79,8 @@ $("#viewHitRate").pagecontainer ({
     			for(var i in eisdata[year][month]) {
     				data_array[i]["BudgetHitRate"] = eisdata[year][month][i][1] / eisdata[year][month][i][0];
     			}
+    		}else{
+
     		}
     	}
 
@@ -102,6 +104,8 @@ $("#viewHitRate").pagecontainer ({
 	    			data_array[index] = (Number(eisdata[year][month][i][1]));
 	    			index++;
 	    		}
+    		}else {
+
     		}
     	}
 
@@ -141,7 +145,7 @@ $("#viewHitRate").pagecontainer ({
         				y: -11
         			},
         			min: 0,
-        			tickInterval: 1000
+        			tickInterval: 1000000
         		},
 				legend: {
 					align: 'left',
@@ -181,21 +185,22 @@ $("#viewHitRate").pagecontainer ({
 			    	data: thisMonthActualAMT
 				}]
 			});
+			loadingMask("hide");
         });
 
-        $(".page-tabs #viewHitRate-tab-1").on("click", function(){
-        	chart.series[0].setData(thisMonthBudgetAMT, true);
-        	chart.series[1].setData(thisMonthActualAMT, true);
+        $(".page-tabs #viewHitRate-tab-1").on("click", function() {
+        	chart.series[0].setData(thisMonthBudgetAMT, true, true, false);
+        	chart.series[1].setData(thisMonthActualAMT, true, true, false );
         	showData();
         });
 
-        $(".page-tabs #viewHitRate-tab-2").on("click", function(){
-        	chart.series[0].setData(lastMonthBudgetAMT, true);
-        	chart.series[1].setData(lastMonthActualAMT, true);
+        $(".page-tabs #viewHitRate-tab-2").on("click", function() {
+        	chart.series[0].setData(lastMonthBudgetAMT, true, true, false);
+        	chart.series[1].setData(lastMonthActualAMT, true, true, false);
         	showData();
         });
 
-        $(".page-tabs #viewHitRate-tab-3").on("click", function(){
+        $(".page-tabs #viewHitRate-tab-3").on("click", function() {
     		
         });
 	}
