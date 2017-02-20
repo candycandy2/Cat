@@ -5,10 +5,23 @@
         create: function(event, ui) {
 
             var tempPhonebookData = {};
-            var doRefresh = false;
+            var doRefresh = false, telString = "";
 
             /********************************** function *************************************/
             function phoneBookListHTML(index, company, eName, cName, extNo) {
+                // check has more than one ext num or not
+                if (extNo.indexOf(';')>0){
+                    telString = " class='chooseNumPop extNumMore'" + ' ';
+                    for (var i = 0; i < extNo.match(';').length+1; i++){
+                        telString += "data-extnum" + (i+1) + "=" + extNo.split(';')[i] + ' ';
+                    }
+                    telString += 'data-extnum=' + extNo + '>' + extNo.split(';')[0];
+                    extTmpNum = extNo.split(';')[0];
+                }
+                else{
+                    telString = " href='tel:" + extNo + "'>" + extNo;
+                    extTmpNum = extNo;
+                }
                 return '<li>'
                         +   '<div class="company">'
                         +       '<p class="edit-checkbox">'
@@ -18,7 +31,7 @@
                         +   '</div>'
                         +   '<div class="e-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
-                        +       '<p><a rel="external" href="tel:' + extNo + '" style="color:red;">' + extNo + '</a></p>'
+                        +       '<p><a rel="external" style="color:red;"' + telString + '</a></p>'
                         +   '</div>'
                         +   '<div class="c-name">'
                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'
@@ -110,6 +123,7 @@
                     } else {
                         //ResultCode = 001905, [fail]
                     }
+                    QueryMyPhoneBook();
                 };
 
                 this.failCallback = function(data) {};
