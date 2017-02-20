@@ -21,7 +21,7 @@
                         var dataContent = data['Content'];
                         var htmlContent = "";
                         var errorMsg = $("#errorMsg").clone();
-                        var errorMsg2 = $("#errorMsg2").clone(), telString = "";
+                        var errorMsg2 = $("#errorMsg2").clone(), telString = "", extTmpNum = "";
 
                         for (var i=0; i<dataContent.length; i++){
                             var tempData = {};
@@ -29,15 +29,35 @@
                             tempData["company"] = dataContent[i].Company;
                             tempData["ename"] = dataContent[i].Name_EN;
                             tempData["cname"] = dataContent[i].Name_CH;
-                            tempData["extnum"] = dataContent[i].Ext_No.match(/^([0-9X\-]{0,9})/)[1];
+                            tempData["extnum"] = dataContent[i].Ext_No;
                             tempData["mvpn"] = dataContent[i].Mvpn;
 
-                            if (tempData["mvpn"] === ""){
-                                telString = "href='tel:" + tempData["extnum"] + "'";
+                            // check has more than one ext num or not
+                            if (tempData["extnum"].indexOf(';')>0){
+                                // check has mvpn num or not
+                                if (tempData["mvpn"] === ""){
+                                    telString = "class='chooseNumPop extNumMore";
+                                }
+                                else{
+                                    telString = "class='chooseNumPop extNumMore mvpnNum" + "' data-mvpnnum = " + tempData["mvpn"];
+                                }
+                                for (var i = 0; i < tempData["extnum"].match(';').length+1; i++){
+                                    telString += " data-extnum" + (i+1) + "= " + tempData["extnum"].split(';')[i] + ' ';
+                                }
+                                telString += 'data-extnum=' + tempData["extnum"] + ' ';
+                                extTmpNum = tempData["extnum"].split(';')[0];
                             }
                             else{
-                                telString = "class='mvpnPop" + "' data-mvpnnum = " + tempData["mvpn"] + " data-extnum = " + tempData["extnum"] + " ";
+                                // check has mvpn num or not
+                                if (tempData["mvpn"] === ""){
+                                    telString = "href='tel:" + tempData["extnum"] + "'";
+                                }
+                                else{
+                                    telString = "class='chooseNumPop mvpnNum'" + "' data-mvpnnum=" + tempData["mvpn"] + " data-extnum=" + tempData["extnum"] + " ";
+                                }
+                                extTmpNum = tempData["extnum"];
                             }
+
 
                             employeeData[i] = tempData;
 
@@ -51,7 +71,7 @@
                                 +       '<img src = "img/phone.png" style="width:3.5VW; height:2VH;">'
                                 +   '</div>'
                                 +   '<div style="margin-right:6VW; line-height:10VH; width: 21VW;">'
-                                +       '<p><a rel="external"' + telString + 'style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + tempData["extnum"] + '</a></p>'
+                                +       '<p><a rel="external"' + telString + 'style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + extTmpNum + '</a></p>'
                                 +   '</div>'
                                 +   '<div style="float:right; margin-right:3.8VW; line-height:12VH">'
                                 +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/info.png" style="width:6.4VW; height:3.7VH;"></a>'
@@ -117,20 +137,7 @@
                 }
             });
 
-            // popup window, if the employee has mvpn num
-            $(document).on('click', '.mvpnPop', function(){
-                var tempNum = '', tempMvpn = $(this).data('mvpnnum'), tempExt = $(this).data('extnum');
-                $('#numSelectPopupWindow').popup('open');
-                $('#numSelectPopupWindow').find('li').each(function(){
-                    if ($(this).index() === 0) tempNum = tempExt;
-                    else tempNum = tempMvpn;
-                    $(this).find('span').html("<a href='tel:" + tempNum + "' style='text-decoration: none; font-weight: normal;'>" + tempNum + "</a>");
-                });
-            });
-
-            $('#numPopupCloseBtn').on('click', function(){
-                $('#numSelectPopupWindow').popup('close');
-            });
+            
         }
     });
 

@@ -21,9 +21,22 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
-var startYearMonth = "2013/01";
+var monTable = {
+    '1' : "Jan.",
+    '2' : "Feb.",
+    '3' : "Mar.",
+    '4' : "Apr.",
+    '5' : "May.",
+    '6' : "Jun.",
+    '7' : "Jul.",
+    '8' : "Aug.",
+    '9' : "Sep.",
+    '10' : "Oct.",
+    '11' : "Nov.",
+    '12' : "Dec.",
+};
 var eisdata = {};
-var endYearMonth, currentYear, currentMonth;
+var currentYear, currentMonth, queryData, callbackData, length;
 
 
 $(document).one("pagebeforeshow", function() {
@@ -70,10 +83,16 @@ window.initialSuccess = function() {
 
     loadingMask("show");
     currentYear = time.getFullYear();
-    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1) ;
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1) ;            
+    queryData =   "<LayoutHeader><StartYearMonth>"
+                + (currentYear - 3) + "/01"
+                + "</StartYearMonth><EndYearMonth>"
+                + currentYear + "/" + currentMonth
+                + "</EndYearMonth></LayoutHeader>";
     ROSummary();
     $.mobile.changePage('#viewHitRate');
 }
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
