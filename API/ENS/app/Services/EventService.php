@@ -265,7 +265,6 @@ class EventService
 
    private function arrangeEventList($event,  $parameterMap){
         $item = [];
-
         $item['event_row_id'] = $event->event_row_id;
         $item['event_type'] = $parameterMap[$event->event_type_parameter_value];
         $item['event_title'] = $event->event_title;
@@ -276,7 +275,7 @@ class EventService
         $userInfo = $this->userRepository->getUserInfoByEmpNO(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];
-        $item['created_at'] = $event->created_at->format('Y-m-d H:m:s');
+        $item['created_at'] = $event->created_at->format('Y-m-d H:i:s');
 
         return $item;
    }
