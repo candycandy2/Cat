@@ -26,10 +26,10 @@ foreach ($oriMenuList as $menu) {
         } else {
             $menu->Active = false;
         }
-        array_push($menuList, $menu);
+        $menuList[$menu->sequence] = $menu;
         foreach ($oriMenuList as $submenu) {
             if($submenu->pId == $menu->Id) {
-                array_push($menu->subMenuList, $submenu);
+                $menu->subMenuList[$submenu->sequence] = $submenu;
                 if($submenu->Name == $menu_name) {
                     $exist = true;
                     $submenu->Active = true;
@@ -43,10 +43,10 @@ foreach ($oriMenuList as $menu) {
                 }
             }
         }
+        ksort($menu->subMenuList);
     }
 }
-
-
+ksort($menuList);
 
 $title = trans('messages.TITLE_'.$menu_name);
 $withMessage = false;
@@ -91,9 +91,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
-    @if(App::getLocale()!='en-us')
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
-    @endif
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -106,6 +104,9 @@ if(array_key_exists('with_msg_id', $input)) {
             white-space:nowrap;
             overflow:hidden;
             text-overflow:ellipsis;
+        }
+        td.grid_warp_column {
+            word-break:break-all;
         }
         .error{
             color: red;
