@@ -95,7 +95,7 @@ class Verify
             'message'=>"欄位格式錯誤");
         }
 
-        $event = $eventService->getRelatedEventById($relatedId);
+        $event = $eventService->getRelatedStatusById($relatedId);
         if(is_null($event) || count($event) == 0){
              return array('code'=>ResultCode::_014911_relatedEventStatusError,
             'message'=>"關聯事件狀態異常");

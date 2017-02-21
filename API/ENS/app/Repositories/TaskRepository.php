@@ -120,7 +120,7 @@ class TaskRepository
     }
 
     /**
-     * 檢查任務是否有此擁有者
+     * 檢查任務是否有此參與者
      * @param  [type] $taskId en_task.row_id
      * @param  [type] $empNo  emp_no
      * @return mix

@@ -182,7 +182,11 @@ class EventService
          }
          return $userList;
    }
-
+   /**
+    * 找出不重複的事件參與者(被指派任務的人、主管以及機房管理者)
+    * @param  int $eventId 事件id en_event.row_id
+    * @return Array
+    */
    public function findEventUser($eventId){
         $eventUser = [];
         $taskUser = $this->taskRepository->getAllUserFromTaskbyEventId($eventId);
@@ -198,8 +202,8 @@ class EventService
         return array_unique($eventUser);
    }
 
-   public function getRelatedEventById($eventId){
-        return $this->eventRepository->getRelatedEventById($eventId);
+   public function getRelatedStatusById($eventId){
+        return $this->eventRepository->getRelatedStatusById($eventId);
    }
 
    public function updateTaskById($taskId, Array $data){
@@ -210,20 +214,44 @@ class EventService
         return $this->taskRepository->getUserByTaskId($taskId);
    }
 
+   /**
+    * 依任務id取得任務資料
+    * @param  int $taskId 任務id
+    * @return mixed
+    */
    public function getTaskById($taskId){
         return $this->taskRepository->getTaskById($taskId);
    }
    
+   /**
+    * 檢查人員是否有更新任務狀態的權限
+    * @param  int    $taskId    en_task.row_id
+    * @param  String $empNo     員工編號
+    * @return boolean
+    */
    public function checkUpdateTaskAuth($taskId, $empNo){
-
         $res = count($this->taskRepository->getIsTaskOwner($taskId, $empNo));
-
         if($res > 0){
             return true;
         }else{
             return false;
         }
         return true;
+   }
+
+   /**
+    * 檢查人員是否有更新事件狀態的權限
+    * @param  int    $taskId    en_task.row_id
+    * @param  String $empNo     員工編號
+    * @return boolean
+    */
+   public function checkUpdateEventAuth($taskId, $empNo){
+        $res = count($this->eventRepository->getIsEventOwner($taskId, $empNo));
+        if($res > 0){
+            return true;
+        }else{
+            return false;
+        }
    }
 
    private function getUniqueTask($basicList){
@@ -311,6 +339,14 @@ class EventService
         return $item;
    }
 
+   /**
+    * 發送推播訊息給事件參與者
+    * @param  int       $eventId    事件id en_event.row_id
+    * @param  Array     $data       發送資料
+    * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
+    * @param  string    $scenario   發送推播的場景(new:新增事件|updateL更新事件)
+    * @return json
+    */
    private function sendPushMessageToEventUser($eventId, $data, $queryParam, $scenario = 'new'){
        $empNo = ($scenario == 'new')?$data['created_user']:$data['updated_user'];
        $to = $this->getPushUserListByEvent($eventId);

@@ -22,9 +22,9 @@ class UserRepository
     }
 
     /**
-     * get User group by employee No.
-     * @param  string $empNo employee No.
-     * @return Collection
+     * 取得使用者所屬角色
+     * @param  String $empNo 員工編號
+     * @return mixed
      */
     public function getUserAuth($empNo){
 
@@ -36,6 +36,11 @@ class UserRepository
 
     }
 
+    /**
+     * 依員工編號取得使用者資訊
+     * @param  Array  $empNoArr 員工編號清單
+     * @return mixed
+     */
     public function getUserInfoByEmpNO(Array $empNoArr){
          return $this->user
          ->whereIn('emp_no', $empNoArr)
@@ -43,7 +48,10 @@ class UserRepository
          ->get();
     }
 
-
+    /**
+     * 查找en_user_group表，若存在此表有特殊權限
+     * @return mixed
+     */
     public function getSuperUser(){
         return $this->userGroup
          ->select('emp_no')
