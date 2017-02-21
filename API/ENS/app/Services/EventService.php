@@ -356,13 +356,18 @@ class EventService
     * @return json
     */
    private function sendPushMessageToEventUser($eventId, $data, $queryParam, $scenario = 'new'){
+       
+       $result = null;
+       
        $empNo = ($scenario == 'new')?$data['created_user']:$data['updated_user'];
        $to = $this->getPushUserListByEvent($eventId);
        $from = $this->getPushUserListByEmpNoArr(array( $empNo))[0];
        $title = base64_encode($data['event_title']);
        $text = base64_encode($data['event_desc']);
        //TODO append ENS event link
+       
        $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
+       
        $result = json_decode($pushResult);
        return $result;
    }

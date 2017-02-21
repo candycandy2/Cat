@@ -79,7 +79,7 @@ class CommonUtil
     public static function arrangeUpdateDataFromXml($xml, $updateField){
          $data = array('updated_user'=>(string)$xml->emp_no[0]);
          foreach ( $updateField as $column) {
-             if(isset($xml->$column[0]) && $xml->$column[0]!=""){
+             if(isset($xml->$column[0])){
                 $data[$column] = (string)$xml->$column[0];
              }
          }
