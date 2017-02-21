@@ -14,11 +14,12 @@ class customController extends Controller
     public function processRequest($api_version,$app_key,$action){
         //Check version/appkey/action in Url first
         if (!CommonUtil::checkCustomApiUrl($api_version,$app_key,$action)){
-            $result = response()->json(['result_code'=>ResultCode::_000921_customAPINotExisted,
-                'message'=>'custom api不存在，檢查url中的version,appkey,action！',
-                'content'=>'']);
+            $result = ['result_code'=>ResultCode::_999016_haveNoAppVersion,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999016_haveNoAppVersion),
+                'content'=>''];
             CommonUtil::logCustomApi($api_version,$app_key,$action,
                 response()->json(apache_response_headers()), $result);
+            $result = response()->json($result);
             return $result;
         }
 
