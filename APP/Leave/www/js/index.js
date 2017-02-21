@@ -1,19 +1,19 @@
 
 /*global variable, function*/
-var initialAppName = "ENS";
-var appKeyOriginal = "appens";
-var appKey = "appens";
-var pageList = ["viewEventList"];
-var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
+var initialAppName = "Leave";
+var appKeyOriginal = "appleave";
+var appKey = "appleave";
+var pageList = ["viewExample"];
+var appSecretKey = "86883911af025422b626131ff932a4b5";
 
 var prevPageID;
 
 window.initialSuccess = function() {
 
-    loadingMask("show");
+    //loadingMask("show");
 
-    $.mobile.changePage('#viewEventList');
-    var EventList = new getEventList();
+    $.mobile.changePage('#viewExample');
+    var APIRequest = new APIRequest();
 
 }
 
@@ -22,10 +22,10 @@ function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
 
-    if (activePageID === "viewEventList") {
+    if (activePageID === "viewExample") {
 
         if (checkPopupShown()) {
-            $.mobile.changePage('#viewEventList');
+            $.mobile.changePage('#viewExample');
         } else {
             navigator.app.exitApp();
         }
