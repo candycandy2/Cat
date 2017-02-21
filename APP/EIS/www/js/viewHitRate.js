@@ -101,7 +101,13 @@ $("#viewHitRate").pagecontainer ({
     				YOYGrowth = "" + (thisMonthData[ro]["YOYGrowth"] * 100);
     				$("#" + ro + " .AS span").text(ActualAMT.match(pattern)[1]);
     				$("#" + ro + " .HR span").text(budgetHitRate.match(pattern)[1] + "%");
-    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+    				
+    				if(Number(YOYGrowth.match(pattern)[1]) < 0) {
+	    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			}else {
+	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
+	    			}
+
     				if ((thisMonthData[ro]["BudgetHitRate"] * 100) < 90) {
     					$("#" + ro + " .HR").css('background', '#ee3839');
     				}else if((thisMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
@@ -122,7 +128,13 @@ $("#viewHitRate").pagecontainer ({
     				YOYGrowth = "" + (lastMonthData[ro]["YOYGrowth"] * 100);
     				$("#" + ro + " .AS span").text(ActualAMT.match(pattern)[1]);
     				$("#" + ro + " .HR span").text(budgetHitRate.match(pattern)[1] + "%");
-    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+    				
+	    			if(Number(YOYGrowth.match(pattern)[1]) < 0) {
+	    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			}else {
+	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
+	    			}
+
 	    			if ((lastMonthData[ro]["BudgetHitRate"] * 100) < 90) {
 	    				$("#" + ro + " .HR").css('background', '#ee3839');
 	    			}else if((lastMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
@@ -143,7 +155,13 @@ $("#viewHitRate").pagecontainer ({
     				YOYGrowth = "" + (ytdData[ro]["YOYGrowth"] * 100);
     				$("#" + ro + " .AS span").text(ActualAMT.match(pattern)[1]);
     				$("#" + ro + " .HR span").text(budgetHitRate.match(pattern)[1] + "%");
-    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			
+	    			if(Number(YOYGrowth.match(pattern)[1]) < 0) {
+	    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			}else {
+	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
+	    			}
+    				
     				if ((ytdData[ro]["BudgetHitRate"] * 100) < 90) {
 	    				$("#" + ro + " .HR").css('background', '#ee3839');
 	    			}else if((ytdData[ro]["BudgetHitRate"] * 100) >= 100) {
