@@ -211,7 +211,7 @@ class EventController extends Controller
                 'Message'=>'查無事件資料',
                 'Content'=>'']);
             }
-            
+
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
         } catch (Exception $e){
@@ -249,7 +249,13 @@ class EventController extends Controller
             $appKey         = trim((string)$xml->app_key[0]);
             $relatedId      = trim((string) $xml->related_event_row_id[0]);
             $completeDate   = trim((string) $xml->estimated_complete_date[0]);
-            $eventTypeParameterValue   = trim((string) $xml->estimated_complete_date[0]);
+            $eventTypeParameterValue   = trim((string) $xml->event_type_parameter_value[0]);
+
+            $queryParam =  array(
+                'lang'      => $lang,
+                'need_push' => $needPush,
+                'app_key'   => $appKey
+                );
 
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
@@ -258,7 +264,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($lang=="" || $needPush =="" || $appKey=="" || $eventId){
+            if($lang == "" || $needPush == "" || $appKey =="" || $eventId == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -310,7 +316,14 @@ class EventController extends Controller
                 }
             }
             
-            $pushResult = $this->eventService->updateEvent($xml);
+           $updateField = array('event_type_parameter_value',
+                                  'event_title','event_desc',
+                                  'estimated_complete_date',
+                                  'related_event_row_id');
+
+           $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
+           
+            $pushResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
             \DB::commit();
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);

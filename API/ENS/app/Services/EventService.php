@@ -70,31 +70,24 @@ class EventService
 
    /**
     * 更新事件流程
-    * @param  String $xml 傳入的更新資料內容
-    * @return json        更新結果
+    * @param  String $empNo      員工編號
+    * @param  int    $eventId    事件row_id
+    * @param  Array  $data       更新資料
+    * @param  Array  $queryParam 推播必要參數
+    * @return json               更新結果
     */
-   public function updateEvent($xml){
-           $result = null;
-           $eventId     = (string)$xml->event_row_id[0];
-           $relatedId   = (string)$xml->related_event_row_id[0];
-           $empNo       = (string)$xml->emp_no[0];
+   public function updateEvent($empNo, $eventId, $data, $queryParam){
 
-           $updateField = array('event_type_parameter_value',
-                                  'event_title','event_desc',
-                                  'estimated_complete_date',
-                                  'related_event_row_id');
-           $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
-           $queryParam =  array(
-                'lang'      => (string)$xml->lang[0],
-                'need_push' => (string)$xml->need_push[0],
-                'app_key'   => (string)$xml->app_key[0]
-                );
-           
            $this->eventRepository->updateEventById($eventId,$data);
-           
-           if($relatedId!=""){
-                $this->eventRepository->bindRelatedEvent($eventId, $relatedId, $empNo);
+           if(isset($data['related_event_row_id'])){
+                if($data['related_event_row_id'] != ""){
+                    $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $empNo);
+                }else{
+                    //if related_event_row_id is null clear related
+                    $this->eventRepository->bindRelatedEvent($eventId, 0, $empNo);
+                }
            }
+           
            $result = $this->sendPushMessageToEventUser($eventId, $data, $queryParam, 'update');
            
            return $result;

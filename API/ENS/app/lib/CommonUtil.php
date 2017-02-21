@@ -123,7 +123,7 @@ class CommonUtil
             return $result;
         }
 
-     public static function getSignature($signatureTime)
+    public static function getSignature($signatureTime)
         {
             $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
             return $ServerSignature;
