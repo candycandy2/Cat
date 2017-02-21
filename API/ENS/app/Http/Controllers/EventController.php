@@ -237,6 +237,7 @@ class EventController extends Controller
             $needPush = (string)$xml->need_push[0];
             $appKey = (string)$xml->app_key[0];
             $relatedId = (string) $xml->related_event_row_id[0];
+            $completeDate = trim((string) $xml->estimated_complete_date[0]);
 
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
@@ -279,9 +280,9 @@ class EventController extends Controller
                 'Content'=>""]);
             }
 
-            if(isset($xml->estimated_complete_date[0]) && trim((string)$xml->estimated_complete_date[0])!=""){
-                if( preg_match("/^[1-9][0-9]*$/", $xml->estimated_complete_date[0]) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+            if($completeDate!=""){
+                if(!$Verify->checkTimeStemp($completeDate)){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
                 }
@@ -305,11 +306,9 @@ class EventController extends Controller
         } catch (Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
-            'Content'=>""]);
-           
+            'Content'=>""]);           
         }
-
-            
+   
     }
 
     /**
@@ -333,7 +332,9 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
 
             $empNo = (string)$xml->emp_no[0];
-            $eventId = $xml->event_row_id[0];
+            $eventId = (string)$xml->event_row_id[0];
+            $readTime =  trim((string)$xml->read_time[0]);
+            $eventStetus = trim((string)$xml->event_status[0]);
 
             if(!isset($eventId) || trim($eventId) == "" ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
@@ -368,14 +369,14 @@ class EventController extends Controller
             }
             
             //update Event Status
-            if(isset($xml->event_status[0]) && trim((string)$xml->event_status[0])!=""){
+            if($eventStetus!=""){
                 $userAuthList = $this->userService->getUserRoleList($empNo);
                 if(!in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
                         'Content'=>""]);
                 }
-                if( !in_array($xml->event_status[0],array(0,1))){
+                if( !in_array($eventStetus,array(0,1))){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
@@ -386,16 +387,15 @@ class EventController extends Controller
             }
 
             //update Event Read Time
-            if(isset($xml->read_time[0]) && trim((string)$xml->read_time[0])!=""){
+            if($readTime!=""){
                 
                 if(!$this->eventService->checkUpdateEventAuth($eventId, $empNo)){
                     return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
                         'Content'=>""]);
                 }
-
-                if( preg_match("/[0-9]{10}/", (string)$xml->read_time[0]) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                if(!$Verify->checkTimeStemp($readTime)){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
                 }

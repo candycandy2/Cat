@@ -111,7 +111,12 @@ class Verify
         "message"=>"");
     } 
     
-
+    /**
+     * 檢查事件是否已完成
+     * @param  int          $eventId            en_event.row_id
+     * @param  EventRepository $eventRepository eventRepository
+     * @return boolean                          true:已完成|false:未完成
+     */
     public function isEventClosed($eventId, EventRepository $eventRepository){
         $event = $eventRepository->getEventDetail($eventId);
         if($event->event_status == 1){
@@ -119,5 +124,12 @@ class Verify
         }else{
             return false;
         }
+    }
+
+    public function checkTimeStemp($timpStemp){
+        if( preg_match("/[0-9]{10}/", $timpStemp) == 0){
+           return false;         
+        }
+        return true;
     }
 }
