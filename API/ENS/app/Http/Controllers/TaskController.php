@@ -17,7 +17,7 @@ class TaskController extends EventController
     public function updateTaskStatus(){
         
         $allow_user = 'admin';
-
+        \DB::beginTransaction();
         try{
 
             $Verify = new Verify();
@@ -73,7 +73,9 @@ class TaskController extends EventController
             $resutlt = $this->eventService->updateTaskById($taskId,$data);
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                         'Content'=>""]);
+        \DB::commit();
         } catch (Exception $e){
+            \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
             'Content'=>""]);
            
