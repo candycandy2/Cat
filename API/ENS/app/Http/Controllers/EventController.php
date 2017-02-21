@@ -252,7 +252,13 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if(!isset($eventId) || trim($eventId) == "" || preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
+            if(trim($eventId) == ""){
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
