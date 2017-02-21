@@ -195,6 +195,32 @@ class platformController extends Controller
                     }
                 }
 
+                if($status == "N") {
+                    $userInfo = CommonUtil::getUserInfoByRowId($userId);
+                    $tag = PushUtil::GetTagByUserInfo($userInfo);
+                    foreach ($userInfo->uuidList as $uuid) {
+                        $pushToken = $uuid->uuid;
+                        $pushResult = PushUtil::RemoveTagsWithJPushWebAPI($pushToken, $tag);
+                    }
+
+                    $registerList = \DB::table("qp_register")
+                        ->where("user_row_id", "=", $userId)
+                        ->select()->get();
+                    foreach ($registerList as $registerInfo)
+                    {
+                        $registerId = $registerInfo->row_id;
+                        \DB::table("qp_push_token")
+                            ->where("register_row_id", "=", $registerId)
+                            ->delete();
+                        \DB::table("qp_register")
+                            ->where("row_id", "=", $registerId)
+                            ->delete();
+                        \DB::table("qp_session")
+                            ->where("user_row_id", "=", $userId)
+                            ->delete();
+                    }
+                }
+
                 \DB::commit();
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
             } catch (\Exception $e) {
