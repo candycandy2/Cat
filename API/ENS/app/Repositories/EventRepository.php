@@ -72,22 +72,33 @@ class EventRepository
      * @param  int $bindEventId     被綁定的事件
      * @return int                  已綁定資料筆數
      */
-    public function bindRelatedEvent($eventId, $bindEventId){
-        $this->event::where('row_id', $bindEventId)
-            ->where('related_event_row_id',0)
-            ->update(['related_event_row_id' => $eventId]);
+    public function bindRelatedEvent($eventId, $bindEventId, $empNo){
+        
+        $nowTimestamp = time();
+        $now = date('Y-m-d H:i:s',$nowTimestamp);
+        
+        $res = \DB::table("en_event")
+        ->join('en_event as rel','en_event.related_event_row_id','=','rel.row_id')
+        ->where('en_event.related_event_row_id','=',$eventId)
+        ->update(['en_event.related_event_row_id' => 0,
+                  'en_event.updated_user'=>$empNo,
+                  'en_event.updated_at'=>$now,
+                  ]);
+
+         $this->event::where('row_id', $bindEventId)
+             ->where('related_event_row_id',0)
+             ->update(['related_event_row_id' => $eventId]);
     }
 
     /**
-     * 取得事件關聯性，檢查欲關聯的事件是否真的為被關聯
+     * 取得事件關聯性，檢查欲關聯的事件是否真的沒有被關聯
      * @param  int $relatedId 關聯事件id
      * @return mixed
      */
     public function getRelatedStatusById($relatedId){
        return $this->event::where('row_id', $relatedId)
-            ->where('related_event_row_id', 0)
-            ->select('row_id')
-            ->get();
+            ->select('related_event_row_id')
+            ->first();
     }
 
     /**

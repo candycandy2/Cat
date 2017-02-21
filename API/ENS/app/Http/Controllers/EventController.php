@@ -236,7 +236,8 @@ class EventController extends Controller
             $lang = (string)$xml->lang[0];
             $needPush = (string)$xml->need_push[0];
             $appKey = (string)$xml->app_key[0];
-          
+            $relatedId = (string) $xml->related_event_row_id[0];
+
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
@@ -272,6 +273,12 @@ class EventController extends Controller
                 }
             }
 
+            if($Verify->isEventClosed($eventId, $this->eventRepository)){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014910_eventClosed,
+                'Message'=>"無法編輯已完成事件",
+                'Content'=>""]);
+            }
+
             if(isset($xml->estimated_complete_date[0]) && trim((string)$xml->estimated_complete_date[0])!=""){
                 if( preg_match("/^[1-9][0-9]*$/", $xml->estimated_complete_date[0]) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
@@ -279,9 +286,9 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
             }
-
-            if(isset($xml->related_event_row_id[0]) && trim((string)$xml->related_event_row_id[0])!=""){
-                $verifyResult = $Verify->checkRelatedEvent($xml->related_event_row_id[0], $this->eventService);
+            //更新關聯事件
+            if(trim($relatedId)!=""){
+                $verifyResult = $Verify->checkRelatedEvent($eventId, $relatedId, $this->eventService);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
                         'Message'=>$verifyResult["message"],

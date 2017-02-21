@@ -30,7 +30,12 @@ class EventService
         $this->push = $push;
     }
 
-
+    /**
+     * 新增事件
+     * @param  Array  $data       新增事件內容
+     * @param  Array  $queryParam 推播必要參數
+     * @return int                新增成功的事件Id
+     */
     public function newEvent(Array $data, Array $queryParam){
 
        $eventId = $this->eventRepository->saveEvent($data);
@@ -42,7 +47,7 @@ class EventService
        $this->insertTask($eventId, $uniqueTask, $data['created_user'], $now);
 
        if(isset($data['related_event_row_id'])){
-            $this->eventRepository->bindRelatedEvent($eventId,$data['related_event_row_id']);
+            $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $data['emp_no']);
        }
 
        $taskInfo = $this->taskRepository->getTaskByEventId($eventId);
@@ -61,7 +66,10 @@ class EventService
    }
 
    public function updateEvent($xml){
-           $eventId = $xml->event_row_id[0];
+           $result = null;
+           $eventId = (string)$xml->event_row_id[0];
+           $relatedId = (string)$xml->related_event_row_id[0];
+           $empNo = (string)$xml->emp_no[0];
            $updateField = array('event_type_parameter_value',
                                   'event_title','event_desc',
                                   'estimated_complete_date',
@@ -75,8 +83,8 @@ class EventService
            
            $this->eventRepository->updateEventById($eventId,$data);
            
-           if(isset($xml->related_event_row_id[0]) && $xml->related_event_row_id[0]!=""){
-                $this->eventRepository->bindRelatedEvent($eventId,$xml->related_event_row_id[0]);
+           if($relatedId!=""){
+                $this->eventRepository->bindRelatedEvent($eventId, $relatedId, $empNo);
            }
            $result = $this->sendPushMessageToEventUser($eventId, $data, $queryParam, 'update');
            
