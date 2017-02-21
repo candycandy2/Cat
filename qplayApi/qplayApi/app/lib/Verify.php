@@ -48,24 +48,32 @@ class Verify
             || $headerSignature == null || $headerSignatureTime == null
             || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> "傳入參數不足或傳入參數格式錯誤");
+                //"message"=> "傳入參數不足或傳入參數格式錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+            );
         }
 
         if($headerAppKey != CommonUtil::getContextAppKey()) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
-                "message"=> "app-key參數錯誤");
+                //"message"=> "app-key參數錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect)
+            );
         }
 
         //verify language input
         if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
             return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
-                "message"=>"lang參數錯誤 or 不存在");
+                //"message"=>"lang參數錯誤 or 不存在"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999004_parameterLangLostOrIncorrect)
+            );
         }
         
         //verify content-type
         if (!stristr($headerContentType,'application/json')) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=>"Content-Type錯誤");
+                //"message"=>"Content-Type錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid)
+            );
         }
 
         //TODO for test
@@ -82,12 +90,16 @@ class Verify
         $sigResult = self::chkSignature($headerSignature, $headerSignatureTime);
         if ($sigResult == 1) {
             return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                "message"=>"Signature驗證碼不正確");
+                //"message"=>"Signature驗證碼不正確"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid)
+            );
         }
 
         if($sigResult == 2) {
             return array("code"=>ResultCode::_999011_signatureOvertime,
-                "message"=>"signature參數錯誤或誤差超過15分鐘");
+                //"message"=>"signature參數錯誤或誤差超過15分鐘"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -108,24 +120,32 @@ class Verify
             || $headerSignature == null || $headerSignatureTime == null
             || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> "傳入參數不足或傳入參數格式錯誤");
+                //"message"=> "傳入參數不足或傳入參數格式錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+            );
         }
 
         if(!self::chkAppKeyExist($headerAppKey)) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
-                "message"=> "app-key參數錯誤");
+                //"message"=> "app-key參數錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect)
+            );
         }
 
         //verify language input
         if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
             return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
-                "message"=>"lang參數錯誤 or 不存在");
+                //"message"=>"lang參數錯誤 or 不存在"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999004_parameterLangLostOrIncorrect)
+            );
         }
 
         //verify content-type
         if (!stristr($headerContentType,'application/json')) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=>"Content-Type錯誤");
+                //"message"=>"Content-Type錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid)
+            );
         }
 
         //TODO for test
@@ -142,12 +162,16 @@ class Verify
         $sigResult = self::chkSignatureCustom($headerSignature, $headerSignatureTime,$headerAppKey);
         if ($sigResult == 1) {
             return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                "message"=>"Signature驗證碼不正確");
+                //"message"=>"Signature驗證碼不正確"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid)
+            );
         }
 
         if($sigResult == 2) {
             return array("code"=>ResultCode::_999011_signatureOvertime,
-                "message"=>"signature參數錯誤或誤差超過15分鐘");
+                //"message"=>"signature參數錯誤或誤差超過15分鐘"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -157,12 +181,16 @@ class Verify
     public static function verifyToken($uuid, $token) {
         if($token == null || $uuid == null || trim($uuid) == "" || trim($token) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> "傳入參數不足或傳入參數格式錯誤");
+                //"message"=> "傳入參數不足或傳入參數格式錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+            );
         }
 
         if(!Verify::chkUuidExist($uuid)) {
             return array("code"=>ResultCode::_000911_uuidNotExist,
-                "message"=> "uuid不存在");
+                //"message"=> "uuid不存在"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist)
+            );
         }
 
 //        $sessionList = \DB::table("qp_session")
@@ -178,7 +206,10 @@ class Verify
         $sessionList = DB::select($sql, []);
         if(count($sessionList) < 1)
         {
-            return array("code"=>ResultCode::_000908_tokenInvalid,"message"=> "token已经失效");
+            return array("code"=>ResultCode::_000908_tokenInvalid,
+                //"message"=> "token已经失效"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000908_tokenInvalid)
+            );
         }
 
         $token_valid_date = $sessionList[0]->token_valid_date;
@@ -188,7 +219,9 @@ class Verify
         if(time() > $token_valid_date)
         {
             return array("code"=>ResultCode::_000907_tokenOverdue,
-                "message"=> "token过期");
+                //"message"=> "token过期"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000907_tokenOverdue)
+            );
         }
 
 //        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
@@ -213,15 +246,21 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=>"账号已被停权");
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -232,15 +271,21 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserRowID($userRowId);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=>"账号已被停权");
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -252,15 +297,21 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserIDAndCompany($loginid, $company);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=>"账号已被停权");
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -272,15 +323,21 @@ class Verify
         $userStatus = CommonUtil::getUserStatusByUserIDAndDomain($loginid, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 1) {
             return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=>"账号已被停权");
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -563,25 +620,33 @@ class Verify
             || trim($headerContentType) == "" || trim($headerAppKey) == ""
             || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> "vcustom傳入參數不足或傳入參數格式錯誤");
+                //"message"=> "vcustom傳入參數不足或傳入參數格式錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+            );
         }
 
         //检查app_key是否存在
         if(!self::chkAppKeyExist($headerAppKey)) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
-                "message"=> "app-key參數錯誤");
+                //"message"=> "app-key參數錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect)
+            );
         }
 
         //verify language input
         if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
             return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
-                "message"=>"lang參數錯誤 or 不存在");
+                //"message"=>"lang參數錯誤 or 不存在"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999004_parameterLangLostOrIncorrect)
+            );
         }
 
         //verify content-type
         if (!stristr($headerContentType,'application/json')) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=>"Content-Type錯誤");
+                //"message"=>"Content-Type錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid)
+            );
         }
 
         //TODO for test
@@ -593,12 +658,16 @@ class Verify
             $sigResult = self::chkSignatureCustom($headerSignature, $headerSignatureTime,$headerAppKey);
             if ($sigResult == 1) {
                 return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                    "message"=>"Signature驗證碼不正確");
+                    //"message"=>"Signature驗證碼不正確"
+                    "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid)
+                );
             }
 
             if($sigResult == 2) {
                 return array("code"=>ResultCode::_999011_signatureOvertime,
-                    "message"=>"signature參數錯誤或誤差超過15分鐘");
+                    //"message"=>"signature參數錯誤或誤差超過15分鐘"
+                    "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime)
+                );
             }
         }
 
@@ -610,7 +679,9 @@ class Verify
 
             if(!self::chkUuidExist($uuid)) {
                 return array("code"=>ResultCode::_000911_uuidNotExist,
-                    "message"=>"uuid不存在");
+                    //"message"=>"uuid不存在"
+                    "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist)
+                );
             }
 
             return self::verifyToken($uuid, $token);
