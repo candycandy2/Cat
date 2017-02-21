@@ -30,6 +30,7 @@ class BasicInfoRepository
      */
     public function getAllBasicInfo()
     {   
+
         return  $this->basicInfo
             ->select(
                 'location',
@@ -37,7 +38,8 @@ class BasicInfoRepository
                 DB::raw('GROUP_CONCAT(emp_no SEPARATOR ",") as users')
                 )
             ->groupBy('location', 'function')
-            ->orderBy('location', 'function')
+            ->orderBy('location','asc')
+            ->orderBy('function','asc')
             ->get();
     }
 
@@ -68,6 +70,8 @@ class BasicInfoRepository
             ->where('location', '=', $location)
             ->where('function', '=', $function)
             ->select('en_basic_info.emp_no as emp_no')
+            ->orderBy('location','asc')
+            ->orderBy('function','asc')
             ->get();
     }
 }
