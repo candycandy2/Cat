@@ -38,7 +38,7 @@
                         // check has more than one ext num or not
                         if (data['Content'][0].Ext_No.indexOf(';')>0){
                             telString = " class='chooseNumPop extNumMore'" + ' ';
-                            for (var i = 0; i < data['Content'][0].Ext_No.match(';').length+1; i++){
+                            for (var i = 0; i < data['Content'][0].Ext_No.match(/;/igm).length+1; i++){
                                 telString += "data-extnum" + (i+1) + "=" + data['Content'][0].Ext_No.split(';')[i] + ' ';
                             }
                             telString += 'data-extnum=' + data['Content'][0].Ext_No + '>' + data['Content'][0].Ext_No.split(';')[0];
