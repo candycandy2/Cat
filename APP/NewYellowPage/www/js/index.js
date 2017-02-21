@@ -84,7 +84,7 @@ $(document).on('click', '.chooseNumPop', function(){
         $('#numSelectPopupWindow').find('ul').html('');
         // has mutiple ext num
         if ($(this).hasClass('extNumMore')){
-            extTotalNum = tempExt.match(';').length + 1;
+            extTotalNum = tempExt.match(/;/igm).length + 1;
             for (var i = 0; i < extTotalNum; i++){
                 appendNum($(this).data('extnum' + (i+1)));
             }
@@ -92,6 +92,9 @@ $(document).on('click', '.chooseNumPop', function(){
 
         // has mvpn num
         if ($(this).hasClass('mvpnNum')){
+            // has only one ext number
+            if (!$(this).hasClass('extNumMore'))
+                appendNum(tempExt);
             appendNum(tempMvpn);
         }
         tmpPopupData = tempExt;
