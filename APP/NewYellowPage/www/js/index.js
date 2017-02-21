@@ -92,6 +92,9 @@ $(document).on('click', '.chooseNumPop', function(){
 
         // has mvpn num
         if ($(this).hasClass('mvpnNum')){
+            // has only one ext number
+            if (!$(this).hasClass('extNumMore'))
+                appendNum(tempExt);
             appendNum(tempMvpn);
         }
         tmpPopupData = tempExt;
