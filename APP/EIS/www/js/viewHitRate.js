@@ -5,9 +5,10 @@ var lastMonthBudgetAMT = [];
 var lastMonthActualAMT = [];
 var YTDBudgetAMT = [];
 var YTDActualAMT = [];
+var lastYTDActualAMT = {};
 var thisMonthData = {};
 var lastMonthData = {};
-var YTDData = {};
+var ytdData = {};
 
 $("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
@@ -20,6 +21,7 @@ $("#viewHitRate").pagecontainer ({
 	    		thisYear = callbackData[length-1]["YEAR"];
 	    		thisMonth = callbackData[length-1]["MONTH"];
 	    		$(".page-date").text(monTable[thisMonth]+thisYear);
+	    		
 	    		convertData(data);
 	    		
 	    		getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
@@ -32,17 +34,23 @@ $("#viewHitRate").pagecontainer ({
 	    		for(var i in eisdata[thisYear][thisMonth]) {
     				thisMonthData[i] = {};
     				lastMonthData[i] = {};
-    				YTDData = {};
+    				ytdData[i] = {};
+    			}
+    			/* 2016/01~05  2015/01~12 is a problem*/
+	    		for(var i in eisdata[thisYear-1][thisMonth]) {
+    				lastYTDActualAMT[i] = 0;
+    				for(var j in eisdata[thisYear-1]) {
+    					lastYTDActualAMT[i] += (Number(eisdata[thisYear-1][j][i][1])); 
+    				}
     			}
 
 	    		calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
 	    		calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
 	    		calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
 	    		calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
-	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", YTDData);
-	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", YTDData);
-
-	    		showData();
+	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
+	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
+	    		showData("thisMonth");
 	    		loadingMask("hide");
 	    	};
 
@@ -56,6 +64,7 @@ $("#viewHitRate").pagecontainer ({
 		};
 
     	function calculateData(year, month, type, data_array) {
+    		var index = 0;
     		if(month == 0) {
     			month = 12;
     			year--;
@@ -69,14 +78,73 @@ $("#viewHitRate").pagecontainer ({
     				data_array[i]["BudgetHitRate"] = eisdata[year][month][i][1] / eisdata[year][month][i][0];
     			}
     		}else if(type == "YTDYOYGrowth") {
-
-    		}else if(type == "YTDBudgetHitRate"){
-
+    			for(var i in eisdata[year][month]) {
+    				data_array[i]["YOYGrowth"] = (YTDActualAMT[index++] / lastYTDActualAMT[i]) - 1;
+    			}
+    		}else if(type == "YTDBudgetHitRate") {
+    			for(var i in eisdata[year][month]) {
+    				data_array[i]["BudgetHitRate"] = YTDActualAMT[index++] / YTDBudgetAMT[index++];
+    			}
     		}
     	}
 
-    	function showData(){
-
+    	function showData(tab) {
+    		var index = 0;
+    		if(tab == "thisMonth") {
+    			for(var ro in thisMonthData) {
+    				$("#" + ro + " .AS span").text(thisMonthActualAMT[index++] / Math.pow(10, 6));
+    				$("#" + ro + " .HR span").text(thisMonthData[ro]["BudgetHitRate"] * 100);
+    				$("#" + ro + " .YR span").text(thisMonthData[ro]["YOYGrowth"] * 100);	
+    				if ((thisMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+    					$("#" + ro + " .HR").css('background', '#ee3839');
+    				}else if((thisMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
+    					$("#" + ro + " .HR").css('background', '#48af56');
+    				}else{
+    					$("#" + ro + " .HR").css('background', '#e6be20');
+    				}
+    				if((thisMonthData[ro]["YOYGrowth"] * 100) < 0 ) {
+    					$("#" + ro + " .YR").css('background', '#ee3839');
+    				}else{
+    					$("#" + ro + " .YR").css('background', '#48af56');
+    				}
+    			}
+    		}else if(tab == "lastMonth") {
+    			for(var ro in lastMonthData) { 
+    				$("#" + ro + " .AS span").text(lastMonthActualAMT[index++] / Math.pow(10, 6));
+    				$("#" + ro + " .HR span").text(lastMonthData[ro]["BudgetHitRate"] * 100);
+    				$("#" + ro + " .YR span").text(lastMonthData[ro]["YOYGrowth"] * 100);
+	    			if ((lastMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+	    				$("#" + ro + " .HR").css('background', '#ee3839');
+	    			}else if((lastMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
+	    				$("#" + ro + " .HR").css('background', '#48af56');
+	    			}else{
+	    				$("#" + ro + " .HR").css('background', '#e6be20');
+	    			}
+	    			if((lastMonthData[ro]["YOYGrowth"] * 100) < 0 ) {
+    					$("#" + ro + " .YR").css('background', '#ee3839');
+    				}else{
+    					$("#" + ro + " .YR").css('background', '#48af56');
+    				}
+	    		}
+    		}else if(tab == "YTD") {
+    			for(var ro in ytdData) { 
+    				$("#" + ro + " .AS span").text(YTDActualAMT[index++] / Math.pow(10, 6));
+    				$("#" + ro + " .HR span").text(ytdData[ro]["BudgetHitRate"] * 100);
+    				$("#" + ro + " .YR span").text(ytdData[ro]["YOYGrowth"] * 100);
+    				if ((ytdData[ro]["BudgetHitRate"] * 100) < 90) {
+	    				$("#" + ro + " .HR").css('background', '#ee3839');
+	    			}else if((ytdData[ro]["BudgetHitRate"] * 100) >= 100) {
+	    				$("#" + ro + " .HR").css('background', '#48af56');
+	    			}else{
+	    				$("#" + ro + " .HR").css('background', '#e6be20');
+	    			}
+	    			if((ytdData[ro]["YOYGrowth"] * 100) < 0 ) {
+    					$("#" + ro + " .YR").css('background', '#ee3839');
+    				}else{
+    					$("#" + ro + " .YR").css('background', '#48af56');
+    				}
+    			}
+    		}
     	}
 
     	function getHighcahrtsData(year, month, type, data_array) {
@@ -87,13 +155,11 @@ $("#viewHitRate").pagecontainer ({
     		}
     		if(type == "BUDGET_AMT") {
 	    		for(var i in eisdata[year][month]) {
-	    			data_array[index] = (Number(eisdata[year][month][i][0]));
-	    			index++;
+	    			data_array[index++] = (Number(eisdata[year][month][i][0]));
 	    		}
     		}else if(type == "ACTUAL_ADJ_AMT") {
     			for(var i in eisdata[year][month]) {
-	    			data_array[index] = (Number(eisdata[year][month][i][1]));
-	    			index++;
+	    			data_array[index++] = (Number(eisdata[year][month][i][1]));
 	    		}
     		}else if(type == "YTDBUDGET_AMT") {
     			for(var i in eisdata[year][month]) {
@@ -213,21 +279,21 @@ $("#viewHitRate").pagecontainer ({
         	$(".page-date").text(monTable[thisMonth]+thisYear);
         	chart.series[0].setData(thisMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(thisMonthActualAMT, true, true, false );
-        	showData();
+        	showData("thisMonth");
         });
 
         $(".page-tabs #viewHitRate-tab-2").on("click", function() {
         	$(".page-date").text(monTable[thisMonth-1]+thisYear);
         	chart.series[0].setData(lastMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(lastMonthActualAMT, true, true, false);
-        	showData();
+        	showData("lastMonth");
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function() {
     		$(".page-date").text(thisYear);
     		chart.series[0].setData(YTDBudgetAMT, true, true, false);
         	chart.series[1].setData(YTDActualAMT, true, true, false);
-        	showData();
+        	showData("YTD");
         });
 	}
 });

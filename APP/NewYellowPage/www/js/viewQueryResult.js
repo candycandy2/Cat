@@ -36,16 +36,16 @@
                             if (tempData["extnum"].indexOf(';')>0){
                                 // check has mvpn num or not
                                 if (tempData["mvpn"] === ""){
-                                    telString = "class='chooseNumPop extNumMore";
+                                    telString = "class='chooseNumPop extNumMore'";
                                 }
                                 else{
-                                    telString = "class='chooseNumPop extNumMore mvpnNum" + "' data-mvpnnum = " + tempData["mvpn"];
+                                    telString = "class='chooseNumPop extNumMore mvpnNum'" + " data-mvpnnum='" + tempData["mvpn"] + "'";
                                 }
-                                for (var i = 0; i < tempData["extnum"].match(';').length+1; i++){
-                                    telString += " data-extnum" + (i+1) + "= " + tempData["extnum"].split(';')[i] + ' ';
+                                for (var j = 0; j < tempData["extnum"].match(/;/igm).length+1; j++){
+                                    telString += " data-extnum" + (j+1) + "='" + tempData["extnum"].split(';')[j].replace(' ', '') + "' " ;
                                 }
-                                telString += 'data-extnum=' + tempData["extnum"] + ' ';
-                                extTmpNum = tempData["extnum"].split(';')[0];
+                                telString += 'data-extnum="' + tempData["extnum"] + '" ';
+                                extTmpNum = tempData["extnum"].split(';')[0].replace(' ', '');
                             }
                             else{
                                 // check has mvpn num or not
@@ -53,7 +53,7 @@
                                     telString = "href='tel:" + tempData["extnum"] + "'";
                                 }
                                 else{
-                                    telString = "class='chooseNumPop mvpnNum'" + "' data-mvpnnum=" + tempData["mvpn"] + " data-extnum=" + tempData["extnum"] + " ";
+                                    telString = "class='chooseNumPop mvpnNum'" + " data-mvpnnum='" + tempData["mvpn"] + "' data-extnum='" + tempData["extnum"] + "' ";
                                 }
                                 extTmpNum = tempData["extnum"];
                             }
