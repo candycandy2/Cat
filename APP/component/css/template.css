@@ -42,7 +42,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     padding: 5px;
     font-size: 2.8vh;
     border: 0;
-    background: url('../img/dropdown.png') right transparent;
+    background: url('../img/component/dropdown.png') right transparent;
     background-size: 2.9vw 2vw;
     background-repeat: no-repeat;
     -webkit-appearance: none;
