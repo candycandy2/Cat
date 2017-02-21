@@ -127,20 +127,18 @@
 
 #viewHitRate .HR{
 	color: #fff;
-	margin-left: 8.5VW;
+	margin-left: 8VW;
 	text-align: center;
-	width: 19VW;
-	/*background-color: #ee3839;*/
+	width: 20VW;
 	border-radius: 3.5px;
 	display: inline-block;
 }
 
 #viewHitRate .YR{
 	color: #fff;
-	margin-left: 7.5VW;
+	margin-left: 7VW;
 	text-align: center;
-	width: 19VW;
-	/*background-color: #48af56;*/
+	width: 20VW;
 	border-radius: 3.5px;
 	display: inline-block;
 }
