@@ -8,12 +8,65 @@
             </div>
         </div>
     </div>
-    <div data-role="main" class="page-main" id="content">
-
+    <div data-role="main" class="page-main" id="contentEventList">
+        <!--template @Event List Msg-->
+        <template id="tplEventListMsg">
+            <div class="event-list-msg">
+                <div class="event-list-msg-top">
+                    <div>
+                        <span class="name">Michael Yang</span>
+                        <span class="event-status">
+                            <div class="done">
+                                <span class="img"></span>
+                                <span class="text">已完成</span>
+                            </div>
+                            <div class="unfinished hide">
+                                <span class="img"></span>
+                                <span class="text">未完成</span>
+                            </div>
+                        </span>
+                    </div>
+                    <div>
+                        <span class="link">
+                            <div class="normal">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="urgent hide">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                        </span>
+                        <span class="time">2017-01-01 12:30</span>
+                    </div>
+                    <div class="description">[機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業
+                    </div>
+                </div>
+                <hr class="event-list-msg-hr">
+                <div class="event-list-msg-bottom">
+                    <span class="member">
+                        <span class="img"></span>
+                        <span class="text">1</span>
+                    </span>
+                    <span class="view">
+                        <span class="img"></span>
+                        <span class="text">2</span>
+                    </span>
+                    <span class="member-done">
+                        <span class="img"></span>
+                        <span class="text">3</span>
+                    </span>
+                    <span class="message">
+                        <span class="img"></span>
+                        <span class="text">4</span>
+                    </span>
+                </div>
+            </div>
+        </template>
     </div>
 
     <div data-theme="a" data-role="footer" data-position="fixed">
-        
+
     </div>
 
 </div>

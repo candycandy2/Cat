@@ -3,12 +3,22 @@
 /************************************ Tempalte CSS *******************************/
 /*********************************************************************************/
 
+/* Tabs */
+.ui-tabs {
+    padding: 0px;
+}
+
 /* Navbar */
 .ui-navbar li .ui-btn {
     font-size: 2.8vh;
     font-weight: bold;
     color: #0f0f0f;
     border-color: #2a88bc;
+    border-right-width: 1px;
+}
+
+.ui-navbar li:last-child .ui-btn {
+    margin-right: 0px;
 }
 
 html .ui-navbar li .ui-btn.ui-btn-active {
@@ -24,4 +34,17 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 .tpl-navbar-button-right {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+}
+
+/* Dropdown List */
+.tpl-dropdown-list {
+    outline: none;
+    padding: 5px;
+    font-size: 2.8vh;
+    border: 0;
+    background: url('../img/component/dropdown.png') right transparent;
+    background-size: 2.9vw 2vw;
+    background-repeat: no-repeat;
+    -webkit-appearance: none;
+    margin-bottom: 1.2vh;
 }

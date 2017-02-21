@@ -50,6 +50,8 @@ function addConponentView() {
                 }
             });
         });
+
+        overridejQueryFunction();
     }, "html");
 }
 
