@@ -1,4 +1,7 @@
 <?php
+/**
+ * 處理事件相關商業邏輯
+ */
 namespace App\Services;
 
 use App\Repositories\EventRepository;
@@ -31,7 +34,7 @@ class EventService
     }
 
     /**
-     * 新增事件
+     * 新增事件流程
      * @param  Array  $data       新增事件內容
      * @param  Array  $queryParam 推播必要參數
      * @return int                新增成功的事件Id
@@ -65,20 +68,26 @@ class EventService
        return $eventId;
    }
 
+   /**
+    * 更新事件流程
+    * @param  String $xml 傳入的更新資料內容
+    * @return json        更新結果
+    */
    public function updateEvent($xml){
            $result = null;
-           $eventId = (string)$xml->event_row_id[0];
-           $relatedId = (string)$xml->related_event_row_id[0];
-           $empNo = (string)$xml->emp_no[0];
+           $eventId     = (string)$xml->event_row_id[0];
+           $relatedId   = (string)$xml->related_event_row_id[0];
+           $empNo       = (string)$xml->emp_no[0];
+
            $updateField = array('event_type_parameter_value',
                                   'event_title','event_desc',
                                   'estimated_complete_date',
                                   'related_event_row_id');
            $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
            $queryParam =  array(
-                'lang' => (string)$xml->lang[0],
+                'lang'      => (string)$xml->lang[0],
                 'need_push' => (string)$xml->need_push[0],
-                'app_key' => (string)$xml->app_key[0]
+                'app_key'   => (string)$xml->app_key[0]
                 );
            
            $this->eventRepository->updateEventById($eventId,$data);
@@ -109,8 +118,8 @@ class EventService
 
    /**
     * 取得尚未被關聯的事件，並格式化部分資料
-    * @param  [type] $currentEventId [description]
-    * @return [type]                 [description]
+    * @param  int $currentEventId 目前的事件row_id
+    * @return Array
     */
    public function getUnrelatedEventList($currentEventId){
     
@@ -123,7 +132,11 @@ class EventService
         }
         return $eventList;
    }
-
+   /**
+    * 取得事件詳細資料
+    * @param  int $eventId 事件row_id
+    * @return Array
+    */
    public function getEventDetail($eventId){
         
          $evenDetail = [];
@@ -139,6 +152,11 @@ class EventService
          return $evenDetail;
    }
 
+   /**
+    * 依據事件id取得任務詳細資料
+    * @param  int $eventId 事件row_id
+    * @return Array
+    */
    public function getTaskDetailByEventId($eventId){
         
         $result = $this->taskRepository->getTaskDetailByEventId($eventId);
@@ -155,7 +173,6 @@ class EventService
          foreach ($tsakUserDetail as $key => $user) {
             $userData['emp_no'] = $user->emp_no;
             $userData['login_id'] = $user->login_id;
-            $userData['read_time'] = $user->read_time;
             $userList[] = $userData;
          }
          return $userList;
@@ -179,6 +196,11 @@ class EventService
         return $userList;
    }
 
+   /**
+    * 取得任務參與者詳細資料
+    * @param  int $eventId 事件row_id
+    * @return Array
+    */
    public function getEventUserDetail($eventId){
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];

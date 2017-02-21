@@ -172,7 +172,10 @@ class EventController extends Controller
         }
 
     }
-
+    /**
+     * 獲取事件詳細資訊
+     * @return json
+     */
     public function getEventDetail(){
     
          try{
@@ -187,20 +190,28 @@ class EventController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             
-            $empNo = (string)$xml->emp_no[0];
-            $eventId = (string)$xml->event_row_id[0];
+            $empNo      = trim((string)$xml->emp_no[0]);
+            $eventId    = trim((string)$xml->event_row_id[0]);
 
-            if(!isset($eventId) || $eventId == "" || preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
+            if($eventId==""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
+
             $eventList = $this->eventService->getEventDetail($eventId);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
                 'Content'=>'']);
             }
+            
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
         } catch (Exception $e){
@@ -231,13 +242,14 @@ class EventController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
 
-            $empNo = (string)$xml->emp_no[0];
-            $eventId = (string)$xml->event_row_id[0];
-            $lang = (string)$xml->lang[0];
-            $needPush = (string)$xml->need_push[0];
-            $appKey = (string)$xml->app_key[0];
-            $relatedId = (string) $xml->related_event_row_id[0];
-            $completeDate = trim((string) $xml->estimated_complete_date[0]);
+            $empNo          = trim((string)$xml->emp_no[0]);
+            $eventId        = trim((string)$xml->event_row_id[0]);
+            $lang           = trim((string)$xml->lang[0]);
+            $needPush       = trim((string)$xml->need_push[0]);
+            $appKey         = trim((string)$xml->app_key[0]);
+            $relatedId      = trim((string) $xml->related_event_row_id[0]);
+            $completeDate   = trim((string) $xml->estimated_complete_date[0]);
+            $eventTypeParameterValue   = trim((string) $xml->estimated_complete_date[0]);
 
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
@@ -246,14 +258,8 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if((!isset($lang) || $lang=="")||(!isset($needPush ) || $needPush =="")|| (!isset($appKey) || $appKey=="")){
+            if($lang=="" || $needPush =="" || $appKey=="" || $eventId){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
-            }
-
-            if(trim($eventId) == ""){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
             }
@@ -271,9 +277,9 @@ class EventController extends Controller
                 'Content'=>'']);
             }
 
-            if(isset($xml->event_type_parameter_value[0]) && trim((string)$xml->event_type_parameter_value[0])!=""){
+            if($eventTypeParameterValue != ""){
              $parameterMap =  CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
-                if(!in_array($xml->event_type_parameter_value[0],array_keys($parameterMap))){
+                if(!in_array($eventTypeParameterValue, array_keys($parameterMap))){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
                         'Message'=>"事件類型錯誤",
                         'Content'=>""]);
@@ -294,7 +300,7 @@ class EventController extends Controller
                 }
             }
             //更新關聯事件
-            if(trim($relatedId)!=""){
+            if($relatedId!=""){
                 $verifyResult = $Verify->checkRelatedEvent($eventId, $relatedId, $this->eventService);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
