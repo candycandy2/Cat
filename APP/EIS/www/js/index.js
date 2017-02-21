@@ -98,6 +98,12 @@ window.initialSuccess = function() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
+
+    if($(".ui-page-active").jqmData("panel") === "open"){
+        $("#mypanel").panel( "close");
+    }else{
+        /*leave this app*/
+    }
 }
 
 function zoomBtnInit(){
@@ -118,7 +124,3 @@ function zoomBtnInit(){
         chart.setSize($('.hc-fragment').width(), $('.hc-fragment').height(), doAnimation = true);        
     });
 }
-
-
-
-
