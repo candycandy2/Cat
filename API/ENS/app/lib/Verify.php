@@ -57,27 +57,17 @@ class Verify
              return array("code"=>ResultCode::_999007_inputJsonFormatInvalid,
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
-
-        if(!isset($xml->emp_no[0]) || (string)$xml->emp_no[0] == "" ){
-             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=>"傳入參數不足或傳入參數格式錯誤");
+        $empNo = trim((string)$xml->emp_no[0]);
+        if($empNo == "" ){
+             return array("code"=>ResultCode::_014903_mandatoryFieldLost,
+                "message"=>"必填欄位缺失");
         }
-
-        $empNo =  $xml->emp_no[0];
-        $userStatus = CommonUtil::getUserStatusByUserEmpNo($empNo);
-        if($userStatus == 0) {
+        
+        if(!CommonUtil::checkUserStatusByUserEmpNo($empNo)) {
             return array("code"=>ResultCode::_014908_accountNotExist,
                 "message"=>"帳號不存在");
         }
-        if($userStatus == 1) {
-            return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
-        }
-        if($userStatus == 2) {
-            return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=>"帳號已被停權");
-        }
-
+        
         return array("code"=>ResultCode::_1_reponseSuccessful,
             "message"=>"");
     }

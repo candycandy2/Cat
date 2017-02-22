@@ -10,40 +10,17 @@ class CommonUtil
         return $input;
     }
 
-    public static function getUserStatusByUserEmpNo($empNo)
+    public static function checkUserStatusByUserEmpNo($empNo)
     {   
-
+        $result = true;
         $userList = \DB::table('en_user')
             -> where('en_user.emp_no', '=', $empNo)
             -> select('en_user.row_id', 'en_user.status', 'en_user.resign','en_user.emp_no')->get();
+
         if(count($userList) < 1) {
-            return 0; //用户不存在
+            $result = false; //用户不存在
         }
-
-        if(count($userList) == 1) {
-            $user = $userList[0];
-            if($user->resign != "N") {
-                return 1; //用户已离职
-            }
-
-            if($user->status != "Y") {
-                return 2; //用户已停权
-            }
-        } else {
-            foreach ($userList as $user)
-            {
-                if($user->resign == "N") {
-                    if($user->status == "Y") {
-                        return 3; //正常
-                    } else {
-                        return 2; //停权
-                    }
-                }
-            }
-            return 1;  //离职
-        }
-
-        return 3; //正常
+        return $result;
     }
 
 
