@@ -132,17 +132,20 @@ class EventService
     */
    public function getEventDetail($eventId){
         
-         $evenDetail = [];
-
+         $eventDetail = [];
+         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
          if(count($this->eventRepository->getEventDetail($eventId)) > 0 ){
-             $evenDetail = $this->eventRepository->getEventDetail($eventId);
-             $evenDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
-             $evenDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
-             $evenDetail['user_event'] = $this->getEventUserDetail($eventId);
-             $evenDetail['task_detail'] = $this->getTaskDetailByEventId($eventId);
+             $eventDetail = $this->eventRepository->getEventDetail($eventId);
+             $eventType = $eventDetail['event_type'];
+             $eventDetail['event_type'] =  $parameterMap[$eventType];
+             $eventDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
+             $eventDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
+             $eventDetail['task_finish_count'] = $this->taskRepository->getCloseTaskCntByEventId($eventId);
+             $eventDetail['user_event'] = $this->getEventUserDetail($eventId);
+             $eventDetail['task_detail'] = $this->getTaskDetailByEventId($eventId);
          }
 
-         return $evenDetail;
+         return $eventDetail;
    }
 
    /**
@@ -348,7 +351,7 @@ class EventService
    private function arrangeEventList($event,  $parameterMap){
         $item = [];
         $item['event_row_id'] = $event->event_row_id;
-        $item['event_type'] = $parameterMap[$event->event_type_parameter_value];
+        $item['event_type'] = $parameterMap[$event->event_type];
         $item['event_title'] = $event->event_title;
         $item['event_desc'] = $event->event_desc;
         $item['estimated_complete_date'] = $event->estimated_complete_date;

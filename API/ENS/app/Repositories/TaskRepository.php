@@ -110,7 +110,7 @@ class TaskRepository
 
     /**
      * 取得任務資料
-     * @param  int $taskId    事件id,en_task.row_id
+     * @param  int $taskId    任務id,en_task.row_id
      * @return mixs
      */
     public function getTaskById($taskId){
@@ -132,4 +132,15 @@ class TaskRepository
             ->get();
     }
 
+    /**
+     * 取得事件已完成的任務數量
+     * @param  int $eventId 事件id event.row_id
+     * @return int             已完成的任務數
+     */
+    public function getCloseTaskCntByEventId($eventId){
+            return $this->task
+                ->where('event_row_id',$eventId)
+                ->where('task_status', '=', 1)
+                ->count();
+    }
 }

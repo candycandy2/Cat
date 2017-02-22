@@ -11,7 +11,7 @@ class EventRepository
     /** @var event Inject EN_Event model */
     protected $event;
 
-    private $eventField = array('en_event.row_id as event_row_id','event_type_parameter_value','event_title','event_desc',
+    private $eventField = array('en_event.row_id as event_row_id','event_type_parameter_value as event_type','event_title','event_desc',
                 'estimated_complete_date','related_event_row_id','event_status',
                 'en_event.created_user as created_user','en_event.created_at as created_at');
    
@@ -142,10 +142,12 @@ class EventRepository
      * @return mix
      */
     public function getEventDetail($eventId){
-       
+        $selectField = $this->eventField;
+        array_push($selectField,'en_user.ext_no as created_user_ext_no');
         return $this->event
-            ->where('row_id', '=', $eventId)
-            ->select($this->eventField)
+            ->join('en_user','en_user.emp_no','=','en_event.created_user')
+            ->where('en_event.row_id', '=', $eventId)
+            ->select($selectField)
             ->first();
     }
 
