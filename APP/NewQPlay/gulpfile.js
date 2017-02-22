@@ -303,3 +303,7 @@ gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLau
 gulp.task('jenkinsdefault', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
+
+gulp.task('jenkinsdefaultwithbuild', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+
+});

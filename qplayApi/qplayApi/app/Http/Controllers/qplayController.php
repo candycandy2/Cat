@@ -16,6 +16,54 @@ use DB;
 
 class qplayController extends Controller
 {
+    public function getIpInfo()
+    {
+        $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
+
+        //For Log
+        $ACTION = 'getIpInfo';
+
+        $ip = $input['ip'];
+
+
+        $url = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip='.$ip;
+        $ch = curl_init($url);
+        //curl_setopt($ch,CURLOPT_ENCODING ,'utf8');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
+        $location = curl_exec($ch);
+        $location = json_decode($location);
+        curl_close($ch);
+        $loc = "";
+        if($location===FALSE)
+            //return "";
+            if (empty($location->desc)) {
+                $loc = $location->province.$location->city.$location->district.$location->isp;
+            }else{
+                $loc = $location->desc;
+            }
+
+//        $url = 'http://ip.qq.com/cgi-bin/searchip?searchip1='.$ip;
+//        $ch = curl_init($url);
+//        curl_setopt($ch,CURLOPT_ENCODING ,'gb2312');
+//        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
+//        $result = curl_exec($ch);
+//        $result = mb_convert_encoding($result, "utf-8", "gb2312"); // 编码转换，否则乱码
+//        curl_close($ch);
+//        preg_match("@(.*)@iU",$result,$ipArray);
+//        $loc = $ipArray[1];
+
+        $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+            'message'=>'',
+            'content'=>array("ip info"=>$loc)]);
+        
+        return $result;
+    }
+
     public function isLogin()
     {
         $Verify = new Verify();
@@ -63,7 +111,7 @@ class qplayController extends Controller
 
                     if(count($sessionList) <= 0) {
                         $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                            'message'=>'is not Login',
+                            'message'=>trans("messages.MSG_IS_NOT_LOGIN"),
                             'is_login'=>0,
                             'login_id'=>$userInfo->login_id];
                         CommonUtil::logApi("", $ACTION,
@@ -76,7 +124,7 @@ class qplayController extends Controller
                         $token_valid = $sessionInfo->token_valid_date;
                         if($nowTimestamp <= $token_valid) {
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'is Login',
+                                'message'=>trans("messages.MSG_IS_LOGIN"),
                                 'is_login'=>1,
                                 'login_id'=>$userInfo->login_id];
                             CommonUtil::logApi("", $ACTION,
@@ -85,7 +133,7 @@ class qplayController extends Controller
                             return $result;
                         } else {
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'is not Login',
+                                'message'=>trans("messages.MSG_IS_NOT_LOGIN"),
                                 'is_login'=>0,
                                 'login_id'=>$userInfo->login_id];
                             CommonUtil::logApi("", $ACTION,
@@ -96,8 +144,8 @@ class qplayController extends Controller
                     }
                 } else {
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        //'message'=>'Unknown error',
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans("messages.MSG_UNKNOWN_ERROR"),
+                        //'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
                         'is_login'=>0,
                         'login_id'=>""];
                     CommonUtil::logApi("", $ACTION,
@@ -109,7 +157,7 @@ class qplayController extends Controller
             else
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Device Has not Registered',
+                    'message'=>trans("messages.MSG_DEVICE_HAS_NOT_REGISTERED"),
                     'is_login'=>0,
                     'login_id'=>""];
                 CommonUtil::logApi("", $ACTION,
@@ -177,7 +225,7 @@ class qplayController extends Controller
             if(count($uuidList) > 0)
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Device Has Registered',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'content'=>array("is_register"=>1)];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -187,7 +235,7 @@ class qplayController extends Controller
             else
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Device Has not Registered',
+                    'message'=>trans("messages.MSG_DEVICE_HAS_NOT_REGISTERED"),
                     'content'=>array("is_register"=>0)];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -347,7 +395,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError);
+                    $message = trans('messages.MSG_CALL_SERVICE_SUCCESS');
                     $finalUrl = urlencode($redirect_uri.'?result_code='
                         .ResultCode::_999999_unknownError
                         .'&message='
@@ -530,7 +578,7 @@ class qplayController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -538,7 +586,7 @@ class qplayController extends Controller
             }
 
             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Call Service Successed',
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
             CommonUtil::logApi($userInfo->row_id, $ACTION,
@@ -707,7 +755,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError);
+                    $message = trans('messages.MSG_CALL_SERVICE_ERROR');
                     $finalUrl = urlencode($redirect_uri.'?result_code='
                         .ResultCode::_999999_unknownError
                         .'&message='
@@ -744,7 +792,7 @@ class qplayController extends Controller
                     .'&token_valid='
                     .$token_valid);
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Login Successed',
+                    'message'=>trans("messages.MSG_LOGIN_SUCCESS"),
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid,
                         "redirect_uri"=>$finalUrl,
@@ -842,7 +890,7 @@ class qplayController extends Controller
                 catch (Exception $e)
                 {
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                         'content'=>''
                     ];
 
@@ -853,7 +901,7 @@ class qplayController extends Controller
                 }
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Logout Successed',
+                    'message'=>trans("messages.MSG_LOGOUT_SUCCESS"),
                     'content'=>array("uuid" => $uuid)
                 ];
 
@@ -950,7 +998,7 @@ class qplayController extends Controller
             if(count($versionList) > 1)
             {
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -970,7 +1018,7 @@ class qplayController extends Controller
             else
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Need to update',
+                    'message'=>trans("messages.MSG_NEED_TO_UPDATE"),
                     'content'=>array("version_code"=>$versionLine->version_code,
                         'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $version_code, $versionLine->url))];
                 CommonUtil::logApi("", $ACTION,
@@ -1221,7 +1269,7 @@ SQL;
 
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array(
                         'app_category_list'=>$app_category_list,
@@ -1350,7 +1398,7 @@ SQL;
 
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>json_encode($whitelist),
                     'security_level'=>$level[0],
@@ -1610,7 +1658,7 @@ SQL;
                 }
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_count'=> count($r),
                         'message_list'=>$r)
@@ -1789,7 +1837,7 @@ SQL;
                         }
                     }
                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                        'message'=>'Call Service Successed',
+                        'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetail
                     ];
@@ -1997,7 +2045,7 @@ SQL;
                 }  
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_send_row_id' => $message_send_row_id_str)
                 ];
@@ -2166,7 +2214,7 @@ SQL;
                 if(!$pushResult["result"]) {
                     \DB::rollBack();
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'),
                         'content'=>''
                     ];
                     CommonUtil::logApi("", $ACTION,
@@ -2178,7 +2226,7 @@ SQL;
             } catch (Exception $e) {
                 \DB::rollBack();
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -2186,7 +2234,7 @@ SQL;
             }
 
             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Call Service Successed',
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
 
@@ -2280,7 +2328,7 @@ SQL;
                         'updated_user'=>$user->row_id,]);
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Renew Successed',
+                    'message'=>trans("messages.MSG_RENEW_SUCCESS"),
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid, "token"=>$token)
                 ];
@@ -2514,7 +2562,7 @@ SQL;
                                         ]);
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                        'message'=>'Send Push Message Successed',
+                                        'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                         'content'=>array('jsonContent'=>$countFlag,
                                             'content'=>$content)
                                     ];
@@ -2526,7 +2574,7 @@ SQL;
 
                             \DB::commit();
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'Send Push Message Successed',
+                                'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                 'content'=>array('jsonContent'=>$countFlag,
                                     'content'=>$content)//json_encode($jsonContent)
                             ];
@@ -2536,7 +2584,7 @@ SQL;
                         } catch (Exception $e) {
                             \DB::rollBack();
                             $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                                 'content'=>''];
                             CommonUtil::logApi("", $ACTION,
                                 response()->json(apache_response_headers()), $result);
@@ -2727,7 +2775,7 @@ SQL;
                                         ]);
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                        'message'=>'Send Push Message Successed',
+                                        'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                         'content'=>array('jsonContent'=>$newCountFlag,
                                             'content'=>$content)
                                     ];
@@ -2739,7 +2787,7 @@ SQL;
 
                             \DB::commit();
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'Send Push Message Successed',
+                                'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                 'content'=>array('jsonContent'=>count($destinationUserIdList),
                                     'content'=>$content)//json_encode($jsonContent)
                             ];
@@ -2749,7 +2797,7 @@ SQL;
                         } catch (Exception $e) {
                             \DB::rollBack();
                             $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                                 'content'=>''];
                             CommonUtil::logApi("", $ACTION,
                                 response()->json(apache_response_headers()), $result);
@@ -2844,7 +2892,7 @@ SQL;
                             'updated_user'=>$user->row_id]);
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('uuid'=>$uuid)
                 ];

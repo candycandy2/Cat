@@ -13,7 +13,7 @@ git push origin --tags
 # ------ build QPlay ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp default --env dev 
+gulp jenkinsdefaultwithbuild --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 
 # cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="1bf5dd25-17b1-466d-85f3-1bcc21371cfd" --developmentTeam="BenQ Corporation" --packageType="enterprise"
@@ -24,7 +24,7 @@ cd ../NewYellowPage
 pwd
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp jenkinsdefault
+gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="fd574cdf-cd7b-4349-9559-f0e07713dcc7" --packageType="enterprise"
 
@@ -33,7 +33,7 @@ cd ../RRS
 pwd
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp jenkinsdefault
+gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="64ae12f1-1cc3-45dc-9fc3-5ad7da41f655" --packageType="enterprise"
 
@@ -42,7 +42,7 @@ cd ../EIS
 pwd
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
-gulp jenkinsdefault
+gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="be22e920-9a9c-4b52-a484-f56724f40540" --packageType="enterprise"
 
@@ -80,4 +80,3 @@ git add RRS/config.xml
 git add EIS/config.xml
 git commit -m "v1.0.0.$dailyver[Develop]"
 git push
-
