@@ -15,6 +15,8 @@
 //    return view('welcome');
 //});
 
+Route::any('/v101/qplay/getIpInfo', 'qplayController@getIpInfo');
+
 //QPlay Api
 Route::any('/v101/qplay/getSecurityList', 'qplayController@getSecurityList');
 Route::any('/v101/qplay/register', 'qplayController@register');
@@ -41,7 +43,7 @@ Route::any('/qplayauth_register', function() {
 });
 
 //Custom
-Route::any('/v101/custom/{app}/{function}', 'customController@processRequest');
+Route::any('/{api_version}/custom/{app_key}/{function}', 'customController@processRequest');
 
 //YellowPage
 /*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');

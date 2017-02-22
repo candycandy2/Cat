@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use DB;
 use JPush\Exceptions\APIConnectionException;
 use JPush\Exceptions\APIRequestException;
 use JPush\Exceptions\JPushException;
@@ -313,8 +314,12 @@ class CommonUtil
     }
 
     public static function getLanguageIdByName($lang) {
-        $lang = strtolower($lang);
         $lang_row_id = 1;
+        if (empty($lang)){
+            return $lang_row_id;
+        }
+        $lang = strtolower($lang);
+
         switch ($lang) {
             case "en-us":
                 $lang_row_id = 1;
@@ -438,34 +443,108 @@ class CommonUtil
         return false;
     }
 
+    /**
+     * @param $userId
+     * @param $action
+     * @param $responseHeader
+     * @param $responseBody
+     */
     public static function logApi($userId, $action, $responseHeader, $responseBody) {
-        $version = self::getApiVersionFromUrl();
-        $appKey = self::getAppKeyFromHeader();
-        if($appKey == null) {
-            $appKey = "";
+    $version = self::getApiVersionFromUrl();
+    $appKey = self::getAppKeyFromHeader();
+    if($appKey == null) {
+        $appKey = "";
+    }
+    $now = date('Y-m-d H:i:s',time());
+    $ip = self::getIP();
+    $url_parameter = $_SERVER["QUERY_STRING"];
+    $request_header = apache_request_headers();
+    /*
+     * "App-Key":"appyellowpagedev",
+     * "Signature":"UTpzSsnqBrMJ9mmz1g0dicvlmwEYWjPi69fGmSwm1ug=",
+     * "Signature-Time":"1483581882",
+     * "token":"586da9b75a3ab"
+     * */
+    $requestHeaderInfo = [];
+        if(array_key_exists("app-key",$request_header)){
+            $requestHeaderInfo["app-key"] = $request_header["app-key"];
         }
+        if(array_key_exists("signature",$request_header)){
+            $requestHeaderInfo["signature"] = $request_header["signature"];
+        }
+        if(array_key_exists("signature-time",$request_header)){
+            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+        }
+        if(array_key_exists("token",$request_header)){
+            $requestHeaderInfo["token"] = $request_header["token"];
+        }
+    $request_body = self::prepareJSON(file_get_contents('php://input'));
+
+    \DB::table("qp_api_log")
+        -> insert([
+            'user_row_id'=>$userId,
+            'app_key'=>$appKey,
+            'api_version'=>$version,
+            'action'=>$action,
+            'ip'=>$ip,
+            'url_parameter'=>$url_parameter,
+            'request_header'=>json_encode($requestHeaderInfo),
+            'request_body'=>$request_body,
+            'response_header'=>$responseHeader,
+            'response_body'=>json_encode($responseBody),
+            'created_at'=>$now,
+        ]);
+}
+
+    public static function logCustomApi($version,$appKey,$action, $responseHeader, $responseBody) {
         $now = date('Y-m-d H:i:s',time());
         $ip = self::getIP();
         $url_parameter = $_SERVER["QUERY_STRING"];
-        $request_header = response()->json(apache_request_headers());
+        $request_header = apache_request_headers();
         $request_body = self::prepareJSON(file_get_contents('php://input'));
-
+        /*
+             * "app-key":"appyellowpagedev",
+             * "signature":"UTpzSsnqBrMJ9mmz1g0dicvlmwEYWjPi69fGmSwm1ug=",
+             * "signature-time":"1483581882",
+             * "token":"586da9b75a3ab"
+             * */
+        $requestHeaderInfo = [];
+        if(array_key_exists("app-key",$request_header)){
+            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+        }
+        if(array_key_exists("signature",$request_header)){
+            $requestHeaderInfo["signature"] = $request_header["signature"];
+        }
+        if(array_key_exists("signature-time",$request_header)){
+            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+        }
+        if(array_key_exists("token",$request_header)){
+            $requestHeaderInfo["token"] = $request_header["token"];
+        }
         \DB::table("qp_api_log")
             -> insert([
-                'user_row_id'=>$userId,
+                'user_row_id'=>' ',
                 'app_key'=>$appKey,
                 'api_version'=>$version,
                 'action'=>$action,
                 'ip'=>$ip,
                 'url_parameter'=>$url_parameter,
-                'request_header'=>$request_header,
-                'request_body'=>$request_body,
-                'request_header'=>$request_header,
+                'request_header'=>json_encode($requestHeaderInfo),
                 'request_body'=>$request_body,
                 'response_header'=>$responseHeader,
-                'response_body'=>$responseBody,
+                'response_body'=>json_encode($responseBody),
                 'created_at'=>$now,
             ]);
+    }
+
+    public static function checkCustomApiUrl($version,$appKey,$action){
+        $result = DB::table('qp_app_custom_api')
+            -> where('app_key', '=', $appKey)
+            -> where('api_version', '=', $version)
+            -> where('api_action', '=', $action)
+            -> select('qp_app_custom_api.app_row_id')
+            -> get();
+        return count($result) > 0;
     }
 
     public static function getIP() {
@@ -509,4 +588,5 @@ class CommonUtil
         }
         return $key;
     }
+
 }

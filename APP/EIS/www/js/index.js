@@ -1,12 +1,9 @@
-
 /*global variable, function*/
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
-// var pageList = ["viewMoHitRate_0","viewHitRate_1","viewQueryResult2","viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
-
 var htmlContent = "";
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
@@ -23,6 +20,24 @@ var panel = htmlContent
         +       '<span class="panel-text" style="line-height:7.5VH;">YTD Hit Rate Trend</span>'
         +   '</div>'
         +'</div>';
+var time = new Date(Date.now());
+var monTable = {
+    '1' : "Jan.",
+    '2' : "Feb.",
+    '3' : "Mar.",
+    '4' : "Apr.",
+    '5' : "May.",
+    '6' : "Jun.",
+    '7' : "Jul.",
+    '8' : "Aug.",
+    '9' : "Sep.",
+    '10' : "Oct.",
+    '11' : "Nov.",
+    '12' : "Dec.",
+};
+var eisdata = {};
+var currentYear, currentMonth, queryData, callbackData, length;
+
 
 $(document).one("pagebeforeshow", function() {
 
@@ -30,23 +45,26 @@ $(document).one("pagebeforeshow", function() {
     $("#mypanel").panel().enhanceWithin();
 
     $("#mypanel #panel-header-content").on("click", function(){
-        $("#viewHitRate").show();
-        $("#viewMonthlyHitRate").hide();
-        $("#viewYTDHitRate").hide();
+        if($.mobile.activePage[0].id !== "viewHitRate") {
+            loadingMask("show");
+            $.mobile.changePage("#viewHitRate");
+        }
         $("#mypanel").panel("close");
     });
 
     $("#mypanel #panel-sub-header").on("click", function(){
-        $("#viewHitRate").hide();
-        $("#viewMonthlyHitRate").show();
-        $("#viewYTDHitRate").hide();
+        if($.mobile.activePage[0].id !== "viewMonthlyHitRate") {
+            loadingMask("show");
+            $.mobile.changePage("#viewMonthlyHitRate");
+        }
         $("#mypanel").panel("close");
     });
 
     $("#mypanel #panel-sub-header-content").on("click", function(){
-        $("#viewHitRate").hide();
-        $("#viewMonthlyHitRate").hide();
-        $("#viewYTDHitRate").show();
+        if($.mobile.activePage[0].id !== "viewYTDHitRate") {
+            loadingMask("show");
+            $.mobile.changePage("#viewYTDHitRate");
+        }
         $("#mypanel").panel("close");
     });
 
@@ -54,65 +72,55 @@ $(document).one("pagebeforeshow", function() {
         $("#mypanel").panel("open");
     });
 
-     $(this).on( "swiperight", function(event){
+    $("#viewHitRate").on( "swiperight", function(event){
         if($(".ui-page-active").jqmData("panel") !== "open"){
             $("#mypanel").panel( "open");
         }
     });
+    zoomBtnInit();
 });
 
 window.initialSuccess = function() {
 
-    // loadingMask("show");
-
+    loadingMask("show");
+    currentYear = time.getFullYear();
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1) ;            
+    queryData =   "<LayoutHeader><StartYearMonth>"
+                + (currentYear - 3) + "/01"
+                + "</StartYearMonth><EndYearMonth>"
+                + currentYear + "/" + currentMonth
+                + "</EndYearMonth></LayoutHeader>";
+    ROSummary();
     $.mobile.changePage('#viewHitRate');
-    // var companyData = new QueryCompanyData();
-
-    // $("a[name=goPrevPage]").on("click", function(){
-    //     $.mobile.changePage('#' + prevPageID);
-    //     prevPageID = null;
-    // });
-
 }
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
 
-    // if (activePageID === "viewDataInput") {
+    if($(".ui-page-active").jqmData("panel") === "open"){
+        $("#mypanel").panel( "close");
+    }else{
+        /*leave this app*/
+    }
+}
 
-    //     if (checkPopupShown()) {
-    //         $.mobile.changePage('#viewDataInput');
-    //     } else {
-    //         navigator.app.exitApp();
-    //     }
-
-    // } else if (activePageID === "viewQueryResult") {
-
-    //     doClearInputData = false;
-    //     $.mobile.changePage('#viewDataInput');
-
-    // } else if (activePageID === "viewDetailInfo") {
-
-    //     if (checkPopupShown()) {
-    //         $('#' + popupID).popup('close');
-    //     } else {
-    //         $.mobile.changePage('#' + prevPageID);
-    //     }
-
-    // } else if (activePageID === "viewPhonebook") {
-
-    //     //If User is doing edit phonebook, cancel edit mode.
-    //     if ($("#phonebookEditBtn").css("display") === "block") {
-    //         cancelEditMode();
-    //     } else if (checkPopupShown()) {
-    //         if (popupID === "phonebookDelectAlert" || popupID === "phonebookDelectConfirm") {
-    //             $('#' + popupID).popup('close');
-    //             $("#phonebookEditBtn").show();
-    //         }
-    //     } else {
-    //         $.mobile.changePage('#viewDataInput');
-    //     }
-
-    // }
+function zoomBtnInit(){
+    var screenWidth = $('html').width(), screenHeight = $('html').height(), tmp = 0;
+    $('.zoomInBtn').on('click', function(){
+        $('body').addClass('ui-landscape');
+        $('.hc-fragment').css({'height': 'auto'});
+        $('.zoomBtn').css({'right': -(screenHeight-$('.chartArea').width()-$('.viewIndex').css('padding-top').replace('px', '')-
+            $('.viewIndex').css('padding-bottom').replace('px', ''))/$('.chartArea').width()*100 + '%'});
+        chart.legend.update({ itemStyle: {fontSize: 14}});
+        chart.setSize(screenHeight*0.9, screenWidth*0.85, doAnimation = true);
+    });
+    $('.zoomOutBtn').on('click', function(){
+        $('body').removeClass('ui-landscape');
+        $('.hc-fragment').css({'height': '38vh'});
+        $('.zoomBtn').css({'right': '4%'});
+        chart.legend.update({ itemStyle: {fontSize: 12}});
+        chart.setSize($('.hc-fragment').width(), $('.hc-fragment').height(), doAnimation = true);        
+    });
 }

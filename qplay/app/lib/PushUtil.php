@@ -156,7 +156,7 @@ class PushUtil
                 ),
             );
             $content = $message;
-            $scheduleName = $message;
+            $scheduleName = time();//$message;
             $message = array(
                 'title' => $message,
                 'content_type' => 'text',
@@ -191,7 +191,14 @@ class PushUtil
             }
 
             $schedule = $client->schedule();
-            $trigger = array("time"=>date("Y-m-d H:i:s",$schedule_datetime / 1000));
+            if(intval($schedule_datetime) >= 1000000000000) { //毫秒转秒
+                $schedule_datetime = intval($schedule_datetime) / 1000;
+            }
+
+            //TODO 暂时加8小时
+            $schedule_datetime += 8 * 60 * 60;
+
+            $trigger = array("time"=>date("Y-m-d H:i:s",$schedule_datetime));
             $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
         } catch (APIConnectionException $e) {
             $result["result"] = false;
@@ -273,6 +280,32 @@ class PushUtil
         return $result;
     }
 
+    public static function RemoveTagsWithJPushWebAPI($registrationId, $tag) {
+        $result = array();
+        $result["result"] = true;
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["info"] = $device->removeDevicesFromTag($tag, $registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred".$e->getMessage();
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred".$e->getMessage();
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred".$e->getMessage();
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred".$e->getMessage();
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred".$e->getMessage();
+        }
+        return $result;
+    }
     //JPush API Proxy
     public static function GetDevices($registrationId) {
         $result = array();

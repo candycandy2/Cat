@@ -27,6 +27,7 @@ return [
 	'MSG_CONFIRM_COPY' => '确认复制?',
     'MSG_REQUIRED_FIELD_MISSING' => '必填项内容缺失!',
 	'MSG_CONFIRM_LOGOUT' => '确认登出?',
+    'MSG_CONFIRM_SEND_EMAIL'=>'确认发信',
     'MSG_REQUIRED_FIELD' => '此为必填栏位',
 	'PAGING_SHOWING' => '当前显示',
 	'PAGING_TO' => '至',
@@ -52,7 +53,7 @@ return [
     'TITLE_SYS_MENU_MAINTAIN' => '选单维护',
     'TITLE_SYS_GROUP_MAINTAIN' => '系统群组管理',
     'TITLE_SYS_PARAMETER_MAINTAIN' => '参数设置',
-    'TITLE_SYS_PROJECT_MAINTAIN' => '专案管理',
+    'TITLE_SYS_PROJECT_MAINTAIN' => '项目管理',
 	'TITLE_SECRETARY_PUSH' => '秘书推播',
 
     //validate
@@ -268,11 +269,23 @@ return [
     'ERR_VERSION_NAME_DUPLICATE' => '版本名称不可重复',
 
 	//Project Maintain
-	'PROJECT_CODE' => '专案代码',
-	'PROJECT_DESCRIPTION' => '专案描述',
-	'PROJECT_PM' => 'PM',
-	'PROJECT_MEMO' => 'Memo',
+	'PROJECT_CODE' => '项目代码',
+	'PROJECT_DESCRIPTION' => '项目描述',
+	'PROJECT_PM' => '项目负责人',
+	'PROJECT_MEMO' => '备注',
+    'APP_MAINTAIN' => 'App 维护',
+    'ACTION_MAINTAIN' => '维护',
+    'SEND_EMAIL' => '寄送详细资讯',
+    'ACTION_SEND' => '再寄一次',
+    'APPLY_APP_KEY' => '申请APP Key',
+    'FIELD_DESCRIPTION'=>'字段说明',
+    
 	'MSG_CONFIRM_DELETE_PROJECT' => '确认删除所选专案?',
+    'MSG_NO_CREATED_APP' => '尚未建立App',
+    'MSG_COMFIRM_SEND_TO_RECIVER'=>'系统将发送信件给以下收件人，确认发送?',
+    'HINT_APP_KEY'=>'请填入系统名称缩写 ex:flower',
+    'HINT_PROJECT_PM'=>'请填入系统负责PM的AD账号 ex:Steven.Yan',
+    'HINT_PROJECT_DESC'=>'请填入系统说明',
 
 	'ERR_EXIST_ROLE' => '角色在当前公司内已存在!',
 	'ERR_GROUP_NAME_EXIST' => '群组名称已存在!',

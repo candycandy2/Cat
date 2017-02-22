@@ -36,7 +36,7 @@ $menu_name = "APP_MAINTAIN";
     };
 
     function appEditFormatter(value, row){
-        var path = '{{asset('appDetailMaintain?app_row_id=')}}' + row.row_id;
+        var path = '{{asset('appDetailMaintain?source=admin&app_row_id=')}}' + row.row_id;
         return '<a href="' + path + '" </a>' + value;
     }
 
@@ -69,7 +69,7 @@ $menu_name = "APP_MAINTAIN";
                      showMessageDialog("{{trans("messages.ERROR")}}",data.message);
                 }
                 else{
-                    window.location='{{asset('appDetailMaintain?app_row_id=')}}' + data.new_app_row_id;
+                    window.location='{{asset('appDetailMaintain?source=admin&app_row_id=')}}' + data.new_app_row_id;
                 }
             },error: function (e) {
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);

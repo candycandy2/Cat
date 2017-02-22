@@ -49,8 +49,10 @@
 
 #myPhonebookList p {
     margin: 0px 2px;
-    font-size: 12px;
+    font-size: 3.35vw;
 }
+
+#myPhonebookList li{ padding: 2% 0;}
 
 .header-style .ui-bar {
     padding: 0;
@@ -76,7 +78,7 @@
 .vice-header .title {
     font-family: Arial;
     color: #666667;
-    font-size: 2.3VH;
+    font-size: 3.5vw;
     font-weight: bold;
 }
 
@@ -187,6 +189,7 @@
 #detial-name-title #eName{
     font-family:Arial; 
     font-size:3VH;
+    padding-top: 3%;
 }
 
 #detial-name-title #cName{
@@ -227,6 +230,9 @@
     margin-bottom: 0.8VH;
     width: 100VW;
 }
+
+#detail-data .item-content a{ text-decoration: none; font-weight: normal;}
+#detail-data .item-content a:visited{ color: #2d87ba;}
 
 #detailData.q-result-grid > li div {
     height: 50px;
@@ -273,8 +279,9 @@
 /* mvpn select popup window for yellow page */
 #numSelectPopupWindow #msgTitle{ margin: 0 5%; padding: 5% 0; font-size: 5vw; border-bottom: 1px solid #d4d4d4; position: relative;}
 #numSelectPopupWindow ul{ list-style: none; padding: 0;}
-#numSelectPopupWindow li{ color:#2d87ba; font-size: 4.5vw; font-family:Arial; font-weight: normal; padding-bottom: 5%;}
-#numSelectPopupWindow li:nth-of-type(2){ padding-bottom: 2%;}
+#numSelectPopupWindow li{ font-size: 4.5vw; font-family:Arial; font-weight: normal; padding-bottom: 5%;}
+#numSelectPopupWindow li:nth-last-of-type(1){ padding-bottom: 2%;}
+#numSelectPopupWindow li a{ color:#2d87ba;}
 #numSelectPopupWindow img{ margin-right: 1.9vw;}
 #numPopupCloseBtn{ width: 7%; position: absolute; right: 0; top: 5%;}
 #numPopupCloseBtn:after{ content: "\d7"; font-size: 7vw; font-weight: normal;}

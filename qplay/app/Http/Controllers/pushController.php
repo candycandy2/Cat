@@ -533,6 +533,16 @@ class pushController extends Controller
                     foreach($userList as $userId) {
                         if(!in_array($userId, $insertedUserIdList)) {
                             $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                            if($currentUserInfo->status != "Y") {
+                                if(count($roleList) == 0) {
+                                    \DB::rollBack();
+                                    return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
+                                        'message'=>'用户已停权']); //TODO get message from Database
+                                } else {
+                                    //TODO Log
+                                }
+                            }
+
                             foreach ($currentUserInfo->uuidList as $uuid) {
                                 \DB::table("qp_user_message")
                                     -> insert([

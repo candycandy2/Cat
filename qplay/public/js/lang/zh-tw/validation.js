@@ -23,5 +23,7 @@ $.extend( $.validator.messages, {
     min: $.validator.format( "請輸入不小於 {0} 的數值" ),
     setAppUser:$.validator.format( "請選擇企業角色或加入用戶" ),
     icon:"請上傳 icon",
-    screenshot:"請上傳 screenshot"
+    screenshot:"請上傳 screenshot",
+    appKeyFormat:"只允許小寫英文字母, 不允許空白及或下底線等其他符號"
+
 } );
