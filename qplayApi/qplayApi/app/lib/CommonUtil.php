@@ -465,12 +465,19 @@ class CommonUtil
      * "Signature-Time":"1483581882",
      * "token":"586da9b75a3ab"
      * */
-    $request_header = [
-        "App-Key"=>$request_header["app-key"],
-        "Signature"=>$request_header["signature"],
-        "Signature-Time"=>$request_header["signature-time"],
-        "token"=>$request_header["token"],
-        ];
+    $requestHeaderInfo = [];
+        if(array_key_exists("app-key",$request_header)){
+            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+        }
+        if(array_key_exists("signature",$request_header)){
+            $requestHeaderInfo["signature"] = $request_header["signature"];
+        }
+        if(array_key_exists("signature-time",$request_header)){
+            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+        }
+        if(array_key_exists("token",$request_header)){
+            $requestHeaderInfo["token"] = $request_header["token"];
+        }
     $request_body = self::prepareJSON(file_get_contents('php://input'));
 
     \DB::table("qp_api_log")
@@ -481,7 +488,7 @@ class CommonUtil
             'action'=>$action,
             'ip'=>$ip,
             'url_parameter'=>$url_parameter,
-            'request_header'=>json_encode($request_header),
+            'request_header'=>json_encode($requestHeaderInfo),
             'request_body'=>$request_body,
             'response_header'=>$responseHeader,
             'response_body'=>json_encode($responseBody),
@@ -501,12 +508,19 @@ class CommonUtil
              * "signature-time":"1483581882",
              * "token":"586da9b75a3ab"
              * */
-        $request_header = [
-            "App-Key"=>$request_header["app-key"],
-            "Signature"=>$request_header["signature"],
-            "Signature-Time"=>$request_header["signature-time"],
-            "token"=>$request_header["token"],
-        ];
+        $requestHeaderInfo = [];
+        if(array_key_exists("app-key",$request_header)){
+            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+        }
+        if(array_key_exists("signature",$request_header)){
+            $requestHeaderInfo["signature"] = $request_header["signature"];
+        }
+        if(array_key_exists("signature-time",$request_header)){
+            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+        }
+        if(array_key_exists("token",$request_header)){
+            $requestHeaderInfo["token"] = $request_header["token"];
+        }
         \DB::table("qp_api_log")
             -> insert([
                 'user_row_id'=>' ',
@@ -515,7 +529,7 @@ class CommonUtil
                 'action'=>$action,
                 'ip'=>$ip,
                 'url_parameter'=>$url_parameter,
-                'request_header'=>json_encode($request_header),
+                'request_header'=>json_encode($requestHeaderInfo),
                 'request_body'=>$request_body,
                 'response_header'=>$responseHeader,
                 'response_body'=>json_encode($responseBody),
