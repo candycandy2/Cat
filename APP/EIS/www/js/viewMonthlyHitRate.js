@@ -1,13 +1,53 @@
 var chart;
+var ProductList = '<a>ALL</a>';
 
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
-        /********************************** page event *************************************/
-        $("#viewMonthlyHitRate").on("pagebeforeshow", function(event, ui){
-        	console.log("a");
-        });
 
-        $("#viewMonthlyHitRate").on("pageshow", function(event, ui){
+        window.UserAuthority = function() {
+            
+            this.successCallback = function(data) {
+                callbackData = data["Content"]["DataList"];
+                length = callbackData.length;
+                for(var i=0; i<length; i++) {
+                    for(var j in callbackData[i]) {
+                        if(callbackData[i][j] == "PRODUCT") {
+                            ProductList += '<a>' + callbackData[i]["PVALUE"] + '</a>' ;
+                        }
+                    }
+                }
+                $(".Product").html("");
+                $(".Product").append(ProductList).enhanceWithin();
+            };
+
+            this.failCallback = function(data) {
+
+            };
+
+            var _construct = function() {
+                CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
+
+
+        window.ProductDetail = function() {
+
+            this.successCallback = function(data) {
+                console.log(data);
+            }
+
+            this.failCallback = function(data) {
+
+            }
+
+            var _constrcut = function() {
+                CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
+
+        /********************************** page event *************************************/
+        $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
+            $("#viewMonthlyHitRate .page-date").text(monTable[thisMonth]+thisYear);
         	chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
@@ -86,10 +126,19 @@ $("#viewMonthlyHitRate").pagecontainer({
         			pointStart: 1
         		}]
         	});
-
         	loadingMask("hide");
-
     	});
 
+        $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
+            
+        });
+
+        $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
+          
+        });
+
+        $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
+           
+        });
     }
 });
