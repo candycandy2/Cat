@@ -103,8 +103,8 @@ class EventService
             $item = $this->arrangeEventList($event, $parameterMap);
             $item['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
             $item['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
-
-           $eventList[] = $item;                
+            $item['task_finish_count'] = $this->taskRepository->getCloseTaskCntByEventId($eventId);
+            $eventList[] = $item;                
         }
           return $eventList;
    }
