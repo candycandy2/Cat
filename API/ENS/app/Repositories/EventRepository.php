@@ -119,7 +119,7 @@ class EventRepository
         if($eventStatus!=""){
             $result->where('event_status', '=', $eventStatus);
         }
-        return $result->orderByRaw(DB::raw("event_status,en_event.updated_at,en_event.created_at desc"))
+        return $result->orderByRaw(DB::raw("en_event.event_status asc, en_event.updated_at desc, en_event.created_at desc"))
              ->select($this->eventField)
              ->get();
     }
