@@ -79,6 +79,12 @@ return [
     'MSG_CONFIRM_REMOVE_RIGHT' => '確認將用戶停權?',
     'MSG_REMOVE_RIGHT_FAILED' => '用戶停權失敗!',
     'MSG_BELONG_TO_GROUP_RIGHT' => '依系統群組權限',
+    'MSG_LOGIN_INFO_ERROR'=>'用戶名/密碼/域/語言 不能為空!',
+    'MSG_LOGIN_ERROR'=>'用戶名或密碼錯誤',
+    'MSG_LOGIN_FAILED'=>'登錄失敗',
+    'MSG_USER_VERIFY_ERROR'=>'使用者認證錯誤',
+    'MSG_WRONG_SIGNATURE'=>'錯誤的簽名',
+    'MSG_SIGNATURE_OUT_OF_LIMIT'=>'簽名過期',
 
     //Role Maintain
     'COMPANY_NAME' => '公司名稱',
@@ -267,6 +273,8 @@ return [
     'ERR_APP_KEY_INCORRECT_ERROR' => '上傳檔案appkey與專案不符，請確認上傳檔案內容!',
     'ERR_VERSION_NO_DUPLICATE' => '版本號不可重複',
     'ERR_VERSION_NAME_DUPLICATE' => '版本名稱不可重複',
+    'MSG_SAVE_APP_SUCCESS'=>'保存APP成功',
+    'MSG_SAVE_APP_ERROR'=>'保存APP失敗',
 
     //Project Maintain
     'PROJECT_CODE' => '專案代碼',
