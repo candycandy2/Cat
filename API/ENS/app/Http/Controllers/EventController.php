@@ -57,7 +57,8 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($data['lang']=="" || $data['need_push']=="" || $data['app_key']=="" || $data['event_type_parameter_value'] ==""){
+            if($data['lang']=="" || $data['need_push']=="" || $data['app_key']=="" || $data['event_title']=="" ||
+              $data['event_type_parameter_value'] =="" ||  $data['estimated_complete_date'] == "" || $data['basicList']==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -70,19 +71,18 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if(!isset($data['basicList']) || $data['basicList']=="" || !is_array($data['basicList'])){
+            if(!is_array($data['basicList'])){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
 
-            if($data['estimated_complete_date']!=""){
-                if(!$Verify->checkTimeStemp($data['estimated_complete_date'])){
-                    return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-                }
+            if(!$Verify->checkTimeStemp($data['estimated_complete_date'])){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                'Message'=>"欄位格式錯誤",
+                'Content'=>""]);
             }
+            
 
             //has related
             if($data['related_event_row_id'] != ""){
@@ -96,8 +96,13 @@ class EventController extends Controller
                 }
 
             }            
-            //has task
+            //check task
             foreach ($data['basicList'] as $key => $basicInfo) {
+                if(trim($basicInfo['location']) == "" || trim($basicInfo['function']) == ""){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+                }
                 if(!$this->basicInfoService->checkBasicInfo($basicInfo['location'],$basicInfo['function'])){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014902_locationOrFunctionNotFound,
                     'Message'=>"Location或是Function錯誤",
@@ -110,7 +115,7 @@ class EventController extends Controller
                 'need_push' =>  $data['need_push'],
                 'app_key' =>  $data['app_key']
                 );
-            
+
             $eventId = $this->eventService->newEvent($data, $queryParam);
             
             \DB::commit();
@@ -500,16 +505,15 @@ class EventController extends Controller
      */
     private function arrangeInsertData($xml){
         $insertfieldAry = ['lang','need_push','app_key','event_type_parameter_value',
-                            'estimated_complete_date','related_event_row_id','emp_no'
+                            'estimated_complete_date','related_event_row_id','emp_no','event_title'
                             ];
         $data = [];
         foreach ($insertfieldAry as $fieldName) {
-            $data[ $fieldName ] = (string)$xml-> $fieldName[0];
+            $data[ $fieldName ] = trim((string)$xml-> $fieldName[0]);
         }
         
         $data['created_user'] = (string)$xml->emp_no[0];
-        $data['event_title'] = $xml->event_title[0];
-        $data['event_desc'] = $xml->event_desc[0];
+        $data['event_desc'] = (string)$xml->event_desc[0];
 
         foreach ($xml->basic_list as $key => $value) {
              $tmp['location'] = (string)$value->location[0];
