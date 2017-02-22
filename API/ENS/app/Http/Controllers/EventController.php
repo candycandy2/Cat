@@ -141,7 +141,7 @@ class EventController extends Controller
             $eventType = (string)$xml->event_type_parameter_value[0];
             $eventStatus = (string)$xml->event_status[0];
 
-            if(isset($eventType) && $eventType!=""){
+            if($eventType!=""){
                 $parameterMap = CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
                 if(!in_array($eventType,array_keys($parameterMap))){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
@@ -149,11 +149,11 @@ class EventController extends Controller
                     'Content'=>'']);
                 }
             }
-            if(isset($eventStatus) && $eventStatus!=""){
+            if($eventStatus!=""){
                 $validStatusArr = array('0','1');
                 if(!in_array($eventStatus,$validStatusArr)){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
+                    'Message'=>"事件狀態碼錯誤",
                     'Content'=>""]);
                 }
             }
