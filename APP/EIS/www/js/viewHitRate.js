@@ -36,11 +36,12 @@ $("#viewHitRate").pagecontainer ({
     				lastMonthData[i] = {};
     				ytdData[i] = {};
     			}
-    			/* 2016/01~05  2015/01~12 is a problem*/
 	    		for(var i in eisdata[thisYear-1][thisMonth]) {
     				lastYTDActualAMT[i] = 0;
     				for(var j in eisdata[thisYear-1]) {
-    					lastYTDActualAMT[i] += (Number(eisdata[thisYear-1][j][i][1])); 
+    					if(Number(j) <= Number(thisMonth)) {
+    						lastYTDActualAMT[i] += (Number(eisdata[thisYear-1][j][i][1])); 
+    					}
     				}
     			}
 
@@ -83,19 +84,35 @@ $("#viewHitRate").pagecontainer ({
     			}
     		}else if(type == "YTDBudgetHitRate") {
     			for(var i in eisdata[year][month]) {
-    				data_array[i]["BudgetHitRate"] = YTDActualAMT[index++] / YTDBudgetAMT[index++];
+    				data_array[i]["BudgetHitRate"] = (YTDActualAMT[index] / YTDBudgetAMT[index]);
+    				index++;
     			}
     		}
     	}
 
     	function showData(tab) {
+    		var pattern = /(^[0-9\-]*\.\d{0,2})\d*/;
     		var index = 0;
+    		var ActualAMT, budgetHitRate, YOYGrowth, totalBudgetHitRate, totalYOYGrowth;
+            var totalActualAMT = 0;
+            var totalBudgetAMT = 0;
+            var totalLastYTDActualAMT = 0;
     		if(tab == "thisMonth") {
     			for(var ro in thisMonthData) {
-    				$("#" + ro + " .AS span").text(thisMonthActualAMT[index++] / Math.pow(10, 6));
-    				$("#" + ro + " .HR span").text(thisMonthData[ro]["BudgetHitRate"] * 100);
-    				$("#" + ro + " .YR span").text(thisMonthData[ro]["YOYGrowth"] * 100);	
-    				if ((thisMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+    				ActualAMT = "" + (thisMonthActualAMT[index++] / Math.pow(10, 6));
+    				budgetHitRate = "" + (thisMonthData[ro]["BudgetHitRate"] * 100);
+    				YOYGrowth = "" + (thisMonthData[ro]["YOYGrowth"] * 100);
+    				$("#" + ro + " .AS span").text(ActualAMT.match(pattern)[1]);
+                    totalActualAMT += Number(ActualAMT.match(pattern)[1]);
+    				$("#" + ro + " .HR span").text(budgetHitRate.match(pattern)[1] + "%");
+    				
+    				if(Number(YOYGrowth.match(pattern)[1]) < 0) {
+	    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			}else {
+	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
+	    			}
+
+    				if((thisMonthData[ro]["BudgetHitRate"] * 100) < 90) {
     					$("#" + ro + " .HR").css('background', '#ee3839');
     				}else if((thisMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
     					$("#" + ro + " .HR").css('background', '#48af56');
@@ -108,11 +125,49 @@ $("#viewHitRate").pagecontainer ({
     					$("#" + ro + " .YR").css('background', '#48af56');
     				}
     			}
-    		}else if(tab == "lastMonth") {
-    			for(var ro in lastMonthData) { 
-    				$("#" + ro + " .AS span").text(lastMonthActualAMT[index++] / Math.pow(10, 6));
-    				$("#" + ro + " .HR span").text(lastMonthData[ro]["BudgetHitRate"] * 100);
-    				$("#" + ro + " .YR span").text(lastMonthData[ro]["YOYGrowth"] * 100);
+                $("#total .dataContainer .AS span").text((""+totalActualAMT).match(pattern)[1]);
+                // 
+                totalActualAMT = 0;
+                for(var i=0; i<thisMonthActualAMT.length; i++) {
+                    totalActualAMT += thisMonthActualAMT[i];
+                    totalBudgetAMT += thisMonthBudgetAMT[i];
+                }
+                totalBudgetHitRate = "" + ((totalActualAMT / totalBudgetAMT) * 100);
+                if(Number(totalBudgetHitRate) < 90) {
+                    $("#total .dataContainer .HR").css('background', '#ee3839');
+                }else if(Number(totalBudgetHitRate) >= 100) {
+                    $("#total .dataContainer .HR").css('background', '#48af56');
+                }else {
+                    $("#total .dataContainer .HRn").css('background', '#e6be20');
+                }
+                $("#total .dataContainer .HR span").text(totalBudgetHitRate.match(pattern)[1] + "%");
+                // 
+                for(var i in lastYTDActualAMT) {
+                    totalLastYTDActualAMT += lastYTDActualAMT[i];
+                }
+                totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+                if(totalYOYGrowth < 0) {
+                    $("#total .dataContainer .YR span").text((""+totalYOYGrowth).match(pattern)[1]+"%");
+                    $("#total .dataContainer .YR").css('background', '#ee3839')
+                }else{
+                    $("#total .dataContainer .YR span").text(("+"+(""+totalYOYGrowth).match(pattern)[1])+"%");
+                    $("#total .dataContainer .YR").css('background', '#48af56');
+                }
+            }else if(tab == "lastMonth") {
+    			for(var ro in lastMonthData) {
+    				ActualAMT = "" + (lastMonthActualAMT[index++] / Math.pow(10, 6));
+    				budgetHitRate = "" + (lastMonthData[ro]["BudgetHitRate"] * 100);
+    				YOYGrowth = "" + (lastMonthData[ro]["YOYGrowth"] * 100);
+    				$("#" + ro + " .AS span").text(ActualAMT.match(pattern)[1]);
+                    totalActualAMT += Number(ActualAMT.match(pattern)[1]);
+    				$("#" + ro + " .HR span").text(budgetHitRate.match(pattern)[1] + "%");
+    				
+	    			if(Number(YOYGrowth.match(pattern)[1]) < 0) {
+	    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			}else {
+	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
+	    			}
+
 	    			if ((lastMonthData[ro]["BudgetHitRate"] * 100) < 90) {
 	    				$("#" + ro + " .HR").css('background', '#ee3839');
 	    			}else if((lastMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
@@ -126,11 +181,49 @@ $("#viewHitRate").pagecontainer ({
     					$("#" + ro + " .YR").css('background', '#48af56');
     				}
 	    		}
+                $("#total .dataContainer .AS span").text((""+totalActualAMT).match(pattern)[1]);
+                // 
+                totalActualAMT = 0;
+                for(var i=0; i<lastMonthActualAMT.length; i++) {
+                    totalActualAMT += lastMonthActualAMT[i];
+                    totalBudgetAMT += lastMonthBudgetAMT[i];
+                }
+                totalBudgetHitRate = "" + ((totalActualAMT / totalBudgetAMT) * 100);
+                if(Number(totalBudgetHitRate) < 90) {
+                    $("#total .dataContainer .HR").css('background', '#ee3839');
+                }else if(Number(totalBudgetHitRate) >= 100) {
+                    $("#total .dataContainer .HR").css('background', '#48af56');
+                }else {
+                    $("#total .dataContainer .HR").css('background', '#e6be20');
+                }
+                $("#total .dataContainer .HR span").text(totalBudgetHitRate.match(pattern)[1] + "%");
+                // 
+                for(var i in lastYTDActualAMT) {
+                    totalLastYTDActualAMT += lastYTDActualAMT[i];
+                }
+                totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+                if(totalYOYGrowth < 0) {
+                    $("#total .dataContainer .YR span").text((""+totalYOYGrowth).match(pattern)[1]+"%");
+                    $("#total .dataContainer .YR").css('background', '#ee3839')
+                }else{
+                    $("#total .dataContainer .YR span").text(("+"+(""+totalYOYGrowth).match(pattern)[1])+"%");
+                    $("#total .dataContainer .YR").css('background', '#48af56');
+                }
     		}else if(tab == "YTD") {
-    			for(var ro in ytdData) { 
-    				$("#" + ro + " .AS span").text(YTDActualAMT[index++] / Math.pow(10, 6));
-    				$("#" + ro + " .HR span").text(ytdData[ro]["BudgetHitRate"] * 100);
-    				$("#" + ro + " .YR span").text(ytdData[ro]["YOYGrowth"] * 100);
+    			for(var ro in ytdData) {
+    				ActualAMT = "" + (YTDActualAMT[index++] / Math.pow(10, 6));
+    				budgetHitRate = "" + (ytdData[ro]["BudgetHitRate"] * 100);
+    				YOYGrowth = "" + (ytdData[ro]["YOYGrowth"] * 100);
+    				$("#" + ro + " .AS span").text(ActualAMT.match(pattern)[1]);
+                    totalActualAMT += Number(ActualAMT.match(pattern)[1]);
+    				$("#" + ro + " .HR span").text(budgetHitRate.match(pattern)[1] + "%");
+	    			
+	    			if(Number(YOYGrowth.match(pattern)[1]) < 0) {
+	    				$("#" + ro + " .YR span").text(YOYGrowth.match(pattern)[1] + "%");
+	    			}else {
+	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
+	    			}
+    				
     				if ((ytdData[ro]["BudgetHitRate"] * 100) < 90) {
 	    				$("#" + ro + " .HR").css('background', '#ee3839');
 	    			}else if((ytdData[ro]["BudgetHitRate"] * 100) >= 100) {
@@ -144,6 +237,34 @@ $("#viewHitRate").pagecontainer ({
     					$("#" + ro + " .YR").css('background', '#48af56');
     				}
     			}
+                $("#total .dataContainer .AS span").text((""+totalActualAMT).match(pattern)[1]);
+                // 
+                totalActualAMT = 0;
+                for(var i=0; i<YTDActualAMT.length; i++) {
+                    totalActualAMT += YTDActualAMT[i];
+                    totalBudgetAMT += YTDBudgetAMT[i];
+                }
+                totalBudgetHitRate = "" + ((totalActualAMT / totalBudgetAMT) * 100);
+                if(Number(totalBudgetHitRate) < 90) {
+                    $("#total .dataContainer .HR").css('background', '#ee3839');
+                }else if(Number(totalBudgetHitRate) >= 100) {
+                    $("#total .dataContainer .HR").css('background', '#48af56');
+                }else {
+                    $("#total .dataContainer .HR").css('background', '#e6be20');
+                }
+                $("#total .dataContainer .HR span").text(totalBudgetHitRate.match(pattern)[1] + "%");
+                // 
+                for(var i in lastYTDActualAMT) {
+                    totalLastYTDActualAMT += lastYTDActualAMT[i];
+                }
+                totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+                if(totalYOYGrowth < 0) {
+                    $("#total .dataContainer .YR span").text((""+totalYOYGrowth).match(pattern)[1]+"%");
+                    $("#total .dataContainer .YR").css('background', '#ee3839')
+                }else{
+                    $("#total .dataContainer .YR span").text(("+"+(""+totalYOYGrowth).match(pattern)[1])+"%");
+                    $("#total .dataContainer .YR").css('background', '#48af56');
+                }
     		}
     	}
 
