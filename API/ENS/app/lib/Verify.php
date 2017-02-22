@@ -118,7 +118,7 @@ class Verify
      * @return boolean                          true:已完成|false:未完成
      */
     public function isEventClosed($eventId, EventRepository $eventRepository){
-        $event = $eventRepository->getEventDetail($eventId);
+        $event = $eventRepository->getEventStatus($eventId);
         if($event->event_status == 1){
             return true;
         }else{

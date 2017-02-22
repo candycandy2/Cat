@@ -127,15 +127,16 @@ class EventService
    }
    /**
     * 取得事件詳細資料
-    * @param  int $eventId 事件row_id
+    * @param  int $eventId  事件row_id
+    * @param  String $empNo 員工編號
     * @return Array
     */
-   public function getEventDetail($eventId){
+   public function getEventDetail($eventId, $empNo){
         
          $eventDetail = [];
          $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
-         if(count($this->eventRepository->getEventDetail($eventId)) > 0 ){
-             $eventDetail = $this->eventRepository->getEventDetail($eventId);
+         $eventDetail = $this->eventRepository->getEventDetail($eventId, $empNo);
+         if(count($eventDetail) > 0 ){
              $eventType = $eventDetail['event_type'];
              $eventDetail['event_type'] =  $parameterMap[$eventType];
              $eventDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);

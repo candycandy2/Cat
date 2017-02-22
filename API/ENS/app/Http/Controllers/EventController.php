@@ -205,7 +205,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            $eventList = $this->eventService->getEventDetail($eventId);
+            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -276,7 +276,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventService->getEventDetail($eventId);
+            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -373,7 +373,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            $eventList = $this->eventService->getEventDetail($eventId);
+            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',

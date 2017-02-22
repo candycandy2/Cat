@@ -11,8 +11,9 @@ class EventRepository
     /** @var event Inject EN_Event model */
     protected $event;
 
-    private $eventField = array('en_event.row_id as event_row_id','event_type_parameter_value as event_type','event_title','event_desc',
-                'estimated_complete_date','related_event_row_id','event_status',
+    private $eventField = array('en_event.row_id as event_row_id','event_type_parameter_value as event_type',
+                'event_title','event_desc',
+                'estimated_complete_date','related_event_row_id','en_event.event_status',
                 'en_event.created_user as created_user','en_event.created_at as created_at');
    
     /*
@@ -139,14 +140,17 @@ class EventRepository
     /**
      * 取得事件內容
      * @param  int $eventId en_event.row_id
+     * @param  String $empNo 員工編號
      * @return mix
      */
-    public function getEventDetail($eventId){
+    public function getEventDetail($eventId, $empNo){
         $selectField = $this->eventField;
         array_push($selectField,'en_user.ext_no as created_user_ext_no');
         return $this->event
+            ->join('en_user_event','en_user_event.event_row_id','=','en_event.row_id')
             ->join('en_user','en_user.emp_no','=','en_event.created_user')
             ->where('en_event.row_id', '=', $eventId)
+            ->where('en_user_event.emp_no' ,'=', $empNo)
             ->select($selectField)
             ->first();
     }
@@ -219,8 +223,8 @@ class EventRepository
 
     /**
      * 檢查事件是否有此參與者
-     * @param  [type] $taskId en_task.row_id
-     * @param  [type] $empNo  emp_no
+     * @param  int    $eventId en_event.row_id
+     * @param  String $empNo  員工編號
      * @return mix
      */
     public function getIsEventOwner($eventId, $empNo){
@@ -228,5 +232,17 @@ class EventRepository
             ->where('event_row_id', '=', $eventId)
             ->where('emp_no', '=', $empNo)
             ->get();
+    }
+
+    /**
+     * 取得事件狀態
+     * @param  int $eventId     事件id en_event.row_id
+     * @return mix
+     */
+    public function getEventStatus($eventId){
+         return $this->event
+            ->where('row_id', '=', $eventId)
+            ->select('row_id','event_status')
+            ->first();
     }
 }
