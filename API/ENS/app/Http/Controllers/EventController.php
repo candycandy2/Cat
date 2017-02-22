@@ -137,9 +137,9 @@ class EventController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             
-            $empNo = (string)$xml->emp_no[0];
-            $eventType = (string)$xml->event_type_parameter_value[0];
-            $eventStatus = (string)$xml->event_status[0];
+            $empNo = trim((string)$xml->emp_no[0]);
+            $eventType = trim((string)$xml->event_type_parameter_value[0]);
+            $eventStatus = trim((string)$xml->event_status[0]);
 
             if($eventType!=""){
                 $parameterMap = CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
