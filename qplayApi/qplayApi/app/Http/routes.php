@@ -15,6 +15,8 @@
 //    return view('welcome');
 //});
 
+Route::any('/v101/qplay/getIpInfo', 'qplayController@getIpInfo');
+
 //QPlay Api
 Route::any('/v101/qplay/getSecurityList', 'qplayController@getSecurityList');
 Route::any('/v101/qplay/register', 'qplayController@register');
