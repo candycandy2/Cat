@@ -32,6 +32,7 @@ class EventRepository
      * @return int          被更新的事件id
      */
     public function saveEvent(Array $data){
+        
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
         $this->event->event_type_parameter_value = $data['event_type_parameter_value'];
@@ -43,6 +44,8 @@ class EventRepository
         $this->event->created_user = $data['created_user'];
         $this->event->created_at = $now;
         $this->event->save();
+        $queries = DB::getQueryLog();
+
         return $this->event->row_id;
     }
 
@@ -52,7 +55,7 @@ class EventRepository
      * @return int          新增成功的事件id
      */
     public function saveUserEvent(Array $data){
-        return $this->userEvent-> insertGetId($data);
+        return $this->userEvent-> insert($data);
     }
 
     /**

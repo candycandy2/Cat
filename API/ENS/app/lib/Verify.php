@@ -127,7 +127,7 @@ class Verify
     }
 
     public function checkTimeStemp($timpStemp){
-        if( preg_match("/[0-9]{10}/", $timpStemp) == 0){
+        if( preg_match("/^[0-9]{10}$/", $timpStemp) == 0){
            return false;         
         }
         return true;

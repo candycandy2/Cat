@@ -333,12 +333,12 @@ class EventService
    private function insertUserEvent($eventId, Array $eventUser, $createdUser, $createdDate){
         $userEventData = [];
         foreach ($eventUser as $user) {
-            $userEventData[] = array(
+            $userEventData[] = [
                 'event_row_id'=>$eventId,
                 'emp_no'=>(string)$user,
                 'created_user'=>$createdUser,
                 'created_at'=>$createdDate
-                );
+                ];
         }
         $this->eventRepository->saveUserEvent($userEventData);
    }

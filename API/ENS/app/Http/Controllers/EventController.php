@@ -50,16 +50,20 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             $data = $this->arrangeInsertData($xml);
 
-            if((!isset($data['lang']) || $data['lang']=="")||
-                (!isset($data['need_push']) || $data['need_push']=="")||
-                (!isset($data['app_key']) || $data['app_key']=="")){
+            $userAuthList = $this->userService->getUserRoleList($data['created_user']);
+            if(!in_array($allow_user, $userAuthList)){
+                  return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
+                    'Message'=>"權限不足",
+                    'Content'=>""]);
+            }
+
+            if($data['lang']=="" || $data['need_push']=="" || $data['app_key']==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
             }
 
             $parameterMap =  CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
-
             if(!in_array($data['event_type_parameter_value'],array_keys($parameterMap))){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
                     'Message'=>"事件類型錯誤",
@@ -71,6 +75,16 @@ class EventController extends Controller
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
+
+            if($data['estimated_complete_date']!=""){
+                if(!$Verify->checkTimeStemp($data['estimated_complete_date'])){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+                }
+            }
+
+            //has related
             if(isset($data['related_event_row_id']) && trim($data['related_event_row_id'])!=""){
                 if(!is_numeric($data['related_event_row_id'])){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
@@ -79,22 +93,13 @@ class EventController extends Controller
                 }
  
                 $event = $this->eventService->getRelatedEventById($data['related_event_row_id']);
-
                 if(is_null($event) || count($event) == 0){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014911_relatedEventStatusError,
                     'Message'=>"關聯事件狀態異常",
                     'Content'=>""]);
                 }
 
-            }
-
-            $userAuthList = $this->userService->getUserRoleList($data['created_user']);
-            if(!in_array($allow_user, $userAuthList)){
-                  return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
-                    'Message'=>"權限不足",
-                    'Content'=>""]);
-            }
-            
+            }            
             
             foreach ($data['basicList'] as $key => $basicInfo) {
                 if(!$this->basicInfoService->checkBasicInfo($basicInfo['location'],$basicInfo['function'])){
@@ -492,6 +497,11 @@ class EventController extends Controller
 
     }
 
+    /**
+     * 整理新增事件時的資料
+     * @param  String $xml request data
+     * @return Array
+     */
     private function arrangeInsertData($xml){
 
         $data = [];
@@ -504,6 +514,7 @@ class EventController extends Controller
         $data['estimated_complete_date'] = (string)$xml->estimated_complete_date[0];
         $data['related_event_row_id'] = (string)$xml->related_event_row_id[0];
         $data['created_user'] = (string)$xml->emp_no[0];
+        $data['emp_no'] = (string)$xml->emp_no[0];
 
         foreach ($xml->basic_list as $key => $value) {
              $tmp['location'] = (string)$value->location[0];
