@@ -57,7 +57,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($data['lang']=="" || $data['need_push']=="" || $data['app_key']==""){
+            if($data['lang']=="" || $data['need_push']=="" || $data['app_key']=="" || $data['event_type_parameter_value'] ==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -85,22 +85,18 @@ class EventController extends Controller
             }
 
             //has related
-            if(isset($data['related_event_row_id']) && trim($data['related_event_row_id'])!=""){
-                if(!is_numeric($data['related_event_row_id'])){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-                }
- 
-                $event = $this->eventService->getRelatedEventById($data['related_event_row_id']);
-                if(is_null($event) || count($event) == 0){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014911_relatedEventStatusError,
-                    'Message'=>"關聯事件狀態異常",
-                    'Content'=>""]);
+            if($data['related_event_row_id'] != ""){
+
+                $verifyResult = $Verify->checkRelatedEvent($data['related_event_row_id'], $this->eventService);
+                if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+                     $result = response()->json(['ResultCode'=>$verifyResult["code"],
+                        'Message'=>$verifyResult["message"],
+                        'Content'=>'']);
+                    return $result;
                 }
 
             }            
-            
+            //has task
             foreach ($data['basicList'] as $key => $basicInfo) {
                 if(!$this->basicInfoService->checkBasicInfo($basicInfo['location'],$basicInfo['function'])){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014902_locationOrFunctionNotFound,
@@ -312,7 +308,7 @@ class EventController extends Controller
             }
             //更新關聯事件
             if($relatedId!=""){
-                $verifyResult = $Verify->checkRelatedEvent($eventId, $relatedId, $this->eventService);
+                $verifyResult = $Verify->checkRelatedEvent($relatedId, $this->eventService, $eventId);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
                         'Message'=>$verifyResult["message"],
@@ -503,25 +499,23 @@ class EventController extends Controller
      * @return Array
      */
     private function arrangeInsertData($xml){
-
+        $insertfieldAry = ['lang','need_push','app_key','event_type_parameter_value',
+                            'estimated_complete_date','related_event_row_id','emp_no'
+                            ];
         $data = [];
-        $data['lang'] = (string)$xml->lang[0];
-        $data['need_push'] = (string)$xml->need_push[0];
-        $data['app_key'] = (string)$xml->app_key[0];
-        $data['event_type_parameter_value'] = (string)$xml->event_type_parameter_value[0];
-        $data['event_title'] = (string)$xml->event_title[0];
-        $data['event_desc'] = (string)$xml->event_desc[0];
-        $data['estimated_complete_date'] = (string)$xml->estimated_complete_date[0];
-        $data['related_event_row_id'] = (string)$xml->related_event_row_id[0];
+        foreach ($insertfieldAry as $fieldName) {
+            $data[ $fieldName ] = (string)$xml-> $fieldName[0];
+        }
+        
         $data['created_user'] = (string)$xml->emp_no[0];
-        $data['emp_no'] = (string)$xml->emp_no[0];
+        $data['event_title'] = $xml->event_title[0];
+        $data['event_desc'] = $xml->event_desc[0];
 
         foreach ($xml->basic_list as $key => $value) {
              $tmp['location'] = (string)$value->location[0];
              $tmp['function'] = (string)$value->function[0];
              $data['basicList'][] = $tmp;
         }
-
         return $data;
     }
 

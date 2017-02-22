@@ -84,12 +84,12 @@ class Verify
 
     /**
      * 檢察關聯事件是否存在或已被關聯
-     * @param  int $eventId   qp_event.row_id
      * @param  int $relatedId qp_event.row_id
      * @param  EventService $eventService
+     * @param  int $eventId   qp_event.row_id (非必填)
      * @return 
      */
-    public function checkRelatedEvent($eventId, $relatedId, EventService $eventService){
+    public function checkRelatedEvent($relatedId, EventService $eventService, $eventId=null){
         
         if( preg_match("/^[1-9][0-9]*$/", $relatedId) == 0){
              return array('code'=>ResultCode::_014905_fieldFormatError,
@@ -101,8 +101,8 @@ class Verify
             'message'=>"關聯事件狀態異常");
         }
         //事件已被關聯
-        $event = $eventService->getRelatedStatusById($relatedId);
-        if(is_null($event) || ($event->related_event_row_id != 0 && $event->related_event_row_id != $eventId)){
+        $eventRet = $eventService->getRelatedStatusById($relatedId);
+        if(is_null($eventRet) || ($eventRet->related_event_row_id != 0 && $eventRet->related_event_row_id != $eventId)){
              return array('code'=>ResultCode::_014911_relatedEventStatusError,
             'message'=>"關聯事件狀態異常");
         }

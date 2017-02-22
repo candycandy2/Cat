@@ -209,6 +209,7 @@ class EventService
          }
          return $userList;
    }
+
    /**
     * 找出不重複的事件參與者(被指派任務的人、主管以及機房管理者)
     * @param  int $eventId 事件id en_event.row_id
@@ -228,15 +229,31 @@ class EventService
 
         return array_unique($eventUser);
    }
-
+   
+   /**
+    * 取得事件關聯到的事件id
+    * @param  int $eventId    事件id
+    * @return mixed
+    */
    public function getRelatedStatusById($eventId){
         return $this->eventRepository->getRelatedStatusById($eventId);
    }
 
+   /**
+    * 更新當前任務
+    * @param  int $taskId    任務id en_task.row_id
+    * @param  Array  $data   更新資料
+    * @return int            更新成功筆數
+    */
    public function updateTaskById($taskId, Array $data){
         return $this->taskRepository->updateTaskById($taskId, $data);
    }
 
+   /**
+    * 取得任務參與者
+    * @param  int $taskId    任務id en_task.row_id
+    * @return mixed         
+    */
    public function getUserByTaskId($taskId){
         return $this->taskRepository->getUserByTaskId($taskId);
    }

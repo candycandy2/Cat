@@ -80,7 +80,7 @@ class EventRepository
         
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
-        
+        //if update clear related_event_row_id
         $res = \DB::table("en_event")
         ->join('en_event as rel','en_event.related_event_row_id','=','rel.row_id')
         ->where('en_event.related_event_row_id','=',$eventId)
@@ -88,19 +88,21 @@ class EventRepository
                   'en_event.updated_user'=>$empNo,
                   'en_event.updated_at'=>$now,
                   ]);
-
+    
          $this->event::where('row_id', $bindEventId)
              ->where('related_event_row_id',0)
-             ->update(['related_event_row_id' => $eventId]);
+             ->update(['related_event_row_id' => $eventId,
+                       'en_event.updated_user'=>$empNo,
+                       'en_event.updated_at'=>$now,]);
     }
 
     /**
-     * 取得事件關聯性，檢查欲關聯的事件是否真的沒有被關聯
-     * @param  int $relatedId 關聯事件id
+     * 取得事件關聯到的事件id
+     * @param  int $eventId 關聯事件id
      * @return mixed
      */
-    public function getRelatedStatusById($relatedId){
-       return $this->event::where('row_id', $relatedId)
+    public function getRelatedStatusById($eventId){
+       return $this->event::where('row_id', $eventId)
             ->select('related_event_row_id')
             ->first();
     }
