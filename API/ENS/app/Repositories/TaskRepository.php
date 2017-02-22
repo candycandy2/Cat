@@ -127,7 +127,7 @@ class TaskRepository
      */
     public function getIsTaskOwner($taskId, $empNo){
         return $this->userTask
-            ->where('row_id', '=', $taskId)
+            ->where('task_row_id', '=', $taskId)
             ->where('emp_no', '=', $empNo)
             ->get();
     }

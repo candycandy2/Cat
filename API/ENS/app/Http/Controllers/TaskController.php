@@ -71,9 +71,9 @@ class TaskController extends EventController
            
             $data = $this->getUpdataStatusData($taskStatus, $xml);
             $resutlt = $this->eventService->updateTaskById($taskId,$data);
+            \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                         'Content'=>""]);
-        \DB::commit();
         } catch (Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
