@@ -537,7 +537,7 @@ class pushController extends Controller
                                 if(count($roleList) == 0) {
                                     \DB::rollBack();
                                     return response()->json(['result_code'=>ResultCode::_000914_userWithoutRight,
-                                        'message'=>'用户已停权']); //TODO get message from Database
+                                        CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)]);
                                 } else {
                                     //TODO Log
                                 }

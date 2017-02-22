@@ -144,8 +144,8 @@ class qplayController extends Controller
                     }
                 } else {
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        //'message'=>'Unknown error',
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans("messages.MSG_UNKNOWN_ERROR"),
+                        //'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
                         'is_login'=>0,
                         'login_id'=>""];
                     CommonUtil::logApi("", $ACTION,
@@ -395,7 +395,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError);
+                    $message = trans('messages.MSG_CALL_SERVICE_SUCCESS');
                     $finalUrl = urlencode($redirect_uri.'?result_code='
                         .ResultCode::_999999_unknownError
                         .'&message='
@@ -578,7 +578,7 @@ class qplayController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -755,7 +755,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError);
+                    $message = trans('messages.MSG_CALL_SERVICE_ERROR');
                     $finalUrl = urlencode($redirect_uri.'?result_code='
                         .ResultCode::_999999_unknownError
                         .'&message='
@@ -890,7 +890,7 @@ class qplayController extends Controller
                 catch (Exception $e)
                 {
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                         'content'=>''
                     ];
 
@@ -998,7 +998,7 @@ class qplayController extends Controller
             if(count($versionList) > 1)
             {
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -2214,7 +2214,7 @@ SQL;
                 if(!$pushResult["result"]) {
                     \DB::rollBack();
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'),
                         'content'=>''
                     ];
                     CommonUtil::logApi("", $ACTION,
@@ -2226,7 +2226,7 @@ SQL;
             } catch (Exception $e) {
                 \DB::rollBack();
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -2584,7 +2584,7 @@ SQL;
                         } catch (Exception $e) {
                             \DB::rollBack();
                             $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                                 'content'=>''];
                             CommonUtil::logApi("", $ACTION,
                                 response()->json(apache_response_headers()), $result);
@@ -2797,7 +2797,7 @@ SQL;
                         } catch (Exception $e) {
                             \DB::rollBack();
                             $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                                 'content'=>''];
                             CommonUtil::logApi("", $ACTION,
                                 response()->json(apache_response_headers()), $result);
