@@ -111,7 +111,7 @@ class qplayController extends Controller
 
                     if(count($sessionList) <= 0) {
                         $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                            'message'=>'is not Login',
+                            'message'=>trans("messages.MSG_IS_NOT_LOGIN"),
                             'is_login'=>0,
                             'login_id'=>$userInfo->login_id];
                         CommonUtil::logApi("", $ACTION,
@@ -124,7 +124,7 @@ class qplayController extends Controller
                         $token_valid = $sessionInfo->token_valid_date;
                         if($nowTimestamp <= $token_valid) {
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'is Login',
+                                'message'=>trans("messages.MSG_IS_LOGIN"),
                                 'is_login'=>1,
                                 'login_id'=>$userInfo->login_id];
                             CommonUtil::logApi("", $ACTION,
@@ -133,7 +133,7 @@ class qplayController extends Controller
                             return $result;
                         } else {
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'is not Login',
+                                'message'=>trans("messages.MSG_IS_NOT_LOGIN"),
                                 'is_login'=>0,
                                 'login_id'=>$userInfo->login_id];
                             CommonUtil::logApi("", $ACTION,
@@ -157,7 +157,7 @@ class qplayController extends Controller
             else
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Device Has not Registered',
+                    'message'=>trans("messages.MSG_DEVICE_HAS_NOT_REGISTERED"),
                     'is_login'=>0,
                     'login_id'=>""];
                 CommonUtil::logApi("", $ACTION,
@@ -225,7 +225,7 @@ class qplayController extends Controller
             if(count($uuidList) > 0)
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Device Has Registered',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'content'=>array("is_register"=>1)];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -235,7 +235,7 @@ class qplayController extends Controller
             else
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Device Has not Registered',
+                    'message'=>trans("messages.MSG_DEVICE_HAS_NOT_REGISTERED"),
                     'content'=>array("is_register"=>0)];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -586,7 +586,7 @@ class qplayController extends Controller
             }
 
             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Call Service Successed',
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
             CommonUtil::logApi($userInfo->row_id, $ACTION,
@@ -792,7 +792,7 @@ class qplayController extends Controller
                     .'&token_valid='
                     .$token_valid);
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Login Successed',
+                    'message'=>trans("messages.MSG_LOGIN_SUCCESS"),
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid,
                         "redirect_uri"=>$finalUrl,
@@ -901,7 +901,7 @@ class qplayController extends Controller
                 }
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Logout Successed',
+                    'message'=>trans("messages.MSG_LOGOUT_SUCCESS"),
                     'content'=>array("uuid" => $uuid)
                 ];
 
@@ -1018,7 +1018,7 @@ class qplayController extends Controller
             else
             {
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Need to update',
+                    'message'=>trans("messages.MSG_NEED_TO_UPDATE"),
                     'content'=>array("version_code"=>$versionLine->version_code,
                         'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $version_code, $versionLine->url))];
                 CommonUtil::logApi("", $ACTION,
@@ -1269,7 +1269,7 @@ SQL;
 
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array(
                         'app_category_list'=>$app_category_list,
@@ -1398,7 +1398,7 @@ SQL;
 
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>json_encode($whitelist),
                     'security_level'=>$level[0],
@@ -1658,7 +1658,7 @@ SQL;
                 }
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_count'=> count($r),
                         'message_list'=>$r)
@@ -1837,7 +1837,7 @@ SQL;
                         }
                     }
                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                        'message'=>'Call Service Successed',
+                        'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetail
                     ];
@@ -2045,7 +2045,7 @@ SQL;
                 }  
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_send_row_id' => $message_send_row_id_str)
                 ];
@@ -2234,7 +2234,7 @@ SQL;
             }
 
             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>'Call Service Successed',
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
 
@@ -2328,7 +2328,7 @@ SQL;
                         'updated_user'=>$user->row_id,]);
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Renew Successed',
+                    'message'=>trans("messages.MSG_RENEW_SUCCESS"),
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid, "token"=>$token)
                 ];
@@ -2562,7 +2562,7 @@ SQL;
                                         ]);
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                        'message'=>'Send Push Message Successed',
+                                        'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                         'content'=>array('jsonContent'=>$countFlag,
                                             'content'=>$content)
                                     ];
@@ -2574,7 +2574,7 @@ SQL;
 
                             \DB::commit();
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'Send Push Message Successed',
+                                'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                 'content'=>array('jsonContent'=>$countFlag,
                                     'content'=>$content)//json_encode($jsonContent)
                             ];
@@ -2775,7 +2775,7 @@ SQL;
                                         ]);
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                        'message'=>'Send Push Message Successed',
+                                        'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                         'content'=>array('jsonContent'=>$newCountFlag,
                                             'content'=>$content)
                                     ];
@@ -2787,7 +2787,7 @@ SQL;
 
                             \DB::commit();
                             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                                'message'=>'Send Push Message Successed',
+                                'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
                                 'content'=>array('jsonContent'=>count($destinationUserIdList),
                                     'content'=>$content)//json_encode($jsonContent)
                             ];
@@ -2892,7 +2892,7 @@ SQL;
                             'updated_user'=>$user->row_id]);
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                    'message'=>'Call Service Successed',
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('uuid'=>$uuid)
                 ];
