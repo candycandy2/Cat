@@ -394,9 +394,10 @@ class EventService
     * @return Array
     */
    private function arrangeEventList($event,  $parameterMap){
+
         $item = [];
         $item['event_row_id'] = $event->event_row_id;
-        $item['event_type'] = $parameterMap[$event->event_type];
+        $item['event_type'] = (isset($event->event_type)&& $event->event_type!="")?$parameterMap[$event->event_type]:"";
         $item['event_title'] = $event->event_title;
         $item['event_desc'] = $event->event_desc;
         $item['estimated_complete_date'] = $event->estimated_complete_date;
