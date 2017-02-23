@@ -294,7 +294,11 @@ class CommonUtil
     }
 
     public static function getMessageContentByCode($messageCode) {
-        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $lang = "";
+        if (array_key_exists('lang',$_GET)){
+            $lang = $_GET["lang"];
+        }
+        $lang_row_id = self::getLanguageIdByName($lang);
         $project_id = self::getProjectInfo();
         if ($project_id == null ||  count($project_id)<0){
             return "";

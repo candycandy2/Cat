@@ -200,13 +200,57 @@ var tplJS = {
         //Render Template
         this.tplRender(pageID, contentID, renderAction, dropdownList);
 
-        //Auto Resize-width
-        $(document).on("change", "#" + data.id, function() {
-            $("span[data-id='tmp_option_width']").html($('#' + data.id + ' option:selected').text());
+        //Option msg
+        var optionMsgHTML = $("template#tplOptionMsg").html();
+        var optionMsg = $(optionMsgHTML);
+        var optionMsgID = data.id + "-option";
+        var optionMsgDataListID = data.id + "-option-list";
+
+        optionMsg.prop("id", optionMsgID);
+
+        var optionMsgDataList = optionMsg.find("ul");
+        optionMsgDataList.prop("id", optionMsgDataListID);
+
+        var tplOptionMsgListHTML = optionMsg.find("template#tplOptionMsgList").html();
+
+        for (var i=0; i<data.option.length; i++) {
+            var tplOptionMsgList = $(tplOptionMsgListHTML);
+
+            tplOptionMsgList.prop("value", data.option[i].value);
+            tplOptionMsgList.html(data.option[i].text);
+            optionMsgDataList.append(tplOptionMsgList);
+        }
+
+        //Render Template
+        this.tplRender(pageID, contentID, renderAction, optionMsg);
+        //Initialize Popup
+        $('#' + optionMsgID).popup();
+
+        $(document).on("click", "#" + data.id, function() {
+            $('#' + optionMsgID).popup('open');
+        });
+
+        $(document).on("click", "#" + optionMsgID + " .close", function() {
+            $('#' + optionMsgID).popup('close');
+
+            reSizeDropdownList(data.id);
+        });
+
+        $(document).on("click", "#" + optionMsgID + " ul li", function() {
+            $("#" + optionMsgID + " ul li").removeClass("tpl-dropdown-list-selected");
+            $(this).addClass("tpl-dropdown-list-selected");
+            $("#" + data.id).val($(this).val());
+
+            reSizeDropdownList(data.id);
+        });
+
+        //Auto Resize DropdownList Width
+        function reSizeDropdownList(ID) {
+            $("span[data-id='tmp_option_width']").html($('#' + ID + ' option:selected').text());
             var pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
             //px conver to vw
             var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
-            $("#" + data.id).css('width', vwWidth + 'vw');
-        });
+            $("#" + ID).css('width', vwWidth + 'vw');
+        }
     }
 };
