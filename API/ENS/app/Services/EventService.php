@@ -145,7 +145,7 @@ class EventService
          $eventDetail = $this->eventRepository->getEventDetail($eventId, $empNo);
          if(count($eventDetail) > 0 ){
              $eventType = $eventDetail['event_type'];
-             $eventDetail['event_type'] =  $parameterMap[$eventType];
+             $eventDetail['event_type'] =  (isset($eventType) && trim($eventType)!="")?$parameterMap[$eventType]:"";
              $eventDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
              $eventDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
              $eventDetail['task_finish_count'] = $this->taskRepository->getCloseTaskCntByEventId($eventId);
