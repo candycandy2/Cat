@@ -82,7 +82,9 @@ class CommonUtil
     public static function arrangeInsertDataFromXml($xml, $dataField){
         $data = array('created_user'=>(string)$xml->emp_no[0]);
         foreach ( $dataField as $column) {
-            $data[$column] = trim((string)$xml->$column[0]);
+            if(isset($xml->$column[0])){
+                $data[$column] = trim((string)$xml->$column[0]);
+            }
          }
         return $data;
     }

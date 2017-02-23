@@ -67,8 +67,13 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($data['lang']=="" || $data['need_push']=="" || $data['app_key']=="" || $data['event_title']=="" ||
-              $data['event_type_parameter_value'] =="" ||  $data['estimated_complete_date'] == "" || $data['basicList']==""){
+            if(!isset($data['lang'])        || $data['lang']=="" || 
+               !isset($data['need_push'])   || $data['need_push']=="" || 
+               !isset($data['app_key'])     || $data['app_key']=="" || 
+               !isset($data['event_title']) || $data['event_title']=="" ||
+               !isset($data['event_type_parameter_value']) || $data['event_type_parameter_value'] =="" || 
+               !isset($data['estimated_complete_date'])     || $data['estimated_complete_date'] == "" ||
+               !isset($data['basicList'])   || $data['basicList']==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
