@@ -1,4 +1,8 @@
 <?php
+/**
+ *  任務Task相關資料處理
+ * @author Cleo.W.Chan
+ */
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +30,7 @@ class TaskRepository
     /**
      * 取得事件所屬的任務資料
      * @param  int $eventId event row_id
-     * @return mix
+     * @return mixed
      */
     public function getTaskByEventId($eventId){
          return  $this->task
@@ -55,7 +59,7 @@ class TaskRepository
     /**
      * 取得事件負責人
      * @param  int $taskId 事件id
-     * @return mix
+     * @return mixed
      */
     public function getUserByTaskId($taskId){
         return $this->userTask
@@ -88,7 +92,7 @@ class TaskRepository
     /**
      * 取得事件相關人
      * @param  int $eventId en_event.row_id 
-     * @return mix 
+     * @return mixed 
      */
     public function getAllUserFromTaskbyEventId($eventId){
        return $this->userTask
@@ -111,7 +115,7 @@ class TaskRepository
     /**
      * 取得任務資料
      * @param  int $taskId    任務id,en_task.row_id
-     * @return mixs
+     * @return mixed
      */
     public function getTaskById($taskId){
          return $this->task
@@ -123,7 +127,7 @@ class TaskRepository
      * 檢查任務是否有此參與者
      * @param  [type] $taskId en_task.row_id
      * @param  [type] $empNo  emp_no
-     * @return mix
+     * @return mixed
      */
     public function getIsTaskOwner($taskId, $empNo){
         return $this->userTask

@@ -20,17 +20,27 @@ class EventController extends Controller
     protected $basicInfoService;
     protected $userService;
     protected $eventRepository;
-    protected $pushService;
 
-    public function __construct(EventRepository $eventRepository, EventService $eventService, BasicInfoService $basicInfoService, UserService $userService, TaskRepository $taskRepository)
+    /**
+     * 建構子，初始化引入相關服務
+     * @param EventRepository  $eventRepository  事件Repository
+     * @param EventService     $eventService     事件相關服務
+     * @param BasicInfoService $basicInfoService 地點基本資訊服務
+     * @param UserService      $userService      用戶服務
+     * @param TaskRepository   $taskRepository   處理Repository
+     */
+    public function __construct(EventRepository $eventRepository, EventService $eventService, BasicInfoService $basicInfoService, UserService $userService)
     {
         $this->eventRepository = $eventRepository;
         $this->eventService = $eventService;
         $this->basicInfoService = $basicInfoService;
         $this->userService = $userService;
-        $this->taskRepository = $taskRepository;
     }
 
+    /**
+     * 新增事件
+     * @return json
+     */
     public function newEvent(){
 
          $allow_user = "admin";
@@ -48,7 +58,7 @@ class EventController extends Controller
             }
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
-            $data = $this->arrangeInsertData($xml);
+            $data = $this->getInsertEventData($xml);
 
             $userAuthList = $this->userService->getUserRoleList($data['created_user']);
             if(!in_array($allow_user, $userAuthList)){
@@ -122,13 +132,16 @@ class EventController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
         } catch (Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
             \DB::rollBack();
         }
     }
 
-
+    /**
+     * 獲取事件列表
+     * @return json
+     */
     public function getEventList(){
         
         try{
@@ -173,7 +186,7 @@ class EventController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
         } catch (Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
 
@@ -221,7 +234,7 @@ class EventController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
         } catch (Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
 
@@ -336,7 +349,7 @@ class EventController extends Controller
 
         } catch (Exception $e){
             \DB::rollBack();
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);           
         }
    
@@ -440,7 +453,7 @@ class EventController extends Controller
 
         } catch (Exception $e){
             \DB::rollBack();
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
            
         }
@@ -492,7 +505,7 @@ class EventController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
         } catch (Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
 
@@ -503,16 +516,12 @@ class EventController extends Controller
      * @param  String $xml request data
      * @return Array
      */
-    private function arrangeInsertData($xml){
+    private function getInsertEventData($xml){
         $insertfieldAry = ['lang','need_push','app_key','event_type_parameter_value',
                             'estimated_complete_date','related_event_row_id','emp_no','event_title'
                             ];
-        $data = [];
-        foreach ($insertfieldAry as $fieldName) {
-            $data[ $fieldName ] = trim((string)$xml-> $fieldName[0]);
-        }
-        
-        $data['created_user'] = (string)$xml->emp_no[0];
+
+        $data = CommonUtil::arrangeInsertDataFromXml($xml, $insertfieldAry);
         $data['event_desc'] = (string)$xml->event_desc[0];
 
         foreach ($xml->basic_list as $key => $value) {

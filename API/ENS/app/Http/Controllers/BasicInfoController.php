@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Http\Controllers;
 
 use Request;
@@ -17,6 +15,10 @@ class BasicInfoController extends Controller
 
     protected $basicInfoService;
 
+    /**
+     * 建構子，初始化引入相關服務
+     * @param BasicInfoService $basicInfoService 地點基本資訊服務
+     */
     public function __construct(BasicInfoService $basicInfoService)
     {
         $this->basicInfoService = $basicInfoService;
@@ -51,7 +53,7 @@ class BasicInfoController extends Controller
             }
 
         } catch (Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
     }

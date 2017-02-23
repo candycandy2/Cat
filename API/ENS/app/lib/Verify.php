@@ -41,12 +41,12 @@ class Verify
         $headerContentType = $request->header('Content-Type');
         
         if($headerContentType == null || trim($headerContentType) != "application/json") {
-            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+            return array("code"=>ResultCode::_014915_contentTypeParameterInvalid,
                 "message"=> "Content-Type錯誤");
         }
 
         if(count($input) == 0 || !array_key_exists('strXml', $input) || trim($input["strXml"]) == "") {
-            return array("code"=>ResultCode::_999007_inputJsonFormatInvalid,
+            return array("code"=>ResultCode::_014917_inputJsonFormatInvalid,
                 "message"=>"傳入的json格式錯誤, Server端無法解析");
         }
     
@@ -54,7 +54,7 @@ class Verify
         $xml=simplexml_load_string($input['strXml']);
 
         if ($xml === false) {
-             return array("code"=>ResultCode::_999007_inputJsonFormatInvalid,
+             return array("code"=>ResultCode::_014916_inputXmlFormatInvalid,
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
         $empNo = trim((string)$xml->emp_no[0]);
@@ -116,6 +116,11 @@ class Verify
         }
     }
 
+    /**
+     * 檢查時間戳記是否合法
+     * @param  String             $timpStemp  時間戳記
+     * @return boolean            true:合法|false:不合法
+     */
     public function checkTimeStemp($timpStemp){
         if( preg_match("/^[0-9]{10}$/", $timpStemp) == 0){
            return false;         

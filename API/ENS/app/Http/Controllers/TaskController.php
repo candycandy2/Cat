@@ -76,7 +76,7 @@ class TaskController extends EventController
                         'Content'=>""]);
         } catch (Exception $e){
             \DB::rollBack();
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
            
         }

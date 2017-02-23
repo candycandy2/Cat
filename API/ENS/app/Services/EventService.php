@@ -93,6 +93,13 @@ class EventService
            return $result;
    }
 
+  /**
+   * 取得事件列表
+   * @param  String $empNo       員工編號
+   * @param  String $eventType   1:緊急通報 | 2:一般通報 (非必填，不需要篩選時傳入空字串)
+   * @param  int $eventStatus 事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
+   * @return Array              事件列表包含參與人數(user_count),seen_count(已讀人數),task_finish_count(任務完成數)
+   */
    public function getEventList($empNo, $eventType, $eventStatus){
         $oraEventList = $this->eventRepository->getEventList($empNo, $eventType, $eventStatus);
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
@@ -164,6 +171,11 @@ class EventService
         return $result;
    }
 
+   /**
+    * 取得任務參與者的詳細資料
+    * @param  int $taskId 任務id en_task
+    * @return Array
+    */
    public function getTaskUserDetail($taskId){
          $tsakUserDetail = $this->taskRepository->getUserByTaskId($taskId);
           $userList = [];
@@ -175,6 +187,11 @@ class EventService
          return $userList;
    }
 
+   /**
+    * 取得事件參與者當作推播接收訊者清單
+    * @param  int $eventId 事件id en_event.row_id
+    * @return Array|array  array('Domain\\LoginId')
+    */
    public function getPushUserListByEvent($eventId){
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];
@@ -184,6 +201,11 @@ class EventService
          return $userList;
    }
 
+   /**
+    * 根據員工編號產生收件者清單
+    * @param  Array  $empNoArr 員工編號列表
+    * @return Array|array      array('Domain\\LoginId')
+    */
    public function getPushUserListByEmpNoArr(Array $empNoArr){
         $userInfo = $this->userRepository->getUserInfoByEmpNO($empNoArr);
         $userList = [];
@@ -297,7 +319,12 @@ class EventService
             return false;
         }
    }
-
+   
+   /**
+    * 取得不重複的任務清單(function-location)
+    * @param  Array|array    $basicList 地點等資訊列表
+    * @return Array|array    不重複的任務清單
+    */
    private function getUniqueTask($basicList){
         
         $uniqueTask = [];
@@ -391,7 +418,7 @@ class EventService
     * @param  string    $scenario   發送推播的場景(new:新增事件|updateL更新事件)
     * @return json
     */
-   private function sendPushMessageToEventUser($eventId, $data, $queryParam, $scenario = 'new'){
+   private function sendPushMessageToEventUser($eventId, $data, Array $queryParam, $scenario = 'new'){
        
        $result = null;
        

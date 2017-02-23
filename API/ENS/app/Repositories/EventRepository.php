@@ -1,4 +1,8 @@
 <?php
+/**
+ * 事件Event相關資料處理
+ * @author Cleo.W.Chan
+ */
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
@@ -111,7 +115,7 @@ class EventRepository
      * 取得事件列表
      * @param  String $empNo       員工編號
      * @param  int    $eventType   1:緊急通報 | 2:一般通報 (非必填，不需要篩選時傳入空字串)
-     * @param  int $eventStatus 事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
+     * @param  int    $eventStatus    事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
      * @return mixed
      */
     public function getEventList($empNo, $eventType, $eventStatus){
