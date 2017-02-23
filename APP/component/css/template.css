@@ -48,3 +48,26 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     -webkit-appearance: none;
     margin-bottom: 1.2vh;
 }
+
+.tpl-dropdown-list-selected {
+    background-color: #2C89BC;
+    color: #FFF;
+}
+
+/* Popup Msg */
+.app-popup.ui-overlay-shadow {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.app-popup.ui-popup {
+    margin: 0 auto;
+}
+
+.app-popup.ui-corner-all {
+    border-radius: 16px;
+}
+
+.app-popup .ui-content {
+    padding: 2.5vh 3vw 2.9vh;
+}

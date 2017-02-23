@@ -18,7 +18,7 @@ $("#viewEventList").pagecontainer({
 
             var __construct = function() {
                 //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
-                loadingMask("hide");
+                //loadingMask("hide");
             }();
 
         };
@@ -31,34 +31,16 @@ $("#viewEventList").pagecontainer({
                 navbar: {
                     button: [{
                         href: "reportDiv",
-                        text: "通報動態",
-                        attr: {
-                            class: "testClass1"
-                        }
+                        text: "通報動態"
                     }, {
                         href: "memberDiv",
-                        text: "成員",
-                        attr: {
-                            class: "testClass2"
-                        }
-                    }],
-                    attr: {
-                        class: "testClassAAA",
-                        id: "test123456"
-                    }
+                        text: "成員"
+                    }]
                 },
                 content: [{
-                    id: "reportDiv",
-                    attr: {
-                        class: "testClass3",
-                        name: "name1"
-                    }
+                    id: "reportDiv"
                 }, {
-                    id: "memberDiv",
-                    attr: {
-                        class: "testClass4",
-                        name: "name2"
-                    }
+                    id: "memberDiv"
                 }],
                 attr: {
                     id: "tabEventList"
@@ -101,7 +83,8 @@ $("#viewEventList").pagecontainer({
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
-            
+            //$('#deleteConfirm').popup('open');
+            //$('#tplOptionTest').popup('open');
         });
 
         /********************************** dom event *************************************/
