@@ -148,7 +148,7 @@ gulp.task('config', function(){
 
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-/*     'cordova plugin remove cordova-plugin-qlogin',
+    'cordova plugin remove cordova-plugin-qlogin',
     'cordova plugin remove cordova-plugin-qpush',
     'cordova plugin remove cordova-plugin-device',
     'cordova plugin remove cordova-plugin-console',
@@ -160,8 +160,8 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-appavailability',
     //'cordova plugin remove cordova-plugin-file',
     'cordova platform rm ios',
-    'cordova platform rm android', */
-/*     'cordova platform add ios', */
+    'cordova platform rm android',
+    'cordova platform add ios',
     'cordova platform add android',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
