@@ -10,13 +10,13 @@ var panel = htmlContent
         +   '<div id="panel-header">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Sales Analysis</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="panel-header-content">'
+        +   '<div class="panel-content" id="mypanelviewHitRate">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Hit Rate</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="panel-sub-header">'
+        +   '<div class="panel-content" id="mypanelviewMonthlyHitRate">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Monthly Hit Rate Trend</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="panel-sub-header-content">'
+        +   '<div class="panel-content" id="mypanelviewYTDHitRate">'
         +       '<span class="panel-text" style="line-height:7.5VH;">YTD Hit Rate Trend</span>'
         +   '</div>'
         +'</div>';
@@ -43,38 +43,26 @@ $(document).one("pagebeforeshow", function() {
 
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #panel-header-content").css("background", "#503f81");
-    $("#mypanel #panel-header-content").css("color", "#fff");
+    $("#mypanel #mypanelviewHitRate").css("background", "#503f81");
+    $("#mypanel #mypanelviewHitRate").css("color", "#fff");
 
-    $("#mypanel #panel-header-content").on("click", function() {
-        if($.mobile.activePage[0].id !== "viewHitRate") {   
-            loadingMask("show");
-            $.mobile.changePage("#viewHitRate");
-        }
-        $("#mypanel").panel("close");
+    $("#mypanel #mypanelviewHitRate").on("click", function() {
+        changePageByPanel("viewHitRate");
     });
 
-    $("#mypanel #panel-sub-header").on("click", function() {
-        if($.mobile.activePage[0].id !== "viewMonthlyHitRate") {
-            loadingMask("show");
-            $.mobile.changePage("#viewMonthlyHitRate");
-        }
-        $("#mypanel").panel("close");
+    $("#mypanel #mypanelviewMonthlyHitRate").on("click", function() {
+        changePageByPanel("viewMonthlyHitRate");
     });
 
-    $("#mypanel #panel-sub-header-content").on("click", function() {
-        if($.mobile.activePage[0].id !== "viewYTDHitRate") {
-            loadingMask("show");
-            $.mobile.changePage("#viewYTDHitRate");
-        }
-        $("#mypanel").panel("close");
+    $("#mypanel #mypanelviewYTDHitRate").on("click", function() {
+        changePageByPanel("viewYTDHitRate");
     });
 
-    $(".menu-btn").on("click", function(){
+    $(".menu-btn").on("click", function() {
         $("#mypanel").panel("open");
     });
 
-    $("#viewHitRate").on( "swiperight", function(event){
+    $("#viewHitRate").on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open"){
             $("#mypanel").panel( "open");
         }
@@ -106,6 +94,18 @@ function onBackKeyDown() {
     }else{
         /*leave this app*/
     }
+}
+
+function changePageByPanel(pageId) {
+    if($.mobile.activePage[0].id !== pageId) {   
+        loadingMask("show");
+        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
+        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
+        $.mobile.changePage("#" + pageId);
+        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
+        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
+    }
+    $("#mypanel").panel("close");
 }
 
 function zoomBtnInit(){
