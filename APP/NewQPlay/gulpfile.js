@@ -58,6 +58,9 @@ var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
                     + "<string>appens"      + appNameDecorate + "</string>"
                     + "<string>appeis"      + appNameDecorate + "</string>"
                     + "<string>appleave"    + appNameDecorate + "</string>"
+					+ "<string>apprelieve"  + appNameDecorate + "</string>"
+					+ "<string>appmas"    + appNameDecorate + "</string>"
+					+ "<string>appim"    + appNameDecorate + "</string>"					
                     + "<string>appscheme01" + appNameDecorate + "</string>"
                     + "<string>appscheme02" + appNameDecorate + "</string>"
                     + "<string>appscheme03" + appNameDecorate + "</string>"
@@ -106,6 +109,9 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appens' +      appNameDecorate + ':*" />' +
                         '<allow-intent href="appaccountingrate'+appNameDecorate + ':*" />' +
 						'<allow-intent href="appleave'+appNameDecorate + ':*" />' +
+						'<allow-intent href="apprelieve'+appNameDecorate + ':*" />' +
+						'<allow-intent href="appmas'+appNameDecorate + ':*" />' +
+						'<allow-intent href="appim'+appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + appNameDecorate + ':*" />' +
@@ -233,7 +239,6 @@ gulp.task('less',function(){
         .pipe(less())
         .pipe(gulp.dest('www/src/css/'));
 });
-
 gulp.task('concat:css', ['less'], function(){
     return gulp.src('www/src/css/*.css')
         .pipe(concat('style.css'))

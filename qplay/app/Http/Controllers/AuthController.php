@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
@@ -40,7 +41,7 @@ class AuthController extends Controller
         if (array_key_exists("remember", $input)) {
             $remember = $input["remember"];
         }
-
+        App::setLocale($lang);
         $verify = new Verify();
         $result = $verify->verifyUserByUserID($loginid, $domain);
         if($result["code"] != ResultCode::_1_reponseSuccessful)

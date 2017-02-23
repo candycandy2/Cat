@@ -2547,7 +2547,7 @@ SQL;
 
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId, true);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId, true);
                                 } else {
                                     $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
                                 }
@@ -2761,7 +2761,7 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId);
                                 } else {
                                     $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
                                 }
