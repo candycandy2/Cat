@@ -22,7 +22,7 @@ $("#viewHitRate").pagecontainer ({
 	    		thisMonth = callbackData[length-1]["MONTH"];
 	    		$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
 	    		
-	    		convertData(data);
+	    		convertData();
 	    		
 	    		getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
 	    		getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
@@ -55,11 +55,7 @@ $("#viewHitRate").pagecontainer ({
 	    		calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
 	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
 	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
-
-                // queryData = "<LayoutHeader><StartYearMonth>2013/01</StartYearMonth><EndYearMonth>2017/02</EndYearMonth></LayoutHeader>";
-                // ProductDetail();
-                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-                UserAuthority();
+                ProductDetail();
             };
 
 	    	this.failCallback = function(data) {
@@ -104,10 +100,6 @@ $("#viewHitRate").pagecontainer ({
             var totalActualAMT = 0;
             var totalBudgetAMT = 0;
             var totalLastYTDActualAMT = 0;
-
-
-
-
     		if(tab == "thisMonth") {
     			for(var ro in thisMonthData) {
     				ActualAMT = "" + (thisMonthActualAMT[index++] / Math.pow(10, 6));
@@ -123,9 +115,9 @@ $("#viewHitRate").pagecontainer ({
 	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
 	    			}
 
-    				if((thisMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+    				if((thisMonthData[ro]["BudgetHitRate"] * 100) < 80) {
     					$("#" + ro + " .HR").css('background', '#ee3839');
-    				}else if((thisMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
+    				}else if((thisMonthData[ro]["BudgetHitRate"] * 100) >= 95) {
     					$("#" + ro + " .HR").css('background', '#48af56');
     				}else{
     					$("#" + ro + " .HR").css('background', '#e6be20');
@@ -144,9 +136,9 @@ $("#viewHitRate").pagecontainer ({
                     totalBudgetAMT += thisMonthBudgetAMT[i];
                 }
                 totalBudgetHitRate = "" + ((totalActualAMT / totalBudgetAMT) * 100);
-                if(Number(totalBudgetHitRate) < 90) {
+                if(Number(totalBudgetHitRate) < 80) {
                     $("#total .dataContainer .HR").css('background', '#ee3839');
-                }else if(Number(totalBudgetHitRate) >= 100) {
+                }else if(Number(totalBudgetHitRate) >= 95) {
                     $("#total .dataContainer .HR").css('background', '#48af56');
                 }else {
                     $("#total .dataContainer .HRn").css('background', '#e6be20');
@@ -179,9 +171,9 @@ $("#viewHitRate").pagecontainer ({
 	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
 	    			}
 
-	    			if ((lastMonthData[ro]["BudgetHitRate"] * 100) < 90) {
+	    			if ((lastMonthData[ro]["BudgetHitRate"] * 100) < 80) {
 	    				$("#" + ro + " .HR").css('background', '#ee3839');
-	    			}else if((lastMonthData[ro]["BudgetHitRate"] * 100) >= 100) {
+	    			}else if((lastMonthData[ro]["BudgetHitRate"] * 100) >= 95) {
 	    				$("#" + ro + " .HR").css('background', '#48af56');
 	    			}else{
 	    				$("#" + ro + " .HR").css('background', '#e6be20');
@@ -200,9 +192,9 @@ $("#viewHitRate").pagecontainer ({
                     totalBudgetAMT += lastMonthBudgetAMT[i];
                 }
                 totalBudgetHitRate = "" + ((totalActualAMT / totalBudgetAMT) * 100);
-                if(Number(totalBudgetHitRate) < 90) {
+                if(Number(totalBudgetHitRate) < 80) {
                     $("#total .dataContainer .HR").css('background', '#ee3839');
-                }else if(Number(totalBudgetHitRate) >= 100) {
+                }else if(Number(totalBudgetHitRate) >= 95) {
                     $("#total .dataContainer .HR").css('background', '#48af56');
                 }else {
                     $("#total .dataContainer .HR").css('background', '#e6be20');
@@ -235,9 +227,9 @@ $("#viewHitRate").pagecontainer ({
 	    				$("#" + ro + " .YR span").text("+" + YOYGrowth.match(pattern)[1] + "%");
 	    			}
     				
-    				if ((ytdData[ro]["BudgetHitRate"] * 100) < 90) {
+    				if ((ytdData[ro]["BudgetHitRate"] * 100) < 80) {
 	    				$("#" + ro + " .HR").css('background', '#ee3839');
-	    			}else if((ytdData[ro]["BudgetHitRate"] * 100) >= 100) {
+	    			}else if((ytdData[ro]["BudgetHitRate"] * 100) >= 95) {
 	    				$("#" + ro + " .HR").css('background', '#48af56');
 	    			}else{
 	    				$("#" + ro + " .HR").css('background', '#e6be20');
@@ -256,9 +248,9 @@ $("#viewHitRate").pagecontainer ({
                     totalBudgetAMT += YTDBudgetAMT[i];
                 }
                 totalBudgetHitRate = "" + ((totalActualAMT / totalBudgetAMT) * 100);
-                if(Number(totalBudgetHitRate) < 90) {
+                if(Number(totalBudgetHitRate) < 80) {
                     $("#total .dataContainer .HR").css('background', '#ee3839');
-                }else if(Number(totalBudgetHitRate) >= 100) {
+                }else if(Number(totalBudgetHitRate) >= 95) {
                     $("#total .dataContainer .HR").css('background', '#48af56');
                 }else {
                     $("#total .dataContainer .HR").css('background', '#e6be20');
@@ -277,7 +269,10 @@ $("#viewHitRate").pagecontainer ({
                     $("#total .dataContainer .YR").css('background', '#48af56');
                 }
     		}
-    	}
+        }
+
+
+
 
     	function getHighcahrtsData(year, month, type, data_array) {
     		var index = 0;
@@ -312,7 +307,7 @@ $("#viewHitRate").pagecontainer ({
     		}
     	}
 
-    	function convertData(data) {
+    	function convertData() {
     		var month;
     		var rosite = 0;
 	    	for(var i=callbackData[0]["YEAR"]; i<=callbackData[length-1]["YEAR"]; i++) {
@@ -400,6 +395,11 @@ $("#viewHitRate").pagecontainer ({
 			    	data: thisMonthActualAMT
 				}]
 			});
+            $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
+            $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
+            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active'); 
+            $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
+            showData("thisMonth");
 			loadingMask("hide");
         });
 
