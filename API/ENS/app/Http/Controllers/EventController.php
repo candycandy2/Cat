@@ -485,12 +485,12 @@ class EventController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             
-            $empNo = (string)$xml->emp_no[0];
+            $empNo = trim((string)$xml->emp_no[0]);
+            $eventId = trim((string)$xml->event_row_id[0]);
 
-            $currentEventId = (string)$xml->event_row_id[0];
-            if(!isset($currentEventId) || trim($currentEventId) == ""){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
+            if( $eventId == ""){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
                     'Content'=>""]);
             }
 
@@ -500,8 +500,15 @@ class EventController extends Controller
                     'Message'=>"權限不足",
                     'Content'=>""]);
             }
-
-            $eventList = $this->eventService->getUnrelatedEventList($currentEventId);
+            
+            if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+            }
+            
+            $eventList = $this->eventService->getUnrelatedEventList($eventId);
+            //have no Unrelated Event
             if(count($eventList) == 0){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                     'Message'=>'查無事件資料',
