@@ -569,13 +569,13 @@ class pushController extends Controller
                         }
                     }
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $news_push_token_list, $messageSendId, true);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$messageSendId, $schedule_datetime, $title, $news_push_token_list, $messageSendId, true);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $news_push_token_list, $messageSendId, true);
                     }
                 } else {
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $event_push_token_list, $messageSendId);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$messageSendId, $schedule_datetime, $title, $event_push_token_list, $messageSendId);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $event_push_token_list, $messageSendId);
                     }
@@ -716,13 +716,13 @@ class pushController extends Controller
                         }
                     }
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $news_push_token_list, $newMessageSendId, true);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $schedule_datetime, $title, $news_push_token_list, $newMessageSendId, true);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $news_push_token_list, $newMessageSendId, true);
                     }
                 } else {
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $event_push_token_list, $newMessageSendId);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $schedule_datetime, $title, $event_push_token_list, $newMessageSendId);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $event_push_token_list, $newMessageSendId);
                     }
@@ -869,13 +869,13 @@ class pushController extends Controller
                         }
                     }
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $tag_list, $newMessageSendId, true);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("pushonly".$newMessageSendId, $schedule_datetime, $title, $tag_list, $newMessageSendId, true);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $tag_list, $messageSendRowId, true);
                     }
                 } else {
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $push_token_list, $newMessageSendId);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("pushonly".$newMessageSendId, $schedule_datetime, $title, $push_token_list, $newMessageSendId);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $push_token_list, $messageSendRowId);
                     }

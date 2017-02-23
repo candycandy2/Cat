@@ -200,44 +200,60 @@ var tplJS = {
         //Render Template
         this.tplRender(pageID, contentID, renderAction, dropdownList);
 
-        //Option msg
-        var optionMsgHTML = $("template#tplOptionMsg").html();
-        var optionMsg = $(optionMsgHTML);
-        var optionMsgID = data.id + "-option";
-        var optionMsgDataListID = data.id + "-option-list";
+        //Option in Popup
+        var popupHTML = $("template#tplPopup").html();
+        var popup = $(popupHTML);
+        var popupID = data.id + "-option";
+        var dropdownListUlID = data.id + "-option-list";
 
-        optionMsg.prop("id", optionMsgID);
+        popup.prop("id", popupID);
 
-        var optionMsgDataList = optionMsg.find("ul");
-        optionMsgDataList.prop("id", optionMsgDataListID);
+        var dropdownListOptionHTML = $("template#tplPopupContentDropdownListOption").html();
+        var dropdownList = $(dropdownListOptionHTML);
+        var dropdownListClose = $(dropdownList[0]);
+        var dropdownListUl = $(dropdownList[2]);
 
-        var tplOptionMsgListHTML = optionMsg.find("template#tplOptionMsgList").html();
+        dropdownListUl.prop("id", dropdownListUlID);
+
+        var dropdownListLiHTML = dropdownList.find("template#tplPopupContentDropdownListLi").html();
+        var dropdownListHrHTML = dropdownList.find("template#tplPopupContentDropdownListHr").html();
 
         for (var i=0; i<data.option.length; i++) {
-            var tplOptionMsgList = $(tplOptionMsgListHTML);
+            var dropdownListLi = $(dropdownListLiHTML);
 
-            tplOptionMsgList.prop("value", data.option[i].value);
-            tplOptionMsgList.html(data.option[i].text);
-            optionMsgDataList.append(tplOptionMsgList);
+            dropdownListLi.prop("value", data.option[i].value);
+            dropdownListLi.html(data.option[i].text);
+            dropdownListUl.append(dropdownListLi);
+
+            if (i !== parseInt(data.option.length - 1, 10)) {
+                var dropdownListHr = $(dropdownListHrHTML);
+                dropdownListHr.addClass("ui-hr-option");
+                dropdownListUl.append(dropdownListHr);
+            }
         }
 
+        popup.find("div[data-role='main']").append(dropdownListClose);
+        popup.find("div[data-role='main']").append(dropdownListUl);
+
         //Render Template
-        this.tplRender(pageID, contentID, renderAction, optionMsg);
+        this.tplRender(pageID, contentID, renderAction, popup);
+
         //Initialize Popup
-        $('#' + optionMsgID).popup();
+        $('#' + popupID).popup();
 
         $(document).on("click", "#" + data.id, function() {
-            $('#' + optionMsgID).popup('open');
+            $('#' + popupID).popup('open');
         });
 
-        $(document).on("click", "#" + optionMsgID + " .close", function() {
-            $('#' + optionMsgID).popup('close');
+        $(document).on("click", "#" + popupID + " .close", function() {
+            $('#' + popupID).popup('close');
 
             reSizeDropdownList(data.id);
         });
 
-        $(document).on("click", "#" + optionMsgID + " ul li", function() {
-            $("#" + optionMsgID + " ul li").removeClass("tpl-dropdown-list-selected");
+        //Click Li to change the value of Dropdown List
+        $(document).on("click", "#" + popupID + " ul li", function() {
+            $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
             $(this).addClass("tpl-dropdown-list-selected");
             $("#" + data.id).val($(this).val());
 
@@ -252,5 +268,6 @@ var tplJS = {
             var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
             $("#" + ID).css('width', vwWidth + 'vw');
         }
+
     }
 };

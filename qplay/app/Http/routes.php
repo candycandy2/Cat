@@ -11,6 +11,14 @@
 |
 */
 
+/*
+ * change locale for every request from url or session
+ * */
+if (array_key_exists('lang',$_GET)){
+    App::setLocale($_GET["lang"]);
+}else if(!empty(session('lang'))){
+    App::setLocale(session('lang'));
+}
 
 Route::any('/platform/getUserList', 'platformController@getUserList');
 Route::any('/platform/getUserListWithoutGroup', 'platformController@getUserListWithoutGroup');
