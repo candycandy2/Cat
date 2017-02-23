@@ -5,30 +5,28 @@ var ActualQTY = [];
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
 
-        window.UserAuthority = function() {
+        // window.UserAuthority = function() {
             
-            this.successCallback = function(data) {
-                callbackData = data["Content"]["DataList"];
-                length = callbackData.length;
-                for(var i=0; i<length; i++) {
-                    for(var j in callbackData[i]) {
-                        if(callbackData[i][j] == "PRODUCT") {
-                            ProductList += '<a>' + callbackData[i]["PVALUE"] + '</a>' ;
-                        }
-                    }
-                }
-                $(".Product").html("");
-                $(".Product").append(ProductList).enhanceWithin();
-            };
-
-            this.failCallback = function(data) {
-                console.log("api misconnected");
-            };
-
-            var _construct = function() {
-                CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
-            }();
-        };
+        //     this.successCallback = function(data) {
+        //         callbackData = data["Content"]["DataList"];
+        //         length = callbackData.length;
+        //         for(var i=0; i<length; i++) {
+        //             for(var j in callbackData[i]) {
+        //                 if(callbackData[i][j] == "PRODUCT") {
+        //                     ProductList += '<a>' + callbackData[i]["PVALUE"] + '</a>' ;
+        //                 }
+        //             }
+        //         }
+        //         $(".Product").html("");
+        //         $(".Product").append(ProductList).enhanceWithin();
+        //     };
+        //     this.failCallback = function(data) {
+        //         console.log("api misconnected");
+        //     };
+        //     var _construct = function() {
+        //         CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
+        //     }();
+        // };
 
 
         window.ProductDetail = function() {
@@ -37,6 +35,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 callbackData = data["Content"]["DataList"];
                 length = callbackData.length;
                 convertData();
+                addItem2scrollmenu();
             }
 
             this.failCallback = function(data) {
@@ -49,7 +48,15 @@ $("#viewMonthlyHitRate").pagecontainer({
         };
 
         function showData() {
-            
+
+        }
+
+        function addItem2scrollmenu() {
+            for(var i in eisdata[thisYear][thisMonth]["BQA"]) {
+                ProductList += '<a>' + i + '</a>';
+            }
+            $(".Product").html("");
+            $(".Product").append(ProductList).enhanceWithin();
         }
 
         function convertData() {

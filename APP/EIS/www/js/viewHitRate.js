@@ -55,11 +55,7 @@ $("#viewHitRate").pagecontainer ({
 	    		calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
 	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
 	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
-
-                // queryData = "<LayoutHeader><StartYearMonth>2013/01</StartYearMonth><EndYearMonth>2017/02</EndYearMonth></LayoutHeader>";
                 ProductDetail();
-                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-                UserAuthority();
             };
 
 	    	this.failCallback = function(data) {
