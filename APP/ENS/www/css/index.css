@@ -211,3 +211,21 @@
     height: 5.6vw;
     display: inline-block;
 }
+
+.event-list-footer {
+    width: 18vw;
+    left: initial;
+    right: 4.9vw;
+}
+
+.event-list-footer.ui-bar-inherit {
+    background-color: rgba(255,0,0,0);
+    border-color: rgba(255,0,0,0);
+}
+
+.event-list-add-button {
+    background: url(../img/notice.png) no-repeat;
+    background-size: 18vw;
+    width: 18vw;
+    height: 18vw;
+}
