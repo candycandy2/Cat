@@ -1,32 +1,56 @@
 
 //$(document).one("pagecreate", "#viewDataInput", function(){
-    
+
+// review
+var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
+
     $("#viewDataInput").pagecontainer({
         create: function(event, ui) {
             
             /****************************************************** function ********************************************************/
             window.QueryCompanyData = function() {
                 
-                var self = this;
-
-                this.successCallback = function(data) {
-                    loadingMask("hide");
-                    var resultcode = data['ResultCode'];
-                    if (resultcode === "1") {
-                        var dataContent = data['Content'];
-                        $('#Company').html('<option value="All Company">All Company</option>');
-                        for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
-                            var companyname = dataContent[i].CompanyName;
-                            $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
+                var self = this, storageTime;
+                
+                // review
+                if (localStorage.getItem('companyInfo') === null){
+                    this.successCallback = function(data) {
+                        loadingMask("hide");
+                        var resultcode = data['ResultCode'];
+                        if (resultcode === "1") {
+                            insertCompanyValue(data['Content']);
+                            
+                            // save data into localstorage
+                            var nowTime = new Date();
+                            companyInfoAry.push({'result': data['Content'], 'time': nowTime});
+                            localStorage.setItem('companyInfo', JSON.stringify(companyInfoAry));
                         }
-                        QueryMyPhoneBook();
+                    };
+                    this.failCallback = function(data) {};
+                    var __construct = function() {
+                        CustomAPI("POST", true, "QueryCompanyData", self.successCallback, self.failCallback, queryData, "");
+                    }();
+                }
+                else{
+                    var storageData = JSON.parse(localStorage.getItem("companyInfo"));
+                    insertCompanyValue(storageData[0].result);
+                    if (checkDataExpired(storageData[0].time, expiredTime, 'MM')){
+                        localStorage.removeItem("companyInfo");
                     }
-                };
-                this.failCallback = function(data) {};
-                var __construct = function() {
-                    CustomAPI("POST", true, "QueryCompanyData", self.successCallback, self.failCallback, queryData, "");
-                }();
+                    loadingMask("hide");
+                }
             };
+
+            // review
+            // insert value into html
+            function insertCompanyValue(dataContent){
+                $('#Company').html('<option value="All Company">All Company</option>');
+                for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
+                    var companyname = dataContent[i].CompanyName;
+                    $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
+                }
+                QueryMyPhoneBook();
+            }
 
             function checkInputData() {
                 var queryData;
