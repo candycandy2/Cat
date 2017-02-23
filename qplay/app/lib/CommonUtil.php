@@ -396,12 +396,12 @@ SQL;
     }
 
     public static function getMessageContentByCode($messageCode) {
-        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
-        $project_id = self::getProjectInfo()->row_id;
+        $lang_row_id = self::getLanguageIdByName(session('lang'));
+        //$project_id = self::getProjectInfo()->row_id;
         $errorMessage = \DB::table('qp_error_code')
             -> where('lang_row_id', '=', $lang_row_id)
             -> where('error_code', '=', $messageCode)
-            -> where ('project_row_id','=',$project_id)
+            //-> where ('project_row_id','=',$project_id)
             -> select("qp_error_code.error_desc")
             ->get();
         if(count($errorMessage) < 1) {
@@ -412,8 +412,12 @@ SQL;
     }
 
     public static function getLanguageIdByName($lang) {
-        $lang = strtolower($lang);
         $lang_row_id = 1;
+        if (empty($lang)){
+            return $lang_row_id;
+        }
+        $lang = strtolower($lang);
+
         switch ($lang) {
             case "en-us":
                 $lang_row_id = 1;

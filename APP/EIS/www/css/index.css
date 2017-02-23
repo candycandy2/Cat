@@ -127,10 +127,9 @@
 
 #viewHitRate .HR{
 	color: #fff;
-	margin-left: 9VW;
+	margin-left: 8VW;
 	text-align: center;
-	width: 19VW;
-	background-color: #ee3839;
+	width: 20VW;
 	border-radius: 3.5px;
 	display: inline-block;
 }
@@ -139,8 +138,7 @@
 	color: #fff;
 	margin-left: 7VW;
 	text-align: center;
-	width: 19VW;
-	background-color: #48af56;
+	width: 20VW;
 	border-radius: 3.5px;
 	display: inline-block;
 }
@@ -199,19 +197,19 @@
 
 div.scrollmenu {
 	background-color: #fbfdfd;
-	overflow: auto;
 	text-align: center;
 	border-style: solid;
 	border-width: 0.5px;
 	border-color: #1e1e2f;
 	white-space: nowrap;
+	width: 100VW;
 	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
 	/*box-shadow: inset 0px 0px 20px 10px rgba(0, 0, 0, 0.6);*/
 }
 
 div.scrollmenu a {
 	display: inline-block;
-	padding: 1.8VH 5.8VW 1.6VH 5.8VW;
+	padding: 1.8VH 4VW 1.6VH 4VW;
 	background-color: #fbfdfd;
 	color: #0f0f0f;
 	font-family: Arial;
@@ -230,11 +228,6 @@ div.scrollmenu a:hover {
     color: #fff !important;
     margin-left: -1.4VW;
 }
-
-/*.hover {
-    background-color: #0db6b7;
-    color: white !important;
-}*/
 
 /****************************************** viewYTDHitRate ******************************************/
 #viewYTDHitRate #title-container {
@@ -274,20 +267,19 @@ div.scrollmenu a:hover {
 	margin-left:3.7VW;
 }
 
-#mypanel #panel-sub-header{
-	background-color: #503f81;
-	color:#fff;
-	font-size: 4VW;
-	font-family: Arial;
-	height:6.8VH;
-}
-
 #mypanel .panel-content{
 	background-color: #f6f6f6;
 	color:#0f0f0f;
 	font-size: 3.8VW;
 	font-family: Arial;
 	height:6.8VH;
+
+}
+
+#mypanel .panel-content{
+	border-bottom: solid;
+    border-bottom-color: #e4e4e4;
+    border-bottom-width: 0.1VH;
 }
 
 #mypanel #panel-sub-header-content{

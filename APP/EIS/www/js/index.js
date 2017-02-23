@@ -13,7 +13,7 @@ var panel = htmlContent
         +   '<div class="panel-content" id="panel-header-content">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Hit Rate</span>'
         +   '</div>'
-        +   '<div id="panel-sub-header">'
+        +   '<div class="panel-content" id="panel-sub-header">'
         +       '<span class="panel-text" style="line-height:7.5VH;">Monthly Hit Rate Trend</span>'
         +   '</div>'
         +   '<div class="panel-content" id="panel-sub-header-content">'
@@ -36,23 +36,25 @@ var monTable = {
     '12' : "Dec.",
 };
 var eisdata = {};
-var currentYear, currentMonth, queryData, callbackData, length;
+var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
 
 
 $(document).one("pagebeforeshow", function() {
 
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
+    $("#mypanel #panel-header-content").css("background", "#503f81");
+    $("#mypanel #panel-header-content").css("color", "#fff");
 
-    $("#mypanel #panel-header-content").on("click", function(){
-        if($.mobile.activePage[0].id !== "viewHitRate") {
+    $("#mypanel #panel-header-content").on("click", function() {
+        if($.mobile.activePage[0].id !== "viewHitRate") {   
             loadingMask("show");
             $.mobile.changePage("#viewHitRate");
         }
         $("#mypanel").panel("close");
     });
 
-    $("#mypanel #panel-sub-header").on("click", function(){
+    $("#mypanel #panel-sub-header").on("click", function() {
         if($.mobile.activePage[0].id !== "viewMonthlyHitRate") {
             loadingMask("show");
             $.mobile.changePage("#viewMonthlyHitRate");
@@ -60,7 +62,7 @@ $(document).one("pagebeforeshow", function() {
         $("#mypanel").panel("close");
     });
 
-    $("#mypanel #panel-sub-header-content").on("click", function(){
+    $("#mypanel #panel-sub-header-content").on("click", function() {
         if($.mobile.activePage[0].id !== "viewYTDHitRate") {
             loadingMask("show");
             $.mobile.changePage("#viewYTDHitRate");
@@ -91,7 +93,7 @@ window.initialSuccess = function() {
                 + currentYear + "/" + currentMonth
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
-    $.mobile.changePage('#viewHitRate');
+    $.mobile.changePage("#viewHitRate");
 }
 
 //[Android]Handle the back button
