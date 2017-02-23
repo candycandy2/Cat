@@ -23,6 +23,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         LogFile.createAndWriteFile(dataArr);
     }
 
+    // review
     function requestError(data) {
         checkNetwork(data);
     }
