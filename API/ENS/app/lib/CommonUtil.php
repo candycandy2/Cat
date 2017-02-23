@@ -27,6 +27,8 @@ class CommonUtil
         $result = true;
         $userList = \DB::table('en_user')
             -> where('en_user.emp_no', '=', $empNo)
+            -> where('en_user.status', '<>', 'N')
+            -> where('en_user.resign', '<>', 'Y')
             -> select('en_user.row_id', 'en_user.status', 'en_user.resign','en_user.emp_no')->get();
 
         if(count($userList) < 1) {
