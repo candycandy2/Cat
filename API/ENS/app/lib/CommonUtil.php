@@ -8,8 +8,8 @@ class CommonUtil
 {
     /**
      * 預先處理json格式
-     * @param  [type] $input [description]
-     * @return [type]        [description]
+     * @param  String $input 傳入的json格式字串
+     * @return String
      */
     public static function prepareJSON($input){
         $input = mb_convert_encoding($input,'UTF-8','ASCII,UTF-8,ISO-8859-1');
@@ -82,9 +82,7 @@ class CommonUtil
     public static function arrangeInsertDataFromXml($xml, $dataField){
         $data = array('created_user'=>(string)$xml->emp_no[0]);
         foreach ( $dataField as $column) {
-             if(isset($xml->$column[0])){
-                $data[$column] = (string)$xml->$column[0];
-             }
+            $data[$column] = trim((string)$xml->$column[0]);
          }
         return $data;
     }
