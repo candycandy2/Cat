@@ -488,12 +488,6 @@ class EventController extends Controller
             $empNo = trim((string)$xml->emp_no[0]);
             $eventId = trim((string)$xml->event_row_id[0]);
 
-            if( $eventId == ""){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
-            }
-
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
@@ -501,7 +495,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
+            if( $eventId != "" && preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
