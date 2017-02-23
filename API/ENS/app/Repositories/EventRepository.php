@@ -32,11 +32,12 @@ class EventRepository
 
     /**
      * 更新事件資料
-     * @param  Array  $data 更新事件內容
-     * @return int          被更新的事件id
+     * @param  String  $empNo  使用者員工編號 
+     * @param  Array   $data   更新事件內容
+     * @return int             被更新的事件id
      */
-    public function saveEvent(Array $data){
-        
+    public function saveEvent($empNo, Array $data){
+
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
         $this->event->event_type_parameter_value = $data['event_type_parameter_value'];
@@ -45,7 +46,7 @@ class EventRepository
         $this->event->estimated_complete_date = $data['estimated_complete_date'];
         $this->event->related_event_row_id = $data['related_event_row_id'];
         $this->event->event_status = 0;
-        $this->event->created_user = $data['created_user'];
+        $this->event->created_user = $empNo;
         $this->event->created_at = $now;
         $this->event->save();
         $queries = DB::getQueryLog();
@@ -207,23 +208,26 @@ class EventRepository
 
     /**
      * 更新事件表
-     * @param  int      $eventId  事件id en_event.row_id
-     * @param  Array    $updateData 更新的資料欄位對應
-     * @return int                已更新的資料筆數
+     * @param  String   $empNo       員工編號
+     * @param  int      $eventId     事件id en_event.row_id
+     * @param  Array    $updateData  更新的資料欄位對應
+     * @return int                   已更新的資料筆數
      */
-    public function updateEventById($eventId, Array $updateData){
+    public function updateEventById($empNo, $eventId, Array $updateData){
+        $updateData['updated_user'] = $empNo;
         $this->event->where('row_id', $eventId)
         ->update($updateData);
     }
 
     /**
      * 更新使用者對應事件表
-     * @param  int      $eventId    事件id en_event.row_id
      * @param  String   $empNo      員工編號
+     * @param  int      $eventId    事件id en_event.row_id
      * @param  Array    $updateData 更新的資料欄位對應
      * @return int                  已更新的資料筆數
      */
-    public function updateUserEvent($eventId, $empNo, Array $updateData){
+    public function updateUserEvent($empNo, $eventId,  Array $updateData){
+        $updateData['updated_user'] = $empNo;
         $this->userEvent
         ->where('event_row_id', $eventId)
         ->where('emp_no', $empNo)

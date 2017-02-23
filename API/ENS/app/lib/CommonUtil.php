@@ -58,35 +58,20 @@ class CommonUtil
     }
 
     /**
-     * 依欲更新欄位取得資料結構
+     * 從xml中找出要更新的資料並回傳資料
      * @param  String $xml         requestData
      * @param  Array  $dataField   資料欄位
      * @return Array
      */
-    public static function arrangeUpdateDataFromXml($xml, $dataField){
-         $data = array('updated_user'=>(string)$xml->emp_no[0]);
+    public static function arrangeDataFromXml($xml, $dataField){
+        
+         $data = [];
          foreach ( $dataField as $column) {
              if(isset($xml->$column[0])){
                 $data[$column] = (string)$xml->$column[0];
              }
          }
          return $data;
-    }
-
-    /**
-     * 依欲新增欄位取得資料結構
-     * @param  String $xml         requestData
-     * @param  Array  $dataField   資料欄位
-     * @return Array
-     */
-    public static function arrangeInsertDataFromXml($xml, $dataField){
-        $data = array('created_user'=>(string)$xml->emp_no[0]);
-        foreach ( $dataField as $column) {
-            if(isset($xml->$column[0])){
-                $data[$column] = trim((string)$xml->$column[0]);
-            }
-         }
-        return $data;
     }
 
     /**

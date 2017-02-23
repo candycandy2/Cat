@@ -103,11 +103,13 @@ class TaskRepository
     }
     /**
      * 依據任務id更新事件
+     * @param  String   $empNo      員工編號
      * @param  int      $taskId     事件id,en_task.row_id
      * @param  Array    $updateData 更新的欄位值及資料對照
      * @return int                  更新的資料筆數
      */
-    public function updateTaskById($taskId, Array $updateData){
+    public function updateTaskById($empNo, $taskId, Array $updateData){
+       $updateData['updated_user'] = $empNo;
        return $this->task->where('row_id', $taskId)
         ->update($updateData);
     }

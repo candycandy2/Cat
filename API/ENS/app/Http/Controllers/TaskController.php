@@ -70,7 +70,7 @@ class TaskController extends EventController
             }
            
             $data = $this->getUpdataStatusData($taskStatus, $xml);
-            $resutlt = $this->eventService->updateTaskById($taskId,$data);
+            $resutlt = $this->eventService->updateTaskById($empNo, $taskId, $data);
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                         'Content'=>""]);
@@ -92,7 +92,7 @@ class TaskController extends EventController
     private function getUpdataStatusData($taskStatus, $xml){
         $data = [];
 
-        $data = CommonUtil::arrangeUpdateDataFromXml($xml, array('task_status'));
+        $data = CommonUtil::arrangeDataFromXml($xml, array('task_status'));
              
         if($taskStatus == $this->eventService::STATUS_UNFINISHED){
                 $data['close_task_emp_no'] = "";

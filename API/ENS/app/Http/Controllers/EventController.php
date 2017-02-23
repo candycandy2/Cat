@@ -58,9 +58,10 @@ class EventController extends Controller
             }
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
+            $empNo = trim((string)$xml->emp_no[0]);
             $data = $this->getInsertEventData($xml);
 
-            $userAuthList = $this->userService->getUserRoleList($data['created_user']);
+            $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
@@ -131,7 +132,7 @@ class EventController extends Controller
                 'app_key' =>  $data['app_key']
                 );
 
-            $eventId = $this->eventService->newEvent($data, $queryParam);
+            $eventId = $this->eventService->newEvent($empNo, $data, $queryParam);
             
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
@@ -345,10 +346,17 @@ class EventController extends Controller
                                   'estimated_complete_date',
                                   'related_event_row_id');
 
-           $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
-           
-            $pushResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
-            \DB::commit();
+           $data = CommonUtil::arrangeDataFromXml($xml, $updateField);
+           //event_title 不可update為空白，若為空則不更新
+           if(isset($xml->event_title[0]) && trim($xml->event_title[0]) == ""){
+                unset( $data['event_title']);
+           }
+          
+           //若無資料就跳過不更新
+           if(count($data) > 0){
+                $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
+           }
+           \DB::commit();
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
 
@@ -380,8 +388,8 @@ class EventController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
 
-            $empNo = (string)$xml->emp_no[0];
-            $eventId = (string)$xml->event_row_id[0];
+            $empNo = trim((string)$xml->emp_no[0]);
+            $eventId = trim((string)$xml->event_row_id[0]);
             $readTime =  trim((string)$xml->read_time[0]);
             $eventStetus = trim((string)$xml->event_status[0]);
 
@@ -404,13 +412,6 @@ class EventController extends Controller
                 'Content'=>'']);
             }
             
-            if( (!isset($xml->read_time[0]) || trim((string)$xml->read_time[0])=="") && 
-                (!isset($xml->event_status[0]) || trim((string)$xml->event_status[0])=="") ){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
-            }
-
             if($Verify->isEventClosed($eventId, $this->eventRepository)){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014910_eventClosed,
                 'Message'=>"無法編輯已完成事件",
@@ -431,8 +432,8 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
                 //update qp_event
-                $data = CommonUtil::arrangeUpdateDataFromXml($xml, array('event_status'));
-                $this->eventRepository->updateEventById($eventId,$data);
+                $data = CommonUtil::arrangeDataFromXml($xml, array('event_status'));
+                $this->eventRepository->updateEventById($empNo, $eventId, $data);
             }
 
             //update Event Read Time
@@ -449,8 +450,8 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
                 //update qp_user_event
-                $data = CommonUtil::arrangeUpdateDataFromXml($xml,array('read_time'));
-                $this->eventRepository->updateUserEvent($eventId,  $empNo, $data);
+                $data = CommonUtil::arrangeDataFromXml($xml,array('read_time'));
+                $this->eventRepository->updateUserEvent($empNo, $eventId,  $data);
             }
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
@@ -527,7 +528,7 @@ class EventController extends Controller
                             'estimated_complete_date','related_event_row_id','emp_no','event_title'
                             ];
 
-        $data = CommonUtil::arrangeInsertDataFromXml($xml, $insertfieldAry);
+        $data = CommonUtil::arrangeDataFromXml($xml, $insertfieldAry);
         $data['event_desc'] = (string)$xml->event_desc[0];
 
         foreach ($xml->basic_list as $key => $value) {
