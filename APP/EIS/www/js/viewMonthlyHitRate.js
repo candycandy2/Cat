@@ -1,5 +1,6 @@
 var chart;
 var ProductList = '<a>ALL</a>';
+var ActualQTY = [];
 
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
@@ -21,7 +22,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             };
 
             this.failCallback = function(data) {
-
+                console.log("api misconnected");
             };
 
             var _construct = function() {
@@ -33,11 +34,13 @@ $("#viewMonthlyHitRate").pagecontainer({
         window.ProductDetail = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                callbackData = data["Content"]["DataList"];
+                length = callbackData.length;
+                convertData();
             }
 
             this.failCallback = function(data) {
-
+                console.log("api misconnected");
             }
 
             var _constrcut = function() {
@@ -45,9 +48,37 @@ $("#viewMonthlyHitRate").pagecontainer({
             }();
         };
 
+        function showData() {
+            
+        }
+
+        function convertData() {
+            var month, rosite;
+            var index = 0;
+            for(var i=callbackData[0]["YEAR"]; i<=callbackData[length-1]["YEAR"]; i++) {
+                eisdata[i] = {};
+                month = (i == callbackData[length-1]["YEAR"]) ? (callbackData[length-1]["MONTH"]) : 12;  
+                for(var j=1; j<=month; j++) {
+                    eisdata[i][j] = {};
+                    while(index<length && j == callbackData[index]["MONTH"]) {
+                        rosite = callbackData[index]["RO_SITE"];
+                        eisdata[i][j][rosite] = {};
+                        while(index<length && rosite == callbackData[index]["RO_SITE"]) {
+                            eisdata[i][j][rosite][callbackData[index]["PRODUCT"]] = [
+                                callbackData[index]["BUDGET_QTY"],
+                                callbackData[index]["ACTUAL_QTY"],
+                                callbackData[index]["BUDGET_AMT"],
+                                callbackData[index]["ACTUAL_ADJ_AMT"]
+                            ];
+                            index++;
+                        }
+                    }
+                }
+            }
+        }
+
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            $("#viewMonthlyHitRate .page-date").text(monTable[thisMonth]+thisYear);
         	chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
@@ -100,25 +131,25 @@ $("#viewMonthlyHitRate").pagecontainer({
         			enabled: false
         		},
         		series: [{
-        			name: '2014 Actual QTY',
+        			name: (thisYear-2) + ' Actual QTY',
         			type: 'column',
         			color: '#0AB5B6',
         			data: [1912, 2904, 3390, 2922, 2794, 1843, 2791, 2702, 2694, 1598, 2605, 3120],
         			pointStart: 1
         		}, {
-        			name: '2015 Actual QTY',
+        			name: (thisYear-1) + ' Actual QTY',
         			type: 'column',
         			color: '#F4A143',
         			data: [2634, 1782, 1851, 2112, 3910, 1010, 1991, 2217, 2781, 3669, 1221, 2150],
         			pointStart: 1
         		}, {
-        			name: '2016 Actual QTY',
+        			name: thisYear + ' Actual QTY',
         			type: 'column',
         			color: '#824E9F',
         			data: [2700, 2806, 711, 601, 577, 496, 901, 661, 1249, 712, 3600, 912],
         			pointStart: 1
         		}, {
-        			name: '2016 Actual Budget',
+        			name: thisYear + ' Actual Budget',
         			type: 'line',
         			color: '#134A8C',
         			lineWidth: 1,
@@ -127,7 +158,20 @@ $("#viewMonthlyHitRate").pagecontainer({
         		}]
         	});
         	loadingMask("hide");
-    	});
+            // $(".slider").slick({
+            //     autopaly: false,
+            //     dots: false,
+            //     responseive: [{
+            //         breakpoint: 500,
+            //         settings: {
+            //             arrows: true,
+            //             infinite: false,
+            //             slidesToShow: 2,
+            //             slidesToScroll: 2
+            //         }
+            //     }]
+            // });
+        });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
             
