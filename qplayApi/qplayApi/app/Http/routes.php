@@ -14,6 +14,12 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
+/*
+ * change locale for every request
+ * */
+if (array_key_exists('lang',$_GET)){
+    App::setLocale($_GET["lang"]);
+}
 
 Route::any('/v101/qplay/getIpInfo', 'qplayController@getIpInfo');
 
