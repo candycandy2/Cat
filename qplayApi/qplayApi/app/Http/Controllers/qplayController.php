@@ -144,8 +144,8 @@ class qplayController extends Controller
                     }
                 } else {
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        //'message'=>'Unknown error',
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans("messages.MSG_UNKNOWN_ERROR"),
+                        //'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
                         'is_login'=>0,
                         'login_id'=>""];
                     CommonUtil::logApi("", $ACTION,
@@ -395,7 +395,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError);
+                    $message = trans('messages.MSG_CALL_SERVICE_SUCCESS');
                     $finalUrl = urlencode($redirect_uri.'?result_code='
                         .ResultCode::_999999_unknownError
                         .'&message='
@@ -578,7 +578,7 @@ class qplayController extends Controller
             } catch (Exception $e) {
                 \DB::rollBack();
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -755,7 +755,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError);
+                    $message = trans('messages.MSG_CALL_SERVICE_ERROR');
                     $finalUrl = urlencode($redirect_uri.'?result_code='
                         .ResultCode::_999999_unknownError
                         .'&message='
@@ -890,7 +890,7 @@ class qplayController extends Controller
                 catch (Exception $e)
                 {
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                         'content'=>''
                     ];
 
@@ -998,7 +998,7 @@ class qplayController extends Controller
             if(count($versionList) > 1)
             {
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -2214,7 +2214,7 @@ SQL;
                 if(!$pushResult["result"]) {
                     \DB::rollBack();
                     $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                        'message'=>trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'),
                         'content'=>''
                     ];
                     CommonUtil::logApi("", $ACTION,
@@ -2226,7 +2226,7 @@ SQL;
             } catch (Exception $e) {
                 \DB::rollBack();
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                     'content'=>''];
                 CommonUtil::logApi($userInfo->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
@@ -2547,7 +2547,7 @@ SQL;
 
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId, true);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId, true);
                                 } else {
                                     $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
                                 }
@@ -2584,7 +2584,7 @@ SQL;
                         } catch (Exception $e) {
                             \DB::rollBack();
                             $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                                 'content'=>''];
                             CommonUtil::logApi("", $ACTION,
                                 response()->json(apache_response_headers()), $result);
@@ -2713,29 +2713,22 @@ SQL;
                                     $userRowId = $userRoleInfo->row_id;
 
                                     if(!in_array($userRowId, $hasSentUserIdList)) {
-                                        $thisUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
-//                                        if(count($thisUserInfo->uuidList) == 0) {
-//                                            \DB::rollBack();
-//                                            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
-//                                                'message'=>"接收推播的用户uuid不存在",
-//                                                'content'=>'']);
-//                                            CommonUtil::logApi("", $ACTION,
-//                                                response()->json(apache_response_headers()), $result);
-//                                            return $result;
-//                                        }
-                                        foreach ($thisUserInfo->uuidList as $uuid) {
-                                            \DB::table("qp_user_message")
-                                                -> insertGetId([
-                                                    'project_row_id'=>$projectInfo->row_id,
-                                                    'user_row_id'=>$userRowId,
-                                                    'uuid'=>$uuid->uuid,
-                                                    'message_send_row_id'=>$newMessageSendId,
-                                                    'created_user'=>$sourceUserInfo->row_id,
-                                                    'created_at'=>$now
-                                                ]);
+                                        $thisUserInfo = CommonUtil::getUserInfoByRowID($userRowId);//CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
+                                        if($thisUserInfo->status == "Y" && $thisUserInfo->resign == "N") {
+                                            foreach ($thisUserInfo->uuidList as $uuid) {
+                                                \DB::table("qp_user_message")
+                                                    -> insertGetId([
+                                                        'project_row_id'=>$projectInfo->row_id,
+                                                        'user_row_id'=>$userRowId,
+                                                        'uuid'=>$uuid->uuid,
+                                                        'message_send_row_id'=>$newMessageSendId,
+                                                        'created_user'=>$sourceUserInfo->row_id,
+                                                        'created_at'=>$now
+                                                    ]);
+                                            }
+                                            $hasSentUserIdList[] = $userRowId;
+                                            $real_push_user_list[] = $userRowId;
                                         }
-                                        $hasSentUserIdList[] = $userRowId;
-                                        $real_push_user_list[] = $userRowId;
                                     }
                                 }
                             }
@@ -2761,7 +2754,7 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId);
                                 } else {
                                     $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
                                 }
@@ -2797,7 +2790,7 @@ SQL;
                         } catch (Exception $e) {
                             \DB::rollBack();
                             $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999999_unknownError),
+                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
                                 'content'=>''];
                             CommonUtil::logApi("", $ACTION,
                                 response()->json(apache_response_headers()), $result);

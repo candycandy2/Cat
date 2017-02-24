@@ -10,7 +10,7 @@ var prevPageID;
 
 window.initialSuccess = function() {
 
-    loadingMask("show");
+    //loadingMask("show");
 
     $.mobile.changePage('#viewEventList');
     var EventList = new getEventList();

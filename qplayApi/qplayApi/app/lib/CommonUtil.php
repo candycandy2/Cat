@@ -118,6 +118,24 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserInfoByRowID($userRowId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.row_id', '=', $userRowId)
+            -> select()->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> where('status', '=', 'A')
+            -> select('uuid')->get();
+
+        return $userList[0];
+    }
+
     public static function getUserIdByUUID($uuid) {
         $userList = \DB::table('qp_user')
             -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
@@ -294,7 +312,11 @@ class CommonUtil
     }
 
     public static function getMessageContentByCode($messageCode) {
-        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $lang = "";
+        if (array_key_exists('lang',$_GET)){
+            $lang = $_GET["lang"];
+        }
+        $lang_row_id = self::getLanguageIdByName($lang);
         $project_id = self::getProjectInfo();
         if ($project_id == null ||  count($project_id)<0){
             return "";

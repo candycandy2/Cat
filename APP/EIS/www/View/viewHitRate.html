@@ -12,14 +12,14 @@
 
   	<div data-role="main" class="ui-content page-main">
     	<form>
-			<fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
-				<input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-1" checked="checked">
+			<fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs" id="viewHitRateTab">
+				<input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-1" value="on" checked="checked">
 			    <label for="viewHitRate-tab-1" class="tabs-title">This Month</label>
 
-			    <input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-2">
+			    <input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-2" value="off">
 			    <label for="viewHitRate-tab-2" class="tabs-title label-style">Last Month</label>
 			    
-			    <input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-3">
+			    <input type="radio" name="radio-choice-h-2" id="viewHitRate-tab-3" value="other">
 			    <label for="viewHitRate-tab-3" class="tabs-title">YTD</label>
 			</fieldset>
 		</form>
@@ -39,7 +39,7 @@
 
 		<div id="data-title-bar">
 			<div class="data-title" style="margin-left: 16VW;">
-				<p style="margin-top: 0.7VH;">Adj Sales</p>
+				<p style="margin-top: 0.7VH;">Adj. Sales</p>
 				<p>(USD$M)</p>
 			</div>
 			<div class="data-title" style="padding-top: 1.7VH;">

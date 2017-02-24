@@ -167,6 +167,7 @@
 .event-list-msg-bottom {
     width: 95%;
     text-align: right;
+    display: inline-block;
 }
 
 .event-list-msg-bottom .text {
@@ -176,7 +177,6 @@
 }
 
 .event-list-msg-bottom span {
-    display: inline-flex;
     float: left;
 }
 
@@ -198,7 +198,7 @@
 }
 
 .event-list-msg-bottom .message {
-    float: none;
+    float: right;
 }
 
 .event-list-msg-bottom .message .img {
@@ -210,4 +210,22 @@
     width: 5.6vw;
     height: 5.6vw;
     display: inline-block;
+}
+
+.event-list-footer {
+    width: 18vw;
+    left: initial;
+    right: 4.9vw;
+}
+
+.event-list-footer.ui-bar-inherit {
+    background-color: rgba(255,0,0,0);
+    border-color: rgba(255,0,0,0);
+}
+
+.event-list-add-button {
+    background: url(../img/notice.png) no-repeat;
+    background-size: 18vw;
+    width: 18vw;
+    height: 18vw;
 }
