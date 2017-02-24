@@ -1,4 +1,8 @@
 <?php
+/**
+ *  任務Task相關資料處理
+ * @author Cleo.W.Chan
+ */
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
@@ -24,9 +28,9 @@ class TaskRepository
     }
 
     /**
-     * get task info which belong event
+     * 取得事件所屬的任務資料
      * @param  int $eventId event row_id
-     * @return Collaction
+     * @return mixed
      */
     public function getTaskByEventId($eventId){
          return  $this->task
@@ -35,19 +39,29 @@ class TaskRepository
             ->get();
     }
 
+    /**
+     * 取得事件所屬的任務詳細資料
+     * @param  int $eventId event row_id
+     * @return Array
+     */
     public function getTaskDetailByEventId($eventId){
          $result = $this->task
             ->leftJoin( 'en_user', 'en_user.emp_no', '=', 'en_task.close_task_emp_no')
             ->select('en_task.row_id as task_row_id','task_function','task_location','task_status',
                 'close_task_emp_no','close_task_date',
-                DB::raw("CONCAT(login_id,'\\\\',user_domain) as close_task_date"))
+                DB::raw("CONCAT(user_domain,'\\\\',login_id) as close_task_user_id"))
             ->where('event_row_id','=',$eventId)
             ->get();
 
         return $result->toArray();
     }
 
-     public function getUserByTaskId($taskId){
+    /**
+     * 取得事件負責人
+     * @param  int $taskId 事件id
+     * @return mixed
+     */
+    public function getUserByTaskId($taskId){
         return $this->userTask
             ->join( 'en_user', 'en_user.emp_no', '=', 'en_user_task.emp_no')
             ->where('task_row_id',$taskId)
@@ -59,16 +73,27 @@ class TaskRepository
             ->get();
     }
 
-    
+    /**
+     * 儲存任務資料
+     * @param  Array  $data 儲存的欄位值及資料對照
+     */
     public function saveTask(Array $data){
         $this->task->insert($data);
     }
 
-
+    /**
+     * 儲存使用者對應任務表(en_user_task)
+     * @param  Array  $data 儲存的欄位值及資料對照
+     */
     public function saveUserTask(Array $data){
         $this->userTask->insert($data);
     }
 
+    /**
+     * 取得事件相關人
+     * @param  int $eventId en_event.row_id 
+     * @return mixed 
+     */
     public function getAllUserFromTaskbyEventId($eventId){
        return $this->userTask
             ->join( 'en_task', 'en_task.row_id', '=', 'en_user_task.task_row_id')
@@ -76,15 +101,52 @@ class TaskRepository
             ->select('emp_no')
             ->get();
     }
-
-    public function updateTaskById($taskId, Array $updateData){
+    /**
+     * 依據任務id更新事件
+     * @param  String   $empNo      員工編號
+     * @param  int      $taskId     事件id,en_task.row_id
+     * @param  Array    $updateData 更新的欄位值及資料對照
+     * @return int                  更新的資料筆數
+     */
+    public function updateTaskById($empNo, $taskId, Array $updateData){
+       $updateData['updated_user'] = $empNo;
        return $this->task->where('row_id', $taskId)
         ->update($updateData);
     }
 
+    /**
+     * 取得任務資料
+     * @param  int $taskId    任務id,en_task.row_id
+     * @return mixed
+     */
     public function getTaskById($taskId){
          return $this->task
                 ->where('row_id',$taskId)
-                ->get();
+                ->first();
+    }
+
+    /**
+     * 檢查任務是否有此參與者
+     * @param  [type] $taskId en_task.row_id
+     * @param  [type] $empNo  emp_no
+     * @return mixed
+     */
+    public function getIsTaskOwner($taskId, $empNo){
+        return $this->userTask
+            ->where('task_row_id', '=', $taskId)
+            ->where('emp_no', '=', $empNo)
+            ->get();
+    }
+
+    /**
+     * 取得事件已完成的任務數量
+     * @param  int $eventId 事件id event.row_id
+     * @return int             已完成的任務數
+     */
+    public function getCloseTaskCntByEventId($eventId){
+            return $this->task
+                ->where('event_row_id',$eventId)
+                ->where('task_status', '=', 1)
+                ->count();
     }
 }

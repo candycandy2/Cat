@@ -14,9 +14,9 @@ class UserService
     }
 
     /**
-     * Get the user belong roles
-     * @param  String $empNo employee No.
-     * @return Array
+     * 取得用戶所屬角色
+     * @param  String $empNo 工號
+     * @return array         角色列表，一個人可能所屬於多個角色 (admin:機房管理者|supervisor:主管|common:一般用戶)
      */
     public function getUserRoleList($empNo){
         $roleList = [];
