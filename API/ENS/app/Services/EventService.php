@@ -21,8 +21,8 @@ class EventService
     protected $push;
 
     const EVENT_TYPE = 'event_type';
-    const STATUS_FINISHED = 1;
-    const STATUS_UNFINISHED = 0;
+    const STATUS_FINISHED = '1';
+    const STATUS_UNFINISHED = '0';
 
     public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push)
     {

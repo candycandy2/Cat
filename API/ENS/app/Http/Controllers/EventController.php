@@ -175,7 +175,7 @@ class EventController extends Controller
                 }
             }
             if($eventStatus!=""){
-                $validStatusArr = array('0','1');
+                $validStatusArr = array(EventService::STATUS_FINISHED,EventService::STATUS_UNFINISHED);
                 if(!in_array($eventStatus,$validStatusArr)){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
                     'Message'=>"事件狀態碼錯誤",
@@ -359,9 +359,7 @@ class EventController extends Controller
            }
 
            //若無資料就跳過不更新
-           //if(count($data) > 0){
             $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
-           //}
            \DB::commit();
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
@@ -397,7 +395,7 @@ class EventController extends Controller
             $empNo = trim((string)$xml->emp_no[0]);
             $eventId = trim((string)$xml->event_row_id[0]);
             $readTime =  trim((string)$xml->read_time[0]);
-            $eventStetus = trim((string)$xml->event_status[0]);
+            $eventStatus = trim((string)$xml->event_status[0]);
 
             if(!isset($eventId) || trim($eventId) == "" ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
@@ -425,16 +423,19 @@ class EventController extends Controller
             }
             
             //update Event Status
-            if($eventStetus!=""){
+            if($eventStatus!=""){
+
                 $userAuthList = $this->userService->getUserRoleList($empNo);
                 if(!in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
                         'Content'=>""]);
                 }
-                if( !in_array($eventStetus,array(0,1))){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
+
+                $validStatusArr = array(EventService::STATUS_FINISHED,EventService::STATUS_UNFINISHED);
+                if(!in_array($eventStatus,$validStatusArr)){
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
+                    'Message'=>"事件狀態碼錯誤",
                     'Content'=>""]);
                 }
                 //update qp_event
