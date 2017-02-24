@@ -57,6 +57,7 @@ function overridejQueryFunction() {
 //3. html
 
 var tplJS = {
+    pageHeight: "",
     tplRender: function(pageID, contentID, renderAction, HTMLContent) {
         if (renderAction === "append") {
             $("#" + pageID + " #" + contentID).append(HTMLContent);
@@ -84,6 +85,19 @@ var tplJS = {
                 $(element).html(langStr[id]);
             });
         }
+    },
+    getRealContentHeight: function() {
+        var header = $.mobile.activePage.find("div[data-role='header']:visible");
+        var footer = $.mobile.activePage.find("div[data-role='footer']:visible");
+        var content = $.mobile.activePage.find("div[data-role='content']:visible:visible");
+        var viewport_height = $(window).height();
+
+        var content_height = viewport_height - header.outerHeight() - footer.outerHeight();
+        if ((content.outerHeight() - header.outerHeight() - footer.outerHeight()) <= viewport_height) {
+            content_height -= (content.outerHeight() - content.height());
+        }
+
+        return content_height;
     },
     Tab: function(pageID, contentID, renderAction, data) {
         var tabHTML = $("template#tplTab").html();
@@ -232,23 +246,44 @@ var tplJS = {
             }
         }
 
-        popup.find("div[data-role='main']").append(dropdownListClose);
-        popup.find("div[data-role='main']").append(dropdownListUl);
+        popup.find("div[data-role='main'] .header").append(dropdownListClose);
+        popup.find("div[data-role='main'] .main").append(dropdownListUl);
 
         //Render Template
         this.tplRender(pageID, contentID, renderAction, popup);
+
+        //When Popup open, Auto Resize height of Popup main,
+        //and change height of page, prevent User to scroll the page behind Popup.
+        $(document).on("popupafteropen", "#" + popupID, function() {
+            var popupHeight = popup.height();
+            var popupHeaderHeight = popup.find("div[data-role='main'] .header").height();
+            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+            //ui-content paddint-top/padding-bottom:2.9vh
+            var uiContentPaddingHeight = parseInt(document.documentElement.clientHeight * 2.9 * 2 / 100, 10);
+
+            //Ul margin-top:2.9vh
+            var ulMarginTop = parseInt(document.documentElement.clientHeight * 2.9 / 100, 10);
+
+            var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+            $(this).find("div[data-role='main'] .main").height(popupMainHeight);
+            $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
+        });
 
         //Initialize Popup
         $('#' + popupID).popup();
 
         $(document).on("click", "#" + data.id, function() {
             $('#' + popupID).popup('open');
+
+            preventPageScroll();
         });
 
         $(document).on("click", "#" + popupID + " .close", function() {
             $('#' + popupID).popup('close');
 
             reSizeDropdownList(data.id);
+            recoveryPageScroll();
         });
 
         //Click Li to change the value of Dropdown List
@@ -269,5 +304,30 @@ var tplJS = {
             $("#" + ID).css('width', vwWidth + 'vw');
         }
 
+        //Prevent Background Page to be scroll, when Option Popup is shown,
+        //Change the [height / overflow-y] of Background Page,
+        //And then, when Option Popup is close, recovery the [height / overflow-y] of Background Page.
+        function preventPageScroll() {
+            tplJS.pageHeight = $.mobile.activePage.outerHeight();
+            var adjustHeight = tplJS.getRealContentHeight();
+
+            $.mobile.activePage.css({
+                "height": adjustHeight,
+                "overflow-y": "hidden"
+            });
+        }
+
+        function recoveryPageScroll() {
+            //Padding
+            var paddingTop = parseInt($.mobile.activePage.css("padding-top"), 10);
+            var paddingBottom = parseInt($.mobile.activePage.css("padding-bottom"), 10);
+
+            var originalHeight = tplJS.pageHeight - paddingTop - paddingBottom;
+
+            $.mobile.activePage.css({
+                "height": originalHeight,
+                "overflow-y": "auto"
+            });
+        }
     }
 };
