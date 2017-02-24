@@ -118,6 +118,24 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserInfoByRowID($userRowId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.row_id', '=', $userRowId)
+            -> select()->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> where('status', '=', 'A')
+            -> select('uuid')->get();
+
+        return $userList[0];
+    }
+
     public static function getUserIdByUUID($uuid) {
         $userList = \DB::table('qp_user')
             -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
