@@ -357,7 +357,7 @@ class EventController extends Controller
                     unset( $data[$field]);
                 }
            }
-           
+
            //若無資料就跳過不更新
            //if(count($data) > 0){
             $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
@@ -538,8 +538,8 @@ class EventController extends Controller
         $data['event_desc'] = (string)$xml->event_desc[0];
 
         foreach ($xml->basic_list as $key => $value) {
-             $tmp['location'] = (string)$value->location[0];
-             $tmp['function'] = (string)$value->function[0];
+             $tmp['location'] = trim((string)$value->location[0]);
+             $tmp['function'] = trim((string)$value->function[0]);
              $data['basicList'][] = $tmp;
         }
         return $data;
