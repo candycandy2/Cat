@@ -214,9 +214,12 @@ class EventRepository
      * @return int                   已更新的資料筆數
      */
     public function updateEventById($empNo, $eventId, Array $updateData){
-        $updateData['updated_user'] = $empNo;
-        $this->event->where('row_id', $eventId)
-        ->update($updateData);
+        
+        if(count($updateData) > 0){
+            $updateData['updated_user'] = $empNo;
+            $this->event->where('row_id', $eventId)
+            ->update($updateData);
+        }
     }
 
     /**

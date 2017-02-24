@@ -347,15 +347,21 @@ class EventController extends Controller
                                   'related_event_row_id');
 
            $data = CommonUtil::arrangeDataFromXml($xml, $updateField);
-           //event_title 不可update為空白，若為空則不更新
-           if(isset($xml->event_title[0]) && trim($xml->event_title[0]) == ""){
-                unset( $data['event_title']);
+           
+           //不可update為空白，若為空則不更新
+           $requireField = array('event_title',
+                                'event_type_parameter_value',
+                                'estimated_complete_date');
+           foreach ($requireField as $field) {
+               if(isset($xml->$field[0]) && trim($xml->$field[0]) == ""){
+                    unset( $data[$field]);
+                }
            }
-          
+           
            //若無資料就跳過不更新
-           if(count($data) > 0){
-                $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
-           }
+           //if(count($data) > 0){
+            $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
+           //}
            \DB::commit();
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
