@@ -28,15 +28,16 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     // do nothing
                 }
                 else{
-                    var storageData = JSON.parse(localStorage.getItem("detailInfo"));
+                    detailHasDataAry = JSON.parse(localStorage.getItem("detailInfo"));
                     // check data is exist or not
-                    for(var item in storageData){
-                        if (queryData === storageData[item].query){
-                            dataContent = storageData[item].result;
+                    for(var item in detailHasDataAry){
+                        if (queryData === detailHasDataAry[item].query){
+                            dataContent = detailHasDataAry[item].result;
                             insertDetailValue(dataContent);
                             dataExist = true;
-                            if (checkDataExpired(storageData[item].time, expiredQueryTime, 'mm')){
+                            if (checkDataExpired(detailHasDataAry[item].time, expiredQueryTime, 'dd')){
                                 dataExist = false;
+                                // detailHasDataAry.remove(item);   // review
                             }
                             loadingMask("hide");
                             break;
@@ -121,6 +122,9 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                         QueryMyPhoneBook();
                         $("#addStar").hide();
                         $("#deleteStar").show();
+                        // clear data in storage
+                        localStorage.removeItem('detailInfo');
+                        localStorage.removeItem('queryInfo');   // review
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
                     } else {

@@ -22,15 +22,17 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     // do nothing
                 }
                 else{
-                    var storageData = JSON.parse(localStorage.getItem("queryInfo"));
-                    for(var item in storageData){
-                        if (queryData === storageData[item].query){
-                            dataContent = storageData[item].result;
+                    queryHasDataAry = JSON.parse(localStorage.getItem("queryInfo"));
+                    // var storageData = JSON.parse(localStorage.getItem("queryInfo"));
+                    for(var item in queryHasDataAry){
+                        if (queryData === queryHasDataAry[item].query){
+                            dataContent = queryHasDataAry[item].result;
                             insertQueryValue(dataContent, 1);
                             loadingMask("hide");
                             dataExist = true;
-                            if (checkDataExpired(storageData[item].time, expiredQueryTime, 'mm')){
+                            if (checkDataExpired(queryHasDataAry[item].time, expiredQueryTime, 'dd')){
                                 dataExist = false;
+                                // queryHasDataAry.remove(item);    // review
                             }
                             break;
                         }
