@@ -3,7 +3,9 @@
 <template id="tplPopup">
     <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content">
-
+            <div class="header"></div>
+            <div class="main"></div>
+            <div class="footer"></div>
         </div>
     </div>
 </template>
@@ -11,7 +13,7 @@
 <!--template @popup content > dorpdown list option-->
 <template id="tplPopupContentDropdownListOption">
     <div class="close">X</div>
-    <ul>
+    <ul data-role="listview">
         <template id="tplPopupContentDropdownListLi">
             <li class="tpl-option-msg-list"></li>
         </template>
