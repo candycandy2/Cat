@@ -1,6 +1,7 @@
 var chart;
 var ProductList = '<a>ALL</a>';
-var ActualQTY = [];
+var ActualQTY = {};
+var BudgetAMT = {};
 
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
@@ -36,6 +37,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 length = callbackData.length;
                 convertData();
                 addItem2scrollmenu();
+                getHighchartsData();
             }
 
             this.failCallback = function(data) {
@@ -57,6 +59,24 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
             $(".Product").html("");
             $(".Product").append(ProductList).enhanceWithin();
+        }
+
+        function getHighchartsData() {
+            var total = 0;
+            for(var year in eisdata) {
+                ActualQTY[year] = [];
+                BudgetAMT[year] = [];
+                for(var month in eisdata[year]) {
+                    ActualQTY[year][Number(month)-1] = 0;
+                    BudgetAMT[year][Number(month)-1] = 0;
+                    for(var ro in eisdata[year][month]) {
+                        for(var product in eisdata[year][month][ro]) {
+                            ActualQTY[year][Number(month)-1] += Number(eisdata[year][month][ro][product][1]);
+                            BudgetAMT[year][Number(month)-1] += Number(eisdata[year][month][ro][product][2]);
+                        }
+                    }
+                }
+            }
         }
 
         function convertData() {
@@ -114,7 +134,7 @@ $("#viewMonthlyHitRate").pagecontainer({
         				y: -11
         			},
         			min: 0,
-        			tickInterval: 500
+        			tickInterval: 10000
         		},
         		legend: {
         			align: 'left',
@@ -138,29 +158,29 @@ $("#viewMonthlyHitRate").pagecontainer({
         			enabled: false
         		},
         		series: [{
-        			name: (thisYear-2) + ' Actual QTY',
+        			name: (thisYear-3) + ' Actual QTY',
         			type: 'column',
         			color: '#0AB5B6',
-        			data: [1912, 2904, 3390, 2922, 2794, 1843, 2791, 2702, 2694, 1598, 2605, 3120],
+        			data: ActualQTY[thisYear-3],
+        			pointStart: 1
+        		}, {
+        			name: (thisYear-2) + ' Actual QTY',
+        			type: 'column',
+        			color: '#F4A143',
+        			data: ActualQTY[thisYear-2],
         			pointStart: 1
         		}, {
         			name: (thisYear-1) + ' Actual QTY',
         			type: 'column',
-        			color: '#F4A143',
-        			data: [2634, 1782, 1851, 2112, 3910, 1010, 1991, 2217, 2781, 3669, 1221, 2150],
-        			pointStart: 1
-        		}, {
-        			name: thisYear + ' Actual QTY',
-        			type: 'column',
         			color: '#824E9F',
-        			data: [2700, 2806, 711, 601, 577, 496, 901, 661, 1249, 712, 3600, 912],
+        			data: ActualQTY[thisYear-1],
         			pointStart: 1
         		}, {
-        			name: thisYear + ' Actual Budget',
+        			name: (thisYear-1) + ' Actual Budget',
         			type: 'line',
         			color: '#134A8C',
         			lineWidth: 1,
-        			data: [910, 1880, 1520, 1250, 1680, 1090, 3520, 2590, 3400, 3080, 1110, 2220],
+        			// data: BudgetAMT[thisYear-1],
         			pointStart: 1
         		}]
         	});
