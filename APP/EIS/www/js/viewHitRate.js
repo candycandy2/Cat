@@ -56,6 +56,8 @@ $("#viewHitRate").pagecontainer ({
 	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
 	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
                 ProductDetail();
+                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+                UserAuthority();
             };
 
 	    	this.failCallback = function(data) {
