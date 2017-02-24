@@ -1,6 +1,8 @@
 
 //$(document).one("pagecreate", "#viewDetailInfo", function(){
 
+// review
+var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
     $("#viewDetailInfo").pagecontainer({
         create: function(event, ui) {
             /********************************** function *************************************/
@@ -19,56 +21,92 @@
                 var queryData = '<LayoutHeader><Company>' + employeeData[employeeSelectedIndex].company + '</Company>' + 
                                 '<Name_EN>' + employeeData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
 
-                this.successCallback = function(data) {
-                    var resultcode = data['ResultCode'];
+                // review
+                // data is not exist
+                var dataExist = false;
+                if (localStorage.getItem('detailInfo') === null){
+                    // do nothing
+                }
+                else{
+                    var storageData = JSON.parse(localStorage.getItem("detailInfo"));
+                    // check data is exist or not
+                    for(var item in storageData){
+                        if (queryData === storageData[item].query){
+                            dataContent = storageData[item].result;
+                            insertDetailValue(dataContent);
+                            dataExist = true;
+                            if (checkDataExpired(storageData[item].time, expiredQueryTime, 'mm')){
+                                dataExist = false;
+                            }
+                            loadingMask("hide");
+                            break;
+                        }
+                    }
+                }
 
-                    if (resultcode === "1") {
+                // review
+                if (!dataExist){
+                    this.successCallback = function(data) {
+                        var resultcode = data['ResultCode'];
 
-                        if (prevPageID === "viewQueryResult") {
-                            employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
-                            for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                                if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
-                                    $("#addStar").hide();
-                                    $("#deleteStar").show();
-                                    break;
+                        if (resultcode === "1") {
+                            // save data into localstorage
+                            var nowTime = new Date();
+                            detailHasDataAry.push({'query': queryData, 'result': data['Content'], 'time': nowTime});
+
+                            if (prevPageID === "viewQueryResult") {
+                                employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
+                                for(var i=0; i<Object.keys(phonebookData).length; i++) {
+                                    if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                                        $("#addStar").hide();
+                                        $("#deleteStar").show();
+                                        break;
+                                    }
                                 }
                             }
+                            localStorage.setItem('detailInfo', JSON.stringify(detailHasDataAry));
+                            insertDetailValue(data['Content']);
                         }
+                        loadingMask("hide");                
+                    };
 
-                        // check has more than one ext num or not
-                        if (data['Content'][0].Ext_No.indexOf(';')>0){
-                            telString = " class='chooseNumPop extNumMore'" + ' ';
-                            for (var i = 0; i < data['Content'][0].Ext_No.match(/;/igm).length+1; i++){
-                                telString += "data-extnum" + (i+1) + "=" + data['Content'][0].Ext_No.split(';')[i] + ' ';
-                            }
-                            telString += 'data-extnum=' + data['Content'][0].Ext_No + '>' + data['Content'][0].Ext_No.split(';')[0];
-                            extTmpNum = data['Content'][0].Ext_No.split(';')[0];
-                        }
-                        else{
-                            telString = " href='tel:" + data['Content'][0].Ext_No + "'>" + data['Content'][0].Ext_No;
-                            extTmpNum = data['Content'][0].Ext_No;
-                        }
+                    this.failCallback = function(data) {};
 
-                        $("#detial-name-title #eName").html(data['Content'][0].Name_EN);
-                        $("#detial-name-title #cName").html(data['Content'][0].Name_CH);
-                        $("#detail-data #companyName").html(data['Content'][0].Company);
-                        $("#detail-data #employeeID").html(data['Content'][0].EmployeeID);
-                        $("#detail-data #sideCode").html(data['Content'][0].SiteCode);
-                        $("#detail-data #dept").html(data['Content'][0].Dept);
-                        $("#detail-data #deptCode").html(data['Content'][0].DeptCode);
-                        $("#detail-data #extNo").html("<a" + telString + "</a>");
-                        $("#detail-data #eMail").html(data['Content'][0].EMail);
+                    var __construct = function() {
+                        CustomAPI("POST", true, "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData, "");
+                    }();
+                }
+                else{
+                    // do nothing
+                }
 
+            }
+
+            // review
+            function insertDetailValue(dataContent){
+                // check has more than one ext num or not
+                if (dataContent[0].Ext_No.indexOf(';')>0){
+                    telString = " class='chooseNumPop extNumMore'" + ' ';
+                    for (var i = 0; i < dataContent[0].Ext_No.match(/;/igm).length+1; i++){
+                        telString += "data-extnum" + (i+1) + "=" + dataContent[0].Ext_No.split(';')[i] + ' ';
                     }
-                    loadingMask("hide");                
-                };
+                    telString += 'data-extnum=' + dataContent[0].Ext_No + '>' + dataContent[0].Ext_No.split(';')[0];
+                    extTmpNum = dataContent[0].Ext_No.split(';')[0];
+                }
+                else{
+                    telString = " href='tel:" + dataContent[0].Ext_No + "'>" + dataContent[0].Ext_No;
+                    extTmpNum = dataContent[0].Ext_No;
+                }
 
-                this.failCallback = function(data) {};
-
-                var __construct = function() {
-                    CustomAPI("POST", true, "QueryEmployeeDataDetail", self.successCallback, self.failCallback, queryData, "");
-                }();
-
+                $("#detial-name-title #eName").html(dataContent[0].Name_EN);
+                $("#detial-name-title #cName").html(dataContent[0].Name_CH);
+                $("#detail-data #companyName").html(dataContent[0].Company);
+                $("#detail-data #employeeID").html(dataContent[0].EmployeeID);
+                $("#detail-data #sideCode").html(dataContent[0].SiteCode);
+                $("#detail-data #dept").html(dataContent[0].Dept);
+                $("#detail-data #deptCode").html(dataContent[0].DeptCode);
+                $("#detail-data #extNo").html("<a" + telString + "</a>");
+                $("#detail-data #eMail").html(dataContent[0].EMail);
             }
             
             function AddMyPhoneBook() {
