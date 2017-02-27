@@ -28,15 +28,18 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     // do nothing
                 }
                 else{
-                    var storageData = JSON.parse(localStorage.getItem("detailInfo"));
+                    detailHasDataAry = JSON.parse(localStorage.getItem("detailInfo"));
                     // check data is exist or not
-                    for(var item in storageData){
-                        if (queryData === storageData[item].query){
-                            dataContent = storageData[item].result;
-                            insertDetailValue(dataContent);
-                            dataExist = true;
-                            if (checkDataExpired(storageData[item].time, expiredQueryTime, 'mm')){
+                    for(var item in detailHasDataAry){
+                        if (queryData === detailHasDataAry[item].query){
+                            dataContent = detailHasDataAry[item].result;
+                            if (checkDataExpired(detailHasDataAry[item].time, expiredQueryTime, 'dd')){
                                 dataExist = false;
+                                detailHasDataAry.splice(item, 1);
+                            }
+                            else{
+                                insertDetailValue(dataContent);
+                                dataExist = true;
                             }
                             loadingMask("hide");
                             break;
@@ -107,6 +110,17 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                 $("#detail-data #deptCode").html(dataContent[0].DeptCode);
                 $("#detail-data #extNo").html("<a" + telString + "</a>");
                 $("#detail-data #eMail").html(dataContent[0].EMail);
+
+                if (prevPageID === "viewQueryResult") {
+                    employeeData[employeeSelectedIndex].employeeid = dataContent[0].EmployeeID;
+                    for(var i=0; i<Object.keys(phonebookData).length; i++) {
+                        if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                            $("#addStar").hide();
+                            $("#deleteStar").show();
+                            break;
+                        }
+                    }
+                }
             }
             
             function AddMyPhoneBook() {
