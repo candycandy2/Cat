@@ -57,13 +57,13 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         }
 
-        // function addItem2scrollmenu() {
-        //     for(var i in eisdata[thisYear][thisMonth]["BQA"]) {
-        //         ProductList += '<a>' + i + '</a>';
-        //     }
-        //     $(".Product").html("");
-        //     $(".Product").append(ProductList).enhanceWithin();
-        // }
+     /*   function addItem2scrollmenu() {
+            for(var i in eisdata[thisYear][thisMonth]["BQA"]) {
+                ProductList += '<a>' + i + '</a>';
+            }
+            $(".Product").html("");
+            $(".Product").append(ProductList).enhanceWithin();
+        }*/
 
         function getActualValue(ro, product, year, month, type) {
             var actualIndex;
@@ -81,19 +81,19 @@ $("#viewMonthlyHitRate").pagecontainer({
                         Actual += eisdata[year][month][i][j][actualIndex];
                     }
                 }
-                return Actual;
+                return Math.round(Actual * Math.pow(10, 2)) / 100;
             }else if(ro != "ALL" && product == "ALL") {
                 for(var i in eisdata[year][month][ro]) {
                     Actual += eisdata[year][month][ro][i][actualIndex];
                 }
-                return Actual;
+                return Math.round(Actual * Math.pow(10, 2)) / 100;
             }else if(ro == "ALL" && product != "ALL"){
                 for(var i in eisdata[year][month]) {
                     Actual += eisdata[year][month][i][product][actualIndex];
                 }
-                return Actual;
+                return Math.round(Actual * Math.pow(10, 2)) / 100;
             }else {
-                return eisdata[year][month][ro][product][actualIndex];
+                return Math.round((eisdata[year][month][ro][product][actualIndex]) * Math.pow(10, 2)) / 100;
             }
         }
 
@@ -118,22 +118,23 @@ $("#viewMonthlyHitRate").pagecontainer({
                         Budget += eisdata[year][month][i][j][budgetIndex];
                     }
                 }
-                return (Actual / Budget) * 100;
+                return Math.round((Actual / Budget) * Math.pow(10, 4)) / 100;
             }else if(ro != "ALL" && product == "ALL") {
                 for(var i in eisdata[year][month][ro]) {
                     Actual += eisdata[year][month][ro][i][actualIndex];
                     Budget += eisdata[year][month][ro][i][budgetIndex];
                 }
-                return (Actual / Budget) * 100;
+                return Math.round((Actual / Budget) * Math.pow(10, 4)) / 100;
             }else if(ro == "ALL" && product != "ALL"){
                 for(var i in eisdata[year][month]) {
                     Actual += eisdata[year][month][i][product][actualIndex];
                     Budget += eisdata[year][month][i][product][budgetIndex];
                 }
-                return (Actual / Budget) * 100;
+                return Math.round((Actual / Budget) * Math.pow(10, 4)) / 100;
             }else {
-                return (eisdata[year][month][ro][product][actualIndex] / eisdata[year][month][ro][product][budgetIndex]) * 100;
-            }    
+                var result = (eisdata[year][month][ro][product][actualIndex] / eisdata[year][month][ro][product][budgetIndex]);
+                return Math.round(result * Math.pow(10, 4)) / 100;
+            }
         }
 
         function getYOYGrowth(ro, product, year, month, type) {
@@ -149,32 +150,41 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
             if (ro == "ALL" && product == "ALL") {
                 for(var i in eisdata[year][month]) {    //ro
-                    console.log(i);
                     for(var j in eisdata[year][month][i]) {   //product
-                        console.log(j);
                         Actual += eisdata[year][month][i][j][actualIndex];
-                        lastActual += eisdata[year-1][month][i][j][actualIndex];
+                        if(eisdata[year-1][month][i].hasOwnProperty(j)){
+                            lastActual += eisdata[year-1][month][i][j][actualIndex];
+                        }
                     }
                 }
-                return ((Actual / lastActualAMT)  - 1 )* 100;
+                return Math.round(((Actual / lastActual)  - 1 ) * Math.pow(10, 4)) / 100;
             }else if(ro != "ALL" && product == "ALL") {
                 for(var i in eisdata[year][month][ro]) {
                     Actual += eisdata[year][month][ro][i][actualIndex];
-                    lastActual += eisdata[year-1][month][ro][i][actualIndex];
+                    if(eisdata[year-1][month][i].hasOwnProperty(j)) {
+                        lastActual += eisdata[year-1][month][ro][i][actualIndex];
+                    }
                 }
-                return ((Actual / lastActualAMT) - 1) * 100;
+                return Math.round(((Actual / lastActual)  - 1 ) * Math.pow(10, 4)) / 100;
             }else if(ro == "ALL" && product != "ALL") {
                 for(var i in eisdata[year][month]) {
                     Actual += eisdata[year][month][i][product][actualIndex];
-                    lastActual += eisdata[year-1][month][i][product][actualIndex];
+                    if(eisdata[year-1][month][i].hasOwnProperty(j)) {
+                        lastActual += eisdata[year-1][month][i][product][actualIndex];
+                    }
                 }
-                return ((Actual / lastActualAMT) - 1) * 100;
+                return Math.round(((Actual / lastActual)  - 1 ) * Math.pow(10, 4)) / 100;
             }else {
-                return ((eisdata[year][month][ro][product][actualIndex] / eisdata[year-1][month][ro][product][actualIndex]) - 1) * 100;
+                if(eisdata[year-1][month][i].hasOwnProperty(j)) {
+                    var result = ((eisdata[year][month][ro][product][actualIndex] / eisdata[year-1][month][ro][product][actualIndex]) - 1);
+                    Math.round(result * Math.pow(10, 4)) / 100
+                }else {
+                    //In ro, the product doesn't exist in last year.
+                }
             }
         }
 
-        function getHighchartsData() {
+        function getHighchartsData(ro, product, year, month, type) {
             var total = 0;
             for(var year in eisdata) {
                 ActualQTY[year] = [];
@@ -310,19 +320,19 @@ $("#viewMonthlyHitRate").pagecontainer({
         		}]
         	});
         	loadingMask("hide");
-            // $(".slider").slick({
-            //     autopaly: false,
-            //     dots: false,
-            //     responseive: [{
-            //         breakpoint: 500,
-            //         settings: {
-            //             arrows: true,
-            //             infinite: false,
-            //             slidesToShow: 2,
-            //             slidesToScroll: 2
-            //         }
-            //     }]
-            // });
+            $(".slider").slick({
+                autopaly: false,
+                dots: false,
+                responseive: [{
+                    breakpoint: 500,
+                    settings: {
+                        arrows: true,
+                        infinite: false,
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }]
+            });
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
