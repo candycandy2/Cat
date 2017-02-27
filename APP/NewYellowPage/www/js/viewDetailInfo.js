@@ -33,11 +33,13 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     for(var item in detailHasDataAry){
                         if (queryData === detailHasDataAry[item].query){
                             dataContent = detailHasDataAry[item].result;
-                            insertDetailValue(dataContent);
-                            dataExist = true;
                             if (checkDataExpired(detailHasDataAry[item].time, expiredQueryTime, 'dd')){
                                 dataExist = false;
-                                // detailHasDataAry.remove(item);   // review
+                                detailHasDataAry.splice(item, 1);
+                            }
+                            else{
+                                insertDetailValue(dataContent);
+                                dataExist = true;
                             }
                             loadingMask("hide");
                             break;
@@ -108,6 +110,17 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                 $("#detail-data #deptCode").html(dataContent[0].DeptCode);
                 $("#detail-data #extNo").html("<a" + telString + "</a>");
                 $("#detail-data #eMail").html(dataContent[0].EMail);
+
+                if (prevPageID === "viewQueryResult") {
+                    employeeData[employeeSelectedIndex].employeeid = dataContent[0].EmployeeID;
+                    for(var i=0; i<Object.keys(phonebookData).length; i++) {
+                        if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                            $("#addStar").hide();
+                            $("#deleteStar").show();
+                            break;
+                        }
+                    }
+                }
             }
             
             function AddMyPhoneBook() {
@@ -122,9 +135,6 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                         QueryMyPhoneBook();
                         $("#addStar").hide();
                         $("#deleteStar").show();
-                        // clear data in storage
-                        localStorage.removeItem('detailInfo');
-                        localStorage.removeItem('queryInfo');   // review
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
                         getServerData();
                     } else {

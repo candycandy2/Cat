@@ -23,16 +23,17 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                 }
                 else{
                     queryHasDataAry = JSON.parse(localStorage.getItem("queryInfo"));
-                    // var storageData = JSON.parse(localStorage.getItem("queryInfo"));
                     for(var item in queryHasDataAry){
                         if (queryData === queryHasDataAry[item].query){
                             dataContent = queryHasDataAry[item].result;
-                            insertQueryValue(dataContent, 1);
                             loadingMask("hide");
-                            dataExist = true;
                             if (checkDataExpired(queryHasDataAry[item].time, expiredQueryTime, 'dd')){
                                 dataExist = false;
-                                // queryHasDataAry.remove(item);    // review
+                                queryHasDataAry.splice(item, 1);
+                            }
+                            else{
+                                insertQueryValue(dataContent, 1);
+                                dataExist = true;
                             }
                             break;
                         }
