@@ -15,6 +15,10 @@ class UserController extends Controller
 {
     protected $userService;
 
+    /**
+     * 建構子，初始化引入相關服務
+     * @param UserService      $userService      用戶服務
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -45,7 +49,7 @@ class UserController extends Controller
                     'Content'=>array("RoleList"=>$roleList)]);
 
         } catch (Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
 
