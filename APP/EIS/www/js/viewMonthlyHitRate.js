@@ -23,6 +23,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".Product").html("");
                 $(".Product").append(ProductList).enhanceWithin();
+
+                setScrollMenuHeight();
             };
             this.failCallback = function(data) {
                 console.log("api misconnected");
@@ -229,6 +231,10 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
+        function setScrollMenuHeight(){
+            $('div.scrollmenu a').css({'width': ($('body').width()-5)/6});
+        }
+
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
         	chart = new Highcharts.Chart({
@@ -333,6 +339,13 @@ $("#viewMonthlyHitRate").pagecontainer({
             $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "ASP"));
             $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "ASP"));
             $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "ASP"));
+        });
+
+        // scroll menu on click
+        $(document).on('click', '.scrollmenu>a', function(e){
+            e.preventDefault();
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
         });
     }
 });
