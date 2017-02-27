@@ -1,4 +1,4 @@
-var chart, ro, product, year, month;
+var chart, ro, product, year, month, actualValue, budgetHitRate, yoyGrowth, tab;
 var ProductList = '<a>ALL</a>';
 var ActualQTY = {};
 var BudgetQTY = {};
@@ -17,13 +17,12 @@ $("#viewMonthlyHitRate").pagecontainer({
                 for(var i=0; i<length; i++) {
                     for(var j in callbackData[i]) {
                         if(callbackData[i][j] == "PRODUCT") {
-                            ProductList += '<a>' + callbackData[i]["PVALUE"] + '</a>' ;
+                            ProductList += '<a id="' + callbackData[i]["PVALUE"] + '">' + callbackData[i]["PVALUE"] + '</a>' ;
                         }
                     }
                 }
                 $(".Product").html("");
                 $(".Product").append(ProductList).enhanceWithin();
-
                 setScrollMenuHeight();
             };
             this.failCallback = function(data) {
@@ -54,10 +53,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                 CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
             }();
         };
-
-        function showData() {
-
-        }
 
      /*   function addItem2scrollmenu() {
             for(var i in eisdata[thisYear][thisMonth]["BQA"]) {
@@ -186,6 +181,10 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
+        function setPropertyOfResult(){
+
+        }
+
         function getHighchartsData(ro, product, year, month, type) {
             var total = 0;
             for(var year in eisdata) {
@@ -247,6 +246,12 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
+            tab = "Quantity";
+            ro = "ALL";
+            product = "ALL";
+            actualValue = getActualValue(ro, product, thisYear, thisMonth, tab);
+            yoyGrowth = getYOYGrowth(ro, product, thisYear, thisMonth, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
         	chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
@@ -325,11 +330,10 @@ $("#viewMonthlyHitRate").pagecontainer({
         			pointStart: 1
         		}]
         	});
-        	loadingMask("hide");
+        
             $(".slider").slick({
                 autopaly: false,
                 dots: false,
-
                 responseive: [{
                     breakpoint: 500,
                     settings: {
@@ -338,36 +342,61 @@ $("#viewMonthlyHitRate").pagecontainer({
                         slidesToShow: 2,
                         slidesToScroll: 2
                     }
-                }]
-
+                }],
                 infinite: false
-
             });
+
+            loadingMask("hide");
+            $("#title-content #ActualValue p").text(actualValue);
+            $("#title-content #BudgetHitRate p").text(budgetHitRate);
+            $("#title-content #YOYGrowth p").text(yoyGrowth);
+            setPropertyOfResult();
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
-            $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "Quantity"));
-            $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "Quantity"));
-            $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "Quantity"));
+            tab = "Quantity";
+            $("#title-content #ActualValue p").text(getActualValue(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate(ro, product, thisYear, thisMonth, tab) + "%");
+            $("#title-content #YOYGrowth p").text(getYOYGrowth(ro, product, thisYear, thisMonth, tab));
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
-            $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "Amount"));
-            $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "Amount"));
-            $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "Amount"));
+            tab = "Amount";
+            $("#title-content #ActualValue p").text(getActualValue(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate(ro, product, thisYear, thisMonth, tab) + "%");
+            $("#title-content #YOYGrowth p").text(getYOYGrowth(ro, product, thisYear, thisMonth, tab));
+            setPropertyOfResult();
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
-            $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "ASP"));
-            $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "ASP"));
-            $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "ASP"));
+            tab = "ASP";
+            $("#title-content #ActualValue p").text(getActualValue(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate(ro, product, thisYear, thisMonth, tab) + "%");
+            $("#title-content #YOYGrowth p").text(getYOYGrowth(ro, product, thisYear, thisMonth, tab));
+            setPropertyOfResult();
         });
 
         // scroll menu on click
-        $(document).on('click', '.scrollmenu>a', function(e){
+        $(document).on('click', '.Ro > a', function(e){
             e.preventDefault();
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
+            console.log($(this).context.id);
+            ro = $(this).context.id
+            $("#title-content #ActualValue p").text(getActualValue(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #YOYGrowth p").text(getYOYGrowth(ro, product, thisYear, thisMonth, tab));
+        });
+
+        $(document).on('click', '.Product > a', function(e){
+            e.preventDefault();
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
+            console.log($(this).context.id);
+            product = $(this).context.id;
+            $("#title-content #ActualValue p").text(getActualValue(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate(ro, product, thisYear, thisMonth, tab));
+            $("#title-content #YOYGrowth p").text(getYOYGrowth(ro, product, thisYear, thisMonth, tab));
         });
     }
 });
