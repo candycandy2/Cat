@@ -58,11 +58,12 @@
 }
 
 .page-main .page-date{
-	margin-top: 2VH;
 	font-family: Arial;
 	font-size: 2.5VH;
 	color: #0f0f0f;
-	text-align:center
+	text-align:center;
+	width: 80%;
+	margin: 2vh auto 0;
 }
 
 /******************************************** viewHitRate *******************************************/

@@ -310,19 +310,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         		}]
         	});
         	loadingMask("hide");
-            // $(".slider").slick({
-            //     autopaly: false,
-            //     dots: false,
-            //     responseive: [{
-            //         breakpoint: 500,
-            //         settings: {
-            //             arrows: true,
-            //             infinite: false,
-            //             slidesToShow: 2,
-            //             slidesToScroll: 2
-            //         }
-            //     }]
-            // });
+            $(".slider").slick({
+                autopaly: false,
+                dots: false,
+                infinite: false
+            });
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
