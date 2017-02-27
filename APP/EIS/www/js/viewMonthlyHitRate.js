@@ -1,43 +1,49 @@
-var chart;
+var chart, ro, product, year, month;
 var ProductList = '<a>ALL</a>';
 var ActualQTY = {};
+var BudgetQTY = {};
+var ActualAMT = {};
 var BudgetAMT = {};
+var HighchartsName = [];
 
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
 
-        // window.UserAuthority = function() {
+        window.UserAuthority = function() {
             
-        //     this.successCallback = function(data) {
-        //         callbackData = data["Content"]["DataList"];
-        //         length = callbackData.length;
-        //         for(var i=0; i<length; i++) {
-        //             for(var j in callbackData[i]) {
-        //                 if(callbackData[i][j] == "PRODUCT") {
-        //                     ProductList += '<a>' + callbackData[i]["PVALUE"] + '</a>' ;
-        //                 }
-        //             }
-        //         }
-        //         $(".Product").html("");
-        //         $(".Product").append(ProductList).enhanceWithin();
-        //     };
-        //     this.failCallback = function(data) {
-        //         console.log("api misconnected");
-        //     };
-        //     var _construct = function() {
-        //         CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
-        //     }();
-        // };
+            this.successCallback = function(data) {
+                callbackData = data["Content"]["DataList"];
+                length = callbackData.length;
+                for(var i=0; i<length; i++) {
+                    for(var j in callbackData[i]) {
+                        if(callbackData[i][j] == "PRODUCT") {
+                            ProductList += '<a>' + callbackData[i]["PVALUE"] + '</a>' ;
+                        }
+                    }
+                }
+                $(".Product").html("");
+                $(".Product").append(ProductList).enhanceWithin();
 
+                setScrollMenuHeight();
+            };
+            this.failCallback = function(data) {
+                console.log("api misconnected");
+            };
+            var _construct = function() {
+                CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
 
         window.ProductDetail = function() {
 
             this.successCallback = function(data) {
                 callbackData = data["Content"]["DataList"];
                 length = callbackData.length;
+                year = thisYear;
+                month = thisMonth;
                 convertData();
-                addItem2scrollmenu();
                 getHighchartsData();
+                // addItem2scrollmenu();
             }
 
             this.failCallback = function(data) {
@@ -53,12 +59,121 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         }
 
-        function addItem2scrollmenu() {
-            for(var i in eisdata[thisYear][thisMonth]["BQA"]) {
-                ProductList += '<a>' + i + '</a>';
+        // function addItem2scrollmenu() {
+        //     for(var i in eisdata[thisYear][thisMonth]["BQA"]) {
+        //         ProductList += '<a>' + i + '</a>';
+        //     }
+        //     $(".Product").html("");
+        //     $(".Product").append(ProductList).enhanceWithin();
+        // }
+
+        function getActualValue(ro, product, year, month, type) {
+            var actualIndex;
+            var Actual = 0;
+            if(type == "Quantity") {
+                actualIndex = 0;
+            }else if(type == "Amount") {
+                actualIndex = 2;
+            }else if(type == "ASP") {
+                actualIndex = 4;
             }
-            $(".Product").html("");
-            $(".Product").append(ProductList).enhanceWithin();
+            if(ro == "ALL" && product == "ALL") {
+                for(var i in eisdata[year][month]) {   //ro
+                    for(var j in eisdata[year][month][i]) {   //product
+                        Actual += eisdata[year][month][i][j][actualIndex];
+                    }
+                }
+                return Actual;
+            }else if(ro != "ALL" && product == "ALL") {
+                for(var i in eisdata[year][month][ro]) {
+                    Actual += eisdata[year][month][ro][i][actualIndex];
+                }
+                return Actual;
+            }else if(ro == "ALL" && product != "ALL"){
+                for(var i in eisdata[year][month]) {
+                    Actual += eisdata[year][month][i][product][actualIndex];
+                }
+                return Actual;
+            }else {
+                return eisdata[year][month][ro][product][actualIndex];
+            }
+        }
+
+        function getBudgetHitRate(ro, product, year, month, type) {
+            var actualIndex, budgetIndex;
+            var Actual = 0;
+            var Budget = 0;
+            if(type == "Quantity") {
+                budgetIndex = 1;
+                actualIndex = 0;
+            }else if(type == "Amount"){
+                budgetIndex = 3;
+                actualIndex = 2;
+            }else if(type == "ASP"){
+                budgetIndex = 5;
+                actualIndex = 4;
+            }
+            if(ro == "ALL" && product == "ALL") {
+                for(var i in eisdata[year][month]) {   //ro
+                    for(var j in eisdata[year][month][i]) {   //product
+                        Actual += eisdata[year][month][i][j][actualIndex];
+                        Budget += eisdata[year][month][i][j][budgetIndex];
+                    }
+                }
+                return (Actual / Budget) * 100;
+            }else if(ro != "ALL" && product == "ALL") {
+                for(var i in eisdata[year][month][ro]) {
+                    Actual += eisdata[year][month][ro][i][actualIndex];
+                    Budget += eisdata[year][month][ro][i][budgetIndex];
+                }
+                return (Actual / Budget) * 100;
+            }else if(ro == "ALL" && product != "ALL"){
+                for(var i in eisdata[year][month]) {
+                    Actual += eisdata[year][month][i][product][actualIndex];
+                    Budget += eisdata[year][month][i][product][budgetIndex];
+                }
+                return (Actual / Budget) * 100;
+            }else {
+                return (eisdata[year][month][ro][product][actualIndex] / eisdata[year][month][ro][product][budgetIndex]) * 100;
+            }    
+        }
+
+        function getYOYGrowth(ro, product, year, month, type) {
+            var actualIndex;
+            var Actual = 0;
+            var lastActual = 0;
+            if(type == "Quantity") {
+                actualIndex = 0;
+            }else if(type == "Amount") {
+                actualIndex = 2;
+            }else if(type == "ASP") {
+                actualIndex = 4;
+            }
+            if (ro == "ALL" && product == "ALL") {
+                for(var i in eisdata[year][month]) {    //ro
+                    console.log(i);
+                    for(var j in eisdata[year][month][i]) {   //product
+                        console.log(j);
+                        Actual += eisdata[year][month][i][j][actualIndex];
+                        lastActual += eisdata[year-1][month][i][j][actualIndex];
+                    }
+                }
+                return ((Actual / lastActualAMT)  - 1 )* 100;
+            }else if(ro != "ALL" && product == "ALL") {
+                for(var i in eisdata[year][month][ro]) {
+                    Actual += eisdata[year][month][ro][i][actualIndex];
+                    lastActual += eisdata[year-1][month][ro][i][actualIndex];
+                }
+                return ((Actual / lastActualAMT) - 1) * 100;
+            }else if(ro == "ALL" && product != "ALL") {
+                for(var i in eisdata[year][month]) {
+                    Actual += eisdata[year][month][i][product][actualIndex];
+                    lastActual += eisdata[year-1][month][i][product][actualIndex];
+                }
+                return ((Actual / lastActualAMT) - 1) * 100;
+            }else {
+                return ((eisdata[year][month][ro][product][actualIndex] / eisdata[year-1][month][ro][product][actualIndex]) - 1) * 100;
+            }
         }
 
         function getHighchartsData() {
@@ -71,8 +186,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                     BudgetAMT[year][Number(month)-1] = 0;
                     for(var ro in eisdata[year][month]) {
                         for(var product in eisdata[year][month][ro]) {
-                            ActualQTY[year][Number(month)-1] += Number(eisdata[year][month][ro][product][1]);
-                            BudgetAMT[year][Number(month)-1] += Number(eisdata[year][month][ro][product][2]);
+                            ActualQTY[year][Number(month)-1] += eisdata[year][month][ro][product][0];
+                            BudgetAMT[year][Number(month)-1] += eisdata[year][month][ro][product][3];
                         }
                     }
                 }
@@ -80,7 +195,9 @@ $("#viewMonthlyHitRate").pagecontainer({
         }
 
         function convertData() {
-            var month, rosite;
+            var month, rosite; 
+            var ActualASP = 0;
+            var BudgetASP = 0;
             var index = 0;
             for(var i=callbackData[0]["YEAR"]; i<=callbackData[length-1]["YEAR"]; i++) {
                 eisdata[i] = {};
@@ -91,17 +208,31 @@ $("#viewMonthlyHitRate").pagecontainer({
                         rosite = callbackData[index]["RO_SITE"];
                         eisdata[i][j][rosite] = {};
                         while(index<length && rosite == callbackData[index]["RO_SITE"]) {
+                            if(Number(callbackData[index]["ACTUAL_QTY"]) != 0) {
+                                ActualASP = Number(callbackData[index]["ACTUAL_ADJ_AMT"]) / Number(callbackData[index]["ACTUAL_QTY"]);    
+                            }
+                            if(Number(callbackData[index]["BUDGET_QTY"]) != 0) {
+                                BudgetASP = Number(callbackData[index]["BUDGET_AMT"]) / Number(callbackData[index]["BUDGET_QTY"]);    
+                            }
                             eisdata[i][j][rosite][callbackData[index]["PRODUCT"]] = [
-                                callbackData[index]["BUDGET_QTY"],
-                                callbackData[index]["ACTUAL_QTY"],
-                                callbackData[index]["BUDGET_AMT"],
-                                callbackData[index]["ACTUAL_ADJ_AMT"]
+                                Number(callbackData[index]["ACTUAL_QTY"]),
+                                Number(callbackData[index]["BUDGET_QTY"]),
+                                Number(callbackData[index]["ACTUAL_ADJ_AMT"]),
+                                Number(callbackData[index]["BUDGET_AMT"]),
+                                ActualASP,
+                                BudgetASP
                             ];
+                            ActualASP = 0;
+                            BudgetASP = 0;
                             index++;
                         }
                     }
                 }
             }
+        }
+
+        function setScrollMenuHeight(){
+            $('div.scrollmenu a').css({'width': ($('body').width()-5)/6});
         }
 
         /********************************** page event *************************************/
@@ -185,31 +316,36 @@ $("#viewMonthlyHitRate").pagecontainer({
         		}]
         	});
         	loadingMask("hide");
-            // $(".slider").slick({
-            //     autopaly: false,
-            //     dots: false,
-            //     responseive: [{
-            //         breakpoint: 500,
-            //         settings: {
-            //             arrows: true,
-            //             infinite: false,
-            //             slidesToShow: 2,
-            //             slidesToScroll: 2
-            //         }
-            //     }]
-            // });
+            $(".slider").slick({
+                autopaly: false,
+                dots: false,
+                infinite: false
+            });
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
-            
+            $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "Quantity"));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "Quantity"));
+            $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "Quantity"));
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
-          
+            $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "Amount"));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "Amount"));
+            $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "Amount"));
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
-           
+            $("#title-content #ActualValue p").text(getActualValue("ALL", "ALL", thisYear, thisMonth, "ASP"));
+            $("#title-content #BudgetHitRate p").text(getBudgetHitRate("ALL", "ALL", thisYear, thisMonth, "ASP"));
+            $("#title-content #YOYGrowth p").text(getYOYGrowth("ALL", "ALL", thisYear, thisMonth, "ASP"));
+        });
+
+        // scroll menu on click
+        $(document).on('click', '.scrollmenu>a', function(e){
+            e.preventDefault();
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
         });
     }
 });
