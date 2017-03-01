@@ -512,20 +512,22 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$messageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                    array_push($event_push_token_list,$uuid->uuid);
+                                if($currentUserInfo->status == "Y" && $currentUserInfo->resign == "N") {
+                                    foreach ($currentUserInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insert([
+                                                'project_row_id'=>1,
+                                                'user_row_id'=>$userId,
+                                                'uuid'=>$uuid->uuid,
+                                                'message_send_row_id'=>$messageSendId,
+                                                'created_user'=>\Auth::user()->row_id,
+                                                'created_at'=>$now,
+                                            ]);
+                                        array_push($event_push_token_list,$uuid->uuid);
+                                    }
+                                    array_push($insertedUserIdList, $userId);
+                                    array_push($real_push_user_list, $userId);
                                 }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
                             }
                         }
                     }
@@ -569,13 +571,13 @@ class pushController extends Controller
                         }
                     }
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $news_push_token_list, $messageSendId, true);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$messageSendId, $schedule_datetime, $title, $news_push_token_list, $messageSendId, true);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $news_push_token_list, $messageSendId, true);
                     }
                 } else {
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $event_push_token_list, $messageSendId);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$messageSendId, $schedule_datetime, $title, $event_push_token_list, $messageSendId);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $event_push_token_list, $messageSendId);
                     }
@@ -668,20 +670,22 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$newMessageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                    array_push($event_push_token_list, $uuid->uuid);
+                                if($currentUserInfo->status == "Y" && $currentUserInfo->resign == "N") {
+                                    foreach ($currentUserInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insert([
+                                                'project_row_id'=>1,
+                                                'user_row_id'=>$userId,
+                                                'uuid'=>$uuid->uuid,
+                                                'message_send_row_id'=>$newMessageSendId,
+                                                'created_user'=>\Auth::user()->row_id,
+                                                'created_at'=>$now,
+                                            ]);
+                                        array_push($event_push_token_list, $uuid->uuid);
+                                    }
+                                    array_push($insertedUserIdList, $userId);
+                                    array_push($real_push_user_list, $userId);
                                 }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
                             }
 
                         }
@@ -716,13 +720,13 @@ class pushController extends Controller
                         }
                     }
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $news_push_token_list, $newMessageSendId, true);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $schedule_datetime, $title, $news_push_token_list, $newMessageSendId, true);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $news_push_token_list, $newMessageSendId, true);
                     }
                 } else {
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $event_push_token_list, $newMessageSendId);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $schedule_datetime, $title, $event_push_token_list, $newMessageSendId);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $event_push_token_list, $newMessageSendId);
                     }
@@ -869,13 +873,13 @@ class pushController extends Controller
                         }
                     }
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $tag_list, $newMessageSendId, true);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("pushonly".$newMessageSendId, $schedule_datetime, $title, $tag_list, $newMessageSendId, true);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $tag_list, $messageSendRowId, true);
                     }
                 } else {
                     if($is_schedule) {
-                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI($schedule_datetime, $title, $push_token_list, $newMessageSendId);
+                        $result = PushUtil::PushScheduleMessageWithJPushWebAPI("pushonly".$newMessageSendId, $schedule_datetime, $title, $push_token_list, $newMessageSendId);
                     } else {
                         $result = PushUtil::PushMessageWithJPushWebAPI($title, $push_token_list, $messageSendRowId);
                     }

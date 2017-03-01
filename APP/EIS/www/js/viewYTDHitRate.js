@@ -101,6 +101,11 @@ $("#viewYTDHitRate").pagecontainer({
 					pointStart: 1
 				}]
 			});
+			$(".sliderYTD").slick({
+                autopaly: false,
+                dots: false,
+                infinite: false
+            });
 			loadingMask("hide");
         });
     }

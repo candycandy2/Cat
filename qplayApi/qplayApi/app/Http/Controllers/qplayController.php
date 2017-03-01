@@ -2547,7 +2547,7 @@ SQL;
 
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId, true);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId, true);
                                 } else {
                                     $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
                                 }
@@ -2713,29 +2713,22 @@ SQL;
                                     $userRowId = $userRoleInfo->row_id;
 
                                     if(!in_array($userRowId, $hasSentUserIdList)) {
-                                        $thisUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
-//                                        if(count($thisUserInfo->uuidList) == 0) {
-//                                            \DB::rollBack();
-//                                            $result = response()->json(['result_code'=>ResultCode::_000911_uuidNotExist,
-//                                                'message'=>"接收推播的用户uuid不存在",
-//                                                'content'=>'']);
-//                                            CommonUtil::logApi("", $ACTION,
-//                                                response()->json(apache_response_headers()), $result);
-//                                            return $result;
-//                                        }
-                                        foreach ($thisUserInfo->uuidList as $uuid) {
-                                            \DB::table("qp_user_message")
-                                                -> insertGetId([
-                                                    'project_row_id'=>$projectInfo->row_id,
-                                                    'user_row_id'=>$userRowId,
-                                                    'uuid'=>$uuid->uuid,
-                                                    'message_send_row_id'=>$newMessageSendId,
-                                                    'created_user'=>$sourceUserInfo->row_id,
-                                                    'created_at'=>$now
-                                                ]);
+                                        $thisUserInfo = CommonUtil::getUserInfoByRowID($userRowId);//CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
+                                        if($thisUserInfo->status == "Y" && $thisUserInfo->resign == "N") {
+                                            foreach ($thisUserInfo->uuidList as $uuid) {
+                                                \DB::table("qp_user_message")
+                                                    -> insertGetId([
+                                                        'project_row_id'=>$projectInfo->row_id,
+                                                        'user_row_id'=>$userRowId,
+                                                        'uuid'=>$uuid->uuid,
+                                                        'message_send_row_id'=>$newMessageSendId,
+                                                        'created_user'=>$sourceUserInfo->row_id,
+                                                        'created_at'=>$now
+                                                    ]);
+                                            }
+                                            $hasSentUserIdList[] = $userRowId;
+                                            $real_push_user_list[] = $userRowId;
                                         }
-                                        $hasSentUserIdList[] = $userRowId;
-                                        $real_push_user_list[] = $userRowId;
                                     }
                                 }
                             }
@@ -2761,7 +2754,7 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI($push_time_utc, $message_title, $to, $newMessageSendId);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId);
                                 } else {
                                     $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
                                 }

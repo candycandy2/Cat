@@ -57,6 +57,7 @@ function overridejQueryFunction() {
 //3. html
 
 var tplJS = {
+    pageHeight: "",
     tplRender: function(pageID, contentID, renderAction, HTMLContent) {
         if (renderAction === "append") {
             $("#" + pageID + " #" + contentID).append(HTMLContent);
@@ -84,6 +85,19 @@ var tplJS = {
                 $(element).html(langStr[id]);
             });
         }
+    },
+    getRealContentHeight: function() {
+        var header = $.mobile.activePage.find("div[data-role='header']:visible");
+        var footer = $.mobile.activePage.find("div[data-role='footer']:visible");
+        var content = $.mobile.activePage.find("div[data-role='content']:visible:visible");
+        var viewport_height = $(window).height();
+
+        var content_height = viewport_height - header.outerHeight() - footer.outerHeight();
+        if ((content.outerHeight() - header.outerHeight() - footer.outerHeight()) <= viewport_height) {
+            content_height -= (content.outerHeight() - content.height());
+        }
+
+        return content_height;
     },
     Tab: function(pageID, contentID, renderAction, data) {
         var tabHTML = $("template#tplTab").html();
@@ -200,44 +214,81 @@ var tplJS = {
         //Render Template
         this.tplRender(pageID, contentID, renderAction, dropdownList);
 
-        //Option msg
-        var optionMsgHTML = $("template#tplOptionMsg").html();
-        var optionMsg = $(optionMsgHTML);
-        var optionMsgID = data.id + "-option";
-        var optionMsgDataListID = data.id + "-option-list";
+        //Option in Popup
+        var popupHTML = $("template#tplPopup").html();
+        var popup = $(popupHTML);
+        var popupID = data.id + "-option";
+        var dropdownListUlID = data.id + "-option-list";
 
-        optionMsg.prop("id", optionMsgID);
+        popup.prop("id", popupID);
 
-        var optionMsgDataList = optionMsg.find("ul");
-        optionMsgDataList.prop("id", optionMsgDataListID);
+        var dropdownListOptionHTML = $("template#tplPopupContentDropdownListOption").html();
+        var dropdownList = $(dropdownListOptionHTML);
+        var dropdownListClose = $(dropdownList[0]);
+        var dropdownListUl = $(dropdownList[2]);
 
-        var tplOptionMsgListHTML = optionMsg.find("template#tplOptionMsgList").html();
+        dropdownListUl.prop("id", dropdownListUlID);
+
+        var dropdownListLiHTML = dropdownList.find("template#tplPopupContentDropdownListLi").html();
+        var dropdownListHrHTML = dropdownList.find("template#tplPopupContentDropdownListHr").html();
 
         for (var i=0; i<data.option.length; i++) {
-            var tplOptionMsgList = $(tplOptionMsgListHTML);
+            var dropdownListLi = $(dropdownListLiHTML);
 
-            tplOptionMsgList.prop("value", data.option[i].value);
-            tplOptionMsgList.html(data.option[i].text);
-            optionMsgDataList.append(tplOptionMsgList);
+            dropdownListLi.prop("value", data.option[i].value);
+            dropdownListLi.html(data.option[i].text);
+            dropdownListUl.append(dropdownListLi);
+
+            if (i !== parseInt(data.option.length - 1, 10)) {
+                var dropdownListHr = $(dropdownListHrHTML);
+                dropdownListHr.addClass("ui-hr-option");
+                dropdownListUl.append(dropdownListHr);
+            }
         }
 
+        popup.find("div[data-role='main'] .header").append(dropdownListClose);
+        popup.find("div[data-role='main'] .main").append(dropdownListUl);
+
         //Render Template
-        this.tplRender(pageID, contentID, renderAction, optionMsg);
+        this.tplRender(pageID, contentID, renderAction, popup);
+
+        //When Popup open, Auto Resize height of Popup main,
+        //and change height of page, prevent User to scroll the page behind Popup.
+        $(document).on("popupafteropen", "#" + popupID, function() {
+            var popupHeight = popup.height();
+            var popupHeaderHeight = popup.find("div[data-role='main'] .header").height();
+            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+            //ui-content paddint-top/padding-bottom:2.9vh
+            var uiContentPaddingHeight = parseInt(document.documentElement.clientHeight * 2.9 * 2 / 100, 10);
+
+            //Ul margin-top:2.9vh
+            var ulMarginTop = parseInt(document.documentElement.clientHeight * 2.9 / 100, 10);
+
+            var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+            $(this).find("div[data-role='main'] .main").height(popupMainHeight);
+            $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
+        });
+
         //Initialize Popup
-        $('#' + optionMsgID).popup();
+        $('#' + popupID).popup();
 
         $(document).on("click", "#" + data.id, function() {
-            $('#' + optionMsgID).popup('open');
+            $('#' + popupID).popup('open');
+
+            preventPageScroll();
         });
 
-        $(document).on("click", "#" + optionMsgID + " .close", function() {
-            $('#' + optionMsgID).popup('close');
+        $(document).on("click", "#" + popupID + " .close", function() {
+            $('#' + popupID).popup('close');
 
             reSizeDropdownList(data.id);
+            recoveryPageScroll();
         });
 
-        $(document).on("click", "#" + optionMsgID + " ul li", function() {
-            $("#" + optionMsgID + " ul li").removeClass("tpl-dropdown-list-selected");
+        //Click Li to change the value of Dropdown List
+        $(document).on("click", "#" + popupID + " ul li", function() {
+            $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
             $(this).addClass("tpl-dropdown-list-selected");
             $("#" + data.id).val($(this).val());
 
@@ -251,6 +302,32 @@ var tplJS = {
             //px conver to vw
             var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + 7;
             $("#" + ID).css('width', vwWidth + 'vw');
+        }
+
+        //Prevent Background Page to be scroll, when Option Popup is shown,
+        //Change the [height / overflow-y] of Background Page,
+        //And then, when Option Popup is close, recovery the [height / overflow-y] of Background Page.
+        function preventPageScroll() {
+            tplJS.pageHeight = $.mobile.activePage.outerHeight();
+            var adjustHeight = tplJS.getRealContentHeight();
+
+            $.mobile.activePage.css({
+                "height": adjustHeight,
+                "overflow-y": "hidden"
+            });
+        }
+
+        function recoveryPageScroll() {
+            //Padding
+            var paddingTop = parseInt($.mobile.activePage.css("padding-top"), 10);
+            var paddingBottom = parseInt($.mobile.activePage.css("padding-bottom"), 10);
+
+            var originalHeight = tplJS.pageHeight - paddingTop - paddingBottom;
+
+            $.mobile.activePage.css({
+                "height": originalHeight,
+                "overflow-y": "auto"
+            });
         }
     }
 };

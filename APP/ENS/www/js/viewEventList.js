@@ -67,6 +67,21 @@ $("#viewEventList").pagecontainer({
                 }, {
                     value: "4",
                     text: "一般通報"
+                }, {
+                    value: "0",
+                    text: "全部##"
+                }, {
+                    value: "1",
+                    text: "未完成##"
+                }, {
+                    value: "2",
+                    text: "完成##"
+                }, {
+                    value: "3",
+                    text: "緊急通報##"
+                }, {
+                    value: "4",
+                    text: "一般通報##"
                 }]
             };
 

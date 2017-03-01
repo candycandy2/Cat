@@ -18,6 +18,7 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
         LogFile.createAndWriteFile(dataArr);
     }
 
+    // review
     function requestError(data) {
         checkNetwork(data);
     }
