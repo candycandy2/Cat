@@ -79,6 +79,12 @@ return [
     'MSG_CONFIRM_REMOVE_RIGHT' => 'Confirm to remove rights?',
     'MSG_REMOVE_RIGHT_FAILED' => 'Remove user right failed!',
     'MSG_BELONG_TO_GROUP_RIGHT' => 'Belong to system group right',
+    'MSG_LOGIN_INFO_ERROR'=>'loginid / password / domain / lang can not empty!',
+    'MSG_LOGIN_ERROR'=>'loginid or password error',
+    'MSG_LOGIN_FAILED'=>'Login Failed',
+    'MSG_USER_VERIFY_ERROR'=>'User Verify Error',
+    'MSG_WRONG_SIGNATURE'=>'Wrong Signature',
+    'MSG_SIGNATURE_OUT_OF_LIMIT'=>'Out of signature-time limit',
 
     //Role Maintain
     'COMPANY_NAME' => 'Company Name',
@@ -267,6 +273,9 @@ return [
     'ERR_APP_KEY_INCORRECT_ERROR'=>'App key incrrect,please check yout file content!',
     'ERR_VERSION_NO_DUPLICATE' => 'Version No. can not de duplicated',
     'ERR_VERSION_NAME_DUPLICATE' => 'Version Name. can not de duplicated',
+    'MSG_SAVE_APP_SUCCESS'=>'Save App Success',
+    'MSG_SAVE_APP_ERROR'=>'Save App Error',
+    'MSG_GET_APP_LIST_ERROR'=>'Get App List Error',
 
     //Project Maintain
     'PROJECT_CODE' => 'App Code',
@@ -275,7 +284,7 @@ return [
     'PROJECT_MEMO' => 'Memo',
     'APP_MAINTAIN' => 'App Maintain',
     'ACTION_MAINTAIN' => 'Maintain',
-    'SEND_TO_ME' => 'Send To Me',
+    'SEND_EMAIL' => 'Send Email',
     'ACTION_SEND' => 'Send Again',
     'APPLY_APP_KEY' => 'Applying APP Key',
     'FIELD_DESCRIPTION'=>'Field Description',

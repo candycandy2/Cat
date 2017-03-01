@@ -134,7 +134,7 @@ class PushUtil
         return $result;
     }
 
-    public static function PushScheduleMessageWithJPushWebAPI($schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
         $result = array();
         $result["result"] = true;
         $result["info"] = "success";
@@ -156,7 +156,7 @@ class PushUtil
                 ),
             );
             $content = $message;
-            $scheduleName = time();//$message;
+            $scheduleName = $schedule_name; //time();//$message;
             $message = array(
                 'title' => $message,
                 'content_type' => 'text',
@@ -280,6 +280,32 @@ class PushUtil
         return $result;
     }
 
+    public static function RemoveTagsWithJPushWebAPI($registrationId, $tag) {
+        $result = array();
+        $result["result"] = true;
+        $response = null;
+        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        try {
+            $device = $client->device();
+            $result["info"] = $device->removeDevicesFromTag($tag, $registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred".$e->getMessage();
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred".$e->getMessage();
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred".$e->getMessage();
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred".$e->getMessage();
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred".$e->getMessage();
+        }
+        return $result;
+    }
     //JPush API Proxy
     public static function GetDevices($registrationId) {
         $result = array();

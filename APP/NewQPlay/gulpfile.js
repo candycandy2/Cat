@@ -58,6 +58,9 @@ var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
                     + "<string>appens"      + appNameDecorate + "</string>"
                     + "<string>appeis"      + appNameDecorate + "</string>"
                     + "<string>appleave"    + appNameDecorate + "</string>"
+					+ "<string>apprelieve"  + appNameDecorate + "</string>"
+					+ "<string>appmas"    + appNameDecorate + "</string>"
+					+ "<string>appim"    + appNameDecorate + "</string>"
                     + "<string>appscheme01" + appNameDecorate + "</string>"
                     + "<string>appscheme02" + appNameDecorate + "</string>"
                     + "<string>appscheme03" + appNameDecorate + "</string>"
@@ -105,6 +108,10 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appcalendar' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appens' +      appNameDecorate + ':*" />' +
                         '<allow-intent href="appaccountingrate'+appNameDecorate + ':*" />' +
+						'<allow-intent href="appleave'+appNameDecorate + ':*" />' +
+						'<allow-intent href="apprelieve'+appNameDecorate + ':*" />' +
+						'<allow-intent href="appmas'+appNameDecorate + ':*" />' +
+						'<allow-intent href="appim'+appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + appNameDecorate + ':*" />' +
@@ -232,7 +239,6 @@ gulp.task('less',function(){
         .pipe(less())
         .pipe(gulp.dest('www/src/css/'));
 });
-
 gulp.task('concat:css', ['less'], function(){
     return gulp.src('www/src/css/*.css')
         .pipe(concat('style.css'))
@@ -243,17 +249,17 @@ gulp.task('concat:css', ['less'], function(){
 gulp.task('templateHTML', function() {
     return gulp.src('../component/template/*.html')
         .pipe(concat('template.html'))
-        .pipe(gulp.dest('../component/'));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('appHTML', ['templateHTML'], function(){
-    return gulp.src(['../component/component.html','../component/template.html'])
+    return gulp.src(['../component/component.html','./template.html'])
         .pipe(concat('APP.html'))
         .pipe(gulp.dest('www/View/'));
 });
 
 gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ../component/template.html'
+    'rm ./template.html'
 ]));
 
 gulp.task('componentIMG', function() {
@@ -269,11 +275,11 @@ gulp.task('libJS', function() {
 gulp.task('functionJS', function() {
     return gulp.src('../component/function/*.js')
         .pipe(concat('function.js'))
-        .pipe(gulp.dest('../component/'));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('appJS', ['functionJS'], function(){
-    return gulp.src(['../component/component.js','../component/function.js'])
+    return gulp.src(['../component/component.js','./function.js'])
         //.pipe(uglify())
         //.pipe(concat('app.min.js'))
         .pipe(concat('APP.js'))
@@ -291,14 +297,18 @@ gulp.task('String', ['commonString'], function() {
 });
 
 gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ../component/function.js'
+    'rm ./function.js'
 ]));
 
 //ex: gulp default --env test
-gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 
 gulp.task('jenkinsdefault', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+
+});
+
+gulp.task('jenkinsdefaultwithbuild', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });

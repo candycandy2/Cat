@@ -79,6 +79,12 @@ return [
     'MSG_CONFIRM_REMOVE_RIGHT' => '确认将用户停权?',
     'MSG_REMOVE_RIGHT_FAILED' => '用户停权失败!',
     'MSG_BELONG_TO_GROUP_RIGHT' => '依系统群组权限',
+    'MSG_LOGIN_INFO_ERROR'=>'用户名/密码/域/语言 不能为空!',
+    'MSG_LOGIN_ERROR'=>'用户名或密码错误',
+    'MSG_LOGIN_FAILED'=>'登录失败',
+    'MSG_USER_VERIFY_ERROR'=>'用户认证错误',
+    'MSG_WRONG_SIGNATURE'=>'错误的签名',
+    'MSG_SIGNATURE_OUT_OF_LIMIT'=>'签名过期',
 
     //Role Maintain
     'COMPANY_NAME' => '公司名称',
@@ -267,6 +273,8 @@ return [
     'ERR_APP_KEY_INCORRECT_ERROR' => '上传档案appkey与专案不符，请确认上传档案内容!',
     'ERR_VERSION_NO_DUPLICATE' => '版本号不可重复',
     'ERR_VERSION_NAME_DUPLICATE' => '版本名称不可重复',
+    'MSG_SAVE_APP_SUCCESS'=>'保存APP成功',
+    'MSG_SAVE_APP_ERROR'=>'保存APP失败',
 
 	//Project Maintain
 	'PROJECT_CODE' => '项目代码',
@@ -275,7 +283,7 @@ return [
 	'PROJECT_MEMO' => '备注',
     'APP_MAINTAIN' => 'App 维护',
     'ACTION_MAINTAIN' => '维护',
-    'SEND_TO_ME' => '寄送详细资讯',
+    'SEND_EMAIL' => '寄送详细资讯',
     'ACTION_SEND' => '再寄一次',
     'APPLY_APP_KEY' => '申请APP Key',
     'FIELD_DESCRIPTION'=>'字段说明',

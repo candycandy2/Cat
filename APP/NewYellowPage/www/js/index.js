@@ -12,6 +12,8 @@ var phonebookData = {};
 var prevPageID;
 var doClearInputData = false;
 
+var tmpPopupData = "", tmpPageID = "";
+
 window.initialSuccess = function() {
 //alert("initialSuccess");
     loadingMask("show");
@@ -24,6 +26,10 @@ window.initialSuccess = function() {
         prevPageID = null;
     });
 
+    // close number popup window for yellowpage
+    $('#numPopupCloseBtn').on('click', function(){
+        $('#numSelectPopupWindow').popup('close');
+    });
 }
 
 //[Android]Handle the back button
@@ -67,4 +73,41 @@ function onBackKeyDown() {
         }
 
     }
+}
+
+
+// popup window, if the employee has multiple num
+$(document).on('click', '.chooseNumPop', function(){
+    var tempMvpn = $(this).data('mvpnnum'), tempExt = $(this).data('extnum'), extTotalNum = 0;
+
+    if (tempExt != tmpPopupData || $(this).closest('.ui-page').attr('id') != tmpPageID){
+        $('#numSelectPopupWindow').find('ul').html('');
+        // has mutiple ext num
+        if ($(this).hasClass('extNumMore')){
+            extTotalNum = tempExt.match(/;/igm).length + 1;
+            for (var i = 0; i < extTotalNum; i++){
+                appendNum($(this).data('extnum' + (i+1)));
+            }
+        }
+
+        // has mvpn num
+        if ($(this).hasClass('mvpnNum')){
+            // has only one ext number
+            if (!$(this).hasClass('extNumMore'))
+                appendNum(tempExt);
+            appendNum(tempMvpn);
+        }
+        tmpPopupData = tempExt;
+        tmpPageID = $(this).closest('.ui-page').attr('id');
+    }
+
+    $('#numSelectPopupWindow').popup();
+    $('#numSelectPopupWindow').show();
+    $('#numSelectPopupWindow').popup('open');
+});
+
+function appendNum(num){
+    $('#numSelectPopupWindow').find('ul').append('<li><img src="img/phone.png" style="width:4vw; height:auto;"><span>' + 
+            "<a href='tel:" + num + "' style='text-decoration: none; font-weight: normal;'>" + num + "</a>"
+         + '</span></li>');
 }

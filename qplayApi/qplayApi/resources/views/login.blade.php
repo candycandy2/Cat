@@ -75,6 +75,9 @@
 
         #dlgMessage {
             border-radius: .8em;
+            border: 0px;
+            box-shadow: 0 0 0px rgba(0,0,0,0);
+            -webkit-box-shadow: 0 0 0px rgba(0,0,0,0);
         }
 
         #dlgMessage .ui-header {

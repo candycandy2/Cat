@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
@@ -28,7 +29,7 @@ class AuthController extends Controller
             'lang'      => 'required'
         ]);
         if ($validator->fails()) {
-            $data['errormsg'] ='loginid / password / domain / lang can not empty!';
+            $data['errormsg'] = trans("messages.MSG_LOGIN_INFO_ERROR");
             return \Redirect::to('auth/login')->with($data);
         }
 
@@ -40,7 +41,7 @@ class AuthController extends Controller
         if (array_key_exists("remember", $input)) {
             $remember = $input["remember"];
         }
-
+        App::setLocale($lang);
         $verify = new Verify();
         $result = $verify->verifyUserByUserID($loginid, $domain);
         if($result["code"] != ResultCode::_1_reponseSuccessful)
@@ -57,7 +58,7 @@ class AuthController extends Controller
         $bind = @ldap_bind($ldapConnect, $userId, $password);
         if (!$bind)
         {
-            $data['errormsg'] = "帳號或密碼錯誤";
+            $data['errormsg'] = trans('messages.MSG_LOGIN_ERROR');;
             return \Redirect::to('auth/login')->with($data);
         }
 
@@ -66,7 +67,7 @@ class AuthController extends Controller
             // 认证通过...
             return redirect()->to($this->getRdirectUrl());
         } else {
-            $data['errormsg'] = "Login Failed";
+            $data['errormsg'] = trans("messages.MSG_LOGIN_FAILED");
             return \Redirect::to('auth/login')->with($data);
         }
     }
@@ -118,16 +119,16 @@ class AuthController extends Controller
             $result = $verify->verifyUserByUserID($loginid, $domain);
             if($result["code"] != ResultCode::_1_reponseSuccessful)
             {
-               $data['errormsg'] = "User Verify Error";
+               $data['errormsg'] = trans('messages.MSG_USER_VERIFY_ERROR');
                return \Redirect::to('auth/login')->with($data);
             }
             $sigResult = self::chkSignature($loginid, $password,$signatureTime);
             if ($sigResult == 1) {
-                $data['errormsg'] = "Wrong Signature";
+                $data['errormsg'] = trans('messages.MSG_WRONG_SIGNATURE');
                 return \Redirect::to('auth/login')->with($data);
             }
             if($sigResult == 2) {
-                $data['errormsg'] = "Out of signature-time limit";
+                $data['errormsg'] = trans('messages.MSG_SIGNATURE_OUT_OF_LIMIT');
                 return \Redirect::to('auth/login')->with($data);
             }
         }
@@ -136,7 +137,7 @@ class AuthController extends Controller
             // 认证通过...
             return redirect()->to($this->getRdirectUrl());
         } else {
-            $data['errormsg'] = "Login Failed";
+            $data['errormsg'] = trans('messages.MSG_LOGIN_FAILED');
             return \Redirect::to('auth/login')->with($data);
         }
         

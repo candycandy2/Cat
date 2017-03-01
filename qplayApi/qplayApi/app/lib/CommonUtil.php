@@ -118,6 +118,24 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserInfoByRowID($userRowId)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.row_id', '=', $userRowId)
+            -> select()->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        $userList[0] -> uuidList = array();
+        $userList[0] -> uuidList = \DB::table('qp_register')
+            -> where('user_row_id', '=', $userList[0]->row_id)
+            -> where('status', '=', 'A')
+            -> select('uuid')->get();
+
+        return $userList[0];
+    }
+
     public static function getUserIdByUUID($uuid) {
         $userList = \DB::table('qp_user')
             -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
@@ -294,7 +312,11 @@ class CommonUtil
     }
 
     public static function getMessageContentByCode($messageCode) {
-        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
+        $lang = "";
+        if (array_key_exists('lang',$_GET)){
+            $lang = $_GET["lang"];
+        }
+        $lang_row_id = self::getLanguageIdByName($lang);
         $project_id = self::getProjectInfo();
         if ($project_id == null ||  count($project_id)<0){
             return "";
@@ -314,8 +336,12 @@ class CommonUtil
     }
 
     public static function getLanguageIdByName($lang) {
-        $lang = strtolower($lang);
         $lang_row_id = 1;
+        if (empty($lang)){
+            return $lang_row_id;
+        }
+        $lang = strtolower($lang);
+
         switch ($lang) {
             case "en-us":
                 $lang_row_id = 1;
@@ -439,6 +465,12 @@ class CommonUtil
         return false;
     }
 
+    /**
+     * @param $userId
+     * @param $action
+     * @param $responseHeader
+     * @param $responseBody
+     */
     public static function logApi($userId, $action, $responseHeader, $responseBody) {
     $version = self::getApiVersionFromUrl();
     $appKey = self::getAppKeyFromHeader();
@@ -448,7 +480,26 @@ class CommonUtil
     $now = date('Y-m-d H:i:s',time());
     $ip = self::getIP();
     $url_parameter = $_SERVER["QUERY_STRING"];
-    $request_header = response()->json(apache_request_headers());
+    $request_header = apache_request_headers();
+    /*
+     * "App-Key":"appyellowpagedev",
+     * "Signature":"UTpzSsnqBrMJ9mmz1g0dicvlmwEYWjPi69fGmSwm1ug=",
+     * "Signature-Time":"1483581882",
+     * "token":"586da9b75a3ab"
+     * */
+    $requestHeaderInfo = [];
+        if(array_key_exists("app-key",$request_header)){
+            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+        }
+        if(array_key_exists("signature",$request_header)){
+            $requestHeaderInfo["signature"] = $request_header["signature"];
+        }
+        if(array_key_exists("signature-time",$request_header)){
+            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+        }
+        if(array_key_exists("token",$request_header)){
+            $requestHeaderInfo["token"] = $request_header["token"];
+        }
     $request_body = self::prepareJSON(file_get_contents('php://input'));
 
     \DB::table("qp_api_log")
@@ -459,12 +510,10 @@ class CommonUtil
             'action'=>$action,
             'ip'=>$ip,
             'url_parameter'=>$url_parameter,
-            'request_header'=>$request_header,
-            'request_body'=>$request_body,
-            'request_header'=>$request_header,
+            'request_header'=>json_encode($requestHeaderInfo),
             'request_body'=>$request_body,
             'response_header'=>$responseHeader,
-            'response_body'=>$responseBody,
+            'response_body'=>json_encode($responseBody),
             'created_at'=>$now,
         ]);
 }
@@ -473,9 +522,27 @@ class CommonUtil
         $now = date('Y-m-d H:i:s',time());
         $ip = self::getIP();
         $url_parameter = $_SERVER["QUERY_STRING"];
-        $request_header = response()->json(apache_request_headers());
+        $request_header = apache_request_headers();
         $request_body = self::prepareJSON(file_get_contents('php://input'));
-
+        /*
+             * "app-key":"appyellowpagedev",
+             * "signature":"UTpzSsnqBrMJ9mmz1g0dicvlmwEYWjPi69fGmSwm1ug=",
+             * "signature-time":"1483581882",
+             * "token":"586da9b75a3ab"
+             * */
+        $requestHeaderInfo = [];
+        if(array_key_exists("app-key",$request_header)){
+            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+        }
+        if(array_key_exists("signature",$request_header)){
+            $requestHeaderInfo["signature"] = $request_header["signature"];
+        }
+        if(array_key_exists("signature-time",$request_header)){
+            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+        }
+        if(array_key_exists("token",$request_header)){
+            $requestHeaderInfo["token"] = $request_header["token"];
+        }
         \DB::table("qp_api_log")
             -> insert([
                 'user_row_id'=>' ',
@@ -484,10 +551,10 @@ class CommonUtil
                 'action'=>$action,
                 'ip'=>$ip,
                 'url_parameter'=>$url_parameter,
-                'request_header'=>$request_header,
+                'request_header'=>json_encode($requestHeaderInfo),
                 'request_body'=>$request_body,
                 'response_header'=>$responseHeader,
-                'response_body'=>$responseBody,
+                'response_body'=>json_encode($responseBody),
                 'created_at'=>$now,
             ]);
     }
@@ -543,4 +610,5 @@ class CommonUtil
         }
         return $key;
     }
+
 }

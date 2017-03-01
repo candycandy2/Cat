@@ -136,7 +136,7 @@ class PushUtil
         return $result;
     }
 
-    public static function PushScheduleMessageWithJPushWebAPI($schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
         $result = array();
         $result["result"] = true;
         $result["info"] = "success";
@@ -158,7 +158,7 @@ class PushUtil
                 ),
             );
             $content = $message;
-            $scheduleName = time();//$message;
+            $scheduleName = $schedule_name; //time();//$message;
             $message = array(
                 'title' => $message,
                 'content_type' => 'text',

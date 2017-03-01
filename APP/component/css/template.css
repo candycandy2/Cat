@@ -3,12 +3,36 @@
 /************************************ Tempalte CSS *******************************/
 /*********************************************************************************/
 
+/* Tabs */
+.ui-tabs {
+    padding: 0px;
+}
+
+/* Hr */
+.ui-hr {
+    width: 100%;
+    height: 1px;
+    background-color: #989898;
+    border: none;
+    opacity: 0.5;
+    margin: 0 auto;
+}
+
+.ui-hr-option {
+    width: 95%;
+}
+
 /* Navbar */
 .ui-navbar li .ui-btn {
     font-size: 2.8vh;
     font-weight: bold;
     color: #0f0f0f;
     border-color: #2a88bc;
+    border-right-width: 1px;
+}
+
+.ui-navbar li:last-child .ui-btn {
+    margin-right: 0px;
 }
 
 html .ui-navbar li .ui-btn.ui-btn-active {
@@ -24,4 +48,66 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 .tpl-navbar-button-right {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+}
+
+/* Dropdown List */
+.tpl-dropdown-list {
+    outline: none;
+    padding: 5px;
+    font-size: 2.8vh;
+    border: 0;
+    background: url('../img/component/dropdown.png') right transparent;
+    background-size: 2.9vw 2vw;
+    background-repeat: no-repeat;
+    -webkit-appearance: none;
+    margin-bottom: 1.2vh;
+}
+
+.tpl-dropdown-list-selected {
+    background-color: #2C89BC;
+    color: #FFFFFF !important;
+}
+
+.tpl-option-msg-list {
+    font-size: 2.8vh;
+    padding: 1.3vh 2.4vw;
+    color: #0f0f0f;
+}
+
+/* Popup Msg */
+.app-popup {
+    max-height: 50vh;
+    overflow-y: hidden;
+}
+
+.app-popup.ui-overlay-shadow {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.app-popup.ui-popup {
+    margin: 0 auto;
+}
+
+.app-popup.ui-corner-all {
+    border-radius: 16px;
+}
+
+.app-popup .close {
+    text-align: right;
+    font-weight: bold;
+}
+
+.app-popup .ui-content {
+    padding: 2.5vh 3vw 2.9vh;
+    overflow-y: hidden;
+    max-height: inherit;
+}
+
+.app-popup .ui-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 2.9vh;
+    overflow-y: scroll;
 }

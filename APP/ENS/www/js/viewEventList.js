@@ -18,36 +18,88 @@ $("#viewEventList").pagecontainer({
 
             var __construct = function() {
                 //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
-                loadingMask("hide");
+                //loadingMask("hide");
             }();
 
         };
 
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
+
+            //UI Tab
             var tabData = {
-                id: "tabEventList",
-                navbar: [{
-                    href: "reportDiv",
-                    text: "通報動態"
-                }, {
-                    href: "memberDiv",
-                    text: "成員"
-                }],
+                navbar: {
+                    button: [{
+                        href: "reportDiv",
+                        text: "通報動態"
+                    }, {
+                        href: "memberDiv",
+                        text: "成員"
+                    }]
+                },
                 content: [{
-                    id: "reportDiv",
-                    text: "reportDiv"
+                    id: "reportDiv"
                 }, {
-                    id: "memberDiv",
-                    text: "memberDiv"
+                    id: "memberDiv"
+                }],
+                attr: {
+                    id: "tabEventList"
+                }
+            };
+
+            tplJS.Tab("viewEventList", "contentEventList", "append", tabData);
+
+            //UI Dropdown List : Event Type
+            var eventTypeData = {
+                id: "eventType",
+                option: [{
+                    value: "0",
+                    text: "全部"
+                }, {
+                    value: "1",
+                    text: "未完成"
+                }, {
+                    value: "2",
+                    text: "完成"
+                }, {
+                    value: "3",
+                    text: "緊急通報"
+                }, {
+                    value: "4",
+                    text: "一般通報"
+                }, {
+                    value: "0",
+                    text: "全部##"
+                }, {
+                    value: "1",
+                    text: "未完成##"
+                }, {
+                    value: "2",
+                    text: "完成##"
+                }, {
+                    value: "3",
+                    text: "緊急通報##"
+                }, {
+                    value: "4",
+                    text: "一般通報##"
                 }]
             };
 
-            tplJS.Tab("viewEventList", "content", "append", tabData);
+            tplJS.DropdownList("viewEventList", "reportDiv", "append", eventTypeData);
+
+            //Event List Msg
+            var eventListMsgHTML = $("template#tplEventListMsg").html();
+
+            for (var i=0; i<5; i++) {
+                var eventListMsg = $(eventListMsgHTML);
+                $("#reportDiv").append(eventListMsg);
+            }
+
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
-            
+            //$('#deleteConfirm').popup('open');
+            //$('#tplOptionTest').popup('open');
         });
 
         /********************************** dom event *************************************/

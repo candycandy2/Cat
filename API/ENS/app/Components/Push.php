@@ -1,4 +1,7 @@
 <?php
+/**
+ * 推播相關元件
+ */
 namespace App\Components;
 
 use App\lib\CommonUtil;
@@ -9,7 +12,16 @@ use Config;
 class Push
 {    
 
-    public function sendPushMessage($from, Array $to, $title, $text, $queryParam)
+    /**
+     * 發送推播訊息
+     * @param  String $from       發訊人
+     * @param  Array  $to         收訊人
+     * @param  String $title      訊息標題
+     * @param  String $text       訊息內容
+     * @param  Array  $queryParam 
+     * @return json               訊息推播結果
+     */
+    public function sendPushMessage($from, Array $to, $title, $text, Array $queryParam)
     {
             $signatureTime = time();
             $apiFunction = 'sendPushMessage';
