@@ -145,7 +145,11 @@
                     }
                 }; 
 
-                this.failCallback = function(data) {};
+                this.failCallback = function(data) {
+                    if (callGetMessageList) {
+                        callGetMessageList = false;
+                    }
+                };
 
                 var __construct = function() {
                     QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
