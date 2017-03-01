@@ -408,8 +408,8 @@ class EventController extends Controller
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
-
-            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
+            
+            $eventList = $this->eventRepository->getEventById($eventId);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -421,7 +421,7 @@ class EventController extends Controller
                 'Message'=>"無法編輯已完成事件",
                 'Content'=>""]);
             }
-            
+
             //update Event Status
             if($eventStatus!=""){
 
