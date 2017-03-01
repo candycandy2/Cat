@@ -112,7 +112,7 @@ $("#viewHitRate").pagecontainer ({
 			
 				if(budgetHitRate < 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
-				}else if(budgetHitRate >= 95) {
+				}else if(budgetHitRate > 95) {
 					$("#" + ro + " .HR").css('background', '#48af56');
 				}else{
 					$("#" + ro + " .HR").css('background', '#e6be20');
@@ -134,7 +134,7 @@ $("#viewHitRate").pagecontainer ({
             $("#total .dataContainer .HR span").text((Math.round(totalBudgetHitRate * Math.pow(10, 2)) / 100) + "%");
             if(totalBudgetHitRate < 80) {
                 $("#total .dataContainer .HR").css('background', '#ee3839');
-            }else if(totalBudgetHitRate >= 95) {
+            }else if(totalBudgetHitRate > 95) {
                 $("#total .dataContainer .HR").css('background', '#48af56');
             }else {
                 $("#total .dataContainer .HR").css('background', '#e6be20');
