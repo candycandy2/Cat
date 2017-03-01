@@ -22,15 +22,18 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     // do nothing
                 }
                 else{
-                    var storageData = JSON.parse(localStorage.getItem("queryInfo"));
-                    for(var item in storageData){
-                        if (queryData === storageData[item].query){
-                            dataContent = storageData[item].result;
-                            insertQueryValue(dataContent, 1);
+                    queryHasDataAry = JSON.parse(localStorage.getItem("queryInfo"));
+                    for(var item in queryHasDataAry){
+                        if (queryData === queryHasDataAry[item].query){
+                            dataContent = queryHasDataAry[item].result;
                             loadingMask("hide");
-                            dataExist = true;
-                            if (checkDataExpired(storageData[item].time, expiredQueryTime, 'mm')){
+                            if (checkDataExpired(queryHasDataAry[item].time, expiredQueryTime, 'dd')){
                                 dataExist = false;
+                                queryHasDataAry.splice(item, 1);
+                            }
+                            else{
+                                insertQueryValue(dataContent, 1);
+                                dataExist = true;
                             }
                             break;
                         }
