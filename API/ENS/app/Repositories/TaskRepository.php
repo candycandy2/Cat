@@ -68,7 +68,7 @@ class TaskRepository
             ->select(
                 'en_user_task.emp_no as emp_no',
                 'read_time',
-                DB::raw("CONCAT(login_id,'\\\\',user_domain) as login_id")
+                DB::raw("CONCAT(user_domain,'\\\\',login_id) as login_id")
                 )
             ->get();
     }
