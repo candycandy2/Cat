@@ -94,6 +94,15 @@ function onBackKeyDown() {
     }else{
         /*leave this app*/
     }
+
+    // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
+    //     navigator.app.exitApp();
+    // } else {
+    //     $("input[id=viewHitRate-tab-1]").trigger('click');
+    //     $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
+    //     $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
+    //     $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
+    // }
 }
 
 function changePageByPanel(pageId) {
