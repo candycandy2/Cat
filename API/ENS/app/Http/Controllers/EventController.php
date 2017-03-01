@@ -175,7 +175,7 @@ class EventController extends Controller
                 }
             }
             if($eventStatus!=""){
-                $validStatusArr = array('0','1');
+                $validStatusArr = array(EventService::STATUS_FINISHED,EventService::STATUS_UNFINISHED);
                 if(!in_array($eventStatus,$validStatusArr)){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
                     'Message'=>"事件狀態碼錯誤",
@@ -357,11 +357,9 @@ class EventController extends Controller
                     unset( $data[$field]);
                 }
            }
-           
+
            //若無資料就跳過不更新
-           //if(count($data) > 0){
             $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
-           //}
            \DB::commit();
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
@@ -397,7 +395,7 @@ class EventController extends Controller
             $empNo = trim((string)$xml->emp_no[0]);
             $eventId = trim((string)$xml->event_row_id[0]);
             $readTime =  trim((string)$xml->read_time[0]);
-            $eventStetus = trim((string)$xml->event_status[0]);
+            $eventStatus = trim((string)$xml->event_status[0]);
 
             if(!isset($eventId) || trim($eventId) == "" ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
@@ -410,8 +408,8 @@ class EventController extends Controller
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
-
-            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
+            
+            $eventList = $this->eventRepository->getEventById($eventId);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -423,18 +421,21 @@ class EventController extends Controller
                 'Message'=>"無法編輯已完成事件",
                 'Content'=>""]);
             }
-            
+
             //update Event Status
-            if($eventStetus!=""){
+            if($eventStatus!=""){
+
                 $userAuthList = $this->userService->getUserRoleList($empNo);
                 if(!in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
                         'Content'=>""]);
                 }
-                if( !in_array($eventStetus,array(0,1))){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
+
+                $validStatusArr = array(EventService::STATUS_FINISHED,EventService::STATUS_UNFINISHED);
+                if(!in_array($eventStatus,$validStatusArr)){
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
+                    'Message'=>"事件狀態碼錯誤",
                     'Content'=>""]);
                 }
                 //update qp_event
@@ -538,8 +539,8 @@ class EventController extends Controller
         $data['event_desc'] = (string)$xml->event_desc[0];
 
         foreach ($xml->basic_list as $key => $value) {
-             $tmp['location'] = (string)$value->location[0];
-             $tmp['function'] = (string)$value->function[0];
+             $tmp['location'] = trim((string)$value->location[0]);
+             $tmp['function'] = trim((string)$value->function[0]);
              $data['basicList'][] = $tmp;
         }
         return $data;
