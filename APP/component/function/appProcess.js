@@ -3,7 +3,8 @@
 /********************************** APP Process JS function *************************************/
 /************************************************************************************************/
 var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
-    isDisConnect = false;                   // check if disconnect
+    isDisConnect = false,                   // check if disconnect
+    closeInfoMsgInit = false;               // let closeInfoMsg click event init once
 
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
@@ -113,7 +114,7 @@ function openNetworkDisconnectWindow(status){
 
     // closeDisconnectNetwork click event should init only once
     if (!closeDisconnectNetworkInit){
-        $("#closeDisconnectNetwork").on("click", function(){
+        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
             $('#disconnectNetwork').popup('close');
             $('#disconnectNetwork').hide();
 
@@ -194,10 +195,13 @@ function infoMessage() {
         document.documentElement.style.webkitUserSelect = "auto";
     }, 1000);
 
-    $("#closeInfoMsg").on("click", function(){
-        $('#infoMsg').popup('close');
-        $('#infoMsg').hide();
-    });
+    if (!closeInfoMsgInit){
+        $(document).on('click', '#infoMsg #closeInfoMsg', function(){
+            $('#infoMsg').popup('close');
+            $('#infoMsg').hide();
+        });
+        closeInfoMsgInit = true;
+    }
 }
 
 //[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
