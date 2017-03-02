@@ -9,6 +9,7 @@
         </div>
     </div>
     <div data-role="main" class="page-main" id="contentEventList">
+
         <!--template @Event List Msg-->
         <template id="tplEventListMsg">
             <div class="event-list-msg">
@@ -64,11 +65,122 @@
             </div>
         </template>
 
+        <!--template @popup content > Event Member List-->
+        <template id="tplEventMemberList">
+            <!--header: Title or Button-->
+            <div class="header event-member-list">
+                <div class="number">
+                    <div class="normal">
+                        <span class="img"></span>
+                        <span class="text">16003</span>
+                    </div>
+                    <div class="urgent hide">
+                        <span class="img"></span>
+                        <span class="text">16003</span>
+                    </div>
+                </div>
+                <div class="title">
+                    [機房緊提通報_停電]
+                </div>
+                <div class="description">
+                     因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業
+                </div>
+            </div>
+            <!--main: Ul listview-->
+            <ul data-role="listview" class="main event-member-list">
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Kevin.CM.Huang</span>
+                    </div>
+                    <div class="view-after hide">
+                        <span class="img"></span>
+                        <span class="text">Kevin.CM.Huang</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before hide">
+                        <span class="img"></span>
+                        <span class="text">Steven.Yan</span>
+                    </div>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Steven.Yan</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Wendy Shih</span>
+                    </div>
+                    <div class="view-after hide">
+                        <span class="img"></span>
+                        <span class="text">Wendy Shih</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before hide">
+                        <span class="img"></span>
+                        <span class="text">Allen Su</span>
+                    </div>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Allen Su</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Kevin.CM.Huang</span>
+                    </div>
+                    <div class="view-after hide">
+                        <span class="img"></span>
+                        <span class="text">Kevin.CM.Huang</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before hide">
+                        <span class="img"></span>
+                        <span class="text">Steven.Yan</span>
+                    </div>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Steven.Yan</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Wendy Shih</span>
+                    </div>
+                    <div class="view-after hide">
+                        <span class="img"></span>
+                        <span class="text">Wendy Shih</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before hide">
+                        <span class="img"></span>
+                        <span class="text">Allen Su</span>
+                    </div>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Allen Su</span>
+                    </div>
+                </li>
+            </ul>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="confirm">OK</div>
+            </div>
+        </template>
+
     </div>
 
     <div data-role="footer" class="event-list-footer" data-position="fixed">
         <!--@Event List Add Button-->
-        <div class="event-list-add-button"></div>
+        <div id="addEvent" class="event-list-add-button"></div>
     </div>
+
 
 </div>

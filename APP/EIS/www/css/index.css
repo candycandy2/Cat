@@ -58,11 +58,12 @@
 }
 
 .page-main .page-date{
-	margin-top: 2VH;
 	font-family: Arial;
 	font-size: 2.5VH;
 	color: #0f0f0f;
-	text-align:center
+	text-align:center;
+	width: 80%;
+	margin: 2vh auto 0;
 }
 
 /******************************************** viewHitRate *******************************************/
@@ -216,7 +217,7 @@ div.scrollmenu {
 
 div.scrollmenu a {
 	display: inline-block;
-	padding: 1.8VH 4VW 1.6VH 4VW;
+	padding: 1.8VH 0 1.6VH;
 	background-color: #fbfdfd;
 	color: #0f0f0f;
 	font-family: Arial;
@@ -225,16 +226,22 @@ div.scrollmenu a {
 	border-style: solid;
 	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
-	width: 9VW;
+	width: 16.5%;
 	text-decoration: none;
-	margin-left: -1.4VW;
 }
 
-div.scrollmenu a:hover {
+div.scrollmenu a:nth-of-type(1){ border-left-width: 0;}
+
+div.scrollmenu a.hover {
     background-color: #0fb6b7;
     color: #fff !important;
-    margin-left: -1.4VW;
 }
+
+div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
+.scrollmenu.Ro{ overflow: hidden;}
+.scrollmenu.Ro a{ float: left;}
+/* let scroll more smooth in iOS */
+.scrollmenu.Product{ -webkit-overflow-scrolling: touch}
 
 /****************************************** viewYTDHitRate ******************************************/
 #viewYTDHitRate #title-container {
