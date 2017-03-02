@@ -23,6 +23,15 @@ $("#viewEventList").pagecontainer({
 
         };
 
+        function eventMemberListPopup() {
+            var data = {
+                id: "eventMemberList",
+                content: $("template#tplEventMemberList").html()
+            };
+
+            tplJS.Popup("viewEventList", "contentEventList", "append", data);
+        }
+
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
 
@@ -85,7 +94,8 @@ $("#viewEventList").pagecontainer({
                 }]
             };
 
-            tplJS.DropdownList("viewEventList", "reportDiv", "append", eventTypeData);
+            $("#reportDiv").append('<div id="eventTypeContent"></div>');
+            tplJS.DropdownList("viewEventList", "eventTypeContent", "append", "typeA", eventTypeData);
 
             //Event List Msg
             var eventListMsgHTML = $("template#tplEventListMsg").html();
@@ -98,14 +108,22 @@ $("#viewEventList").pagecontainer({
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
-            //$('#deleteConfirm').popup('open');
-            //$('#tplOptionTest').popup('open');
+
+            //Event Member List Popup
+            eventMemberListPopup();
         });
 
         /********************************** dom event *************************************/
-        $(document).on("click", "#tabEventList", function() {
-
+        $(document).on("click", ".event-list-msg-bottom .member, .event-list-msg-bottom .view", function() {
+            $("#eventMemberList").popup("open");
         });
 
+        $(document).on("click", "#eventMemberList .confirm", function() {
+            $("#eventMemberList").popup("close");
+        });
+
+        $(document).on("click", "#addEvent", function() {
+            $.mobile.changePage('#viewEventAdd');
+        });
     }
 });

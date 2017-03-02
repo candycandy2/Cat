@@ -137,7 +137,7 @@ class EventRepository
     /**
      * 取回不包含自己且尚未被關聯的事件
      * @param  int $currentEventId 目前事件
-     * @return mix
+     * @return mixed
      */
     public function getUnrelatedEventList($currentEventId){
         return $this->event
@@ -151,7 +151,7 @@ class EventRepository
      * 取得事件內容
      * @param  int $eventId en_event.row_id
      * @param  String $empNo 員工編號
-     * @return mix
+     * @return mixed
      */
     public function getEventDetail($eventId, $empNo){
         $selectField = $this->eventField;
@@ -166,9 +166,9 @@ class EventRepository
     }
 
     /**
-     * 依事件取得餐與者
+     * 依事件取得參與者
      * @param  int $eventId  事件id en_event.row_id
-     * @return mix
+     * @return mixed
      */
     public function getUserByEventId($eventId){
         return $this->userEvent
@@ -214,7 +214,7 @@ class EventRepository
      * @return int                   已更新的資料筆數
      */
     public function updateEventById($empNo, $eventId, Array $updateData){
-        
+
         if(count($updateData) > 0){
             $updateData['updated_user'] = $empNo;
             $this->event->where('row_id', $eventId)
@@ -241,7 +241,7 @@ class EventRepository
      * 檢查事件是否有此參與者
      * @param  int    $eventId en_event.row_id
      * @param  String $empNo  員工編號
-     * @return mix
+     * @return mixed
      */
     public function getIsEventOwner($eventId, $empNo){
         return $this->userEvent
@@ -253,10 +253,22 @@ class EventRepository
     /**
      * 取得事件狀態
      * @param  int $eventId     事件id en_event.row_id
-     * @return mix
+     * @return mixed
      */
     public function getEventStatus($eventId){
          return $this->event
+            ->where('row_id', '=', $eventId)
+            ->select('row_id','event_status')
+            ->first();
+    }
+
+    /**
+     * 依據事件Id取得事件資料
+     * @param  int $eventId 事件id en_event.row_id
+     * @return mixed
+     */
+    public function getEventById($eventId){
+        return $this->event
             ->where('row_id', '=', $eventId)
             ->select('row_id','event_status')
             ->first();

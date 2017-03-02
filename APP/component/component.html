@@ -23,47 +23,39 @@
     </div>
 
     <!-- Start of popup infoMsg -->
-    <div data-role="popup" data-history="false" id="infoMsg" class="popup-div popup-info" data-overlay-theme="b" data-dismissible="false" style="display:none;">
+    <div id="infoMsg" class="app-popup msg" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" style="display:none;">
         <div data-role="main" class="ui-content">
-            <p id="infoLoginid"></p>
-            <p>
-                UUID: <span id="infoUUID"></span>
-            </p>
-            <p>
-                Version: <span id="infoVersionName"></span>
-            </p>
-
-            <hr class="hr-style">
-
-            <div class="bottom">
-                <div class="button-content">
-                    <!--<span id="closeInfoMsg">確定</span>-->
-                    <span id="closeInfoMsg">
-                        <span class="langStr" data-id="com_016"></span>
-                    </span>
-                </div>
+            <div class="main">
+                <p id="infoLoginid"></p>
+                <p>
+                    UUID: <span id="infoUUID"></span>
+                </p>
+                <p>
+                    Version: <span id="infoVersionName"></span>
+                </p>
+            </div>
+            <hr class="ui-hr ui-hr-bottom">
+            <div class="footer">
+                <span id="closeInfoMsg">
+                    <span class="langStr" data-id="com_016"></span>
+                </span>
             </div>
         </div>
     </div>
 
     <!-- Start of popup Network disconnected -->
-    <div data-role="popup" data-history="false" id="disconnectNetwork" class="popup-div popup-info" 
-         data-overlay-theme="b" data-dismissible="false" style="display:none; z-index:999;">
+    <div id="disconnectNetwork" class="app-popup msg" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" style="display:none; z-index:999;">
         <div data-role="main" class="ui-content">
-            <p>
-                <!--連線失敗，請確認網路連線狀態-->
-                <span class="langStr" data-id="com_007"></span>
-            </p>
-
-            <hr class="hr-style">
-
-            <div class="bottom">
-                <div class="button-content">
-                    <!--確定-->
-                    <span id="closeDisconnectNetwork">
-                        <span class="langStr" data-id="com_016"></span>
-                    </span>
-                </div>
+             <div class="main">
+                <p>
+                    <span class="langStr" data-id="com_007"></span>
+                </p>
+             </div>
+             <hr class="ui-hr ui-hr-bottom">
+             <div class="footer">
+                <span id="closeInfoMsg">
+                    <span class="langStr" data-id="com_016"></span>
+                </span>
             </div>
         </div>
     </div>
