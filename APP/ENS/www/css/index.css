@@ -372,11 +372,44 @@ input[type=radio]:checked + label {
     margin-bottom: 2.14vw;
 }
 
-#eventLevelContent select, #eventTempalteSelectContent select,
-#eventFunctionSelectContent select {
+#contentEventAdd select  {
     margin-left: -5px;
 }
 
 #setDateTimeContent {
     margin-top: 2.14vw;
+}
+
+/*Event Content*/
+/*
+.event-content-footer .ui-footer .ui-bar-inherit .ui-footer-fixed slideup
+.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit
+*/
+.event-content-footer.ui-bar-inherit {
+    background-color: #2C89BC;
+    height: 12.88vw;
+}
+
+.event-content-footer > div {
+    float: left;
+}
+
+.event-content-footer .right, .event-content-footer .left {
+    width: 17vw;
+}
+
+.event-content-footer .center {
+    width: 66vw;
+    padding-top: 1.7vw;
+}
+
+.event-content-footer .center .ui-input-text {
+    margin: 0;
+}
+
+.event-content-footer .right {
+    color: #FFF;
+    font-size: 5vw;
+    padding-top: 3.9vw;
+    text-align: center;
 }

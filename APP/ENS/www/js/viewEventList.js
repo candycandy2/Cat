@@ -100,7 +100,7 @@ $("#viewEventList").pagecontainer({
             //Event List Msg
             var eventListMsgHTML = $("template#tplEventListMsg").html();
 
-            for (var i=0; i<5; i++) {
+            for (var i=0; i<1; i++) {
                 var eventListMsg = $(eventListMsgHTML);
                 $("#reportDiv").append(eventListMsg);
             }
@@ -111,6 +111,7 @@ $("#viewEventList").pagecontainer({
 
             //Event Member List Popup
             eventMemberListPopup();
+
         });
 
         /********************************** dom event *************************************/
@@ -124,6 +125,10 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#addEvent", function() {
             $.mobile.changePage('#viewEventAdd');
+        });
+
+        $(document).on("click", ".event-list-msg .description", function() {
+            $.mobile.changePage('#viewEventContent');
         });
     }
 });
