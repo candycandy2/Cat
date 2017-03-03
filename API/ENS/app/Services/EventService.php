@@ -21,8 +21,8 @@ class EventService
     protected $push;
 
     const EVENT_TYPE = 'event_type';
-    const STATUS_FINISHED = 1;
-    const STATUS_UNFINISHED = 0;
+    const STATUS_FINISHED = '1';
+    const STATUS_UNFINISHED = '0';
 
     public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push)
     {
@@ -143,7 +143,9 @@ class EventService
          $eventDetail = [];
          $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
          $eventDetail = $this->eventRepository->getEventDetail($eventId, $empNo);
-         $eventDetail  = $this->arrangeEventList($eventDetail);
+         if(isset($eventDetail)){
+            $eventDetail  = $this->arrangeEventList($eventDetail);
+         }
          if(count($eventDetail) > 0 ){
              $eventDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
              $eventDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
@@ -393,6 +395,7 @@ class EventService
     * @return Array
     */
    private function arrangeEventList($event){
+
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
         $item = [];
         $item['event_row_id'] = $event->event_row_id;

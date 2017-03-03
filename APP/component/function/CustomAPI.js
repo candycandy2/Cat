@@ -20,7 +20,10 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
 
     // review
     function requestError(data) {
-        checkNetwork(data);
+        errorHandler(data);
+        if (failCallback){
+            failCallback();
+        }
     }
 
     var signatureTime = getSignature("getTime");
