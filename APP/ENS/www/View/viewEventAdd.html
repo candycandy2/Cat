@@ -1,0 +1,72 @@
+
+<div data-role="page" id="viewEventAdd">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#viewEventList" data-role="none">
+            <div class="q-btn-header" style="width: 4vh;">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title">新增通報</h1>
+        </div>
+        <a href="#" data-role="none" class="ui-btn-right" style="text-decoration:none; color:#FFF; font-size: 2.8vh; padding-top: 0.8vh;">
+            <span>發送</span>
+        </a>
+    </div>
+    <div data-role="main" class="page-main event-add" id="contentEventAdd">
+        <div>
+            <span>等級 :</span>
+        </div>
+        <div id="eventLevelContent">
+            
+        </div>
+
+        <hr class="ui-hr ui-hr-absolute">
+
+        <div class="title">
+            <span>標題 : (限40個字)</span>
+        </div>
+        <div id="eventTempalteSelectContent">
+            
+        </div>
+        <textarea data-autogrow="false" maxlength="40" class="textarea-template">請選擇範本或輸入標題</textarea>
+
+        <hr class="ui-hr ui-hr-absolute">
+
+        <div class="title">
+            <span>描述 : (限80個字)</span>
+        </div>
+        <textarea data-autogrow="false" maxlength="80" class="textarea-description">描述文字</textarea>
+
+        <hr class="ui-hr ui-hr-absolute">
+
+        <div class="title">
+            <span>位置 / IT Function :</span>
+        </div>
+        <div id="eventFunctionSelectContent">
+            
+        </div>
+
+        <hr class="ui-hr ui-hr-absolute">
+
+        <div class="title">
+            <span>希望完成時間 :</span>
+        </div>
+        <div id="setDateTimeContent">
+                <input type="radio" data-role="none" name="setDateTime" id="setNow" value='setNow' checked="checked">
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="setNow">
+                    <span>立即</span>
+                </label>
+
+                <input type="radio" data-role="none" name="setDateTime" id="setTime" value='setTime'>
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="setTime">
+                    <span>設定時間</span>
+                </label>
+        </div>
+
+        <hr class="ui-hr ui-hr-absolute">
+    </div>
+</div>

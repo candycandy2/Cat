@@ -68,7 +68,7 @@ class CommonUtil
          $data = [];
          foreach ( $dataField as $column) {
              if(isset($xml->$column[0])){
-                $data[$column] = (string)$xml->$column[0];
+                $data[$column] = trim((string)$xml->$column[0]);
              }
          }
          return $data;
