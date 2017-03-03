@@ -66,7 +66,32 @@
                     <span>設定時間</span>
                 </label>
         </div>
+<div>
+<!--<input id="someinput" type="text">-->
+<input class="form-control" id="allentest" type="text" data-role="datebox" data-options='{"mode":"flipbox","useInlineAlign":"center","openCallback": "someFunction"}' readonly="readonly">
 
+<input class="form-control" id="allentest2" type="text" data-role="datebox" data-options='{"mode":"flipbox","useInlineAlign":"center","openCallback": "someFunction"}' readonly="readonly">
+</div>
         <hr class="ui-hr ui-hr-absolute">
+
+        <div class="title">
+            <span>關聯事件 :</span>
+        </div>
+        <div id="eventaAdditionalSelectContent">
+
+        </div>
+
+        <!--template @popup content > Event Add Confirm-->
+        <template id="tplEventAddConfirm">
+            <!--header: Title or Button-->
+            <div class="header">
+                確定發送緊急通報?
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <span class="confirm">取消</span>
+                <span class="confirm">確定</span>
+            </div>
+        </template>
     </div>
 </div>
