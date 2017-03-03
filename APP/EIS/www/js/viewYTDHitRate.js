@@ -152,7 +152,7 @@ $("#viewYTDHitRate").pagecontainer({
 		function showData() {
             $("#title-content #ActualValue p").text(actualValue);
             $("#title-content #BudgetHitRate p").text(budgetHitRate + "%");
-            if(budgetHitRate < 80) {
+            if(budgetHitRate <= 80) {
                 $("#title-content #BudgetHitRate p").css("color", "#ee3839");
             }else if(budgetHitRate > 95) {
                 $("#title-content #BudgetHitRate p").css("color", "#48af56");
@@ -164,6 +164,10 @@ $("#viewYTDHitRate").pagecontainer({
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
         	tab = "Quantity";
+
+			$(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+
             ro = "ALL";
             product = "ALL";
             actualValue = getActualValue(ro, product, thisYear, thisMonth, tab);
@@ -321,7 +325,6 @@ $("#viewYTDHitRate").pagecontainer({
 		    budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
 		    // getHighchartsData(ro, product, thisYear, thisMonth, tab);
 		    showData();
-		    console.log("r");
 		    // chart.series[0].setData(Actual[thisYear-3], true, true, false);
 		    // chart.series[1].setData(Actual[thisYear-2], true, true, false);
 		    // chart.series[2].setData(Actual[thisYear-1], true, true, false);
@@ -337,7 +340,6 @@ $("#viewYTDHitRate").pagecontainer({
 		    budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
 		    // getHighchartsData(ro, product, thisYear, thisMonth, tab);
 		    showData();
-		    console.log("p");
 		    // chart.series[0].setData(Actual[thisYear-3], true, true, false);
 		    // chart.series[1].setData(Actual[thisYear-2], true, true, false);
 		    // chart.series[2].setData(Actual[thisYear-1], true, true, false);
