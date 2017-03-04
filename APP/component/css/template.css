@@ -76,9 +76,15 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     -webkit-appearance: none;
 }
 
-.tpl-dropdown-list-header {
+.tpl-dropdown-list-icon-add {
     background: url('../img/add_icon.png') right transparent;
     background-size: 4vw 4vw;
+    background-repeat: no-repeat;
+}
+
+.tpl-dropdown-list-icon-arrow {
+    background: url('../img/component/dropdown.png') right transparent;
+    background-size: 2.9vw 2vw;
     background-repeat: no-repeat;
 }
 
@@ -111,11 +117,6 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 
 .app-popup.ui-corner-all {
     border-radius: 16px;
-}
-
-.app-popup .close {
-    text-align: right;
-    font-weight: bold;
 }
 
 .app-popup .ui-content {
@@ -162,7 +163,14 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 }
 
 /* ---common--- */
-.app-popup .header{ text-align: center;}
+.app-popup .header {
+    text-align: center;
+}
+
+.app-popup .close {
+    text-align: right;
+    font-weight: bold;
+}
 
 /* typography */
 .font-style1{ font-weight: normal; font-size: 4.39vw;}
