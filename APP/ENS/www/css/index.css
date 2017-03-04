@@ -341,6 +341,14 @@ input[type=radio]:checked + label {
 }
 
 /*Event Add*/
+.delete {
+    background: url(../img/delete.png) no-repeat;
+    background-size: 4.42vw;
+    width: 4.42vw;
+    height: 4.42vw;
+    display: block;
+}
+
 .text-bold {
     font-weight: bold;
 }
@@ -378,6 +386,42 @@ input[type=radio]:checked + label {
 
 #setDateTimeContent {
     margin-top: 2.14vw;
+}
+
+.event-add-location-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 85.4vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-add-location-list .left {
+    float: left;
+    width: 5%;
+    margin-right: 1.6vw;
+}
+
+.event-add-location-list .right {
+    float: left;
+    width: 93%;
+}
+
+.event-add-additional-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 85.4vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-add-additional-list .left {
+    float: left;
+    width: 5%;
+    margin-right: 1.6vw;
+}
+
+.event-add-additional-list .right {
+    float: left;
+    width: 93%;
 }
 
 /*Event Content*/

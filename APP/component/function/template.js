@@ -221,7 +221,7 @@ var tplJS = {
 
         //DropdownList Background IMG
         if (type === "typeB") {
-            dropdownList.addClass("tpl-dropdown-list-header");
+            dropdownList.addClass("tpl-dropdown-list-icon-add");
         }
 
         //DropdownList Attr
@@ -316,16 +316,20 @@ var tplJS = {
         $('#' + popupID).popup();
 
         $(document).on("click", "#" + data.id, function() {
-            $('#' + popupID).popup('open');
-
-            tplJS.preventPageScroll();
+            //Scroll Page to top
+            $("#" + pageID).animate({
+                "scrollTop": 0
+            }, 0, function() {
+                $('#' + popupID).popup('open');
+                tplJS.preventPageScroll();
+            });
         });
 
         $(document).on("click", "#" + popupID + " .close", function() {
             $('#' + popupID).popup('close');
 
             if (type === "typeA") {
-                reSizeDropdownList(data.id);
+                tplJS.reSizeDropdownList(data.id, type);
             }
             tplJS.recoveryPageScroll();
         });
@@ -334,30 +338,55 @@ var tplJS = {
         $(document).on("click", "#" + popupID + " ul li", function() {
             $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
             $(this).addClass("tpl-dropdown-list-selected");
-            
+
             if (type === "typeA") {
                 $("#" + data.id).val($(this).val());
-                reSizeDropdownList(data.id);
+                tplJS.reSizeDropdownList(data.id, type);
+            } else if (type === "typeB") {
+                //Find drowdown list, set selected option value
+                var defaultText;
+                $("#" + data.id + " option").each(function(index, el) {
+                    if (index === 0) {
+                        defaultText = $(el).text();
+                    }
+                });
+
+                var newOption = '<option value="' + $(this).val() + '" hidden selected>' + defaultText + '</option>';
+                $("#" + data.id).find("option").remove().end().append(newOption);
+
+                //Trigger drowdown list 'change' event
+                $("#" + data.id).trigger("change");
+
+                //Close Popup
+                $('#' + popupID).popup('close');
+
+                tplJS.recoveryPageScroll();
             }
         });
 
         //Auto Resize DropdownList Width
-        function reSizeDropdownList(ID) {
+        this.reSizeDropdownList = function(ID, type, setWidth) {
+            type = type || null;
             var tempWidth;
+
             if (type === "typeA") {
                 tempWidth = 7;
             } else if (type === "typeB") {
                 tempWidth = 7.5;
             }
 
-            $("span[data-id='tmp_option_width']").html($('#' + ID + ' option:selected').text());
-            var pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
-            //px conver to vw
-            var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + tempWidth;
-            $("#" + ID).css('width', vwWidth + 'vw');
-        }
+            if (type !== null) {
+                $("span[data-id='tmp_option_width']").html($('#' + ID + ' option:selected').text());
+                var pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
+                //px conver to vw
+                var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + tempWidth;
+                $("#" + ID).css('width', vwWidth + 'vw');
+            } else {
+                $("#" + ID).css('width', setWidth + 'vw');
+            }
+        };
 
-        reSizeDropdownList(data.id);
+        this.reSizeDropdownList(data.id, type);
 
     },
     Popup: function(pageID, contentID, renderAction, data) {
