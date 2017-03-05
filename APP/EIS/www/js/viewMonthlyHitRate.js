@@ -1,7 +1,4 @@
-var chart, year, month, actualValue, budgetHitRate, yoyGrowth;
-var ro = "ALL";
-var product = "ALL";
-var tab = "QTY";
+var chart, ro, product, tab, year, month, actualValue, budgetHitRate, yoyGrowth;
 var productList = '<a id="ALL">ALL</a>';
 var highchartsName = "Actual QTY";
 var highchartsData = {
@@ -422,7 +419,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             yoyGrowth = getYOYGrowth(ro, product, thisYear, thisMonth, tab);
             budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
             getHighchartsData(ro, product, thisYear, thisMonth);
-        	chart = new Highcharts.Chart({
+        	
+            chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
         			marginBottom: 80,
@@ -500,20 +498,7 @@ $("#viewMonthlyHitRate").pagecontainer({
         			pointStart: 1
         		}]
         	});
-            // $(".slider").slick({
-            //     autopaly: false,
-            //     dots: false,
-            //     responseive: [{
-            //         breakpoint: 500,
-            //         settings: {
-            //             arrows: true,
-            //             infinite: false,
-            //             slidesToShow: 2,
-            //             slidesToScroll: 2
-            //         }
-            //     }],
-            //     infinite: false
-            // });
+            initSlider();
             showData();
             chart.series[0].setData(highchartsData["Actual QTY"][thisYear-3], true, true, false);
             chart.series[1].setData(highchartsData["Actual QTY"][thisYear-2], true, true, false);
@@ -527,6 +512,23 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #ALL").addClass('hover');
             loadingMask("hide");
         });
+
+        function initSlider() {
+            $(".slider").slick({
+                autopaly: false,
+                dots: false,
+                responseive: [{
+                    breakpoint: 500,
+                    settings: {
+                        arrows: true,
+                        infinite: false,
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }],
+                infinite: false
+            });
+        }
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
             tab = "QTY";
