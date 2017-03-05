@@ -5,7 +5,7 @@ $("#viewEventAdd").pagecontainer({
         var doneDateTime = {};
         var eventTemplateData;
         var eventLocationData;
-        var eventFunctionData;
+        window.eventFunctionData;
         var eventAdditionalData;
 
         /********************************** function *************************************/
@@ -171,22 +171,22 @@ $("#viewEventAdd").pagecontainer({
                 title: "IT Function",
                 option: [{
                     value: "1",
-                    text: "Oracle ERP and Releated Web/DB Appliction"
+                    text: "Function A"
                 }, {
                     value: "2",
-                    text: "Oracle ERP and Releated Web/DB Appliction"
+                    text: "Function B"
                 }, {
                     value: "3",
-                    text: "Oracle ERP and Releated Web/DB Appliction"
+                    text: "Function C"
                 }, {
                     value: "4",
-                    text: "Oracle ERP and Releated Web/DB Appliction"
+                    text: "Function D"
                 }, {
                     value: "5",
-                    text: "Oracle ERP and Releated Web/DB Appliction"
+                    text: "Function E"
                 }, {
                     value: "6",
-                    text: "Oracle ERP and Releated Web/DB Appliction"
+                    text: "Function F"
                 }],
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow"

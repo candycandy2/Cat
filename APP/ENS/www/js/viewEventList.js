@@ -32,6 +32,15 @@ $("#viewEventList").pagecontainer({
             tplJS.Popup("viewEventList", "contentEventList", "append", data);
         }
 
+        function eventFunctionListPopup() {
+            var data = {
+                id: "eventFunctionList",
+                content: $("template#tplEventFunctionList").html()
+            };
+
+            tplJS.Popup("viewEventList", "contentEventList", "append", data);
+        }
+
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
 
@@ -105,6 +114,30 @@ $("#viewEventList").pagecontainer({
                 $("#reportDiv").append(eventListMsg);
             }
 
+            //UI Dropdown List : Event Member Type
+            var eventMemberTypeData = {
+                id: "eventMemberType",
+                option: [{
+                    value: "0",
+                    text: "位置"
+                }, {
+                    value: "1",
+                    text: "IT Function"
+                }, {
+                    value: "2",
+                    text: "管理員"
+                }]
+            };
+
+            $("#memberDiv").append('<div id="eventMemberTypeContent"></div>');
+            tplJS.DropdownList("viewEventList", "eventMemberTypeContent", "append", "typeA", eventMemberTypeData);
+
+            //Event Member Data List
+            var eventMemberDataListHTML = $("template#tplEventMemberDataList").html();
+
+            var eventMemberDataList = $(eventMemberDataListHTML);
+            $("#memberDiv").append(eventMemberDataList);
+
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
@@ -112,9 +145,13 @@ $("#viewEventList").pagecontainer({
             //Event Member List Popup
             eventMemberListPopup();
 
+            //Event Function List Popup
+            eventFunctionListPopup();
         });
 
         /********************************** dom event *************************************/
+
+        //Event Member List Popup
         $(document).on("click", ".event-list-msg-bottom .member, .event-list-msg-bottom .view", function() {
             $("#eventMemberList").popup("open");
         });
@@ -123,12 +160,23 @@ $("#viewEventList").pagecontainer({
             $("#eventMemberList").popup("close");
         });
 
-        $(document).on("click", "#addEvent", function() {
-            $.mobile.changePage('#viewEventAdd');
+        //Event Function List Popup
+        $(document).on("click", ".event-list-msg-bottom .member-done", function() {
+            $("#eventFunctionList").popup("open");
         });
 
+        $(document).on("click", "#eventFunctionList .confirm", function() {
+            $("#eventFunctionList").popup("close");
+        });
+
+        //Event Content
         $(document).on("click", ".event-list-msg .description", function() {
             $.mobile.changePage('#viewEventContent');
+        });
+
+        //Event Add
+        $(document).on("click", "#addEvent", function() {
+            $.mobile.changePage('#viewEventAdd');
         });
     }
 });

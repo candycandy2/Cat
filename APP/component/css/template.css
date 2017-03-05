@@ -101,7 +101,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 
 /* Popup Msg */
 .app-popup {
-    max-height: 50vh;
+    max-height: 112.7vw;
     overflow-y: hidden;
     color: #0f0f0f;
 }
@@ -157,8 +157,8 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 
 .app-popup .ui-content .header .title {
     width: 100%;
-    font-size: 2.8vh;
-    font-weight: bold;
+    /*font-size: 2.8vh;
+    font-weight: bold;*/
     text-align: center;
 }
 
