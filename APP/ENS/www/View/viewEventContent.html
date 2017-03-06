@@ -14,36 +14,104 @@
             <span>編輯</span>
         </a>
     </div>
-    <div data-role="main" class="page-main event-add" id="contentEventContent">
+    <div data-role="main" class="page-main event-content" id="contentEventContent">
 
             <hr class="ui-hr ui-hr-absolute">
 
         <div class="title">
             <span>希望完成時間 :</span>
         </div>
-        <input name="EName" id="EName" type="text" value="2016/10/27 08:00"/>
+        <div class="event-content-data-list">
+            <div class="datetime">
+                2016/10/27 08:00
+            </div>
+        </div>
 
             <hr class="ui-hr ui-hr-absolute">
 
         <div class="title">
             <span>關聯事件 :</span>
         </div>
-        <input name="EName" id="EName" type="text" value="16003"/>
+        <div class="event-content-data-list">
+            <div class="left">
+                <span class="delete"></span>
+            </div>
+            <div class="right relate-event">
+                16003
+            </div>
+        </div>
 
             <hr class="ui-hr ui-hr-absolute">
 
         <div class="title">
             <span>工作分配 :</span>
         </div>
-
-        <div>
-            <img id="myImage" style="width: 30vw; height: 30vw;">
+        <div id="workAssignContent" class="event-content-data-list">
+            <div class="work-before">
+                <div class="left">
+                    <span class="img"></span>
+                </div>
+                <div class="right">
+                    <div class="title font-style3">
+                        BQT 3F機房
+                    </div>
+                    <div class="function font-style3">
+                        Function A
+                    </div>
+                    <div class="user-datetime">
+                        <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                        <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                    </div>
+                </div>
+            </div>
+            <div class="work-after">
+                <div class="left">
+                    <span class="img"></span>
+                </div>
+                <div class="right">
+                    <div class="title font-style3">
+                        BQT 3F機房
+                    </div>
+                    <div class="function font-style3">
+                        Function A
+                    </div>
+                    <div class="user-datetime">
+                        <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                        <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                    </div>
+                </div>
+            </div>
         </div>
 
+            <hr class="ui-hr ui-hr-absolute" id="hrMessage">
+
+        <div class="title">
+            <span>留言 :</span>
+        </div>
+        <div id="messageContent" class="event-content-data-list">
+
+        </div>
+
+        <div id="tempImage">
+            <!--<img id="myImage">-->
+        </div>
+
+        <div class="previewImageDiv-AddHeight hide">
+
+        </div>
+
+        <div class="previewImageDiv hide">
+            <span class="left">
+                <img id="finalImage" width="50" height="50">
+            </span>
+            <span class="right delete-button">
+                <span class="delete"></span>
+            </span>
+        </div>
     </div>
     <div data-role="footer" class="event-content-footer" data-position="fixed">
-        <div class="left">
-            X
+        <div class="left" id="cameraButton">
+            <span class="camera"></span>
         </div>
         <div class="center">
             <input name="EName" id="EName" type="text" value="請輸入訊息"/>
