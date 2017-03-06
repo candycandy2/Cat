@@ -114,9 +114,12 @@ html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html h
 
 textarea, textarea.ui-input-text {
     padding: 1.5vh 0 1.5vh 3.7vw;
-    color: #323232;
 }
 
+textarea.ui-body-inherit {
+    color: #323232;
+    border-color: #989898;
+}
 /* variable, function, style for All APP */
 
 /* disable ‘hold to copy’ on all elements */

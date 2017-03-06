@@ -33,6 +33,14 @@ function addConponentView() {
         //If is other APP, set APP name in initial page
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
+
+            //set Other APP initial page dispaly
+            $("#initialOther").removeClass("hide");
+            $("#initialQPlay").remove();
+        } else {
+            //set QPlay initial page dispaly
+            $("#initialQPlay").removeClass("hide");
+            $("#initialOther").remove();
         }
 
         //viewNotSignedIn, Login Again
