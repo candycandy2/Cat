@@ -498,7 +498,7 @@ $("#viewMonthlyHitRate").pagecontainer({
         			pointStart: 1
         		}]
         	});
-            initSlider();
+            // initSlider();
             showData();
             chart.series[0].setData(highchartsData["Actual QTY"][thisYear-3], true, true, false);
             chart.series[1].setData(highchartsData["Actual QTY"][thisYear-2], true, true, false);
@@ -513,22 +513,22 @@ $("#viewMonthlyHitRate").pagecontainer({
             loadingMask("hide");
         });
 
-        function initSlider() {
-            $(".slider").slick({
-                autopaly: false,
-                dots: false,
-                responseive: [{
-                    breakpoint: 500,
-                    settings: {
-                        arrows: true,
-                        infinite: false,
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                }],
-                infinite: false
-            });
-        }
+        // function initSlider() {
+        //     $(".slider").slick({
+        //         autopaly: false,
+        //         dots: false,
+        //         responseive: [{
+        //             breakpoint: 500,
+        //             settings: {
+        //                 arrows: true,
+        //                 infinite: false,
+        //                 slidesToShow: 2,
+        //                 slidesToScroll: 2
+        //             }
+        //         }],
+        //         infinite: false
+        //     });
+        // }
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
             tab = "QTY";
