@@ -18,8 +18,12 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
         LogFile.createAndWriteFile(dataArr);
     }
 
+    // review
     function requestError(data) {
-        checkNetwork(data);
+        errorHandler(data);
+        if (failCallback){
+            failCallback();
+        }
     }
 
     var signatureTime = getSignature("getTime");
@@ -39,7 +43,7 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
         data: queryData,
         async: asyncType,
         cache: false,
-        timeout: 3000,
+        timeout: 6000,
         success: requestSuccess,
         error: requestError
     });

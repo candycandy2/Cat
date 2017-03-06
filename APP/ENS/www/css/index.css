@@ -5,6 +5,88 @@
 }
 
 /*new class*/
+.event-list-msg-top .description {
+    font-size: 2.8vh;
+    color: #323232;
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative;
+    /* use this value to count block height */
+    line-height: 1.2em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 2.2em;
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+    white-space: pre-wrap;
+}
+
+.event-list-msg-top .description:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 4.5vw;
+    bottom: 0;
+    width: 4.5vw;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.event-list-msg-top .description:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    width: 1em;
+    /* set width and height */
+    height: 1em;
+    background: #f9f9f9;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/radio_blue.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/radio_select_blue.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 6.5vw;
+    padding-left: 8.6vw;
+    width: 85%;
+    color: #0F0F0F;
+}
+
+.ui-mobile label {
+    font-size: 2.9vh;
+    font-weight: bold;
+}
 
 /*Event List*/
 #contentEventList {
@@ -13,6 +95,10 @@
 
 #reportDiv {
     padding-top: 2.2vh;
+}
+
+#eventTypeContent {
+    margin-bottom: 2.14vw;
 }
 
 .event-list-msg {
@@ -88,11 +174,13 @@
     margin-bottom: 0.8vh;
 }
 
-.event-list-msg-top .normal, .event-list-msg-top .urgent {
+.event-list-msg-top .normal, .event-list-msg-top .urgent,
+.event-member-list .normal, .event-member-list .urgent {
     position: relative;
 }
 
-.event-list-msg-top .link .text {
+.event-list-msg-top .link .text,
+.event-member-list .number .text {
     margin-left: 5.8vw;
 }
 
@@ -118,50 +206,6 @@
     font-size: 2.6vh;
     color: #989898;
     text-align: right;
-}
-
-.event-list-msg-top .description {
-    font-size: 2.8vh;
-    color: #323232;
-    /* hide text if it more than N lines  */
-    overflow: hidden;
-    /* for set '...' in absolute position */
-    position: relative;
-    /* use this value to count block height */
-    line-height: 1.2em;
-    /* max-height = line-height (1.2) * lines max number (3) */
-    max-height: 2.2em;
-    /* fix problem when last visible word doesn't adjoin right side  */
-    text-align: justify;
-    margin-right: -1em;
-    padding-right: 1em;
-    white-space: pre-wrap;
-}
-
-.event-list-msg-top .description:before {
-    /* points in the end */
-    content: '...';
-    /* absolute position */
-    position: absolute;
-    /* set position to right bottom corner of block */
-    right: 4.5vw;
-    bottom: 0;
-    width: 4.5vw;
-    text-align: center;
-    background-color: #f9f9f9;
-}
-
-.event-list-msg-top .description:after {
-    /* points in the end */
-    content: '';
-    /* absolute position */
-    position: absolute;
-    /* set position to right bottom corner of text */
-    right: 0;
-    width: 1em;
-    /* set width and height */
-    height: 1em;
-    background: #f9f9f9;
 }
 
 .event-list-msg-bottom {
@@ -228,4 +272,282 @@
     background-size: 18vw;
     width: 18vw;
     height: 18vw;
+}
+
+.event-member-list.header .text {
+    font-size: 4.18vw;
+    color: #0f0f0f;
+}
+
+.event-member-list.header .img {
+    display: inline-block;
+    position: absolute;
+    width: 4.2vw;
+    height: 4.2vw;
+}
+
+.event-member-list.header .title {
+    font-size: 4.18vw;
+    font-weight: bold;
+    color: #0f0f0f;
+    margin-bottom: 0.6vh;
+}
+
+.event-member-list.header .description {
+    font-size: 4.18vw;
+    color: #323232;
+}
+
+.event-member-list .number {
+    margin-bottom: 0.95vh;
+}
+
+.event-member-list .normal .img {
+    background: url(../img/normal.png) no-repeat;
+    background-size: 4.2vw;
+}
+
+.event-member-list .urgent .img {
+    background: url(../img/urgent.png) no-repeat;
+    background-size: 4.2vw;
+}
+
+.event-member-list .number, .event-member-list .title {
+    color: #0f0f0f;
+    text-align: center;
+}
+
+.event-member-list li .img {
+    display: block;
+    float: left;
+    width: 5.6vw;
+    height: 5.6vw;
+}
+
+.event-member-list li .text {
+    font-size: 4.18vw;
+    color: #0f0f0f;
+    margin-left: 1.6vw;
+}
+
+.event-member-list li .left {
+    clear: left;
+    float: left;
+    width: 10%;
+}
+
+.event-member-list li .right {
+    float: left;
+    width: 88%;
+    padding-left: 2%;
+}
+
+.event-member-list li .right .title {
+    text-align: left;
+    color: #0f0f0f;
+    margin-bottom: 0.98vw;
+}
+
+.event-member-list li .right .function {
+    color: #323232;
+    margin-bottom: 0.98vw;
+}
+
+.event-member-list li .right .user-datetime {
+    color: #989898;
+    margin-bottom: 5.07vw;
+}
+
+.event-member-list li .right .user-datetime span {
+    display: inline-block;
+}
+
+.event-member-list li .right .user-datetime .user {
+    width: 53%;
+}
+
+.event-member-list li .right .user-datetime .datetime {
+    width: 45%;
+    text-align: right;
+}
+
+.event-member-list li {
+    margin-bottom: 2.6vw;
+}
+
+.event-member-list li:last-child {
+    margin-bottom: 0;
+}
+
+.event-member-list .view-before .img {
+    background: url(../img/view_blue.png) no-repeat;
+    background-size: 5.6vw;
+}
+
+.event-member-list .view-after .img {
+    background: url(../img/view_gray.png) no-repeat;
+    background-size: 5.6vw;
+}
+
+.event-member-list .work-before .img {
+    background: url(../img/memberdone_gray.png) no-repeat;
+    background-size: 5.6vw;
+}
+
+.event-member-list .work-after .img {
+    background: url(../img/memberdone_green.png) no-repeat;
+    background-size: 5.6vw;
+}
+
+#memberDiv {
+    padding-top: 3.99vw;
+}
+
+#memberDiv select  {
+    margin-bottom: 2.73vw;
+}
+
+.event-member-data-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 84.5vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-member-data-list .title {
+    color: #0f0f0f;
+    margin-bottom: 2.14vw;
+}
+
+.event-member-data-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0
+    color: #323232;
+}
+
+.event-member-data-list ul li {
+    margin-bottom: 5.07vw;
+}
+
+.event-member-data-list ul li:last-child {
+    margin-bottom: 0;
+}
+
+/*Event Add*/
+.delete {
+    background: url(../img/delete.png) no-repeat;
+    background-size: 4.42vw;
+    width: 4.42vw;
+    height: 4.42vw;
+    display: block;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.event-add {
+    padding: 2.4vh 3.7vw 0;
+}
+
+#contentEventAdd .title {
+    display: inline-block;
+    margin-top: 4.3vw;
+}
+
+.textarea-template {
+    height: 16.63vw;
+    max-height: 16.63vw;
+    font-size: 2.9vh;
+    margin: 2.14vw 0;
+}
+
+.textarea-description {
+    height: 27.92vw;
+    max-height: 27.92vw;
+    font-size: 2.8vh;
+    margin: 2.14vw 0;
+}
+
+#eventLevelContent {
+    margin-bottom: 2.14vw;
+}
+
+#contentEventAdd select  {
+    margin-left: -5px;
+}
+
+#setDateTimeContent {
+    margin-top: 2.14vw;
+}
+
+.event-add-location-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 85.4vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-add-location-list .left {
+    float: left;
+    width: 5%;
+    margin-right: 1.6vw;
+}
+
+.event-add-location-list .right {
+    float: left;
+    width: 93%;
+}
+
+.event-add-additional-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 85.4vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-add-additional-list .left {
+    float: left;
+    width: 5%;
+    margin-right: 1.6vw;
+}
+
+.event-add-additional-list .right {
+    float: left;
+    width: 93%;
+}
+
+/*Event Content*/
+/*
+.event-content-footer .ui-footer .ui-bar-inherit .ui-footer-fixed slideup
+.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit
+*/
+.event-content-footer.ui-bar-inherit {
+    background-color: #2C89BC;
+    height: 12.88vw;
+}
+
+.event-content-footer > div {
+    float: left;
+}
+
+.event-content-footer .right, .event-content-footer .left {
+    width: 17vw;
+}
+
+.event-content-footer .center {
+    width: 66vw;
+    padding-top: 1.7vw;
+}
+
+.event-content-footer .center .ui-input-text {
+    margin: 0;
+}
+
+.event-content-footer .right {
+    color: #FFF;
+    font-size: 5vw;
+    padding-top: 3.9vw;
+    text-align: center;
 }

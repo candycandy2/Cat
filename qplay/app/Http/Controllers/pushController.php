@@ -512,20 +512,22 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$messageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                    array_push($event_push_token_list,$uuid->uuid);
+                                if($currentUserInfo->status == "Y" && $currentUserInfo->resign == "N") {
+                                    foreach ($currentUserInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insert([
+                                                'project_row_id'=>1,
+                                                'user_row_id'=>$userId,
+                                                'uuid'=>$uuid->uuid,
+                                                'message_send_row_id'=>$messageSendId,
+                                                'created_user'=>\Auth::user()->row_id,
+                                                'created_at'=>$now,
+                                            ]);
+                                        array_push($event_push_token_list,$uuid->uuid);
+                                    }
+                                    array_push($insertedUserIdList, $userId);
+                                    array_push($real_push_user_list, $userId);
                                 }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
                             }
                         }
                     }
@@ -668,20 +670,22 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
-                                foreach ($currentUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insert([
-                                            'project_row_id'=>1,
-                                            'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
-                                            'message_send_row_id'=>$newMessageSendId,
-                                            'created_user'=>\Auth::user()->row_id,
-                                            'created_at'=>$now,
-                                        ]);
-                                    array_push($event_push_token_list, $uuid->uuid);
+                                if($currentUserInfo->status == "Y" && $currentUserInfo->resign == "N") {
+                                    foreach ($currentUserInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insert([
+                                                'project_row_id'=>1,
+                                                'user_row_id'=>$userId,
+                                                'uuid'=>$uuid->uuid,
+                                                'message_send_row_id'=>$newMessageSendId,
+                                                'created_user'=>\Auth::user()->row_id,
+                                                'created_at'=>$now,
+                                            ]);
+                                        array_push($event_push_token_list, $uuid->uuid);
+                                    }
+                                    array_push($insertedUserIdList, $userId);
+                                    array_push($real_push_user_list, $userId);
                                 }
-                                array_push($insertedUserIdList, $userId);
-                                array_push($real_push_user_list, $userId);
                             }
 
                         }

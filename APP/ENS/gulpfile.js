@@ -26,7 +26,7 @@ function getArg(key) {
     return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
 }
 
-var env = getArg("--env");  
+var env = getArg("--env");
 var vname = getArg("--vname");
 var vcode = getArg("--vcode");
 
@@ -71,13 +71,13 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
-                            //'<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
+                            '<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
-                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
+                            '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
@@ -96,17 +96,21 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove cordova-plugin-camera',
+  'cordova plugin remove cordova-plugin-ios-camera-permissions',
   //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
-  'cordova platform rm android', 
-  'cordova platform add ios', 
+  'cordova platform rm android',
+  'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appens' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist'//,
+  'cordova plugin add cordova-plugin-whitelist',
+  'cordova plugin add cordova-plugin-camera',
+  'cordova plugin add cordova-plugin-ios-camera-permissions --save'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -118,7 +122,9 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-appversion@1.0.0',
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appens' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1'//,
+  'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add cordova-plugin-camera@2.3.1',
+  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
@@ -169,17 +175,17 @@ gulp.task('concat:css', ['less'], function(){
 gulp.task('templateHTML', function() {
     return gulp.src('../component/template/*.html')
         .pipe(concat('template.html'))
-        .pipe(gulp.dest('../component/'));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('appHTML', ['templateHTML'], function(){
-    return gulp.src(['../component/component.html','../component/template.html'])
+    return gulp.src(['../component/component.html','./template.html'])
         .pipe(concat('APP.html'))
         .pipe(gulp.dest('www/View/'));
 });
 
 gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ../component/template.html'
+    'rm ./template.html'
 ]));
 
 gulp.task('componentIMG', function() {
@@ -195,11 +201,11 @@ gulp.task('libJS', function() {
 gulp.task('functionJS', function() {
     return gulp.src('../component/function/*.js')
         .pipe(concat('function.js'))
-        .pipe(gulp.dest('../component/'));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('appJS', ['functionJS'], function(){
-    return gulp.src(['../component/component.js','../component/function.js'])
+    return gulp.src(['../component/component.js','./function.js'])
         //.pipe(uglify())
         //.pipe(concat('app.min.js'))
         .pipe(concat('APP.js'))
@@ -217,7 +223,7 @@ gulp.task('String', ['commonString'], function() {
 });
 
 gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ../component/function.js'
+    'rm ./function.js'
 ]));
 
 //ex: gulp default

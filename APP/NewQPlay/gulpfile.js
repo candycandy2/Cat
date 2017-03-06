@@ -60,7 +60,7 @@ var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
                     + "<string>appleave"    + appNameDecorate + "</string>"
 					+ "<string>apprelieve"  + appNameDecorate + "</string>"
 					+ "<string>appmas"    + appNameDecorate + "</string>"
-					+ "<string>appim"    + appNameDecorate + "</string>"					
+					+ "<string>appim"    + appNameDecorate + "</string>"
                     + "<string>appscheme01" + appNameDecorate + "</string>"
                     + "<string>appscheme02" + appNameDecorate + "</string>"
                     + "<string>appscheme03" + appNameDecorate + "</string>"
@@ -249,17 +249,17 @@ gulp.task('concat:css', ['less'], function(){
 gulp.task('templateHTML', function() {
     return gulp.src('../component/template/*.html')
         .pipe(concat('template.html'))
-        .pipe(gulp.dest('../component/'));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('appHTML', ['templateHTML'], function(){
-    return gulp.src(['../component/component.html','../component/template.html'])
+    return gulp.src(['../component/component.html','./template.html'])
         .pipe(concat('APP.html'))
         .pipe(gulp.dest('www/View/'));
 });
 
 gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ../component/template.html'
+    'rm ./template.html'
 ]));
 
 gulp.task('componentIMG', function() {
@@ -275,11 +275,11 @@ gulp.task('libJS', function() {
 gulp.task('functionJS', function() {
     return gulp.src('../component/function/*.js')
         .pipe(concat('function.js'))
-        .pipe(gulp.dest('../component/'));
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('appJS', ['functionJS'], function(){
-    return gulp.src(['../component/component.js','../component/function.js'])
+    return gulp.src(['../component/component.js','./function.js'])
         //.pipe(uglify())
         //.pipe(concat('app.min.js'))
         .pipe(concat('APP.js'))
@@ -297,7 +297,7 @@ gulp.task('String', ['commonString'], function() {
 });
 
 gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ../component/function.js'
+    'rm ./function.js'
 ]));
 
 //ex: gulp default --env test

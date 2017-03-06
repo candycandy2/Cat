@@ -3,15 +3,32 @@
 <template id="tplPopup">
     <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false">
         <div data-role="main" class="ui-content">
-
+            <div class="header"></div>
+            <div class="main"></div>
+            <div class="footer"></div>
         </div>
     </div>
 </template>
 
+<!--template @popup content > hr-->
+<template id="tplPopupContentHr">
+    <hr class="ui-hr">
+</template>
+
 <!--template @popup content > dorpdown list option-->
 <template id="tplPopupContentDropdownListOption">
-    <div class="close">X</div>
-    <ul>
+    <!--header: Title or Button-->
+    <div class="header typeA close">X</div>
+    <div class="header typeB">
+        <div class="close">
+            X
+        </div>
+        <div class="title">
+            
+        </div>
+    </div>
+    <!--main: Ul listview-->
+    <ul data-role="listview" class="main">
         <template id="tplPopupContentDropdownListLi">
             <li class="tpl-option-msg-list"></li>
         </template>
@@ -19,4 +36,69 @@
             <hr class="ui-hr">
         </template>
     </ul>
+    <!--footer: Button-->
 </template>
+
+
+<!-- *** header *** -->
+<!--template @header with 1 title-->
+<template id="tplHeaderTitleOne">
+    <div class="header-content">
+        <div class="font-style2 header-title-main">[機房緊急通報_停電]</div>
+    </div>
+</template>
+
+<!--template @header with 2 title-->
+<template id="tplHeaderTitleTwo">
+    <div class="header-content header-content-type2">
+        <div class="font-style2 header-title-main">[機房緊急通報_停電]</div>
+        <div class="font-style3 header-title-sub">因xxx原因，請QTY機房進行關機作業</div>
+    </div>
+</template>
+
+<!--template @header with 3 title-->
+<template id="tplHeaderTitleThree">
+    <div class="header-content header-content-type3">
+        <!-- can add class 'hidden' on .header-icon when there is no icon need to show-->
+        <div class="font-style3 header-title-subsub"><span class='header-icon'><img src="../image/urgent.png" alt=""></span>16003</div>
+        <div class="font-style2 header-title-main">[機房緊急通報_停電]</div>
+        <div class="font-style3 header-title-sub">因xxx原因，請QTY機房進行關機作業</div>
+    </div>
+</template>
+
+<!-- *** main *** -->
+<!--template @content with 1 paragraph-->
+<template id="tplMainParagraph">
+    <p class="main-paragraph font-style1">
+        Network is disconnected<br>please check the connection!
+    </p>
+</template>
+
+<!--template @content with scroll list-->
+<!-- ariel: .main-scroll-list's height need calculate by jquery -->
+<template id="tplMainScrollList">
+    <div class="main-scroll-list">
+        <ul class="font-style3">
+            <li><span class="list-icon"></span>Kevin.CM.Huang</li>
+            <li><span class="list-icon"></span>Steven.Yan</li>
+            <li><span class="list-icon"></span>Wendy Shih</li>
+            <li><span class="list-icon"></span>Allen.Su</li>
+            <li><span class="list-icon"></span>Ariel.H.Yih</li>
+        </ul>
+    </div>
+</template>
+
+<!-- *** footer *** -->
+<!--template @footer with 1 btn-->
+<template id="tplFooterBtnOne">
+    <div class="btn-one font-style8">OK</div>
+</template>
+
+<!--template @footer with 2 btn-->
+<template id="tplFooterBtnTwo">
+    <div class="btn-two font-style8">
+        <div>取消</div>
+        <div>確認</div>
+    </div>
+</template>
+

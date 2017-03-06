@@ -21,7 +21,8 @@ html body .ui-group-theme-a .ui-btn, html head+body .ui-btn.ui-btn-a, .ui-page-t
 html .ui-bar-a .ui-btn:visited, html .ui-body-a .ui-btn:visited, html body .ui-group-theme-a .ui-btn:visited, 
 html head+body .ui-btn.ui-btn-a:visited, .ui-body-a, .ui-page-theme-a .ui-body-inherit, 
 html .ui-bar-a .ui-body-inherit, html .ui-body-a .ui-body-inherit, html body .ui-group-theme-a .ui-body-inherit, 
-html .ui-panel-page-container-a {
+html .ui-panel-page-container-a, .ui-page-theme-a .ui-bar-inherit, .ui-bar-a .ui-bar-inherit,
+.ui-body-a .ui-bar-inherit, .ui-group-theme-a .ui-bar-inherit {
     text-shadow: none;
 }
 
@@ -71,6 +72,18 @@ html .ui-panel-page-container-a {
     width: 90%;
 }
 
+.ui-popup-screen.in {
+    opacity: 0.3;
+}
+
+.ui-popup.ui-body-inherit {
+    border-style: none;
+}
+
+.ui-body-inherit {
+    background-color: #FFFFFF;
+}
+
 body, input, select, textarea, button, .ui-btn {
     font-family: "Arial", "微軟中黑體";
 }
@@ -94,6 +107,19 @@ html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html h
     box-shadow: none;
 }
 
+.ui-overlay-b {
+    text-shadow: none;
+    background-color: #231f20;
+}
+
+textarea, textarea.ui-input-text {
+    padding: 1.5vh 0 1.5vh 3.7vw;
+}
+
+textarea.ui-body-inherit {
+    color: #323232;
+    border-color: #989898;
+}
 /* variable, function, style for All APP */
 
 /* disable ‘hold to copy’ on all elements */
@@ -116,7 +142,7 @@ body *:not(input){ -webkit-user-select: none;}
     z-index: 1000;
     height: 100%;
     width: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(35,31,32,0.3);
     text-align: center;
     padding-top: 70%;
 }
