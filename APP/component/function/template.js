@@ -381,14 +381,15 @@ var tplJS = {
             popup.find("div.header").append(header);
         }
 
-        //HR Top
-        var HRTop = $(HRHTML);
-        HRTop.addClass("ui-hr-top");
-        popup.find("div.header:first").after(HRTop);
-
         //Main
         var mainHTML = content.siblings(".main");
         if (mainHTML.length !== 0) {
+
+            //HR Top
+            var HRTop = $(HRHTML);
+            HRTop.addClass("ui-hr-top");
+            popup.find("div.header:first").after(HRTop);
+
             var main = mainHTML.clone();
 
             popup.find("div.main").append(main);

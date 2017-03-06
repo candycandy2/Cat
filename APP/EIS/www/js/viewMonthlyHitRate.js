@@ -199,7 +199,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                         for(var ro in eisdata[year][month]) {
                             for(var product in eisdata[year][month][ro]) {
                                 Actual[year][Number(month)-1] += eisdata[year][month][ro][product][actualIndex];
-                                Budget[year][Number(month)-1] += eisdata[year][month][ro][product][budgetIndex];
+                                Budget[year][Number(month)-1] += eisdata[year][month][ro][product][budgetIndex];   
                             }
                         }
                     }
@@ -225,8 +225,10 @@ $("#viewMonthlyHitRate").pagecontainer({
                         Actual[year][Number(month)-1] = 0;
                         Budget[year][Number(month)-1] = 0;
                         for(var ro in eisdata[year][month]) {
-                            Actual[year][Number(month)-1] += eisdata[year][month][ro][product][actualIndex];
-                            Budget[year][Number(month)-1] += eisdata[year][month][ro][product][budgetIndex];   
+                            if(eisdata[year][month][ro].hasOwnProperty(product)) {
+                                Actual[year][Number(month)-1] += eisdata[year][month][ro][product][actualIndex];
+                                Budget[year][Number(month)-1] += eisdata[year][month][ro][product][budgetIndex];   
+                            }
                         }
                     }
                 }
@@ -235,10 +237,14 @@ $("#viewMonthlyHitRate").pagecontainer({
                     Actual[year] = [];
                     Budget[year] = [];
                     for(var month in eisdata[year]) {
-                        Actual[year][Number(month)-1] = eisdata[year][month][ro][product][actualIndex];
-                        Budget[year][Number(month)-1] = eisdata[year][month][ro][product][budgetIndex];   
+                        Actual[year][Number(month)-1] = 0;
+                        Budget[year][Number(month)-1] = 0;
+                        if(eisdata[year][month][ro].hasOwnProperty(product)) {
+                            Actual[year][Number(month)-1] = eisdata[year][month][ro][product][actualIndex];
+                            Budget[year][Number(month)-1] = eisdata[year][month][ro][product][budgetIndex];   
+                        }
                     }
-                } 
+                }
             }
         }
 
@@ -339,7 +345,7 @@ $("#viewMonthlyHitRate").pagecontainer({
         				y: -11
         			},
         			min: 0,
-        			tickInterval: 1000000
+        			tickInterval: 1000
         		},
         		legend: {
         			align: 'left',
@@ -456,7 +462,7 @@ $("#viewMonthlyHitRate").pagecontainer({
         });
 
         // scroll menu on click
-        $(document).on('click', '.Ro > a', function(e){
+        $(document).on('click', '#viewMonthlyHitRate .Ro > a', function(e){
             e.preventDefault();
             ro = $(this).context.id
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
@@ -472,7 +478,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[3].setData(Budget[thisYear-1], true, true, false);
         });
 
-        $(document).on('click', '.Product > a', function(e){
+        $(document).on('click', '#viewMonthlyHitRate .Product > a', function(e){
             e.preventDefault();
             product = $(this).context.id;
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
