@@ -850,7 +850,7 @@ class qplayController extends Controller
         $loginid = $input['loginid'];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
                 $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
                 //Check uuid exist
