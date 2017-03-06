@@ -372,7 +372,6 @@ $("#viewYTDHitRate").pagecontainer({
 					pointStart: 1
 				}]
 			});
-			// initSlider();
             showData();
             chart.series[0].setData(highchartsData["Actual QTY"][thisYear-3], true, true, false);
             chart.series[1].setData(highchartsData["Actual QTY"][thisYear-2], true, true, false);
@@ -384,27 +383,15 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Ro #ALL").addClass('hover');
             $(".Product #ALL").addClass('hover');
 			loadingMask("hide");
-        });
-
-        // function initSlider(){
-        //     $(".sliderYTD").slick({
-        //         autopaly: false,
-        //         dots: false,
-        //         infinite: false
-        //     });
-        // }
-
-        // $(document).ready(function(){
-        //     $(".sliderYTD").slick({
-        //         autopaly: false,
-        //         dots: false,
-        //         infinite: false
-        //     });
-        // });
+        });     
         
-        // $("#viewYTDHitRate").on("ready", function () {
-        //     initSlider();
-        // });
+        $(document).ready(function() {
+            $(".sliderYTD").slick({
+                autopaly: false,
+                dots: false,
+                infinite: false
+            });
+        });
 
 		$(".page-tabs #viewYTDHitRate-tab-1").on("click", function() {
 		    tab = "QTY";
@@ -412,10 +399,11 @@ $("#viewYTDHitRate").pagecontainer({
 		    budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
 		    HighchartsName = "Actual QTY";
 		    showData();
-		    chart.series[0].setData(highchartsData["Actual QTY"][thisYear-3], true, true, false);
-            chart.series[1].setData(highchartsData["Actual QTY"][thisYear-2], true, true, false);
-            chart.series[2].setData(highchartsData["Actual QTY"][thisYear-1], true, true, false);
-            chart.series[3].setData(highchartsData["Budget QTY"][thisYear-1], true, true, false);
+		    chart.series[0].setData(highchartsData["Actual QTY"][thisYear-3], false, false, false);
+            chart.series[1].setData(highchartsData["Actual QTY"][thisYear-2], false, false, false);
+            chart.series[2].setData(highchartsData["Actual QTY"][thisYear-1], false, false, false);
+            chart.series[3].setData(highchartsData["Budget QTY"][thisYear-1], false, false, false);
+            chart.redraw();
 		});
 
 		$(".page-tabs #viewYTDHitRate-tab-2").on("click", function() {
@@ -424,10 +412,11 @@ $("#viewYTDHitRate").pagecontainer({
 		    budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
 		    HighchartsName = "Actual AMT";
 		    showData();
-		    chart.series[0].setData(highchartsData["Actual AMT"][thisYear-3], true, true, false);
-            chart.series[1].setData(highchartsData["Actual AMT"][thisYear-2], true, true, false);
-            chart.series[2].setData(highchartsData["Actual AMT"][thisYear-1], true, true, false);
-            chart.series[3].setData(highchartsData["Budget AMT"][thisYear-1], true, true, false);
+		    chart.series[0].setData(highchartsData["Actual AMT"][thisYear-3], false, false, false);
+            chart.series[1].setData(highchartsData["Actual AMT"][thisYear-2], false, false, false);
+            chart.series[2].setData(highchartsData["Actual AMT"][thisYear-1], false, false, false);
+            chart.series[3].setData(highchartsData["Budget AMT"][thisYear-1], false, false, false);
+            chart.redraw();
 		});
 
 		$(".page-tabs #viewYTDHitRate-tab-3").on("click", function() {
@@ -436,11 +425,12 @@ $("#viewYTDHitRate").pagecontainer({
 		    budgetHitRate = getBudgetHitRate(ro, product, thisYear, thisMonth, tab);
 		    HighchartsName = "Actual ASP";
 		    showData();
-		    chart.series[0].setData(highchartsData["Actual ASP"][thisYear-3], true, true, false);
-            chart.series[1].setData(highchartsData["Actual ASP"][thisYear-2], true, true, false);
-            chart.series[2].setData(highchartsData["Actual ASP"][thisYear-1], true, true, false);
-            chart.series[3].setData(highchartsData["Budget ASP"][thisYear-1], true, true, false);
-		});
+		    chart.series[0].setData(highchartsData["Actual ASP"][thisYear-3], false, false, false);
+            chart.series[1].setData(highchartsData["Actual ASP"][thisYear-2], false, false, false);
+            chart.series[2].setData(highchartsData["Actual ASP"][thisYear-1], false, false, false);
+            chart.series[3].setData(highchartsData["Budget ASP"][thisYear-1], false, false, false);
+            chart.redraw();
+        });
 		// scroll menu on click
 		$(document).on('click', '#viewYTDHitRate .Ro > a', function(e) {
 		    e.preventDefault();
