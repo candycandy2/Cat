@@ -60,7 +60,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                         month = 12 - index + Number(thisMonth);
                     }
                     pageDateList += "<div>" + monTable[month] + year + "</div>";
-                    pageDate[index] = monTable[month] + year;
+                    pageDate[index] = month + "." + year;
                     if(month == 1){
                         year--;
                     }
@@ -447,10 +447,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         }
 
         $('.slider').on('beforeChange', function(event, slick, currentSlide, nextSlide){
-            year = pageDate[nextSlide].match(/([a-zA-Z]*\.)([0-9]{0,4})/)[2];
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
+            year = pageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
+            month = pageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
+            actualValue = getActualValue(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
         });
 
@@ -465,9 +466,9 @@ $("#viewMonthlyHitRate").pagecontainer({
             year = thisYear;
             month = thisMonth;
             
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
+            actualValue = getActualValue(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             getHighchartsData(ro, product, thisYear, thisMonth);
 
             chart = new Highcharts.Chart({
@@ -566,9 +567,9 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
             tab = "QTY";
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             
             highchartsName = "Actual QTY";
             showData();
@@ -580,9 +581,9 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
             tab = "AMT";
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             
             highchartsName = "Actual AMT";
             showData();
@@ -594,9 +595,9 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
             tab = "ASP";
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             
             highchartsName = "Actual ASP";
             showData();
@@ -612,9 +613,9 @@ $("#viewMonthlyHitRate").pagecontainer({
             ro = $(this).context.id
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             getHighchartsData(ro, product, thisYear, thisMonth);
             showData();
             chart.series[0].setData(highchartsData["Actual " + tab][thisYear-3], true, true, false);
@@ -628,9 +629,9 @@ $("#viewMonthlyHitRate").pagecontainer({
             product = $(this).context.id;
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
-            actualValue = getActualValue(ro, product, year, thisMonth, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, thisMonth, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, thisMonth, tab);
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             getHighchartsData(ro, product, thisYear, thisMonth);
             showData();
             chart.series[0].setData(highchartsData["Actual " + tab][thisYear-3], true, true, false);
