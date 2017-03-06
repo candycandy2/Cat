@@ -48,7 +48,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         dataType: "json",
         data: queryData,
         cache: false,
-        timeout: 3000,
+        timeout: 6000,
         success: requestSuccess,
         error: requestError
     });

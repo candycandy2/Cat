@@ -274,15 +274,32 @@ input[type=radio]:checked + label {
     height: 18vw;
 }
 
-.event-member-list .header {
-    font-size: 2.8vh;
+.event-member-list.header .text {
+    font-size: 4.18vw;
+    color: #0f0f0f;
 }
 
-.event-member-list .number .img {
+.event-member-list.header .img {
     display: inline-block;
     position: absolute;
     width: 4.2vw;
     height: 4.2vw;
+}
+
+.event-member-list.header .title {
+    font-size: 4.18vw;
+    font-weight: bold;
+    color: #0f0f0f;
+    margin-bottom: 0.6vh;
+}
+
+.event-member-list.header .description {
+    font-size: 4.18vw;
+    color: #323232;
+}
+
+.event-member-list .number {
+    margin-bottom: 0.95vh;
 }
 
 .event-member-list .normal .img {
@@ -300,15 +317,6 @@ input[type=radio]:checked + label {
     text-align: center;
 }
 
-.event-member-list .title {
-    font-weight: bold;
-    margin-bottom: 0.6vh;
-}
-
-.event-member-list .number {
-    margin-bottom: 0.95vh;
-}
-
 .event-member-list li .img {
     display: block;
     float: left;
@@ -317,9 +325,50 @@ input[type=radio]:checked + label {
 }
 
 .event-member-list li .text {
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     color: #0f0f0f;
     margin-left: 1.6vw;
+}
+
+.event-member-list li .left {
+    clear: left;
+    float: left;
+    width: 10%;
+}
+
+.event-member-list li .right {
+    float: left;
+    width: 88%;
+    padding-left: 2%;
+}
+
+.event-member-list li .right .title {
+    text-align: left;
+    color: #0f0f0f;
+    margin-bottom: 0.98vw;
+}
+
+.event-member-list li .right .function {
+    color: #323232;
+    margin-bottom: 0.98vw;
+}
+
+.event-member-list li .right .user-datetime {
+    color: #989898;
+    margin-bottom: 5.07vw;
+}
+
+.event-member-list li .right .user-datetime span {
+    display: inline-block;
+}
+
+.event-member-list li .right .user-datetime .user {
+    width: 53%;
+}
+
+.event-member-list li .right .user-datetime .datetime {
+    width: 45%;
+    text-align: right;
 }
 
 .event-member-list li {
@@ -340,7 +389,60 @@ input[type=radio]:checked + label {
     background-size: 5.6vw;
 }
 
+.event-member-list .work-before .img {
+    background: url(../img/memberdone_gray.png) no-repeat;
+    background-size: 5.6vw;
+}
+
+.event-member-list .work-after .img {
+    background: url(../img/memberdone_green.png) no-repeat;
+    background-size: 5.6vw;
+}
+
+#memberDiv {
+    padding-top: 3.99vw;
+}
+
+#memberDiv select  {
+    margin-bottom: 2.73vw;
+}
+
+.event-member-data-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 84.5vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-member-data-list .title {
+    color: #0f0f0f;
+    margin-bottom: 2.14vw;
+}
+
+.event-member-data-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0
+    color: #323232;
+}
+
+.event-member-data-list ul li {
+    margin-bottom: 5.07vw;
+}
+
+.event-member-data-list ul li:last-child {
+    margin-bottom: 0;
+}
+
 /*Event Add*/
+.delete {
+    background: url(../img/delete.png) no-repeat;
+    background-size: 4.42vw;
+    width: 4.42vw;
+    height: 4.42vw;
+    display: block;
+}
+
 .text-bold {
     font-weight: bold;
 }
@@ -349,7 +451,7 @@ input[type=radio]:checked + label {
     padding: 2.4vh 3.7vw 0;
 }
 
-.title {
+#contentEventAdd .title {
     display: inline-block;
     margin-top: 4.3vw;
 }
@@ -372,11 +474,80 @@ input[type=radio]:checked + label {
     margin-bottom: 2.14vw;
 }
 
-#eventLevelContent select, #eventTempalteSelectContent select,
-#eventFunctionSelectContent select {
+#contentEventAdd select  {
     margin-left: -5px;
 }
 
 #setDateTimeContent {
     margin-top: 2.14vw;
+}
+
+.event-add-location-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 85.4vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-add-location-list .left {
+    float: left;
+    width: 5%;
+    margin-right: 1.6vw;
+}
+
+.event-add-location-list .right {
+    float: left;
+    width: 93%;
+}
+
+.event-add-additional-list {
+    display: inline-block;
+    border: 1px solid #989898;
+    width: 85.4vw;
+    padding: 2.73vw 3.71vw;
+}
+
+.event-add-additional-list .left {
+    float: left;
+    width: 5%;
+    margin-right: 1.6vw;
+}
+
+.event-add-additional-list .right {
+    float: left;
+    width: 93%;
+}
+
+/*Event Content*/
+/*
+.event-content-footer .ui-footer .ui-bar-inherit .ui-footer-fixed slideup
+.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit
+*/
+.event-content-footer.ui-bar-inherit {
+    background-color: #2C89BC;
+    height: 12.88vw;
+}
+
+.event-content-footer > div {
+    float: left;
+}
+
+.event-content-footer .right, .event-content-footer .left {
+    width: 17vw;
+}
+
+.event-content-footer .center {
+    width: 66vw;
+    padding-top: 1.7vw;
+}
+
+.event-content-footer .center .ui-input-text {
+    margin: 0;
+}
+
+.event-content-footer .right {
+    color: #FFF;
+    font-size: 5vw;
+    padding-top: 3.9vw;
+    text-align: center;
 }
