@@ -38,7 +38,6 @@ var monTable = {
 var eisdata = {};
 var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
 
-
 $(document).one("pagebeforeshow", function() {
 
     $.mobile.pageContainer.prepend(panel);
@@ -71,10 +70,9 @@ $(document).one("pagebeforeshow", function() {
 });
 
 window.initialSuccess = function() {
-
-    loadingMask("show");
     currentYear = time.getFullYear();
-    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1) ;            
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    loadingMask("show");
     queryData =   "<LayoutHeader><StartYearMonth>"
                 + (currentYear - 3) + "/01"
                 + "</StartYearMonth><EndYearMonth>"
