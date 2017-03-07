@@ -370,11 +370,11 @@ input[type=radio]:checked + label {
 }
 
 .event-member-list li {
-    margin-bottom: 2.6vw;
+    margin-bottom: 5.07vw;
 }
 
 .event-member-list li:last-child {
-    margin-bottom: 0;
+    /*margin-bottom: 0;*/
 }
 
 .view-before .img {
@@ -429,7 +429,7 @@ input[type=radio]:checked + label {
 }
 
 .event-member-data-list ul li:last-child {
-    margin-bottom: 0;
+    /*margin-bottom: 0;*/
 }
 
 /*Event Add*/
@@ -514,6 +514,28 @@ input[type=radio]:checked + label {
 .event-add-additional-list .right {
     float: left;
     width: 93%;
+}
+
+.event-add-success-full-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.event-add-success-full-screen div {
+    position: relative;
+    top: 50%;
+    text-align: center;
+}
+
+.event-add-success-full-screen div span {
+    background-color: #676767;
+    color: #FFF;
+    padding: 10px 20px;
 }
 
 /*Event Content*/
@@ -636,7 +658,7 @@ input[type=radio]:checked + label {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 1000;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
@@ -648,7 +670,7 @@ input[type=radio]:checked + label {
     left: 0;
     width: 100vw;
     height: 13.06vw;
-    z-index: 10000;
+    z-index: 1100;
     background-color: #0f0f0f;
     color: #FFF;
 }
@@ -671,6 +693,7 @@ input[type=radio]:checked + label {
     text-align: center;
     padding-top: 4.4vw;
     height: 100%;
+    z-index: 1100;
 }
 
 .previewImageDiv-AddHeight {
@@ -692,7 +715,7 @@ input[type=radio]:checked + label {
 }
 
 .previewImageDiv .left {
-    width: 90%;
+    width: 88vw;
 }
 
 .previewImageDiv .right {

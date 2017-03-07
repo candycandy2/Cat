@@ -11,7 +11,7 @@
             <h1 class="ui-title">新增通報</h1>
         </div>
         <a href="#" data-role="none" class="ui-btn-right" style="text-decoration:none; color:#FFF; font-size: 2.8vh; padding-top: 0.8vh;">
-            <span>發送</span>
+            <span id="sendEvent">發送</span>
         </a>
     </div>
     <div data-role="main" class="page-main event-add" id="contentEventAdd">
@@ -119,13 +119,15 @@
         <!--template @popup content > Event Add Confirm-->
         <template id="tplEventAddConfirm">
             <!--header: Title or Button-->
-            <div class="header">
+            <div class="header font-style1">
                 確定發送緊急通報?
             </div>
             <!--footer: Button-->
             <div class="footer">
-                <span class="confirm">取消</span>
-                <span class="confirm">確定</span>
+                <div class="btn-two font-style8">
+                    <div class="cancel">取消</div>
+                    <div class="confirm">確認</div>
+                </div>
             </div>
         </template>
     </div>
