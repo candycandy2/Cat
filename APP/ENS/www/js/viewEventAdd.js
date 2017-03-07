@@ -47,7 +47,7 @@ $("#viewEventAdd").pagecontainer({
         };
 
         function eventAddSuccess() {
-            var content = '<div><span>AAAAA</span></div>';
+            var content = '<div><span>通報已發送</span></div>';
             $('<div class="event-add-success-full-screen">' + content + '</div').appendTo("body");
 
             tplJS.preventPageScroll();
@@ -151,6 +151,22 @@ $("#viewEventAdd").pagecontainer({
             };
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddConfirmData);
+
+            //UI Popup : Event Edit Confirm
+            var eventEditConfirmData = {
+                id: "eventEditConfirm",
+                content: $("template#tplEventEditConfirm").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditConfirmData);
+
+            //UI Popup : Event Edit Cancel Confirm
+            var eventEditCancelConfirmData = {
+                id: "eventEditCancelConfirm",
+                content: $("template#tplEventEditCancelConfirm").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditCancelConfirmData);
 
         });
         
@@ -286,6 +302,11 @@ $("#viewEventAdd").pagecontainer({
 
         $(document).on("click", "#eventAddConfirm .confirm", function() {
 
+        });
+
+        //Event Edit Button
+        $(document).on("click", "#eventEditConfirm .cancel", function() {
+            $("#eventEditConfirm").popup("close");
         });
     }
 });

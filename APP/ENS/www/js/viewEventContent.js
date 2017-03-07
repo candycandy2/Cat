@@ -142,21 +142,22 @@ $("#viewEventContent").pagecontainer({
             var eventListMsg = $(eventListMsgHTML);
             $("#contentEventContent").prepend(eventListMsg);
 
-            //UI Popup : Event Edit Confirm
-            var eventEditConfirmData = {
-                id: "eventEditConfirm",
-                content: $("template#tplEventEditConfirm").html()
+            //UI Popup : Report Event Work Done Confirm
+            var eventReportWorkDoneConfirmData = {
+                id: "eventReportWorkDoneConfirm",
+                content: $("template#tplEventReportWorkDoneConfirm").html()
             };
 
-            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventEditConfirmData);
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventReportWorkDoneConfirmData);
 
             //UI Popup : Event Edit Cancel Confirm
-            var eventEditCancelConfirmData = {
-                id: "eventEditCancelConfirm",
-                content: $("template#tplEventEditCancelConfirm").html()
+            var eventCancelWorkDoneConfirmData = {
+                id: "eventCancelWorkDoneConfirm",
+                content: $("template#tplEventCancelWorkDoneConfirm").html()
             };
 
-            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventEditCancelConfirmData);
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventCancelWorkDoneConfirmData);
+
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
@@ -177,7 +178,6 @@ $("#viewEventContent").pagecontainer({
                 alert('Failed because: ' + message);
             }
             */
-            eventAddSuccess();
         });
         /********************************** dom event *************************************/
 
@@ -202,12 +202,26 @@ $("#viewEventContent").pagecontainer({
 
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
-            $("#eventEditConfirm").popup("open");
+
         });
 
-        $(document).on("click", "#eventEditConfirm .cancel", function() {
-            $("#eventEditConfirm").popup("close");
-            $("#eventEditCancelConfirm").popup("open");
+        //Report Event Work Done
+        $(document).on("click", "#eventReportWorkDoneConfirm .cancel", function() {
+
         });
+
+        $(document).on("click", "#eventReportWorkDoneConfirm .confirm", function() {
+
+        });
+
+        //Cancel Event Work Done
+        $(document).on("click", "#eventCancelWorkDoneConfirm .cnacel", function() {
+
+        });
+
+        $(document).on("click", "#eventCancelWorkDoneConfirm .confirm", function() {
+
+        });
+
     }
 });

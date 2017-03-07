@@ -471,6 +471,7 @@ var tplJS = {
             //Ul margin-bottom:5.07vw
             var ulMarginBottom = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
 
+            //Resize Height of Main
             if (showMain) {
                 var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop - ulMarginBottom, 10);
                 $(this).find("div[data-role='main'] .main").height(popupMainHeight);
@@ -481,6 +482,13 @@ var tplJS = {
                 $(this).find("div[data-role='main'] > .header").height(popupHeaderHeight);
                 $(this).find("div[data-role='main'] .header .header").addClass("all-center");
             }
+
+            //Resize Height of background div
+            var activePageID = $.mobile.activePage.attr("id");
+            var activePage = $("#" + activePageID);
+            var activePageScrollHeight = activePage[0].scrollHeight;
+
+            $(".ui-popup-screen.in").height(activePageScrollHeight);
 
             tplJS.preventPageScroll();
         });
