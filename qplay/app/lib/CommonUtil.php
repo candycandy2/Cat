@@ -35,9 +35,11 @@ class CommonUtil
         }
         $userList[0] -> uuidList = array();
         $userList[0] -> uuidList = \DB::table('qp_register')
+            ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
             -> where('user_row_id', '=', $userList[0]->row_id)
             -> where('status', '=', 'A')
-            -> select('uuid')->get();
+            -> select('qp_register.uuid',"qp_push_token.push_token")
+            ->get();
 
         return $userList[0];
     }
