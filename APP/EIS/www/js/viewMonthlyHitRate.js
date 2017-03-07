@@ -18,9 +18,7 @@ $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
 
         window.UserAuthority = function() {
-            var index = 0;
-            year = thisYear-1;
-            month = thisMonth;
+            var index = 0;   
             this.successCallback = function(data) {
                 callbackData = data["Content"]["DataList"];
                 length = callbackData.length;
@@ -35,6 +33,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                 $(".Product").append(productList).enhanceWithin();
                 setScrollMenuHeight();
 
+                year = thisYear-1;
+                month = thisMonth;
                 while(index < 13) {
                     monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
                     monthlyPageDate[index] = month + "." + year;
@@ -47,8 +47,22 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".sliderMonthly").html("");
                 $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
-
-
+                
+                index = 0;
+                year = thisYear-1;
+                month = thisMonth;
+                while(index < 2) {
+                    ytdPageDateList += "<div>" + year + "</div>";
+                    if(year == thisYear) {
+                        ytdPageDate[index] = thisMonth + "." + year;
+                    }else{
+                        ytdPageDate[index] = 12 + "." + year;
+                    }
+                    index++;
+                    year++;
+                }
+                $(".sliderYTD").html("");
+                $(".sliderYTD").append(ytdPageDateList).enhanceWithin();
             };
             this.failCallback = function(data) {
                 console.log("api misconnected");

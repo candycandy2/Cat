@@ -286,8 +286,8 @@ $("#viewYTDHitRate").pagecontainer({
         }
 
         $(".sliderYTD").on('beforeChange', function(event, slick, currentSlide, nextSlide){
-            year = pageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
-            month = pageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
+            year = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
+            month = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
@@ -414,7 +414,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #ALL").addClass('hover');
 
             initSlider();
-            $(".sliderYTD").slick("slickGoTo", 0, true);
+            $(".sliderYTD").slick("slickGoTo", ytdPageDate.length-1, true);
 			loadingMask("hide");
         });
 
