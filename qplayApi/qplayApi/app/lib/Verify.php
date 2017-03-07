@@ -75,13 +75,15 @@ class Verify
                 "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid)
             );
         }
-
+        /*
         //TODO for test
+
         if($headerSignature == "Moses824")
         {
             return array("code"=>ResultCode::_1_reponseSuccessful,
                 "message"=>"");
         }
+        */
 
 //        if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
 //            return array("code"=>ResultCode::_999011_signatureOvertime,
@@ -148,12 +150,14 @@ class Verify
             );
         }
 
+        /*
         //TODO for test
         if($headerSignature == "Moses824")
         {
             return array("code"=>ResultCode::_1_reponseSuccessful,
                 "message"=>"");
         }
+        */
 
 //        if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
 //            return array("code"=>ResultCode::_999011_signatureOvertime,
@@ -258,6 +262,32 @@ class Verify
         }
         if($userStatus == 2) {
             return array("code"=>ResultCode::_000914_userWithoutRight,
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
+    public static function verifyUserByUserID4Logout($loginid, $domain)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
+        }
+        //供logout使用，即使用户停权或离职，仍可以loginout
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
                 //"message"=>"账号已被停权"
                 "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
             );
@@ -649,6 +679,7 @@ class Verify
             );
         }
 
+        /*
         //TODO for test
         if($headerSignature == "Moses824")
         {
@@ -669,6 +700,21 @@ class Verify
                     "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime)
                 );
             }
+        }
+        */
+        $sigResult = self::chkSignatureCustom($headerSignature, $headerSignatureTime,$headerAppKey);
+        if ($sigResult == 1) {
+            return array("code"=>ResultCode::_999008_signatureIsInvalid,
+                //"message"=>"Signature驗證碼不正確"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid)
+            );
+        }
+
+        if($sigResult == 2) {
+            return array("code"=>ResultCode::_999011_signatureOvertime,
+                //"message"=>"signature參數錯誤或誤差超過15分鐘"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime)
+            );
         }
 
         //sendPushMessage專用不需UUID參數判斷

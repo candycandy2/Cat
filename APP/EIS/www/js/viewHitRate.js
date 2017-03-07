@@ -110,7 +110,7 @@ $("#viewHitRate").pagecontainer ({
 				$("#" + ro + " .HR span").text(budgetHitRate + "%");
 				totalActualAMT += ActualAMT;
 			
-				if(budgetHitRate < 80) {
+				if(budgetHitRate <= 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
 				}else if(budgetHitRate > 95) {
 					$("#" + ro + " .HR").css('background', '#48af56');
@@ -132,7 +132,7 @@ $("#viewHitRate").pagecontainer ({
             }
             totalBudgetHitRate = (totalActualAMT / totalBudgetAMT) * 100;
             $("#total .dataContainer .HR span").text((Math.round(totalBudgetHitRate * Math.pow(10, 2)) / 100) + "%");
-            if(totalBudgetHitRate < 80) {
+            if(totalBudgetHitRate <= 80) {
                 $("#total .dataContainer .HR").css('background', '#ee3839');
             }else if(totalBudgetHitRate > 95) {
                 $("#total .dataContainer .HR").css('background', '#48af56');
