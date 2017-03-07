@@ -450,6 +450,10 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[1].setData(highchartsData["Actual " + tab][year-1], true, true, false);
             chart.series[2].setData(highchartsData["Actual " + tab][year], true, true, false);
             chart.series[3].setData(highchartsData["Budget " + tab][year], true, true, false);
+            chart.series[0].update({name: (year-2) + " Actual " + tab});
+            chart.series[1].update({name: (year-1) + " Actual " + tab});
+            chart.series[2].update({name: (year) + " Actual " + tab});
+            chart.series[3].update({name: (year) + " Budget " + tab});
         });
 
         /********************************** page event *************************************/
@@ -520,25 +524,25 @@ $("#viewMonthlyHitRate").pagecontainer({
         			enabled: false
         		},
         		series: [{
-        			name: (thisYear-2) + " Actual QTY",
+        			name: (year-2) + " Actual QTY",
         			type: 'column',
         			color: '#0AB5B6',
         			// data: Actual[thisYear-3],
         			pointStart: 1
         		}, {
-        			name: (thisYear-1) + " Actual QTY",
+        			name: (year-1) + " Actual QTY",
         			type: 'column',
         			color: '#F4A143',
         			// data: Actual[thisYear-2],
         			pointStart: 1
         		}, {
-        			name: (thisYear) + " Actual QTY",
+        			name: (year) + " Actual QTY",
         			type: 'column',
         			color: '#824E9F',
         			// data: Actual[thisYear-1],
         			pointStart: 1
         		}, {
-        			name: (thisYear) + " Budget QTY",
+        			name: (year) + " Budget QTY",
         			type: 'line',
         			color: '#134A8C',
         			lineWidth: 1,
@@ -548,10 +552,10 @@ $("#viewMonthlyHitRate").pagecontainer({
         	});
             showData();
             $("#title-container > #title > #actualValue > p").text("Net Quantity");
-            chart.series[0].setData(highchartsData["Actual QTY"][thisYear-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual QTY"][thisYear-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual QTY"][thisYear], true, true, false);
-            chart.series[3].setData(highchartsData["Budget QTY"][thisYear], true, true, false);
+            chart.series[0].setData(highchartsData["Actual QTY"][year-2], true, true, false);
+            chart.series[1].setData(highchartsData["Actual QTY"][year-1], true, true, false);
+            chart.series[2].setData(highchartsData["Actual QTY"][year], true, true, false);
+            chart.series[3].setData(highchartsData["Budget QTY"][year], true, true, false);
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewMonthlyHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
@@ -571,14 +575,14 @@ $("#viewMonthlyHitRate").pagecontainer({
 
             showData();
             $("#title-container > #title > #actualValue > p").text("Net Quantity");
-            chart.series[0].setData(highchartsData["Actual QTY"][thisYear-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual QTY"][thisYear-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual QTY"][thisYear], true, true, false);
-            chart.series[3].setData(highchartsData["Budget QTY"][thisYear], true, true, false);
-            chart.series[0].update({name: (thisYear-2) + " Actual " + tab});
-            chart.series[1].update({name: (thisYear-1) + " Actual " + tab});
-            chart.series[2].update({name: (thisYear) + " Actual " + tab});
-            chart.series[3].update({name: (thisYear) + " Budget " + tab});
+            chart.series[0].setData(highchartsData["Actual QTY"][year-2], true, true, false);
+            chart.series[1].setData(highchartsData["Actual QTY"][year-1], true, true, false);
+            chart.series[2].setData(highchartsData["Actual QTY"][year], true, true, false);
+            chart.series[3].setData(highchartsData["Budget QTY"][year], true, true, false);
+            chart.series[0].update({name: (year-2) + " Actual " + tab});
+            chart.series[1].update({name: (year-1) + " Actual " + tab});
+            chart.series[2].update({name: (year) + " Actual " + tab});
+            chart.series[3].update({name: (year) + " Budget " + tab});
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
@@ -588,14 +592,14 @@ $("#viewMonthlyHitRate").pagecontainer({
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             showData();
             $("#title-container > #title > #actualValue > p").text("Adj. Sales");
-            chart.series[0].setData(highchartsData["Actual AMT"][thisYear-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual AMT"][thisYear-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual AMT"][thisYear], true, true, false);
-            chart.series[3].setData(highchartsData["Budget AMT"][thisYear], true, true, false);
-            chart.series[0].update({name: (thisYear-2) + "  Actual " + tab});
-            chart.series[1].update({name: (thisYear-1) + "  Actual " + tab});
-            chart.series[2].update({name: (thisYear) + "  Actual " + tab});
-            chart.series[3].update({name: (thisYear) + "  Budget " + tab});
+            chart.series[0].setData(highchartsData["Actual AMT"][year-2], true, true, false);
+            chart.series[1].setData(highchartsData["Actual AMT"][year-1], true, true, false);
+            chart.series[2].setData(highchartsData["Actual AMT"][year], true, true, false);
+            chart.series[3].setData(highchartsData["Budget AMT"][year], true, true, false);
+            chart.series[0].update({name: (year-2) + "  Actual " + tab});
+            chart.series[1].update({name: (year-1) + "  Actual " + tab});
+            chart.series[2].update({name: (year) + "  Actual " + tab});
+            chart.series[3].update({name: (year) + "  Budget " + tab});
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
@@ -605,14 +609,14 @@ $("#viewMonthlyHitRate").pagecontainer({
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             showData();
             $("#title-container > #title > #actualValue > p").text("ASP");
-            chart.series[0].setData(highchartsData["Actual ASP"][thisYear-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual ASP"][thisYear-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual ASP"][thisYear], true, true, false);
-            chart.series[3].setData(highchartsData["Budget ASP"][thisYear], true, true, false);
-            chart.series[0].update({name: (thisYear-2) + "  Actual " + tab});
-            chart.series[1].update({name: (thisYear-1) + "  Actual " + tab});
-            chart.series[2].update({name: (thisYear) + "  Actual " + tab});
-            chart.series[3].update({name: (thisYear) + "  Budget " + tab});
+            chart.series[0].setData(highchartsData["Actual ASP"][year-2], true, true, false);
+            chart.series[1].setData(highchartsData["Actual ASP"][year-1], true, true, false);
+            chart.series[2].setData(highchartsData["Actual ASP"][year], true, true, false);
+            chart.series[3].setData(highchartsData["Budget ASP"][year], true, true, false);
+            chart.series[0].update({name: (year-2) + "  Actual " + tab});
+            chart.series[1].update({name: (year-1) + "  Actual " + tab});
+            chart.series[2].update({name: (year) + "  Actual " + tab});
+            chart.series[3].update({name: (year) + "  Budget " + tab});
         });
 
         // scroll menu on click
@@ -626,10 +630,10 @@ $("#viewMonthlyHitRate").pagecontainer({
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             getHighchartsData(ro, product, thisYear, thisMonth);
             showData();
-            chart.series[0].setData(highchartsData["Actual " + tab][thisYear-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual " + tab][thisYear-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual " + tab][thisYear], true, true, false);
-            chart.series[3].setData(highchartsData["Budget " + tab][thisYear], true, true, false);
+            chart.series[0].setData(highchartsData["Actual " + tab][year-2], true, true, false);
+            chart.series[1].setData(highchartsData["Actual " + tab][year-1], true, true, false);
+            chart.series[2].setData(highchartsData["Actual " + tab][year], true, true, false);
+            chart.series[3].setData(highchartsData["Budget " + tab][year], true, true, false);
         });
 
         $(document).on('click', '#viewMonthlyHitRate .Product > a', function(e) {
@@ -642,10 +646,10 @@ $("#viewMonthlyHitRate").pagecontainer({
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             getHighchartsData(ro, product, thisYear, thisMonth);
             showData();
-            chart.series[0].setData(highchartsData["Actual " + tab][thisYear-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual " + tab][thisYear-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual " + tab][thisYear], true, true, false);
-            chart.series[3].setData(highchartsData["Budget " + tab][thisYear], true, true, false);
+            chart.series[0].setData(highchartsData["Actual " + tab][year-2], true, true, false);
+            chart.series[1].setData(highchartsData["Actual " + tab][year-1], true, true, false);
+            chart.series[2].setData(highchartsData["Actual " + tab][year], true, true, false);
+            chart.series[3].setData(highchartsData["Budget " + tab][year], true, true, false);
         });
     }
 });
