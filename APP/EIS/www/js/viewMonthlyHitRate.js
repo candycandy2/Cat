@@ -238,8 +238,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                     lastActual = eisdata[year-1][month][ro][product][actualIndex];
                     ActualQTY = eisdata[year][month][ro][product][0];
                     ActualAMT = eisdata[year][month][ro][product][2];                    
-                    lastActualQTY = eisdata[year][month][ro][product][0];
-                    lastActualAMT = eisdata[year][month][ro][product][2];
+                    lastActualQTY = eisdata[year-1][month][ro][product][0];
+                    lastActualAMT = eisdata[year-1][month][ro][product][2];
                 }
             }
             if(type == "ASP") {
