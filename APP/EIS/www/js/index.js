@@ -1,4 +1,7 @@
 /*global variable, function*/
+var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
+var monthlyPageDateList = "";
+var ytdPagesDateList = "";
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
@@ -21,6 +24,9 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
+var monthlyPageDate = [];
+var ytdPageDate = [];
+var eisdata = {};
 var monTable = {
     '1' : "Jan.",
     '2' : "Feb.",
@@ -35,11 +41,8 @@ var monTable = {
     '11' : "Nov.",
     '12' : "Dec.",
 };
-var eisdata = {};
-var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
 
 $(document).one("pagebeforeshow", function() {
-
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
     $("#mypanel #mypanelviewHitRate").css("background", "#503f81");
