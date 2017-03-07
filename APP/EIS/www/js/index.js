@@ -1,7 +1,7 @@
 /*global variable, function*/
 var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
 var monthlyPageDateList = "";
-var ytdPagesDateList = "";
+var ytdPageDateList = "";
 var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
