@@ -46,6 +46,18 @@ $("#viewEventAdd").pagecontainer({
             tplJS.recoveryPageScroll();
         };
 
+        function eventAddSuccess() {
+            var content = '<div><span>AAAAA</span></div>';
+            $('<div class="event-add-success-full-screen">' + content + '</div').appendTo("body");
+
+            tplJS.preventPageScroll();
+
+            setTimeout(function() {
+                $(".event-add-success-full-screen").remove();
+                tplJS.recoveryPageScroll();
+            }, 3000);
+        }
+
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
 
@@ -143,7 +155,7 @@ $("#viewEventAdd").pagecontainer({
         });
         
         $("#viewEventAdd").on("pageshow", function(event, ui) {
-
+            eventAddSuccess();
         });
 
         /********************************** dom event *************************************/
@@ -250,6 +262,7 @@ $("#viewEventAdd").pagecontainer({
             });
         });
 
+        //Radio Button : Finish Time
         $(document).on("change", "input[name=setDateTime]", function() {
             var setDateTime = $('input[name=setDateTime]:checked').val();
 
@@ -262,5 +275,17 @@ $("#viewEventAdd").pagecontainer({
             }
         });
 
+        //Send Event
+        $(document).on("click", "#sendEvent", function() {
+            $("#eventAddConfirm").popup("open");
+        });
+
+        $(document).on("click", "#eventAddConfirm .cancel", function() {
+            $("#eventAddConfirm").popup("close");
+        });
+
+        $(document).on("click", "#eventAddConfirm .confirm", function() {
+
+        });
     }
 });

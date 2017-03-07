@@ -89,6 +89,16 @@ $("#viewEventContent").pagecontainer({
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             tplJS.preventPageScroll();
+
+            //Photo Confirm - Button Event
+            $("#photoCancel").on("click", function() {
+                confirmPhotoClose();
+                openFilePicker();
+            });
+
+            $("#photoConfirm").on("click", function() {
+                confirmPhotoOK();
+            });
         }
 
         function confirmPhotoClose() {
@@ -114,6 +124,14 @@ $("#viewEventContent").pagecontainer({
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             tplJS.preventPageScroll();
+
+            //Back Button
+            $(".button-content .back-button").on("click", function() {
+                $(".event-content-photo-full-screen").remove();
+                $(".event-content-footer").removeClass("ui-fixed-hidden");
+
+                tplJS.recoveryPageScroll();
+            });
         }
 
         /********************************** page event *************************************/
@@ -124,6 +142,21 @@ $("#viewEventContent").pagecontainer({
             var eventListMsg = $(eventListMsgHTML);
             $("#contentEventContent").prepend(eventListMsg);
 
+            //UI Popup : Event Edit Confirm
+            var eventEditConfirmData = {
+                id: "eventEditConfirm",
+                content: $("template#tplEventEditConfirm").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventEditConfirmData);
+
+            //UI Popup : Event Edit Cancel Confirm
+            var eventEditCancelConfirmData = {
+                id: "eventEditCancelConfirm",
+                content: $("template#tplEventEditCancelConfirm").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventEditCancelConfirmData);
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
@@ -144,22 +177,13 @@ $("#viewEventContent").pagecontainer({
                 alert('Failed because: ' + message);
             }
             */
+            eventAddSuccess();
         });
         /********************************** dom event *************************************/
 
         //Open Photo Library
         $(document).on("click", "#viewEventContent #cameraButton", function() {
             openFilePicker();
-        });
-
-        //Photo Confirm - Button Event
-        $(document).on("click", "#photoCancel", function() {
-            confirmPhotoClose();
-            openFilePicker();
-        });
-
-        $(document).on("click", "#photoConfirm", function() {
-            confirmPhotoOK();
         });
 
         //Photo - Small Preview
@@ -176,11 +200,14 @@ $("#viewEventContent").pagecontainer({
             fullScreenPhoto();
         });
 
-        $(document).on("click", ".button-content .back-button", function() {
-            $(".event-content-photo-full-screen").remove();
-            $(".event-content-footer").removeClass("ui-fixed-hidden");
+        //Event Edit Button
+        $(document).on("click", "#eventEdit", function() {
+            $("#eventEditConfirm").popup("open");
+        });
 
-            tplJS.recoveryPageScroll();
+        $(document).on("click", "#eventEditConfirm .cancel", function() {
+            $("#eventEditConfirm").popup("close");
+            $("#eventEditCancelConfirm").popup("open");
         });
     }
 });
