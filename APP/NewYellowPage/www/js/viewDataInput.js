@@ -1,32 +1,56 @@
 
-$(document).one("pagecreate", "#viewDataInput", function(){
-    
+//$(document).one("pagecreate", "#viewDataInput", function(){
+
+// review
+var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
+
     $("#viewDataInput").pagecontainer({
         create: function(event, ui) {
             
             /****************************************************** function ********************************************************/
             window.QueryCompanyData = function() {
                 
-                var self = this;
-
-                this.successCallback = function(data) {
-                    loadingMask("hide");
-                    var resultcode = data['ResultCode'];
-                    if (resultcode === "1") {
-                        var dataContent = data['Content'];
-                        $('#Company').html('<option value="All Company">All Company</option>');
-                        for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
-                            var companyname = dataContent[i].CompanyName;
-                            $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
+                var self = this, storageTime;
+                
+                // review
+                if (localStorage.getItem('companyInfo') === null){
+                    this.successCallback = function(data) {
+                        loadingMask("hide");
+                        var resultcode = data['ResultCode'];
+                        if (resultcode === "1") {
+                            insertCompanyValue(data['Content']);
+                            
+                            // save data into localstorage
+                            var nowTime = new Date();
+                            companyInfoAry.push({'result': data['Content'], 'time': nowTime});
+                            localStorage.setItem('companyInfo', JSON.stringify(companyInfoAry));
                         }
-                        QueryMyPhoneBook();
+                    };
+                    this.failCallback = function(data) {};
+                    var __construct = function() {
+                        CustomAPI("POST", true, "QueryCompanyData", self.successCallback, self.failCallback, queryData, "");
+                    }();
+                }
+                else{
+                    var storageData = JSON.parse(localStorage.getItem("companyInfo"));
+                    insertCompanyValue(storageData[0].result);
+                    if (checkDataExpired(storageData[0].time, expiredTime, 'MM')){
+                        localStorage.removeItem("companyInfo");
                     }
-                };
-                this.failCallback = function(data) {};
-                var __construct = function() {
-                    QPlayAPI("POST", "QueryCompanyData", self.successCallback, self.failCallback);
-                }();
+                    loadingMask("hide");
+                }
             };
+
+            // review
+            // insert value into html
+            function insertCompanyValue(dataContent){
+                $('#Company').html('<option value="All Company">All Company</option>');
+                for (var i=2; i<dataContent.length; i++) { // ignore 0 and 1, 0: "All Company", 1: ""
+                    var companyname = dataContent[i].CompanyName;
+                    $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
+                }
+                QueryMyPhoneBook();
+            }
 
             function checkInputData() {
                 var queryData;
@@ -79,18 +103,6 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             // });
 
             /***********************************************  Validation of input data  ***********************************************/
-            $("#CName").keyup(function(event) {
-                var pattern = /([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)[\u4E00-\u9FFF\u3400-\u4DB5\-\.]*([^\u4E00-\u9FFF\u3400-\u4DB5\-\.]*)/;
-                var maxlength = $("#CName").data('maxlength');
-                var residue = event.currentTarget.value.match(pattern);
-                if(residue[1] !== "" || residue[2] !== "") {
-                    $("#CName").val($("#CName").val().replace(residue[1], ""));
-                    $("#CName").val($("#CName").val().replace(residue[2], ""));
-                }
-                if($("#CName").val().length > maxlength - 1)
-                    $("#CName").val($("#CName").val().substring(0, maxlength));
-            });
-
             $("#EName").keyup(function(event) {
                 var pattern = /([^a-zA-Z\-\.]*)[a-zA-Z\-\.]*([^a-zA-Z\-\.]*)/;
                 var maxlength = $("#EName").data('maxlength');
@@ -128,4 +140,4 @@ $(document).one("pagecreate", "#viewDataInput", function(){
             });
         }
     });
-});
+//});

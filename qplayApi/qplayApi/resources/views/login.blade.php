@@ -72,6 +72,25 @@
             color: #989898;!important;
             text-overflow: ellipsis;
         }
+
+        #dlgMessage {
+            border-radius: .8em;
+            border: 0px;
+            box-shadow: 0 0 0px rgba(0,0,0,0);
+            -webkit-box-shadow: 0 0 0px rgba(0,0,0,0);
+        }
+
+        #dlgMessage .ui-header {
+            background-color: #fff;
+            padding:15px;
+        }
+
+        #dlgMessage .ui-content {
+            background-color: #fff;
+            padding:15px;
+            color: #3c3c75;
+            text-shadow:0 0;
+        }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
         <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
@@ -151,10 +170,10 @@
         <div data-role="popup" id="dlgMessage"
              data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:400px;">
             <div data-role="header" data-theme="a">
-                <h1>錯誤</h1>
+                <h1 id="messageContainer" style="margin: 0px;">錯誤</h1>
             </div>
-            <div role="main" class="ui-content">
-                <p id="messageContainer"></p>
+            <div role="main" class="ui-content" style="text-align: center;font-family:Arial;" onclick="return hideMessage();">
+                <strong>OK</strong>
             </div>
         </div>
     </div>
@@ -201,6 +220,10 @@
         var showMessage = function (msg) {
             $("#messageContainer").text(msg);
             $("#dlgMessage").popup('open');
+        }
+
+        var hideMessage = function() {
+            $("#dlgMessage").popup('close');
         }
 
         var getQueryString =function (name) {

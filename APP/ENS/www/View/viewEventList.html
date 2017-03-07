@@ -1,0 +1,273 @@
+
+<div data-role="page" id="viewEventList">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <div class="ui-title">
+                ENS
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main" id="contentEventList">
+
+        <!--template @Event List Msg-->
+        <template id="tplEventListMsg">
+            <div class="event-list-msg">
+                <div class="event-list-msg-top">
+                    <div>
+                        <span class="name">Michael Yang</span>
+                        <span class="event-status">
+                            <div class="done">
+                                <span class="img"></span>
+                                <span class="text">已完成</span>
+                            </div>
+                            <div class="unfinished hide">
+                                <span class="img"></span>
+                                <span class="text">未完成</span>
+                            </div>
+                        </span>
+                    </div>
+                    <div>
+                        <span class="link">
+                            <div class="normal">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="urgent hide">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                        </span>
+                        <span class="time">2017-01-01 12:30</span>
+                    </div>
+                    <div class="description">[機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業
+                    </div>
+                </div>
+                <hr class="event-list-msg-hr">
+                <div class="event-list-msg-bottom">
+                    <span class="member">
+                        <span class="img"></span>
+                        <span class="text">1</span>
+                    </span>
+                    <span class="view">
+                        <span class="img"></span>
+                        <span class="text">2</span>
+                    </span>
+                    <span class="member-done">
+                        <span class="img"></span>
+                        <span class="text">3</span>
+                    </span>
+                    <span class="message">
+                        <span class="img"></span>
+                        <span class="text">4</span>
+                    </span>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Member List-->
+        <template id="tplEventMemberList">
+            <!--header: Title or Button-->
+            <div class="header event-member-list">
+                <div class="number">
+                    <div class="normal">
+                        <span class="img"></span>
+                        <span class="text">16003</span>
+                    </div>
+                    <div class="urgent hide">
+                        <span class="img"></span>
+                        <span class="text">16003</span>
+                    </div>
+                </div>
+                <div class="title">
+                    [機房緊提通報_停電]
+                </div>
+                <div class="description">
+                     因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業
+                </div>
+            </div>
+            <!--main: Ul listview-->
+            <ul data-role="listview" class="main event-member-list">
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Kevin.CM.Huang</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Steven.Yan</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Wendy Shih</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Allen Su</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Kevin.CM.Huang</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Steven.Yan</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-before">
+                        <span class="img"></span>
+                        <span class="text">Wendy Shih</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="view-after">
+                        <span class="img"></span>
+                        <span class="text">Allen Su</span>
+                    </div>
+                </li>
+            </ul>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="confirm">OK</div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Funciton List-->
+        <template id="tplEventFunctionList">
+            <!--header: Title or Button-->
+            <div class="header event-member-list">
+                <div class="number">
+                    <div class="normal">
+                        <span class="img"></span>
+                        <span class="text">16003</span>
+                    </div>
+                    <div class="urgent hide">
+                        <span class="img"></span>
+                        <span class="text">16003</span>
+                    </div>
+                </div>
+                <div class="title">
+                    [機房緊提通報_停電]
+                </div>
+                <div class="description">
+                     因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業
+                </div>
+            </div>
+            <!--main: Ul listview-->
+            <ul data-role="listview" class="main event-member-list">
+                <li>
+                    <div class="work-before">
+                        <div class="left">
+                            <span class="img"></span>
+                        </div>
+                        <div class="right">
+                            <div class="title font-style3">
+                                BQT 3F機房
+                            </div>
+                            <div class="function font-style3">
+                                Function A
+                            </div>
+                            <div class="user-datetime">
+                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="work-after">
+                        <div class="left">
+                            <span class="img"></span>
+                        </div>
+                        <div class="right">
+                            <div class="title font-style3">
+                                BQT 3F機房
+                            </div>
+                            <div class="function font-style3">
+                                Function A
+                            </div>
+                            <div class="user-datetime">
+                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="work-before">
+                        <div class="left">
+                            <span class="img"></span>
+                        </div>
+                        <div class="right">
+                            <div class="title font-style3">
+                                BQT 3F機房
+                            </div>
+                            <div class="function font-style3">
+                                Function A
+                            </div>
+                            <div class="user-datetime">
+                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="work-after">
+                        <div class="left">
+                            <span class="img"></span>
+                        </div>
+                        <div class="right">
+                            <div class="title font-style3">
+                                BQT 3F機房
+                            </div>
+                            <div class="function font-style3">
+                                Function A
+                            </div>
+                            <div class="user-datetime">
+                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="confirm">OK</div>
+            </div>
+        </template>
+
+        <!--template @Tab memberDiv content > Event Member Data List-->
+        <template id="tplEventMemberDataList">
+            <div class="event-member-data-list">
+                <div class="title font-style2">
+                    QTT 3F
+                </div>
+                <ul data-role="listview" class="main font-style5">
+                    <li>
+                        Emily Lin
+                    </li>
+                    <li>
+                        Wendy Shih
+                    </li>
+                </ul>
+            </div>
+        </template>
+
+    </div>
+    <div data-role="footer" class="event-list-footer" data-position="fixed">
+        <div id="addEvent" class="event-list-add-button"></div>
+    </div>
+</div>

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 測試用Controller
+ */
 namespace App\Http\Controllers;
 
 use Request;

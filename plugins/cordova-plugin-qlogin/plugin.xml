@@ -16,7 +16,8 @@
             <serverUrl href="$LOGIN_URL" />
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:name="org.apache.cordova.qlogin.LoginActivity">
+            <activity android:name="org.apache.cordova.qlogin.LoginActivity"
+					  android:windowSoftInputMode="stateVisible|adjustResize">
                 <intent-filter>
                     <action android:name="android.intent.action.VIEW" />
                     <category android:name="android.intent.category.BROWSABLE" />

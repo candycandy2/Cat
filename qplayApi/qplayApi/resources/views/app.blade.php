@@ -13,13 +13,21 @@
 	<script src="{{ asset('/js/jquery.json.js') }}"></script>
 	<script src="{{ asset('/js/Math.uuid.js') }}"></script>
 	<script src="{{ asset('/js/QLoading.js') }}"></script>
+	<script>
+		$(function () {
+			$("body").removeClass('page-body');
+        });
+	</script>
 	<style>
 		body {
 			font-family: "Gill Sans MT",Arial;
 		}
+		.page-body {
+			display: none;
+		}
 	</style>
 </head>
-<body>
+<body class="page-body">
 	@yield('content')
 </body>
 </html>

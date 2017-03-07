@@ -11,17 +11,31 @@ use App\Http\Requests;
 
 class customController extends Controller
 {
-    public function processRequest($app,$function){
+    public function processRequest($api_version,$app_key,$action){
+        //Check version/appkey/action in Url first
+        if (!CommonUtil::checkCustomApiUrl($api_version,$app_key,$action)){
+            $result = ['result_code'=>ResultCode::_999016_haveNoAppVersion,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999016_haveNoAppVersion),
+                'content'=>''];
+            CommonUtil::logCustomApi($api_version,$app_key,$action,
+                response()->json(apache_response_headers()), $result);
+            $result = response()->json($result);
+            return $result;
+        }
+
         $Verify = new Verify();
         $verifyResult = $Verify->verifyCustom(true);//$verifyResult = ["code"=>ResultCode::_1_reponseSuccessful];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $url = CommonUtil::getApiCustomerUrl($function);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
+            $url = CommonUtil::getApiCustomerUrl($action);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
             return $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
         } else {
-            return response()->json(array("ResultCode"=>$verifyResult["code"],
+            $result = response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
                 "Content"=>""));
+            CommonUtil::logCustomApi($api_version,$app_key,$action,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         }
     }
 

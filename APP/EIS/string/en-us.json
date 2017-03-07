@@ -57,11 +57,11 @@
   },
   {
     "term": "str_008",
-    "definition": "[Mon. yyyy]",
+    "definition": "",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon. yyyy]"
   },
   {
     "term": "str_009",
@@ -121,7 +121,7 @@
   },
   {
     "term": "str_016",
-    "definition": "Adj Sales \n(USD$ M)",
+    "definition": "Adj. Sales",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "Hit Rate",
+    "definition": "Budget Hit Rate",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "YoY Rate",
+    "definition": "YoY Growth",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,27 +177,27 @@
   },
   {
     "term": "str_023",
-    "definition": "[Site] Hit Rate",
+    "definition": "Hit Rate",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Site] Hit Rate"
   },
   {
     "term": "str_024",
-    "definition": "Budget AMT = $[Value]",
+    "definition": "Budget AMT = $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Budget AMT = $[Value]"
   },
   {
     "term": "str_025",
-    "definition": "Actual AMT = $[Value]",
+    "definition": "Actual AMT = $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Actual AMT = $[Value]"
   },
   {
     "term": "str_026",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "Actual Value",
+    "definition": "Net Quantity",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,35 +249,35 @@
   },
   {
     "term": "str_032",
-    "definition": "[yyyy-2] Actual QTY",
+    "definition": "Actual QTY",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy-2] Actual QTY"
   },
   {
     "term": "str_033",
-    "definition": "[yyyy-1] Actual QTY",
+    "definition": "Actual QTY",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy-1] Actual QTY"
   },
   {
     "term": "str_034",
-    "definition": "[yyyy] Actual QTY",
+    "definition": "Actual QTY",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy] Actual QTY"
   },
   {
     "term": "str_035",
-    "definition": "[yyyy] Budget QTY",
+    "definition": "Budget QTY",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy] Budget QTY"
   },
   {
     "term": "str_036",
@@ -377,171 +377,171 @@
   },
   {
     "term": "str_048",
-    "definition": "[yyyy-2] Actual AMT",
+    "definition": "Actual AMT",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Actual AMT"
   },
   {
     "term": "str_049",
-    "definition": "[yyyy-1] Actual AMT",
+    "definition": "Actual AMT",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy-1] Actual AMT"
   },
   {
     "term": "str_050",
-    "definition": "[yyyy] Actual AMT",
+    "definition": "Actual AMT",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy] Actual AMT"
   },
   {
     "term": "str_051",
-    "definition": "[yyyy] Budget AMT",
+    "definition": "Budget AMT",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy] Budget AMT"
   },
   {
     "term": "str_052",
-    "definition": "[yyyy-2] Actual ASP",
+    "definition": "Actual ASP",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy-2] Actual ASP"
   },
   {
     "term": "str_053",
-    "definition": "[yyyy-1] Actual ASP",
+    "definition": "Actual ASP",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy-1] Actual ASP"
   },
   {
     "term": "str_054",
-    "definition": "[yyyy] Actual ASP",
+    "definition": "Actual ASP",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy] Actual ASP"
   },
   {
     "term": "str_055",
-    "definition": "[yyyy] Budget ASP",
+    "definition": "Budget ASP",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[yyyy] Budget ASP"
   },
   {
     "term": "str_056",
-    "definition": "[Site] Hit Rate - [product]",
+    "definition": "Hit Rate -",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Site] Hit Rate - [product]"
   },
   {
     "term": "str_057",
-    "definition": "[Mon yyyy] Budget QTY= [Value]",
+    "definition": "Budget QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] Budget QTY= [Value]"
   },
   {
     "term": "str_058",
-    "definition": "[Mon yyyy] Actual QTY= [Value]",
+    "definition": "Actual QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] Actual QTY= [Value]"
   },
   {
     "term": "str_059",
-    "definition": "[Mon yyyy-1] Actual QTY= [Value]",
+    "definition": "Actual QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy-1] Actual QTY= [Value]"
   },
   {
     "term": "str_060",
-    "definition": "[Mon yyyy-2] Actual QTY= [Value]",
+    "definition": "Actual QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy-2] Actual QTY= [Value]"
   },
   {
     "term": "str_061",
-    "definition": "[Mon yyyy] Budget AMT= $[Value]",
+    "definition": "Budget AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] Budget AMT= $[Value]"
   },
   {
     "term": "str_062",
-    "definition": "[Mon yyyy] Actual AMT= $[Value]",
+    "definition": "Actual AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] Actual AMT= $[Value]"
   },
   {
     "term": "str_063",
-    "definition": "[Mon yyyy-1] Actual AMT= $[Value]",
+    "definition": "Actual AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy-1] Actual AMT= $[Value]"
   },
   {
     "term": "str_064",
-    "definition": "[Mon yyyy-2] Actual AMT= $[Value]",
+    "definition": "Actual AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy-2] Actual AMT= $[Value]"
   },
   {
     "term": "str_065",
-    "definition": "[Mon yyyy] Budget ASP= $[Value]",
+    "definition": "Budget ASP= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] Budget ASP= $[Value]"
   },
   {
     "term": "str_066",
-    "definition": "[Mon yyyy] Actual ASP= $[Value]",
+    "definition": "Actual ASP= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] Actual ASP= $[Value]"
   },
   {
     "term": "str_067",
-    "definition": "[Mon yyyy-1] Actual ASP= $[Value]",
+    "definition": "Actual ASP= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy-1] Actual ASP= $[Value]"
   },
   {
     "term": "str_068",
-    "definition": "[Mon yyyy-2] Actual ASP= $[Value]",
+    "definition": "Actual ASP= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy-2] Actual ASP= $[Value]"
   },
   {
     "term": "str_069",
@@ -641,15 +641,15 @@
   },
   {
     "term": "str_081",
-    "definition": "[Mon yyyy] [Site] Hit Rate - [product]",
+    "definition": "Hit Rate -",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "[Mon yyyy] [Site] Hit Rate - [product]"
   },
   {
     "term": "str_082",
-    "definition": "Budget QTY= ",
+    "definition": "Budget QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "str_083",
-    "definition": "Actual QTY= ",
+    "definition": "Actual QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,79 +665,127 @@
   },
   {
     "term": "str_084",
-    "definition": "RT Budget QTY= [Value]",
+    "definition": "RT Budget QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "RT Budget QTY= [Value]"
   },
   {
     "term": "str_085",
-    "definition": "RT Actual QTY= [Value]",
+    "definition": "RT Actual QTY=",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "RT Actual QTY= [Value]"
   },
   {
     "term": "str_086",
-    "definition": "Budget AMT= $[Value]",
+    "definition": "Budget AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Budget AMT= $[Value]"
   },
   {
     "term": "str_087",
-    "definition": "Actual AMT= $[Value]",
+    "definition": "Actual AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Actual AMT= $[Value]"
   },
   {
     "term": "str_088",
-    "definition": "RT Budget AMT= $[Value]",
+    "definition": "RT Budget AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "RT Budget AMT= $[Value]"
   },
   {
     "term": "str_089",
-    "definition": "RT Actual AMT= $[Value]",
+    "definition": "RT Actual AMT= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "RT Actual AMT= $[Value]"
   },
   {
     "term": "str_090",
-    "definition": "Budget ASP= $[Value]",
+    "definition": "Budget ASP= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Budget ASP= $[Value]"
   },
   {
     "term": "str_091",
-    "definition": "Actual ASP= $[Value]",
+    "definition": "Actual ASP= $",
     "context": "",
     "term_plural": "",
     "reference": "",
-    "comment": ""
+    "comment": "Actual ASP= $[Value]"
   },
   {
     "term": "str_092",
-    "definition": "RT Budget ASP= $[Value]",
+    "definition": "RT Budget ASP= $",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": "RT Budget ASP= $[Value]"
+  },
+  {
+    "term": "str_093",
+    "definition": "RT Actual ASP= $",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": "RT Actual ASP= $[Value]"
+  },
+  {
+    "term": "str_094",
+    "definition": "Adj. Sales",
     "context": "",
     "term_plural": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "str_093",
-    "definition": "RT Actual ASP= $[Value]",
+    "term": "str_095",
+    "definition": "ASP",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_096",
+    "definition": "YTD Net Quantity",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_097",
+    "definition": "YTD Budget Hit Rate",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_098",
+    "definition": "YTD Adj. Sales",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_099",
+    "definition": "YTD ASP",
     "context": "",
     "term_plural": "",
     "reference": "",

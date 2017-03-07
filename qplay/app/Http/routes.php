@@ -11,6 +11,14 @@
 |
 */
 
+/*
+ * change locale for every request from url or session
+ * */
+if (array_key_exists('lang',$_GET)){
+    App::setLocale($_GET["lang"]);
+}else if(!empty(session('lang'))){
+    App::setLocale(session('lang'));
+}
 
 Route::any('/platform/getUserList', 'platformController@getUserList');
 Route::any('/platform/getUserListWithoutGroup', 'platformController@getUserListWithoutGroup');
@@ -53,7 +61,9 @@ Route::any('/push/pushSecretaryMessage', 'pushController@pushSecretaryMessage');
 
 Route::any('/platform/getProjectList', 'platformController@getProjectList');
 Route::any('/platform/deleteProject', 'platformController@deleteProject');
-Route::any('/platform/saveProject', 'platformController@saveProject');
+Route::any('/platform/newProject', 'platformController@newProject');
+Route::any('/platform/updateProject', 'platformController@updateProject');
+Route::any('/platform/sendProjectInformation', 'platformController@sendProjectInformation');
 
 Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
 Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
@@ -75,13 +85,14 @@ Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintain
 Route::any('auth/login', function() {
     return view("auth/login");
 });
+Route::any('404', function() {
+    return view("404");
+});
 
+Route::any('/', 'AuthController@checkLogin');
+Route::any('auth/checkLogin', 'AuthController@checkLogin');
 Route::any('auth/login_process', 'AuthController@authenticate');
 Route::any('auth/logout', 'AuthController@logout');
-
-Route::any('/', ['middleware' => 'auth', function() {
-    return view("user_maintain/account_maintain");
-}]);
 
 Route::any('accountMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/account_maintain");
@@ -180,5 +191,8 @@ Route::any('testJpush', ['middleware' => 'auth', function() {
 }]);
 Route::any('test/jpushTest', 'testController@jpushTest');
 
-
+Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
+    return view("tool/sync_jpush_tags_tool");
+}]);
+Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 

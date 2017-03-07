@@ -44,6 +44,7 @@
       <HintPath>Libs\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -56,8 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\FlowerUser.cs" />
+    <Compile Include="DTO\LoginIDRegisterIDTagDTO.cs" />
     <Compile Include="DTO\User.cs" />
     <Compile Include="Entity\Am_Employee_Qplay.cs" />
+    <Compile Include="Entity\Qp_Push_Token.cs" />
+    <Compile Include="Entity\Qp_Register.cs" />
+    <Compile Include="Entity\Qp_Session.cs" />
+    <Compile Include="Entity\Qp_User.cs" />
     <Compile Include="Entity\Qp_User_Flower.cs" />
     <Compile Include="MainSyncService.cs">
       <SubType>Component</SubType>
@@ -84,7 +90,12 @@
     <Content Include="Libs\ITS.Data.dll" />
     <Content Include="Libs\log4net.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\JPushProxy\JPushProxy.csproj">
+      <Project>{96FA8ABF-469D-4467-A534-0DD7D40B9E2C}</Project>
+      <Name>JPushProxy</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>

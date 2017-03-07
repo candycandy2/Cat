@@ -126,14 +126,16 @@ class CommonUtil
         return $userList[0];
     }
 
-    public static function getUserInfoJustByUserID($loginId, $domain)
+    public static function getUserInfoJustByUserID($loginId, $domain=null)
     {
-        $userList = \DB::table('qp_user')
+        $query = \DB::table('qp_user')
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
-            -> where('qp_user.login_id', '=', $loginId)
-            -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')->get();
+            -> where('qp_user.login_id', '=', $loginId);
+        if(!is_null($domain)){
+            $query -> where('qp_user.user_domain', '=', $domain);
+        }
+         $userList= $query -> select('qp_user.row_id','emp_no','email')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -394,12 +396,12 @@ SQL;
     }
 
     public static function getMessageContentByCode($messageCode) {
-        $lang_row_id = self::getLanguageIdByName($_GET['lang']);
-        $project_id = self::getProjectInfo()->row_id;
+        $lang_row_id = self::getLanguageIdByName(session('lang'));
+        //$project_id = self::getProjectInfo()->row_id;
         $errorMessage = \DB::table('qp_error_code')
             -> where('lang_row_id', '=', $lang_row_id)
             -> where('error_code', '=', $messageCode)
-            -> where ('project_row_id','=',$project_id)
+            //-> where ('project_row_id','=',$project_id)
             -> select("qp_error_code.error_desc")
             ->get();
         if(count($errorMessage) < 1) {
@@ -410,8 +412,12 @@ SQL;
     }
 
     public static function getLanguageIdByName($lang) {
-        $lang = strtolower($lang);
         $lang_row_id = 1;
+        if (empty($lang)){
+            return $lang_row_id;
+        }
+        $lang = strtolower($lang);
+
         switch ($lang) {
             case "en-us":
                 $lang_row_id = 1;
@@ -649,6 +655,52 @@ SQL;
              $projectId = $appHead->project_row_id;
         }
         return $projectId;
+    }
+
+    /**
+     * 取得0-9 a-z A-Z 亂數
+     * @param  integer $length 取得亂數長度(預設10)
+     * @return string
+     */
+    public static function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    /**
+     * 取得所有環境設定
+     * @return Array 環境設定代號
+     */
+    public static function getAllEnv(){
+        return array('dev','test','production');
+    }
+
+    /**
+     * 根據輸入環境取得appkey
+     * @return String 
+     */
+    public static function getContextAppKey($env,$key){
+        $env = strtolower($env);
+        $key = "app".$key;
+        switch ($env)
+        {
+            case  "dev":
+                $key = $key."dev";
+                break;
+            case  "test":
+                $key = $key."test";
+                break;
+            case  "production":
+                break;
+            default :
+                break;
+        }
+        return $key;
     }
 
 }

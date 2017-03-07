@@ -23,40 +23,39 @@
     </div>
 
     <!-- Start of popup infoMsg -->
-    <div data-role="popup" data-history="false" id="infoMsg" class="popup-div popup-info" data-overlay-theme="b" data-dismissible="false" style="display:none;">
+    <div id="infoMsg" class="app-popup msg" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" style="display:none;">
         <div data-role="main" class="ui-content">
-            <p id="infoLoginid"></p>
-            <p>
-                UUID: <span id="infoUUID"></span>
-            </p>
-            <p>
-                Version: <span id="infoVersionName"></span>
-            </p>
-
-            <hr class="hr-style">
-
-            <div class="bottom">
-                <div class="button-content">
-                    <span id="closeInfoMsg">確定</span>
-                </div>
+            <div class="main">
+                <p id="infoLoginid"></p>
+                <p>
+                    UUID: <span id="infoUUID"></span>
+                </p>
+                <p>
+                    Version: <span id="infoVersionName"></span>
+                </p>
+            </div>
+            <hr class="ui-hr ui-hr-bottom">
+            <div class="footer">
+                <span id="closeInfoMsg">
+                    <span class="langStr" data-id="com_016"></span>
+                </span>
             </div>
         </div>
     </div>
 
     <!-- Start of popup Network disconnected -->
-    <div data-role="popup" data-history="false" id="disconnectNetwork" class="popup-div popup-info" 
-         data-overlay-theme="b" data-dismissible="false" style="display:none; z-index:999;">
+    <div id="disconnectNetwork" class="app-popup msg" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" style="display:none; z-index:999;">
         <div data-role="main" class="ui-content">
-            <p>
-                連線失敗，請確認網路連線狀態
-            </p>
-
-            <hr class="hr-style">
-
-            <div class="bottom">
-                <div class="button-content">
-                    <span id="closeDisconnectNetwork">確定</span>
-                </div>
+             <div class="main">
+                <p>
+                    <span class="langStr" data-id="com_007"></span>
+                </p>
+             </div>
+             <hr class="ui-hr ui-hr-bottom">
+             <div class="footer">
+                <span id="closeInfoMsg">
+                    <span class="langStr" data-id="com_016"></span>
+                </span>
             </div>
         </div>
     </div>
@@ -78,7 +77,10 @@
                 <div class="button-content">
                     <div id="cancelNewMessage">關閉</div>
                     <div class="vertical-line">&nbsp;</div>
-                    <div id="openNewMessage">開啟</div>
+                    <div id="openNewMessage">
+                        <!--開啟-->
+                        <span class="langStr" data-id="str_026"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,7 +99,10 @@
 
             <div class="bottom">
                 <div class="button-content">
-                    <span id="closeAPIError">確定</span>
+                    <span id="closeAPIError">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -113,8 +118,9 @@
     <div data-role="main" class="main-GetQPush">
         <img class="logo-GetQPush" src="img/component/QPlay_logo.svg"/>
         <div class="text-GetQPush">
-            服務連線中...
-            <br>第一次登入需要取得認證, 請耐心等候
+            <!--服務連線中...-->
+            <span class="langStr" data-id="str_001"></span>
+            <!--<br>第一次登入需要取得認證, 請耐心等候-->
         </div>
         <div class="brand-GetQPush-content">
             <img class="brand-GetQPush" src="img/component/Logo.svg"/>
@@ -130,7 +136,8 @@
     <div data-role="main" class="main-GetQPush">
         <img class="logo-GetQPush" src="img/component/QPlay_logo.svg"/>
         <div class="text-GetQPush">
-            系統維護中<br>請稍後再試
+            <!--系統維護中<br>請稍後再試-->
+            <span class="langStr" data-id="com_004"></span>
         </div>
         <div class="brand-GetQPush-content">
             <img class="brand-GetQPush" src="img/component/Logo.svg"/>
@@ -146,10 +153,14 @@
     <div data-role="main" class="main-updateAppVersion">
         <img class="logo-updateAppVersion" src="img/component/QPlay_logo.svg"/>
         <div class="text-updateAppVersion">
-            請更新應用程式以立即體驗新功能、獲得改善效能和錯誤修正
+            <!--請更新應用程式以立即體驗新功能、獲得改善效能和錯誤修正-->
+            <span class="langStr" data-id="com_005"></span>
         </div>
         <div class="button-updateAppVersion" id="UpdateAPP">
-            <div class="button-text-updateAppVersion">更新應用程式</div>
+            <div class="button-text-updateAppVersion">
+                <!--更新應用程式-->
+                <span class="langStr" data-id="com_006"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -162,10 +173,14 @@
     <div data-role="main" class="main-updateAppVersion">
         <img class="logo-updateAppVersion" src="img/component/QPlay_logo.svg"/>
         <div class="text-updateAppVersion">
-            已登出，請重新登入
+            <!--已登出，請重新登入-->
+            <span class="langStr" data-id="str_044"></span>
         </div>
         <div class="button-updateAppVersion" id="LoginAgain">
-            <div class="button-text-updateAppVersion">Login</div>
+            <div class="button-text-updateAppVersion">
+                <!--Login-->
+                <span class="langStr" data-id="str_045"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -177,5 +192,15 @@
         <div id="msgContent"></div>
         <button id="cancel"></button>
         <button id="confirm"></button>
+    </div>
+</div>
+
+<!-- use only in Yellow page if the employee has multiple num -->
+<div id="numSelectPopupWindow" data-history="false" data-role="popup" data-overlay-theme="b" data-dismissible="false" class="popup-msg hide">
+    <div data-role="main" class="popup-msg">
+        <h1 id="msgTitle">請選擇號碼
+            <div id=numPopupCloseBtn></div>
+        </h1>
+        <ul></ul>
     </div>
 </div>

@@ -14,6 +14,14 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
+/*
+ * change locale for every request
+ * */
+if (array_key_exists('lang',$_GET)){
+    App::setLocale($_GET["lang"]);
+}
+
+Route::any('/v101/qplay/getIpInfo', 'qplayController@getIpInfo');
 
 //QPlay Api
 Route::any('/v101/qplay/getSecurityList', 'qplayController@getSecurityList');
@@ -41,7 +49,7 @@ Route::any('/qplayauth_register', function() {
 });
 
 //Custom
-Route::any('/v101/custom/{app}/{function}', 'customController@processRequest');
+Route::any('/{api_version}/custom/{app_key}/{function}', 'customController@processRequest');
 
 //YellowPage
 /*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');

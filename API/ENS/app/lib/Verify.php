@@ -1,7 +1,7 @@
 <?php
 namespace App\lib;
 use App\Services\EventService;
-
+use App\Repositories\EventRepository;
 /**
  * 
  * User: Cleo.W.Chan
@@ -41,12 +41,12 @@ class Verify
         $headerContentType = $request->header('Content-Type');
         
         if($headerContentType == null || trim($headerContentType) != "application/json") {
-            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+            return array("code"=>ResultCode::_014915_contentTypeParameterInvalid,
                 "message"=> "Content-Type錯誤");
         }
 
         if(count($input) == 0 || !array_key_exists('strXml', $input) || trim($input["strXml"]) == "") {
-            return array("code"=>ResultCode::_999007_inputJsonFormatInvalid,
+            return array("code"=>ResultCode::_014917_inputJsonFormatInvalid,
                 "message"=>"傳入的json格式錯誤, Server端無法解析");
         }
     
@@ -54,49 +54,48 @@ class Verify
         $xml=simplexml_load_string($input['strXml']);
 
         if ($xml === false) {
-             return array("code"=>ResultCode::_999007_inputJsonFormatInvalid,
+             return array("code"=>ResultCode::_014916_inputXmlFormatInvalid,
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
-
-        if(!isset($xml->emp_no[0]) || (string)$xml->emp_no[0] == "" ){
-             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=>"傳入參數不足或傳入參數格式錯誤");
+        $empNo = trim((string)$xml->emp_no[0]);
+        if($empNo == "" ){
+             return array("code"=>ResultCode::_014903_mandatoryFieldLost,
+                "message"=>"必填欄位缺失");
         }
-
-        $empNo =  $xml->emp_no[0];
-        $userStatus = CommonUtil::getUserStatusByUserEmpNo($empNo);
-        if($userStatus == 0) {
+        if( preg_match("/^[0-9]*$/", $empNo) == 0){
+              return array('code'=>ResultCode::_014905_fieldFormatError,
+                'message'=>"欄位格式錯誤");
+        }
+        if(!CommonUtil::checkUserStatusByUserEmpNo($empNo)) {
             return array("code"=>ResultCode::_014908_accountNotExist,
                 "message"=>"帳號不存在");
         }
-        if($userStatus == 1) {
-            return array("code"=>ResultCode::_000901_userNotExistError,
-                "message"=>"員工資訊錯誤");
-        }
-        if($userStatus == 2) {
-            return array("code"=>ResultCode::_000914_userWithoutRight,
-                "message"=>"帳號已被停權");
-        }
-
+        
         return array("code"=>ResultCode::_1_reponseSuccessful,
             "message"=>"");
     }
 
     /**
      * 檢察關聯事件是否存在或已被關聯
-     * @param  int $relatedId event_row_id
+     * @param  int $relatedId qp_event.row_id
      * @param  EventService $eventService
+     * @param  int $eventId   qp_event.row_id (非必填)
      * @return 
      */
-    public function checkRelatedEvent($relatedId, EventService $eventService){
+    public function checkRelatedEvent($relatedId, EventService $eventService, $eventId=null){
         
         if( preg_match("/^[1-9][0-9]*$/", $relatedId) == 0){
              return array('code'=>ResultCode::_014905_fieldFormatError,
             'message'=>"欄位格式錯誤");
         }
-
-        $event = $eventService->getRelatedEventById($relatedId);
-        if(is_null($event) || count($event) == 0){
+        //關聯自己
+        if($eventId == $relatedId ){
+             return array('code'=>ResultCode::_014911_relatedEventStatusError,
+            'message'=>"關聯事件狀態異常");
+        }
+        //事件已被關聯
+        $eventRet = $eventService->getRelatedStatusById($relatedId);
+        if(is_null($eventRet) || ($eventRet->related_event_row_id != 0 && $eventRet->related_event_row_id != $eventId)){
              return array('code'=>ResultCode::_014911_relatedEventStatusError,
             'message'=>"關聯事件狀態異常");
         }
@@ -105,5 +104,30 @@ class Verify
         "message"=>"");
     } 
     
+    /**
+     * 檢查事件是否已完成
+     * @param  int          $eventId            en_event.row_id
+     * @param  EventRepository $eventRepository eventRepository
+     * @return boolean                          true:已完成|false:未完成
+     */
+    public function isEventClosed($eventId, EventRepository $eventRepository){
+        $event = $eventRepository->getEventStatus($eventId);
+        if($event->event_status == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    /**
+     * 檢查時間戳記是否合法
+     * @param  String             $timpStemp  時間戳記
+     * @return boolean            true:合法|false:不合法
+     */
+    public function checkTimeStemp($timpStemp){
+        if( preg_match("/^[0-9]{10}$/", $timpStemp) == 0){
+           return false;         
+        }
+        return true;
+    }
 }

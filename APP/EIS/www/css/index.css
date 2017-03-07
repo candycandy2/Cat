@@ -1,24 +1,325 @@
+/********************************************* overwrite ********************************************/
+.ui-content{
+	padding: 0px;
+}
+
+.ui-panel-inner { 
+  	padding: 0 !important;
+  	margin-top: 0.1VH !important;
+}
+
+.ui-controlgroup-controls {
+	-webkit-border-radius: 8px;
+}
+
+.ui-radio {
+	width:30.86VW;
+}
+
+.page-tabs > div > div > label {
+	border: 1px solid #2b87ba !important;
+}
+
+.page-tabs > div > div > label.label-style {
+	border-left-style: none !important;
+	border-right-style: none !important;
+}
+
+
+/******************************************** common use ********************************************/
 .page-header .menu-btn{
 	background-color: initial !important;
 	border-style: none;
 	padding:0px;
 	margin-top: 1VH !important;
+	margin-left: 1.5VW;
 }
 
-.ui-panel-inner { 
-  	padding: 0 !important;
-  	margin-right: -0.4VW !important;
-	margin-top: -2.1VH !important;
+.page-main{
+	background-color: #fff;
 }
 
+.page-main .page-tabs{
+	margin-top: 1.8VH;
+	margin-bottom: 0VH;
+	margin-right: 3.7VW;
+	margin-left: 3.7VW;
+	text-align: center;
+}
+
+.page-main .tabs-title{
+	height: 5VH;
+	font-size: 2.5VH;
+	font-family: Arial;
+	font-weight: 500;
+	line-height: 5.6VH;
+	text-align: center;
+	padding: 0px;
+}
+
+.page-main .page-date{
+	font-family: Arial;
+	font-size: 2.5VH;
+	color: #0f0f0f;
+	text-align:center;
+	width: 80%;
+	margin: 2vh auto 0;
+}
+
+/******************************************** viewHitRate *******************************************/
+#viewHitRate #data-title-bar{
+	background-color: #f2f2f3;
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	height: 5.8VH;
+}
+
+#viewHitRate .data-title{
+	width: 26.6VW;
+	text-align: center;
+	border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #000;
+    font-weight: 400;
+    font-size: 2VH;
+}
+
+#viewHitRate .data-title > p{
+	height: 2.4VH;
+	margin: 0;
+	font-family: Arial;
+}
+
+
+#viewHitRate ul {
+	list-style-type: none;
+}
+
+#viewHitRate ul > li {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	height: 5.8VH;
+}
+
+#viewHitRate .dataContainer{
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	width: 79.7VW;
+	margin-left: 2.5VW;
+	padding-bottom: 1VH;
+	padding-top: 1VH;
+}
+
+#viewHitRate .row {	
+	border-width: 1px;
+	border-style: none;
+	border-bottom-style: solid;
+	border-bottom-color: #989898;
+}
+
+#viewHitRate .AS{
+	color: #0f0f0f;
+	margin-left: 2VW;
+	text-align: center;
+	width: 20VW;
+	font-weight: bold;
+	display: inline-block;
+}
+
+#viewHitRate .HR{
+	color: #fff;
+	margin-left: 8VW;
+	text-align: center;
+	width: 20VW;
+	border-radius: 3.5px;
+	display: inline-block;
+}
+
+#viewHitRate .YR{
+	color: #fff;
+	margin-left: 7VW;
+	text-align: center;
+	width: 20VW;
+	border-radius: 3.5px;
+	display: inline-block;
+}
+
+#viewHitRate .data{
+	font-size: 2.2VH;
+	padding-top: 0.7VH;
+	font-weight: 900;
+}
+
+#viewHitRate .total-data{
+	font-size: 2.2VH;
+	padding-top: 0.9VH;
+	font-weight: 900;
+}
+
+#viewHitRate .column{
+	font-size: 2.3VH;
+	padding-top: 1.6VH;
+	width: 10VW;
+}
+
+#viewHitRate #total {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+	background-color: #c6c6c6;
+	border-style: none;
+	border-top-style: solid;
+	border-top-color: #323232;
+	border-top-width: 1.2px;
+}
+
+/**************************************** viewMonthlyHitRate ****************************************/
+#viewMonthlyHitRate #title-container {
+	border-style: none;
+	border-bottom-style: solid;
+	border-bottom-color: #989898;
+	border-bottom-width: 0.1VH;
+	margin: 3.2VW 3.7VW 3.2VW 3.7VW;
+	padding-bottom: 1.8VH;
+}
+
+#viewMonthlyHitRate #title-container > div {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+}
+
+
+#viewMonthlyHitRate #title-container > div > div {
+	text-align: center;
+}
+
+#viewMonthlyHitRate #title-container > div > div > p {
+	margin: 0;
+}
+
+.slider {
+    width: 100VW;
+}
+
+.slick-prev:before, .slick-next:before {
+	color: black;
+}
+
+div.scrollmenu {
+	background-color: #fbfdfd;
+	text-align: center;
+	border-style: solid;
+	border-width: 0.5px;
+	border-color: #1e1e2f;
+	white-space: nowrap;
+	width: 100VW;
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+div.scrollmenu a {
+	display: inline-block;
+	padding: 1.8VH 0 1.6VH;
+	background-color: #fbfdfd;
+	color: #0f0f0f;
+	font-family: Arial;
+	font-size: 2.8VH;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 0px 0px 0px 1px;
+	border-color: #e4e4e4 !important;
+	width: 16.5%;
+	text-decoration: none;
+}
+
+div.scrollmenu a:nth-of-type(1){ border-left-width: 0;}
+
+div.scrollmenu a.hover {
+    background-color: #0fb6b7;
+    color: #fff !important;
+}
+
+div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
+.scrollmenu.Ro{ overflow: hidden;}
+.scrollmenu.Ro a{ float: left;}
+/* let scroll more smooth in iOS */
+.scrollmenu.Product{ -webkit-overflow-scrolling: touch}
+
+/****************************************** viewYTDHitRate ******************************************/
+#viewYTDHitRate #title-container {
+	border-style: none;
+	border-bottom-style: solid;
+	border-bottom-color: #989898;
+	border-bottom-width: 0.1VH;
+	margin: 3.2VW 3.7VW 3.2VW 3.7VW;
+	padding-bottom: 1.8VH;
+}
+
+#viewYTDHitRate #title-container > div {
+	display: -webkit-flex;
+	flex-flow: row wrap;
+}
+
+#viewYTDHitRate #title-container > div > div {
+	text-align: center;
+}
+
+#viewYTDHitRate #title-container > div > div > p {
+	margin: 0;
+}
+
+/********************************************** mypanel *********************************************/
 #mypanel #panel-header{
-	font-size: 4VW; 
-	font-family:Arial; 
+	background-color: #4c4c4c;
 	color:#fff; 
-	background-color: #4c4c4c; 
+	font-size: 4VW;
+	font-family:Arial;
 	height:7.3VH;
 }
 
 #mypanel .panel-text{
 	margin-left:3.7VW;
 }
+
+#mypanel .panel-content{
+	background-color: #f6f6f6;
+	color:#0f0f0f;
+	font-size: 3.8VW;
+	font-family: Arial;
+	height:6.8VH;
+
+}
+
+#mypanel .panel-content{
+	border-bottom: solid;
+    border-bottom-color: #e4e4e4;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel #mypanelviewYTDHitRate{
+	border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
+}
+
+
+#mypanel div.panel-content:hover {
+    background-color: #503f81;
+    color: #fff;
+}
+/********************************************** highcharts landscape *********************************************/
+.ui-landscape .viewIndex.ui-page .ui-content.page-main>div:not(.chartArea):not(.hc-fragment),
+	.ui-landscape .viewIndex.ui-page .ui-content.page-main>form,
+	.ui-landscape #viewHitRate #data-title-bar, .ui-landscape .page-header,
+	.ui-landscape div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup{ display: none;}
+.ui-landscape .viewIndex.ui-page{ background-color: #fff;}
+.ui-landscape .chartArea{ -webkit-transform:rotate(90deg) translate(3%, 8%); -moz-transform:rotate(90deg) translate(3%, 8%); transform:rotate(90deg) translate(3%, 8%);}
+.ui-landscape .zoomBtn{ bottom: auto; top: -7%; right: -30%; width: 8%;}
+.ui-landscape .ui-content{ overflow-x: visible;}
+.ui-landscape .hc-fragment{ height: auto;}
+.ui-landscape .zoomInBtn{ display: none;}
+.ui-landscape .zoomOutBtn{ display: inline;}
+.ui-landscape .page-main{ margin-right: -5%;}
+/* zoom btn */
+.chartArea{ position: relative;}
+.zoomBtn{ width: 7%; position: absolute; right: 4%; top: -5%; z-index: 100;}
+.zoomBtn img{ width: 100%; height: auto;}
+.zoomOutBtn{ display: none;}

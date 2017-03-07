@@ -1,4 +1,7 @@
 <?php
+/**
+ * 處理事件相關商業邏輯
+ */
 namespace App\Services;
 
 use App\Repositories\EventRepository;
@@ -18,7 +21,8 @@ class EventService
     protected $push;
 
     const EVENT_TYPE = 'event_type';
-    //private $empNo;
+    const STATUS_FINISHED = '1';
+    const STATUS_UNFINISHED = '0';
 
     public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push)
     {
@@ -29,59 +33,73 @@ class EventService
         $this->push = $push;
     }
 
+    /**
+     * 新增事件流程
+     * @param  String $empNo      使用者員工編號
+     * @param  Array  $data       新增事件內容
+     * @param  Array  $queryParam 推播必要參數
+     * @return int                新增成功的事件Id
+     */
+    public function newEvent($empNo, Array $data, Array $queryParam){
 
-    public function newEvent(Array $data, Array $queryParam){
-
-       $eventId = $this->eventRepository->saveEvent($data);
+       $eventId = $this->eventRepository->saveEvent($empNo, $data);
 
        $nowTimestamp = time();
        $now = date('Y-m-d H:i:s',$nowTimestamp);
 
        $uniqueTask = $this->getUniqueTask($data['basicList']);       
-       $this->insertTask($eventId, $uniqueTask, $data['created_user'], $now);
+       $this->insertTask($eventId, $uniqueTask, $empNo, $now);
 
        if(isset($data['related_event_row_id'])){
-            $this->eventRepository->bindRelatedEvent($eventId,$data['related_event_row_id']);
+            $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $data['emp_no']);
        }
 
        $taskInfo = $this->taskRepository->getTaskByEventId($eventId);
-       $this->insertUserTask($taskInfo, $data['created_user'], $now);
+       $this->insertUserTask($taskInfo, $empNo, $now);
                
 
        $eventUsers =  $this->findEventUser($eventId);
-       $this->insertUserEvent($eventId, $eventUsers, $data['created_user'], $now);
+       $this->insertUserEvent($eventId, $eventUsers, $empNo, $now);
 
 
-       $this->eventRepository->updateReadTime($eventId, $data['created_user']);
+       $this->eventRepository->updateReadTime($eventId, $empNo);
 
-       $this->sendPushMessageToEventUser($eventId, $data, $queryParam, 'new');
+       $this->sendPushMessageToEventUser($eventId, $data, $queryParam, $empNo);
 
        return $eventId;
    }
 
-   public function updateEvent($xml){
-           $eventId = $xml->event_row_id[0];
-           $updateField = array('event_type_parameter_value',
-                                  'event_title','event_desc',
-                                  'estimated_complete_date',
-                                  'related_event_row_id');
-           $data = CommonUtil::arrangeUpdateDataFromXml($xml, $updateField);
-           $queryParam =  array(
-                'lang' => (string)$xml->lang[0],
-                'need_push' => (string)$xml->need_push[0],
-                'app_key' => (string)$xml->app_key[0]
-                );
-           
-           $this->eventRepository->updateEventById($eventId,$data);
-           
-           if(isset($xml->related_event_row_id[0]) && $xml->related_event_row_id[0]!=""){
-                $this->eventRepository->bindRelatedEvent($eventId,$xml->related_event_row_id[0]);
+   /**
+    * 更新事件流程
+    * @param  String $empNo      員工編號
+    * @param  int    $eventId    事件row_id
+    * @param  Array  $data       更新資料
+    * @param  Array  $queryParam 推播必要參數
+    * @return json               更新結果
+    */
+   public function updateEvent($empNo, $eventId, $data, $queryParam){
+           $this->eventRepository->updateEventById($empNo, $eventId, $data);
+           if(isset($data['related_event_row_id'])){
+                if($data['related_event_row_id'] != ""){
+                    $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $empNo);
+                }else{
+                    //if related_event_row_id is null clear related
+                    $this->eventRepository->bindRelatedEvent($eventId, 0, $empNo);
+                }
            }
-           $result = $this->sendPushMessageToEventUser($eventId, $data, $queryParam, 'update');
+           
+           $result = $this->sendPushMessageToEventUser($eventId, $data, $queryParam, $empNo);
            
            return $result;
    }
 
+  /**
+   * 取得事件列表
+   * @param  String $empNo       員工編號
+   * @param  String $eventType   1:緊急通報 | 2:一般通報 (非必填，不需要篩選時傳入空字串)
+   * @param  int $eventStatus 事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
+   * @return Array              事件列表包含參與人數(user_count),seen_count(已讀人數),task_finish_count(任務完成數)
+   */
    public function getEventList($empNo, $eventType, $eventStatus){
         $oraEventList = $this->eventRepository->getEventList($empNo, $eventType, $eventStatus);
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
@@ -89,43 +107,61 @@ class EventService
         $eventList = [];
         foreach ($oraEventList as $event) {
             $eventId = $event->event_row_id;
-            $item = $this->arrangeEventList($event, $parameterMap);
+            $item = $this->arrangeEventList($event);
             $item['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
             $item['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
-
-           $eventList[] = $item;                
+            $item['task_finish_count'] = $this->taskRepository->getCloseTaskCntByEventId($eventId);
+            $eventList[] = $item;                
         }
           return $eventList;
    }
 
-   public function getUnrelatedEventList($empNo){
+   /**
+    * 取得尚未被關聯的事件，並格式化部分資料
+    * @param  int $currentEventId 目前的事件row_id
+    * @return Array
+    */
+   public function getUnrelatedEventList($currentEventId){
     
-        $oraEventList = $this->eventRepository->getUnrelatedEventList($empNo);
+        $oraEventList = $this->eventRepository->getUnrelatedEventList($currentEventId);
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
-       
         $eventList = [];
         foreach ($oraEventList as $event) {
-           $item = $this->arrangeEventList($event, $parameterMap);
+           $item = $this->arrangeEventList($event);
            $eventList[] = $item;                
         }
-          return $eventList;
+        return $eventList;
    }
-
-   public function getEventDetail($eventId){
+   /**
+    * 取得事件詳細資料
+    * @param  int $eventId  事件row_id
+    * @param  String $empNo 員工編號
+    * @return Array
+    */
+   public function getEventDetail($eventId, $empNo){
         
-         $evenDetail = [];
-
-         if(count($this->eventRepository->getEventDetail($eventId)) > 0 ){
-             $evenDetail = $this->eventRepository->getEventDetail($eventId)[0];
-             $evenDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
-             $evenDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
-             $evenDetail['user_event'] = $this->getEventUserDetail($eventId);
-             $evenDetail['task_detail'] = $this->getTaskDetailByEventId($eventId);
+         $eventDetail = [];
+         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+         $eventDetail = $this->eventRepository->getEventDetail($eventId, $empNo);
+         if(isset($eventDetail)){
+            $eventDetail  = $this->arrangeEventList($eventDetail);
+         }
+         if(count($eventDetail) > 0 ){
+             $eventDetail['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
+             $eventDetail['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
+             $eventDetail['task_finish_count'] = $this->taskRepository->getCloseTaskCntByEventId($eventId);
+             $eventDetail['user_event'] = $this->getEventUserDetail($eventId);
+             $eventDetail['task_detail'] = $this->getTaskDetailByEventId($eventId);
          }
 
-         return $evenDetail;
+         return $eventDetail;
    }
 
+   /**
+    * 依據事件id取得任務詳細資料
+    * @param  int $eventId 事件row_id
+    * @return Array
+    */
    public function getTaskDetailByEventId($eventId){
         
         $result = $this->taskRepository->getTaskDetailByEventId($eventId);
@@ -136,18 +172,27 @@ class EventService
         return $result;
    }
 
+   /**
+    * 取得任務參與者的詳細資料
+    * @param  int $taskId 任務id en_task
+    * @return Array
+    */
    public function getTaskUserDetail($taskId){
          $tsakUserDetail = $this->taskRepository->getUserByTaskId($taskId);
           $userList = [];
          foreach ($tsakUserDetail as $key => $user) {
             $userData['emp_no'] = $user->emp_no;
             $userData['login_id'] = $user->login_id;
-            $userData['read_time'] = $user->read_time;
             $userList[] = $userData;
          }
          return $userList;
    }
 
+   /**
+    * 取得事件參與者當作推播接收訊者清單
+    * @param  int $eventId 事件id en_event.row_id
+    * @return Array|array  array('Domain\\LoginId')
+    */
    public function getPushUserListByEvent($eventId){
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];
@@ -157,6 +202,11 @@ class EventService
          return $userList;
    }
 
+   /**
+    * 根據員工編號產生收件者清單
+    * @param  Array  $empNoArr 員工編號列表
+    * @return Array|array      array('Domain\\LoginId')
+    */
    public function getPushUserListByEmpNoArr(Array $empNoArr){
         $userInfo = $this->userRepository->getUserInfoByEmpNO($empNoArr);
         $userList = [];
@@ -166,6 +216,11 @@ class EventService
         return $userList;
    }
 
+   /**
+    * 取得任務參與者詳細資料
+    * @param  int $eventId 事件row_id
+    * @return Array
+    */
    public function getEventUserDetail($eventId){
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];
@@ -178,6 +233,11 @@ class EventService
          return $userList;
    }
 
+   /**
+    * 找出不重複的事件參與者(被指派任務的人、主管以及機房管理者)
+    * @param  int $eventId 事件id en_event.row_id
+    * @return Array
+    */
    public function findEventUser($eventId){
         $eventUser = [];
         $taskUser = $this->taskRepository->getAllUserFromTaskbyEventId($eventId);
@@ -192,15 +252,81 @@ class EventService
 
         return array_unique($eventUser);
    }
-
-   public function getRelatedEventById($eventId){
-        return $this->eventRepository->getRelatedEventById($eventId);
+   
+   /**
+    * 取得事件關聯到的事件id
+    * @param  int $eventId    事件id
+    * @return mixed
+    */
+   public function getRelatedStatusById($eventId){
+        return $this->eventRepository->getRelatedStatusById($eventId);
    }
 
-   public function updateTaskById($taskId){
-        return $this->taskRepository->updateTaskById($taskId);
+   /**
+    * 更新當前任務
+    * @param  String $empNo  員工編號
+    * @param  int    $taskId 任務id en_task.row_id
+    * @param  Array  $data   更新資料
+    * @return int            更新成功筆數
+    */
+   public function updateTaskById($empNo, $taskId, Array $data){
+        return $this->taskRepository->updateTaskById($empNo, $taskId, $data);
    }
 
+   /**
+    * 取得任務參與者
+    * @param  int $taskId    任務id en_task.row_id
+    * @return mixed         
+    */
+   public function getUserByTaskId($taskId){
+        return $this->taskRepository->getUserByTaskId($taskId);
+   }
+
+   /**
+    * 依任務id取得任務資料
+    * @param  int $taskId 任務id
+    * @return mixed
+    */
+   public function getTaskById($taskId){
+        return $this->taskRepository->getTaskById($taskId);
+   }
+   
+   /**
+    * 檢查人員是否有更新任務狀態的權限
+    * @param  int    $taskId    en_task.row_id
+    * @param  String $empNo     員工編號
+    * @return boolean
+    */
+   public function checkUpdateTaskAuth($taskId, $empNo){
+        $res = count($this->taskRepository->getIsTaskOwner($taskId, $empNo));
+        if($res > 0){
+            return true;
+        }else{
+            return false;
+        }
+        return true;
+   }
+
+   /**
+    * 檢查人員是否有更新事件狀態的權限
+    * @param  int    $taskId    en_task.row_id
+    * @param  String $empNo     員工編號
+    * @return boolean
+    */
+   public function checkUpdateEventAuth($taskId, $empNo){
+        $res = count($this->eventRepository->getIsEventOwner($taskId, $empNo));
+        if($res > 0){
+            return true;
+        }else{
+            return false;
+        }
+   }
+   
+   /**
+    * 取得不重複的任務清單(function-location)
+    * @param  Array|array    $basicList 地點等資訊列表
+    * @return Array|array    不重複的任務清單
+    */
    private function getUniqueTask($basicList){
         
         $uniqueTask = [];
@@ -253,21 +379,27 @@ class EventService
    private function insertUserEvent($eventId, Array $eventUser, $createdUser, $createdDate){
         $userEventData = [];
         foreach ($eventUser as $user) {
-            $userEventData[] = array(
+            $userEventData[] = [
                 'event_row_id'=>$eventId,
                 'emp_no'=>(string)$user,
                 'created_user'=>$createdUser,
                 'created_at'=>$createdDate
-                );
+                ];
         }
         $this->eventRepository->saveUserEvent($userEventData);
    }
 
-   private function arrangeEventList($event,  $parameterMap){
-        $item = [];
+   /**
+    * 格式化事件相關資料，並組合創建人資訊
+    * @param  Object $event        event object
+    * @return Array
+    */
+   private function arrangeEventList($event){
 
+        $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
+        $item = [];
         $item['event_row_id'] = $event->event_row_id;
-        $item['event_type'] = $parameterMap[$event->event_type_parameter_value];
+        $item['event_type'] = (isset($event->event_type)&& $event->event_type!="")?$parameterMap[$event->event_type]:"";
         $item['event_title'] = $event->event_title;
         $item['event_desc'] = $event->event_desc;
         $item['estimated_complete_date'] = $event->estimated_complete_date;
@@ -276,21 +408,31 @@ class EventService
         $userInfo = $this->userRepository->getUserInfoByEmpNO(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];
-        $item['created_at'] = $event->created_at->format('Y-m-d H:m:s');
+        $item['created_at'] = $event->created_at->format('Y-m-d H:i:s');
 
         return $item;
    }
 
-   private function sendPushMessageToEventUser($eventId, $data, $queryParam, $scenario = 'new'){
-       $empNo = ($scenario == 'new')?$data['created_user']:$data['updated_user'];
+   /**
+    * 發送推播訊息給事件參與者
+    * @param  int       $eventId    事件id en_event.row_id
+    * @param  Array     $data       發送資料
+    * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
+    * @return json
+    */
+   private function sendPushMessageToEventUser($eventId, $data, Array $queryParam, $empNo){
+       
+       $result = null;
        $to = $this->getPushUserListByEvent($eventId);
-       $from = $this->getPushUserListByEmpNoArr(array( $empNo))[0];
-       $title = base64_encode($data['event_title']);
-       $text = base64_encode($data['event_desc']);
+       $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
+       $event = $this->getEventDetail($eventId, $empNo);
+       $title = base64_encode($event['event_title']);
+       $text = base64_encode($event['event_desc']);
        //TODO append ENS event link
+       
        $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
+       
        $result = json_decode($pushResult);
-       var_dump($result );exit();
        return $result;
    }
 

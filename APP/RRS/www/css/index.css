@@ -30,11 +30,6 @@ a {
     padding-top: initial !important;
 }
 
-.ui-title {
-    text-shadow: initial !important;
-    font-size: 2.8vh !important;
-}
-
 .ui-btn {
     text-overflow: initial;
     margin-right: auto !important;
@@ -150,7 +145,15 @@ a {
     font-size: 3vw;
 }
 
+
 /********************************** public area *************************************/
+
+.ui-title-btn {
+    text-shadow: none !important;
+    font-size: 2.8vh !important;
+    border: 0;
+    padding-top: 1.5vh;
+}
 
 .ui-margin-10 {
     margin: 3% !important;
@@ -183,6 +186,7 @@ a {
 
 .inline {
     display: inline-block;
+    vertical-align: middle;
 }
 
 div.circle {
@@ -364,6 +368,7 @@ div.circle {
     min-height: 100% !important;
 }
 
+
 /*.loader{
     margin-top: 100vh !important;
 }*/
@@ -412,6 +417,7 @@ div.circle {
     background-repeat: no-repeat;
     -webkit-appearance: none;
 }
+
 
 /********************************** color setting *************************************/
 

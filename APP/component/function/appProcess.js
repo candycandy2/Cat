@@ -2,42 +2,66 @@
 /************************************************************************************************/
 /********************************** APP Process JS function *************************************/
 /************************************************************************************************/
+var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
+    isDisConnect = false,                   // check if disconnect
+    closeInfoMsgInit = false;               // let closeInfoMsg click event init once
 
-function callQPlayAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
+function getLanguageString() {
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        for (var i=0; i<data.length; i++) {
+            langStr[data[i].term] = data[i].definition.trim();
+        }
 
-    failCallback =  failCallback || null;
-    queryData = queryData || null;
-    queryStr = queryStr || "";
+        $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
+            for (var i=0; i<data.length; i++) {
+                langStr[data[i].term] = data[i].definition.trim();
+            }
 
-    function requestSuccess(data) {
-        checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
-    }
-
-    function requestError(data) {
-        checkNetwork(data);
-    }
-
-    var signatureTime = getSignature("getTime");
-    var signatureInBase64 = getSignature("getInBase64", signatureTime);
-
-    $.ajax({
-        type: requestType,
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': appKey,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'token': loginData.token,
-            'push-token': loginData.pushToken
-        },
-        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
-        dataType: "json",
-        data: queryData,
-        cache: false,
-        timeout: 3000,
-        success: requestSuccess,
-        error: requestError
+            addConponentView();
+        });
     });
+}
+
+function addConponentView() {
+    //add component view template into index.html
+    $.get("View/APP.html", function(data) {
+        $.mobile.pageContainer.append(data);
+
+        //Set viewInitial become the index page
+        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
+
+        //If is other APP, set APP name in initial page
+        if (appKey !== qplayAppKey) {
+            $("#initialAppName").html(initialAppName);
+
+            //set Other APP initial page dispaly
+            $("#initialOther").removeClass("hide");
+            $("#initialQPlay").remove();
+        } else {
+            //set QPlay initial page dispaly
+            $("#initialQPlay").removeClass("hide");
+            $("#initialOther").remove();
+        }
+
+        //viewNotSignedIn, Login Again
+        $("#LoginAgain").on("click", function() {
+            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+            var checkAppVer = new checkAppVersion();
+        });
+
+        //After all template load finished, processing language string
+        $(".langStr").each(function(index, element){
+            var id = $(element).data("id");
+
+            $(".langStr[data-id='" + id + "']").each(function(index, element){
+                if (langStr[id] !== undefined) {
+                    $(this).html(langStr[id]);
+                }
+            });
+        });
+
+        overridejQueryFunction();
+    }, "html");
 }
 
 //Check Mobile Device Network Status
@@ -53,6 +77,7 @@ function checkNetwork(data) {
     //2. cellular > 3G / 4G
     //3. none
     var showMsg = false;
+    var logMsg = "";
 
     if (!navigator.onLine) {
         //----Network disconnected
@@ -68,29 +93,98 @@ function checkNetwork(data) {
             showNetworkDisconnected = true;
         }
 
+        isDisConnect = true;
+
+        logMsg = "Network disconnected";
     } else {
         //----Network connected
-        //Maybe these following situation happened.
-        //1. status = 200, request succeed, but timeout 3000
-        if (data !== null) {
-            if (data.status !== 200) {
-                showMsg = true;
-                showNetworkDisconnected = true;
-            }
-        }
+        // do nothing
     }
 
     if (showMsg) {
-        $('#disconnectNetwork').popup();
-        $('#disconnectNetwork').show();
-        $('#disconnectNetwork').popup('open');
+        openNetworkDisconnectWindow('noNetwork');
+    }
 
-        $("#closeDisconnectNetwork").on("click", function(){
+    if (logMsg.length > 0) {
+        var dataArr = [
+            "Network Error",
+            "",
+            logMsg
+        ];
+        LogFile.createAndWriteFile(dataArr);
+    }
+}
+
+function openNetworkDisconnectWindow(status){
+    $('#disconnectNetwork').popup();
+    $('#disconnectNetwork').show();
+    $('#disconnectNetwork').popup('open');
+
+    // closeDisconnectNetwork click event should init only once
+    if (!closeDisconnectNetworkInit){
+        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
             $('#disconnectNetwork').popup('close');
             $('#disconnectNetwork').hide();
 
+            // network disconnect
+            if (status === 'noNetwork'){
+                setTimeout(function(){
+                    checkNetwork();
+                }, 500);
+            }
+            // API return fail: timeout or error
+            else if (status === 'timeout' || status === 'error'){
+                var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
+
+                // on initial page, should reload app
+                if (activePageID === 'viewInitial' || activatePageIndex === -1){
+                    reStartAPP = true;
+                }
+                // on page 1
+                else if(activatePageIndex === 0){
+                    // no page can return, do nothing
+                }
+                // on other page, back to last page
+                else{
+                    onBackKeyDown();
+                }
+                loadingMask("hide");
+            }
+            // API retun fail that we never seen before
+            else{
+                alert('網路連線失敗，' + status);
+                reStartAPP = true;
+            }
+
             showNetworkDisconnected = false;
+            if (reStartAPP) {
+                reStartAPP = false;
+                location.reload();
+            }
         });
+        closeDisconnectNetworkInit = true;
+    }
+}
+
+function errorHandler(data){
+    console.log('readyState: ' + data.readyState + ' status: ' + data.status + ' statusText: ' + data.statusText);
+    //1. status = timeout (Network status display ["canceled"])
+    if (data.statusText === "timeout") {
+        showNetworkDisconnected = true;
+        logMsg = "Network status=canceled, timeout";
+        openNetworkDisconnectWindow('timeout');
+    }
+    //2. status = error (Network status display ["failed"]) as we know, the error will appear when network is disconnect
+    else if (data.statusText === 'error'){
+        showNetworkDisconnected = true;
+        logMsg = "Network status=failed, error";
+        openNetworkDisconnectWindow('error');
+    }
+    // 3. status that we never seen before
+    else{
+        showNetworkDisconnected = true;
+        logMsg = data.statusText;
+        openNetworkDisconnectWindow(data.statusText);
     }
 }
 
@@ -109,10 +203,13 @@ function infoMessage() {
         document.documentElement.style.webkitUserSelect = "auto";
     }, 1000);
 
-    $("#closeInfoMsg").on("click", function(){
-        $('#infoMsg').popup('close');
-        $('#infoMsg').hide();
-    });
+    if (!closeInfoMsgInit){
+        $(document).on('click', '#infoMsg #closeInfoMsg', function(){
+            $('#infoMsg').popup('close');
+            $('#infoMsg').hide();
+        });
+        closeInfoMsgInit = true;
+    }
 }
 
 //[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
@@ -128,6 +225,7 @@ function checkPopupShown() {
 
 //Hide APP initial page
 function hideInitialPage() {
+//alert("hideInitialPage");
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
 }

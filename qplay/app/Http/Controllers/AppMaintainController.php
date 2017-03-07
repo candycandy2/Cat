@@ -36,12 +36,9 @@ class AppMaintainController extends Controller
             -> orderBy('app_category')
             -> get();
         foreach ($appCategoryList as $category) {
-            $app_count = \DB::table('qp_app_head')
-                ->where('app_category_row_id', '=', $category->row_id)
-                ->count();
-            $category->app_count = $app_count;
+            $appList = $this->getAppList($category->row_id,'=');
+            $category->app_count = count($appList);
         }
-
          return response()->json($appCategoryList);
     }
 
@@ -298,36 +295,54 @@ class AppMaintainController extends Controller
         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
+
         $data = array();
         $appRowId = $input["app_row_id"];
-        $appBasic = \DB::table("qp_app_head as h")
+        $appMain = \DB::table("qp_app_head as h")
                 -> join('qp_project as p', 'h.project_row_id', '=', 'p.row_id')
-                -> join('qp_app_line as l', 'h.row_id', '=', 'l.app_row_id')
-                -> join('qp_language as lang', 'l.lang_row_id', '=', 'lang.row_id')
                 -> where('h.row_id', '=', $appRowId)
-                -> select('h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
-                            'h.security_level','h.icon_url','h.company_label','l.row_id','l.app_description' ,'l.app_name' ,
-                            'l.lang_row_id','l.app_summary','lang.lang_desc' ,'lang.lang_code',
-                            'p.app_key','p.project_code')
-                -> get();
+                ->select('p.app_key','p.project_code','p.created_user','p.project_pm',
+                         'h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
+                        'h.security_level','h.icon_url','h.company_label')
+                ->first();
 
-         $appPic = \DB::table("qp_app_pic as pic")
+        if(count($appMain) == 0){
+            abort(404);
+        }
+
+        if(!\Auth::user()->isAppAdmin()){
+            if($appMain->created_user!=\Auth::user()->row_id &&
+             strtolower($appMain->project_pm)!=strtolower(\Auth::user()->login_id)){
+                abort(404); 
+            }
+        }
+
+        $appLine = \DB::table("qp_app_line as l")
+                -> join('qp_language as lang', 'l.lang_row_id', '=', 'lang.row_id')
+                -> where('l.app_row_id', '=', $appRowId)
+                -> select('l.row_id','l.app_description' ,'l.app_name' ,'l.lang_row_id', 'l.app_summary',
+                        'lang.lang_desc' ,'lang.lang_code')
+                ->get();
+
+        $picData=[];
+        $appPic = \DB::table("qp_app_pic as pic")
                 -> join('qp_app_head as h', 'h.row_id', '=', 'pic.app_row_id')
                 -> join('qp_project as p', 'h.project_row_id', '=', 'p.row_id')
                 -> join('qp_language as lang', 'pic.lang_row_id', '=', 'lang.row_id')
                 -> where('pic.app_row_id', '=', $appRowId)
                 -> select('pic.row_id','pic.pic_url','pic.lang_row_id','pic.pic_type')
                 -> get();
-        $picData = array();
+
         foreach ($appPic  as $value) {
              $picData[$value->lang_row_id][$value->pic_type][$value->row_id]=$value->pic_url;
         }
         $data['picData']        = $picData;
-        $data['appBasic']       = $appBasic;
+        $data['appMain']        = $appMain;
+        $data['appLine']        = $appLine;
         $data['langList']       = CommonUtil::getLangList();
         $data['categoryList']   = CommonUtil::getAllCategoryList();
-        $data['errorCode']      = $this->getErrorCode($appBasic[0]->project_row_id,$appRowId);
-        $data['company_label']  = ($appBasic[0]->company_label == "")?null:explode(';',$appBasic[0]->company_label);
+        $data['errorCode']      = $this->getErrorCode($appMain->project_row_id,$appRowId);
+        $data['company_label']  = ($appMain->company_label == "")?null:explode(';',$appMain->company_label);
 
         return view("app_maintain/app_detail/main")->with('data',$data);
     }
@@ -385,13 +400,13 @@ class AppMaintainController extends Controller
 
                 }
 
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>'Save App Success',
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'message'=>trans("messages.MSG_SAVE_APP_SUCCESS"),
                     'new_app_row_id'=>$newAppRowId]
                     );
 
             }catch(Exception $e){
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>'Save App Error',
+                    'message'=>trans("messages.MSG_SAVE_APP_ERROR"),
                     'content'=>''
                 ]);
             }
@@ -434,7 +449,7 @@ class AppMaintainController extends Controller
         $appRowId = $input["app_row_id"];
         $customApiList = \DB::table("qp_app_custom_api")
                 -> where('app_row_id', '=', $appRowId)
-                -> select('row_id', 'api_version', 'api_action', 'api_url')
+                -> select('row_id', 'api_version', 'api_action', 'api_url','app_key')
                 -> get();
 
         return response()->json($customApiList);
@@ -824,18 +839,21 @@ class AppMaintainController extends Controller
             $appsList = \DB::table("qp_app_head as h")
                 -> join('qp_project as p','h.project_row_id', '=', 'p.row_id')
                 -> where(function($query) use ($categoryId,$op){
-            
             if(isset($categoryId) && is_numeric($categoryId) && isset($op))
 
                 $query->where('h.app_category_row_id', $op, $categoryId);
             })
             -> select('h.row_id','h.package_name','h.icon_url',
                         'h.app_category_row_id','h.default_lang_row_id',
-                        'h.updated_at','h.created_at')
+                        'h.updated_at','h.created_at','p.created_user as p_created_user','p.project_pm as pm')
             -> get();
 
-            foreach ($appsList as $app) {
-               
+            foreach ($appsList as $index => $app) {
+                if(!\Auth::user()->isAppAdmin()){
+                    if($app->p_created_user!=\Auth::user()->row_id && $app->pm!=\Auth::user()->login_id){
+                            unset($appsList[$index]);
+                    }
+                }
                 $appLineInfo = \DB::table('qp_app_line')
                     ->where('app_row_id', '=', $app->row_id)
                     ->where('lang_row_id', '=', $app->default_lang_row_id)
@@ -863,11 +881,12 @@ class AppMaintainController extends Controller
             }
         }catch(Exception $e){
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                'message'=>'Get App List Error',
+                'message'=>trans('messages.MSG_GET_APP_LIST_ERROR'),
                 'content'=>''
             ]);
         }
-        return $appsList;
+        $appsListRes = array_values($appsList);
+        return $appsListRes;
 
     }
 
@@ -1001,17 +1020,20 @@ class AppMaintainController extends Controller
         $errorCodeArray = json_decode(CommonUtil::removeBOM($errorCodeJson));
         if(is_null($errorCodeArray)){
             return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
-                    'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
+                    //'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
+                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999007_inputJsonFormatInvalid)
                 ];
         }
         if(!isset($errorCodeArray->error_list->appkey) || !isset($errorCodeArray->error_list->code_list)){
             return ['result_code'=>ResultCode::_999007_inputJsonFormatInvalid,
-                    'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
+                    //'message'=>trans("messages.ERR_JSON_PARSING_ERROR")
+                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999007_inputJsonFormatInvalid)
                 ];
         }
         if($errorCodeArray->error_list->appkey != $appkey){
               return ['result_code'=>ResultCode::_999010_appKeyIncorrect,
-                        'message'=>trans("messages.ERR_APP_KEY_INCORRECT_ERROR")
+                        //'message'=>trans("messages.ERR_APP_KEY_INCORRECT_ERROR")
+                        'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect)
                 ];
         }
         $appProjectId = CommonUtil::getProjectIdByAppId($appId);

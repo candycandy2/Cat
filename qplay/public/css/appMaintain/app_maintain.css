@@ -92,7 +92,6 @@ table.costum-table {
     padding-left: 20px;
     padding-right: 20px; 
 }
-
 table.costum-table td { border: 1px solid #ddd; padding: 8px; }
 table.costum-table tr:first-child{font-weight:bold;}
 table.costum-table tr:last-child{background-color: #f9f9f9;}

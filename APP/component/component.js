@@ -10,6 +10,9 @@ var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
+var browserLanguage;
+var langStr = {};
+var logFileName;
 
 var loginData = {
     versionName:         "",
@@ -37,6 +40,7 @@ var checkTimerCount = 0;
 var doHideInitialPage = false;
 var initialNetworkDisconnected = false;
 var showNetworkDisconnected = false;
+var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
 
@@ -93,7 +97,9 @@ var app = {
         document.addEventListener("backbutton", onBackKeyDown, false);
 
         //[device] data ready to get on this step.
-        readConfig();
+        setTimeout(function() {
+            readConfig();
+        }, 2000);
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
@@ -101,6 +107,13 @@ var app = {
         if (device.platform === "iOS") {
             $.mobile.hashListeningEnabled = false;
         }
+
+        //Log -
+        //get now year + month
+        var now = new Date();
+        logFileName = now.yyyymm("");
+        //console.log(cordova.file);
+        //LogFile.checkOldFile();
     },
     onGetRegistradionID: function (data) {
         if (data.length !== 0) {
@@ -234,6 +247,28 @@ $(document).one("pagebeforecreate", function(){
     $(':mobile-pagecontainer').html("");
 
     //According to the data [pageList] which set in index.js ,
+    //add Page JS into index.html
+    $.map(pageList, function(value, key) {
+        (function(pageID){
+            /*
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.src = "js/" + pageID + ".js";
+            $("head").append(s);
+            */
+
+            var script = document.createElement("script");
+            // onload fires even when script fails loads with an error.
+            //script.onload = onload;
+            // onerror fires for malformed URLs.
+            //script.onerror = onerror;
+            script.type = "text/javascript";
+            script.src = "js/" + pageID + ".js";
+            document.head.appendChild(script);
+        }(value));
+    });
+
+    //According to the data [pageList] which set in index.js ,
     //add View template into index.html
     $.map(pageList, function(value, key) {
         (function(pageID){
@@ -244,33 +279,37 @@ $(document).one("pagebeforecreate", function(){
         }(value));
     });
 
-    //add component view template into index.html
-    $.get("View/component.html", function(data) {
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-        $.mobile.pageContainer.append(data);
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-        //Set viewInitial become the inde page
-        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
-
-        //If is other APP, set APP name in initial page
-        if (appKey !== qplayAppKey) {
-            $("#initialAppName").html(initialAppName);
-        }
-
-        //viewNotSignedIn, Login Again
-        $("#LoginAgain").on("click", function() {
-            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var checkAppVer = new checkAppVersion();
-        });
-    }, "html");
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+        //language string exist
+        getLanguageString();
+    })
+    .fail(function() {
+        //language string does not exist
+        browserLanguage = "zh-tw";
+        getLanguageString();
+    });
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
-
         if (device.platform === "Android") {
+            $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            $(".ui-header-fixed").css("position", "fixed");
+
             var version = device.version.substr(0, 1);
-            if (version === "5") {
-                $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            if (version === "6") {
+                $(".ui-footer-fixed").css("position", "fixed");
             }
         }
 
@@ -337,6 +376,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
                 }
             } else {
                 if (doInitialSuccess) {
+//alert("doInitialSuccess--true");
                     doInitialSuccess = false;
                     hideInitialPage();
                 } else {
@@ -444,9 +484,6 @@ function readConfig() {
             var checkAppVer = new checkAppVersion();
         }
 
-        //set initial page dispaly
-        $("#initialQPlay").removeClass("hide");
-        $("#initialOther").remove();
     } else {
         var doCheckAppVer = false;
 
@@ -462,12 +499,12 @@ function readConfig() {
             if (appKey.indexOf("rrs") !== -1) {
                 if (appEnvironment.length === 0) {
                     //Production
-                    if (versionCode > 23 && versionCode <= 232) {
+                    if (versionCode > 23 && versionCode <= 234) {
                         getServerData();
                     }
                 } else if (appEnvironment === "test") {
                     //Staging
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 }
@@ -476,12 +513,12 @@ function readConfig() {
             if (appKey.indexOf("yellowpage") !== -1) {
                 if (appEnvironment.length === 0) {
                     //Production
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 } else if (appEnvironment === "test") {
                     //Staging
-                    if (versionCode > 226 && versionCode <= 232) {
+                    if (versionCode > 226 && versionCode <= 234) {
                         getServerData();
                     }
                 }
@@ -504,10 +541,6 @@ function readConfig() {
 
         if (doCheckAppVer) {
             var checkAppVer = new checkAppVersion();
-
-            //set initial page dispaly
-            $("#initialOther").removeClass("hide");
-            $("#initialQPlay").remove();
         }
     }
 }
@@ -574,7 +607,7 @@ function checkAppVersion() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
@@ -586,14 +619,10 @@ function setWhiteList() {
 
     this.successCallback = function() {
         var doCheckStorageData = false;
-
+//alert("setWhiteList");
         if (appKey !== qplayAppKey) {
-            if (window.localStorage.getItem("openScheme") === "true") {
-                if (callHandleOpenURL) {
-                    return;
-                } else {
-                    doCheckStorageData = true;
-                }
+            if (callHandleOpenURL) {
+                return;
             } else {
                 doCheckStorageData = true;
             }
@@ -615,7 +644,6 @@ function setWhiteList() {
         }
 
         $(".ui-title").on("taphold", function(){
-
             //Set for iOS, control text select
             document.documentElement.style.webkitTouchCallout = "none";
             document.documentElement.style.webkitUserSelect = "none";
@@ -700,6 +728,7 @@ function setWhiteList() {
 
 //check data(token, token_value, ...) on web-storage
 function checkStorageData() {
+//alert("checkStorageData");
     if (window.localStorage.length === 0) {
         getDataFromServer = true;
     } else {
@@ -736,6 +765,7 @@ function processStorageData(action, data) {
 
         return checkLoginDataExist;
     } else if (action === "checkSecurityList") {
+//alert("checkSecurityList");
         $.map(loginData, function(value, key) {
             if (window.localStorage.getItem(key) !== null) {
                 loginData[key] = window.localStorage.getItem(key);
@@ -777,11 +807,7 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        if (window.localStorage.getItem("openScheme") !== "true") {
-            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
-        }
-
-        window.localStorage.setItem("openScheme", true);
+        openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
     }
 
 }
@@ -794,6 +820,7 @@ function getSecurityList() {
     var queryStr = "&app_key=" + appKey;
 
     this.successCallback = function(data) {
+//alert("getSecurityList");
         doInitialSuccess = true;
         checkTokenValid(data['result_code'], data['token_valid'], null, null);
     };
@@ -801,7 +828,7 @@ function getSecurityList() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        callQPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
     }();
 
 }
@@ -814,7 +841,9 @@ function createAPPSchemeURL() {
 
 //Return Login Data from QPlay
 function getLoginDataCallBack() {
+//alert("getLoginDataCallBack");
     var callBackURL = queryData["callbackApp"] + createAPPSchemeURL();
+//alert(callBackURL);
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
@@ -824,6 +853,8 @@ function getLoginDataCallBack() {
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
 function handleOpenURL(url) {
+//alert("handleOpenURL");
+//alert(url);
 
     if (url !== "null") {
 
@@ -841,7 +872,7 @@ function handleOpenURL(url) {
         });
 
         if (appKey === qplayAppKey && queryData["action"] === "getLoginData") {
-
+//alert("getLoginData");
             loginData['doLoginDataCallBack'] = true;
 
             //APP version record
@@ -864,8 +895,7 @@ function handleOpenURL(url) {
             checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
-
-            window.localStorage.setItem("openScheme", false);
+//alert("retrunLoginData");
 
             $.map(queryData, function(value, key) {
                 if (key !== "callbackApp" && key !== "action") {
@@ -881,7 +911,9 @@ function handleOpenURL(url) {
         //[APP is in action or background] need to following step.
         if (loginData['doLoginDataCallBack'] === true) {
             $.mobile.changePage('#viewInitial');
+//alert("----1");
             if (appInitialFinish === true) {
+//alert("----2");
                 var checkAppVer = new checkAppVersion();
             }
         }

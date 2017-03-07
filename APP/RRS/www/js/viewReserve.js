@@ -1,4 +1,4 @@
-$(document).one('pagecreate', '#viewReserve', function() {
+//$(document).one('pagecreate', '#viewReserve', function() {
 
     var SiteData = {};
     var roomData = {};
@@ -398,7 +398,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                     };
 
                     var __construct = function() {
-                        QPlayAPI("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, queryData);
+                        CustomAPI("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, queryData, "");
                     }();
                 }
             }
@@ -503,7 +503,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "ReserveMeetingRoom", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "ReserveMeetingRoom", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -538,7 +538,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -574,7 +574,7 @@ $(document).one('pagecreate', '#viewReserve', function() {
                 };
 
                 var __construct = function() {
-                    QPlayAPI("POST", true, "QuickReserve", self.successCallback, self.failCallback, queryData);
+                    CustomAPI("POST", true, "QuickReserve", self.successCallback, self.failCallback, queryData, "");
                 }();
             }
 
@@ -910,4 +910,4 @@ $(document).one('pagecreate', '#viewReserve', function() {
             });
         }
     });
-});
+//});
