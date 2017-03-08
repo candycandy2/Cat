@@ -89,6 +89,16 @@ $("#viewEventContent").pagecontainer({
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             tplJS.preventPageScroll();
+
+            //Photo Confirm - Button Event
+            $("#photoCancel").on("click", function() {
+                confirmPhotoClose();
+                openFilePicker();
+            });
+
+            $("#photoConfirm").on("click", function() {
+                confirmPhotoOK();
+            });
         }
 
         function confirmPhotoClose() {
@@ -114,6 +124,14 @@ $("#viewEventContent").pagecontainer({
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             tplJS.preventPageScroll();
+
+            //Back Button
+            $(".button-content .back-button").on("click", function() {
+                $(".event-content-photo-full-screen").remove();
+                $(".event-content-footer").removeClass("ui-fixed-hidden");
+
+                tplJS.recoveryPageScroll();
+            });
         }
 
         /********************************** page event *************************************/
@@ -123,6 +141,22 @@ $("#viewEventContent").pagecontainer({
             var eventListMsgHTML = $("template#tplEventListMsg").html();
             var eventListMsg = $(eventListMsgHTML);
             $("#contentEventContent").prepend(eventListMsg);
+
+            //UI Popup : Report Event Work Done Confirm
+            var eventReportWorkDoneConfirmData = {
+                id: "eventReportWorkDoneConfirm",
+                content: $("template#tplEventReportWorkDoneConfirm").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventReportWorkDoneConfirmData);
+
+            //UI Popup : Event Edit Cancel Confirm
+            var eventCancelWorkDoneConfirmData = {
+                id: "eventCancelWorkDoneConfirm",
+                content: $("template#tplEventCancelWorkDoneConfirm").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventCancelWorkDoneConfirmData);
 
         });
 
@@ -152,16 +186,6 @@ $("#viewEventContent").pagecontainer({
             openFilePicker();
         });
 
-        //Photo Confirm - Button Event
-        $(document).on("click", "#photoCancel", function() {
-            confirmPhotoClose();
-            openFilePicker();
-        });
-
-        $(document).on("click", "#photoConfirm", function() {
-            confirmPhotoOK();
-        });
-
         //Photo - Small Preview
         $(document).on("click", ".previewImageDiv .delete-button", function() {
             uploadPhoto = false;
@@ -176,11 +200,28 @@ $("#viewEventContent").pagecontainer({
             fullScreenPhoto();
         });
 
-        $(document).on("click", ".button-content .back-button", function() {
-            $(".event-content-photo-full-screen").remove();
-            $(".event-content-footer").removeClass("ui-fixed-hidden");
+        //Event Edit Button
+        $(document).on("click", "#eventEdit", function() {
 
-            tplJS.recoveryPageScroll();
         });
+
+        //Report Event Work Done
+        $(document).on("click", "#eventReportWorkDoneConfirm .cancel", function() {
+
+        });
+
+        $(document).on("click", "#eventReportWorkDoneConfirm .confirm", function() {
+
+        });
+
+        //Cancel Event Work Done
+        $(document).on("click", "#eventCancelWorkDoneConfirm .cnacel", function() {
+
+        });
+
+        $(document).on("click", "#eventCancelWorkDoneConfirm .confirm", function() {
+
+        });
+
     }
 });
