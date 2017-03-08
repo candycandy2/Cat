@@ -3,7 +3,7 @@
 /********************************** APP Process JS function *************************************/
 /************************************************************************************************/
 var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
-    isDisConnect = false,                   // check if disconnect
+    isDisConnect = false;                   // check if disconnect
 
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
