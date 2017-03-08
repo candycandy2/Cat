@@ -36,29 +36,30 @@
             </div>
             <hr class="ui-hr ui-hr-bottom">
             <div class="footer">
-                <span id="closeInfoMsg">
-                    <span class="langStr" data-id="com_016"></span>
-                </span>
+                <div id="closeInfoMsg" class="btn-one font-style8">
+                    <div>
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Start of popup Network disconnected -->
-    <div id="disconnectNetwork" class="app-popup msg" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" style="display:none; z-index:999;">
-        <div data-role="main" class="ui-content">
-             <div class="main">
-                <p>
-                    <span class="langStr" data-id="com_007"></span>
-                </p>
-             </div>
-             <hr class="ui-hr ui-hr-bottom">
-             <div class="footer">
-                <span id="closeInfoMsg">
+    <!--template @popup content > Network disconnected-->
+    <template id="tplDisconnectNetwork">
+        <!--header: Title or Button-->
+        <div class="header font-style1">
+            <span class="langStr" data-id="com_007"></span>
+        </div>
+        <!--footer: Button-->
+        <div class="footer">
+            <div id="closeInfoMsg" class="btn-one font-style8">
+                <div>
                     <span class="langStr" data-id="com_016"></span>
-                </span>
+                </div>
             </div>
         </div>
-    </div>
+    </template>
 
     <!-- Start of popup iOS get new message -->
     <div data-role="popup" data-history="false" id="iOSGetNewMessage" class="popup-div popup-info" 

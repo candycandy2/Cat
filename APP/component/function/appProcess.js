@@ -49,6 +49,14 @@ function addConponentView() {
             var checkAppVer = new checkAppVersion();
         });
 
+        //UI Popup : Event Add Confirm
+        var disconnectNetworkData = {
+            id: "disconnectNetwork",
+            content: $("template#tplDisconnectNetwork").html()
+        };
+
+        tplJS.Popup(null, null, "append", disconnectNetworkData);
+
         //After all template load finished, processing language string
         $(".langStr").each(function(index, element){
             var id = $(element).data("id");

@@ -67,12 +67,14 @@ class Verify
                 "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid));
         }
 
+        /*
         //TODO for test
         if($headerSignature == "Moses824")
         {
             return array("code"=>ResultCode::_1_reponseSuccessful,
                 "message"=>"");
         }
+        */
 
 //        if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
 //            return array("code"=>ResultCode::_999011_signatureOvertime,
@@ -263,6 +265,7 @@ class Verify
                 "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid));
         }
 
+        /*
         //TODO for test
         if($headerSignature == "Moses824")
         {
@@ -279,6 +282,17 @@ class Verify
                 return array("code"=>ResultCode::_999011_signatureOvertime,
                     "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime));
             }
+        }
+        */
+        $sigResult = self::chkSignatureYellowPage($headerSignature, $headerSignatureTime);
+        if ($sigResult == 1) {
+            return array("code"=>ResultCode::_999008_signatureIsInvalid,
+                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid));
+        }
+
+        if($sigResult == 2) {
+            return array("code"=>ResultCode::_999011_signatureOvertime,
+                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime));
         }
 
         //通用api參數判斷
