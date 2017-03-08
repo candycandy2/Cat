@@ -488,6 +488,8 @@ class CommonUtil
      * "token":"586da9b75a3ab"
      * */
     $requestHeaderInfo = [];
+    $operationTime = 0;
+    $SignatureTime = 0;
         if(array_key_exists("app-key",$request_header)){
             $requestHeaderInfo["app-key"] = $request_header["app-key"];
         }
@@ -496,11 +498,15 @@ class CommonUtil
         }
         if(array_key_exists("signature-time",$request_header)){
             $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
+            $SignatureTime = $requestHeaderInfo["signature-time"];
+            
         }
         if(array_key_exists("token",$request_header)){
             $requestHeaderInfo["token"] = $request_header["token"];
         }
     $request_body = self::prepareJSON(file_get_contents('php://input'));
+    $apiStartTime = Request::instance()->get('ApiStartTime');
+    $operationTime = microtime(true) - $apiStartTime;
 
     \DB::table("qp_api_log")
         -> insert([
@@ -514,6 +520,8 @@ class CommonUtil
             'request_body'=>$request_body,
             'response_header'=>$responseHeader,
             'response_body'=>json_encode($responseBody),
+            'signature_time'=> $SignatureTime,
+            'operation_time'=> $operationTime,
             'created_at'=>$now,
         ]);
 }
