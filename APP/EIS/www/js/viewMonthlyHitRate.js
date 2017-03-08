@@ -453,19 +453,22 @@ $("#viewMonthlyHitRate").pagecontainer({
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
             getHighchartsData(ro, product, year, month);
-            chart.series[0].setData(monthlyHighchartsData["Actual QTY"][year-2], true, true, false);
-            chart.series[1].setData(monthlyHighchartsData["Actual QTY"][year-1], true, true, false);
-            chart.series[2].setData(monthlyHighchartsData["Actual QTY"][year], true, true, false);
-            chart.series[3].setData(monthlyHighchartsData["Budget QTY"][year], true, true, false);
+            chart.series[0].update({name: (year-2) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year-2]});
+            chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year-1]});
+            chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year]});
+            chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget " + tab][year]});
         });
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+
             ro = "ALL";
             product = "ALL";
             tab = "QTY";
+            initSlider();
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            
             chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
@@ -494,7 +497,7 @@ $("#viewMonthlyHitRate").pagecontainer({
         				y: -11
         			},
         			min: 0,
-        			tickInterval: 1000
+        			// tickInterval: 1000
         		},
         		legend: {
         			align: 'left',
@@ -547,8 +550,6 @@ $("#viewMonthlyHitRate").pagecontainer({
             $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
             $(".Ro #ALL").addClass('hover');
             $(".Product #ALL").addClass('hover');
-
-            initSlider();
             $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
             loadingMask("hide");
         });
