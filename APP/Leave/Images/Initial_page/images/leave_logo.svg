@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="335.695px" height="593.628px" viewBox="0 0 335.695 593.628" enable-background="new 0 0 335.695 593.628"
+	 xml:space="preserve">
+<g>
+	<g>
+		<path fill="#006678" d="M62.54,0c-7.279,0-13.178,5.901-13.178,13.178v23.043v18.889c0,7.279,5.898,13.18,13.178,13.18
+			c7.278,0,13.177-5.9,13.177-13.18V36.221V13.178C75.717,5.901,69.818,0,62.54,0z"/>
+		<path fill="#006678" d="M239.615,0c-7.279,0-13.18,5.901-13.18,13.178v23.043v18.889c0,7.279,5.9,13.18,13.18,13.18
+			c7.277,0,13.178-5.9,13.178-13.18V36.221V13.178C252.793,5.901,246.893,0,239.615,0z"/>
+		<rect x="7.444" y="86.602" fill="#ECF2F2" width="294.001" height="241"/>
+		<text transform="matrix(1 0 0 1 63.8394 272.0151)" fill="#009999" font-family="'MicrosoftJhengHeiBold'" font-size="168.7341">假</text>
+		<path fill="#60BCCE" d="M277.795,36.221h-0.4h-10.666h-0.029h-6.377v18.889c0,11.419-9.287,20.709-20.707,20.709
+			c-11.418,0-20.709-9.29-20.709-20.709V36.221h-4.479H88.794h-5.548v18.889c0,11.419-9.288,20.709-20.706,20.709
+			c-11.42,0-20.708-9.29-20.708-20.709V36.221h-5.31H25.517h-1.157C10.926,36.221,0,47.146,0,60.578v253.439
+			c0,13.432,10.926,24.357,24.359,24.357h210.689c-3.197-5.271-5.627-11.061-7.156-17.203H24.359c-3.946,0-7.155-3.209-7.155-7.154
+			V95.154h212.583h55.041l0.123,15.298v133.362c1.139-0.061,2.289-0.1,3.447-0.1c4.729,0,9.328,0.547,13.756,1.541V60.578
+			C302.154,47.146,291.227,36.221,277.795,36.221z"/>
+		<path fill="#006678" d="M290.754,242.479c-4.092-0.922-8.344-1.424-12.719-1.424c-1.07,0-2.133,0.032-3.189,0.09
+			c-30.361,1.656-54.469,26.796-54.469,57.564c0,4.817,0.6,9.491,1.711,13.965c1.414,5.678,3.662,11.033,6.619,15.904
+			c10.109,16.662,28.42,27.791,49.328,27.791c31.846,0,57.66-25.815,57.66-57.66C335.695,271.236,316.48,248.269,290.754,242.479z"
+			/>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="235.7617" y1="303.7368" x2="321.1523" y2="303.7368">
+			<stop  offset="0" style="stop-color:#F2F3F3"/>
+			<stop  offset="0.4946" style="stop-color:#FFFFFF"/>
+			<stop  offset="1" style="stop-color:#F2F3F3"/>
+		</linearGradient>
+		<polygon fill="url(#SVGID_1_)" points="268.061,335.012 235.762,302.718 245.945,292.528 268.787,315.372 311.699,272.462 
+			321.152,281.916 		"/>
+	</g>
+	<defs>
+		<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="378.037" width="335.695" height="215.591">
+			<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
+			<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
+		</filter>
+	</defs>
+	<mask maskUnits="userSpaceOnUse" x="0" y="378.037" width="335.695" height="215.591" id="SVGID_2_">
+		<g filter="url(#Adobe_OpacityMaskFilter)">
+			<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="176.668" y1="483.5107" x2="176.668" y2="48.106">
+				<stop  offset="0" style="stop-color:#000000"/>
+				<stop  offset="0.0935" style="stop-color:#2B2B2C"/>
+				<stop  offset="0.2704" style="stop-color:#58585B"/>
+				<stop  offset="0.512" style="stop-color:#85878A"/>
+				<stop  offset="0.8057" style="stop-color:#C4C6C8"/>
+				<stop  offset="1" style="stop-color:#F2F3F3"/>
+			</linearGradient>
+			<rect x="-21.352" y="363.499" fill="url(#SVGID_3_)" width="396.04" height="267.027"/>
+		</g>
+	</mask>
+	<g mask="url(#SVGID_2_)">
+		<rect x="7.444" y="378.295" fill="#ECF2F2" width="294.001" height="178.102"/>
+		<g>
+			
+				<text transform="matrix(1.3532 0 0 -1 63.8394 419.374)" fill="#009999" font-family="'MicrosoftJhengHeiBold'" font-size="124.6962">假</text>
+		</g>
+		<path fill="#60BCCE" d="M277.795,593.628h-0.4h-10.666h-0.029h-6.377v-13.209c0-7.984-9.287-14.481-20.707-14.481
+			c-11.418,0-20.709,6.497-20.709,14.481v13.209h-4.479H88.794h-5.548v-13.209c0-7.984-9.288-14.481-20.706-14.481
+			c-11.42,0-20.708,6.497-20.708,14.481v13.209h-5.31H25.517h-1.157C10.926,593.628,0,585.987,0,576.596V399.367
+			c0-9.393,10.926-17.033,24.359-17.033h210.689c-3.197,3.687-5.627,7.734-7.156,12.03H24.359c-3.946,0-7.155,2.244-7.155,5.003
+			v153.05h212.583h55.041l0.123-10.697v-93.26c1.139,0.042,2.289,0.069,3.447,0.069c4.729,0,9.328-0.383,13.756-1.077v129.144
+			C302.154,585.987,291.227,593.628,277.795,593.628z"/>
+		<path fill="#006678" d="M290.754,462.203c-4.092,0.682-8.344,1.053-12.719,1.053c-1.07,0-2.133-0.023-3.189-0.066
+			c-30.361-1.225-54.469-19.802-54.469-42.541c0-3.559,0.6-7.014,1.711-10.32c1.414-4.195,3.662-8.153,6.619-11.753
+			c10.109-12.313,28.42-20.538,49.328-20.538c31.846,0,57.66,19.078,57.66,42.611C335.695,440.951,316.48,457.926,290.754,462.203z"
+			/>
+		
+			<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="235.7617" y1="154.6079" x2="321.1523" y2="154.6079" gradientTransform="matrix(1 0 0 -1 0 571.0391)">
+			<stop  offset="0" style="stop-color:#F2F3F3"/>
+			<stop  offset="0.4946" style="stop-color:#FFFFFF"/>
+			<stop  offset="1" style="stop-color:#F2F3F3"/>
+		</linearGradient>
+		<polygon opacity="0.6" fill="url(#SVGID_4_)" points="268.061,390.818 235.762,414.685 245.945,422.215 268.787,410.333 
+			311.699,442.044 321.152,430.057 		"/>
+	</g>
+</g>
+</svg>
