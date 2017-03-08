@@ -127,6 +127,7 @@ return [
 
     'App_id' => env('APP_ID'),
     'Secret_key' => env('SECRET_KEY'),
+    'App_Secret_key'=>env('APP_SECRET_KEY'),
     'time_to_live' => env('TIME_TO_LIVE'),
     'apns_flag' => env('APNS_FLAG'),
 
