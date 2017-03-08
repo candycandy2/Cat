@@ -5,6 +5,7 @@
 var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
     isDisConnect = false;                   // check if disconnect
 
+
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
         for (var i=0; i<data.length; i++) {
