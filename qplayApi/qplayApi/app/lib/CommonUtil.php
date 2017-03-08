@@ -508,20 +508,17 @@ class CommonUtil
     $requestHeaderInfo = [];
     $operationTime = 0;
     $SignatureTime = 0;
-        if(array_key_exists("app-key",$request_header)){
-            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+    $needToLogArray = ["app-key","signature","signature-time","token"];
+
+    foreach ($request_header as $key => $value) {
+        $loweheaderKey = strtolower($key);
+        if(in_array($loweheaderKey,$needToLogArray)){
+            $requestHeaderInfo[$loweheaderKey] = $value;
         }
-        if(array_key_exists("signature",$request_header)){
-            $requestHeaderInfo["signature"] = $request_header["signature"];
-        }
-        if(array_key_exists("signature-time",$request_header)){
-            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
-            $SignatureTime = $requestHeaderInfo["signature-time"];
-            
-        }
-        if(array_key_exists("token",$request_header)){
-            $requestHeaderInfo["token"] = $request_header["token"];
-        }
+    }
+    if(isset($requestHeaderInfo["signature-time"])){
+        $SignatureTime = $requestHeaderInfo["signature-time"];
+    }
     $request_body = self::prepareJSON(file_get_contents('php://input'));
     $apiStartTime = Request::instance()->get('ApiStartTime');
     $operationTime = microtime(true) - $apiStartTime;
@@ -539,10 +536,10 @@ class CommonUtil
             'response_header'=>$responseHeader,
             'response_body'=>json_encode($responseBody),
             'signature_time'=> $SignatureTime,
-            'operation_time'=> $operationTime,
+            'operation_time'=> number_format($operationTime,3),
             'created_at'=>$now,
         ]);
-}
+    }
 
     public static function logCustomApi($version,$appKey,$action, $responseHeader, $responseBody) {
         $now = date('Y-m-d H:i:s',time());
@@ -557,18 +554,23 @@ class CommonUtil
              * "token":"586da9b75a3ab"
              * */
         $requestHeaderInfo = [];
-        if(array_key_exists("app-key",$request_header)){
-            $requestHeaderInfo["app-key"] = $request_header["app-key"];
+        $operationTime = 0;
+        $SignatureTime = 0;
+        
+        $needToLogArray = ["app-key","signature","signature-time","token"];
+
+        foreach ($request_header as $key => $value) {
+            $loweheaderKey = strtolower($key);
+            if(in_array($loweheaderKey,$needToLogArray)){
+                $requestHeaderInfo[$loweheaderKey] = $value;
+            }
         }
-        if(array_key_exists("signature",$request_header)){
-            $requestHeaderInfo["signature"] = $request_header["signature"];
+        if(isset($requestHeaderInfo["signature-time"])){
+            $SignatureTime = $requestHeaderInfo["signature-time"];
         }
-        if(array_key_exists("signature-time",$request_header)){
-            $requestHeaderInfo["signature-time"] = $request_header["signature-time"];
-        }
-        if(array_key_exists("token",$request_header)){
-            $requestHeaderInfo["token"] = $request_header["token"];
-        }
+        $apiStartTime = Request::instance()->get('ApiStartTime');
+        $operationTime = microtime(true) - $apiStartTime;
+       
         \DB::table("qp_api_log")
             -> insert([
                 'user_row_id'=>' ',
@@ -581,6 +583,8 @@ class CommonUtil
                 'request_body'=>$request_body,
                 'response_header'=>$responseHeader,
                 'response_body'=>json_encode($responseBody),
+                'signature_time'=> $SignatureTime,
+                'operation_time'=> number_format($operationTime,3),
                 'created_at'=>$now,
             ]);
     }
