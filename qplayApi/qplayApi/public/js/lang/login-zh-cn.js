@@ -2,12 +2,12 @@
  * Created by John.ZC.Zhuang on 2017/3/7.
  */
 var login_lang_list = {
-    "MSG_ACCOUNT_ERROR":"请确认账号输入正确 !"
-    ,"MSG_PASSWORD_ERROR":" 请确认密码输入正确 !"
-    ,"MSG_NETWORK_ERROR":" 请检查网络状态 !"
-    ,"MSG_INFO_ERROR":"账号 / 密码 / 公司 不能为空 !"
-    ,"MSG_NO_UUID":"未知的uuid ！"
-    ,"MSG_NO_DEVICE_TYPE":"未知的设备类型 ！"
+    "MSG_ACCOUNT_ERROR":"请确认账号输入正确"
+    ,"MSG_PASSWORD_ERROR":" 请确认密码输入正确"
+    ,"MSG_NETWORK_ERROR":" 请检查网络状态"
+    ,"MSG_INFO_ERROR":"账号 / 密码 / 公司 不能为空"
+    ,"MSG_NO_UUID":"未知的uuid"
+    ,"MSG_NO_DEVICE_TYPE":"未知的设备类型"
     ,"COMPANY":"公司"
     ,"NAME":"账号"
     ,"PASSWORD":"密码"
