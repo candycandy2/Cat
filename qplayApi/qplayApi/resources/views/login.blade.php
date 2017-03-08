@@ -199,7 +199,7 @@
         var loginIdPattern = /\w+([-+.]\w+)*$/;
         var chinesePattern = /[^\x00-\xff]/;
         var appKey = <?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'";' ?>
-        var appSecretKey = <?php echo '"'.Config::get("app.Secret_key").'";' ?>
+        var appSecretKey = <?php echo '"'.Config::get("app.App_Secret_key").'";' ?>
         $(function () {
             var url = "{{asset('')}}" + "js/lang/login-"+getLanguage()+".js";
             $.getScript(url,Init);
