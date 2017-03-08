@@ -55,6 +55,24 @@ class CommonUtil
         return $userList[0];
     }
 
+    public static function getUserInfoByUserID4Logout($loginId, $domain)
+    {
+        $userList = \DB::table('qp_user')
+            /*--> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
+            > where('qp_register.status', '=', 'A')
+            -> where('qp_user.status', '=', 'Y')
+            -> where('qp_user.resign', '=', 'N')*/
+            -> where('qp_user.login_id', '=', $loginId)
+            -> where('qp_user.user_domain', '=', $domain)
+            -> select('qp_user.row_id')
+            -> get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
+
     public static function getUserInfoJustByUserID($loginId, $domain)
     {
         $userList = \DB::table('qp_user')
