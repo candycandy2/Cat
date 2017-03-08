@@ -4,7 +4,7 @@ var Budget = {};
 var ytdHighchartsData = {
     "Actual QTY" : [],
     "Actual AMT" : [],
-    "Actual ASP" : [], 
+    "Actual ASP" : [],
     "Budget QTY" : [],
     "Budget AMT" : [],
     "Budget ASP" : [],
@@ -161,8 +161,9 @@ $("#viewYTDHitRate").pagecontainer({
             var rtBQ = 0;
             var rtAA = 0;
             var rtBA = 0;
-            var rtAP = 0;
-            var rtBP = 0;
+            for(var i in ytdHighchartsData) {
+                ytdHighchartsData[i] = [];
+            }
             if(ro == "ALL" && product == "ALL") {
                 for(var month in eisdata[year]) {
                 	for(var i in ytdHighchartsData) {
@@ -184,15 +185,13 @@ $("#viewYTDHitRate").pagecontainer({
                     rtBQ = ytdHighchartsData["RT Budget QTY"][Number(month)-1];
                     rtAA = ytdHighchartsData["RT Actual AMT"][Number(month)-1];
                     rtBA = ytdHighchartsData["RT Budget AMT"][Number(month)-1];
-                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0) {
+                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Actual QTY"][Number(month)-1] != 0) {
                         ytdHighchartsData["Actual ASP"][Number(month)-1] = (ytdHighchartsData["Actual AMT"][Number(month)-1] / ytdHighchartsData["Actual QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = ytdHighchartsData["Actual ASP"][Number(month)-1] + rtAP;
-                        rtAP = ytdHighchartsData["RT Actual ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = (ytdHighchartsData["RT Actual AMT"][Number(month)-1]  / ytdHighchartsData["RT Actual QTY"][Number(month)-1]);
                     }
-                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0){
+                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Budget QTY"][Number(month)-1] != 0){
                 		ytdHighchartsData["Budget ASP"][Number(month)-1] = (ytdHighchartsData["Budget AMT"][Number(month)-1] / ytdHighchartsData["Budget QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = ytdHighchartsData["Budget ASP"][Number(month)-1] + rtBP;
-                        rtBP = ytdHighchartsData["RT Budget ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = (ytdHighchartsData["RT Budget AMT"][Number(month)-1] / ytdHighchartsData["RT Budget QTY"][Number(month)-1]);
                     }
                 }
             }else if(ro != "ALL" && product == "ALL") {
@@ -214,15 +213,13 @@ $("#viewYTDHitRate").pagecontainer({
                     rtBQ = ytdHighchartsData["RT Budget QTY"][Number(month)-1];
                     rtAA = ytdHighchartsData["RT Actual AMT"][Number(month)-1];
                     rtBA = ytdHighchartsData["RT Budget AMT"][Number(month)-1];
-                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0) {
+                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Actual QTY"][Number(month)-1] != 0) {
                         ytdHighchartsData["Actual ASP"][Number(month)-1] = (ytdHighchartsData["Actual AMT"][Number(month)-1] / ytdHighchartsData["Actual QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = ytdHighchartsData["Actual ASP"][Number(month)-1] + rtAP;
-                        rtAP = ytdHighchartsData["RT Actual ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = (ytdHighchartsData["RT Actual AMT"][Number(month)-1] / ytdHighchartsData["RT Actual QTY"][Number(month)-1]);
                     }
-                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0){
+                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Budget QTY"][Number(month)-1] != 0){
                 		ytdHighchartsData["Budget ASP"][Number(month)-1] = (ytdHighchartsData["Budget AMT"][Number(month)-1] / ytdHighchartsData["Budget QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = ytdHighchartsData["Budget ASP"][Number(month)-1] + rtBP;
-                        rtBP = ytdHighchartsData["RT Budget ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = (ytdHighchartsData["RT Budget AMT"][Number(month)-1] / ytdHighchartsData["RT Budget QTY"][Number(month)-1]);
                     }
                 }
             }else if(ro == "ALL" && product != "ALL") {    
@@ -246,15 +243,13 @@ $("#viewYTDHitRate").pagecontainer({
                     rtBQ = ytdHighchartsData["RT Budget QTY"][Number(month)-1];
                     rtAA = ytdHighchartsData["RT Actual AMT"][Number(month)-1];
                     rtBA = ytdHighchartsData["RT Budget AMT"][Number(month)-1];
-                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0) {
+                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Actual QTY"][Number(month)-1] != 0) {
                         ytdHighchartsData["Actual ASP"][Number(month)-1] = (ytdHighchartsData["Actual AMT"][Number(month)-1] / ytdHighchartsData["Actual QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = ytdHighchartsData["Actual ASP"][Number(month)-1] + rtAP;
-                        rtAP = ytdHighchartsData["RT Actual ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = (ytdHighchartsData["RT Actual AMT"][Number(month)-1] / ytdHighchartsData["RT Actual QTY"][Number(month)-1]);
                     }
-                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0){
+                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Budget QTY"][Number(month)-1] != 0){
                 		ytdHighchartsData["Budget ASP"][Number(month)-1] = (ytdHighchartsData["Budget AMT"][Number(month)-1] / ytdHighchartsData["Budget QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = ytdHighchartsData["Budget ASP"][Number(month)-1] + rtBP;
-                        rtBP = ytdHighchartsData["RT Budget ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = (ytdHighchartsData["RT Budget AMT"][Number(month)-1] / ytdHighchartsData["RT Budget QTY"][Number(month)-1]);
                     }
                 }
             }else {
@@ -276,15 +271,13 @@ $("#viewYTDHitRate").pagecontainer({
                     rtBQ = ytdHighchartsData["RT Budget QTY"][Number(month)-1];
                     rtAA = ytdHighchartsData["RT Actual AMT"][Number(month)-1];
                     rtBA = ytdHighchartsData["RT Budget AMT"][Number(month)-1];
-                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0) {
+                    if(ytdHighchartsData["Actual QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Actual QTY"][Number(month)-1] != 0) {
                         ytdHighchartsData["Actual ASP"][Number(month)-1] = (ytdHighchartsData["Actual AMT"][Number(month)-1] / ytdHighchartsData["Actual QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = ytdHighchartsData["Actual ASP"][Number(month)-1] + rtAP;
-                        rtAP = ytdHighchartsData["RT Actual ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Actual ASP"][Number(month)-1] = (ytdHighchartsData["RT Actual AMT"][Number(month)-1] / ytdHighchartsData["RT Actual QTY"][Number(month)-1]);
                     }
-                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0){
+                	if(ytdHighchartsData["Budget QTY"][Number(month)-1] != 0 && ytdHighchartsData["RT Budget QTY"][Number(month)-1] != 0){
                 		ytdHighchartsData["Budget ASP"][Number(month)-1] = (ytdHighchartsData["Budget AMT"][Number(month)-1] / ytdHighchartsData["Budget QTY"][Number(month)-1]);
-                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = ytdHighchartsData["Budget ASP"][Number(month)-1] + rtBP;
-                        rtBP = ytdHighchartsData["RT Budget ASP"][Number(month)-1];
+                        ytdHighchartsData["RT Budget ASP"][Number(month)-1] = (ytdHighchartsData["RT Budget AMT"][Number(month)-1] /ytdHighchartsData["RT Budget QTY"][Number(month)-1]);
                     }
                 }
             }
@@ -338,21 +331,21 @@ $("#viewYTDHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
-			$(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-
+			
             ro = "ALL";
             product = "ALL";
             tab = "QTY";
-            year = thisYear;
-            month = thisMonth;
-            
+            initSlider();
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+
 			chart = new Highcharts.Chart ({
 				chart: {
 					renderTo: 'viewYTDHitRate-hc-canvas',
 					marginBottom: 75,
 					marginTop: 25,
-					marginLeft: 55
+					marginLeft: 55,
+                    marginRight: 25
 				},
 				title: {
 					text: '' 
@@ -376,11 +369,12 @@ $("#viewYTDHitRate").pagecontainer({
 		        		align: 'high',
 		        		rotation: 0,
 		        		offset: 0,
-		        		x: 4,
+		        		// x: 4,
+                        x: -5,
 		        		y: -15
 		    		},
 		        	min: 0,
-		        	tickInterval: 200
+		        	// tickInterval: 200
 			    }, {
 			    	title: {
 		        		text: '',
@@ -445,10 +439,7 @@ $("#viewYTDHitRate").pagecontainer({
             $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active');
             $(".Ro #ALL").addClass('hover');
             $(".Product #ALL").addClass('hover');
-
-            initSlider();
             $(".sliderYTD").slick("slickGoTo", ytdPageDate.length-1, true);
-
 			loadingMask("hide");
         });
 
