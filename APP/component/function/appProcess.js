@@ -4,7 +4,6 @@
 /************************************************************************************************/
 var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
     isDisConnect = false,                   // check if disconnect
-    closeInfoMsgInit = false;               // let closeInfoMsg click event init once
 
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
@@ -210,14 +209,6 @@ function infoMessage() {
         document.documentElement.style.webkitTouchCallout = "default";
         document.documentElement.style.webkitUserSelect = "auto";
     }, 1000);
-
-    if (!closeInfoMsgInit){
-        $(document).on('click', '#infoMsg #closeInfoMsg', function(){
-            $('#infoMsg').popup('close');
-            $('#infoMsg').hide();
-        });
-        closeInfoMsgInit = true;
-    }
 }
 
 //[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
