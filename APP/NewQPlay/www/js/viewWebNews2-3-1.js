@@ -28,8 +28,7 @@
 
     $("#viewWebNews2-3-1").pagecontainer({
         create: function(event, ui) {
-
-            var messageExist;
+            var messageExist = true;
 
             /********************************** function *************************************/
             function QueryMessageDetail() {
@@ -279,6 +278,7 @@
             });
             /********************************** dom event *************************************/
             $("#confirmMessageNotExist").on("click", function(){
+                messageExist = true;
                 $('#messageNotExist').popup('close');
                 $.mobile.changePage("#viewNewsEvents2-3");
             });
