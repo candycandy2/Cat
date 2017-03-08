@@ -43,6 +43,7 @@ var showNetworkDisconnected = false;
 var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
+var closeInfoMsgInit = false;   // let closeInfoMsg click event init once
 
 /********************************** Corodva APP initial *************************************/
 var app = {
@@ -649,6 +650,15 @@ function setWhiteList() {
             document.documentElement.style.webkitUserSelect = "none";
 
             infoMessage();
+
+            // close ifo msg init
+            if (!closeInfoMsgInit){
+                $(document).on('click', '#infoMsg #closeInfoMsg', function(){
+                    $('#infoMsg').popup('close');
+                    $('#infoMsg').hide();
+                });
+                closeInfoMsgInit = true;
+            }
         });
     };
 
