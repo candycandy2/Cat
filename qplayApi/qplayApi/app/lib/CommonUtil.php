@@ -508,7 +508,8 @@ class CommonUtil
     $requestHeaderInfo = [];
     $operationTime = 0;
     $SignatureTime = 0;
-    $needToLogArray = ["app-key","signature","signature-time","token"];
+    $needToLogArray = ["app-key", "signature", "signature-time", "token",
+                        "domain", "loginid", "redirect-uri", "push-token"];
 
     foreach ($request_header as $key => $value) {
         $loweheaderKey = strtolower($key);
