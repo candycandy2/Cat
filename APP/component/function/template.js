@@ -59,12 +59,22 @@ function overridejQueryFunction() {
 var tplJS = {
     pageHeight: "",
     tplRender: function(pageID, contentID, renderAction, HTMLContent) {
-        if (renderAction === "append") {
-            $("#" + pageID + " #" + contentID).append(HTMLContent);
-        } else if (renderAction === "prepend") {
-            $("#" + pageID + " #" + contentID).prepend(HTMLContent);
-        } else if (renderAction === "html") {
-            $("#" + pageID + " #" + contentID).html(HTMLContent);
+        if (pageID == null) {
+            if (renderAction === "append") {
+                $("body").append(HTMLContent);
+            } else if (renderAction === "prepend") {
+                $("body").prepend(HTMLContent);
+            } else if (renderAction === "html") {
+                $("body").html(HTMLContent);
+            }
+        } else {
+            if (renderAction === "append") {
+                $("#" + pageID + " #" + contentID).append(HTMLContent);
+            } else if (renderAction === "prepend") {
+                $("#" + pageID + " #" + contentID).prepend(HTMLContent);
+            } else if (renderAction === "html") {
+                $("#" + pageID + " #" + contentID).html(HTMLContent);
+            }
         }
 
         this.setMultiLanguage(HTMLContent);
@@ -390,6 +400,7 @@ var tplJS = {
 
     },
     Popup: function(pageID, contentID, renderAction, data) {
+        var showMain = false;
         var popupHTML = $("template#tplPopup").html();
         var popup = $(popupHTML);
         var HRHTML = $("template#tplPopupContentHr").html();
@@ -413,6 +424,7 @@ var tplJS = {
         //Main
         var mainHTML = content.siblings(".main");
         if (mainHTML.length !== 0) {
+            showMain = true;
 
             //HR Top
             var HRTop = $(HRHTML);
@@ -450,18 +462,33 @@ var tplJS = {
             var popupFooter = popup.find("div[data-role='main'] .footer")[0];
             var popupFooterHeight = popupFooter.offsetHeight;
             
-            //ui-content paddint-top/padding-bottom:2.9vh
-            var uiContentPaddingHeight = parseInt(document.documentElement.clientHeight * 2.9 * 2 / 100, 10);
+            //ui-content paddint-top:5.07vw
+            var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
 
-            //Ul margin-top:2.9vh
-            var ulMarginTop = parseInt(document.documentElement.clientHeight * 2.9 / 100, 10);
+            //Ul margin-top:5.07vw
+            var ulMarginTop = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
 
-            //Ul margin-top:2.9vh
-            var ulMarginBottom = parseInt(document.documentElement.clientHeight * 2.6 / 100, 10);
+            //Ul margin-bottom:5.07vw
+            var ulMarginBottom = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
 
-            var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop - ulMarginBottom, 10);
-            $(this).find("div[data-role='main'] .main").height(popupMainHeight);
-            $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
+            //Resize Height of Main
+            if (showMain) {
+                var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop - ulMarginBottom, 10);
+                $(this).find("div[data-role='main'] .main").height(popupMainHeight);
+                $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
+            } else {
+                $(this).find("div[data-role='main'] .main").height(0);
+                var popupHeaderHeight = parseInt(popupHeight - popupFooterHeight, 10);
+                $(this).find("div[data-role='main'] > .header").height(popupHeaderHeight);
+                $(this).find("div[data-role='main'] .header .header").addClass("all-center");
+            }
+
+            //Resize Height of background div
+            var activePageID = $.mobile.activePage.attr("id");
+            var activePage = $("#" + activePageID);
+            var activePageScrollHeight = activePage[0].scrollHeight;
+
+            $(".ui-popup-screen.in").height(activePageScrollHeight);
 
             tplJS.preventPageScroll();
         });
