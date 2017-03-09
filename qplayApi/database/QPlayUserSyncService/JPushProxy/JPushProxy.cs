@@ -27,6 +27,7 @@ namespace JPushProxy
             mLogger = new JPushLogger.JPushLogger();
         }
 
+        /*
         public bool RemoveTags(string registration_id, HashSet<String> tags)
         {
             DefaultResult result = null;
@@ -61,7 +62,34 @@ namespace JPushProxy
             HashSet<String> tagHashsetRemove = new HashSet<string>();
             tagHashsetRemove.Add(tag);
 
-            return RemoveTags(registration_id, tagHashsetRemove);            
+            return RemoveTags(registration_id, tagHashsetRemove);
+        }
+        */
+
+        public bool RemoveTag(string registration_id, string tag)
+        {
+            HashSet<String> usersToRemove = new HashSet<string>();
+            usersToRemove.Add(registration_id);
+            DefaultResult result = null;
+            try
+            {
+                result = mDeviceClient.addRemoveDevicesFromTag(tag, new HashSet<string>(), usersToRemove);
+            }
+            catch (APIRequestException e)
+            {
+                return false;
+            }
+            catch (APIConnectionException e)
+            {
+                return false;
+            }
+
+            if (result != null && result.isResultOK())
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
