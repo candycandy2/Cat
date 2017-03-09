@@ -11,7 +11,7 @@ var login_lang_list = {
     ,"COMPANY":"Company"
     ,"NAME":"Name"
     ,"PASSWORD":"Password"
-    ,"FORGET_PWD":"forget password,please contact "
+    ,"FORGET_PWD":"Forget password,please contact "
     ,"LOGIN":"Login"
     ,"ERROR":"Error"
     ,"VERIFY_SUCCESS":"Name and device verified success"
