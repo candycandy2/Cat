@@ -850,14 +850,24 @@ class qplayController extends Controller
         $loginid = $input['loginid'];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
+                $user = CommonUtil::getUserInfoByUserID4Logout($loginid, $domain);
+                //用户没找到则直接return
+                if (is_null($user)){
+                    $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+                        'message'=>trans("messages.MSG_LOGOUT_SUCCESS"),
+                        'content'=>"[".$domain."]".$loginid."not found"
+                    ];
+                    CommonUtil::logApi($user->row_id, $ACTION,
+                        response()->json(apache_response_headers()), $result);
+                    return response()->json($result);
+                }
                 //Check uuid exist
                 //Check user
                 $uuidList = \DB::table("qp_register")
                     -> where('uuid', "=", $uuid)
-                    -> where('status', '=', 'A')
+                    //-> where('status', '=', 'A')
                     -> select('row_id','uuid', 'user_row_id')->get();
                 $uuidInDB = null;
                 if(count($uuidList) < 1)

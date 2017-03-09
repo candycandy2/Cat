@@ -12,14 +12,25 @@
 	<script src="{{ asset('/js/jquery.mobile-1.4.5.min.js') }}"></script>
 	<script src="{{ asset('/js/jquery.json.js') }}"></script>
 	<script src="{{ asset('/js/Math.uuid.js') }}"></script>
+	<script src="{{ asset('/js/core-min.js') }}"></script>
+	<script src="{{ asset('/js/hmac-sha256.js') }}"></script>
+	<script src="{{ asset('/js/enc-base64-min.js') }}"></script>
 	<script src="{{ asset('/js/QLoading.js') }}"></script>
+	<script>
+		$(function () {
+			$("body").removeClass('page-body');
+        });
+	</script>
 	<style>
 		body {
 			font-family: "Gill Sans MT",Arial;
 		}
+		.page-body {
+			display: none;
+		}
 	</style>
 </head>
-<body>
+<body class="page-body">
 	@yield('content')
 </body>
 </html>

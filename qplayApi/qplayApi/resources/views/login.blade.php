@@ -2,7 +2,7 @@
 
 @section('content')
     <?php
-    $csrf_token = csrf_token();
+    use App\lib\CommonUtil;$csrf_token = csrf_token();
 
     ?>
     <style>
@@ -50,7 +50,7 @@
             color: #0f0f0f;
         }
         .login_control{
-            font:2.9vh "Arial";
+            font:2.9vh "Gill Sans MT";
         }
         ::-webkit-input-placeholder {
             font:2.9vh "Gill Sans MT";
@@ -90,6 +90,12 @@
             padding:15px;
             color: #3c3c75;
             text-shadow:0 0;
+        }
+        #info_cell_forget {
+            font:1em "Gill Sans MT";
+        }
+        #info_cell_logout + .linkITS{
+            font:1em "Gill Sans MT";
         }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
@@ -157,9 +163,9 @@
                 </tr>
             </table>
             <div style="margin-top: 1.8vh;">
-                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;">忘記密碼請聯絡 <a href="mailto:QPlay@BenQ.com">ITS</a></div>
+                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
-                    <button class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
                     <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
@@ -182,15 +188,15 @@
         <div role="main" class="ui-content" style="text-align: center;">
             <div style="margin: 24vh auto 0 auto;">
                 <img src="{{asset('/css/images/verified_img.png')}}" style="height:12vh; margin:0vh 2vh 4vh 4.5vh;" />
-                <h3 style="color: #0f0f0f;font:3.3vh 'Gill Sans MT';margin-top:0;">帳號與設備驗證成功</h3>
+                <h3 id="info_cell_verify" style="color: #0f0f0f;font:3.3vh 'Gill Sans MT';margin-top:0;">帳號與設備驗證成功</h3>
                 
         </div>
         </div>
         <div style="position:fixed;bottom: 0;padding:1em 1em 6.6vh 1em;left: 0;right: 0;">
-            <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';margin: 0 auto;text-align: center;">若要註銷設備，請聯絡<a href="mailto:QPlay@BenQ.com">ITS</a></h4>
+            <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4>
             <div style="margin: 2vh auto 0 auto;">
                 <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
+                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
                     onclick="start()">好，我知道了</button>
             </div>
         </div>
@@ -198,18 +204,54 @@
     <script>
         var loginIdPattern = /\w+([-+.]\w+)*$/;
         var chinesePattern = /[^\x00-\xff]/;
-
+        var appKey = "<?php echo CommonUtil::getContextAppKey()?>";
+        var appSecretKey = "<?php echo Config::get("app.App_Secret_key")?>";
         $(function () {
-            $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
-            $("#tbxName").parent().css("background-color","transparent");
-            $("#tbxPassword").parent().css("background-color","transparent");
-            $("#ddlCompany").parent().css("background-color","transparent");
-            
-            var showOriLogin = getQueryString("show_origin_login");
-            if(showOriLogin && showOriLogin == "Y") {
-                $("#btnOriLogin").show();
-            }
+            var url = "{{asset('js/lang')}}" + "/login-"+getLanguage()+".js";
+            $.getScript(url,Init);
+            function Init(){
+                InitUI();
+                $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
+                $("#tbxName").parent().css("background-color","transparent");
+                $("#tbxPassword").parent().css("background-color","transparent");
+                $("#ddlCompany").parent().css("background-color","transparent");
+
+                var showOriLogin = getQueryString("show_origin_login");
+                if(showOriLogin && showOriLogin == "Y") {
+                    $("#btnOriLogin").show();
+                }
+            };
         });
+
+        function InitUI(){
+            if(!login_lang_list){
+                return;
+            }
+            $("#ddlCompany").attr("placeholder",login_lang_list["COMPANY"]);
+            $("#tbxName").attr("placeholder",login_lang_list["NAME"]);
+            $("#tbxPassword").attr("placeholder",login_lang_list["PASSWORD"]);
+            $("#btnLogin").text(login_lang_list["LOGIN"]);
+            $("#btnOriLogin").text(login_lang_list["LOGIN"]);
+            $("#btnOK").text(login_lang_list["OK_IKNOW"]);
+            $("#info_cell_forget").text(login_lang_list["FORGET_PWD"]);
+            $("#messageContainer").text(login_lang_list["ERROR"]);
+            $("#info_cell_verify").text(login_lang_list["VERIFY_SUCCESS"]);
+            $("#info_cell_logout").text(login_lang_list["LOGOUT"]);
+        }
+
+        var getLanguage = function(){
+            var browserLanguage = navigator.language.toLowerCase();
+            if (browserLanguage === "zh-tw") {
+                browserLanguage = "zh-tw";
+            }else if (browserLanguage === "zh-cn") {
+                browserLanguage = "zh-cn";
+            }else if(browserLanguage.substr(0,2)==="en"){
+                browserLanguage = "en-us";
+            }else {
+                browserLanguage = "<?php echo Config::get("app.locale")?>";
+            }
+            return browserLanguage;
+        };
 
         var oriLogin = function() {
             if(window.smartfactoryapp) {
@@ -217,7 +259,10 @@
             }
         };
 
-        var showMessage = function (msg) {
+        var showMessage = function (msg,isMessage) {
+            if(login_lang_list && !isMessage){
+                msg = login_lang_list[msg];
+            }
             $("#messageContainer").text(msg);
             $("#dlgMessage").popup('open');
         }
@@ -237,35 +282,37 @@
             var password = encodeURI($("#tbxPassword").val());
             var company = $("#ddlCompany").val();
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
-                showMessage("帳號 / 密碼 / 公司 不能為空 !");
+                showMessage("MSG_INFO_ERROR");
                 return;
             }
 
             var uuid = getQueryString("uuid");//Math.uuid();//"CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20";
             if(!uuid) {
-                showMessage("no uuid received!");
+                showMessage("MSG_NO_UUID");
                 return;
             }
             var device_type = getQueryString("device_type");
             if(!device_type) {
-                showMessage("no device type received!");
+                showMessage("MSG_NO_DEVICE_TYPE");
                 return;
             }
 
            
             if(!loginIdPattern.test(userName))
 　　　　　　{
-　　　　　　　showMessage(" 請確認帳號輸入正確 !");
+　　　　　　　showMessage("MSG_ACCOUNT_ERROR");
 　　　　　　　return;
 　　　　　　}
            
             if(chinesePattern.test(password))
 　　　　　　{
-　　　　　　　showMessage(" 請確認密碼輸入正確 !");
+　　　　　　　showMessage("MSG_PASSWORD_ERROR");
 　　　　　　　return;
 　　　　　　}
 
             ShowLoading();
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/isRegister?lang=en-us&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
@@ -273,9 +320,9 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key",<?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("app-key",appKey);
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                 },
                 success: function (d, status, xhr) {
                     if(d.result_code == 1) {
@@ -286,16 +333,16 @@
                         }
                     } else {
                         HideLoading();
-                        showMessage(d.message);
+                        showMessage(d.message,"Y");
                     }
                 },
                 error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
                     if($.trim(e.responseText) == '' && e.statusText == 'error'){
-                        showMessage(" 請檢查網路狀態 !");
+                        showMessage("MSG_NETWORK_ERROR");
                         return;
                     }
-                    showMessage(thrownError);
+                    showMessage(thrownError,"Y");
                 }
             });
         }
@@ -304,15 +351,17 @@
             
             if(!loginIdPattern.test(loginId))
 　　　　　　{
-　　　　　　　showMessage(" 請確認帳號輸入正確 !");
+　　　　　　　showMessage("MSG_ACCOUNT_ERROR");
 　　　　　　　return;
 　　　　　　}
             
             if(chinesePattern.test(password))
 　　　　　　{
-　　　　　　　showMessage(" 請確認密碼輸入正確 !");
+　　　　　　　showMessage("MSG_PASSWORD_ERROR");
 　　　　　　　return;
 　　　　　　}
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/login?lang=en-us&uuid=" +uuid,//Math.uuid(),
                 dataType: "json",
@@ -320,9 +369,9 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key",<?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("app-key",appKey);
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", domain);
                     request.setRequestHeader("loginid", loginId);
@@ -342,16 +391,16 @@
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                         callPlugin();
                     } else {
-                        showMessage(d.result_code + ": " + d.message);
+                        showMessage(d.result_code + ": " + d.message,"Y");
                     }
                 },
                 error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
                     if($.trim(e.responseText) == '' && e.statusText == 'error'){
-                        showMessage(" 請檢查網路狀態 !");
+                        showMessage("MSG_NETWORK_ERROR");
                         return;
                     }
-                    showMessage(thrownError);
+                    showMessage(thrownError,"Y");
                 }
             });
         }
@@ -360,15 +409,17 @@
             
             if(!loginIdPattern.test(loginId))
 　　　　　　{
-　　　　　　　showMessage(" 請確認帳號輸入正確 !");
+　　　　　　　showMessage("MSG_ACCOUNT_ERROR");
 　　　　　　　return;
 　　　　　　}
             
             if(chinesePattern.test(password))
 　　　　　　{
-　　　　　　　showMessage(" 請確認密碼輸入正確 !");
+　　　　　　　showMessage("MSG_PASSWORD_ERROR");
 　　　　　　　return;
 　　　　　　}
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/register?lang=en-us&device_type=" + device_type + "&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
@@ -376,9 +427,9 @@
                 contentType: "application/json",
                 data:{},
                 beforeSend:function (request) {
-                    request.setRequestHeader("app-key", <?php echo '"'.\App\lib\CommonUtil::getContextAppKey().'"' ?>);
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("app-key",appKey);
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", domain);
                     request.setRequestHeader("loginid", loginId);
@@ -398,17 +449,17 @@
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                         $.mobile.changePage("#pageRegister");
                     } else {
-                        showMessage(d.result_code + ": " + d.message);
+                        showMessage(d.result_code + ": " + d.message,"Y");
                     }
 
                 },
                 error: function (e, ajaxOptions, thrownError) {
                     HideLoading();
                     if($.trim(e.responseText) == '' && e.statusText == 'error'){
-                        showMessage(" 請檢查網路狀態 !");
+                        showMessage("MSG_NETWORK_ERROR");
                         return;
                     }
-                    showMessage(thrownError);
+                    showMessage(thrownError,"Y");
                 }
             });
         }
@@ -428,7 +479,7 @@
                 }else if (browser.versions.android) {
                     LoginWebview.loginResult(LoginMsg);
                 } else {
-                    showMessage(LoginMsg);
+                    showMessage(LoginMsg,"Y");
                 }
             }
         };
@@ -444,6 +495,17 @@
                 };
             }(),
         }
+
+        function getSignature(action, signatureTime) {
+            if (action === "getTime") {
+                return Math.round(new Date().getTime()/1000);
+            } else if (action === "getInBase64") {
+                var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+                return CryptoJS.enc.Base64.stringify(hash);
+            }
+        }
+
+
     </script>
 @endsection
 

@@ -523,7 +523,7 @@ class pushController extends Controller
                                                 'created_user'=>\Auth::user()->row_id,
                                                 'created_at'=>$now,
                                             ]);
-                                        array_push($event_push_token_list,$uuid->uuid);
+                                        array_push($event_push_token_list,$uuid->push_token);
                                     }
                                     array_push($insertedUserIdList, $userId);
                                     array_push($real_push_user_list, $userId);
@@ -555,7 +555,7 @@ class pushController extends Controller
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
                                     ]);
-                                array_push($event_push_token_list,$uuid->uuid);
+                                array_push($event_push_token_list,$uuid->push_token);
                             }
                             array_push($insertedUserIdList, $userId);
                             array_push($real_push_user_list, $userId);
@@ -681,7 +681,7 @@ class pushController extends Controller
                                                 'created_user'=>\Auth::user()->row_id,
                                                 'created_at'=>$now,
                                             ]);
-                                        array_push($event_push_token_list, $uuid->uuid);
+                                        array_push($event_push_token_list, $uuid->push_token);
                                     }
                                     array_push($insertedUserIdList, $userId);
                                     array_push($real_push_user_list, $userId);
@@ -704,7 +704,7 @@ class pushController extends Controller
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
                                     ]);
-                                array_push($event_push_token_list, $uuid->uuid);
+                                array_push($event_push_token_list, $uuid->push_token);
                             }
                             array_push($insertedUserIdList, $userId);
                             array_push($real_push_user_list, $userId);
@@ -848,7 +848,7 @@ class pushController extends Controller
                                     'created_user'=>\Auth::user()->row_id,
                                     'created_at'=>$now,
                                 ]);
-                            array_push($push_token_list,$uuid->uuid);
+                            array_push($push_token_list,$uuid->push_token);
                         }
                         array_push($real_push_user_list, $userId);
                     }

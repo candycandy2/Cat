@@ -43,6 +43,7 @@ var showNetworkDisconnected = false;
 var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
+var closeInfoMsgInit = false;   // let closeInfoMsg click event init once
 
 /********************************** Corodva APP initial *************************************/
 var app = {
@@ -97,7 +98,9 @@ var app = {
         document.addEventListener("backbutton", onBackKeyDown, false);
 
         //[device] data ready to get on this step.
-        readConfig();
+        setTimeout(function() {
+            readConfig();
+        }, 2000);
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
@@ -482,9 +485,6 @@ function readConfig() {
             var checkAppVer = new checkAppVersion();
         }
 
-        //set initial page dispaly
-        $("#initialQPlay").removeClass("hide");
-        $("#initialOther").remove();
     } else {
         var doCheckAppVer = false;
 
@@ -542,10 +542,6 @@ function readConfig() {
 
         if (doCheckAppVer) {
             var checkAppVer = new checkAppVersion();
-
-            //set initial page dispaly
-            $("#initialOther").removeClass("hide");
-            $("#initialQPlay").remove();
         }
     }
 }
@@ -558,7 +554,7 @@ function checkAppVersion() {
     loadingMask("show");
 
     this.successCallback = function(data) {
-//alert("checkAppVersion");
+
         var resultcode = data['result_code'];
 
         if (resultcode == 1 || resultcode == 000915) {
@@ -626,12 +622,8 @@ function setWhiteList() {
         var doCheckStorageData = false;
 //alert("setWhiteList");
         if (appKey !== qplayAppKey) {
-            if (window.localStorage.getItem("openScheme") === "true") {
-                if (callHandleOpenURL) {
-                    return;
-                } else {
-                    doCheckStorageData = true;
-                }
+            if (callHandleOpenURL) {
+                return;
             } else {
                 doCheckStorageData = true;
             }
@@ -658,6 +650,15 @@ function setWhiteList() {
             document.documentElement.style.webkitUserSelect = "none";
 
             infoMessage();
+
+            // close ifo msg init
+            if (!closeInfoMsgInit){
+                $(document).on('click', '#infoMsg #closeInfoMsg', function(){
+                    $('#infoMsg').popup('close');
+                    $('#infoMsg').hide();
+                });
+                closeInfoMsgInit = true;
+            }
         });
     };
 
@@ -816,11 +817,7 @@ function getServerData() {
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
-        if (window.localStorage.getItem("openScheme") !== "true") {
-            openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
-        }
-
-        window.localStorage.setItem("openScheme", true);
+        openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=getLoginData&versionCode=" + loginData["versionCode"]);
     }
 
 }
@@ -868,6 +865,7 @@ function getLoginDataCallBack() {
 function handleOpenURL(url) {
 //alert("handleOpenURL");
 //alert(url);
+
     if (url !== "null") {
 
         callHandleOpenURL = true;
@@ -908,7 +906,6 @@ function handleOpenURL(url) {
 
         } else if (queryData["action"] === "retrunLoginData") {
 //alert("retrunLoginData");
-            window.localStorage.setItem("openScheme", false);
 
             $.map(queryData, function(value, key) {
                 if (key !== "callbackApp" && key !== "action") {

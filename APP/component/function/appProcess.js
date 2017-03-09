@@ -5,6 +5,7 @@
 var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
     isDisConnect = false;                   // check if disconnect
 
+
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
         for (var i=0; i<data.length; i++) {
@@ -32,6 +33,14 @@ function addConponentView() {
         //If is other APP, set APP name in initial page
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
+
+            //set Other APP initial page dispaly
+            $("#initialOther").removeClass("hide");
+            $("#initialQPlay").remove();
+        } else {
+            //set QPlay initial page dispaly
+            $("#initialQPlay").removeClass("hide");
+            $("#initialOther").remove();
         }
 
         //viewNotSignedIn, Login Again
@@ -39,6 +48,14 @@ function addConponentView() {
             //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
             var checkAppVer = new checkAppVersion();
         });
+
+        //UI Popup : Event Add Confirm
+        var disconnectNetworkData = {
+            id: "disconnectNetwork",
+            content: $("template#tplDisconnectNetwork").html()
+        };
+
+        tplJS.Popup(null, null, "append", disconnectNetworkData);
 
         //After all template load finished, processing language string
         $(".langStr").each(function(index, element){
@@ -89,54 +106,11 @@ function checkNetwork(data) {
         logMsg = "Network disconnected";
     } else {
         //----Network connected
-        //Maybe these following situation happened.
-        if (data !== null) {
-            //1. status = 200, request succeed, but timeout 3000
-            if (data.status !== 200) {
-                showMsg = true;
-                showNetworkDisconnected = true;
-                logMsg = "Network status=200, timeout";
-            }
-            //2. status = timeout (Network status display ["canceled"])
-            if (data.statusText === "timeout") {
-                showMsg = true;
-                showNetworkDisconnected = true;
-                reStartAPP = true;
-                logMsg = "Network status=canceled, timeout";
-            }
-        }
-        // reload page when network is back and the page is initial one
-        else{
-            if (isDisConnect && $('#viewInitial').css('display') === 'block'){
-                location.reload();
-            }
-            isDisConnect = false;
-        }
+        // do nothing
     }
 
     if (showMsg) {
-        $('#disconnectNetwork').popup();
-        $('#disconnectNetwork').show();
-        $('#disconnectNetwork').popup('open');
-
-        // closeDisconnectNetwork click event should init only once
-        if (!closeDisconnectNetworkInit){
-            $("#closeDisconnectNetwork").on("click", function(){
-                $('#disconnectNetwork').popup('close');
-                $('#disconnectNetwork').hide();
-
-                showNetworkDisconnected = false;
-                setTimeout(function(){
-                    checkNetwork();
-                }, 500);
-
-                if (reStartAPP) {
-                    reStartAPP = false;
-                    location.reload();
-                }
-            });
-            closeDisconnectNetworkInit = true;
-        }
+        openNetworkDisconnectWindow('noNetwork');
     }
 
     if (logMsg.length > 0) {
@@ -146,6 +120,79 @@ function checkNetwork(data) {
             logMsg
         ];
         LogFile.createAndWriteFile(dataArr);
+    }
+}
+
+function openNetworkDisconnectWindow(status){
+    $('#disconnectNetwork').popup();
+    $('#disconnectNetwork').show();
+    $('#disconnectNetwork').popup('open');
+
+    // closeDisconnectNetwork click event should init only once
+    if (!closeDisconnectNetworkInit){
+        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
+            $('#disconnectNetwork').popup('close');
+            $('#disconnectNetwork').hide();
+
+            // network disconnect
+            if (status === 'noNetwork'){
+                setTimeout(function(){
+                    checkNetwork();
+                }, 500);
+            }
+            // API return fail: timeout or error
+            else if (status === 'timeout' || status === 'error'){
+                var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
+
+                // on initial page, should reload app
+                if (activePageID === 'viewInitial' || activatePageIndex === -1){
+                    reStartAPP = true;
+                }
+                // on page 1
+                else if(activatePageIndex === 0){
+                    // no page can return, do nothing
+                }
+                // on other page, back to last page
+                else{
+                    onBackKeyDown();
+                }
+                loadingMask("hide");
+            }
+            // API retun fail that we never seen before
+            else{
+                alert('網路連線失敗，' + status);
+                reStartAPP = true;
+            }
+
+            showNetworkDisconnected = false;
+            if (reStartAPP) {
+                reStartAPP = false;
+                location.reload();
+            }
+        });
+        closeDisconnectNetworkInit = true;
+    }
+}
+
+function errorHandler(data){
+    console.log('readyState: ' + data.readyState + ' status: ' + data.status + ' statusText: ' + data.statusText);
+    //1. status = timeout (Network status display ["canceled"])
+    if (data.statusText === "timeout") {
+        showNetworkDisconnected = true;
+        logMsg = "Network status=canceled, timeout";
+        openNetworkDisconnectWindow('timeout');
+    }
+    //2. status = error (Network status display ["failed"]) as we know, the error will appear when network is disconnect
+    else if (data.statusText === 'error'){
+        showNetworkDisconnected = true;
+        logMsg = "Network status=failed, error";
+        openNetworkDisconnectWindow('error');
+    }
+    // 3. status that we never seen before
+    else{
+        showNetworkDisconnected = true;
+        logMsg = data.statusText;
+        openNetworkDisconnectWindow(data.statusText);
     }
 }
 
@@ -163,11 +210,6 @@ function infoMessage() {
         document.documentElement.style.webkitTouchCallout = "default";
         document.documentElement.style.webkitUserSelect = "auto";
     }, 1000);
-
-    $("#closeInfoMsg").on("click", function(){
-        $('#infoMsg').popup('close');
-        $('#infoMsg').hide();
-    });
 }
 
 //[Android]Popup > Check if popup is shown, then if User click [back] button, just hide the popup.
