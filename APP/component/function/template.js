@@ -352,6 +352,7 @@ var tplJS = {
             if (type === "typeA") {
                 $("#" + data.id).val($(this).val());
                 tplJS.reSizeDropdownList(data.id, type);
+
             } else if (type === "typeB") {
                 //Find drowdown list, set selected option value
                 var defaultText;
@@ -364,14 +365,14 @@ var tplJS = {
                 var newOption = '<option value="' + $(this).val() + '" hidden selected>' + defaultText + '</option>';
                 $("#" + data.id).find("option").remove().end().append(newOption);
 
-                //Trigger drowdown list 'change' event
-                $("#" + data.id).trigger("change");
-
-                //Close Popup
-                $('#' + popupID).popup('close');
-
                 tplJS.recoveryPageScroll();
             }
+
+            //Trigger drowdown list 'change' event
+            $("#" + data.id).trigger("change");
+
+            //Close Popup
+            $('#' + popupID).popup('close');
         });
 
         //Auto Resize DropdownList Width
