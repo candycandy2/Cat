@@ -1,10 +1,38 @@
 
 $("#viewEventList").pagecontainer({
     create: function(event, ui) {
-        
+
         /********************************** function *************************************/
+        window.getAuthority = function() {
+
+            var self = this;
+            //Data Life-Cycle: 7 Days
+            var dataLifeCycle = 604800;
+            var queryData = '<LayoutHeader><emp_no>' + loginData["emp_no"] + '</emp_no></LayoutHeader>';
+
+            this.successCallback = function(data) {
+                var resultcode = data['ResultCode'];
+
+                if (resultcode === 1) {
+                    var dataContent = data["Content"];
+                    processLocalData.storeData("getAuthority", dataLifeCycle, dataContent);
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            this.callAPI = function() {
+                CustomAPI("POST", true, "getAuthority", self.successCallback, self.failCallback, queryData, "");
+            };
+
+            var __construct = function() {
+                processLocalData.checkLifeCycle("getAuthority", self.callAPI, self.successCallback);
+            }();
+
+        };
+
         window.getEventList = function() {
-            
+
             var self = this;
 
             this.successCallback = function(data) {

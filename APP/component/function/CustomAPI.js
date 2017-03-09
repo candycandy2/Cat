@@ -38,7 +38,7 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
             'Signature': signatureInBase64,
             'token': loginData.token
         },
-        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
         async: asyncType,
