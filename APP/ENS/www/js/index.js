@@ -8,31 +8,23 @@ var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
 
 var prevPageID;
 
+//Set the result code, which is not [1], but still means [success],
+//need to be check the token_valid.
+var APIResultCodeArray = ["014904"];
+//Set the result code which means [Unknown Error]
+errorCodeArray = ["014999"];
+
 window.initialSuccess = function() {
 
-    //loadingMask("show");
-    /*
-    if (window.localStorage.getItem(key) !== null) {
+    //Concat result_code with common data which set in compnent.js
+    var tempCodeArray = codeArray;
+    codeArray = tempCodeArray.concat(APIResultCodeArray);
 
-    }
+    loadingMask("show");
 
-    window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
-
-    loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
-    var localContent = JSON.parse(loginData["messagecontent"]);
-
-    window.localStorage.setItem(key, value);
-
-    if (window.localStorage.getItem("openMessage") === null) {
-
-    }
-    */
     processLocalData.initialData();
 
     $.mobile.changePage('#viewEventList');
-    var EventList = new getEventList();
-    var Authority = new getAuthority();
-
 }
 
 //1. Each data has its own life-cycle.
@@ -65,11 +57,12 @@ var processLocalData = {
                 //data expired, call API again
                 callAPI();
             } else {
-                //data expired, just update latestUpdateTimeStamp
+                //data not expired, just update latestUpdateTimeStamp
                 var nowTime = new Date();
                 var nowTimeStamp = nowTime.TimeStamp();
-                var latestUpdateTimeStamp = parseInt(nowTimeStamp + lifeCycle, 10);
-                localData[dataName]["latestUpdateTimeStamp"] = latestUpdateTimeStamp;
+                localData[dataName]["latestUpdateTimeStamp"] = nowTimeStamp;
+
+                dataExistCallBack(localData[dataName]["data"], true);
             }
 
         } else {
