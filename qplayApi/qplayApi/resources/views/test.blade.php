@@ -182,7 +182,7 @@ FORM;
     <br/><br/>
     <script>
         var registerUUID = "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20";
-        var appSecretKey = <?php echo '"'.Config::get("app.Secret_key").'"' ?>;
+        var appSecretKey = <?php echo '"'.Config::get("app.App_Secret_key").'"' ?>;
         function getSignature(action, signatureTime) {
                 if (action === "getTime") {
                     return Math.round(new Date().getTime()/1000);
