@@ -571,10 +571,14 @@ class CommonUtil
         }
         $apiStartTime = Request::instance()->get('ApiStartTime');
         $operationTime = microtime(true) - $apiStartTime;
+        $uuid = "";
+        if (array_key_exists('uuid',$_GET)){
+            $uuid = $_GET["uuid"];
+        }
        
         \DB::table("qp_api_log")
             -> insert([
-                'user_row_id'=>' ',
+                'user_row_id'=> self::getUserRowIDByUUID($uuid),
                 'app_key'=>$appKey,
                 'api_version'=>$version,
                 'action'=>$action,
@@ -588,6 +592,14 @@ class CommonUtil
                 'operation_time'=> number_format($operationTime,3),
                 'created_at'=>$now,
             ]);
+    }
+
+    public static function getUserRowIDByUUID($uuid){
+        $id = DB::table("qp_register")
+            -> where('uuid','=',$uuid)
+            -> select('user_row_id')
+            -> get();
+        return count($id)>0?$id[0]->user_row_id:"";
     }
 
     public static function checkCustomApiUrl($version,$appKey,$action){

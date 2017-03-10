@@ -3,8 +3,8 @@
  */
 var login_lang_list = {
     "MSG_ACCOUNT_ERROR":"Please check name"
-    ,"MSG_PASSWORD_ERROR":" Please check password"
-    ,"MSG_NETWORK_ERROR":" Please check network status"
+    ,"MSG_PASSWORD_ERROR":" please check password"
+    ,"MSG_NETWORK_ERROR":" please check network status"
     ,"MSG_INFO_ERROR":"Account/password/company can't be empty"
     ,"MSG_NO_UUID":"No uuid received"
     ,"MSG_NO_DEVICE_TYPE":"No device type received"

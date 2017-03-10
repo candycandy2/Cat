@@ -36,6 +36,19 @@ class platformController extends Controller
         }
         CommonUtil::setLanguage();
 
+        /*
+        $input = Input::get();
+        $order = $input["order"];
+        $offset = $input["offset"];
+        $limit = $input["limit"];
+        $userList = \DB::table("qp_user")
+            -> where("resign", "=", "N")
+            -> select()
+            -> orderBy("department")
+            -> orderBy("login_id")
+            -> Paginate($limit,['*'],null,($offset/$limit)+1);
+        return response()->json(["total"=>$userList->total(),"rows"=>$userList->items()]);
+        */
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
             -> select()
@@ -105,23 +118,53 @@ class platformController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
-
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $userIdList = $jsonContent['user_id_list'];
-            foreach ($userIdList as $uId) {
-                \DB::table("qp_user")
-                    -> where('row_id', '=', $uId)
-                    -> update(
-                        ['status'=>'N',
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
+            try {
+                foreach ($userIdList as $uId) {
+                    \DB::beginTransaction();
+                    \DB::table("qp_user")
+                        -> where('row_id', '=', $uId)
+                        -> update(
+                            ['status'=>'N',
+                                'updated_at'=>$now,
+                                'updated_user'=>\Auth::user()->row_id]);
 
+                    $userInfo = CommonUtil::getUserInfoByRowId($uId);
+                    $tag = PushUtil::GetTagByUserInfo($userInfo);
+                    foreach ($userInfo->uuidList as $uuid) {
+                        $pushToken = $uuid->uuid;
+                        $pushResult = PushUtil::RemoveTagsWithJPushWebAPI($pushToken, $tag);
+                    }
+
+                    $registerList = \DB::table("qp_register")
+                        ->where("user_row_id", "=", $uId)
+                        ->select()->get();
+                    foreach ($registerList as $registerInfo)
+                    {
+                        $registerId = $registerInfo->row_id;
+                        \DB::table("qp_push_token")
+                            ->where("register_row_id", "=", $registerId)
+                            ->delete();
+                        \DB::table("qp_register")
+                            ->where("row_id", "=", $registerId)
+                            ->delete();
+                        \DB::table("qp_session")
+                            ->where("user_row_id", "=", $uId)
+                            ->delete();
+                    }
+                    DB::commit();
+                }
             }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            catch(\Exception $e){
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful]);
+        }else  {
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
         }
-
-        return null;
     }
 
     public function saveUser() {
@@ -222,13 +265,13 @@ class platformController extends Controller
                 }
 
                 \DB::commit();
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'jpush-result'=>$pushResult]);
             } catch (\Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
             }
         } else {
-            return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
         }
     }
 
