@@ -31,7 +31,7 @@ class customController extends Controller
             $result = $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
             CommonUtil::logCustomApi($api_version,$app_key,$action,
                 response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         } else {
             $result = response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
@@ -64,10 +64,10 @@ class customController extends Controller
             $resultContent = $json->Content;
         }
         $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-        return response()->json(array("ResultCode"=>$resultCode,
+        return array("ResultCode"=>$resultCode,
             "token_valid"=>$tokenValid,
             "Message"=>$message,
-            "Content"=>$resultContent));
+            "Content"=>$resultContent);
     }
 
     public function do_post_request($url, $data, $optional_headers = null)
