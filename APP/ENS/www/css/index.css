@@ -432,6 +432,12 @@ input[type=radio]:checked + label {
     /*margin-bottom: 0;*/
 }
 
+.event-list-no-data {
+    color: #0f0f0f;
+    text-align: center;
+    margin-top: 50%;
+}
+
 /*Event Add*/
 .delete {
     background: url(../img/delete.png) no-repeat;
