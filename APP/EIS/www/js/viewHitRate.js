@@ -16,17 +16,20 @@ $("#viewHitRate").pagecontainer ({
     	window.ROSummary = function() {
 		
 	    	this.successCallback = function(data) {
-	    		callbackData = data["Content"]["DataList"];
+	    		
+                ProductDetail();
+                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+                UserAuthority();
+
+                callbackData = data["Content"]["DataList"];
 	    		length = callbackData.length;
 	    		thisYear = callbackData[length-1]["YEAR"];
 	    		thisMonth = callbackData[length-1]["MONTH"];
-	    		$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
 	    		
 	    		convertData();
-	    		
-	    		getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
-	    		getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
-	    		
+                getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
+                getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
+               
                 for(var i in eisdata[thisYear][thisMonth]) {
                     thisMonthData[i] = {};
                     lastMonthData[i] = {};
@@ -41,23 +44,18 @@ $("#viewHitRate").pagecontainer ({
                         }
                     }
                 }
-
+                
                 calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
                 calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
-                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
-                loadingMask("hide");
-
+                
                 getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
                 getHighcahrtsData(thisYear, thisMonth-1, "ACTUAL_ADJ_AMT", lastMonthActualAMT);
                 getHighcahrtsData(thisYear, thisMonth, "YTDBUDGET_AMT", YTDBudgetAMT);
                 getHighcahrtsData(thisYear, thisMonth, "YTDACTUAL_ADJ_AMT", YTDActualAMT);
-	    		calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
-	    		calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
-	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
-	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
-                ProductDetail();
-                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-                UserAuthority();
+                calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
+                calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
+                calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
+                calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
             };
 
 	    	this.failCallback = function(data) {
@@ -153,8 +151,6 @@ $("#viewHitRate").pagecontainer ({
             }
         }
 
-
-
     	function getHighcahrtsData(year, month, type, data_array) {
     		var index = 0;
     		if(month == 0) {
@@ -207,6 +203,9 @@ $("#viewHitRate").pagecontainer ({
 
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
+            
+            showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+
 			chart = new Highcharts.Chart ({
 				chart: {
 					renderTo: 'viewHitRate-hc-canvas',
@@ -236,7 +235,6 @@ $("#viewHitRate").pagecontainer ({
         				y: -11
         			},
         			min: 0,
-        			tickInterval: 1000000
         		},
 				legend: {
 					align: 'left',
@@ -280,7 +278,6 @@ $("#viewHitRate").pagecontainer ({
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active'); 
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-            showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
 			loadingMask("hide");
         });
 
