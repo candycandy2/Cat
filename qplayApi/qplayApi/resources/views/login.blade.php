@@ -206,8 +206,10 @@
         var chinesePattern = /[^\x00-\xff]/;
         var appKey = "<?php echo CommonUtil::getContextAppKey()?>";
         var appSecretKey = "<?php echo Config::get("app.App_Secret_key")?>";
+        var lang = "en-us";
         $(function () {
-            var url = "{{asset('js/lang')}}" + "/login-"+getLanguage()+".js";
+            lang = getLanguage();
+            var url = "{{asset('js/lang')}}" + "/login-"+lang+".js";
             $.getScript(url,Init);
             function Init(){
                 InitUI();
@@ -314,7 +316,7 @@
             var signatureTime = getSignature("getTime");
             var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
-                url: "v101/qplay/isRegister?lang=en-us&uuid=" + uuid,//Math.uuid(),
+                url: "v101/qplay/isRegister?lang="+lang+"&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -363,7 +365,7 @@
             var signatureTime = getSignature("getTime");
             var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
-                url: "v101/qplay/login?lang=en-us&uuid=" +uuid,//Math.uuid(),
+                url: "v101/qplay/login?lang="+lang+"&uuid=" +uuid,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -421,7 +423,7 @@
             var signatureTime = getSignature("getTime");
             var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=" + device_type + "&uuid=" + uuid,//Math.uuid(),
+                url: "v101/qplay/register?lang="+lang+"&device_type=" + device_type + "&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",

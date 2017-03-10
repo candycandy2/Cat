@@ -28,7 +28,10 @@ class customController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = CommonUtil::getApiCustomerUrl($action);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
-            return $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
+            $result = $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
+            CommonUtil::logCustomApi($api_version,$app_key,$action,
+                response()->json(apache_response_headers()), $result);
+            return $result;
         } else {
             $result = response()->json(array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
