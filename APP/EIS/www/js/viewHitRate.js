@@ -94,7 +94,6 @@ $("#viewHitRate").pagecontainer ({
     	}
 
     	function showData(tab, AAMT_array, BAMT_array, data_array) {
-    		// var pattern = /(^[0-9\-]*\.{0,1}\d{0,2})\d*/;
     		var index = 0;
     		var ActualAMT, budgetHitRate, YOYGrowth, totalBudgetHitRate, totalYOYGrowth;
             var totalActualAMT = 0;
@@ -107,7 +106,7 @@ $("#viewHitRate").pagecontainer ({
 				$("#" + ro + " .AS span").text(ActualAMT);
 				$("#" + ro + " .HR span").text(budgetHitRate + "%");
 				totalActualAMT += ActualAMT;
-			
+                
 				if(budgetHitRate <= 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
 				}else if(budgetHitRate > 95) {
@@ -227,11 +226,11 @@ $("#viewHitRate").pagecontainer ({
 				},
 				yAxis: {
         			title: {
-        				text: '(USD$M)',
+        				text: '(USD)',
         				align: 'high',
         				rotation: 0,
         				offset: 0,
-        				x: 5,
+        				x: -10,
         				y: -11
         			},
         			min: 0,
