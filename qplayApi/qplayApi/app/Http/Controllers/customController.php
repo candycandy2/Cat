@@ -19,8 +19,7 @@ class customController extends Controller
                 'content'=>''];
             CommonUtil::logCustomApi($api_version,$app_key,$action,
                 response()->json(apache_response_headers()), $result);
-            $result = response()->json($result);
-            return $result;
+            return response()->json($result);
         }
 
         $Verify = new Verify();
@@ -33,12 +32,12 @@ class customController extends Controller
                 response()->json(apache_response_headers()), $result);
             return response()->json($result);
         } else {
-            $result = response()->json(array("ResultCode"=>$verifyResult["code"],
+            $result = array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
-                "Content"=>""));
+                "Content"=>"");
             CommonUtil::logCustomApi($api_version,$app_key,$action,
                 response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
     }
 
