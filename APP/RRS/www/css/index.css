@@ -48,8 +48,7 @@ a {
 
 #newSettingFloor div.ui-bar {
     text-align: center;
-    height: 7vh;
-    line-height: 7vh;
+    padding: 3vw 0;
     font-weight: initial;
 }
 
@@ -59,8 +58,8 @@ a {
 
 .ui-btn-active {
     background-color: #0db6b7;
-    border-color: #0db6b7 !important;
     color: white !important;
+    border-color: #ddd !important;
 }
 
 .ui-controlgroup-controls label.ui-btn-active {
@@ -73,7 +72,8 @@ a {
 
 .ui-radio label {
     text-align: center !important;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
+    padding: 3vw 0;
 }
 
 #reserveDateSelect div.ui-bar-a {
@@ -145,6 +145,18 @@ a {
     font-size: 3vw;
 }
 
+#viewNewSetting .ui-margin-public span{ display: block;}
+#viewNewSetting .ui-input-text{ margin: 0 0 5.38vw;}
+#viewNewSetting .col-8{ width: 100% !important;}
+#viewNewSetting .ui-grid-a > div:nth-of-type(2n+1){ margin-bottom: 1.16vw;}
+#viewNewSetting .ui-btn, #viewNewSetting label.ui-btn{ font-weight: normal;}
+#newSettingSelect span{ font-size: 3.55vw;}
+#newSettingSelect .ui-block-a span{ padding-top: 1vw;}
+#newSettingSelect, #newSettingPeople, #newSettingTime{ margin: 0 0 4.388vw; padding-bottom: 4.88vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#newSettingPeople, #newSettingTitle{ font-size: 4.18vw;}
+#newSettingPeople .ui-controlgroup{ margin: 0;}
+
+
 
 /********************************** public area *************************************/
 
@@ -152,7 +164,7 @@ a {
     text-shadow: none !important;
     font-size: 2.8vh !important;
     border: 0;
-    padding-top: 1.5vh;
+    padding-top: 2.6vw;
 }
 
 .ui-margin-10 {
@@ -197,11 +209,15 @@ div.circle {
 }
 
 .ui-margin-public {
-    margin: 1.8vw 2.7vw !important;
+    margin: 1.8vw 3.71vw !important;
+    font-size: 3.55vw;
 }
 
+#viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
+#newSettingFloor{ font-size: 4.18vw;}
+
 .title-icon {
-    height: 2.7vh;
+    height: 5.957vw;
 }
 
 .radius-btn {
@@ -334,14 +350,15 @@ div.circle {
 }
 
 .cntIcon {
-    width: 6vw;
-    height: 3.5vh;
+    width: 5.4vw;
+    height: 5.4vw;
     position: absolute;
     top: 0;
     right: 0;
     text-align: center;
-    line-height: 3.5vh;
+    line-height: 6vw;
     background-color: #142433 !important;
+    font-size: 3.55vw;
 }
 
 .setting-icon {
@@ -409,11 +426,10 @@ div.circle {
 
 .dropdown-icon {
     outline: none;
-    padding: 5px;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     border: 0;
     background: url('../img/dropdown.png') right transparent;
-    background-size: 4vw 1.7vh;
+    background-size: 4vw 2.9vw;
     background-repeat: no-repeat;
     -webkit-appearance: none;
 }
