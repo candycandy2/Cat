@@ -118,7 +118,6 @@ class platformController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
-        $pushResult = null;
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $userIdList = $jsonContent['user_id_list'];
@@ -160,9 +159,9 @@ class platformController extends Controller
             }
             catch(\Exception $e){
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'jpush-result'=>$pushResult]);
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
             }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'jpush-result'=>$pushResult]);
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful]);
         }else  {
             return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
         }
@@ -179,7 +178,6 @@ class platformController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
-        $pushResult = null;
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $userId = $jsonContent['user_id'];
@@ -270,7 +268,7 @@ class platformController extends Controller
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'jpush-result'=>$pushResult]);
             } catch (\Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'jpush-result'=>$pushResult]);
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
             }
         } else {
             return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
