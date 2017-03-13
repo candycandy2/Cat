@@ -93,7 +93,8 @@ function onBackKeyDown() {
     if($(".ui-page-active").jqmData("panel") === "open"){
         $("#mypanel").panel( "close");
     }else{
-        /*leave this app*/
+        /******** leave this app *********/
+        navigator.app.exitApp();
     }
 
     // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
