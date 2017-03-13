@@ -65,7 +65,7 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#viewHitRate").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open"){
+        if($(".ui-page-active").jqmData("panel") !== "open" && !($("body").hasClass("ui-landscape"))) {
             $("#mypanel").panel( "open");
         }
     });
