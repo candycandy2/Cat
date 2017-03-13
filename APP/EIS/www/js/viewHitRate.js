@@ -1,6 +1,6 @@
 var chart;
-var totalActualAMT = 0;
-var lastTotalActualAMT = 0;
+var lytmTotalActualAMT = 0;
+var lylmTotalActualAMT = 0;
 var thisMonthBudgetAMT = [];
 var thisMonthActualAMT = [];
 var lastMonthBudgetAMT = [];
@@ -40,8 +40,8 @@ $("#viewHitRate").pagecontainer ({
 
                 for(var ro in eisdata[thisYear-1][thisMonth]) {
                     lastYTDActualAMT[ro] = 0;
-                    totalActualAMT += Number(eisdata[thisYear-1][thisMonth][ro][1]);
-                    lastTotalActualAMT += Number(eisdata[thisYear-1][thisMonth-1][ro][1]);
+                    lytmTotalActualAMT += Number(eisdata[thisYear-1][thisMonth][ro][1]);
+                    lylmTotalActualAMT += Number(eisdata[thisYear-1][thisMonth-1][ro][1]);
                     for(var j in eisdata[thisYear-1]) {
                         if(Number(j) <= Number(thisMonth)) {
                             lastYTDActualAMT[ro] += (Number(eisdata[thisYear-1][j][ro][1]));
@@ -149,9 +149,9 @@ $("#viewHitRate").pagecontainer ({
                 totalLastYTDActualAMT += lastYTDActualAMT[i];
             }
             if(tab == "thisMonth") {
-                totalYOYGrowth = ((totalActualAMT / totalBudgetAMT) - 1) * 100;
+                totalYOYGrowth = ((totalActualAMT / lytmTotalActualAMT) - 1) * 100;
             }else if(tab == "lastMonth") {
-                totalYOYGrowth = ((totalActualAMT / lastTotalBudgetAMT) - 1) * 100;
+                totalYOYGrowth = ((totalActualAMT / lylmTotalActualAMT) - 1) * 100;
             }else if (tab == "YTD") {
                 totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
             }
