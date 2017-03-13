@@ -1,4 +1,6 @@
 var chart;
+var lytmTotalActualAMT = 0;
+var lylmTotalActualAMT = 0;
 var thisMonthBudgetAMT = [];
 var thisMonthActualAMT = [];
 var lastMonthBudgetAMT = [];
@@ -36,18 +38,19 @@ $("#viewHitRate").pagecontainer ({
                     ytdData[i] = {};
                 }
 
-                for(var i in eisdata[thisYear-1][thisMonth]) {
-                    lastYTDActualAMT[i] = 0;
+                for(var ro in eisdata[thisYear-1][thisMonth]) {
+                    lastYTDActualAMT[ro] = 0;
+                    lytmTotalActualAMT += Number(eisdata[thisYear-1][thisMonth][ro][1]);
+                    lylmTotalActualAMT += Number(eisdata[thisYear-1][thisMonth-1][ro][1]);
                     for(var j in eisdata[thisYear-1]) {
                         if(Number(j) <= Number(thisMonth)) {
-                            lastYTDActualAMT[i] += (Number(eisdata[thisYear-1][j][i][1])); 
+                            lastYTDActualAMT[ro] += (Number(eisdata[thisYear-1][j][ro][1]));
                         }
                     }
                 }
                 
                 calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
                 calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
-                
                 getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
                 getHighcahrtsData(thisYear, thisMonth-1, "ACTUAL_ADJ_AMT", lastMonthActualAMT);
                 getHighcahrtsData(thisYear, thisMonth, "YTDBUDGET_AMT", YTDBudgetAMT);
@@ -108,10 +111,10 @@ $("#viewHitRate").pagecontainer ({
 				ActualAMT = Math.round(AAMT_array[index++] / Math.pow(10, 4)) / 100;
 				budgetHitRate = Math.round((data_array[ro]["BudgetHitRate"] * Math.pow(10, 4))) / 100;
 				YOYGrowth = Math.round((data_array[ro]["YOYGrowth"] * Math.pow(10, 4))) / 100;
-				$("#" + ro + " .AS span").text(ActualAMT);
-				$("#" + ro + " .HR span").text(budgetHitRate + "%");
 				totalActualAMT += ActualAMT;
-                
+
+                $("#" + ro + " .AS span").text(ActualAMT);
+				$("#" + ro + " .HR span").text(budgetHitRate + "%");
 				if(budgetHitRate <= 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
 				}else if(budgetHitRate > 95) {
@@ -145,7 +148,13 @@ $("#viewHitRate").pagecontainer ({
             for(var i in lastYTDActualAMT) {
                 totalLastYTDActualAMT += lastYTDActualAMT[i];
             }
-            totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+            if(tab == "thisMonth") {
+                totalYOYGrowth = ((totalActualAMT / lytmTotalActualAMT) - 1) * 100;
+            }else if(tab == "lastMonth") {
+                totalYOYGrowth = ((totalActualAMT / lylmTotalActualAMT) - 1) * 100;
+            }else if (tab == "YTD") {
+                totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+            }
             if(totalYOYGrowth < 0) {
                 $("#total .dataContainer .YR span").text((Math.round(totalYOYGrowth * Math.pow(10, 2)) / 100) + "%");
                 $("#total .dataContainer .YR").css('background', '#ee3839')
@@ -207,9 +216,7 @@ $("#viewHitRate").pagecontainer ({
 
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
-            
             showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
-
 			chart = new Highcharts.Chart ({
 				chart: {
 					renderTo: 'viewHitRate-hc-canvas',
