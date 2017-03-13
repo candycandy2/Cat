@@ -30,6 +30,8 @@ $("#viewEventList").pagecontainer({
                     var EventList = new getEventList();
 
                     var basicInfo = new getBasicInfo();
+
+                    showEventAdd();
                 }
             };
 
@@ -109,7 +111,8 @@ $("#viewEventList").pagecontainer({
                         user: [],
                         userDetail: {},
                         function: {},
-                        location: {}
+                        location: {},
+                        locationFunction: {}
                     };
 
                     for (var i=0; i<dataContent.length; i++) {
@@ -124,6 +127,11 @@ $("#viewEventList").pagecontainer({
                         var locationName = dataContent[i].location.trim();
                         if (loginData["BasicInfo"]["location"][locationName] == undefined) {
                             loginData["BasicInfo"]["location"][locationName] = [];
+                        }
+
+                        //LocationFunciton
+                        if (loginData["BasicInfo"]["locationFunction"][locationName] == undefined) {
+                            loginData["BasicInfo"]["locationFunction"][locationName] = [];
                         }
 
                         for (var j=0; j<dataContent[i].user_list.length; j++) {
@@ -142,6 +150,11 @@ $("#viewEventList").pagecontainer({
                             if (loginData["BasicInfo"]["location"][locationName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
                                 loginData["BasicInfo"]["location"][locationName].push(dataContent[i].user_list[j].login_id);
                             }
+                        }
+
+                        //All LocationFunciton
+                        if (loginData["BasicInfo"]["locationFunction"][locationName].indexOf(dataContent[i].function) == -1) {
+                            loginData["BasicInfo"]["locationFunction"][locationName].push(dataContent[i].function);
                         }
 
                         //Sort User ID
@@ -202,6 +215,13 @@ $("#viewEventList").pagecontainer({
             $(".event-member-data-list ul li:last-child").css({
                 "margin-bottom": 0
             });
+        }
+
+        function showEventAdd() {
+            //Only [admin] can Add New Event
+            //if (checkAuthority["admin"]) {
+                $("#addEvent").show();
+            //}
         }
 
         /********************************** page event *************************************/
@@ -326,7 +346,7 @@ $("#viewEventList").pagecontainer({
             if (ui.newPanel.selector === "#memberDiv") {
                 $("#addEvent").hide();
             } else {
-                $("#addEvent").show();
+                showEventAdd();
             }
         });
 
@@ -362,6 +382,7 @@ $("#viewEventList").pagecontainer({
 
         //Event Add
         $(document).on("click", "#addEvent", function() {
+            loadingMask("show");
             $.mobile.changePage('#viewEventAdd');
         });
 
