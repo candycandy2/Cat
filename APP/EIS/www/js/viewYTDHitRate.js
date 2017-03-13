@@ -379,9 +379,8 @@ $("#viewYTDHitRate").pagecontainer({
 				legend: {
 					align: 'left',
 					float: true,
-                    itemDistance: 30,
-					x: -3,
-					y: 5
+					x: -7,
+					y: 13
 				},
 				credits: {
 					enabled: false

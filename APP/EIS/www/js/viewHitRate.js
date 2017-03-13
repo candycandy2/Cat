@@ -60,6 +60,11 @@ $("#viewHitRate").pagecontainer ({
 
 	    	this.failCallback = function(data) {
 	    		console.log("api misconnected");
+                // $("#total .dataContainer .AS span").text("");
+                // $("#total .dataContainer .HR span").text("");
+                // $("#total .dataContainer .YR span").text("");
+                // $("#total .dataContainer .HR span").css("background", none);
+                // $("#total .dataContainer .YR span").css("background", none);
 	    	};
 
 			var _construct = function() {
