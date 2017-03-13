@@ -10,7 +10,7 @@ var prevPageID;
 
 //Set the result code, which is not [1], but still means [success],
 //need to be check the token_valid.
-var APIResultCodeArray = ["014904"];
+var APIResultCodeArray = ["014904", "014907"];
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
 
@@ -83,6 +83,15 @@ var processLocalData = {
         };
 
         this.updateLocalStorage();
+    },
+    createXMLDataString: function(data) {
+        var XMLDataString = "";
+
+        $.each(data, function(key, value) {
+            XMLDataString += "<" + key + ">" + htmlspecialchars(value) + "</" + key + ">";
+        });
+
+        return XMLDataString;
     }
 };
 
