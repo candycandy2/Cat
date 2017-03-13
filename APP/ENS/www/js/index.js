@@ -53,7 +53,7 @@ var processLocalData = {
             var expiredTimeStamp = parseInt(localData[dataName]["expiredTimeStamp"]);
             var latestUpdateTimeStamp = parseInt(localData[dataName]["latestUpdateTimeStamp"]);
 
-            if (latestUpdateTimeStamp > expiredTimeStamp) {
+            if (latestUpdateTimeStamp >= expiredTimeStamp) {
                 //data expired, call API again
                 callAPI();
             } else {
@@ -85,6 +85,16 @@ var processLocalData = {
         this.updateLocalStorage();
     }
 };
+
+//Cehck User Authority
+function checkAuthority(level) {
+    // admin / supervisor / common
+    if (loginData["RoleList"].indexOf(level) != -1) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //[Android]Handle the back button
 function onBackKeyDown() {
