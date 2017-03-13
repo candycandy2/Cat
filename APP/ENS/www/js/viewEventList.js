@@ -6,8 +6,8 @@ $("#viewEventList").pagecontainer({
         window.getAuthority = function() {
 
             var self = this;
-            //Data Life-Cycle: 7 Days
-            var dataLifeCycle = 604800;
+            //Data Life-Cycle: none
+            var dataLifeCycle = 0;
             var queryData = '<LayoutHeader><emp_no>' + loginData["emp_no"] + '</emp_no></LayoutHeader>';
 
             this.successCallback = function(data, dataExist) {
@@ -20,8 +20,16 @@ $("#viewEventList").pagecontainer({
                     }
 
                     var dataContent = data["Content"];
+                    var RoleList = dataContent["RoleList"];
+                    loginData["RoleList"] = [];
+
+                    for (var i=0; i<RoleList.length; i++) {
+                        loginData["RoleList"].push(RoleList[i]);
+                    }
 
                     var EventList = new getEventList();
+
+                    var basicInfo = new getBasicInfo();
                 }
             };
 
@@ -72,8 +80,6 @@ $("#viewEventList").pagecontainer({
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
                 }
-
-                var basicInfo = new getBasicInfo();
             };
 
             this.failCallback = function(data) {};
@@ -97,7 +103,57 @@ $("#viewEventList").pagecontainer({
                 var resultCode = data['ResultCode'];
 
                 if (resultCode === 1) {
+                    var dataContent = data["Content"];
 
+                    loginData["BasicInfo"] = {
+                        user: [],
+                        userDetail: {},
+                        function: {},
+                        location: {}
+                    };
+
+                    for (var i=0; i<dataContent.length; i++) {
+
+                        //Function
+                        var functionName = dataContent[i].function.trim();
+                        if (loginData["BasicInfo"]["function"][functionName] == undefined) {
+                            loginData["BasicInfo"]["function"][functionName] = [];
+                        }
+
+                        //Location
+                        var locationName = dataContent[i].location.trim();
+                        if (loginData["BasicInfo"]["location"][locationName] == undefined) {
+                            loginData["BasicInfo"]["location"][locationName] = [];
+                        }
+
+                        for (var j=0; j<dataContent[i].user_list.length; j++) {
+                            //All User
+                            if (loginData["BasicInfo"]["user"].indexOf(dataContent[i].user_list[j].login_id) == -1) {
+                                loginData["BasicInfo"]["user"].push(dataContent[i].user_list[j].login_id);
+                                loginData["BasicInfo"]["userDetail"][dataContent[i].user_list[j].login_id] = dataContent[i].user_list[j];
+                            }
+
+                            //All Functon
+                            if (loginData["BasicInfo"]["function"][functionName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
+                                loginData["BasicInfo"]["function"][functionName].push(dataContent[i].user_list[j].login_id);
+                            }
+
+                            //All Location
+                            if (loginData["BasicInfo"]["location"][locationName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
+                                loginData["BasicInfo"]["location"][locationName].push(dataContent[i].user_list[j].login_id);
+                            }
+                        }
+
+                        //Sort User ID
+                        loginData["BasicInfo"]["function"][functionName].sort();
+                        loginData["BasicInfo"]["location"][locationName].sort();
+
+                    }
+
+                    //Sort User ID
+                    loginData["BasicInfo"]["user"].sort();
+
+                    memberListView("location");
                 }
             };
 
@@ -107,6 +163,45 @@ $("#viewEventList").pagecontainer({
                 CustomAPI("POST", true, "getBasicInfo", self.successCallback, self.failCallback, queryData, "");
             }();
 
+        }
+
+        function memberListView(sortType) {
+
+            var eventMemberDataListHTML = $("template#tplEventMemberDataList").html();
+            $("#eventMemberTypeContent").siblings().remove();
+
+            if (sortType === "userDetail") {
+                var eventMemberDataList = $(eventMemberDataListHTML);
+                eventMemberDataList.find(".title").html("管理員");
+
+                var eventMemberDataListView = eventMemberDataList.find("ul");
+                var eventMemberData = "";
+
+                $.each(loginData["BasicInfo"][sortType], function(key, user) {
+                    eventMemberData += "<li>" + key + "</li>";
+                });
+
+                eventMemberDataListView.html(eventMemberData);
+                $("#memberDiv").append(eventMemberDataList);
+            } else {
+                $.each(loginData["BasicInfo"][sortType], function(key, user) {
+                    var eventMemberDataList = $(eventMemberDataListHTML);
+                    eventMemberDataList.find(".title").html(key);
+
+                    var eventMemberDataListView = eventMemberDataList.find("ul");
+                    var eventMemberData = "";
+                    for (var i=0; i<user.length; i++) {
+                        eventMemberData += "<li>" + user[i] + "</li>";
+                    }
+                    eventMemberDataListView.html(eventMemberData);
+
+                    $("#memberDiv").append(eventMemberDataList);
+                });
+            }
+
+            $(".event-member-data-list ul li:last-child").css({
+                "margin-bottom": 0
+            });
         }
 
         /********************************** page event *************************************/
@@ -173,25 +268,19 @@ $("#viewEventList").pagecontainer({
             var eventMemberTypeData = {
                 id: "eventMemberType",
                 option: [{
-                    value: "0",
-                    text: "位置"
+                    value: "location",
+                    text: "位置排序"
                 }, {
-                    value: "1",
-                    text: "IT Function"
+                    value: "function",
+                    text: "IT Function排序"
                 }, {
-                    value: "2",
-                    text: "管理員"
+                    value: "userDetail",
+                    text: "成員排序"
                 }]
             };
 
             $("#memberDiv").append('<div id="eventMemberTypeContent"></div>');
             tplJS.DropdownList("viewEventList", "eventMemberTypeContent", "append", "typeA", eventMemberTypeData);
-
-            //Event Member Data List
-            var eventMemberDataListHTML = $("template#tplEventMemberDataList").html();
-
-            var eventMemberDataList = $(eventMemberDataListHTML);
-            $("#memberDiv").append(eventMemberDataList);
 
             //Event List No Data Msg
             var eventListNoDataHTML = $("template#tplEventListNoData").html();
@@ -232,6 +321,15 @@ $("#viewEventList").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        //Tabs Change
+        $(document).on("tabsactivate", "#tabEventList", function(event, ui) {
+            if (ui.newPanel.selector === "#memberDiv") {
+                $("#addEvent").hide();
+            } else {
+                $("#addEvent").show();
+            }
+        });
+
         //Event Type
         $(document).on("change", "#eventType", function() {
             $(".event-list-no-data").hide();
@@ -271,6 +369,12 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventListNoDataPopup .confirm", function() {
             $("#eventListNoDataPopup").popup("close");
             $(".event-list-no-data").show();
+        });
+
+        //Event Member List - Sort Type
+        $(document).on("change", "#eventMemberType", function() {
+            console.log($(this).val());
+            memberListView($(this).val());
         });
     }
 });
