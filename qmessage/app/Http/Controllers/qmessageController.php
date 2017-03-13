@@ -86,13 +86,13 @@ class qmessageController extends Controller
         $desc = $input->desc;
         $members = $input->members;
         //(1)检查$owner
-        if (empty($owner) || CommonUtil::getUserStatusByUsername($owner)!=3){
+        if (empty($owner)){
             $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998003_groupOwnerEmptyOrInvalid,"Group add failed,owner is empty or invalid"));
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
             return $result;
         }
         //(2)检查$members
-        if (count($members)==0 || !CommonUtil::checkUserListStatusByUsername($members)){
+        if (count($members)==0){
             $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group add failed,group member is empty or invalid"));
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
             return $result;
@@ -291,7 +291,11 @@ class qmessageController extends Controller
         $baseUrl = "http://media.file.jpush.cn/";
         $fp=fsockopen('localhost',8081,$errno,$errstr,5);
         if($fp){
-            fputs($fp,"GET ".$_SERVER['PHP_SELF']."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id)."\r\n");
+            //for test
+            /**/
+            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_1_reponseSuccessful,'download begin',"GET ".$_SERVER['PHP_SELF']."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id)));
+            CommonUtil::logApi("",$ACTION,response()->json(apache_response_headers()), $result);
+            fputs($fp,"GET ".$_SERVER['PHP_SELF']."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id).(PHP_OS=="WINNT"?"\r\n":"\n"));
             fclose($fp);
         }else{
             return $errstr;
@@ -314,6 +318,9 @@ class qmessageController extends Controller
                 }
             } while (strstr($return_content,"error") || empty($return_content));
             //echo gettype($return_content).$return_content;
+            //for test
+            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_1_reponseSuccessful,'download end'));
+            CommonUtil::logApi("",$ACTION,response()->json(apache_response_headers()), $result);
             //三次尝试失败后记录log
             if (strstr($return_content,"error") || empty($return_content)){
                 $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998006_downloadFileFailed,$return_content));
