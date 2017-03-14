@@ -129,7 +129,7 @@ $("#viewHitRate").pagecontainer ({
 					$("#" + ro + " .YR").css('background', '#48af56');
 				}
 			}
-            $("#total .dataContainer .AS span").text(Math.round(totalActualAMT * Math.pow(10, 2)) / 100);
+            $("#total .dataContainer .AS span").text((Math.round(totalActualAMT * Math.pow(10, 2))) / 100);
             for(var i=0; i<AAMT_array.length; i++) {
                 totalActualAMT += AAMT_array[i];
                 totalBudgetAMT += BAMT_array[i];
@@ -155,10 +155,10 @@ $("#viewHitRate").pagecontainer ({
                 totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
             }
             if(totalYOYGrowth < 0) {
-                $("#total .dataContainer .YR span").text((Math.round(totalYOYGrowth * Math.pow(10, 2)) / 100) + "%");
+                $("#total .dataContainer .YR span").text(Math.round(totalYOYGrowth * Math.pow(10, 2) / 100) + "%");
                 $("#total .dataContainer .YR").css('background', '#ee3839')
             }else{
-                $("#total .dataContainer .YR span").text("+"+ (Math.round(totalYOYGrowth * Math.pow(10, 2)) / 100) + "%");
+                $("#total .dataContainer .YR span").text("+"+ Math.round(totalYOYGrowth * Math.pow(10, 2) / 100) + "%");
                 $("#total .dataContainer .YR").css('background', '#48af56');
             }
         }
@@ -194,6 +194,9 @@ $("#viewHitRate").pagecontainer ({
     				index++;
     			}
     		}
+            // for(var i=0; i<data_array.length; i++){
+            //     data_array[i] = Number(formatNumber(data_array[i]));
+            // }
     	}
 
     	function convertData() {
@@ -256,11 +259,18 @@ $("#viewHitRate").pagecontainer ({
 					enabled: false
 				},
 				tooltip: {
-			    	headerFormat: '<span style="font-size:10px">{point.key} Hit Rate</span><table>',
-			    	pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name} = </td>' +
-			        	'<td style="padding:0"><b>${point.y}</b></td></tr>',
-			    	footerFormat: '</table>',
-			    	shared: true,
+			    	// headerFormat: '<span style="font-size:10px">{point.key} Hit Rate</span><table>',
+			    	// pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name} = </td>' +
+			     //    	'<td style="padding:0"><b>$'+ formatNumber({point.y})+'</b></td></tr>',
+			    	// footerFormat: '</table>',
+			    	formatter: function () {
+                        var s = '<b>' + this.x + ' Hit Rate</b>';
+                        $.each(this.points, function () {
+                           s += '<br/> ' + this.series.name + ' = $' + formatNumber(this.y);
+                        });
+                        return s;
+                    },
+                    shared: true,
 			    	useHTML: true
 				},
 				plotOptions: {
