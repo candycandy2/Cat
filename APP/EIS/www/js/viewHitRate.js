@@ -129,7 +129,7 @@ $("#viewHitRate").pagecontainer ({
 					$("#" + ro + " .YR").css('background', '#48af56');
 				}
 			}
-            $("#total .dataContainer .AS span").text((Math.round(totalActualAMT * Math.pow(10, 2))) / 100);
+            $("#total .dataContainer .AS span").text(Math.round(totalActualAMT * Math.pow(10, 2)) / 100);
             for(var i=0; i<AAMT_array.length; i++) {
                 totalActualAMT += AAMT_array[i];
                 totalBudgetAMT += BAMT_array[i];
@@ -155,10 +155,10 @@ $("#viewHitRate").pagecontainer ({
                 totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
             }
             if(totalYOYGrowth < 0) {
-                $("#total .dataContainer .YR span").text(Math.round(totalYOYGrowth * Math.pow(10, 2) / 100) + "%");
+                $("#total .dataContainer .YR span").text((Math.round(totalYOYGrowth * Math.pow(10, 2)) / 100) + "%");
                 $("#total .dataContainer .YR").css('background', '#ee3839')
             }else{
-                $("#total .dataContainer .YR span").text("+"+ Math.round(totalYOYGrowth * Math.pow(10, 2) / 100) + "%");
+                $("#total .dataContainer .YR span").text("+"+ (Math.round(totalYOYGrowth * Math.pow(10, 2)) / 100) + "%");
                 $("#total .dataContainer .YR").css('background', '#48af56');
             }
         }
@@ -194,9 +194,6 @@ $("#viewHitRate").pagecontainer ({
     				index++;
     			}
     		}
-            // for(var i=0; i<data_array.length; i++){
-            //     data_array[i] = Number(formatNumber(data_array[i]));
-            // }
     	}
 
     	function convertData() {
