@@ -438,11 +438,8 @@ $("#viewYTDHitRate").pagecontainer({
         });
 
 		$(".page-tabs #viewYTDHitRate-tab-1").on("click", function() {
-		    tab = "QTY";
-		    actualValue = getActualValue(ro, product, year, month, tab);
-		    budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-		    showData();
-            $("#title-container > #title > #actualValue > p").text("YTD Net Quantity");
+		    $("#title-container > #title > #actualValue > p").text("YTD Net Quantity");
+            tab = "QTY";
 		    chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
             chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
             chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
@@ -450,14 +447,15 @@ $("#viewYTDHitRate").pagecontainer({
             chart.yAxis[0].setTitle({
                 text: '',
             });
+            chart.tooltip.hide();
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            showData();
 		});
 
 		$(".page-tabs #viewYTDHitRate-tab-2").on("click", function() {
-		    tab = "AMT";
-		    actualValue = getActualValue(ro, product, year, month, tab);
-		    budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-		    showData();
-            $("#title-container > #title > #actualValue > p").text("YTD Adj. Sales");
+		    $("#title-container > #title > #actualValue > p").text("YTD Adj. Sales");
+            tab = "AMT";
 		    chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
             chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
             chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
@@ -470,14 +468,15 @@ $("#viewYTDHitRate").pagecontainer({
                 x: -11,
                 y: -11
             });
-		});
+            chart.tooltip.hide();
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            showData();
+        });
 
 		$(".page-tabs #viewYTDHitRate-tab-3").on("click", function() {
-		    tab = "ASP";
-		    actualValue = getActualValue(ro, product, year, month, tab);
-		    budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-		    showData();
-            $("#title-container > #title > #actualValue > p").text("YTD ASP");
+		    $("#title-container > #title > #actualValue > p").text("YTD ASP");
+            tab = "ASP";
             chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
 		    chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
             chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
@@ -490,6 +489,10 @@ $("#viewYTDHitRate").pagecontainer({
                 x: -11,
                 y: -11
             });
+            chart.tooltip.hide();
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            showData();
         });
 		// scroll menu on click
 		$(document).on('click', '#viewYTDHitRate .Ro > a', function(e) {
