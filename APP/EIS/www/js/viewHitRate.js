@@ -259,10 +259,6 @@ $("#viewHitRate").pagecontainer ({
 					enabled: false
 				},
 				tooltip: {
-			    	// headerFormat: '<span style="font-size:10px">{point.key} Hit Rate</span><table>',
-			    	// pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name} = </td>' +
-			     //    	'<td style="padding:0"><b>$'+ formatNumber({point.y})+'</b></td></tr>',
-			    	// footerFormat: '</table>',
 			    	formatter: function () {
                         var s = '<b>' + this.x + ' Hit Rate</b>';
                         $.each(this.points, function () {
