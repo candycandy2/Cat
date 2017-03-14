@@ -314,6 +314,11 @@ $(document).one("pagebeforecreate", function(){
             }
         }
 
+        else if (device.platform === "iOS"){
+            $('.page-header').addClass('ios-fix-overlap');
+            $('.ios-fix-overlap-div').css('display','block');
+        }
+
         //For some APP Page, if page's header has second level [button / title],
         //auto resize the margin-top of page-main.
         var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
