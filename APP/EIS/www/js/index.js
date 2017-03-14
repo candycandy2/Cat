@@ -65,7 +65,7 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#viewHitRate").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open"){
+        if($(".ui-page-active").jqmData("panel") !== "open" && !($("body").hasClass("ui-landscape"))) {
             $("#mypanel").panel( "open");
         }
     });
@@ -93,8 +93,10 @@ function onBackKeyDown() {
     if($(".ui-page-active").jqmData("panel") === "open"){
         $("#mypanel").panel( "close");
     }else{
-        /*leave this app*/
+        navigator.app.exitApp();
     }
+
+
 
     // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
     //     navigator.app.exitApp();
