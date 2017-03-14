@@ -1,4 +1,4 @@
-# QMessage Web API
+﻿# QMessage Web API
 
 ## Part Ⅰ.  Restful API
 ### User API
@@ -170,7 +170,7 @@ POST /v101/qmessage/group/members/delete
 #### 3. List Group Members
 ##### Resuest
 ```
-POST /v101/qmessage/group/members/delete 
+POST /v101/qmessage/group/members/list 
 { "gid":20798373}
 ```
 
