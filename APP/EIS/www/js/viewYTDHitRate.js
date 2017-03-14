@@ -286,8 +286,8 @@ $("#viewYTDHitRate").pagecontainer({
         }
 
 		function showData() {
-            $("#title-content #ActualValue p").text(actualValue);
-            $("#title-content #BudgetHitRate p").text(budgetHitRate + "%");
+            $("#title-content #ActualValue p").text(formatNumber(actualValue));
+            $("#title-content #BudgetHitRate p").text(formatNumber(budgetHitRate) + "%");
             if(budgetHitRate <= 80) {
                 $("#title-content #BudgetHitRate p").css("color", "#ee3839");
             }else if(budgetHitRate > 95) {
@@ -398,7 +398,10 @@ $("#viewYTDHitRate").pagecontainer({
                             dollar = "";
                         }
                         $.each(this.points, function () {
-                            s += '<br/>' + this.series.name + ' = ' + dollar + this.y;
+                            if(tab == "ASP"){
+                                this.y = Math.round(this.y * Math.pow(10, 2)) / 100;
+                            }
+                            s += '<br/>' + this.series.name + ' = ' + dollar + formatNumber(this.y);
                         });
                         return s;
                     },
