@@ -1,4 +1,4 @@
-@extends('app')
+﻿@extends('app')
 
 @section('content')
     <?php
@@ -46,29 +46,29 @@
         }
         .control_title_text
         {
-            font:2.6vh "Gill Sans MT";
+            font:2.6vh "Arial";
             color: #0f0f0f;
         }
         .login_control{
-            font:2.9vh "Gill Sans MT";
+            font:2.9vh "Arial";
         }
         ::-webkit-input-placeholder {
-            font:2.9vh "Gill Sans MT";
+            font:2.9vh "Arial";
             color: #989898;
             text-overflow: ellipsis;
         }
         :-moz-placeholder {
-            font:1em "Gill Sans MT";
+            font:1em "Arial";
             color: #989898;!important;
             text-overflow: ellipsis;
         }
         ::-moz-placeholder {
-            font:1em "Gill Sans MT";
+            font:1em "Arial";
             color: #989898;!important;
             text-overflow: ellipsis;
         }
         :-ms-input-placeholder {
-            font:1em "Gill Sans MT";
+            font:1em "Arial";
             color: #989898;!important;
             text-overflow: ellipsis;
         }
@@ -92,13 +92,13 @@
             text-shadow:0 0;
         }
         #info_cell_forget {
-            font:1em "Gill Sans MT";
+            font:1em "Arial";
         }
         #info_cell_logout + .linkITS{
-            font:1em "Gill Sans MT";
+            font:1em "Arial";
         }
     </style>
-    <div data-role="page" id="pageLogin" style="font-family: 'Gill Sans MT';">
+    <div data-role="page" id="pageLogin" style="font-family: 'Arial';">
         <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
             <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
             @if (Config::get('app.env')!='production')
@@ -163,11 +163,11 @@
                 </tr>
             </table>
             <div style="margin-top: 1.8vh;">
-                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
+                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
-                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Gill Sans MT';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
                 </div>
             </div>
@@ -188,15 +188,15 @@
         <div role="main" class="ui-content" style="text-align: center;">
             <div style="margin: 24vh auto 0 auto;">
                 <img src="{{asset('/css/images/verified_img.png')}}" style="height:12vh; margin:0vh 2vh 4vh 4.5vh;" />
-                <h3 id="info_cell_verify" style="color: #0f0f0f;font:3.3vh 'Gill Sans MT';margin-top:0;">帳號與設備驗證成功</h3>
+                <h3 id="info_cell_verify" style="color: #0f0f0f;font:3.3vh 'Arial';margin-top:0;">帳號與設備驗證成功</h3>
                 
         </div>
         </div>
         <div style="position:fixed;bottom: 0;padding:1em 1em 6.6vh 1em;left: 0;right: 0;">
-            <h4 style="color: #0f0f0f;font: 2.3vh 'Gill Sans MT';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4>
+            <h4 style="color: #0f0f0f;font: 2.3vh 'Arial';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4>
             <div style="margin: 2vh auto 0 auto;">
                 <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Gill Sans MT';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
+                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Arial';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
                     onclick="start()">好，我知道了</button>
             </div>
         </div>
@@ -206,8 +206,10 @@
         var chinesePattern = /[^\x00-\xff]/;
         var appKey = "<?php echo CommonUtil::getContextAppKey()?>";
         var appSecretKey = "<?php echo Config::get("app.App_Secret_key")?>";
+        var lang = "en-us";
         $(function () {
-            var url = "{{asset('js/lang')}}" + "/login-"+getLanguage()+".js";
+            lang = getLanguage();
+            var url = "{{asset('js/lang')}}" + "/login-"+lang+".js";
             $.getScript(url,Init);
             function Init(){
                 InitUI();
@@ -314,7 +316,7 @@
             var signatureTime = getSignature("getTime");
             var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
-                url: "v101/qplay/isRegister?lang=en-us&uuid=" + uuid,//Math.uuid(),
+                url: "v101/qplay/isRegister?lang="+lang+"&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -363,7 +365,7 @@
             var signatureTime = getSignature("getTime");
             var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
-                url: "v101/qplay/login?lang=en-us&uuid=" +uuid,//Math.uuid(),
+                url: "v101/qplay/login?lang="+lang+"&uuid=" +uuid,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",
@@ -421,7 +423,7 @@
             var signatureTime = getSignature("getTime");
             var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
-                url: "v101/qplay/register?lang=en-us&device_type=" + device_type + "&uuid=" + uuid,//Math.uuid(),
+                url: "v101/qplay/register?lang="+lang+"&device_type=" + device_type + "&uuid=" + uuid,//Math.uuid(),
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",

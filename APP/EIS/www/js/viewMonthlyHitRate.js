@@ -443,6 +443,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }],
                 infinite: false
             });
+
         }
 
         $(".sliderMonthly").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
@@ -461,14 +462,17 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-
             ro = "ALL";
             product = "ALL";
             tab = "QTY";
+            year = thisYear;
+            month = thisMonth;
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             
+            getHighchartsData(ro, product, year, month);
+
             chart = new Highcharts.Chart({
         		chart: {
         			renderTo: 'viewMonthlyHitRate-hc-canvas',
@@ -485,19 +489,15 @@ $("#viewMonthlyHitRate").pagecontainer({
         				align: 'high'	
         			},
         			tickInterval: 1,
+                    max: 12,
+                    min: 1,
         			crosshair: true
         		},
         		yAxis: {
-        			title: {
-        				text: '(USD$M)',
-        				align: 'high',
-        				rotation: 0,
-        				offset: 0,
-        				x: 6,
-        				y: -11
-        			},
+                    title: {
+                        text: ''
+                    },
         			min: 0,
-        			// tickInterval: 1000
         		},
         		legend: {
         			align: 'left',
@@ -514,8 +514,12 @@ $("#viewMonthlyHitRate").pagecontainer({
         		plotOptions: {
         			column: {
         				pointPadding: 0,
-        				borderWidth: 0
-        			}
+        				borderWidth: 0,
+                        pointStart: 1
+        			},
+                    line: {
+                        pointStart: 1
+                    }
         		},
         		exporting: {
         			enabled: false
@@ -524,27 +528,27 @@ $("#viewMonthlyHitRate").pagecontainer({
         			name: (year-2) + " Actual QTY",
         			type: 'column',
         			color: '#0AB5B6',
-        			pointStart: 1
         		}, {
         			name: (year-1) + " Actual QTY",
         			type: 'column',
         			color: '#F4A143',
-        			pointStart: 1
         		}, {
         			name: (year) + " Actual QTY",
         			type: 'column',
         			color: '#824E9F',
-        			pointStart: 1
         		}, {
         			name: (year) + " Budget QTY",
         			type: 'line',
         			color: '#134A8C',
         			lineWidth: 1,
-        			pointStart: 1
         		}]
         	});
             showData();
-            $("#title-container > #title > #actualValue > p").text("Net Quantity");
+            chart.series[0].setData(monthlyHighchartsData["Actual " + tab][year-2], false, false, false);
+            chart.series[1].setData(monthlyHighchartsData["Actual " + tab][year-1], false, false, false);
+            chart.series[2].setData(monthlyHighchartsData["Actual " + tab][year], false, false, false);
+            chart.series[3].setData(monthlyHighchartsData["Budget " + tab][year], false, false, false);
+            $("#viewMonthlyHitRate #title-container > #title > #actualValue > p").text("Net Quantity");
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewMonthlyHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
@@ -566,6 +570,9 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[1].update({name: (year-1) + " Actual " + tab, data: monthlyHighchartsData["Actual QTY"][year-1]});
             chart.series[2].update({name: (year) + " Actual " + tab, data: monthlyHighchartsData["Actual QTY"][year]});
             chart.series[3].update({name: (year) + " Budget " + tab, data: monthlyHighchartsData["Budget QTY"][year]});
+            chart.yAxis[0].setTitle({
+                text: '' 
+            });
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
@@ -579,6 +586,14 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual AMT"][year-1]});
             chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual AMT"][year]});
             chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget AMT"][year]});
+            chart.yAxis[0].setTitle({
+                text: '(USD)',
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                x: -11,
+                y: -11
+            });
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
@@ -592,6 +607,14 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual ASP"][year-1]});
             chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual ASP"][year]});
             chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget ASP"][year]});
+            chart.yAxis[0].setTitle({
+                text: '(USD)',
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                x: -11,
+                y: -11
+            });
         });
 
         // scroll menu on click

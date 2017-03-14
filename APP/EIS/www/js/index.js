@@ -65,7 +65,7 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#viewHitRate").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open"){
+        if($(".ui-page-active").jqmData("panel") !== "open" && !($("body").hasClass("ui-landscape"))) {
             $("#mypanel").panel( "open");
         }
     });
@@ -93,8 +93,10 @@ function onBackKeyDown() {
     if($(".ui-page-active").jqmData("panel") === "open"){
         $("#mypanel").panel( "close");
     }else{
-        /*leave this app*/
+        navigator.app.exitApp();
     }
+
+
 
     // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
     //     navigator.app.exitApp();
@@ -107,7 +109,7 @@ function onBackKeyDown() {
 }
 
 function changePageByPanel(pageId) {
-    if($.mobile.activePage[0].id !== pageId) {   
+    if($.mobile.activePage[0].id !== pageId) {
         loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
@@ -128,11 +130,34 @@ function zoomBtnInit(){
         chart.legend.update({ itemStyle: {fontSize: 14}});
         chart.setSize(screenHeight*0.9, screenWidth*0.85, doAnimation = true);
     });
-    $('.zoomOutBtn').on('click', function(){
+
+    $('#viewHitRateZoomOutBtn').on('click', function(){
         $('body').removeClass('ui-landscape');
-        $('.hc-fragment').css({'height': '38vh'});
+        $('#viewHitRate-hc-canvas').css({'height': '38VH'});
+        $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
+        $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
         $('.zoomBtn').css({'right': '4%'});
         chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize($('.hc-fragment').width(), $('.hc-fragment').height(), doAnimation = true);        
+        chart.setSize($('#viewHitRate-hc-canvas').width(), $('#viewHitRate-hc-canvas').height(), doAnimation = true);        
+    });
+
+    $('#viewMonthlyHitRateZoomOutBtn').on('click', function(){
+        $('body').removeClass('ui-landscape');
+        $('#viewHitRate-hc-canvas').css({'height': '38VH'});
+        $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
+        $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
+        $('.zoomBtn').css({'right': '4%'});
+        chart.legend.update({ itemStyle: {fontSize: 12}});
+        chart.setSize($('#viewMonthlyHitRate-hc-canvas').width(), $('#viewMonthlyHitRate-hc-canvas').height(), doAnimation = true);        
+    });
+
+    $('#viewYTDHitRateZoomOutBtn').on('click', function(){
+        $('body').removeClass('ui-landscape');
+        $('#viewHitRate-hc-canvas').css({'height': '38VH'});
+        $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
+        $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
+        $('.zoomBtn').css({'right': '4%'});
+        chart.legend.update({ itemStyle: {fontSize: 12}});
+        chart.setSize($('#viewYTDHitRate-hc-canvas').width(), $('#viewYTDHitRate-hc-canvas').height(), doAnimation = true);        
     });
 }

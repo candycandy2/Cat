@@ -286,10 +286,13 @@ var tplJS = {
 
         for (var i=0; i<data.option.length; i++) {
             var dropdownListLi = $(dropdownListLiHTML);
-
-            dropdownListLi.prop("value", data.option[i].value);
+            dropdownListLi.data("value", data.option[i].value);
             dropdownListLi.html(data.option[i].text);
             dropdownListUl.append(dropdownListLi);
+
+            if (i == 0) {
+                dropdownListLi.addClass("tpl-dropdown-list-selected");
+            }
 
             if (i !== parseInt(data.option.length - 1, 10)) {
                 var dropdownListHr = $(dropdownListHrHTML);
@@ -350,7 +353,7 @@ var tplJS = {
             $(this).addClass("tpl-dropdown-list-selected");
 
             if (type === "typeA") {
-                $("#" + data.id).val($(this).val());
+                $("#" + data.id).val($(this).data("value"));
                 tplJS.reSizeDropdownList(data.id, type);
             } else if (type === "typeB") {
                 //Find drowdown list, set selected option value
@@ -361,17 +364,17 @@ var tplJS = {
                     }
                 });
 
-                var newOption = '<option value="' + $(this).val() + '" hidden selected>' + defaultText + '</option>';
+                var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
                 $("#" + data.id).find("option").remove().end().append(newOption);
-
-                //Trigger drowdown list 'change' event
-                $("#" + data.id).trigger("change");
-
-                //Close Popup
-                $('#' + popupID).popup('close');
-
-                tplJS.recoveryPageScroll();
             }
+
+            //Trigger drowdown list 'change' event
+            $("#" + data.id).trigger("change");
+
+            //Close Popup
+            $('#' + popupID).popup('close');
+
+            tplJS.recoveryPageScroll();
         });
 
         //Auto Resize DropdownList Width
