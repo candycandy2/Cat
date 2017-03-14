@@ -311,7 +311,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	.ui-landscape div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup{ display: none;}
 .ui-landscape .viewIndex.ui-page{ background-color: #fff;}
 .ui-landscape .chartArea{-webkit-transform:rotate(90deg) translate(3%, 8%); -moz-transform:rotate(90deg) translate(3%, 8%); transform:rotate(90deg) translate(3%, 8%);}
-.ui-landscape .zoomOutBtn{ position: absolute; bottom: auto; top: -7%; right: -50%; width: 9%;}
+.ui-landscape .zoomOutBtn{ position: absolute; bottom: auto; top: -7%; right: -50%; width: 8%;}
 .ui-landscape .ui-content{ overflow-x: visible;}
 .ui-landscape .hc-fragment{ height: auto;}
 .ui-landscape .zoomInBtn{ display: none;}
