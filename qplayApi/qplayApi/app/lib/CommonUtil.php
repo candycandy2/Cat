@@ -483,6 +483,22 @@ class CommonUtil
         return false;
     }
 
+    public static function replace_unicode_escape_sequence($match) {
+        return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+
+    }
+
+    public static function unicodeDecode($data) {
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'self::replace_unicode_escape_sequence', $data);
+    }
+
+    public static function unicode_decode($name) {
+        $json = '{"str":"'.$name.'"}';
+        $arr = json_decode($json,true);
+        if(empty($arr)) return '';
+        return $arr['str'];
+    }
+
     /**
      * @param $userId
      * @param $action
@@ -490,56 +506,56 @@ class CommonUtil
      * @param $responseBody
      */
     public static function logApi($userId, $action, $responseHeader, $responseBody) {
-    $version = self::getApiVersionFromUrl();
-    $appKey = self::getAppKeyFromHeader();
-    if($appKey == null) {
-        $appKey = "";
-    }
-    $now = date('Y-m-d H:i:s',time());
-    $ip = self::getIP();
-    $url_parameter = $_SERVER["QUERY_STRING"];
-    $request_header = apache_request_headers();
-    /*
-     * "App-Key":"appyellowpagedev",
-     * "Signature":"UTpzSsnqBrMJ9mmz1g0dicvlmwEYWjPi69fGmSwm1ug=",
-     * "Signature-Time":"1483581882",
-     * "token":"586da9b75a3ab"
-     * */
-    $requestHeaderInfo = [];
-    $operationTime = 0;
-    $SignatureTime = 0;
-    $needToLogArray = ["app-key", "signature", "signature-time", "token",
-                        "domain", "loginid", "redirect-uri", "push-token"];
-
-    foreach ($request_header as $key => $value) {
-        $loweheaderKey = strtolower($key);
-        if(in_array($loweheaderKey,$needToLogArray)){
-            $requestHeaderInfo[$loweheaderKey] = $value;
+        $version = self::getApiVersionFromUrl();
+        $appKey = self::getAppKeyFromHeader();
+        if($appKey == null) {
+            $appKey = "";
         }
-    }
-    if(isset($requestHeaderInfo["signature-time"])){
-        $SignatureTime = $requestHeaderInfo["signature-time"];
-    }
-    $request_body = self::prepareJSON(file_get_contents('php://input'));
-    $apiStartTime = Request::instance()->get('ApiStartTime');
-    $operationTime = microtime(true) - $apiStartTime;
+        $now = date('Y-m-d H:i:s',time());
+        $ip = self::getIP();
+        $url_parameter = $_SERVER["QUERY_STRING"];
+        $request_header = apache_request_headers();
+        /*
+         * "App-Key":"appyellowpagedev",
+         * "Signature":"UTpzSsnqBrMJ9mmz1g0dicvlmwEYWjPi69fGmSwm1ug=",
+         * "Signature-Time":"1483581882",
+         * "token":"586da9b75a3ab"
+         * */
+        $requestHeaderInfo = [];
+        $operationTime = 0;
+        $SignatureTime = 0;
+        $needToLogArray = ["app-key", "signature", "signature-time", "token",
+            "domain", "loginid", "redirect-uri", "push-token"];
 
-    \DB::table("qp_api_log")
-        -> insert([
-            'user_row_id'=>$userId,
-            'app_key'=>$appKey,
-            'api_version'=>$version,
-            'action'=>$action,
-            'ip'=>$ip,
-            'url_parameter'=>$url_parameter,
-            'request_header'=>json_encode($requestHeaderInfo),
-            'request_body'=>$request_body,
-            'response_header'=>$responseHeader,
-            'response_body'=>json_encode($responseBody),
-            'signature_time'=> $SignatureTime,
-            'operation_time'=> number_format($operationTime,3),
-            'created_at'=>$now,
-        ]);
+        foreach ($request_header as $key => $value) {
+            $loweheaderKey = strtolower($key);
+            if(in_array($loweheaderKey,$needToLogArray)){
+                $requestHeaderInfo[$loweheaderKey] = $value;
+            }
+        }
+        if(isset($requestHeaderInfo["signature-time"])){
+            $SignatureTime = $requestHeaderInfo["signature-time"];
+        }
+        $request_body = self::prepareJSON(file_get_contents('php://input'));
+        $apiStartTime = Request::instance()->get('ApiStartTime');
+        $operationTime = microtime(true) - $apiStartTime;
+
+        \DB::table("qp_api_log")
+            -> insert([
+                'user_row_id'=>$userId,
+                'app_key'=>$appKey,
+                'api_version'=>$version,
+                'action'=>$action,
+                'ip'=>$ip,
+                'url_parameter'=>$url_parameter,
+                'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
+                'request_body'=>self::unicodeDecode($request_body),
+                'response_header'=>self::unicodeDecode($responseHeader),
+                'response_body'=>self::unicodeDecode((json_encode($responseBody))),
+                'signature_time'=> $SignatureTime,
+                'operation_time'=> number_format($operationTime,3),
+                'created_at'=>$now,
+            ]);
     }
 
     public static function logCustomApi($version,$appKey,$action, $responseHeader, $responseBody) {

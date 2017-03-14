@@ -12,7 +12,7 @@
         .ui-icon-dropdown {
             background:url({{asset('/css/images/dropdown_n.png')}}) no-repeat 0 0;
             background-position: 98% 50%;
-            background-size: 4vw 1.2vh ;
+            background-size: 4vw 2.4vw ;
         }
         .ui-content {
             padding: 0;
@@ -24,13 +24,13 @@
             display: inherit;
         }
         #main_table input {
-            font-size:2.9vh;
+            font-size:5.8vw;
         }
         #button_cell {
             width: 100%
         }
         #main_table {
-            margin: 17vh 0 1.8vh 0;
+            margin: 22vw 0 3.6vw 0;
             border-collapse: collapse;
             width: 100%;
         }
@@ -39,21 +39,21 @@
             border-bottom: 1px solid #333333;
         }
         #button_cell {
-            padding-top: 3vh;
+            padding-top: 3vw;
         }
         #main_table > td {
             height: 1.2em;
         }
         .control_title_text
         {
-            font:2.6vh "Arial";
+            font:5.2vw "Arial";
             color: #0f0f0f;
         }
         .login_control{
-            font:2.9vh "Arial";
+            font:5.9vw "Arial";
         }
         ::-webkit-input-placeholder {
-            font:2.9vh "Arial";
+            font:5.8vw "Arial";
             color: #989898;
             text-overflow: ellipsis;
         }
@@ -75,9 +75,9 @@
 
         #dlgMessage {
             border-radius: .8em;
-            border: 0px;
-            box-shadow: 0 0 0px rgba(0,0,0,0);
-            -webkit-box-shadow: 0 0 0px rgba(0,0,0,0);
+            border: 0;
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+            -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
         }
 
         #dlgMessage .ui-header {
@@ -99,10 +99,10 @@
         }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Arial';">
-        <div role="main" class="ui-content" style="text-align: center;margin: 13vh 8vw 0 8vw;">
-            <img src="{{asset('/css/images/login_logo.png')}}" style="height:18vh;" />
+        <div role="main" class="ui-content" style="text-align: center;margin: 22vw 8vw 0 8vw;">
+            <img src="{{asset('/css/images/login_logo.png')}}" style="height:36vw;" />
             @if (Config::get('app.env')!='production')
-                <div style="color: red; font-size:5vh">● {{Config::get('app.env')}} ●</div>
+                <div style="color: red; font-size:10vw">● {{Config::get('app.env')}} ●</div>
             @endif
             <table id="main_table">
                 <tr>
@@ -162,12 +162,12 @@
                     </td>
                 </tr>
             </table>
-            <div style="margin-top: 1.8vh;">
-                <div id="info_cell" style="color: #0f0f0f;font: 2.3vh 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
+            <div style="margin-top: 3.6vw;">
+                <div id="info_cell" style="color: #0f0f0f;font: 4.6vw 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
                 <div id="button_cell">
-                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:2.8vh 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:5.6vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:2.8vh 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:5.6vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
                 </div>
             </div>
@@ -186,17 +186,17 @@
 
     <div data-role="page" id="pageRegister" style="background: linear-gradient(to bottom, #f2f2f3, #ffffff 50%, #f2f2f3);">
         <div role="main" class="ui-content" style="text-align: center;">
-            <div style="margin: 24vh auto 0 auto;">
-                <img src="{{asset('/css/images/verified_img.png')}}" style="height:12vh; margin:0vh 2vh 4vh 4.5vh;" />
-                <h3 id="info_cell_verify" style="color: #0f0f0f;font:3.3vh 'Arial';margin-top:0;">帳號與設備驗證成功</h3>
+            <div style="margin: 48vw auto 0 auto;">
+                <img src="{{asset('/css/images/verified_img.png')}}" style="height:24vw; margin:0 2vw 4vw 9vw;" />
+                <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:0;">帳號與設備驗證成功</h3>
                 
         </div>
         </div>
-        <div style="position:fixed;bottom: 0;padding:1em 1em 6.6vh 1em;left: 0;right: 0;">
-            <h4 style="color: #0f0f0f;font: 2.3vh 'Arial';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4>
-            <div style="margin: 2vh auto 0 auto;">
+        <div style="position:fixed;bottom: 0;padding:1em 1em 13.2vw 1em;left: 0;right: 0;">
+            <h4 style="color: #0f0f0f;font: 4.6vw 'Arial';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4>
+            <div style="margin: 4vw auto 0 auto;">
                 <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:2.8vh 'Arial';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
+                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:5.6vw 'Arial';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
                     onclick="start()">好，我知道了</button>
             </div>
         </div>
