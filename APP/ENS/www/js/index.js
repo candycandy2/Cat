@@ -10,7 +10,7 @@ var prevPageID;
 
 //Set the result code, which is not [1], but still means [success],
 //need to be check the token_valid.
-var APIResultCodeArray = ["014904", "014907"];
+var APIResultCodeArray = ["014901", "014904", "014907"];
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
 

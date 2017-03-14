@@ -29,67 +29,71 @@
 
             <hr class="ui-hr ui-hr-absolute">
 
-        <div class="title">
-            <span>關聯事件 :</span>
-        </div>
-        <div class="event-content-data-list">
-            <div class="left">
-                <span class="delete"></span>
+        <div class="relate-event-content hide">
+            <div class="title">
+                <span>關聯事件 :</span>
             </div>
-            <div class="right relate-event">
-                16003
+            <div class="event-content-data-list">
+                <div class="left">
+                    <span class="delete hide"></span>
+                </div>
+                <div class="right relate-event">
+                    16003
+                </div>
             </div>
-        </div>
 
             <hr class="ui-hr ui-hr-absolute">
+        </div>
 
         <div class="title">
             <span>工作分配 :</span>
         </div>
-        <div id="workAssignContent" class="event-content-data-list">
-            <div class="work-before">
-                <div class="left">
-                    <span class="img"></span>
-                </div>
-                <div class="right">
-                    <div class="title font-style3">
-                        BQT 3F機房
+        <div id="eventTaskListContent" class="event-content-data-list">
+            <template id="tplEventTaskListBefore">
+                <div class="work-before">
+                    <div class="left">
+                        <span class="img"></span>
                     </div>
-                    <div class="function font-style3">
-                        Function A
-                    </div>
-                    <div class="user-datetime">
-                        <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                        <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                    <div class="right">
+                        <div class="title font-style3">
+                            BQT 3F機房
+                        </div>
+                        <div class="function font-style3">
+                            Function A
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="work-after">
-                <div class="left">
-                    <span class="img"></span>
+            </template>
+            <template id="tplEventTaskListAfter">
+                <div class="work-after">
+                    <div class="left">
+                        <span class="img"></span>
+                    </div>
+                    <div class="right">
+                        <div class="title font-style3">
+                            BQT 3F機房
+                        </div>
+                        <div class="function font-style3">
+                            Function A
+                        </div>
+                        <div class="user-datetime">
+                            <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                            <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                        </div>
+                    </div>
                 </div>
-                <div class="right">
-                    <div class="title font-style3">
-                        BQT 3F機房
-                    </div>
-                    <div class="function font-style3">
-                        Function A
-                    </div>
-                    <div class="user-datetime">
-                        <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                        <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
-                    </div>
-                </div>
-            </div>
+            </template>
         </div>
 
-            <hr class="ui-hr ui-hr-absolute" id="hrMessage">
+            <!--<hr class="ui-hr ui-hr-absolute">-->
 
-        <div class="title">
-            <span>留言 :</span>
-        </div>
-        <div id="messageContent" class="event-content-data-list">
+        <div class="message-content hide">
+            <div class="title">
+                <span>留言 :</span>
+            </div>
+            <div id="messageContent" class="event-content-data-list">
 
+            </div>
         </div>
 
         <div id="tempImage">
