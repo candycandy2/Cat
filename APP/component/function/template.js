@@ -364,7 +364,7 @@ var tplJS = {
                     }
                 });
 
-                var newOption = '<option value="' + $(this).val() + '" hidden selected>' + defaultText + '</option>';
+                var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
                 $("#" + data.id).find("option").remove().end().append(newOption);
             }
 
