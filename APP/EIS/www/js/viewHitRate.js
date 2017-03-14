@@ -237,7 +237,7 @@ $("#viewHitRate").pagecontainer ({
 				},
 				yAxis: {
         			title: {
-        				text: '(USD)',
+        				text: '(USD$)',
         				align: 'high',
         				rotation: 0,
         				offset: 0,
