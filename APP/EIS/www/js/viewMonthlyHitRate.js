@@ -451,15 +451,16 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".sliderMonthly").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = monthlyPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = monthlyPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
-            actualValue = getActualValue(ro, product, year, month, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-            showData();
             getHighchartsData(ro, product, year, month);
             chart.series[0].update({name: (year-2) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year-2]});
             chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year-1]});
             chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year]});
             chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget " + tab][year]});
+            chart.tooltip.hide();
+            actualValue = getActualValue(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            showData();
         });
 
         /********************************** page event *************************************/
@@ -469,6 +470,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             tab = "QTY";
             year = thisYear;
             month = thisMonth;
+            hcRo = "ALL";
+            hcProduct = "ALL Product";
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
@@ -603,7 +606,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual AMT"][year]});
             chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget AMT"][year]});
             chart.yAxis[0].setTitle({
-                text: '(USD)',
+                text: '(USD$)',
                 align: 'high',
                 rotation: 0,
                 offset: 0,
@@ -625,7 +628,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual ASP"][year]});
             chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget ASP"][year]});
             chart.yAxis[0].setTitle({
-                text: '(USD)',
+                text: '(USD$)',
                 align: 'high',
                 rotation: 0,
                 offset: 0,
