@@ -425,8 +425,10 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
         //Other APP
         //errorCodeArray set in APP's index.js
-        if (errorCodeArray.indexOf(resultCode) !== -1) {
-            openAPIError("error");
+        if (errorCodeArray !== undefined) {
+            if (errorCodeArray.indexOf(resultCode) !== -1) {
+                openAPIError("error");
+            }
         }
     }
 }
