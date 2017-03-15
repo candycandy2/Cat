@@ -233,7 +233,14 @@ $("#viewHitRate").pagecontainer ({
 			       		'BQL',
 			       		'BQP'
 			    	],
-			    	crosshair: true
+                    crosshair: true,
+                    // labels: {
+                    //     events: {
+                    //         click: function () {
+                    //             console.log("a");
+                    //         },
+                    //     }
+                    // }
 				},
 				yAxis: {
         			title: {
@@ -264,7 +271,8 @@ $("#viewHitRate").pagecontainer ({
                         return s;
                     },
                     shared: true,
-			    	useHTML: true
+			    	useHTML: true,
+                    hideDelay: 0
 				},
 				plotOptions: {
 			    	column: {
@@ -317,5 +325,9 @@ $("#viewHitRate").pagecontainer ({
         	chart.tooltip.hide();
             showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
-	}
+
+        $('.highcharts-xaxis-labels text').on('click', function () {
+            console.log($(this).text());
+        });
+    }
 });
