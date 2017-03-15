@@ -42,6 +42,21 @@ var monTable = {
     '12' : "Dec.",
 };
 
+var hcTable = {
+    '1' : "Jan",
+    '2' : "Feb",
+    '3' : "Mar",
+    '4' : "Apr",
+    '5' : "May",
+    '6' : "Jun",
+    '7' : "Jul",
+    '8' : "Aug",
+    '9' : "Sep",
+    '10' : "Oct",
+    '11' : "Nov",
+    '12' : "Dec",
+};
+
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
@@ -95,9 +110,6 @@ function onBackKeyDown() {
     }else{
         navigator.app.exitApp();
     }
-
-
-
     // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
     //     navigator.app.exitApp();
     // } else {
@@ -125,7 +137,7 @@ function zoomBtnInit(){
     $('.zoomInBtn').on('click', function(){
         $('body').addClass('ui-landscape');
         $('.hc-fragment').css({'height': 'auto'});
-        $('.zoomBtn').css({'right': -(screenHeight-$('.chartArea').width()-$('.viewIndex').css('padding-top').replace('px', '')-
+        $('.zoomOutBtn').css({'right': -(screenHeight-$('.chartArea').width()-$('.viewIndex').css('padding-top').replace('px', '')-
             $('.viewIndex').css('padding-bottom').replace('px', ''))/$('.chartArea').width()*100 + '%'});
         chart.legend.update({ itemStyle: {fontSize: 14}});
         chart.setSize(screenHeight*0.9, screenWidth*0.85, doAnimation = true);
@@ -160,4 +172,11 @@ function zoomBtnInit(){
         chart.legend.update({ itemStyle: {fontSize: 12}});
         chart.setSize($('#viewYTDHitRate-hc-canvas').width(), $('#viewYTDHitRate-hc-canvas').height(), doAnimation = true);        
     });
+}
+
+function formatNumber(n) {
+    n += "";
+    var arr = n.split(".");
+    var regex = /(\d{1,3})(?=(\d{3})+$)/g;
+    return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }
