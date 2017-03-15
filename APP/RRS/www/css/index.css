@@ -146,12 +146,9 @@ a {
     background-color: #f6f6f6;
 }
 
-#reserveDateSelect div.ui-bar div:nth-child(1) {
-    font-size: 5vw;
-}
-
 #reserveDateSelect div.ui-bar div:nth-child(2) {
     font-size: 3vw;
+    margin-top: 1vw;
 }
 
 #viewNewSetting .ui-margin-public span{ display: block;}
@@ -164,6 +161,7 @@ a {
 #newSettingSelect, #newSettingPeople, #newSettingTime{ margin: 0 0 4.388vw; padding-bottom: 4.88vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
 #newSettingPeople, #newSettingTitle{ font-size: 4.18vw;}
 #newSettingPeople .ui-controlgroup{ margin: 0;}
+.ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 
 
 
@@ -218,12 +216,13 @@ div.circle {
 }
 
 .ui-margin-public {
-    margin: 1.8vw 3.71vw !important;
+    margin: 1.8vw 3.71vw 3.99vw !important;
     font-size: 4.18vw;
 }
 
 #viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
 #newSettingFloor{ font-size: 4.18vw;}
+#pageOne .scrollmenu{ margin-bottom: 0.99vw;}
 
 .title-icon {
     height: 5.957vw;
@@ -400,11 +399,8 @@ div.circle {
 }*/
 
 .word-mid {
-    position: absolute;
-    height: 8.5vh;
     text-align: left;
-    line-height: 8.5vh;
-    vertical-align: middle;
+    vertical-align: sub;
     margin-left: 3.3vw;
 }
 
@@ -545,9 +541,13 @@ div.scrollmenu a {
     font-weight: normal;
 }
 
+#scrollDate a{ padding: 2.4vw 0;}
+
 #reserveRoom a {
-    padding: 2vh 6vw;
-    font-weight: normal;}
+    padding: 3vw 0;
+    font-weight: normal;
+    width: 22%;
+}
 
 .hover {
     background-color: #0db6b7;
