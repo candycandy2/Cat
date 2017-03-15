@@ -110,9 +110,6 @@ function onBackKeyDown() {
     }else{
         navigator.app.exitApp();
     }
-
-
-
     // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
     //     navigator.app.exitApp();
     // } else {
@@ -175,4 +172,11 @@ function zoomBtnInit(){
         chart.legend.update({ itemStyle: {fontSize: 12}});
         chart.setSize($('#viewYTDHitRate-hc-canvas').width(), $('#viewYTDHitRate-hc-canvas').height(), doAnimation = true);        
     });
+}
+
+function formatNumber(n) {
+    n += "";
+    var arr = n.split(".");
+    var regex = /(\d{1,3})(?=(\d{3})+$)/g;
+    return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }

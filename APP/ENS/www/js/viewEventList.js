@@ -2,6 +2,9 @@
 $("#viewEventList").pagecontainer({
     create: function(event, ui) {
 
+        var callGetAuthority = false;
+        var callBasicInfo = false;
+
         /********************************** function *************************************/
         window.getAuthority = function() {
 
@@ -15,6 +18,8 @@ $("#viewEventList").pagecontainer({
                 var resultCode = data['ResultCode'];
 
                 if (resultCode === 1) {
+                    callGetAuthority = true;
+
                     if (!dataExist) {
                         processLocalData.storeData("getAuthority", dataLifeCycle, data);
                     }
@@ -28,7 +33,6 @@ $("#viewEventList").pagecontainer({
                     }
 
                     var EventList = new getEventList();
-
                     var basicInfo = new getBasicInfo();
 
                     showEventAdd();
@@ -42,7 +46,9 @@ $("#viewEventList").pagecontainer({
             };
 
             var __construct = function() {
-                processLocalData.checkLifeCycle("getAuthority", self.callAPI, self.successCallback);
+                if (!callGetAuthority) {
+                    processLocalData.checkLifeCycle("getAuthority", self.callAPI, self.successCallback);
+                }
             }();
 
         };
@@ -72,12 +78,63 @@ $("#viewEventList").pagecontainer({
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
 
             this.successCallback = function(data) {
-                loadingMask("hide");
 
                 var resultCode = data['ResultCode'];
 
                 if (resultCode === 1) {
                     $(".event-list-no-data").hide();
+
+                    //Event List Msg
+                    $("#reportDiv .event-list-msg").remove();
+                    var eventListMsgHTML = $("template#tplEventListMsg").html();
+
+                    for (var i=0; i<data['Content'].length; i++) {
+                        var eventListMsg = $(eventListMsgHTML);
+
+                        //Created User
+                        eventListMsg.find(".event-list-msg-top .name").html(data['Content'][i].created_user);
+
+                        //Create Datetime - Convert with TimeZone
+                        var tempDate = dateFormatYMD(data['Content'][i].created_at);
+                        var createTime = new Date(tempDate);
+                        var createTimeConvert = createTime.TimeZoneConvert();
+                        createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+                        eventListMsg.find(".event-list-msg-top .time").html(createTimeConvert);
+
+                        //Event ID Number
+                        eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'][i].event_row_id);
+
+                        //Event Title
+                        eventListMsg.find(".event-list-msg-top .description").html(data['Content'][i].event_title);
+
+                        //Type: 緊急通報 / 一般通報
+                        var event_type = data['Content'][i].event_type;
+                        if (event_type === "一般通報") {
+                            eventListMsg.find(".event-list-msg-top .link .normal").show();
+                            eventListMsg.find(".event-list-msg-top .link .urgent").hide();
+                        }
+
+                        //Status: 未完成 / 完成
+                        var event_status = data['Content'][i].event_status;
+                        if (event_type === "完成") {
+                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
+                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
+                        }
+
+                        //User Count
+                        eventListMsg.find(".event-list-msg-bottom .member .text").html(data['Content'][i].user_count);
+
+                        //Seen Count
+                        eventListMsg.find(".event-list-msg-bottom .view .text").html(data['Content'][i].seen_count);
+
+                        //Task finish Count
+                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'][i].task_finish_count);
+
+                        $("#reportDiv").append(eventListMsg);
+                    }
+
+                    loadingMask("hide");
+
                 } else if (resultCode === "014904") {
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
@@ -97,7 +154,6 @@ $("#viewEventList").pagecontainer({
             var self = this;
 
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
-
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
 
             this.successCallback = function(data) {
@@ -105,6 +161,8 @@ $("#viewEventList").pagecontainer({
                 var resultCode = data['ResultCode'];
 
                 if (resultCode === 1) {
+                    callBasicInfo = true;
+
                     var dataContent = data["Content"];
 
                     loginData["BasicInfo"] = {
@@ -173,7 +231,9 @@ $("#viewEventList").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "getBasicInfo", self.successCallback, self.failCallback, queryData, "");
+                if (!callBasicInfo) {
+                    CustomAPI("POST", true, "getBasicInfo", self.successCallback, self.failCallback, queryData, "");
+                }
             }();
 
         }
@@ -217,11 +277,123 @@ $("#viewEventList").pagecontainer({
             });
         }
 
+        window.memberListPopup = function(data) {
+
+            //Event Member List Popup
+            var eventMemberListHTML = $("template#tplEventMemberList").html();
+            var eventMemberList = $(eventMemberListHTML);
+
+            //Type: 緊急通報 / 一般通報
+            var event_type = data.event_type;
+            if (event_type === "一般通報") {
+                eventMemberList.siblings(".header .number .normal").show();
+                eventMemberList.siblings(".header .number .urgent").hide();
+            }
+
+            //Event ID Number
+            eventMemberList.siblings(".header").find(".number .text").html(data.event_row_id);
+
+            //Event Title
+            eventMemberList.siblings(".header").find(".title").html(data.event_title);
+
+            //Event Description
+            eventMemberList.siblings(".header").find(".description").html(data.event_desc);
+
+            //Event Member List Li - Before & Atfer
+            eventMemberList.siblings(".main").find("li").remove();
+
+            var eventMemberListBeforeHTML = eventMemberList.siblings(".main").find("template#tplEventMemberListBefore").html();
+            var eventMemberListAfterHTML = eventMemberList.siblings(".main").find("template#tplEventMemberListAfter").html();
+
+            for (var i=0; i<data.user_event.length; i++) {
+                if (data.user_event[i].read_time === 0) {
+                    //Before Read
+                    var eventMemberListLi = $(eventMemberListBeforeHTML);
+                } else {
+                    //After Read
+                    var eventMemberListLi = $(eventMemberListAfterHTML);
+                }
+                eventMemberListLi.find(".text").html(data.user_event[i].login_id);
+                eventMemberList.siblings(".main").append(eventMemberListLi);
+            }
+
+            var eventMemberListData = {
+                id: "eventMemberList",
+                content: eventMemberList
+            };
+            tplJS.Popup("viewEventList", "contentEventList", "append", eventMemberListData);
+
+            $("#eventMemberList").popup("open");
+        };
+
+        window.functionListPopup = function(data) {
+
+            //Event Function List Popup
+            var eventFunctionListHTML = $("template#tplEventFunctionList").html();
+            var eventFunctionList = $(eventFunctionListHTML);
+
+            //Type: 緊急通報 / 一般通報
+            var event_type = data.event_type;
+            if (event_type === "一般通報") {
+                eventFunctionList.siblings(".header .number .normal").show();
+                eventFunctionList.siblings(".header .number .urgent").hide();
+            }
+
+            //Event ID Number
+            eventFunctionList.siblings(".header").find(".number .text").html(data.event_row_id);
+
+            //Event Title
+            eventFunctionList.siblings(".header").find(".title").html(data.event_title);
+
+            //Event Description
+            eventFunctionList.siblings(".header").find(".description").html(data.event_desc);
+
+            //Event Function List Li - Before & Atfer
+            eventFunctionList.siblings(".main").find("li").remove();
+
+            var eventFunctionListBeforeHTML = eventFunctionList.siblings(".main").find("template#tplEventFunctionListBefore").html();
+            var eventFunctionListAfterHTML = eventFunctionList.siblings(".main").find("template#tplEventFunctionListAfter").html();
+
+            for (var i=0; i<data.task_detail.length; i++) {
+                if (data.task_detail[i].task_status === "0") {
+                    //Before Done
+                    var eventFunctionListLi = $(eventFunctionListBeforeHTML);
+                } else {
+                    //After Done
+                    var eventFunctionListLi = $(eventFunctionListAfterHTML);
+                    eventFunctionListLi.find(".user").html(data.task_detail[i].close_task_user_id);
+                    eventFunctionListLi.find(".datetime").html(data.task_detail[i].close_task_date);
+                }
+                eventFunctionListLi.find(".title").html(data.task_detail[i].task_location);
+                eventFunctionListLi.find(".function").html(data.task_detail[i].task_function);
+
+                eventFunctionList.siblings(".main").append(eventFunctionListLi);
+            }
+
+            var eventFunctionListData = {
+                id: "eventFunctionList",
+                content: eventFunctionList
+            };
+            tplJS.Popup("viewEventList", "contentEventList", "append", eventFunctionListData);
+
+            $("#eventFunctionList").popup("open");
+        };
+
         function showEventAdd() {
             //Only [admin] can Add New Event
-            //if (checkAuthority["admin"]) {
+            if (checkAuthority("admin")) {
                 $("#addEvent").show();
-            //}
+            }
+        }
+
+        function ahowEventData(dom, action) {
+            if (action === "member" || action === "function") {
+                var eventID = $(dom).parent().siblings(".event-list-msg-top").find(".link .normal .text").html();
+            } else {
+                var eventID = $(dom).parent().find(".link .normal .text").html();
+            }
+
+            var eventDetail = new getEventDetail(eventID, action);
         }
 
         /********************************** page event *************************************/
@@ -274,16 +446,6 @@ $("#viewEventList").pagecontainer({
             $("#reportDiv").append('<div id="eventTypeContent"></div>');
             tplJS.DropdownList("viewEventList", "eventTypeContent", "append", "typeA", eventTypeData);
 
-            //Event List Msg
-            /*
-            var eventListMsgHTML = $("template#tplEventListMsg").html();
-
-            for (var i=0; i<1; i++) {
-                var eventListMsg = $(eventListMsgHTML);
-                $("#reportDiv").append(eventListMsg);
-            }
-            */
-
             //UI Dropdown List : Event Member Type
             var eventMemberTypeData = {
                 id: "eventMemberType",
@@ -307,22 +469,6 @@ $("#viewEventList").pagecontainer({
 
             var eventListNoData = $(eventListNoDataHTML);
             $("#reportDiv").append(eventListNoData);
-
-            //Event Member List Popup
-            var eventMemberListData = {
-                id: "eventMemberList",
-                content: $("template#tplEventMemberList").html()
-            };
-
-            tplJS.Popup("viewEventList", "contentEventList", "append", eventMemberListData);
-
-            //Event Function List Popup
-            var eventFunctionListData = {
-                id: "eventFunctionList",
-                content: $("template#tplEventFunctionList").html()
-            };
-
-            tplJS.Popup("viewEventList", "contentEventList", "append", eventFunctionListData);
 
             //Event List No Data Popup
             var eventListNoDataPopupData = {
@@ -357,9 +503,9 @@ $("#viewEventList").pagecontainer({
             var EventList = new getEventList($(this).val());
         });
 
-        //Event Member List Popup
+        //Event Member List Popup - Member List & View List
         $(document).on("click", ".event-list-msg-bottom .member, .event-list-msg-bottom .view", function() {
-            $("#eventMemberList").popup("open");
+            ahowEventData(this, "member");
         });
 
         $(document).on("click", "#eventMemberList .confirm", function() {
@@ -368,7 +514,7 @@ $("#viewEventList").pagecontainer({
 
         //Event Function List Popup
         $(document).on("click", ".event-list-msg-bottom .member-done", function() {
-            $("#eventFunctionList").popup("open");
+            ahowEventData(this, "function");
         });
 
         $(document).on("click", "#eventFunctionList .confirm", function() {
@@ -377,6 +523,8 @@ $("#viewEventList").pagecontainer({
 
         //Event Content
         $(document).on("click", ".event-list-msg .description", function() {
+            ahowEventData(this);
+            loadingMask("show");
             $.mobile.changePage('#viewEventContent');
         });
 
@@ -394,7 +542,6 @@ $("#viewEventList").pagecontainer({
 
         //Event Member List - Sort Type
         $(document).on("change", "#eventMemberType", function() {
-            console.log($(this).val());
             memberListView($(this).val());
         });
     }

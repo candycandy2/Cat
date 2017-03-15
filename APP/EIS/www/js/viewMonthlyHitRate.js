@@ -375,8 +375,8 @@ $("#viewMonthlyHitRate").pagecontainer({
         }
 
         function showData() {
-            $("#title-content #ActualValue p").text(actualValue);
-            $("#title-content #BudgetHitRate p").text(budgetHitRate + "%");
+            $("#title-content #ActualValue p").text(formatNumber(actualValue));
+            $("#title-content #BudgetHitRate p").text(formatNumber(budgetHitRate) + "%");
             if(budgetHitRate < 80) {
                 $("#title-content #BudgetHitRate p").css("color", "#ee3839");
             }else if(budgetHitRate > 95) {
@@ -385,10 +385,10 @@ $("#viewMonthlyHitRate").pagecontainer({
                 $("#title-content #BudgetHitRate p").css("color", "#e6be20");
             }
             if(yoyGrowth < 0) {
-                $("#title-content #YOYGrowth p").text(yoyGrowth + "%");
+                $("#title-content #YOYGrowth p").text(formatNumber(yoyGrowth) + "%");
                 $("#title-content #YOYGrowth p").css("color", "#ee3839");
             }else {
-                $("#title-content #YOYGrowth p").text("+" + yoyGrowth + "%");
+                $("#title-content #YOYGrowth p").text("+" + formatNumber(yoyGrowth) + "%");
                 $("#title-content #YOYGrowth p").css("color", "#48af56");
             }
         }
@@ -523,13 +523,17 @@ $("#viewMonthlyHitRate").pagecontainer({
                             dollar = "";
                         }
                         $.each(this.points, function () {
-                            detailInfo[index++] = '<br/>' + hcTable[this.x] + ' ' + this.series.name + ' = ' + dollar + this.y;
+                            if(tab == "ASP"){
+                                this.y = Math.round(this.y * Math.pow(10, 2)) / 100;
+                            }
+                            detailInfo[index++] = '<br/>' + hcTable[this.x] + ' ' + this.series.name + ' = ' + dollar + formatNumber(this.y);
                         });
                         for(var i=0; i<detailInfo.length; i++) {
                             s += detailInfo[--index];
                         }
                         return s;
                     },
+                    // pointFormat: "Value: {point.y:.2f}",
                     shared: true,
                     useHTML: true,
                     crosshairs: false

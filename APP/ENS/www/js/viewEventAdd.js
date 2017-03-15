@@ -9,7 +9,7 @@ $("#viewEventAdd").pagecontainer({
         window.eventFunctionData;
         var loctionFunctionData = [];
         var loctionFunctionID = 0;
-        var eventAdditionalData;
+        var eventRelatedData;
 
         /********************************** function *************************************/
 
@@ -28,6 +28,28 @@ $("#viewEventAdd").pagecontainer({
                     $("#eventaAdditionalTitle").show();
                     $("#eventaAdditionalSelectContent").show();
                     $("#eventaAdditionalContent").show();
+
+                    //UI Dropdown List : Event Additional
+                    eventRelatedData = {
+                        id: "eventAdditional",
+                        defaultText: "添加事件",
+                        title: "請選擇-關聯事件",
+                        option: [],
+                        attr: {
+                            class: "text-bold"
+                        }
+                    };
+
+                    for (var i=0; i<data['Content'].length; i++) {
+                        var tempData = {
+                            value: data['Content'][i].event_row_id,
+                            text: data['Content'][i].event_row_id + "[" + data['Content'][i].event_title + "]" + data['Content'][i].event_desc
+                        };
+                        eventRelatedData["option"].push(tempData);
+                    }
+
+                    tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventRelatedData);
+
                 } else if (resultCode === "014904" || resultCode === "014907") {
                     //014904: No Unrelated Event
                     //014907: No Authority
@@ -49,6 +71,7 @@ $("#viewEventAdd").pagecontainer({
 
             var self = this;
 
+            //Complete Datetime
             if (setDateTime === "setNow") {
                 var specificDoneDateTime = new Date();
                 var specificTimeStamp = specificDoneDateTime.TimeStamp();
@@ -59,6 +82,14 @@ $("#viewEventAdd").pagecontainer({
                 var specificTimeStamp = specificTime.TimeStamp();
             }
 
+            //Related Event
+            var relatedEventVal = $("#eventAdditional").val();
+            if (typeof relatedEventVal !== "number"){
+                relatedEventVal = "";
+            } else if (relatedEventVal === 0) {
+                relatedEventVal = "";
+            }
+
             var queryDataObj = {
                 lang: "zh-tw",
                 need_push: "Y",
@@ -67,7 +98,7 @@ $("#viewEventAdd").pagecontainer({
                 event_title: $("#eventTemplateTextarea").val(),
                 event_desc: $("#eventDescriptionTextarea").val(),
                 estimated_complete_date: specificTimeStamp,
-                //related_event_row_id: 1,
+                related_event_row_id: relatedEventVal,
                 emp_no: loginData["emp_no"]
             };
 
@@ -79,24 +110,27 @@ $("#viewEventAdd").pagecontainer({
                     location: loctionFunctionData[i].location,
                     function: loctionFunctionData[i].function
                 }
-                basicListParameter += processLocalData.createXMLDataString(tempDataObj);
+                basicListParameter += "<basic_list>" + processLocalData.createXMLDataString(tempDataObj) + "</basic_list>";
             }
-            var basicList = "<basic_list>" + basicListParameter + "</basic_list>";
 
-            var queryData = "<LayoutHeader>" + queryDataParameter + basicList + "</LayoutHeader>";
+            var queryData = "<LayoutHeader>" + queryDataParameter + basicListParameter + "</LayoutHeader>";
 
             this.successCallback = function(data) {
 
                 var resultCode = data['ResultCode'];
 
-                if (resultCode === 1) {
-
+                if (resultCode === "014901") {
+                    loadingMask("hide");
+                    eventAddSuccess();
                 }
             };
 
             this.failCallback = function(data) {};
 
             var __construct = function() {
+                $("#eventAddConfirm").popup("close");
+                loadingMask("show");
+
                 CustomAPI("POST", true, "newEvent", self.successCallback, self.failCallback, queryData, "");
             }();
 
@@ -160,6 +194,8 @@ $("#viewEventAdd").pagecontainer({
             setTimeout(function() {
                 $(".event-add-success-full-screen").remove();
                 tplJS.recoveryPageScroll();
+
+                $.mobile.changePage('#viewEventList');
             }, 3000);
         }
 
@@ -226,28 +262,6 @@ $("#viewEventAdd").pagecontainer({
             });
 
             tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
-
-            //UI Dropdown List : Event Additional
-            eventAdditionalData = {
-                id: "eventAdditional",
-                defaultText: "添加事件",
-                title: "請選擇-關聯事件",
-                option: [{
-                    value: "16003",
-                    text: "16003[機房緊急通報_停電]因為XXX, 請 QTY 機房進行關機作業"
-                }, {
-                    value: "16002",
-                    text: "16002[機房緊急通報_停電]因為XXX, 請 QTY 機房進行關機作業"
-                }, {
-                    value: "16001",
-                    text: "16001[機房緊急通報_停電]因為XXX, 請 QTY 機房進行關機作業"
-                }],
-                attr: {
-                    class: "text-bold"
-                }
-            };
-
-            tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventAdditionalData);
 
             //UI Popup : Event Add Confirm
             var eventAddConfirmData = {
@@ -381,7 +395,7 @@ $("#viewEventAdd").pagecontainer({
 
             var eventAdditionalListHTML = $("template#tplEventAdditionalList").html();
 
-            $.each(eventAdditionalData.option, function(key, obj) {
+            $.each(eventRelatedData.option, function(key, obj) {
                 if (obj.value == selectedValue) {
                     var eventAdditionalList = $(eventAdditionalListHTML);
 
@@ -391,6 +405,14 @@ $("#viewEventAdd").pagecontainer({
                     $("#eventaAdditionalContent").append(eventAdditionalList);
                 }
             });
+        });
+
+        //Event Related delete
+        $(document).on("click", ".event-add-additional-list .delete", function() {
+            var domID = $(this).parent().siblings().find("select").prop("id");
+
+            $("#" + domID).parents(".event-add-additional-list").remove();
+            $("#" + domID).val("0");
         });
 
         //Location-Function delete
