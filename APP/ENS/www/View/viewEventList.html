@@ -17,11 +17,11 @@
                     <div>
                         <span class="name">Michael Yang</span>
                         <span class="event-status">
-                            <div class="done">
+                            <div class="done hide">
                                 <span class="img"></span>
                                 <span class="text">已完成</span>
                             </div>
-                            <div class="unfinished hide">
+                            <div class="unfinished">
                                 <span class="img"></span>
                                 <span class="text">未完成</span>
                             </div>
@@ -29,18 +29,18 @@
                     </div>
                     <div>
                         <span class="link">
-                            <div class="normal">
+                            <div class="normal hide">
                                 <span class="img"></span>
                                 <span class="text">16003</span>
                             </div>
-                            <div class="urgent hide">
+                            <div class="urgent">
                                 <span class="img"></span>
                                 <span class="text">16003</span>
                             </div>
                         </span>
                         <span class="time">2017-01-01 12:30</span>
                     </div>
-                    <div class="description">[機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業
+                    <div class="description">[機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業
                     </div>
                 </div>
                 <hr class="event-list-msg-hr">
@@ -59,7 +59,7 @@
                     </span>
                     <span class="message">
                         <span class="img"></span>
-                        <span class="text">4</span>
+                        <span class="text">0</span>
                     </span>
                 </div>
             </div>
@@ -70,11 +70,11 @@
             <!--header: Title or Button-->
             <div class="header event-member-list">
                 <div class="number">
-                    <div class="normal">
+                    <div class="normal hide">
                         <span class="img"></span>
                         <span class="text">16003</span>
                     </div>
-                    <div class="urgent hide">
+                    <div class="urgent">
                         <span class="img"></span>
                         <span class="text">16003</span>
                     </div>
@@ -88,54 +88,22 @@
             </div>
             <!--main: Ul listview-->
             <ul data-role="listview" class="main event-member-list">
-                <li>
-                    <div class="view-before">
-                        <span class="img"></span>
-                        <span class="text">Kevin.CM.Huang</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-after">
-                        <span class="img"></span>
-                        <span class="text">Steven.Yan</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-before">
-                        <span class="img"></span>
-                        <span class="text">Wendy Shih</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-after">
-                        <span class="img"></span>
-                        <span class="text">Allen Su</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-before">
-                        <span class="img"></span>
-                        <span class="text">Kevin.CM.Huang</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-after">
-                        <span class="img"></span>
-                        <span class="text">Steven.Yan</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-before">
-                        <span class="img"></span>
-                        <span class="text">Wendy Shih</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="view-after">
-                        <span class="img"></span>
-                        <span class="text">Allen Su</span>
-                    </div>
-                </li>
+                <template id="tplEventMemberListBefore">
+                    <li>
+                        <div class="view-before">
+                            <span class="img"></span>
+                            <span class="text">Kevin.CM.Huang</span>
+                        </div>
+                    </li>
+                </template>
+                <template id="tplEventMemberListAfter">
+                    <li>
+                        <div class="view-after">
+                            <span class="img"></span>
+                            <span class="text">Steven.Yan</span>
+                        </div>
+                    </li>
+                </template>
             </ul>
             <!--footer: Button-->
             <div class="footer">
@@ -168,82 +136,48 @@
             </div>
             <!--main: Ul listview-->
             <ul data-role="listview" class="main event-member-list">
-                <li>
-                    <div class="work-before">
-                        <div class="left">
-                            <span class="img"></span>
-                        </div>
-                        <div class="right">
-                            <div class="title font-style3">
-                                BQT 3F機房
+                <template id="tplEventFunctionListBefore">
+                    <li>
+                        <div class="work-before">
+                            <div class="left">
+                                <span class="img"></span>
                             </div>
-                            <div class="function font-style3">
-                                Function A
-                            </div>
-                            <div class="user-datetime">
-                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="work-after">
-                        <div class="left">
-                            <span class="img"></span>
-                        </div>
-                        <div class="right">
-                            <div class="title font-style3">
-                                BQT 3F機房
-                            </div>
-                            <div class="function font-style3">
-                                Function A
-                            </div>
-                            <div class="user-datetime">
-                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                            <div class="right">
+                                <div class="title font-style3">
+                                    BQT 3F機房
+                                </div>
+                                <div class="function font-style3">
+                                    Function A
+                                </div>
+                                <div class="user-datetime">
+                                    <sapn class="user font-style6"></sapn>
+                                    <sapn class="datetime font-style7"></sapn>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="work-before">
-                        <div class="left">
-                            <span class="img"></span>
-                        </div>
-                        <div class="right">
-                            <div class="title font-style3">
-                                BQT 3F機房
+                    </li>
+                </template>
+                <template id="tplEventFunctionListAfter">
+                    <li>
+                        <div class="work-after">
+                            <div class="left">
+                                <span class="img"></span>
                             </div>
-                            <div class="function font-style3">
-                                Function A
-                            </div>
-                            <div class="user-datetime">
-                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="work-after">
-                        <div class="left">
-                            <span class="img"></span>
-                        </div>
-                        <div class="right">
-                            <div class="title font-style3">
-                                BQT 3F機房
-                            </div>
-                            <div class="function font-style3">
-                                Function A
-                            </div>
-                            <div class="user-datetime">
-                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                            <div class="right">
+                                <div class="title font-style3">
+                                    BQT 3F機房
+                                </div>
+                                <div class="function font-style3">
+                                    Function A
+                                </div>
+                                <div class="user-datetime">
+                                    <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                                    <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                </template>
             </ul>
             <!--footer: Button-->
             <div class="footer">

@@ -237,7 +237,7 @@ $("#viewHitRate").pagecontainer ({
 				},
 				yAxis: {
         			title: {
-        				text: '(USD)',
+        				text: '(USD$)',
         				align: 'high',
         				rotation: 0,
         				offset: 0,
@@ -256,11 +256,14 @@ $("#viewHitRate").pagecontainer ({
 					enabled: false
 				},
 				tooltip: {
-			    	headerFormat: '<span style="font-size:10px">{point.key} Hit Rate</span><table>',
-			    	pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name} = </td>' +
-			        	'<td style="padding:0"><b>${point.y}</b></td></tr>',
-			    	footerFormat: '</table>',
-			    	shared: true,
+			    	formatter: function () {
+                        var s = '<b>' + this.x + ' Hit Rate</b>';
+                        $.each(this.points, function () {
+                           s += '<br/> ' + this.series.name + ' = $' + formatNumber(this.y);
+                        });
+                        return s;
+                    },
+                    shared: true,
 			    	useHTML: true
 				},
 				plotOptions: {
