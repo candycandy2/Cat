@@ -536,6 +536,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                     // pointFormat: "Value: {point.y:.2f}",
                     shared: true,
                     useHTML: true,
+                    hideDelay: 0,
                     crosshairs: false
         		},
         		plotOptions: {

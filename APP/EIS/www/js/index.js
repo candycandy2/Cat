@@ -1,5 +1,6 @@
 /*global variable, function*/
 var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
+var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
 var initialAppName = "EIS";
@@ -104,20 +105,73 @@ window.initialSuccess = function() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-
-    if($(".ui-page-active").jqmData("panel") === "open"){
-        $("#mypanel").panel( "close");
-    }else{
-        navigator.app.exitApp();
+    if(activePageID == "viewHitRate") {
+        if($("body").hasClass("ui-landscape")) {
+            /*** Zoom Out the chart ***/
+            zoomOutChart("viewHitRate-hc-canvas"); 
+        }else{
+            /*** change tab and close the panel ***/
+            if($(".ui-page-active").jqmData("panel") === "open") {
+                $("#mypanel").panel( "close");
+            }else if($("#viewHitRate :radio:checked").val() == "viewHitRate-tab-1") {
+                navigator.app.exitApp();
+            }else if($("#viewHitRate :radio:checked").val() == "viewHitRate-tab-2") {
+                $("input[id=viewHitRate-tab-1]").trigger('click');
+                $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
+                $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active'); 
+            }else if($("#viewHitRate :radio:checked").val() == "viewHitRate-tab-3") {
+                $("input[id=viewHitRate-tab-2]").trigger('click');
+                $("label[for=viewHitRate-tab-2]").addClass('ui-btn-active');
+                $("label[for=viewHitRate-tab-1]").removeClass('ui-btn-active');
+                $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
+            }
+        }
+    }else if(activePageID == "viewMonthlyHitRate") {
+        if($("body").hasClass("ui-landscape")) {
+            /*** Zoom Out the chart ***/
+            zoomOutChart("viewMonthlyHitRate-hc-canvas");
+        }else{
+            /*** change tab and close the panel ***/
+            if($(".ui-page-active").jqmData("panel") === "open") {
+                $("#mypanel").panel( "close");  
+            }else if($("#viewMonthlyHitRate :radio:checked").val() == "viewMonthlyHitRate-tab-1") {
+                changePageByPanel(lastPageID);
+            }else if($("#viewMonthlyHitRate :radio:checked").val() == "viewMonthlyHitRate-tab-2") {
+                $("input[id=viewMonthlyHitRate-tab-1]").trigger('click');
+                $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewMonthlyHitRate-tab-2]").removeClass('ui-btn-active');
+                $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active'); 
+            }else if($("#viewMonthlyHitRate :radio:checked").val() == "viewMonthlyHitRate-tab-3") {
+                $("input[id=viewMonthlyHitRate-tab-2]").trigger('click');
+                $("label[for=viewMonthlyHitRate-tab-2]").addClass('ui-btn-active');
+                $("label[for=viewMonthlyHitRate-tab-1]").removeClass('ui-btn-active');
+                $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
+            }
+        }
+    }else if(activePageID == "viewYTDHitRate") {
+        if($("body").hasClass("ui-landscape")) {
+            /*** Zoom Out the chart ***/
+            zoomOutChart("viewYTDHitRate-hc-canvas");  
+        }else{
+            /*** change tab and close the panel ***/
+            if($(".ui-page-active").jqmData("panel") === "open") {
+                $("#mypanel").panel( "close");
+            }else if($("#viewYTDHitRate :radio:checked").val() == "viewYTDHitRate-tab-1") {
+                changePageByPanel(lastPageID);
+            }else if($("#viewYTDHitRate :radio:checked").val() == "viewYTDHitRate-tab-2") {
+                $("input[id=viewYTDHitRate-tab-1]").trigger('click');
+                $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewYTDHitRate-tab-2]").removeClass('ui-btn-active');
+                $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active'); 
+            }else if($("#viewYTDHitRate :radio:checked").val() == "viewYTDHitRate-tab-3") {
+                $("input[id=viewYTDHitRate-tab-2]").trigger('click');
+                $("label[for=viewYTDHitRate-tab-2]").addClass('ui-btn-active');
+                $("label[for=viewYTDHitRate-tab-1]").removeClass('ui-btn-active');
+                $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active');
+            }
+        }
     }
-    // if ($("#viewHitRate-tab-1 :radio:checked").val() == "viewHitRate-tab-1") {
-    //     navigator.app.exitApp();
-    // } else {
-    //     $("input[id=viewHitRate-tab-1]").trigger('click');
-    //     $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
-    //     $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
-    //     $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-    // }
 }
 
 function changePageByPanel(pageId) {
@@ -125,6 +179,7 @@ function changePageByPanel(pageId) {
         loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
+        lastPageID = $.mobile.activePage[0].id;
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
@@ -132,9 +187,9 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
-function zoomBtnInit(){
+function zoomBtnInit() {
     var screenWidth = $('html').width(), screenHeight = $('html').height(), tmp = 0;
-    $('.zoomInBtn').on('click', function(){
+    $('.zoomInBtn').on('click', function() {
         $('body').addClass('ui-landscape');
         $('.hc-fragment').css({'height': 'auto'});
         $('.zoomOutBtn').css({'right': -(screenHeight-$('.chartArea').width()-$('.viewIndex').css('padding-top').replace('px', '')-
@@ -144,33 +199,15 @@ function zoomBtnInit(){
     });
 
     $('#viewHitRateZoomOutBtn').on('click', function(){
-        $('body').removeClass('ui-landscape');
-        $('#viewHitRate-hc-canvas').css({'height': '38VH'});
-        $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
-        $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
-        $('.zoomBtn').css({'right': '4%'});
-        chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize($('#viewHitRate-hc-canvas').width(), $('#viewHitRate-hc-canvas').height(), doAnimation = true);        
+        zoomOutChart("viewHitRate-hc-canvas"); 
     });
 
     $('#viewMonthlyHitRateZoomOutBtn').on('click', function(){
-        $('body').removeClass('ui-landscape');
-        $('#viewHitRate-hc-canvas').css({'height': '38VH'});
-        $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
-        $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
-        $('.zoomBtn').css({'right': '4%'});
-        chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize($('#viewMonthlyHitRate-hc-canvas').width(), $('#viewMonthlyHitRate-hc-canvas').height(), doAnimation = true);        
+        zoomOutChart("viewMonthlyHitRate-hc-canvas");
     });
 
     $('#viewYTDHitRateZoomOutBtn').on('click', function(){
-        $('body').removeClass('ui-landscape');
-        $('#viewHitRate-hc-canvas').css({'height': '38VH'});
-        $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
-        $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
-        $('.zoomBtn').css({'right': '4%'});
-        chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize($('#viewYTDHitRate-hc-canvas').width(), $('#viewYTDHitRate-hc-canvas').height(), doAnimation = true);        
+        zoomOutChart("viewYTDHitRate-hc-canvas");
     });
 }
 
@@ -179,4 +216,14 @@ function formatNumber(n) {
     var arr = n.split(".");
     var regex = /(\d{1,3})(?=(\d{3})+$)/g;
     return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
+}
+
+function zoomOutChart(chartId) {
+    $('body').removeClass('ui-landscape');
+    $('#viewHitRate-hc-canvas').css({'height': '38VH'});
+    $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
+    $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
+    $('.zoomBtn').css({'right': '4%'});
+    chart.legend.update({ itemStyle: {fontSize: 12}});
+    chart.setSize($("#" + chartId).width(), $("#" + chartId).height(), doAnimation = true);
 }
