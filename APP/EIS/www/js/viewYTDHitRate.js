@@ -406,7 +406,8 @@ $("#viewYTDHitRate").pagecontainer({
                         return s;
                     },
 			    	shared: true,
-			    	useHTML: true
+			    	useHTML: true,
+                    hideDelay: 0
 				},
 				plotOptions: {
 			    	column: {
