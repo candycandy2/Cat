@@ -285,6 +285,11 @@
                 });
 
                 $("#navMessage a").addClass("ui-btn-active");
+
+                // fix problem of somtimes can't see bottom msg in iOS (due to jQuery mobile layout setting)
+                if (device.platform === "iOS"){
+                    $('#viewNewsEvents2-3').find('.ui-tabs').css({'padding-bottom': $('#msgFooter').height()});
+                }
             };
 
             function tabChange(action) {
