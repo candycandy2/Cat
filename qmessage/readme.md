@@ -273,6 +273,9 @@ var opts = {
     'username':username,
     'eventHandler': eventHandler,
     'messageHandler': messageHandler
+    'message_key':"3c207a542c715ca5a0c7426d",
+    'message_secret':"b15a6140ee8971c7598c3a0b",
+    'message_api_url_prefix':"qplaytest.benq.com/qmessage/public/"
 };
 msgController = window.QMessage(opts);
 ```
@@ -334,6 +337,9 @@ msgController = window.QMessage(opts);
     "event": "msg_sync"
 }
 ```
+4. message_key：appkey from jmessage
+5. message_message_secret: secret from jmessage
+6. message_api_url_prefix: service url without http or https,default value is empty(call current site)
 
 ### Step 3. Send Text/Image
 #### SendText(gid,gname,text,success,error)
