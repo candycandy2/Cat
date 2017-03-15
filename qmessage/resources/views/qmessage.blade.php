@@ -142,7 +142,10 @@
                 'eventHandler': eventHandler,
                 'messageHandler': messageHandler,
                 'debug': false,
-                'username':username
+                'username':username,
+                'message_key':"3c207a542c715ca5a0c7426d",
+                'message_secret':"b15a6140ee8971c7598c3a0b",
+                'message_api_url_prefix':"o-a3a5.qgroup.corp.com:8081/EnterpriseAPPPlatform/qmessage/public/index.php/"
             };
             msgController = window.QMessage(opts);
         }
