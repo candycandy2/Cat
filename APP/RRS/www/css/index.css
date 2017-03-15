@@ -50,13 +50,21 @@ a {
     text-align: center;
     padding: 3vw 0;
     font-weight: initial;
+    text-shadow: none;
+    background-color: #f6f6f6;
+    border-width: 0 1px 1px 0;
+}
+
+#newSettingFloor > div > div:nth-of-type(3n+1) div.ui-bar{ border-left-width: 1px;}
+#newSettingFloor > div > div:nth-of-type(1) div.ui-bar, #newSettingFloor > div > div:nth-of-type(2) div.ui-bar, #newSettingFloor > div > div:nth-of-type(3) div.ui-bar{ 
+    border-top-width: 1px;
 }
 
 #navbar ul li a {
     line-height: 90%;
 }
 
-.ui-btn-active {
+.ui-btn-active, #newSettingFloor div.ui-btn-active{
     background-color: #0db6b7;
     color: white !important;
     border-color: #ddd !important;
@@ -126,15 +134,16 @@ a {
     text-align: left;
     height: 5.5vh;
     border-style: solid;
-    border-color: #666;
+    border-color: #d6d6d6;
     border-width: 0px 1px 1px 0px;
     padding: .4em 2vw !important;
 }
 
 #reserveDateSelect > div.ui-grid-c {
     border-style: solid;
-    border-color: #666;
+    border-color: #d6d6d6;
     border-width: 1px 0px 0px 1px;
+    background-color: #f6f6f6;
 }
 
 #reserveDateSelect div.ui-bar div:nth-child(1) {
@@ -210,7 +219,7 @@ div.circle {
 
 .ui-margin-public {
     margin: 1.8vw 3.71vw !important;
-    font-size: 3.55vw;
+    font-size: 4.18vw;
 }
 
 #viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
@@ -508,15 +517,15 @@ hr.ui-color-green {
 /********************************** scrollmenu *************************************/
 
 div.scrollmenu {
-    background-color: white;
+    background-color: #f6f6f6;
     overflow: auto;
     white-space: nowrap;
     /*display: flex;*/
     border-style: solid;
     border-width: 1px 0px 1px 1px;
-    box-shadow: 5px 1px 3px #666;
-    border-color: #666 !important;
-    margin: 0 -2vw 0 0 !important;
+    border-color: #d6d6d6 !important;
+    margin: 0 -3.6vw 0 0 !important;
+    -webkit-overflow-scrolling: touch
 }
 
 div.scrollmenu a {
@@ -526,17 +535,19 @@ div.scrollmenu a {
     text-decoration: none;
     border-style: solid;
     border-width: 0px 1px 0px 0px;
-    border-color: #e4e4e4 !important;
+    border-color: #d6d6d6 !important;
 }
 
 #scrollDate a,
 #quickReserveScrollDate a {
-    padding: 1vh 6vw;
+    padding: 3vw 0;
+    width:30%;
+    font-weight: normal;
 }
 
 #reserveRoom a {
     padding: 2vh 6vw;
-}
+    font-weight: normal;}
 
 .hover {
     background-color: #0db6b7;

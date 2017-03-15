@@ -40,15 +40,14 @@ $("#viewHitRate").pagecontainer ({
 
                 for(var ro in eisdata[thisYear-1][thisMonth]) {
                     lastYTDActualAMT[ro] = 0;
-                    lytmTotalActualAMT += Number(eisdata[thisYear-1][thisMonth][ro][1]);
-                    lylmTotalActualAMT += Number(eisdata[thisYear-1][thisMonth-1][ro][1]);
+                    lytmTotalActualAMT += eisdata[thisYear-1][thisMonth][ro][1];
+                    lylmTotalActualAMT += eisdata[thisYear-1][thisMonth-1][ro][1];
                     for(var j in eisdata[thisYear-1]) {
                         if(Number(j) <= Number(thisMonth)) {
-                            lastYTDActualAMT[ro] += (Number(eisdata[thisYear-1][j][ro][1]));
+                            lastYTDActualAMT[ro] += eisdata[thisYear-1][j][ro][1];
                         }
                     }
                 }
-                
                 calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
                 calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
                 getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
@@ -172,17 +171,17 @@ $("#viewHitRate").pagecontainer ({
     		}
     		if(type == "BUDGET_AMT") {
 	    		for(var i in eisdata[year][month]) {
-	    			data_array[index++] = (Number(eisdata[year][month][i][0]));
+	    			data_array[index++] = eisdata[year][month][i][0];
 	    		}
     		}else if(type == "ACTUAL_ADJ_AMT") {
     			for(var i in eisdata[year][month]) {
-	    			data_array[index++] = (Number(eisdata[year][month][i][1]));
+	    			data_array[index++] = eisdata[year][month][i][1];
 	    		}
     		}else if(type == "YTDBUDGET_AMT") {
     			for(var i in eisdata[year][month]) {
     				data_array[index] = 0;
     				for(var j in eisdata[year]) {
-    					data_array[index] += (Number(eisdata[year][j][i][0])); 
+    					data_array[index] += eisdata[year][j][i][0]; 
     				}
     				index++;
     			}
@@ -190,7 +189,7 @@ $("#viewHitRate").pagecontainer ({
     			for(var i in eisdata[year][month]) {
     				data_array[index] = 0;
     				for(var j in eisdata[year]) {
-    					data_array[index] += (Number(eisdata[year][j][i][1])); 
+    					data_array[index] += eisdata[year][j][i][1]; 
     				}
     				index++;
     			}
@@ -207,7 +206,7 @@ $("#viewHitRate").pagecontainer ({
 	    			eisdata[i][j] = {};
 	    			for(var k=0; k<5 && rosite<length; k++) {
 	    				eisdata[i][j][callbackData[rosite]["RO_SITE"]] = 
-	    						[callbackData[rosite]["BUDGET_AMT"], callbackData[rosite]["ACTUAL_ADJ_AMT"]];
+	    						[Number(callbackData[rosite]["BUDGET_AMT"]), Number(callbackData[rosite]["ACTUAL_ADJ_AMT"])];
 	    				rosite++;
 	    			}
 	    		}
@@ -238,7 +237,7 @@ $("#viewHitRate").pagecontainer ({
 				},
 				yAxis: {
         			title: {
-        				text: '(USD)',
+        				text: '(USD$)',
         				align: 'high',
         				rotation: 0,
         				offset: 0,
@@ -257,11 +256,14 @@ $("#viewHitRate").pagecontainer ({
 					enabled: false
 				},
 				tooltip: {
-			    	headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-			    	pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-			        	'<td style="padding:0"><b>{point.y:.1f} $M</b></td></tr>',
-			    	footerFormat: '</table>',
-			    	shared: false,
+			    	formatter: function () {
+                        var s = '<b>' + this.x + ' Hit Rate</b>';
+                        $.each(this.points, function () {
+                           s += '<br/> ' + this.series.name + ' = $' + formatNumber(this.y);
+                        });
+                        return s;
+                    },
+                    shared: true,
 			    	useHTML: true
 				},
 				plotOptions: {
@@ -296,6 +298,7 @@ $("#viewHitRate").pagecontainer ({
         	$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
         	chart.series[0].setData(thisMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(thisMonthActualAMT, true, true, false );
+            chart.tooltip.hide();
         	showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
         });
 
@@ -303,14 +306,16 @@ $("#viewHitRate").pagecontainer ({
         	$("#viewHitRate .page-date").text(monTable[thisMonth-1]+thisYear);
         	chart.series[0].setData(lastMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(lastMonthActualAMT, true, true, false);
-        	showData("lastMonth", lastMonthActualAMT, lastMonthBudgetAMT, lastMonthData);
+        	chart.tooltip.hide();
+            showData("lastMonth", lastMonthActualAMT, lastMonthBudgetAMT, lastMonthData);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function() {
     		$("#viewHitRate .page-date").text(thisYear);
     		chart.series[0].setData(YTDBudgetAMT, true, true, false);
         	chart.series[1].setData(YTDActualAMT, true, true, false);
-        	showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
+        	chart.tooltip.hide();
+            showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
 	}
 });
