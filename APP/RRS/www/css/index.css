@@ -147,7 +147,7 @@ a {
 }
 
 #reserveDateSelect div.ui-bar div:nth-child(2) {
-    font-size: 3vw;
+    font-size: 3.14vw;
     margin-top: 1vw;
 }
 
@@ -261,6 +261,9 @@ div.circle {
     background-size: 4.8vw 2.8vh;
     background-repeat: no-repeat;
 }
+
+.timeRemind{ font-size: 3.14vw; margin-top: 1vw !important; display: none;}
+.timeRemind.timeShow{ display: block;}
 
 .btn-border {
     background-color: white !important;
