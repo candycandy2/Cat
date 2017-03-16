@@ -119,7 +119,7 @@ function checkNetwork(data) {
             "",
             logMsg
         ];
-        LogFile.createAndWriteFile(dataArr);
+        //LogFile.createAndWriteFile(dataArr);
     }
 }
 
