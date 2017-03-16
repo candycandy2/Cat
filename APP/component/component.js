@@ -8,6 +8,13 @@
 var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
+
+if (window.localStorage.getItem("appKey") !== null) {
+    appKey = window.localStorage.getItem("appKey");
+    serverURL = window.localStorage.getItem("serverURL");
+    qplayAppKey = window.localStorage.getItem("qplayAppKey");
+}
+
 var qplaySecretKey = "swexuc453refebraXecujeruBraqAc4e";
 var appEnvironment = "";
 var browserLanguage;
@@ -121,6 +128,7 @@ var app = {
 
             loginData["deviceType"] = device.platform;
             loginData["pushToken"] = data;
+            window.localStorage.setItem("deviceType", device.platform);
             window.localStorage.setItem("pushToken", data);
             stopCheck();
 
@@ -344,22 +352,6 @@ $(document).one("pagebeforecreate", function(){
 
 /********************************** QPlay APP function *************************************/
 
-//Success Result Code
-//even though some result code != 1, but it still means the result is success,
-//need to check the token_valid
-//
-//new create APP, set this data in specific APP's index.js
-codeArray = [
-    //All APP
-    "1",
-    //QPlay
-    "000910", "000913", "000915", "000910", "000919",
-    //Yellowpage
-    "001901", "001902", "001903", "001904", "001905", "001906",
-    //RRS
-    "002901", "002902", "002903", "002904", "002905", "002906", "002907"
-];
-
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
@@ -369,40 +361,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
     resultCode = resultCode.toString();
 
-    if (codeArray.indexOf(resultCode) !== -1) {
-        var doSuccessCallback = false;
-        var clientTimestamp = new Date().getTime();
-        clientTimestamp = clientTimestamp.toString().substr(0, 10);
-
-        if (!isNaN(tokenValid)) {
-            if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
-                //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
-                if (appKey === qplayAppKey) {
-                    reNewToken();
-                } else {
-                    getServerData();
-                }
-            } else {
-                if (doInitialSuccess) {
-//alert("doInitialSuccess--true");
-                    doInitialSuccess = false;
-                    hideInitialPage();
-                } else {
-                    doSuccessCallback = true;
-                }
-            }
-        } else {
-            //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
-            doSuccessCallback = true;
-        }
-
-        if (doSuccessCallback) {
-            if (typeof successCallback === "function") {
-                successCallback(data);
-            }
-        }
-
-    } else if (resultCode === "000907") {
+    if (resultCode === "000907") {
         //token expired
         getServerData();
     } else if (resultCode === "000908") {
@@ -415,18 +374,52 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //User Account Suspended
         openAPIError("suspended");
     } else {
-        //Other API Result code, show [Please contact ITS]
-        var resultCodeStart = resultCode.substr(0, 3);
-
-        //QPlay
-        if (resultCodeStart === "999") {
-            openAPIError("error");
-        }
 
         //Other APP
         //errorCodeArray set in APP's index.js
-        if (errorCodeArray.indexOf(resultCode) !== -1) {
-            openAPIError("error");
+        if (!typeof errorCodeArray === "undefined") {
+            if (errorCodeArray.indexOf(resultCode) !== -1) {
+                openAPIError("error");
+            }
+        } else {
+            //Other Result code from API, show [Please contact ITS]
+            var resultCodeStart = resultCode.substr(0, 3);
+
+            if (resultCodeStart === "999") {
+                openAPIError("error");
+            } else {
+                //Each [Success] case
+                var doSuccessCallback = false;
+                var clientTimestamp = new Date().getTime();
+                clientTimestamp = clientTimestamp.toString().substr(0, 10);
+
+                if (!isNaN(tokenValid)) {
+                    if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
+                        //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
+                        if (appKey === qplayAppKey) {
+                            reNewToken();
+                        } else {
+                            getServerData();
+                        }
+                    } else {
+                        if (doInitialSuccess) {
+                            doInitialSuccess = false;
+                            hideInitialPage();
+                        } else {
+                            doSuccessCallback = true;
+                        }
+                    }
+                } else {
+                    //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
+                    doSuccessCallback = true;
+                }
+
+                if (doSuccessCallback) {
+                    if (typeof successCallback === "function") {
+                        successCallback(data);
+                    }
+                }
+            }
         }
     }
 }
@@ -436,22 +429,29 @@ function readConfig() {
     loginData["versionName"] = AppVersion.version;
     loginData["versionCode"] = AppVersion.build;
 
-    //according to the versionName, change the appKey
-    if (loginData["versionName"].indexOf("Staging") !== -1) {
-        appEnvironment = "test";
-        appKey = appKeyOriginal + "test";
-        serverURL = "https://qplaytest.benq.com"; // Staging API Server
-        qplayAppKey = qplayAppKey + "test";
-    } else if (loginData["versionName"].indexOf("Development") !== -1) {
-        appEnvironment = "dev";
-        appKey = appKeyOriginal + "dev";
-        serverURL = "https://qplaydev.benq.com"; // Development API Server
-        qplayAppKey = qplayAppKey + "dev";
-    }else {
-        appEnvironment = "";
-        appKey = appKeyOriginal + "";
-        serverURL = "https://qplay.benq.com"; // Production API Server
-        qplayAppKey = qplayAppKey + "";
+    //set in Local Storage
+    if (window.localStorage.getItem("appKey") === null) {
+        //according to the versionName, change the appKey
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            appEnvironment = "test";
+            appKey = appKeyOriginal + "test";
+            serverURL = "https://qplaytest.benq.com"; // Staging API Server
+            qplayAppKey = qplayAppKey + "test";
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            appEnvironment = "dev";
+            appKey = appKeyOriginal + "dev";
+            serverURL = "https://qplaydev.benq.com"; // Development API Server
+            qplayAppKey = qplayAppKey + "dev";
+        } else {
+            appEnvironment = "";
+            appKey = appKeyOriginal + "";
+            serverURL = "https://qplay.benq.com"; // Production API Server
+            qplayAppKey = qplayAppKey + "";
+        }
+
+        window.localStorage.setItem("appKey", appKey);
+        window.localStorage.setItem("serverURL", serverURL);
+        window.localStorage.setItem("qplayAppKey", qplayAppKey);
     }
 
     //Plugin-QPush
@@ -571,7 +571,7 @@ function checkAppVersion() {
 
         var resultcode = data['result_code'];
 
-        if (resultcode == 1 || resultcode == 000915) {
+        if (resultcode == 1) {
 
             // need to update app
             window.checkVerTimer = setInterval(function() {
@@ -609,12 +609,15 @@ function checkAppVersion() {
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
 
-        } else if (resultcode == 000915) {
+        } else if (resultcode == 999015) {
 
-            // app package name does not exist
+            // app apk/ipa file does not upload to QPlay.
+            // This status only for Developer to skip check the version of New Create APP.
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
 
+        } else if (resultcode == 999012) {
+            // app has been removed in QPlay.
         }
 
     }
@@ -634,7 +637,7 @@ function setWhiteList() {
 
     this.successCallback = function() {
         var doCheckStorageData = false;
-//alert("setWhiteList");
+
         if (appKey !== qplayAppKey) {
             if (callHandleOpenURL) {
                 return;
@@ -752,7 +755,7 @@ function setWhiteList() {
 
 //check data(token, token_value, ...) on web-storage
 function checkStorageData() {
-//alert("checkStorageData");
+
     if (window.localStorage.length === 0) {
         getDataFromServer = true;
     } else {
@@ -789,7 +792,7 @@ function processStorageData(action, data) {
 
         return checkLoginDataExist;
     } else if (action === "checkSecurityList") {
-//alert("checkSecurityList");
+
         $.map(loginData, function(value, key) {
             if (window.localStorage.getItem(key) !== null) {
                 loginData[key] = window.localStorage.getItem(key);
@@ -844,7 +847,6 @@ function getSecurityList() {
     var queryStr = "&app_key=" + appKey;
 
     this.successCallback = function(data) {
-//alert("getSecurityList");
         doInitialSuccess = true;
         checkTokenValid(data['result_code'], data['token_valid'], null, null);
     };
@@ -865,20 +867,20 @@ function createAPPSchemeURL() {
 
 //Return Login Data from QPlay
 function getLoginDataCallBack() {
-//alert("getLoginDataCallBack");
+
     var callBackURL = queryData["callbackApp"] + createAPPSchemeURL();
-//alert(callBackURL);
     openAPP(callBackURL);
 
     loginData['doLoginDataCallBack'] = false;
 
+    $.mobile.changePage('#viewMain2-1', {
+        reloadPage: true
+    });
     $.mobile.changePage('#viewMain2-1');
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
 function handleOpenURL(url) {
-//alert("handleOpenURL");
-//alert(url);
 
     if (url !== "null") {
 
@@ -896,7 +898,7 @@ function handleOpenURL(url) {
         });
 
         if (appKey === qplayAppKey && queryData["action"] === "getLoginData") {
-//alert("getLoginData");
+
             loginData['doLoginDataCallBack'] = true;
 
             //APP version record
@@ -919,7 +921,6 @@ function handleOpenURL(url) {
             checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
-//alert("retrunLoginData");
 
             $.map(queryData, function(value, key) {
                 if (key !== "callbackApp" && key !== "action") {
@@ -934,10 +935,10 @@ function handleOpenURL(url) {
         //Because Scheme work different process between [APP is in action or background] / [APP is not open],
         //[APP is in action or background] need to following step.
         if (loginData['doLoginDataCallBack'] === true) {
-            $.mobile.changePage('#viewInitial');
-//alert("----1");
+            $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
+            $("#viewMain2-1").removeClass("ui-page ui-page-theme-a ui-page-active");
+
             if (appInitialFinish === true) {
-//alert("----2");
                 var checkAppVer = new checkAppVersion();
             }
         }

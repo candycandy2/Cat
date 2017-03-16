@@ -662,6 +662,10 @@
                 calSelectWidth($('#reserveFloor'));
                 calSelectWidth($('#reserveSetting'));
                 jqMobileOverwriteStyle();
+                // add 10px between header and main when device is iOS
+                if (device.platform === "iOS"){
+                    $('.ui-page').find('div.page-main').css({'padding-top': '0.5vw'});
+                }
             });
 
             /********************************** dom event *************************************/
