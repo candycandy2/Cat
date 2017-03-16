@@ -44,8 +44,13 @@ POST /getaccountingrate?LAST_UPDATE_DATE=1464677364
 
 ```
 ##### Response Data
- 1. 1 Success,return username in 'Content'
-
+```
+如果成功, ResultCode 1, Message 'Success'
+如果有Error, 請固定前三碼016, 後三碼從001開始, 然後給錯誤訊息
+下面是範例
+ 1. 1       'Success'
+ 2. 016001  'Unknow error'
+```
  
  ```
  當下的時間(unix timestamp型式), 共10碼
