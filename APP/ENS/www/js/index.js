@@ -8,17 +8,10 @@ var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
 
 var prevPageID;
 
-//Set the result code, which is not [1], but still means [success],
-//need to be check the token_valid.
-var APIResultCodeArray = ["014904"];
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
 
 window.initialSuccess = function() {
-
-    //Concat result_code with common data which set in compnent.js
-    var tempCodeArray = codeArray;
-    codeArray = tempCodeArray.concat(APIResultCodeArray);
 
     loadingMask("show");
 
@@ -53,7 +46,7 @@ var processLocalData = {
             var expiredTimeStamp = parseInt(localData[dataName]["expiredTimeStamp"]);
             var latestUpdateTimeStamp = parseInt(localData[dataName]["latestUpdateTimeStamp"]);
 
-            if (latestUpdateTimeStamp > expiredTimeStamp) {
+            if (latestUpdateTimeStamp >= expiredTimeStamp) {
                 //data expired, call API again
                 callAPI();
             } else {
@@ -83,8 +76,27 @@ var processLocalData = {
         };
 
         this.updateLocalStorage();
+    },
+    createXMLDataString: function(data) {
+        var XMLDataString = "";
+
+        $.each(data, function(key, value) {
+            XMLDataString += "<" + key + ">" + htmlspecialchars(value) + "</" + key + ">";
+        });
+
+        return XMLDataString;
     }
 };
+
+//Cehck User Authority
+function checkAuthority(level) {
+    // admin / supervisor / common
+    if (loginData["RoleList"].indexOf(level) != -1) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //[Android]Handle the back button
 function onBackKeyDown() {

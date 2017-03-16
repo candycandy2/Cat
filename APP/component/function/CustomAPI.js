@@ -43,7 +43,7 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
         data: queryData,
         async: asyncType,
         cache: false,
-        timeout: 6000,
+        timeout: 30000,
         success: requestSuccess,
         error: requestError
     });

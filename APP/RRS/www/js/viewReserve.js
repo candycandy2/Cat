@@ -661,6 +661,11 @@
                 calSelectWidth($('#reserveSite'));
                 calSelectWidth($('#reserveFloor'));
                 calSelectWidth($('#reserveSetting'));
+                jqMobileOverwriteStyle();
+                // add 10px between header and main when device is iOS
+                if (device.platform === "iOS"){
+                    $('.ui-page').find('div.page-main').css({'padding-top': '0.5vw'});
+                }
             });
 
             /********************************** dom event *************************************/
@@ -908,6 +913,13 @@
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
                 $('div[for=reserveFailMsg]').popup('close');
             });
+
+            /********************************** overwrite jQuery mobile css *************************************/
+            function jqMobileOverwriteStyle(){
+                $('#viewNewSetting').find('.ui-margin-public').find('span').css({'line-height': 1, 'margin': '0 0 1.16vw'});
+                $('#viewNewSetting').find('.ui-margin-public').find('.ui-block-b.col-8').css({'line-height': 1});
+                $('#newSettingSelect').css({'margin-bottom': '4.88vw'});
+            }
         }
     });
 //});

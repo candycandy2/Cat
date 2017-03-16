@@ -48,19 +48,26 @@ a {
 
 #newSettingFloor div.ui-bar {
     text-align: center;
-    height: 7vh;
-    line-height: 7vh;
+    padding: 3vw 0;
     font-weight: initial;
+    text-shadow: none;
+    background-color: #f6f6f6;
+    border-width: 0 1px 1px 0;
+}
+
+#newSettingFloor > div > div:nth-of-type(3n+1) div.ui-bar{ border-left-width: 1px;}
+#newSettingFloor > div > div:nth-of-type(1) div.ui-bar, #newSettingFloor > div > div:nth-of-type(2) div.ui-bar, #newSettingFloor > div > div:nth-of-type(3) div.ui-bar{ 
+    border-top-width: 1px;
 }
 
 #navbar ul li a {
     line-height: 90%;
 }
 
-.ui-btn-active {
+.ui-btn-active, #newSettingFloor div.ui-btn-active{
     background-color: #0db6b7;
-    border-color: #0db6b7 !important;
     color: white !important;
+    border-color: #ddd !important;
 }
 
 .ui-controlgroup-controls label.ui-btn-active {
@@ -73,7 +80,8 @@ a {
 
 .ui-radio label {
     text-align: center !important;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
+    padding: 3vw 0;
 }
 
 #reserveDateSelect div.ui-bar-a {
@@ -126,24 +134,35 @@ a {
     text-align: left;
     height: 5.5vh;
     border-style: solid;
-    border-color: #666;
+    border-color: #d6d6d6;
     border-width: 0px 1px 1px 0px;
     padding: .4em 2vw !important;
 }
 
 #reserveDateSelect > div.ui-grid-c {
     border-style: solid;
-    border-color: #666;
+    border-color: #d6d6d6;
     border-width: 1px 0px 0px 1px;
-}
-
-#reserveDateSelect div.ui-bar div:nth-child(1) {
-    font-size: 5vw;
+    background-color: #f6f6f6;
 }
 
 #reserveDateSelect div.ui-bar div:nth-child(2) {
     font-size: 3vw;
+    margin-top: 1vw;
 }
+
+#viewNewSetting .ui-margin-public span{ display: block;}
+#viewNewSetting .ui-input-text{ margin: 0 0 5.38vw;}
+#viewNewSetting .col-8{ width: 100% !important;}
+#viewNewSetting .ui-grid-a > div:nth-of-type(2n+1){ margin-bottom: 1.16vw;}
+#viewNewSetting .ui-btn, #viewNewSetting label.ui-btn{ font-weight: normal;}
+#newSettingSelect span{ font-size: 3.55vw;}
+#newSettingSelect .ui-block-a span{ padding-top: 1vw;}
+#newSettingSelect, #newSettingPeople, #newSettingTime{ margin: 0 0 4.388vw; padding-bottom: 4.88vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#newSettingPeople, #newSettingTitle{ font-size: 4.18vw;}
+#newSettingPeople .ui-controlgroup{ margin: 0;}
+.ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
+
 
 
 /********************************** public area *************************************/
@@ -152,7 +171,7 @@ a {
     text-shadow: none !important;
     font-size: 2.8vh !important;
     border: 0;
-    padding-top: 1.5vh;
+    padding-top: 2.6vw;
 }
 
 .ui-margin-10 {
@@ -197,11 +216,16 @@ div.circle {
 }
 
 .ui-margin-public {
-    margin: 1.8vw 2.7vw !important;
+    margin: 1.8vw 3.71vw 3.99vw !important;
+    font-size: 4.18vw;
 }
 
+#viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
+#newSettingFloor{ font-size: 4.18vw;}
+#pageOne .scrollmenu{ margin-bottom: 0.99vw;}
+
 .title-icon {
-    height: 2.7vh;
+    height: 5.957vw;
 }
 
 .radius-btn {
@@ -334,14 +358,15 @@ div.circle {
 }
 
 .cntIcon {
-    width: 6vw;
-    height: 3.5vh;
+    width: 5.4vw;
+    height: 5.4vw;
     position: absolute;
     top: 0;
     right: 0;
     text-align: center;
-    line-height: 3.5vh;
+    line-height: 6vw;
     background-color: #142433 !important;
+    font-size: 3.55vw;
 }
 
 .setting-icon {
@@ -374,11 +399,8 @@ div.circle {
 }*/
 
 .word-mid {
-    position: absolute;
-    height: 8.5vh;
     text-align: left;
-    line-height: 8.5vh;
-    vertical-align: middle;
+    vertical-align: sub;
     margin-left: 3.3vw;
 }
 
@@ -409,11 +431,10 @@ div.circle {
 
 .dropdown-icon {
     outline: none;
-    padding: 5px;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     border: 0;
     background: url('../img/dropdown.png') right transparent;
-    background-size: 4vw 1.7vh;
+    background-size: 4vw 2.9vw;
     background-repeat: no-repeat;
     -webkit-appearance: none;
 }
@@ -492,15 +513,15 @@ hr.ui-color-green {
 /********************************** scrollmenu *************************************/
 
 div.scrollmenu {
-    background-color: white;
+    background-color: #f6f6f6;
     overflow: auto;
     white-space: nowrap;
     /*display: flex;*/
     border-style: solid;
     border-width: 1px 0px 1px 1px;
-    box-shadow: 5px 1px 3px #666;
-    border-color: #666 !important;
-    margin: 0 -2vw 0 0 !important;
+    border-color: #d6d6d6 !important;
+    margin: 0 -3.6vw 0 0 !important;
+    -webkit-overflow-scrolling: touch
 }
 
 div.scrollmenu a {
@@ -510,16 +531,22 @@ div.scrollmenu a {
     text-decoration: none;
     border-style: solid;
     border-width: 0px 1px 0px 0px;
-    border-color: #e4e4e4 !important;
+    border-color: #d6d6d6 !important;
 }
 
 #scrollDate a,
 #quickReserveScrollDate a {
-    padding: 1vh 6vw;
+    padding: 3vw 0;
+    width:30%;
+    font-weight: normal;
 }
 
+#scrollDate a{ padding: 2.4vw 0;}
+
 #reserveRoom a {
-    padding: 2vh 6vw;
+    padding: 3vw 0;
+    font-weight: normal;
+    width: 22%;
 }
 
 .hover {
