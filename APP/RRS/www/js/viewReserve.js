@@ -213,6 +213,7 @@
                 if ($('div[id^=time]').hasClass('hover')) {
                     $('div[id^=time]').removeClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                    $(this).find('.timeRemind').removeClass('timeShow');
                     $(this).find('div:nth-child(2)').addClass('iconSelect');
                 }
                 timeClick = [];
@@ -770,6 +771,8 @@
                     $(this).addClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelect');
                     $(this).find('div:nth-child(2)').addClass('iconSelected');
+                    $(this).find('.timeRemind').addClass('timeShow');
+                    $(this).find('.timeRemind').html('~' + addThirtyMins($(this).find('div > div:nth-child(1)').text()));
 
                 } else if (bReserveSelect) {
 
@@ -780,6 +783,7 @@
 
                     $(this).removeClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                    $(this).find('.timeRemind').removeClass('timeShow');
                     $(this).find('div:nth-child(2)').addClass('iconSelect');
 
                 }
