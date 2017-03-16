@@ -30,7 +30,7 @@
             width: 100%
         }
         #main_table {
-            margin: 22vw 0 3.6vw 0;
+            margin: 10vw 0 3.6vw 0;
             border-collapse: collapse;
             width: 100%;
         }
