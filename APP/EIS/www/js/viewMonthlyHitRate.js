@@ -1,6 +1,6 @@
 var chart, ro, product, tab, year, month, actualValue, budgetHitRate, yoyGrowth;
-var hcRo = "ALL";
-var hcProduct = "ALL Product";
+var hcRo = "All";
+var hcProduct = "All product";
 var productList = '<a id="ALL">ALL</a>';
 var monthlyHighchartsData = {
 	"Actual QTY" : {},
@@ -470,8 +470,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             tab = "QTY";
             year = thisYear;
             month = thisMonth;
-            hcRo = "ALL";
-            hcProduct = "ALL Product";
+            hcRo = "All";
+            hcProduct = "All product";
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
@@ -533,7 +533,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                         }
                         return s;
                     },
-                    // pointFormat: "Value: {point.y:.2f}",
                     shared: true,
                     useHTML: true,
                     hideDelay: 0,
@@ -651,7 +650,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(document).on('click', '#viewMonthlyHitRate .Ro > a', function(e) {
             e.preventDefault();
             ro = $(this).context.id;
-            hcRo = $(this).context.id;
+            if($(this).context.id == "ALL"){
+                hcRo = "All";
+            }else{
+                hcRo = $(this).context.id;
+            }
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
             actualValue = getActualValue(ro, product, year, month, tab);
@@ -669,7 +672,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             e.preventDefault();
             product = $(this).context.id;
             if($(this).context.id == "ALL"){
-                hcProduct = "ALL Product";
+                hcProduct = "All product";
             }else{
                 hcProduct = $(this).context.id;
             }
