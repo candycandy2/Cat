@@ -373,9 +373,9 @@ $(document).one("pagebeforecreate", function(){
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
-    successCallback =  successCallback || successCallback;
-    tokenValid = tokenValid || tokenValid;
-    data =  data || data;
+    successCallback =  successCallback || null;
+    tokenValid = tokenValid || null;
+    data =  data || null;
 
     resultCode = resultCode.toString();
 
@@ -404,7 +404,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
             var doSuccessCallback = false;
 
             //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
-            if (!isNaN(tokenValid)) {
+            if (tokenValid == null) {
                 doSuccessCallback = true;
             } else {
                 //Other Result code from API, show [Please contact ITS]
