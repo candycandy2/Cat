@@ -6,8 +6,8 @@
 POST /getaccountingrate?LAST_UPDATE_DATE=1464677364
 ```
 ##### Request Params
- 1. allows a-z,A-Z,0-9,-.@
- 2. begin with a-z,A-Z,0-9
+ 1. LAST_UPDATE_DATE (unix timestamp型式), 共10碼, 範例 2016/5/31 14:49:24換算為unix time為1464677364
+
 ##### Response
 ```json
 {
@@ -34,10 +34,18 @@ POST /getaccountingrate?LAST_UPDATE_DATE=1464677364
 }
 
 ```
+
+```json 空值範例
+{
+    "ResultCode":1,
+    "Message":"Success",
+    "Content":[]
+}
+
+```
 ##### Response Data
  1. 1 Success,return username in 'Content'
- 2. 998001 username is empty or invalid
- 3. 998002 call Jmessage API failed,check details in 'Content'
+
  
  ```
  當下的時間(unix timestamp型式), 共10碼
