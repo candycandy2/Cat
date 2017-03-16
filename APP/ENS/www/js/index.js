@@ -8,17 +8,10 @@ var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
 
 var prevPageID;
 
-//Set the result code, which is not [1], but still means [success],
-//need to be check the token_valid.
-var APIResultCodeArray = ["014901", "014904", "014907"];
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
 
 window.initialSuccess = function() {
-
-    //Concat result_code with common data which set in compnent.js
-    var tempCodeArray = codeArray;
-    codeArray = tempCodeArray.concat(APIResultCodeArray);
 
     loadingMask("show");
 
