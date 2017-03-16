@@ -347,6 +347,14 @@ $(document).one("pagebeforecreate", function(){
             });
 
         }
+        // close ifo msg init
+        if (!closeInfoMsgInit){
+            $(document).on('click', '#infoMsg #closeInfoMsg', function(){
+                $('#infoMsg').popup('close');
+                $('#infoMsg').hide();
+            });
+            closeInfoMsgInit = true;
+        }
     });
 });
 
@@ -667,15 +675,6 @@ function setWhiteList() {
             document.documentElement.style.webkitUserSelect = "none";
 
             infoMessage();
-
-            // close ifo msg init
-            if (!closeInfoMsgInit){
-                $(document).on('click', '#infoMsg #closeInfoMsg', function(){
-                    $('#infoMsg').popup('close');
-                    $('#infoMsg').hide();
-                });
-                closeInfoMsgInit = true;
-            }
         });
     };
 
