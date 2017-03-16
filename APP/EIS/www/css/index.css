@@ -221,7 +221,7 @@ div.scrollmenu a {
 	color: #0f0f0f;
 	font-family: Arial;
 	font-size: 2.8VH;
-	font-weight: bold;
+	font-weight: 400;
 	border-style: solid;
 	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
@@ -238,7 +238,7 @@ div.scrollmenu a.hover {
 
 div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 .scrollmenu.Ro{ overflow: hidden;}
-.scrollmenu.Ro a{ float: left;}
+.scrollmenu.Ro a { float: left;}
 /* let scroll more smooth in iOS */
 .scrollmenu.Product{ -webkit-overflow-scrolling: touch}
 
@@ -326,7 +326,6 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 #viewHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
 #viewMonthlyHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
 #viewYTDHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
-
 #viewHitRateZoomOutBtn{ display: none;}
 #viewMonthlyHitRateZoomOutBtn{ display: none;}
 #viewYTDHitRateZoomOutBtn{ display: none;}
