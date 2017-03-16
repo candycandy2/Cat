@@ -65,6 +65,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".sliderYTD").html("");
                 $(".sliderYTD").append(ytdPageDateList).enhanceWithin();
+
+                loadingMask("hide");
             };
             this.failCallback = function(data) {
                 console.log("api misconnected");
