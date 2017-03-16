@@ -74,4 +74,16 @@ class BasicInfoRepository
             ->orderBy('function','asc')
             ->get();
     }
+
+    /**
+     * 取得location下所有function
+     * @param  [type] $location [description]
+     * @return [type]           [description]
+     */
+    public function getAllFunctionByLocation($location){
+        return  $this->basicInfo
+            ->where('location', '=', $location)
+            ->select('function')
+            ->get();
+    }
 }
