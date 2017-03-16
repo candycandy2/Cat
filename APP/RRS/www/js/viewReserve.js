@@ -315,13 +315,13 @@
                 if (site == '1') { //QTY
                     $("#alertLimitRoomMsg").removeClass('disable');
                     if (floor == '3F') {
-                        $("#alertLimitRoomMsg").html('A30、E31會議室請使用PC預約');
+                        $("#alertLimitRoomMsg").html('*A30、E31會議室請使用PC預約');
                     } else if (floor == '7F') {
-                        $("#alertLimitRoomMsg").html('A70、B71會議室請使用PC預約');
+                        $("#alertLimitRoomMsg").html('*A70、B71會議室請使用PC預約');
                     }
                 } else if (site == '2' && floor == '1F') { //BQT/QTT
                     $("#alertLimitRoomMsg").removeClass('disable');
-                    $("#alertLimitRoomMsg").html('T00、T13會議室請使用PC預約');
+                    $("#alertLimitRoomMsg").html('*T00、T13會議室請使用PC預約');
                 }
             }
 
