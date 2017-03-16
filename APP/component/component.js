@@ -347,6 +347,16 @@ $(document).one("pagebeforecreate", function(){
             });
 
         }
+
+        // tab title, open version, uuid window
+        $(".ui-title").on("taphold", function(){
+            //Set for iOS, control text select
+            document.documentElement.style.webkitTouchCallout = "none";
+            document.documentElement.style.webkitUserSelect = "none";
+
+            infoMessage();
+        });
+
         // close ifo msg init
         if (!closeInfoMsgInit){
             $(document).on('click', '#infoMsg #closeInfoMsg', function(){
@@ -668,14 +678,6 @@ function setWhiteList() {
             $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
         }
-
-        $(".ui-title").on("taphold", function(){
-            //Set for iOS, control text select
-            document.documentElement.style.webkitTouchCallout = "none";
-            document.documentElement.style.webkitUserSelect = "none";
-
-            infoMessage();
-        });
     };
 
     this.failCallback = function() {};
