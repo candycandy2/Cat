@@ -382,18 +382,23 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
                 openAPIError("error");
             }
         } else {
-            //Other Result code from API, show [Please contact ITS]
-            var resultCodeStart = resultCode.substr(0, 3);
 
-            if (resultCodeStart === "999") {
-                openAPIError("error");
+            var doSuccessCallback = false;
+
+            //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
+            if (!isNaN(tokenValid)) {
+                doSuccessCallback = true;
             } else {
-                //Each [Success] case
-                var doSuccessCallback = false;
-                var clientTimestamp = new Date().getTime();
-                clientTimestamp = clientTimestamp.toString().substr(0, 10);
+                //Other Result code from API, show [Please contact ITS]
+                var resultCodeStart = resultCode.substr(0, 3);
 
-                if (!isNaN(tokenValid)) {
+                if (resultCodeStart === "999") {
+                    openAPIError("error");
+                } else {
+                    //Each [Success] case
+                    var clientTimestamp = new Date().getTime();
+                    clientTimestamp = clientTimestamp.toString().substr(0, 10);
+
                     if (parseInt(tokenValid - clientTimestamp, 10) < 60 * 60) {
                         //Only QPlay can do re-new Token, other APP must open QPlay to do this work.
                         if (appKey === qplayAppKey) {
@@ -409,15 +414,12 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
                             doSuccessCallback = true;
                         }
                     }
-                } else {
-                    //[checkAppVersion] & [logout] won't return token_valid, just do successCallback
-                    doSuccessCallback = true;
                 }
+            }
 
-                if (doSuccessCallback) {
-                    if (typeof successCallback === "function") {
-                        successCallback(data);
-                    }
+            if (doSuccessCallback) {
+                if (typeof successCallback === "function") {
+                    successCallback(data);
                 }
             }
         }
