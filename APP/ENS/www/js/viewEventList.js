@@ -32,7 +32,12 @@ $("#viewEventList").pagecontainer({
                         loginData["RoleList"].push(RoleList[i]);
                     }
 
-                    var EventList = new getEventList();
+                    //Set Event Type Selected Option
+                    if (window.localStorage.getItem("eventType") !== null) {
+                        var EventList = new getEventList(window.localStorage.getItem("eventType"));
+                    } else {
+                        var EventList = new getEventList();
+                    }
                     var basicInfo = new getBasicInfo();
 
                     showEventAdd();
@@ -46,15 +51,14 @@ $("#viewEventList").pagecontainer({
             };
 
             var __construct = function() {
-                if (!callGetAuthority) {
-                    processLocalData.checkLifeCycle("getAuthority", self.callAPI, self.successCallback);
-                }
+                processLocalData.checkLifeCycle("getAuthority", self.callAPI, self.successCallback);
             }();
 
         };
 
         function getEventList(eventType) {
 
+            eventType = eventType || null;
             var self = this;
 
             //queryData Type: (According to Dropdown List [Event Type])
@@ -81,11 +85,13 @@ $("#viewEventList").pagecontainer({
 
                 var resultCode = data['ResultCode'];
 
+                //Clear Event List Data
+                $("#reportDiv .event-list-msg").remove();
+
                 if (resultCode === 1) {
                     $(".event-list-no-data").hide();
 
-                    //Event List Msg
-                    $("#reportDiv .event-list-msg").remove();
+                    //Event List Msg 
                     var eventListMsgHTML = $("template#tplEventListMsg").html();
 
                     for (var i=0; i<data['Content'].length; i++) {
@@ -133,12 +139,12 @@ $("#viewEventList").pagecontainer({
                         $("#reportDiv").append(eventListMsg);
                     }
 
-                    loadingMask("hide");
-
                 } else if (resultCode === "014904") {
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
                 }
+
+                loadingMask("hide");
             };
 
             this.failCallback = function(data) {};
@@ -224,6 +230,12 @@ $("#viewEventList").pagecontainer({
                     //Sort User ID
                     loginData["BasicInfo"]["user"].sort();
 
+                    //Event Member Sort Type
+                    if (window.localStorage.getItem("eventMemberType") !== null) {
+                        memberListView(window.localStorage.getItem("eventMemberType"));
+                    } else {
+                        memberListView("location");
+                    }
                     memberListView("location");
                 }
             };
@@ -387,13 +399,22 @@ $("#viewEventList").pagecontainer({
         }
 
         function ahowEventData(dom, action) {
+            var openData = false;
+
             if (action === "member" || action === "function") {
-                var eventID = $(dom).parent().siblings(".event-list-msg-top").find(".link .normal .text").html();
+                //Only [admin] & [supervisor] can read (member) & (function)
+                if (checkAuthority("admin") || checkAuthority("supervisor")) {
+                    var eventID = $(dom).parent().siblings(".event-list-msg-top").find(".link .normal .text").html();
+                    openData = true;
+                }
             } else {
                 var eventID = $(dom).parent().find(".link .normal .text").html();
+                openData = true;
             }
 
-            var eventDetail = new getEventDetail(eventID, action);
+            if (openData) {
+                var eventDetail = new getEventDetail(eventID, action);
+            }
         }
 
         /********************************** page event *************************************/
@@ -423,6 +444,12 @@ $("#viewEventList").pagecontainer({
             tplJS.Tab("viewEventList", "contentEventList", "append", tabData);
 
             //UI Dropdown List : Event Type
+            if (window.localStorage.getItem("eventType") !== null) {
+                var eventTypeDefaultVal = window.localStorage.getItem("eventType");
+            } else {
+                var eventTypeDefaultVal = "0";
+            }
+
             var eventTypeData = {
                 id: "eventType",
                 option: [{
@@ -440,13 +467,20 @@ $("#viewEventList").pagecontainer({
                 }, {
                     value: "4",
                     text: "一般通報"
-                }]
+                }],
+                defaultValue: eventTypeDefaultVal
             };
 
             $("#reportDiv").append('<div id="eventTypeContent"></div>');
             tplJS.DropdownList("viewEventList", "eventTypeContent", "append", "typeA", eventTypeData);
 
             //UI Dropdown List : Event Member Type
+            if (window.localStorage.getItem("eventMemberType") !== null) {
+                var eventMemberTypeDefaultVal = window.localStorage.getItem("eventMemberType");
+            } else {
+                var eventMemberTypeDefaultVal = "location";
+            }
+
             var eventMemberTypeData = {
                 id: "eventMemberType",
                 option: [{
@@ -458,7 +492,8 @@ $("#viewEventList").pagecontainer({
                 }, {
                     value: "userDetail",
                     text: "成員排序"
-                }]
+                }],
+                defaultValue: eventMemberTypeDefaultVal
             };
 
             $("#memberDiv").append('<div id="eventMemberTypeContent"></div>');
@@ -481,8 +516,23 @@ $("#viewEventList").pagecontainer({
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
+            //Set Active Tab
+            $("#tabEventList a:eq(0)").addClass("ui-btn-active");
+            $("#tabEventList").tabs({ active: 0 });
+
             //Call API getAuthority
-            var Authority = new getAuthority();
+            if (!callGetAuthority) {
+                var Authority = new getAuthority();
+            } else {
+                loadingMask("show");
+
+                //Set Event Type Selected Option
+                if (window.localStorage.getItem("eventType") !== null) {
+                    var EventList = new getEventList(window.localStorage.getItem("eventType"));
+                } else {
+                    var EventList = new getEventList();
+                }
+            }
         });
 
         /********************************** dom event *************************************/
@@ -500,7 +550,11 @@ $("#viewEventList").pagecontainer({
         $(document).on("change", "#eventType", function() {
             $(".event-list-no-data").hide();
             loadingMask("show");
+
             var EventList = new getEventList($(this).val());
+
+            //Remember Event Type
+            window.localStorage.setItem("eventType", $(this).val());
         });
 
         //Event Member List Popup - Member List & View List
@@ -543,6 +597,9 @@ $("#viewEventList").pagecontainer({
         //Event Member List - Sort Type
         $(document).on("change", "#eventMemberType", function() {
             memberListView($(this).val());
+
+            //Remember Event Member Sort Type
+            window.localStorage.setItem("eventMemberType", $(this).val());
         });
     }
 });
