@@ -26,6 +26,9 @@ $("#viewEventAdd").pagecontainer({
 
                 if (resultCode === 1) {
                     $("#eventaAdditionalTitle").show();
+                    $("#eventAdditional").off();
+                    $("#eventAdditional").remove();
+                    $("#eventaAdditionalSelectContent").html("");
                     $("#eventaAdditionalSelectContent").show();
                     $("#eventaAdditionalContent").show();
 
@@ -49,6 +52,28 @@ $("#viewEventAdd").pagecontainer({
                     }
 
                     tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventRelatedData);
+
+                    $(document).on("change", "#eventAdditional", function() {
+                        var selectedValue = $(this).val();
+
+                        //create new Event Additional List, set new ID by count number
+                        var ID = parseInt($(".event-add-additional-list").length + 1, 10);
+
+                        var eventAdditionalListHTML = $("template#tplEventAdditionalList").html();
+
+                        $.each(eventRelatedData.option, function(key, obj) {
+                            if (obj.value == selectedValue) {
+
+                                var eventAdditionalList = $(eventAdditionalListHTML);
+
+                                //set Additional Event Number Text
+                                eventAdditionalList.find(".event-additional-number").html(obj.value);
+
+                                $("#eventaAdditionalContent .event-add-additional-list").remove();
+                                $("#eventaAdditionalContent").append(eventAdditionalList);
+                            }
+                        });
+                    });
 
                 } else if (resultCode === "014904" || resultCode === "014907") {
                     //014904: No Unrelated Event
@@ -84,9 +109,7 @@ $("#viewEventAdd").pagecontainer({
 
             //Related Event
             var relatedEventVal = $("#eventAdditional").val();
-            if (typeof relatedEventVal !== "number"){
-                relatedEventVal = "";
-            } else if (relatedEventVal === 0) {
+            if (!$.isNumeric(relatedEventVal)) {
                 relatedEventVal = "";
             }
 
@@ -168,7 +191,6 @@ $("#viewEventAdd").pagecontainer({
             doneDateTime["hour"] + ":" + doneDateTime["minute"];
             $("#textDateTime").html(textDateTime);
 
-            console.log(doneDateTime);
             tplJS.recoveryPageScroll();
         };
 
@@ -201,23 +223,6 @@ $("#viewEventAdd").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
-
-            //UI Dropdown List : Event Level
-            var eventLevelData = {
-                id: "eventLevel",
-                option: [{
-                    value: "1",
-                    text: "緊急通報"
-                }, {
-                    value: "2",
-                    text: "一般通報"
-                }],
-                attr: {
-                    class: "text-bold"
-                }
-            };
-
-            tplJS.DropdownList("viewEventAdd", "eventLevelContent", "append", "typeA", eventLevelData);
 
             //UI Dropdown List : Event Template
             eventTemplateData = {
@@ -288,15 +293,49 @@ $("#viewEventAdd").pagecontainer({
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditCancelConfirmData);
 
         });
-        
+
+        $("#viewEventAdd").on("pagebeforeshow", function(event, ui) {
+
+            //UI Dropdown List : Event Level
+            $("#eventLevelContent").html("");
+
+            var eventLevelData = {
+                id: "eventLevel",
+                option: [{
+                    value: "1",
+                    text: "緊急通報"
+                }, {
+                    value: "2",
+                    text: "一般通報"
+                }],
+                attr: {
+                    class: "text-bold"
+                },
+                defaultValue: "1"
+            };
+
+            tplJS.DropdownList("viewEventAdd", "eventLevelContent", "append", "typeA", eventLevelData);
+
+        });
+
         $("#viewEventAdd").on("pageshow", function(event, ui) {
             var unrelatedEventList = new getUnrelatedEventList();
+
+            //Set Default
+            $("#eventLevel").val("1");
+            $("#eventTemplateTextarea").val("請選擇範本或輸入標題");
+            $("#eventDescriptionTextarea").val("描述文字");
+            $("#eventLocationListContent .event-add-location-list").remove();
+            $("#setNow").prop("checked", "checked");
+            setDateTime = "setNow";
+            $("#textDateTime").html("");
+            $("#eventaAdditionalContent .event-add-additional-list").remove();
         });
 
         /********************************** dom event *************************************/
         $(document).on("change", "#eventTemplate", function() {
             var selectedValue = $(this).val();
-            console.log(selectedValue);
+
             $("#eventTemplateTextarea").val("");
 
             $.each(eventTemplateData.option, function(key, obj) {
@@ -310,7 +349,6 @@ $("#viewEventAdd").pagecontainer({
             var selectedLocation = $(this).val();
 
             //create new Event Location List, set new ID by count number
-            //var ID = parseInt($(".event-add-location-list").length + 1, 10);
             var ID = loctionFunctionID;
             loctionFunctionID++;
 
@@ -319,6 +357,7 @@ $("#viewEventAdd").pagecontainer({
                 id: "eventFunction-" + ID,
                 defaultText: "All Function",
                 title: "IT Function",
+                autoResize: false,
                 option: [{
                     value: "all",
                     text: "All Function"
@@ -355,7 +394,7 @@ $("#viewEventAdd").pagecontainer({
                     $("#eventLocationListContent").append(eventLocationList);
 
                     //create Event Function drowdown list
-                    tplJS.DropdownList("viewEventAdd", functionContentID, "append", "typeB", eventFunctionData);
+                    tplJS.DropdownList("viewEventAdd", functionContentID, "append", "typeA", eventFunctionData);
 
                     //resize Event Function drowdown list
                     tplJS.reSizeDropdownList(eventFunctionData.id, null, 81);
@@ -383,26 +422,6 @@ $("#viewEventAdd").pagecontainer({
                     };
 
                     loctionFunctionData.push(tempData);
-                }
-            });
-        });
-
-        $(document).on("change", "#eventAdditional", function() {
-            var selectedValue = $(this).val();
-
-            //create new Event Additional List, set new ID by count number
-            var ID = parseInt($(".event-add-additional-list").length + 1, 10);
-
-            var eventAdditionalListHTML = $("template#tplEventAdditionalList").html();
-
-            $.each(eventRelatedData.option, function(key, obj) {
-                if (obj.value == selectedValue) {
-                    var eventAdditionalList = $(eventAdditionalListHTML);
-
-                    //set Additional Event Number Text
-                    eventAdditionalList.find(".event-additional-number").html(obj.value);
-
-                    $("#eventaAdditionalContent").append(eventAdditionalList);
                 }
             });
         });

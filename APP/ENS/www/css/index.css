@@ -329,6 +329,7 @@ input[type=radio]:checked + label {
     font-size: 4.18vw;
     color: #0f0f0f;
     margin-left: 1.6vw;
+    line-height: 1.6;
 }
 
 .event-member-list li .left {
