@@ -57,7 +57,7 @@ class EventRepository
     /**
      * 新增事件資料
      * @param  Array  $data 新增事件內容
-     * @return int          新增成功的事件id
+     * @return bool
      */
     public function saveUserEvent(Array $data){
         return $this->userEvent-> insert($data);
@@ -85,20 +85,32 @@ class EventRepository
         
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
-        //if update clear related_event_row_id
-        $res = \DB::table("en_event")
-        ->join('en_event as rel','en_event.related_event_row_id','=','rel.row_id')
-        ->where('en_event.related_event_row_id','=',$eventId)
-        ->update(['en_event.related_event_row_id' => 0,
-                  'en_event.updated_user'=>$empNo,
-                  'en_event.updated_at'=>$now,
-                  ]);
-    
-         $this->event::where('row_id', $bindEventId)
+                
+        $this->event::where('row_id', $bindEventId)
              ->where('related_event_row_id',0)
              ->update(['related_event_row_id' => $eventId,
                        'en_event.updated_user'=>$empNo,
                        'en_event.updated_at'=>$now,]);
+        
+        $this->event::where('row_id', $eventId)
+             ->where('related_event_row_id',0)
+             ->update(['related_event_row_id' => $bindEventId,
+                       'en_event.updated_user'=>$empNo,
+                       'en_event.updated_at'=>$now,]);
+    }
+
+    public function unBindRelatedEvent($eventId,  $empNo){
+        $nowTimestamp = time();
+        $now = date('Y-m-d H:i:s',$nowTimestamp);
+        $res = \DB::table("en_event")
+        ->join('en_event as rel','en_event.related_event_row_id','=','rel.row_id')
+        ->where('en_event.related_event_row_id','=',$eventId)
+        ->update(['en_event.related_event_row_id' => 0,
+                  'rel.related_event_row_id'=>0,
+                  'en_event.updated_user'=>$empNo,
+                  'en_event.updated_at'=>$now,
+                  ]);
+
     }
 
     /**

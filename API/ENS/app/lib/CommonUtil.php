@@ -131,4 +131,37 @@ class CommonUtil
             return $ServerSignature;
         }
 
+
+    /**
+     * 將字串做javascript escape
+     * @param  string $str Utf-8字串
+     * @return string      javascript escape 後的字串
+     */
+    public static function jsEscape($str){
+        $ret = '';
+        $len = mb_strlen($str);
+        for ($i = 0; $i < $len; $i++)
+        {
+            $oriStr = mb_substr( $str,$i,1,"utf-8");
+            $uniStr = self::utf8_str_to_unicode($oriStr);
+            if($oriStr == $uniStr){
+                $ret .= rawurlencode($oriStr);
+            }else{
+                $ret .= $uniStr; 
+            }
+         }
+        return $ret;
+    }
+
+    /**
+     * utf8字符轉換成Unicode字符 (%uxxxx)
+     * @param  string $utf8_str Utf-8字符
+     * @return string           Unicode字符
+     */
+    public static function utf8_str_to_unicode($utf8_str) {
+        $conv = json_encode($utf8_str);
+        $conv = preg_replace('/\\\u/', '%u', $conv);
+        return  json_decode($conv);
+    }
+
 }
