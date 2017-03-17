@@ -62,6 +62,7 @@ class BasicInfoService
      * @return blool           
      */
     public function checkBasicInfo($location, $function){
+
         $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($location, $function);
         if(!is_null($res) && count($res) > 0){
             return true;
