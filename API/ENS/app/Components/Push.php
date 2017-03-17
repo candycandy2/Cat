@@ -37,7 +37,7 @@ class Push
                         'message_text' => $text,
                         'message_html' => '',
                         'message_url' => '',
-                        'message_source' => 'Cleo Test ENS',
+                        'message_source' => 'ENS',
                         'source_user_id' => $from,
                         'destination_user_id' => $to,
                         'destination_role_id' => array(
