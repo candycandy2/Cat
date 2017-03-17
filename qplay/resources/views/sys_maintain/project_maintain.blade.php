@@ -46,7 +46,7 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
                     <form id="projectForm" name="projectForm">
                         <table  width="100%">
                             <tr>
-                                <td>{{trans("messages.APP_KEY")}}:</td>
+                                <td>{{trans("messages.APP_ENG_NAME")}}:</td>
 
                                 <td style="padding: 10px;">
                                     <input type="text" data-clear-btn="true" class="form-control" name="txbAppKey"

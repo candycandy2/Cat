@@ -283,6 +283,7 @@ return [
     'PROJECT_PM' => 'PM',
     'PROJECT_MEMO' => 'Memo',
     'APP_MAINTAIN' => 'App Maintain',
+    'APP_ENG_NAME' => 'App Abbreviation Name',
     'ACTION_MAINTAIN' => 'Maintain',
     'SEND_EMAIL' => 'Send Email',
     'ACTION_SEND' => 'Send Again',
