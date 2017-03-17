@@ -1,6 +1,6 @@
 var chart, ro, product, year, month, actualValue, budgetHitRate, tab;
-var hcRo = "ALL";
-var hcProduct = "ALL Product";
+var hcRo = "All";
+var hcProduct = "All product";
 var Actual = {};
 var Budget = {};
 var ytdHighchartsData = {
@@ -339,8 +339,8 @@ $("#viewYTDHitRate").pagecontainer({
             tab = "QTY";
             year = thisYear;
             month = thisMonth;
-            hcRo = "ALL";
-            hcProduct = "ALL Product";
+            hcRo = "All";
+            hcProduct = "All product";
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
@@ -515,8 +515,12 @@ $("#viewYTDHitRate").pagecontainer({
 		$(document).on('click', '#viewYTDHitRate .Ro > a', function(e) {
 		    e.preventDefault();
 		    ro = $(this).context.id;
-            hcRo = $(this).context.id;
-		    $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            if($(this).context.id == "ALL"){
+                hcRo = "All";
+            }else{
+                hcRo = $(this).context.id;
+            }    
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
 		    $(this).addClass('hover');
 		    actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
@@ -532,7 +536,7 @@ $("#viewYTDHitRate").pagecontainer({
 		    e.preventDefault();
 		    product = $(this).context.id;
             if($(this).context.id == "ALL"){
-                hcProduct = "ALL Product";
+                hcProduct = "All product";
             }else{
                 hcProduct = $(this).context.id;
             }
