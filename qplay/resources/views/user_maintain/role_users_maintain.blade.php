@@ -173,6 +173,9 @@ foreach ($allCompanyRoleList as $companyRoles) {
                         showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_COPY_LIST_SUCCESS")}}");
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                     }
                 });
@@ -255,6 +258,9 @@ foreach ($allCompanyRoleList as $companyRoles) {
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                     }
                 });

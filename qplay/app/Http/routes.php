@@ -20,6 +20,69 @@ if (array_key_exists('lang',$_GET)){
     App::setLocale(session('lang'));
 }
 
+Route::any('/platform/getUserList', ['middleware' => 'auth','uses'=>'platformController@getUserList']);
+Route::any('/platform/getUserListWithoutGroup', ['middleware' => 'auth','uses'=>'platformController@getUserListWithoutGroup']);
+Route::any('/platform/getRoleList', ['middleware' => 'auth','uses'=>'platformController@getRoleList']);
+Route::any('/platform/removeUserRight', ['middleware' => 'auth','uses'=>'platformController@removeUserRight']);
+Route::any('/platform/saveUser', ['middleware' => 'auth','uses'=>'platformController@saveUser']);
+Route::any('/platform/deleteRole', ['middleware' => 'auth','uses'=>'platformController@deleteRole']);
+Route::any('/platform/saveRole', ['middleware' => 'auth','uses'=>'platformController@saveRole']);
+Route::any('/platform/getRoleUsers', ['middleware' => 'auth','uses'=>'platformController@getRoleUsers']);
+Route::any('/platform/saveRoleUsers', ['middleware' => 'auth','uses'=>'platformController@saveRoleUsers']);
+Route::any('/platform/getRootMenuList', ['middleware' => 'auth','uses'=>'platformController@getRootMenuList']);
+Route::any('/platform/deleteMenu', ['middleware' => 'auth','uses'=>'platformController@deleteMenu']);
+Route::any('/platform/newMenu', ['middleware' => 'auth','uses'=>'platformController@newMenu']);
+Route::any('/platform/saveMenuSequence', ['middleware' => 'auth','uses'=>'platformController@saveMenuSequence']);
+Route::any('/platform/getSubMenuList', ['middleware' => 'auth','uses'=>'platformController@getSubMenuList']);
+Route::any('/platform/saveRootMenu', ['middleware' => 'auth','uses'=>'platformController@saveRootMenu']);
+Route::any('/platform/getGroupList', ['middleware' => 'auth','uses'=>'platformController@getGroupList']);
+Route::any('/platform/deleteGroup', ['middleware' => 'auth','uses'=>'platformController@deleteGroup']);
+Route::any('/platform/saveGroup', ['middleware' => 'auth','uses'=>'platformController@saveGroup']);
+Route::any('/platform/getGroupUsers', ['middleware' => 'auth','uses'=>'platformController@getGroupUsers']);
+Route::any('/platform/saveGroupUsers', ['middleware' => 'auth','uses'=>'platformController@saveGroupUsers']);
+Route::any('/platform/getParameterTypeList', ['middleware' => 'auth','uses'=>'platformController@getParameterTypeList']);
+Route::any('/platform/deleteParameterType', ['middleware' => 'auth','uses'=>'platformController@deleteParameterType']);
+Route::any('/platform/saveParameterType', ['middleware' => 'auth','uses'=>'platformController@saveParameterType']);
+Route::any('/platform/getParameterList', ['middleware' => 'auth','uses'=>'platformController@getParameterList']);
+Route::any('/platform/deleteParameter', ['middleware' => 'auth','uses'=>'platformController@deleteParameter']);
+Route::any('/platform/saveParameter', ['middleware' => 'auth','uses'=>'platformController@saveParameter']);
+
+//push
+Route::any('/push/getMessageList', ['middleware' => 'auth','uses'=>'pushController@getMessageList']);
+Route::any('/push/saveNewMessage', ['middleware' => 'auth','uses'=>'pushController@saveNewMessage']);
+Route::any('/push/getMessageSendList', ['middleware' => 'auth','uses'=>'pushController@getMessageSendList']);
+Route::any('/push/saveMessageVisible', ['middleware' => 'auth','uses'=>'pushController@saveMessageVisible']);
+Route::any('/push/pushMessageImmediatelyAgain', ['middleware' => 'auth','uses'=>'pushController@pushMessageImmediatelyAgain']);
+Route::any('/push/saveUpdateMessage', ['middleware' => 'auth','uses'=>'pushController@saveUpdateMessage']);
+Route::any('/push/saveUpdateAndPushMessage',['middleware' => 'auth','uses'=> 'pushController@saveUpdateAndPushMessage']);
+Route::any('/push/getSingleEventMessageReceiver', ['middleware' => 'auth','uses'=>'pushController@getSingleEventMessageReceiver']);
+Route::any('/push/getSecretaryMessageList', ['middleware' => 'auth','uses'=>'pushController@getSecretaryMessageList']);
+Route::any('/push/pushSecretaryMessage', ['middleware' => 'auth','uses'=>'pushController@pushSecretaryMessage']);
+
+Route::any('/platform/getProjectList', ['middleware' => 'auth','uses'=>'platformController@getProjectList']);
+Route::any('/platform/deleteProject', ['middleware' => 'auth','uses'=>'platformController@deleteProject']);
+Route::any('/platform/newProject', ['middleware' => 'auth','uses'=>'platformController@newProject']);
+Route::any('/platform/updateProject', ['middleware' => 'auth','uses'=>'platformController@updateProject']);
+Route::any('/platform/sendProjectInformation', ['middleware' => 'auth','uses'=>'platformController@sendProjectInformation']);
+
+Route::any('/AppMaintain/getCategoryList', ['middleware' => 'auth','uses'=>'AppMaintainController@getCategoryList']);
+Route::any('/AppMaintain/saveCategory', ['middleware' => 'auth','uses'=>'AppMaintainController@saveCategory']);
+Route::any('/AppMaintain/deleteCategory', ['middleware' => 'auth','uses'=>'AppMaintainController@deleteCategory']);
+Route::any('/AppMaintain/getCategoryAppsList', ['middleware' => 'auth','uses'=>'AppMaintainController@getCategoryAppsList']);
+Route::any('/AppMaintain/getOtherAppList', ['middleware' => 'auth','uses'=>'AppMaintainController@getOtherAppList']);
+Route::any('/AppMaintain/saveCategoryApps', ['middleware' => 'auth','uses'=>'AppMaintainController@saveCategoryApps']);
+Route::any('/AppMaintain/getBlockList', ['middleware' => 'auth','uses'=>'AppMaintainController@getBlockList']);
+Route::any('/AppMaintain/saveBlockList', ['middleware' => 'auth','uses'=>'AppMaintainController@saveBlockList']);
+Route::any('/AppMaintain/deleteBlockList', ['middleware' => 'auth','uses'=>'AppMaintainController@deleteBlockList']);
+Route::any('/AppMaintain/saveAppMainData', ['middleware' => 'auth','uses'=>'AppMaintainController@saveAppMainData']);
+Route::any('/AppMaintain/getWhiteList', ['middleware' => 'auth','uses'=>'AppMaintainController@getWhiteList']);
+Route::any('/AppMaintain/getCustomApi', ['middleware' => 'auth','uses'=>'AppMaintainController@getCustomApi']);
+Route::any('/AppMaintain/getAppUser', ['middleware' => 'auth','uses'=>'AppMaintainController@getAppUser']);
+Route::any('/AppMaintain/getAppVersionList', ['middleware' => 'auth','uses'=>'AppMaintainController@getAppVersionList']);
+Route::any('/AppMaintain/saveAppDetail', ['middleware' => 'auth','uses'=>'AppMaintainController@saveAppDetail']);
+Route::any('/AppMaintain/getMaintainAppList', ['middleware' => 'auth','uses'=>'AppMaintainController@getMaintainAppList']);
+
+/*
 Route::any('/platform/getUserList', 'platformController@getUserList');
 Route::any('/platform/getUserListWithoutGroup', 'platformController@getUserListWithoutGroup');
 Route::any('/platform/getRoleList', 'platformController@getRoleList');
@@ -81,6 +144,7 @@ Route::any('/AppMaintain/getAppUser', 'AppMaintainController@getAppUser');
 Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersionList');
 Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
 Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintainAppList');
+*/
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -93,6 +157,13 @@ Route::any('/', 'AuthController@checkLogin');
 Route::any('auth/checkLogin', 'AuthController@checkLogin');
 Route::any('auth/login_process', 'AuthController@authenticate');
 Route::any('auth/logout', 'AuthController@logout');
+
+/*
+Route::any('/', ['middleware' => 'auth','uses'=>'AuthController@checkLogin']);
+Route::any('auth/checkLogin', ['middleware' => 'auth','uses'=>'AuthController@checkLogin']);
+Route::any('auth/login_process', ['middleware' => 'auth','uses'=>'AuthController@authenticate']);
+Route::any('auth/logout', ['middleware' => 'auth','uses'=>'AuthController@logout']);
+*/
 
 Route::any('accountMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/account_maintain");
@@ -143,7 +214,10 @@ Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/ios");
 }]);
 
-
+/*
+Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
+Route::any('appDetailMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
+*/
 Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
 Route::any('appDetailMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
 
@@ -189,10 +263,12 @@ Route::any('lang/{lang}/{uri}', function($lang, $uri) {
 Route::any('testJpush', ['middleware' => 'auth', function() {
     return view("test/jpush_test");
 }]);
-Route::any('test/jpushTest', 'testController@jpushTest');
+//Route::any('test/jpushTest', 'testController@jpushTest');
+Route::any('test/jpushTest', ['middleware' => 'auth','uses'=>'testController@jpushTest']);
 
 Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
     return view("tool/sync_jpush_tags_tool");
 }]);
-Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
+//Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
+Route::any('tool/syncJpushTags', ['middleware' => 'auth','uses'=>'toolController@syncJpushTags']);
 
