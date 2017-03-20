@@ -51,7 +51,7 @@ a {
     padding: 3vw 0;
     font-weight: initial;
     text-shadow: none;
-    background-color: #f6f6f6;
+    background-color: #fff;
     border-width: 0 1px 1px 0;
 }
 
@@ -156,7 +156,7 @@ a {
 #viewNewSetting .ui-input-text{ margin: 0 0 5.38vw;}
 #viewNewSetting .col-8{ width: 100% !important;}
 #viewNewSetting .ui-grid-a > div:nth-of-type(2n+1){ margin-bottom: 1.16vw;}
-#viewNewSetting .ui-btn, #viewNewSetting label.ui-btn{ font-weight: normal;}
+#viewNewSetting .ui-btn, #viewNewSetting label.ui-btn{ font-weight: normal; background-color: #fff;}
 #newSettingSelect span{ font-size: 3.55vw;}
 #newSettingSelect .ui-block-a span{ padding-top: 1vw;}
 #newSettingSelect, #newSettingPeople, #newSettingTime{ margin: 0 0 4.388vw; padding-bottom: 4.88vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}

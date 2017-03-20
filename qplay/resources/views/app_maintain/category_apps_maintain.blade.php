@@ -157,6 +157,9 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                     }
                 });

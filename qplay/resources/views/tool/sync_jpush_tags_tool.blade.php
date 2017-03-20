@@ -52,6 +52,9 @@ $menu_name = "SYNC_JPUSH_TAGS_TOOL";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showResult("Failed", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });

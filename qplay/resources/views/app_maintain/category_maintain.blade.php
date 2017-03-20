@@ -79,6 +79,9 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_CATEGORY_FAILED")}}", e.responseText);
                     }
                 });
@@ -175,6 +178,9 @@ $menu_name = "APP_CATEGORY_MAINTAIN";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_CATEGORY_FAILED")}}", e.responseText);
                     }
                 });

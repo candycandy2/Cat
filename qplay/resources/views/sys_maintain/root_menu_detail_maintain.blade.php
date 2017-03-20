@@ -323,6 +323,9 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                         return false;
+                    }
                     $("#gridSubMenuList").bootstrapTable('refresh');
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
@@ -385,6 +388,9 @@ $menuInfo = \App\lib\CommonUtil::getMenuInfo($menuId);
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });

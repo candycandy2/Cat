@@ -81,6 +81,9 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_ROLE_FAILED")}}", e.responseText);
                     }
                 });
@@ -148,6 +151,9 @@ $allCompanyList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_ROLE_FAILED")}}", e.responseText);
                 }
             });

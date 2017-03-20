@@ -80,9 +80,12 @@ $("#viewEventContent").pagecontainer({
                         } else {
                             $("#contentEventContent .relate-event").html(data['Content'].related_event_row_id);
                             $("#contentEventContent .relate-event-content").show();
+                            $('<hr class="ui-hr ui-hr-absolute">').insertAfter("#contentEventContent .relate-event-content");
+                            $("#contentEventContent .relate-event-content .event-content-data-list").css("margin-bottom", "1vw");
                         }
 
                         //Task List
+                        $("#contentEventContent #eventTaskListContent div").remove();
                         var eventTaskListBeforeHTML = $("#contentEventContent").find("template#tplEventTaskListBefore").html();
                         var eventTaskListAfterHTML = $("#contentEventContent").find("template#tplEventTaskListAfter").html();
 
@@ -103,7 +106,9 @@ $("#viewEventContent").pagecontainer({
                         }
 
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
-                        $('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
+
+                        //Message List
+                        //$('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
                     }
 
                 }
