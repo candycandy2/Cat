@@ -8,6 +8,120 @@ $("#viewEventContent").pagecontainer({
         var uploadPhoto = false;
         /********************************** function *************************************/
 
+        window.getEventDetail = function(eventID, action) {
+            action = action || null;
+
+            var self = this;
+            var queryData = "<LayoutHeader><event_row_id>" + eventID + "</event_row_id><emp_no>" + loginData["emp_no"] + "</emp_no></LayoutHeader>";
+
+            this.successCallback = function(data) {
+
+                var resultCode = data['ResultCode'];
+
+                if (resultCode === 1) {
+
+                    if (action === "member") {
+                        //Define in viewEventList
+                        memberListPopup(data['Content']);
+                    } else if (action === "function") {
+                        //Define in viewEventList
+                        functionListPopup(data['Content']);
+                    } else {
+                        loadingMask("hide");
+
+                        $("#contentEventContent .event-list-msg").remove();
+
+                        //Event List Msg
+                        var eventListMsgHTML = $("template#tplEventListMsg").html();
+                        var eventListMsg = $(eventListMsgHTML);
+                        eventListMsg.css("margin-bottom", "2.14vw");
+
+                        //Created User
+                        eventListMsg.find(".event-list-msg-top .name").html(data['Content'].created_user);
+
+                        //Create Datetime - Convert with TimeZone
+                        var tempDate = dateFormatYMD(data['Content'].created_at);
+                        var createTime = new Date(tempDate);
+                        var createTimeConvert = createTime.TimeZoneConvert();
+                        createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+                        eventListMsg.find(".event-list-msg-top .time").html(createTimeConvert);
+
+                        //Event ID Number
+                        eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'].event_row_id);
+
+                        //Event Title
+                        eventListMsg.find(".event-list-msg-top .description").html(data['Content'].event_title);
+
+                        //Event Desc
+                        var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
+                        eventListMsg.find(".event-list-msg-top").append(desc);
+
+                        //User Count
+                        eventListMsg.find(".event-list-msg-bottom .member .text").html(data['Content'].user_count);
+
+                        //Seen Count
+                        eventListMsg.find(".event-list-msg-bottom .view .text").html(data['Content'].seen_count);
+
+                        //Task finish Count
+                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
+
+                        $("#contentEventContent").prepend(eventListMsg);
+
+                        //Complete Datetime
+                        var completeTime = new Date(parseInt(data['Content'].estimated_complete_date * 1000, 10));
+                        var completeTimeConvert = completeTime.TimeZoneConvert();
+                        completeTimeConvert = completeTimeConvert.substr(0, parseInt(completeTimeConvert.length - 3, 10));
+                        $("#contentEventContent .datetime").html(completeTimeConvert);
+
+                        //Related Event
+                        if (data['Content'].related_event_row_id === 0) {
+                            //No Related Event
+                            $("#contentEventContent .relate-event-content").hide();
+                        } else {
+                            $("#contentEventContent .relate-event").html(data['Content'].related_event_row_id);
+                            $("#contentEventContent .relate-event-content").show();
+                            $('<hr class="ui-hr ui-hr-absolute">').insertAfter("#contentEventContent .relate-event-content");
+                            $("#contentEventContent .relate-event-content .event-content-data-list").css("margin-bottom", "1vw");
+                        }
+
+                        //Task List
+                        $("#contentEventContent #eventTaskListContent div").remove();
+                        var eventTaskListBeforeHTML = $("#contentEventContent").find("template#tplEventTaskListBefore").html();
+                        var eventTaskListAfterHTML = $("#contentEventContent").find("template#tplEventTaskListAfter").html();
+
+                        for (var i=0; i<data['Content'].task_detail.length; i++) {
+                            if (data['Content'].task_detail[i].task_status === "0") {
+                                //Before Done
+                                var eventTaskList = $(eventTaskListBeforeHTML);
+                            } else {
+                                //After Done
+                                var eventTaskList = $(eventTaskListAfterHTML);
+                                eventTaskList.find(".user").html(data['Content'].task_detail[i].close_task_user_id);
+                                eventTaskList.find(".datetime").html(data['Content'].task_detail[i].close_task_date);
+                            }
+                            eventTaskList.find(".title").html(data['Content'].task_detail[i].task_location);
+                            eventTaskList.find(".function").html(data['Content'].task_detail[i].task_function);
+
+                            $("#contentEventContent #eventTaskListContent").append(eventTaskList);
+                        }
+
+                        $("#eventTaskListContent").css("margin-bottom", "1.5vw");
+
+                        //Message List
+                        //$('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
+                    }
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "getEventDetail", self.successCallback, self.failCallback, queryData, "");
+            }();
+
+        };
+
         //For Plugin Camera
         function setOptions(srcType) {
             var options = {
@@ -33,18 +147,6 @@ $("#viewEventContent").pagecontainer({
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
 
                 photoUrl = imageUri;
-                //var image = document.getElementById('myImage');
-                //image.src = imageUri;
-
-                /*
-                var canvas = document.createElement('canvas');
-                var context = canvas.getContext('2d');
-                var img = document.getElementById('myImage');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                context.drawImage(img, 0, 0 );
-                var myData = context.getImageData(0, 0, img.width, img.height);
-                */
 
                 $("<img id='myTempImage' style='display:none;' src='" + photoUrl + "'>").load(function() {
                     $(this).appendTo("#tempImage");
@@ -63,12 +165,10 @@ $("#viewEventContent").pagecontainer({
 
                 // JPEG file
                 dirEntry.getFile("tempFile.jpeg", { create: true, exclusive: false }, function (fileEntry) {
-
                     // Do something with it, like write to it, upload it, etc.
                     // writeFile(fileEntry, imgUri);
                     console.log("got file: " + fileEntry.fullPath);
                     // displayFileData(fileEntry.fullPath, "File copied to");
-
                 }, onErrorCreateFile);
 
             }, onErrorResolveUrl);
@@ -136,11 +236,6 @@ $("#viewEventContent").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewEventContent").one("pagebeforeshow", function(event, ui) {
-
-            //Event List Msg
-            var eventListMsgHTML = $("template#tplEventListMsg").html();
-            var eventListMsg = $(eventListMsgHTML);
-            $("#contentEventContent").prepend(eventListMsg);
 
             //UI Popup : Report Event Work Done Confirm
             var eventReportWorkDoneConfirmData = {

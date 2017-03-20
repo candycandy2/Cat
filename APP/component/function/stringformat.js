@@ -34,3 +34,17 @@ function padLeft(str, length) {
     else
         return padLeft("0" + str, length);
 }
+
+//API - XML data need to do [ PHP htmlspecialchars() ]
+function htmlspecialchars(text) {
+    if (typeof text === "string") {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    } else {
+        return text;
+    }
+}

@@ -221,7 +221,7 @@ class PushUtil
 
     public static function GetTagByUserInfo($userInfo) {
         $company = strtoupper($userInfo->company);
-        $firstLetter = substr($userInfo->login_id, 0, 1);
+        $firstLetter = strtoupper(substr($userInfo->login_id, 0, 1));
         switch ($firstLetter) {
             case 'A':
             case 'B':

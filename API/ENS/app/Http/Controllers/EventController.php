@@ -101,7 +101,7 @@ class EventController extends Controller
             
 
             //has related
-            if($data['related_event_row_id'] != ""){
+            if(isset($data['related_event_row_id']) && $data['related_event_row_id'] != ""){
 
                 $verifyResult = $Verify->checkRelatedEvent($data['related_event_row_id'], $this->eventService);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
@@ -119,6 +119,7 @@ class EventController extends Controller
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
                 }
+
                 if(!$this->basicInfoService->checkBasicInfo($basicInfo['location'],$basicInfo['function'])){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014902_locationOrFunctionNotFound,
                     'Message'=>"Location或是Function錯誤",
@@ -391,17 +392,25 @@ class EventController extends Controller
             }
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
+            $data = CommonUtil::arrangeDataFromXml($xml, array('emp_no', 'event_row_id', 'read_time','event_status',
+                                                               'lang', 'need_push', 'app_key'));
+            $empNo = $data['emp_no'];
+            $eventId = $data['event_row_id'];
 
-            $empNo = trim((string)$xml->emp_no[0]);
-            $eventId = trim((string)$xml->event_row_id[0]);
-            $readTime =  trim((string)$xml->read_time[0]);
-            $eventStatus = trim((string)$xml->event_status[0]);
-
-            if(!isset($eventId) || trim($eventId) == "" ){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
+            if(!isset($eventId) || trim($eventId) == "" || 
+               !isset($data['lang'])|| $data['lang']=="" || 
+               !isset($data['need_push'])   || $data['need_push']=="" || 
+               !isset($data['app_key'])     || $data['app_key']==""){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                'Message'=>"必填欄位缺失",
+                'Content'=>""]);
             }
+
+            $queryParam =  array(
+                    'lang'      => $data['lang'],
+                    'need_push' => $data['need_push'],
+                    'app_key'   => $data['app_key']
+                    );
 
             if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
                      return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
@@ -423,8 +432,17 @@ class EventController extends Controller
             }
 
             //update Event Status
-            if($eventStatus!=""){
+            if(isset($data['event_status']) && $data['event_status']!=""){
 
+               if(!isset($data['lang'])        || $data['lang']=="" || 
+               !isset($data['need_push'])   || $data['need_push']=="" || 
+               !isset($data['app_key'])     || $data['app_key']==""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+                }
+                $eventStatus = $data['event_status'];
+               
                 $userAuthList = $this->userService->getUserRoleList($empNo);
                 if(!in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
@@ -438,14 +456,17 @@ class EventController extends Controller
                     'Message'=>"事件狀態碼錯誤",
                     'Content'=>""]);
                 }
+
                 //update qp_event
                 $data = CommonUtil::arrangeDataFromXml($xml, array('event_status'));
-                $this->eventRepository->updateEventById($empNo, $eventId, $data);
+                $updateResult = $this->eventService->updateEvent($empNo, $eventId, $data, $queryParam);
             }
 
             //update Event Read Time
-            if($readTime!=""){
+            if(isset($data['read_time']) && $data['read_time']!=""){
                 
+                $readTime = $data['read_time'];
+
                 if(!$this->eventService->checkUpdateEventAuth($eventId, $empNo)){
                     return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
@@ -537,7 +558,7 @@ class EventController extends Controller
 
         $data = CommonUtil::arrangeDataFromXml($xml, $insertfieldAry);
         $data['event_desc'] = (string)$xml->event_desc[0];
-
+ 
         foreach ($xml->basic_list as $key => $value) {
              $tmp['location'] = trim((string)$value->location[0]);
              $tmp['function'] = trim((string)$value->function[0]);

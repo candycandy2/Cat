@@ -229,6 +229,15 @@ var tplJS = {
         //DropdownList ID
         dropdownList.prop("id", data.id);
 
+        //DropdownList Default Selected Option Value
+        var defaultValue = data.defaultValue;
+
+        //DropdownList AutoResize
+        var autoResize = true;
+        if (data.autoResize !== undefined) {
+            autoResize = data.autoResize;
+        }
+
         //DropdownList Background IMG
         if (type === "typeB") {
             dropdownList.addClass("tpl-dropdown-list-icon-add");
@@ -248,6 +257,11 @@ var tplJS = {
 
                 dropdownListOption.prop("value", data.option[i].value);
                 dropdownListOption.prop("text", data.option[i].text);
+
+                if (defaultValue == data.option[i].value) {
+                    dropdownListOption.prop("selected", "selected");
+                }
+
                 dropdownList.append(dropdownListOption);
             }
         } else if (type === "typeB") {
@@ -286,10 +300,13 @@ var tplJS = {
 
         for (var i=0; i<data.option.length; i++) {
             var dropdownListLi = $(dropdownListLiHTML);
-
-            dropdownListLi.prop("value", data.option[i].value);
+            dropdownListLi.data("value", data.option[i].value);
             dropdownListLi.html(data.option[i].text);
             dropdownListUl.append(dropdownListLi);
+
+            if (defaultValue == data.option[i].value) {
+                dropdownListLi.addClass("tpl-dropdown-list-selected");
+            }
 
             if (i !== parseInt(data.option.length - 1, 10)) {
                 var dropdownListHr = $(dropdownListHrHTML);
@@ -339,7 +356,9 @@ var tplJS = {
             $('#' + popupID).popup('close');
 
             if (type === "typeA") {
-                tplJS.reSizeDropdownList(data.id, type);
+                if (autoResize) {
+                    tplJS.reSizeDropdownList(data.id, type);
+                }
             }
             tplJS.recoveryPageScroll();
         });
@@ -350,8 +369,10 @@ var tplJS = {
             $(this).addClass("tpl-dropdown-list-selected");
 
             if (type === "typeA") {
-                $("#" + data.id).val($(this).val());
-                tplJS.reSizeDropdownList(data.id, type);
+                $("#" + data.id).val($(this).data("value"));
+                if (autoResize) {
+                    tplJS.reSizeDropdownList(data.id, type);
+                }
             } else if (type === "typeB") {
                 //Find drowdown list, set selected option value
                 var defaultText;
@@ -361,17 +382,18 @@ var tplJS = {
                     }
                 });
 
-                var newOption = '<option value="' + $(this).val() + '" hidden selected>' + defaultText + '</option>';
+                var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
+
                 $("#" + data.id).find("option").remove().end().append(newOption);
-
-                //Trigger drowdown list 'change' event
-                $("#" + data.id).trigger("change");
-
-                //Close Popup
-                $('#' + popupID).popup('close');
-
-                tplJS.recoveryPageScroll();
             }
+
+            //Trigger drowdown list 'change' event
+            $("#" + data.id).trigger("change");
+
+            //Close Popup
+            $('#' + popupID).popup('close');
+
+            tplJS.recoveryPageScroll();
         });
 
         //Auto Resize DropdownList Width

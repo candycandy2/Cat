@@ -220,8 +220,8 @@ div.scrollmenu a {
 	background-color: #fbfdfd;
 	color: #0f0f0f;
 	font-family: Arial;
-	font-size: 2.8VH;
-	font-weight: bold;
+	font-size: 4.18VW;
+	font-weight: 400;
 	border-style: solid;
 	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
@@ -238,7 +238,7 @@ div.scrollmenu a.hover {
 
 div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 .scrollmenu.Ro{ overflow: hidden;}
-.scrollmenu.Ro a{ float: left;}
+.scrollmenu.Ro a { float: left;}
 /* let scroll more smooth in iOS */
 .scrollmenu.Product{ -webkit-overflow-scrolling: touch}
 
@@ -306,14 +306,12 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 /********************************************** highcharts landscape *********************************************/
 .ui-landscape .viewIndex.ui-page .ui-content.page-main>div:not(.chartArea):not(.hc-fragment),
 	.ui-landscape .viewIndex.ui-page .ui-content.page-main>form,
-	.ui-landscape #viewHitRate #data-title-bar, .ui-landscape .page-header,
+	.ui-landscape #viewHitRate #data-title-bar, .ui-landscape #viewMonthlyHitRate #title-container, 
+	.ui-landscape #viewYTDHitRate #title-container, .ui-landscape .page-header,
 	.ui-landscape div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup{ display: none;}
 .ui-landscape .viewIndex.ui-page{ background-color: #fff;}
-.ui-landscape .chartArea{ -webkit-transform:rotate(90deg) translate(3%, 8%); -moz-transform:rotate(90deg) translate(3%, 8%); transform:rotate(90deg) translate(3%, 8%);}
-.ui-landscape .zoomBtn{ bottom: auto; top: -7%; right: -30%; width: 8%;}
-/*.ui-landscape #viewHitRateZoomOutBtn{top: -50%; right: 10%; width: 8%;}
-.ui-landscape #viewMonthlyHitRateZoomOutBtn{ bottom: auto; top: -7%; right: 70%; width: 8%;}
-.ui-landscape #viewYTDHitRateZoomOutBtn{ bottom: auto; top: -7%; right: 70%; width: 8%;}*/
+.ui-landscape .chartArea{-webkit-transform:rotate(90deg) translate(3%, 8%); -moz-transform:rotate(90deg) translate(3%, 8%); transform:rotate(90deg) translate(3%, 8%);}
+.ui-landscape .zoomOutBtn{ position: absolute; bottom: auto; top: -7%; right: -50%; width: 8%;}
 .ui-landscape .ui-content{ overflow-x: visible;}
 .ui-landscape .hc-fragment{ height: auto;}
 .ui-landscape .zoomInBtn{ display: none;}
@@ -321,13 +319,13 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 .ui-landscape #viewMonthlyHitRateZoomOutBtn{ display: inline;}
 .ui-landscape #viewYTDHitRateZoomOutBtn{ display: inline;}
 .ui-landscape .page-main{ margin-right: -5%;}
+
 /* zoom btn */
 .chartArea{ position: relative;}
-.zoomBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
-/*#viewHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: 86%; z-index: 100;}
-#viewMonthlyHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: 88%; z-index: 100;}
-#viewYTDHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}*/
 .zoomBtn img{ width: 100%; height: auto;}
+#viewHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
+#viewMonthlyHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
+#viewYTDHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
 #viewHitRateZoomOutBtn{ display: none;}
 #viewMonthlyHitRateZoomOutBtn{ display: none;}
 #viewYTDHitRateZoomOutBtn{ display: none;}

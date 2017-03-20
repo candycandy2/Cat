@@ -121,3 +121,12 @@ function getUrlVar(name){
     return vars[name];
 
 }
+
+function handleAJAXError(ajax,error) {
+    if(error.status ==401 &&  error.responseText == "Unauthorized."){
+        window.location.href = "auth/login";
+        return true;
+    }else {
+        return false;
+    }
+}

@@ -213,6 +213,7 @@
                 if ($('div[id^=time]').hasClass('hover')) {
                     $('div[id^=time]').removeClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                    $(this).find('.timeRemind').removeClass('timeShow');
                     $(this).find('div:nth-child(2)').addClass('iconSelect');
                 }
                 timeClick = [];
@@ -314,13 +315,13 @@
                 if (site == '1') { //QTY
                     $("#alertLimitRoomMsg").removeClass('disable');
                     if (floor == '3F') {
-                        $("#alertLimitRoomMsg").html('A30、E31會議室請使用PC預約');
+                        $("#alertLimitRoomMsg").html('*A30、E31會議室請使用PC預約');
                     } else if (floor == '7F') {
-                        $("#alertLimitRoomMsg").html('A70、B71會議室請使用PC預約');
+                        $("#alertLimitRoomMsg").html('*A70、B71會議室請使用PC預約');
                     }
                 } else if (site == '2' && floor == '1F') { //BQT/QTT
                     $("#alertLimitRoomMsg").removeClass('disable');
-                    $("#alertLimitRoomMsg").html('T00、T13會議室請使用PC預約');
+                    $("#alertLimitRoomMsg").html('*T00、T13會議室請使用PC預約');
                 }
             }
 
@@ -661,6 +662,11 @@
                 calSelectWidth($('#reserveSite'));
                 calSelectWidth($('#reserveFloor'));
                 calSelectWidth($('#reserveSetting'));
+                jqMobileOverwriteStyle();
+                // add 10px between header and main when device is iOS
+                if (device.platform === "iOS"){
+                    $('.ui-page').find('div.page-main').css({'padding-top': '0.5vw'});
+                }
             });
 
             /********************************** dom event *************************************/
@@ -765,6 +771,8 @@
                     $(this).addClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelect');
                     $(this).find('div:nth-child(2)').addClass('iconSelected');
+                    $(this).find('.timeRemind').addClass('timeShow');
+                    $(this).find('.timeRemind').html('~' + addThirtyMins($(this).find('div > div:nth-child(1)').text()));
 
                 } else if (bReserveSelect) {
 
@@ -775,6 +783,7 @@
 
                     $(this).removeClass('hover');
                     $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                    $(this).find('.timeRemind').removeClass('timeShow');
                     $(this).find('div:nth-child(2)').addClass('iconSelect');
 
                 }
@@ -908,6 +917,13 @@
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
                 $('div[for=reserveFailMsg]').popup('close');
             });
+
+            /********************************** overwrite jQuery mobile css *************************************/
+            function jqMobileOverwriteStyle(){
+                $('#viewNewSetting').find('.ui-margin-public').find('span').css({'line-height': 1, 'margin': '0 0 1.16vw'});
+                $('#viewNewSetting').find('.ui-margin-public').find('.ui-block-b.col-8').css({'line-height': 1});
+                $('#newSettingSelect').css({'margin-bottom': '4.88vw'});
+            }
         }
     });
 //});
