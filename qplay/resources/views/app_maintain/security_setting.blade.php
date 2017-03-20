@@ -73,6 +73,9 @@ $menu_name = "APP_SECURITY_SETTING";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_BLOCK_FAILED")}}", e.responseText);
                     }
                 });
@@ -148,6 +151,9 @@ $menu_name = "APP_SECURITY_SETTING";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_SAVE_BLOCK_FAILED")}}", e.responseText);
                     }
                 });

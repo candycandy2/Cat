@@ -72,6 +72,9 @@ $menu_name = "APP_MAINTAIN";
                     window.location='{{asset('appDetailMaintain?source=admin&app_row_id=')}}' + data.new_app_row_id;
                 }
             },error: function (e) {
+                if(handleAJAXError(this,e)){
+                    return false;
+                }
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
             }
         });

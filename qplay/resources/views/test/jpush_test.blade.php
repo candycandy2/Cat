@@ -103,6 +103,9 @@ $menu_name = "JPUSH_TEST";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showResult("Failed", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });
@@ -138,6 +141,9 @@ $menu_name = "JPUSH_TEST";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showResult("Failed", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });
