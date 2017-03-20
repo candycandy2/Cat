@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
@@ -28,6 +28,7 @@ var time = new Date(Date.now());
 var monthlyPageDate = [];
 var ytdPageDate = [];
 var eisdata = {};
+var hitRateEisData = {};
 var monTable = {
     '1' : "Jan.",
     '2' : "Feb.",
@@ -81,7 +82,7 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#viewHitRate").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open" && !($("body").hasClass("ui-landscape"))) {
+        if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
             $("#mypanel").panel( "open");
         }
     });

@@ -551,5 +551,24 @@ $("#viewYTDHitRate").pagecontainer({
             chart.series[2].setData(ytdHighchartsData["RT Budget " + tab], true, true, false);
             chart.series[3].setData(ytdHighchartsData["RT Actual " + tab], true, true, false);
         });
+
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
+            // portraint
+            if (window.orientation === 180 || window.orientation === 0) {
+                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+                $(".viewIndex.ui-page .ui-content.page-main>form").show();
+                $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu, .hc-fragment").show();
+                $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
+            }
+            // landscape
+            if (window.orientation === 90 || window.orientation === -90 ) {
+                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+                $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+                $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu").hide();
+                $(".viewIndex.ui-page").css("background-color", "#fff");
+                $(".hc-fragment").css("height", "auto");
+                $(".hc-fragment").show();
+            }
+        }, false);
     }
 });
