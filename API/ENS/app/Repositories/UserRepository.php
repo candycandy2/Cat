@@ -45,7 +45,7 @@ class UserRepository
      * @param  Array  $empNoArr 員工編號清單
      * @return mixed
      */
-    public function getUserInfoByEmpNO(Array $empNoArr){
+    public function getUserInfoByEmpNo(Array $empNoArr){
          return $this->user
          ->whereIn('emp_no', $empNoArr)
          ->select('row_id','login_id','ext_no','email','emp_no','user_domain')
