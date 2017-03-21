@@ -101,6 +101,9 @@
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessage(e);
                 }
             });
@@ -132,6 +135,9 @@
                     callPlugin();
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessage(e);
                 }
             });
@@ -162,6 +168,9 @@
                     $.mobile.changePage("#pageRegister");
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessage(e);
                 }
             });

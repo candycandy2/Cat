@@ -22,12 +22,12 @@ $("#viewMonthlyHitRate").pagecontainer({
         window.UserAuthority = function() {
             var index = 0;   
             this.successCallback = function(data) {
-                callbackData = data["Content"]["DataList"];
-                length = callbackData.length;
+                userAuthoritycallbackData = data["Content"]["DataList"];
+                length = userAuthoritycallbackData.length;
                 for(var i=0; i<length; i++) {
-                    for(var j in callbackData[i]) {
-                        if(callbackData[i][j] == "PRODUCT") {
-                            productList += '<a id="' + callbackData[i]["PVALUE"] + '">' + callbackData[i]["PVALUE"] + '</a>' ;
+                    for(var j in userAuthoritycallbackData[i]) {
+                        if(userAuthoritycallbackData[i][j] == "PRODUCT") {
+                            productList += '<a id="' + userAuthoritycallbackData[i]["PVALUE"] + '">' + userAuthoritycallbackData[i]["PVALUE"] + '</a>' ;
                         }
                     }
                 }
@@ -78,8 +78,8 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         window.ProductDetail = function() {
             this.successCallback = function(data) {
-                callbackData = data["Content"]["DataList"];
-                length = callbackData.length;
+                productDetailcallbackData = data["Content"]["DataList"];
+                length = productDetailcallbackData.length;
                 convertData();
             }
 
@@ -374,18 +374,13 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
             }
             if(year == thisYear) {
-                var index;
                 for(var i=thisYear-3; i<thisYear; i++) {
-                    index = Number(thisMonth);
-                    while(index <= 11) {
-                        monthlyHighchartsData["Actual QTY"][i][index] = 0;
-                        monthlyHighchartsData["Actual AMT"][i][index] = 0;
-                        monthlyHighchartsData["Actual ASP"][i][index] = 0;
-                        monthlyHighchartsData["Budget QTY"][i][index] = 0;
-                        monthlyHighchartsData["Budget AMT"][i][index] = 0;
-                        monthlyHighchartsData["Budget ASP"][i][index] = 0;
-                        index++;
-                    }
+                    monthlyHighchartsData["Actual QTY"][i].splice(Number(thisMonth), 11);
+                    monthlyHighchartsData["Actual AMT"][i].splice(Number(thisMonth), 11);
+                    monthlyHighchartsData["Actual ASP"][i].splice(Number(thisMonth), 11);
+                    monthlyHighchartsData["Budget QTY"][i].splice(Number(thisMonth), 11);
+                    monthlyHighchartsData["Budget AMT"][i].splice(Number(thisMonth), 11);
+                    monthlyHighchartsData["Budget ASP"][i].splice(Number(thisMonth), 11);
                 }
             }
         }
@@ -414,20 +409,20 @@ $("#viewMonthlyHitRate").pagecontainer({
             var ActualASP = 0;
             var BudgetASP = 0;
             var index = 0;
-            for(var i=callbackData[0]["YEAR"]; i<=callbackData[length-1]["YEAR"]; i++) {
+            for(var i=productDetailcallbackData[0]["YEAR"]; i<=productDetailcallbackData[length-1]["YEAR"]; i++) {
                 eisdata[i] = {};
-                month = (i == callbackData[length-1]["YEAR"]) ? (callbackData[length-1]["MONTH"]) : 12;  
+                month = (i == productDetailcallbackData[length-1]["YEAR"]) ? (productDetailcallbackData[length-1]["MONTH"]) : 12;  
                 for(var j=1; j<=month; j++) {
                     eisdata[i][j] = {};
-                    while(index<length && j == callbackData[index]["MONTH"]) {
-                        rosite = callbackData[index]["RO_SITE"];
+                    while(index<length && j == productDetailcallbackData[index]["MONTH"]) {
+                        rosite = productDetailcallbackData[index]["RO_SITE"];
                         eisdata[i][j][rosite] = {};
-                        while(index<length && rosite == callbackData[index]["RO_SITE"]) {
-                            eisdata[i][j][rosite][callbackData[index]["PRODUCT"]] = [
-                                Number(callbackData[index]["ACTUAL_QTY"]),
-                                Number(callbackData[index]["BUDGET_QTY"]),
-                                Number(callbackData[index]["ACTUAL_ADJ_AMT"]),
-                                Number(callbackData[index]["BUDGET_AMT"])
+                        while(index<length && rosite == productDetailcallbackData[index]["RO_SITE"]) {
+                            eisdata[i][j][rosite][productDetailcallbackData[index]["PRODUCT"]] = [
+                                Number(productDetailcallbackData[index]["ACTUAL_QTY"]),
+                                Number(productDetailcallbackData[index]["BUDGET_QTY"]),
+                                Number(productDetailcallbackData[index]["ACTUAL_ADJ_AMT"]),
+                                Number(productDetailcallbackData[index]["BUDGET_AMT"])
                             ];
                             ActualASP = 0;
                             BudgetASP = 0;
@@ -461,7 +456,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }],
                 infinite: false
             });
-
         }
 
         $(".sliderMonthly").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
@@ -479,56 +473,43 @@ $("#viewMonthlyHitRate").pagecontainer({
             showData();
         });
 
-        /********************************** page event *************************************/
-        $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            ro = "ALL";
-            product = "ALL";
-            tab = "QTY";
-            year = thisYear;
-            month = thisMonth;
-            hcRo = "All";
-            hcProduct = "All product";
-            initSlider();
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            getHighchartsData(ro, product);
-
+        function showHighchart() {
             chart = new Highcharts.Chart({
-        		chart: {
-        			renderTo: 'viewMonthlyHitRate-hc-canvas',
-        			marginBottom: 80,
-        			marginTop: 20,
-        			marginLeft: 55
-        		},
-        		title: {
-        			text: ''
-        		},
-        		xAxis: {
-        			title: {
-        				text: '(Mth)',
-        				align: 'high'	
-        			},
-        			tickInterval: 1,
+                chart: {
+                    renderTo: 'viewMonthlyHitRate-hc-canvas',
+                    marginBottom: 80,
+                    marginTop: 20,
+                    marginLeft: 55
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    title: {
+                        text: '(Mth)',
+                        align: 'high'   
+                    },
+                    tickInterval: 1,
                     max: 12,
                     min: 1,
-        			crosshair: true
-        		},
-        		yAxis: {
+                    crosshair: true
+                },
+                yAxis: {
                     title: {
                         text: ''
                     },
-        			min: 0,
-        		},
-        		legend: {
-        			align: 'left',
-        			float: true,
-        			x: -7,
-        			y: 13
-        		},
-        		credits: {
-					enabled: false
-				},
-        		tooltip: {
+                    min: 0,
+                },
+                legend: {
+                    align: 'left',
+                    float: true,
+                    x: -7,
+                    y: 13
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
                     formatter: function () {
                         var index = 0;
                         var s = '<b>' + hcRo + ' Hit Rate - ' + hcProduct + '</b>';
@@ -552,39 +533,55 @@ $("#viewMonthlyHitRate").pagecontainer({
                     useHTML: true,
                     hideDelay: 0,
                     crosshairs: false
-        		},
-        		plotOptions: {
-        			column: {
-        				pointPadding: 0,
-        				borderWidth: 0,
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0,
                         pointStart: 1
-        			},
+                    },
                     line: {
                         pointStart: 1
                     }
-        		},
-        		exporting: {
-        			enabled: false
-        		},
-        		series: [{
-        			name: (year-2) + " Actual QTY",
-        			type: 'column',
-        			color: '#0AB5B6',
-        		}, {
-        			name: (year-1) + " Actual QTY",
-        			type: 'column',
-        			color: '#F4A143',
-        		}, {
-        			name: (year) + " Actual QTY",
-        			type: 'column',
-        			color: '#824E9F',
-        		}, {
-        			name: (year) + " Budget QTY",
-        			type: 'line',
-        			color: '#134A8C',
-        			lineWidth: 1,
-        		}]
-        	});
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: (year-2) + " Actual QTY",
+                    type: 'column',
+                    color: '#0AB5B6',
+                }, {
+                    name: (year-1) + " Actual QTY",
+                    type: 'column',
+                    color: '#F4A143',
+                }, {
+                    name: (year) + " Actual QTY",
+                    type: 'column',
+                    color: '#824E9F',
+                }, {
+                    name: (year) + " Budget QTY",
+                    type: 'line',
+                    color: '#134A8C',
+                    lineWidth: 1,
+                }]
+            });
+        }
+
+        /********************************** page event *************************************/
+        $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
+            ro = "ALL";
+            product = "ALL";
+            tab = "QTY";
+            year = thisYear;
+            month = thisMonth;
+            hcRo = "All";
+            hcProduct = "All product";
+            initSlider();
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            getHighchartsData(ro, product);
+            showHighchart();
             showData();
             chart.series[0].setData(monthlyHighchartsData["Actual " + tab][year-2], false, false, false);
             chart.series[1].setData(monthlyHighchartsData["Actual " + tab][year-1], false, false, false);
@@ -598,6 +595,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #ALL").addClass('hover');
             $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
             loadingMask("hide");
+            chartWidth = chart.chartWidth;
+            chartHeight = chart.chartHeight;
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
@@ -703,5 +702,29 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[2].setData(monthlyHighchartsData["Actual " + tab][year], true, true, false);
             chart.series[3].setData(monthlyHighchartsData["Budget " + tab][year], true, true, false);
         });
+
+        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+        //     var screenWidth = $("html").width(), screenHeight = $("html").height();
+        //     // portraint
+        //     if (window.orientation === 180 || window.orientation === 0) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
+        //         $("#viewMonthlyHitRate .page-header, .sliderMonthly, #title-container, div > .scrollmenu, .hc-fragment").show();
+        //         $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
+        //         chart.legend.update({ itemStyle: {fontSize: 12}});
+        //         chart.setSize(chartWidth, chartHeight);
+        //     }
+        //     // landscape
+        //     if (window.orientation === 90 || window.orientation === -90 ) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+        //         $("#viewMonthlyHitRate .page-header, .sliderMonthly, #title-container, div > .scrollmenu").hide();
+        //         $(".viewIndex.ui-page").css("background-color", "#fff");
+        //         $(".hc-fragment").css("height", "auto");
+        //         $(".hc-fragment").show();
+        //         chart.legend.update({ itemStyle: {fontSize: 14}});
+        //         chart.setSize(screenHeight, screenWidth*0.8);
+        //     }
+        // }, false);
     }
 });

@@ -229,6 +229,15 @@ var tplJS = {
         //DropdownList ID
         dropdownList.prop("id", data.id);
 
+        //DropdownList Default Selected Option Value
+        var defaultValue = data.defaultValue;
+
+        //DropdownList AutoResize
+        var autoResize = true;
+        if (data.autoResize !== undefined) {
+            autoResize = data.autoResize;
+        }
+
         //DropdownList Background IMG
         if (type === "typeB") {
             dropdownList.addClass("tpl-dropdown-list-icon-add");
@@ -248,6 +257,11 @@ var tplJS = {
 
                 dropdownListOption.prop("value", data.option[i].value);
                 dropdownListOption.prop("text", data.option[i].text);
+
+                if (defaultValue == data.option[i].value) {
+                    dropdownListOption.prop("selected", "selected");
+                }
+
                 dropdownList.append(dropdownListOption);
             }
         } else if (type === "typeB") {
@@ -290,7 +304,7 @@ var tplJS = {
             dropdownListLi.html(data.option[i].text);
             dropdownListUl.append(dropdownListLi);
 
-            if (i == 0) {
+            if (defaultValue == data.option[i].value) {
                 dropdownListLi.addClass("tpl-dropdown-list-selected");
             }
 
@@ -342,7 +356,9 @@ var tplJS = {
             $('#' + popupID).popup('close');
 
             if (type === "typeA") {
-                tplJS.reSizeDropdownList(data.id, type);
+                if (autoResize) {
+                    tplJS.reSizeDropdownList(data.id, type);
+                }
             }
             tplJS.recoveryPageScroll();
         });
@@ -354,7 +370,9 @@ var tplJS = {
 
             if (type === "typeA") {
                 $("#" + data.id).val($(this).data("value"));
-                tplJS.reSizeDropdownList(data.id, type);
+                if (autoResize) {
+                    tplJS.reSizeDropdownList(data.id, type);
+                }
             } else if (type === "typeB") {
                 //Find drowdown list, set selected option value
                 var defaultText;
@@ -365,6 +383,7 @@ var tplJS = {
                 });
 
                 var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
+
                 $("#" + data.id).find("option").remove().end().append(newOption);
             }
 

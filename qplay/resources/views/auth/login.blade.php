@@ -107,6 +107,10 @@
 
 <script>
     $(function () {
+        $(document).ajaxComplete(function(event,xhr,options){
+            console.log(event);
+        });
+
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',

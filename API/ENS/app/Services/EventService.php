@@ -10,6 +10,7 @@ use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
 use App\lib\CommonUtil;
 use App\Components\Push;
+use App\Components\Message;
 use DB;
 
 class EventService
@@ -47,10 +48,9 @@ class EventService
        $nowTimestamp = time();
        $now = date('Y-m-d H:i:s',$nowTimestamp);
 
-       $uniqueTask = $this->getUniqueTask($data['basicList']);       
+       $uniqueTask = $this->getUniqueTask($data['basicList']);
        $this->insertTask($eventId, $uniqueTask, $empNo, $now);
-
-       if(isset($data['related_event_row_id'])){
+       if(isset($data['related_event_row_id']) && $data['related_event_row_id'] !="" ){
             $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $data['emp_no']);
        }
 
@@ -64,7 +64,7 @@ class EventService
 
        $this->eventRepository->updateReadTime($eventId, $empNo);
 
-       $this->sendPushMessageToEventUser($eventId, $data, $queryParam, $empNo);
+       $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
 
        return $eventId;
    }
@@ -78,17 +78,16 @@ class EventService
     * @return json               更新結果
     */
    public function updateEvent($empNo, $eventId, $data, $queryParam){
+           
            $this->eventRepository->updateEventById($empNo, $eventId, $data);
+           
            if(isset($data['related_event_row_id'])){
+                $this->eventRepository->unBindRelatedEvent($eventId, $empNo);
                 if($data['related_event_row_id'] != ""){
                     $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $empNo);
-                }else{
-                    //if related_event_row_id is null clear related
-                    $this->eventRepository->bindRelatedEvent($eventId, 0, $empNo);
                 }
            }
-           
-           $result = $this->sendPushMessageToEventUser($eventId, $data, $queryParam, $empNo);
+           $result = $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
            
            return $result;
    }
@@ -166,6 +165,7 @@ class EventService
         
         $result = $this->taskRepository->getTaskDetailByEventId($eventId);
         foreach ($result as $key => &$task) {
+            $task['task_status'] = ($task['task_status']==0)?'未完成':'完成';
             $task['user_task'] =  $this->getTaskUserDetail($task['task_row_id']);
         }
 
@@ -208,7 +208,7 @@ class EventService
     * @return Array|array      array('Domain\\LoginId')
     */
    public function getPushUserListByEmpNoArr(Array $empNoArr){
-        $userInfo = $this->userRepository->getUserInfoByEmpNO($empNoArr);
+        $userInfo = $this->userRepository->getUserInfoByEmpNo($empNoArr);
         $userList = [];
         foreach ($userInfo as $user) {
             $userList[] = $user['user_domain'].'\\'.$user['login_id'];
@@ -274,6 +274,41 @@ class EventService
    }
 
    /**
+    * 設定為已完成任務，當最後一筆任務時完成時，同時更新事件為已完成
+    * @param  string    $empNo   員工編號
+    * @param  int       $eventId 事件id en_event.row_id
+    * @param  int       $taskId  任務id en_task.row_id
+    * @return int       更新狀態為完成的筆數
+    */
+   public function closeTask($empNo, $eventId, $taskId, $queryParam){
+        $data = array(
+                    "close_task_emp_no" => $empNo,
+                    "close_task_date" => time(),
+                    "task_status" => self::STATUS_FINISHED
+                );
+        $openedTask = $this->taskRepository->getOpenTaskByEventId($eventId);
+        if(count($openedTask) == 1){
+            $updateResult = $this->updateEvent($empNo, $eventId, array("event_status"=>self::STATUS_FINISHED), $queryParam);
+        }
+        return $this->taskRepository->updateTaskById($empNo, $taskId, $data);
+   }
+
+   /**
+    * 重啟任務，將任務狀態改為未完成
+    * @param  string    $empNo   員工編號
+    * @param  int       $taskId  任務id en_task.row_id
+    * @return int                還原狀態為完成的筆數
+    */
+   public function reopenTask($empNo, $taskId){
+        $data = array(
+                    "close_task_emp_no" => "",
+                    "close_task_date" => 0,
+                    "task_status" => self::STATUS_UNFINISHED
+                );
+        return $this->taskRepository->updateTaskById($empNo, $taskId, $data);
+   }
+
+   /**
     * 取得任務參與者
     * @param  int $taskId    任務id en_task.row_id
     * @return mixed         
@@ -321,6 +356,30 @@ class EventService
             return false;
         }
    }
+
+   /**
+    * 根據Event產生聊天室
+    * @param  string    $empNo   員工編號
+    * @param  int       $eventId en_event.row_id
+    * @param  array     $desc    聊天室簡述
+    * @return json
+    */
+   public function createChatRoomByEvent($empNo, $eventId, $desc){
+        
+        $owner = $this->userRepository->getUserInfoByEmpNo(array($empNo))[0]->login_id;
+        $members = array();
+        $eventUsersEmpNo = $this->findEventUser($eventId);
+        $eventUsers = $this->userRepository->getUserInfoByEmpNo($eventUsersEmpNo);
+        foreach ($eventUsers as $user) {
+            //加入不與owner重複的用戶
+           if($user->login_id != $owner){
+             array_push($members, $user->login_id);
+           }
+        }
+    
+        $qMessage = new Message();
+        return $qMessage->createChatRoom($owner, $members, $desc);
+    }
    
    /**
     * 取得不重複的任務清單(function-location)
@@ -339,9 +398,18 @@ class EventService
                 }
            }
         }
+
         return $uniqueTask;
    }
 
+   /**
+    * 寫入task 資料
+    * @param  int    $eventId     event_row_id
+    * @param  Array  $tasks       所屬該事件的任務列表
+    * @param  string $createdUser 建立者員工編號
+    * @param  date   $createdDate 建立日期
+    * @return bool
+    */
    private function insertTask($eventId, $tasks, $createdUser, $createdDate){
         $TaskData = [];
          foreach ($tasks as $location => $functions) {
@@ -355,9 +423,16 @@ class EventService
                 );
             }
         }
-        $this->taskRepository->saveTask($TaskData);
+        return $this->taskRepository->saveTask($TaskData);
    }
 
+   /**
+    * 寫入任務包含哪些成員
+    * @param  Array  $taskInfo    task 資料
+    * @param  string $createdUser 建立者員工編號
+    * @param  date   $createdDate 建立日期
+    * @return bool
+    */
    private function insertUserTask($taskInfo, $createdUser, $createdDate){
         $UserTaskData = [];
         foreach ($taskInfo as $task) {
@@ -373,9 +448,17 @@ class EventService
                     );
               }
         }
-        $this->taskRepository->saveUserTask($UserTaskData);
+        return $this->taskRepository->saveUserTask($UserTaskData);
    }
 
+   /**
+    * 寫入事件所參與人
+    * @param  int    $eventId     event_row_id
+    * @param  Array  $eventUser   事見相關人員
+    * @param  string $createdUser 建立者員工編號
+    * @param  date   $createdDate 建立日期
+    * @return bool
+    */
    private function insertUserEvent($eventId, Array $eventUser, $createdUser, $createdDate){
         $userEventData = [];
         foreach ($eventUser as $user) {
@@ -386,7 +469,7 @@ class EventService
                 'created_at'=>$createdDate
                 ];
         }
-        $this->eventRepository->saveUserEvent($userEventData);
+        return $this->eventRepository->saveUserEvent($userEventData);
    }
 
    /**
@@ -405,7 +488,7 @@ class EventService
         $item['estimated_complete_date'] = $event->estimated_complete_date;
         $item['related_event_row_id'] = $event->related_event_row_id;
         $item['event_status'] = ($event->event_status == 0)?'未完成':'完成';
-        $userInfo = $this->userRepository->getUserInfoByEmpNO(array($event->created_user));
+        $userInfo = $this->userRepository->getUserInfoByEmpNo(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];
         $item['created_at'] = $event->created_at->format('Y-m-d H:i:s');
@@ -416,18 +499,17 @@ class EventService
    /**
     * 發送推播訊息給事件參與者
     * @param  int       $eventId    事件id en_event.row_id
-    * @param  Array     $data       發送資料
     * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
     * @return json
     */
-   private function sendPushMessageToEventUser($eventId, $data, Array $queryParam, $empNo){
+   private function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo){
        
        $result = null;
        $to = $this->getPushUserListByEvent($eventId);
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($eventId, $empNo);
-       $title = base64_encode($event['event_title']);
-       $text = base64_encode($event['event_desc']);
+       $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($event['event_title'])));
+       $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($event['event_desc'])));
        //TODO append ENS event link
        
        $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);

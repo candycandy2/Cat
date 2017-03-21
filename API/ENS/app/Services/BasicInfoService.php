@@ -36,7 +36,7 @@ class BasicInfoService
                 $list['user_list']= [];
                 $empNoArr = explode(',',$value->users);
                 
-                $userInfoList = $this->userRepository->getUserInfoByEmpNO($empNoArr);
+                $userInfoList = $this->userRepository->getUserInfoByEmpNo($empNoArr);
 
                foreach ($userInfoList as $userInfo) {
                    
@@ -62,6 +62,7 @@ class BasicInfoService
      * @return blool           
      */
     public function checkBasicInfo($location, $function){
+
         $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($location, $function);
         if(!is_null($res) && count($res) > 0){
             return true;

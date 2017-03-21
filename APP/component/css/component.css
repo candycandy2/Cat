@@ -205,16 +205,17 @@ body *:not(input){ -webkit-user-select: none;}
 }
 
 #initialOther .logo-initial {
-    height: 11vh;
+    width: 18vw;
+    height: auto;
 }
 
 #initialAppName {
     font-size: 6.5vh;
-    margin-top: 3vh;
+    margin-top: 3vw;
 }
 
 #initialOther .app-logo-initial {
-    margin-top: 8vh;
+    margin-top: 4vw;
     width: 28vw;
 }
 
@@ -226,6 +227,15 @@ body *:not(input){ -webkit-user-select: none;}
 
 #initialOther .brand-initial {
     height: 10vh;
+}
+
+/*initial page layout setting when landscape*/
+@media all and (orientation: landscape){
+    #initialOther{ position: absolute; top: 0; left; 0; right: 0; margin: auto; height: auto; width: 100%;}
+    #initialOther .logo-initial{ height: auto; width: 9vw;}
+    #initialAppName{ margin-top: 2vw;}
+    #initialOther .app-logo-initial{ width: 15vw; margin-top: 0;}
+    #initialOther .brand-initial-content{ position: fixed;}
 }
 
 /*APP Get QPsuh / Maintain */
