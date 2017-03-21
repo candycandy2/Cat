@@ -8,6 +8,7 @@
         "getPwd": "v101/qmessage/pwd"
         , "storeTextHistory": "v101/qmessage/history/text"
         , "storePicHistory": "v101/qmessage/history/pic"
+        , "storeFileHistory": "v101/qmessage/history/file"
     };
 
     /* constructor */
@@ -154,10 +155,30 @@
             $.post(url, JSON.stringify(json));
         };
 
-        /* Text picture to server */
+        /* Picture history to server */
         StorePicHistory = function (content, msg) {
             var url = $.trim(options["message_api_url_prefix"]);
             url = (url == "") ? URL_MAP["storePicHistory"] : (HTTP_PREFIX + url + URL_MAP["storePicHistory"]);
+            var json = {
+                "msg_id": msg["msg_id"],
+                "msg_type": content["msg_type"],
+                "from_id": content["from_id"],
+                "from_type": "user",
+                "target_id": content["target_id"],
+                "target_type": content["target_type"],
+                "target_name": content["target_name"],
+                "ctime": content["create_time"],
+                "content": JSON.stringify(content["msg_body"]),
+                "fname": content["fname"],
+                "extras": content["msg_body"]
+            };
+            $.post(url, JSON.stringify(json));
+        };
+
+        /* File history to server */
+        StoreFileHistory = function (content, msg) {
+            var url = $.trim(options["message_api_url_prefix"]);
+            url = (url == "") ? URL_MAP["storeFileHistory"] : (HTTP_PREFIX + url + URL_MAP["storeFileHistory"]);
             var json = {
                 "msg_id": msg["msg_id"],
                 "msg_type": content["msg_type"],
@@ -249,6 +270,51 @@
                 }
             }).onFail(function (msg) {
                 console.log(JSON.stringify(msg));
+                if (error instanceof String) {
+                    setTimeout(error + "(" + msg + ")", 0);
+                }
+                if (error instanceof Function) {
+                    error(msg);
+                }
+            });
+        };
+
+        QMessage.prototype.SendFile = function (gid, gname, fileId, success, error) {
+            var result = { 'code': -1, 'message': 'QMessage has not been inited' };
+            if (!this.isInited) {
+                error(result);
+                return;
+            }
+            //为了缓存filename，将getfile方法拆分
+            var fd = new FormData();
+            var file = $("#" + fileId)[0];
+            var filename;
+            if (!file.files[0]) {
+                throw new Error('获取文件失败');
+            } else {
+                filename = file.files[0].name;
+            }
+            fd.append(filename, file.files[0]);
+
+            JIM.sendGroupFile({
+                'target_gid': gid,
+                'target_gname': gname,
+                'file': fd
+            }).onSuccess(function(msg) {
+                var content = this.data["content"];
+                content["fname"] = filename;
+                var __args = {
+                    result: msg,
+                    content: content
+                };
+                StoreFileHistory(content, msg);
+                if (success instanceof String) {
+                    setTimeout(success + "(" + __args + ")", 0);
+                }
+                if (success instanceof Function) {
+                    success(__args);
+                }
+            }).onFail(function(data) {
                 if (error instanceof String) {
                     setTimeout(error + "(" + msg + ")", 0);
                 }
