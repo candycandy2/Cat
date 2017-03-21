@@ -56,7 +56,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
-                        '<preference name="Orientation" value="portrait" />' +
+                        '<preference name="Orientation" value="default" />' +
                         '<access origin="*" />' +
                         '<access origin="tel:*" launch-external="yes" />' +
                         '<allow-navigation href="*" />' +
@@ -90,16 +90,16 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
+  // 'cordova plugin remove cordova-plugin-device',
+  // 'cordova plugin remove cordova-plugin-console',
+  // 'cordova plugin remove cordova-plugin-appversion',
+  // 'cordova plugin remove cordova-plugin-customurlscheme',
+  // 'cordova plugin remove cordova-plugin-qsecurity',
+  // 'cordova plugin remove cordova-plugin-whitelist',
   //'cordova plugin remove cordova-plugin-file',
-  'cordova platform rm ios',
+  // 'cordova platform rm ios',
   'cordova platform rm android',
-  'cordova platform add ios',
+  // 'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
