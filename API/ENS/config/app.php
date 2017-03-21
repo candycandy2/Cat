@@ -112,14 +112,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | QPlay Api Serer
+    | QPlay Api Server
     |--------------------------------------------------------------------------
     |
     | Here you may configure the qply api server settings for your application.
     |
     */
     'qplay_api_server' => env('QPLAY_API_SERVER'),
-    
+     /*
+    |--------------------------------------------------------------------------
+    | QMessage Api Server
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the qMessage api server settings for your application.
+    |
+    */
+    'qmessage_api_server' => env('QMESSAGE_API_SERVER'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

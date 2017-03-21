@@ -25,5 +25,5 @@ Route::any('/v101/ens/updateEventStatus', 'EventController@updateEventStatus');
 Route::any('/v101/ens/updateTaskStatus', 'TaskController@updateTaskStatus');
 
 //test
-Route::any('/v101/ens/test/sendPushMessageToUser', 'TestController@sendPushMessageToUser');
+Route::any('/v101/ens/test/createChatRoom', 'TestController@createChatRoom');
 
