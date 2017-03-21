@@ -36,7 +36,7 @@ class BasicInfoService
                 $list['user_list']= [];
                 $empNoArr = explode(',',$value->users);
                 
-                $userInfoList = $this->userRepository->getUserInfoByEmpNO($empNoArr);
+                $userInfoList = $this->userRepository->getUserInfoByEmpNo($empNoArr);
 
                foreach ($userInfoList as $userInfo) {
                    

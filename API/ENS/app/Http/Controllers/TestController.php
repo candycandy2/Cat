@@ -5,7 +5,9 @@
 namespace App\Http\Controllers;
 
 use App\Components\Push;
+use App\Components\Message;
 use App\lib\CommonUtil;
+use App\lib\ResultCode;
 use Request;
 
 class testController extends Controller
@@ -131,6 +133,35 @@ class testController extends Controller
        
        $result = json_encode($pushResult);
        return $result;
+   }
+
+   public function createChatRoom(){
+        
+       
+        $owner = "Cleo.W.Chan";
+        $members = array("Steven.Yan","Sammi.Yao");
+        $desc = "cleo test create chatRoom";
+        //var_dump($messageGroupInfo);exit();
+        $qMessage = new Message($owner, $members, $desc);
+        $res = json_decode($qMessage->createChatRoom());
+        if($res->ResultCode != 1){
+            if($res->ResultCode == '998002'){
+
+                return $result = response()->json(['ResultCode'=>ResultCode::_014918_memberNotRegistered,
+                'Message'=>"新增聊天室失敗, 成員未註冊",
+                'Content'=>""]);
+
+            }else if($res->ResultCode== '998003' ||
+                    $res->ResultCode == '998004'){
+
+                return $result = response()->json(['ResultCode'=>ResultCode::_014919_chatroomMemberInvalid,
+                'Message'=>"聊天室成員不存在",
+                'Content'=>""]);
+            }else{
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+                 'Content'=>""]);
+            }
+        }
    }
 
 }
