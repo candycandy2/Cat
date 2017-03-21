@@ -44,11 +44,11 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
             'token': loginData.token,
             'push-token': loginData.pushToken
         },
-        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=en-us&uuid=" + loginData.uuid + queryStr,
+        url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
         cache: false,
-        timeout: 6000,
+        timeout: 30000,
         success: requestSuccess,
         error: requestError
     });

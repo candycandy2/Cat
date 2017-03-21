@@ -1,6 +1,8 @@
 var chart, ro, product, tab, year, month, actualValue, budgetHitRate, yoyGrowth;
+var hcRo = "All";
+var hcProduct = "All product";
 var productList = '<a id="ALL">ALL</a>';
-var highchartsData = {
+var monthlyHighchartsData = {
 	"Actual QTY" : {},
 	"Actual AMT" : {},
 	"Actual ASP" : {}, 
@@ -63,6 +65,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".sliderYTD").html("");
                 $(".sliderYTD").append(ytdPageDateList).enhanceWithin();
+
+                loadingMask("hide");
             };
             this.failCallback = function(data) {
                 console.log("api misconnected");
@@ -271,110 +275,124 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
-        function getHighchartsData(ro, product, year, month) {
+        function getHighchartsData(ro, product) {
             if(ro == "ALL" && product == "ALL") {
-                for(var year in eisdata) {
-                    for(var i in highchartsData) {
-                    	highchartsData[i][year] = []; 
+                for(var hcYear in eisdata) {
+                    for(var i in monthlyHighchartsData) {
+                    	monthlyHighchartsData[i][hcYear] = [];
                     }
-                    for(var month in eisdata[year]) {
-                    	for(var i in highchartsData) {
-                    		highchartsData[i][year][Number(month)-1] = 0;
+                    for(var month in eisdata[hcYear]) {
+                    	for(var i in monthlyHighchartsData) {
+                    		monthlyHighchartsData[i][hcYear][Number(month)-1] = 0;
                     	}
-                        for(var ro in eisdata[year][month]) {
-                            for(var product in eisdata[year][month][ro]) {
-                                highchartsData["Actual QTY"][year][Number(month)-1] += eisdata[year][month][ro][product][0];
-                                highchartsData["Budget QTY"][year][Number(month)-1] += eisdata[year][month][ro][product][1];
-                                highchartsData["Actual AMT"][year][Number(month)-1] += eisdata[year][month][ro][product][2];
-                                highchartsData["Budget AMT"][year][Number(month)-1] += eisdata[year][month][ro][product][3];
+                        for(var ro in eisdata[hcYear][month]) {
+                            for(var product in eisdata[hcYear][month][ro]) {
+                                monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][0];
+                                monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][1];
+                                monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][2];
+                                monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][3];
                             }
                         }
-                        if(highchartsData["Actual QTY"][year][Number(month)-1] != 0) {
-	                        highchartsData["Actual ASP"][year][Number(month)-1] = (highchartsData["Actual AMT"][year][Number(month)-1] / highchartsData["Actual QTY"][year][Number(month)-1]);
+                        if(monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] != 0) {
+	                        monthlyHighchartsData["Actual ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1]);
                     	}
-                    	if(highchartsData["Budget QTY"][year][Number(month)-1] != 0){
-                    		highchartsData["Budget ASP"][year][Number(month)-1] = (highchartsData["Budget AMT"][year][Number(month)-1] / highchartsData["Budget QTY"][year][Number(month)-1]);
+                    	if(monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] != 0){
+                    		monthlyHighchartsData["Budget ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1]);
                     	}
                     }
                 }
             }else if(ro != "ALL" && product == "ALL") {
-                for(var year in eisdata) {
-                    for(var i in highchartsData) {
-                    	highchartsData[i][year] = []; 
+                for(var hcYear in eisdata) {
+                    for(var i in monthlyHighchartsData) {
+                    	monthlyHighchartsData[i][hcYear] = []; 
                     }
-                    for(var month in eisdata[year]) {
-                        for(var i in highchartsData) {
-                    		highchartsData[i][year][Number(month)-1] = 0;
+                    for(var month in eisdata[hcYear]) {
+                        for(var i in monthlyHighchartsData) {
+                    		monthlyHighchartsData[i][hcYear][Number(month)-1] = 0;
                     	}
-                        for(var product in eisdata[year][month][ro]) {
-                        	highchartsData["Actual QTY"][year][Number(month)-1] += eisdata[year][month][ro][product][0];
-                        	highchartsData["Budget QTY"][year][Number(month)-1] += eisdata[year][month][ro][product][1];
-                            highchartsData["Actual AMT"][year][Number(month)-1] += eisdata[year][month][ro][product][2];
-                            highchartsData["Budget AMT"][year][Number(month)-1] += eisdata[year][month][ro][product][3];
+                        for(var product in eisdata[hcYear][month][ro]) {
+                        	monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][0];
+                        	monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][1];
+                            monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][2];
+                            monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][3];
                         }
-                        if(highchartsData["Actual QTY"][year][Number(month)-1] != 0) {
-	                        highchartsData["Actual ASP"][year][Number(month)-1] = (highchartsData["Actual AMT"][year][Number(month)-1] / highchartsData["Actual QTY"][year][Number(month)-1]);
+                        if(monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] != 0) {
+	                        monthlyHighchartsData["Actual ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1]);
                     	}
-                    	if(highchartsData["Budget QTY"][year][Number(month)-1] != 0){
-                    		highchartsData["Budget ASP"][year][Number(month)-1] = (highchartsData["Budget AMT"][year][Number(month)-1] / highchartsData["Budget QTY"][year][Number(month)-1]);
+                    	if(monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] != 0){
+                    		monthlyHighchartsData["Budget ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1]);
                     	}
                     }
                 }
             }else if(ro == "ALL" && product != "ALL") {
-                for(var year in eisdata) {
-                    for(var i in highchartsData) {
-                    	highchartsData[i][year] = []; 
+                for(var hcYear in eisdata) {
+                    for(var i in monthlyHighchartsData) {
+                    	monthlyHighchartsData[i][hcYear] = []; 
                     }
-                    for(var month in eisdata[year]) {
-                    	for(var i in highchartsData) {
-                    		highchartsData[i][year][Number(month)-1] = 0;
+                    for(var month in eisdata[hcYear]) {
+                    	for(var i in monthlyHighchartsData) {
+                    		monthlyHighchartsData[i][hcYear][Number(month)-1] = 0;
                     	}
-                        for(var ro in eisdata[year][month]) {
-                            if(eisdata[year][month][ro].hasOwnProperty(product)) {
-								highchartsData["Actual QTY"][year][Number(month)-1] += eisdata[year][month][ro][product][0];
-								highchartsData["Budget QTY"][year][Number(month)-1] += eisdata[year][month][ro][product][1];
-								highchartsData["Actual AMT"][year][Number(month)-1] += eisdata[year][month][ro][product][2];
-								highchartsData["Budget AMT"][year][Number(month)-1] += eisdata[year][month][ro][product][3];  
+                        for(var ro in eisdata[hcYear][month]) {
+                            if(eisdata[hcYear][month][ro].hasOwnProperty(product)) {
+								monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][0];
+								monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][1];
+								monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][2];
+								monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] += eisdata[hcYear][month][ro][product][3];
                             }
                         }
-                        if(highchartsData["Actual QTY"][year][Number(month)-1] != 0) {
-	                        highchartsData["Actual ASP"][year][Number(month)-1] = (highchartsData["Actual AMT"][year][Number(month)-1] / highchartsData["Actual QTY"][year][Number(month)-1]);
+                        if(monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] != 0) {
+	                        monthlyHighchartsData["Actual ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1]);
                     	}
-                    	if(highchartsData["Budget QTY"][year][Number(month)-1] != 0){
-                    		highchartsData["Budget ASP"][year][Number(month)-1] = (highchartsData["Budget AMT"][year][Number(month)-1] / highchartsData["Budget QTY"][year][Number(month)-1]);
+                    	if(monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] != 0){
+                    		monthlyHighchartsData["Budget ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1]);
                     	}
                     }
                 }
             }else {
-               for(var year in eisdata) {
-                    for(var i in highchartsData) {
-                    	highchartsData[i][year] = []; 
+                for(var hcYear in eisdata) {
+                    for(var i in monthlyHighchartsData) {
+                    	monthlyHighchartsData[i][hcYear] = []; 
                     }
-                    for(var month in eisdata[year]) {
-                    	for(var i in highchartsData) {
-                    		highchartsData[i][year][Number(month)-1] = 0;
+                    for(var month in eisdata[hcYear]) {
+                    	for(var i in monthlyHighchartsData) {
+                    		monthlyHighchartsData[i][hcYear][Number(month)-1] = 0;
                     	}
-                        if(eisdata[year][month][ro].hasOwnProperty(product)) {
-                        	highchartsData["Actual QTY"][year][Number(month)-1] = eisdata[year][month][ro][product][0];
-                        	highchartsData["Budget QTY"][year][Number(month)-1] = eisdata[year][month][ro][product][1];
-                            highchartsData["Actual AMT"][year][Number(month)-1] = eisdata[year][month][ro][product][2];
-                            highchartsData["Budget AMT"][year][Number(month)-1] = eisdata[year][month][ro][product][3];  
+                        if(eisdata[hcYear][month][ro].hasOwnProperty(product)) {
+                        	monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] = eisdata[hcYear][month][ro][product][0];
+                        	monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] = eisdata[hcYear][month][ro][product][1];
+                            monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] = eisdata[hcYear][month][ro][product][2];
+                            monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] = eisdata[hcYear][month][ro][product][3];  
                         }
-                        if(highchartsData["Actual QTY"][year][Number(month)-1] != 0) {
-	                        highchartsData["Actual ASP"][year][Number(month)-1] = (highchartsData["Actual AMT"][year][Number(month)-1] / highchartsData["Actual QTY"][year][Number(month)-1]);
+                        if(monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1] != 0) {
+	                        monthlyHighchartsData["Actual ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Actual AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Actual QTY"][hcYear][Number(month)-1]);
                     	}
-                    	if(highchartsData["Budget QTY"][year][Number(month)-1] != 0){
-                    		highchartsData["Budget ASP"][year][Number(month)-1] = (highchartsData["Budget AMT"][year][Number(month)-1] / highchartsData["Budget QTY"][year][Number(month)-1]);
+                    	if(monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1] != 0){
+                    		monthlyHighchartsData["Budget ASP"][hcYear][Number(month)-1] = (monthlyHighchartsData["Budget AMT"][hcYear][Number(month)-1] / monthlyHighchartsData["Budget QTY"][hcYear][Number(month)-1]);
                     	}
                     }
                 }
             }
-
+            if(year == thisYear) {
+                var index;
+                for(var i=thisYear-3; i<thisYear; i++) {
+                    index = Number(thisMonth);
+                    while(index <= 11) {
+                        monthlyHighchartsData["Actual QTY"][i][index] = 0;
+                        monthlyHighchartsData["Actual AMT"][i][index] = 0;
+                        monthlyHighchartsData["Actual ASP"][i][index] = 0;
+                        monthlyHighchartsData["Budget QTY"][i][index] = 0;
+                        monthlyHighchartsData["Budget AMT"][i][index] = 0;
+                        monthlyHighchartsData["Budget ASP"][i][index] = 0;
+                        index++;
+                    }
+                }
+            }
         }
 
         function showData() {
-            $("#title-content #ActualValue p").text(actualValue);
-            $("#title-content #BudgetHitRate p").text(budgetHitRate + "%");
+            $("#title-content #ActualValue p").text(formatNumber(actualValue));
+            $("#title-content #BudgetHitRate p").text(formatNumber(budgetHitRate) + "%");
             if(budgetHitRate < 80) {
                 $("#title-content #BudgetHitRate p").css("color", "#ee3839");
             }else if(budgetHitRate > 95) {
@@ -383,10 +401,10 @@ $("#viewMonthlyHitRate").pagecontainer({
                 $("#title-content #BudgetHitRate p").css("color", "#e6be20");
             }
             if(yoyGrowth < 0) {
-                $("#title-content #YOYGrowth p").text(yoyGrowth + "%");
+                $("#title-content #YOYGrowth p").text(formatNumber(yoyGrowth) + "%");
                 $("#title-content #YOYGrowth p").css("color", "#ee3839");
             }else {
-                $("#title-content #YOYGrowth p").text("+" + yoyGrowth + "%");
+                $("#title-content #YOYGrowth p").text("+" + formatNumber(yoyGrowth) + "%");
                 $("#title-content #YOYGrowth p").css("color", "#48af56");
             }
         }
@@ -443,37 +461,37 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }],
                 infinite: false
             });
+
         }
 
         $(".sliderMonthly").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = monthlyPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = monthlyPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
+            getHighchartsData(ro, product);
+            chart.series[0].update({name: (year-2) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year-2]});
+            chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year-1]});
+            chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual " + tab][year]});
+            chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget " + tab][year]});
+            chart.tooltip.hide();
             actualValue = getActualValue(ro, product, year, month, tab);
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
-            getHighchartsData(ro, product, year, month);
-            chart.series[0].update({name: (year-2) + " Actual " + tab, data: highchartsData["Actual " + tab][year-2]});
-            chart.series[1].update({name: (year-1) + " Actual " + tab, data: highchartsData["Actual " + tab][year-1]});
-            chart.series[2].update({name: (year) + " Actual " + tab, data: highchartsData["Actual " + tab][year]});
-            chart.series[3].update({name: (year) + " Budget " + tab, data: highchartsData["Budget " + tab][year]});
         });
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            
             ro = "ALL";
             product = "ALL";
             tab = "QTY";
             year = thisYear;
             month = thisMonth;
-            
-            actualValue = getActualValue(ro, product, year, month, tab);
-            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-            getHighchartsData(ro, product, thisYear, thisMonth);
+            hcRo = "All";
+            hcProduct = "All product";
+            initSlider();
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            getHighchartsData(ro, product);
 
             chart = new Highcharts.Chart({
         		chart: {
@@ -491,19 +509,15 @@ $("#viewMonthlyHitRate").pagecontainer({
         				align: 'high'	
         			},
         			tickInterval: 1,
+                    max: 12,
+                    min: 1,
         			crosshair: true
         		},
         		yAxis: {
-        			title: {
-        				text: '(USD$M)',
-        				align: 'high',
-        				rotation: 0,
-        				offset: 0,
-        				x: 6,
-        				y: -11
-        			},
+                    title: {
+                        text: ''
+                    },
         			min: 0,
-        			tickInterval: 1000
         		},
         		legend: {
         			align: 'left',
@@ -515,13 +529,39 @@ $("#viewMonthlyHitRate").pagecontainer({
 					enabled: false
 				},
         		tooltip: {
-        			shared: true
+                    formatter: function () {
+                        var index = 0;
+                        var s = '<b>' + hcRo + ' Hit Rate - ' + hcProduct + '</b>';
+                        var dollar = "$";
+                        var detailInfo = [];
+                        if(tab == "QTY"){
+                            dollar = "";
+                        }
+                        $.each(this.points, function () {
+                            if(tab == "ASP"){
+                                this.y = Math.round(this.y * Math.pow(10, 2)) / 100;
+                            }
+                            detailInfo[index++] = '<br/>' + hcTable[this.x] + ' ' + this.series.name + ' = ' + dollar + formatNumber(this.y);
+                        });
+                        for(var i=0; i<detailInfo.length; i++) {
+                            s += detailInfo[--index];
+                        }
+                        return s;
+                    },
+                    shared: true,
+                    useHTML: true,
+                    hideDelay: 0,
+                    crosshairs: false
         		},
         		plotOptions: {
         			column: {
         				pointPadding: 0,
-        				borderWidth: 0
-        			}
+        				borderWidth: 0,
+                        pointStart: 1
+        			},
+                    line: {
+                        pointStart: 1
+                    }
         		},
         		exporting: {
         			enabled: false
@@ -530,117 +570,138 @@ $("#viewMonthlyHitRate").pagecontainer({
         			name: (year-2) + " Actual QTY",
         			type: 'column',
         			color: '#0AB5B6',
-        			// data: Actual[thisYear-3],
-        			pointStart: 1
         		}, {
         			name: (year-1) + " Actual QTY",
         			type: 'column',
         			color: '#F4A143',
-        			// data: Actual[thisYear-2],
-        			pointStart: 1
         		}, {
         			name: (year) + " Actual QTY",
         			type: 'column',
         			color: '#824E9F',
-        			// data: Actual[thisYear-1],
-        			pointStart: 1
         		}, {
         			name: (year) + " Budget QTY",
         			type: 'line',
         			color: '#134A8C',
         			lineWidth: 1,
-        			// data: BudgetAMT[thisYear-1],
-        			pointStart: 1
         		}]
         	});
             showData();
-            $("#title-container > #title > #actualValue > p").text("Net Quantity");
-            chart.series[0].setData(highchartsData["Actual QTY"][year-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual QTY"][year-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual QTY"][year], true, true, false);
-            chart.series[3].setData(highchartsData["Budget QTY"][year], true, true, false);
+            chart.series[0].setData(monthlyHighchartsData["Actual " + tab][year-2], false, false, false);
+            chart.series[1].setData(monthlyHighchartsData["Actual " + tab][year-1], false, false, false);
+            chart.series[2].setData(monthlyHighchartsData["Actual " + tab][year], false, false, false);
+            chart.series[3].setData(monthlyHighchartsData["Budget " + tab][year], false, false, false);
+            $("#viewMonthlyHitRate #title-container > #title > #actualValue > p").text("Net Quantity");
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewMonthlyHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
             $(".Ro #ALL").addClass('hover');
             $(".Product #ALL").addClass('hover');
-
-            initSlider();
             $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
             loadingMask("hide");
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
+            $("#title-container > #title > #actualValue > p").text("Net Quantity");
             tab = "QTY";
+            chart.series[0].update({name: (year-2) + " Actual " + tab, data: monthlyHighchartsData["Actual QTY"][year-2]});
+            chart.series[1].update({name: (year-1) + " Actual " + tab, data: monthlyHighchartsData["Actual QTY"][year-1]});
+            chart.series[2].update({name: (year) + " Actual " + tab, data: monthlyHighchartsData["Actual QTY"][year]});
+            chart.series[3].update({name: (year) + " Budget " + tab, data: monthlyHighchartsData["Budget QTY"][year]});
+            chart.yAxis[0].setTitle({
+                text: '' 
+            });
+            chart.tooltip.hide();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-
             showData();
-            $("#title-container > #title > #actualValue > p").text("Net Quantity");
-            chart.series[0].update({name: (year-2) + " Actual " + tab, data: highchartsData["Actual QTY"][year-2]});
-            chart.series[1].update({name: (year-1) + " Actual " + tab, data: highchartsData["Actual QTY"][year-1]});
-            chart.series[2].update({name: (year) + " Actual " + tab, data: highchartsData["Actual QTY"][year]});
-            chart.series[3].update({name: (year) + " Budget " + tab, data: highchartsData["Budget QTY"][year]});
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
+            $("#title-container > #title > #actualValue > p").text("Adj. Sales");
             tab = "AMT";
+            chart.series[0].update({name: (year-2) + "  Actual " + tab, data: monthlyHighchartsData["Actual AMT"][year-2]});
+            chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual AMT"][year-1]});
+            chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual AMT"][year]});
+            chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget AMT"][year]});
+            chart.yAxis[0].setTitle({
+                text: '(USD$)',
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                x: -11,
+                y: -11
+            });
+            chart.tooltip.hide();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             showData();
-            $("#title-container > #title > #actualValue > p").text("Adj. Sales");
-            chart.series[0].update({name: (year-2) + "  Actual " + tab, data: highchartsData["Actual AMT"][year-2]});
-            chart.series[1].update({name: (year-1) + "  Actual " + tab, data: highchartsData["Actual AMT"][year-1]});
-            chart.series[2].update({name: (year) + "  Actual " + tab, data: highchartsData["Actual AMT"][year]});
-            chart.series[3].update({name: (year) + "  Budget " + tab, data: highchartsData["Budget AMT"][year]});
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
+            $("#title-container > #title > #actualValue > p").text("ASP");
             tab = "ASP";
+            chart.series[0].update({name: (year-2) + "  Actual " + tab, data: monthlyHighchartsData["Actual ASP"][year-2]});
+            chart.series[1].update({name: (year-1) + "  Actual " + tab, data: monthlyHighchartsData["Actual ASP"][year-1]});
+            chart.series[2].update({name: (year) + "  Actual " + tab, data: monthlyHighchartsData["Actual ASP"][year]});
+            chart.series[3].update({name: (year) + "  Budget " + tab, data: monthlyHighchartsData["Budget ASP"][year]});
+            chart.yAxis[0].setTitle({
+                text: '(USD$)',
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                x: -11,
+                y: -11
+            });
+            chart.tooltip.hide();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
             showData();
-            $("#title-container > #title > #actualValue > p").text("ASP");
-            chart.series[0].update({name: (year-2) + "  Actual " + tab, data: highchartsData["Actual ASP"][year-2]});
-            chart.series[1].update({name: (year-1) + "  Actual " + tab, data: highchartsData["Actual ASP"][year-1]});
-            chart.series[2].update({name: (year) + "  Actual " + tab, data: highchartsData["Actual ASP"][year]});
-            chart.series[3].update({name: (year) + "  Budget " + tab, data: highchartsData["Budget ASP"][year]});
         });
 
         // scroll menu on click
         $(document).on('click', '#viewMonthlyHitRate .Ro > a', function(e) {
             e.preventDefault();
-            ro = $(this).context.id
+            ro = $(this).context.id;
+            if($(this).context.id == "ALL"){
+                hcRo = "All";
+            }else{
+                hcRo = $(this).context.id;
+            }
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-            getHighchartsData(ro, product, thisYear, thisMonth);
+            getHighchartsData(ro, product);
             showData();
-            chart.series[0].setData(highchartsData["Actual " + tab][year-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual " + tab][year-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual " + tab][year], true, true, false);
-            chart.series[3].setData(highchartsData["Budget " + tab][year], true, true, false);
+            chart.series[0].setData(monthlyHighchartsData["Actual " + tab][year-2], true, true, false);
+            chart.series[1].setData(monthlyHighchartsData["Actual " + tab][year-1], true, true, false);
+            chart.series[2].setData(monthlyHighchartsData["Actual " + tab][year], true, true, false);
+            chart.series[3].setData(monthlyHighchartsData["Budget " + tab][year], true, true, false);
         });
 
         $(document).on('click', '#viewMonthlyHitRate .Product > a', function(e) {
             e.preventDefault();
             product = $(this).context.id;
+            if($(this).context.id == "ALL"){
+                hcProduct = "All product";
+            }else{
+                hcProduct = $(this).context.id;
+            }
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-            getHighchartsData(ro, product, thisYear, thisMonth);
+            getHighchartsData(ro, product);
             showData();
-            chart.series[0].setData(highchartsData["Actual " + tab][year-2], true, true, false);
-            chart.series[1].setData(highchartsData["Actual " + tab][year-1], true, true, false);
-            chart.series[2].setData(highchartsData["Actual " + tab][year], true, true, false);
-            chart.series[3].setData(highchartsData["Budget " + tab][year], true, true, false);
+            chart.series[0].setData(monthlyHighchartsData["Actual " + tab][year-2], true, true, false);
+            chart.series[1].setData(monthlyHighchartsData["Actual " + tab][year-1], true, true, false);
+            chart.series[2].setData(monthlyHighchartsData["Actual " + tab][year], true, true, false);
+            chart.series[3].setData(monthlyHighchartsData["Budget " + tab][year], true, true, false);
         });
     }
 });
