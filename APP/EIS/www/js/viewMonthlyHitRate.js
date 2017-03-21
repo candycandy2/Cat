@@ -473,56 +473,43 @@ $("#viewMonthlyHitRate").pagecontainer({
             showData();
         });
 
-        /********************************** page event *************************************/
-        $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            ro = "ALL";
-            product = "ALL";
-            tab = "QTY";
-            year = thisYear;
-            month = thisMonth;
-            hcRo = "All";
-            hcProduct = "All product";
-            initSlider();
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            getHighchartsData(ro, product);
-
+        function showHighchart() {
             chart = new Highcharts.Chart({
-        		chart: {
-        			renderTo: 'viewMonthlyHitRate-hc-canvas',
-        			marginBottom: 80,
-        			marginTop: 20,
-        			marginLeft: 55
-        		},
-        		title: {
-        			text: ''
-        		},
-        		xAxis: {
-        			title: {
-        				text: '(Mth)',
-        				align: 'high'	
-        			},
-        			tickInterval: 1,
+                chart: {
+                    renderTo: 'viewMonthlyHitRate-hc-canvas',
+                    marginBottom: 80,
+                    marginTop: 20,
+                    marginLeft: 55
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    title: {
+                        text: '(Mth)',
+                        align: 'high'   
+                    },
+                    tickInterval: 1,
                     max: 12,
                     min: 1,
-        			crosshair: true
-        		},
-        		yAxis: {
+                    crosshair: true
+                },
+                yAxis: {
                     title: {
                         text: ''
                     },
-        			min: 0,
-        		},
-        		legend: {
-        			align: 'left',
-        			float: true,
-        			x: -7,
-        			y: 13
-        		},
-        		credits: {
-					enabled: false
-				},
-        		tooltip: {
+                    min: 0,
+                },
+                legend: {
+                    align: 'left',
+                    float: true,
+                    x: -7,
+                    y: 13
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
                     formatter: function () {
                         var index = 0;
                         var s = '<b>' + hcRo + ' Hit Rate - ' + hcProduct + '</b>';
@@ -546,39 +533,55 @@ $("#viewMonthlyHitRate").pagecontainer({
                     useHTML: true,
                     hideDelay: 0,
                     crosshairs: false
-        		},
-        		plotOptions: {
-        			column: {
-        				pointPadding: 0,
-        				borderWidth: 0,
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0,
                         pointStart: 1
-        			},
+                    },
                     line: {
                         pointStart: 1
                     }
-        		},
-        		exporting: {
-        			enabled: false
-        		},
-        		series: [{
-        			name: (year-2) + " Actual QTY",
-        			type: 'column',
-        			color: '#0AB5B6',
-        		}, {
-        			name: (year-1) + " Actual QTY",
-        			type: 'column',
-        			color: '#F4A143',
-        		}, {
-        			name: (year) + " Actual QTY",
-        			type: 'column',
-        			color: '#824E9F',
-        		}, {
-        			name: (year) + " Budget QTY",
-        			type: 'line',
-        			color: '#134A8C',
-        			lineWidth: 1,
-        		}]
-        	});
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: (year-2) + " Actual QTY",
+                    type: 'column',
+                    color: '#0AB5B6',
+                }, {
+                    name: (year-1) + " Actual QTY",
+                    type: 'column',
+                    color: '#F4A143',
+                }, {
+                    name: (year) + " Actual QTY",
+                    type: 'column',
+                    color: '#824E9F',
+                }, {
+                    name: (year) + " Budget QTY",
+                    type: 'line',
+                    color: '#134A8C',
+                    lineWidth: 1,
+                }]
+            });
+        }
+
+        /********************************** page event *************************************/
+        $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
+            ro = "ALL";
+            product = "ALL";
+            tab = "QTY";
+            year = thisYear;
+            month = thisMonth;
+            hcRo = "All";
+            hcProduct = "All product";
+            initSlider();
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            getHighchartsData(ro, product);
+            showHighchart();
             showData();
             chart.series[0].setData(monthlyHighchartsData["Actual " + tab][year-2], false, false, false);
             chart.series[1].setData(monthlyHighchartsData["Actual " + tab][year-1], false, false, false);
@@ -592,6 +595,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #ALL").addClass('hover');
             $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
             loadingMask("hide");
+            chartWidth = chart.chartWidth;
+            chartHeight = chart.chartHeight;
         });
 
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
@@ -698,23 +703,28 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart.series[3].setData(monthlyHighchartsData["Budget " + tab][year], true, true, false);
         });
 
-        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
-            // portraint
-            if (window.orientation === 180 || window.orientation === 0) {
-                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
-                $(".viewIndex.ui-page .ui-content.page-main>form").show();
-                $("#viewMonthlyHitRate .page-header, .sliderMonthly, #title-container, div > .scrollmenu, .hc-fragment").show();
-                $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
-            }
-            // landscape
-            if (window.orientation === 90 || window.orientation === -90 ) {
-                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
-                $(".viewIndex.ui-page .ui-content.page-main>form").hide();
-                $("#viewMonthlyHitRate .page-header, .sliderMonthly, #title-container, div > .scrollmenu").hide();
-                $(".viewIndex.ui-page").css("background-color", "#fff");
-                $(".hc-fragment").css("height", "auto");
-                $(".hc-fragment").show();
-            }
-        }, false);
+        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+        //     var screenWidth = $("html").width(), screenHeight = $("html").height();
+        //     // portraint
+        //     if (window.orientation === 180 || window.orientation === 0) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
+        //         $("#viewMonthlyHitRate .page-header, .sliderMonthly, #title-container, div > .scrollmenu, .hc-fragment").show();
+        //         $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
+        //         chart.legend.update({ itemStyle: {fontSize: 12}});
+        //         chart.setSize(chartWidth, chartHeight);
+        //     }
+        //     // landscape
+        //     if (window.orientation === 90 || window.orientation === -90 ) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+        //         $("#viewMonthlyHitRate .page-header, .sliderMonthly, #title-container, div > .scrollmenu").hide();
+        //         $(".viewIndex.ui-page").css("background-color", "#fff");
+        //         $(".hc-fragment").css("height", "auto");
+        //         $(".hc-fragment").show();
+        //         chart.legend.update({ itemStyle: {fontSize: 14}});
+        //         chart.setSize(screenHeight, screenWidth*0.8);
+        //     }
+        // }, false);
     }
 });

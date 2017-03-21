@@ -332,65 +332,53 @@ $("#viewYTDHitRate").pagecontainer({
             showData();
         });
 
-        /********************************** page event *************************************/
-        $("#viewYTDHitRate").on("pageshow", function(event, ui) {
-            ro = "ALL";
-            product = "ALL";
-            tab = "QTY";
-            year = thisYear;
-            month = thisMonth;
-            hcRo = "All";
-            hcProduct = "All product";
-            initSlider();
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-
-			chart = new Highcharts.Chart ({
-				chart: {
-					renderTo: 'viewYTDHitRate-hc-canvas',
-					marginBottom: 75,
-					marginTop: 25,
-					marginLeft: 60,
+        function showHighchart() {
+            chart = new Highcharts.Chart ({
+                chart: {
+                    renderTo: 'viewYTDHitRate-hc-canvas',
+                    marginBottom: 75,
+                    marginTop: 25,
+                    marginLeft: 60,
                     marginRight: 25
-				},
-				title: {
-					text: '' 
-				},
-				xAxis: {
-					title: {
-						text: '(Mth)',
-						align: 'high',
-						offset: 0,
-						x: 25,
-						y: 7
-					},
-			    	tickInterval: 1,
+                },
+                title: {
+                    text: '' 
+                },
+                xAxis: {
+                    title: {
+                        text: '(Mth)',
+                        align: 'high',
+                        offset: 0,
+                        x: 25,
+                        y: 7
+                    },
+                    tickInterval: 1,
                     max: 12,
                     min: 1,
-			    	crosshair: true
-				},
-				yAxis: [{
-		    		title: {
-		        		text: ''
-		    		},
-		        	min: 0
-			    }, {
-			    	title: {
-		        		text: '',
-		    		},
-		    		opposite: true,
-		        	min: 0,
-			    }],
-				legend: {
-					align: 'left',
-					float: true,
-					x: -7,
-					y: 13
-				},
-				credits: {
-					enabled: false
-				},
-				tooltip: {
+                    crosshair: true
+                },
+                yAxis: [{
+                    title: {
+                        text: ''
+                    },
+                    min: 0
+                }, {
+                    title: {
+                        text: '',
+                    },
+                    opposite: true,
+                    min: 0,
+                }],
+                legend: {
+                    align: 'left',
+                    float: true,
+                    x: -7,
+                    y: 13
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
                     formatter: function () {
                         var s = '<b>' + hcTable[this.x] + " " + year + " " + hcRo + ' Hit Rate - ' + hcProduct + '</b>';
                         var dollar = "$";
@@ -405,43 +393,58 @@ $("#viewYTDHitRate").pagecontainer({
                         });
                         return s;
                     },
-			    	shared: true,
-			    	useHTML: true,
+                    shared: true,
+                    useHTML: true,
                     hideDelay: 0
-				},
-				plotOptions: {
-			    	column: {
-			        	pointPadding: 0,
-			        	borderWidth: 0,
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0,
                         pointStart: 1
-			    	},
+                    },
                     line: {
                         pointStart: 1
                     }
-				},
-				exporting: {
-					enabled: false
-				},
-				series: [{
-			    	name: 'Budget QTY',
-			    	type: 'column',
-			    	color: '#0AB5B6',
-				},{
-					name: 'Actual QTY',
-					type: 'column',
-					color: '#F4A143',
-				},{
-					name: 'RT Budget QTY',
-					type: 'line',
-					color: '#A0C83A',
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Budget QTY',
+                    type: 'column',
+                    color: '#0AB5B6',
+                },{
+                    name: 'Actual QTY',
+                    type: 'column',
+                    color: '#F4A143',
+                },{
+                    name: 'RT Budget QTY',
+                    type: 'line',
+                    color: '#A0C83A',
                     // yAxis: 1,
-				},{
-					name: 'RT Actual QTY',
-					type: 'line',
-					color: '#134A8C',
-					// yAxis: 1,
-				}]
-			});
+                },{
+                    name: 'RT Actual QTY',
+                    type: 'line',
+                    color: '#134A8C',
+                    // yAxis: 1,
+                }]
+            });
+        }
+        /********************************** page event *************************************/
+        $("#viewYTDHitRate").on("pageshow", function(event, ui) {
+            ro = "ALL";
+            product = "ALL";
+            tab = "QTY";
+            year = thisYear;
+            month = thisMonth;
+            hcRo = "All";
+            hcProduct = "All product";
+            initSlider();
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+
+			showHighchart();
             showData();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Net Quantity");
             $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
@@ -451,6 +454,8 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #ALL").addClass('hover');
             $(".sliderYTD").slick("slickGoTo", ytdPageDate.length-1, true);
 			loadingMask("hide");
+            chartWidth = chart.chartWidth;
+            chartHeight = chart.chartHeight;
         });
 
 		$(".page-tabs #viewYTDHitRate-tab-1").on("click", function() {
@@ -552,23 +557,27 @@ $("#viewYTDHitRate").pagecontainer({
             chart.series[3].setData(ytdHighchartsData["RT Actual " + tab], true, true, false);
         });
 
-        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
-            // portraint
-            if (window.orientation === 180 || window.orientation === 0) {
-                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
-                $(".viewIndex.ui-page .ui-content.page-main>form").show();
-                $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu, .hc-fragment").show();
-                $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
-            }
-            // landscape
-            if (window.orientation === 90 || window.orientation === -90 ) {
-                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
-                $(".viewIndex.ui-page .ui-content.page-main>form").hide();
-                $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu").hide();
-                $(".viewIndex.ui-page").css("background-color", "#fff");
-                $(".hc-fragment").css("height", "auto");
-                $(".hc-fragment").show();
-            }
-        }, false);
+        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
+        //     // portraint
+        //     if (window.orientation === 180 || window.orientation === 0) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
+        //         $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu, .hc-fragment").show();
+        //         $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
+        //         chart.legend.update({ itemStyle: {fontSize: 12}});
+        //         chart.setSize(chartWidth, chartHeight, doAnimation = true);
+        //     }
+        //     // landscape
+        //     if (window.orientation === 90 || window.orientation === -90 ) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+        //         $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu").hide();
+        //         $(".viewIndex.ui-page").css("background-color", "#fff");
+        //         $(".hc-fragment").css("height", "auto");
+        //         $(".hc-fragment").show();
+        //         chart.legend.update({ itemStyle: {fontSize: 14}});
+        //         chart.setSize(screenHeight, screenWidth*0.8);
+        //     }
+        // }, false);
     }
 });

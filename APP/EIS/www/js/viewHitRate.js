@@ -113,7 +113,7 @@ $("#viewHitRate").pagecontainer ({
 
                 $("#" + ro + " .AS span").text(ActualAMT);
 				$("#" + ro + " .HR span").text(budgetHitRate + "%");
-				if(budgetHitRate <= 80) {
+				if(budgetHitRate < 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
 				}else if(budgetHitRate > 95) {
 					$("#" + ro + " .HR").css('background', '#48af56');
@@ -135,7 +135,7 @@ $("#viewHitRate").pagecontainer ({
             }
             totalBudgetHitRate = (totalActualAMT / totalBudgetAMT) * 100;
             $("#total .dataContainer .HR span").text((Math.round(totalBudgetHitRate * Math.pow(10, 2)) / 100) + "%");
-            if(totalBudgetHitRate <= 80) {
+            if(totalBudgetHitRate < 80) {
                 $("#total .dataContainer .HR").css('background', '#ee3839');
             }else if(totalBudgetHitRate > 95) {
                 $("#total .dataContainer .HR").css('background', '#48af56');
@@ -292,12 +292,15 @@ $("#viewHitRate").pagecontainer ({
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active'); 
+            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-            showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+
             if(lastPageID != "viewHitRate") {
+                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
             }
+            chartWidth = chart.chartWidth;
+            chartHeight = chart.chartHeight;
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function() {
@@ -324,23 +327,28 @@ $("#viewHitRate").pagecontainer ({
             showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
 
-        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
-            // portraint
-            if (window.orientation === 180 || window.orientation === 0) {
-                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
-                $(".viewIndex.ui-page .ui-content.page-main>form").show();
-                $("#viewHitRate .hc-fragment, #data-title-bar, .page-header, .page-date, div > ul").show();
-                $("#viewHitRate-hc-canvas").css("height", "38VH");
-            }
-           // landscape
-            if (window.orientation === 90 || window.orientation === -90 ) {
-                $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
-                $(".viewIndex.ui-page .ui-content.page-main>form").hide();
-                $("#viewHitRate .page-header, .page-date, #data-title-bar, div > ul").hide();
-                $(".viewIndex.ui-page").css("background-color", "#fff");
-                $(".hc-fragment").css("height", "auto");
-                $(".hc-fragment").show();
-            }
-        }, false);
+        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
+        //     var screenWidth = $("html").width(), screenHeight = $("html").height();
+        //     // portraint
+        //     if (window.orientation === 180 || window.orientation === 0) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
+        //         $("#viewHitRate .hc-fragment, #data-title-bar, .page-header, .page-date, div > ul").show();
+        //         $("#viewHitRate-hc-canvas").css("height", "38VH");
+        //         chart.legend.update({ itemStyle: {fontSize: 12}});
+        //         chart.setSize(chartWidth, chartHeight, doAnimation = true);
+        //     }
+        //    // landscape
+        //     if (window.orientation === 90 || window.orientation === -90 ) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+        //         $("#viewHitRate .page-header, .page-date, #data-title-bar, div > ul").hide();
+        //         $(".viewIndex.ui-page").css("background-color", "#fff");
+        //         $(".hc-fragment").css("height", "auto");
+        //         $(".hc-fragment").show();
+        //         chart.legend.update({ itemStyle: {fontSize: 14}});
+        //         chart.setSize(screenHeight, screenWidth*0.8, doAnimation = true);
+        //     }
+        // }, false);
     }
 });
