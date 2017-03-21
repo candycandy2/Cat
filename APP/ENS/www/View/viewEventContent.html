@@ -11,7 +11,7 @@
             <h1 class="ui-title">緊急通報</h1>
         </div>
         <a href="#" data-role="none" class="ui-btn-right" style="text-decoration:none; color:#FFF; font-size: 2.8vh; padding-top: 0.8vh;">
-            <span>編輯</span>
+            <span id="eventEdit">編輯</span>
         </a>
     </div>
     <div data-role="main" class="page-main event-content" id="contentEventContent">
@@ -29,67 +29,71 @@
 
             <hr class="ui-hr ui-hr-absolute">
 
-        <div class="title">
-            <span>關聯事件 :</span>
-        </div>
-        <div class="event-content-data-list">
-            <div class="left">
-                <span class="delete"></span>
+        <div class="relate-event-content hide">
+            <div class="title">
+                <span>關聯事件 :</span>
             </div>
-            <div class="right relate-event">
-                16003
+            <div class="event-content-data-list">
+                <div class="left">
+                    <span style="display: block; width: 4.42vw; height: 4.42vw;"></span>
+                </div>
+                <div class="right relate-event">
+                    16003
+                </div>
             </div>
         </div>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <!--<hr class="ui-hr ui-hr-absolute">-->
 
         <div class="title">
             <span>工作分配 :</span>
         </div>
-        <div id="workAssignContent" class="event-content-data-list">
-            <div class="work-before">
-                <div class="left">
-                    <span class="img"></span>
-                </div>
-                <div class="right">
-                    <div class="title font-style3">
-                        BQT 3F機房
+        <div id="eventTaskListContent" class="event-content-data-list">
+            <template id="tplEventTaskListBefore">
+                <div class="work-before">
+                    <div class="left">
+                        <span class="img"></span>
                     </div>
-                    <div class="function font-style3">
-                        Function A
-                    </div>
-                    <div class="user-datetime">
-                        <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                        <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                    <div class="right">
+                        <div class="title font-style3">
+                            BQT 3F機房
+                        </div>
+                        <div class="function font-style3">
+                            Function A
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="work-after">
-                <div class="left">
-                    <span class="img"></span>
+            </template>
+            <template id="tplEventTaskListAfter">
+                <div class="work-after">
+                    <div class="left">
+                        <span class="img"></span>
+                    </div>
+                    <div class="right">
+                        <div class="title font-style3">
+                            BQT 3F機房
+                        </div>
+                        <div class="function font-style3">
+                            Function A
+                        </div>
+                        <div class="user-datetime">
+                            <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                            <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                        </div>
+                    </div>
                 </div>
-                <div class="right">
-                    <div class="title font-style3">
-                        BQT 3F機房
-                    </div>
-                    <div class="function font-style3">
-                        Function A
-                    </div>
-                    <div class="user-datetime">
-                        <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                        <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
-                    </div>
-                </div>
-            </div>
+            </template>
         </div>
 
-            <hr class="ui-hr ui-hr-absolute" id="hrMessage">
+            <!--<hr class="ui-hr ui-hr-absolute">-->
 
-        <div class="title">
-            <span>留言 :</span>
-        </div>
-        <div id="messageContent" class="event-content-data-list">
+        <div class="message-content hide">
+            <div class="title">
+                <span>留言 :</span>
+            </div>
+            <div id="messageContent" class="event-content-data-list">
 
+            </div>
         </div>
 
         <div id="tempImage">
@@ -108,6 +112,37 @@
                 <span class="delete"></span>
             </span>
         </div>
+
+        <!--template @popup content > Report Event Work Done Confirm-->
+        <template id="tplEventReportWorkDoneConfirm">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                確認回報工作完成?
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">取消</div>
+                    <div class="confirm">確認</div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Cancel Event Work Done Confirm-->
+        <template id="tplEventCancelWorkDoneConfirm">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                確定取消回報?
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">取消</div>
+                    <div class="confirm">確認</div>
+                </div>
+            </div>
+        </template>
+
     </div>
     <div data-role="footer" class="event-content-footer" data-position="fixed">
         <div class="left" id="cameraButton">

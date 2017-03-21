@@ -76,17 +76,19 @@ class TaskRepository
     /**
      * 儲存任務資料
      * @param  Array  $data 儲存的欄位值及資料對照
+     * @return bool
      */
     public function saveTask(Array $data){
-        $this->task->insert($data);
+        return $this->task->insert($data);
     }
 
     /**
      * 儲存使用者對應任務表(en_user_task)
      * @param  Array  $data 儲存的欄位值及資料對照
+     * @return bool
      */
     public function saveUserTask(Array $data){
-        $this->userTask->insert($data);
+        return $this->userTask->insert($data);
     }
 
     /**
@@ -120,15 +122,15 @@ class TaskRepository
      * @return mixed
      */
     public function getTaskById($taskId){
-         return $this->task
+        return $this->task
                 ->where('row_id',$taskId)
                 ->first();
     }
 
     /**
      * 檢查任務是否有此參與者
-     * @param  [type] $taskId en_task.row_id
-     * @param  [type] $empNo  emp_no
+     * @param  int $taskId en_task.row_id
+     * @param  string $empNo  emp_no
      * @return mixed
      */
     public function getIsTaskOwner($taskId, $empNo){
@@ -144,9 +146,22 @@ class TaskRepository
      * @return int             已完成的任務數
      */
     public function getCloseTaskCntByEventId($eventId){
-            return $this->task
-                ->where('event_row_id',$eventId)
-                ->where('task_status', '=', 1)
-                ->count();
+        return $this->task
+            ->where('event_row_id',$eventId)
+            ->where('task_status', '=', 1)
+            ->count();
+    }
+
+    /**
+     * 取得事件未完成的任務
+     * @param  int      $eventId 事件id event.row_id
+     * @return mixed             已完成的任務數
+     */
+    public function getOpenTaskByEventId($eventId){
+        return $this->task
+            ->where('event_row_id',$eventId)
+            ->where('task_status', '=', 0)
+            ->select('row_id')
+            ->get();
     }
 }

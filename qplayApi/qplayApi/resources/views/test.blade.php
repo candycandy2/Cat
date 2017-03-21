@@ -181,11 +181,21 @@ FORM;
     <input type="button" value="getIpInfo" onclick="getIpInfo()">
     <br/><br/>
     <script>
-        var sectoryKey = 'swexuc453refebraXecujeruBraqAc4e';
         var registerUUID = "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20";
+        var appSecretKey = <?php echo '"'.Config::get("app.App_Secret_key").'"' ?>;
+        function getSignature(action, signatureTime) {
+                if (action === "getTime") {
+                    return Math.round(new Date().getTime()/1000);
+                } else if (action === "getInBase64") {
+                    var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+                    return CryptoJS.enc.Base64.stringify(hash);
+                }
+        }
 
         var mosesAndroidUuid = "A000004E11012A9";
         var isLogin = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/isLogin?lang=en-us&uuid=" + mosesAndroidUuid,
                 dataType: "json",
@@ -194,8 +204,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -209,6 +219,8 @@ FORM;
         };
 
         var isRegister = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/isRegister?lang=en-us&uuid=" + registerUUID,//Math.uuid(),
                 dataType: "json",
@@ -217,8 +229,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -231,6 +243,8 @@ FORM;
         };
 
         var getIpInfo = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/getIpInfo?ip=" + $("#tbxIP").val(),//Math.uuid(),
                 dataType: "json",
@@ -239,8 +253,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -253,6 +267,8 @@ FORM;
         }
         
         var register = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/register?lang=en-us&device_type=android&uuid=" + "chaosTest3",//Math.uuid(),
                 dataType: "json",
@@ -261,8 +277,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
@@ -287,6 +303,8 @@ FORM;
         }
 
         var login = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/login?lang=en-us&uuid=" + "chaosTest",//Math.uuid(),
                 dataType: "json",
@@ -295,8 +313,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("redirect-uri", "http://www.moses.com/test");
                     request.setRequestHeader("domain", "QGROUP");
                     request.setRequestHeader("loginid", "Moses.Zhu");
@@ -322,6 +340,8 @@ FORM;
         }
         
         var logout = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/logout?lang=en-us&loginid=Moses.Zhu&domain=QCS&uuid=" + "CD8C4CBC-FC71-41D1-93D4-FB5547E7AA20",//Math.uuid(),
                 dataType: "json",
@@ -330,8 +350,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                 },
                 success: function (d, status, xhr) {
                     alert(d.result_code + ": " + d.message);
@@ -344,6 +364,8 @@ FORM;
         }
 
         var checkAppVersion = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/checkAppVersion?lang=en-us&package_name=benq.qplay&device_type=android&version_code=100",
                 dataType: "json",
@@ -352,7 +374,7 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
+                    request.setRequestHeader("signature", signatureInBase64);//request.setRequestHeader("signature", "IR3bipdmUxPsGFCg94CWunAdVineHFBXiRQJdN3HcrQ=");
                     request.setRequestHeader("signature-time", "1467699291");
                 },
                 success: function (d, status, xhr) {
@@ -367,6 +389,8 @@ FORM;
         }
 
         var getAppList = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/getAppList?lang=en-us&uuid=chaosTest",
                 dataType: "json",
@@ -375,8 +399,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "580da532d3894");
                 },
                 success: function (d, status, xhr) {
@@ -423,6 +447,8 @@ FORM;
         }
 
         var getSecturityList = function() {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/getSecurityList?lang=en-us&uuid=A1234567890A1234567890&app_key=appqplay",
                 dataType: "json",
@@ -431,8 +457,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "579ec219ddc92");
                 },
                 success: function (d, status, xhr) {
@@ -447,6 +473,8 @@ FORM;
         };
 
         var getMessageList = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest&overwrite_timestamp=0",
                 //url: "v101/qplay/getMessageList?lang=en-us&uuid=chaosTest",
@@ -456,8 +484,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
@@ -488,6 +516,8 @@ FORM;
         }
 
         var getMessageDetail = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/getMessageDetail?lang=en-us&uuid=chaosTest&message_send_row_id=262",
                 dataType: "json",
@@ -496,8 +526,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
@@ -524,6 +554,8 @@ FORM;
         }
 
         var updateMessage = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/updateMessage?lang=en-us&uuid=chaosTest&message_send_row_id=19,257,261&message_type=event&status=read",
                 dataType: "json",
@@ -532,8 +564,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "585d30e887808");
                 },
                 success: function (d, status, xhr) {
@@ -548,6 +580,8 @@ FORM;
         }
 
         var sendPushToken = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/sendPushToken?lang=en-us&uuid=chaosTest&app_key=qplay&device_type=android",
                 dataType: "json",
@@ -556,8 +590,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("push-token", "test_token");
                 },
                 success: function (d, status, xhr) {
@@ -572,6 +606,8 @@ FORM;
         }
 
         var renewToken = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/renewToken?lang=en-us&uuid=aaaaadasdasdasd",
                 dataType: "json",
@@ -580,8 +616,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "5784945d01e24");
                 },
                 success: function (d, status, xhr) {
@@ -596,6 +632,8 @@ FORM;
         }
 
         var updateLastMessageTime = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             $.ajax({
                 url: "v101/qplay/updateLastMessageTime?lang=en-us&uuid=chaosTest&last_update_time=1470100946",
                 dataType: "json",
@@ -604,8 +642,8 @@ FORM;
                 data:{},
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "57a93c3dbee41");
                 },
                 success: function (d, status, xhr) {
@@ -620,6 +658,8 @@ FORM;
         }
 
         var sendPushMessage = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
 //            var mydata = '{"message_title":"System Announcement",' +
 //                    '"message_type":"event",' +
 //                    '"message_text":"system is down",' +
@@ -669,8 +709,8 @@ FORM;
                 data: mydataStr,
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplay");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "58169b8a895eb");
                 },
                 success: function (d, status, xhr) {
@@ -685,6 +725,8 @@ FORM;
         }
 
         var sendPushMessageWithJPushWebAPI = function () {
+            var signatureTime = getSignature("getTime");
+            var signatureInBase64 = getSignature("getInBase64", signatureTime);
             var mydata = {message_title: "SlB1c2ggV2ViIEFQSSBUZXN0",//"JPush Web API Test",
                 template_id:3,
                 message_type: "event",
@@ -705,8 +747,8 @@ FORM;
                 data: mydataStr,
                 beforeSend:function (request) {
                     request.setRequestHeader("app-key", "appqplaytest");
-                    request.setRequestHeader("signature", "Moses824");
-                    request.setRequestHeader("signature-time", "1000000000");
+                    request.setRequestHeader("signature", signatureInBase64);
+                    request.setRequestHeader("signature-time", signatureTime);
                     request.setRequestHeader("token", "58169b8a895eb");
                 },
                 success: function (d, status, xhr) {

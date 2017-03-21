@@ -31,9 +31,26 @@ class TaskController extends EventController
 
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
-            $empNo = (string)$xml->emp_no[0];
-            $taskStatus = (string)$xml->task_status[0];
-            $taskId = (string)$xml->task_row_id[0];
+            $data = CommonUtil::arrangeDataFromXml($xml, array('emp_no', 'task_status', 'task_row_id',
+                                                               'lang', 'need_push', 'app_key'));
+            if(!isset($data['lang'])        || $data['lang']=="" || 
+               !isset($data['need_push'])   || $data['need_push']=="" || 
+               !isset($data['app_key'])     || $data['app_key']=="" || 
+               !isset($data['task_status']) || $data['task_status']=="" ||
+               !isset($data['task_row_id']) || $data['task_row_id'] =="" ){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            $empNo = $data['emp_no'];
+            $taskStatus = $data['task_status'];
+            $taskId = $data['task_row_id'];
+            $queryParam =  array(
+                'lang' => $data['lang'],
+                'need_push' =>  $data['need_push'],
+                'app_key' =>  $data['app_key']
+            );
 
             if(trim($taskId) == "" || trim($taskStatus) == "" ){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
@@ -68,9 +85,12 @@ class TaskController extends EventController
                 'Message'=>"權限不足",
                 'Content'=>""]);
             }
-           
-            $data = $this->getUpdataStatusData($taskStatus, $xml);
-            $resutlt = $this->eventService->updateTaskById($empNo, $taskId, $data);
+            
+            if($taskStatus == $this->eventService::STATUS_FINISHED){
+                $this->eventService->closeTask($empNo, $taskData->event_row_id, $taskId, $queryParam);
+            }else{
+                $this->eventService->reopenTask($empNo, $taskId);
+            }
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                         'Content'=>""]);
@@ -81,27 +101,5 @@ class TaskController extends EventController
            
         }
 
-    }
-
-    /**
-     * 取得更新狀態資料
-     * @param  int    $taskStatus task狀態 (0:未完成 | 1:已完成)
-     * @param  string $xml request data 
-     * @return Array       更新資料Array
-     */
-    private function getUpdataStatusData($taskStatus, $xml){
-        $data = [];
-
-        $data = CommonUtil::arrangeDataFromXml($xml, array('task_status'));
-             
-        if($taskStatus == $this->eventService::STATUS_UNFINISHED){
-                $data['close_task_emp_no'] = "";
-                $data['close_task_date'] = 0;
-        }else{
-                $data['close_task_emp_no'] = (string)$xml->emp_no[0];
-                $data['close_task_date'] = time();
-        }
-
-        return $data;
     }
 }

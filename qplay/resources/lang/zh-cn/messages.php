@@ -282,6 +282,7 @@ return [
 	'PROJECT_PM' => '项目负责人',
 	'PROJECT_MEMO' => '备注',
     'APP_MAINTAIN' => 'App 维护',
+    'APP_ENG_NAME' => 'App 英文缩写',
     'ACTION_MAINTAIN' => '维护',
     'SEND_EMAIL' => '寄送详细资讯',
     'ACTION_SEND' => '再寄一次',

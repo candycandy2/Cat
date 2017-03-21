@@ -36,6 +36,19 @@ class platformController extends Controller
         }
         CommonUtil::setLanguage();
 
+        /*
+        $input = Input::get();
+        $order = $input["order"];
+        $offset = $input["offset"];
+        $limit = $input["limit"];
+        $userList = \DB::table("qp_user")
+            -> where("resign", "=", "N")
+            -> select()
+            -> orderBy("department")
+            -> orderBy("login_id")
+            -> Paginate($limit,['*'],null,($offset/$limit)+1);
+        return response()->json(["total"=>$userList->total(),"rows"=>$userList->items()]);
+        */
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
             -> select()
@@ -105,23 +118,53 @@ class platformController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         $now = date('Y-m-d H:i:s',time());
-
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $userIdList = $jsonContent['user_id_list'];
-            foreach ($userIdList as $uId) {
-                \DB::table("qp_user")
-                    -> where('row_id', '=', $uId)
-                    -> update(
-                        ['status'=>'N',
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
+            try {
+                foreach ($userIdList as $uId) {
+                    \DB::beginTransaction();
+                    \DB::table("qp_user")
+                        -> where('row_id', '=', $uId)
+                        -> update(
+                            ['status'=>'N',
+                                'updated_at'=>$now,
+                                'updated_user'=>\Auth::user()->row_id]);
 
+                    $userInfo = CommonUtil::getUserInfoByRowId($uId);
+                    $tag = PushUtil::GetTagByUserInfo($userInfo);
+                    foreach ($userInfo->uuidList as $uuid) {
+                        $pushToken = $uuid->uuid;
+                        $pushResult = PushUtil::RemoveTagsWithJPushWebAPI($pushToken, $tag);
+                    }
+
+                    $registerList = \DB::table("qp_register")
+                        ->where("user_row_id", "=", $uId)
+                        ->select()->get();
+                    foreach ($registerList as $registerInfo)
+                    {
+                        $registerId = $registerInfo->row_id;
+                        \DB::table("qp_push_token")
+                            ->where("register_row_id", "=", $registerId)
+                            ->delete();
+                        \DB::table("qp_register")
+                            ->where("row_id", "=", $registerId)
+                            ->delete();
+                        \DB::table("qp_session")
+                            ->where("user_row_id", "=", $uId)
+                            ->delete();
+                    }
+                    DB::commit();
+                }
             }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+            catch(\Exception $e){
+                \DB::rollBack();
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful]);
+        }else  {
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
         }
-
-        return null;
     }
 
     public function saveUser() {
@@ -222,13 +265,13 @@ class platformController extends Controller
                 }
 
                 \DB::commit();
-                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'jpush-result'=>$pushResult]);
             } catch (\Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
             }
         } else {
-            return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
+            return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
         }
     }
 
@@ -1389,10 +1432,11 @@ class platformController extends Controller
             $project_pm = $jsonContent['tbxProjectPM'];
             $project_description = $jsonContent['tbxProjectDescription'];
             $mailTo = array(\Auth::user()->email);
-            \DB::beginTransaction();
-             try{
-
-                $now = date('Y-m-d H:i:s',time());
+          
+            \DB::connection('mysql_production')->beginTransaction();
+            \DB::connection('mysql_test')->beginTransaction();
+            \DB::connection('mysql_dev')->beginTransaction();
+            try{
                 $validator = \Validator::make($request->all(), [
                 'txbAppKey' => 'required|regex:/^[a-z]*$/|max:50|is_app_key_unique',
                 'tbxProjectPM' => 'required|is_user_exist',
@@ -1402,41 +1446,33 @@ class platformController extends Controller
                 if ($validator->fails()) {
                  return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,'message'=>$validator->messages()], 200);
                 }
-               
+                
                 $projectCode = $this->projectService->getProjectCode(\DB::connection('mysql_production'));
-                
                 if(is_null($projectCode)){
-                      \Log::error('newProjectError :There might have project code not 3 digit number in DB.');
-                      return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
-                }
-                
+                      throw new Exception('newProjectError :There might have project code not 3 digit number in DB.');
+                }           
                 $secretKey = hash('md5', CommonUtil::generateRandomString());
-                
-                $newProjectId =  $this->projectService->newProject('mysql_production', 
-                CommonUtil::getContextAppKey('production',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
 
-                $this->projectService->newProject('mysql_test',
-                CommonUtil::getContextAppKey('test',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
+                $this->projectService->newProject('production', $app_key, $secretKey, $projectCode, $project_description, $project_pm);
+                $this->projectService->newProject('test', $app_key, $secretKey, $projectCode, $project_description, $project_pm);
+                $this->projectService->newProject('dev', $app_key, $secretKey, $projectCode, $project_description, $project_pm);
 
-                $this->projectService->newProject('mysql_dev',
-                CommonUtil::getContextAppKey('dev',$app_key), $secretKey, $projectCode, $project_description, $project_pm, \Auth::user()->row_id, $now);
-
-                \DB::commit();
-
-                //send project information
+               //send project information
                $pm = CommonUtil::getUserInfoJustByUserID($project_pm);
                $envAppKey =  CommonUtil::getContextAppKey(\Config::get('app.env'),$app_key);
 
                array_push($mailTo,$pm->email);
                $mailTo = array_unique($mailTo);
-               $projectInfo = $this->projectRepository->getProjectInfoByAppKey($envAppKey);
-               $secretKey =  $projectInfo->secret_key;
-               $projectCode =  $projectInfo->project_code;
+
                $this->projectService->sendProjectInformation($mailTo, $envAppKey, $secretKey, $projectCode);
 
+                \DB::connection('mysql_production')->commit();
+                \DB::connection('mysql_test')->commit();
+                \DB::connection('mysql_dev')->commit();
             }catch (\Exception $e) {
-
-                \DB::rollBack();
+                \DB::connection('mysql_production')->rollBack();
+                \DB::connection('mysql_test')->rollBack();
+                \DB::connection('mysql_dev')->rollBack();
                return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
            
@@ -1469,11 +1505,12 @@ class platformController extends Controller
             $project_description = $jsonContent['tbxProjectDescription'];
             $project_memo = $jsonContent['tbxProjectMemo'];
                
-            \DB::beginTransaction();
+            \DB::connection('mysql_production')->beginTransaction();
+            \DB::connection('mysql_test')->beginTransaction();
+            \DB::connection('mysql_dev')->beginTransaction();
 
             try{
 
-                $now = date('Y-m-d H:i:s',time());
                 $validator = \Validator::make($request->all(), [
                 'projectCode'           => 'required',
                 'tbxProjectPM'          => 'required|is_user_exist',
@@ -1483,15 +1520,19 @@ class platformController extends Controller
                 if ($validator->fails()) {
                  return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,'message'=>$validator->messages()], 200);
                 }
-                $this->projectService->updateProject('mysql_production', $projectCode, $project_description, $project_memo, $project_pm, \Auth::user()->row_id, $now);
-                $this->projectService->updateProject('mysql_test', $projectCode, $project_description, $project_memo, $project_pm, \Auth::user()->row_id, $now);
-                $this->projectService->updateProject('mysql_dev', $projectCode, $project_description, $project_memo, $project_pm, \Auth::user()->row_id, $now);
+                $this->projectService->updateProject('production', $projectCode, $project_description, $project_memo, $project_pm);
+                $this->projectService->updateProject('test', $projectCode, $project_description, $project_memo, $project_pm);
+                $this->projectService->updateProject('dev', $projectCode, $project_description, $project_memo, $project_pm);
 
-                \DB::commit();
+                \DB::connection('mysql_production')->commit();
+                \DB::connection('mysql_test')->commit();
+                \DB::connection('mysql_dev')->commit();
 
             }catch (\Exception $e) {
 
-                \DB::rollBack();
+                \DB::connection('mysql_production')->rollBack();
+                \DB::connection('mysql_test')->rollBack();
+                \DB::connection('mysql_dev')->rollBack();
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,]);
             }
             return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);

@@ -276,6 +276,9 @@ $(function () {
                             }
                         },
                         error: function (e) {
+                            if(handleAJAXError(this,e)){
+                                return false;
+                            }
                             validate = 0;
                              showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
                         }

@@ -13,47 +13,53 @@
     <div data-role="main" class="ui-content page-main">
         <form >
             <fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
-                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-1" checked="checked">
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-1" value="viewMonthlyHitRate-tab-1" checked="checked">
                 <label for="viewMonthlyHitRate-tab-1" class="tabs-title">Quantity</label>
         
-                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-2">
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-2" value="viewMonthlyHitRate-tab-2">
                 <label for="viewMonthlyHitRate-tab-2" class="tabs-title label-style">Amount</label>
         
-                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-3">
+                <input type="radio" name="radio-choice-h-2" id="viewMonthlyHitRate-tab-3" value="viewMonthlyHitRate-tab-3">
                 <label for="viewMonthlyHitRate-tab-3" class="tabs-title">ASP</label>
             </fieldset>
         </form>
 
-        <div class="page-date slider">
-            <!-- <span>MM./YY</span> -->
+        <div class="page-date sliderMonthly">
+            <span>MM./YY</span>
         </div>
 
         <div id="title-container">
             <div id="title">
-                <div style="width: 25VW; font-size:2.6VH; margin-left: 2.3VW;">
-                    <p>Actual Value</p>
+                <div id="actualValue" style="width: 25VW; font-size:3.97VW; margin-left: 2.3VW;">
+                    <p>Net Quantity</p>
                 </div>
-                <div style="width: 31VW; font-size:2.6VH; margin-left: 4VW">
+                <div style="width: 31VW; font-size:3.97VW; margin-left: 4VW">
                     <p>Budget Hit Rate</p>
                 </div>
-                <div style="width: 24VW; font-size:2.6VH; margin-left: 4VW; margin-right: 2.3VW">
+                <div style="width: 24VW; font-size:3.97VW; margin-left: 4VW; margin-right: 2.3VW">
                     <p>YoY Growth</p>
                 </div>
             </div>
             <div id="title-content" style="margin-top: 1.3VH;">
-                <div id="ActualValue" style="width: 25VW; font-size:2.6VH; margin-left: 2.3VW">
+                <div id="ActualValue" style="width: 25VW; font-size:3.97VW; margin-left: 2.3VW">
                     <p></p>
                 </div>
-                <div id="BudgetHitRate" style="width: 31VW; font-size:2.6VH; margin-left: 4VW;">
+                <div id="BudgetHitRate" style="width: 31VW; font-size:3.97VW; margin-left: 4VW;">
                     <p></p>
                 </div>
-                <div id="YOYGrowth" style="width: 24VW; font-size:2.6VH; margin-left: 4VW; margin-right: 2.3VW">
+                <div id="YOYGrowth" style="width: 24VW; font-size:3.97VW; margin-left: 4VW; margin-right: 2.3VW">
                     <p></p>
                 </div>
             </div>
         </div>
 
-        <div class="hc-fragment" id="viewMonthlyHitRate-hc-canvas" style="height:46.5VH;">
+        <div class="chartArea">
+            <div class="hc-fragment" id="viewMonthlyHitRate-hc-canvas" style="height:46.5VH;">
+            </div>
+            <!-- <div class="zoomBtn">
+                <img src="img/zoomin.png" alt="" class="zoomInBtn" id="viewMonthlyHitRateZoomInBtn">
+                <img src="img/zoomout.png" alt="" class="zoomOutBtn" id="viewMonthlyHitRateZoomOutBtn">
+            </div> -->
         </div>
 
         <div style="margin-top: 1.5VH;">

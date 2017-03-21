@@ -48,6 +48,10 @@ Date.prototype.TimeZoneConvert = function() {
     padLeft(fixedDateStr.getHours(), 2) + ":" + padLeft(fixedDateStr.getMinutes(), 2) + ":" + padLeft(fixedDateStr.getSeconds(), 2);
 };
 
+Date.prototype.TimeStamp = function() {
+    return parseInt(this / 1000, 10);
+};
+
 function addThirtyMins(time) {
     var timeStr = new Date(new Date().toDateString() + ' ' + time)
     timeStr.setMinutes(timeStr.getMinutes() + 30);

@@ -10,7 +10,9 @@
 	<script src="{{ asset('/js/jquery.json.js') }}"></script>
 	<script src="{{ asset('/js/Math.uuid.js') }}"></script>
 	<script src="{{ asset('/js/jquery.base64.js') }}"></script>
-
+	<script src="{{ asset('/js/core-min.js') }}"></script>
+	<script src="{{ asset('/js/hmac-sha256.js') }}"></script>
+	<script src="{{ asset('/js/enc-base64-min.js') }}"></script>
 	<style>
 		body {
 			font-family: Arial;

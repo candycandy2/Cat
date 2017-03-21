@@ -1,4 +1,6 @@
 var chart;
+var lytmTotalActualAMT = 0;
+var lylmTotalActualAMT = 0;
 var thisMonthBudgetAMT = [];
 var thisMonthActualAMT = [];
 var lastMonthBudgetAMT = [];
@@ -16,48 +18,50 @@ $("#viewHitRate").pagecontainer ({
     	window.ROSummary = function() {
 		
 	    	this.successCallback = function(data) {
-	    		callbackData = data["Content"]["DataList"];
-	    		length = callbackData.length;
-	    		thisYear = callbackData[length-1]["YEAR"];
-	    		thisMonth = callbackData[length-1]["MONTH"];
-	    		$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
 	    		
+                ProductDetail();
+                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+                UserAuthority();
+                roSummaryCallBackData = data["Content"]["DataList"];
+	    		length = roSummaryCallBackData.length;
+	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
+	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
 	    		convertData();
-	    		
-	    		getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
-	    		getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
-	    		
-                for(var i in eisdata[thisYear][thisMonth]) {
+                getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
+                getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
+                
+                for(var i in hitRateEisData[thisYear][thisMonth]) {
                     thisMonthData[i] = {};
                     lastMonthData[i] = {};
                     ytdData[i] = {};
                 }
 
-                for(var i in eisdata[thisYear-1][thisMonth]) {
-                    lastYTDActualAMT[i] = 0;
-                    for(var j in eisdata[thisYear-1]) {
+                for(var ro in hitRateEisData[thisYear-1][thisMonth]) {
+                    lastYTDActualAMT[ro] = 0;
+                    lytmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth][ro][1];
+                    lylmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth-1][ro][1];
+                    for(var j in hitRateEisData[thisYear-1]) {
                         if(Number(j) <= Number(thisMonth)) {
-                            lastYTDActualAMT[i] += (Number(eisdata[thisYear-1][j][i][1])); 
+                            lastYTDActualAMT[ro] += hitRateEisData[thisYear-1][j][ro][1];
                         }
                     }
                 }
 
                 calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
                 calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
-                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
-                loadingMask("hide");
-
                 getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
                 getHighcahrtsData(thisYear, thisMonth-1, "ACTUAL_ADJ_AMT", lastMonthActualAMT);
                 getHighcahrtsData(thisYear, thisMonth, "YTDBUDGET_AMT", YTDBudgetAMT);
                 getHighcahrtsData(thisYear, thisMonth, "YTDACTUAL_ADJ_AMT", YTDActualAMT);
-	    		calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
-	    		calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
-	    		calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
-	    		calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
-                ProductDetail();
-                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-                UserAuthority();
+                calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
+                calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
+                calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
+                calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
+                
+                $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
+                showHighchart();
+                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+                loadingMask("hide");
             };
 
 	    	this.failCallback = function(data) {
@@ -76,19 +80,19 @@ $("#viewHitRate").pagecontainer ({
     			year--;
     		}
     		if(type == "YOYGrowth") {
-	    		for(var i in eisdata[year][month]) {
-	    			data_array[i]["YOYGrowth"] = (eisdata[year][month][i][1] / eisdata[year-1][month][i][1]) - 1;
+	    		for(var i in hitRateEisData[year][month]) {
+	    			data_array[i]["YOYGrowth"] = (hitRateEisData[year][month][i][1] / hitRateEisData[year-1][month][i][1]) - 1;
 	    		}
     		}else if(type == "BudgetHitRate") {
-    			for(var i in eisdata[year][month]) {
-    				data_array[i]["BudgetHitRate"] = eisdata[year][month][i][1] / eisdata[year][month][i][0];
+    			for(var i in hitRateEisData[year][month]) {
+    				data_array[i]["BudgetHitRate"] = hitRateEisData[year][month][i][1] / hitRateEisData[year][month][i][0];
     			}
     		}else if(type == "YTDYOYGrowth") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[i]["YOYGrowth"] = (YTDActualAMT[index++] / lastYTDActualAMT[i]) - 1;
     			}
     		}else if(type == "YTDBudgetHitRate") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[i]["BudgetHitRate"] = (YTDActualAMT[index] / YTDBudgetAMT[index]);
     				index++;
     			}
@@ -96,7 +100,6 @@ $("#viewHitRate").pagecontainer ({
     	}
 
     	function showData(tab, AAMT_array, BAMT_array, data_array) {
-    		// var pattern = /(^[0-9\-]*\.{0,1}\d{0,2})\d*/;
     		var index = 0;
     		var ActualAMT, budgetHitRate, YOYGrowth, totalBudgetHitRate, totalYOYGrowth;
             var totalActualAMT = 0;
@@ -106,11 +109,11 @@ $("#viewHitRate").pagecontainer ({
 				ActualAMT = Math.round(AAMT_array[index++] / Math.pow(10, 4)) / 100;
 				budgetHitRate = Math.round((data_array[ro]["BudgetHitRate"] * Math.pow(10, 4))) / 100;
 				YOYGrowth = Math.round((data_array[ro]["YOYGrowth"] * Math.pow(10, 4))) / 100;
-				$("#" + ro + " .AS span").text(ActualAMT);
-				$("#" + ro + " .HR span").text(budgetHitRate + "%");
 				totalActualAMT += ActualAMT;
-			
-				if(budgetHitRate <= 80) {
+
+                $("#" + ro + " .AS span").text(ActualAMT);
+				$("#" + ro + " .HR span").text(budgetHitRate + "%");
+				if(budgetHitRate < 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
 				}else if(budgetHitRate > 95) {
 					$("#" + ro + " .HR").css('background', '#48af56');
@@ -132,7 +135,7 @@ $("#viewHitRate").pagecontainer ({
             }
             totalBudgetHitRate = (totalActualAMT / totalBudgetAMT) * 100;
             $("#total .dataContainer .HR span").text((Math.round(totalBudgetHitRate * Math.pow(10, 2)) / 100) + "%");
-            if(totalBudgetHitRate <= 80) {
+            if(totalBudgetHitRate < 80) {
                 $("#total .dataContainer .HR").css('background', '#ee3839');
             }else if(totalBudgetHitRate > 95) {
                 $("#total .dataContainer .HR").css('background', '#48af56');
@@ -143,7 +146,13 @@ $("#viewHitRate").pagecontainer ({
             for(var i in lastYTDActualAMT) {
                 totalLastYTDActualAMT += lastYTDActualAMT[i];
             }
-            totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+            if(tab == "thisMonth") {
+                totalYOYGrowth = ((totalActualAMT / lytmTotalActualAMT) - 1) * 100;
+            }else if(tab == "lastMonth") {
+                totalYOYGrowth = ((totalActualAMT / lylmTotalActualAMT) - 1) * 100;
+            }else if (tab == "YTD") {
+                totalYOYGrowth = ((totalActualAMT / totalLastYTDActualAMT) - 1) * 100;
+            }
             if(totalYOYGrowth < 0) {
                 $("#total .dataContainer .YR span").text((Math.round(totalYOYGrowth * Math.pow(10, 2)) / 100) + "%");
                 $("#total .dataContainer .YR").css('background', '#ee3839')
@@ -153,8 +162,6 @@ $("#viewHitRate").pagecontainer ({
             }
         }
 
-
-
     	function getHighcahrtsData(year, month, type, data_array) {
     		var index = 0;
     		if(month == 0) {
@@ -162,26 +169,26 @@ $("#viewHitRate").pagecontainer ({
     			year--;
     		}
     		if(type == "BUDGET_AMT") {
-	    		for(var i in eisdata[year][month]) {
-	    			data_array[index++] = (Number(eisdata[year][month][i][0]));
+	    		for(var i in hitRateEisData[year][month]) {
+	    			data_array[index++] = hitRateEisData[year][month][i][0];
 	    		}
     		}else if(type == "ACTUAL_ADJ_AMT") {
-    			for(var i in eisdata[year][month]) {
-	    			data_array[index++] = (Number(eisdata[year][month][i][1]));
+    			for(var i in hitRateEisData[year][month]) {
+	    			data_array[index++] = hitRateEisData[year][month][i][1];
 	    		}
     		}else if(type == "YTDBUDGET_AMT") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[index] = 0;
-    				for(var j in eisdata[year]) {
-    					data_array[index] += (Number(eisdata[year][j][i][0])); 
+    				for(var j in hitRateEisData[year]) {
+    					data_array[index] += hitRateEisData[year][j][i][0]; 
     				}
     				index++;
     			}
     		}else if(type == "YTDACTUAL_ADJ_AMT") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[index] = 0;
-    				for(var j in eisdata[year]) {
-    					data_array[index] += (Number(eisdata[year][j][i][1])); 
+    				for(var j in hitRateEisData[year]) {
+    					data_array[index] += hitRateEisData[year][j][i][1]; 
     				}
     				index++;
     			}
@@ -191,103 +198,119 @@ $("#viewHitRate").pagecontainer ({
     	function convertData() {
     		var month;
     		var rosite = 0;
-	    	for(var i=callbackData[0]["YEAR"]; i<=callbackData[length-1]["YEAR"]; i++) {
-	    		eisdata[i] = {};
-	    		month = (i == callbackData[length-1]["YEAR"]) ? (callbackData[length-1]["MONTH"]) : 12;  
+	    	for(var i=roSummaryCallBackData[0]["YEAR"]; i<=roSummaryCallBackData[length-1]["YEAR"]; i++) {
+	    		hitRateEisData[i] = {};
+	    		month = (i == roSummaryCallBackData[length-1]["YEAR"]) ? (roSummaryCallBackData[length-1]["MONTH"]) : 12;  
 	    		for(var j=1; j<=month; j++) {
-	    			eisdata[i][j] = {};
+	    			hitRateEisData[i][j] = {};
 	    			for(var k=0; k<5 && rosite<length; k++) {
-	    				eisdata[i][j][callbackData[rosite]["RO_SITE"]] = 
-	    						[callbackData[rosite]["BUDGET_AMT"], callbackData[rosite]["ACTUAL_ADJ_AMT"]];
+	    				hitRateEisData[i][j][roSummaryCallBackData[rosite]["RO_SITE"]] = 
+	    						[Number(roSummaryCallBackData[rosite]["BUDGET_AMT"]), Number(roSummaryCallBackData[rosite]["ACTUAL_ADJ_AMT"])];
 	    				rosite++;
 	    			}
 	    		}
 	    	}
     	}
 
+        function showHighchart() {
+            chart = new Highcharts.Chart ({
+                chart: {
+                    renderTo: 'viewHitRate-hc-canvas',
+                    marginTop: 30,
+                    marginLeft: 50,
+                },
+                title: {
+                    text: '' 
+                },
+                xAxis: {
+                    categories: [
+                        'BQA',
+                        'BQC',
+                        'BQE',
+                        'BQL',
+                        'BQP'
+                    ],
+                    crosshair: true,
+                },
+                yAxis: {
+                    title: {
+                        text: '(USD$)',
+                        align: 'high',
+                        rotation: 0,
+                        offset: 0,
+                        x: -10,
+                        y: -11
+                    },
+                    min: 0,
+                },
+                legend: {
+                    align: 'left',
+                    float: true,
+                    x: -13,
+                    y: 10
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    formatter: function () {
+                        var s = '<b>' + this.x + ' Hit Rate</b>';
+                        $.each(this.points, function () {
+                           s += '<br/> ' + this.series.name + ' = $' + formatNumber(this.y);
+                        });
+                        return s;
+                    },
+                    shared: true,
+                    useHTML: true,
+                    hideDelay: 0
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0
+                    }
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Budget AMT',
+                    type: 'column',
+                    color: '#0AB5B6',
+                    data: thisMonthBudgetAMT
+                },{
+                    name: 'Actual AMT',
+                    type: 'column',
+                    color: '#F4A143',
+                    data: thisMonthActualAMT
+                }]
+            });
+        }
+
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
-			chart = new Highcharts.Chart ({
-				chart: {
-					renderTo: 'viewHitRate-hc-canvas',
-					marginTop: 30,
-					marginLeft: 50
-				},
-				title: {
-					text: '' 
-				},
-				xAxis: {
-			    	categories: [
-			        	'BQA',
-			       		'BQC',
-			       		'BQE',
-			       		'BQL',
-			       		'BQP'
-			    	],
-			    	crosshair: true
-				},
-				yAxis: {
-        			title: {
-        				text: '(USD$M)',
-        				align: 'high',
-        				rotation: 0,
-        				offset: 0,
-        				x: 5,
-        				y: -11
-        			},
-        			min: 0,
-        			tickInterval: 1000000
-        		},
-				legend: {
-					align: 'left',
-					float: true,
-					x: -13,
-					y: 10
-				},
-				credits: {
-					enabled: false
-				},
-				tooltip: {
-			    	headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-			    	pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-			        	'<td style="padding:0"><b>{point.y:.1f} $M</b></td></tr>',
-			    	footerFormat: '</table>',
-			    	shared: false,
-			    	useHTML: true
-				},
-				plotOptions: {
-			    	column: {
-			        	pointPadding: 0,
-			        	borderWidth: 0
-			    	}
-				},
-				exporting: {
-					enabled: false
-				},
-				series: [{
-			    	name: 'Budget AMT',
-			    	type: 'column',
-			    	color: '#0AB5B6',
-			    	data: thisMonthBudgetAMT
-				},{
-					name: 'Actual AMT',
-					type: 'column',
-					color: '#F4A143',
-			    	data: thisMonthActualAMT
-				}]
-			});
+            showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active'); 
+            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-            showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
-			loadingMask("hide");
+
+            if(lastPageID != "viewHitRate") {
+                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+                loadingMask("hide");
+            }
+            chartWidth = chart.chartWidth;
+            chartHeight = chart.chartHeight;
+            if (window.orientation === 90 || window.orientation === -90 ) {
+                zoomInChart();
+            }
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function() {
         	$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
         	chart.series[0].setData(thisMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(thisMonthActualAMT, true, true, false );
+            chart.tooltip.hide();
         	showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
         });
 
@@ -295,14 +318,40 @@ $("#viewHitRate").pagecontainer ({
         	$("#viewHitRate .page-date").text(monTable[thisMonth-1]+thisYear);
         	chart.series[0].setData(lastMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(lastMonthActualAMT, true, true, false);
-        	showData("lastMonth", lastMonthActualAMT, lastMonthBudgetAMT, lastMonthData);
+        	chart.tooltip.hide();
+            showData("lastMonth", lastMonthActualAMT, lastMonthBudgetAMT, lastMonthData);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function() {
     		$("#viewHitRate .page-date").text(thisYear);
     		chart.series[0].setData(YTDBudgetAMT, true, true, false);
         	chart.series[1].setData(YTDActualAMT, true, true, false);
-        	showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
+        	chart.tooltip.hide();
+            showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
-	}
+
+        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
+        //     var screenWidth = $("html").width(), screenHeight = $("html").height();
+        //     // portraint
+        //     if (window.orientation === 180 || window.orientation === 0) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
+        //         $("#viewHitRate .hc-fragment, #data-title-bar, .page-header, .page-date, div > ul").show();
+        //         $("#viewHitRate-hc-canvas").css("height", "38VH");
+        //         chart.legend.update({ itemStyle: {fontSize: 12}});
+        //         chart.setSize(chartWidth, chartHeight, doAnimation = true);
+        //     }
+        //    // landscape
+        //     if (window.orientation === 90 || window.orientation === -90 ) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+        //         $("#viewHitRate .page-header, .page-date, #data-title-bar, div > ul").hide();
+        //         $(".viewIndex.ui-page").css("background-color", "#fff");
+        //         $(".hc-fragment").css("height", "auto");
+        //         $(".hc-fragment").show();
+        //         chart.legend.update({ itemStyle: {fontSize: 14}});
+        //         chart.setSize(screenWidth, screenHeight*0.8, doAnimation = true);
+        //     }
+        // }, false);
+    }
 });

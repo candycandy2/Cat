@@ -86,13 +86,13 @@ class qmessageController extends Controller
         $desc = $input->desc;
         $members = $input->members;
         //(1)检查$owner
-        if (empty($owner) || CommonUtil::getUserStatusByUsername($owner)!=3){
+        if (empty($owner)){
             $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998003_groupOwnerEmptyOrInvalid,"Group add failed,owner is empty or invalid"));
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
             return $result;
         }
         //(2)检查$members
-        if (count($members)==0 || !CommonUtil::checkUserListStatusByUsername($members)){
+        if (count($members)==0){
             $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group add failed,group member is empty or invalid"));
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
             return $result;
@@ -289,10 +289,36 @@ class qmessageController extends Controller
         ];
         CommonUtil::saveHistoryFile($fileInfo);
         $baseUrl = "http://media.file.jpush.cn/";
-        $fp=fsockopen('localhost',8081,$errno,$errstr,5);
+        $fp=fsockopen('localhost',80,$errno,$errstr,5);
         if($fp){
-            fputs($fp,"GET ".$_SERVER['PHP_SELF']."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id)."\r\n");
+            fputs($fp,"GET ".url()->current()."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id).(PHP_OS=="WINNT"?"\r\n":"\n"));
             fclose($fp);
+            return "";
+        }else{
+            return $errstr;
+        }
+    }
+
+    public static function storeHistoryFile(){
+        $ACTION = "storeHistoryFile";
+        $data = json_decode(file_get_contents('php://input'));
+        CommonUtil::saveHistory($data);
+        $fileInfo = [
+            "msg_id"=>$data->msg_id,
+            "fname"=>$data->fname,
+            "fsize"=>$data->extras->fsize,
+            "format"=>substr(strrchr($data->fname, '.'), 1),
+            "npath"=>$data->extras->media_id,
+        ];
+        CommonUtil::saveHistoryFile($fileInfo);
+        $baseUrl = "http://media.file.jpush.cn/";
+        $fp=fsockopen('localhost',80,$errno,$errstr,5);
+        $url = url()->current()."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id).(PHP_OS=="WINNT"?"\r\n":"\n");
+        //CommonUtil::logApi("",$ACTION,response()->json(apache_response_headers()), $url);
+        if($fp){
+            fputs($fp,"GET ".$url);
+            fclose($fp);
+            return "";
         }else{
             return $errstr;
         }
@@ -313,7 +339,6 @@ class qmessageController extends Controller
                     break;
                 }
             } while (strstr($return_content,"error") || empty($return_content));
-            //echo gettype($return_content).$return_content;
             //三次尝试失败后记录log
             if (strstr($return_content,"error") || empty($return_content)){
                 $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998006_downloadFileFailed,$return_content));
@@ -399,6 +424,14 @@ class qmessageController extends Controller
         return response()->json($package);
     }
 
+    /*
+    public static function testUrl(){
+        return [
+            "\$_SERVER['PHP_SELF']:"=>$_SERVER['PHP_SELF']
+            ,"url()->current():"=>url()->current()
+        ];
+    }
+    */
 }
 
 //DTO

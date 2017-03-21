@@ -1,4 +1,4 @@
-# QMessage Web API
+﻿# QMessage Web API
 
 ## Part Ⅰ.  Restful API
 ### User API
@@ -170,7 +170,7 @@ POST /v101/qmessage/group/members/delete
 #### 3. List Group Members
 ##### Resuest
 ```
-POST /v101/qmessage/group/members/delete 
+POST /v101/qmessage/group/members/list 
 { "gid":20798373}
 ```
 
@@ -273,6 +273,9 @@ var opts = {
     'username':username,
     'eventHandler': eventHandler,
     'messageHandler': messageHandler
+    'message_key':"3c207a542c715ca5a0c7426d",
+    'message_secret':"b15a6140ee8971c7598c3a0b",
+    'message_api_url_prefix':"qplaytest.benq.com/qmessage/public/"
 };
 msgController = window.QMessage(opts);
 ```
@@ -334,8 +337,11 @@ msgController = window.QMessage(opts);
     "event": "msg_sync"
 }
 ```
+4. message_key：appkey from jmessage
+5. message_message_secret: secret from jmessage
+6. message_api_url_prefix: service url without http or https,default value is empty(call current site)
 
-### Step 3. Send Text/Image
+### Step 3. Send Text/Image/File
 #### SendText(gid,gname,text,success,error)
 1. gid:group id
 2. gname: group name
@@ -380,7 +386,7 @@ successResult:
 }
 ```
 
-#### SendImage(gid,gname,text,success,error)
+#### SendImage(gid,gname,fid,success,error)
 1. gid:group id
 2. gname: group name
 3. fid: html element id(```<input type="file"/>```) which refers image to be sended
@@ -429,6 +435,52 @@ successResult:
 }
 ```
 
+#### SendFile(gid,gname,fid,success,error)
+1. gid:group id
+2. gname: group name
+3. fid: html element id(```<input type="file"/>```) which refers file to be sended
+4. success: callback function on success ,1 parameter
+5. error: callback function on error ,1 parameter
+##### Example
+```js
+if(msgController.isInited){
+    msgController.SendFile(gid,gname,fid,function(successResult){
+
+    }, function(errorResult){
+        
+    });
+}
+```
+successResult:
+```js
+{
+    "result": {
+        "target_gid": 21059495,
+        "code": 0,
+        "event": "send_group_msg",
+        "msg_id": 278247268,
+        "message": "success"
+    },
+    "content": {
+        "version": 1,
+        "target_type": "group",
+        "from_platform": "web",
+        "target_id": "21059495",
+        "target_name": "9B1F51DD-74CB-985C-8030-40663530B3E3",
+        "from_id": "Sammi.Yao",
+        "create_time": 1490076642685,
+        "msg_type": "file",
+        "msg_body": {
+            "media_id": "qiniu/file/j/6E94A97B5AD56CC1DD7B787E90C0AFD9",
+            "media_crc32": 4028161950,
+            "hash": "Fk6l4V01WOVIT0d-bt8OSAFbiRYQ",
+            "fsize": 4249,
+            "fname": "oracle.sql"
+        },
+        "fname": "oracle.sql"
+    }
+}
+```
 
 ### Step 4. Close
 ```js

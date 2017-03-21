@@ -93,6 +93,7 @@
         <div id="input-box">
             <input type="file" name="input-message-image" id="input-message-image" class="ui-btn-inline">
             <a href="javascript:void(0);" id="btnQMessageImageSend" data-role="button" data-inline="true">Send</a>
+            <a href="javascript:void(0);" id="btnQMessageFileSend" data-role="button" data-inline="true">File Send</a>
             <input type="text" name="input-message" id="input-message" class="ui-btn-inline">
             <a href="javascript:void(0);" id="btnQMessageSend" data-role="button" data-inline="true">Send</a>
             <input type="text" name="history-count" id="history-count" class="ui-btn-inline">
@@ -104,7 +105,8 @@
         var msgController,opts;
         $(function(){
            $("#btnQMessageSend").on("click",clickHandler);
-            $("#btnQMessageImageSend").on("click",fileClickHandler);
+            $("#btnQMessageImageSend").on("click",imageClickHandler);
+            $("#btnQMessageFileSend").on("click",fileClickHandler);
             $("#btnLogin").on("click",login);
             $("#btnHistory").on("click",getHistory);
         });
@@ -142,7 +144,10 @@
                 'eventHandler': eventHandler,
                 'messageHandler': messageHandler,
                 'debug': false,
-                'username':username
+                'username':username,
+                'message_key':"3c207a542c715ca5a0c7426d",
+                'message_secret':"b15a6140ee8971c7598c3a0b",
+                'message_api_url_prefix':"o-a3a5.qgroup.corp.com:8081/EnterpriseAPPPlatform/qmessage/public/index.php/"
             };
             msgController = window.QMessage(opts);
         }
@@ -155,10 +160,16 @@
             text = $.trim(text);
             sendText(gid,gname,text);
         }
-        function fileClickHandler(){
+        function imageClickHandler(){
             var  gname= $('#drpGroup > option:selected').text();
             var  gid = $('#drpGroup > option:selected').val();
             sendPic(gid,gname,"input-message-image");
+        }
+
+        function fileClickHandler(){
+            var  gname= $('#drpGroup > option:selected').text();
+            var  gid = $('#drpGroup > option:selected').val();
+            sendFile(gid,gname,"input-message-image");
         }
         function eventHandler(data){
 
@@ -170,8 +181,11 @@
              */
             var msg = data["messages"][0];
             var now = msg.ctime_ms;
+            if(msg["msg_type"]=="file"){
+                now =  msg.create_time;
+            }
             now = timestamp2Normal(now);
-            msg = msg["content"]
+            msg = msg["content"];
             var fromId = msg["from_id"];
             var content = "";
             if(msg["msg_type"]=="text"){
@@ -181,6 +195,10 @@
             if(msg["msg_type"]=="image"){
                 content = msg["msg_body"]["media_url"];
                 Render('image',content,now,fromId);
+            }
+            if(msg["msg_type"]=="file"){
+                content = "http://media.file.jpush.cn/" + msg["msg_body"]["media_id"];
+                Render('file',content,now,fromId);
             }
         }
         //Function
@@ -199,6 +217,17 @@
                     var content = result["content"];
                     var url = "http://media.file.jpush.cn/"+content["msg_body"].media_id;
                     Render('image',url,now,opts["username"]);
+                }, function(){});
+            }
+        }
+
+        function sendFile(gid,gname,fid){
+            if(msgController.isInited){
+                var now = getTime();
+                msgController.SendFile(gid,gname,fid, function(result){
+                    var content = result["content"];
+                    var url = "http://media.file.jpush.cn/"+content["msg_body"].media_id;
+                    Render('file',url,now,opts["username"]);
                 }, function(){});
             }
         }
@@ -288,6 +317,13 @@
                 html  = $("#template-message").html();
                 html = html
                     .replace("@@content","<img src='"+content+"' />")
+                    .replace("@@time",time)
+                    .replace("@@from",from);
+            }
+            if (type=='file'){
+                html  = $("#template-message").html();
+                html = html
+                    .replace("@@content","<div style='width:20px;height:10px;background-color: #fffd6c' src='"+content+"' ></div>")
                     .replace("@@time",time)
                     .replace("@@from",from);
             }
