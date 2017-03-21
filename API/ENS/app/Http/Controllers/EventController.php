@@ -153,6 +153,9 @@ class EventController extends Controller
                 }
             }
             \DB::commit();
+            //send push
+            $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
+            
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>$createChatRoomRes->Content]);
         } catch (Exception $e){

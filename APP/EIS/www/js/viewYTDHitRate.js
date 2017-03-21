@@ -338,18 +338,18 @@ $("#viewYTDHitRate").pagecontainer({
                     renderTo: 'viewYTDHitRate-hc-canvas',
                     marginBottom: 75,
                     marginTop: 25,
-                    marginLeft: 60,
-                    marginRight: 25
+                    marginLeft: 35,
+                    marginRight: 40
                 },
                 title: {
                     text: '' 
                 },
                 xAxis: {
                     title: {
-                        text: '(Mth)',
+                        text: 'Month',
                         align: 'high',
                         offset: 0,
-                        x: 25,
+                        x: 31,
                         y: 7
                     },
                     tickInterval: 1,
@@ -361,10 +361,16 @@ $("#viewYTDHitRate").pagecontainer({
                     title: {
                         text: ''
                     },
+                    labels: {
+                        x: -2
+                    },
                     min: 0
                 }, {
                     title: {
                         text: '',
+                    },
+                    labels: {
+                        x: 5
                     },
                     opposite: true,
                     min: 0,
@@ -422,15 +428,16 @@ $("#viewYTDHitRate").pagecontainer({
                     name: 'RT Budget QTY',
                     type: 'line',
                     color: '#A0C83A',
-                    // yAxis: 1,
+                    yAxis: 1,
                 },{
                     name: 'RT Actual QTY',
                     type: 'line',
                     color: '#134A8C',
-                    // yAxis: 1,
+                    yAxis: 1,
                 }]
             });
         }
+
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
             ro = "ALL";
@@ -486,7 +493,7 @@ $("#viewYTDHitRate").pagecontainer({
                 align: 'high',
                 rotation: 0,
                 offset: 0,
-                x: -11,
+                x: 11,
                 y: -11
             });
             chart.tooltip.hide();
@@ -507,7 +514,7 @@ $("#viewYTDHitRate").pagecontainer({
                 align: 'high',
                 rotation: 0,
                 offset: 0,
-                x: -11,
+                x: 11,
                 y: -11
             });
             chart.tooltip.hide();

@@ -64,8 +64,6 @@ class EventService
 
        $this->eventRepository->updateReadTime($eventId, $empNo);
 
-       $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
-
        return $eventId;
    }
 
@@ -502,7 +500,7 @@ class EventService
     * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
     * @return json
     */
-   private function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo){
+   public function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo){
        
        $result = null;
        $to = $this->getPushUserListByEvent($eventId);
