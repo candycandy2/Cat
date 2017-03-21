@@ -299,6 +299,31 @@ class qmessageController extends Controller
         }
     }
 
+    public static function storeHistoryFile(){
+        $ACTION = "storeHistoryFile";
+        $data = json_decode(file_get_contents('php://input'));
+        CommonUtil::saveHistory($data);
+        $fileInfo = [
+            "msg_id"=>$data->msg_id,
+            "fname"=>$data->fname,
+            "fsize"=>$data->extras->fsize,
+            "format"=>substr(strrchr($data->fname, '.'), 1),
+            "npath"=>$data->extras->media_id,
+        ];
+        CommonUtil::saveHistoryFile($fileInfo);
+        $baseUrl = "http://media.file.jpush.cn/";
+        $fp=fsockopen('localhost',80,$errno,$errstr,5);
+        $url = url()->current()."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id).(PHP_OS=="WINNT"?"\r\n":"\n");
+        //CommonUtil::logApi("",$ACTION,response()->json(apache_response_headers()), $url);
+        if($fp){
+            fputs($fp,"GET ".$url);
+            fclose($fp);
+            return "";
+        }else{
+            return $errstr;
+        }
+    }
+
     public static function downloadFile(){
         $url = Input::get('url');
         $fileName = Input::get('filename');

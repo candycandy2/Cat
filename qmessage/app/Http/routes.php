@@ -25,7 +25,9 @@ Route::any('/v101/qmessage/history/list','qmessageController@getMessageHistory')
 //Private API
 Route::post('/v101/qmessage/history/text','qmessageController@storeHistoryText');
 Route::get('/v101/qmessage/history/pic/downloadfile','qmessageController@downloadFile');
+Route::get('/v101/qmessage/history/file/downloadfile','qmessageController@downloadFile');
 Route::post('/v101/qmessage/history/pic','qmessageController@storeHistoryPic');
+Route::post('/v101/qmessage/history/file','qmessageController@storeHistoryFile');
 
 /**/
 
