@@ -46,6 +46,9 @@ $menu_name = "APP_MAINTAIN";
     
     var newApp = function(){
          $("#newAppDialog").find('.modal-title').text('{{trans('messages.NEW_APP')}}');
+         $("#newAppDialog").find('input').val('');
+         $("#ddlAppKey option[value='']").prop('selected',true);
+         $("#ddlLang option[value='3']").prop('selected',true);
          $("#newAppDialog").modal('show');
     }
 
@@ -69,7 +72,7 @@ $menu_name = "APP_MAINTAIN";
                      showMessageDialog("{{trans("messages.ERROR")}}",data.message);
                 }
                 else{
-                    window.location='{{asset('appDetailMaintain?source=admin&app_row_id=')}}' + data.new_app_row_id;
+                    window.location.href = '{{asset('appDetailMaintain')}}'+'?'+ $.param({'source':'admin','app_row_id':data.new_app_row_id});
                 }
             },error: function (e) {
                 if(handleAJAXError(this,e)){
