@@ -8,8 +8,10 @@ namespace App\Services;
 use App\Repositories\ProjectRepository;
 use App\Repositories\AppRepository;
 use App\lib\FilePath;
+use App\lib\CommonUtil;
 use Mail;
 use Config;
+use Exception;
 
 class ProjectService
 {   
@@ -25,35 +27,40 @@ class ProjectService
 
     /**
      * 新增專案
-     * @param  String $db                 datasource
-     * @param  String $appKey             app_key
+     * @param  String $env                環境變數
+     * @param  String $appKey             app_key (英文縮寫)
      * @param  String $secretKey          secretKey 0-9A-za-z 32位元亂數
      * @param  String $projectCode        專案代碼(三位數代碼 ex: 000,001,002)
      * @param  String $projectDescription 專案描述
      * @param  String $projectPm          專案PM
-     * @param  Strgin $createdUser        創建者
-     * @param  Strgin $createdAt          創建時間
      * @return Int                        新增的project_row_id
      */
-    public function newProject($db, $appKey, $secretKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt){
-
+    public function newProject($env, $appKey,$secretKey, $projectCode, $projectDescription, $projectPm){
+        
+        $appKey = CommonUtil::getContextAppKey($env,$appKey);
+        $db = 'mysql_'.$env;
+        $createdUser = \Auth::user()->getUserRowId($db);
+        $createdAt = date('Y-m-d H:i:s',time());
+ 
         $projectId = $this->projectRepository->insertProject($db, $appKey, $secretKey, $projectCode, $projectDescription, $projectPm, $createdUser, $createdAt);
         $appRowId = $this->appRepository->insertAppHead($db, $projectId, $appKey, $createdAt, $createdUser);
         $this->appRepository->insertAppLine($db, $appRowId, $appKey, $createdAt, $createdUser);
+        
         return $projectId;
     }
 
     /**
      * 更新專案
-     * @param  String $db                 datasource
+     * @param  String $env                 環境變數
      * @param  String $projectCode        專案代碼(三位數代碼 ex: 000,001,002)
      * @param  String $projectDescription 專案描述
      * @param  String $projectMemo        專案Memo
      * @param  String $projectPm          專案PM
-     * @param  Strgin $createdUser        創建者
-     * @param  Strgin $createdAt          創建時間
      */
-    public function updateProject($db, $projectCode, $projectDescription, $projectMemo, $projectPm, $updatedUser, $updatedAt){
+    public function updateProject($env, $projectCode, $projectDescription, $projectMemo, $projectPm){
+        $db = 'mysql_'.$env;
+        $updatedUser = \Auth::user()->getUserRowId($db);
+        $updatedAt = date('Y-m-d H:i:s',time());
         $this->projectRepository->updateProject($db, $projectCode, $projectDescription, $projectMemo, $projectPm, $updatedUser, $updatedAt);
     }
 
