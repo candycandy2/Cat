@@ -22,32 +22,31 @@ $("#viewHitRate").pagecontainer ({
                 ProductDetail();
                 queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
                 UserAuthority();
-
-                callbackData = data["Content"]["DataList"];
-	    		length = callbackData.length;
-	    		thisYear = callbackData[length-1]["YEAR"];
-	    		thisMonth = callbackData[length-1]["MONTH"];
-	    		
+                roSummaryCallBackData = data["Content"]["DataList"];
+	    		length = roSummaryCallBackData.length;
+	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
+	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
 	    		convertData();
                 getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
                 getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
-               
-                for(var i in eisdata[thisYear][thisMonth]) {
+                
+                for(var i in hitRateEisData[thisYear][thisMonth]) {
                     thisMonthData[i] = {};
                     lastMonthData[i] = {};
                     ytdData[i] = {};
                 }
 
-                for(var ro in eisdata[thisYear-1][thisMonth]) {
+                for(var ro in hitRateEisData[thisYear-1][thisMonth]) {
                     lastYTDActualAMT[ro] = 0;
-                    lytmTotalActualAMT += eisdata[thisYear-1][thisMonth][ro][1];
-                    lylmTotalActualAMT += eisdata[thisYear-1][thisMonth-1][ro][1];
-                    for(var j in eisdata[thisYear-1]) {
+                    lytmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth][ro][1];
+                    lylmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth-1][ro][1];
+                    for(var j in hitRateEisData[thisYear-1]) {
                         if(Number(j) <= Number(thisMonth)) {
-                            lastYTDActualAMT[ro] += eisdata[thisYear-1][j][ro][1];
+                            lastYTDActualAMT[ro] += hitRateEisData[thisYear-1][j][ro][1];
                         }
                     }
                 }
+
                 calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
                 calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
                 getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
@@ -58,15 +57,15 @@ $("#viewHitRate").pagecontainer ({
                 calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
                 calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
                 calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
+                
+                $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
+                showHighchart();
+                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+                loadingMask("hide");
             };
 
 	    	this.failCallback = function(data) {
 	    		console.log("api misconnected");
-                // $("#total .dataContainer .AS span").text("");
-                // $("#total .dataContainer .HR span").text("");
-                // $("#total .dataContainer .YR span").text("");
-                // $("#total .dataContainer .HR span").css("background", none);
-                // $("#total .dataContainer .YR span").css("background", none);
 	    	};
 
 			var _construct = function() {
@@ -81,19 +80,19 @@ $("#viewHitRate").pagecontainer ({
     			year--;
     		}
     		if(type == "YOYGrowth") {
-	    		for(var i in eisdata[year][month]) {
-	    			data_array[i]["YOYGrowth"] = (eisdata[year][month][i][1] / eisdata[year-1][month][i][1]) - 1;
+	    		for(var i in hitRateEisData[year][month]) {
+	    			data_array[i]["YOYGrowth"] = (hitRateEisData[year][month][i][1] / hitRateEisData[year-1][month][i][1]) - 1;
 	    		}
     		}else if(type == "BudgetHitRate") {
-    			for(var i in eisdata[year][month]) {
-    				data_array[i]["BudgetHitRate"] = eisdata[year][month][i][1] / eisdata[year][month][i][0];
+    			for(var i in hitRateEisData[year][month]) {
+    				data_array[i]["BudgetHitRate"] = hitRateEisData[year][month][i][1] / hitRateEisData[year][month][i][0];
     			}
     		}else if(type == "YTDYOYGrowth") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[i]["YOYGrowth"] = (YTDActualAMT[index++] / lastYTDActualAMT[i]) - 1;
     			}
     		}else if(type == "YTDBudgetHitRate") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[i]["BudgetHitRate"] = (YTDActualAMT[index] / YTDBudgetAMT[index]);
     				index++;
     			}
@@ -114,7 +113,7 @@ $("#viewHitRate").pagecontainer ({
 
                 $("#" + ro + " .AS span").text(ActualAMT);
 				$("#" + ro + " .HR span").text(budgetHitRate + "%");
-				if(budgetHitRate <= 80) {
+				if(budgetHitRate < 80) {
 					$("#" + ro + " .HR").css('background', '#ee3839');
 				}else if(budgetHitRate > 95) {
 					$("#" + ro + " .HR").css('background', '#48af56');
@@ -136,7 +135,7 @@ $("#viewHitRate").pagecontainer ({
             }
             totalBudgetHitRate = (totalActualAMT / totalBudgetAMT) * 100;
             $("#total .dataContainer .HR span").text((Math.round(totalBudgetHitRate * Math.pow(10, 2)) / 100) + "%");
-            if(totalBudgetHitRate <= 80) {
+            if(totalBudgetHitRate < 80) {
                 $("#total .dataContainer .HR").css('background', '#ee3839');
             }else if(totalBudgetHitRate > 95) {
                 $("#total .dataContainer .HR").css('background', '#48af56');
@@ -170,26 +169,26 @@ $("#viewHitRate").pagecontainer ({
     			year--;
     		}
     		if(type == "BUDGET_AMT") {
-	    		for(var i in eisdata[year][month]) {
-	    			data_array[index++] = eisdata[year][month][i][0];
+	    		for(var i in hitRateEisData[year][month]) {
+	    			data_array[index++] = hitRateEisData[year][month][i][0];
 	    		}
     		}else if(type == "ACTUAL_ADJ_AMT") {
-    			for(var i in eisdata[year][month]) {
-	    			data_array[index++] = eisdata[year][month][i][1];
+    			for(var i in hitRateEisData[year][month]) {
+	    			data_array[index++] = hitRateEisData[year][month][i][1];
 	    		}
     		}else if(type == "YTDBUDGET_AMT") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[index] = 0;
-    				for(var j in eisdata[year]) {
-    					data_array[index] += eisdata[year][j][i][0]; 
+    				for(var j in hitRateEisData[year]) {
+    					data_array[index] += hitRateEisData[year][j][i][0]; 
     				}
     				index++;
     			}
     		}else if(type == "YTDACTUAL_ADJ_AMT") {
-    			for(var i in eisdata[year][month]) {
+    			for(var i in hitRateEisData[year][month]) {
     				data_array[index] = 0;
-    				for(var j in eisdata[year]) {
-    					data_array[index] += eisdata[year][j][i][1]; 
+    				for(var j in hitRateEisData[year]) {
+    					data_array[index] += hitRateEisData[year][j][i][1]; 
     				}
     				index++;
     			}
@@ -199,71 +198,62 @@ $("#viewHitRate").pagecontainer ({
     	function convertData() {
     		var month;
     		var rosite = 0;
-	    	for(var i=callbackData[0]["YEAR"]; i<=callbackData[length-1]["YEAR"]; i++) {
-	    		eisdata[i] = {};
-	    		month = (i == callbackData[length-1]["YEAR"]) ? (callbackData[length-1]["MONTH"]) : 12;  
+	    	for(var i=roSummaryCallBackData[0]["YEAR"]; i<=roSummaryCallBackData[length-1]["YEAR"]; i++) {
+	    		hitRateEisData[i] = {};
+	    		month = (i == roSummaryCallBackData[length-1]["YEAR"]) ? (roSummaryCallBackData[length-1]["MONTH"]) : 12;  
 	    		for(var j=1; j<=month; j++) {
-	    			eisdata[i][j] = {};
+	    			hitRateEisData[i][j] = {};
 	    			for(var k=0; k<5 && rosite<length; k++) {
-	    				eisdata[i][j][callbackData[rosite]["RO_SITE"]] = 
-	    						[Number(callbackData[rosite]["BUDGET_AMT"]), Number(callbackData[rosite]["ACTUAL_ADJ_AMT"])];
+	    				hitRateEisData[i][j][roSummaryCallBackData[rosite]["RO_SITE"]] = 
+	    						[Number(roSummaryCallBackData[rosite]["BUDGET_AMT"]), Number(roSummaryCallBackData[rosite]["ACTUAL_ADJ_AMT"])];
 	    				rosite++;
 	    			}
 	    		}
 	    	}
     	}
 
-		/********************************** page event *************************************/
-        $("#viewHitRate").on("pageshow", function(event, ui) {
-            showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
-			chart = new Highcharts.Chart ({
-				chart: {
-					renderTo: 'viewHitRate-hc-canvas',
-					marginTop: 30,
-					marginLeft: 50
-				},
-				title: {
-					text: '' 
-				},
-				xAxis: {
-			    	categories: [
-			        	'BQA',
-			       		'BQC',
-			       		'BQE',
-			       		'BQL',
-			       		'BQP'
-			    	],
+        function showHighchart() {
+            chart = new Highcharts.Chart ({
+                chart: {
+                    renderTo: 'viewHitRate-hc-canvas',
+                    marginTop: 30,
+                    marginLeft: 50,
+                },
+                title: {
+                    text: '' 
+                },
+                xAxis: {
+                    categories: [
+                        'BQA',
+                        'BQC',
+                        'BQE',
+                        'BQL',
+                        'BQP'
+                    ],
                     crosshair: true,
-                    // labels: {
-                    //     events: {
-                    //         click: function () {
-                    //             console.log("a");
-                    //         },
-                    //     }
-                    // }
-				},
-				yAxis: {
-        			title: {
-        				text: '(USD$)',
-        				align: 'high',
-        				rotation: 0,
-        				offset: 0,
-        				x: -10,
-        				y: -11
-        			},
-        			min: 0,
-        		},
-				legend: {
-					align: 'left',
-					float: true,
-					x: -13,
-					y: 10
-				},
-				credits: {
-					enabled: false
-				},
-				tooltip: {
-			    	formatter: function () {
+                },
+                yAxis: {
+                    title: {
+                        text: '(USD$)',
+                        align: 'high',
+                        rotation: 0,
+                        offset: 0,
+                        x: -10,
+                        y: -11
+                    },
+                    min: 0,
+                },
+                legend: {
+                    align: 'left',
+                    float: true,
+                    x: -13,
+                    y: 10
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    formatter: function () {
                         var s = '<b>' + this.x + ' Hit Rate</b>';
                         $.each(this.points, function () {
                            s += '<br/> ' + this.series.name + ' = $' + formatNumber(this.y);
@@ -271,35 +261,46 @@ $("#viewHitRate").pagecontainer ({
                         return s;
                     },
                     shared: true,
-			    	useHTML: true,
+                    useHTML: true,
                     hideDelay: 0
-				},
-				plotOptions: {
-			    	column: {
-			        	pointPadding: 0,
-			        	borderWidth: 0
-			    	}
-				},
-				exporting: {
-					enabled: false
-				},
-				series: [{
-			    	name: 'Budget AMT',
-			    	type: 'column',
-			    	color: '#0AB5B6',
-			    	data: thisMonthBudgetAMT
-				},{
-					name: 'Actual AMT',
-					type: 'column',
-					color: '#F4A143',
-			    	data: thisMonthActualAMT
-				}]
-			});
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0
+                    }
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Budget AMT',
+                    type: 'column',
+                    color: '#0AB5B6',
+                    data: thisMonthBudgetAMT
+                },{
+                    name: 'Actual AMT',
+                    type: 'column',
+                    color: '#F4A143',
+                    data: thisMonthActualAMT
+                }]
+            });
+        }
+
+		/********************************** page event *************************************/
+        $("#viewHitRate").on("pageshow", function(event, ui) {
+            showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active'); 
+            $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-			loadingMask("hide");
+
+            if(lastPageID != "viewHitRate") {
+                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+                loadingMask("hide");
+            }
+            chartWidth = chart.chartWidth;
+            chartHeight = chart.chartHeight;
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function() {
@@ -326,8 +327,28 @@ $("#viewHitRate").pagecontainer ({
             showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
 
-        $('.highcharts-xaxis-labels text').on('click', function () {
-            console.log($(this).text());
-        });
+        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
+        //     var screenWidth = $("html").width(), screenHeight = $("html").height();
+        //     // portraint
+        //     if (window.orientation === 180 || window.orientation === 0) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
+        //         $("#viewHitRate .hc-fragment, #data-title-bar, .page-header, .page-date, div > ul").show();
+        //         $("#viewHitRate-hc-canvas").css("height", "38VH");
+        //         chart.legend.update({ itemStyle: {fontSize: 12}});
+        //         chart.setSize(chartWidth, chartHeight, doAnimation = true);
+        //     }
+        //    // landscape
+        //     if (window.orientation === 90 || window.orientation === -90 ) {
+        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
+        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
+        //         $("#viewHitRate .page-header, .page-date, #data-title-bar, div > ul").hide();
+        //         $(".viewIndex.ui-page").css("background-color", "#fff");
+        //         $(".hc-fragment").css("height", "auto");
+        //         $(".hc-fragment").show();
+        //         chart.legend.update({ itemStyle: {fontSize: 14}});
+        //         chart.setSize(screenHeight, screenWidth*0.8, doAnimation = true);
+        //     }
+        // }, false);
     }
 });

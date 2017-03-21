@@ -184,7 +184,17 @@ SQL;
     {
 
     }
-
+    /**
+     * 依環境取得使用者row_id
+     * @param string $env
+     * @return int   qp_user.row_id
+     */
+    public function getUserRowId($db){
+        $user = \DB::connection($db)->table($this->table)
+        ->where("login_id", '=', $this->login_id)->select('row_id')->first();
+        return $user->row_id;
+        return 32;
+    }
     /**
      * 是否使用群組清單
      * @return int 清單Id
@@ -202,5 +212,6 @@ SQL;
         }
         return $groupId;
     }
+
 
 }
