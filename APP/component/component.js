@@ -314,6 +314,11 @@ $(document).one("pagebeforecreate", function(){
             }
         }
 
+        else if (device.platform === "iOS"){
+            $('.page-header').addClass('ios-fix-overlap');
+            $('.ios-fix-overlap-div').css('display','block');
+        }
+
         //For some APP Page, if page's header has second level [button / title],
         //auto resize the margin-top of page-main.
         var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -339,26 +344,28 @@ $(document).one("pagebeforecreate", function(){
 
 /********************************** QPlay APP function *************************************/
 
+//Success Result Code
+//even though some result code != 1, but it still means the result is success,
+//need to check the token_valid
+//
+//new create APP, set this data in specific APP's index.js
+codeArray = [
+    //All APP
+    "1",
+    //QPlay
+    "000910", "000913", "000915", "000910", "000919",
+    //Yellowpage
+    "001901", "001902", "001903", "001904", "001905", "001906",
+    //RRS
+    "002901", "002902", "002903", "002904", "002905", "002906", "002907"
+];
+
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
     successCallback =  successCallback || successCallback;
     tokenValid = tokenValid || tokenValid;
     data =  data || data;
-
-    //Success Result Code
-    //even though some result code != 1, but it still means the result is success,
-    //need to check the token_valid
-    var codeArray = [
-        //All APP
-        "1",
-        //QPlay
-        "000910", "000913", "000915", "000910", "000919",
-        //Yellowpage
-        "001901", "001902", "001903", "001904", "001905", "001906",
-        //RRS
-        "002901", "002902", "002903", "002904", "002905", "002906", "002907"
-    ];
 
     resultCode = resultCode.toString();
 
@@ -411,8 +418,17 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
         //Other API Result code, show [Please contact ITS]
         var resultCodeStart = resultCode.substr(0, 3);
 
+        //QPlay
         if (resultCodeStart === "999") {
             openAPIError("error");
+        }
+
+        //Other APP
+        //errorCodeArray set in APP's index.js
+        if (errorCodeArray !== undefined) {
+            if (errorCodeArray.indexOf(resultCode) !== -1) {
+                openAPIError("error");
+            }
         }
     }
 }

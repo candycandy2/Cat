@@ -73,42 +73,64 @@ namespace QPlayUserSyncService
         /// </summary>
         private void ClearRegisterIDPushTokenSession()
         {
-            //待删除user
-            List<Qp_User> userInfoList = _dbQPlay.From<Qp_User>()
-                .InnerJoin<Qp_User_Flower>(Qp_User_Flower._.Emp_No == Qp_User._.Emp_No)
-                .Where(Qp_User_Flower._.Active == "N")
-                .Select(Qp_User._.All)
-                .ToList();
-            //待删除register_id
-            List<string> userRowIDList = userInfoList.Select(x => x.Row_Id).ToList();
-            List<Qp_Register> registerList = _dbQPlay.From<Qp_Register>()
-                .Where(Qp_Register._.User_Row_Id.In(userRowIDList))
-                .Select(Qp_Register._.All)
-                .ToList();
-            List<int> registerRowIDList = registerList.Select(x => x.Row_Id).ToList();
-
-            //(1)移除Tag
-            List<LoginIDRegisterIDTagDTO> tagList = new List<LoginIDRegisterIDTagDTO>();
-            registerList.ForEach(x =>
+            try
             {
-                Qp_User user = userInfoList.Find(y => x.User_Row_Id == y.Row_Id);
-                if (user != null)
-                {
-                    LoginIDRegisterIDTagDTO item = new LoginIDRegisterIDTagDTO();
-                    item.Company = user.Company;
-                    item.LoginID = user.Login_Id;
-                    item.RegisterID = x.Uuid;
-                    tagList.Add(item);
-                }
-            });
-            UnregisterTag(tagList);
+                _dbQPlay.BeginTransaction();
+                //待删除user
+                List<Qp_User> userInfoList = _dbQPlay.From<Qp_User>()
+                    .InnerJoin<Qp_User_Flower>(Qp_User_Flower._.Emp_No == Qp_User._.Emp_No)
+                    .Where(Qp_User_Flower._.Active == "N")
+                    .Select(Qp_User._.All)
+                    .ToList();
+                //待删除register_id
+                List<string> userRowIDList = userInfoList.Select(x => x.Row_Id).ToList();
+                List<Qp_Register> registerList = _dbQPlay.From<Qp_Register>()
+                    .Where(Qp_Register._.User_Row_Id.In(userRowIDList))
+                    .Select(Qp_Register._.All)
+                    .ToList();
+                List<int> registerRowIDList = registerList.Select(x => x.Row_Id).ToList();
 
-            //(2)移除session
-            _dbQPlay.Delete<Qp_Session>(Qp_Session._.User_Row_Id.In(userRowIDList));
-            //(3)移除register
-            _dbQPlay.Delete<Qp_Register>(Qp_Register._.Row_Id.In(registerList.Select(x=>x.Row_Id).ToList()));
-            //(4)移除push_token
-            _dbQPlay.Delete<Qp_Push_Token>(Qp_Push_Token._.Register_Row_Id.In(registerRowIDList));
+                //(1)移除Tag
+                List<LoginIDRegisterIDTagDTO> tagList = new List<LoginIDRegisterIDTagDTO>();
+                registerList.ForEach(x =>
+                {
+                    Qp_User user = userInfoList.Find(y => x.User_Row_Id == y.Row_Id);
+                    if (user != null)
+                    {
+                        LoginIDRegisterIDTagDTO item = new LoginIDRegisterIDTagDTO();
+                        item.Company = user.Company;
+                        item.LoginID = user.Login_Id;
+                        item.RegisterID = x.Uuid;
+                        tagList.Add(item);
+                    }
+                });
+                /*
+                //Test Data
+                tagList = new List<LoginIDRegisterIDTagDTO>();
+                tagList.Add(new LoginIDRegisterIDTagDTO() {
+                    RegisterID = "100d855909480e53421",
+                    Company = "BENQ",
+                    LoginID = "EEEEE",
+                });
+                */
+
+                UnregisterTag(tagList);
+
+                //(2)移除session
+                _dbQPlay.Delete<Qp_Session>(Qp_Session._.User_Row_Id.In(userRowIDList));
+                //(3)移除register
+                _dbQPlay.Delete<Qp_Register>(Qp_Register._.Row_Id.In(registerList.Select(x => x.Row_Id).ToList()));
+                //(4)移除push_token
+                _dbQPlay.Delete<Qp_Push_Token>(Qp_Push_Token._.Register_Row_Id.In(registerRowIDList));
+
+                _dbQPlay.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                _dbQPlay.RollBackTransaction();
+                throw;
+            }
+
         }
 
         private void UnregisterTag(List<LoginIDRegisterIDTagDTO> dicRegisterIDTag)
@@ -116,7 +138,7 @@ namespace QPlayUserSyncService
             JPushProxy.JPushProxy jpush = new JPushProxy.JPushProxy();
             foreach (var item in dicRegisterIDTag)
             {
-                jpush.RemoveTag(item.RegisterID,item.Tag);
+                jpush.RemoveTag(item.RegisterID, item.Tag);
             }
         }
 

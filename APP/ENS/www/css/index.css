@@ -6,16 +6,16 @@
 
 /*new class*/
 .event-list-msg-top .description {
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     color: #323232;
     /* hide text if it more than N lines  */
     overflow: hidden;
     /* for set '...' in absolute position */
     position: relative;
     /* use this value to count block height */
-    line-height: 1.2em;
+    line-height: 5vw;
     /* max-height = line-height (1.2) * lines max number (3) */
-    max-height: 2.2em;
+    max-height: 8vw;
     /* fix problem when last visible word doesn't adjoin right side  */
     text-align: justify;
     margin-right: -1em;
@@ -29,9 +29,9 @@
     /* absolute position */
     position: absolute;
     /* set position to right bottom corner of block */
-    right: 4.5vw;
+    right: 4.1vw;
     bottom: 0;
-    width: 4.5vw;
+    width: 4.18vw;
     text-align: center;
     background-color: #f9f9f9;
 }
@@ -42,10 +42,11 @@
     /* absolute position */
     position: absolute;
     /* set position to right bottom corner of text */
-    right: 0;
-    width: 1em;
+    right: 4.1vw;
+    bottom: 0;
     /* set width and height */
-    height: 1em;
+    width: 4.18vw;
+    height: 4.18vw;
     background: #f9f9f9;
 }
 
@@ -378,12 +379,12 @@ input[type=radio]:checked + label {
 }
 
 .view-before .img {
-    background: url(../img/view_blue.png) no-repeat;
+    background: url(../img/view_gray.png) no-repeat;
     background-size: 5.6vw;
 }
 
 .view-after .img {
-    background: url(../img/view_gray.png) no-repeat;
+    background: url(../img/view_blue.png) no-repeat;
     background-size: 5.6vw;
 }
 
@@ -410,6 +411,7 @@ input[type=radio]:checked + label {
     border: 1px solid #989898;
     width: 84.5vw;
     padding: 2.73vw 3.71vw;
+    margin-bottom: 2.14vw;
 }
 
 .event-member-data-list .title {
@@ -420,7 +422,7 @@ input[type=radio]:checked + label {
 .event-member-data-list ul {
     list-style: none;
     padding: 0;
-    margin: 0
+    margin: 0;
     color: #323232;
 }
 
@@ -430,6 +432,12 @@ input[type=radio]:checked + label {
 
 .event-member-data-list ul li:last-child {
     /*margin-bottom: 0;*/
+}
+
+.event-list-no-data {
+    color: #0f0f0f;
+    text-align: center;
+    margin-top: 50%;
 }
 
 /*Event Add*/
