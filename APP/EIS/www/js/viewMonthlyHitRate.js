@@ -479,27 +479,42 @@ $("#viewMonthlyHitRate").pagecontainer({
                     renderTo: 'viewMonthlyHitRate-hc-canvas',
                     marginBottom: 80,
                     marginTop: 20,
-                    marginLeft: 55
+                    marginLeft: 35,
+                    marginRight: 35
                 },
                 title: {
                     text: ''
                 },
                 xAxis: {
                     title: {
-                        text: '(Mth)',
-                        align: 'high'   
+                        text: 'Month',
+                        align: 'high',   
+                        x: 31,
+                        y: -18
                     },
                     tickInterval: 1,
                     max: 12,
                     min: 1,
-                    crosshair: true
+                    crosshair: true,
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
                         text: ''
                     },
+                    labels: {
+                        x: -2
+                    },
                     min: 0,
-                },
+                }, {
+                    title: {
+                        text: '',
+                    },
+                    labels: {
+                        x: 5
+                    },
+                    opposite: true,
+                    min: 0,
+                }],
                 legend: {
                     align: 'left',
                     float: true,
@@ -564,6 +579,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                     type: 'line',
                     color: '#134A8C',
                     lineWidth: 1,
+                    yAxis: 1
                 }]
             });
         }
@@ -628,7 +644,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 align: 'high',
                 rotation: 0,
                 offset: 0,
-                x: -11,
+                x: 11,
                 y: -11
             });
             chart.tooltip.hide();
@@ -650,7 +666,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 align: 'high',
                 rotation: 0,
                 offset: 0,
-                x: -11,
+                x: 11,
                 y: -11
             });
             chart.tooltip.hide();

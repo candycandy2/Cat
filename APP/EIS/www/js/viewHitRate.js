@@ -301,6 +301,9 @@ $("#viewHitRate").pagecontainer ({
             }
             chartWidth = chart.chartWidth;
             chartHeight = chart.chartHeight;
+            if (window.orientation === 90 || window.orientation === -90 ) {
+                zoomInChart();
+            }
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function() {
@@ -347,7 +350,7 @@ $("#viewHitRate").pagecontainer ({
         //         $(".hc-fragment").css("height", "auto");
         //         $(".hc-fragment").show();
         //         chart.legend.update({ itemStyle: {fontSize: 14}});
-        //         chart.setSize(screenHeight, screenWidth*0.8, doAnimation = true);
+        //         chart.setSize(screenWidth, screenHeight*0.8, doAnimation = true);
         //     }
         // }, false);
     }
