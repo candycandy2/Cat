@@ -36,13 +36,16 @@ cordova-plugin-statusbar 2.1.3 "StatusBar"
 ```
 
 目錄結構
-- /componentapp         …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
-- /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
+- /API                  …放置APP API, QPLay團隊自行開發的APP API
 - /APP                  …放置APP的地方,包括使用www+css+js的UI功能
-- /WEB                  …放置WEB的地方,Login, Download...
+- /componentapp         …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
+- /Dailybuild           …放置CI的地方,Dailybuild
+- /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
+- /qmessage             …放置qmessage API
 - /qplay                …放置PHP Platform
 - /qplayApi             …放置PHP API
-- /Dailybuild           …放置CI的地方,Dailybuild
+- /WEB                  …放置WEB的地方,Login, Download...
+
 
 ## Android BUILD
 1. 手動 sign apk，讓 build 出來的 apk 可以使用 adb install 安裝
@@ -78,7 +81,6 @@ Requirements check results for ios:
  - Xcode: installed 7.3
  - ios-deploy: installed 2.0.0
 
-![Image of Yaktocat](https://cloud.githubusercontent.com/assets/1924451/15109396/ce744f80-160d-11e6-9558-92e85836c014.png)
 
 ![sa2 - system archiecture](https://cloud.githubusercontent.com/assets/1924451/24186815/026d322e-0f15-11e7-9407-ee799456cba9.png)
 
