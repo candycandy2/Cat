@@ -3,40 +3,59 @@
 var initialAppName = "Relieve";
 var appKeyOriginal = "apprelieve";
 var appKey = "apprelieve";
-var pageList = ["viewExample"];
+var pageList = ["viewReserve"];
 var appSecretKey = "00a87a05c855809a0600388425c55f0b";
 
 var prevPageID;
+
+var arrOtherTimeBlock = [];
 
 window.initialSuccess = function() {
 
     //loadingMask("show");
 
-    $.mobile.changePage('#viewExample');
-    var APIRequest = new APIRequest();
+    $.mobile.changePage('#viewReserve');
 
 }
 
 //[Android]Handle the back button
 function onBackKeyDown() {
-    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-    var activePageID = activePage[0].id;
-
-    if (activePageID === "viewExample") {
-
-        if (checkPopupShown()) {
-            $.mobile.changePage('#viewExample');
-        } else {
-            navigator.app.exitApp();
-        }
-
-    }/* else if (activePageID === "viewDetailInfo") {
+    function onBackKeyDown() {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
 
         if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
+            popupClose();
         } else {
-            $.mobile.changePage('#' + prevPageID);
-        }
+            if (activePageID === "viewReserve") {
 
-    }*/
+                if ($("#reserveTab :radio:checked").val() == 'tab1') {
+                    navigator.app.exitApp();
+                } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
+                    $("input[id=tab1]").trigger('click');
+                    $("label[for=tab1]").addClass('ui-btn-active');
+                    $("label[for=tab2]").removeClass('ui-btn-active');
+                    $("label[for=tab3]").removeClass('ui-btn-active');
+                }
+                else{
+                    $("input[id=tab1]").trigger('click');
+                    $("label[for=tab1]").addClass('ui-btn-active');
+                    $("label[for=tab2]").removeClass('ui-btn-active');
+                    $("label[for=tab3]").removeClass('ui-btn-active');
+                }
+
+            } else if (activePageID === "viewMyReserve") {
+
+                $.mobile.changePage('#viewReserve');
+
+            } else if (activePageID === "viewSettingList") {
+
+                $.mobile.changePage('#viewReserve');
+
+            } else if (activePageID === "viewNewSetting") {
+
+                $.mobile.changePage('#viewSettingList');
+            }
+        }
+    }
 }
