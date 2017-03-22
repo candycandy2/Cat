@@ -305,12 +305,6 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 }
 
 /***************************************************** highcharts ************************************************/
-/*#viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
-	width: 100VW;
-	height: 100VH;
-	background-color: red;
-}*/
-
 #viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
 	display: none;
 }
