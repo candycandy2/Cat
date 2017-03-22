@@ -203,7 +203,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
         $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
         chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize(chartWidth, chartHeight, doAnimation = true);
+        chart.setSize(chartWidth, chartHeight, true);
     }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
@@ -216,5 +216,9 @@ function zoomInChart() {
     $(".hc-fragment").css("height", "auto");
     $(".hc-fragment").show();
     chart.legend.update({ itemStyle: {fontSize: 14}});
-    chart.setSize(screen.width, screen.height*0.8, doAnimation = true);
+    if(screen.width < screen.height) {
+        chart.setSize(screen.height, screen.width*0.8, doAnimation = true);
+    }else {
+        chart.setSize(screen.width, screen.height*0.8, doAnimation = true);
+    }
 }
