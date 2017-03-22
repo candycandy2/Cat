@@ -339,7 +339,7 @@ $("#viewYTDHitRate").pagecontainer({
                     marginBottom: 75,
                     marginTop: 25,
                     marginLeft: 35,
-                    marginRight: 40
+                    marginRight: 45
                 },
                 title: {
                     text: '' 
@@ -349,7 +349,7 @@ $("#viewYTDHitRate").pagecontainer({
                         text: 'Month',
                         align: 'high',
                         offset: 0,
-                        x: 31,
+                        x: 38,
                         y: 7
                     },
                     tickInterval: 1,
@@ -370,7 +370,8 @@ $("#viewYTDHitRate").pagecontainer({
                         text: '',
                     },
                     labels: {
-                        x: 5
+                        x: 5,
+                        padding: -7,
                     },
                     opposite: true,
                     min: 0,
