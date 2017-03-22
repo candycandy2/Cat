@@ -1,6 +1,8 @@
 /*global variable, function*/
 var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth, chartWidth, chartHeight;
+var options;
 var lastPageID = "viewHitRate";
+var PageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
 var initialAppName = "EIS";
@@ -185,6 +187,7 @@ function changePageByPanel(pageId) {
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
+        PageID = $.mobile.activePage[0].id;
     }
     $("#mypanel").panel("close");
 }
@@ -199,26 +202,27 @@ function formatNumber(n) {
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
     // portraint
     if (window.orientation === 180 || window.orientation === 0) {
-        $("#viewHitRate-hc-canvas").css("height", "38VH");
-        $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
-        $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
-        chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize(chartWidth, chartHeight, false);
+        $("#viewHitRate .page-main").css("margin-top", "0px");
+        zoomOutChart(PageID);
     }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
-        zoomInChart();
+        zoomInChart(PageID);
     }
-
 }, false);
 
-function zoomInChart() {
-    $(".hc-fragment").css("height", "auto");
-    $(".hc-fragment").show();
-    chart.legend.update({ itemStyle: {fontSize: 14}});
+function zoomInChart(pageId) {
+    options.chart.renderTo = pageId + "-hc-landscape-canvas";
+    chart = new Highcharts.Chart(options);
+    chart.legend.update({itemStyle: {fontSize: 14}});
     if(screen.width < screen.height) {
         chart.setSize(screen.height, screen.width*0.8, false);
     }else {
         chart.setSize(screen.width, screen.height*0.8, false);
     }
+}
+
+function zoomOutChart(pageId) {
+    options.chart.renderTo = pageId + "-hc-canvas";
+    chart = new Highcharts.Chart(options);
 }

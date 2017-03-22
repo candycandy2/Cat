@@ -59,12 +59,14 @@ $("#viewHitRate").pagecontainer ({
                 calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
                 
                 $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
-                showHighchart();
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
-                if (window.orientation === 90 || window.orientation === -90 ) {
-                    zoomInChart();
-                }
+                showHighchart();
+                chartWidth = chart.chartWidth;
+                chartHeight = chart.chartHeight;
+                // if (window.orientation === 90 || window.orientation === -90 ) {
+                //     zoomInChart();
+                // }
             };
 
 	    	this.failCallback = function(data) {
@@ -216,9 +218,8 @@ $("#viewHitRate").pagecontainer ({
     	}
 
         function showHighchart() {
-            chart = new Highcharts.Chart ({
+            options = {
                 chart: {
-                    renderTo: 'viewHitRate-hc-canvas',
                     marginTop: 30,
                     marginLeft: 50,
                 },
@@ -287,17 +288,23 @@ $("#viewHitRate").pagecontainer ({
                     color: '#F4A143',
                     data: thisMonthActualAMT
                 }]
-            });
+            }
+            options.chart.renderTo = "viewHitRate-hc-canvas";
+            chart = new Highcharts.Chart(options);
         }
 
 		/********************************** page event *************************************/
+
+        $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
+
+        });
+
         $("#viewHitRate").on("pageshow", function(event, ui) {
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-
             if(lastPageID != "viewHitRate") {
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
@@ -305,7 +312,7 @@ $("#viewHitRate").pagecontainer ({
             chartWidth = chart.chartWidth;
             chartHeight = chart.chartHeight;
             if (window.orientation === 90 || window.orientation === -90 ) {
-                zoomInChart();
+                zoomInChart(PageID);
             }
         });
 
