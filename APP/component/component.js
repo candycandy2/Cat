@@ -966,16 +966,3 @@ function handleOpenURL(url) {
     }
 
 }
-
-// when landscape or portraint, initial page should be in middle of layout
-$(window).resize(function() {
-    if ($('#viewInitial').hasClass('ui-page-active') && ((window.orientation === 90 || window.orientation === -90))){
-        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
-    }
-});
-
-// set initial page's layout after layout is loaded finished
-$(window).load(function() {
-    if ($('#viewInitial').hasClass('ui-page-active') && ((window.orientation === 90 || window.orientation === -90)))
-        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
-});
