@@ -92,6 +92,9 @@ $menu_name = "SYS_MENU_MAINTAIN";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_DELETE_MENU_FAILED")}}", e.responseText);
                     }
                 });
@@ -169,6 +172,9 @@ $menu_name = "SYS_MENU_MAINTAIN";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });
@@ -247,6 +253,9 @@ $menu_name = "SYS_MENU_MAINTAIN";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     $("#gridRootMenuList").bootstrapTable('refresh');
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }

@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, callbackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth, chartWidth, chartHeight;
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
@@ -28,6 +28,7 @@ var time = new Date(Date.now());
 var monthlyPageDate = [];
 var ytdPageDate = [];
 var eisdata = {};
+var hitRateEisData = {};
 var monTable = {
     '1' : "Jan.",
     '2' : "Feb.",
@@ -81,14 +82,15 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#viewHitRate").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open" && !($("body").hasClass("ui-landscape"))) {
+        if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
             $("#mypanel").panel( "open");
         }
     });
-    zoomBtnInit();
+    // zoomBtnInit();
 });
 
 window.initialSuccess = function() {
+    
     currentYear = time.getFullYear();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
     loadingMask("show");
@@ -187,30 +189,6 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
-function zoomBtnInit() {
-    var screenWidth = $('html').width(), screenHeight = $('html').height(), tmp = 0;
-    $('.zoomInBtn').on('click', function() {
-        $('body').addClass('ui-landscape');
-        $('.hc-fragment').css({'height': 'auto'});
-        $('.zoomOutBtn').css({'right': -(screenHeight-$('.chartArea').width()-$('.viewIndex').css('padding-top').replace('px', '')-
-            $('.viewIndex').css('padding-bottom').replace('px', ''))/$('.chartArea').width()*100 + '%'});
-        chart.legend.update({ itemStyle: {fontSize: 14}});
-        chart.setSize(screenHeight*0.9, screenWidth*0.85, doAnimation = true);
-    });
-
-    $('#viewHitRateZoomOutBtn').on('click', function(){
-        zoomOutChart("viewHitRate-hc-canvas"); 
-    });
-
-    $('#viewMonthlyHitRateZoomOutBtn').on('click', function(){
-        zoomOutChart("viewMonthlyHitRate-hc-canvas");
-    });
-
-    $('#viewYTDHitRateZoomOutBtn').on('click', function(){
-        zoomOutChart("viewYTDHitRate-hc-canvas");
-    });
-}
-
 function formatNumber(n) {
     n += "";
     var arr = n.split(".");
@@ -218,12 +196,25 @@ function formatNumber(n) {
     return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }
 
-function zoomOutChart(chartId) {
-    $('body').removeClass('ui-landscape');
-    $('#viewHitRate-hc-canvas').css({'height': '38VH'});
-    $('#viewMonthlyHitRate-hc-canvas').css({'height': '46.5VH'});
-    $('#viewYTDHitRate-hc-canvas').css({'height': '46.5VH'});
-    $('.zoomBtn').css({'right': '4%'});
-    chart.legend.update({ itemStyle: {fontSize: 12}});
-    chart.setSize($("#" + chartId).width(), $("#" + chartId).height(), doAnimation = true);
+window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+    // portraint
+    if (window.orientation === 180 || window.orientation === 0) {
+        $("#viewHitRate-hc-canvas").css("height", "38VH");
+        $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
+        $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
+        chart.legend.update({ itemStyle: {fontSize: 12}});
+        chart.setSize(chartWidth, chartHeight, doAnimation = true);
+    }
+    // landscape
+    if(window.orientation === 90 || window.orientation === -90 ) {
+        zoomInChart();
+    }
+
+}, false);
+
+function zoomInChart() {
+    $(".hc-fragment").css("height", "auto");
+    $(".hc-fragment").show();
+    chart.legend.update({ itemStyle: {fontSize: 14}});
+    chart.setSize(screen.width, screen.height*0.8, doAnimation = true);
 }

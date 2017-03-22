@@ -30,6 +30,9 @@ function addConponentView() {
         //Set viewInitial become the index page
         $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
 
+        //set initial page's layout when landscape
+        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
+
         //If is other APP, set APP name in initial page
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);

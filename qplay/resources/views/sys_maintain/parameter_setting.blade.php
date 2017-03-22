@@ -182,6 +182,9 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                     }
                 });
@@ -214,6 +217,9 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                         }
                     },
                     error: function (e) {
+                        if(handleAJAXError(this,e)){
+                            return false;
+                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                     }
                 });
@@ -305,6 +311,9 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });
@@ -397,6 +406,9 @@ $menu_name = "SYS_PARAMETER_MAINTAIN";
                     }
                 },
                 error: function (e) {
+                    if(handleAJAXError(this,e)){
+                        return false;
+                    }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
                 }
             });
