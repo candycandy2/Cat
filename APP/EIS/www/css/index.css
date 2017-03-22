@@ -303,42 +303,35 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     background-color: #503f81;
     color: #fff;
 }
+
+/***************************************************** highcharts ************************************************/
+/*#viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
+	width: 100VW;
+	height: 100VH;
+	background-color: red;
+}*/
+
+#viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
+	display: none;
+}
 /********************************************** highcharts landscape *********************************************/
 @media all and (orientation: landscape) {
 	body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup, .viewIndex.ui-page .ui-content.page-main>form, 
+	
 	#viewHitRate .page-header, #viewHitRate .page-date, #viewHitRate #data-title-bar, #viewHitRate div > ul, 
+	#viewHitRate #viewHitRate-hc-canvas,
+
 	#viewMonthlyHitRate .page-header, #viewMonthlyHitRate .sliderMonthly, #viewMonthlyHitRate #title-container, 
-	#viewMonthlyHitRate div > .scrollmenu, #viewYTDHitRate .page-header, #viewYTDHitRate .sliderYTD, 
-	#viewYTDHitRate #title-container, #viewYTDHitRate div > .scrollmenu {
+	#viewMonthlyHitRate div > .scrollmenu, #viewMonthlyHitRate #viewMonthlyHitRate-hc-canvas,
+
+	#viewYTDHitRate .page-header, #viewYTDHitRate .sliderYTD, #viewYTDHitRate #title-container, 
+	#viewYTDHitRate div > .scrollmenu, #viewYTDHitRate #viewYTDHitRate-hc-canvas{
 		display: none;
 	}
 	.viewIndex.ui-page {
 		background-color: #fff;
 	}
+	#viewHitRate-hc-landscape-canvas {display: inline;}
+	#viewMonthlyHitRate-hc-landscape-canvas {display: inline;}
+	#viewYTDHitRate-hc-landscape-canvas {display: inline;}
 }
-
-/*.ui-landscape .viewIndex.ui-page .ui-content.page-main>div:not(.chartArea):not(.hc-fragment),
-	.ui-landscape .viewIndex.ui-page .ui-content.page-main>form,
-	.ui-landscape #viewHitRate #data-title-bar, .ui-landscape #viewMonthlyHitRate #title-container, 
-	.ui-landscape #viewYTDHitRate #title-container, .ui-landscape .page-header,
-	.ui-landscape div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup{ display: none;}
-.ui-landscape .viewIndex.ui-page{ background-color: #fff;}
-.ui-landscape .chartArea{-webkit-transform:rotate(90deg) translate(3%, 8%); -moz-transform:rotate(90deg) translate(3%, 8%); transform:rotate(90deg) translate(3%, 8%);}
-.ui-landscape .zoomOutBtn{ position: absolute; bottom: auto; top: -7%; right: -50%; width: 8%;}
-.ui-landscape .ui-content{ overflow-x: visible;}
-.ui-landscape .hc-fragment{ height: auto;}
-.ui-landscape .zoomInBtn{ display: none;}
-.ui-landscape #viewHitRateZoomOutBtn{ display: inline;}
-.ui-landscape #viewMonthlyHitRateZoomOutBtn{ display: inline;}
-.ui-landscape #viewYTDHitRateZoomOutBtn{ display: inline;}
-.ui-landscape .page-main{ margin-right: -5%;}*/
-
-/* zoom btn */
-/*.chartArea{ position: relative;}
-.zoomBtn img{ width: 100%; height: auto;}
-#viewHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
-#viewMonthlyHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
-#viewYTDHitRateZoomInBtn{ width: 7%; position: absolute; right: 4%; top: -3%; z-index: 100;}
-#viewHitRateZoomOutBtn{ display: none;}
-#viewMonthlyHitRateZoomOutBtn{ display: none;}
-#viewYTDHitRateZoomOutBtn{ display: none;}*/
