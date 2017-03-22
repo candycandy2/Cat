@@ -460,4 +460,11 @@ body *:not(input){ -webkit-user-select: none;}
     .main-updateAppVersion, .main-updateAppVersion, .main-GetQPush{ padding-top: 0;}
     .text-updateAppVersion, .text-updateAppVersion, .text-GetQPush{ font-size: 2.5vw; margin-top: 3vw;}
     .button-updateAppVersion, .brand-GetQPush-content{ font-size: 2.5vw; position: fixed;}
+    /*loader*/
+    .loader{ padding-top: 0;}
+    .loader img{ position: absolute; top: 40%; left: 0; right: 0; margin: auto;}
 }
+
+/*maskAll use for hide all element when layout is not ready*/
+#maskAll{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #fff;}
+#maskAll.hide{ display: none;}

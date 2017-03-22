@@ -127,10 +127,6 @@ function checkNetwork(data) {
 }
 
 function openNetworkDisconnectWindow(status){
-    $('#disconnectNetwork').popup();
-    $('#disconnectNetwork').show();
-    $('#disconnectNetwork').popup('open');
-
     // closeDisconnectNetwork click event should init only once
     if (!closeDisconnectNetworkInit){
         $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
@@ -175,6 +171,10 @@ function openNetworkDisconnectWindow(status){
         });
         closeDisconnectNetworkInit = true;
     }
+    
+    $('#disconnectNetwork').popup();
+    $('#disconnectNetwork').show();
+    $('#disconnectNetwork').popup('open');
 }
 
 function errorHandler(data){
