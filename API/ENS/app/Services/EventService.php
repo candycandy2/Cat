@@ -10,6 +10,7 @@ use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
 use App\lib\CommonUtil;
 use App\Components\Push;
+use App\Components\Message;
 use DB;
 
 class EventService
@@ -62,8 +63,6 @@ class EventService
 
 
        $this->eventRepository->updateReadTime($eventId, $empNo);
-
-       $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
 
        return $eventId;
    }
@@ -207,7 +206,7 @@ class EventService
     * @return Array|array      array('Domain\\LoginId')
     */
    public function getPushUserListByEmpNoArr(Array $empNoArr){
-        $userInfo = $this->userRepository->getUserInfoByEmpNO($empNoArr);
+        $userInfo = $this->userRepository->getUserInfoByEmpNo($empNoArr);
         $userList = [];
         foreach ($userInfo as $user) {
             $userList[] = $user['user_domain'].'\\'.$user['login_id'];
@@ -243,11 +242,11 @@ class EventService
         foreach ($taskUser as $tu) {
             $eventUser[] = (string)$tu->emp_no;
         }
-        // $superUser = $this->userRepository->getSuperUser();
+        $superUser = $this->userRepository->getSuperUser();
         
-        // foreach ($superUser as $su) {
-        //     $eventUser[] = (string)$su->emp_no;
-        // }
+        foreach ($superUser as $su) {
+            $eventUser[] = (string)$su->emp_no;
+        }
 
         return array_unique($eventUser);
    }
@@ -355,6 +354,30 @@ class EventService
             return false;
         }
    }
+
+   /**
+    * 根據Event產生聊天室
+    * @param  string    $empNo   員工編號
+    * @param  int       $eventId en_event.row_id
+    * @param  array     $desc    聊天室簡述
+    * @return json
+    */
+   public function createChatRoomByEvent($empNo, $eventId, $desc){
+        
+        $owner = $this->userRepository->getUserInfoByEmpNo(array($empNo))[0]->login_id;
+        $members = array();
+        $eventUsersEmpNo = $this->findEventUser($eventId);
+        $eventUsers = $this->userRepository->getUserInfoByEmpNo($eventUsersEmpNo);
+        foreach ($eventUsers as $user) {
+            //加入不與owner重複的用戶
+           if($user->login_id != $owner){
+             array_push($members, $user->login_id);
+           }
+        }
+    
+        $qMessage = new Message();
+        return $qMessage->createChatRoom($owner, $members, $desc);
+    }
    
    /**
     * 取得不重複的任務清單(function-location)
@@ -463,7 +486,7 @@ class EventService
         $item['estimated_complete_date'] = $event->estimated_complete_date;
         $item['related_event_row_id'] = $event->related_event_row_id;
         $item['event_status'] = ($event->event_status == 0)?'未完成':'完成';
-        $userInfo = $this->userRepository->getUserInfoByEmpNO(array($event->created_user));
+        $userInfo = $this->userRepository->getUserInfoByEmpNo(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];
         $item['created_at'] = $event->created_at->format('Y-m-d H:i:s');
@@ -477,7 +500,7 @@ class EventService
     * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
     * @return json
     */
-   private function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo){
+   public function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo){
        
        $result = null;
        $to = $this->getPushUserListByEvent($eventId);

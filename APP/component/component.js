@@ -141,6 +141,10 @@ var app = {
             $("#viewGetQPush").addClass("ui-page ui-page-theme-a ui-page-active");
             $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
 
+            // set need to qpush's layout when landscape
+            if (window.orientation === 90 || window.orientation === -90)
+                $('.main-GetQPush').css('top', (screen.height-$('.main-GetQPush').height())/4);
+
             if (checkTimerCount >= 30) {
                 $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
                 $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
@@ -602,6 +606,9 @@ function checkAppVersion() {
                     $('#viewUpdateAppVersion').removeClass("hide");
                     $("#mainUpdateAppVersion").show();
 
+                    // set update app version's layout when landscape
+                    if (window.orientation === 90 || window.orientation === -90)
+                        $('.main-updateAppVersion').css('top', (screen.height-$('.main-updateAppVersion').height())/4);
                     stopcheckVerTimer();
                 }
             }, 1000);
@@ -962,12 +969,29 @@ function handleOpenURL(url) {
 
 // when landscape or portraint, initial page should be in middle of layout
 $(window).resize(function() {
-    if ($('#viewInitial').hasClass('ui-page-active')){
-        $('#initialOther').css('top', ($(window).height()-$('#initialOther').height())/2);
+    if ((window.orientation === 90 || window.orientation === -90)){
+        var screenHeight = screen.height, screenWidth = screen.width, elementValue = '';
+        if (screenHeight > screenWidth){
+            screenHeight = screen.width;
+        }
+        if ($('#viewInitial').hasClass('ui-page-active'))
+            $('#initialOther').css('top', (screenHeight-$('#initialOther').height())/2);
+        else if ($('.main-updateAppVersion').hasClass('ui-page-active'))
+            $('.main-updateAppVersion').css('top', (screenHeight-$('.main-updateAppVersion').height())/4);
+        else if ($('.main-GetQPush').hasClass('ui-page-active'))
+            $('.main-GetQPush').css('top', (screenHeight-$('.main-GetQPush').height())/4);
     }
 });
 
 // set initial page's layout after layout is loaded finished
 $(window).load(function() {
-    $('#initialOther').css('top', ($(window).height()-$('#initialOther').height())/2);
+    if ($('#viewInitial').hasClass('ui-page-active') && ((window.orientation === 90 || window.orientation === -90))){
+        var screenHeight = screen.height, screenWidth = screen.width;
+        if (screenHeight > screenWidth){
+            screenHeight = screen.width;
+        }
+        $('#initialOther').css('top', (screenHeight-$('#initialOther').height())/2);
+    }
+    //hide mask after window is loaded
+    $('#maskAll').addClass('hide');
 });

@@ -338,18 +338,18 @@ $("#viewYTDHitRate").pagecontainer({
                     renderTo: 'viewYTDHitRate-hc-canvas',
                     marginBottom: 75,
                     marginTop: 25,
-                    marginLeft: 60,
-                    marginRight: 25
+                    marginLeft: 35,
+                    marginRight: 45
                 },
                 title: {
                     text: '' 
                 },
                 xAxis: {
                     title: {
-                        text: '(Mth)',
+                        text: 'Month',
                         align: 'high',
                         offset: 0,
-                        x: 25,
+                        x: 38,
                         y: 7
                     },
                     tickInterval: 1,
@@ -361,10 +361,17 @@ $("#viewYTDHitRate").pagecontainer({
                     title: {
                         text: ''
                     },
+                    labels: {
+                        x: -2
+                    },
                     min: 0
                 }, {
                     title: {
                         text: '',
+                    },
+                    labels: {
+                        x: 5,
+                        padding: -7,
                     },
                     opposite: true,
                     min: 0,
@@ -411,31 +418,32 @@ $("#viewYTDHitRate").pagecontainer({
                     enabled: false
                 },
                 series: [{
-                    name: 'Budget QTY',
+                    name: 'Budget AMT',
                     type: 'column',
                     color: '#0AB5B6',
                 },{
-                    name: 'Actual QTY',
+                    name: 'Actual AMT',
                     type: 'column',
                     color: '#F4A143',
                 },{
-                    name: 'RT Budget QTY',
+                    name: 'RT Budget AMT',
                     type: 'line',
                     color: '#A0C83A',
-                    // yAxis: 1,
+                    yAxis: 1,
                 },{
-                    name: 'RT Actual QTY',
+                    name: 'RT Actual AMT',
                     type: 'line',
                     color: '#134A8C',
-                    // yAxis: 1,
+                    yAxis: 1,
                 }]
             });
         }
+
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
             ro = "ALL";
             product = "ALL";
-            tab = "QTY";
+            tab = "AMT";
             year = thisYear;
             month = thisMonth;
             hcRo = "All";
@@ -443,10 +451,9 @@ $("#viewYTDHitRate").pagecontainer({
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-
 			showHighchart();
             showData();
-            $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Net Quantity");
+            $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewYTDHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active');
@@ -459,22 +466,6 @@ $("#viewYTDHitRate").pagecontainer({
         });
 
 		$(".page-tabs #viewYTDHitRate-tab-1").on("click", function() {
-		    $("#title-container > #title > #actualValue > p").text("YTD Net Quantity");
-            tab = "QTY";
-		    chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
-            chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
-            chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
-            chart.series[3].update({name: "RT Actual " + tab, data: ytdHighchartsData["RT Actual " + tab]});
-            chart.yAxis[0].setTitle({
-                text: '',
-            });
-            chart.tooltip.hide();
-            actualValue = getActualValue(ro, product, year, month, tab);
-            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-            showData();
-		});
-
-		$(".page-tabs #viewYTDHitRate-tab-2").on("click", function() {
 		    $("#title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             tab = "AMT";
 		    chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
@@ -486,7 +477,28 @@ $("#viewYTDHitRate").pagecontainer({
                 align: 'high',
                 rotation: 0,
                 offset: 0,
-                x: -11,
+                x: 11,
+                y: -11
+            });
+            chart.tooltip.hide();
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            showData();
+		});
+
+		$(".page-tabs #viewYTDHitRate-tab-2").on("click", function() {
+            $("#title-container > #title > #actualValue > p").text("YTD ASP");
+		    tab = "ASP";
+            chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
+            chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
+            chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
+            chart.series[3].update({name: "RT Actual " + tab, data: ytdHighchartsData["RT Actual " + tab]});
+            chart.yAxis[0].setTitle({
+                text: '(USD$)',
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                x: 11,
                 y: -11
             });
             chart.tooltip.hide();
@@ -496,19 +508,14 @@ $("#viewYTDHitRate").pagecontainer({
         });
 
 		$(".page-tabs #viewYTDHitRate-tab-3").on("click", function() {
-		    $("#title-container > #title > #actualValue > p").text("YTD ASP");
-            tab = "ASP";
+            $("#title-container > #title > #actualValue > p").text("YTD Net Quantity");
+            tab = "QTY";
             chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
 		    chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
             chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
             chart.series[3].update({name: "RT Actual " + tab, data: ytdHighchartsData["RT Actual " + tab]});
             chart.yAxis[0].setTitle({
-                text: '(USD$)',
-                align: 'high',
-                rotation: 0,
-                offset: 0,
-                x: -11,
-                y: -11
+                text: '',
             });
             chart.tooltip.hide();
             actualValue = getActualValue(ro, product, year, month, tab);
@@ -556,28 +563,5 @@ $("#viewYTDHitRate").pagecontainer({
             chart.series[2].setData(ytdHighchartsData["RT Budget " + tab], true, true, false);
             chart.series[3].setData(ytdHighchartsData["RT Actual " + tab], true, true, false);
         });
-
-        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
-        //     // portraint
-        //     if (window.orientation === 180 || window.orientation === 0) {
-        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
-        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
-        //         $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu, .hc-fragment").show();
-        //         $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
-        //         chart.legend.update({ itemStyle: {fontSize: 12}});
-        //         chart.setSize(chartWidth, chartHeight, doAnimation = true);
-        //     }
-        //     // landscape
-        //     if (window.orientation === 90 || window.orientation === -90 ) {
-        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
-        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
-        //         $("#viewYTDHitRate .page-header, .sliderYTD, #title-container, div > .scrollmenu").hide();
-        //         $(".viewIndex.ui-page").css("background-color", "#fff");
-        //         $(".hc-fragment").css("height", "auto");
-        //         $(".hc-fragment").show();
-        //         chart.legend.update({ itemStyle: {fontSize: 14}});
-        //         chart.setSize(screenHeight, screenWidth*0.8);
-        //     }
-        // }, false);
     }
 });

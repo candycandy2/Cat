@@ -229,15 +229,6 @@ body *:not(input){ -webkit-user-select: none;}
     height: 10vh;
 }
 
-/*initial page layout setting when landscape*/
-@media all and (orientation: landscape){
-    #initialOther{ position: absolute; top: 0; left; 0; right: 0; margin: auto; height: auto; width: 100%;}
-    #initialOther .logo-initial{ height: auto; width: 9vw;}
-    #initialAppName{ margin-top: 2vw;}
-    #initialOther .app-logo-initial{ width: 15vw; margin-top: 0;}
-    #initialOther .brand-initial-content{ position: fixed;}
-}
-
 /*APP Get QPsuh / Maintain */
 #viewGetQPush, #viewMaintain {
     height: 100%;
@@ -454,3 +445,26 @@ body *:not(input){ -webkit-user-select: none;}
     position: absolute;
     right: 0;
 }
+
+
+/*initial page layout setting when landscape*/
+@media all and (orientation: landscape){
+    /*initial*/
+    #initialOther, .main-updateAppVersion, .main-GetQPush{ position: absolute; top: 0; left: 0; right: 0; margin: auto; height: auto; width: 100%;}
+    #initialOther .logo-initial{ height: auto; width: 9vw;}
+    #initialAppName{ margin-top: 2vw;}
+    #initialOther .app-logo-initial{ width: 15vw; margin-top: 0;}
+    #initialOther .brand-initial-content{ position: fixed;}
+    /*need update, update app version, get qpush*/
+    .logo-updateAppVersion, .logo-GetQPush{ width: 15%;}
+    .main-updateAppVersion, .main-updateAppVersion, .main-GetQPush{ padding-top: 0;}
+    .text-updateAppVersion, .text-updateAppVersion, .text-GetQPush{ font-size: 2.5vw; margin-top: 3vw;}
+    .button-updateAppVersion, .brand-GetQPush-content{ font-size: 2.5vw; position: fixed;}
+    /*loader*/
+    .loader{ padding-top: 0;}
+    .loader img{ position: absolute; top: 40%; left: 0; right: 0; margin: auto;}
+}
+
+/*maskAll use for hide all element when layout is not ready*/
+#maskAll{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #fff;}
+#maskAll.hide{ display: none;}
