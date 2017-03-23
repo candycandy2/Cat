@@ -62,11 +62,9 @@ $("#viewHitRate").pagecontainer ({
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
                 showHighchart();
-                chartWidth = chart.chartWidth;
-                chartHeight = chart.chartHeight;
-                // if (window.orientation === 90 || window.orientation === -90 ) {
-                //     zoomInChart();
-                // }
+                if (window.orientation === 90 || window.orientation === -90 ) {
+                    zoomInChart(PageID);
+                }
             };
 
 	    	this.failCallback = function(data) {
@@ -309,8 +307,6 @@ $("#viewHitRate").pagecontainer ({
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
             }
-            chartWidth = chart.chartWidth;
-            chartHeight = chart.chartHeight;
             if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart(PageID);
             }
