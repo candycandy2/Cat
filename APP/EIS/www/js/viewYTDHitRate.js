@@ -455,6 +455,7 @@ $("#viewYTDHitRate").pagecontainer({
             month = thisMonth;
             hcRo = "All";
             hcProduct = "All product";
+            setScrollMenuHeight();
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
