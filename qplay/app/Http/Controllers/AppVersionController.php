@@ -25,56 +25,65 @@ class AppVersionController extends Controller
     }
 
 
-    public function uploadVersion(Request $request){
-
-         $validator = \Validator::make($request->all(), [
-            'app_key' => 'required',
-            'device_type' => 'required|in:android,ios',
-            'version_code' => 'required|integer',
-            'version_name' => 'required',
-            'version_log' => 'required',
-            'userfile'=>'required',
-            'user_id' => 'required|is_user_exist'
-        ]);
-
-        if ($validator->fails()) {
-             return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,'Message'=>$validator->messages()], 200);
-        }
-
-
-        $input = Input::all();
-        $appKey     = trim($input['app_key']);
-        $deviceType = trim($input['device_type']);
-        $userId     = trim($input['user_id']);
-        $versionCode = trim($input['version_code']);
-        $versionName = trim($input['version_name']);
-        $versionFile =  Input::file('userfile');
-
-        $isApkFile = $this->validatAppFileType($deviceType, $versionFile->getClientOriginalName());
-        if(!$isApkFile){
-            return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                'Message'=>'wrong file type']);
-        }
-
-        $userInfo = CommonUtil::getUserInfoJustByUserID($userId);
-        $userRowId = $userInfo->row_id;
-        $appInfo = $this->appService->getAppInfoByAppKey($appKey);
-        if(is_null($appInfo)){
-            return response()->json(['ResultCode'=>ResultCode::_000909_appKeyNotExist,
-                'Message'=>'there is no app whith this app key']);
-        }
-        $appId = $appInfo->row_id;
-        if(!$this->appVersionService->validateVersionCode($appId, $deviceType, $versionCode)){
-            return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                'Message'=>'the version_code must bigger than before version']);
-        }
-         if(!$this->appVersionService->validateVersionName($appId, $deviceType, $versionName)){
-            return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                'Message'=>'version name is already exist']);
-        }
-
+    public function uploadAppVersion(Request $request){
         \DB::beginTransaction();
         try{
+             $validator = \Validator::make($request->all(), [
+                'app_key' => 'required',
+                'device_type' => 'required|in:android,ios',
+                'version_code' => 'required|integer',
+                'version_name' => 'required',
+                'version_log' => 'required',
+                'userfile'=>'required',
+                'user_id' => 'required|is_user_exist'
+            ],
+            [
+                'is_user_exist' => 'user is not exist'
+            ]);
+
+            if ($validator->fails()) {
+                 return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,'Message'=>$validator->messages()], 200);
+            }
+        
+            $input = Input::all();
+            $appKey     = trim($input['app_key']);
+            $deviceType = trim($input['device_type']);
+            $userId     = trim($input['user_id']);
+            $versionCode = trim($input['version_code']);
+            $versionName = trim($input['version_name']);
+            $versionFile =  Input::file('userfile');
+            
+            if(is_null($versionFile)){
+                $errorMsg['userfile'] = ['userfile must be file type'];
+                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                    'Message'=>$errorMsg]);
+            }
+
+            $isApkFile = $this->validatAppFileType($deviceType, $versionFile->getClientOriginalName());
+            if(!$isApkFile){
+                $errorMsg['userfile'] = ['userfile type error'];
+                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                    'Message'=>$errorMsg]);
+            }
+
+            $userInfo = CommonUtil::getUserInfoJustByUserID($userId);
+            $userRowId = $userInfo->row_id;
+            $appInfo = $this->appService->getAppInfoByAppKey($appKey);
+            if(is_null($appInfo)){
+                return response()->json(['ResultCode'=>ResultCode::_000909_appKeyNotExist,
+                    'Message'=>'there is no app whith this app key']);
+            }
+            $appId = $appInfo->row_id;
+            if(!$this->appVersionService->validateVersionCode($appId, $deviceType, $versionCode)){
+                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                    'Message'=>'the version_code must bigger than before version']);
+            }
+             if(!$this->appVersionService->validateVersionName($appId, $deviceType, $versionName)){
+                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                    'Message'=>'version name is already exist']);
+            }
+
+
             //step1:下架舊版本
             $this->appVersionService->unPublishVersion($appId, $deviceType, $userRowId);
              
@@ -86,6 +95,7 @@ class AppVersionController extends Controller
                 'Message'=>trans("messages.MSG_OPERATION_SUCCESS"),
                 'Content'=>''
             ]);
+
         }catch(\Exception $e){
            \DB::rollBack();
              return response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
@@ -105,9 +115,9 @@ class AppVersionController extends Controller
     private function validatAppFileType($deviceType, $fileName){
         $result = false;
         if($deviceType == 'ios'){
-            $result = (substr($fileName,-4) == '.ipa')?true:fasle;
+            $result = (substr($fileName,-4) == '.ipa')?true:false;
         }else if($deviceType == 'android'){
-            $result = (substr($fileName,-4) == '.apk')?true:fasle;
+            $result = (substr($fileName,-4) == '.apk')?true:false;
         }
         return $result;   
     }

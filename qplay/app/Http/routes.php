@@ -275,4 +275,4 @@ Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
 Route::any('tool/syncJpushTags', ['middleware' => 'auth','uses'=>'toolController@syncJpushTags']);
 
 //AutoDeplay
-Route::post('auto/uploadVersion', 'appVersionController@uploadVersion');
+Route::post('auto/uploadAppVersion', 'AppVersionController@uploadAppVersion');
