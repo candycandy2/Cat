@@ -59,9 +59,12 @@ $("#viewHitRate").pagecontainer ({
                 calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
                 
                 $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
-                showHighchart();
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
+                showHighchart();
+                if (window.orientation === 90 || window.orientation === -90 ) {
+                    zoomInChart(PageID);
+                }
             };
 
 	    	this.failCallback = function(data) {
@@ -213,9 +216,8 @@ $("#viewHitRate").pagecontainer ({
     	}
 
         function showHighchart() {
-            chart = new Highcharts.Chart ({
+            options = {
                 chart: {
-                    renderTo: 'viewHitRate-hc-canvas',
                     marginTop: 30,
                     marginLeft: 50,
                 },
@@ -284,25 +286,29 @@ $("#viewHitRate").pagecontainer ({
                     color: '#F4A143',
                     data: thisMonthActualAMT
                 }]
-            });
+            }
+            options.chart.renderTo = "viewHitRate-hc-canvas";
+            chart = new Highcharts.Chart(options);
         }
 
 		/********************************** page event *************************************/
+
+        $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
+
+        });
+
         $("#viewHitRate").on("pageshow", function(event, ui) {
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
-
             if(lastPageID != "viewHitRate") {
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
             }
-            chartWidth = chart.chartWidth;
-            chartHeight = chart.chartHeight;
             if (window.orientation === 90 || window.orientation === -90 ) {
-                zoomInChart();
+                zoomInChart(PageID);
             }
         });
 
@@ -329,29 +335,5 @@ $("#viewHitRate").pagecontainer ({
         	chart.tooltip.hide();
             showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
-
-        // window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function(){
-        //     var screenWidth = $("html").width(), screenHeight = $("html").height();
-        //     // portraint
-        //     if (window.orientation === 180 || window.orientation === 0) {
-        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").show();
-        //         $(".viewIndex.ui-page .ui-content.page-main>form").show();
-        //         $("#viewHitRate .hc-fragment, #data-title-bar, .page-header, .page-date, div > ul").show();
-        //         $("#viewHitRate-hc-canvas").css("height", "38VH");
-        //         chart.legend.update({ itemStyle: {fontSize: 12}});
-        //         chart.setSize(chartWidth, chartHeight, doAnimation = true);
-        //     }
-        //    // landscape
-        //     if (window.orientation === 90 || window.orientation === -90 ) {
-        //         $("body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup").hide();
-        //         $(".viewIndex.ui-page .ui-content.page-main>form").hide();
-        //         $("#viewHitRate .page-header, .page-date, #data-title-bar, div > ul").hide();
-        //         $(".viewIndex.ui-page").css("background-color", "#fff");
-        //         $(".hc-fragment").css("height", "auto");
-        //         $(".hc-fragment").show();
-        //         chart.legend.update({ itemStyle: {fontSize: 14}});
-        //         chart.setSize(screenWidth, screenHeight*0.8, doAnimation = true);
-        //     }
-        // }, false);
     }
 });
