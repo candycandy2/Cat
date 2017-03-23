@@ -330,3 +330,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewMonthlyHitRate-hc-landscape-canvas {display: inline;}
 	#viewYTDHitRate-hc-landscape-canvas {display: inline;}
 }
+
+@media all and (orientation: portrait) {
+	.ui-mobile .ui-page{ min-height: auto !important}
+}
