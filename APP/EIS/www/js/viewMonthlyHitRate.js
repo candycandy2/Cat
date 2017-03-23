@@ -78,19 +78,19 @@ $("#viewMonthlyHitRate").pagecontainer({
             this.successCallback = function(data) {
                 productDetailcallbackData = data["Content"]["DataList"];
                 length = productDetailcallbackData.length;
-                year = thisYear;
-                month = thisMonth;
+                // year = thisYear;
+                // month = thisMonth;
                 convertData();
-                getHighchartsData(ro, product);
-                showHighchart();
-                actualValue = getActualValue(ro, product, year, month, tab);
-                yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-                budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-                showData();
-                $(".Ro #ALL").addClass('hover');
-                $(".Product #ALL").addClass('hover');
-                $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
-                loadingMask("hide");
+                // getHighchartsData(ro, product);
+                // showHighchart();
+                // actualValue = getActualValue(ro, product, year, month, tab);
+                // yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+                // budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+                // showData();
+                // $(".Ro #ALL").addClass('hover');
+                // $(".Product #ALL").addClass('hover');
+                // $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
+                // loadingMask("hide");
             }
 
             this.failCallback = function(data) {
