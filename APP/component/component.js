@@ -966,32 +966,3 @@ function handleOpenURL(url) {
     }
 
 }
-
-// when landscape or portraint, initial page should be in middle of layout
-$(window).resize(function() {
-    if ((window.orientation === 90 || window.orientation === -90)){
-        var screenHeight = screen.height, screenWidth = screen.width, elementValue = '';
-        if (screenHeight > screenWidth){
-            screenHeight = screen.width;
-        }
-        if ($('#viewInitial').hasClass('ui-page-active'))
-            $('#initialOther').css('top', (screenHeight-$('#initialOther').height())/2);
-        else if ($('.main-updateAppVersion').hasClass('ui-page-active'))
-            $('.main-updateAppVersion').css('top', (screenHeight-$('.main-updateAppVersion').height())/4);
-        else if ($('.main-GetQPush').hasClass('ui-page-active'))
-            $('.main-GetQPush').css('top', (screenHeight-$('.main-GetQPush').height())/4);
-    }
-});
-
-// set initial page's layout after layout is loaded finished
-$(window).load(function() {
-    if ($('#viewInitial').hasClass('ui-page-active') && ((window.orientation === 90 || window.orientation === -90))){
-        var screenHeight = screen.height, screenWidth = screen.width;
-        if (screenHeight > screenWidth){
-            screenHeight = screen.width;
-        }
-        $('#initialOther').css('top', (screenHeight-$('#initialOther').height())/2);
-    }
-    //hide mask after window is loaded
-    $('#maskAll').addClass('hide');
-});

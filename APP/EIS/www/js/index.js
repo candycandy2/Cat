@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth, chartWidth, chartHeight;
+var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options;
 var lastPageID = "viewHitRate";
 var PageID = "viewHitRate";
