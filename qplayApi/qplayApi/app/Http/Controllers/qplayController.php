@@ -444,8 +444,6 @@ class qplayController extends Controller
 
                 CommonUtil::logApi($user->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
-
-                return response()->json($result);
             }
         }
         $message = CommonUtil::getMessageContentByCode($verifyResult["code"]);
@@ -459,7 +457,51 @@ class qplayController extends Controller
         CommonUtil::logApi("", $ACTION,
             response()->json(apache_response_headers()), $result);
         $result = response()->json($result);
+
+        //register to QMessage
+        $QMessage_register_url = \Config::get('app.QMessage_Register_URL');
+        if(!empty($QMessage_register_url)){
+            $qmessage_result = self::Register2QMessage($loginid,$QMessage_register_url);
+            CommonUtil::logApi("", "Register2Qmessage",
+                response()->json(apache_response_headers()), $qmessage_result);
+            //更新标志位
+            \DB::table("qp_user")
+                ->where('login_id', '=', $loginid)
+                ->update(['register_message'=>'Y']);
+        }
+        return response()->json($result);
+    }
+
+    public function Register2QMessage($loginid,$url){
+        $data = ["username" => $loginid];
+        $data_string = json_encode($data);
+        $result = self::http_post_data($url,$data_string);
         return $result;
+    }
+
+    function http_post_data($url, $data_string) {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json; charset=utf-8',
+                'Content-Length: ' . strlen($data_string))
+        );
+        //add for QCS Test
+        curl_setopt($ch, CURLOPT_PROXY,'qcsproxyy.qgroup.corp.com:80');
+        curl_setopt($ch, CURLOPT_PROXYUSERPWD,'john.zc.zhuang:Zucc53546211');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
+        //add end
+        ob_start();
+        curl_exec($ch);
+        $return_content = ob_get_contents();
+        ob_end_clean();
+
+        $return_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        return array($return_code, $return_content);
     }
 
     public function unregister() {
