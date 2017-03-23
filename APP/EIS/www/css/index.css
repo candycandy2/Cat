@@ -208,16 +208,16 @@ div.scrollmenu {
 	text-align: center;
 	border-style: solid;
 	border-width: 0.5px;
-	border-color: #1e1e2f;
+	border-color: #d6d6d6;
 	white-space: nowrap;
 	width: 100VW;
-	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+	/*box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);*/
 }
 
 div.scrollmenu a {
 	display: inline-block;
 	padding: 1.8VH 0 1.6VH;
-	background-color: #fbfdfd;
+	background-color: #ffffff;
 	color: #0f0f0f;
 	font-family: Arial;
 	font-size: 4.18VW;
@@ -234,6 +234,8 @@ div.scrollmenu a:nth-of-type(1){ border-left-width: 0;}
 div.scrollmenu a.hover {
     background-color: #0fb6b7;
     color: #fff !important;
+   /* background-color: #EFEFEF;
+    color: #999999 !important;*/
 }
 
 div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
