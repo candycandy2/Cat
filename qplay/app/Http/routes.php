@@ -146,6 +146,8 @@ Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
 Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintainAppList');
 */
 
+
+
 Route::any('auth/login', function() {
     return view("auth/login");
 });
@@ -272,3 +274,5 @@ Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
 //Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 Route::any('tool/syncJpushTags', ['middleware' => 'auth','uses'=>'toolController@syncJpushTags']);
 
+//AutoDeplay
+Route::post('auto/uploadVersion', 'appVersionController@uploadVersion');
