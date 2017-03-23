@@ -108,8 +108,15 @@ function checkNetwork(data) {
 
         logMsg = "Network disconnected";
     } else {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
         //----Network connected
-        // do nothing
+        // on initial page, should reload app
+        if (activePageID === 'viewInitial' || activatePageIndex === -1){
+            reStartAPP = true;
+        }
+        else{
+            // do nothing
+        }
     }
 
     if (showMsg) {

@@ -288,15 +288,11 @@ $("#viewHitRate").pagecontainer ({
                 }]
             }
             options.chart.renderTo = "viewHitRate-hc-canvas";
+
             chart = new Highcharts.Chart(options);
         }
 
 		/********************************** page event *************************************/
-
-        $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-
-        });
-
         $("#viewHitRate").on("pageshow", function(event, ui) {
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
