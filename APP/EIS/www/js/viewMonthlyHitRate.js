@@ -1,4 +1,7 @@
-var chart, ro, product, tab, year, month, actualValue, budgetHitRate, yoyGrowth;
+var chart, year, month, actualValue, budgetHitRate, yoyGrowth;
+var ro = "ALL";
+var product = "ALL";
+var tab = "AMT";
 var hcRo = "All";
 var hcProduct = "All product";
 var hcTitle = "(USD$)";
@@ -11,11 +14,6 @@ var monthlyHighchartsData = {
 	"Budget AMT" : {},
 	"Budget ASP" : {}
 };
-var monthlyHitRateData = {
-	"QTY" : [],
-	"AMT" : [],
-	"ASP" : []
-}
 
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
@@ -80,7 +78,19 @@ $("#viewMonthlyHitRate").pagecontainer({
             this.successCallback = function(data) {
                 productDetailcallbackData = data["Content"]["DataList"];
                 length = productDetailcallbackData.length;
+                year = thisYear;
+                month = thisMonth;
                 convertData();
+                getHighchartsData(ro, product);
+                showHighchart();
+                actualValue = getActualValue(ro, product, year, month, tab);
+                yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+                budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+                showData();
+                $(".Ro #ALL").addClass('hover');
+                $(".Product #ALL").addClass('hover');
+                $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
+                loadingMask("hide");
             }
 
             this.failCallback = function(data) {
