@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QPlayUserSyncService", "QPlayUserSyncService\QPlayUserSyncService.csproj", "{EFF634F7-683D-47F0-A71A-7DD45D619B8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncFromFlower", "SyncFromFlower\SyncFromFlower.csproj", "{4D38A2BB-67FF-4326-921A-2A5EAEE03AFC}"
@@ -8,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPushProxy", "JPushProxy\JPushProxy.csproj", "{96FA8ABF-469D-4467-A534-0DD7D40B9E2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPushLogger", "JPushLogger\JPushLogger.csproj", "{799589E2-A1FC-4D85-AFD1-FD429EE60034}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterQPlay2QMessage", "RegisterQPlay2QMessage\RegisterQPlay2QMessage.csproj", "{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,18 @@ Global
 		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{799589E2-A1FC-4D85-AFD1-FD429EE60034}.Release|x86.ActiveCfg = Release|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Debug|x86.Build.0 = Debug|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{EEFCCB1E-7CD2-41D5-AE9C-B3B1507F95A8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
