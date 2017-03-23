@@ -59,6 +59,7 @@ class CommonUtil
         return $result;
     }
 
+    /*
     public static function getSecretKeyByAppKey($appKey) {
         $projectList = \DB::connection("qplay")
             -> table('qp_project')
@@ -115,7 +116,7 @@ class CommonUtil
         }
         return true;
     }
-
+*/
     public static function logApi($userId, $action, $responseHeader, $responseBody) {
         $version = self::getApiVersionFromUrl();
         $appKey = self::getAppKeyFromHeader();
@@ -128,7 +129,8 @@ class CommonUtil
         $request_header = response()->json(apache_request_headers());
         $request_body = self::prepareJSON(file_get_contents('php://input'));
 
-        \DB::table("qm_api_log")
+        \DB::connection("qmessage")
+            ->table("qm_api_log")
             -> insert([
                 'user_row_id'=>$userId,
                 'app_key'=>$appKey,

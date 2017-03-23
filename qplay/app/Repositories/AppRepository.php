@@ -6,9 +6,28 @@
 namespace App\Repositories;
 
 use DB;
+use App\Model\QP_App_Head;
+use App\Model\QP_App_Line;
 
 class AppRepository
 {
+    
+    /** @var User Inject QP_App_Head model */
+    protected $appHead;
+
+    /** @var User Inject QP_App_Line model */
+    protected $appLine;
+    
+    /*
+     * AppRepository constructor.
+     * @param QP_App_Head $appHead
+     */
+    public function __construct(QP_App_Head $appHead, QP_App_Line $appLine)
+    {     
+        $this->appHead = $appHead;
+        $this->appLine = $appLine;
+    }
+
     /**
      * 寫入qp_app_head 資料表
      * @param  String $db          datasource
@@ -50,5 +69,22 @@ class AppRepository
                     'app_description'=>'',
                     'created_at'=>$createdAt,
                     'created_user'=>$createdUser]);
+    }
+
+
+    /**
+     * 用appKey取得App資訊
+     * @param  String $appKey appKey
+     * @return mixed          取得資料回傳Data Object,若查無資料則回傳null
+     */
+    public function getAppInfoByAppKey($appKey)
+    {
+        $appInfo = $this->appHead
+            -> join('qp_project','qp_project.row_id','=','qp_app_head.project_row_id')
+            -> where('qp_project.app_key', '=', $appKey)
+            -> select('qp_app_head.row_id')
+            -> first();
+    
+        return $appInfo;
     }
 } 

@@ -1,4 +1,4 @@
-var chart, year, month, actualValue, budgetHitRate, yoyGrowth;
+var year, month, actualValue, budgetHitRate, yoyGrowth;
 var ro = "ALL";
 var product = "ALL";
 var tab = "AMT";
@@ -78,9 +78,9 @@ $("#viewMonthlyHitRate").pagecontainer({
             this.successCallback = function(data) {
                 productDetailcallbackData = data["Content"]["DataList"];
                 length = productDetailcallbackData.length;
+                convertData();
                 // year = thisYear;
                 // month = thisMonth;
-                convertData();
                 // getHighchartsData(ro, product);
                 // showHighchart();
                 // actualValue = getActualValue(ro, product, year, month, tab);
@@ -598,6 +598,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             };
             options.chart.renderTo = "viewMonthlyHitRate-hc-canvas";
             chart = new Highcharts.Chart(options);
+            options.chart.renderTo = "viewMonthlyHitRate-hc-landscape-canvas";
+            chartLandscape = new Highcharts.Chart(options);
         }
 
         /********************************** page event *************************************/
