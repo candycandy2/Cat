@@ -202,7 +202,6 @@ function formatNumber(n) {
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
     // portraint
     if (window.orientation === 180 || window.orientation === 0) {
-        $("#viewHitRate .page-main").css("margin-top", "0px");
         zoomOutChart(PageID);
     }
     // landscape
