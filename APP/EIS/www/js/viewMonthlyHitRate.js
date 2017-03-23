@@ -34,7 +34,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".Product").html("");
                 $(".Product").append(productList).enhanceWithin();
-                setScrollMenuHeight();
 
                 year = thisYear-1;
                 month = thisMonth;
@@ -434,12 +433,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
-        function setScrollMenuHeight() {
-            if(screen.width < screen.height) {
-                $('div.scrollmenu a').css({'width': ($('body').width()-5)/6});
-            }else {
-                $('div.scrollmenu a').css({'width': ($('body').height()+20)/6});
-            }
+        window.setScrollMenuHeight = function() {
+            $('div.scrollmenu a').css({'width': ($('body').width()-5)/6});
         }
 
         function initSlider() {
@@ -605,6 +600,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             hcRo = "All";
             hcProduct = "All product";
             initSlider();
+            setScrollMenuHeight();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             getHighchartsData(ro, product);
