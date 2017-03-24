@@ -269,6 +269,8 @@ return [
     'MSG_VERSION_CAN_NOT_DELETE' => '無法刪除',
     'MSG_VERSION_IS_PUBLISH_CAN_NOT_DELETE' => '所選版本為發布狀態，不可刪除',
     'MSG_SELECT_CATEGORY'=>'請選擇分類',
+    'MSG_APP_KEY_REQUIRED'=>'請選擇App Key',
+    'MSG_APP_NAME_REQUIRED'=>'請填寫App名稱',
     'ERR_JSON_PARSING_ERROR' => 'json 檔案解析失敗，請確認上傳檔案內容!',
     'ERR_APP_KEY_INCORRECT_ERROR' => '上傳檔案appkey與專案不符，請確認上傳檔案內容!',
     'ERR_VERSION_NO_DUPLICATE' => '版本號不可重複',

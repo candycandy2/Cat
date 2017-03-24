@@ -269,6 +269,8 @@ return [
     'MSG_VERSION_CAN_NOT_DELETE' => '无法删除',
     'MSG_VERSION_IS_PUBLISH_CAN_NOT_DELETE' => '所选版本为发布状态，不可删除',
     'MSG_SELECT_CATEGORY'=>'请选择分类',
+    'MSG_APP_KEY_REQUIRED'=>'请选择App Key',
+    'MSG_APP_NAME_REQUIRED'=>'请填写App名称',
     'ERR_JSON_PARSING_ERROR' => 'json 档案解析失败，请确认上传档案的内容!',
     'ERR_APP_KEY_INCORRECT_ERROR' => '上传档案appkey与专案不符，请确认上传档案内容!',
     'ERR_VERSION_NO_DUPLICATE' => '版本号不可重复',

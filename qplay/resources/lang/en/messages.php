@@ -269,6 +269,8 @@ return [
     'MSG_VERSION_CAN_NOT_DELETE' => 'Can not be deleted',
     'MSG_VERSION_IS_PUBLISH_CAN_NOT_DELETE' => 'The selected version can not de deleted, it is published',
     'MSG_SELECT_CATEGORY'=>'Please selece category',
+    'MSG_APP_KEY_REQUIRED'=>'App Key is required',
+    'MSG_APP_NAME_REQUIRED'=>'App name is required',
     'ERR_JSON_PARSING_ERROR'=>'Parsing json error,please check your file content!',
     'ERR_APP_KEY_INCORRECT_ERROR'=>'App key incrrect,please check yout file content!',
     'ERR_VERSION_NO_DUPLICATE' => 'Version No. can not de duplicated',
