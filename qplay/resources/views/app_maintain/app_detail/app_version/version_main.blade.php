@@ -328,7 +328,15 @@ var uploadNewVersion = function(){
             break;
         }
     }
-
+    for(var j = 0; j < currentData.length; j++) {
+        if($.trim(currentData[j].version_name) == $.trim(versionName)) {
+            var error = new Error;
+            error.field = 'tbxVersionName';
+            error.msg = '{{trans('messages.ERR_VERSION_NAME_DUPLICATE')}}';
+            errors.push(error);
+            break;
+        }
+    }
 
     $.each(errors,function(i, error){
         $('span[for='+error.field+']').html(error.msg);
