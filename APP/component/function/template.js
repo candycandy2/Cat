@@ -508,7 +508,14 @@ var tplJS = {
             //Resize Height of background div
             var activePageID = $.mobile.activePage.attr("id");
             var activePage = $("#" + activePageID);
-            var activePageScrollHeight = activePage[0].scrollHeight;
+            var activePageScrollHeight;
+            if (activePageID === undefined){
+                activePage = $('.ui-page-active');
+                activePageScrollHeight = activePage.scrollHeight;
+            }
+            else{
+                activePageScrollHeight = activePage[0].scrollHeight;
+            }
 
             $(".ui-popup-screen.in").height(activePageScrollHeight);
 

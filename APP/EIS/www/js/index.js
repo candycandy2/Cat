@@ -1,6 +1,6 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth, chartWidth, chartHeight;
-var options;
+var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var options, chart, chartLandscape;
 var lastPageID = "viewHitRate";
 var PageID = "viewHitRate";
 var monthlyPageDateList = "";
@@ -200,29 +200,24 @@ function formatNumber(n) {
 }
 
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
-    // portraint
-    if (window.orientation === 180 || window.orientation === 0) {
-        $("#viewHitRate .page-main").css("margin-top", "0px");
-        zoomOutChart(PageID);
+    if($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel( "close");
     }
+    // portraint
+    // if (window.orientation === 180 || window.orientation === 0) {
+        
+    // }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
-        zoomInChart(PageID);
+        zoomInChart();
     }
 }, false);
 
-function zoomInChart(pageId) {
-    options.chart.renderTo = pageId + "-hc-landscape-canvas";
-    chart = new Highcharts.Chart(options);
+function zoomInChart() {
     chart.legend.update({itemStyle: {fontSize: 14}});
     if(screen.width < screen.height) {
-        chart.setSize(screen.height, screen.width*0.8, false);
+        chartLandscape.setSize(screen.height, screen.width*0.8, false);
     }else {
-        chart.setSize(screen.width, screen.height*0.8, false);
+        chartLandscape.setSize(screen.width, screen.height*0.8, false);
     }
-}
-
-function zoomOutChart(pageId) {
-    options.chart.renderTo = pageId + "-hc-canvas";
-    chart = new Highcharts.Chart(options);
 }

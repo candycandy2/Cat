@@ -1,4 +1,4 @@
-var chart;
+var tab = "thisMonth";
 var lytmTotalActualAMT = 0;
 var lylmTotalActualAMT = 0;
 var thisMonthBudgetAMT = [];
@@ -62,11 +62,9 @@ $("#viewHitRate").pagecontainer ({
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
                 showHighchart();
-                chartWidth = chart.chartWidth;
-                chartHeight = chart.chartHeight;
-                // if (window.orientation === 90 || window.orientation === -90 ) {
-                //     zoomInChart();
-                // }
+                if (window.orientation === 90 || window.orientation === -90 ) {
+                    zoomInChart();
+                }
             };
 
 	    	this.failCallback = function(data) {
@@ -291,15 +289,13 @@ $("#viewHitRate").pagecontainer ({
             }
             options.chart.renderTo = "viewHitRate-hc-canvas";
             chart = new Highcharts.Chart(options);
+            options.chart.renderTo = "viewHitRate-hc-landscape-canvas";
+            chartLandscape = new Highcharts.Chart(options);
         }
 
 		/********************************** page event *************************************/
-
-        $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
-
-        });
-
         $("#viewHitRate").on("pageshow", function(event, ui) {
+            // tab = "thisMonth";
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
@@ -309,34 +305,44 @@ $("#viewHitRate").pagecontainer ({
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
                 loadingMask("hide");
             }
-            chartWidth = chart.chartWidth;
-            chartHeight = chart.chartHeight;
             if (window.orientation === 90 || window.orientation === -90 ) {
-                zoomInChart(PageID);
+                zoomInChart();
             }
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function() {
+            // tab = "thisMonth";
         	$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
         	chart.series[0].setData(thisMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(thisMonthActualAMT, true, true, false );
             chart.tooltip.hide();
+            chartLandscape.series[0].setData(thisMonthBudgetAMT, true, true, false);
+            chartLandscape.series[1].setData(thisMonthActualAMT, true, true, false );
+            // showHighchart();
         	showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
         });
 
         $(".page-tabs #viewHitRate-tab-2").on("click", function() {
+            // tab = "lastMonth";
         	$("#viewHitRate .page-date").text(monTable[thisMonth-1]+thisYear);
         	chart.series[0].setData(lastMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(lastMonthActualAMT, true, true, false);
         	chart.tooltip.hide();
+            chartLandscape.series[0].setData(lastMonthBudgetAMT, true, true, false);
+            chartLandscape.series[1].setData(lastMonthActualAMT, true, true, false);
+            // showHighchart();
             showData("lastMonth", lastMonthActualAMT, lastMonthBudgetAMT, lastMonthData);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function() {
+            // tab = "YTD";
     		$("#viewHitRate .page-date").text(thisYear);
     		chart.series[0].setData(YTDBudgetAMT, true, true, false);
         	chart.series[1].setData(YTDActualAMT, true, true, false);
         	chart.tooltip.hide();
+            chartLandscape.series[0].setData(YTDBudgetAMT, true, true, false);
+            chartLandscape.series[1].setData(YTDActualAMT, true, true, false);
+            // showHighchart();
             showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
     }
