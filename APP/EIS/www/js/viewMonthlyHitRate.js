@@ -1,4 +1,7 @@
-var chart, ro, product, tab, year, month, actualValue, budgetHitRate, yoyGrowth;
+var year, month, actualValue, budgetHitRate, yoyGrowth;
+var ro = "ALL";
+var product = "ALL";
+var tab = "AMT";
 var hcRo = "All";
 var hcProduct = "All product";
 var hcTitle = "(USD$)";
@@ -11,11 +14,6 @@ var monthlyHighchartsData = {
 	"Budget AMT" : {},
 	"Budget ASP" : {}
 };
-var monthlyHitRateData = {
-	"QTY" : [],
-	"AMT" : [],
-	"ASP" : []
-}
 
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
@@ -81,6 +79,18 @@ $("#viewMonthlyHitRate").pagecontainer({
                 productDetailcallbackData = data["Content"]["DataList"];
                 length = productDetailcallbackData.length;
                 convertData();
+                // year = thisYear;
+                // month = thisMonth;
+                // getHighchartsData(ro, product);
+                // showHighchart();
+                // actualValue = getActualValue(ro, product, year, month, tab);
+                // yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+                // budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+                // showData();
+                // $(".Ro #ALL").addClass('hover');
+                // $(".Product #ALL").addClass('hover');
+                // $(".sliderMonthly").slick("slickGoTo", monthlyPageDate.length-1, true);
+                // loadingMask("hide");
             }
 
             this.failCallback = function(data) {
@@ -588,6 +598,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             };
             options.chart.renderTo = "viewMonthlyHitRate-hc-canvas";
             chart = new Highcharts.Chart(options);
+            options.chart.renderTo = "viewMonthlyHitRate-hc-landscape-canvas";
+            chartLandscape = new Highcharts.Chart(options);
         }
 
         /********************************** page event *************************************/

@@ -1,4 +1,7 @@
-var chart, ro, product, year, month, actualValue, budgetHitRate, tab;
+var year, month, actualValue, budgetHitRate;
+var ro = "ALL";
+var product = "ALL";
+var tab = "AMT";
 var hcRo = "All";
 var hcProduct = "All product";
 var hcTitle = "(USD$)";
@@ -444,6 +447,8 @@ $("#viewYTDHitRate").pagecontainer({
             };
             options.chart.renderTo = "viewYTDHitRate-hc-canvas";
             chart = new Highcharts.Chart(options);
+            options.chart.renderTo = "viewYTDHitRate-hc-landscape-canvas";
+            chartLandscape = new Highcharts.Chart(options);
         }
 
         /********************************** page event *************************************/
