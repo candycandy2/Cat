@@ -1,8 +1,7 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var lastPageID = "viewHitRate";
-var PageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
 var initialAppName = "EIS";
@@ -88,7 +87,6 @@ $(document).one("pagebeforeshow", function() {
             $("#mypanel").panel( "open");
         }
     });
-    // zoomBtnInit();
 });
 
 window.initialSuccess = function() {
@@ -103,6 +101,19 @@ window.initialSuccess = function() {
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
     $.mobile.changePage("#viewHitRate");
+
+    // for(var i=0; i<=3; i++) {
+    //     var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+    //     for(var j=maxMonth; j>0; j--) {
+    //         j = (j < 10) ? "0"+j : j;
+    //         productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+    //                     + (currentYear - i) + "/" + j
+    //                     + "</StartYearMonth><EndYearMonth>"
+    //                     + (currentYear - i) + "/" + j
+    //                     + "</EndYearMonth></LayoutHeader>";
+    //         ProductDetail();
+    //     }
+    // }    
 }
 
 //[Android]Handle the back button
@@ -187,7 +198,6 @@ function changePageByPanel(pageId) {
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
-        PageID = $.mobile.activePage[0].id;
     }
     $("#mypanel").panel("close");
 }
@@ -205,7 +215,6 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     }
     // portraint
     // if (window.orientation === 180 || window.orientation === 0) {
-        
     // }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
