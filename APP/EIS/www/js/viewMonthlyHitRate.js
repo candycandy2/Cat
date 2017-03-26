@@ -598,6 +598,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             chart = new Highcharts.Chart(options);
             options.chart.renderTo = "viewMonthlyHitRate-hc-landscape-canvas";
             chartLandscape = new Highcharts.Chart(options);
+            chartLandscape.legend.update({itemStyle: {fontSize: 14}, align: "center"});
         }
 
         /********************************** page event *************************************/
