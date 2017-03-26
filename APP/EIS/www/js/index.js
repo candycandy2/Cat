@@ -223,7 +223,6 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 }, false);
 
 function zoomInChart() {
-    chart.legend.update({itemStyle: {fontSize: 14}});
     if(screen.width < screen.height) {
         chartLandscape.setSize(screen.height, screen.width*0.8, false);
     }else {
