@@ -19,7 +19,7 @@ $("#viewHitRate").pagecontainer ({
 		
 	    	this.successCallback = function(data) {
 	    		
-                ProductDetail();
+                // ProductDetail();
                 queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
                 UserAuthority();
                 roSummaryCallBackData = data["Content"]["DataList"];
