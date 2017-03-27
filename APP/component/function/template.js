@@ -99,7 +99,8 @@ var tplJS = {
     getRealContentHeight: function() {
         var header = $.mobile.activePage.find("div[data-role='header']:visible");
         var footer = $.mobile.activePage.find("div[data-role='footer']:visible");
-        var content = $.mobile.activePage.find("div[data-role='content']:visible:visible");
+        //var content = $.mobile.activePage.find("div[data-role='content']:visible:visible");
+        var content = $.mobile.activePage.find("div[data-role='main']:visible:visible");
         var viewport_height = $(window).height();
 
         var content_height = viewport_height - header.outerHeight() - footer.outerHeight();
@@ -118,6 +119,7 @@ var tplJS = {
 
         $.mobile.activePage.css({
             "height": adjustHeight,
+            "min-height": adjustHeight,
             "overflow-y": "hidden"
         });
     },
