@@ -392,6 +392,17 @@ class qplayController extends Controller
                             'created_user'=>$user->row_id,
                         ]);
                     }
+                    //bug 14023 2017.3.27
+                    \DB::table("qp_user_message")
+                        -> where('uuid', '=', $user->row_id)
+                        -> update(
+                            ['uuid'=>$uuid]
+                        );
+                    \DB::table("qp_user_message_pushonly")
+                        -> where('uuid', '=', $user->row_id)
+                        -> update(
+                            ['uuid'=>$uuid]
+                        );
                 }
                 catch (Exception $e)
                 {
@@ -2726,6 +2737,8 @@ SQL;
                                     continue;
                                 }
                                 if(count($destinationUserInfo->uuidList) == 0) {
+                                    /*
+                                     * bug 14023 2017.3.27
                                     \DB::rollBack();
                                     $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                                         'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
@@ -2733,13 +2746,18 @@ SQL;
                                     CommonUtil::logApi("", $ACTION,
                                         response()->json(apache_response_headers()), $result);
                                     return response()->json($result);
+                                    */
+                                    //该用户如无设备，先以user_row_id代替
+                                    $destinationUserInfo->uuidList = [
+                                        ["uuid"=>$destinationUserInfo->row_id]
+                                    ];
                                 }
                                 foreach ($destinationUserInfo->uuidList as $uuid) {
                                     \DB::table("qp_user_message")
                                         -> insertGetId([
                                             'project_row_id'=>$projectInfo->row_id,
                                             'user_row_id'=>$destinationUserInfo->row_id,
-                                            'uuid'=>$uuid->uuid,
+                                            'uuid'=> is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                             'message_send_row_id'=>$newMessageSendId,
                                             'created_user'=>$sourceUserInfo->row_id,
                                             'created_at'=>$now
@@ -2767,12 +2785,18 @@ SQL;
                                     if(!in_array($userRowId, $hasSentUserIdList)) {
                                         $thisUserInfo = CommonUtil::getUserInfoByRowID($userRowId);//CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
                                         if($thisUserInfo->status == "Y" && $thisUserInfo->resign == "N") {
+                                            //bug 14023 2017.3.27
+                                            if (count($thisUserInfo->uuidList)==0){
+                                                $thisUserInfo->uuidList = [
+                                                    ["uuid"=>$userRowId]
+                                                ];
+                                            }
                                             foreach ($thisUserInfo->uuidList as $uuid) {
                                                 \DB::table("qp_user_message")
                                                     -> insertGetId([
                                                         'project_row_id'=>$projectInfo->row_id,
                                                         'user_row_id'=>$userRowId,
-                                                        'uuid'=>$uuid->uuid,
+                                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                                         'message_send_row_id'=>$newMessageSendId,
                                                         'created_user'=>$sourceUserInfo->row_id,
                                                         'created_at'=>$now
