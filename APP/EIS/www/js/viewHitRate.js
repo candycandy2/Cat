@@ -291,6 +291,7 @@ $("#viewHitRate").pagecontainer ({
             chart = new Highcharts.Chart(options);
             options.chart.renderTo = "viewHitRate-hc-landscape-canvas";
             chartLandscape = new Highcharts.Chart(options);
+            chartLandscape.legend.update({itemStyle: {fontSize: 14}, align: "center"});
         }
 
 		/********************************** page event *************************************/
