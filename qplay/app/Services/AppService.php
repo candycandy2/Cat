@@ -32,4 +32,14 @@ class AppService
         $this->appRepository->insertAppLine($db, $appRowId, $appKey, $createdAt, $createdUser);
         return $appRowId;
     }
+
+    /**
+     * 使用appKey 取得App資訊
+     * @param  String $appKey app key
+     * @return mixed  
+     */
+    public function getAppInfoByAppKey($appKey){
+        $appInfo = $this->appRepository->getAppInfoByAppKey($appKey);
+        return $appInfo;
+    }
 }

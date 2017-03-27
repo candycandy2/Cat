@@ -1,8 +1,7 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
-var options;
+var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var options, chart, chartLandscape;
 var lastPageID = "viewHitRate";
-var PageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
 var initialAppName = "EIS";
@@ -88,7 +87,6 @@ $(document).one("pagebeforeshow", function() {
             $("#mypanel").panel( "open");
         }
     });
-    // zoomBtnInit();
 });
 
 window.initialSuccess = function() {
@@ -103,6 +101,19 @@ window.initialSuccess = function() {
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
     $.mobile.changePage("#viewHitRate");
+
+    // for(var i=0; i<=3; i++) {
+    //     var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+    //     for(var j=maxMonth; j>0; j--) {
+    //         j = (j < 10) ? "0"+j : j;
+    //         productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+    //                     + (currentYear - i) + "/" + j
+    //                     + "</StartYearMonth><EndYearMonth>"
+    //                     + (currentYear - i) + "/" + j
+    //                     + "</EndYearMonth></LayoutHeader>";
+    //         ProductDetail();
+    //     }
+    // }    
 }
 
 //[Android]Handle the back button
@@ -187,7 +198,6 @@ function changePageByPanel(pageId) {
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
-        PageID = $.mobile.activePage[0].id;
     }
     $("#mypanel").panel("close");
 }
@@ -200,28 +210,22 @@ function formatNumber(n) {
 }
 
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
-    // portraint
-    if (window.orientation === 180 || window.orientation === 0) {
-        zoomOutChart(PageID);
+    if($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel( "close");
     }
+    // portraint
+    // if (window.orientation === 180 || window.orientation === 0) {
+    // }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
-        zoomInChart(PageID);
+        zoomInChart();
     }
 }, false);
 
-function zoomInChart(pageId) {
-    options.chart.renderTo = pageId + "-hc-landscape-canvas";
-    chart = new Highcharts.Chart(options);
-    chart.legend.update({itemStyle: {fontSize: 14}});
+function zoomInChart() {
     if(screen.width < screen.height) {
-        chart.setSize(screen.height, screen.width*0.8, false);
+        chartLandscape.setSize(screen.height, screen.width*0.8, false);
     }else {
-        chart.setSize(screen.width, screen.height*0.8, false);
+        chartLandscape.setSize(screen.width, screen.height*0.8, false);
     }
-}
-
-function zoomOutChart(pageId) {
-    options.chart.renderTo = pageId + "-hc-canvas";
-    chart = new Highcharts.Chart(options);
 }

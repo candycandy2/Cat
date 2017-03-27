@@ -101,14 +101,17 @@ a {
     color: black;
 }
 
+#reserveSettingArea .ui-grid-a{ margin-top: 3vw !important; margin-bottom: 0 !important;}
+#reserveSettingArea .ui-grid-a > div:nth-of-type(1){ margin-bottom: 0.5vw;}
+
 #reserveTab > div > div.ui-radio label {
-    line-height: 2vh !important;
-    height: 2vh !important;
-    border: 1px solid #2a88bc !important;
+    line-height: 1 !important;
+    border: 1px solid #2c89bc !important;
+    padding: 2.8vw 0 2.6vw;
 }
 
 #reserveTab > div > div.ui-radio label.ui-btn-active {
-    background-color: #2a88bc !important;
+    background-color: #2c89bc !important;
     color: white !important;
 }
 
@@ -163,7 +166,7 @@ a {
 #newSettingPeople, #newSettingTitle{ font-size: 4.18vw;}
 #newSettingPeople .ui-controlgroup{ margin: 0;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
-#reserveTab{ margin-top: 3.99vw;}
+#reserveTab{ margin-top: 3.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
 
 
@@ -207,7 +210,7 @@ a {
 
 .inline {
     display: inline-block;
-    vertical-align: sub;
+    vertical-align: middle;
 }
 
 div.circle {
@@ -253,13 +256,13 @@ div.circle {
 
 .iconSelect {
     background: url(../img/circle1.png);
-    background-size: 4.8vw 2.8vh;
+    background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
 
 .iconSelected {
     background: url(../img/circle2.png);
-    background-size: 4.8vw 2.8vh;
+    background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
 
@@ -333,21 +336,21 @@ div.circle {
     background: url(../img/select.png) no-repeat;
     width: 5vw;
     height: 3vh;
-    background-size: 5vw 3vh;
+    background-size: 5vw auto;
 }
 
 .quick-reserve-warn-icon {
     background: url(../img/warn_icon.png) no-repeat;
     width: 5vw;
     height: 3vh;
-    background-size: 5vw 3vh;
+    background-size: 5vw auto;
 }
 
 .quick-reserve-setting-icon {
     background: url(../img/setting.png) no-repeat;
     width: 7.2vw;
     height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
+    background-size: 7.2vw auto;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -356,7 +359,7 @@ div.circle {
     background: url(../img/setting.png) no-repeat;
     width: 7.2vw;
     height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
+    background-size: 7.2vw auto;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -376,7 +379,7 @@ div.circle {
 .setting-icon {
     width: 7.2vw;
     height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
+    background-size: 7.2vw auto;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -430,7 +433,7 @@ div.circle {
     padding: 1.5vh 2.4vw;
     border: 1px solid #aaa;
     margin-top: 3.2vh;
-    margin-bottom: 5.6vh;
+    margin-bottom: 7vw;
 }
 
 .dropdown-icon {

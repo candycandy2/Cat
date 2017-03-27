@@ -1,4 +1,4 @@
-var chart, year, month, actualValue, budgetHitRate, yoyGrowth;
+var year, month, actualValue, budgetHitRate, yoyGrowth;
 var ro = "ALL";
 var product = "ALL";
 var tab = "AMT";
@@ -21,12 +21,12 @@ $("#viewMonthlyHitRate").pagecontainer({
         window.UserAuthority = function() {
             var index = 0;   
             this.successCallback = function(data) {
-                userAuthoritycallbackData = data["Content"]["DataList"];
-                length = userAuthoritycallbackData.length;
+                userAuthorityCallBackData = data["Content"]["DataList"];
+                length = userAuthorityCallBackData.length;
                 for(var i=0; i<length; i++) {
-                    for(var j in userAuthoritycallbackData[i]) {
-                        if(userAuthoritycallbackData[i][j] == "PRODUCT") {
-                            productList += '<a id="' + userAuthoritycallbackData[i]["PVALUE"] + '">' + userAuthoritycallbackData[i]["PVALUE"] + '</a>' ;
+                    for(var j in userAuthorityCallBackData[i]) {
+                        if(userAuthorityCallBackData[i][j] == "PRODUCT") {
+                            productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>' ;
                         }
                     }
                 }
@@ -76,11 +76,12 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         window.ProductDetail = function() {
             this.successCallback = function(data) {
-                productDetailcallbackData = data["Content"]["DataList"];
-                length = productDetailcallbackData.length;
+                productDetailCallBackData = data["Content"]["DataList"];
+                length = productDetailCallBackData.length;
+                convertData();
+
                 // year = thisYear;
                 // month = thisMonth;
-                convertData();
                 // getHighchartsData(ro, product);
                 // showHighchart();
                 // actualValue = getActualValue(ro, product, year, month, tab);
@@ -98,6 +99,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
 
             var _constrcut = function() {
+                // CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, productDetailQueryData, "");
                 CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
             }();
         };
@@ -416,26 +418,22 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         function convertData() {
             var month, rosite;
-            var ActualASP = 0;
-            var BudgetASP = 0;
             var index = 0;
-            for(var i=productDetailcallbackData[0]["YEAR"]; i<=productDetailcallbackData[length-1]["YEAR"]; i++) {
+            for(var i=productDetailCallBackData[0]["YEAR"]; i<=productDetailCallBackData[length-1]["YEAR"]; i++) {
                 eisdata[i] = {};
-                month = (i == productDetailcallbackData[length-1]["YEAR"]) ? (productDetailcallbackData[length-1]["MONTH"]) : 12;  
+                month = (i == productDetailCallBackData[length-1]["YEAR"]) ? (productDetailCallBackData[length-1]["MONTH"]) : 12;  
                 for(var j=1; j<=month; j++) {
                     eisdata[i][j] = {};
-                    while(index<length && j == productDetailcallbackData[index]["MONTH"]) {
-                        rosite = productDetailcallbackData[index]["RO_SITE"];
+                    while(index<length && j == productDetailCallBackData[index]["MONTH"]) {
+                        rosite = productDetailCallBackData[index]["RO_SITE"];
                         eisdata[i][j][rosite] = {};
-                        while(index<length && rosite == productDetailcallbackData[index]["RO_SITE"]) {
-                            eisdata[i][j][rosite][productDetailcallbackData[index]["PRODUCT"]] = [
-                                Number(productDetailcallbackData[index]["ACTUAL_QTY"]),
-                                Number(productDetailcallbackData[index]["BUDGET_QTY"]),
-                                Number(productDetailcallbackData[index]["ACTUAL_ADJ_AMT"]),
-                                Number(productDetailcallbackData[index]["BUDGET_AMT"])
+                        while(index<length && rosite == productDetailCallBackData[index]["RO_SITE"]) {
+                            eisdata[i][j][rosite][productDetailCallBackData[index]["PRODUCT"]] = [
+                                Number(productDetailCallBackData[index]["ACTUAL_QTY"]),
+                                Number(productDetailCallBackData[index]["BUDGET_QTY"]),
+                                Number(productDetailCallBackData[index]["ACTUAL_ADJ_AMT"]),
+                                Number(productDetailCallBackData[index]["BUDGET_AMT"])
                             ];
-                            ActualASP = 0;
-                            BudgetASP = 0;
                             index++;
                         }
                     }
@@ -598,6 +596,9 @@ $("#viewMonthlyHitRate").pagecontainer({
             };
             options.chart.renderTo = "viewMonthlyHitRate-hc-canvas";
             chart = new Highcharts.Chart(options);
+            options.chart.renderTo = "viewMonthlyHitRate-hc-landscape-canvas";
+            chartLandscape = new Highcharts.Chart(options);
+            chartLandscape.legend.update({itemStyle: {fontSize: 14}, align: "center"});
         }
 
         /********************************** page event *************************************/
