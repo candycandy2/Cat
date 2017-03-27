@@ -28,6 +28,7 @@ function addConponentView() {
         $.mobile.pageContainer.append(data);
 
         //Set viewInitial become the index page
+        $.mobile.changePage('#viewInitial');
         $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
 
         //set initial page's layout when landscape
@@ -138,7 +139,6 @@ function openNetworkDisconnectWindow(status){
     if (!closeDisconnectNetworkInit){
         $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
             $('#disconnectNetwork').popup('close');
-            $('#disconnectNetwork').hide();
 
             // network disconnect
             if (status === 'noNetwork'){
