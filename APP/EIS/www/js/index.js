@@ -102,18 +102,18 @@ window.initialSuccess = function() {
     ROSummary();
     $.mobile.changePage("#viewHitRate");
 
-    // for(var i=0; i<=3; i++) {
-    //     var maxMonth = (i == 0) ? Number(currentMonth) : 12;
-    //     for(var j=maxMonth; j>0; j--) {
-    //         j = (j < 10) ? "0"+j : j;
-    //         productDetailQueryData = "<LayoutHeader><StartYearMonth>"
-    //                     + (currentYear - i) + "/" + j
-    //                     + "</StartYearMonth><EndYearMonth>"
-    //                     + (currentYear - i) + "/" + j
-    //                     + "</EndYearMonth></LayoutHeader>";
-    //         ProductDetail();
-    //     }
-    // }    
+    for(var i=0; i<=3; i++) {
+        var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+        for(var j=maxMonth; j>0; j--) {
+            j = (j < 10) ? "0"+j : j;
+            productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - i) + "/" + j
+                        + "</StartYearMonth><EndYearMonth>"
+                        + (currentYear - i) + "/" + j
+                        + "</EndYearMonth></LayoutHeader>";
+            ProductDetail();
+        }
+    }
 }
 
 //[Android]Handle the back button
