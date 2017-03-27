@@ -293,7 +293,7 @@ class AppMaintainController extends Controller
 
         $input = Input::get();
         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
+            abort(404);
         }
 
         $data = array();
@@ -301,12 +301,12 @@ class AppMaintainController extends Controller
         $appMain = \DB::table("qp_app_head as h")
                 -> join('qp_project as p', 'h.project_row_id', '=', 'p.row_id')
                 -> where('h.row_id', '=', $appRowId)
-                ->select('p.app_key','p.project_code','p.created_user','p.project_pm',
+                -> select('p.app_key','p.project_code','p.created_user','p.project_pm',
                          'h.package_name','h.project_row_id', 'h.default_lang_row_id', 'h.app_category_row_id',
                         'h.security_level','h.icon_url','h.company_label')
                 ->first();
-
-        if(count($appMain) == 0){
+        
+        if($appMain == null){
             abort(404);
         }
 

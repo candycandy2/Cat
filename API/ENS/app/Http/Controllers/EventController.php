@@ -132,16 +132,36 @@ class EventController extends Controller
                 'need_push' =>  $data['need_push'],
                 'app_key' =>  $data['app_key']
                 );
-
+            //create event
             $eventId = $this->eventService->newEvent($empNo, $data, $queryParam);
-            
-            \DB::commit();
-            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
+            //create chat room
+            $createChatRoomRes =  json_decode($this->eventService->createChatRoomByEvent($empNo, $eventId, $data['event_title']));
+            if($createChatRoomRes->ResultCode != 1){
+                if($createChatRoomRes->ResultCode == '998002'){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014918_memberNotRegistered,
+                    'Message'=>"新增聊天室失敗, 成員未註冊",
                     'Content'=>""]);
+
+                }else if($createChatRoomRes->ResultCode== '998003' ||
+                        $createChatRoomRes->ResultCode == '998004'){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014919_chatroomMemberInvalid,
+                    'Message'=>"聊天室成員不存在",
+                    'Content'=>""]);
+                }else{
+                     return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+                     'Content'=>""]);
+                }
+            }
+            \DB::commit();
+            //send push
+            $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
+            
+            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
+                    'Content'=>$createChatRoomRes->Content]);
         } catch (Exception $e){
+            \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
-            \DB::rollBack();
         }
     }
 

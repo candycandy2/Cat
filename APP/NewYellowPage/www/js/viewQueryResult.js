@@ -5,6 +5,7 @@
 var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
     $("#viewQueryResult").pagecontainer({
         create: function(event, ui) {
+            var maxValue = 10;   // max vlaue of search
             
             /********************************** function *************************************/
             function QueryEmployeeData() {
@@ -74,8 +75,7 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
             // insert value into html
             function insertQueryValue(dataContent, resultcode){
                 var htmlContent = "";
-                var errorMsg = $("#errorMsg").clone();
-                var errorMsg2 = $("#errorMsg2").clone(), telString = "", extTmpNum = "";
+                var telString = "", extTmpNum = "";
                 for (var i=0; i<dataContent.length; i++){
                     var tempData = {};
 
@@ -147,11 +147,12 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     $.mobile.changePage('#viewDetailInfo');
                 });
 
-                /*   data length over 5, show error msg
+                /*   data length over maxValue, show error msg
                      if (resultcode === "001906") {     */
-                if (dataContent.length === 5) {
+                if (dataContent.length === maxValue) {
                     $("#errorMsg").show();
                     $("#errorMsg2").hide();
+                    $("#errorMsg").find('.max-value').html(maxValue);
                 } else if (resultcode === "001901") {
                     $("#errorMsg2").show();
                     $("#errorMsg").hide();

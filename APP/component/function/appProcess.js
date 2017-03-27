@@ -30,6 +30,9 @@ function addConponentView() {
         //Set viewInitial become the index page
         $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
 
+        //set initial page's layout when landscape
+        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
+
         //If is other APP, set APP name in initial page
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
@@ -105,8 +108,15 @@ function checkNetwork(data) {
 
         logMsg = "Network disconnected";
     } else {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
         //----Network connected
-        // do nothing
+        // on initial page, should reload app
+        if (activePageID === 'viewInitial' || activatePageIndex === -1){
+            reStartAPP = true;
+        }
+        else{
+            // do nothing
+        }
     }
 
     if (showMsg) {
@@ -124,10 +134,6 @@ function checkNetwork(data) {
 }
 
 function openNetworkDisconnectWindow(status){
-    $('#disconnectNetwork').popup();
-    $('#disconnectNetwork').show();
-    $('#disconnectNetwork').popup('open');
-
     // closeDisconnectNetwork click event should init only once
     if (!closeDisconnectNetworkInit){
         $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
@@ -172,6 +178,10 @@ function openNetworkDisconnectWindow(status){
         });
         closeDisconnectNetworkInit = true;
     }
+    
+    $('#disconnectNetwork').popup();
+    $('#disconnectNetwork').show();
+    $('#disconnectNetwork').popup('open');
 }
 
 function errorHandler(data){
