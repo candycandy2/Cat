@@ -1,6 +1,10 @@
-var chart, ro, product, year, month, actualValue, budgetHitRate, tab;
+var year, month, actualValue, budgetHitRate;
+var ro = "ALL";
+var product = "ALL";
+var tab = "AMT";
 var hcRo = "All";
 var hcProduct = "All product";
+var hcTitle = "(USD$)";
 var Actual = {};
 var Budget = {};
 var ytdHighchartsData = {
@@ -288,7 +292,7 @@ $("#viewYTDHitRate").pagecontainer({
 		function showData() {
             $("#title-content #ActualValue p").text(formatNumber(actualValue));
             $("#title-content #BudgetHitRate p").text(formatNumber(budgetHitRate) + "%");
-            if(budgetHitRate <= 80) {
+            if(budgetHitRate < 80) {
                 $("#title-content #BudgetHitRate p").css("color", "#ee3839");
             }else if(budgetHitRate > 95) {
                 $("#title-content #BudgetHitRate p").css("color", "#48af56");
@@ -321,25 +325,20 @@ $("#viewYTDHitRate").pagecontainer({
         $(".sliderYTD").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
-            getHighchartsData(ro, product, year, month);
-            chart.series[0].setData(ytdHighchartsData["Budget " + tab], true, true, false);
-            chart.series[1].setData(ytdHighchartsData["Actual " + tab], true, true, false);
-            chart.series[2].setData(ytdHighchartsData["RT Budget " + tab], true, true, false);
-            chart.series[3].setData(ytdHighchartsData["RT Actual " + tab], true, true, false);
-            chart.tooltip.hide();
+            getHighchartsData(ro, product, year, month);  
+            showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
         });
 
         function showHighchart() {
-            chart = new Highcharts.Chart ({
+            options = {
                 chart: {
-                    renderTo: 'viewYTDHitRate-hc-canvas',
                     marginBottom: 75,
                     marginTop: 25,
                     marginLeft: 35,
-                    marginRight: 40
+                    marginRight: 45
                 },
                 title: {
                     text: '' 
@@ -349,7 +348,7 @@ $("#viewYTDHitRate").pagecontainer({
                         text: 'Month',
                         align: 'high',
                         offset: 0,
-                        x: 31,
+                        x: 38,
                         y: 7
                     },
                     tickInterval: 1,
@@ -359,7 +358,12 @@ $("#viewYTDHitRate").pagecontainer({
                 },
                 yAxis: [{
                     title: {
-                        text: ''
+                        text: hcTitle,
+                        align: 'high',
+                        rotation: 0,
+                        offset: 0,
+                        x: 11,
+                        y: -11
                     },
                     labels: {
                         x: -2
@@ -370,7 +374,8 @@ $("#viewYTDHitRate").pagecontainer({
                         text: '',
                     },
                     labels: {
-                        x: 5
+                        x: 5,
+                        padding: -7,
                     },
                     opposite: true,
                     min: 0,
@@ -417,25 +422,34 @@ $("#viewYTDHitRate").pagecontainer({
                     enabled: false
                 },
                 series: [{
-                    name: 'Budget AMT',
+                    name: "Budget " + tab,
                     type: 'column',
                     color: '#0AB5B6',
+                    data: ytdHighchartsData["Budget " + tab]
                 },{
-                    name: 'Actual AMT',
+                    name: "Actual " + tab,
                     type: 'column',
                     color: '#F4A143',
+                    data: ytdHighchartsData["Actual " + tab]
                 },{
-                    name: 'RT Budget AMT',
+                    name: "RT Budget " + tab,
                     type: 'line',
                     color: '#A0C83A',
+                    data: ytdHighchartsData["RT Budget " + tab],
                     yAxis: 1,
                 },{
-                    name: 'RT Actual AMT',
+                    name: "RT Actual " + tab,
                     type: 'line',
                     color: '#134A8C',
+                    data: ytdHighchartsData["RT Actual " + tab],
                     yAxis: 1,
                 }]
-            });
+            };
+            options.chart.renderTo = "viewYTDHitRate-hc-canvas";
+            chart = new Highcharts.Chart(options);
+            options.chart.renderTo = "viewYTDHitRate-hc-landscape-canvas";
+            chartLandscape = new Highcharts.Chart(options);
+            chartLandscape.legend.update({itemStyle: {fontSize: 14}, align: "center"});
         }
 
         /********************************** page event *************************************/
@@ -447,6 +461,7 @@ $("#viewYTDHitRate").pagecontainer({
             month = thisMonth;
             hcRo = "All";
             hcProduct = "All product";
+            setScrollMenuHeight();
             initSlider();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
@@ -460,26 +475,13 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #ALL").addClass('hover');
             $(".sliderYTD").slick("slickGoTo", ytdPageDate.length-1, true);
 			loadingMask("hide");
-            chartWidth = chart.chartWidth;
-            chartHeight = chart.chartHeight;
         });
 
 		$(".page-tabs #viewYTDHitRate-tab-1").on("click", function() {
 		    $("#title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             tab = "AMT";
-		    chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
-            chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
-            chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
-            chart.series[3].update({name: "RT Actual " + tab, data: ytdHighchartsData["RT Actual " + tab]});
-            chart.yAxis[0].setTitle({
-                text: '(USD$)',
-                align: 'high',
-                rotation: 0,
-                offset: 0,
-                x: 11,
-                y: -11
-            });
-            chart.tooltip.hide();
+            hcTitle = "(USD$)";
+            showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
@@ -488,19 +490,8 @@ $("#viewYTDHitRate").pagecontainer({
 		$(".page-tabs #viewYTDHitRate-tab-2").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("YTD ASP");
 		    tab = "ASP";
-            chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
-            chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
-            chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
-            chart.series[3].update({name: "RT Actual " + tab, data: ytdHighchartsData["RT Actual " + tab]});
-            chart.yAxis[0].setTitle({
-                text: '(USD$)',
-                align: 'high',
-                rotation: 0,
-                offset: 0,
-                x: 11,
-                y: -11
-            });
-            chart.tooltip.hide();
+            hcTitle = "(USD$)";
+            showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
@@ -509,14 +500,8 @@ $("#viewYTDHitRate").pagecontainer({
 		$(".page-tabs #viewYTDHitRate-tab-3").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("YTD Net Quantity");
             tab = "QTY";
-            chart.series[0].update({name: "Budget " + tab, data: ytdHighchartsData["Budget " + tab]});
-		    chart.series[1].update({name: "Actual " + tab, data: ytdHighchartsData["Actual " + tab]});
-            chart.series[2].update({name: "RT Budget " + tab, data: ytdHighchartsData["RT Budget " + tab]});
-            chart.series[3].update({name: "RT Actual " + tab, data: ytdHighchartsData["RT Actual " + tab]});
-            chart.yAxis[0].setTitle({
-                text: '',
-            });
-            chart.tooltip.hide();
+            hcTitle = "";
+            showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
             showData();
@@ -537,10 +522,7 @@ $("#viewYTDHitRate").pagecontainer({
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
 		    getHighchartsData(ro, product, year, month);
 		    showData();
-		    chart.series[0].setData(ytdHighchartsData["Budget " + tab], true, true, false);
-            chart.series[1].setData(ytdHighchartsData["Actual " + tab], true, true, false);
-            chart.series[2].setData(ytdHighchartsData["RT Budget " + tab], true, true, false);
-            chart.series[3].setData(ytdHighchartsData["RT Actual " + tab], true, true, false);
+            showHighchart();
 		});
 
 		$(document).on('click', '#viewYTDHitRate .Product > a', function(e) {
@@ -557,10 +539,7 @@ $("#viewYTDHitRate").pagecontainer({
 		    budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
 		    getHighchartsData(ro, product, year, month);
 		    showData();
-            chart.series[0].setData(ytdHighchartsData["Budget " + tab], true, true, false);
-            chart.series[1].setData(ytdHighchartsData["Actual " + tab], true, true, false);
-            chart.series[2].setData(ytdHighchartsData["RT Budget " + tab], true, true, false);
-            chart.series[3].setData(ytdHighchartsData["RT Actual " + tab], true, true, false);
+            showHighchart();
         });
     }
 });

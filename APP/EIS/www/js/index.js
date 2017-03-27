@@ -1,5 +1,6 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth, chartWidth, chartHeight;
+var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var options, chart, chartLandscape;
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
@@ -86,7 +87,6 @@ $(document).one("pagebeforeshow", function() {
             $("#mypanel").panel( "open");
         }
     });
-    // zoomBtnInit();
 });
 
 window.initialSuccess = function() {
@@ -101,6 +101,19 @@ window.initialSuccess = function() {
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
     $.mobile.changePage("#viewHitRate");
+
+    for(var i=0; i<=3; i++) {
+        var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+        for(var j=maxMonth; j>0; j--) {
+            j = (j < 10) ? "0"+j : j;
+            productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - i) + "/" + j
+                        + "</StartYearMonth><EndYearMonth>"
+                        + (currentYear - i) + "/" + j
+                        + "</EndYearMonth></LayoutHeader>";
+            ProductDetail();
+        }
+    }
 }
 
 //[Android]Handle the back button
@@ -197,24 +210,22 @@ function formatNumber(n) {
 }
 
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
-    // portraint
-    if (window.orientation === 180 || window.orientation === 0) {
-        $("#viewHitRate-hc-canvas").css("height", "38VH");
-        $("#viewMonthlyHitRate-hc-canvas").css("height", "46.5VH");
-        $("#viewYTDHitRate-hc-canvas").css("height", "46.5VH");
-        chart.legend.update({ itemStyle: {fontSize: 12}});
-        chart.setSize(chartWidth, chartHeight, doAnimation = true);
+    if($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel( "close");
     }
+    // portraint
+    // if (window.orientation === 180 || window.orientation === 0) {
+    // }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
         zoomInChart();
     }
-
 }, false);
 
 function zoomInChart() {
-    $(".hc-fragment").css("height", "auto");
-    $(".hc-fragment").show();
-    chart.legend.update({ itemStyle: {fontSize: 14}});
-    chart.setSize(screen.width, screen.height*0.8, doAnimation = true);
+    if(screen.width < screen.height) {
+        chartLandscape.setSize(screen.height, screen.width*0.8, false);
+    }else {
+        chartLandscape.setSize(screen.width, screen.height*0.8, false);
+    }
 }

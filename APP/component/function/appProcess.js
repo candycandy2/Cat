@@ -28,6 +28,7 @@ function addConponentView() {
         $.mobile.pageContainer.append(data);
 
         //Set viewInitial become the index page
+        $.mobile.changePage('#viewInitial');
         $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
 
         //set initial page's layout when landscape
@@ -108,8 +109,15 @@ function checkNetwork(data) {
 
         logMsg = "Network disconnected";
     } else {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
         //----Network connected
-        // do nothing
+        // on initial page, should reload app
+        if (activePageID === 'viewInitial' || activatePageIndex === -1){
+            reStartAPP = true;
+        }
+        else{
+            // do nothing
+        }
     }
 
     if (showMsg) {
@@ -127,15 +135,10 @@ function checkNetwork(data) {
 }
 
 function openNetworkDisconnectWindow(status){
-    $('#disconnectNetwork').popup();
-    $('#disconnectNetwork').show();
-    $('#disconnectNetwork').popup('open');
-
     // closeDisconnectNetwork click event should init only once
     if (!closeDisconnectNetworkInit){
         $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
             $('#disconnectNetwork').popup('close');
-            $('#disconnectNetwork').hide();
 
             // network disconnect
             if (status === 'noNetwork'){
@@ -175,6 +178,10 @@ function openNetworkDisconnectWindow(status){
         });
         closeDisconnectNetworkInit = true;
     }
+    
+    $('#disconnectNetwork').popup();
+    $('#disconnectNetwork').show();
+    $('#disconnectNetwork').popup('open');
 }
 
 function errorHandler(data){
