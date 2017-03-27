@@ -449,6 +449,7 @@ $("#viewYTDHitRate").pagecontainer({
             chart = new Highcharts.Chart(options);
             options.chart.renderTo = "viewYTDHitRate-hc-landscape-canvas";
             chartLandscape = new Highcharts.Chart(options);
+            chartLandscape.legend.update({itemStyle: {fontSize: 14}, align: "center"});
         }
 
         /********************************** page event *************************************/
