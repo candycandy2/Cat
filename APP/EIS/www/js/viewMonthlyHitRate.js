@@ -99,8 +99,8 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
 
             var _constrcut = function() {
-                // CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, productDetailQueryData, "");
-                CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
+                CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, productDetailQueryData, "");
+                // CustomAPI("POST", true, "ProductDetail", self.successCallback, self.failCallback, queryData, "");
             }();
         };
 
@@ -417,26 +417,45 @@ $("#viewMonthlyHitRate").pagecontainer({
         }
 
         function convertData() {
-            var month, rosite;
-            var index = 0;
-            for(var i=productDetailCallBackData[0]["YEAR"]; i<=productDetailCallBackData[length-1]["YEAR"]; i++) {
-                eisdata[i] = {};
-                month = (i == productDetailCallBackData[length-1]["YEAR"]) ? (productDetailCallBackData[length-1]["MONTH"]) : 12;  
-                for(var j=1; j<=month; j++) {
-                    eisdata[i][j] = {};
-                    while(index<length && j == productDetailCallBackData[index]["MONTH"]) {
-                        rosite = productDetailCallBackData[index]["RO_SITE"];
-                        eisdata[i][j][rosite] = {};
-                        while(index<length && rosite == productDetailCallBackData[index]["RO_SITE"]) {
-                            eisdata[i][j][rosite][productDetailCallBackData[index]["PRODUCT"]] = [
-                                Number(productDetailCallBackData[index]["ACTUAL_QTY"]),
-                                Number(productDetailCallBackData[index]["BUDGET_QTY"]),
-                                Number(productDetailCallBackData[index]["ACTUAL_ADJ_AMT"]),
-                                Number(productDetailCallBackData[index]["BUDGET_AMT"])
-                            ];
-                            index++;
-                        }
-                    }
+            var rosite, index = 0;
+            // for(var i=productDetailCallBackData[0]["YEAR"]; i<=productDetailCallBackData[length-1]["YEAR"]; i++) {
+            //     eisdata[i] = {};
+            //     month = (i == productDetailCallBackData[length-1]["YEAR"]) ? (productDetailCallBackData[length-1]["MONTH"]) : 12;  
+            //     for(var j=1; j<=month; j++) {
+            //         eisdata[i][j] = {};
+            //         while(index<length && j == productDetailCallBackData[index]["MONTH"]) {
+            //             rosite = productDetailCallBackData[index]["RO_SITE"];
+            //             eisdata[i][j][rosite] = {};
+            //             while(index<length && rosite == productDetailCallBackData[index]["RO_SITE"]) {
+            //                 eisdata[i][j][rosite][productDetailCallBackData[index]["PRODUCT"]] = [
+            //                     Number(productDetailCallBackData[index]["ACTUAL_QTY"]),
+            //                     Number(productDetailCallBackData[index]["BUDGET_QTY"]),
+            //                     Number(productDetailCallBackData[index]["ACTUAL_ADJ_AMT"]),
+            //                     Number(productDetailCallBackData[index]["BUDGET_AMT"])
+            //                 ];
+            //                 index++;
+            //             }
+            //         }
+            //     }
+            // }
+            if(!(productDetailCallBackData[length-1]["YEAR"] in eisdata)) {
+                eisdata[productDetailCallBackData[length-1]["YEAR"]] = {};    
+            }
+            eisdata[productDetailCallBackData[length-1]["YEAR"]][productDetailCallBackData[length-1]["MONTH"]] = {};
+            while(index<length) {
+                rosite = productDetailCallBackData[index]["RO_SITE"];
+                eisdata[productDetailCallBackData[length-1]["YEAR"]][productDetailCallBackData[length-1]["MONTH"]][productDetailCallBackData[index]["RO_SITE"]] = {};
+                while(index<length && rosite == productDetailCallBackData[index]["RO_SITE"]) {
+                    eisdata [productDetailCallBackData[length-1]["YEAR"]]
+                            [productDetailCallBackData[length-1]["MONTH"]]
+                            [productDetailCallBackData[index]["RO_SITE"]]
+                            [productDetailCallBackData[index]["PRODUCT"]] = [
+                            Number(productDetailCallBackData[index]["ACTUAL_QTY"]),
+                            Number(productDetailCallBackData[index]["BUDGET_QTY"]),
+                            Number(productDetailCallBackData[index]["ACTUAL_ADJ_AMT"]),
+                            Number(productDetailCallBackData[index]["BUDGET_AMT"])
+                    ];
+                    index++;
                 }
             }
         }
@@ -603,6 +622,7 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
+            setScrollMenuHeight();
             ro = "ALL";
             product = "ALL";
             tab = "AMT";
@@ -611,7 +631,6 @@ $("#viewMonthlyHitRate").pagecontainer({
             hcRo = "All";
             hcProduct = "All product";
             initSlider();
-            setScrollMenuHeight();
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             getHighchartsData(ro, product);
