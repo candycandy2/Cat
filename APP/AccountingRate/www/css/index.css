@@ -1,4 +1,696 @@
 
+/*Tag Frag*/.
+
+
+/*Tag Frag-----------------------------------------------*/
+
+.test{
+   
+};
+
+.buttonfirst         {
+    display       : inline-block; 
+    float         : left; 
+    width         : 35% ;  
+    margin-left   : 3.71VW;
+}
+/*head button*/
+.buttonone,.buttontwo {
+    display       : inline-block; 
+    float         : left; 
+    width         : 38% ;  
+    margin-left   : 3.71VW;
+}
+
+
+
+.buttononea,.buttontwoa  {
+    display       :inline-block;
+    margin-top    : 3.99VW
+    background-color:#FFFFFF;        
+    height        : 10VW; 
+    padding       : 1VW;
+}
+
+.buttononeFlag1,.buttononeFlag2{
+    float         : left;
+    display       : inline-block; 
+    width         : 7.24VW ;
+    margin-left   : 1VW;
+    margin-top    : 3VW;
+    
+} 
+
+.buttononeFlag1non{
+    display       : none; 
+}
+
+.buttononeCountry1,.buttononeCountry2 {
+    float         : left;
+    display       : inline-block; 
+    margin-top    : 3.99VW; 
+    margin-left   : 2VW;
+    color         : #000000;
+    margin-right  : 3VW;
+}
+
+
+.buttonone3img{
+    float            : left;
+    display          : inline-block; 
+    width            : 4VW; 
+    margin-top       : 4.5VW; 
+   /* position: absolute;
+    right: 2VW;
+    */
+}
+
+
+
+.buttontransferdiv
+{
+    display          : inline-block;
+    float            : left;
+    width            : 5VW;  
+}
+
+
+
+.buttontransfer{   
+    width            : 6.79VW; 
+    float            : left;
+    display          : inline-block;
+    margin-left      : 4.5VW;
+    margin-right     : 4.5VW; 
+    margin-top       : 3.99VW; 
+}
+
+/*head button ----------------------------*/
+.frag .frag0{   
+    margin-top                 : 3.99VW;
+}
+
+.frag2 {
+
+    font-size                  :  4.18VW;
+    border-top-right-radius    : 10px;
+    border-bottom-right-radius : 10px;    
+}
+
+.frag1 {  /* top for the Nov Oct */
+    margin-top                 : 3.99VW; 
+    font-size                  :  4.18VW;
+    border-top-left-radius     : 10px;
+    border-bottom-left-radius  : 10px; 
+}
+
+/*Main        ----------------------------*/
+.mainword1{   
+  /*  text-align : center;*/
+    font-size                 :  4.18VW;
+    color                     :  #0F0F0F;
+}
+
+
+.mainword2, .mainword3{
+    font-size                 :  3.349VW;
+    color                     :  #666;
+}
+/*Main       ----------------------------*/
+#contentID{
+    margin-top                : 4.3VW;
+    margin-bottom             : 4.3VW;
+
+}
+
+/*list        ----------------------------*/
+
+.Listdiv1{/*list */
+    display    : inline-block;
+    float      : left;
+    width      : 42%; 
+    padding-left: 4.3VW;
+    margin-left: 1VW;
+}
+
+.Listdiv2{/*list */
+    display    : inline-block;
+    width      : 42%; 
+    float      : left;
+}
+
+.ListviewFlag1,.ListviewFlag2{
+    float      : left;
+    margin-left: 1VW;
+    width      : 7.24VW;
+    display    : inline-block;
+   /* background-repeat: no-repeat;
+    background-size:5vw;   
+    float: left;           
+    */
+}
+
+
+
+.Listdiv3{
+    font size  : 3.5VW;
+    display    : inline-block;
+    float      : left;
+    margin-left: 4.4VW;
+}
+
+.Listdiv1equalmark4{
+    display    : inline-block;
+    float      : left;
+    width      : 5%;
+}
+
+
+.ListRate1{
+    float      :  left;
+    margin-left:  5VW;
+    color      :  #0F0F0F;
+    font-size  : 3.97VW;
+}
+
+.nonstar_icon {  
+    /*visibility : hidden ;*/
+    opacity   : 0;   
+    float     : left;   
+    width     : 3.54vw;  
+}
+
+.star_icon {
+    margin-top: 2VW;
+    opacity   : 1;
+    float     : left;    
+    width     : 3.54vw; 
+}
+
+
+
+.ListDollar1{
+    float: left;
+}
+
+.ListRate2  {
+    color      :  #0F0F0F;
+    float: left;
+    width     : 3.97vw;
+}
+
+
+.ListCountry3
+{   font-size: 3.5VW;
+    float: left;
+    color: #666;
+}
+
+/*list       ----------------------------*/
+.Maccount{
+    background-color:#7700FF;
+    height: 6VH;
+    display: inline-table;;
+    width: 100%;
+}
+
+.Maccount.Flag{
+    background-color:#7700FF;
+}
+.Favorite{
+     margin-left: 0VW;
+     height: 1VH;
+     color: #000000;
+}
+ /*1 ;*/
+
+
+
+
+ /*2 ;*/
+.Flag {
+    width: 20%;    
+    float:left;  
+}
+
+.nonFlag {
+    width: 20%;
+    float: left;     
+}
+ 
+
+
+
+
+
+
+
+img.Flagimg{ 
+    width: 10VW;
+    height:5VH ;
+    float: left; 
+}
+
+img.Flagpop2{ 
+    width: 10VW;
+    height:5VH ;
+    float: left; 
+    margin-left: 5VW;
+}
+
+/* POPUP*/
+#popup.Flagpop2 {
+     width: 20%;   
+     margin-left: 5VW;
+     float: left; 
+     display:inline;  
+}
+
+/*img.Flagpop{ 
+    width: 10VW;
+    height:5VH ;
+    float: left; 
+}*/
+
+.Country2pop{  
+   color: #AAAAAA;
+   display:inline; 
+   float: left;
+   margin-left: -5VW;
+/*   float: right;  */
+}
+/* POPUP*/
+
+ /*3 ;*/
+.Country {
+    width: 25%;
+    display:inline;
+    margin-left:-7VW;
+    float: left;   
+
+}
+
+.Country1 {
+    font-size:2VH; 
+    color: #AAAAAA;
+    float: left; 
+}
+
+.Country2 {
+    
+    font-size:3VH; 
+    font-weight:bold;
+    display:inline;   
+    float: left;   
+    margin-top: 0VH; 
+}
+
+
+.Country2T {
+    margin-left: -7VW;
+    background-color:#7700FF;
+    color:#FFFFFF;
+    font-size:3VH; 
+    font-weight:bold;
+    display:inline ;    
+    float: left;    
+}
+
+ /*4 ;*/
+.account {
+    border-radius: 2px;   
+}
+
+#accountr {
+    text-align:center;
+    width: 30%;
+    border-radius: 5px;
+    margin-top: 1VH;    
+    margin-left: 5VW;  
+}
+ /*4 ;*/
+
+#mark{
+    position:absolute;
+    right:10VW;
+
+}
+element.style {
+    display: inline-block;
+    margin-left: 6VW width: 19VW;
+    float: left;
+    width: 20vw;
+}
+
+
+
+
+
+
+
+#viewExample3 .HR{
+    color: #fff;
+    margin-left: 9VW;
+    text-align: center;
+    width: 19VW;
+    background-color: #ee3839;
+    border-radius: 3.5px;
+    display: inline-block;
+}
+
+#viewExample3 .YR{
+    color: #fff;
+    margin-left: 7VW;
+    text-align: center;
+    width: 19VW;
+    background-color: #48af56;
+    border-radius: 3.5px;
+    display: inline-block;
+}
+
+.custom-navbar ul li a {
+    background: #4B0082 !important; 
+    color: white !important;
+    border-style: none;
+    font-size: large !important;
+}
+
 /*override jQuery Mobile*/
+.ui-content {
+    overflow-x: visible;
+    padding: 0px;
+    padding-left: 3.7VW;
+}
+
+.header-style {
+    background-color: #492f7f;
+}
+.ui-content .ui-listview {
+    margin: 0px;
+}
+
+.ui-listview > .ui-li-static {
+    padding: 0px;
+    white-space: normal;
+}
+
+.ui-popup-container {
+    width: 80%;
+}
+
+#detail-data .ui-btn {
+    border: none;
+}
+
+#myPhonebookList .ui-checkbox input {
+    width: 14px;
+    height: 14px;
+    margin: 0px;
+    margin: 0 auto;
+}
+
+#myPhonebookList .ui-checkbox {
+    margin: 0px;
+    top: 5px;
+    left: 35%;
+    display: none;
+}
+
+#myPhonebookList p {
+    margin: 0px 2px;
+    font-size: 3.35vw;
+}
+
+#myPhonebookList li{ padding: 2% 0;}
+
+.header-style .ui-bar {
+    padding: 0;
+}
 
 /*new class*/
+#viewQueryResult{
+    background-color: #f8f9f9;
+}
+
+#viewDetailInfo{
+    background-color: white;   
+}
+
+.vice-header {
+    background-color: #f8f9f9;
+    height: 5.7VH;
+    margin-top: 0px;
+    padding: 0;
+    line-height: 6VH;
+}
+
+.vice-header .title {
+    font-family: Arial;
+    color: #666667;
+    font-size: 3.5vw;
+    font-weight: bold;
+}
+
+.vice-header .name-tel {
+    margin-left: 3.7VW !important;
+    text-align: left;
+}
+
+.vice-header .company {
+    width: 30%;
+}
+
+.vice-header .e-name {
+    width: 40%;
+}
+
+.vice-header .c-name {
+    width: 30%;
+}
+
+.hide {
+    display: none;
+}
+
+.head-btn{
+    background-color: initial !important;
+    border-style: none;
+    left: initial !important;
+    margin-left: 3.7VW !important;
+    margin-right: 3.7VW !important;
+    margin-top: 8px !important;
+    padding: 0px;
+}
+
+.page-header {
+    height : 40px !important;
+}
+
+#viewIndex .ui-content > div{
+    float: left;
+}
+
+.q-result-grid {
+    text-align: center;
+}
+
+.q-result-grid > li div {
+    float: left;
+    /*display: flex;*/
+    flex-flow: column wrap;
+    justify-content: center;
+    overflow-wrap: break-word;
+}
+
+.q-result-grid > li p {
+    width: 95%;
+    font-weight: normal;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: auto;
+}
+
+.q-result-grid a {
+    text-decoration: none;
+}
+.error-msg {
+    background-color: #f8f9f9;
+    color: #eb2326;
+    font-size: 2.3VH;
+    font-family: Microsoft JhengHei;
+    margin-top: 4.3VH;
+    text-align: center;
+    width: 100%;
+}
+
+#employeeData.q-result-grid > li div {
+    height: 60px;
+}
+
+#employeeData p {
+    margin: 0px 2px;
+    font-size: 12px;
+}
+
+.q-result-grid .company {
+    width: 30%;
+}
+
+.q-result-grid .e-name {
+    width: 40%;
+}
+
+.q-result-grid .c-name {
+    width: 30%;
+}
+
+/**********************  viewDetialInfo  **********************/
+#detial-name-title{
+    margin-left: 3.7VW;
+    margin-top: 2.9VH;
+}
+
+#detial-name-title .detial-name{
+    color:#0f0f0f;
+    width: 100VW;
+}
+
+#detial-name-title #eName{
+    font-family:Arial; 
+    font-size:3VH;
+    padding-top: 3%;
+}
+
+#detial-name-title #cName{
+    font-family:Microsoft JhengHei; 
+    font-size:2.9VH;
+    margin-top: 0.4VH;
+}
+
+#detial-name-title .star{
+    border-style:none;
+    float:right; 
+    margin-top:-35px; 
+    margin-right:8VW; 
+    padding: 0;
+}
+
+#detail-data .liststyle{
+    border-width:1px;
+    border-style:none; 
+    border-bottom-style:solid;
+    border-bottom-color:#989898;
+}
+
+#detail-data .item-name{ 
+    color: #666667;
+    font-size: 2.1VH;
+    font-family: Arial, Microsoft JhengHei;
+    margin-top: 1.9VH;
+    margin-bottom: 0VH;
+    width: 100VW;
+}
+
+#detail-data .item-content{
+    color: #2d87ba;
+    font-size: 2.5VH;
+    font-family: Arial, Microsoft JhengHei;
+    margin-top: 0.3VH;
+    margin-bottom: 0.8VH;
+    width: 100VW;
+}
+
+#detail-data .item-content a{ text-decoration: none; font-weight: normal;}
+#detail-data .item-content a:visited{ color: #2d87ba;}
+
+#detailData.q-result-grid > li div {
+    height: 50px;
+}
+
+#detailData p {
+    margin: 0px 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#detailData .company-data {
+    display: flex;
+}
+
+#detailData .company {
+    display: inline-block;
+    width: 80%;
+    padding-top: 2px;
+}
+
+#detailData .star {
+    display: inline-block;
+}
+
+/*.popup-msg {
+    height: 100px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    background-color: #4B0082;
+    font-weight: bold;
+}*/
+
+/*.popup-msg .ui-btn {
+    padding: 5px 10px;
+    background-color: #28004D;
+    border: none;
+    color: #FFF;
+}*/
+
+.deletepop{
+    width                      : 5VW;
+    margin-left                : 60VW;
+    margin-top                 : 2VW;
+}
+
+#popupA{
+    height                     : 80VW;
+    border-top-right-radius    : 20px;  
+    border-top-left-radius     : 20px;   
+    border-bottom-right-radius : 20px;
+    border-bottom-left-radius  : 20px;
+    overflow-y                 : auto ;  
+}
+
+
+
+.popAmsgli {
+    margin-top                 : 8VW;
+    margin-left                : 8VW;
+    background                 : #00CCCC;
+
+}
+
+.popAmsg{
+    font-size                  : 5VW;
+    background                 : #00CCCC;
+    color                      : white;
+    height                     : 10VW;
+   /* margin-left                : 4.5VW;*/
+    margin-top                 : 15VW;
+    width                      : 100%;
+}
+
+
+.popListdiv1{
+    height                     : 10VW;
+
+
+}
+
+/* mvpn select popup window for yellow page */
+#numSelectPopupWindow #msgTitle{ margin: 0 5%; padding: 5% 0; font-size: 5vw; border-bottom: 1px solid #d4d4d4; position: relative;}
+#numSelectPopupWindow ul{ list-style: none; padding: 0;}
+#numSelectPopupWindow li{ color:#2d87ba; font-size: 4.5vw; font-family:Arial; font-weight: normal; padding-bottom: 5%;}
+#numSelectPopupWindow li:nth-of-type(2){ padding-bottom: 2%;}
+#numSelectPopupWindow img{ margin-right: 1.9vw;}
+#numPopupCloseBtn{ width: 7%; position: absolute; right: 0; top: 5%;}
+#numPopupCloseBtn:after{ content: "\d7"; font-size: 7vw; font-weight: normal;}
