@@ -424,6 +424,31 @@ class qmessageController extends Controller
         return response()->json($package);
     }
 
+    public static function getHistoryCount(){
+        $ACTION = "getHistoryCount";
+        $data = json_decode(file_get_contents('php://input'));
+        $gidList = $data->target_id;
+        if (  !is_array($gidList) || count($gidList)==0  ){
+            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998008_targetIdEmptyOrInvalid,"target_id is empty or invalid !"));
+            CommonUtil::logApi("",$ACTION,response()->json(apache_response_headers()), $result);
+            return $result;
+        }
+        $result_content = [];
+        foreach ($gidList as $gid) {
+            $count = \DB::connection("qmessage")
+                -> table('qm_history')
+                -> where('qm_history.target_id', '=', $gid)
+                -> where('qm_history.target_type', '=', 'group')
+                -> select()
+                -> count();
+            $groupCount = new GroupCountDTO();
+            $groupCount->target_id = $gid;
+            $groupCount->count = $count;
+            array_push($result_content,$groupCount);
+        }
+        return CommonUtil::ResultFactory(ResultCode::_1_reponseSuccessful,"",$result_content);
+    }
+
     /*
     public static function testUrl(){
         return [
@@ -455,4 +480,9 @@ class HistoryFileInfoDTO{
     public $fsize = "";
     public $format = "";
     public $npath = "";
+}
+
+class GroupCountDTO{
+    public $target_id = "";
+    public $count = 0;
 }

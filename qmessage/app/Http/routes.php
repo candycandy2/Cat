@@ -28,6 +28,7 @@ Route::get('/v101/qmessage/history/pic/downloadfile','qmessageController@downloa
 Route::get('/v101/qmessage/history/file/downloadfile','qmessageController@downloadFile');
 Route::post('/v101/qmessage/history/pic','qmessageController@storeHistoryPic');
 Route::post('/v101/qmessage/history/file','qmessageController@storeHistoryFile');
+Route::post('/v101/qmessage/history/count','qmessageController@getHistoryCount');
 
 /**/
 

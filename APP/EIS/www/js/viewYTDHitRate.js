@@ -454,6 +454,17 @@ $("#viewYTDHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
+            setScrollMenuHeight();
+            initSlider();
+            $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
+            $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
+            $("label[for=viewYTDHitRate-tab-2]").removeClass('ui-btn-active');
+            $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active');
+            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Ro #ALL").addClass('hover');
+            $(".Product #ALL").addClass('hover');
+            
             ro = "ALL";
             product = "ALL";
             tab = "AMT";
@@ -461,18 +472,8 @@ $("#viewYTDHitRate").pagecontainer({
             month = thisMonth;
             hcRo = "All";
             hcProduct = "All product";
-            setScrollMenuHeight();
-            initSlider();
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
 			showHighchart();
             showData();
-            $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
-            $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewYTDHitRate-tab-2]").removeClass('ui-btn-active');
-            $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active');
-            $(".Ro #ALL").addClass('hover');
-            $(".Product #ALL").addClass('hover');
             $(".sliderYTD").slick("slickGoTo", ytdPageDate.length-1, true);
 			loadingMask("hide");
         });
