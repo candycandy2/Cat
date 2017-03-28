@@ -220,7 +220,8 @@ div.circle {
 }
 
 .ui-margin-public {
-    margin: 1.8vw 3.71vw 3.99vw !important;
+    margin: 1.8vw 3.71vw 0 !important;
+    padding-bottom: 3.99vw;
     font-size: 4.18vw;
 }
 
