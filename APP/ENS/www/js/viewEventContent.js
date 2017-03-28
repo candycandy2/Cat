@@ -8,10 +8,17 @@ $("#viewEventContent").pagecontainer({
         var uploadPhoto = false;
         /********************************** function *************************************/
 
-        window.getEventDetail = function(eventID, action) {
+        window.getEventDetail = function(eventID, action, callBack) {
+            //action >
+            //member: get member list
+            //function: get fucntion list
+            //authority: check the authority to read this Event
             action = action || null;
+            //Dor check Event Read Authority
+            callBack = callBack || null;
 
             var self = this;
+            this.readAuthority = true;
             var queryData = "<LayoutHeader><event_row_id>" + eventID + "</event_row_id><emp_no>" + loginData["emp_no"] + "</emp_no></LayoutHeader>";
 
             this.successCallback = function(data) {
@@ -48,6 +55,15 @@ $("#viewEventContent").pagecontainer({
 
                         //Event ID Number
                         eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'].event_row_id);
+
+                        //Event Related Link
+                        eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'].event_row_id);
+
+                        if (data['Content'].related_event_row_id !== 0) {
+                            eventListMsg.find(".event-list-msg-top .link-event").data("value", data['Content'].related_event_row_id);
+                        } else {
+                            eventListMsg.find(".event-list-msg-top .link-event").hide();
+                        }
 
                         //Event Title
                         eventListMsg.find(".event-list-msg-top .description").html(data['Content'].event_title);
@@ -90,7 +106,7 @@ $("#viewEventContent").pagecontainer({
                         var eventTaskListAfterHTML = $("#contentEventContent").find("template#tplEventTaskListAfter").html();
 
                         for (var i=0; i<data['Content'].task_detail.length; i++) {
-                            if (data['Content'].task_detail[i].task_status === "0") {
+                            if (data['Content'].task_detail[i].task_status === "未完成") {
                                 //Before Done
                                 var eventTaskList = $(eventTaskListBeforeHTML);
                             } else {
@@ -111,6 +127,15 @@ $("#viewEventContent").pagecontainer({
                         //$('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
                     }
 
+                } else if (resultCode === "014904") {
+                    loadingMask("hide");
+
+                    //the user have no authority to read this event
+                    self.readAuthority = false;
+
+                    if (typeof callBack === "function") {
+                        callBack(self.readAuthority);
+                    }
                 }
             };
 
@@ -234,6 +259,10 @@ $("#viewEventContent").pagecontainer({
             });
         }
 
+        function footerFixed() {
+            $(".event-content-footer").removeClass("ui-fixed-hidden");
+        }
+
         /********************************** page event *************************************/
         $("#viewEventContent").one("pagebeforeshow", function(event, ui) {
 
@@ -295,6 +324,12 @@ $("#viewEventContent").pagecontainer({
             fullScreenPhoto();
         });
 
+        //Event Related Content
+        $(document).on("click", ".relate-event", function() {
+            ahowEventData(this, "authority2");
+            loadingMask("show");
+        });
+
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
 
@@ -317,6 +352,5 @@ $("#viewEventContent").pagecontainer({
         $(document).on("click", "#eventCancelWorkDoneConfirm .confirm", function() {
 
         });
-
     }
 });

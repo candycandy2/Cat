@@ -195,6 +195,14 @@ input[type=radio]:checked + label {
     background-size: 4.2vw;
 }
 
+.event-list-msg-top .link-event {
+    background: url(../img/link.png) no-repeat;
+    background-size: 6vw;
+    width: 6vw;
+    height: 2.5vw;
+    margin-left: 1.6vw;
+}
+
 .event-list-msg-top .link .img {
     width: 4.2vw;
     height: 4.2vw;
