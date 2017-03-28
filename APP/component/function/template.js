@@ -57,7 +57,6 @@ function overridejQueryFunction() {
 //3. html
 
 var tplJS = {
-    pageHeight: "",
     tplRender: function(pageID, contentID, renderAction, HTMLContent) {
         if (pageID == null) {
             if (renderAction === "append") {
@@ -104,8 +103,9 @@ var tplJS = {
         var viewport_height = $(window).height();
 
         var content_height = viewport_height - header.outerHeight();
+
         if ((content.outerHeight() - header.outerHeight() - footer.outerHeight()) <= viewport_height) {
-            content_height -= (content.outerHeight() - content.height());
+            //content_height -= (content.outerHeight() - content.height());
         }
 
         return content_height;
@@ -114,13 +114,14 @@ var tplJS = {
         //Prevent Background Page to be scroll, when Option Popup is shown,
         //Change the [height / overflow-y] of Background Page,
         //And then, when Option Popup is close, recovery the [height / overflow-y] of Background Page.
-        this.pageHeight = $.mobile.activePage.outerHeight();
         var adjustHeight = this.getRealContentHeight();
         var adjustPaddingBottom = 0;
 
         if (device.platform === "iOS") {
             adjustPaddingBottom = 20;
         }
+
+        $.mobile.activePage.outerHeight(adjustHeight);
 
         $.mobile.activePage.css({
             "height": adjustHeight,
@@ -145,7 +146,11 @@ var tplJS = {
         var paddingTop = parseInt($.mobile.activePage.css("padding-top"), 10);
         var paddingBottom = parseInt($.mobile.activePage.css("padding-bottom"), 10);
 
-        var originalHeight = this.pageHeight - paddingTop - paddingBottom;
+        var header = $.mobile.activePage.find("div[data-role='header']:visible");
+        var footer = $.mobile.activePage.find("div[data-role='footer']:visible");
+        var originalHeight = $.mobile.activePage.outerHeight() - paddingTop - paddingBottom + header.outerHeight() + footer.outerHeight();
+
+        $.mobile.activePage.outerHeight($.mobile.activePage.outerHeight());
 
         $.mobile.activePage.css({
             "height": originalHeight,
@@ -498,6 +503,7 @@ var tplJS = {
 
         //Initialize Popup
         $('#' + data.id).popup();
+        //this.pageContentHeight = $.mobile.activePage.outerHeight();
 
         $(document).one("popupafteropen", "#" + data.id, function() {
             var popupHeight = popup.height();
@@ -527,11 +533,15 @@ var tplJS = {
             }
         });
 
-        $(document).on("popupafteropen", "#" + data.id, function() {
+        $(document).one("popupbeforeposition", "#" + data.id, function() {
             tplJS.preventPageScroll();
         });
 
-        $(document).on("popupafterclose", "#" + data.id, function() {
+        $(document).one("popupafteropen", "#" + data.id, function() {
+
+        });
+
+        $(document).one("popupafterclose", "#" + data.id, function() {
             tplJS.recoveryPageScroll();
         });
     }
