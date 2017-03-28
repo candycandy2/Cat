@@ -48,20 +48,6 @@ a {
     margin-bottom: 5px;
 }
 
-#newSettingFloor div.ui-bar {
-    text-align: center;
-    padding: 3vw 0;
-    font-weight: initial;
-    text-shadow: none;
-    background-color: #fff;
-    border-width: 0 1px 1px 0;
-}
-
-#newSettingFloor > div > div:nth-of-type(3n+1) div.ui-bar{ border-left-width: 1px;}
-#newSettingFloor > div > div:nth-of-type(1) div.ui-bar, #newSettingFloor > div > div:nth-of-type(2) div.ui-bar, #newSettingFloor > div > div:nth-of-type(3) div.ui-bar{ 
-    border-top-width: 1px;
-}
-
 #navbar ul li a {
     line-height: 90%;
 }
@@ -256,7 +242,8 @@ div.circle {
 }
 
 .ui-margin-public {
-    margin: 1.8vw 3.71vw 3.99vw !important;
+    margin: 1.8vw 3.71vw 0 !important;
+    padding-bottom: 3.99vw;
     font-size: 4.18vw;
 }
 
@@ -303,7 +290,7 @@ div.circle {
 }
 
 .timeRemind{ font-size: 3.14vw; margin-top: 1vw !important; opacity: 0; padding-bottom: 1.37vw;}
-.timeRemind.timeShow{ display: block;}
+.timeRemind.timeShow{ opacity: 1;}
 
 .btn-border {
     background-color: white !important;
@@ -588,7 +575,8 @@ div.scrollmenu a {
     font-weight: normal;
 }
 
-#scrollDate a{ padding: 2.4vw 0;}
+#scrollDate a{ padding: 2.4vw 0; margin-left: -4px;}
+#scrollDate a:nth-of-type(1){ margin-left: 0;}
 
 #reserveRoom a {
     padding: 3vw 0;
@@ -757,28 +745,4 @@ div.scrollmenu a {
     height: 3vh;
     background-size: 6vw 3vh;
     background-repeat: no-repeat;
-}
-
-#newSettingTimePickerPopup .popup-msg div {
-    margin: 0 auto !important;
-    font-size: 6vw;
-}
-
-#newSettingTimePickerPopup .popup-msg table {
-    height: 23vh !important;
-    margin: 0 auto !important;
-}
-
-#newSettingTimePickerPopup .showMsg {
-    height: 3.5vh;
-    position: absolute;
-    text-align: center;
-    line-height: 3.5vh;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    font-size: 4.5vw !important;
-    bottom: -5vh;
-    background-color: transparent;
-    color: white;
 }
