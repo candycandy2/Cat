@@ -259,6 +259,37 @@ POST /v101/qmessage/history/list
     (5)'content': for 'text',it's plain text;for image,it's an url<br>
     (6)'extras':for 'text',it's empty,for image,it contains image name(fname),image size(fsize),image format(format),jmessage url(npath)<br>
 
+#### 2. Get History Count
+##### Resuest
+```
+POST /v101/qmessage/history/count
+{"target_id":["19454745","20798373"]}
+```
+
+##### Request Params
+ 1. 'target_id':array,gid
+
+##### Response
+```json
+{
+    "ResultCode": 1,
+    "Message": "",
+    "Content": [
+        {
+            "target_id": "19454745",
+            "count": 17
+        },
+        {
+            "target_id": "20798373",
+            "count": 61
+        }
+    ]
+}
+```
+
+##### Response Data
+ 1. count will be 0 when target_id(gid) doesn't exist<br>
+
 ## Part Ⅱ. JS Plugin for Client
 
 ### Step 1. Reference
