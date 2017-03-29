@@ -120,10 +120,11 @@ textarea.ui-body-inherit {
     color: #323232;
     border-color: #989898;
 }
+
 /* variable, function, style for All APP */
 
 /* disable ‘hold to copy’ on all elements */
-body *:not(input){ -webkit-user-select: none;}
+body *:not(input):not(textarea){ -webkit-user-select: none;}
 
 .header-style {
     overflow: hidden;
