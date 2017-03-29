@@ -116,6 +116,20 @@
             </template>
         </div>
 
+        <!--template @popup content > Done DateTime less then Now-->
+        <template id="tplDoneDateTimeAlert">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                希望完成時間需要大於現在時間
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">確認</div>
+                </div>
+            </div>
+        </template>
+
         <!--template @popup content > Event Add Confirm-->
         <template id="tplEventAddConfirm">
             <!--header: Title or Button-->
@@ -156,6 +170,20 @@
             <div class="footer">
                 <div class="btn-two font-style8">
                     <div class="cancel">取消</div>
+                    <div class="confirm">確認</div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Add Fail-->
+        <template id="tplEventAddFail">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                通訊異常，請聯絡 ITS
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
                 </div>
             </div>

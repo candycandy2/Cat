@@ -126,14 +126,31 @@ $("#viewEventAdd").pagecontainer({
             };
 
             var queryDataParameter = processLocalData.createXMLDataString(queryDataObj);
-
             var basicListParameter = "";
+
             for (var i=0; i<loctionFunctionData.length; i++) {
-                var tempDataObj = {
-                    location: loctionFunctionData[i].location,
-                    function: loctionFunctionData[i].function
+
+                if (loctionFunctionData[i].function === "all") {
+                    $.each(loginData["BasicInfo"]["locationFunction"], function(location, functionName) {
+                        if (location === loctionFunctionData[i].location) {
+                            for (var j=0; j<functionName.length; j++) {
+                                var tempDataObj = {
+                                    location: loctionFunctionData[i].location,
+                                    function: functionName[j]
+                                }
+
+                                basicListParameter += "<basic_list>" + processLocalData.createXMLDataString(tempDataObj) + "</basic_list>";
+                            }
+                        }
+                    });
+                } else {
+                    var tempDataObj = {
+                        location: loctionFunctionData[i].location,
+                        function: loctionFunctionData[i].function
+                    }
+
+                    basicListParameter += "<basic_list>" + processLocalData.createXMLDataString(tempDataObj) + "</basic_list>";
                 }
-                basicListParameter += "<basic_list>" + processLocalData.createXMLDataString(tempDataObj) + "</basic_list>";
             }
 
             var queryData = "<LayoutHeader>" + queryDataParameter + basicListParameter + "</LayoutHeader>";
@@ -145,6 +162,9 @@ $("#viewEventAdd").pagecontainer({
                 if (resultCode === "014901") {
                     loadingMask("hide");
                     eventAddSuccess();
+                } else if (resultCode === "014918") {
+                    loadingMask("hide");
+                    $("#eventAddFail").popup("open");
                 }
             };
 
@@ -222,6 +242,27 @@ $("#viewEventAdd").pagecontainer({
             }, 3000);
         }
 
+        function checkDoneDateTime() {
+            //Complete Datetime
+            if (setDateTime === "setNow") {
+                $("#eventAddConfirm").popup("open");
+            } else if (setDateTime === "setTime") {
+                var specificDoneDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
+                doneDateTime["hour"] + ":" + doneDateTime["minute"] + ":00";
+                var specificTime = new Date(specificDoneDateTime);
+                var specificTimeStamp = specificTime.TimeStamp();
+
+                var nowDateTime = new Date();
+                var nowTimestamp = nowDateTime.TimeStamp();
+
+                if (specificTimeStamp <= nowTimestamp) {
+                    $("#doneDateTimeAlert").popup("open");
+                } else {
+                    $("#eventAddConfirm").popup("open");
+                }
+            }
+        }
+
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
 
@@ -260,6 +301,14 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
 
+            //UI Popup : Done DateTime less then Now
+            var doneDateTimeAlertData = {
+                id: "doneDateTimeAlert",
+                content: $("template#tplDoneDateTimeAlert").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", doneDateTimeAlertData);
+
             //UI Popup : Event Add Confirm
             var eventAddConfirmData = {
                 id: "eventAddConfirm",
@@ -283,6 +332,14 @@ $("#viewEventAdd").pagecontainer({
             };
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditCancelConfirmData);
+
+            //UI Popup : Event Add Fail
+            var eventAddFailData = {
+                id: "eventAddFail",
+                content: $("template#tplEventAddFail").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddFailData);
 
         });
 
@@ -449,7 +506,11 @@ $("#viewEventAdd").pagecontainer({
 
         //Send Event
         $(document).on("click", "#sendEvent", function() {
-            $("#eventAddConfirm").popup("open");
+            checkDoneDateTime();
+        });
+
+        $(document).on("click", "#doneDateTimeAlert .confirm", function() {
+            $("#doneDateTimeAlert").popup("close");
         });
 
         $(document).on("click", "#eventAddConfirm .cancel", function() {
@@ -463,6 +524,11 @@ $("#viewEventAdd").pagecontainer({
         //Event Edit Button
         $(document).on("click", "#eventEditConfirm .cancel", function() {
             $("#eventEditConfirm").popup("close");
+        });
+
+        //Event Add Fail
+        $(document).on("click", "#eventAddFail .confirm", function() {
+            $("#eventAddFail").popup("close");
         });
     }
 });
