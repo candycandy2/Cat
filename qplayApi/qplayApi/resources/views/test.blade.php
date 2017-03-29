@@ -735,12 +735,13 @@ FORM;
                 message_url:"",
                 message_source:"Oracle ERP",
                 source_user_id:"Qgroup\\Moses.Zhu",
-                destination_user_id:["Qgroup\\Moses.Zhu","Qgroup\\Sammi.Yao"],
+                destination_user_id:["BENQ\\Richard.Shen"],
+                //destination_user_id:["Qgroup\\Moses.Zhu","Qgroup\\Sammi.Yao"],
                 destination_role_id:["Qisda/AIC0 RD"]
             };
             var mydataStr = $.toJSON(mydata);
             $.ajax({
-                url: "v101/qplay/sendPushMessage?lang=en-us&app_key=appqplay&need_push=Y",
+                url: "v101/qplay/sendPushMessage?lang=en-us&app_key=appqplaytest&need_push=Y",
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json",

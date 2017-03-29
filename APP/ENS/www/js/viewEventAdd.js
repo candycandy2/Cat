@@ -153,6 +153,7 @@ $("#viewEventAdd").pagecontainer({
             var __construct = function() {
                 $("#eventAddConfirm").popup("close");
                 loadingMask("show");
+                checkEventTemplateData("update", $("#eventTemplateTextarea").val());
 
                 CustomAPI("POST", true, "newEvent", self.successCallback, self.failCallback, queryData, "");
             }();
@@ -229,16 +230,7 @@ $("#viewEventAdd").pagecontainer({
                 id: "eventTemplate",
                 defaultText: "選擇範本",
                 title: "標題範本",
-                option: [{
-                    value: "1",
-                    text: "選擇範本----------------------------------1"
-                }, {
-                    value: "2",
-                    text: "選擇範本----------------------------------2"
-                }, {
-                    value: "3",
-                    text: "選擇範本----------------------------------3"
-                }],
+                option: templateData,
                 attr: {
                     class: "text-bold"
                 }

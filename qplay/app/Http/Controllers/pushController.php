@@ -133,12 +133,18 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                                //bug 14023 2017.3.27
+                                if (count($currentUserInfo->uuidList)==0){
+                                    $currentUserInfo->uuidList = [
+                                        ["uuid"=>$userId]
+                                    ];
+                                }
                                 foreach ($currentUserInfo->uuidList as $uuid) {
                                     \DB::table("qp_user_message")
                                         -> insert([
                                             'project_row_id'=>1,
                                             'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
+                                            'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                             'message_send_row_id'=>$newMessageSendId,
                                             'created_user'=>\Auth::user()->row_id,
                                             'created_at'=>$now,
@@ -153,12 +159,18 @@ class pushController extends Controller
                     foreach($userList as $userId) {
                         if(!in_array($userId, $insertedUserIdList)) {
                             $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                            //bug 14023 2017.3.27
+                            if (count($currentUserInfo->uuidList)==0){
+                                $currentUserInfo->uuidList = [
+                                    ["uuid"=>$userId]
+                                ];
+                            }
                             foreach ($currentUserInfo->uuidList as $uuid) {
                                 \DB::table("qp_user_message")
                                     -> insert([
                                         'project_row_id'=>1,
                                         'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
+                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                         'message_send_row_id'=>$newMessageSendId,
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
@@ -330,12 +342,18 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                                //bug 14023 2017.3.27
+                                if (count($currentUserInfo->uuidList)==0){
+                                    $currentUserInfo->uuidList = [
+                                        ["uuid"=>$userId]
+                                    ];
+                                }
                                 foreach ($currentUserInfo->uuidList as $uuid) {
                                     \DB::table("qp_user_message")
                                         -> insert([
                                             'project_row_id'=>1,
                                             'user_row_id'=>$userId,
-                                            'uuid'=>$uuid->uuid,
+                                            'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                             'message_send_row_id'=>$messageSendId,
                                             'created_user'=>\Auth::user()->row_id,
                                             'created_at'=>$now,
@@ -350,12 +368,18 @@ class pushController extends Controller
                     foreach($userList as $userId) {
                         if(!in_array($userId, $insertedUserIdList)) {
                             $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                            //bug 14023 2017.3.27
+                            if (count($currentUserInfo->uuidList)==0){
+                                $currentUserInfo->uuidList = [
+                                    ["uuid"=>$userId]
+                                ];
+                            }
                             foreach ($currentUserInfo->uuidList as $uuid) {
                                 \DB::table("qp_user_message")
                                     -> insert([
                                         'project_row_id'=>1,
                                         'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
+                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                         'message_send_row_id'=>$messageSendId,
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
@@ -512,18 +536,26 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                                //bug 14023 2017.3.27
+                                if (count($currentUserInfo->uuidList)==0){
+                                    $currentUserInfo->uuidList = [
+                                        ["uuid"=>$userId]
+                                    ];
+                                }
                                 if($currentUserInfo->status == "Y" && $currentUserInfo->resign == "N") {
                                     foreach ($currentUserInfo->uuidList as $uuid) {
                                         \DB::table("qp_user_message")
                                             -> insert([
                                                 'project_row_id'=>1,
                                                 'user_row_id'=>$userId,
-                                                'uuid'=>$uuid->uuid,
+                                                'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                                 'message_send_row_id'=>$messageSendId,
                                                 'created_user'=>\Auth::user()->row_id,
                                                 'created_at'=>$now,
                                             ]);
-                                        array_push($event_push_token_list,$uuid->push_token);
+                                        if(!is_array($uuid)){
+                                            array_push($event_push_token_list,$uuid->push_token);
+                                        }
                                     }
                                     array_push($insertedUserIdList, $userId);
                                     array_push($real_push_user_list, $userId);
@@ -544,18 +576,25 @@ class pushController extends Controller
                                     //TODO Log
                                 }
                             }
-
+                            //bug 14023 2017.3.27
+                            if (count($currentUserInfo->uuidList)==0){
+                                $currentUserInfo->uuidList = [
+                                    ["uuid"=>$userId]
+                                ];
+                            }
                             foreach ($currentUserInfo->uuidList as $uuid) {
                                 \DB::table("qp_user_message")
                                     -> insert([
                                         'project_row_id'=>1,
                                         'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
+                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                         'message_send_row_id'=>$messageSendId,
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
                                     ]);
-                                array_push($event_push_token_list,$uuid->push_token);
+                                if(!is_array($uuid)){
+                                    array_push($event_push_token_list,$uuid->push_token);
+                                }
                             }
                             array_push($insertedUserIdList, $userId);
                             array_push($real_push_user_list, $userId);
@@ -670,18 +709,26 @@ class pushController extends Controller
                             $userId = $userInRole->user_row_id;
                             if(!in_array($userId, $insertedUserIdList)) {
                                 $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                                //bug 14023 2017.3.27
+                                if (count($currentUserInfo->uuidList)==0){
+                                    $currentUserInfo->uuidList = [
+                                        ["uuid"=>$userId]
+                                    ];
+                                }
                                 if($currentUserInfo->status == "Y" && $currentUserInfo->resign == "N") {
                                     foreach ($currentUserInfo->uuidList as $uuid) {
                                         \DB::table("qp_user_message")
                                             -> insert([
                                                 'project_row_id'=>1,
                                                 'user_row_id'=>$userId,
-                                                'uuid'=>$uuid->uuid,
+                                                'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                                 'message_send_row_id'=>$newMessageSendId,
                                                 'created_user'=>\Auth::user()->row_id,
                                                 'created_at'=>$now,
                                             ]);
-                                        array_push($event_push_token_list, $uuid->push_token);
+                                        if(!is_array($uuid)){
+                                            array_push($event_push_token_list,$uuid->push_token);
+                                        }
                                     }
                                     array_push($insertedUserIdList, $userId);
                                     array_push($real_push_user_list, $userId);
@@ -694,17 +741,25 @@ class pushController extends Controller
                     foreach($userList as $userId) {
                         if(!in_array($userId, $insertedUserIdList)) {
                             $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                            //bug 14023 2017.3.27
+                            if (count($currentUserInfo->uuidList)==0){
+                                $currentUserInfo->uuidList = [
+                                    ["uuid"=>$userId]
+                                ];
+                            }
                             foreach ($currentUserInfo->uuidList as $uuid) {
                                 \DB::table("qp_user_message")
                                     -> insert([
                                         'project_row_id'=>1,
                                         'user_row_id'=>$userId,
-                                        'uuid'=>$uuid->uuid,
+                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                         'message_send_row_id'=>$newMessageSendId,
                                         'created_user'=>\Auth::user()->row_id,
                                         'created_at'=>$now,
                                     ]);
-                                array_push($event_push_token_list, $uuid->push_token);
+                                if(!is_array($uuid)){
+                                    array_push($event_push_token_list,$uuid->push_token);
+                                }
                             }
                             array_push($insertedUserIdList, $userId);
                             array_push($real_push_user_list, $userId);
@@ -838,17 +893,25 @@ class pushController extends Controller
                     $userList = $receiver["user_list"];
                     foreach($userList as $userId) {
                         $currentUserInfo = CommonUtil::getUserInfoByRowId($userId);
+                        //bug 14023 2017.3.27
+                        if (count($currentUserInfo->uuidList)==0){
+                            $currentUserInfo->uuidList = [
+                                ["uuid"=>$userId]
+                            ];
+                        }
                         foreach ($currentUserInfo->uuidList as $uuid) {
                             \DB::table("qp_user_message_pushonly")
                                 -> insert([
                                     'project_row_id'=>1,
                                     'user_row_id'=>$userId,
-                                    'uuid'=>$uuid->uuid,
+                                    'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                     'message_send_pushonly_row_id'=>$newMessageSendId,
                                     'created_user'=>\Auth::user()->row_id,
                                     'created_at'=>$now,
                                 ]);
-                            array_push($push_token_list,$uuid->push_token);
+                            if(!is_array($uuid)){
+                                array_push($push_token_list,$uuid->push_token);
+                            }
                         }
                         array_push($real_push_user_list, $userId);
                     }
