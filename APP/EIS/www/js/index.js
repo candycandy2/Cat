@@ -31,8 +31,6 @@ var time = new Date(Date.now());
 var nowTime = new Date();
 var monthlyPageDate = [];
 var ytdPageDate = [];
-var eisdataTimeArray = [];
-var thisMonthEisdataTimeArray = [];
 var eisdata = {};
 var thisMonthEisdata = {};
 var hitRateEisData = {};
@@ -106,7 +104,8 @@ window.initialSuccess = function() {
                 + currentYear + "/" + currentMonth
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
-
+    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+    UserAuthority();
     if(localStorage.getItem("eisdata") === null) {
         callProductDetailAPI();
     }else {
@@ -115,13 +114,12 @@ window.initialSuccess = function() {
         if (checkDataExpired(lastTime, allExpiredTime, 'MM')) {
             localStorage.removeItem("eisdata");
             callProductDetailAPI();
-        }else {
-            localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
         }
+        // else {
+        //     localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
+        // }
     }
     $.mobile.changePage("#viewHitRate");
-    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-    UserAuthority();
 }
 
 //[Android]Handle the back button
