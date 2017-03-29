@@ -15,7 +15,9 @@ window.initialSuccess = function() {
     //loadingMask("show");
 
     $.mobile.changePage('#viewReserve');
-
+    if (device.platform === "iOS") {
+        $('.page-main').css({'padding-top': '0.1vw'});
+    }
 }
 
 //[Android]Handle the back button
