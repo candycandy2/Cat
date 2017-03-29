@@ -213,11 +213,14 @@ a {
     vertical-align: middle;
 }
 
-div.circle {
+div.square {
     width: 3vw;
-    height: 3vw;
-    border-radius: 50%;
+    height: 1.5vw;
 }
+
+.square.ui-color-reserve{ background-color: #d4d4d4 !important;}
+.square.ui-color-myreserve{ background-color: #b3d6d1 !important;}
+#reserveColorDiagram > div{ vertical-align: middle;}
 
 .ui-margin-public {
     margin: 1.8vw 3.71vw 0 !important;
