@@ -281,7 +281,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             if(ro == "ALL" && product == "ALL") {
                 for(var hcYear in eisdata) {
                     for(var i in monthlyHighchartsData) {
-                    	monthlyHighchartsData[i][hcYear] = [];
+                        monthlyHighchartsData[i][hcYear] = [];
                     }
                     for(var month in eisdata[hcYear]) {
                     	for(var i in monthlyHighchartsData) {
@@ -306,7 +306,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             }else if(ro != "ALL" && product == "ALL") {
                 for(var hcYear in eisdata) {
                     for(var i in monthlyHighchartsData) {
-                    	monthlyHighchartsData[i][hcYear] = []; 
+                        monthlyHighchartsData[i][hcYear] = [];
                     }
                     for(var month in eisdata[hcYear]) {
                         for(var i in monthlyHighchartsData) {
@@ -329,7 +329,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             }else if(ro == "ALL" && product != "ALL") {
                 for(var hcYear in eisdata) {
                     for(var i in monthlyHighchartsData) {
-                    	monthlyHighchartsData[i][hcYear] = []; 
+                        monthlyHighchartsData[i][hcYear] = [];
                     }
                     for(var month in eisdata[hcYear]) {
                     	for(var i in monthlyHighchartsData) {
@@ -354,7 +354,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             }else {
                 for(var hcYear in eisdata) {
                     for(var i in monthlyHighchartsData) {
-                    	monthlyHighchartsData[i][hcYear] = []; 
+                        monthlyHighchartsData[i][hcYear] = [];
                     }
                     for(var month in eisdata[hcYear]) {
                     	for(var i in monthlyHighchartsData) {
