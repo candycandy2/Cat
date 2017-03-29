@@ -1,6 +1,8 @@
 /*global variable, function*/
 var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
+var allExpiredTime = 1;
+var thisMonthExpiredTime = 1;
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
@@ -26,9 +28,13 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
+var nowTime = new Date();
 var monthlyPageDate = [];
 var ytdPageDate = [];
+var eisdataTimeArray = [];
+var thisMonthEisdataTimeArray = [];
 var eisdata = {};
+var thisMonthEisdata = {};
 var hitRateEisData = {};
 var monTable = {
     '1' : "Jan.",
@@ -100,20 +106,22 @@ window.initialSuccess = function() {
                 + currentYear + "/" + currentMonth
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
-    $.mobile.changePage("#viewHitRate");
 
-    // for(var i=0; i<=3; i++) {
-    //     var maxMonth = (i == 0) ? Number(currentMonth) : 12;
-    //     for(var j=maxMonth; j>0; j--) {
-    //         j = (j < 10) ? "0"+j : j;
-    //         productDetailQueryData = "<LayoutHeader><StartYearMonth>"
-    //                     + (currentYear - i) + "/" + j
-    //                     + "</StartYearMonth><EndYearMonth>"
-    //                     + (currentYear - i) + "/" + j
-    //                     + "</EndYearMonth></LayoutHeader>";
-    //         ProductDetail();
-    //     }
-    // }    
+    if(localStorage.getItem("eisdata") === null) {
+        callProductDetailAPI();
+    }else {
+        eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
+        var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
+        if (checkDataExpired(lastTime, allExpiredTime, 'MM')) {
+            localStorage.removeItem("eisdata");
+            callProductDetailAPI();
+        }else {
+            localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
+        }
+    }
+    $.mobile.changePage("#viewHitRate");
+    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+    UserAuthority();
 }
 
 //[Android]Handle the back button
@@ -209,6 +217,29 @@ function formatNumber(n) {
     return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }
 
+function zoomInChart() {
+    if(screen.width < screen.height) {
+        chartLandscape.setSize(screen.height, screen.width*0.8, false);
+    }else {
+        chartLandscape.setSize(screen.width, screen.height*0.8, false);
+    }
+}
+
+function callProductDetailAPI() {
+    for(var i=0; i<=3; i++) {
+        var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+        for(var j=maxMonth; j>0; j--) {
+            j = (j < 10) ? "0"+j : j;
+            productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - i) + "/" + j
+                        + "</StartYearMonth><EndYearMonth>"
+                        + (currentYear - i) + "/" + j
+                        + "</EndYearMonth></LayoutHeader>";
+            ProductDetail();
+        }
+    }
+}
+
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
     if($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel( "close");
@@ -221,11 +252,3 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         zoomInChart();
     }
 }, false);
-
-function zoomInChart() {
-    if(screen.width < screen.height) {
-        chartLandscape.setSize(screen.height, screen.width*0.8, false);
-    }else {
-        chartLandscape.setSize(screen.width, screen.height*0.8, false);
-    }
-}
