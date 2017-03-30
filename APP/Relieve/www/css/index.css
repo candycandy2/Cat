@@ -48,20 +48,6 @@ a {
     margin-bottom: 5px;
 }
 
-#newSettingFloor div.ui-bar {
-    text-align: center;
-    padding: 3vw 0;
-    font-weight: initial;
-    text-shadow: none;
-    background-color: #fff;
-    border-width: 0 1px 1px 0;
-}
-
-#newSettingFloor > div > div:nth-of-type(3n+1) div.ui-bar{ border-left-width: 1px;}
-#newSettingFloor > div > div:nth-of-type(1) div.ui-bar, #newSettingFloor > div > div:nth-of-type(2) div.ui-bar, #newSettingFloor > div > div:nth-of-type(3) div.ui-bar{ 
-    border-top-width: 1px;
-}
-
 #navbar ul li a {
     line-height: 90%;
 }
@@ -109,6 +95,7 @@ a {
     line-height: 1;
     border: 1px solid #2a88bc !important;
     border-left-width: 0 !important;
+    background-color: #fff !important;
 }
 
 #reserveTab > div > div.ui-radio:nth-of-type(1) label{
@@ -160,6 +147,8 @@ a {
 
 #reserveDateSelect div.ui-bar div:nth-child(2):not(.timeRemind){ padding-bottom: 1.37vw;}
 
+.ui-mobile .ui-page-active{ min-height: 100vh !important;}
+
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
 #viewNewSetting .ui-margin-public span{ display: block;}
 #viewNewSetting .ui-input-text{ margin: 0 0 5.38vw;}
@@ -172,7 +161,7 @@ a {
 #newSettingPeople, #newSettingTitle{ font-size: 4.18vw;}
 #newSettingPeople .ui-controlgroup{ margin: 0;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
-#reserveTab{ margin: 3.99vw 0; border-radius: 8px !important; -webkit-border-radius: 8px;}
+#reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 #reserveBtn{ margin: 5vw auto !important; padding: 1.8vw 0; height: auto;}
 
 /* notice area */
@@ -192,8 +181,9 @@ a {
 .reserveInfo-area{ float: left; vertical-align: middle; display: inline-block;}
 .reserveInfo-area-left{ width: 70%}
 .reserveInfo-area-right{ width: 30%;}
-.btn-area{ text-align: center; border: 1px solid #666; border-radius: 15px; -webkit-border-radius: 15px;}
-.btn-area a{ font-weight: normal;}
+.btn-area{ text-align: right; padding-right: 10%;}
+.btn-area a{ font-weight: normal; display: inline-block; width: 20%;}
+.btn-area img{ width: 100%; height: auto;}
 .reserveInfo-company, .reserveInfo-time{ display: inline-block;}
 .reserveInfo-company{ margin-right: 3vw;}
 .reserve-area-time{ font-size: 3.55vw;}
@@ -203,8 +193,6 @@ a {
 /********************************** public area *************************************/
 *{ box-sizing: border-box;}
 .hide{ display: none;}
-
-.page-main{ padding-top: 1vw;}
 
 .table{ display: table; width: 100%; border: 1px solid #d6d6d6; text-align: center;}
 .tr{ display: table-row;}
@@ -249,14 +237,17 @@ a {
     vertical-align: sub;
 }
 
-div.circle {
+div.square {
     width: 3vw;
-    height: 3vw;
-    border-radius: 50%;
+    height: 1.5vw;
 }
 
+.square.ui-color-reserve{ background-color: #d4d4d4 !important;}
+.square.ui-color-myreserve{ background-color: #b3d6d1 !important;}
+#reserveColorDiagram > div{ vertical-align: middle;}
+
 .ui-margin-public {
-    margin: 1.8vw 3.71vw 3.99vw !important;
+    margin: 1.8vw 3.71vw 0 !important;
     font-size: 4.18vw;
 }
 
@@ -303,7 +294,7 @@ div.circle {
 }
 
 .timeRemind{ font-size: 3.14vw; margin-top: 1vw !important; opacity: 0; padding-bottom: 1.37vw;}
-.timeRemind.timeShow{ display: block;}
+.timeRemind.timeShow{ opacity: 1;}
 
 .btn-border {
     background-color: white !important;
@@ -588,7 +579,8 @@ div.scrollmenu a {
     font-weight: normal;
 }
 
-#scrollDate a{ padding: 2.4vw 0;}
+#scrollDate a{ padding: 2.4vw 0; margin-left: -4px;}
+#scrollDate a:nth-of-type(1){ margin-left: 0;}
 
 #reserveRoom a {
     padding: 3vw 0;
@@ -757,28 +749,4 @@ div.scrollmenu a {
     height: 3vh;
     background-size: 6vw 3vh;
     background-repeat: no-repeat;
-}
-
-#newSettingTimePickerPopup .popup-msg div {
-    margin: 0 auto !important;
-    font-size: 6vw;
-}
-
-#newSettingTimePickerPopup .popup-msg table {
-    height: 23vh !important;
-    margin: 0 auto !important;
-}
-
-#newSettingTimePickerPopup .showMsg {
-    height: 3.5vh;
-    position: absolute;
-    text-align: center;
-    line-height: 3.5vh;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    font-size: 4.5vw !important;
-    bottom: -5vh;
-    background-color: transparent;
-    color: white;
 }

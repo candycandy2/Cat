@@ -15,66 +15,88 @@ var ytdData = {};
 $("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
     	
-    	window.ROSummary = function() {
-		
-	    	this.successCallback = function(data) {
-	    		
-                // ProductDetail();
-                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-                UserAuthority();
-                roSummaryCallBackData = data["Content"]["DataList"];
-	    		length = roSummaryCallBackData.length;
-	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
-	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
-	    		convertData();
-                getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
-                getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
-                
-                for(var i in hitRateEisData[thisYear][thisMonth]) {
-                    thisMonthData[i] = {};
-                    lastMonthData[i] = {};
-                    ytdData[i] = {};
-                }
-
-                for(var ro in hitRateEisData[thisYear-1][thisMonth]) {
-                    lastYTDActualAMT[ro] = 0;
-                    lytmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth][ro][1];
-                    lylmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth-1][ro][1];
-                    for(var j in hitRateEisData[thisYear-1]) {
-                        if(Number(j) <= Number(thisMonth)) {
-                            lastYTDActualAMT[ro] += hitRateEisData[thisYear-1][j][ro][1];
-                        }
+        window.ROSummary = function() {
+            
+            if(localStorage.getItem("hitRateEisData") === null) {
+    	    	this.successCallback = function(data) {      
+                    roSummaryCallBackData = data["Content"]["DataList"];
+    	    		length = roSummaryCallBackData.length;
+    	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
+    	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
+    	    		convertData();
+                    getAllData();
+                    $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
+                    showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
+                    showHighchart();
+                    loadingMask("hide");
+                    if (window.orientation === 90 || window.orientation === -90 ) {
+                        zoomInChart();
                     }
-                }
+                    localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
+                    localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
+                    localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));
+                };
 
-                calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
-                calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
-                getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
-                getHighcahrtsData(thisYear, thisMonth-1, "ACTUAL_ADJ_AMT", lastMonthActualAMT);
-                getHighcahrtsData(thisYear, thisMonth, "YTDBUDGET_AMT", YTDBudgetAMT);
-                getHighcahrtsData(thisYear, thisMonth, "YTDACTUAL_ADJ_AMT", YTDActualAMT);
-                calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
-                calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
-                calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
-                calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData);
-                
+    	    	this.failCallback = function(data) {
+    	    		console.log("api misconnected");
+    	    	};
+
+    			var _construct = function() {
+    				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, queryData, "");
+    			}();
+            }else {
+                hitRateEisData = JSON.parse(localStorage.getItem("hitRateEisData"))[0];
+                thisYear = JSON.parse(localStorage.getItem("thisYear"))[0];
+                thisMonth = JSON.parse(localStorage.getItem("thisMonth"))[0];
+                getAllData();
                 $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
-                loadingMask("hide");
                 showHighchart();
+                loadingMask("hide");
                 if (window.orientation === 90 || window.orientation === -90 ) {
                     zoomInChart();
                 }
-            };
+                var lastTime = JSON.parse(localStorage.getItem("hitRateEisData"))[1];
+                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'dd')) {
+                    localStorage.removeItem("hitRateEisData");
+                    ROSummary();
+                }else {
+                    // localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
+                    // localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
+                    // localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));  
+                }
+            }
+        };
 
-	    	this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-
-			var _construct = function() {
-				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, queryData, "");
-			}();
-		};
+        function getAllData() {
+            for(var i in hitRateEisData[thisYear][thisMonth]) {
+                thisMonthData[i] = {};
+                lastMonthData[i] = {};
+                ytdData[i] = {};
+            }
+            for(var ro in hitRateEisData[thisYear-1][thisMonth]) {
+                lastYTDActualAMT[ro] = 0;
+                lytmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth][ro][1];
+                lylmTotalActualAMT += hitRateEisData[thisYear-1][thisMonth-1][ro][1];
+                for(var j in hitRateEisData[thisYear-1]) {
+                    if(Number(j) <= Number(thisMonth)) {
+                        lastYTDActualAMT[ro] += hitRateEisData[thisYear-1][j][ro][1];
+                    }
+                }
+            }
+            getHighcahrtsData(thisYear, thisMonth, "BUDGET_AMT", thisMonthBudgetAMT);
+            getHighcahrtsData(thisYear, thisMonth, "ACTUAL_ADJ_AMT", thisMonthActualAMT);
+            getHighcahrtsData(thisYear, thisMonth-1, "BUDGET_AMT", lastMonthBudgetAMT);
+            getHighcahrtsData(thisYear, thisMonth-1, "ACTUAL_ADJ_AMT", lastMonthActualAMT);
+            getHighcahrtsData(thisYear, thisMonth, "YTDBUDGET_AMT", YTDBudgetAMT);
+            getHighcahrtsData(thisYear, thisMonth, "YTDACTUAL_ADJ_AMT", YTDActualAMT);
+            calculateData(thisYear, thisMonth, "YOYGrowth", thisMonthData);
+            calculateData(thisYear, thisMonth, "BudgetHitRate", thisMonthData);
+            calculateData(thisYear, thisMonth-1, "YOYGrowth", lastMonthData);
+            calculateData(thisYear, thisMonth-1, "BudgetHitRate", lastMonthData);
+            calculateData(thisYear, thisMonth, "YTDYOYGrowth", ytdData);
+            calculateData(thisYear, thisMonth, "YTDBudgetHitRate", ytdData); 
+        }
 
     	function calculateData(year, month, type, data_array) {
     		var index = 0;
