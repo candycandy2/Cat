@@ -87,12 +87,12 @@
 
 /*head button ----------------------------*/
 .frag .frag0{   
-    margin-top                 : 3.99VW;
+    margin-top                 : 5.99VW;
 }
 
 .frag2 {
 
-    font-size                  :  4.18VW;
+    font-size                  : 4.18VW;
     border-top-right-radius    : 10px;
     border-bottom-right-radius : 10px;    
 }
@@ -128,18 +128,20 @@
 .Listdiv1{/*list */
     display    : inline-block;
     float      : left;
-    width      : 42%; 
-    padding-left: 4.3VW;
-    margin-left: 1VW;
+    width      : 47%; 
+    padding-left: 5.3VW;
+    overflow    : hidden; 
+    position   : relative;
 }
 
 .Listdiv2{/*list */
     display    : inline-block;
-    width      : 42%; 
+    width      : 47%; 
     float      : left;
+    overflow    : hidden; 
 }
 
-.ListviewFlag1,.ListviewFlag2{
+.ListviewFlag1, .ListviewFlag2{
     float      : left;
     margin-left: 1VW;
     width      : 7.24VW;
@@ -151,18 +153,20 @@
 }
 
 
-
 .Listdiv3{
     font size  : 3.5VW;
     display    : inline-block;
     float      : left;
     margin-left: 4.4VW;
+    overflow    : hidden; 
 }
 
 .Listdiv1equalmark4{
     display    : inline-block;
     float      : left;
-    width      : 5%;
+    position   : absolute;
+    right      : 2VW;
+       
 }
 
 
@@ -171,6 +175,9 @@
     margin-left:  5VW;
     color      :  #0F0F0F;
     font-size  : 3.97VW;
+    width      : 15VW;
+    display    : inline-block;
+    padding    : 2.33vw 0;
 }
 
 .nonstar_icon {  
@@ -187,6 +194,13 @@
     width     : 3.54vw; 
 }
 
+#ultestA , #ultestB {
+
+  margin-left :  5VW; 
+  margin-right:  5VW; 
+
+}
+
 
 
 .ListDollar1{
@@ -195,8 +209,8 @@
 
 .ListRate2  {
     color      :  #0F0F0F;
-    float: left;
-    width     : 3.97vw;
+    float      : left;
+
 }
 
 
@@ -265,6 +279,8 @@ img.Flagpop2{
      float: left; 
      display:inline;  
 }
+
+
 
 /*img.Flagpop{ 
     width: 10VW;
@@ -335,16 +351,13 @@ img.Flagpop2{
     right:10VW;
 
 }
+
 element.style {
     display: inline-block;
     margin-left: 6VW width: 19VW;
     float: left;
     width: 20vw;
 }
-
-
-
-
 
 
 
@@ -645,45 +658,70 @@ element.style {
     color: #FFF;
 }*/
 
-.deletepop{
-    width                      : 5VW;
-    margin-left                : 60VW;
-    margin-top                 : 2VW;
+/*  Delete*/
+.popAdeleteli{
+    width                      : 100%;
+    background-color           : white!important;
+    overflow                   : hidden;
 }
 
-#popupA{
+.deletepopa{
+    background-color           : white !important;
+    display                    : inline-block;
+    overflow                   : hidden;
+}
+
+
+.deletepop {
+    display                    : inline-block;
+    width                      : 5VW;       
+    position                   : absolute;
+    right                      : 5VW;
+    background-color           : white!important;
+}
+
+/*  Delete*/
+
+#popupA,#popupB{    
     height                     : 80VW;
     border-top-right-radius    : 20px;  
     border-top-left-radius     : 20px;   
     border-bottom-right-radius : 20px;
     border-bottom-left-radius  : 20px;
-    overflow-y                 : auto ;  
+    overflow-y                 : auto; 
+    padding-left               : 2VW ; 
+    padding-right              : 2VW ; 
 }
 
-
+/* For pop All Curency*/
 
 .popAmsgli {
     margin-top                 : 8VW;
-    margin-left                : 8VW;
-    background                 : #00CCCC;
-
+    margin-left                : 5VW; /* All currency*/
+    padding-left               : 5VW;
+    background                 : #2c89bc;
+    font-size                  : 5VW;
+    color                      : white;
+    padding                    : 2.33vw 0;
 }
 
 .popAmsg{
     font-size                  : 5VW;
-    background                 : #00CCCC;
-    color                      : white;
-    height                     : 10VW;
-   /* margin-left                : 4.5VW;*/
-    margin-top                 : 15VW;
+    background                 : #2c89bc;
+    color                      : white;   
     width                      : 100%;
+}
+/* For pop All Curency*/
+
+
+.popFlag{
+
+
 }
 
 
 .popListdiv1{
     height                     : 10VW;
-
-
 }
 
 /* mvpn select popup window for yellow page */

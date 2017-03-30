@@ -7,6 +7,11 @@
 <title>QPlay install web</title>
 <link href="style/yui_reset.css" rel="stylesheet" type="text/css">
 <link href="style/ios.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+    var userLang = navigator.language || navigator.userLanguage; 
+    //alert ("The language is: " + userLang);//en-us //zh-tw
+    if(userLang === 'zh-tw') window.location = "../InstallQPlay/androidinstall.html";
+  </script>
 </head>
 
 <body>
