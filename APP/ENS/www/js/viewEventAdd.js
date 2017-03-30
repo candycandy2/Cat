@@ -23,26 +23,27 @@ $("#viewEventAdd").pagecontainer({
                 loadingMask("hide");
 
                 var resultCode = data['ResultCode'];
+                var relatedEventExist = false;
 
                 if (resultCode === 1) {
-                    $("#eventaAdditionalTitle").show();
-                    $("#eventAdditional").off();
-                    $("#eventAdditional").remove();
-                    $("#eventaAdditionalSelectContent").html("");
-                    $("#eventaAdditionalSelectContent").show();
-                    $("#eventaAdditionalContent").show();
+                    relatedEventExist = true;
+                } else if (resultCode === "014904" || resultCode === "014907") {
+                    //014904: No Unrelated Event
+                    //014907: No Authority
+                }
 
-                    //UI Dropdown List : Event Additional
-                    eventRelatedData = {
-                        id: "eventAdditional",
-                        defaultText: "添加事件",
-                        title: "請選擇-關聯事件",
-                        option: [],
-                        attr: {
-                            class: "text-bold"
-                        }
-                    };
+                //UI Dropdown List : Event Additional
+                eventRelatedData = {
+                    id: "eventAdditional",
+                    defaultText: "添加事件",
+                    title: "請選擇-關聯事件",
+                    option: [],
+                    attr: {
+                        class: "text-bold"
+                    }
+                };
 
+                if (relatedEventExist) {
                     for (var i=0; i<data['Content'].length; i++) {
                         var tempData = {
                             value: data['Content'][i].event_row_id,
@@ -50,9 +51,11 @@ $("#viewEventAdd").pagecontainer({
                         };
                         eventRelatedData["option"].push(tempData);
                     }
+                }
 
-                    tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventRelatedData);
+                tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventRelatedData);
 
+                if (relatedEventExist) {
                     $(document).on("change", "#eventAdditional", function() {
                         var selectedValue = $(this).val();
 
@@ -74,13 +77,13 @@ $("#viewEventAdd").pagecontainer({
                             }
                         });
                     });
+                } else {
+                    //off event which set in template.js
+                    $(document).off("click", "#eventAdditional");
 
-                } else if (resultCode === "014904" || resultCode === "014907") {
-                    //014904: No Unrelated Event
-                    //014907: No Authority
-                    $("#eventaAdditionalTitle").hide();
-                    $("#eventaAdditionalSelectContent").hide();
-                    $("#eventaAdditionalContent").hide();
+                    $(document).on("click", "#eventAdditional", function() {
+                        $("#noRelatedEventExist").popup("open");
+                    });
                 }
             };
 
@@ -263,6 +266,25 @@ $("#viewEventAdd").pagecontainer({
             }
         }
 
+        function checkFunctionData() {
+            if (loctionFunctionData.length === 0) {
+                $("#selectLocationFunction").popup("open");
+            } else {
+                checkDoneDateTime();
+            }
+        }
+
+        function checkTemplateDesc() {
+            var tempalte = $("#eventTemplateTextarea").val();
+            var description = $("#eventDescriptionTextarea").val();
+
+            if (tempalte.length === 0 || description.length === 0) {
+                $("#templateDescEmpty").popup("open");
+            } else {
+                checkFunctionData();
+            }
+        }
+
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
 
@@ -300,6 +322,30 @@ $("#viewEventAdd").pagecontainer({
             });
 
             tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
+
+            //UI Popup : No Related Event Exist
+            var noRelatedEventExistData = {
+                id: "noRelatedEventExist",
+                content: $("template#tplNoRelatedEventExist").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", noRelatedEventExistData);
+
+            //UI Popup : Template / Descirption were empty
+            var templateDescEmptyData = {
+                id: "templateDescEmpty",
+                content: $("template#tplTemplateDescEmpty").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", templateDescEmptyData);
+
+            //UI Popup : Location / Function does not select
+            var selectLocationFunctionData = {
+                id: "selectLocationFunction",
+                content: $("template#tplSelectLocationFunction").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", selectLocationFunctionData);
 
             //UI Popup : Done DateTime less then Now
             var doneDateTimeAlertData = {
@@ -504,9 +550,23 @@ $("#viewEventAdd").pagecontainer({
             }
         });
 
+        //No Related Event Exist
+        $(document).on("click", "#noRelatedEventExist .confirm", function() {
+            $("#noRelatedEventExist").popup("close");
+        });
+
+        //Template / Descirption were empty
+        $(document).on("click", "#templateDescEmpty .confirm", function() {
+            $("#templateDescEmpty").popup("close");
+        });
+
         //Send Event
         $(document).on("click", "#sendEvent", function() {
-            checkDoneDateTime();
+            checkTemplateDesc();
+        });
+
+        $(document).on("click", "#selectLocationFunction .confirm", function() {
+            $("#selectLocationFunction").popup("close");
         });
 
         $(document).on("click", "#doneDateTimeAlert .confirm", function() {
