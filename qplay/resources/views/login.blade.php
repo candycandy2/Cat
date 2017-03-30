@@ -60,7 +60,7 @@
 
         var tryLogin = function () {
             var userName = $("#tbxName").val();
-            var password = encodeURIComponent($("#tbxPassword").val());
+            var password = $("#tbxPassword").val();
             var company = $("#ddlCompany").val();
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
                 showMessage("user name / password / company can not empty!");
