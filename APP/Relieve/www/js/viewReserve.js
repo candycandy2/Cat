@@ -43,18 +43,15 @@ $("#viewReserve").pagecontainer({
         $('#reserveTab').change(function() {
             var tabValue = $("#reserveTab :radio:checked").val();
             if (tabValue == 'tab1') {
-                console.log('tab1');
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
             } else if (tabValue == 'tab2'){
-                console.log('tab2');
                 $('#pageTwo').show();
                 $('#pageOne').hide();
                 $('#pageThree').hide();
             }
             else{
-                console.log('tab3');
                 $('#pageThree').show();
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
@@ -123,44 +120,47 @@ $("#viewReserve").pagecontainer({
 
         // cancel my reserve
         $('body').on('click', 'div[for=myReserveMsg] #confirm', function() {
+            // cancel sure
             if (bReserveCancelConfirm == true) {
+                if ($('#pageOne').css('display') === 'block'){
+                    $('.trace').find('.ui-bar>div:nth-of-type(2)').remove();
+                    $('<div class="circleIcon iconSelect"</div>').insertAfter($('.trace').find('.ui-bar>div:nth-of-type(1)'));
+                    $('.trace').removeClass('ui-color-myreserve').addClass('ui-color-noreserve').removeClass('trace');
+                }
+                else{
+                    $('.myReserveCancel').parents('.reserveInfo').remove();
+                }
+                bReserveCancelConfirm = false;
                 $('div[for=myReserveMsg]').popup('close');
-                $('.trace').find('.ui-bar>div:nth-of-type(2)').remove();
-                $('<div class="circleIcon iconSelect"</div>').insertAfter($('.trace').find('.ui-bar>div:nth-of-type(1)'));
-                $('.trace').removeClass('ui-color-myreserve').addClass('ui-color-noreserve').removeClass('trace');
-            } else {
+            } 
+            // cancel cancel
+            else {
                 $('div[for=myReserveMsg] span[id=titleText]').text('確定取消預約？');
                 $('div[for=myReserveMsg] button[id=confirm]').html('取消');
                 $('div[for=myReserveMsg] button[id=cancel]').html('不取消');
+                $('div[for=myReserveMsg] img[id=titleImg]').attr('src', 'img/warn_icon.png');
                 bReserveCancelConfirm = true;
             }
         });
 
+        // close canel popup
         $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
             bReserveCancelConfirm = false;
+            if ($('#pageTwo').css('display') === 'block'){
+                $('.myReserveCancel').removeClass('myReserveCancel');
+            }
         });
 
-        $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
-            bReserveCancelConfirm = false;
-        });
-
-        $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
-            $('.trace span').text('');
-            $('div[for=cancelSuccessMsg]').popup('close');
-            $('.trace').removeClass('ui-color-myreserve').removeClass('trace');
+        // my reserve cancel btn click
+        $('body').on('click', '.reserveInfo .btn-area', function(){
+            var tempEname = 'Ariel.H.Yih', msgContent = 'tmpdata....';
+            popupMsg('myReserveMsg', tempEname + '已預約', msgContent, '關閉', true, '取消預約', 'select.png');
+            $(this).addClass('myReserveCancel');
         });
 
         // close popup msg
         $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
         });
-
-       function test(){
-            if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
-                var doAPIListAllTime = new getAPIListAllTime();
-            } else {
-                arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
-            }
-        }
     }
 });
