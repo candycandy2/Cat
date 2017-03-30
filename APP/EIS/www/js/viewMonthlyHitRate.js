@@ -621,14 +621,8 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("Adj. Sales");
             tab = "AMT";
-            // $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            // $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").removeClass('disableHover');
             $(".Product #ALL").removeClass('disableHover');
-            // $(".Ro #" + ro).addClass('hover');
-            // $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
-            // getHighchartsData(ro, product);
             showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
@@ -639,17 +633,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("ASP");
             tab = "ASP";
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").addClass('disableHover');
             $(".Product #ALL").addClass('disableHover');
-            if(ro == "ALL") {
-                ro = "BQA";
-            }
             if(product == "ALL") {
                 product = "PRJ";
             }
-            $(".Ro #" + ro).addClass('hover');
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
             getHighchartsData(ro, product);
@@ -663,17 +651,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("Net Quantity");
             tab = "QTY";
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").addClass('disableHover');
             $(".Product #ALL").addClass('disableHover');
-            if(ro == "ALL") {
-                ro = "BQA";
-            }
             if(product == "ALL") {
                 product = "PRJ";
             }
-            $(".Ro #" + ro).addClass('hover');
             $(".Product #" + product).addClass('hover');
             hcTitle = "";
             getHighchartsData(ro, product);
@@ -688,28 +670,26 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(document).on('click', '#viewMonthlyHitRate .Ro > a', function(e) {
             e.preventDefault();
             ro = $(this).context.id;
-            if(tab == "AMT" || ro != "ALL") {
-                if($(this).context.id == "ALL") {
-                    hcRo = "All";
-                }else{
-                    hcRo = $(this).context.id;
-                }
-                $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
-                $(this).addClass('hover');
-                actualValue = getActualValue(ro, product, year, month, tab);
-                budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-                yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-                getHighchartsData(ro, product);
-                showHighchart();
-                showData();
+            if($(this).context.id == "ALL") {
+                hcRo = "All";
+            }else{
+                hcRo = $(this).context.id;
             }
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+            getHighchartsData(ro, product);
+            showHighchart();
+            showData();
         });
 
         $(document).on('click', '#viewMonthlyHitRate .Product > a', function(e) {
             e.preventDefault();
-            product = $(this).context.id;
-            if(tab == "AMT" || product != "ALL") {
-                if($(this).context.id == "ALL"){
+            if(tab == "AMT" || $(this).context.id != "ALL") {
+                product = $(this).context.id;
+                if($(this).context.id == "ALL") {
                     hcProduct = "All product";
                 }else{
                     hcProduct = $(this).context.id;
