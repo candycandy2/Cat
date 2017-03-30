@@ -61,9 +61,9 @@ $("#viewHitRate").pagecontainer ({
                     localStorage.removeItem("hitRateEisData");
                     ROSummary();
                 }else {
-                    localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
-                    localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
-                    localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));  
+                    // localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
+                    // localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
+                    // localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));  
                 }
             }
         };
