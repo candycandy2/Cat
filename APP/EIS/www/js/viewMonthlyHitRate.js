@@ -602,6 +602,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #ALL").removeClass('disableHover');
             $(".Ro #ALL").addClass('hover');
             $(".Product #ALL").addClass('hover');
 
