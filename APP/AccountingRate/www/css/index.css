@@ -52,6 +52,7 @@
     margin-left   : 2VW;
     color         : #000000;
     margin-right  : 3VW;
+    font-weight   : lighter;
 }
 
 
@@ -87,24 +88,34 @@
 
 /*head button ----------------------------*/
 .frag .frag0{   
-    margin-top                 : 5.99VW;
+    margin-top                 : 3.99VW;
+    padding                    : 2VW;
+
 }
 
 .frag2 {
 
     font-size                  : 4.18VW;
     border-top-right-radius    : 10px;
-    border-bottom-right-radius : 10px;    
+    border-bottom-right-radius : 10px; 
+    height                     : 4VW;   
+    font-weight                : normal!important;;
 }
 
 .frag1 {  /* top for the Nov Oct */
     margin-top                 : 3.99VW; 
-    font-size                  :  4.18VW;
+    font-size                  : 4.18VW;
     border-top-left-radius     : 10px;
     border-bottom-left-radius  : 10px; 
+    height                     : 4VW;
+    font-weight                : normal!important;
 }
 
 /*Main        ----------------------------*/
+.mainword{
+    height: 16VW;
+}
+
 .mainword1{   
   /*  text-align : center;*/
     font-size                 :  4.18VW;
@@ -159,6 +170,7 @@
     float      : left;
     margin-left: 4.4VW;
     overflow    : hidden; 
+    padding    : 2.33vw 0;
 }
 
 .Listdiv1equalmark4{
@@ -170,15 +182,30 @@
 }
 
 
+.ListRate1popup{
+    float      :  left;
+    margin-left:  5VW;
+    color      :  #0F0F0F;
+    font-size  :  3.97VW;
+    width      :  15VW;
+    display    :  inline-block; 
+    padding    :  2.33vw 0;
+}
+
 .ListRate1{
     float      :  left;
     margin-left:  5VW;
     color      :  #0F0F0F;
-    font-size  : 3.97VW;
-    width      : 15VW;
-    display    : inline-block;
-    padding    : 2.33vw 0;
+    font-size  :  3.97VW;
+    width      :  15VW;
+    display    :  inline-block;
+    position   :  absolute;
+    top        :  50% 
 }
+
+
+
+
 
 .nonstar_icon {  
     /*visibility : hidden ;*/
@@ -710,6 +737,8 @@ element.style {
     background                 : #2c89bc;
     color                      : white;   
     width                      : 100%;
+    padding                    : 2.33VW 0;
+    display: inline-block;
 }
 /* For pop All Curency*/
 
