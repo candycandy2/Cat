@@ -893,6 +893,7 @@
                     $('div[for=myReserveMsg] span[id=titleText]').text('確定取消預約？');
                     $('div[for=myReserveMsg] button[id=confirm]').html('取消');
                     $('div[for=myReserveMsg] button[id=cancel]').html('不取消');
+                    $('div[for=myReserveMsg] img[id=titleImg]').attr('src', 'img/warn_icon.png');
                     bReserveCancelConfirm = true;
                 }
             });
