@@ -1189,6 +1189,7 @@ class AppMaintainController extends Controller
                     $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
                     $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
                     $alsoCopyManifest = ($deviceType == 'ios')?true:false;
+                    $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
                     $this->appVersionService->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $alsoCopyManifest);
                 }
             }
