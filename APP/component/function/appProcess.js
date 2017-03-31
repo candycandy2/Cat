@@ -242,12 +242,9 @@ function hideInitialPage() {
 
 //Use Scheme to Open APP
 function openAPP(URL) {
-    /*
     $("body").append('<a id="schemeLink" href="' + URL + '"></a>');
     document.getElementById("schemeLink").click();
     $("#schemeLink").remove();
-    */
-    window.open(URL, '_system');
 }
 
 //If API is error, open Dialog
