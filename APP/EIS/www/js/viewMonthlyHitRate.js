@@ -395,10 +395,6 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
-        window.setScrollMenuHeight = function() {
-            $('div.scrollmenu a').css({'width': ((96.3% - 5) / 6)});
-        }
-
         function initSlider() {
             if(monthlyPageDateExist) {   
                 var index = 0;
@@ -464,8 +460,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                     title: {
                         text: 'Month',
                         align: 'high',   
-                        // x: 31,
-                        // y: -18
                         x: 5,
                         y: -5
                     },
@@ -576,7 +570,6 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            // setScrollMenuHeight();
             initSlider();
             $("#viewMonthlyHitRate #title-container > #title > #actualValue > p").text("Adj. Sales");
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
