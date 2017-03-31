@@ -60,6 +60,7 @@ class EventController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             $empNo = trim((string)$xml->emp_no[0]);
             $data = $this->getInsertEventData($xml);
+            $updateData = [];
 
             $userAuthList = $this->userService->getUserRoleList($empNo);
             if(!in_array($allow_user, $userAuthList)){
@@ -152,6 +153,8 @@ class EventController extends Controller
                      'Content'=>""]);
                 }
             }
+            $updateData['chatroom_id'] =  $createChatRoomRes->Content->gid;
+            $this->eventRepository->updateEventById($empNo, $eventId, $updateData);
             \DB::commit();
             //send push
             $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo);

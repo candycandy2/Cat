@@ -17,7 +17,7 @@ class EventRepository
 
     private $eventField = array('en_event.row_id as event_row_id','event_type_parameter_value as event_type',
                 'event_title','event_desc',
-                'estimated_complete_date','related_event_row_id','en_event.event_status',
+                'estimated_complete_date','related_event_row_id','en_event.event_status','chatroom_id',
                 'en_event.created_user as created_user','en_event.created_at as created_at');
    
     /*
