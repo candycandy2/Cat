@@ -18,8 +18,7 @@ var monthlyHighchartsData = {
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
 
-        window.UserAuthority = function() {
-            var index = 0;   
+        window.UserAuthority = function() { 
             this.successCallback = function(data) {
                 userAuthorityCallBackData = data["Content"]["DataList"];
                 length = userAuthorityCallBackData.length;
@@ -32,37 +31,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".Product").html("");
                 $(".Product").append(productList).enhanceWithin();
-
-                year = thisYear-1;
-                month = thisMonth;
-                while(index < 13) {
-                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
-                    monthlyPageDate[index] = month + "." + year;
-                    if(month == 12){
-                        year++;
-                        month = 0;
-                    }
-                    month++;
-                    index++;
-                }
-                $(".sliderMonthly").html("");
-                $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
-                
-                index = 0;
-                year = thisYear-1;
-                month = thisMonth;
-                while(index < 2) {
-                    ytdPageDateList += "<div>" + year + "</div>";
-                    if(year == thisYear) {
-                        ytdPageDate[index] = thisMonth + "." + year;
-                    }else{
-                        ytdPageDate[index] = 12 + "." + year;
-                    }
-                    index++;
-                    year++;
-                }
-                $(".sliderYTD").html("");
-                $(".sliderYTD").append(ytdPageDateList).enhanceWithin();
 
                 loadingMask("hide");
             };
@@ -79,10 +47,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 productDetailCallBackData = data["Content"]["DataList"];
                 length = productDetailCallBackData.length;
                 convertData();
-                // thisMonthEisdata = eisdata[thisYear][thisMonth];
-                // thisMonthEisdataTimeArray = [thisMonthEisdata, nowTime];
                 localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
-                // localStorage.setItem("thisMonthEisdata", JSON.stringify(thisMonthEisdataTimeArray));
             }
 
             this.failCallback = function(data) {
@@ -431,10 +396,28 @@ $("#viewMonthlyHitRate").pagecontainer({
         }
 
         window.setScrollMenuHeight = function() {
-            $('div.scrollmenu a').css({'width': ($('body').width()-5)/6});
+            $('div.scrollmenu a').css({'width': ((96.3% - 5) / 6)});
         }
 
         function initSlider() {
+            if(monthlyPageDateExist) {   
+                var index = 0;
+                year = thisYear-1;
+                month = thisMonth;
+                while(index < 13) {
+                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
+                    monthlyPageDate[index] = month + "." + year;
+                    if(month == 12){
+                        year++;
+                        month = 0;
+                    }
+                    month++;
+                    index++;
+                }
+                $(".sliderMonthly").html("");
+                $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
+            }
+            monthlyPageDateExist = false;
             if($(".sliderMonthly").hasClass("slick-slider") || $(".sliderMonthly").hasClass("slick-initialized")){
                 $(".sliderMonthly").slick("unslick");
             }
@@ -582,7 +565,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                     color: '#134A8C',
                     data: monthlyHighchartsData["Budget " + tab][year],
                     lineWidth: 1,
-                    // yAxis: 1
                 }]
             };
             options.chart.renderTo = "viewMonthlyHitRate-hc-canvas";
@@ -594,7 +576,7 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            setScrollMenuHeight();
+            // setScrollMenuHeight();
             initSlider();
             $("#viewMonthlyHitRate #title-container > #title > #actualValue > p").text("Adj. Sales");
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
