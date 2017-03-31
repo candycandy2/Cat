@@ -195,7 +195,7 @@ class EventService
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];
          foreach ($eventUserDetail as $user) {
-            $userList[] = $user->user_domain.'\\'.$user->login_id;
+            $userList[] = $user->user_domain."\\".$user->login_id;
          }
          return $userList;
    }
@@ -209,7 +209,7 @@ class EventService
         $userInfo = $this->userRepository->getUserInfoByEmpNo($empNoArr);
         $userList = [];
         foreach ($userInfo as $user) {
-            $userList[] = $user['user_domain'].'\\'.$user['login_id'];
+            $userList[] = $user['user_domain']."\\".$user['login_id'];
         }
         return $userList;
    }
@@ -224,7 +224,7 @@ class EventService
          $userList = [];
          foreach ($eventUserDetail as $key => $user) {
             $userData['emp_no'] = $user->emp_no;
-            $userData['login_id'] = $user->user_domain.'\\'.$user->login_id;
+            $userData['login_id'] = $user->user_domain."\\".$user->login_id;
             $userData['read_time'] = $user->read_time;
             $userList[] = $userData;
          }

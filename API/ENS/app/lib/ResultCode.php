@@ -30,5 +30,6 @@ abstract class ResultCode
     const _014917_inputJsonFormatInvalid = "014917";  //傳入的json格式錯誤, Server端無法解析
     const _014918_memberNotRegistered = "014918";  //新增聊天室失敗, 成員未註冊
     const _014919_chatroomMemberInvalid = "014919";  //聊天室成員不存在
+    const _014920_chatroomIdInvalid = "014920";  //傳入的聊天室編號無法識別 
     const _014999_unknownError = "014999";  //其他未知錯誤    
 }
