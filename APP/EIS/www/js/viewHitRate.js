@@ -16,13 +16,15 @@ $("#viewHitRate").pagecontainer ({
     create: function(event, ui) {
     	
         window.ROSummary = function() {
-            
+
             if(localStorage.getItem("hitRateEisData") === null) {
     	    	this.successCallback = function(data) {      
                     roSummaryCallBackData = data["Content"]["DataList"];
     	    		length = roSummaryCallBackData.length;
     	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
     	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
+                    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";        
+                    UserAuthority();
     	    		convertData();
                     getAllData();
                     $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
@@ -34,7 +36,7 @@ $("#viewHitRate").pagecontainer ({
                     }
                     localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
                     localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
-                    localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));
+                    localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));  
                 };
 
     	    	this.failCallback = function(data) {
@@ -48,6 +50,8 @@ $("#viewHitRate").pagecontainer ({
                 hitRateEisData = JSON.parse(localStorage.getItem("hitRateEisData"))[0];
                 thisYear = JSON.parse(localStorage.getItem("thisYear"))[0];
                 thisMonth = JSON.parse(localStorage.getItem("thisMonth"))[0];
+                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+                UserAuthority();
                 getAllData();
                 $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
                 showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
@@ -57,13 +61,9 @@ $("#viewHitRate").pagecontainer ({
                     zoomInChart();
                 }
                 var lastTime = JSON.parse(localStorage.getItem("hitRateEisData"))[1];
-                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'dd')) {
+                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
                     localStorage.removeItem("hitRateEisData");
                     ROSummary();
-                }else {
-                    // localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
-                    // localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
-                    // localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime]));  
                 }
             }
         };
@@ -318,7 +318,6 @@ $("#viewHitRate").pagecontainer ({
 
 		/********************************** page event *************************************/
         $("#viewHitRate").on("pageshow", function(event, ui) {
-            // tab = "thisMonth";
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
@@ -334,38 +333,32 @@ $("#viewHitRate").pagecontainer ({
         });
 
         $(".page-tabs #viewHitRate-tab-1").on("click", function() {
-            // tab = "thisMonth";
-        	$("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
+            $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
         	chart.series[0].setData(thisMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(thisMonthActualAMT, true, true, false );
             chart.tooltip.hide();
             chartLandscape.series[0].setData(thisMonthBudgetAMT, true, true, false);
             chartLandscape.series[1].setData(thisMonthActualAMT, true, true, false );
-            // showHighchart();
         	showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT,thisMonthData);
         });
 
         $(".page-tabs #viewHitRate-tab-2").on("click", function() {
-            // tab = "lastMonth";
         	$("#viewHitRate .page-date").text(monTable[thisMonth-1]+thisYear);
         	chart.series[0].setData(lastMonthBudgetAMT, true, true, false);
         	chart.series[1].setData(lastMonthActualAMT, true, true, false);
         	chart.tooltip.hide();
             chartLandscape.series[0].setData(lastMonthBudgetAMT, true, true, false);
             chartLandscape.series[1].setData(lastMonthActualAMT, true, true, false);
-            // showHighchart();
             showData("lastMonth", lastMonthActualAMT, lastMonthBudgetAMT, lastMonthData);
         });
 
         $(".page-tabs #viewHitRate-tab-3").on("click", function() {
-            // tab = "YTD";
     		$("#viewHitRate .page-date").text(thisYear);
     		chart.series[0].setData(YTDBudgetAMT, true, true, false);
         	chart.series[1].setData(YTDActualAMT, true, true, false);
         	chart.tooltip.hide();
             chartLandscape.series[0].setData(YTDBudgetAMT, true, true, false);
             chartLandscape.series[1].setData(YTDActualAMT, true, true, false);
-            // showHighchart();
             showData("YTD", YTDActualAMT, YTDBudgetAMT, ytdData);
         });
     }
