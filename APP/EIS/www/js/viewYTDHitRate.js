@@ -488,7 +488,6 @@ $("#viewYTDHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
-            // setScrollMenuHeight();
             initSlider();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
