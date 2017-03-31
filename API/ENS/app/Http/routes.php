@@ -23,6 +23,7 @@ Route::any('/v101/ens/getEventDetail', 'EventController@getEventDetail');
 Route::any('/v101/ens/updateEvent', 'EventController@updateEvent');
 Route::any('/v101/ens/updateEventStatus', 'EventController@updateEventStatus');
 Route::any('/v101/ens/updateTaskStatus', 'TaskController@updateTaskStatus');
+Route::any('/v101/ens/getMessageCount', 'MessageController@getMessageCount');
 
 //test
 Route::any('/v101/ens/test/createChatRoom', 'TestController@createChatRoom');
