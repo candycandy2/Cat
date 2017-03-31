@@ -57,7 +57,6 @@ function overridejQueryFunction() {
 //3. html
 
 var tplJS = {
-    pageHeight: "",
     tplRender: function(pageID, contentID, renderAction, HTMLContent) {
         if (pageID == null) {
             if (renderAction === "append") {
@@ -99,12 +98,14 @@ var tplJS = {
     getRealContentHeight: function() {
         var header = $.mobile.activePage.find("div[data-role='header']:visible");
         var footer = $.mobile.activePage.find("div[data-role='footer']:visible");
-        var content = $.mobile.activePage.find("div[data-role='content']:visible:visible");
+        //var content = $.mobile.activePage.find("div[data-role='content']:visible:visible");
+        var content = $.mobile.activePage.find("div[data-role='main']:visible:visible");
         var viewport_height = $(window).height();
 
-        var content_height = viewport_height - header.outerHeight() - footer.outerHeight();
+        var content_height = viewport_height - header.outerHeight();
+
         if ((content.outerHeight() - header.outerHeight() - footer.outerHeight()) <= viewport_height) {
-            content_height -= (content.outerHeight() - content.height());
+            //content_height -= (content.outerHeight() - content.height());
         }
 
         return content_height;
@@ -113,23 +114,47 @@ var tplJS = {
         //Prevent Background Page to be scroll, when Option Popup is shown,
         //Change the [height / overflow-y] of Background Page,
         //And then, when Option Popup is close, recovery the [height / overflow-y] of Background Page.
-        this.pageHeight = $.mobile.activePage.outerHeight();
         var adjustHeight = this.getRealContentHeight();
+        var adjustPaddingBottom = 0;
+
+        if (device.platform === "iOS") {
+            adjustPaddingBottom = 20;
+        }
+
+        $.mobile.activePage.outerHeight(adjustHeight);
 
         $.mobile.activePage.css({
             "height": adjustHeight,
+            "min-height": adjustHeight,
+            "padding-bottom": adjustPaddingBottom + "px",
             "overflow-y": "hidden"
         });
+
+        if (checkPopupShown()) {
+            var header = $.mobile.activePage.find("div[data-role='header']:visible");
+            var popupScreenHeight = adjustHeight + header.outerHeight();
+
+            if (device.platform === "iOS") {
+                popupScreenHeight += 20;
+            }
+
+            $(".ui-popup-screen.in").height(popupScreenHeight);
+        }
     },
     recoveryPageScroll: function() {
         //Padding
         var paddingTop = parseInt($.mobile.activePage.css("padding-top"), 10);
         var paddingBottom = parseInt($.mobile.activePage.css("padding-bottom"), 10);
 
-        var originalHeight = this.pageHeight - paddingTop - paddingBottom;
+        var header = $.mobile.activePage.find("div[data-role='header']:visible");
+        var footer = $.mobile.activePage.find("div[data-role='footer']:visible");
+        var originalHeight = $.mobile.activePage.outerHeight() - paddingTop - paddingBottom + header.outerHeight() + footer.outerHeight();
+
+        $.mobile.activePage.outerHeight($.mobile.activePage.outerHeight());
 
         $.mobile.activePage.css({
             "height": originalHeight,
+            "padding-bottom": 0,
             "overflow-y": "auto"
         });
     },
@@ -337,6 +362,8 @@ var tplJS = {
             var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
             $(this).find("div[data-role='main'] .main").height(popupMainHeight);
             $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
+
+            tplJS.preventPageScroll();
         });
 
         //Initialize Popup
@@ -476,14 +503,14 @@ var tplJS = {
 
         //Initialize Popup
         $('#' + data.id).popup();
+        //this.pageContentHeight = $.mobile.activePage.outerHeight();
 
-        $(document).on("popupafteropen", "#" + data.id, function() {
+        $(document).one("popupafteropen", "#" + data.id, function() {
             var popupHeight = popup.height();
             var popupHeaderHeight = popup.find("div[data-role='main'] .header").height();
-
             var popupFooter = popup.find("div[data-role='main'] .footer")[0];
             var popupFooterHeight = popupFooter.offsetHeight;
-            
+
             //ui-content paddint-top:5.07vw
             var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
 
@@ -504,22 +531,15 @@ var tplJS = {
                 $(this).find("div[data-role='main'] > .header").height(popupHeaderHeight);
                 $(this).find("div[data-role='main'] .header .header").addClass("all-center");
             }
+        });
 
-            //Resize Height of background div
-            var activePageID = $.mobile.activePage.attr("id");
-            var activePage = $("#" + activePageID);
-            var activePageScrollHeight;
-            if (activePageID === undefined){
-                activePage = $('.ui-page-active');
-                activePageScrollHeight = activePage.scrollHeight;
-            }
-            else{
-                activePageScrollHeight = activePage[0].scrollHeight;
-            }
-
-            $(".ui-popup-screen.in").height(activePageScrollHeight);
-
-            tplJS.preventPageScroll();
+        $(document).on("popupbeforeposition", "#" + data.id, function() {
+            //Scroll Page to top
+            $.mobile.activePage.animate({
+                "scrollTop": 0
+            }, 0, function() {
+                tplJS.preventPageScroll();
+            });
         });
 
         $(document).on("popupafterclose", "#" + data.id, function() {

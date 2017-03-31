@@ -234,8 +234,11 @@ div.scrollmenu a:nth-of-type(1){ border-left-width: 0;}
 div.scrollmenu a.hover {
     background-color: #0fb6b7;
     color: #fff !important;
-   /* background-color: #EFEFEF;
-    color: #999999 !important;*/
+}
+
+div.scrollmenu a.disableHover {
+	background-color: #EFEFEF;
+	color: #999999 !important;
 }
 
 div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}

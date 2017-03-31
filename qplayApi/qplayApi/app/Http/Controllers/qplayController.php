@@ -272,7 +272,7 @@ class qplayController extends Controller
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
         $loginid = $request->header('loginid');
-        $password = $request->header('password');
+        $password = rawurldecode($request->header('password'));
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
@@ -392,6 +392,17 @@ class qplayController extends Controller
                             'created_user'=>$user->row_id,
                         ]);
                     }
+                    //bug 14023 2017.3.27
+                    \DB::table("qp_user_message")
+                        -> where('uuid', '=', $user->row_id)
+                        -> update(
+                            ['uuid'=>$uuid]
+                        );
+                    \DB::table("qp_user_message_pushonly")
+                        -> where('uuid', '=', $user->row_id)
+                        -> update(
+                            ['uuid'=>$uuid]
+                        );
                 }
                 catch (Exception $e)
                 {
@@ -444,6 +455,19 @@ class qplayController extends Controller
 
                 CommonUtil::logApi($user->row_id, $ACTION,
                     response()->json(apache_response_headers()), $result);
+	
+        	//register to QMessage
+        	$QMessage_register_url = \Config::get('app.QMessage_Register_URL');
+        	if(!empty($QMessage_register_url)){
+           	 $qmessage_result = self::Register2QMessage($userInfo->login_id, $QMessage_register_url);
+            	CommonUtil::logApi("", "Register2Qmessage",
+                	response()->json(apache_response_headers()), $qmessage_result);
+            	//更新标志位
+            	\DB::table("qp_user")
+                	->where('login_id', '=', $userInfo->login_id)
+                	->update(['register_message'=>'Y']);
+        	}
+        	return response()->json($result);
             }
         }
         $message = CommonUtil::getMessageContentByCode($verifyResult["code"]);
@@ -457,19 +481,7 @@ class qplayController extends Controller
         CommonUtil::logApi("", $ACTION,
             response()->json(apache_response_headers()), $result);
         $result = response()->json($result);
-
-        //register to QMessage
-        $QMessage_register_url = \Config::get('app.QMessage_Register_URL');
-        if(!empty($QMessage_register_url)){
-            $qmessage_result = self::Register2QMessage($loginid,$QMessage_register_url);
-            CommonUtil::logApi("", "Register2Qmessage",
-                response()->json(apache_response_headers()), $qmessage_result);
-            //更新标志位
-            \DB::table("qp_user")
-                ->where('login_id', '=', $loginid)
-                ->update(['register_message'=>'Y']);
-        }
-        return response()->json($result);
+	return $result;
     }
 
     public function Register2QMessage($loginid,$url){
@@ -490,10 +502,10 @@ class qplayController extends Controller
                 'Content-Length: ' . strlen($data_string))
         );
         //add for QCS Test
-        curl_setopt($ch, CURLOPT_PROXY,'qcsproxyy.qgroup.corp.com:80');
-        curl_setopt($ch, CURLOPT_PROXYUSERPWD,'john.zc.zhuang:Zucc53546211');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
+        //curl_setopt($ch, CURLOPT_PROXY,'qcsproxyy.qgroup.corp.com:80');
+        //curl_setopt($ch, CURLOPT_PROXYUSERPWD,'john.zc.zhuang:Zucc53546211');
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
         //add end
         ob_start();
         curl_exec($ch);
@@ -661,7 +673,7 @@ class qplayController extends Controller
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
         $loginid = $request->header('loginid');
-        $password = urldecode($request->header('password'));
+        $password = rawurldecode($request->header('password'));
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || $redirect_uri == null
@@ -2726,6 +2738,8 @@ SQL;
                                     continue;
                                 }
                                 if(count($destinationUserInfo->uuidList) == 0) {
+                                    /*
+                                     * bug 14023 2017.3.27
                                     \DB::rollBack();
                                     $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                                         'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
@@ -2733,13 +2747,18 @@ SQL;
                                     CommonUtil::logApi("", $ACTION,
                                         response()->json(apache_response_headers()), $result);
                                     return response()->json($result);
+                                    */
+                                    //该用户如无设备，先以user_row_id代替
+                                    $destinationUserInfo->uuidList = [
+                                        ["uuid"=>$destinationUserInfo->row_id]
+                                    ];
                                 }
                                 foreach ($destinationUserInfo->uuidList as $uuid) {
                                     \DB::table("qp_user_message")
                                         -> insertGetId([
                                             'project_row_id'=>$projectInfo->row_id,
                                             'user_row_id'=>$destinationUserInfo->row_id,
-                                            'uuid'=>$uuid->uuid,
+                                            'uuid'=> is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                             'message_send_row_id'=>$newMessageSendId,
                                             'created_user'=>$sourceUserInfo->row_id,
                                             'created_at'=>$now
@@ -2767,12 +2786,18 @@ SQL;
                                     if(!in_array($userRowId, $hasSentUserIdList)) {
                                         $thisUserInfo = CommonUtil::getUserInfoByRowID($userRowId);//CommonUtil::getUserInfoJustByUserIDAndDomain($userRoleInfo->login_id, $userRoleInfo->user_domain);
                                         if($thisUserInfo->status == "Y" && $thisUserInfo->resign == "N") {
+                                            //bug 14023 2017.3.27
+                                            if (count($thisUserInfo->uuidList)==0){
+                                                $thisUserInfo->uuidList = [
+                                                    ["uuid"=>$userRowId]
+                                                ];
+                                            }
                                             foreach ($thisUserInfo->uuidList as $uuid) {
                                                 \DB::table("qp_user_message")
                                                     -> insertGetId([
                                                         'project_row_id'=>$projectInfo->row_id,
                                                         'user_row_id'=>$userRowId,
-                                                        'uuid'=>$uuid->uuid,
+                                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
                                                         'message_send_row_id'=>$newMessageSendId,
                                                         'created_user'=>$sourceUserInfo->row_id,
                                                         'created_at'=>$now
