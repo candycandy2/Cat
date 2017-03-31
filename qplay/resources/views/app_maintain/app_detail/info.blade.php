@@ -392,8 +392,8 @@
                      @endforeach
                 </div>
                 <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="saveRemoveLang();">{{trans("messages.SAVE")}}</button>
-                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+                    <button type="button"  class="btn btn-danger" onclick="saveRemoveLang();">{{trans("messages.CONFIRM")}}</button>
+                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CANCEL")}}</button>
                 </div>
             </div>
         </div>

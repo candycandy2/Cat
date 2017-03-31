@@ -318,6 +318,24 @@ $("#viewYTDHitRate").pagecontainer({
         }
 
         function initSlider() {
+            if (ytdPageDateExist) {
+                var index = 0;
+                year = thisYear-1;
+                month = thisMonth;
+                while(index < 2) {
+                    ytdPageDateList += "<div>" + year + "</div>";
+                    if(year == thisYear) {
+                        ytdPageDate[index] = thisMonth + "." + year;
+                    }else{
+                        ytdPageDate[index] = 12 + "." + year;
+                    }
+                    index++;
+                    year++;
+                }
+                $(".sliderYTD").html("");
+                $(".sliderYTD").append(ytdPageDateList).enhanceWithin();
+            }
+            ytdPageDateExist = false;
             if($(".sliderYTD").hasClass("slick-slider") || $(".sliderYTD").hasClass("slick-initialized")){
                 $(".sliderYTD").slick("unslick");
             }
@@ -470,7 +488,7 @@ $("#viewYTDHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
-            setScrollMenuHeight();
+            // setScrollMenuHeight();
             initSlider();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
