@@ -175,7 +175,7 @@ $(function () {
     $('#saveAppDetail').show(); 
 });
 </script>
-<script src="{{ asset('/js/appMaintain/switch_lang_tool.js') }}"></script>
-<script src="{{ asset('/js/appMaintain/app_pic.js') }}"></script>
-<script src="{{ asset('/js/appMaintain/app_maintain.js') }}"></script>
+<script src="{{ asset('/js/appMaintain/switch_lang_tool.js?v=201703311322') }}"></script>
+<script src="{{ asset('/js/appMaintain/app_pic.js?v=201703311322') }}"></script>
+<script src="{{ asset('/js/appMaintain/app_maintain.js?v=201703311322') }}"></script>
 @endsection
