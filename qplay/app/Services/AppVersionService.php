@@ -19,7 +19,67 @@ class AppVersionService
         $this->appVersionRepository = $appVersionRepository;
     }
 
+    public function getAppOnlineVersion($appId, $deviceType){
+         $whereCondi = array(
+                        array(
+                        "field"=>"status",
+                        "op"=>"=",
+                        "value"=>"ready"
+                        )
+                    );
+         $selectData = array('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'created_at');
+         $appVersionList = $this->appVersionRepository->getAppVersion($appId, $deviceType, $whereCondi, $selectData);
+         $appVersionList = $this->arrangeVersionList($appId, $deviceType, $appVersionList);
+       return  $appVersionList;
+    }
 
+    /**
+     * 取得最新一筆上傳後未發布的版本，並刪除其他從未上架過的版本
+     * @param  int    $appId      qp_app_head.row_id
+     * @param  String $deviceType 裝置類型(ios|android)
+     * @return Array
+     */
+    public function getAppNewVersion($appId, $deviceType){
+        $appVersionList = $this->appVersionRepository->getNewAppVersion($appId, $deviceType);
+        $delVersionArr = [];
+
+        foreach ($appVersionList as $key => $version) {
+           if($key!=0){
+                //第二筆以後刪除
+                $delVersionArr[] = $version->row_id;
+                unset($appVersionList[$key]);
+           }
+        }
+        $this->deleteAppVersion($appId, $delVersionArr);
+        $appVersionList = $this->arrangeVersionList($appId, $deviceType, $appVersionList);
+       return  $appVersionList;
+    }
+
+    /**
+     * 取得歷史版本列表
+     * @param   int    $appId      qp_app_head.row_id
+     * @param   String $deviceType 裝置類型(ios|android)
+     * @return  Array
+     */
+    public function getAppHistoryVersion($appId, $deviceType){
+         $whereCondi = array(
+                        array(
+                        "field"=>"status",
+                        "op"=>"=",
+                        "value"=>"cancel"
+                        ),
+                        array(
+                        "field"=>"ready_date",
+                        "op"=>"!=",
+                        "value"=>null
+                        ),
+                    );
+         $selectData = array('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'created_at');
+         $appVersionList = $this->appVersionRepository->getAppVersion($appId, $deviceType, $whereCondi, $selectData);
+         $appVersionList = $this->arrangeVersionList($appId, $deviceType, $appVersionList);
+       return  $appVersionList;
+
+    }
     /**
      * 下架版本
      * @param  int    $appId      qp_app_head.row_id
@@ -29,7 +89,7 @@ class AppVersionService
     public function unPublishVersion($appId, $deviceType, $userRowId){
         
         //delete file
-        $this->deleteApkFileFromPath($appId,$deviceType);
+        $this->deleteApkFileFromPublish($appId,$deviceType);
         
         //update DB
         $updateData = array(
@@ -162,12 +222,12 @@ class AppVersionService
     }
 
     /**
-     * 移除檔案
+     * 從發佈路徑中移除版本檔案
      * @param  int      $appId      app_row_id
      * @param  string   $deviceType device type android|ios
      * @return string   $targetFilePath the path that had been delete
      */
-    private function deleteApkFileFromPath($appId,$deviceType){
+    private function deleteApkFileFromPublish($appId,$deviceType){
 
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
         $OriPublish = $this->appVersionRepository->getPublishedApp($appId,$deviceType);
@@ -187,8 +247,88 @@ class AppVersionService
     }
 
     /**
+     * 刪除App 版本資訊以及檔案
+     * @param  int    $appIdappId  qp_app_head.row_id         
+     * @param  Array  $delVersionArr 預刪除的version row_id 陣列
+     * @return
+     */
+    public function deleteAppVersion(Int $appId, Array $delVersionArr){
+         $appStatus = $this->getAllPublishedAppStatus($appId);
+        foreach ($delVersionArr as  $vId) {
+            $versionItem = $this->appVersionRepository->getAppVersionById($vId);
+            if(!is_null($versionItem)){
+                //將線上版本改為下架
+                if(($versionItem['version_code'] == $appStatus[$versionItem['device_type']]['versionCode'])){
+                    $this->unPublishVersion($appId, $versionItem['device_type'], \Auth::user()->row_id);
+                }
+                $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
+                $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+                $files = new \RecursiveIteratorIterator($it,
+                             \RecursiveIteratorIterator::CHILD_FIRST);
+                foreach($files as $file) {
+                    if ($file->isDir()){
+                        rmdir($file->getRealPath());
+                    } else {
+                        unlink($file->getRealPath());
+                    }
+                }
+                rmdir($destinationPath);
+            }
+        }
+        $this->appVersionRepository->deleteAppVersionById($delVersionArr);
+    }
+
+    /**
+     * 更新app version 資料
+     * @param  Array $updateArray 慾更新的資料 ["欄位名稱"=>"欄位值"]
+     *
+     */
+    public function updateVersion(Array $updateArray){
+
+        $this->appVersionRepository->updateAppVersionById($updateArray);
+
+    }
+
+    /**
+     * 新增app version,支援批量賦值
+     * @param  Array $insertArray  慾寫入的資料 [["欄位名稱"=>"欄位值"]]
+     */
+    public function insertVersion(Array $insertArray){
+        $this->appVersionRepository->newAppVersion($insertArray);
+    }
+
+    /**
+     * 取得單一App在所有裝置的發布狀態
+     * @return Array
+     */
+    public function getAllPublishedAppStatus($appId){
+        $appStatus = array('android'=>array(
+                                    'str'=>'Unpublish',
+                                    'versionCode'=>'',
+                                    'url'=>''
+                                ),
+                         'ios'=>array(
+                                    'str'=>'Unpublish',
+                                    'versionCode'=>'',
+                                    'url'=>''
+                                )
+                        );
+    
+      foreach ( $appStatus as $deviceType => $value) {
+        $deviceStatus = $this->appVersionRepository->getPublishedApp($appId, $deviceType);
+        if(count($deviceStatus) > 0){
+            $appStatus[$deviceType]['str'] = $deviceStatus->version_name;
+            $appStatus[$deviceType]['versionCode'] = $deviceStatus->version_code;
+            $appStatus[$deviceType]['url'] = $deviceStatus->url;
+        }
+      }
+        return $appStatus;
+    }
+
+
+    /**
      * 產生ios下載時必要的 ManiFest 檔案
-     * @param  int    $appRowId    qp_app_head.row_id
+     * @param  int    $appIdappId  qp_app_head.row_id
      * @param  string $appKey      qp_project.app_key
      * @param  string $deviceType  裝置類型 (ios|android)
      * @param  string $versionCode 版本號
@@ -196,7 +336,7 @@ class AppVersionService
      * @return string              manifest 檔案內容
      * @author Cleo.W.Chan
      */
-    private function getManifest($appRowId, $appKey, $deviceType, $versionCode, $fileName){
+    private function getManifest($appId, $appKey, $deviceType, $versionCode, $fileName){
     
         $MANIFEST_TEMPLETE_PATH = base_path('resources'. DIRECTORY_SEPARATOR .'templete'. DIRECTORY_SEPARATOR .'manifest.plist');
         $contents = null;
@@ -204,7 +344,7 @@ class AppVersionService
         if (File::exists($MANIFEST_TEMPLETE_PATH))
         {
             $contents = File::get($MANIFEST_TEMPLETE_PATH);
-            $appDownLoadUrl = FilePath:: getApkUrl($appRowId,$deviceType,$versionCode,$fileName);
+            $appDownLoadUrl = FilePath:: getApkUrl($appId,$deviceType,$versionCode,$fileName);
             $package = \Config::get('app.app_package') .'.'.$appKey;
 
             $contents = str_replace("{{url}}", $appDownLoadUrl, $contents);
@@ -216,4 +356,25 @@ class AppVersionService
         return $contents ;
            
     }
+
+    /**
+     * 將版本列表整理為可輸出在前台的格式
+     * @param   int    $appId    qp_app_head.row_id
+     * @param   string $deviceType  裝置類型 (ios|android)
+     * @param   Array  $appVersionList version列表資料
+     * @return  Array
+     */
+    private function arrangeVersionList($appId, $deviceType, $appVersionList){
+        foreach ($appVersionList as $appVersion) {
+            if($appVersion->external_app == 1){
+                $appVersion->download_url = $appVersion->url;
+            }else{
+                $appVersion->download_url = FilePath::getApkDownloadUrl($appId,$deviceType,
+                $appVersion->version_code,$appVersion->url);
+            }
+           
+        }
+        return $appVersionList;
+    }
+
 }

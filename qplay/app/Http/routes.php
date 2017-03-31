@@ -81,6 +81,10 @@ Route::any('/AppMaintain/getAppUser', ['middleware' => 'auth','uses'=>'AppMainta
 Route::any('/AppMaintain/getAppVersionList', ['middleware' => 'auth','uses'=>'AppMaintainController@getAppVersionList']);
 Route::any('/AppMaintain/saveAppDetail', ['middleware' => 'auth','uses'=>'AppMaintainController@saveAppDetail']);
 Route::any('/AppMaintain/getMaintainAppList', ['middleware' => 'auth','uses'=>'AppMaintainController@getMaintainAppList']);
+Route::any('/AppVersion/getAppOnlineVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppOnlineVersion']);
+Route::any('/AppVersion/getAppNewVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppNewVersion']);
+Route::any('/AppVersion/getAppHistoryVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppHistoryVersion']);
+Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVersionController@ajxValidVersion']);
 
 /*
 Route::any('/platform/getUserList', 'platformController@getUserList');
