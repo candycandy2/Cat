@@ -559,6 +559,8 @@ $("#viewEventList").pagecontainer({
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
+            prevPageID = "viewEventList";
+
             //Set Active Tab
             $("#tabEventList a:eq(0)").addClass("ui-btn-active");
             $("#tabEventList").tabs({ active: 0 });

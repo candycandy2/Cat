@@ -157,7 +157,7 @@
             /********************************** dom event *************************************/
             $("#InstallApp #InstallAppStr01").on("click", function() {
                 if (selectAppIndex != null) {
-                    openAPP(applist[selectAppIndex].url);
+                    window.open(applist[selectAppIndex].url, '_system');
                 }
             });
 
@@ -170,7 +170,7 @@
                 //1. Open Other APP, do checkAppVersion, need to update, then click button to open QPlay
                 //2. In this case, show [update] in button
                 if (selectAppIndex != null) {
-                    openAPP(applist[selectAppIndex].url);
+                    window.open(applist[selectAppIndex].url, '_system');
                 }
             });
 
