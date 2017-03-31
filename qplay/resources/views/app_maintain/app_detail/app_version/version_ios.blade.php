@@ -1,4 +1,6 @@
 <div>
+    <h4><strong>{{trans('messages.NEW_VERSION')}}</strong></h4>
+    <small class="text-muted"> * {{trans('messages.NEW_VERSION_HINT')}}</small>
     <div id="toolbarIOS">
         <div class="form-group">
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridIOSVersionList')" id="btnIOSVersion">
@@ -38,6 +40,7 @@
 </div>
 <div>
     <hr class="primary" style="border-top: 1px solid #bbb1b1;">
+    <h4><strong>{{trans('messages.NOW_PUBLISH_VERSION')}}</strong></h4>
     <div id="toolbarIOSOnlineVersionList">
         <div class="form-group">
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridIOSOnlineVersionList')" id="btnIOSOnlineVersion">
@@ -71,6 +74,7 @@
 </div>
 <div>
     <hr class="primary" style="border-top: 1px solid #bbb1b1;">
+    <h4><strong>{{trans('messages.HISTORY_VERSION')}}</strong></h4>
     <div id="toolbarIOSHistoryVersionList">
         <div class="form-group">
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridIOSHistoryVersionList')" id="btnIOSHistoryVersion">

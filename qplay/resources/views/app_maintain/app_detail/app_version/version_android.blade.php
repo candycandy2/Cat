@@ -1,4 +1,6 @@
 <div>
+    <h4><strong>{{trans('messages.NEW_VERSION')}}</strong></h4>
+    <small class="text-muted"> * {{trans('messages.NEW_VERSION_HINT')}}</small>
     <div id="toolbarAndroid">
         <div class="form-group">
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridAndroidVersionList')" id="btnDelAndroidVersion">
@@ -38,6 +40,7 @@
 </div>
 <div>
     <hr class="primary" style="border-top: 1px solid #bbb1b1;">
+    <h4><strong>{{trans('messages.NOW_PUBLISH_VERSION')}}</strong></h4>
     <div id="toolbarAndroidOnlineVersionList">
         <div class="form-group">
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridAndroidOnlineVersionList')" id="btnDelAndroidOnlineVersion">
@@ -71,6 +74,7 @@
 
 <div>
     <hr class="primary" style="border-top: 1px solid #bbb1b1;">
+    <h4><strong>{{trans('messages.HISTORY_VERSION')}}</strong></h4>
     <div id="toolbarAndroidHistoryVersionList">
         <div class="form-group">
             <button type="button" class="btn btn-danger"  style="display: none" onclick="delAppVersion('gridAndroidHistoryVersionList')" id="btnDelAndroidHistoryVersion">
@@ -79,6 +83,7 @@
         </div>
     </div>
     <table id="gridAndroidHistoryVersionList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbarAndroidHistoryVersionList"
+           data-url="AppVersion/getAppHistoryVersion?app_row_id={{app('request')->input('app_row_id')}}&device_type=android" data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"

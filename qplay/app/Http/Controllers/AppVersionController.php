@@ -170,6 +170,7 @@ class AppVersionController extends Controller
         $deviceType = $input["device_type"];
 
         $appVersionList = $this->appVersionService->getAppHistoryVersion($appRowId, $deviceType);
+        return $appVersionList;
     }
 
     public function ajxValidVersion(){
