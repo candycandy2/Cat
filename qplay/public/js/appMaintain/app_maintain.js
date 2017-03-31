@@ -26,10 +26,10 @@ SaveAppDetail = function(){
      $('#gridIOSVersionList').bootstrapTable('resetSearch');
          
     if(projectCode == '000'){
-        if($('#gridAndroidVersionList').find('div.switch-success').size() <= 0){
+        if($('#tab_version_android').find('div.switch-success').size() <= 0){
             qplayAppErr.push('Android');
         }
-        if($('#gridIOSVersionList').find('div.switch-success').size() <= 0){
+        if($('#tab_version_ios').find('div.switch-success').size() <= 0){
             qplayAppErr.push('IOS');
         }
 
@@ -39,10 +39,10 @@ SaveAppDetail = function(){
         }
     }
 
-     $('#gridAndroidVersionList').find('div.switch-success').each(function(){
+     $('#tab_version_android').find('div.switch-success').each(function(){
         newAandroidStatus = $(this).parent().data('name');
      });
-     $('#gridIOSVersionList').find('div.switch-success').each(function(){
+     $('#tab_version_ios').find('div.switch-success').each(function(){
         newIOSStatus = $(this).parent().data('name');
      });
 
@@ -227,19 +227,36 @@ $(function () {
                     $.each(appUserData, function(i, user) {
                         formData.append('appUserList[]',user.row_id);
                     });
+                   
                     
-                    var androidVersionList =  $("#gridAndroidVersionList").bootstrapTable('getData');
-                    $.each(androidVersionList, function(i, version) {
-                        $.each(version, function(j,v){
-                            formData.append('versionList[android][' + i + '][' + j + ']',v);
-                        }); 
-                    });
-                    var iosVersionList =  $("#gridIOSVersionList").bootstrapTable('getData');
-                    $.each(iosVersionList, function(i, version) {
-                        $.each(version, function(j,v){
-                            formData.append('versionList[ios][' + i + '][' + j + ']',v);
-                        }); 
-                    });
+                    var androidGridListArr = [
+                                        'gridAndroidVersionList',
+                                        'gridAndroidOnlineVersionList'
+                                      ];
+                    var iosGridListArr = [
+                                        'gridIOSVersionList',
+                                        'gridIOSOnlineVersionList'
+                                      ];
+                    var androidNum = 0;
+                    for (var k = 0; k < androidGridListArr.length; k++) {
+                        var gridList = $("#" + androidGridListArr[k]).bootstrapTable('getData');
+                        $.each(gridList, function(i, version) {
+                            $.each(version, function(j,v){
+                                formData.append('versionList[android][' + androidNum + '][' + j + ']',v);
+                            }); 
+                            androidNum ++;
+                        });
+                    }
+                    var iosNum = 0;
+                    for (var k = 0; k < iosGridListArr.length; k++) {
+                        var gridList = $("#" + iosGridListArr[k]).bootstrapTable('getData');
+                        $.each(gridList, function(i, version) {
+                            $.each(version, function(j,v){
+                                formData.append('versionList[ios][' + iosNum + '][' + j + ']',v);
+                            }); 
+                            iosNum++;
+                        });
+                    }
 
                     formData.append('delVersionArr',delVersionArr);
 
@@ -256,7 +273,6 @@ $(function () {
                             formData.append('whiteList[' + i + '][' + j + ']',data);
                         }); 
                     });
-
                     $.ajax({
                         url: "AppMaintain/saveAppDetail",
                         type: "POST",

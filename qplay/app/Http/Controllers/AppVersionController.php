@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation;
 use Illuminate\Support\Facades\Input;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
+use App\lib\FilePath;
 use App\Services\AppVersionService;
 use App\Services\AppService;
 
@@ -24,7 +25,11 @@ class AppVersionController extends Controller
         $this->appVersionService = $appVersionService;
     }
 
-
+    /**
+     * 自動上架App版本
+     * @param  Request $request 
+     * @return json
+     */
     public function uploadAppVersion(Request $request){
         \DB::beginTransaction();
         try{
@@ -105,6 +110,100 @@ class AppVersionController extends Controller
         }
 
     }
+
+    /**
+     * 取得目前發布中的版本
+     * @return Array
+     */
+    public function getAppOnlineVersion(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $input = Input::get();
+         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
+        }
+        $appRowId = $input["app_row_id"];
+        $deviceType = $input["device_type"];
+
+        $appVersionList = $this->appVersionService->getAppOnlineVersion($appRowId, $deviceType);
+        return response()->json($appVersionList);
+    }
+
+    /**
+     * 取得最新上傳的版本
+     * @return Array
+     */
+    public function getAppNewVersion(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $input = Input::get();
+         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
+        }
+        $appRowId = $input["app_row_id"];
+        $deviceType = $input["device_type"];
+        $appVersionList = $this->appVersionService->getAppNewVersion($appRowId, $deviceType);
+        return response()->json($appVersionList);
+    }
+
+    /**
+     * 取得歷史版本
+     * @return Array
+     */
+    public function getAppHistoryVersion(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $input = Input::get();
+         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
+            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
+        }
+        $appRowId = $input["app_row_id"];
+        $deviceType = $input["device_type"];
+
+        $appVersionList = $this->appVersionService->getAppHistoryVersion($appRowId, $deviceType);
+    }
+
+    public function ajxValidVersion(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+
+         if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $versionNo = $jsonContent['versionNo'];
+            $versionName = $jsonContent['versionName'];
+            $deviceType = $jsonContent['deviceType'];
+            $appId = $jsonContent['appId'];
+            $error = [];
+            $resValidCode = $this->appVersionService->validateVersionCode($appId, $deviceType, $versionNo);
+            if(!$resValidCode){
+                $error['No'] = trans('messages.ERR_VERSION_NO_MUST_GREATER_THAN_PREVIOUS');
+            }
+            $resValidName = $this->appVersionService->validateVersionName($appId, $deviceType, $versionName);
+            if(!$resValidName){
+                $error['Name'] = trans('messages.ERR_VERSION_NAME_DUPLICATE');
+            }
+            if(count($error) > 0){
+                return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,'messages'=>$error ]);
+            }
+            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful]);
+        }
+
+        return null;
+    }
+
 
     /**
      * 根據副檔名驗證檔案類型
