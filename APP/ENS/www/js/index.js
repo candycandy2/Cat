@@ -191,7 +191,7 @@ function onBackKeyDown() {
             $('#' + popupID).popup('close');
             footerFixed();
         } else {
-            $.mobile.changePage('#viewEventList');
+            $.mobile.changePage('#' + prevPageID);
         }
 
     }

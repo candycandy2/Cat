@@ -2,8 +2,9 @@
 $("#viewEventContent").pagecontainer({
     create: function(event, ui) {
 
-        var eventRowID;
+        window.eventRowID;
         var eventFinish;
+        window.eventContentData;
         var taskData;
         var taskRowID;
         var photoUrl;
@@ -40,6 +41,8 @@ $("#viewEventContent").pagecontainer({
                         functionListPopup(data['Content']);
                     } else {
                         loadingMask("hide");
+
+                        eventContentData = data['Content'];
 
                         $("#contentEventContent .event-list-msg").remove();
 
@@ -377,6 +380,7 @@ $("#viewEventContent").pagecontainer({
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
+            prevPageID = "viewEventContent";
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -424,7 +428,9 @@ $("#viewEventContent").pagecontainer({
 
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
-
+            if (!eventFinish) {
+                $.mobile.changePage('#viewEventAdd');
+            }
         });
 
         //Report Event Work Done
