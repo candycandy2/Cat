@@ -13,6 +13,11 @@
 
 <header>
 	<h1>Android用戶下載說明</h1>
+  <script type="text/javascript">
+    var userLang = navigator.language || navigator.userLanguage; 
+    //alert ("The language is: " + userLang);//en-us //zh-tw
+    if(userLang !== 'zh-tw') window.location = "../InstallQPlay_english/androidinstall.html";
+  </script>
 </header>
 
 <article id="CONTENT">
