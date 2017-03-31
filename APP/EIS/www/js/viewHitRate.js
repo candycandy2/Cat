@@ -18,7 +18,7 @@ $("#viewHitRate").pagecontainer ({
         window.ROSummary = function() {
 
             if(localStorage.getItem("hitRateEisData") === null) {
-    	    	this.successCallback = function(data) {      
+    	    	this.successCallback = function(data) {
                     roSummaryCallBackData = data["Content"]["DataList"];
     	    		length = roSummaryCallBackData.length;
     	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
