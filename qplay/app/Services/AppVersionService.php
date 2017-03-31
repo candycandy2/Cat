@@ -214,7 +214,7 @@ class AppVersionService
      * @param  string  $copyToPath         目標檔案路徑
      * @param  boolean $alsoCopyManifest 是否一併移動manifest.plist檔案                 
      */
-    private function copyApkFileToPath($fileName, $copyFromPath, $copyToPath, $alsoCopyManifest = false){ 
+    public function copyApkFileToPath($fileName, $copyFromPath, $copyToPath, $alsoCopyManifest = false){ 
         \File::copy($copyFromPath.$fileName,$copyToPath.$fileName);
         if($alsoCopyManifest){
             \File::copy($copyFromPath.'manifest.plist',$copyToPath.'manifest.plist');
@@ -227,7 +227,7 @@ class AppVersionService
      * @param  string   $deviceType device type android|ios
      * @return string   $targetFilePath the path that had been delete
      */
-    private function deleteApkFileFromPublish($appId,$deviceType){
+    public function deleteApkFileFromPublish($appId,$deviceType){
 
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
         $OriPublish = $this->appVersionRepository->getPublishedApp($appId,$deviceType);
