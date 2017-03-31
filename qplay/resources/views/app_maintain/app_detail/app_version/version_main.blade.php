@@ -119,7 +119,7 @@
                         <td><span style="color: red;">*</span></td>
                     </tr>
                     <input type="hidden"  id="hidVersionRowId" name="hidVersionRowId">
-                    <input type="hidden"  id="hidDeviceType" name="hidDeviceType">
+                    <input type="hidden"  id="hidGridId" name="hidGridId">
                     <input type="hidden"  id="hidIndex" name="hidIndex">
                     <input type="hidden"  id="hidUrl" name="hidUrl">
                 </table>
@@ -190,12 +190,28 @@
 <script>
 
 function switchFormatter(value, row) {
+    
+    if(row.ready_date != null && row.status == 'cancel'){
+        if(row.external_app == 1){
+            return '-';
+        }
+        var download_url = row.download_url;
+        if(row.device_type == 'ios'){
+            download_url = download_url.replace("itms-services://?action=download-manifest&url=","");
+            download_url = download_url.replace("manifest.plist", row.url);
+        }
+        return '<a href="'+ download_url + '"><span class="glyphicon glyphicon-download-alt"> download</span></a>';
+    }
     var status = (row.status == 'ready')?'success':'off';
     return'<div class="switch switch-large has-switch" data-version="'+ row.row_id +'" data-name="'+row.version_name+'"><div class="switch-'+ status +' switch-animate"><input type="checkbox"><span class="switch-left switch-success">Publish</span><label class="">&nbsp;</label><span class="switch-right">Unpublish</span></div></div></div>';
 };
 
 function versionNameFormatter(value, row) {
-    return '<a href="#" class="editVersion" data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version_name="'+row.version_name+'" data-version_code="'+row.version_code+'" data-download_url="'+row.download_url+'" data-external="'+row.external_app+'" data-log="'+row.version_log+'" data-url="'+row.url+'"> '+ value +'</a>';
+    
+    if(row.ready_date != null && row.status == 'cancel'){
+            return value;
+    }
+    return '<a href="#" class="editVersion data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version_name="'+row.version_name+'" data-version_code="'+row.version_code+'" data-download_url="'+row.download_url+'" data-external="'+row.external_app+'" data-log="'+row.version_log+'" data-url="'+row.url+'"><span class="glyphicon glyphicon-edit"></span> '+ value +'</a>';
 };
 
 function createdDateFormatter(value, row){
@@ -237,7 +253,8 @@ var newExternalLink = function (device){
 var EditAppVersion = function(){
 
     var require = ['tbxEditVersionName','tbxEditVersionNo','tbxEditVersionLog','tbxEditVersionUrl'];
-    var errors = validRequired(require);
+    var errors = new Array();
+        errors = validRequired(errors, require);
     var editVersionLog = $('#tbxEditVersionLog').val();
    
 
@@ -255,10 +272,9 @@ var EditAppVersion = function(){
     if(errors.length > 0){
         return false;
     }
-    var deviceType = $("#hidDeviceType").val();
-    var $gridList = (deviceType == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
+    var gridId = $("#hidGridId").val();
+    var $gridList = $('#' + gridId);
     var currentData = $gridList.bootstrapTable('getData');
-    var $gridEditVersionListObj = (deviceType == 'ios')?$("#gridIOSVersionList"):$("#gridAndroidVersionList");
     var targetRow = currentData[$('#hidIndex').val()];
     targetRow.version_name =  $('#tbxEditVersionName').val();
     targetRow.version_code =  $('#tbxEditVersionNo').val();
@@ -282,7 +298,8 @@ var uploadNewVersion = function(){
     var device = $('#newAppVersionForm').attr('device');
     var require = ['tbxVersionName','tbxVersionNo','tbxVersionLog','versionFile'];
     var _validExtension = (device == 'ios')?'ipa':'apk';
-    var errors = validRequired(require);
+    var errors = new Array();
+        errors = validRequired(errors, require);
     var fileFackPath = $('input[name=versionFile]').val();
     var fileName = fileFackPath.replace(/C:\\fakepath\\/i, '');
     
@@ -291,7 +308,9 @@ var uploadNewVersion = function(){
     var versionLog = $('textarea[name=tbxVersionLog]').val();
 
     var $gridList = (device == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
+    var $onlineGridList = (device == 'ios')? $('#gridIOSOnlineVersionList'):$('#gridAndroidOnlineVersionList');
     var currentData = $gridList.bootstrapTable('getData');
+    var onlineData = $onlineGridList.bootstrapTable('getData');
 
     var regNum = /^\d+$/;
 
@@ -319,25 +338,22 @@ var uploadNewVersion = function(){
         errors.push(error);
     }
 
-    for(var j = 0; j < currentData.length; j++) {
-        if($.trim(currentData[j].version_code) == $.trim(versionCode)) {
-            var error = new Error;
-            error.field = 'tbxVersionNo';
-            error.msg = '{{trans('messages.ERR_VERSION_NO_DUPLICATE')}}';
-            errors.push(error);
-            break;
-        }
-    }
-
-
+    var mydata = {versionNo:$.trim(versionCode),
+                 versionName:$.trim(versionName),
+                deviceType:device,
+                appId:jsAppRowId};
+    var mydataStr = $.toJSON(mydata);
+    var field = 'tbxVersion';
+    errors = ajxValidVersion (errors, mydataStr, field);
     $.each(errors,function(i, error){
-        $('span[for='+error.field+']').html(error.msg);
+        if($('span[for='+error.field+']').html() == ''){
+            $('span[for='+error.field+']').html(error.msg);
+        }
     });
-
     if(errors.length > 0){
         return false;
     }
-   
+
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
@@ -351,7 +367,7 @@ var uploadNewVersion = function(){
     newVersion.version_file = $('#versionFile')[0].files[0];
     newVersion.size = $('#versionFile')[0].files[0].size;
     newVersion.external_app = 0;
-    currentData.push(newVersion);
+    currentData.splice(0,1,newVersion);
     $gridList.bootstrapTable('load', currentData);
     $("#newAppVersionDialog").modal('hide');
 }
@@ -360,7 +376,8 @@ var uploadNewExternalLink = function(){
     var device = $('#newAppVersionForm').attr('device');
     var require = ['tbxExternalName','tbxExternalNo','tbxExternalLog','tbxExternalLink'];
     var _validExtension = (device == 'ios')?'ipa':'apk';
-    var errors = validRequired(require);
+    var errors = new Array();
+    errors = validRequired(errors, require);
     
     var externalNo = $('input[name=tbxExternalNo]').val();
     var externalName = $('input[name=tbxExternalName]').val();
@@ -368,7 +385,9 @@ var uploadNewExternalLink = function(){
     var externalLink = $('input[name=tbxExternalLink]').val();
 
     var $gridList = (device == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
+    var $onlineGridList = (device == 'ios')? $('#gridIOSOnlineVersionList'):$('#gridAndroidOnlineVersionList');
     var currentData = $gridList.bootstrapTable('getData');
+    var onlineData = $onlineGridList.bootstrapTable('getData');
 
     var regNum = /^\d+$/;
 
@@ -386,31 +405,23 @@ var uploadNewExternalLink = function(){
         errors.push(error);
     }
 
-    for(var j = 0; j < currentData.length; j++) {
-        if($.trim(currentData[j].version_code) == $.trim(externalNo)) {
-            var error = new Error;
-            error.field = 'tbxExternalNo';
-            error.msg = '{{trans('messages.ERR_VERSION_NO_DUPLICATE')}}';
-            errors.push(error);
-            break;
-        }
-    }
-    for(var j = 0; j < currentData.length; j++) {
-        if($.trim(currentData[j].version_name) == $.trim(externalName)) {
-            var error = new Error;
-            error.field = 'tbxExternalName';
-            error.msg = '{{trans('messages.ERR_VERSION_NAME_DUPLICATE')}}';
-            errors.push(error);
-            break;
-        }
-    }
+    
+    var mydata = {versionNo:$.trim(externalNo),
+                 versionName:$.trim(externalName),
+                deviceType:device,
+                appId:jsAppRowId};
+    var mydataStr = $.toJSON(mydata);
+    var field = 'tbxExternal';
+    errors = ajxValidVersion (errors, mydataStr, field);
     $.each(errors,function(i, error){
-        $('span[for='+error.field+']').html(error.msg);
+        if($('span[for='+error.field+']').html() == ''){
+            $('span[for='+error.field+']').html(error.msg);
+        }
     });
-
     if(errors.length > 0){
         return false;
     }
+
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = externalLink;
@@ -422,13 +433,13 @@ var uploadNewExternalLink = function(){
     newVersion.version_name = externalName;
     newVersion.version_log  = externalLog;
     newVersion.external_app = 1;
-    currentData.push(newVersion);
+    currentData.splice(0,1,newVersion);
     $gridList.bootstrapTable('load', currentData);
     $("#appNewExternalLinkDialog").modal('hide');
 }
+var delAppVersion = function(gridId){
 
-var delAppVersion = function(device){
-    var $gridList = (device == 'ios')? $('#gridIOSVersionList'):$('#gridAndroidVersionList');
+    var $gridList = $( '#' + gridId );
     var $toolbar  =  $($gridList.data('toolbar'));
     var selectedVersion = $gridList.bootstrapTable('getSelections');
     var validToDelete = true;
@@ -443,7 +454,8 @@ var delAppVersion = function(device){
                 hideConfirmDialog();
                 var currentData = $gridList.bootstrapTable('getData');
                 $.each(selectedVersion, function(i, version) {
-                     var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
+                     var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index'); 
+                     delVersionArr.push(currentData[index].row_id);
                      currentData.splice(index,1);
                      $gridList.bootstrapTable('load', currentData);
                 });
@@ -473,30 +485,68 @@ function getApkDownLoadPath(appId,deviceType,versionCode,fileName){
     return url;
 }
 
+function ajxValidVersion(errors, mydataStr, field){
+     $.ajax({
+        url: "AppVersion/ajxValidVersion",
+        dataType: "json",
+        type: "POST",
+        contentType: "application/json",
+        async: false,//啟用同步請
+        data: mydataStr,
+        success: function (d, status, xhr) {
+            if(d.result_code != 1){
+                for (var k in d.messages){
+                     var error = new Error;
+                    if (typeof d.messages[k] !== 'function') {
+                        error.field = field + k;
+                        error.msg = d.messages[k];
+                        errors.push(error);
+                    }
+                }
+            }
+            $.each(errors,function(i, error){
+                if($('span[for='+error.field+']').html() == ''){
+                    $('span[for='+error.field+']').html(error.msg);
+                }
+            });
+        },
+        error: function (e) {
+            showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
+        }
+    });
+     return errors;
+}
+
 $(function () {
     $('body').on('change','.file', function(){showUploadFileName($(this))});
     $('body').on('keypress','input[type=text]', function(){clearError($(this));});
     $('body').on('change','input[type=file]', function(){clearError($(this));});
     $('body').on('change','textarea', function(){clearError($(this));});
-    
+    //unpublish
     $('body').on('click','div.switch-success', function(){
         var index = $(this).parents('tr').data('index');
         $(this).removeClass('switch-success').addClass('switch-off');
         var currentData = $(this).parents('table').bootstrapTable('getData');
-        currentData[index].status = 'cancel';
+        currentData[0].status = 'cancel';
+        if($(this).parents('table').attr('id').search('Online') == -1){
+            var gridId = ( currentData[0].device_type == 'ios')?'gridIOSOnlineVersionList':'gridAndroidOnlineVersionList';
+            $('#' + gridId).bootstrapTable('refresh');
+        }
     });
-
+    //publish
     $('body').on('click','div.switch-off', function(){
-       $(this).parents('tbody').find('div.switch-success').removeClass('switch-success').addClass('switch-off');
        var index = $(this).parents('tr').data('index');
        $(this).removeClass('switch-off').addClass('switch-success');
         var currentData = $(this).parents('table').bootstrapTable('getData');
-        
-        for (var i in currentData) {
-            if(i == index){
-                 currentData[i].status = 'ready'; 
-            }else{
-               currentData[i].status = 'cancel'; 
+         currentData[0].status = 'ready';
+         if($(this).parents('table').attr('id').search('Online') == -1){
+            var gridId = ( currentData[0].device_type == 'ios')?'gridIOSOnlineVersionList':'gridAndroidOnlineVersionList';
+            var onlineData = $('#' + gridId).bootstrapTable('getData');
+            if(onlineData.length > 0 ) {
+                if(onlineData[0].status == 'ready'){
+                    onlineData[0].status = 'cancel'; 
+                    $('#' + gridId).find('tbody').find('div.switch-success').removeClass('switch-success').addClass('switch-off');
+                }
             }
         }
     });
@@ -508,10 +558,9 @@ $(function () {
         if($currentTarget.data('external') == 1){
             disabled = false;
         }
-
         $('#hidIndex').val($currentTarget.parent().parent().data('index'));
         $('#hidVersionRowId').val($currentTarget.data('rowid'));
-        $('#hidDeviceType').val($currentTarget.data('device'));
+        $('#hidGridId').val($currentTarget.parents('table.bootstrapTable').attr('id'));
         $('#hidUrl').val($currentTarget.data('url'));
         $('#tbxEditVersionName').val($currentTarget.data('version_name')).prop('disabled', disabled);
         $('#tbxEditVersionNo').val($currentTarget.data('version_code')).prop('disabled', disabled);

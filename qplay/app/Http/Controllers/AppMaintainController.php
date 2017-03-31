@@ -18,11 +18,25 @@ use App\Model\QP_App_Custom_Api;
 use App\Model\QP_Role_App;
 use App\Model\QP_User_App;
 use App\Model\QP_White_List;
+use App\Services\AppVersionService;
+use App\Services\AppService;
 use DB;
 use File;
 
 class AppMaintainController extends Controller
-{
+{   
+
+    protected $appService;
+    protected $appVersionService;
+    /**
+     * 建構子，初始化引入相關服務
+     * @param AppVersionService $appVersionService 地點基本資訊服務
+     */
+    public function __construct(AppService $appService, AppVersionService $appVersionService)
+    {
+        $this->appService = $appService;
+        $this->appVersionService = $appVersionService;
+    }
 
     public function getCategoryList(){
 
@@ -491,7 +505,9 @@ class AppMaintainController extends Controller
         $appVersionList = \DB::table("qp_app_version")
                 -> where('app_row_id', '=', $appRowId)
                 -> where('device_type', '=', $deviceType)
-                -> select('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status', 'created_at')
+                -> where('status', '=', 'cancel')
+                -> where('ready_date', '!=', null)
+                -> select('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'created_at')
                 -> get();
         foreach ($appVersionList as $appVersion) {
             if($appVersion->external_app == 1){
@@ -571,9 +587,8 @@ class AppMaintainController extends Controller
                     $this->deleteErrorCode($appId);
                 }
             }
-            
-            if(isset($input['delVersionArr']) && is_array($input['delVersionArr'])){
-                $this->deleteAppVersionFile($appId,explode(",", $input['delVersionArr']));
+            if(isset($input['delVersionArr'])){
+                $this->deleteAppVersion($appId,explode(',',$input['delVersionArr']));
             }
             
             $versionList = array();
@@ -596,10 +611,10 @@ class AppMaintainController extends Controller
 
            \DB::commit();
            
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+           return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                'message'=>trans("messages.MSG_OPERATION_FAILED"),
+                'message'=>trans("messages.MSG_OPERATION_FAILED".$e->getMessage()),
                 'content'=>''
             ]);
            \DB::rollBack();
@@ -1092,24 +1107,15 @@ class AppMaintainController extends Controller
         }
     }
 
-    private function deleteAppVersionFile(Int $appId, Array $delVersionArr){
+    /**
+     * 刪除App版本
+     * @param  Int    $appId         qp_app_head.row_id
+     * @param  Array  $delVersionArr 欲刪除的版本qp_version.row_id陣列
+     * @return 
+     */
+    private function deleteAppVersion(Int $appId, Array $delVersionArr){
 
-        foreach ($delVersionArr as  $vId) {
-            $versionItem = QP_App_Version::where('row_id', $vId)
-                            ->first(['version_code','url','device_type']);
-            $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
-            
-            if($versionItem['device_type'] == 'ios'){
-               if (file_exists($destinationPath.'manifest.plist')) {
-                   unlink($destinationPath.'manifest.plist');
-                }
-            }
-
-            if(file_exists($destinationPath.$versionItem['url'])){
-                $result = unlink($destinationPath.$versionItem['url']);
-            }
-        }
-
+        $this->appVersionService->deleteAppVersion($appId, $delVersionArr);
     }
 
     /**
@@ -1118,8 +1124,9 @@ class AppMaintainController extends Controller
      * @param  Array  $versionList version object array
      */
     private function saveAppVersionList($appKey ,Int $appId, Array $versionList){
+
         
-        $appStatus = CommonUtil::getAppVersionStatus($appId);
+        $appStatus = $this->appVersionService->getAllPublishedAppStatus($appId);
         $insertArray = [];
         $updateArray = [];
         $saveId = [];
@@ -1127,7 +1134,6 @@ class AppMaintainController extends Controller
 
         foreach ($versionList as $deviceType => $versionItems) {
             
-            $this->deleteApkFileFromPath($appId,$deviceType);
             foreach ($versionItems as $value) {    
                 $data = array(
                     'app_row_id'=>$appId,
@@ -1139,12 +1145,16 @@ class AppMaintainController extends Controller
                     'status'=>$value['status'],
                     'device_type'=>$deviceType,
                 );
-                if(($value['status'] == 'ready') ){
+                if($value['status'] == 'ready'){
+                    //首次上架
                     if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
                         $data ['ready_date'] = time();
                     }
-                }else{
-                     $data ['ready_date'] = NULL;
+                }else if($value['status'] == 'cancel'){
+                    //將上線版本改為下架
+                    if(($value['version_code'] == $appStatus[$deviceType]['versionCode'])){
+                      $this->appVersionService->unPublishVersion($appId, $deviceType, \Auth::user()->row_id);
+                    }
                 }
                 if(isset($value['row_id'])){//update
                      $data['row_id'] = $value['row_id'];
@@ -1183,27 +1193,8 @@ class AppMaintainController extends Controller
             }
         }
 
-        $deleteApiRows = QP_App_Version::where('app_row_id','=',$appId)
-                            ->whereNotIn('row_id',$saveId)
-                            ->delete();
-        foreach($updateArray as $value){
-            $updatedRow = QP_App_Version::find($value['row_id']);
-            $updatedRow->version_name = $value['version_name'];
-            $updatedRow->version_code = $value['version_code'];
-            $updatedRow->version_log = $value['version_log'];
-            $updatedRow->url = $value['url'];
-            $updatedRow->status = $value['status'];
-            $updatedRow->updated_user = $value['updated_user'];
-            if(isset($value['ready_date'])){
-                if($value['ready_date'] == 'null'){
-                    $updatedRow->ready_date = NULL;
-                }else{
-                    $updatedRow->ready_date = $value['ready_date'];
-                }
-            }
-            $updatedRow->save();
-        }
-        QP_App_Version::insert($insertArray);
+        $this->appVersionService->updateVersion($updateArray);
+        $this->appVersionService->insertVersion($insertArray);
         
     }
 

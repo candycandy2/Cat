@@ -105,13 +105,21 @@ var selectedChanged = function (row, $element) {
         $currentToolBar.find('.btn-danger').hide();
         var selectedItems = $currentTarget.bootstrapTable('getSelections');
         if(selectedItems.length > 0) {
-             $currentToolBar.find('.btn-primary').fadeOut(300, function() {
-                $currentToolBar.find('.btn-danger').fadeIn(300);
-            });
+            if($currentToolBar.find('.btn-primary').length > 0){
+                 $currentToolBar.find('.btn-primary').fadeOut(300, function() {
+                    $currentToolBar.find('.btn-danger').fadeIn(300);
+                });
+            }else{
+                 $currentToolBar.find('.btn-danger').fadeIn(300);
+            }
         } else {
-            $currentToolBar.find('.btn-danger').fadeOut(300, function() {
-                $currentToolBar.find('.btn-primary').fadeIn(300);
-            });
+            if($currentToolBar.find('.btn-primary').length > 0){
+                $currentToolBar.find('.btn-danger').fadeOut(300, function() {
+                    $currentToolBar.find('.btn-primary').fadeIn(300);
+                });
+            }else{
+                 $currentToolBar.find('.btn-primary').fadeIn(300);
+            }
         }
     }
 }
@@ -132,8 +140,8 @@ var showUploadFileName = function($target){
     $target.parent().after('<span class="file-input-name">'+fileName+'</span>');  
 }
 
-function validRequired(fieldList){
-    var errors = new Array();
+function validRequired(errors, fieldList){
+    
     $.each(fieldList, function(i, item) {
         var value = $('input[name='+item+']').val();
         if(typeof value == "undefined"){
