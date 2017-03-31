@@ -1131,10 +1131,14 @@ class AppMaintainController extends Controller
         $updateArray = [];
         $saveId = [];
         $now = date('Y-m-d H:i:s',time());
+        
 
         foreach ($versionList as $deviceType => $versionItems) {
-            
+           
+            $deletePublishFile = true;
+
             foreach ($versionItems as $value) {    
+                
                 $data = array(
                     'app_row_id'=>$appId,
                     'version_code'=>$value['version_code'],
@@ -1145,15 +1149,11 @@ class AppMaintainController extends Controller
                     'status'=>$value['status'],
                     'device_type'=>$deviceType,
                 );
+
                 if($value['status'] == 'ready'){
                     //首次上架
                     if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
                         $data ['ready_date'] = time();
-                    }
-                }else if($value['status'] == 'cancel'){
-                    //將上線版本改為下架
-                    if(($value['version_code'] == $appStatus[$deviceType]['versionCode'])){
-                      $this->appVersionService->unPublishVersion($appId, $deviceType, \Auth::user()->row_id);
                     }
                 }
                 if(isset($value['row_id'])){//update
@@ -1183,63 +1183,28 @@ class AppMaintainController extends Controller
                     $data['created_at'] = $value['created_at'];
                     $insertArray[]=$data;
                 }
-
+                
                 if($value['status'] == 'ready' && $value['external_app'] == 0){
+                    $deletePublishFile = false;
                     $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
                     $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                    $needDeleteManifest = ($deviceType == 'ios')?true:false;
-                    $this->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $needDeleteManifest);
+                    $alsoCopyManifest = ($deviceType == 'ios')?true:false;
+                    $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
+                    $this->appVersionService->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $alsoCopyManifest);
                 }
             }
+            
+            if($deletePublishFile){
+                $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
+            }
         }
-
+        
         $this->appVersionService->updateVersion($updateArray);
         $this->appVersionService->insertVersion($insertArray);
+
         
     }
 
-    /**
-     * Find current publish File and delete it
-     * @param  int      $appId      app_row_id
-     * @param  string   $deviceType device type android|ios
-     * @return string   $targetFilePath the path that had been delete
-     */
-    private function deleteApkFileFromPath($appId,$deviceType){
-        $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
-        $OriPublish = QP_App_Version::where('app_row_id','=',$appId)
-                        ->where('device_type','=',$deviceType)
-                        ->where('status','=','ready')
-                        ->select('url','external_app')
-                        ->first();
-        if(!is_null($OriPublish) && $OriPublish->external_app == 0){
-            if($OriPublish->url!="" && file_exists($publishFilePath.$OriPublish->url)){
-                $result = unlink($publishFilePath.$OriPublish->url);
-            }
-            if($deviceType == 'ios'){
-                if(file_exists($publishFilePath.'manifest.plist')){
-                    unlink($publishFilePath.'manifest.plist');
-                }
-            }
-        }
-    }
-
-    /**
-     * copy apk file to destination fiile path
-     * @param  string  $fileName           destination file name
-     * @param  string  $copyFromPath       source file path
-     * @param  string  $copyToPath         target file path
-     * @param  boolean $needDeleteManifest need to copy manifest or not                    
-     */
-    private function copyApkFileToPath($fileName, $copyFromPath, $copyToPath, $needDeleteManifest = false){ 
-        \File::copy($copyFromPath.$fileName,$copyToPath.$fileName);
-        if($needDeleteManifest){
-            \File::copy($copyFromPath.'manifest.plist',$copyToPath.'manifest.plist');
-        }
-    }
-
-
-    private function uploadFileToBackup(){}
-    
     /**
      * To save CustomApi
      * @param  Int    $appkey        target app key
