@@ -1,7 +1,12 @@
 
 $("#viewEventContent").pagecontainer({
     create: function(event, ui) {
-        
+
+        window.eventRowID;
+        var eventFinish;
+        window.eventContentData;
+        var taskData;
+        var taskRowID;
         var photoUrl;
         var resizePhotoWidth;
         var resizePhotoHeight;
@@ -9,6 +14,7 @@ $("#viewEventContent").pagecontainer({
         /********************************** function *************************************/
 
         window.getEventDetail = function(eventID, action, callBack) {
+            eventRowID = eventID;
             //action >
             //member: get member list
             //function: get fucntion list
@@ -35,6 +41,8 @@ $("#viewEventContent").pagecontainer({
                         functionListPopup(data['Content']);
                     } else {
                         loadingMask("hide");
+
+                        eventContentData = data['Content'];
 
                         $("#contentEventContent .event-list-msg").remove();
 
@@ -67,6 +75,24 @@ $("#viewEventContent").pagecontainer({
 
                         //Event Title
                         eventListMsg.find(".event-list-msg-top .description").html(data['Content'].event_title);
+
+                        //Type: 緊急通報 / 一般通報
+                        var event_type = data['Content'].event_type;
+                        if (event_type === "一般通報") {
+                            eventListMsg.find(".event-list-msg-top .link .normal").show();
+                            eventListMsg.find(".event-list-msg-top .link .urgent").hide();
+                        }
+
+                        //Status: 未完成 / 完成
+                        var event_status = data['Content'].event_status;
+                        if (event_status === "完成") {
+                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
+                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
+
+                            eventFinish = true;
+                        } else {
+                            eventFinish = false;
+                        }
 
                         //Event Desc
                         var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
@@ -101,6 +127,7 @@ $("#viewEventContent").pagecontainer({
                         }
 
                         //Task List
+                        taskData = data['Content'].task_detail;
                         $("#contentEventContent #eventTaskListContent div").remove();
                         var eventTaskListBeforeHTML = $("#contentEventContent").find("template#tplEventTaskListBefore").html();
                         var eventTaskListAfterHTML = $("#contentEventContent").find("template#tplEventTaskListAfter").html();
@@ -146,6 +173,78 @@ $("#viewEventContent").pagecontainer({
             }();
 
         };
+
+        function updateTaskStatus(status) {
+            //status
+            //0: not finish
+            //1: finished
+
+            var self = this;
+
+            var queryDataObj = {
+                lang: "zh-tw",
+                need_push: "Y",
+                app_key: appKey,
+                task_row_id: taskRowID,
+                task_status: status,
+                emp_no: loginData["emp_no"]
+            };
+
+            var queryDataParameter = processLocalData.createXMLDataString(queryDataObj);
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+
+                var resultCode = data['ResultCode'];
+
+                if (resultCode === "014901") {
+                    var eventDetail = new getEventDetail(eventRowID);
+                } else if (resultCode === "014910") {
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                loadingMask("show");
+                CustomAPI("POST", true, "updateTaskStatus", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
+
+        function checkReportAuthority(dom, action) {
+            //First, check Event Finish, if finished, can not edit Task Status.
+            if (eventFinish) {
+                return;
+            };
+
+            //Only [admin] & Function Member can do report
+            var isAdmin = checkAuthority("admin");
+            var isMember = false;
+            var location = $(dom).find(".title").html();
+            var functionName = $(dom).find(".function").html();
+
+            for (var i=0; i<taskData.length; i++) {
+                if (taskData[i].task_location === location && taskData[i].task_function === functionName) {
+
+                    taskRowID = taskData[i].task_row_id;
+
+                    for (var j=0; j<taskData[i].user_task.length; j++) {
+                        if (loginData["emp_no"] === taskData[i].user_task[j].emp_no) {
+                            isMember = true;
+                        }
+                    }
+                }
+            }
+
+            if (isAdmin || isMember) {
+                if (action === "report") {
+                    $("#eventReportWorkDoneConfirm").popup("open");
+                } else {
+                    $("#eventCancelWorkDoneConfirm").popup("open");
+                }
+            }
+        }
 
         //For Plugin Camera
         function setOptions(srcType) {
@@ -259,10 +358,6 @@ $("#viewEventContent").pagecontainer({
             });
         }
 
-        function footerFixed() {
-            $(".event-content-footer").removeClass("ui-fixed-hidden");
-        }
-
         /********************************** page event *************************************/
         $("#viewEventContent").one("pagebeforeshow", function(event, ui) {
 
@@ -285,6 +380,7 @@ $("#viewEventContent").pagecontainer({
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
+            prevPageID = "viewEventContent";
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -332,25 +428,41 @@ $("#viewEventContent").pagecontainer({
 
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
-
+            if (!eventFinish) {
+                $.mobile.changePage('#viewEventAdd');
+            }
         });
 
         //Report Event Work Done
-        $(document).on("click", "#eventReportWorkDoneConfirm .cancel", function() {
+        $(document).on("click", ".work-before", function() {
+            checkReportAuthority(this, "report");
+        });
 
+        $(document).on("click", "#eventReportWorkDoneConfirm .cancel", function() {
+            $("#eventReportWorkDoneConfirm").popup("close");
+            footerFixed();
         });
 
         $(document).on("click", "#eventReportWorkDoneConfirm .confirm", function() {
-
+            $("#eventReportWorkDoneConfirm").popup("close");
+            footerFixed();
+            updateTaskStatus(1);
         });
 
-        //Cancel Event Work Done
-        $(document).on("click", "#eventCancelWorkDoneConfirm .cnacel", function() {
+        //Cancel Event Work
+        $(document).on("click", ".work-after", function() {
+            checkReportAuthority(this, "cancel");
+        });
 
+        $(document).on("click", "#eventCancelWorkDoneConfirm .cancel", function() {
+            $("#eventCancelWorkDoneConfirm").popup("close");
+            footerFixed();
         });
 
         $(document).on("click", "#eventCancelWorkDoneConfirm .confirm", function() {
-
+            $("#eventCancelWorkDoneConfirm").popup("close");
+            footerFixed();
+            updateTaskStatus(0);
         });
     }
 });

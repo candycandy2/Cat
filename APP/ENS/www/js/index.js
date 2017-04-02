@@ -159,6 +159,10 @@ function checkEventTemplateData(action, data) {
     }
 }
 
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+}
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -172,13 +176,23 @@ function onBackKeyDown() {
             navigator.app.exitApp();
         }
 
-    }/* else if (activePageID === "viewDetailInfo") {
+    } else if (activePageID === "viewEventContent") {
 
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
+            footerFixed();
+        } else {
+            $.mobile.changePage('#viewEventList');
+        }
+
+    } else if (activePageID === "viewEventAdd") {
+
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+            footerFixed();
         } else {
             $.mobile.changePage('#' + prevPageID);
         }
 
-    }*/
+    }
 }

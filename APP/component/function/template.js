@@ -533,15 +533,16 @@ var tplJS = {
             }
         });
 
-        $(document).one("popupbeforeposition", "#" + data.id, function() {
-            tplJS.preventPageScroll();
+        $(document).on("popupbeforeposition", "#" + data.id, function() {
+            //Scroll Page to top
+            $.mobile.activePage.animate({
+                "scrollTop": 0
+            }, 0, function() {
+                tplJS.preventPageScroll();
+            });
         });
 
-        $(document).one("popupafteropen", "#" + data.id, function() {
-
-        });
-
-        $(document).one("popupafterclose", "#" + data.id, function() {
+        $(document).on("popupafterclose", "#" + data.id, function() {
             tplJS.recoveryPageScroll();
         });
     }

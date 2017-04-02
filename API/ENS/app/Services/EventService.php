@@ -195,7 +195,7 @@ class EventService
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];
          foreach ($eventUserDetail as $user) {
-            $userList[] = $user->user_domain.'\\'.$user->login_id;
+            $userList[] = $user->user_domain."\\".$user->login_id;
          }
          return $userList;
    }
@@ -209,7 +209,7 @@ class EventService
         $userInfo = $this->userRepository->getUserInfoByEmpNo($empNoArr);
         $userList = [];
         foreach ($userInfo as $user) {
-            $userList[] = $user['user_domain'].'\\'.$user['login_id'];
+            $userList[] = $user['user_domain']."\\".$user['login_id'];
         }
         return $userList;
    }
@@ -224,7 +224,7 @@ class EventService
          $userList = [];
          foreach ($eventUserDetail as $key => $user) {
             $userData['emp_no'] = $user->emp_no;
-            $userData['login_id'] = $user->user_domain.'\\'.$user->login_id;
+            $userData['login_id'] = $user->user_domain."\\".$user->login_id;
             $userData['read_time'] = $user->read_time;
             $userList[] = $userData;
          }
@@ -486,6 +486,7 @@ class EventService
         $item['estimated_complete_date'] = $event->estimated_complete_date;
         $item['related_event_row_id'] = $event->related_event_row_id;
         $item['event_status'] = ($event->event_status == 0)?'未完成':'完成';
+        $item['chatroom_id,'] = $event->chatroom_id;
         $userInfo = $this->userRepository->getUserInfoByEmpNo(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];

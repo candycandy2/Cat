@@ -131,7 +131,7 @@ $("#viewEventList").pagecontainer({
 
                         //Status: 未完成 / 完成
                         var event_status = data['Content'][i].event_status;
-                        if (event_type === "完成") {
+                        if (event_status === "完成") {
                             eventListMsg.find(".event-list-msg-top .event-status .done").show();
                             eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                         }
@@ -414,6 +414,7 @@ $("#viewEventList").pagecontainer({
         }
 
         window.ahowEventData = function(dom, action) {
+            action = action || null;
             var openData = false;
 
             if (action === "member" || action === "function") {
@@ -450,10 +451,6 @@ $("#viewEventList").pagecontainer({
                 var eventDetail = new getEventDetail(eventID, action);
             }
         };
-
-        function footerFixed() {
-            $(".ui-footer").removeClass("ui-fixed-hidden");
-        }
 
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
@@ -562,6 +559,8 @@ $("#viewEventList").pagecontainer({
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
+            prevPageID = "viewEventList";
+
             //Set Active Tab
             $("#tabEventList a:eq(0)").addClass("ui-btn-active");
             $("#tabEventList").tabs({ active: 0 });

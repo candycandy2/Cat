@@ -18,8 +18,7 @@ var monthlyHighchartsData = {
 $("#viewMonthlyHitRate").pagecontainer({
     create: function(event, ui) {
 
-        window.UserAuthority = function() {
-            var index = 0;   
+        window.UserAuthority = function() { 
             this.successCallback = function(data) {
                 userAuthorityCallBackData = data["Content"]["DataList"];
                 length = userAuthorityCallBackData.length;
@@ -32,37 +31,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".Product").html("");
                 $(".Product").append(productList).enhanceWithin();
-
-                year = thisYear-1;
-                month = thisMonth;
-                while(index < 13) {
-                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
-                    monthlyPageDate[index] = month + "." + year;
-                    if(month == 12){
-                        year++;
-                        month = 0;
-                    }
-                    month++;
-                    index++;
-                }
-                $(".sliderMonthly").html("");
-                $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
-                
-                index = 0;
-                year = thisYear-1;
-                month = thisMonth;
-                while(index < 2) {
-                    ytdPageDateList += "<div>" + year + "</div>";
-                    if(year == thisYear) {
-                        ytdPageDate[index] = thisMonth + "." + year;
-                    }else{
-                        ytdPageDate[index] = 12 + "." + year;
-                    }
-                    index++;
-                    year++;
-                }
-                $(".sliderYTD").html("");
-                $(".sliderYTD").append(ytdPageDateList).enhanceWithin();
 
                 loadingMask("hide");
             };
@@ -79,10 +47,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 productDetailCallBackData = data["Content"]["DataList"];
                 length = productDetailCallBackData.length;
                 convertData();
-                // thisMonthEisdata = eisdata[thisYear][thisMonth];
-                // thisMonthEisdataTimeArray = [thisMonthEisdata, nowTime];
                 localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
-                // localStorage.setItem("thisMonthEisdata", JSON.stringify(thisMonthEisdataTimeArray));
             }
 
             this.failCallback = function(data) {
@@ -430,11 +395,25 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
-        window.setScrollMenuHeight = function() {
-            $('div.scrollmenu a').css({'width': ($('body').width()-5)/6});
-        }
-
         function initSlider() {
+            if(monthlyPageDateExist) {   
+                var index = 0;
+                year = thisYear-1;
+                month = thisMonth;
+                while(index < 13) {
+                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
+                    monthlyPageDate[index] = month + "." + year;
+                    if(month == 12){
+                        year++;
+                        month = 0;
+                    }
+                    month++;
+                    index++;
+                }
+                $(".sliderMonthly").html("");
+                $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
+            }
+            monthlyPageDateExist = false;
             if($(".sliderMonthly").hasClass("slick-slider") || $(".sliderMonthly").hasClass("slick-initialized")){
                 $(".sliderMonthly").slick("unslick");
             }
@@ -481,8 +460,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                     title: {
                         text: 'Month',
                         align: 'high',   
-                        // x: 31,
-                        // y: -18
                         x: 5,
                         y: -5
                     },
@@ -582,7 +559,6 @@ $("#viewMonthlyHitRate").pagecontainer({
                     color: '#134A8C',
                     data: monthlyHighchartsData["Budget " + tab][year],
                     lineWidth: 1,
-                    // yAxis: 1
                 }]
             };
             options.chart.renderTo = "viewMonthlyHitRate-hc-canvas";
@@ -594,7 +570,6 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
-            setScrollMenuHeight();
             initSlider();
             $("#viewMonthlyHitRate #title-container > #title > #actualValue > p").text("Adj. Sales");
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
@@ -602,6 +577,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
             $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(".Product #ALL").removeClass('disableHover');
             $(".Ro #ALL").addClass('hover');
             $(".Product #ALL").addClass('hover');
 
@@ -621,14 +597,8 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".page-tabs #viewMonthlyHitRate-tab-1").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("Adj. Sales");
             tab = "AMT";
-            // $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            // $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").removeClass('disableHover');
             $(".Product #ALL").removeClass('disableHover');
-            // $(".Ro #" + ro).addClass('hover');
-            // $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
-            // getHighchartsData(ro, product);
             showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
@@ -639,17 +609,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".page-tabs #viewMonthlyHitRate-tab-2").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("ASP");
             tab = "ASP";
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").addClass('disableHover');
             $(".Product #ALL").addClass('disableHover');
-            if(ro == "ALL") {
-                ro = "BQA";
-            }
             if(product == "ALL") {
                 product = "PRJ";
             }
-            $(".Ro #" + ro).addClass('hover');
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
             getHighchartsData(ro, product);
@@ -663,17 +627,11 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(".page-tabs #viewMonthlyHitRate-tab-3").on("click", function() {
             $("#title-container > #title > #actualValue > p").text("Net Quantity");
             tab = "QTY";
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").addClass('disableHover');
             $(".Product #ALL").addClass('disableHover');
-            if(ro == "ALL") {
-                ro = "BQA";
-            }
             if(product == "ALL") {
                 product = "PRJ";
             }
-            $(".Ro #" + ro).addClass('hover');
             $(".Product #" + product).addClass('hover');
             hcTitle = "";
             getHighchartsData(ro, product);
@@ -688,28 +646,26 @@ $("#viewMonthlyHitRate").pagecontainer({
         $(document).on('click', '#viewMonthlyHitRate .Ro > a', function(e) {
             e.preventDefault();
             ro = $(this).context.id;
-            if(tab == "AMT" || ro != "ALL") {
-                if($(this).context.id == "ALL") {
-                    hcRo = "All";
-                }else{
-                    hcRo = $(this).context.id;
-                }
-                $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
-                $(this).addClass('hover');
-                actualValue = getActualValue(ro, product, year, month, tab);
-                budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
-                yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
-                getHighchartsData(ro, product);
-                showHighchart();
-                showData();
+            if($(this).context.id == "ALL") {
+                hcRo = "All";
+            }else{
+                hcRo = $(this).context.id;
             }
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
+            actualValue = getActualValue(ro, product, year, month, tab);
+            budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
+            yoyGrowth = getYOYGrowth(ro, product, year, month, tab);
+            getHighchartsData(ro, product);
+            showHighchart();
+            showData();
         });
 
         $(document).on('click', '#viewMonthlyHitRate .Product > a', function(e) {
             e.preventDefault();
-            product = $(this).context.id;
-            if(tab == "AMT" || product != "ALL") {
-                if($(this).context.id == "ALL"){
+            if(tab == "AMT" || $(this).context.id != "ALL") {
+                product = $(this).context.id;
+                if($(this).context.id == "ALL") {
                     hcProduct = "All product";
                 }else{
                     hcProduct = $(this).context.id;
