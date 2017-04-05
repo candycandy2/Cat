@@ -6,7 +6,7 @@
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
-use App\Model\EN_User;
+use App\Model\QP_User;
 use App\Model\EN_Usergroup;
 use DB;
 
@@ -19,7 +19,7 @@ class UserRepository
      * UserRepository constructor.
      * @param User $user
      */
-    public function __construct(EN_User $user, EN_Usergroup $userGroup)
+    public function __construct(QP_User $user, EN_Usergroup $userGroup)
     {
         $this->user = $user;
          $this->userGroup = $userGroup;
@@ -31,10 +31,13 @@ class UserRepository
      * @return mixed
      */
     public function getUserAuth($empNo){
+        
+        $ensDataBaseName = \Config::get('database.connections.mysql.database');
+        $userTableName = $this->user->getTableName();
 
         return $this->user
             ->where('en_usergroup.emp_no', '=', (string)$empNo)
-            ->join( 'en_usergroup', 'en_user.emp_no', '=', 'en_usergroup.emp_no')
+            ->join( $ensDataBaseName . '.en_usergroup as en_usergroup', $userTableName . '.emp_no', '=', 'en_usergroup.emp_no')
             ->select('usergroup')
             ->get();
 
