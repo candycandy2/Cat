@@ -225,6 +225,7 @@ function zoomInChart() {
 }
 
 function callProductDetailAPI() {
+    //review by alan : add callLaste2MonothsProductDetailAPI for reduce data
     for(var i=0; i<=3; i++) {
         var maxMonth = (i == 0) ? Number(currentMonth) : 12;
         for(var j=maxMonth; j>0; j--) {
