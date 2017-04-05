@@ -37,6 +37,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             this.failCallback = function(data) {
                 console.log("api misconnected");
             };
+            
             var _construct = function() {
                 CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
             }();
