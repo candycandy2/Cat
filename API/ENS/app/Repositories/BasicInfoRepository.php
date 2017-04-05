@@ -6,7 +6,6 @@
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
-use App\Model\EN_User;
 use App\Model\EN_Basic_Info;
 use DB;
 
