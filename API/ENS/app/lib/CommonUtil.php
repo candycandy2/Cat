@@ -25,11 +25,11 @@ class CommonUtil
     public static function checkUserStatusByUserEmpNo($empNo)
     {   
         $result = true;
-        $userList = \DB::table('en_user')
-            -> where('en_user.emp_no', '=', $empNo)
-            -> where('en_user.status', '<>', 'N')
-            -> where('en_user.resign', '<>', 'Y')
-            -> select('en_user.row_id', 'en_user.status', 'en_user.resign','en_user.emp_no')->get();
+        $userList = \DB::connection('mysql_qplay')->table('qp_user')
+            -> where('emp_no', '=', $empNo)
+            -> where('status', '<>', 'N')
+            -> where('resign', '<>', 'Y')
+            -> select('row_id', 'status', 'resign','emp_no')->get();
 
         if(count($userList) < 1) {
             $result = false; //用户不存在
