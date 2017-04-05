@@ -61,7 +61,8 @@ $("#viewHitRate").pagecontainer ({
                     zoomInChart();
                 }
                 var lastTime = JSON.parse(localStorage.getItem("hitRateEisData"))[1];
-                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'dd')) {
+                // set 'mm' for the temporary test
+                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'mm')) {
                     localStorage.removeItem("hitRateEisData");
                     ROSummary();
                 }
