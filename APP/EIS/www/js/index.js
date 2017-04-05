@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, currentDate, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, ROSummaryQueryData, productDetailQueryData, UserAuthorityQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
@@ -115,11 +115,11 @@ window.initialSuccess = function() {
     }
 
     loadingMask("show");
-    queryData =   "<LayoutHeader><StartYearMonth>"
-                + (currentYear - 3) + "/01"
-                + "</StartYearMonth><EndYearMonth>"
-                + currentYear + "/" + currentMonth
-                + "</EndYearMonth></LayoutHeader>";
+    ROSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
     ROSummary();
     $.mobile.changePage("#viewHitRate");
 }
