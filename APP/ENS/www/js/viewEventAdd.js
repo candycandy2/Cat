@@ -602,6 +602,7 @@ $("#viewEventAdd").pagecontainer({
         });
 
         $("#viewEventAdd").on("pageshow", function(event, ui) {
+            loctionFunctionData = [];
 
             $("#textDateTime").html("");
             $("#eventaAdditionalContent .event-add-additional-list").remove();
