@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, currentDate, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, ROSummaryQueryData, productDetailQueryData, UserAuthorityQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
@@ -107,18 +107,19 @@ window.initialSuccess = function() {
     }else {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        if (checkDataExpired(lastTime, allExpiredTime, 'dd')) {
+        // set 'mm' for the temporary test
+        if (checkDataExpired(lastTime, allExpiredTime, 'mm')) {
             localStorage.removeItem("eisdata");
             callProductDetailAPI();
         }
     }
 
     loadingMask("show");
-    queryData =   "<LayoutHeader><StartYearMonth>"
-                + (currentYear - 3) + "/01"
-                + "</StartYearMonth><EndYearMonth>"
-                + currentYear + "/" + currentMonth
-                + "</EndYearMonth></LayoutHeader>";
+    ROSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
     ROSummary();
     $.mobile.changePage("#viewHitRate");
 }
