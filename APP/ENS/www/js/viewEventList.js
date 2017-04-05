@@ -698,15 +698,21 @@ $("#viewEventList").pagecontainer({
                 if (user === userID) {
                     $("#contactUserPopup #userName").html(detail["login_id"]);
                     $("#contactUserPopup #extNo").html(detail["user_ext_no"]);
+                    $("#contactUserPopup a").css("color", "#38c");
 
                     var mailTo = "#";
                     var tel = "#";
 
                     if (detail["email"] !== null) {
                         mailTo = "mailto:" + detail["email"] + "?subject=ENS";
+                    } else {
+                        $("#contactUserPopup #mail").css("color", "#d6d6d6");
                     }
+
                     if (detail["user_ext_no"] !== null) {
                         tel = "tel:" + detail["user_ext_no"];
+                    } else {
+                        $("#contactUserPopup #tel").css("color", "#d6d6d6");
                     }
 
                     $("#contactUserPopup #mail").prop("href", mailTo);
