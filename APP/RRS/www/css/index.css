@@ -16,6 +16,8 @@ a {
     text-decoration: none !important;
 }
 
+.ui-header-fixed.ui-fixed-hidden{ top: -1px;}
+
 .ios-fix-overlap-div {
     display: initial !important;
 }
@@ -139,7 +141,7 @@ a {
     border-style: solid;
     border-color: #d6d6d6;
     border-width: 0px 1px 1px 0px;
-    padding: .4em 2vw !important;
+    padding: 1.692vw 2vw !important;
 }
 
 #reserveDateSelect > div.ui-grid-c {
@@ -224,9 +226,12 @@ div.square {
 
 .ui-margin-public {
     margin: 1.8vw 3.71vw 0 !important;
-    padding-bottom: 3.99vw;
     font-size: 4.18vw;
 }
+
+.ui-margin-public:not(#pageOne):not(#pageTwo){ padding-bottom: 4.3vw;}
+
+#pageOne{ margin-top: 0 !important;}
 
 #viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
 #newSettingFloor{ font-size: 4.18vw;}
@@ -282,32 +287,32 @@ div.square {
 }
 
 .btn-myreserve {
-    border-radius: 40px;
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
     color: white;
     width: 22vw;
-    height: 4.5vh;
-    line-height: 5vh;
-    text-align: center;
+    text-align: right;
     background-color: transparent;
-    color: white;
-    border-width: 1px;
-    border-color: white;
-    border-style: solid;
     display: inline-block;
 }
 
-.myreserve-margin {
-    font-size: 2.8vh;
-    margin: 1.7vh 4.8vw;
+.myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
+
+#viewMyReserve{ box-sizing: border-box; padding-left: 3.71vw !important;}
+
+#viewMyReserve .ui-margin-public{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
+#viewMyReserve .ui-margin-public:after{
+    content: '';
+    background-color: #989898;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
-.myreserve-height {
-    height: 10.7vh;
-    line-height: 10.7vh;
-}
+#viewMyReserve .ui-margin-public > div > div{ margin: 4vw 0 3vw;}
+
+.delete-myreserve{ width: 4.186vw; height: auto;}
 
 .setting-delete {
     position: absolute;
@@ -482,8 +487,8 @@ hr.ui-color-green {
 }
 
 .btn-disable {
-    background-color: #ddd !important;
-    color: #666 !important;
+    background-color: #d6d6d6 !important;
+    color: #999 !important;
 }
 
 .btn-otherday {
@@ -505,21 +510,16 @@ hr.ui-color-green {
 }
 
 .ui-linear-gradient-gary {
-    background: -webkit-linear-gradient(#a1a3a5, #747679);
-    background: -o-linear-gradient(#a1a3a5, #747679);
-    background: -moz-linear-gradient(#a1a3a5, #747679);
-    background: linear-gradient(#a1a3a5, #747679);
-    color: white !important;
+    color: #323232 !important;
+    background-color: #f6f6f6 !important;
 }
 
 .ui-linear-gradient-green {
-    background: -webkit-linear-gradient(#009cb5, #056c92);
-    background: -o-linear-gradient(#009cb5, #056c92);
-    background: -moz-linear-gradient(#009cb5, #056c92);
-    background: linear-gradient(#009cb5, #056c92);
-    color: white !important;
+    color: #323232 !important;
+    background-color: transparent !important;
 }
 
+.ui-linear-gradient-green span, .ui-linear-gradient-gary span{ margin-left: 4.5vw;}
 
 /********************************** scrollmenu *************************************/
 
@@ -547,7 +547,7 @@ div.scrollmenu a {
 
 #scrollDate a,
 #quickReserveScrollDate a {
-    padding: 3vw 0;
+    padding: 2.894vw 0 2.567vw;
     width:30%;
     font-weight: normal;
 }
@@ -555,7 +555,7 @@ div.scrollmenu a {
 #scrollDate a{ padding: 2.4vw 0;}
 
 #reserveRoom a {
-    padding: 3vw 0;
+    padding: 2.894vw 0 2.567vw;
     font-weight: normal;
     width: 22%;
 }
@@ -565,6 +565,20 @@ div.scrollmenu a {
     color: white !important;
 }
 
+.popup-msg a{ 
+    background: transparent;
+    border: none;
+    color: #1678E5;
+    height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    bottom: 0;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 3rem;
+}
 
 /********************************** new header *************************************/
 
@@ -654,9 +668,7 @@ div.scrollmenu a {
     -moz-box-shadow: none !important;
 }
 
-#reservePopupSchemeMsg #msgContent {
-    margin: 0 auto;
-}
+.popup-msg{ height: auto !important; overflow: hidden;}
 
 .popup-msg a {
     background: transparent;
@@ -665,13 +677,13 @@ div.scrollmenu a {
     height: 3rem;
     line-height: 3rem;
     font-size: 1rem;
-    width: 50%;
-    position: absolute;
-    bottom: 0;
+    width: calc((100% - 1px) / 2 );
     cursor: pointer;
     outline: none;
     text-align: center;
     font-weight: 100;
+    float: left;
+    display: inline-block;
 }
 
 .popup-msg a:nth-of-type(1) {

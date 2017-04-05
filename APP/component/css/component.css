@@ -405,13 +405,15 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     margin-right: 1.5vw;
 }
 
+#msgTitle{ font-size: 4.18vw; font-weight: normal;}
+
 #msgContent {
     margin: 3vh 3vh;
 }
 
 .popup-msg div {
     text-align: center;
-    font-size: 1rem;
+    font-size: 4.18vw;
 }
 
 .popup-msg div > table {

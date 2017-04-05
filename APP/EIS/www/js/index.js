@@ -96,16 +96,8 @@ $(document).one("pagebeforeshow", function() {
 });
 
 window.initialSuccess = function() {
-
     currentYear = time.getFullYear();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
-    loadingMask("show");
-    queryData =   "<LayoutHeader><StartYearMonth>"
-                + (currentYear - 3) + "/01"
-                + "</StartYearMonth><EndYearMonth>"
-                + currentYear + "/" + currentMonth
-                + "</EndYearMonth></LayoutHeader>";
-    ROSummary();
     if(localStorage.getItem("eisdata") === null) {
         callProductDetailAPI();
     }else {
@@ -116,6 +108,14 @@ window.initialSuccess = function() {
             callProductDetailAPI();
         }
     }
+
+    loadingMask("show");
+    queryData =   "<LayoutHeader><StartYearMonth>"
+                + (currentYear - 3) + "/01"
+                + "</StartYearMonth><EndYearMonth>"
+                + currentYear + "/" + currentMonth
+                + "</EndYearMonth></LayoutHeader>";
+    ROSummary();
     $.mobile.changePage("#viewHitRate");
 }
 

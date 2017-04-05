@@ -127,8 +127,8 @@
                     } while (strTime != eTime);
                 }
 
-                var msgContent = '<table><tr><td>會議室</td><td>' + clickReserveRoom + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + clickReserveTime + '</td></tr></table>';
-                popupMsg('cancelMsg', '確定取消預約?', msgContent, '取消', true, '確定', 'warn_icon.png');
+                var msgContent = '<div>' + '&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
+                popupMsg('cancelMsg', '確定取消預約 ' + clickReserveRoom + '?', msgContent, '取消', true, '確定', 'warn_icon.png');
             });
 
             $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
