@@ -53,12 +53,19 @@
                             $('#todayLine').removeClass('disable');
                             $('#todayLine').after(htmlContent_today);
                         }
-
-                        $('#otherDayLine').after(htmlContent_other);
+                        if(htmlContent_other == ''){
+                            $('#otherDayLine').addClass('disable');
+                        }
+                        else{
+                            $('#otherDayLine').removeClass('disable');
+                            $('#otherDayLine').after(htmlContent_other);
+                        }
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
                         popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', '');
+                        $('#todayLine').addClass('disable');
+                        $('#otherDayLine').addClass('disable');
                     }
                     loadingMask('hide');
                 };
