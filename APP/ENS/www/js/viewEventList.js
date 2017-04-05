@@ -148,6 +148,14 @@ $("#viewEventList").pagecontainer({
                         $("#reportDiv").append(eventListMsg);
                     }
 
+                    //Open Event Detail from QPlay
+                    if (openEventFromQPlay) {
+                        var eventDetail = new getEventDetail(eventRowID);
+                        $.mobile.changePage('#viewEventContent');
+
+                        openEventFromQPlay = false;
+                    }
+
                 } else if (resultCode === "014904") {
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
