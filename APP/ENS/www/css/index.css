@@ -4,6 +4,10 @@
     padding: 0px;
 }
 
+a {
+    text-decoration: none;
+}
+
 /*new class*/
 .event-list-msg-top .description {
     font-size: 4.18vw;

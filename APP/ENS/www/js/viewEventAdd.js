@@ -797,9 +797,26 @@ $("#viewEventAdd").pagecontainer({
             $("#eventEditConfirm").popup("close");
         });
 
+        //Event Edit Cancel Button
+        $(document).on("click", "#eventEditCancelConfirm .cancel", function() {
+            $("#eventEditCancelConfirm").popup("close");
+        });
+
+        $(document).on("click", "#eventEditCancelConfirm .confirm", function() {
+            $("#eventEditCancelConfirm").popup("close");
+
+            var eventDetail = new getEventDetail(eventRowID);
+            $.mobile.changePage('#viewEventContent');
+        });
+
         //Event Add Fail
         $(document).on("click", "#eventAddFail .confirm", function() {
             $("#eventAddFail").popup("close");
+        });
+
+        //Back Button
+        $(document).on("click", "#eventAddBack", function() {
+            onBackKeyDown();
         });
     }
 });
