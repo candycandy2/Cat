@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
@@ -97,13 +97,17 @@ $(document).one("pagebeforeshow", function() {
 
 window.initialSuccess = function() {
     currentYear = time.getFullYear();
+    currentDate = time.getDate();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    if(currentDate == 1) {
+        currentMonth = currentMonth - 1;
+    }
     if(localStorage.getItem("eisdata") === null) {
         callProductDetailAPI();
     }else {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
+        if (checkDataExpired(lastTime, allExpiredTime, 'dd')) {
             localStorage.removeItem("eisdata");
             callProductDetailAPI();
         }

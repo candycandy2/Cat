@@ -136,6 +136,11 @@
 
 /*list        ----------------------------*/
 
+.firstli{
+
+    border-top: honeydew !important; 
+}
+
 .Listdiv1{/*list */
     display    : inline-block;
     float      : left;
@@ -161,6 +166,7 @@
     background-size:5vw;   
     float: left;           
     */
+    margin-top:  3.5VW;
 }
 
 
@@ -178,6 +184,7 @@
     float      : left;
     position   : absolute;
     right      : 2VW;
+    margin-top : 4.5VW; 
        
 }
 
@@ -215,7 +222,7 @@
 }
 
 .star_icon {
-    margin-top: 2VW;
+    margin-top: 3.5VW;
     opacity   : 1;
     float     : left;    
     width     : 3.54vw; 
