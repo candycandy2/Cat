@@ -191,7 +191,11 @@ function onBackKeyDown() {
             $('#' + popupID).popup('close');
             footerFixed();
         } else {
-            $.mobile.changePage('#' + prevPageID);
+            if (prevPageID === "viewEventList") {
+                $.mobile.changePage('#viewEventList');
+            } else if (prevPageID === "viewEventContent") {
+                $("#eventEditCancelConfirm").popup("open");
+            }
         }
 
     }
