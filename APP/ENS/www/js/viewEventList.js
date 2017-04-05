@@ -148,6 +148,14 @@ $("#viewEventList").pagecontainer({
                         $("#reportDiv").append(eventListMsg);
                     }
 
+                    //Open Event Detail from QPlay
+                    if (openEventFromQPlay) {
+                        var eventDetail = new getEventDetail(eventRowID);
+                        $.mobile.changePage('#viewEventContent');
+
+                        openEventFromQPlay = false;
+                    }
+
                 } else if (resultCode === "014904") {
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
@@ -236,6 +244,22 @@ $("#viewEventList").pagecontainer({
 
                     }
 
+                    //Sort Function
+                    var tempArr = [];
+                    var tempObj = {};
+
+                    $.each(loginData["BasicInfo"]["function"], function(key, user) {
+                        tempArr.push(key);
+                    });
+
+                    tempArr.sort();
+
+                    for (var i=0; i<tempArr.length; i++) {
+                        tempObj[tempArr[i]] = loginData["BasicInfo"]["function"][tempArr[i]];
+                    }
+
+                    loginData["BasicInfo"]["function"] = tempObj;
+
                     //Sort User ID
                     loginData["BasicInfo"]["user"].sort();
 
@@ -245,8 +269,9 @@ $("#viewEventList").pagecontainer({
                     } else {
                         memberListView("location");
                     }
-                    memberListView("location");
+
                 }
+
             };
 
             this.failCallback = function(data) {};
@@ -264,16 +289,16 @@ $("#viewEventList").pagecontainer({
             var eventMemberDataListHTML = $("template#tplEventMemberDataList").html();
             $("#eventMemberTypeContent").siblings().remove();
 
-            if (sortType === "userDetail") {
+            if (sortType === "user") {
                 var eventMemberDataList = $(eventMemberDataListHTML);
                 eventMemberDataList.find(".title").html("管理員");
 
                 var eventMemberDataListView = eventMemberDataList.find("ul");
                 var eventMemberData = "";
 
-                $.each(loginData["BasicInfo"][sortType], function(key, user) {
-                    eventMemberData += "<li>" + key + "</li>";
-                });
+                for (var i=0; i<loginData["BasicInfo"][sortType].length; i++) {
+                   eventMemberData += "<li>" + loginData["BasicInfo"][sortType][i] + "</li>"; 
+                }
 
                 eventMemberDataListView.html(eventMemberData);
                 $("#memberDiv").append(eventMemberDataList);
@@ -410,6 +435,7 @@ $("#viewEventList").pagecontainer({
             //Only [admin] can Add New Event
             if (checkAuthority("admin")) {
                 $("#addEvent").show();
+                footerFixed();
             }
         }
 
@@ -525,7 +551,7 @@ $("#viewEventList").pagecontainer({
                     value: "function",
                     text: "IT Function排序"
                 }, {
-                    value: "userDetail",
+                    value: "user",
                     text: "成員排序"
                 }],
                 defaultValue: eventMemberTypeDefaultVal
@@ -555,6 +581,14 @@ $("#viewEventList").pagecontainer({
             };
 
             tplJS.Popup(null, null, "append", eventRelatedNoAuthorityPopupData);
+
+            //Contact User Popup
+            var contactUserPopupData = {
+                id: "contactUserPopup",
+                content: $("template#tplContactUserPopup").html()
+            };
+
+            tplJS.Popup("viewEventList", "contentEventList", "append", contactUserPopupData);
 
         });
 
@@ -662,6 +696,46 @@ $("#viewEventList").pagecontainer({
 
             //Remember Event Member Sort Type
             window.localStorage.setItem("eventMemberType", $(this).val());
+        });
+
+        //Mail / Tel
+        $(document).on("click", ".event-member-data-list ul li", function() {
+            var userID = $(this).html();
+
+            $.each(loginData["BasicInfo"]["userDetail"], function(user, detail) {
+                if (user === userID) {
+                    $("#contactUserPopup #userName").html(detail["login_id"]);
+                    $("#contactUserPopup #extNo").html(detail["user_ext_no"]);
+                    $("#contactUserPopup a").css("color", "#38c");
+
+                    var mailTo = "#";
+                    var tel = "#";
+
+                    if (detail["email"] !== null) {
+                        mailTo = "mailto:" + detail["email"] + "?subject=ENS";
+                    } else {
+                        $("#contactUserPopup #mail").css("color", "#d6d6d6");
+                    }
+
+                    if (detail["user_ext_no"] !== null) {
+                        tel = "tel:" + detail["user_ext_no"];
+                    } else {
+                        $("#contactUserPopup #tel").css("color", "#d6d6d6");
+                    }
+
+                    $("#contactUserPopup #mail").prop("href", mailTo);
+                    $("#contactUserPopup #tel").prop("href", tel);
+                }
+            });
+
+            $("#contactUserPopup").popup("option", "dismissible", true);
+            $("#contactUserPopup").popup("open");
+        });
+
+        $(document).on("popupafterclose", "#contactUserPopup", function() {
+            //Set Active Tab
+            $("#tabEventList a:eq(1)").addClass("ui-btn-active");
+            $("#tabEventList").tabs({ active: 1 });
         });
     }
 });

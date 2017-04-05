@@ -39,7 +39,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             };
             
             var _construct = function() {
-                CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, queryData, "");
+                CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, UserAuthorityQueryData, "");
             }();
         };
 
