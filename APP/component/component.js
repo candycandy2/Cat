@@ -940,6 +940,15 @@ function handleOpenURL(url) {
             });
 
             hideInitialPage();
+        } else {
+            //For Other APP, which was be opened by dynamic action,
+            //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
+            if (handleOpenByScheme !== null) {
+                if (typeof handleOpenByScheme === "function") {
+                    callHandleOpenURL = false;
+                    handleOpenByScheme(queryData);
+                }
+            }
         }
 
         //Because Scheme work different process between [APP is in action or background] / [APP is not open],
