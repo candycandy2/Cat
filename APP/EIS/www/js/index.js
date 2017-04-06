@@ -108,7 +108,7 @@ window.initialSuccess = function() {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
         // set 'mm' for the temporary test
-        if (checkDataExpired(lastTime, allExpiredTime, 'mm')) {
+        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
             localStorage.removeItem("eisdata");
             callProductDetailAPI();
         }

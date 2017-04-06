@@ -547,3 +547,17 @@ var tplJS = {
         });
     }
 };
+
+
+function popupMsgInit(popupClass){
+    $(popupClass).popup(); //initialize the popup
+    $(popupClass).show();
+    $(popupClass).popup('open');
+    popupMsgCloseInit(popupClass);
+}
+
+function popupMsgCloseInit(popupClass){
+    $('body').one('click', popupClass  + ' .btn-cancel', function() {
+        $(popupClass).popup('close');
+    });
+}
