@@ -31,8 +31,12 @@ $("#viewAccount").pagecontainer({
         var todayDate   = Today.getDate();
         var lastMonth   = Today.getMonth();
        
-        var FromStatus  = "AUD";  
-        var ToStatus    = "NTD";
+        var FromStatus  = "All Currency";  
+        var ToStatus    = "USD";
+
+
+        $(".buttononeCountry1").text(FromStatus);
+        $(".buttononeCountry2").text(ToStatus);   
 
         //var todayYearmod   = "2015";  
         todayYearmod  = todayYear;        
@@ -55,10 +59,10 @@ $("#viewAccount").pagecontainer({
         $(document).on("click", ".buttontransfer", function() {      
                  tmpsetF = $(".buttononeCountry1").html(); 
                  tmpsetT = $(".buttononeCountry2").html();
-        
+                //  Buttonimg();
                  $(".buttononeCountry1").html(tmpsetT);  
                  $(".buttononeCountry2").html(tmpsetF);
-                
+               
                  $(".buttonone1").attr("src","img/tmp/"+tmpsetT +".png");
                  $(".buttontwo1").attr("src","img/tmp/"+tmpsetF+".png");             
                 /*
@@ -69,17 +73,49 @@ $("#viewAccount").pagecontainer({
                  arrayTo      = arraytmp  ;
                  */
                 // $("#ultestA").remove(content); 
+
                  FromStatus = tmpsetT;
                  ToStatus =  tmpsetF ;
                  $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus  +" ");  
                 //Buttonimg(); 
                 // Addhtml();   // cause a lot => can it renew? not to add?(append) 
                  //$("#fragment-1").html(" "); 
-              
+                 Buttonimg(); 
         });
    //  Transfer   ************************************************************************** 
+        function Buttonimg()     //when to call(when confirm must to test once)      
+        {   
+            $(".buttonone1").attr("src","img/tmp/"+ FromStatus  +".png");
+            $(".buttontwo1").attr("src","img/tmp/"+ ToStatus +".png");
 
+            if (FromStatus =="All Currency")
+             {    // Bug for img show 
+               $(".buttonone1").removeClass('buttononeFlag1');
+               $(".buttonone1").addClass('buttononeFlag1non');
+              // AddhtmlFirst();
+             }
+            else
+             {
+               $(".buttonone1").removeClass('buttononeFlag1non');
+               $(".buttonone1").addClass('buttononeFlag1');
 
+            }
+
+            if (ToStatus =="All Currency")
+            {   // Bug for img show 
+              $(".buttontwo1").removeClass('buttononeFlag2');
+              $(".buttontwo1").addClass('buttononeFlag1non');
+            //  AddhtmlSecond();
+
+            }
+            else
+            {
+              $(".buttontwo1").removeClass('buttononeFlag1non');
+              $(".buttontwo1").addClass('buttononeFlag2');
+
+            }            
+        }     
+            Buttonimg(); 
 
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
@@ -92,8 +128,8 @@ $("#viewAccount").pagecontainer({
          //   Addhtml();
         //$("#ultestA").append(contenttest);
         //$("#eventWorkConfirmA").popup('open');//action
-        //  $("#eventWorkConfirmB").popup('open');     
- 
+        //  $("#eventWorkConfirmB").popup('open');              
+            Buttonimg(); 
         });    
 
         /********************************** dom event *************************************/
