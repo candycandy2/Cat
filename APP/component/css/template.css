@@ -182,7 +182,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 /* ---common--- */
 .app-popup .header {
     text-align: center;
-    padding-bottom: 2.17vw;
+    padding-bottom: 0.98vw;
 }
 
 .app-popup .close {
@@ -223,7 +223,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 
 /* ---main--- */
 /* with paragraph */
-.app-popup .main-paragraph{ text-align: center; color: #0f0f0f; padding: 0 5.36vw;}
+.app-popup .main-paragraph{ text-align: center; color: #0f0f0f; padding: 0 5.36vw; margin: 0 0 5.07vw;}
 /* with scroll list */
 .app-popup .main-scroll-list{ overflow: auto;}
 .app-popup .main-scroll-list ul{ list-style: none;}
