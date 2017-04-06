@@ -73,7 +73,7 @@ a {
     background-color: initial;
 }
 
-#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.8vw;}
+#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.692vw;}
 
 .ui-radio-30 div.ui-radio {
     width: 33%;
@@ -129,7 +129,7 @@ a {
     border-style: solid;
     border-color: #d6d6d6;
     border-width: 0px 1px 1px 0px;
-    padding: 0 2vw;
+    padding: 0 1.3vw 0 2vw;
 }
 
 #reserveDateSelect > div.ui-grid-c {
@@ -144,14 +144,14 @@ a {
     margin-top: 1vw;
 }
 
-#reserveDateSelect div.ui-bar div:nth-child(2):not(.timeRemind){ padding-bottom: 1.37vw;}
+#reserveDateSelect div.ui-bar div:nth-child(2):not(.timeRemind){ padding-bottom: 1.021vw;}
 
 .ui-mobile .ui-page-active{ min-height: 100vh !important;}
 
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 #reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
-#reserveBtn{ margin: 5vw auto !important; padding: 1.8vw 0; height: auto;}
+#reserveBtn{ margin: 4.3vw auto 0 !important; padding: 1.8vw 0; height: auto;}
 
 /* notice area */
 #reserveNotice{ text-align: left;}
@@ -277,11 +277,11 @@ div.square {
 }
 
 .circleIcon {
-    width: 6vw;
-    height: 3.3vh;
+    width: 4.83vw;
+    height: 4.83vw;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 1.021vw;
+    right: 1.3vw;
 }
 
 .iconSelect {
@@ -296,7 +296,7 @@ div.square {
     background-repeat: no-repeat;
 }
 
-.timeRemind{ font-size: 3.14vw; margin-top: 1vw !important; opacity: 0; padding-bottom: 1.37vw;}
+.timeRemind{ font-size: 3.14vw; margin-top: 1vw !important; opacity: 0; padding-bottom: 1.021vw;}
 .timeRemind.timeShow{ opacity: 1;}
 
 .btn-border {
@@ -471,11 +471,11 @@ div.square {
     font-size: 4.18vw;
     border: 0;
     background: url('../img/dropdown.png') 100% 45% transparent;
-    background-size: 4vw auto;
+    background-size: 3.54vw auto;
     background-repeat: no-repeat;
     -webkit-appearance: none;
-    margin-bottom: 2vw !important;
-    padding-right: 6vw;
+    margin-bottom: 2.14vw !important;
+    padding-right: 6.74vw;
 }
 
 
@@ -582,7 +582,7 @@ div.scrollmenu a {
     font-weight: normal;
 }
 
-#scrollDate a{ padding: 2.4vw 0; margin-left: -4px;}
+#scrollDate a{ padding: 2.894vw 0 2.567vw; margin-left: -4px;}
 #scrollDate a:nth-of-type(1){ margin-left: 0;}
 
 #reserveRoom a {
