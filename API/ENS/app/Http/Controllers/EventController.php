@@ -157,7 +157,7 @@ class EventController extends Controller
             $this->eventRepository->updateEventById($empNo, $eventId, $updateData);
             \DB::commit();
             //send push
-            $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
+            $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
             
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>$createChatRoomRes->Content]);
