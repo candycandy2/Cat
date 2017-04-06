@@ -23,7 +23,7 @@ $("#viewHitRate").pagecontainer ({
     	    		length = roSummaryCallBackData.length;
     	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
     	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
-                    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";        
+                    UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
                     UserAuthority();
     	    		convertData();
                     getAllData();
@@ -44,13 +44,13 @@ $("#viewHitRate").pagecontainer ({
     	    	};
 
     			var _construct = function() {
-    				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, queryData, "");
+    				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, ROSummaryQueryData, "");
     			}();
             }else {
                 hitRateEisData = JSON.parse(localStorage.getItem("hitRateEisData"))[0];
                 thisYear = JSON.parse(localStorage.getItem("thisYear"))[0];
                 thisMonth = JSON.parse(localStorage.getItem("thisMonth"))[0];
-                queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+                UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
                 UserAuthority();
                 getAllData();
                 $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
@@ -61,7 +61,8 @@ $("#viewHitRate").pagecontainer ({
                     zoomInChart();
                 }
                 var lastTime = JSON.parse(localStorage.getItem("hitRateEisData"))[1];
-                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'dd')) {
+                // set 'mm' for the temporary test
+                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
                     localStorage.removeItem("hitRateEisData");
                     ROSummary();
                 }

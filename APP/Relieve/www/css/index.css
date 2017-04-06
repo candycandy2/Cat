@@ -16,11 +16,8 @@ a {
     text-decoration: none !important;
 }
 
+.ui-header-fixed{ position: absolute; z-index: 990;}
 .ui-header-fixed.ui-fixed-hidden{ top: -1px;}
-
-.ios-fix-overlap-div {
-    display: initial !important;
-}
 
 .hidden {
     visibility: hidden;
