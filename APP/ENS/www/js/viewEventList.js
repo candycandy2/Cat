@@ -110,6 +110,15 @@ $("#viewEventList").pagecontainer({
                         //Event ID Number
                         eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'][i].event_row_id);
 
+                        //Event Related Link
+                        eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'][i].event_row_id);
+
+                        if (data['Content'][i].related_event_row_id !== 0) {
+                            eventListMsg.find(".event-list-msg-top .link-event").data("value", data['Content'][i].related_event_row_id);
+                        } else {
+                            eventListMsg.find(".event-list-msg-top .link-event").hide();
+                        }
+
                         //Event Title
                         eventListMsg.find(".event-list-msg-top .description").html(data['Content'][i].event_title);
 
@@ -122,7 +131,7 @@ $("#viewEventList").pagecontainer({
 
                         //Status: 未完成 / 完成
                         var event_status = data['Content'][i].event_status;
-                        if (event_type === "完成") {
+                        if (event_status === "完成") {
                             eventListMsg.find(".event-list-msg-top .event-status .done").show();
                             eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                         }
@@ -329,13 +338,16 @@ $("#viewEventList").pagecontainer({
                 eventMemberList.siblings(".main").append(eventMemberListLi);
             }
 
+            //EventList / EventContent
             var eventMemberListData = {
                 id: "eventMemberList",
                 content: eventMemberList
             };
-            tplJS.Popup("viewEventList", "contentEventList", "append", eventMemberListData);
+
+            tplJS.Popup(null, null, "append", eventMemberListData);
 
             $("#eventMemberList").popup("open");
+            footerFixed();
         };
 
         window.functionListPopup = function(data) {
@@ -367,14 +379,14 @@ $("#viewEventList").pagecontainer({
             var eventFunctionListAfterHTML = eventFunctionList.siblings(".main").find("template#tplEventFunctionListAfter").html();
 
             for (var i=0; i<data.task_detail.length; i++) {
-                if (data.task_detail[i].task_status === "0") {
-                    //Before Done
-                    var eventFunctionListLi = $(eventFunctionListBeforeHTML);
-                } else {
+                if (data.task_detail[i].task_status === "完成") {
                     //After Done
                     var eventFunctionListLi = $(eventFunctionListAfterHTML);
                     eventFunctionListLi.find(".user").html(data.task_detail[i].close_task_user_id);
                     eventFunctionListLi.find(".datetime").html(data.task_detail[i].close_task_date);
+                } else {
+                    //Before Done
+                    var eventFunctionListLi = $(eventFunctionListBeforeHTML);
                 }
                 eventFunctionListLi.find(".title").html(data.task_detail[i].task_location);
                 eventFunctionListLi.find(".function").html(data.task_detail[i].task_function);
@@ -382,13 +394,16 @@ $("#viewEventList").pagecontainer({
                 eventFunctionList.siblings(".main").append(eventFunctionListLi);
             }
 
+            //EventList / EventContent
             var eventFunctionListData = {
                 id: "eventFunctionList",
                 content: eventFunctionList
             };
-            tplJS.Popup("viewEventList", "contentEventList", "append", eventFunctionListData);
+
+            tplJS.Popup(null, null, "append", eventFunctionListData);
 
             $("#eventFunctionList").popup("open");
+            footerFixed();
         };
 
         function showEventAdd() {
@@ -398,7 +413,8 @@ $("#viewEventList").pagecontainer({
             }
         }
 
-        function ahowEventData(dom, action) {
+        window.ahowEventData = function(dom, action) {
+            action = action || null;
             var openData = false;
 
             if (action === "member" || action === "function") {
@@ -407,6 +423,25 @@ $("#viewEventList").pagecontainer({
                     var eventID = $(dom).parent().siblings(".event-list-msg-top").find(".link .normal .text").html();
                     openData = true;
                 }
+            } else if (action === "authority" || action === "authority2") {
+
+                function callback(readAuthority) {
+                    if (readAuthority) {
+                        //can read
+                        $.mobile.changePage('#viewEventContent');
+                    } else {
+                        //can not read
+                        $("#eventRelatedNoAuthorityPopup").popup("open");
+                    }
+                }
+
+                if (action === "authority") {
+                    var eventRelatedID = $(dom).data("value");
+                } else if (action === "authority2") {
+                    var eventRelatedID = $(dom).html();
+                }
+
+                var eventDetail = new getEventDetail(eventRelatedID, "authority", callback);
             } else {
                 var eventID = $(dom).parent().find(".link .normal .text").html();
                 openData = true;
@@ -415,7 +450,7 @@ $("#viewEventList").pagecontainer({
             if (openData) {
                 var eventDetail = new getEventDetail(eventID, action);
             }
-        }
+        };
 
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
@@ -513,9 +548,19 @@ $("#viewEventList").pagecontainer({
 
             tplJS.Popup("viewEventList", "contentEventList", "append", eventListNoDataPopupData);
 
+            //Event Related No Authority Popup
+            var eventRelatedNoAuthorityPopupData = {
+                id: "eventRelatedNoAuthorityPopup",
+                content: $("template#tplEventRelatedNoAuthorityPopup").html()
+            };
+
+            tplJS.Popup(null, null, "append", eventRelatedNoAuthorityPopupData);
+
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
+            prevPageID = "viewEventList";
+
             //Set Active Tab
             $("#tabEventList a:eq(0)").addClass("ui-btn-active");
             $("#tabEventList").tabs({ active: 0 });
@@ -564,6 +609,8 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#eventMemberList .confirm", function() {
             $("#eventMemberList").popup("close");
+            $("#eventMemberList").remove();
+            footerFixed();
         });
 
         //Event Function List Popup
@@ -573,6 +620,8 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#eventFunctionList .confirm", function() {
             $("#eventFunctionList").popup("close");
+            $("#eventFunctionList").remove();
+            footerFixed();
         });
 
         //Event Content
@@ -580,6 +629,12 @@ $("#viewEventList").pagecontainer({
             ahowEventData(this);
             loadingMask("show");
             $.mobile.changePage('#viewEventContent');
+        });
+
+        //Event Related Content
+        $(document).on("click", ".event-list-msg .link-event", function() {
+            ahowEventData(this, "authority");
+            loadingMask("show");
         });
 
         //Event Add
@@ -592,6 +647,13 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventListNoDataPopup .confirm", function() {
             $("#eventListNoDataPopup").popup("close");
             $(".event-list-no-data").show();
+            footerFixed();
+        });
+
+        //Event Related No Authority Popup
+        $(document).on("click", "#eventRelatedNoAuthorityPopup .confirm", function() {
+            $("#eventRelatedNoAuthorityPopup").popup("close");
+            footerFixed();
         });
 
         //Event Member List - Sort Type

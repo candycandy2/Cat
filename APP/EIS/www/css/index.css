@@ -211,7 +211,6 @@ div.scrollmenu {
 	border-color: #d6d6d6;
 	white-space: nowrap;
 	width: 100VW;
-	/*box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);*/
 }
 
 div.scrollmenu a {
@@ -225,7 +224,7 @@ div.scrollmenu a {
 	border-style: solid;
 	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
-	width: 16.5%;
+	width: 22VW;
 	text-decoration: none;
 }
 
@@ -234,15 +233,18 @@ div.scrollmenu a:nth-of-type(1){ border-left-width: 0;}
 div.scrollmenu a.hover {
     background-color: #0fb6b7;
     color: #fff !important;
-   /* background-color: #EFEFEF;
-    color: #999999 !important;*/
+}
+
+div.scrollmenu a.disableHover {
+	background-color: #d6d6d6;
+	color: #999999 !important;
 }
 
 div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
-.scrollmenu.Ro{ overflow: hidden;}
-.scrollmenu.Ro a { float: left;}
+.scrollmenu.Ro a:not(:nth-of-type(1)){margin-left: -4px;}
 /* let scroll more smooth in iOS */
 .scrollmenu.Product{ -webkit-overflow-scrolling: touch}
+.scrollmenu.Ro{ -webkit-overflow-scrolling: touch}
 
 /****************************************** viewYTDHitRate ******************************************/
 #viewYTDHitRate #title-container {

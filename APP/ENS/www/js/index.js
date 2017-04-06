@@ -16,6 +16,7 @@ window.initialSuccess = function() {
     loadingMask("show");
 
     processLocalData.initialData();
+    checkEventTemplateData("check");
 
     $.mobile.changePage('#viewEventList');
 }
@@ -98,6 +99,70 @@ function checkAuthority(level) {
     }
 }
 
+//Check Event Template Data
+function checkEventTemplateData(action, data) {
+    data = data || null;
+
+    if (window.localStorage.getItem("template") !== null) {
+        var tempDate = window.localStorage.getItem("template");
+        templateData = JSON.parse(tempDate);
+
+        if (action === "update") {
+            if (templateData.length < 20) {
+                var value = templateData.length+1;
+                var text = data;
+                var tempObj = {
+                    value: value,
+                    text: text
+                };
+
+                templateData.push(tempObj);
+            } else {
+
+                var templateUpdateIndex = 1;
+
+                if (window.localStorage.getItem("templateUpdateIndex") !== null) {
+                    templateUpdateIndex = window.localStorage.getItem("templateUpdateIndex");
+                }
+
+                for (var i=0; i<templateData.length; i++) {
+                    if (templateUpdateIndex == parseInt(i+1, 10)) {
+                        var value = templateUpdateIndex;
+                        var text = data;
+                        var tempObj = {
+                            value: value,
+                            text: text
+                        };
+
+                        templateData[i] = tempObj;
+                    }
+                }
+                templateUpdateIndex++;
+                window.localStorage.setItem("templateUpdateIndex", templateUpdateIndex);
+            }
+
+            window.localStorage.setItem("template", JSON.stringify(templateData));
+        }
+    } else {
+        templateData = [{
+            value: "1",
+            text: "罐頭範本-1"
+        }, {
+            value: "2",
+            text: "罐頭範本-2"
+        }, {
+            value: "3",
+            text: "罐頭範本-3"
+        }];
+
+        window.localStorage.setItem("template", JSON.stringify(templateData));
+    }
+}
+
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+}
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -111,13 +176,23 @@ function onBackKeyDown() {
             navigator.app.exitApp();
         }
 
-    }/* else if (activePageID === "viewDetailInfo") {
+    } else if (activePageID === "viewEventContent") {
 
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
+            footerFixed();
+        } else {
+            $.mobile.changePage('#viewEventList');
+        }
+
+    } else if (activePageID === "viewEventAdd") {
+
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+            footerFixed();
         } else {
             $.mobile.changePage('#' + prevPageID);
         }
 
-    }*/
+    }
 }

@@ -3,6 +3,8 @@ var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallB
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
+var monthlyPageDateExist = true;
+var ytdPageDateExist = true;
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
@@ -31,8 +33,6 @@ var time = new Date(Date.now());
 var nowTime = new Date();
 var monthlyPageDate = [];
 var ytdPageDate = [];
-var eisdataTimeArray = [];
-var thisMonthEisdataTimeArray = [];
 var eisdata = {};
 var thisMonthEisdata = {};
 var hitRateEisData = {};
@@ -96,9 +96,19 @@ $(document).one("pagebeforeshow", function() {
 });
 
 window.initialSuccess = function() {
-    
     currentYear = time.getFullYear();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    if(localStorage.getItem("eisdata") === null) {
+        callProductDetailAPI();
+    }else {
+        eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
+        var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
+        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
+            localStorage.removeItem("eisdata");
+            callProductDetailAPI();
+        }
+    }
+
     loadingMask("show");
     queryData =   "<LayoutHeader><StartYearMonth>"
                 + (currentYear - 3) + "/01"
@@ -106,22 +116,7 @@ window.initialSuccess = function() {
                 + currentYear + "/" + currentMonth
                 + "</EndYearMonth></LayoutHeader>";
     ROSummary();
-
-    if(localStorage.getItem("eisdata") === null) {
-        callProductDetailAPI();
-    }else {
-        eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
-        var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        if (checkDataExpired(lastTime, allExpiredTime, 'MM')) {
-            localStorage.removeItem("eisdata");
-            callProductDetailAPI();
-        }else {
-            localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
-        }
-    }
     $.mobile.changePage("#viewHitRate");
-    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-    UserAuthority();
 }
 
 //[Android]Handle the back button

@@ -18,11 +18,25 @@ use App\Model\QP_App_Custom_Api;
 use App\Model\QP_Role_App;
 use App\Model\QP_User_App;
 use App\Model\QP_White_List;
+use App\Services\AppVersionService;
+use App\Services\AppService;
 use DB;
 use File;
 
 class AppMaintainController extends Controller
-{
+{   
+
+    protected $appService;
+    protected $appVersionService;
+    /**
+     * 建構子，初始化引入相關服務
+     * @param AppVersionService $appVersionService 地點基本資訊服務
+     */
+    public function __construct(AppService $appService, AppVersionService $appVersionService)
+    {
+        $this->appService = $appService;
+        $this->appVersionService = $appVersionService;
+    }
 
     public function getCategoryList(){
 
@@ -491,7 +505,9 @@ class AppMaintainController extends Controller
         $appVersionList = \DB::table("qp_app_version")
                 -> where('app_row_id', '=', $appRowId)
                 -> where('device_type', '=', $deviceType)
-                -> select('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status', 'created_at')
+                -> where('status', '=', 'cancel')
+                -> where('ready_date', '!=', null)
+                -> select('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'created_at')
                 -> get();
         foreach ($appVersionList as $appVersion) {
             if($appVersion->external_app == 1){
@@ -571,9 +587,8 @@ class AppMaintainController extends Controller
                     $this->deleteErrorCode($appId);
                 }
             }
-            
-            if(isset($input['delVersionArr']) && is_array($input['delVersionArr'])){
-                $this->deleteAppVersionFile($appId,explode(",", $input['delVersionArr']));
+            if(isset($input['delVersionArr'])){
+                $this->deleteAppVersion($appId,explode(',',$input['delVersionArr']));
             }
             
             $versionList = array();
@@ -596,10 +611,10 @@ class AppMaintainController extends Controller
 
            \DB::commit();
            
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+           return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                'message'=>trans("messages.MSG_OPERATION_FAILED"),
+                'message'=>trans("messages.MSG_OPERATION_FAILED".$e->getMessage()),
                 'content'=>''
             ]);
            \DB::rollBack();
@@ -1092,24 +1107,15 @@ class AppMaintainController extends Controller
         }
     }
 
-    private function deleteAppVersionFile(Int $appId, Array $delVersionArr){
+    /**
+     * 刪除App版本
+     * @param  Int    $appId         qp_app_head.row_id
+     * @param  Array  $delVersionArr 欲刪除的版本qp_version.row_id陣列
+     * @return 
+     */
+    private function deleteAppVersion(Int $appId, Array $delVersionArr){
 
-        foreach ($delVersionArr as  $vId) {
-            $versionItem = QP_App_Version::where('row_id', $vId)
-                            ->first(['version_code','url','device_type']);
-            $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
-            
-            if($versionItem['device_type'] == 'ios'){
-               if (file_exists($destinationPath.'manifest.plist')) {
-                   unlink($destinationPath.'manifest.plist');
-                }
-            }
-
-            if(file_exists($destinationPath.$versionItem['url'])){
-                $result = unlink($destinationPath.$versionItem['url']);
-            }
-        }
-
+        $this->appVersionService->deleteAppVersion($appId, $delVersionArr);
     }
 
     /**
@@ -1118,17 +1124,21 @@ class AppMaintainController extends Controller
      * @param  Array  $versionList version object array
      */
     private function saveAppVersionList($appKey ,Int $appId, Array $versionList){
+
         
-        $appStatus = CommonUtil::getAppVersionStatus($appId);
+        $appStatus = $this->appVersionService->getAllPublishedAppStatus($appId);
         $insertArray = [];
         $updateArray = [];
         $saveId = [];
         $now = date('Y-m-d H:i:s',time());
+        
 
         foreach ($versionList as $deviceType => $versionItems) {
-            
-            $this->deleteApkFileFromPath($appId,$deviceType);
+           
+            $deletePublishFile = true;
+
             foreach ($versionItems as $value) {    
+                
                 $data = array(
                     'app_row_id'=>$appId,
                     'version_code'=>$value['version_code'],
@@ -1139,12 +1149,12 @@ class AppMaintainController extends Controller
                     'status'=>$value['status'],
                     'device_type'=>$deviceType,
                 );
-                if(($value['status'] == 'ready') ){
+
+                if($value['status'] == 'ready'){
+                    //首次上架
                     if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
                         $data ['ready_date'] = time();
                     }
-                }else{
-                     $data ['ready_date'] = NULL;
                 }
                 if(isset($value['row_id'])){//update
                      $data['row_id'] = $value['row_id'];
@@ -1173,82 +1183,28 @@ class AppMaintainController extends Controller
                     $data['created_at'] = $value['created_at'];
                     $insertArray[]=$data;
                 }
-
+                
                 if($value['status'] == 'ready' && $value['external_app'] == 0){
+                    $deletePublishFile = false;
                     $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
                     $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                    $needDeleteManifest = ($deviceType == 'ios')?true:false;
-                    $this->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $needDeleteManifest);
+                    $alsoCopyManifest = ($deviceType == 'ios')?true:false;
+                    $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
+                    $this->appVersionService->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $alsoCopyManifest);
                 }
             }
+            
+            if($deletePublishFile){
+                $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
+            }
         }
+        
+        $this->appVersionService->updateVersion($updateArray);
+        $this->appVersionService->insertVersion($insertArray);
 
-        $deleteApiRows = QP_App_Version::where('app_row_id','=',$appId)
-                            ->whereNotIn('row_id',$saveId)
-                            ->delete();
-        foreach($updateArray as $value){
-            $updatedRow = QP_App_Version::find($value['row_id']);
-            $updatedRow->version_name = $value['version_name'];
-            $updatedRow->version_code = $value['version_code'];
-            $updatedRow->version_log = $value['version_log'];
-            $updatedRow->url = $value['url'];
-            $updatedRow->status = $value['status'];
-            $updatedRow->updated_user = $value['updated_user'];
-            if(isset($value['ready_date'])){
-                if($value['ready_date'] == 'null'){
-                    $updatedRow->ready_date = NULL;
-                }else{
-                    $updatedRow->ready_date = $value['ready_date'];
-                }
-            }
-            $updatedRow->save();
-        }
-        QP_App_Version::insert($insertArray);
         
     }
 
-    /**
-     * Find current publish File and delete it
-     * @param  int      $appId      app_row_id
-     * @param  string   $deviceType device type android|ios
-     * @return string   $targetFilePath the path that had been delete
-     */
-    private function deleteApkFileFromPath($appId,$deviceType){
-        $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
-        $OriPublish = QP_App_Version::where('app_row_id','=',$appId)
-                        ->where('device_type','=',$deviceType)
-                        ->where('status','=','ready')
-                        ->select('url','external_app')
-                        ->first();
-        if(!is_null($OriPublish) && $OriPublish->external_app == 0){
-            if($OriPublish->url!="" && file_exists($publishFilePath.$OriPublish->url)){
-                $result = unlink($publishFilePath.$OriPublish->url);
-            }
-            if($deviceType == 'ios'){
-                if(file_exists($publishFilePath.'manifest.plist')){
-                    unlink($publishFilePath.'manifest.plist');
-                }
-            }
-        }
-    }
-
-    /**
-     * copy apk file to destination fiile path
-     * @param  string  $fileName           destination file name
-     * @param  string  $copyFromPath       source file path
-     * @param  string  $copyToPath         target file path
-     * @param  boolean $needDeleteManifest need to copy manifest or not                    
-     */
-    private function copyApkFileToPath($fileName, $copyFromPath, $copyToPath, $needDeleteManifest = false){ 
-        \File::copy($copyFromPath.$fileName,$copyToPath.$fileName);
-        if($needDeleteManifest){
-            \File::copy($copyFromPath.'manifest.plist',$copyToPath.'manifest.plist');
-        }
-    }
-
-
-    private function uploadFileToBackup(){}
-    
     /**
      * To save CustomApi
      * @param  Int    $appkey        target app key
