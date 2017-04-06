@@ -58,9 +58,9 @@ class Push
     public function getPushMessageTemplate($action, Array $event, $queryParam){
         
         $template = array('title'=>'','text'=>'');
-        
-        $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), $queryParam['app_key']);
-        $url = 'appens://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'];
+        $appKey = $queryParam['app_key'];
+        $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
+        $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'];
 
         $template['text'] =$event['event_desc'].'<br><a href="'.$url.'">查看事件詳細資料</a>';
 
