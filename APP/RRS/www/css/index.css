@@ -76,7 +76,7 @@ a {
     background-color: #0db6b7 !important;
 }
 
-#viewNewSetting .ui-controlgroup-controls {
+#Setting .ui-controlgroup-controls {
     width: 100%;
 }
 
@@ -169,7 +169,7 @@ a {
 #newSettingPeople .ui-controlgroup{ margin: 0;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 #reserveTab{ margin-top: 3.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
-
+.ui-controlgroup-controls { width: 100%;}
 
 
 /********************************** public area *************************************/
@@ -205,6 +205,8 @@ a {
 .app-font-small {
     font-size: 2.5vh;
 }
+
+#viewSettingList .app-font-small{ font-size: 3.97vw;}
 
 .disable {
     display: none !important;
@@ -316,18 +318,15 @@ div.square {
 
 .setting-delete {
     position: absolute;
-    right: 6vw;
-    display: inline-block;
+    right: -4vw;
+    top: -2vw;    
     width: 22vw;
-    height: 4vh;
-    line-height: 4.5vh;
-    margin-top: -0.5vh;
+    height: 10vw;
+    line-height: 1;
+    padding: 3.5 0;
 }
 
-.setting-img {
-    height: 2.5vh;
-    margin-left: 2vw;
-}
+.setting-img { width: 4.5vw; height: auto; position: absolute; top: 3.8vw; right: 4vw;}
 
 .div-radius {
     border-radius: 5px;
@@ -440,7 +439,7 @@ div.square {
     font-size: 2.8vh;
     text-align: left;
     padding: 1.5vh 2.4vw;
-    border: 1px solid #aaa;
+    border: 1px solid #d6d6d6;
     margin-top: 3.2vh;
     margin-bottom: 7vw;
 }
@@ -513,6 +512,11 @@ hr.ui-color-green {
     color: #323232 !important;
     background-color: #f6f6f6 !important;
 }
+
+#viewSettingList .ui-linear-gradient-gary, #viewSettingList .ui-linear-gradient-green{ background-color: transparent !important; border: 1px solid #d6d6d6;
+    margin-bottom: 4.3vw !important; padding: 2.14vw 0 !important;}
+
+#viewSettingList .ui-linear-gradient-gary .inline, #viewSettingList .ui-linear-gradient-green .inline{ margin-left: 2.4vw;}
 
 .ui-linear-gradient-green {
     color: #323232 !important;
