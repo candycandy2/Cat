@@ -96,7 +96,7 @@ gulp.task('install', shell.task([
   //These following steps only cancel in first time you run this task.
   //After first time finished this task, you should run these steps in this task all the time.
   //
-
+/*
   'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
@@ -107,6 +107,7 @@ gulp.task('install', shell.task([
   //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android', 
+  */
   'cordova platform add ios', 
   'cordova platform add android',
  
