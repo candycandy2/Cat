@@ -38,7 +38,7 @@ window.initialSuccess = function() {
     window.checkTimer = setInterval(function() {
 
         if (msgController.isInited) {
-            console.log("Allen-------------isInited:true");
+            console.log("-------------isInited:true");
             stopCheck();
 
             var gid = "22722001";
@@ -52,7 +52,7 @@ window.initialSuccess = function() {
             });
             */
         } else {
-            console.log("Allen-------------isInited:false");
+            console.log("-------------isInited:false");
         }
 
     }, 1000);
