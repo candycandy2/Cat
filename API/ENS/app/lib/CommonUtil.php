@@ -3,6 +3,7 @@
  * 通用元件庫
  */
 namespace App\lib;
+use Config;
 
 class CommonUtil
 {
@@ -127,7 +128,7 @@ class CommonUtil
      */
     public static function getSignature($signatureTime)
         {
-            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
+            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.secret_key'), true));
             return $ServerSignature;
         }
 
