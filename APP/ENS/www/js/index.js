@@ -5,6 +5,8 @@ var appKeyOriginal = "appens";
 var appKey = "appens";
 var pageList = ["viewEventList", "viewEventAdd", "viewEventContent"];
 var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
+var QMessageKey = "e343504d536ebce16b70167e";
+var QMessageSecretKey = "62f87cad6de67db6c968ba50";
 
 var prevPageID;
 var openEventFromQPlay = false;
@@ -20,6 +22,57 @@ window.initialSuccess = function() {
     checkEventTemplateData("check");
 
     $.mobile.changePage('#viewEventList');
+
+    //QMessage
+    var api_url = serverURL.substr(8);
+    var opts = {
+        'username': loginData["loginid"],
+        'eventHandler': eventHandler,
+        'messageHandler': messageHandler,
+        'message_key': QMessageKey,
+        'message_secret': QMessageSecretKey,
+        'message_api_url_prefix': api_url + "/qmessage/public/"
+    };
+    msgController = window.QMessage(opts);
+
+    window.checkTimer = setInterval(function() {
+
+        if (msgController.isInited) {
+            console.log("Allen-------------isInited:true");
+            stopCheck();
+
+            var gid = "22722001";
+            var gname = "22722001-room";
+            var text = "22722001-test-0406003";
+            /*
+            msgController.SendText(gid, gname, text, function(successResult) {
+                console.log(successResult);
+            }, function(errorResult) {
+                console.log(errorResult);
+            });
+            */
+        } else {
+            console.log("Allen-------------isInited:false");
+        }
+
+    }, 1000);
+
+    window.stopCheck = function() {
+        if (window.checkTimer != null) {
+            clearInterval(window.checkTimer);
+        }
+    };
+
+}
+
+function eventHandler(data) {
+    console.log("------------eventHandler");
+    console.log(data);
+}
+
+function messageHandler(data) {
+    console.log("------------messageHandler");
+    console.log(data);
 }
 
 //1. Each data has its own life-cycle.
