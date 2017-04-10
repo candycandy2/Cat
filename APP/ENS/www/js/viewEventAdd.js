@@ -636,7 +636,7 @@ $("#viewEventAdd").pagecontainer({
             }
 
             $("#viewEventAdd .ui-title").html(title);
-            $("#viewEventAdd #sendEvent").html(buttonText);
+            $("#viewEventAdd #sendEvent span").html(buttonText);
             footerFixed();
         });
 
