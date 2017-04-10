@@ -37,7 +37,7 @@
             });
 
             /********************************** dom event *************************************/
-            $('body').on('click', '#settingDelete', function() {
+            $('body').on('click', '#viewSettingList .setting-delete', function() {
                 $('#viewSettingList').addClass('min-height-100');
                 clickDeleteID = $(this).attr('value');
                 var strTitle = $(this).attr('title');
@@ -58,7 +58,7 @@
             });
 
             $('body').on('click', 'div[id^=set-]', function(e) {
-                if (e.target.id != "settingDelete") {
+                if ((e.target.id != "settingDelete") && (e.target.className != "setting-img")){
                     clickEditSettingID = $(this).attr('value');
                     $.mobile.changePage('#viewNewSetting');
                 }

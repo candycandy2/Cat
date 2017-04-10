@@ -81,6 +81,10 @@ Route::any('/AppMaintain/getAppUser', ['middleware' => 'auth','uses'=>'AppMainta
 Route::any('/AppMaintain/getAppVersionList', ['middleware' => 'auth','uses'=>'AppMaintainController@getAppVersionList']);
 Route::any('/AppMaintain/saveAppDetail', ['middleware' => 'auth','uses'=>'AppMaintainController@saveAppDetail']);
 Route::any('/AppMaintain/getMaintainAppList', ['middleware' => 'auth','uses'=>'AppMaintainController@getMaintainAppList']);
+Route::any('/AppVersion/getAppOnlineVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppOnlineVersion']);
+Route::any('/AppVersion/getAppNewVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppNewVersion']);
+Route::any('/AppVersion/getAppHistoryVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppHistoryVersion']);
+Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVersionController@ajxValidVersion']);
 
 /*
 Route::any('/platform/getUserList', 'platformController@getUserList');
@@ -145,6 +149,8 @@ Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersio
 Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
 Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintainAppList');
 */
+
+
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -272,3 +278,5 @@ Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
 //Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 Route::any('tool/syncJpushTags', ['middleware' => 'auth','uses'=>'toolController@syncJpushTags']);
 
+//AutoDeplay
+Route::post('auto/uploadAppVersion', 'AppVersionController@uploadAppVersion');

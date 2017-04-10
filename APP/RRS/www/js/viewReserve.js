@@ -452,8 +452,8 @@
                             timeName = $('#quickReserveMsgArea div:nth-child(3)').html().replaceAll('預約時段為', '');
                         }
 
-                        var msgContent = '<table><tr><td>會議室</td><td>' + roomName + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + timeName + '</td></tr></table>';
-                        popupMsg('reserveSuccessMsg', '會議室預約成功', msgContent, '', false, '確定', 'select.png');
+                        var msgContent = '<div>' + strDate + '&nbsp;&nbsp;' + timeName + '</div>';
+                        popupMsg('reserveSuccessMsg', roomName + ' 會議室預約成功', msgContent, '', false, '確定', 'select.png');
 
                         var isReserveMulti = '';
                         var selectedSite = '';
@@ -750,16 +750,16 @@
                     var arrMsgValue = $(this).attr('msg').split(',');
                     var arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']);
                     var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
-                    var msgContent = '<table><tr><td>會議室</td><td>' + arrMsgValue[1] + '</td></tr>' + '<tr><td>日期</td><td>' + strDate + '</td></tr>' + '<tr><td>時間</td><td>' + arrMsgValue[2] + '</td></tr></table>';
+                    var msgContent = strDate + '&nbsp;&nbsp;' + arrMsgValue[2] + '</div>';
 
                     if (bMyReserve) {
                         traceID = $(this).attr('traceID');
                         selectMyReserveTime = $(this).find('div > div:nth-child(1)').text();
-                        popupMsg('myReserveMsg', tempEname + '已預約', msgContent, '關閉', true, '取消預約', 'select.png');
+                        popupMsg('myReserveMsg', tempEname + ' 已預約 ' + arrMsgValue[1], msgContent, '關閉', true, '取消預約', 'select.png');
                     } else {
                         //ex: 會議室協調_12/01 T01 15:00-15:30
                         var tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                        popupSchemeMsg('reserveMsg', tempEname + '已預約', msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), 'select.png');
+                        popupSchemeMsg('reserveMsg', tempEname + ' 已預約 ' + arrMsgValue[1], msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), 'select.png');
                     }
 
                 } else if (bNoReserve && !bReserveSelect) {
@@ -893,6 +893,7 @@
                     $('div[for=myReserveMsg] span[id=titleText]').text('確定取消預約？');
                     $('div[for=myReserveMsg] button[id=confirm]').html('取消');
                     $('div[for=myReserveMsg] button[id=cancel]').html('不取消');
+                    $('div[for=myReserveMsg] img[id=titleImg]').attr('src', 'img/warn_icon.png');
                     bReserveCancelConfirm = true;
                 }
             });

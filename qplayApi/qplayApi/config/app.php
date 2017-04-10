@@ -223,5 +223,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-    ]
+    ],
+
+    //QMessage API
+    'QMessage_Register_URL'=>env('QMESSAGE_REGISTER_URL')
 ];

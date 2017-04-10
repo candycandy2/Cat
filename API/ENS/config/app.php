@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'dev'),
+    'env' => env('APP_ENV'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', true),
+    'debug' => env('APP_DEBUG'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL'),
 
     /*
     |--------------------------------------------------------------------------
@@ -118,8 +118,10 @@ return [
     | Here you may configure the qply api server settings for your application.
     |
     */
+   
     'qplay_api_server' => env('QPLAY_API_SERVER'),
-     /*
+
+    /*
     |--------------------------------------------------------------------------
     | QMessage Api Server
     |--------------------------------------------------------------------------
@@ -127,7 +129,20 @@ return [
     | Here you may configure the qMessage api server settings for your application.
     |
     */
+   
     'qmessage_api_server' => env('QMESSAGE_API_SERVER'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Secret Key
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the a secret_key for your application.
+    | this secret comes from qplay project.
+    |
+    */
+    'secret_key' => 'dd88f6e1eea34e77a9ab75439d327363',
+    
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -138,6 +153,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+   
     'providers' => [
 
         /*
@@ -172,6 +188,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -218,6 +235,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

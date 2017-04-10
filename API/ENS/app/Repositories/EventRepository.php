@@ -8,26 +8,35 @@ namespace App\Repositories;
 use Doctrine\Common\Collections\Collection;
 use App\Model\EN_Event;
 use App\Model\EN_User_Event;
+use App\Model\QP_User;
 use DB;
 
 class EventRepository
 {
     /** @var event Inject EN_Event model */
     protected $event;
+    /** @var userDataBaseName user 資料庫名稱 */
+    protected $userDataBaseName;
+    /** @var userTableName user 資料表名稱 */
+    protected $userTableName;
 
     private $eventField = array('en_event.row_id as event_row_id','event_type_parameter_value as event_type',
                 'event_title','event_desc',
-                'estimated_complete_date','related_event_row_id','en_event.event_status',
+                'estimated_complete_date','related_event_row_id','en_event.event_status','chatroom_id',
                 'en_event.created_user as created_user','en_event.created_at as created_at');
    
     /*
      * EventRepository constructor.
      * @param EN_Event $event
+     * @param EN_User_Event $userEvent
+     * @param QP_User $user
      */
-    public function __construct(EN_Event $event, EN_User_Event $userEvent)
+    public function __construct(EN_Event $event, EN_User_Event $userEvent, QP_User $user)
     {     
         $this->event = $event;
         $this->userEvent = $userEvent;
+        $this->userDataBaseName = \Config::get('database.connections.mysql_qplay.database');
+        $this->userTableName = $user->getTableName();
     }
 
     /**
@@ -167,10 +176,10 @@ class EventRepository
      */
     public function getEventDetail($eventId, $empNo){
         $selectField = $this->eventField;
-        array_push($selectField,'en_user.ext_no as created_user_ext_no');
+        array_push($selectField,$this->userTableName.'.ext_no as created_user_ext_no');
         return $this->event
             ->join('en_user_event','en_user_event.event_row_id','=','en_event.row_id')
-            ->join('en_user','en_user.emp_no','=','en_event.created_user')
+            ->join($this->userDataBaseName.'.'.$this->userTableName,$this->userTableName.'.emp_no','=','en_event.created_user')
             ->where('en_event.row_id', '=', $eventId)
             ->where('en_user_event.emp_no' ,'=', $empNo)
             ->select($selectField)
@@ -183,8 +192,9 @@ class EventRepository
      * @return mixed
      */
     public function getUserByEventId($eventId){
+        
         return $this->userEvent
-            ->join( 'en_user', 'en_user.emp_no', '=', 'en_user_event.emp_no')
+            ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_user_event.emp_no')
             ->where('event_row_id',$eventId)
             ->select(
                 'en_user_event.emp_no as emp_no',

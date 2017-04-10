@@ -6,27 +6,37 @@
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
-use App\Model\EN_User;
 use App\Model\EN_Basic_Info;
+use App\Model\QP_User;
 use DB;
+
 
 class BasicInfoRepository
 {
-    /** @var User Inject En_Basic_Info model */
+    /** @var basicInfo Inject En_Basic_Info model */
     protected $basicInfo;
-   
+    /** @var user Inject QP_User model */
+    protected $user;
+    /** @var userDataBaseName user 資料庫名稱 */
+    protected $userDataBaseName;
+    /** @var userTableName user 資料表名稱 */
+    protected $userTableName;
+
     /*
      * UserRepository constructor.
      * @param EN_Basic_Info $basicInfo
+     * @param QP_User $user
      */
-    public function __construct(EN_Basic_Info $basicInfo)
+    public function __construct(EN_Basic_Info $basicInfo, QP_User $user)
     {     
         $this->basicInfo = $basicInfo;
+        $this->userDataBaseName = \Config::get('database.connections.mysql_qplay.database');
+        $this->userTableName = $user->getTableName();
     }
 
     /**
      * 取得所有function-locatio基本資料
-     * @return Collection
+     * @return mixed
      */
     public function getAllBasicInfo()
     {   
@@ -47,7 +57,7 @@ class BasicInfoRepository
      * 使用location-function 取得資本資料
      * @param  String $location 地點
      * @param  String $function 分類
-     * @return Collection
+     * @return mixed
      */
     public function getBasicInfoByLocatnionFunction($location, $function){
 
@@ -62,11 +72,12 @@ class BasicInfoRepository
      * 使用location-function 取得所屬成員
      * @param  String $location 地點
      * @param  String $function 分類
-     * @return Collection
+     * @return mixed
      */
     public function getUserByLocationFunction($location, $function){
+       
         return  $this->basicInfo
-            ->join( 'en_user', 'en_user.emp_no', '=', 'en_basic_info.emp_no')
+            ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_basic_info.emp_no')
             ->where('location', '=', $location)
             ->where('function', '=', $function)
             ->select('en_basic_info.emp_no as emp_no')
@@ -77,13 +88,25 @@ class BasicInfoRepository
 
     /**
      * 取得location下所有function
-     * @param  [type] $location [description]
-     * @return [type]           [description]
+     * @param  string $location 機房地點
+     * @return mixed
      */
     public function getAllFunctionByLocation($location){
         return  $this->basicInfo
             ->where('location', '=', $location)
             ->select('function')
             ->get();
+    }
+
+    /**
+     * 批量寫入basic_info
+     * @param  Array $data 寫入的資料，接受多筆
+     */
+    public function insertBasicInfo(Array $data){
+        $basicIfno = $this->basicInfo->insert($data);
+    }
+
+    public function deleteBasicInfo(){
+        $this->basicInfo::truncate();    
     }
 }

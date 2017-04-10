@@ -1,0 +1,956 @@
+<div data-role="page" id="viewAccount">
+    <div class="ios-fix-overlap-div"></div>
+   
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <div class="ui-title">
+                Accounting Rate
+            </div>
+        </div>
+    </div>
+<!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    -->
+        <template id="tplAddConfirmA">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                3-1.加Add [CAD] to favorite ~ 
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">Cancel</div>
+                    <div class="confirm">OK </div>
+                </div>
+            </div>
+        </template>
+
+
+        <template id="tplRemoveB">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                3-2.除Remove [CAD] from favorite~
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel"> Cancel</div>
+                    <div class="confirm">OK</div>
+                </div>
+            </div>
+        </template>
+
+
+<!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Tab -->
+    <div data-role="main" class="page-main"  class="ui-content" id="contentID">
+
+        <div data-role="tabs" class="frag">
+            <div class="frag0" data-role="navbar" data-iconpos="bottom">
+                 <ul>
+                    <li><a href="#fragment-1" class="ui-btn-active frag1" >Nov.2016</a></li> 
+                    <li><a href="#fragment-2" class="frag2"               >Oct.2016</a></li>
+                </ul>
+            </div>
+<!-- Button1 head========================================================== -->
+            <div  class ="buttonone"  style="">
+                <a href="#popupA" class="buttononea" data-rel= "popup">
+                    <img  class="buttononeFlag1 buttonone1"       src="img/tmp/AUD.png">
+                    <span class="buttononeCountry1" style="">AUD</span>
+                    <img  class="buttonone3img"     src  ="img/tmp/dropdown_n.png">                     
+                </a>
+                <img  class="buttontransfer" src ="img/tmp/change.png">
+            </div>
+       
+                 
+         
+
+            <div  class ="buttontwo " style="">
+                <a href="#popupB"  class="buttontwoa"  data-rel= "popup">
+                    <img  class="buttononeFlag2 buttontwo1"    src="img/tmp/USD.png">
+                    <span class="buttononeCountry2" style="">USD</span>
+                    <img  class="buttonone3img"     src  ="img/tmp/dropdown_n.png">                  
+                </a>
+            </div>
+     
+<!-- Button1 head======================================================================== -->
+            <br>
+            <br>
+
+            <div class="mainword">
+                <hr>
+                <center class ="mainword1" >From All currency to USD </center>
+                <center class ="mainword3" >2020 Candy</center>
+            </div>
+
+<!-- Main   ====================================================================== -->
+            <div id="fragment-1" >
+                <ul data-role="listview" class="favorite test1" id="ultestA" >
+                    
+                    <li data-icon="false" class="1_li CountryA firstli" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> 
+                            <img  class="ListviewFlag1" src ="img/tmp/NTD.png"> 
+                            <span class="ListRate1">1 NTD</span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                        <div class="Listdiv2">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> 
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >10.032 </span> 
+                                <span class="ListRate2"   > USD</span>
+                                <br>          
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 2========================================================== -->
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/EUR.png"> </img>
+                            <span class="ListRate1">1 EUR  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                        <div class="Listdiv2">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >1.0634 </span> 
+                                <span class="ListRate2"   > USD</span>
+                                <br>                             
+                            </div>
+                        </div>              
+                    </li>
+                    <!-- 3========================================================== -->
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/GBP.png"> </img>
+                            <span class="ListRate1">1 GBP  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+       
+                        
+                        <div class="Listdiv2">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                    
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >1.2233 </span> 
+                                <span class="ListRate2"   > USD</span>
+                                <br>
+                             
+                            </div>
+                        </div>
+                    </li>
+                                      
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/AED.png"> </img>
+                            <span class="ListRate1">1 AED  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                                       
+                        <div class="Listdiv2">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                              
+                            </div>
+                        </div>         
+                    </li>
+
+
+                  <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/SGD.png"> </img>
+                        <span class="ListRate1">1 SGD  </span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                         
+                        </div>
+                    </div>         
+                </li>
+
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/AUD.png"> </img>
+                        <span class="ListRate1">1 AUD </span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>                         
+                        </div>
+                    </div>         
+                </li>
+
+                 <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/BDT.png"> </img>
+                        <span class="ListRate1">1 BDT </span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>                         
+                        </div>
+                    </div>         
+                </li>
+
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/BRL.png"> </img>
+                        <span class="ListRate1">1 BRL</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>                        
+                        </div>
+                    </div>         
+                </li>
+
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/CAD.png"> </img>
+                        <span class="ListRate1">1 CAD</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>
+
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/CHF.png"> </img>
+                        <span class="ListRate1">1 CHF</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>
+
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/PHP.png"> </img>
+                        <span class="ListRate1">1 PHP</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>                     
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>
+
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/CZK.png"> </img>
+                        <span class="ListRate1">1 CZK</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>      
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>
+             <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/HKD.png"> </img>
+                        <span class="ListRate1">1 HKD</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>
+
+
+             <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/IDR.png"> </img>
+                        <span class="ListRate1">1 IDR</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+
+             <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/INR.png"> </img>
+                        <span class="ListRate1">1 INR</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/JPY.png"> </img>
+                        <span class="ListRate1">1 JPY</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+                 <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/KRW.png"> </img>
+                        <span class="ListRate1">1 KRW</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+                 <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/MMK.png"> </img>
+                        <span class="ListRate1">1 MMK</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        </span> 
+                       
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/MXN.png"> </img>
+                        <span class="ListRate1">1 MXN</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        </span> 
+                       
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+                <li data-icon="false" class="1_li CountryA" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1" src ="img/tmp/MYR.png"> </img>
+                        <span class="ListRate1">1 MYR</span>  
+                        <div  class="Listdiv1equalmark4">=</div>
+                    </div>
+
+                                   
+                    <div class="Listdiv2">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                        <div class="Listdiv3">
+                            <span class="ListDollar1" >0.2722</span> 
+                            <span class="ListRate2"   >USD</span>
+                            <br>
+                        </div>
+                    </div>         
+                </li>    
+
+
+
+                </ul>
+            </div>
+
+<!-- Fragment 1  ============================================================= -->
+<!-- Fragment 2  ============================================================= -->
+            <div id="fragment-2"  style="" >
+                <ul data-role="listview" class="favorite test12 " id="ultestB" >
+                    <li data-icon="false" class="1_li CountryA firstli" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> 
+                            <img  class="ListviewFlag1" src ="img/tmp/NTD.png"> 
+                            <span class="ListRate1">1 NTD  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> 
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >10.032</span> 
+                                <span class="ListRate2"   >USD</span>                               
+                            </div>
+                        </div>
+                    </li>
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">           
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/EUR.png"> </img>
+                            <span class="ListRate1">1 EUR  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >1.0634</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                           
+                            </div>
+                        </div>                     
+                    </li>
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/GBP.png"> </img>
+                            <span class="ListRate1">1 GBP  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >1.2233</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                            </div>
+                        </div>
+                    </li>
+                  
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/AED.png"> </img>
+                            <span class="ListRate1">1 AED  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                            </div>
+                        </div>         
+                    </li>
+
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/SGD.png"> </img>
+                            <span class="ListRate1">1 SGD  </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+                                       
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>                               
+                            </div>
+                        </div>         
+                    </li>
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/AUD.png"> </img>
+                            <span class="ListRate1">1 AUD </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                                       
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                            </div>
+                        </div>         
+                    </li>
+
+                     <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/BDT.png"> </img>
+                            <span class="ListRate1">1 BDT </span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                                       
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                            </div>
+                        </div>         
+                    </li>
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/BRL.png"> </img>
+                            <span class="ListRate1">1 BRL</span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                                       
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                            </div>
+                        </div>         
+                    </li>
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/CAD.png"> </img>
+                            <span class="ListRate1">1 CAD</span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                                       
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>
+                            </div>
+                        </div>         
+                    </li>
+
+                    <li data-icon="false" class="1_li CountryA" id="litest">
+                        <div class="Listdiv1">
+                            <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag1" src ="img/tmp/CHF.png"> </img>
+                            <span class="ListRate1">1 CHF</span>  
+                            <div  class="Listdiv1equalmark4">=</div>
+                        </div>
+
+                                       
+                        <div class="Listdiv2">
+                            <img  class="star_icon" src ="img/tmp/favorite.png"> </img>
+                            <img  class="ListviewFlag2" src ="img/tmp/USD.png"> </img>
+                            </span> 
+                           
+                            <div class="Listdiv3">
+                                <span class="ListDollar1" >0.2722</span> 
+                                <span class="ListRate2"   >USD</span>
+                                <br>                              
+                            </div>
+                        </div>         
+                    </li>
+                </ul>
+            </div>
+            <!-- Fragment 2  ============================================================= -->
+        </div>
+
+
+    <!-- Popup ================================================================================ -->
+    <div id="popupA"  data-role="popup"  data-position-to="window" class="popupAclass" data-history="false">    
+        <div data-icon="false" class="popListdiv1 popAdeleteli" id="litest">                 
+                <a data-rel="back" class= "deletepopa" >  
+                   <img class="deletepop" src ="img/tmp/close_btn.png" > </a>
+            </div>
+
+        <ul data-role="listview" data-inset="false"> 
+            <!-- popmsg & delete-->
+          
+
+            <li data-icon="false" class ="popAmsgli popListdiv1" >                 
+                <span  class ="popAmsg ListRate1popup" >All Currency</span>              
+            </li>
+
+            <!-- popmsg & delete-->
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">     
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/NTD.png"> </img>
+                        <span class="ListRate1popup">NTD  </span>  
+                    </div>                     
+                       
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">            
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/EUR.png"> </img>
+                        <span class="ListRate1popup">EUR  </span>  
+                    </div>                     
+                                      
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">       
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/GBP.png"> </img>
+                        <span class="ListRate1popup">GBP  </span>  
+                    </div>                     
+                                     
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/AED.png"> </img>
+                        <span class="ListRate1popup">AED  </span>  
+                    </div>                     
+                           
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/BDT.png"> </img>
+                        <span class="ListRate1popup">BDT  </span>  
+                    </div>                     
+                                   
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/BRL.png"> </img>
+                        <span class="ListRate1popup">BRL  </span>  
+                    </div>                     
+                                    
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/RMB.png"> </img>
+                        <span class="ListRate1popup">RMB  </span>  
+                    </div>                     
+                                   
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/USD.png"> </img>
+                        <span class="ListRate1popup">USD  </span>  
+                    </div>                     
+                              
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/TRL.png"> </img>
+                        <span class="ListRate1popup">TRL </span>  
+                    </div>                     
+                                   
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/SGD.png"> </img>
+                        <span class="ListRate1popup">SGD </span>  
+                    </div>                     
+                                  
+            </li>
+             <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/RMB.png"> </img>
+                        <span class="ListRate1popup">RMB  </span>  
+                    </div>                     
+                                 
+            </li>
+                <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/HKD.png"> </img>
+                        <span class="ListRate1popup">HKD  </span>  
+                    </div>                     
+                                   
+            </li>
+        </ul >
+    </div> 
+
+<!-- Popup  ===================================================================== -->
+<!-- Popup ====================================================================== -->
+    <div id="popupB"  data-role="popup"  data-position-to="window" class="popupAclass" data-history="false">    
+        <div data-icon="false" class="popListdiv1 popAdeleteli" id="litest">                 
+                <a data-rel="back" class= "deletepopa" >  
+                  <img class="deletepop" src ="img/tmp/close_btn.png" > 
+                </a>
+            </div>
+
+        <ul data-role="listview" data-inset="false"> 
+            <!-- popmsg & delete-->
+          
+
+            <li data-icon="false" class ="popAmsgli popListdiv1" >                 
+                    <span  class ="popAmsg ListRate1popup" >All Currency</span>              
+            </li>
+
+            <!-- popmsg & delete-->
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">     
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/NTD.png"> </img>
+                        <span class="ListRate1popup">NTD  </span>  
+                    </div>                     
+                       
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">            
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/EUR.png"> </img>
+                        <span class="ListRate1popup">EUR  </span>  
+                    </div>                     
+                                      
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">       
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/GBP.png"> </img>
+                        <span class="ListRate1popup">GBP  </span>  
+                    </div>                     
+                                     
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/AED.png"> </img>
+                        <span class="ListRate1popup">AED  </span>  
+                    </div>                     
+                           
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/BDT.png"> </img>
+                        <span class="ListRate1popup">BDT  </span>  
+                    </div>                     
+                                   
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/BRL.png"> </img>
+                        <span class="ListRate1popup">BRL  </span>  
+                    </div>                     
+                                    
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/RMB.png"> </img>
+                        <span class="ListRate1popup">RMB  </span>  
+                    </div>                     
+                                   
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/USD.png"> </img>
+                        <span class="ListRate1popup">USD  </span>  
+                    </div>                     
+                              
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/TRL.png"> </img>
+                        <span class="ListRate1popup">TRL </span>  
+                    </div>                     
+                                   
+            </li>
+            <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/SGD.png"> </img>
+                        <span class="ListRate1popup">SGD </span>  
+                    </div>                     
+                                  
+            </li>
+             <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/RMB.png"> </img>
+                        <span class="ListRate1popup">RMB  </span>  
+                    </div>                     
+                                 
+            </li>
+                <li data-icon="false" class="popListdiv1" id="litest">
+                    <div class="Listdiv1">
+                        <img  class="nonstar_icon" src ="img/tmp/favorite.png"> </img>
+                        <img  class="ListviewFlag1popup" src ="img/tmp/HKD.png"> </img>
+                        <span class="ListRate1popup">HKD  </span>  
+                    </div>                     
+                                   
+            </li>
+        </ul >
+    </div> 
+
+<!-- Popup  ================================================================================ -->
+
+
+    </div>
+
+</div>

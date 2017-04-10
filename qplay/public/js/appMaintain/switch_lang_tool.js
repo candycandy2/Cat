@@ -114,6 +114,9 @@
        $('.label-hint').text($('#ddlLang_'+langId).children('a').text());
     }
     var saveRemoveLang= function(){
+        if($('#removeableLang').find('input[type=checkbox]:checked').length == 0){
+            return false;
+        }
         showConfirmDialog(Messages.REMOVE_CONFIRM, Messages.MSG_SYSTEM_WILL_DELETE_ALL_ALNGUAGE,"",function () {
             hideConfirmDialog();
             var chk = $('#removeableLang').find('input[type=checkbox]:checked').each(function(){

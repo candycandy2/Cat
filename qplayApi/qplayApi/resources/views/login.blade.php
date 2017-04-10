@@ -281,7 +281,7 @@
 
         var tryLogin = function () {
             var userName = $("#tbxName").val();
-            var password = encodeURI($("#tbxPassword").val());
+            var password = encodeURIComponent($("#tbxPassword").val());
             var company = $("#ddlCompany").val();
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
                 showMessage("MSG_INFO_ERROR");

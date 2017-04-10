@@ -16,6 +16,8 @@ a {
     text-decoration: none !important;
 }
 
+.ui-header-fixed.ui-fixed-hidden{ top: -1px;}
+
 .ios-fix-overlap-div {
     display: initial !important;
 }
@@ -74,7 +76,7 @@ a {
     background-color: #0db6b7 !important;
 }
 
-#viewNewSetting .ui-controlgroup-controls {
+#Setting .ui-controlgroup-controls {
     width: 100%;
 }
 
@@ -101,14 +103,17 @@ a {
     color: black;
 }
 
+#reserveSettingArea .ui-grid-a{ margin-top: 3vw !important; margin-bottom: 0 !important;}
+#reserveSettingArea .ui-grid-a > div:nth-of-type(1){ margin-bottom: 0.5vw;}
+
 #reserveTab > div > div.ui-radio label {
-    line-height: 2vh !important;
-    height: 2vh !important;
-    border: 1px solid #2a88bc !important;
+    line-height: 1 !important;
+    border: 1px solid #2c89bc !important;
+    padding: 2.8vw 0 2.6vw;
 }
 
 #reserveTab > div > div.ui-radio label.ui-btn-active {
-    background-color: #2a88bc !important;
+    background-color: #2c89bc !important;
     color: white !important;
 }
 
@@ -136,7 +141,7 @@ a {
     border-style: solid;
     border-color: #d6d6d6;
     border-width: 0px 1px 1px 0px;
-    padding: .4em 2vw !important;
+    padding: 1.692vw 2vw !important;
 }
 
 #reserveDateSelect > div.ui-grid-c {
@@ -163,8 +168,8 @@ a {
 #newSettingPeople, #newSettingTitle{ font-size: 4.18vw;}
 #newSettingPeople .ui-controlgroup{ margin: 0;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
-#reserveTab{ margin-top: 3.99vw;}
-
+#reserveTab{ margin-top: 3.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
+.ui-controlgroup-controls { width: 100%;}
 
 
 /********************************** public area *************************************/
@@ -201,25 +206,34 @@ a {
     font-size: 2.5vh;
 }
 
+#viewSettingList .app-font-small{ font-size: 3.97vw;}
+
 .disable {
     display: none !important;
 }
 
 .inline {
     display: inline-block;
-    vertical-align: sub;
+    vertical-align: middle;
 }
 
-div.circle {
+div.square {
     width: 3vw;
-    height: 3vw;
-    border-radius: 50%;
+    height: 1.5vw;
 }
+
+.square.ui-color-reserve{ background-color: #d4d4d4 !important;}
+.square.ui-color-myreserve{ background-color: #b3d6d1 !important;}
+#reserveColorDiagram > div{ vertical-align: middle;}
 
 .ui-margin-public {
-    margin: 1.8vw 3.71vw 3.99vw !important;
+    margin: 1.8vw 3.71vw 0 !important;
     font-size: 4.18vw;
 }
+
+.ui-margin-public:not(#pageOne):not(#pageTwo){ padding-bottom: 4.3vw;}
+
+#pageOne{ margin-top: 0 !important;}
 
 #viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
 #newSettingFloor{ font-size: 4.18vw;}
@@ -253,13 +267,13 @@ div.circle {
 
 .iconSelect {
     background: url(../img/circle1.png);
-    background-size: 4.8vw 2.8vh;
+    background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
 
 .iconSelected {
     background: url(../img/circle2.png);
-    background-size: 4.8vw 2.8vh;
+    background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
 
@@ -275,47 +289,44 @@ div.circle {
 }
 
 .btn-myreserve {
-    border-radius: 40px;
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
     color: white;
     width: 22vw;
-    height: 4.5vh;
-    line-height: 5vh;
-    text-align: center;
+    text-align: right;
     background-color: transparent;
-    color: white;
-    border-width: 1px;
-    border-color: white;
-    border-style: solid;
     display: inline-block;
 }
 
-.myreserve-margin {
-    font-size: 2.8vh;
-    margin: 1.7vh 4.8vw;
+.myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
+
+#viewMyReserve{ box-sizing: border-box; padding-left: 3.71vw !important;}
+
+#viewMyReserve .ui-margin-public{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
+#viewMyReserve .ui-margin-public:after{
+    content: '';
+    background-color: #989898;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
-.myreserve-height {
-    height: 10.7vh;
-    line-height: 10.7vh;
-}
+#viewMyReserve .ui-margin-public > div > div{ margin: 4vw 0 3vw;}
+
+.delete-myreserve{ width: 4.186vw; height: auto;}
 
 .setting-delete {
     position: absolute;
-    right: 6vw;
-    display: inline-block;
+    right: -4vw;
+    top: -2vw;    
     width: 22vw;
-    height: 4vh;
-    line-height: 4.5vh;
-    margin-top: -0.5vh;
+    height: 10vw;
+    line-height: 1;
+    padding: 3.5 0;
 }
 
-.setting-img {
-    height: 2.5vh;
-    margin-left: 2vw;
-}
+.setting-img { width: 4.5vw; height: auto; position: absolute; top: 3.8vw; right: 4vw;}
 
 .div-radius {
     border-radius: 5px;
@@ -333,21 +344,21 @@ div.circle {
     background: url(../img/select.png) no-repeat;
     width: 5vw;
     height: 3vh;
-    background-size: 5vw 3vh;
+    background-size: 5vw auto;
 }
 
 .quick-reserve-warn-icon {
     background: url(../img/warn_icon.png) no-repeat;
     width: 5vw;
     height: 3vh;
-    background-size: 5vw 3vh;
+    background-size: 5vw auto;
 }
 
 .quick-reserve-setting-icon {
     background: url(../img/setting.png) no-repeat;
     width: 7.2vw;
     height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
+    background-size: 7.2vw auto;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -356,7 +367,7 @@ div.circle {
     background: url(../img/setting.png) no-repeat;
     width: 7.2vw;
     height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
+    background-size: 7.2vw auto;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -376,7 +387,7 @@ div.circle {
 .setting-icon {
     width: 7.2vw;
     height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
+    background-size: 7.2vw auto;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -428,9 +439,9 @@ div.circle {
     font-size: 2.8vh;
     text-align: left;
     padding: 1.5vh 2.4vw;
-    border: 1px solid #aaa;
+    border: 1px solid #d6d6d6;
     margin-top: 3.2vh;
-    margin-bottom: 5.6vh;
+    margin-bottom: 7vw;
 }
 
 .dropdown-icon {
@@ -475,8 +486,8 @@ hr.ui-color-green {
 }
 
 .btn-disable {
-    background-color: #ddd !important;
-    color: #666 !important;
+    background-color: #d6d6d6 !important;
+    color: #999 !important;
 }
 
 .btn-otherday {
@@ -498,21 +509,21 @@ hr.ui-color-green {
 }
 
 .ui-linear-gradient-gary {
-    background: -webkit-linear-gradient(#a1a3a5, #747679);
-    background: -o-linear-gradient(#a1a3a5, #747679);
-    background: -moz-linear-gradient(#a1a3a5, #747679);
-    background: linear-gradient(#a1a3a5, #747679);
-    color: white !important;
+    color: #323232 !important;
+    background-color: #f6f6f6 !important;
 }
+
+#viewSettingList .ui-linear-gradient-gary, #viewSettingList .ui-linear-gradient-green{ background-color: transparent !important; border: 1px solid #d6d6d6;
+    margin-bottom: 4.3vw !important; padding: 2.14vw 0 !important;}
+
+#viewSettingList .ui-linear-gradient-gary .inline, #viewSettingList .ui-linear-gradient-green .inline{ margin-left: 2.4vw;}
 
 .ui-linear-gradient-green {
-    background: -webkit-linear-gradient(#009cb5, #056c92);
-    background: -o-linear-gradient(#009cb5, #056c92);
-    background: -moz-linear-gradient(#009cb5, #056c92);
-    background: linear-gradient(#009cb5, #056c92);
-    color: white !important;
+    color: #323232 !important;
+    background-color: transparent !important;
 }
 
+.ui-linear-gradient-green span, .ui-linear-gradient-gary span{ margin-left: 4.5vw;}
 
 /********************************** scrollmenu *************************************/
 
@@ -540,7 +551,7 @@ div.scrollmenu a {
 
 #scrollDate a,
 #quickReserveScrollDate a {
-    padding: 3vw 0;
+    padding: 2.894vw 0 2.567vw;
     width:30%;
     font-weight: normal;
 }
@@ -548,7 +559,7 @@ div.scrollmenu a {
 #scrollDate a{ padding: 2.4vw 0;}
 
 #reserveRoom a {
-    padding: 3vw 0;
+    padding: 2.894vw 0 2.567vw;
     font-weight: normal;
     width: 22%;
 }
@@ -558,6 +569,20 @@ div.scrollmenu a {
     color: white !important;
 }
 
+.popup-msg a{ 
+    background: transparent;
+    border: none;
+    color: #1678E5;
+    height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    bottom: 0;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 3rem;
+}
 
 /********************************** new header *************************************/
 
@@ -647,9 +672,7 @@ div.scrollmenu a {
     -moz-box-shadow: none !important;
 }
 
-#reservePopupSchemeMsg #msgContent {
-    margin: 0 auto;
-}
+.popup-msg{ height: auto !important; overflow: hidden;}
 
 .popup-msg a {
     background: transparent;
@@ -658,13 +681,13 @@ div.scrollmenu a {
     height: 3rem;
     line-height: 3rem;
     font-size: 1rem;
-    width: 50%;
-    position: absolute;
-    bottom: 0;
+    width: calc((100% - 1px) / 2 );
     cursor: pointer;
     outline: none;
     text-align: center;
     font-weight: 100;
+    float: left;
+    display: inline-block;
 }
 
 .popup-msg a:nth-of-type(1) {

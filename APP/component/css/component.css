@@ -88,14 +88,44 @@ body, input, select, textarea, button, .ui-btn {
     font-family: "Arial", "微軟中黑體";
 }
 
+.ui-header .ui-title, .ui-header .ui-btn-left, .ui-header .ui-btn-right {
+    font-weight: normal;
+    font-size: 4.39vw !important;
+    padding: 3.328vw 0;
+    color: #ffffff;
+}
+
 .ui-title {
-    line-height: 1;
+    line-height: 1.5;
 }
 
 .ui-title > div { 
     font-size: 5vw;
     font-weight: normal;
     pointer-events: none;
+}
+
+.ui-header-fixed {
+    padding-top: 0;
+}
+
+.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right {
+    margin-top: 0;
+    top: 0;
+}
+
+.ui-header-fixed .ui-btn-left {
+    left: 3.71vw;
+}
+
+.ui-header-fixed .ui-btn-right {
+    right: 3.71vw;
+}
+
+.ui-header .ui-btn {
+    border: none;
+    height: 0;
+    margin-top: 3.238vw;
 }
 
 .ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, 
@@ -120,20 +150,11 @@ textarea.ui-body-inherit {
     color: #323232;
     border-color: #989898;
 }
+
 /* variable, function, style for All APP */
 
 /* disable ‘hold to copy’ on all elements */
-body *:not(input){ -webkit-user-select: none;}
-
-.header-style {
-    overflow: hidden;
-    background-color: #4B0082;
-    color: white;
-    border-style: none;
-    font-size: 16px;
-    text-align: center;
-    line-height: 0;
-}
+body *:not(input):not(textarea){ -webkit-user-select: none;}
 
 .loader {
     position: absolute;
@@ -144,8 +165,10 @@ body *:not(input){ -webkit-user-select: none;}
     width: 100%;
     background: rgba(35,31,32,0.3);
     text-align: center;
-    padding-top: 70%;
+    padding-top: 0;
 }
+
+.loader img{ padding-top: 70%;}
 
 .hide {
     display: none;
@@ -402,13 +425,15 @@ body *:not(input){ -webkit-user-select: none;}
     margin-right: 1.5vw;
 }
 
+#msgTitle{ font-size: 4.18vw; font-weight: normal;}
+
 #msgContent {
     margin: 3vh 3vh;
 }
 
 .popup-msg div {
     text-align: center;
-    font-size: 1rem;
+    font-size: 4.18vw;
 }
 
 .popup-msg div > table {
@@ -450,14 +475,31 @@ body *:not(input){ -webkit-user-select: none;}
 /*initial page layout setting when landscape*/
 @media all and (orientation: landscape){
     /*initial*/
-    #initialOther, .main-updateAppVersion, .main-GetQPush{ position: absolute; top: 0; left: 0; right: 0; margin: auto; height: auto; width: 100%;}
-    #initialOther .logo-initial{ height: auto; width: 9vw;}
+    #initialOther, .main-updateAppVersion, .main-GetQPush{ margin-top: 18vh;}
+    #initialOther .logo-initial{ height: auto; width: 13vh;}
     #initialAppName{ margin-top: 2vw;}
-    #initialOther .app-logo-initial{ width: 15vw; margin-top: 0;}
+    #initialOther .app-logo-initial{ width: 25vh; margin-top: 0;}
     #initialOther .brand-initial-content{ position: fixed;}
     /*need update, update app version, get qpush*/
-    .logo-updateAppVersion, .logo-GetQPush{ width: 15%;}
+    .logo-updateAppVersion, .logo-GetQPush{ width: 20vh;}
     .main-updateAppVersion, .main-updateAppVersion, .main-GetQPush{ padding-top: 0;}
-    .text-updateAppVersion, .text-updateAppVersion, .text-GetQPush{ font-size: 2.5vw; margin-top: 3vw;}
-    .button-updateAppVersion, .brand-GetQPush-content{ font-size: 2.5vw; position: fixed;}
+    .text-updateAppVersion, .text-updateAppVersion, .text-GetQPush{ font-size: 3.4vh; margin-top: 4vh;}
+    .button-updateAppVersion, .brand-GetQPush-content{ font-size: 3.4vh; position: fixed;}
+    /*loader*/
+    .loader{ padding-top: 0;}
+    .loader img{ position: absolute; top: 40%; left: 0; right: 0; margin: auto; padding-top: 0;}
+}
+
+/* APP Header */
+.header-style {
+    overflow: hidden;
+    background-color: #492f7f;
+    color: #ffffff;
+    border-style: none;
+    text-align: center;
+    line-height: 0;
+}
+
+.q-btn-header {
+    width: 5.957vw;
 }

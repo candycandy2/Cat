@@ -2,7 +2,7 @@
 <div data-role="page" id="viewYTDHitRate" class="viewIndex">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
-        <a class="menu-btn">
+        <a class="menu-btn" data-role="none">
             <img src="img/humb.png" style="width:6VW;">
         </a>
         <div class="header-style">
@@ -14,13 +14,13 @@
         <form >
             <fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs">
                 <input type="radio" name="radio-choice-h-2" id="viewYTDHitRate-tab-1" value="viewYTDHitRate-tab-1" checked="checked">
-                <label for="viewYTDHitRate-tab-1" class="tabs-title">Quantity</label>
+                <label for="viewYTDHitRate-tab-1" class="tabs-title">Amount</label>
         
                 <input type="radio" name="radio-choice-h-2" id="viewYTDHitRate-tab-2" value="viewYTDHitRate-tab-2">
-                <label for="viewYTDHitRate-tab-2" class="tabs-title label-style">Amount</label>
+                <label for="viewYTDHitRate-tab-2" class="tabs-title label-style">ASP</label>
         
                 <input type="radio" name="radio-choice-h-2" id="viewYTDHitRate-tab-3" value="viewYTDHitRate-tab-3">
-                <label for="viewYTDHitRate-tab-3" class="tabs-title">ASP</label>
+                <label for="viewYTDHitRate-tab-3" class="tabs-title">Quantity</label>
             </fieldset>
         </form>
 
@@ -50,14 +50,12 @@
         <div class="chartArea">
             <div class="hc-fragment" id="viewYTDHitRate-hc-canvas" style="height:46.5VH;">
             </div>
-            <!-- <div class="zoomBtn">
-                <img src="img/zoomin.png" alt="" class="zoomInBtn" id="viewYTDHitRateZoomInBtn">
-                <img src="img/zoomout.png" alt="" class="zoomOutBtn" id="viewYTDHitRateZoomOutBtn">
-            </div> -->
+            <div class="hc-fragment-landscape" id="viewYTDHitRate-hc-landscape-canvas">
+            </div>
         </div>
 
         <div style="margin-top: 1.5VH;">
-            <div class="scrollmenu Ro" data-role="none">
+            <div class="scrollmenu Ro" data-role="none" style="overflow: auto;">
                 <a id="ALL">ALL</a>
                 <a id="BQA">BQA</a>
                 <a id="BQC">BQC</a>

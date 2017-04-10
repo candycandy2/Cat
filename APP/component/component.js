@@ -370,6 +370,22 @@ $(document).one("pagebeforecreate", function(){
             closeInfoMsgInit = true;
         }
     });
+
+    //For Message Content, click link to open APP by Scheme
+    $(document).on("click", "a", function(event) {
+        if ($(this).prop("href") != null) {
+            var id = $(this).prop("id");
+            var href = $(this).prop("href");
+            var hrefStart = href.substr(0, 3);
+
+            if (hrefStart === "app") {
+                if (id !== "schemeLink") {
+                    event.preventDefault();
+                    openAPP(href);
+                }
+            }
+        }
+    });
 });
 
 /********************************** QPlay APP function *************************************/
@@ -940,6 +956,15 @@ function handleOpenURL(url) {
             });
 
             hideInitialPage();
+        } else {
+            //For Other APP, which was be opened by dynamic action,
+            //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
+            if (handleOpenByScheme !== null) {
+                if (typeof handleOpenByScheme === "function") {
+                    callHandleOpenURL = false;
+                    handleOpenByScheme(queryData);
+                }
+            }
         }
 
         //Because Scheme work different process between [APP is in action or background] / [APP is not open],
@@ -966,16 +991,3 @@ function handleOpenURL(url) {
     }
 
 }
-
-// when landscape or portraint, initial page should be in middle of layout
-$(window).resize(function() {
-    if ($('#viewInitial').hasClass('ui-page-active') && ((window.orientation === 90 || window.orientation === -90))){
-        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
-    }
-});
-
-// set initial page's layout after layout is loaded finished
-$(window).load(function() {
-    if ($('#viewInitial').hasClass('ui-page-active') && ((window.orientation === 90 || window.orientation === -90)))
-        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
-});

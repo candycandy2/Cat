@@ -14,15 +14,16 @@
     <div data-role="main" class="page-main">
         <div style="height: 1vh;"></div>
         <div id="settingList" value="[index]" class="app-font div-radius ui-linear-gradient-green ui-margin-public ui-hasBtn disable">
-            <div style="line-height: 5vh;margin-left: 2.4vw;">
+            <div style="line-height: 5vh;">
                 <span class="inline">[title]</span>
                 <div class="inline" style="position: absolute;right: 8vw;">
-                    <span>[siteName]</span>
-                    <img src="img/detail.png" class="setting-img" />
+                    <a id="settingDelete" href="#" value="[index]" title="[title]" class="ui-delete-btn btn-myreserve setting-delete">
+                        <img src="img/delete.png" class="setting-img" />
+                    </a>
                 </div>
             </div>
-            <hr class="ui-color-green col-95" style="margin: 0 auto;" />
-            <div class="app-font-small ui-grid-a" style="margin: 1vh 2.4vw 0;">
+            <hr class="col-95" style="margin: 0 auto;" />
+            <div class="app-font-small ui-grid-a" style="margin: 2.4vw 2.4vw 0;">
                 <div class="ui-block-a col-5">
                     人數&nbsp;[people]
                 </div>
@@ -35,7 +36,7 @@
                     <div>優先樓層&nbsp;[floor]</div>
                 </div>
                 <div class="ui-block-b col-3">
-                    <a id="settingDelete" href="#" value="[index]" title="[title]" class="ui-delete-btn btn-myreserve setting-delete">刪除</a>
+                    <span>[siteName]</span>
                 </div>
             </div>
         </div>

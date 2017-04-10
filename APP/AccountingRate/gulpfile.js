@@ -96,15 +96,18 @@ gulp.task('install', shell.task([
   //These following steps only cancel in first time you run this task.
   //After first time finished this task, you should run these steps in this task all the time.
   //
+/*
   'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-console',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
-  'cordova plugin remove cordova-plugin-file',
+
+  //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android', 
+  */
   'cordova platform add ios', 
   'cordova platform add android',
  
@@ -138,12 +141,12 @@ gulp.task('copyAndroidImages', function() {
 
 gulp.task('copyIOSImages', function() {
     return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
-        .pipe(gulp.dest('platforms/ios/ENS/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/appaccountingrate/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
 });
 
 gulp.task('copyIOSLaunchImages', function() {
     return gulp.src('../component/LaunchImage.launchimage/*')
-        .pipe(gulp.dest('platforms/ios/ENS/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/appaccountingrate/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([

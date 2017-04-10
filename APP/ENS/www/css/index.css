@@ -4,6 +4,15 @@
     padding: 0px;
 }
 
+a {
+    text-decoration: none;
+}
+
+/*override APP CSS*/
+.app-popup .ui-content {
+    padding: 2.5vh 3vw 2.9vh;
+}
+
 /*new class*/
 .event-list-msg-top .description {
     font-size: 4.18vw;
@@ -193,6 +202,14 @@ input[type=radio]:checked + label {
 .event-list-msg-top .urgent .img {
     background: url(../img/urgent.png) no-repeat;
     background-size: 4.2vw;
+}
+
+.event-list-msg-top .link-event {
+    background: url(../img/link.png) no-repeat;
+    background-size: 6vw;
+    width: 6vw;
+    height: 2.5vw;
+    margin-left: 1.6vw;
 }
 
 .event-list-msg-top .link .img {

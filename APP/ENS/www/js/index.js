@@ -5,8 +5,11 @@ var appKeyOriginal = "appens";
 var appKey = "appens";
 var pageList = ["viewEventList", "viewEventAdd", "viewEventContent"];
 var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
+var QMessageKey = "e343504d536ebce16b70167e";
+var QMessageSecretKey = "62f87cad6de67db6c968ba50";
 
 var prevPageID;
+var openEventFromQPlay = false;
 
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
@@ -16,8 +19,60 @@ window.initialSuccess = function() {
     loadingMask("show");
 
     processLocalData.initialData();
+    checkEventTemplateData("check");
 
     $.mobile.changePage('#viewEventList');
+
+    //QMessage
+    var api_url = serverURL.substr(8);
+    var opts = {
+        'username': loginData["loginid"],
+        'eventHandler': eventHandler,
+        'messageHandler': messageHandler,
+        'message_key': QMessageKey,
+        'message_secret': QMessageSecretKey,
+        'message_api_url_prefix': api_url + "/qmessage/public/"
+    };
+    msgController = window.QMessage(opts);
+
+    window.checkTimer = setInterval(function() {
+
+        if (msgController.isInited) {
+            console.log("-------------isInited:true");
+            stopCheck();
+
+            var gid = "22722001";
+            var gname = "22722001-room";
+            var text = "22722001-test-0406003";
+            /*
+            msgController.SendText(gid, gname, text, function(successResult) {
+                console.log(successResult);
+            }, function(errorResult) {
+                console.log(errorResult);
+            });
+            */
+        } else {
+            console.log("-------------isInited:false");
+        }
+
+    }, 1000);
+
+    window.stopCheck = function() {
+        if (window.checkTimer != null) {
+            clearInterval(window.checkTimer);
+        }
+    };
+
+}
+
+function eventHandler(data) {
+    console.log("------------eventHandler");
+    console.log(data);
+}
+
+function messageHandler(data) {
+    console.log("------------messageHandler");
+    console.log(data);
 }
 
 //1. Each data has its own life-cycle.
@@ -98,6 +153,70 @@ function checkAuthority(level) {
     }
 }
 
+//Check Event Template Data
+function checkEventTemplateData(action, data) {
+    data = data || null;
+
+    if (window.localStorage.getItem("template") !== null) {
+        var tempDate = window.localStorage.getItem("template");
+        templateData = JSON.parse(tempDate);
+
+        if (action === "update") {
+            if (templateData.length < 20) {
+                var value = templateData.length+1;
+                var text = data;
+                var tempObj = {
+                    value: value,
+                    text: text
+                };
+
+                templateData.push(tempObj);
+            } else {
+
+                var templateUpdateIndex = 1;
+
+                if (window.localStorage.getItem("templateUpdateIndex") !== null) {
+                    templateUpdateIndex = window.localStorage.getItem("templateUpdateIndex");
+                }
+
+                for (var i=0; i<templateData.length; i++) {
+                    if (templateUpdateIndex == parseInt(i+1, 10)) {
+                        var value = templateUpdateIndex;
+                        var text = data;
+                        var tempObj = {
+                            value: value,
+                            text: text
+                        };
+
+                        templateData[i] = tempObj;
+                    }
+                }
+                templateUpdateIndex++;
+                window.localStorage.setItem("templateUpdateIndex", templateUpdateIndex);
+            }
+
+            window.localStorage.setItem("template", JSON.stringify(templateData));
+        }
+    } else {
+        templateData = [{
+            value: "1",
+            text: "罐頭範本-1"
+        }, {
+            value: "2",
+            text: "罐頭範本-2"
+        }, {
+            value: "3",
+            text: "罐頭範本-3"
+        }];
+
+        window.localStorage.setItem("template", JSON.stringify(templateData));
+    }
+}
+
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+}
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -111,13 +230,35 @@ function onBackKeyDown() {
             navigator.app.exitApp();
         }
 
-    }/* else if (activePageID === "viewDetailInfo") {
+    } else if (activePageID === "viewEventContent") {
 
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
+            footerFixed();
         } else {
-            $.mobile.changePage('#' + prevPageID);
+            $.mobile.changePage('#viewEventList');
         }
 
-    }*/
+    } else if (activePageID === "viewEventAdd") {
+
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+            footerFixed();
+        } else {
+            if (prevPageID === "viewEventList") {
+                $.mobile.changePage('#viewEventList');
+            } else if (prevPageID === "viewEventContent") {
+                $("#eventEditCancelConfirm").popup("open");
+            }
+        }
+
+    }
+}
+
+//Open By Other APP
+function handleOpenByScheme(queryData) {
+    if (queryData["callbackApp"] === qplayAppKey && queryData["action"] === "openevent") {
+        openEventFromQPlay = true;
+        eventRowID = queryData["eventID"];
+    }
 }
