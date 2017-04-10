@@ -88,14 +88,44 @@ body, input, select, textarea, button, .ui-btn {
     font-family: "Arial", "微軟中黑體";
 }
 
+.ui-header .ui-title, .ui-header .ui-btn-left, .ui-header .ui-btn-right {
+    font-weight: normal;
+    font-size: 4.39vw !important;
+    padding: 3.328vw 0;
+    color: #ffffff;
+}
+
 .ui-title {
-    line-height: 1;
+    line-height: 1.5;
 }
 
 .ui-title > div { 
     font-size: 5vw;
     font-weight: normal;
     pointer-events: none;
+}
+
+.ui-header-fixed {
+    padding-top: 0;
+}
+
+.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right {
+    margin-top: 0;
+    top: 0;
+}
+
+.ui-header-fixed .ui-btn-left {
+    left: 3.71vw;
+}
+
+.ui-header-fixed .ui-btn-right {
+    right: 3.71vw;
+}
+
+.ui-header .ui-btn {
+    border: none;
+    height: 0;
+    margin-top: 3.238vw;
 }
 
 .ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, 
@@ -125,16 +155,6 @@ textarea.ui-body-inherit {
 
 /* disable ‘hold to copy’ on all elements */
 body *:not(input):not(textarea){ -webkit-user-select: none;}
-
-.header-style {
-    overflow: hidden;
-    background-color: #4B0082;
-    color: white;
-    border-style: none;
-    font-size: 16px;
-    text-align: center;
-    line-height: 0;
-}
 
 .loader {
     position: absolute;
@@ -468,4 +488,18 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     /*loader*/
     .loader{ padding-top: 0;}
     .loader img{ position: absolute; top: 40%; left: 0; right: 0; margin: auto; padding-top: 0;}
+}
+
+/* APP Header */
+.header-style {
+    overflow: hidden;
+    background-color: #492f7f;
+    color: #ffffff;
+    border-style: none;
+    text-align: center;
+    line-height: 0;
+}
+
+.q-btn-header {
+    width: 5.957vw;
 }
