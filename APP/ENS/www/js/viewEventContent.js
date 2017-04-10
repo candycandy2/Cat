@@ -107,6 +107,16 @@ $("#viewEventContent").pagecontainer({
                         //Task finish Count
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
 
+                        //Message Count
+                        var msgCount = 0;
+                        for (j=0; j<messageCountData.length; j++) {
+                            if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
+                                msgCount = messageCountData[j]["count"];
+                                break;
+                            }
+                        }
+                        eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
+
                         $("#contentEventContent").prepend(eventListMsg);
 
                         //Complete Datetime

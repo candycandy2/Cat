@@ -370,6 +370,22 @@ $(document).one("pagebeforecreate", function(){
             closeInfoMsgInit = true;
         }
     });
+
+    //For Message Content, click link to open APP by Scheme
+    $(document).on("click", "a", function(event) {
+        if ($(this).prop("href") != null) {
+            var id = $(this).prop("id");
+            var href = $(this).prop("href");
+            var hrefStart = href.substr(0, 3);
+
+            if (hrefStart === "app") {
+                if (id !== "schemeLink") {
+                    event.preventDefault();
+                    openAPP(href);
+                }
+            }
+        }
+    });
 });
 
 /********************************** QPlay APP function *************************************/
