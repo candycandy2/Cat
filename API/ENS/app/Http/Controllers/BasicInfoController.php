@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use Request;
 use Mockery\CountValidator\Exception;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
@@ -56,6 +57,29 @@ class BasicInfoController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
+    }
+
+    /**
+     * 上傳成員基本資料
+     * @return json
+     */
+    public function uploaBasicInfo(Request $request){
+    
+       $validator = Validator::make($request->all(), [
+            'basicInfoFile' => 'required|mimes:xls,xlsx'
+        ]);
+        if ($validator->fails()) {
+            return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+        }
+       $input = $request->all();
+       $this->basicInfoService->importBasicInfo($input['basicInfoFile']);
+    }
+
+    public function basicInfoMaintain(){
+        $basicInfo = $this->basicInfoService->getBasicInfo();
+        return view('basic_info/basic_info_maintain')->with('basicInfo',$basicInfo );
     }
 }
 
