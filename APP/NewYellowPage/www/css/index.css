@@ -213,6 +213,7 @@
 #myPhonebookList{ padding: 0 3.71vw; background-color: #fff; width: 113vw; margin-left: -13vw; transition: margin 0.5s ease-in-out;}
 #myPhonebookList.editClick{ margin-left: 0;}
 #myPhonebookList li, #employeeData li{ background-color: transparent; border-top: none; display: flex; align-items: center; position: relative; border: none;}
+#employeeData li{ border-bottom: 1px solid #d6d6d6;}
 #myPhonebookList li:after{ width: 88%; content: ''; height: 1px; background-color: #d6d6d6; position: absolute; bottom: 0; left: 13vw;}
 #myPhonebookList.editClick li:after{ left: 0;}
 #myPhonebookList li:nth-last-of-type(1):after, #employeeData li:nth-last-of-type(1):after{ display: none;}

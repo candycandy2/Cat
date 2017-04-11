@@ -355,6 +355,7 @@ var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
                 $(".phonebookDeleteConfirm").popup("close");
                 $('#phonebookEditBtn').hide();
                 $('#phonebookEdit').show();
+                $('#myPhonebookList').removeClass('editClick');
             });
 
             $('body').on('click', 'div[for=phonebookSelectAlert] #confirm', function() {
