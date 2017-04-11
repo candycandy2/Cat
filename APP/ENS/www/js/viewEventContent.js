@@ -391,6 +391,12 @@ $("#viewEventContent").pagecontainer({
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
             prevPageID = "viewEventContent";
+
+            //Only [admin] can Edit Event
+            if (checkAuthority("admin")) {
+                $("#eventEdit").show();
+            }
+
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
