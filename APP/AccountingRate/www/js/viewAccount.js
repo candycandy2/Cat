@@ -52,8 +52,14 @@ $("#viewAccount").pagecontainer({
       
         $(".mainword1").text("From "+ FromStatus +" to "+ToStatus+" ");  
         $(".mainword3").text("Updated on "+todayYear+"/"+todayMonth+"/"+todayDate);  
-    //  Exception Img   **************************************************************************    
-    
+    //  Exception Img   **************************************************************************  
+
+
+
+
+
+
+     
     //  Transfer   ************************************************************************** 
 
         $(document).on("click", ".buttontransfer", function() {      
@@ -117,6 +123,10 @@ $("#viewAccount").pagecontainer({
         }     
             Buttonimg(); 
 
+ 
+  
+
+
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
            // Addhtml();
@@ -130,9 +140,94 @@ $("#viewAccount").pagecontainer({
         //$("#eventWorkConfirmA").popup('open');//action
         //  $("#eventWorkConfirmB").popup('open');              
             Buttonimg(); 
+   
+            var eventConfirmA = { //Add
+                id: "eventWorkConfirmA",  //template id
+                content: $("template#tplAddConfirmA").html()
+            };
+
+        //   tplJS.Popup("viewExample2", "contentID", "append", eventCancelWorkDoneConfirmData);
+        //Pop2
+            var eventConfirmB = {  //Remove
+                id: "eventWorkConfirmB",        // html template id  
+                content: $("template#tplRemoveB").html()  //
+            };
+             
+            tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);  
+            tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
         });    
 
+
+
+        /********************************** Popup *************************************/
+        $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
+            
+            //var sta2 =$(this).find(".ListRate2").text().trim(); 
+            $("#eventWorkConfirmA").popup('open');
+
+        });
+
+        $(document).on("click", "#eventWorkConfirmA .confirm", function() { // B window OK   
+
+           // $('img.'+countrystatus).removeClass('nonstar_icon');
+           // $('img.'+countrystatus).addClass('star_icon');  
+            $("#eventWorkConfirmA").popup('close');
+        });
+
+        $(document).on("click", "#eventWorkConfirmA .cancel", function() {  // B window OK
+            $("#eventWorkConfirmA").popup('close');
+
+        });
+
+        /********************************** Popup  *************************************/
+        $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
+           // $("#eventWorkConfirmB").popup('open');
+
+        });
+
+        $(document).on("click", "#eventWorkConfirmB .confirm", function() { // B window OK   
+           // $('span.3'+countrystatus).removeClass('star_icon');
+           // $('span.3'+countrystatus).addClass('nonstar_icon');
+            $("#eventWorkConfirmB").popup('close');
+        });
+
+        $(document).on("click", "#eventWorkConfirmB .cancel", function() {  // B window OK
+            $("#eventWorkConfirmB").popup('close');
+
+        });
+
+        /********************************** Popup  *************************************/
+        $(document).on("click", "#popupA .popListdiv1", function() {  //.Listdiv1  
+           //$("popListdiv1").css("background-color", "#FFFF30");
+            var statuspop = $(this).find(".ListRate1popup").text().trim();
+            FromStatus    = statuspop;
+
+            if ((FromStatus =="All Currency") && (ToStatus =="All Currency")) 
+            {                
+                alert("NO!不可以喔!~");
+                FromStatus    = "NTD";
+            }
+               
+            $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus +" ");  
+            $(".mainword3").text("Update on "+todayYear+"/"+todayMonth+"/"+todayDate);  
+         
+            $(".buttonone1").attr("src","img/tmp/"+ FromStatus +".png");
+            $(".buttontwo1").attr("src","img/tmp/"+ ToStatus +".png");
+
+            $(".buttononeCountry1").text(FromStatus);
+            $(".buttononeCountry2").text(ToStatus);   
+           
+             Buttonimg();
+                      
+
+            $("#popupA").popup('close');
+
+        });
+
+
         /********************************** dom event *************************************/
+
+
         $('#viewAccount').keypress(function(event) {
 
         });
