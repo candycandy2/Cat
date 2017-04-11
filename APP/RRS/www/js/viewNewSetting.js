@@ -256,7 +256,7 @@
                     setDefaultStatus();
                     clickEditSettingID = '';
                     $.mobile.changePage('#viewSettingList');
-
+                    $('#viewSettingList').removeClass('min-height-100');
                 } else {
                     popupMsg('validationMsg', '', validationResult[1], '', false, '確定', '');
                 }
@@ -271,6 +271,7 @@
                 setDefaultStatus();
                 clickEditSettingID = '';
                 $.mobile.changePage('#viewSettingList');
+                $('#viewSettingList').removeClass('min-height-100');
             });
 
             $('#newSettingTimePickerPopup .timepicker-icon').on('click', function() {

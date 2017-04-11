@@ -15,6 +15,14 @@ class Message
      */
     protected $messageGroupInfo;
 
+
+    public function register($loginId){
+        $data['username'] = $loginId;
+        $apiFunction = 'register';
+        $result = $this->callQmessageAPI($apiFunction, $data);
+        return $result;
+    }
+
     /**
      * 取得聊天群組資訊
      * @return array
@@ -57,6 +65,7 @@ class Message
         return $result;
 
     }
+
 
     /**
      * 呼叫QMessageAPI

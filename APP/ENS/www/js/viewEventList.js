@@ -4,6 +4,8 @@ $("#viewEventList").pagecontainer({
 
         var callGetAuthority = false;
         var callBasicInfo = false;
+        var eventListData;
+        window.messageCountData;
 
         /********************************** function *************************************/
         window.getAuthority = function() {
@@ -84,84 +86,31 @@ $("#viewEventList").pagecontainer({
             this.successCallback = function(data) {
 
                 var resultCode = data['ResultCode'];
-
-                //Clear Event List Data
-                $("#reportDiv .event-list-msg").remove();
+                var chatroomIDList = [];
 
                 if (resultCode === 1) {
                     $(".event-list-no-data").hide();
 
-                    //Event List Msg 
-                    var eventListMsgHTML = $("template#tplEventListMsg").html();
+                    eventListData = data['Content'];
 
                     for (var i=0; i<data['Content'].length; i++) {
-                        var eventListMsg = $(eventListMsgHTML);
-
-                        //Created User
-                        eventListMsg.find(".event-list-msg-top .name").html(data['Content'][i].created_user);
-
-                        //Create Datetime - Convert with TimeZone
-                        var tempDate = dateFormatYMD(data['Content'][i].created_at);
-                        var createTime = new Date(tempDate);
-                        var createTimeConvert = createTime.TimeZoneConvert();
-                        createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
-                        eventListMsg.find(".event-list-msg-top .time").html(createTimeConvert);
-
-                        //Event ID Number
-                        eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'][i].event_row_id);
-
-                        //Event Related Link
-                        eventListMsg.find(".event-list-msg-top .link .text").html(data['Content'][i].event_row_id);
-
-                        if (data['Content'][i].related_event_row_id !== 0) {
-                            eventListMsg.find(".event-list-msg-top .link-event").data("value", data['Content'][i].related_event_row_id);
-                        } else {
-                            eventListMsg.find(".event-list-msg-top .link-event").hide();
+                        //Chatroom ID
+                        if (data['Content'][i].chatroom_id !== null && data['Content'][i].chatroom_id.length != 0) {
+                            chatroomIDList.push(data['Content'][i].chatroom_id);
                         }
-
-                        //Event Title
-                        eventListMsg.find(".event-list-msg-top .description").html(data['Content'][i].event_title);
-
-                        //Type: 緊急通報 / 一般通報
-                        var event_type = data['Content'][i].event_type;
-                        if (event_type === "一般通報") {
-                            eventListMsg.find(".event-list-msg-top .link .normal").show();
-                            eventListMsg.find(".event-list-msg-top .link .urgent").hide();
-                        }
-
-                        //Status: 未完成 / 完成
-                        var event_status = data['Content'][i].event_status;
-                        if (event_status === "完成") {
-                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
-                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
-                        }
-
-                        //User Count
-                        eventListMsg.find(".event-list-msg-bottom .member .text").html(data['Content'][i].user_count);
-
-                        //Seen Count
-                        eventListMsg.find(".event-list-msg-bottom .view .text").html(data['Content'][i].seen_count);
-
-                        //Task finish Count
-                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'][i].task_finish_count);
-
-                        $("#reportDiv").append(eventListMsg);
                     }
 
-                    //Open Event Detail from QPlay
-                    if (openEventFromQPlay) {
-                        var eventDetail = new getEventDetail(eventRowID);
-                        $.mobile.changePage('#viewEventContent');
-
-                        openEventFromQPlay = false;
-                    }
+                    //Update Message Count
+                    getMessageCount(chatroomIDList);
 
                 } else if (resultCode === "014904") {
+                    //Clear Event List Data
+                    $("#reportDiv .event-list-msg").remove();
+
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
                 }
 
-                loadingMask("hide");
             };
 
             this.failCallback = function(data) {};
@@ -282,6 +231,151 @@ $("#viewEventList").pagecontainer({
                 }
             }();
 
+        }
+
+        function getMessageCount(chatroomIDList) {
+            var self = this;
+
+            var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
+            var chatroomListParameter = "<chatroom_list>";
+
+            for (var i=0; i<chatroomIDList.length; i++) {
+                var queryDataObj = {
+                    chatroom_id: chatroomIDList[i]
+                };
+                chatroomListParameter += processLocalData.createXMLDataString(queryDataObj);
+            }
+            chatroomListParameter += "</chatroom_list>";
+
+            var queryData = "<LayoutHeader>" + queryDataParameter + chatroomListParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+                var resultCode = data['ResultCode'];
+                var openEventDetail = false;
+
+                if (resultCode === "014901") {
+                    messageCountData = data['Content'];
+
+                    if (openEventFromQPlay) {
+                        openEventDetail = true;
+                    } else {
+                        eventListView();
+                    }
+                } else {
+                    if (openEventFromQPlay) {
+                        openEventDetail = true;
+                    }
+                }
+
+                if (openEventDetail) {
+                    //Open Event Detail from QPlay
+                    var eventDetail = new getEventDetail(eventRowID);
+                    $.mobile.changePage('#viewEventContent');
+
+                    openEventFromQPlay = false;
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "getMessageCount", self.successCallback, self.failCallback, queryData, "");
+            }();
+
+        }
+
+        function eventListView() {
+            //Clear Event List Data
+            $("#reportDiv .event-list-msg").remove();
+
+            //Event List Msg
+            var eventListMsgHTML = $("template#tplEventListMsg").html();
+
+            for (var i=0; i<eventListData.length; i++) {
+
+                var eventListMsg = $(eventListMsgHTML);
+
+                //Add ID
+                eventListMsg.prop("id", "event-list-msg-" + eventListData[i].event_row_id);
+
+                //Created User
+                eventListMsg.find(".event-list-msg-top .name").html(eventListData[i].created_user);
+
+                //Create Datetime - Convert with TimeZone
+                var tempDate = dateFormatYMD(eventListData[i].created_at);
+                var createTime = new Date(tempDate);
+                var createTimeConvert = createTime.TimeZoneConvert();
+                createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+                eventListMsg.find(".event-list-msg-top .time").html(createTimeConvert);
+
+                //Event ID Number
+                eventListMsg.find(".event-list-msg-top .link .text").html(eventListData[i].event_row_id);
+
+                //Event Related Link
+                eventListMsg.find(".event-list-msg-top .link .text").html(eventListData[i].event_row_id);
+
+                if (eventListData[i].related_event_row_id !== 0) {
+                    eventListMsg.find(".event-list-msg-top .link-event").data("value", eventListData[i].related_event_row_id);
+                } else {
+                    eventListMsg.find(".event-list-msg-top .link-event").hide();
+                }
+
+                //Event Title
+                eventListMsg.find(".event-list-msg-top .description").html(eventListData[i].event_title);
+
+                //Type: 緊急通報 / 一般通報
+                var event_type = eventListData[i].event_type;
+                if (event_type === "一般通報") {
+                    eventListMsg.find(".event-list-msg-top .link .normal").show();
+                    eventListMsg.find(".event-list-msg-top .link .urgent").hide();
+                }
+
+                //Status: 未完成 / 完成
+                var event_status = eventListData[i].event_status;
+                if (event_status === "完成") {
+                    eventListMsg.find(".event-list-msg-top .event-status .done").show();
+                    eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
+                }
+
+                //User Count
+                eventListMsg.find(".event-list-msg-bottom .member .text").html(eventListData[i].user_count);
+
+                //Seen Count
+                eventListMsg.find(".event-list-msg-bottom .view .text").html(eventListData[i].seen_count);
+
+                //Task finish Count
+                eventListMsg.find(".event-list-msg-bottom .member-done .text").html(eventListData[i].task_finish_count);
+
+                //Message Count
+                var msgCount = 0;
+                for (j=0; j<messageCountData.length; j++) {
+                    if (messageCountData[j]["target_id"] === eventListData[i].chatroom_id) {
+                        msgCount = messageCountData[j]["count"];
+                        break;
+                    }
+                }
+                eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
+
+                $("#reportDiv").append(eventListMsg);
+            }
+
+            loadingMask("hide");
+            eventListData = null;
+
+            //Scroll to the specific Event List position
+            if (typeof eventRowID != 'undefined') {
+                if (eventRowID != null) {
+                    var headerHeight = $("#viewEventList .page-header").height();
+                    var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
+                    if (device.platform === "iOS") {
+                        scrollPageTop -= 20;
+                    }
+
+                    $('html, body').animate({
+                        scrollTop: scrollPageTop
+                    }, 'fast');
+                }
+            }
         }
 
         function memberListView(sortType) {
@@ -435,7 +529,6 @@ $("#viewEventList").pagecontainer({
             //Only [admin] can Add New Event
             if (checkAuthority("admin")) {
                 $("#addEvent").show();
-                footerFixed();
             }
         }
 
@@ -612,6 +705,8 @@ $("#viewEventList").pagecontainer({
                     var EventList = new getEventList();
                 }
             }
+
+            footerFixed();
         });
 
         /********************************** dom event *************************************/
@@ -681,6 +776,7 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventListNoDataPopup .confirm", function() {
             $("#eventListNoDataPopup").popup("close");
             $(".event-list-no-data").show();
+            loadingMask("hide");
             footerFixed();
         });
 

@@ -27,7 +27,7 @@ class Push
             $apiFunction = 'sendPushMessage';
             $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
             $header = array('Content-Type: application/json',
-                        'App-Key: appqplaydev',
+                        'App-Key: '.CommonUtil::getContextAppKey(Config::get('app.env'), 'ens'),
                         'Signature-Time: '.$signatureTime,
                         'Signature: '.CommonUtil::getSignature($signatureTime));
             $data = array(
@@ -43,7 +43,7 @@ class Push
                         'destination_role_id' => array(
                             )
                         );
-            $data = json_encode($data);
+            $data = json_encode($header);
             $result = CommonUtil::callAPI('POST', $url,  $header, $data);
             return $result;
     }
