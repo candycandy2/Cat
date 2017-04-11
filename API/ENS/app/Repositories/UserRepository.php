@@ -12,7 +12,7 @@ use DB;
 
 class UserRepository
 {
-    /** @var User Inject En_User model */
+    /** @var User Inject QP_User model */
     protected $user;
     protected $userGroup;
     /**
@@ -56,6 +56,18 @@ class UserRepository
     }
 
     /**
+     * 依員工帳號取得使用者資訊
+     * @param  String  $loginId 員工帳號
+     * @return mixed
+     */
+    public function getUserInfoByLoginId($loginId){
+         return $this->user
+         ->where('login_id','=', $loginId)
+         ->select('row_id','login_id','ext_no','email','emp_no','user_domain','register_message')
+         ->first();
+    }
+
+    /**
      * 查找en_user_group表，若存在此表有特殊權限
      * @return mixed
      */
@@ -63,5 +75,11 @@ class UserRepository
         return $this->userGroup
          ->select('emp_no')
          ->get();
+    }
+
+    public function updateUserByLoginId($loginId ,$updateData){
+        return $this->user
+        ->where('login_id','=', $loginId)
+        ->update($updateData);
     }
 }

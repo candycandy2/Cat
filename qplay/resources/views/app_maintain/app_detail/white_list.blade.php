@@ -66,7 +66,8 @@
     var saveWhiteList = function(action,index) {
         var allowUrl = $("#tbxAllowUrl").val();
         var require = ['tbxAllowUrl'];
-        var errors = validRequired(require);
+        var errors = new Array();
+        errors = validRequired(errors, require);
         $.each(errors,function(i, error){
             $('span[for='+error.field+']').html(error.msg);
         });
