@@ -115,19 +115,19 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                     employeeData[i] = tempData;
 
                     var content = htmlContent
-                        + '<li style="border-width:1px; border-style:none; border-bottom-style:solid; border-bottom-color:#989898;">'
-                        +   '<div id="name" style="width:53.4VW">'
-                        +       '<p style="margin-top:2VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#0f0f0f; font-family:Arial; font-size:2.6VH;">' + tempData["ename"] + '</a></p>'
-                        +       '<p style="margin-bottom:1VH;"><a href="#" value="' + i.toString() + '" name="detailIndex" style="color:#666; font-family:Microsoft JhengHei; font-size:2.3VH; font-weight: normal;">' + tempData["cname"] + '</a></p>'
+                        + '<li>'
+                        +   '<div class="name">'
+                        +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + tempData["ename"] + '</a></p>'
+                        +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + tempData["cname"] + '</a></p>'
                         +   '</div>'
-                        +   '<div style="margin-right:1.9VW; line-height:10VH">'
-                        +       '<img src = "img/phone.png" style="width:3.5VW; height:2VH;">'
+                        +   '<div class="img-phone">'
+                        +       '<img src = "img/phone.png">'
+                        +       '<div class="tel-num">'
+                        +           '<p><a rel="external"' + telString + '>' + extTmpNum + '</a></p>'
+                        +       '</div>'
                         +   '</div>'
-                        +   '<div style="margin-right:6VW; line-height:10VH; width: 21VW;">'
-                        +       '<p><a rel="external"' + telString + 'style="color:#2d87ba; font-size: 2.2VH; font-family:Arial; font-weight: normal;">' + extTmpNum + '</a></p>'
-                        +   '</div>'
-                        +   '<div style="float:right; margin-right:3.8VW; line-height:12VH">'
-                        +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/info.png" style="width:6.4VW; height:3.7VH;"></a>'
+                        +   '<div class="img-info">'
+                        +       '<a href="#" value="' + i.toString() + '" name="detailIndex"><img src="img/info.png"></a>'
                         +   '</div>'
                         + '</li>';
 

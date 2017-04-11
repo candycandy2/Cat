@@ -1,260 +1,260 @@
 
-//$(document).one("pagecreate", "#viewPhonebook", function(){
+// //$(document).one("pagecreate", "#viewPhonebook", function(){
     
-    $("#viewPhonebook").pagecontainer({
-        create: function(event, ui) {
+//     $("#viewPhonebook").pagecontainer({
+//         create: function(event, ui) {
 
-            var tempPhonebookData = {};
-            var doRefresh = false, telString = "";
+//             var tempPhonebookData = {};
+//             var doRefresh = false, telString = "";
 
-            /********************************** function *************************************/
-            function phoneBookListHTML(index, company, eName, cName, extNo) {
-                // check has more than one ext num or not
-                if (extNo.indexOf(';')>0){
-                    telString = " class='chooseNumPop extNumMore'" + ' ';
-                    for (var i = 0; i < extNo.match(/;/igm).length+1; i++){
-                        telString += "data-extnum" + (i+1) + "=" + extNo.split(';')[i] + ' ';
-                    }
-                    telString += 'data-extnum=' + extNo + '>' + extNo.split(';')[0];
-                    extTmpNum = extNo.split(';')[0];
-                }
-                else{
-                    telString = " href='tel:" + extNo + "'>" + extNo;
-                    extTmpNum = extNo;
-                }
-                return '<li>'
-                        +   '<div class="company">'
-                        +       '<p class="edit-checkbox">'
-                        +           '<input type="checkbox" class="custom" data-mini="true" id="phoneBookList' + index + '">'
-                        +       '</p>'
-                        +       '<p>' + company + '</p>'
-                        +   '</div>'
-                        +   '<div class="e-name">'
-                        +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
-                        +       '<p><a rel="external" style="color:red;"' + telString + '</a></p>'
-                        +   '</div>'
-                        +   '<div class="c-name">'
-                        +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'
-                        +   '</div>'
-                        + '</li>';
-            }
+//             /********************************** function *************************************/
+//             function phoneBookListHTML(index, company, eName, cName, extNo) {
+//                 // check has more than one ext num or not
+//                 if (extNo.indexOf(';')>0){
+//                     telString = " class='chooseNumPop extNumMore'" + ' ';
+//                     for (var i = 0; i < extNo.match(/;/igm).length+1; i++){
+//                         telString += "data-extnum" + (i+1) + "=" + extNo.split(';')[i] + ' ';
+//                     }
+//                     telString += 'data-extnum=' + extNo + '>' + extNo.split(';')[0];
+//                     extTmpNum = extNo.split(';')[0];
+//                 }
+//                 else{
+//                     telString = " href='tel:" + extNo + "'>" + extNo;
+//                     extTmpNum = extNo;
+//                 }
+//                 return '<li>'
+//                         +   '<div class="company">'
+//                         +       '<p class="edit-checkbox">'
+//                         +           '<input type="checkbox" class="custom" data-mini="true" id="phoneBookList' + index + '">'
+//                         +       '</p>'
+//                         +       '<p>' + company + '</p>'
+//                         +   '</div>'
+//                         +   '<div class="e-name">'
+//                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>'
+//                         +       '<p><a rel="external" style="color:red;"' + telString + '</a></p>'
+//                         +   '</div>'
+//                         +   '<div class="c-name">'
+//                         +       '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>'
+//                         +   '</div>'
+//                         + '</li>';
+//             }
 
-            window.QueryMyPhoneBook = function() {
-                var self = this;
-                var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
+//             window.QueryMyPhoneBook = function() {
+//                 var self = this;
+//                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
 
-                this.successCallback = function(data) {
-                    var resultcode = data['ResultCode'];
+//                 this.successCallback = function(data) {
+//                     var resultcode = data['ResultCode'];
 
-                    if (resultcode === "1") {
+//                     if (resultcode === "1") {
 
-                        phonebookData = {};
-                        var htmlContent = "";
+//                         phonebookData = {};
+//                         var htmlContent = "";
 
-                        if(data['Content'].length !== 0) {
-                            $('#phonebookEdit').show();
-                        }
+//                         if(data['Content'].length !== 0) {
+//                             $('#phonebookEdit').show();
+//                         }
 
-                        for (var i=0; i<data['Content'].length; i++) {
-                            var tempData = {};
+//                         for (var i=0; i<data['Content'].length; i++) {
+//                             var tempData = {};
 
-                            tempData["company"] = data['Content'][i].Company;
-                            tempData["ename"] = data['Content'][i].Name_EN;
-                            tempData["cname"] = data['Content'][i].Name_CH;
-                            tempData["extnum"] = data['Content'][i].Ext_No;
-                            tempData["employeeid"] = data['Content'][i].EmployeeID;
+//                             tempData["company"] = data['Content'][i].Company;
+//                             tempData["ename"] = data['Content'][i].Name_EN;
+//                             tempData["cname"] = data['Content'][i].Name_CH;
+//                             tempData["extnum"] = data['Content'][i].Ext_No;
+//                             tempData["employeeid"] = data['Content'][i].EmployeeID;
 
-                            phonebookData[i] = tempData;
+//                             phonebookData[i] = tempData;
 
-                            var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"]);
-                            htmlContent = content;
-                        }
+//                             var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"]);
+//                             htmlContent = content;
+//                         }
 
-                        $("#myPhonebookList").html(htmlContent).enhanceWithin();
-                        $('#myPhonebookList').listview('refresh');
-                        loadingMask("hide");
+//                         $("#myPhonebookList").html(htmlContent).enhanceWithin();
+//                         $('#myPhonebookList').listview('refresh');
+//                         loadingMask("hide");
 
-                        $('a[name="detailIndex"]').click(function(e) {
-                            e.stopImmediatePropagation();
-                            e.preventDefault();
+//                         $('a[name="detailIndex"]').click(function(e) {
+//                             e.stopImmediatePropagation();
+//                             e.preventDefault();
 
-                            prevPageID = "viewPhonebook";
-                            employeeSelectedIndex = $(this).attr("value");
-                            $.mobile.changePage('#viewDetailInfo');
-                        });
-                    } else {
-                        //ResultCode = 001901, [no data]
-                        loadingMask("hide");
-                        $('#phonebookEdit').hide();
-                    }
-                };
+//                             prevPageID = "viewPhonebook";
+//                             employeeSelectedIndex = $(this).attr("value");
+//                             $.mobile.changePage('#viewDetailInfo');
+//                         });
+//                     } else {
+//                         //ResultCode = 001901, [no data]
+//                         loadingMask("hide");
+//                         $('#phonebookEdit').hide();
+//                     }
+//                 };
 
-                this.failCallback = function(data) {};
+//                 this.failCallback = function(data) {};
 
-                var __construct = function() {
-                    CustomAPI("POST", true, "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
-                }();
+//                 var __construct = function() {
+//                     CustomAPI("POST", true, "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
+//                 }();
 
-            }
+//             }
 
-            window.deletePhoneBook = function(actionPage, index) {
-                var self = this;
-                var company;
-                for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                    if(index === phonebookData[i].employeeid) {
-                        company = phonebookData[i].company
-                        break;
-                    }
-                }
-                var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' +
-                                '<Delete_EmpID>' + index + '</Delete_EmpID>' + 
-                                '<Delete_Company>' + company + '</Delete_Company></LayoutHeader>';
-                this.successCallback = function(data) {
-                    if (data['ResultCode'] === "001904") {
-                        if (actionPage === "viewPhonebook") {
-                            if (doRefresh) {
-                                refreshMyPhonebookList();
-                            }
-                        } else if (actionPage === "viewDetailInfo") {
-                            deletePheonBookFinished();
-                        }
-                    } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
-                        getServerData();
-                    } else {
-                        //ResultCode = 001905, [fail]
-                    }
-                    QueryMyPhoneBook();
-                };
+//             window.deletePhoneBook = function(actionPage, index) {
+//                 var self = this;
+//                 var company;
+//                 for(var i=0; i<Object.keys(phonebookData).length; i++) {
+//                     if(index === phonebookData[i].employeeid) {
+//                         company = phonebookData[i].company
+//                         break;
+//                     }
+//                 }
+//                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' +
+//                                 '<Delete_EmpID>' + index + '</Delete_EmpID>' + 
+//                                 '<Delete_Company>' + company + '</Delete_Company></LayoutHeader>';
+//                 this.successCallback = function(data) {
+//                     if (data['ResultCode'] === "001904") {
+//                         if (actionPage === "viewPhonebook") {
+//                             if (doRefresh) {
+//                                 refreshMyPhonebookList();
+//                             }
+//                         } else if (actionPage === "viewDetailInfo") {
+//                             deletePheonBookFinished();
+//                         }
+//                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
+//                         getServerData();
+//                     } else {
+//                         //ResultCode = 001905, [fail]
+//                     }
+//                     QueryMyPhoneBook();
+//                 };
 
-                this.failCallback = function(data) {};
+//                 this.failCallback = function(data) {};
 
-                var __construct = function() {
-                    CustomAPI("POST", true, "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
-                }();
-            };
+//                 var __construct = function() {
+//                     CustomAPI("POST", true, "DeleteMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
+//                 }();
+//             };
 
-            function refreshMyPhonebookList() {
+//             function refreshMyPhonebookList() {
 
-                phonebookData = tempPhonebookData;
-                tempPhonebookData = {};
+//                 phonebookData = tempPhonebookData;
+//                 tempPhonebookData = {};
                 
-                $("#myPhonebookList").empty();
-                var htmlContent = "";
+//                 $("#myPhonebookList").empty();
+//                 var htmlContent = "";
 
-                $.map(phonebookData, function(value, key) {
-                    var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum);
-                    htmlContent = content;
-                });
+//                 $.map(phonebookData, function(value, key) {
+//                     var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum);
+//                     htmlContent = content;
+//                 });
 
-                $("#myPhonebookList").html(htmlContent).enhanceWithin();
-                $('#myPhonebookList').listview('refresh');
-                loadingMask("hide");
-                doRefresh = false;
-                if(Object.keys(phonebookData).length === 0){
-                    $('#phonebookEdit').hide();
-                }
-            }
+//                 $("#myPhonebookList").html(htmlContent).enhanceWithin();
+//                 $('#myPhonebookList').listview('refresh');
+//                 loadingMask("hide");
+//                 doRefresh = false;
+//                 if(Object.keys(phonebookData).length === 0){
+//                     $('#phonebookEdit').hide();
+//                 }
+//             }
 
-            window.cancelEditMode = function() {
-                $('.edit-checkbox').hide();
-                $('#myPhonebookList .ui-checkbox').hide();
-                $('#phonebookEditBtn').hide();
-            };
-            /********************************** page event *************************************/
-            $("#viewPhonebook").on("pagebeforeshow", function(event, ui){
-                loadingMask("show");
-                var myPhoneBook = new QueryMyPhoneBook();
+//             window.cancelEditMode = function() {
+//                 $('.edit-checkbox').hide();
+//                 $('#myPhonebookList .ui-checkbox').hide();
+//                 $('#phonebookEditBtn').hide();
+//             };
+//             /********************************** page event *************************************/
+//             $("#viewPhonebook").on("pagebeforeshow", function(event, ui){
+//                 loadingMask("show");
+//                 var myPhoneBook = new QueryMyPhoneBook();
 
-                $('.edit-checkbox').hide();
-                $('.ui-checkbox').hide();
-                $('#phonebookEditBtn').hide();
-                $('#phonebook_page #selectAll').show();
-            });
+//                 $('.edit-checkbox').hide();
+//                 $('.ui-checkbox').hide();
+//                 $('#phonebookEditBtn').hide();
+//                 $('#phonebook_page #selectAll').show();
+//             });
 
-            /********************************** dom event *************************************/
-            $('#phonebookEdit').on('click', function() {
-               if ($('#phonebookEditBtn').is(':hidden')) {
-                    $('.edit-checkbox').show();
-                    $('#myPhonebookList .ui-checkbox').show();
-                    $('#phonebookEditBtn').show();
-                    $('#myPhonebookList .edit-checkbox').css('height','20px');
-                    $('#viewPhonebook :checkbox').prop('checked', false);
-                    $('#viewPhonebook #unselectAll').hide();
-                    $('#viewPhonebook #selectAll').show();
-               } else {
-                    cancelEditMode();
-               }
-            });
+//             /********************************** dom event *************************************/
+//             $('#phonebookEdit').on('click', function() {
+//                if ($('#phonebookEditBtn').is(':hidden')) {
+//                     $('.edit-checkbox').show();
+//                     $('#myPhonebookList .ui-checkbox').show();
+//                     $('#phonebookEditBtn').show();
+//                     $('#myPhonebookList .edit-checkbox').css('height','20px');
+//                     $('#viewPhonebook :checkbox').prop('checked', false);
+//                     $('#viewPhonebook #unselectAll').hide();
+//                     $('#viewPhonebook #selectAll').show();
+//                } else {
+//                     cancelEditMode();
+//                }
+//             });
 
-            $('#viewPhonebook #selectAll').on('click', function(){
-                $('#viewPhonebook :checkbox').prop('checked', true);
-                $(this).hide();
-                $('#viewPhonebook #unselectAll').show();
-            });
+//             $('#viewPhonebook #selectAll').on('click', function(){
+//                 $('#viewPhonebook :checkbox').prop('checked', true);
+//                 $(this).hide();
+//                 $('#viewPhonebook #unselectAll').show();
+//             });
 
-            $('#viewPhonebook #unselectAll').on('click', function(){
-                $('#viewPhonebook :checkbox').prop('checked', false);
-                $(this).hide();
-                $('#viewPhonebook #selectAll').show();
-            });
+//             $('#viewPhonebook #unselectAll').on('click', function(){
+//                 $('#viewPhonebook :checkbox').prop('checked', false);
+//                 $(this).hide();
+//                 $('#viewPhonebook #selectAll').show();
+//             });
 
-            $('#viewPhonebook #myPhonebookList').on('click', function(){
-                var checkboxTotalCount = $('#viewPhonebook :checkbox').length;
-                var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
+//             $('#viewPhonebook #myPhonebookList').on('click', function(){
+//                 var checkboxTotalCount = $('#viewPhonebook :checkbox').length;
+//                 var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
 
-                if (checkboxTotalCount === checkboxCheckedCount) {
-                    $('#viewPhonebook #unselectAll').show();
-                    $('#viewPhonebook #selectAll').hide();
-                } else {
-                    $('#viewPhonebook #unselectAll').hide();
-                    $('#viewPhonebook #selectAll').show();
-                }
-            });
+//                 if (checkboxTotalCount === checkboxCheckedCount) {
+//                     $('#viewPhonebook #unselectAll').show();
+//                     $('#viewPhonebook #selectAll').hide();
+//                 } else {
+//                     $('#viewPhonebook #unselectAll').hide();
+//                     $('#viewPhonebook #selectAll').show();
+//                 }
+//             });
 
-            $('#phoneDelete').on('click', function(){
-                var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
+//             $('#phoneDelete').on('click', function(){
+//                 var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
 
-                if (checkboxCheckedCount === 0) {
-                    popupMsg("phonebookSelectAlert", "請選擇要刪除的聯絡人!", "", "", false, "取消", "");
-                } else {
-                    popupMsg("phonebookDeleteConfirm", "是否刪除選擇的聯絡人?", "", "取消", true, "確定", "");
-                }
-            });
+//                 if (checkboxCheckedCount === 0) {
+//                     popupMsg("phonebookSelectAlert", "請選擇要刪除的聯絡人!", "", "", false, "取消", "");
+//                 } else {
+//                     popupMsg("phonebookDeleteConfirm", "是否刪除選擇的聯絡人?", "", "取消", true, "確定", "");
+//                 }
+//             });
 
-            $('body').on('click', 'div[for=phonebookSelectAlert] #confirm', function() {
-                $("#viewPopupMsg").popup("close");
-            });
+//             $('body').on('click', 'div[for=phonebookSelectAlert] #confirm', function() {
+//                 $("#viewPopupMsg").popup("close");
+//             });
 
-            $('body').on('click', 'div[for=phonebookDeleteConfirm] #confirm', function() {
-                var doDeleteCount = 0;
-                var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
-                loadingMask("show");
+//             $('body').on('click', 'div[for=phonebookDeleteConfirm] #confirm', function() {
+//                 var doDeleteCount = 0;
+//                 var checkboxCheckedCount = $('#viewPhonebook :checkbox:checked').length;
+//                 loadingMask("show");
 
-                $.map(phonebookData, function(value, key) {
-                    var tempData = {};
+//                 $.map(phonebookData, function(value, key) {
+//                     var tempData = {};
                     
-                    if ($("#phoneBookList" + key).prop("checked")) {
-                        doDeleteCount++;
+//                     if ($("#phoneBookList" + key).prop("checked")) {
+//                         doDeleteCount++;
                         
-                        if (checkboxCheckedCount === doDeleteCount) {
-                            doRefresh = true;
-                        }
+//                         if (checkboxCheckedCount === doDeleteCount) {
+//                             doRefresh = true;
+//                         }
 
-                        deletePhoneBook("viewPhonebook", phonebookData[key].employeeid);
+//                         deletePhoneBook("viewPhonebook", phonebookData[key].employeeid);
 
-                    } else {
-                        tempData["company"] = phonebookData[key].company;
-                        tempData["ename"] = phonebookData[key].ename;
-                        tempData["cname"] = phonebookData[key].cname;
-                        tempData["extnum"] = phonebookData[key].extnum;
-                        tempData["employeeid"] = phonebookData[key].employeeid;
+//                     } else {
+//                         tempData["company"] = phonebookData[key].company;
+//                         tempData["ename"] = phonebookData[key].ename;
+//                         tempData["cname"] = phonebookData[key].cname;
+//                         tempData["extnum"] = phonebookData[key].extnum;
+//                         tempData["employeeid"] = phonebookData[key].employeeid;
 
-                        tempPhonebookData[key] = tempData;
-                    }
-                });
-                $("#viewPopupMsg").popup("close");
-                $('#phonebookEditBtn').hide();
-            });
-        }
-    });
-//});
+//                         tempPhonebookData[key] = tempData;
+//                     }
+//                 });
+//                 $("#viewPopupMsg").popup("close");
+//                 $('#phonebookEditBtn').hide();
+//             });
+//         }
+//     });
+// //});
