@@ -7,6 +7,7 @@ $("#viewEventContent").pagecontainer({
         window.eventContentData;
         var taskData;
         var taskRowID;
+        window.chatroomID;
         var photoUrl;
         var resizePhotoWidth;
         var resizePhotoHeight;
@@ -40,7 +41,6 @@ $("#viewEventContent").pagecontainer({
                         //Define in viewEventList
                         functionListPopup(data['Content']);
                     } else {
-                        loadingMask("hide");
 
                         eventContentData = data['Content'];
 
@@ -108,7 +108,9 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
 
                         //Message Count
+                        chatroomID = data['Content'].chatroom_id;
                         var msgCount = 0;
+
                         for (j=0; j<messageCountData.length; j++) {
                             if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
                                 msgCount = messageCountData[j]["count"];
@@ -160,8 +162,8 @@ $("#viewEventContent").pagecontainer({
 
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
 
-                        //Message List
-                        //$('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
+                        //ChatRoom Message List
+                        chatRoomListView();
                     }
 
                 } else if (resultCode === "014904") {
@@ -182,6 +184,41 @@ $("#viewEventContent").pagecontainer({
                 CustomAPI("POST", true, "getEventDetail", self.successCallback, self.failCallback, queryData, "");
             }();
 
+        };
+
+        window.chatRoomListView = function() {
+            var messages = chatRoom.getMsg(chatroomID);
+
+            if (messages) {
+                $("#msgContentHR").show();
+                $(".message-content").show();
+                $("#messageContent .message-data-list").remove();
+
+                //Message List
+                var messageListHTML = $("template#tplMessageList").html();
+
+                for (var i=0; i<messages.length; i++) {
+                    var messageList = $(messageListHTML);
+
+                    if (messages[i]["msg_type"] === "text") {
+                        messageList.find(".user").html(messages[i]["from_id"]);
+                        messageList.find(".datetime").html(messages[i]["ctimeText"]);
+                        messageList.find(".text").html(messages[i]["msg_body"]);
+                    }
+
+                    if ((i+1) == messages.length) {
+                        messageList.find(".ui-hr").remove();
+                    }
+
+                    $("#messageContent").append(messageList);
+                }
+            } else {
+                //empty message
+                $("#msgContentHR").hide();
+                $(".message-content").hide();
+            }
+
+            loadingMask("hide");
         };
 
         function updateTaskStatus(status) {
@@ -465,7 +502,7 @@ $("#viewEventContent").pagecontainer({
             updateTaskStatus(1);
         });
 
-        //Cancel Event Work
+        //Cancel Event Work Done
         $(document).on("click", ".work-after", function() {
             checkReportAuthority(this, "cancel");
         });
@@ -479,6 +516,52 @@ $("#viewEventContent").pagecontainer({
             $("#eventCancelWorkDoneConfirm").popup("close");
             footerFixed();
             updateTaskStatus(0);
+        });
+
+        //Chatroom Msg Button
+        $(document).on("click", "#msgButton", function() {
+            var msgEmpty = false;
+            var msg = $("#msgText").val();
+
+            if (msg.length === 0 || msg === "請輸入訊息") {
+                msgEmpty = true;
+            }
+
+            if (!msgEmpty) {
+                if (msgController.isInited) {
+                    var gid = chatroomID;
+                    var gname = chatroomID + "-room";
+                    var text = msg;
+
+                    msgController.SendText(gid, gname, text, function(successResult) {
+                        console.log("---------------successResult");
+                        console.log(successResult);
+                        loadingMask("show");
+
+                        if (successResult["result"]["code"] === 0) {
+                            var chatRoomID = successResult["result"]["target_gid"];
+                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                            var createTime = new Date(ctime * 1000);
+
+                            var objData = {
+                                msg_id: successResult["result"]["msg_id"],
+                                ctime: ctime,
+                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                                    padLeft(createTime.getMinutes(), 2),
+                                from_id: successResult["content"]["from_id"],
+                                msg_type: successResult["content"]["msg_type"],
+                                msg_body: successResult["content"]["msg_body"]["text"]
+                            };
+
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                        }
+                    }, function(errorResult) {
+                        console.log("---------------errorResult");
+                        console.log(errorResult);
+                    });
+                }
+            }
         });
     }
 });
