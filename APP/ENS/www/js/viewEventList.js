@@ -104,6 +104,9 @@ $("#viewEventList").pagecontainer({
                     getMessageCount(chatroomIDList);
 
                 } else if (resultCode === "014904") {
+                    //Clear Event List Data
+                    $("#reportDiv .event-list-msg").remove();
+
                     //No Event exist
                     $("#eventListNoDataPopup").popup("open");
                 }
@@ -292,6 +295,9 @@ $("#viewEventList").pagecontainer({
 
                 var eventListMsg = $(eventListMsgHTML);
 
+                //Add ID
+                eventListMsg.prop("id", "event-list-msg-" + eventListData[i].event_row_id);
+
                 //Created User
                 eventListMsg.find(".event-list-msg-top .name").html(eventListData[i].created_user);
 
@@ -355,6 +361,21 @@ $("#viewEventList").pagecontainer({
 
             loadingMask("hide");
             eventListData = null;
+
+            //Scroll to the specific Event List position
+            if (typeof eventRowID != 'undefined') {
+                if (eventRowID != null) {
+                    var headerHeight = $("#viewEventList .page-header").height();
+                    var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
+                    if (device.platform === "iOS") {
+                        scrollPageTop -= 20;
+                    }
+
+                    $('html, body').animate({
+                        scrollTop: scrollPageTop
+                    }, 'fast');
+                }
+            }
         }
 
         function memberListView(sortType) {
@@ -508,7 +529,6 @@ $("#viewEventList").pagecontainer({
             //Only [admin] can Add New Event
             if (checkAuthority("admin")) {
                 $("#addEvent").show();
-                footerFixed();
             }
         }
 
@@ -685,6 +705,8 @@ $("#viewEventList").pagecontainer({
                     var EventList = new getEventList();
                 }
             }
+
+            footerFixed();
         });
 
         /********************************** dom event *************************************/
@@ -754,6 +776,7 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventListNoDataPopup .confirm", function() {
             $("#eventListNoDataPopup").popup("close");
             $(".event-list-no-data").show();
+            loadingMask("hide");
             footerFixed();
         });
 

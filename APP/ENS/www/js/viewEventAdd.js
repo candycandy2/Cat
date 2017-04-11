@@ -74,6 +74,8 @@ $("#viewEventAdd").pagecontainer({
                     $(document).on("click", "#eventAdditional", function() {
                         $("#noRelatedEventExist").popup("open");
                     });
+
+                    loadingMask("hide");
                 }
             };
 
