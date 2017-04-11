@@ -9,8 +9,8 @@
 <link href="style/ios.css" rel="stylesheet" type="text/css">
   <script type="text/javascript">
     var userLang = navigator.language || navigator.userLanguage; 
-    //alert ("The language is: " + userLang);//en-us //zh-tw
-    if(userLang === 'zh-tw') window.location = "../InstallQPlay/androidinstall.html";
+    //alert ("The language is: ".toLowerCase() + userLang);//en-us //zh-tw
+    if(userLang.toLowerCase() === "zh-tw".toLowerCase()) window.location = "../InstallQPlay/androidinstall.html";
   </script>
 </head>
 

@@ -24,7 +24,7 @@
                         @endif
                     >
                         <div class="icon-upl-btn js-icon-file"><div>+</div><div>{{trans('messages.NEW_ICON')}}</div></div>
-                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style="display:none" accept=".jpeg,.jpg,.png">
+                        <input type="file" name="fileIconUpload" id="fileIconUpload" class="js-upl-overlap" style=" opacity:0;width:0px;height:0px;" accept=".jpeg,.jpg,.png">
                     </div>
                 
                 </div>
@@ -76,7 +76,7 @@
                                     <li class="screen-upl-btn js-screen-file" id="androidScreenUpl_{{$appData->lang_row_id}}" @if($i >= 5)  style="display:none"   @endif>
                                         <div>+</div>
                                         <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
-                                        <input type="file" accept=".jpeg,.jpg,.png" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                        <input type="file" accept=".jpeg,.jpg,.png" name="androidScreenUpload_{{$appData->lang_row_id}}" id="androidScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style=" opacity:0;width:0px;height:0px;" multiple>
                                     </li>
                                 </ul>
                                 <ul class="form-group tab-pane fade sortable" id="tab_ios_{{$appData->lang_row_id}}">
@@ -91,7 +91,7 @@
                                     <li class="screen-upl-btn js-screen-file" @if($j >= 5)  style="display:none"   @endif id="iosScreenUpl_{{$appData->lang_row_id}}">
                                         <div>+</div>
                                         <div>{{trans('messages.NEW')}}<br>{{trans('messages.SCREENSHOT')}}</div>
-                                        <input type="file" accept=".jpeg,.jpg,.png" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="display:none" multiple>
+                                        <input type="file" accept=".jpeg,.jpg,.png" name="iosScreenUpload_{{$appData->lang_row_id}}" id="iosScreenUpload_{{$appData->lang_row_id}}" class="js-upl-addition" style="opacity:0;width:0px;height:0px;" multiple>
                                     </li>
                                 </ul>
                             </div>
