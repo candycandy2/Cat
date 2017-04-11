@@ -1,16 +1,26 @@
 
 .custom-navbar ul li a {
-    background: #4B0082 !important; 
-    color: white !important;
     border-style: none;
-    font-size: large !important;
 }
+
+/*common*/
+*{ box-sizing: border-box;}
+.ui-header-fixed.ui-fixed-hidden{ top: -1px;}
+.ui-margin-public { margin: 1.8vw 3.71vw 0 !important; font-size: 4.18vw;}
+.ui-radio-50w div.ui-radio{ width: 50%;}
+#reserveTab{ margin: 3.99vw 0 4.3vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
+#reserveTab > div > div.ui-radio label { line-height: 1; border: 1px solid #2a88bc !important; border-left-width: 0 !important; background-color: #fff !important;
+    font-weight: normal; padding: 2.8vw 0 2.6vw; text-align: center;}
+#reserveTab > div > div.ui-radio:nth-of-type(1) label{ border-left-width: 1px !important;}
+#reserveTab > div > div.ui-radio label.ui-btn-active { background-color: #2a88bc !important; color: white !important;}
+.ui-controlgroup-controls { width: 100%;}
+.ui-mobile .ui-page-active{ min-height: 100vh !important;}
 
 /*override jQuery Mobile*/
 .ui-content {
     overflow-x: visible;
     padding: 0px;
-    padding-left: 3.7VW;
+    padding: 0 3.71vw;
 }
 
 .header-style {
@@ -34,25 +44,23 @@
 }
 
 #myPhonebookList .ui-checkbox input {
-    width: 14px;
-    height: 14px;
-    margin: 0px;
-    margin: 0 auto;
+    margin: 0;
+    position: static;
 }
 
 #myPhonebookList .ui-checkbox {
     margin: 0px;
     top: 5px;
     left: 35%;
-    display: none;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #myPhonebookList p {
-    margin: 0px 2px;
     font-size: 3.35vw;
 }
-
-#myPhonebookList li{ padding: 2% 0;}
 
 .header-style .ui-bar {
     padding: 0;
@@ -113,10 +121,6 @@
     padding: 0px;
 }
 
-.page-header {
-    height : 40px !important;
-}
-
 #viewIndex .ui-content > div{
     float: left;
 }
@@ -146,16 +150,12 @@
 }
 .error-msg {
     background-color: #f8f9f9;
-    color: #eb2326;
-    font-size: 2.3VH;
-    font-family: Microsoft JhengHei;
-    margin: 4.3VH 0;
+    color: #666;
+    font-size: 3.14vw;
+    margin: 7vw 0;
     text-align: center;
     width: 100%;
-}
-
-#employeeData.q-result-grid > li div {
-    height: 60px;
+    line-height: 1.7;
 }
 
 #employeeData p {
@@ -175,10 +175,71 @@
     width: 30%;
 }
 
+/**********************  viewDataInput  **********************/
+.ui-field-contain{ display: flex; align-items: center; margin-bottom: 6.44vw;}
+.ui-field-contain:nth-last-of-type(2){ margin-bottom: 10vw;}
+.btn-area a{ display: block; width: 70%; margin: 0 auto; border-radius: 20px; padding: 2.8vw 0 2.6vw; text-align: center; text-decoration: none;
+    border: 1px solid #2c89bc;}
+#cleanQuery, #callQuery{ font-weight: normal;}
+#cleanQuery{ border: none; padding-top: 0;}
+#cleanQuery:before{ content: "\d7"; font-size: 6vw; font-weight: normal; display: inline-block; vertical-align: middle; margin-right: 2.405vw;}
+#callQuery{ background-color: #2c89bc; color: #fff; margin-bottom: 4.3vw;}
+#callQuery:hover, #callQuery:visited, #callQuery:active{ color: #fff;}
+#cleanQuery:hover, #cleanQuery:visited, #cleanQuery:active{ color: #666;}
+.ui-select > div, .ui-input-text{ background-color: #fff !important; box-shadow: none; background-image: none; -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    border-color: #dfdfdf !important; height: 9.661vw !important;}
+.ui-select>div:after{ background-image: url('../img/dropdown.png') !important; background-color: transparent; border-radius: 0; background-size: 100% auto;
+    width: 3.4vw; 4vw; top: 1.5vw; bottom: 0; margin: auto 0;}
+.ui-select>div{ position: relative; line-height: 9.661vw;}
+.ui-select>div select{ height: 9.661vw;  max-height: 9.661vw; }
+#Company-button span{ top: 0; left: 3.2vw; position: absolute; font-weight: normal;}
+.ui-input-text input, #Company-button span{ color: #323232; font-size: 3.768vw;}
+.ui-input-text input{ padding: 0 3.2vw;}
+#pageOne{ margin-top: 10vw !important;}
+#pageOne h4{ font-weight: normal; margin: 0; color: #0f0f0f; font-size: 3.349vw;}
+#pageOne label, #pageOne .ui-select{ float: none;}
+
+/**********************  phonebook  **********************/
+#pageTwo{ margin: 1.8vw 0 0 !important;}
+.phoneBook-btnArea{ margin: 0 3.71vw 2.14vw;}
+#phonebookEdit{ text-decoration: none; text-align: right; display: block;}
+#phonebookEdit, #phonebookEdit:hover, #phonebookEdit:active, #phonebookEdit:visited,
+    .custom-navbar ul li a, .custom-navbar ul li a:hover, .custom-navbar ul li a:active, .custom-navbar ul li a:visited{ color: #0f0f0f !important;}
+.custom-navbar ul li a{ background: transparent !important; font-size: 4.18vw !important; text-decoration: none;}
+#phoneCancelDelete, #phoneDelete, #phonebookEdit{ font-weight: normal; padding: 0;}
+#phoneDelete{ text-align: right;}
+#phoneCancelDelete{ text-align: left;}
+#phoneDelete.noneSelect{ color: #d6d6d6 !important; pointer-events: none;}
+#myPhonebookList{ padding: 0 3.71vw; background-color: #fff; width: 113vw; margin-left: -13vw; transition: margin 0.5s ease-in-out;}
+#myPhonebookList.editClick{ margin-left: 0;}
+#myPhonebookList li, #employeeData li{ background-color: transparent; border-top: none; display: flex; align-items: center; position: relative; border: none;}
+#myPhonebookList li:after{ width: 88%; content: ''; height: 1px; background-color: #d6d6d6; position: absolute; bottom: 0; left: 13vw;}
+#myPhonebookList.editClick li:after{ left: 0;}
+#myPhonebookList li:nth-last-of-type(1):after, #employeeData li:nth-last-of-type(1):after{ display: none;}
+#myPhonebookList .name, #myPhonebookList .img-phone, #myPhonebookList .tel-num,
+#employeeData .name, #employeeData .img-phone, #employeeData .tel-num{ float: none;}
+#myPhonebookList .name, #employeeData .name{ width: 53.4VW}
+#myPhonebookList .name p, #employeeData .name p{ margin: 4vw 0 0;}
+#myPhonebookList .name p:nth-of-type(1) a, #employeeData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
+#myPhonebookList .name p:nth-of-type(2), #employeeData .name p:nth-of-type(2){ margin: 0.98vw 0 3vw;}
+#myPhonebookList .name p:nth-of-type(2) a, #employeeData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
+.img-phone{ padding-right:1.9vw; width: 32vw;}
+.img-phone img, #myPhonebookList .img-phone img{ width:3.5vw; height:auto; vertical-align: middle; margin-right: 1vw;}
+.tel-num{ width: 85%; display: inline-block; vertical-align: middle;}
+.tel-num p{ margin: 0 !important;}
+.tel-num a{ color:#2c89bc; font-size: 3.768vw; font-family:Arial; font-weight: normal;}
+.img-info img{ width:6.4vw; height:auto;}
+.checkbox-area, .checkbox-area div, .img-info{ float: none !important;}
+.checkbox-area{ margin-right: 8vw; width: 5vw; height: 5vw; position: relative;}
+#myPhonebookList .ui-checkbox input:after{ content: ''; width: 100%; height: 100%; position: absolute; top: 0; left; 0; 
+    background: url('../img/circlebox.png') #fff; background-size: 100% auto; z-index: 10;}
+#myPhonebookList .ui-checkbox input:checked:after{ background-image: url('../img/circlebox_select.png');}
+#myPhonebookList .ui-checkbox, #myPhonebookList .ui-checkbox input{ width: 100%; height: 100%;}
+
 /**********************  viewDetialInfo  **********************/
 #detial-name-title{
-    margin-left: 3.7VW;
-    margin-top: 2.9VH;
+    margin: 3.8vw 3.71vw 6.44vw;
+    position: relative;
 }
 
 #detial-name-title .detial-name{
@@ -187,47 +248,42 @@
 }
 
 #detial-name-title #eName{
-    font-family:Arial; 
-    font-size:3VH;
-    padding-top: 3%;
+    font-size: 4.39vw;
 }
 
 #detial-name-title #cName{
-    font-family:Microsoft JhengHei; 
-    font-size:2.9VH;
-    margin-top: 0.4VH;
+    font-size: 4.18vw;
+    margin-top: 0.98vw;
 }
 
 #detial-name-title .star{
     border-style:none;
-    float:right; 
-    margin-top:-35px; 
-    margin-right:8VW; 
+    position: absolute;
+    top: 0;
+    right: 3.49vw;
+    background-color: transparent;
     padding: 0;
+    margin: 0;
 }
 
 #detail-data .liststyle{
     border-width:1px;
     border-style:none; 
     border-bottom-style:solid;
-    border-bottom-color:#989898;
+    border-bottom-color:#d6d6d6;
 }
 
 #detail-data .item-name{ 
-    color: #666667;
-    font-size: 2.1VH;
-    font-family: Arial, Microsoft JhengHei;
-    margin-top: 1.9VH;
-    margin-bottom: 0VH;
+    color: #666;
+    font-size: 3.55vw;
+    margin: 4.3vw 0 0;
     width: 100VW;
 }
 
 #detail-data .item-content{
-    color: #2d87ba;
-    font-size: 2.5VH;
-    font-family: Arial, Microsoft JhengHei;
-    margin-top: 0.3VH;
-    margin-bottom: 0.8VH;
+    color: #2c89bc;
+    font-size: 4.18vw;
+    margin: 0.98vw 0;
     width: 100VW;
 }
 
