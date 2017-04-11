@@ -212,6 +212,13 @@ gulp.task('appJS', ['functionJS'], function(){
         .pipe(gulp.dest('www/js/'));
 });
 
+gulp.task('QMessage', function() {
+    return gulp.src(['../../qmessage/public/js/qmessage.js',
+        '../../qmessage/public/js/lib/jmessage-sdk-web-2.1.0.min.js',
+        '../../qmessage/public/js/lib/md5.min.js'])
+        .pipe(gulp.dest('www/js/'));
+});
+
 gulp.task('commonString', function() {
     return gulp.src('../component/string/*')
         .pipe(gulp.dest('www/string/'));
@@ -222,7 +229,7 @@ gulp.task('String', ['commonString'], function() {
         .pipe(gulp.dest('www/string/'));
 });
 
-gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
+gulp.task('componentJS', ['libJS', 'appJS', 'QMessage', 'String'], shell.task([
     'rm ./function.js'
 ]));
 
