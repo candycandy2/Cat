@@ -370,6 +370,22 @@ $(document).one("pagebeforecreate", function(){
             closeInfoMsgInit = true;
         }
     });
+
+    //For Message Content, click link to open APP by Scheme
+    $(document).on("click", "a", function(event) {
+        if ($(this).prop("href") != null) {
+            var id = $(this).prop("id");
+            var href = $(this).prop("href");
+            var hrefStart = href.substr(0, 3);
+
+            if (hrefStart === "app") {
+                if (id !== "schemeLink") {
+                    event.preventDefault();
+                    openAPP(href);
+                }
+            }
+        }
+    });
 });
 
 /********************************** QPlay APP function *************************************/
@@ -940,6 +956,15 @@ function handleOpenURL(url) {
             });
 
             hideInitialPage();
+        } else {
+            //For Other APP, which was be opened by dynamic action,
+            //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
+            if (handleOpenByScheme !== null) {
+                if (typeof handleOpenByScheme === "function") {
+                    callHandleOpenURL = false;
+                    handleOpenByScheme(queryData);
+                }
+            }
         }
 
         //Because Scheme work different process between [APP is in action or background] / [APP is not open],

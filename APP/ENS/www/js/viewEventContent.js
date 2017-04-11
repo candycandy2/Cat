@@ -2,8 +2,9 @@
 $("#viewEventContent").pagecontainer({
     create: function(event, ui) {
 
-        var eventRowID;
+        window.eventRowID;
         var eventFinish;
+        window.eventContentData;
         var taskData;
         var taskRowID;
         var photoUrl;
@@ -40,6 +41,8 @@ $("#viewEventContent").pagecontainer({
                         functionListPopup(data['Content']);
                     } else {
                         loadingMask("hide");
+
+                        eventContentData = data['Content'];
 
                         $("#contentEventContent .event-list-msg").remove();
 
@@ -103,6 +106,16 @@ $("#viewEventContent").pagecontainer({
 
                         //Task finish Count
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
+
+                        //Message Count
+                        var msgCount = 0;
+                        for (j=0; j<messageCountData.length; j++) {
+                            if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
+                                msgCount = messageCountData[j]["count"];
+                                break;
+                            }
+                        }
+                        eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
 
                         $("#contentEventContent").prepend(eventListMsg);
 
@@ -377,6 +390,7 @@ $("#viewEventContent").pagecontainer({
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
+            prevPageID = "viewEventContent";
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -424,7 +438,9 @@ $("#viewEventContent").pagecontainer({
 
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
-
+            if (!eventFinish) {
+                $.mobile.changePage('#viewEventAdd');
+            }
         });
 
         //Report Event Work Done

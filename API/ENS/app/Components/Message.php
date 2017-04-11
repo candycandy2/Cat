@@ -15,6 +15,14 @@ class Message
      */
     protected $messageGroupInfo;
 
+
+    public function register($loginId){
+        $data['username'] = $loginId;
+        $apiFunction = 'register';
+        $result = $this->callQmessageAPI($apiFunction, $data);
+        return $result;
+    }
+
     /**
      * 取得聊天群組資訊
      * @return array
@@ -28,41 +36,51 @@ class Message
      * @param  String $owner   發起人login_id
      * @param  Array  $members 聊天室成員 ex:["Steven.Yan","Sammi.Yao"]
      * @param  String $desc    聊天室title
-     * @return json            成功回傳ex:
-     *                         {
-     *                            "ResultCode": 1,
-     *                             "Message": "Success",
-     *                             "Content": {
-     *                               "gid": 22256873,
-     *                               "owner_username": "Moses.zhu",
-     *                               "name": "E9931A1A-159A-AC85-B7AB-CD7EE62D94A5",
-     *                               "desc": "$desc",
-     *                               "members_username": [
-     *                                 "Steven.Yan",
-     *                                 "Sammi.Yao"
-     *                               ],
-     *                               "max_member_count": 500
-     *                             }
-     *                           }
-     *
+     * @return json
      */
     public function createChatRoom($owner, Array $members, $desc)
     {       
 
-            $this->messageGroupInfo = array(
-            "owner"=>$owner,
-            "members"=>$members,
-            "desc"=>$desc);
+        $this->messageGroupInfo = array(
+        "owner"=>$owner,
+        "members"=>$members,
+        "desc"=>$desc);
 
-            $signatureTime = time();
-            $apiFunction = 'group/add';
-            $url = Config::get('app.qmessage_api_server').$apiFunction;
-            $header = array('Content-Type: application/json',
+        $apiFunction = 'group/add';
+        $data = $this->messageGroupInfo;
+        $result = $this->callQmessageAPI($apiFunction, $data);
+        return $result;
+    }
+
+    /**
+     * 獲得留言總數
+     * @param  Array  $targetId 欲取得的target_id Array ( array('target_id'=>array('123456','456789') )
+     * @return json
+     */
+    public function getMessageCount(Array $targetId){
+        
+        $data['target_id'] = $targetId;
+        $apiFunction = 'history/count';
+        $result = $this->callQmessageAPI($apiFunction, $data);
+        return $result;
+
+    }
+
+
+    /**
+     * 呼叫QMessageAPI
+     * @param  String $apiFunction 呼叫的function名稱
+     * @param  Array $data        傳送的參數
+     * @return json
+     */
+    private function callQmessageAPI($apiFunction, $data){
+         $signatureTime = time();
+         $data = json_encode($data);
+         $url = Config::get('app.qmessage_api_server').$apiFunction;
+         $headers = array('Content-Type: application/json',
                         'Signature-Time: '.$signatureTime,
                         'Signature: '.CommonUtil::getSignature($signatureTime));
-            $data = $this->messageGroupInfo;
-            $data = json_encode($data);
-            $result = CommonUtil::callAPI('POST', $url,  $header, $data);
-            return $result;
+         return CommonUtil::callAPI('POST', $url, $headers, $data);
     }
+
 }

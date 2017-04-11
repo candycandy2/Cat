@@ -3,6 +3,7 @@
  * 通用元件庫
  */
 namespace App\lib;
+use Config;
 
 class CommonUtil
 {
@@ -25,11 +26,11 @@ class CommonUtil
     public static function checkUserStatusByUserEmpNo($empNo)
     {   
         $result = true;
-        $userList = \DB::table('en_user')
-            -> where('en_user.emp_no', '=', $empNo)
-            -> where('en_user.status', '<>', 'N')
-            -> where('en_user.resign', '<>', 'Y')
-            -> select('en_user.row_id', 'en_user.status', 'en_user.resign','en_user.emp_no')->get();
+        $userList = \DB::connection('mysql_qplay')->table('qp_user')
+            -> where('emp_no', '=', $empNo)
+            -> where('status', '<>', 'N')
+            -> where('resign', '<>', 'Y')
+            -> select('row_id', 'status', 'resign','emp_no')->get();
 
         if(count($userList) < 1) {
             $result = false; //用户不存在
@@ -127,7 +128,7 @@ class CommonUtil
      */
     public static function getSignature($signatureTime)
         {
-            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
+            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.secret_key'), true));
             return $ServerSignature;
         }
 
@@ -164,4 +165,27 @@ class CommonUtil
         return  json_decode($conv);
     }
 
+
+    /**
+     * 根據輸入環境取得appkey
+     * @return String 
+     */
+    public static function getContextAppKey($env,$key){
+        $env = strtolower($env);
+        $key = "app".$key;
+        switch ($env)
+        {
+            case  "dev":
+                $key = $key."dev";
+                break;
+            case  "test":
+                $key = $key."test";
+                break;
+            case  "production":
+                break;
+            default :
+                break;
+        }
+        return $key;
+    }
 }

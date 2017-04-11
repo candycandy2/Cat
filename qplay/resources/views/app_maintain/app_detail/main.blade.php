@@ -105,13 +105,21 @@ var selectedChanged = function (row, $element) {
         $currentToolBar.find('.btn-danger').hide();
         var selectedItems = $currentTarget.bootstrapTable('getSelections');
         if(selectedItems.length > 0) {
-             $currentToolBar.find('.btn-primary').fadeOut(300, function() {
-                $currentToolBar.find('.btn-danger').fadeIn(300);
-            });
+            if($currentToolBar.find('.btn-primary').length > 0){
+                 $currentToolBar.find('.btn-primary').fadeOut(300, function() {
+                    $currentToolBar.find('.btn-danger').fadeIn(300);
+                });
+            }else{
+                 $currentToolBar.find('.btn-danger').fadeIn(300);
+            }
         } else {
-            $currentToolBar.find('.btn-danger').fadeOut(300, function() {
-                $currentToolBar.find('.btn-primary').fadeIn(300);
-            });
+            if($currentToolBar.find('.btn-primary').length > 0){
+                $currentToolBar.find('.btn-danger').fadeOut(300, function() {
+                    $currentToolBar.find('.btn-primary').fadeIn(300);
+                });
+            }else{
+                 $currentToolBar.find('.btn-primary').fadeIn(300);
+            }
         }
     }
 }
@@ -132,8 +140,8 @@ var showUploadFileName = function($target){
     $target.parent().after('<span class="file-input-name">'+fileName+'</span>');  
 }
 
-function validRequired(fieldList){
-    var errors = new Array();
+function validRequired(errors, fieldList){
+    
     $.each(fieldList, function(i, item) {
         var value = $('input[name='+item+']').val();
         if(typeof value == "undefined"){
@@ -167,7 +175,7 @@ $(function () {
     $('#saveAppDetail').show(); 
 });
 </script>
-<script src="{{ asset('/js/appMaintain/switch_lang_tool.js') }}"></script>
-<script src="{{ asset('/js/appMaintain/app_pic.js') }}"></script>
-<script src="{{ asset('/js/appMaintain/app_maintain.js') }}"></script>
+<script src="{{ asset('/js/appMaintain/switch_lang_tool.js?v=201703311322') }}"></script>
+<script src="{{ asset('/js/appMaintain/app_pic.js?v=201704101719') }}"></script>
+<script src="{{ asset('/js/appMaintain/app_maintain.js?v=201703311322') }}"></script>
 @endsection

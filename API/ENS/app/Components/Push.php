@@ -27,7 +27,7 @@ class Push
             $apiFunction = 'sendPushMessage';
             $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
             $header = array('Content-Type: application/json',
-                        'App-Key: appqplaydev',
+                        'App-Key: '.CommonUtil::getContextAppKey(Config::get('app.env'), 'ens'),
                         'Signature-Time: '.$signatureTime,
                         'Signature: '.CommonUtil::getSignature($signatureTime));
             $data = array(
@@ -43,8 +43,37 @@ class Push
                         'destination_role_id' => array(
                             )
                         );
-            $data = json_encode($data);
+            $data = json_encode($header);
             $result = CommonUtil::callAPI('POST', $url,  $header, $data);
             return $result;
     }
+
+    /**
+     * 取得推播訊息樣板
+     * @param  string $action     呼叫場景(new|update|close)
+     * @param  Array $event       事件資訊
+     * @param  Array $queryParam  推播時的必要參數
+     * @return Array              array('title'=>'','text'=>'');
+     */
+    public function getPushMessageTemplate($action, Array $event, $queryParam){
+        
+        $template = array('title'=>'','text'=>'');
+        $appKey = $queryParam['app_key'];
+        $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
+        $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'];
+
+        $template['text'] =$event['event_desc'].'<br><a href="'.$url.'">查看事件詳細資料</a>';
+
+        switch ($action) {
+            case 'new':
+            case 'update':
+                $template['title'] = '[ENS]'.'['.$event['event_title'].']';
+                break;
+            case 'close':
+                $template['title'] = '[ENS]'.$event['event_row_id'].$event['event_type'].'，已完成作業';
+                break;
+        }
+        return $template;
+   }
+
 }

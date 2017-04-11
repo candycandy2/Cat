@@ -15,12 +15,21 @@
     margin-left   : 3.71VW;
 }
 /*head button*/
-.buttonone,.buttontwo {
+.buttonone {
     display       : inline-block; 
     float         : left; 
-    width         : 38% ;  
+    width         : 50% ;  
+    margin-left   : 3.71VW;
+    position      : relative;
+}
+
+.buttontwo {
+    display       : inline-block; 
+    float         : left; 
+    width         : 42% ;  
     margin-left   : 3.71VW;
 }
+
 
 
 
@@ -81,15 +90,15 @@
     width            : 6.79VW; 
     float            : left;
     display          : inline-block;
-    margin-left      : 4.5VW;
-    margin-right     : 4.5VW; 
-    margin-top       : 3.99VW; 
+    position         : absolute;
+    left             : 43VW;
+    top              : 30%;
 }
 
 /*head button ----------------------------*/
 .frag .frag0{   
     margin-top                 : 3.99VW;
-    padding                    : 2VW;
+    padding                    : 0 2VW;
 
 }
 
@@ -136,6 +145,15 @@
 
 /*list        ----------------------------*/
 
+.CountryA {
+    background-color          : #f9f9f9!important;;
+}
+
+
+.firstli{
+    border-top: honeydew !important; 
+}
+
 .Listdiv1{/*list */
     display    : inline-block;
     float      : left;
@@ -149,9 +167,9 @@
     display    : inline-block;
     width      : 47%; 
     float      : left;
-    overflow    : hidden; 
+    overflow   : hidden; 
 }
-
+/* Flag */
 .ListviewFlag1, .ListviewFlag2{
     float      : left;
     margin-left: 1VW;
@@ -161,16 +179,27 @@
     background-size:5vw;   
     float: left;           
     */
+    
+    padding    : 2.33vw 0;
 }
 
+/* Flag Popup*/
+.ListviewFlag1popup{
+    float      : left;
+    margin-left: 1VW;
+    width      : 7.24VW;
+    display    : inline-block;
+    margin-top  : 1.5VW;
+
+}
 
 .Listdiv3{
-    font size  : 3.5VW;
+    font size  : 3.97VW;
     display    : inline-block;
     float      : left;
-    margin-left: 4.4VW;
-    overflow    : hidden; 
-    padding    : 2.33vw 0;
+    margin-left: 3.4VW;
+    overflow   : hidden; 
+    margin-top : 4VW;
 }
 
 .Listdiv1equalmark4{
@@ -178,6 +207,7 @@
     float      : left;
     position   : absolute;
     right      : 2VW;
+    margin-top : 3.5VW; 
        
 }
 
@@ -199,8 +229,7 @@
     font-size  :  3.97VW;
     width      :  15VW;
     display    :  inline-block;
-    position   :  absolute;
-    top        :  50% 
+    margin-top :  4VW;
 }
 
 
@@ -215,7 +244,7 @@
 }
 
 .star_icon {
-    margin-top: 2VW;
+    margin-top: 4.5VW;
     opacity   : 1;
     float     : left;    
     width     : 3.54vw; 
@@ -223,8 +252,8 @@
 
 #ultestA , #ultestB {
 
-  margin-left :  5VW; 
-  margin-right:  5VW; 
+  margin-left :  2VW; 
+  margin-right:  2VW; 
 
 }
 
@@ -232,20 +261,26 @@
 
 .ListDollar1{
     float: left;
+    font-size  :  3.97VW;
+
 }
 
 .ListRate2  {
     color      :  #0F0F0F;
-    float      : left;
-
+    float      : left;    
+    margin-left: 1VW;
+    font-size  : 3.97VW;
 }
 
 
 .ListCountry3
-{   font-size: 3.5VW;
-    float: left;
-    color: #666;
+{   
+    font-size: 3.5VW;
+    float    : left;
+    color    : #666;
+    margin-top: 5VW;
 }
+
 
 /*list       ----------------------------*/
 .Maccount{
@@ -523,7 +558,7 @@ element.style {
 }
 
 .page-header {
-    height : 40px !important;
+ 
 }
 
 #viewIndex .ui-content > div{
@@ -743,10 +778,7 @@ element.style {
 /* For pop All Curency*/
 
 
-.popFlag{
 
-
-}
 
 
 .popListdiv1{

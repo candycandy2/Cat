@@ -272,7 +272,7 @@ class qplayController extends Controller
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
         $loginid = $request->header('loginid');
-        $password = urldecode($request->header('password'));
+        $password = rawurldecode($request->header('password'));
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == ""
@@ -459,12 +459,12 @@ class qplayController extends Controller
         	//register to QMessage
         	$QMessage_register_url = \Config::get('app.QMessage_Register_URL');
         	if(!empty($QMessage_register_url)){
-           	 $qmessage_result = self::Register2QMessage($loginid,$QMessage_register_url);
+           	 $qmessage_result = self::Register2QMessage($userInfo->login_id, $QMessage_register_url);
             	CommonUtil::logApi("", "Register2Qmessage",
                 	response()->json(apache_response_headers()), $qmessage_result);
             	//更新标志位
             	\DB::table("qp_user")
-                	->where('login_id', '=', $loginid)
+                	->where('login_id', '=', $userInfo->login_id)
                 	->update(['register_message'=>'Y']);
         	}
         	return response()->json($result);
@@ -673,7 +673,7 @@ class qplayController extends Controller
         $redirect_uri = $request->header('redirect-uri');
         $domain = $request->header('domain');
         $loginid = $request->header('loginid');
-        $password = urldecode($request->header('password'));
+        $password = rawurldecode($request->header('password'));
 
         //通用api參數判斷
         if(!array_key_exists('uuid', $input) || $redirect_uri == null

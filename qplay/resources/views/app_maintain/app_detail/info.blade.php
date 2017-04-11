@@ -194,10 +194,9 @@
                         @endif
                         >{{trans('messages.USER_SETTING_BY_ROLE')}}</option>
                     </select>
-                </div>
-    
-                <label class="control-label col-sm-2" for="userApp"></label>
-                <div class="col-sm-10"> 
+               {{--  </div> --}}
+             {{--    <label class="control-label col-sm-2" for="userApp"></label>
+                <div class="col-sm-10"> --}} 
                     <div id="selNormal"  
                     @if (!isset($companyLabel))
                         style="display: none"
@@ -392,8 +391,8 @@
                      @endforeach
                 </div>
                 <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="saveRemoveLang();">{{trans("messages.SAVE")}}</button>
-                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+                    <button type="button"  class="btn btn-danger" onclick="saveRemoveLang();">{{trans("messages.CONFIRM")}}</button>
+                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CANCEL")}}</button>
                 </div>
             </div>
         </div>
@@ -559,17 +558,19 @@
         $("#newCustomApiDialog").find('#saveCustomApi').attr('onclick','saveCustomApi("edit",'+index+')');
         $("#newCustomApiDialog").modal('show');
     };
-    var saveCustomApi = function(action,index) {
+    var saveCustomApi = function(action,index) {    
         var apiAction = $("#tbxApiAction").val();
         var apiVersion = $("#tbxApiVersion").val();
         var apiUrl = $("#tbxApiUrl").val();
         var require = ['tbxApiAction','tbxApiVersion','tbxApiUrl'];
-        var errors = validRequired(require);
+        var errors = new Array();
+        errors = validRequired(errors, require);
         var currentData = $("#gridCustomApi").bootstrapTable('getData');
         $.merge(errors,validateDuplicateAPI(currentData, index, apiAction, apiVersion));
         $.each(errors,function(i, error){
             $('span[for='+error.field+']').html(error.msg);
         });
+
         if(errors.length > 0){
             return false;
         }

@@ -76,7 +76,7 @@ class EventService
     * @return json               更新結果
     */
    public function updateEvent($empNo, $eventId, $data, $queryParam){
-           
+           $action = 'update';
            $this->eventRepository->updateEventById($empNo, $eventId, $data);
            
            if(isset($data['related_event_row_id'])){
@@ -85,7 +85,12 @@ class EventService
                     $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $empNo);
                 }
            }
-           $result = $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo);
+           //事件完成
+           if(isset($data['event_status']) && $data['event_status'] == self::STATUS_FINISHED){
+                $action = 'close';
+           }
+
+           $result = $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo, $action);
            
            return $result;
    }
@@ -195,7 +200,7 @@ class EventService
          $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
          $userList = [];
          foreach ($eventUserDetail as $user) {
-            $userList[] = $user->user_domain.'\\'.$user->login_id;
+            $userList[] = $user->user_domain."\\".$user->login_id;
          }
          return $userList;
    }
@@ -209,7 +214,7 @@ class EventService
         $userInfo = $this->userRepository->getUserInfoByEmpNo($empNoArr);
         $userList = [];
         foreach ($userInfo as $user) {
-            $userList[] = $user['user_domain'].'\\'.$user['login_id'];
+            $userList[] = $user['user_domain']."\\".$user['login_id'];
         }
         return $userList;
    }
@@ -224,7 +229,7 @@ class EventService
          $userList = [];
          foreach ($eventUserDetail as $key => $user) {
             $userData['emp_no'] = $user->emp_no;
-            $userData['login_id'] = $user->user_domain.'\\'.$user->login_id;
+            $userData['login_id'] = $user->user_domain."\\".$user->login_id;
             $userData['read_time'] = $user->read_time;
             $userList[] = $userData;
          }
@@ -486,6 +491,7 @@ class EventService
         $item['estimated_complete_date'] = $event->estimated_complete_date;
         $item['related_event_row_id'] = $event->related_event_row_id;
         $item['event_status'] = ($event->event_status == 0)?'未完成':'完成';
+        $item['chatroom_id'] = $event->chatroom_id;
         $userInfo = $this->userRepository->getUserInfoByEmpNo(array($event->created_user));
         $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
         $item['created_user'] = $userInfo[0]['login_id'];
@@ -496,24 +502,26 @@ class EventService
 
    /**
     * 發送推播訊息給事件參與者
-    * @param  int       $eventId    事件id en_event.row_id
-    * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
+    * @param  int      $eventId    事件id en_event.row_id
+    * @param  Array    $queryParam 呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
+    * @param  string   $empNo       
     * @return json
     */
-   public function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo){
+   public function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo, $action){
        
        $result = null;
        $to = $this->getPushUserListByEvent($eventId);
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($eventId, $empNo);
-       $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($event['event_title'])));
-       $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($event['event_desc'])));
-       //TODO append ENS event link
        
-       $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
+       $template = $this->push->getPushMessageTemplate($action, $event, $queryParam);
+       $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['title'])));
+       $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['text'])));
+      
+       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, $queryParam);
        
        $result = json_decode($pushResult);
        return $result;
-   }
+    }
 
 }

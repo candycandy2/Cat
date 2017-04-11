@@ -55,11 +55,11 @@ $menu_name = "APP_MAINTAIN";
 
     var saveMainInfo = function() {
         if($('#ddlAppKey option:selected').val()==0){
-            showMessageDialog("{{trans("messages.ERROR")}}","請選擇AppKey");
+            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_APP_KEY_REQUIRED")}}");
             return false;
         }
         if($('#newAppForm').find('input[name="tbxAppName"]').val()=="") {
-            showMessageDialog("{{trans("messages.ERROR")}}","請填寫App名稱");
+            showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_APP_NAME_REQUIRED")}}");
             return false;
         }
 

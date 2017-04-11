@@ -8,23 +8,32 @@ namespace App\Repositories;
 use Doctrine\Common\Collections\Collection;
 use App\Model\EN_Task;
 use App\Model\EN_User_Task;
+use App\Model\QP_User;
 use DB;
 
 class TaskRepository
 {
-    /** @var task Inject EN_Event model */
+    /** @var task Inject EN_Task model */
     protected $task;
-    /** @var userTask Inject EN_Event model */
+    /** @var userTask Inject EN_User_Task model */
     protected $userTask;
+    /** @var userDataBaseName user 資料庫名稱 */
+    protected $userDataBaseName;
+    /** @var userTableName user 資料表名稱 */
+    protected $userTableName;
    
     /*
      * EventRepository constructor.
-     * @param EN_Event task
+     * @param EN_Task $task
+     * @param EN_User_Task $userTask
+     * @param QP_User $user
      */
-    public function __construct(EN_Task $task, EN_User_Task $userTask)
+    public function __construct(EN_Task $task, EN_User_Task $userTask, QP_User $user)
     {     
         $this->task = $task;
         $this->userTask = $userTask;
+        $this->userDataBaseName = \Config::get('database.connections.mysql_qplay.database');
+        $this->userTableName = $user->getTableName();
     }
 
     /**
@@ -46,7 +55,7 @@ class TaskRepository
      */
     public function getTaskDetailByEventId($eventId){
          $result = $this->task
-            ->leftJoin( 'en_user', 'en_user.emp_no', '=', 'en_task.close_task_emp_no')
+            ->leftJoin( $this->userDataBaseName.'.'. $this->userTableName, $this->userTableName.'.emp_no', '=', 'en_task.close_task_emp_no')
             ->select('en_task.row_id as task_row_id','task_function','task_location','task_status',
                 'close_task_emp_no','close_task_date',
                 DB::raw("CONCAT(user_domain,'\\\\',login_id) as close_task_user_id"))
@@ -63,7 +72,7 @@ class TaskRepository
      */
     public function getUserByTaskId($taskId){
         return $this->userTask
-            ->join( 'en_user', 'en_user.emp_no', '=', 'en_user_task.emp_no')
+            ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_user_task.emp_no')
             ->where('task_row_id',$taskId)
             ->select(
                 'en_user_task.emp_no as emp_no',

@@ -4,6 +4,15 @@
     padding: 0px;
 }
 
+a {
+    text-decoration: none;
+}
+
+/*override APP CSS*/
+.app-popup .ui-content {
+    padding: 2.5vh 3vw 2.9vh;
+}
+
 /*new class*/
 .event-list-msg-top .description {
     font-size: 4.18vw;

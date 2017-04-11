@@ -1,8 +1,10 @@
 /*global variable, function*/
-var currentYear, currentMonth, queryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, ROSummaryQueryData, productDetailQueryData, UserAuthorityQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
+var monthlyPageDateExist = true;
+var ytdPageDateExist = true;
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
@@ -94,31 +96,31 @@ $(document).one("pagebeforeshow", function() {
 });
 
 window.initialSuccess = function() {
-    
     currentYear = time.getFullYear();
+    currentDate = time.getDate();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
-    loadingMask("show");
-    queryData =   "<LayoutHeader><StartYearMonth>"
-                + (currentYear - 3) + "/01"
-                + "</StartYearMonth><EndYearMonth>"
-                + currentYear + "/" + currentMonth
-                + "</EndYearMonth></LayoutHeader>";
-    ROSummary();
-    queryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
-    UserAuthority();
+    if(currentDate == 1) {
+        currentMonth = currentMonth - 1;
+    }
     if(localStorage.getItem("eisdata") === null) {
         callProductDetailAPI();
     }else {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        if (checkDataExpired(lastTime, allExpiredTime, 'MM')) {
+        // set 'mm' for the temporary test
+        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
             localStorage.removeItem("eisdata");
             callProductDetailAPI();
         }
-        // else {
-        //     localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
-        // }
     }
+
+    loadingMask("show");
+    ROSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
+    ROSummary();
     $.mobile.changePage("#viewHitRate");
 }
 
@@ -224,6 +226,7 @@ function zoomInChart() {
 }
 
 function callProductDetailAPI() {
+    //review by alan : add callLaste2MonothsProductDetailAPI for reduce data
     for(var i=0; i<=3; i++) {
         var maxMonth = (i == 0) ? Number(currentMonth) : 12;
         for(var j=maxMonth; j>0; j--) {

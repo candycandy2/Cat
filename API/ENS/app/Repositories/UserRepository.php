@@ -6,20 +6,20 @@
 namespace App\Repositories;
 
 use Doctrine\Common\Collections\Collection;
-use App\Model\EN_User;
+use App\Model\QP_User;
 use App\Model\EN_Usergroup;
 use DB;
 
 class UserRepository
 {
-    /** @var User Inject En_User model */
+    /** @var User Inject QP_User model */
     protected $user;
     protected $userGroup;
     /**
      * UserRepository constructor.
      * @param User $user
      */
-    public function __construct(EN_User $user, EN_Usergroup $userGroup)
+    public function __construct(QP_User $user, EN_Usergroup $userGroup)
     {
         $this->user = $user;
          $this->userGroup = $userGroup;
@@ -31,10 +31,13 @@ class UserRepository
      * @return mixed
      */
     public function getUserAuth($empNo){
+        
+        $ensDataBaseName = \Config::get('database.connections.mysql.database');
+        $userTableName = $this->user->getTableName();
 
         return $this->user
             ->where('en_usergroup.emp_no', '=', (string)$empNo)
-            ->join( 'en_usergroup', 'en_user.emp_no', '=', 'en_usergroup.emp_no')
+            ->join( $ensDataBaseName . '.en_usergroup as en_usergroup', $userTableName . '.emp_no', '=', 'en_usergroup.emp_no')
             ->select('usergroup')
             ->get();
 
@@ -53,6 +56,18 @@ class UserRepository
     }
 
     /**
+     * 依員工帳號取得使用者資訊
+     * @param  String  $loginId 員工帳號
+     * @return mixed
+     */
+    public function getUserInfoByLoginId($loginId){
+         return $this->user
+         ->where('login_id','=', $loginId)
+         ->select('row_id','login_id','ext_no','email','emp_no','user_domain','register_message')
+         ->first();
+    }
+
+    /**
      * 查找en_user_group表，若存在此表有特殊權限
      * @return mixed
      */
@@ -60,5 +75,11 @@ class UserRepository
         return $this->userGroup
          ->select('emp_no')
          ->get();
+    }
+
+    public function updateUserByLoginId($loginId ,$updateData){
+        return $this->user
+        ->where('login_id','=', $loginId)
+        ->update($updateData);
     }
 }
