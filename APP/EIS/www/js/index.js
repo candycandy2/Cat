@@ -34,7 +34,6 @@ var nowTime = new Date();
 var monthlyPageDate = [];
 var ytdPageDate = [];
 var eisdata = {};
-var eisdataReduce = {};
 var thisMonthEisdata = {};
 var hitRateEisData = {};
 var monTable = {
@@ -109,7 +108,7 @@ window.initialSuccess = function() {
     }else {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        if (checkDataExpired(lastTime, allExpiredTime, 'mm')) {
+        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
             callProductDetailAPIReduce();
         }
     }
