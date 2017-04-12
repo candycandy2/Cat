@@ -34,6 +34,7 @@ var nowTime = new Date();
 var monthlyPageDate = [];
 var ytdPageDate = [];
 var eisdata = {};
+var eisdataReduce = {};
 var thisMonthEisdata = {};
 var hitRateEisData = {};
 var monTable = {
@@ -103,14 +104,13 @@ window.initialSuccess = function() {
         currentMonth = currentMonth - 1;
     }
     if(localStorage.getItem("eisdata") === null) {
+        callProductDetailAPIReduce();
         callProductDetailAPI();
     }else {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        // set 'mm' for the temporary test
-        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
-            localStorage.removeItem("eisdata");
-            callProductDetailAPI();
+        if (checkDataExpired(lastTime, allExpiredTime, 'mm')) {
+            callProductDetailAPIReduce();
         }
     }
 
@@ -226,18 +226,35 @@ function zoomInChart() {
 }
 
 function callProductDetailAPI() {
-    //review by alan : add callLaste2MonothsProductDetailAPI for reduce data
+    var maxMonth, k = 0;
     for(var i=0; i<=3; i++) {
-        var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+        if (i == 0 && currentMonth > 2) {
+            maxMonth = Number(currentMonth-2);
+        }else{
+            maxMonth = 12;
+            k++;
+        };
         for(var j=maxMonth; j>0; j--) {
             j = (j < 10) ? "0"+j : j;
             productDetailQueryData = "<LayoutHeader><StartYearMonth>"
-                        + (currentYear - i) + "/" + j
+                        + (currentYear - k) + "/" + j
                         + "</StartYearMonth><EndYearMonth>"
-                        + (currentYear - i) + "/" + j
+                        + (currentYear - k) + "/" + j
                         + "</EndYearMonth></LayoutHeader>";
             ProductDetail();
         }
+    }
+}
+
+function callProductDetailAPIReduce() {
+    for(var j=0; j<2; j++) {
+        var i = ((Number(currentMonth)-j) < 10) ? "0"+(Number(currentMonth)-j) : Number(currentMonth)-j;
+        productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                    + currentYear + "/" + i
+                    + "</StartYearMonth><EndYearMonth>"
+                    + currentYear + "/" + i
+                    + "</EndYearMonth></LayoutHeader>";
+        ProductDetail();
     }
 }
 
