@@ -5,21 +5,23 @@
 var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
     $("#viewDetailInfo").pagecontainer({
         create: function(event, ui) {
+            var tmpemployeeInfo = {};
             /********************************** function *************************************/
             function QueryEmployeeDataDetail() {
                 
                 if (prevPageID === "viewQueryResult") {
                     $("#addStar").show();
                     $("#deleteStar").hide();
+                    tmpemployeeInfo = employeeData;
                 } else if (prevPageID === "viewDataInput") {
-                    employeeData = phonebookData;
+                    tmpemployeeInfo = phonebookData;
                     $("#addStar").hide();
                     $("#deleteStar").show();
                 }
 
                 var self = this;
-                var queryData = '<LayoutHeader><Company>' + employeeData[employeeSelectedIndex].company + '</Company>' + 
-                                '<Name_EN>' + employeeData[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
+                var queryData = '<LayoutHeader><Company>' + tmpemployeeInfo[employeeSelectedIndex].company + '</Company>' + 
+                                '<Name_EN>' + tmpemployeeInfo[employeeSelectedIndex].ename + '</Name_EN></LayoutHeader>';
 
                 // review
                 // data is not exist
@@ -58,9 +60,9 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                             detailHasDataAry.push({'query': queryData, 'result': data['Content'], 'time': nowTime});
 
                             if (prevPageID === "viewQueryResult") {
-                                employeeData[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
+                                tmpemployeeInfo[employeeSelectedIndex].employeeid = data['Content'][0].EmployeeID;
                                 for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                                    if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                                    if(tmpemployeeInfo[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
                                         $("#addStar").hide();
                                         $("#deleteStar").show();
                                         break;
@@ -112,9 +114,9 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                 $("#detail-data #eMail").html(dataContent[0].EMail);
 
                 if (prevPageID === "viewQueryResult") {
-                    employeeData[employeeSelectedIndex].employeeid = dataContent[0].EmployeeID;
+                    tmpemployeeInfo[employeeSelectedIndex].employeeid = dataContent[0].EmployeeID;
                     for(var i=0; i<Object.keys(phonebookData).length; i++) {
-                        if(employeeData[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
+                        if(tmpemployeeInfo[employeeSelectedIndex].employeeid === phonebookData[Object.keys(phonebookData)[i]].employeeid) {
                             $("#addStar").hide();
                             $("#deleteStar").show();
                             break;
@@ -127,8 +129,8 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                 
                 var self = this;
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID>' + 
-                                '<Add_EmpID>' + employeeData[employeeSelectedIndex].employeeid + '</Add_EmpID>' + 
-                                '<Add_Company>' + employeeData[employeeSelectedIndex].company + '</Add_Company></LayoutHeader>';
+                                '<Add_EmpID>' + tmpemployeeInfo[employeeSelectedIndex].employeeid + '</Add_EmpID>' + 
+                                '<Add_Company>' + tmpemployeeInfo[employeeSelectedIndex].company + '</Add_Company></LayoutHeader>';
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
@@ -177,7 +179,7 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
 
             $('body').on('click', 'div[for=askDeletePhonebook] #confirm', function() {
                 // deletePhoneBook("viewDetailInfo", employeeSelectedIndex);
-                deletePhoneBook("viewDetailInfo", employeeData[employeeSelectedIndex].employeeid);
+                deletePhoneBook("viewDetailInfo", tmpemployeeInfo[employeeSelectedIndex].employeeid);
                 $("#viewPopupMsg").popup("close");
             });
         }
