@@ -123,9 +123,10 @@ $("#viewEventContent").pagecontainer({
 
                         //Complete Datetime
                         var completeTime = new Date(parseInt(data['Content'].estimated_complete_date * 1000, 10));
-                        var completeTimeConvert = completeTime.TimeZoneConvert();
-                        completeTimeConvert = completeTimeConvert.substr(0, parseInt(completeTimeConvert.length - 3, 10));
-                        $("#contentEventContent .datetime").html(completeTimeConvert);
+                        var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                        padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                        padLeft(completeTime.getMinutes(), 2);
+                        $("#contentEventContent .datetime").html(completeTimeText);
 
                         //Related Event
                         if (data['Content'].related_event_row_id === 0) {
@@ -164,6 +165,21 @@ $("#viewEventContent").pagecontainer({
 
                         //ChatRoom Message List
                         chatRoomListView();
+
+                        //Update User Read Status & Time
+                        //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
+                        if (!eventFinish) {
+                            if (loginData["loginid"] !== data['Content'].created_user) {
+                                for (var i=0; i<data['Content'].user_event.length; i++) {
+                                    if (data['Content'].user_event[i].emp_no === loginData["emp_no"]) {
+                                        if (data['Content'].user_event[i].read_time === 0) {
+                                            var updateEventStatusObj = new updateEventStatus();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                 } else if (resultCode === "014904") {
@@ -220,6 +236,47 @@ $("#viewEventContent").pagecontainer({
 
             loadingMask("hide");
         };
+
+        function updateEventStatus() {
+            //Update 1. [event_status] 2. [read_time]
+            //Now only for read_time
+            var self = this;
+
+            var specificDoneDateTime = new Date();
+            var specificTimeStamp = specificDoneDateTime.TimeStamp();
+
+            var queryDataObj = {
+                lang: "zh-tw",
+                need_push: "Y",
+                app_key: appKey,
+                event_row_id: eventRowID,
+                read_time: specificTimeStamp,
+                emp_no: loginData["emp_no"]
+            };
+
+            var queryDataParameter = processLocalData.createXMLDataString(queryDataObj);
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+
+                var resultCode = data['ResultCode'];
+
+                if (resultCode === "014901") {
+                    //Update Success, then update count of viewer in Top of Page
+                    var countView = $("#viewEventContent .event-list-msg .view .text").html();
+                    var newCountView = parseInt(countView, 10) + 1;
+                    $("#viewEventContent .event-list-msg .view .text").html(newCountView);
+                } else if (resultCode === "014910") {
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "updateEventStatus", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
 
         function updateTaskStatus(status) {
             //status
