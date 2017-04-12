@@ -83,7 +83,7 @@ $("#viewAccount").pagecontainer({
                  Buttonimg(); 
         });
    //  Transfer   ************************************************************************** 
-        function Buttonimg()     //when to call(when confirm must to test once)      
+        function Buttonimg()    
         {   
             $(".buttonone1").attr("src","img/tmp/"+ FromStatus  +".png");
             $(".buttontwo1").attr("src","img/tmp/"+ ToStatus +".png");
@@ -115,7 +115,7 @@ $("#viewAccount").pagecontainer({
 
             }            
         }     
-            Buttonimg(); 
+    
 
  
   
@@ -148,26 +148,38 @@ $("#viewAccount").pagecontainer({
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);  
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
 
-
-            
-             
+          /*201704test
+            $("#popupA").popup( { dismissible : false});
+            $("#popupB").popup( { dismissible : false });
+          */   
         });    
 
 
 
         /********************************** Popup *************************************/
         $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
-            
-                   
+                
             statuscountrypop = $(this).prop("id");
-         
-             $("#eventWorkConfirmB").popup('open');
+            //if hasclass favorite$("#eventWorkConfirmB").popup('open');
+            //else hasclass $("#eventWorkConfirmA").popup('open');
+           
+
+        if ($("#"+statuscountrypop).hasClass("favorite")) ////$(this).hasClass("favorite")){
+        {
+                $("#eventWorkConfirmB").popup('open');
+        }
+        else 
+        {
+            $("#eventWorkConfirmA").popup('open');
             // $("#eventWorkConfirmA").popup('open');
+        }
         });
 
         $(document).on("click", "#eventWorkConfirmA .confirm", function() { // B window OK   
 
-            $("#"+statuscountrypop).children(".star_icon").css("opacity","1"); 
+            $("#"+statuscountrypop).children(".star_icon").css("opacity","1"); //li id 
+            $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","1");
+            $("#"+statuscountrypop).addClass("favorite");
            //$("#NTD").children(".star_icon").css("opacity","0"); 
            // $('img.'+countrystatus).addClass('star_icon');  
             $("#eventWorkConfirmA").popup('close');
@@ -185,7 +197,9 @@ $("#viewAccount").pagecontainer({
         });
 
         $(document).on("click", "#eventWorkConfirmB .confirm", function() { // B window OK   
-            $("#"+statuscountrypop).children(".star_icon").css("opacity","0");             
+            $("#"+statuscountrypop).children(".star_icon").css("opacity","0");  
+            $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","0");   
+            $("#"+statuscountrypop).removeClass("favorite");        
             $("#eventWorkConfirmB").popup('close');
         });
 
@@ -197,8 +211,8 @@ $("#viewAccount").pagecontainer({
  
         /********************************** Popup  *************************************/
         $(document).on("click", "#popupA .popListdiv1", function() {  //.Listdiv1  
-   
-            $("#popupA").popup( {  disabled:false});
+           
+
             var statuspop = $(this).find(".ListRate1popup").text().trim();
             FromStatus    = statuspop;
 
@@ -226,7 +240,7 @@ $("#viewAccount").pagecontainer({
 
         $(document).on("click", "#popupB .popListdiv1", function() {     //popListadd
            //$("popListdiv1").css("background-color", "#FFFF30");
-           //$("#popupB").popup( {disabled:true});
+            
             var statuspop = $(this).find(".ListRate1popup").text().trim(); //ListRate1popup
             ToStatus    =statuspop;
             if ((FromStatus =="All Currency") && (ToStatus =="All Currency")) 
