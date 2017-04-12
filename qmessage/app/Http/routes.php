@@ -13,7 +13,7 @@
 
 //QMessage API
 Route::any('/v101/qmessage/register', 'qmessageController@register');
-
+Route::any('/v101/qmessage/userstate/{username}', 'qmessageController@userstate');
 Route::post('/v101/qmessage/group/add','qmessageController@addGroup');
 Route::any('/v101/qmessage/group/delete','qmessageController@deleteGroup');
 Route::any('/v101/qmessage/group/list','qmessageController@getGroupList');
