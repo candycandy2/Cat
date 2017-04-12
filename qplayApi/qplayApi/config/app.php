@@ -132,6 +132,13 @@ return [
     'apns_flag' => env('APNS_FLAG'),
 
     /*
+     * Log记录模式：
+     *All: mysql,mongodb
+     *MYSQL:mysql
+     *MONGODB:mongodb
+     * */
+    'log_mode' => env('LOG_MODE','All'),
+    /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
@@ -176,6 +183,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /*
+         * MongoDB
+         * */
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
     ],
 
@@ -222,7 +234,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
     ],
 
     //QMessage API

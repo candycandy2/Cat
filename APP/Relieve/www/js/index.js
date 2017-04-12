@@ -22,42 +22,29 @@ window.initialSuccess = function() {
 
 //[Android]Handle the back button
 function onBackKeyDown() {
-    function onBackKeyDown() {
-        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-        var activePageID = activePage[0].id;
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
 
-        if (checkPopupShown()) {
-            popupClose();
-        } else {
-            if (activePageID === "viewReserve") {
+    if (checkPopupShown()) {
+        popupClose();
+    } else {
+        if (activePageID === "viewReserve") {
 
-                if ($("#reserveTab :radio:checked").val() == 'tab1') {
-                    navigator.app.exitApp();
-                } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
-                    $("input[id=tab1]").trigger('click');
-                    $("label[for=tab1]").addClass('ui-btn-active');
-                    $("label[for=tab2]").removeClass('ui-btn-active');
-                    $("label[for=tab3]").removeClass('ui-btn-active');
-                }
-                else{
-                    $("input[id=tab1]").trigger('click');
-                    $("label[for=tab1]").addClass('ui-btn-active');
-                    $("label[for=tab2]").removeClass('ui-btn-active');
-                    $("label[for=tab3]").removeClass('ui-btn-active');
-                }
-
-            } else if (activePageID === "viewMyReserve") {
-
-                $.mobile.changePage('#viewReserve');
-
-            } else if (activePageID === "viewSettingList") {
-
-                $.mobile.changePage('#viewReserve');
-
-            } else if (activePageID === "viewNewSetting") {
-
-                $.mobile.changePage('#viewSettingList');
+            if ($("#reserveTab :radio:checked").val() == 'tab1') {
+                navigator.app.exitApp();
+            } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
+                $("input[id=tab1]").trigger('click');
+                $("label[for=tab1]").addClass('ui-btn-active');
+                $("label[for=tab2]").removeClass('ui-btn-active');
+                $("label[for=tab3]").removeClass('ui-btn-active');
             }
+            else{
+                $("input[id=tab1]").trigger('click');
+                $("label[for=tab1]").addClass('ui-btn-active');
+                $("label[for=tab2]").removeClass('ui-btn-active');
+                $("label[for=tab3]").removeClass('ui-btn-active');
+            }
+
         }
     }
 }

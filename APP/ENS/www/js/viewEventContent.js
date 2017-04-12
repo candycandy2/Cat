@@ -7,6 +7,7 @@ $("#viewEventContent").pagecontainer({
         window.eventContentData;
         var taskData;
         var taskRowID;
+        window.chatroomID;
         var photoUrl;
         var resizePhotoWidth;
         var resizePhotoHeight;
@@ -40,7 +41,6 @@ $("#viewEventContent").pagecontainer({
                         //Define in viewEventList
                         functionListPopup(data['Content']);
                     } else {
-                        loadingMask("hide");
 
                         eventContentData = data['Content'];
 
@@ -108,7 +108,9 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
 
                         //Message Count
+                        chatroomID = data['Content'].chatroom_id;
                         var msgCount = 0;
+
                         for (j=0; j<messageCountData.length; j++) {
                             if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
                                 msgCount = messageCountData[j]["count"];
@@ -121,9 +123,10 @@ $("#viewEventContent").pagecontainer({
 
                         //Complete Datetime
                         var completeTime = new Date(parseInt(data['Content'].estimated_complete_date * 1000, 10));
-                        var completeTimeConvert = completeTime.TimeZoneConvert();
-                        completeTimeConvert = completeTimeConvert.substr(0, parseInt(completeTimeConvert.length - 3, 10));
-                        $("#contentEventContent .datetime").html(completeTimeConvert);
+                        var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                        padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                        padLeft(completeTime.getMinutes(), 2);
+                        $("#contentEventContent .datetime").html(completeTimeText);
 
                         //Related Event
                         if (data['Content'].related_event_row_id === 0) {
@@ -160,8 +163,23 @@ $("#viewEventContent").pagecontainer({
 
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
 
-                        //Message List
-                        //$('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
+                        //ChatRoom Message List
+                        chatRoomListView();
+
+                        //Update User Read Status & Time
+                        //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
+                        if (!eventFinish) {
+                            if (loginData["loginid"] !== data['Content'].created_user) {
+                                for (var i=0; i<data['Content'].user_event.length; i++) {
+                                    if (data['Content'].user_event[i].emp_no === loginData["emp_no"]) {
+                                        if (data['Content'].user_event[i].read_time === 0) {
+                                            var updateEventStatusObj = new updateEventStatus();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                 } else if (resultCode === "014904") {
@@ -183,6 +201,82 @@ $("#viewEventContent").pagecontainer({
             }();
 
         };
+
+        window.chatRoomListView = function() {
+            var messages = chatRoom.getMsg(chatroomID);
+
+            if (messages) {
+                $("#msgContentHR").show();
+                $(".message-content").show();
+                $("#messageContent .message-data-list").remove();
+
+                //Message List
+                var messageListHTML = $("template#tplMessageList").html();
+
+                for (var i=0; i<messages.length; i++) {
+                    var messageList = $(messageListHTML);
+
+                    if (messages[i]["msg_type"] === "text") {
+                        messageList.find(".user").html(messages[i]["from_id"]);
+                        messageList.find(".datetime").html(messages[i]["ctimeText"]);
+                        messageList.find(".text").html(messages[i]["msg_body"]);
+                    }
+
+                    if ((i+1) == messages.length) {
+                        messageList.find(".ui-hr").remove();
+                    }
+
+                    $("#messageContent").append(messageList);
+                }
+            } else {
+                //empty message
+                $("#msgContentHR").hide();
+                $(".message-content").hide();
+            }
+
+            loadingMask("hide");
+        };
+
+        function updateEventStatus() {
+            //Update 1. [event_status] 2. [read_time]
+            //Now only for read_time
+            var self = this;
+
+            var specificDoneDateTime = new Date();
+            var specificTimeStamp = specificDoneDateTime.TimeStamp();
+
+            var queryDataObj = {
+                lang: "zh-tw",
+                need_push: "Y",
+                app_key: appKey,
+                event_row_id: eventRowID,
+                read_time: specificTimeStamp,
+                emp_no: loginData["emp_no"]
+            };
+
+            var queryDataParameter = processLocalData.createXMLDataString(queryDataObj);
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+
+                var resultCode = data['ResultCode'];
+
+                if (resultCode === "014901") {
+                    //Update Success, then update count of viewer in Top of Page
+                    var countView = $("#viewEventContent .event-list-msg .view .text").html();
+                    var newCountView = parseInt(countView, 10) + 1;
+                    $("#viewEventContent .event-list-msg .view .text").html(newCountView);
+                } else if (resultCode === "014910") {
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "updateEventStatus", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
 
         function updateTaskStatus(status) {
             //status
@@ -465,7 +559,7 @@ $("#viewEventContent").pagecontainer({
             updateTaskStatus(1);
         });
 
-        //Cancel Event Work
+        //Cancel Event Work Done
         $(document).on("click", ".work-after", function() {
             checkReportAuthority(this, "cancel");
         });
@@ -479,6 +573,52 @@ $("#viewEventContent").pagecontainer({
             $("#eventCancelWorkDoneConfirm").popup("close");
             footerFixed();
             updateTaskStatus(0);
+        });
+
+        //Chatroom Msg Button
+        $(document).on("click", "#msgButton", function() {
+            var msgEmpty = false;
+            var msg = $("#msgText").val();
+
+            if (msg.length === 0 || msg === "請輸入訊息") {
+                msgEmpty = true;
+            }
+
+            if (!msgEmpty) {
+                if (msgController.isInited) {
+                    var gid = chatroomID;
+                    var gname = chatroomID + "-room";
+                    var text = msg;
+
+                    msgController.SendText(gid, gname, text, function(successResult) {
+                        console.log("---------------successResult");
+                        console.log(successResult);
+                        loadingMask("show");
+
+                        if (successResult["result"]["code"] === 0) {
+                            var chatRoomID = successResult["result"]["target_gid"];
+                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                            var createTime = new Date(ctime * 1000);
+
+                            var objData = {
+                                msg_id: successResult["result"]["msg_id"],
+                                ctime: ctime,
+                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                                    padLeft(createTime.getMinutes(), 2),
+                                from_id: successResult["content"]["from_id"],
+                                msg_type: successResult["content"]["msg_type"],
+                                msg_body: successResult["content"]["msg_body"]["text"]
+                            };
+
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                        }
+                    }, function(errorResult) {
+                        console.log("---------------errorResult");
+                        console.log(errorResult);
+                    });
+                }
+            }
         });
     }
 });
