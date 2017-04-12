@@ -8,6 +8,7 @@ namespace App\lib;
  * Time: 下午1:25
  */
 
+use App\Model\Log;
 use DB;
 use JPush\Exceptions\APIConnectionException;
 use JPush\Exceptions\APIRequestException;
@@ -540,22 +541,51 @@ class CommonUtil
         $apiStartTime = Request::instance()->get('ApiStartTime');
         $operationTime = microtime(true) - $apiStartTime;
 
-        \DB::table("qp_api_log")
-            -> insert([
-                'user_row_id'=>$userId,
-                'app_key'=>$appKey,
-                'api_version'=>$version,
-                'action'=>$action,
-                'ip'=>$ip,
-                'url_parameter'=>$url_parameter,
-                'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
-                'request_body'=>self::unicodeDecode($request_body),
-                'response_header'=>self::unicodeDecode($responseHeader),
-                'response_body'=>self::unicodeDecode((json_encode($responseBody))),
-                'signature_time'=> $SignatureTime,
-                'operation_time'=> number_format($operationTime,3),
-                'created_at'=>$now,
-            ]);
+        $logMode = Config::get('app.log_mode');
+
+        //Mysql
+        if ($logMode == 'ALL' || $logMode == 'MYSQL'){
+            \DB::table("qp_api_log")
+                -> insert([
+                    'user_row_id'=>$userId,
+                    'app_key'=>$appKey,
+                    'api_version'=>$version,
+                    'action'=>$action,
+                    'ip'=>$ip,
+                    'url_parameter'=>$url_parameter,
+                    'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
+                    'request_body'=>self::unicodeDecode($request_body),
+                    'response_header'=>self::unicodeDecode($responseHeader),
+                    'response_body'=>self::unicodeDecode((json_encode($responseBody))),
+                    'signature_time'=> $SignatureTime,
+                    'operation_time'=> number_format($operationTime,3),
+                    'created_at'=>$now,
+                ]);
+        }
+
+        //MongoDB
+        if ($logMode == 'ALL' || $logMode == 'MONGODB'){
+            $log = new Log();
+            $log->user_row_id = $userId;
+            $log->app_key = $appKey;
+            $log->api_version = $version;
+            $log->action = $action;
+            $log->latitude = '';
+            $log->longitude = '';
+            $log->ip = $ip;
+            $log->county = '';
+            $log->city = '';
+            $log->url_parameter = $url_parameter;
+            $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
+            $log->request_body= self::unicodeDecode($request_body);
+            $log->response_header= self::unicodeDecode($responseHeader);
+            $log->response_body= self::unicodeDecode((json_encode($responseBody)));
+            $log->signature_time= (int)$SignatureTime;
+            $log->operation_time= (float)(number_format($operationTime,3));
+            $log->created_at= $now;
+            $log->save();
+        }
+
     }
 
     public static function logCustomApi($version,$appKey,$action, $responseHeader, $responseBody) {
@@ -591,7 +621,11 @@ class CommonUtil
         if (array_key_exists('uuid',$_GET)){
             $uuid = $_GET["uuid"];
         }
-       
+
+        $logMode = Config::get('app.log_mode');
+
+        //Mysql
+        if ($logMode == 'ALL' || $logMode == 'MYSQL') {
         \DB::table("qp_api_log")
             -> insert([
                 'user_row_id'=> self::getUserRowIDByUUID($uuid),
@@ -600,14 +634,38 @@ class CommonUtil
                 'action'=>$action,
                 'ip'=>$ip,
                 'url_parameter'=>$url_parameter,
-                'request_header'=>json_encode($requestHeaderInfo),
-                'request_body'=>$request_body,
-                'response_header'=>$responseHeader,
-                'response_body'=>json_encode($responseBody),
+                'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
+                'request_body'=>self::unicodeDecode($request_body),
+                'response_header'=>self::unicodeDecode($responseHeader),
+                'response_body'=>self::unicodeDecode(json_encode($responseBody)),
                 'signature_time'=> $SignatureTime,
                 'operation_time'=> number_format($operationTime,3),
                 'created_at'=>$now,
             ]);
+        }
+
+        //MongoDB
+        if ($logMode == 'ALL' || $logMode == 'MONGODB'){
+            $log = new Log();
+            $log->user_row_id = self::getUserRowIDByUUID($uuid);
+            $log->app_key = $appKey;
+            $log->api_version = $version;
+            $log->action = $action;
+            $log->latitude = '';
+            $log->longitude = '';
+            $log->ip = $ip;
+            $log->county = '';
+            $log->city = '';
+            $log->url_parameter = $url_parameter;
+            $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
+            $log->request_body= self::unicodeDecode($request_body);
+            $log->response_header= self::unicodeDecode($responseHeader);
+            $log->response_body= self::unicodeDecode((json_encode($responseBody)));
+            $log->signature_time= (int)$SignatureTime;
+            $log->operation_time= (float)(number_format($operationTime,3));
+            $log->created_at= $now;
+            $log->save();
+        }
     }
 
     public static function getUserRowIDByUUID($uuid){
