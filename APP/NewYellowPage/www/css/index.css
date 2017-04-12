@@ -10,11 +10,14 @@
 .ui-radio-50w div.ui-radio{ width: 50%;}
 #reserveTab{ margin: 3.99vw 0 4.3vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 #reserveTab > div > div.ui-radio label { line-height: 1; border: 1px solid #2a88bc !important; border-left-width: 0 !important; background-color: #fff !important;
-    font-weight: normal; padding: 2.8vw 0 2.6vw; text-align: center;}
+    font-weight: normal; padding: 2.8vw 0 2.6vw; text-align: center; font-size: 4.18vw;}
 #reserveTab > div > div.ui-radio:nth-of-type(1) label{ border-left-width: 1px !important;}
 #reserveTab > div > div.ui-radio label.ui-btn-active { background-color: #2a88bc !important; color: white !important;}
 .ui-controlgroup-controls { width: 100%;}
 .ui-mobile .ui-page-active{ min-height: 100vh !important;}
+.ui-mobile .ui-page:not(#viewInitial){ padding-top: 14vw !important;}
+.ui-mobile .ui-page:not(#viewInitial).ui-page-ios{ padding-top: calc(14vw + 20px) !important;}
+.page-main{ overflow-x: hidden; margin-top: 0 !important;}
 
 /*override jQuery Mobile*/
 .ui-content {
@@ -49,8 +52,6 @@
 }
 
 #myPhonebookList .ui-checkbox {
-    margin: 0px;
-    top: 5px;
     left: 35%;
     display: inline-block;
     position: absolute;
@@ -176,12 +177,12 @@
 }
 
 /**********************  viewDataInput  **********************/
-.ui-field-contain{ display: flex; align-items: center; margin-bottom: 6.44vw;}
+.ui-field-contain{ display: flex; align-items: center; margin-bottom: 6.44vw; padding: 0;}
 .ui-field-contain:nth-last-of-type(2){ margin-bottom: 10vw;}
 .btn-area a{ display: block; width: 70%; margin: 0 auto; border-radius: 20px; padding: 2.8vw 0 2.6vw; text-align: center; text-decoration: none;
     border: 1px solid #2c89bc;}
 #cleanQuery, #callQuery{ font-weight: normal;}
-#cleanQuery{ border: none; padding-top: 0;}
+#cleanQuery{ border: none; padding-top: 0; color: #2c89bc;}
 #cleanQuery:before{ content: "\d7"; font-size: 6vw; font-weight: normal; display: inline-block; vertical-align: middle; margin-right: 2.405vw;}
 #callQuery{ background-color: #2c89bc; color: #fff; margin-bottom: 4.3vw;}
 #callQuery:hover, #callQuery:visited, #callQuery:active{ color: #fff;}
@@ -189,22 +190,25 @@
 .ui-select > div, .ui-input-text{ background-color: #fff !important; box-shadow: none; background-image: none; -webkit-appearance: none; -moz-appearance: none; appearance: none;
     border-color: #dfdfdf !important; height: 9.661vw !important;}
 .ui-select>div:after{ background-image: url('../img/dropdown.png') !important; background-color: transparent; border-radius: 0; background-size: 100% auto;
-    width: 3.4vw; 4vw; top: 1.5vw; bottom: 0; margin: auto 0;}
+    width: 3.4vw; top: 1.5vw; bottom: 0; margin: auto 0;}
 .ui-select>div{ position: relative; line-height: 9.661vw;}
 .ui-select>div select{ height: 9.661vw;  max-height: 9.661vw; }
 #Company-button span{ top: 0; left: 3.2vw; position: absolute; font-weight: normal;}
 .ui-input-text input, #Company-button span{ color: #323232; font-size: 3.768vw;}
-.ui-input-text input{ padding: 0 3.2vw;}
+.ui-input-text input{ padding: 0 3.2vw; height: 100%;}
 #pageOne{ margin-top: 10vw !important;}
 #pageOne h4{ font-weight: normal; margin: 0; color: #0f0f0f; font-size: 3.349vw;}
-#pageOne label, #pageOne .ui-select{ float: none;}
+#pageOne label, #pageOne .ui-select{ float: none; margin: 0;}
+#pageOne label{ text-align: right; width: 20%;}
+.ui-field-contain > label~[class*=ui-], .ui-select .ui-btn{ width: 61%;}
+#Company-button{ width: 100%;}
 
 /**********************  phonebook  **********************/
 #pageTwo{ margin: 1.8vw 0 0 !important;}
 .phoneBook-btnArea{ margin: 0 3.71vw 2.14vw;}
 #phonebookEdit{ text-decoration: none; text-align: right; display: block;}
 #phonebookEdit, #phonebookEdit:hover, #phonebookEdit:active, #phonebookEdit:visited,
-    .custom-navbar ul li a, .custom-navbar ul li a:hover, .custom-navbar ul li a:active, .custom-navbar ul li a:visited{ color: #0f0f0f !important;}
+    .custom-navbar ul li a, .custom-navbar ul li a:hover, .custom-navbar ul li a:active, .custom-navbar ul li a:visited{ color: #2c89bc !important;}
 .custom-navbar ul li a{ background: transparent !important; font-size: 4.18vw !important; text-decoration: none;}
 #phoneCancelDelete, #phoneDelete, #phonebookEdit{ font-weight: normal; padding: 0;}
 #phoneDelete{ text-align: right;}
@@ -232,14 +236,15 @@
 .img-info img{ width:6.4vw; height:auto;}
 .checkbox-area, .checkbox-area div, .img-info{ float: none !important;}
 .checkbox-area{ margin-right: 8vw; width: 5vw; height: 5vw; position: relative;}
-#myPhonebookList .ui-checkbox input:after{ content: ''; width: 100%; height: 100%; position: absolute; top: 0; left; 0; 
-    background: url('../img/circlebox.png') #fff; background-size: 100% auto; z-index: 10;}
+#myPhonebookList .ui-checkbox input:after{ content: ''; width: 100%; height: 100%; position: absolute; top: 0; left: 0; 
+    background: url('../img/circlebox.png') #fff; background-size: 100% auto; z-index: 10; pointer-events: none;}
 #myPhonebookList .ui-checkbox input:checked:after{ background-image: url('../img/circlebox_select.png');}
 #myPhonebookList .ui-checkbox, #myPhonebookList .ui-checkbox input{ width: 100%; height: 100%;}
+#myPhonebookList .ui-checkbox input{ border: none; background-color: transparent;}
 
 /**********************  viewDetialInfo  **********************/
 #detial-name-title{
-    margin: 3.8vw 3.71vw 6.44vw;
+    margin: 6.763vw 3.71vw 2.14vw;
     position: relative;
 }
 

@@ -243,11 +243,15 @@ var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
                 $('#pageTwo').hide();
                 var tabValue = $("#reserveTab :radio:checked").val();
                 if (tabValue == 'tab2'){
-                    $('label[for=tab1]').addClass('ui-btn-active ui-radio-on').removeClass('ui-radio-off');
-                    $('label[for=tab2]').removeClass('ui-btn-active ui-radio-on').addClass('ui-radio-off');
                     $('#myPhonebookList').removeClass('editClick');
                     $('#phonebookEditBtn').hide();
                     $('#phonebookEdit').show();
+                    $('#pageOne').hide();
+                    $('#pageTwo').show();
+                    $('#phoneDelete').addClass('noneSelect');
+                }
+                if (device.platform === "iOS") {
+                    $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
                 }
             });
 
@@ -279,6 +283,7 @@ var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
                     $('#phonebookEditBtn').hide();
                     $('#phonebookEdit').show();
                     $('#myPhonebookList').removeClass('editClick');
+                    $('#phoneDelete').addClass('noneSelect');
                 } else if (tabValue == 'tab2'){
                     $('#pageTwo').show();
                     $('#pageOne').hide();
@@ -303,6 +308,7 @@ var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
                 $('#phonebookEditBtn').hide();
                 $('#phonebookEdit').show();
                 $('#myPhonebookList').removeClass('editClick');
+                $('#phoneDelete').addClass('noneSelect');
             });
 
             $('#phoneDelete').on('click', function(){
@@ -356,6 +362,7 @@ var companyInfoAry = [], expiredTime = 3;   // exporedTime = 3 months
                 $('#phonebookEditBtn').hide();
                 $('#phonebookEdit').show();
                 $('#myPhonebookList').removeClass('editClick');
+                $('#phoneDelete').addClass('noneSelect');
             });
 
             $('body').on('click', 'div[for=phonebookSelectAlert] #confirm', function() {
