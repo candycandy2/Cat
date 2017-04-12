@@ -47,9 +47,9 @@ class qmessageController extends Controller
         $username = $input->username;
         if (empty($username)){
         //if (empty($username) || CommonUtil::getUserStatusByUsername($username)!=3){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998001_usernameEmptyOrInvalid,"Register failed,username is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998001_usernameEmptyOrInvalid,"Register failed,username is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
 
         //2.注册
@@ -58,11 +58,23 @@ class qmessageController extends Controller
         $password = CommonUtil::generatePasswordByUsername($username);
         $response = $user->register($username, $password);
         $result = CommonUtil::UnpackageResponse($response);
-        if($result["ResultCode"] != ResultCode::_1_reponseSuccessful){
-            $result = response()->json($result);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
+        return response()->json($result);
+    }
+
+    public static function userstate($username){
+        $ACTION = "userstate";
+        if (empty($username)){
+            $result  = CommonUtil::ResultFactory(ResultCode::_998001_usernameEmptyOrInvalid,"username is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
+            return response()->json($result);
         }
-        return $result;
+        $jim = CommonUtil::getJIM();
+        $user = new User($jim);
+        $response = $user->stat($username);
+        $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
+        return response()->json($result);
     }
 
     //Group
@@ -87,15 +99,15 @@ class qmessageController extends Controller
         $members = $input->members;
         //(1)检查$owner
         if (empty($owner)){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998003_groupOwnerEmptyOrInvalid,"Group add failed,owner is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998003_groupOwnerEmptyOrInvalid,"Group add failed,owner is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
         //(2)检查$members
         if (count($members)==0){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group add failed,group member is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group add failed,group member is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
 
         //2.增加Group
@@ -103,6 +115,7 @@ class qmessageController extends Controller
         $group = new Group($jim);
         $response = $group->create($owner, $name, $desc, $members);
         $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -123,9 +136,9 @@ class qmessageController extends Controller
         $input = json_decode(file_get_contents('php://input'));
         $gid = $input->gid;
         if (empty($gid) || !is_numeric($gid) || strlen($gid)!=8){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
 
         //2.删除Group
@@ -133,6 +146,7 @@ class qmessageController extends Controller
         $group = new Group($jim);
         $response = $group->delete($gid);
         $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -158,6 +172,7 @@ class qmessageController extends Controller
         $user = new User($jim);
         $response = $user->groups($username);
         $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -180,16 +195,16 @@ class qmessageController extends Controller
         $usernames = $input->usernames;
         //(1)检查gid
         if (empty($gid) || !is_numeric($gid) || strlen($gid)!=8){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
         //(2)检查$usernames
         //if (count($usernames)==0 || !CommonUtil::checkUserListStatusByUsername($usernames)){
         if (count($usernames)==0){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group add failed,group member is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group add failed,group member is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
 
         //2.增加Group成员
@@ -197,6 +212,7 @@ class qmessageController extends Controller
         $group = new Group($jim);
         $response = $group->addMembers($gid, $usernames);
         $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -219,16 +235,16 @@ class qmessageController extends Controller
         $usernames = $input->usernames;
         //(1)检查gid
         if (empty($gid) || !is_numeric($gid) || strlen($gid)!=8){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
         //(2)检查$usernames
         //if (count($usernames)==0 || !CommonUtil::checkUserListStatusByUsername($usernames)){
         if (count($usernames)==0){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group delete failed,group member is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998004_groupMembersEmptyOrInvalid,"Group delete failed,group member is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
 
         //2.删除Group成员
@@ -236,6 +252,7 @@ class qmessageController extends Controller
         $group = new Group($jim);
         $response = $group->removeMembers($gid, $usernames);
         $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -256,9 +273,9 @@ class qmessageController extends Controller
         $input = json_decode(file_get_contents('php://input'));
         $gid = $input->gid;
         if (empty($gid) || !is_numeric($gid) || strlen($gid)!=8){
-            $result  = response()->json(CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid"));
+            $result  = CommonUtil::ResultFactory(ResultCode::_998005_groupIDEmptyOrInvalid,"Group id is empty or invalid");
             CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
-            return $result;
+            return response()->json($result);
         }
 
         //2.获得群成员列表
@@ -266,6 +283,7 @@ class qmessageController extends Controller
         $group = new Group($jim);
         $response = $group->members($gid);
         $result = CommonUtil::UnpackageResponse($response);
+        CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 

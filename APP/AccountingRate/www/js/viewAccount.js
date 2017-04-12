@@ -2,6 +2,14 @@
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
         var statuscountrypop;
+        var array =[ "GBP","AED","SGD","AUD"
+                     ];
+
+        var arrayadd =["NTD","EUR","AUD"
+                      ];
+        var arraycomb =[
+                      ];
+        
         /********************************** function *************************************/
         window.APIRequest = function() {
             
@@ -55,6 +63,48 @@ $("#viewAccount").pagecontainer({
 
 
      
+    
+    
+
+ 
+  
+
+
+        /********************************** page event *************************************/
+        $("#viewAccount").on("pagebeforeshow", function(event, ui) {
+           // Addhtml();
+           
+
+        });
+
+        $("#viewAccount").on("pageshow", function(event, ui) {
+         //  
+            Favorite();
+            Buttonimg(); 
+   
+            var eventConfirmA = { //Add
+                id: "eventWorkConfirmA",  //template id
+                content: $("template#tplAddConfirmA").html()
+            };
+
+        //   tplJS.Popup("viewExample2", "contentID", "append", eventCancelWorkDoneConfirmData);
+        //Pop2
+            var eventConfirmB = {  //Remove
+                id: "eventWorkConfirmB",        // html template id  
+                content: $("template#tplRemoveB").html()  //
+            };
+             
+            tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);  
+            tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
+
+          /*201704test
+            $("#popupA").popup( { dismissible : false});
+            $("#popupB").popup( { dismissible : false });
+          */   
+        });    
+
+
+
     //  Transfer   ************************************************************************** 
 
         $(document).on("click", ".buttontransfer", function() {      
@@ -83,7 +133,7 @@ $("#viewAccount").pagecontainer({
                  Buttonimg(); 
         });
    //  Transfer   ************************************************************************** 
-        function Buttonimg()     //when to call(when confirm must to test once)      
+        function Buttonimg()    
         {   
             $(".buttonone1").attr("src","img/tmp/"+ FromStatus  +".png");
             $(".buttontwo1").attr("src","img/tmp/"+ ToStatus +".png");
@@ -115,61 +165,37 @@ $("#viewAccount").pagecontainer({
 
             }            
         }     
-            Buttonimg(); 
 
- 
-  
-
-
-        /********************************** page event *************************************/
-        $("#viewAccount").on("pagebeforeshow", function(event, ui) {
-           // Addhtml();
+        /********************************** Event *************************************/
+        $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
+                
+            statuscountrypop = $(this).prop("id");
            
-
+            if ($("#"+statuscountrypop).hasClass("favorite")) 
+            {
+                $("#eventWorkConfirmB").popup('open');
+            }
+            else 
+            {
+                $("#eventWorkConfirmA").popup('open');             
+            }
         });
-
-        $("#viewAccount").on("pageshow", function(event, ui) {
-         //  
-            
-            Buttonimg(); 
-   
-            var eventConfirmA = { //Add
-                id: "eventWorkConfirmA",  //template id
-                content: $("template#tplAddConfirmA").html()
-            };
-
-        //   tplJS.Popup("viewExample2", "contentID", "append", eventCancelWorkDoneConfirmData);
-        //Pop2
-            var eventConfirmB = {  //Remove
-                id: "eventWorkConfirmB",        // html template id  
-                content: $("template#tplRemoveB").html()  //
-            };
-             
-            tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);  
-            tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
-
-
-            
-             
-        });    
-
 
 
         /********************************** Popup *************************************/
-        $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
-            
-                   
-            statuscountrypop = $(this).prop("id");
-         
-             $("#eventWorkConfirmB").popup('open');
-            // $("#eventWorkConfirmA").popup('open');
-        });
 
         $(document).on("click", "#eventWorkConfirmA .confirm", function() { // B window OK   
 
-            $("#"+statuscountrypop).children(".star_icon").css("opacity","1"); 
-           //$("#NTD").children(".star_icon").css("opacity","0"); 
-           // $('img.'+countrystatus).addClass('star_icon');  
+            $("#"+statuscountrypop).children(".star_icon").css("opacity","1"); //li id 
+            $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","1");
+            $("#"+statuscountrypop).addClass("favorite");
+
+
+            Favorite();
+
+
+
+
             $("#eventWorkConfirmA").popup('close');
         });
 
@@ -179,13 +205,15 @@ $("#viewAccount").pagecontainer({
         });
 
         /********************************** Popup  *************************************/
-        $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
-           // $("#eventWorkConfirmB").popup('open');
-
-        });
 
         $(document).on("click", "#eventWorkConfirmB .confirm", function() { // B window OK   
-            $("#"+statuscountrypop).children(".star_icon").css("opacity","0");             
+            $("#"+statuscountrypop).children(".star_icon").css("opacity","0");  
+            $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","0");   
+            $("#"+statuscountrypop).removeClass("favorite"); 
+
+
+       
+
             $("#eventWorkConfirmB").popup('close');
         });
 
@@ -197,8 +225,8 @@ $("#viewAccount").pagecontainer({
  
         /********************************** Popup  *************************************/
         $(document).on("click", "#popupA .popListdiv1", function() {  //.Listdiv1  
-   
-            $("#popupA").popup( {  disabled:false});
+           
+
             var statuspop = $(this).find(".ListRate1popup").text().trim();
             FromStatus    = statuspop;
 
@@ -224,9 +252,10 @@ $("#viewAccount").pagecontainer({
 
         });
 
+        /********************************** Popup *************************************/
         $(document).on("click", "#popupB .popListdiv1", function() {     //popListadd
            //$("popListdiv1").css("background-color", "#FFFF30");
-           //$("#popupB").popup( {disabled:true});
+            
             var statuspop = $(this).find(".ListRate1popup").text().trim(); //ListRate1popup
             ToStatus    =statuspop;
             if ((FromStatus =="All Currency") && (ToStatus =="All Currency")) 
@@ -244,15 +273,47 @@ $("#viewAccount").pagecontainer({
 
             $(".buttononeCountry1").text(FromStatus);
             $(".buttononeCountry2").text(ToStatus);   
-
-             //$("#ultestA").html(" ");
-            // Addarray();
-             //Addhtml();  
+     
             
              Buttonimg();
             $("#popupB").popup('close');
         });
+        /********************************** Favorite*************************************/
+        function Favorite(){  
 
+           /*
+            if ($("ul").children(".favorite")) //use favorite to contrl star (not nontstar) 
+            {
+                $("ul").children(".favorite").children(".star_icon").css("opacity","1"); //li id 
+                $("ul").children(".favorite").children(".nonstar_icon").css("opacity","1"); //li id 
+
+            }       
+
+          
+
+            if ($(".Listdiv1").hasClass("favorite")) //use favorite to contrl star (not nontstar) 
+            {
+                $(".Listdiv1").children(".star_icon").css("opacity","1"); //li id 
+                $(".Listdiv1").children(".nonstar_icon").css("opacity","1");
+
+            }  
+            */
+             /*
+            if ($("#"+statuscountrypop).hasClass("favorite")) 
+            {
+                array.splice(array.indexOf(arrayadd)).sort();   
+                array.splice(array.indexOf(statuscountrypop)).sort();      
+                arrayadd.unshift(statuscountrypop);
+                arraycomb = arrayadd.concat(array);
+
+
+                
+                console.log("283_array_"+array);
+                console.log("283_arrayadd_"+arrayadd);
+                console.log("283_arraycomb_"+arraycomb);
+            }
+            */
+        }
         /********************************** dom event *************************************/
 
 

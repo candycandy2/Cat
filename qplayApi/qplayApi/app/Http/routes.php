@@ -51,6 +51,9 @@ Route::any('/qplayauth_register', function() {
 //Custom
 Route::any('/{api_version}/custom/{app_key}/{function}', 'customController@processRequest');
 
+//MongoTest
+Route::any('/mongo', 'mongoController@Test');
+
 //YellowPage
 /*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
 Route::any('/v101/yellowpage/QueryEmployeeDataDetail', 'yellowpageController@QueryEmployeeDataDetail');

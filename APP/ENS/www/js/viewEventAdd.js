@@ -220,9 +220,9 @@ $("#viewEventAdd").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             if (data.event_type === "一般通報") {
-                $("#eventLevel").val("1");
-            } else {
                 $("#eventLevel").val("2");
+            } else {
+                $("#eventLevel").val("1");
             }
 
             //Event Title
@@ -236,16 +236,15 @@ $("#viewEventAdd").pagecontainer({
             setDateTime = "setTime";
 
             var completeTime = new Date(parseInt(data.estimated_complete_date * 1000, 10));
-            var completeTimeConvert = completeTime.TimeZoneConvert();
-            var completeTimeData = new Date(completeTimeConvert);
 
-            doneDateTime["year"] = completeTimeData.getFullYear();
-            doneDateTime["month"] = padLeft(parseInt(completeTimeData.getMonth() + 1, 10), 2);
-            doneDateTime["day"] = padLeft(completeTimeData.getUTCDate(), 2);
-            doneDateTime["hour"] = padLeft(completeTimeData.getHours(), 2);
-            doneDateTime["minute"] = padLeft(completeTimeData.getMinutes(), 2);
+            doneDateTime["year"] = completeTime.getFullYear();
+            doneDateTime["month"] = padLeft(parseInt(completeTime.getMonth() + 1, 10), 2);
+            doneDateTime["day"] = padLeft(completeTime.getUTCDate(), 2);
+            doneDateTime["hour"] = padLeft(completeTime.getHours(), 2);
+            doneDateTime["minute"] = padLeft(completeTime.getMinutes(), 2);
 
-            var completeTimeText = completeTimeConvert.substr(0, parseInt(completeTimeConvert.length - 3, 10));
+            var completeTimeText = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
+            doneDateTime["hour"] + ":" + doneDateTime["minute"];
             $("#textDateTime").html(completeTimeText);
 
             //Related Event
