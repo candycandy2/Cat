@@ -220,9 +220,9 @@ $("#viewEventAdd").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             if (data.event_type === "一般通報") {
-                $("#eventLevel").val("1");
-            } else {
                 $("#eventLevel").val("2");
+            } else {
+                $("#eventLevel").val("1");
             }
 
             //Event Title
