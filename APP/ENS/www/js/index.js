@@ -27,8 +27,8 @@ window.initialSuccess = function() {
     var api_url = serverURL.substr(8);
     var opts = {
         'username': loginData["loginid"],
-        'eventHandler': eventHandler,
-        'messageHandler': messageHandler,
+        'eventHandler': chatRoom.eventHandler,
+        'messageHandler': chatRoom.messageHandler,
         'message_key': QMessageKey,
         'message_secret': QMessageSecretKey,
         'message_api_url_prefix': api_url + "/qmessage/public/"
@@ -40,17 +40,6 @@ window.initialSuccess = function() {
         if (msgController.isInited) {
             console.log("-------------isInited:true");
             stopCheck();
-
-            var gid = "22722001";
-            var gname = "22722001-room";
-            var text = "22722001-test-0406003";
-            /*
-            msgController.SendText(gid, gname, text, function(successResult) {
-                console.log(successResult);
-            }, function(errorResult) {
-                console.log(errorResult);
-            });
-            */
         } else {
             console.log("-------------isInited:false");
         }
@@ -65,15 +54,85 @@ window.initialSuccess = function() {
 
 }
 
-function eventHandler(data) {
-    console.log("------------eventHandler");
-    console.log(data);
-}
+var chatRoom = {
+    newMsgChatRoomID: "",
+    eventHandler: function(data) {
+        console.log("------------eventHandler");
+        console.log(data);
+    },
+    messageHandler: function(data) {
+        console.log("------------messageHandler");
+        console.log(data);
+        //1. Every time when APP receive new message, stored it in local storage.
+        //2. The old message won't be sent again.
+        //3. Stored messages according to the chat room ID.
+        for (var i=0; i<data["messages"].length; i++) {
+            var createTime = new Date(data["messages"][i]["ctime"] * 1000);
+            var objData = {
+                msg_id: data["messages"][i]["msg_id"],
+                ctime: data["messages"][i]["ctime"],
+                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                    padLeft(createTime.getMinutes(), 2),
+                from_id: data["messages"][i]["content"]["from_id"],
+                msg_type: data["messages"][i]["content"]["msg_type"],
+                msg_body: data["messages"][i]["content"]["msg_body"]["text"]
+            };
 
-function messageHandler(data) {
-    console.log("------------messageHandler");
-    console.log(data);
-}
+            chatRoom.newMsgChatRoomID = data["messages"][i]["from_gid"];
+            chatRoom.storeMsg(data["messages"][i]["from_gid"], objData, chatRoom.refreshMsg);
+        }
+    },
+    storeMsg: function(chatRoomID, data, callback) {
+        callback = callback || null;
+
+        if (window.localStorage.getItem("Messages") !== null) {
+            var tempDate = window.localStorage.getItem("Messages");
+            var Messages = JSON.parse(tempDate);
+        } else {
+            var Messages = {};
+        }
+
+        if (Messages[chatRoomID] === undefined) {
+            Messages[chatRoomID] = [];
+        }
+
+        Messages[chatRoomID].push(data);
+        window.localStorage.setItem("Messages", JSON.stringify(Messages));
+
+        if (typeof callback === "function") {
+            callback();
+        }
+    },
+    getMsg: function(chatRoomID) {
+        var chatRoomExist = false;
+
+        if (window.localStorage.getItem("Messages") !== null) {
+            var tempDate = window.localStorage.getItem("Messages");
+            var Messages = JSON.parse(tempDate);
+
+            if (Messages[chatRoomID] !== undefined) {
+                chatRoomExist = true;
+            }
+        }
+
+        if (chatRoomExist) {
+            return Messages[chatRoomID];
+        } else {
+            return false;
+        }
+    },
+    refreshMsg: function() {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
+
+        if (activePageID === "viewEventContent") {
+            if (chatroomID === chatRoom.newMsgChatRoomID.toString()) {
+                chatRoomListView();
+            }
+        }
+    }
+};
 
 //1. Each data has its own life-cycle.
 //2. Every time before call API, check the life-cycle timestamp first.

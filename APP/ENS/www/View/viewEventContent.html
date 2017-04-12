@@ -85,14 +85,25 @@
             </template>
         </div>
 
-            <!--<hr class="ui-hr ui-hr-absolute">-->
+            <hr id="msgContentHR" class="ui-hr ui-hr-absolute hide">
 
         <div class="message-content hide">
             <div class="title">
                 <span>留言 :</span>
             </div>
             <div id="messageContent" class="event-content-data-list">
-
+                <template id="tplMessageList">
+                    <div class="message-data-list">
+                        <div class="message-user-datetime">
+                            <sapn class="user font-style3">Kevin.CM.Huang</sapn>
+                            <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                        </div>
+                        <div class="text font-style5">
+                            Test Message
+                        </div>
+                        <hr class="ui-hr ui-hr-message">
+                    </div>
+                </template>
             </div>
         </div>
 
@@ -149,9 +160,9 @@
             <span class="camera"></span>
         </div>
         <div class="center">
-            <input name="EName" id="EName" type="text" value="請輸入訊息"/>
+            <input name="msgText" id="msgText" type="text" value="請輸入訊息"/>
         </div>
-        <div class="right">
+        <div class="right" id="msgButton">
             留言
         </div>
     </div>
