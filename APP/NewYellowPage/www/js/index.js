@@ -46,8 +46,6 @@ function onBackKeyDown() {
                 navigator.app.exitApp();
             } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
                 $("input[id=tab1]").trigger('click');
-                $("label[for=tab1]").addClass('ui-btn-active');
-                $("label[for=tab2]").removeClass('ui-btn-active');
             }
         }
 

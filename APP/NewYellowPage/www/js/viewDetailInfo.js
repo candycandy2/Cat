@@ -90,17 +90,22 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
             // review
             function insertDetailValue(dataContent){
                 // check has more than one ext num or not
-                if (dataContent[0].Ext_No.indexOf(';')>0){
-                    telString = " class='chooseNumPop extNumMore'" + ' ';
-                    for (var i = 0; i < dataContent[0].Ext_No.match(/;/igm).length+1; i++){
-                        telString += "data-extnum" + (i+1) + "=" + dataContent[0].Ext_No.split(';')[i] + ' ';
+                if (dataContent[0].Ext_No !== null){
+                    if (dataContent[0].Ext_No.indexOf(';')>0){
+                        telString = " class='chooseNumPop extNumMore'" + ' ';
+                        for (var i = 0; i < dataContent[0].Ext_No.match(/;/igm).length+1; i++){
+                            telString += "data-extnum" + (i+1) + "=" + dataContent[0].Ext_No.split(';')[i] + ' ';
+                        }
+                        telString += 'data-extnum=' + dataContent[0].Ext_No + '>' + dataContent[0].Ext_No.split(';')[0];
+                        extTmpNum = dataContent[0].Ext_No.split(';')[0];
                     }
-                    telString += 'data-extnum=' + dataContent[0].Ext_No + '>' + dataContent[0].Ext_No.split(';')[0];
-                    extTmpNum = dataContent[0].Ext_No.split(';')[0];
+                    else{
+                        telString = " href='tel:" + dataContent[0].Ext_No + "'>" + dataContent[0].Ext_No;
+                        extTmpNum = dataContent[0].Ext_No;
+                    }
                 }
                 else{
-                    telString = " href='tel:" + dataContent[0].Ext_No + "'>" + dataContent[0].Ext_No;
-                    extTmpNum = dataContent[0].Ext_No;
+                    telString = '';
                 }
 
                 $("#detial-name-title #eName").html(dataContent[0].Name_EN);
