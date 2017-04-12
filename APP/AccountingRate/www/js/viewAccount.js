@@ -1,7 +1,7 @@
 
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
-        
+        var statuscountrypop;
         /********************************** function *************************************/
         window.APIRequest = function() {
             
@@ -47,15 +47,10 @@ $("#viewAccount").pagecontainer({
         $(".frag1").text(MonthWord[todayMonth-1]+"-"+todayYearmod);
         $(".frag2").text(MonthWord[todayMonth-2]+"-"+todayYearmod);
         
-        
-     
       
         $(".mainword1").text("From "+ FromStatus +" to "+ToStatus+" ");  
         $(".mainword3").text("Updated on "+todayYear+"/"+todayMonth+"/"+todayDate);  
     //  Exception Img   **************************************************************************  
-
-
-
 
 
 
@@ -79,12 +74,11 @@ $("#viewAccount").pagecontainer({
                  arrayTo      = arraytmp  ;
                  */
                 // $("#ultestA").remove(content); 
-
                  FromStatus = tmpsetT;
                  ToStatus =  tmpsetF ;
                  $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus  +" ");  
                 //Buttonimg(); 
-                // Addhtml();   // cause a lot => can it renew? not to add?(append) 
+                // Addhtml();  
                  //$("#fragment-1").html(" "); 
                  Buttonimg(); 
         });
@@ -130,15 +124,13 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
            // Addhtml();
-
+           
 
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
-         //   Addhtml();
-        //$("#ultestA").append(contenttest);
-        //$("#eventWorkConfirmA").popup('open');//action
-        //  $("#eventWorkConfirmB").popup('open');              
+         //  
+            
             Buttonimg(); 
    
             var eventConfirmA = { //Add
@@ -155,6 +147,10 @@ $("#viewAccount").pagecontainer({
              
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);  
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
+
+
+            
+             
         });    
 
 
@@ -162,14 +158,17 @@ $("#viewAccount").pagecontainer({
         /********************************** Popup *************************************/
         $(document).on("click", ".Listdiv1", function() {  // C Flag special window OK
             
-            //var sta2 =$(this).find(".ListRate2").text().trim(); 
-            $("#eventWorkConfirmA").popup('open');
-
+                   
+            statuscountrypop = $(this).prop("id");
+         
+             $("#eventWorkConfirmB").popup('open');
+            // $("#eventWorkConfirmA").popup('open');
         });
 
         $(document).on("click", "#eventWorkConfirmA .confirm", function() { // B window OK   
 
-           // $('img.'+countrystatus).removeClass('nonstar_icon');
+            $("#"+statuscountrypop).children(".star_icon").css("opacity","1"); 
+           //$("#NTD").children(".star_icon").css("opacity","0"); 
            // $('img.'+countrystatus).addClass('star_icon');  
             $("#eventWorkConfirmA").popup('close');
         });
@@ -186,8 +185,7 @@ $("#viewAccount").pagecontainer({
         });
 
         $(document).on("click", "#eventWorkConfirmB .confirm", function() { // B window OK   
-           // $('span.3'+countrystatus).removeClass('star_icon');
-           // $('span.3'+countrystatus).addClass('nonstar_icon');
+            $("#"+statuscountrypop).children(".star_icon").css("opacity","0");             
             $("#eventWorkConfirmB").popup('close');
         });
 
@@ -196,9 +194,11 @@ $("#viewAccount").pagecontainer({
 
         });
 
+ 
         /********************************** Popup  *************************************/
         $(document).on("click", "#popupA .popListdiv1", function() {  //.Listdiv1  
-           //$("popListdiv1").css("background-color", "#FFFF30");
+   
+            $("#popupA").popup( {  disabled:false});
             var statuspop = $(this).find(".ListRate1popup").text().trim();
             FromStatus    = statuspop;
 
@@ -224,6 +224,34 @@ $("#viewAccount").pagecontainer({
 
         });
 
+        $(document).on("click", "#popupB .popListdiv1", function() {     //popListadd
+           //$("popListdiv1").css("background-color", "#FFFF30");
+           //$("#popupB").popup( {disabled:true});
+            var statuspop = $(this).find(".ListRate1popup").text().trim(); //ListRate1popup
+            ToStatus    =statuspop;
+            if ((FromStatus =="All Currency") && (ToStatus =="All Currency")) 
+            {                
+                alert("NO!不可以喔!~");
+                ToStatus    = "NTD";
+            }
+                 
+
+            $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus +" ");  
+            $(".mainword3").text("Update on "+todayYear+"/"+todayMonth+"/"+todayDate);  
+         
+            $(".buttonone1").attr("src","img/tmp/"+ FromStatus  +".png");
+            $(".buttontwo1").attr("src","img/tmp/"+ ToStatus +".png");
+
+            $(".buttononeCountry1").text(FromStatus);
+            $(".buttononeCountry2").text(ToStatus);   
+
+             //$("#ultestA").html(" ");
+            // Addarray();
+             //Addhtml();  
+            
+             Buttonimg();
+            $("#popupB").popup('close');
+        });
 
         /********************************** dom event *************************************/
 
