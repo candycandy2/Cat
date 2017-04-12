@@ -12,19 +12,21 @@ $(function (){
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-               var valisRes = validImageSize(512,512,e.target.result)
-               if(valisRes!=""){
-                    showMessageDialog(Messages.ERROR,valisRes);
-                    $("#"+$(input).attr('id')).val('');
-                    return false;
-               }
-                $('.iconUpload').parent().find('.imgLi').html('<img class="icon-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/></div>')
-                $('.icon-preview').attr('src', e.target.result);
-                $('.iconUpload').parent().find('.imgLi').show();
-                $('.iconUpload').next('label.error').remove();
-                $('.iconUpload').hide();
-               // var KB = format_float(e.total / 1024, 2);
-               // $('.size').text("檔案大小：" + KB + " KB");
+               validImageSize(512,512,e.target.result,function(valisRes){
+                    if(valisRes!=""){
+                        showMessageDialog(Messages.ERROR,valisRes);
+                        $("#"+$(input).attr('id')).val('');
+                        return false;
+                    }else{
+                         $('.iconUpload').parent().find('.imgLi').html('<img class="icon-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="icon"/></div>')
+                         $('.icon-preview').attr('src', e.target.result);
+                         $('.iconUpload').parent().find('.imgLi').show();
+                         $('.iconUpload').next('label.error').remove();
+                        $('.iconUpload').hide();
+                    }
+               });
+              // var KB = format_float(e.total / 1024, 2);
+              // $('.size').text("檔案大小：" + KB + " KB");
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -50,19 +52,21 @@ $(function (){
                 reader.fileName = input.files[i].name;
                 reader.langId = langId;
                 reader.deviceType = deviceType;
-                reader.onload = function (e,name) { 
-                    var valisRes = validImageSize(768,1024,e.target.result)
-                       if(valisRes!=""){
-                            showMessageDialog(Messages.ERROR,valisRes);
-                            $("#"+$(input).attr('id')).val('');
-                            return false;
-                       }    
-                    $('#'+ uplBtnId).before('<li class="imgLi" data-url="'+e.target.fileName+'" data-lang="'+e.target.langId+'" data-device="'+deviceType+'"><img src="'+e.target.result+'" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>');
-                    var imgCount = $('#'+ uplBtnId).parent('ul').find('li .screen-preview').length;
-                    if(imgCount >= 5){
-                        $('#'+ uplBtnId).parent('ul').find('.screen-upl-btn').hide();
-                    }
-                    $('#'+ uplBtnId).next('label.error').remove();
+                reader.onload = function (e,name) {
+                    validImageSize(768,1024,e.target.result,function(valisRes){
+                    if(valisRes!=""){
+                        showMessageDialog(Messages.ERROR,valisRes);
+                        $("#"+$(input).attr('id')).val('');
+                        return false;
+                    }else{
+                        $('#'+ uplBtnId).before('<li class="imgLi" data-url="'+e.target.fileName+'" data-lang="'+e.target.langId+'" data-device="'+deviceType+'"><img src="'+e.target.result+'" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>');
+                        var imgCount = $('#'+ uplBtnId).parent('ul').find('li .screen-preview').length;
+                        if(imgCount >= 5){
+                            $('#'+ uplBtnId).parent('ul').find('.screen-upl-btn').hide();
+                        }
+                        $('#'+ uplBtnId).next('label.error').remove();
+                        }
+                    });
                 }
                 reader.readAsDataURL(input.files[i]);
             }
@@ -98,16 +102,25 @@ $(function (){
         });
     }
 
-    function validImageSize(widthLimit,heightLimit,fileBase64){
-        var result = "";
+    function validImageSize(widthLimit,heightLimit,fileBase64,callback){
+        
         var img = new Image();
+        img.onload = function(){
+            var result = "";
+            if(img.width != widthLimit || img.height != heightLimit){
+                result =  Messages.ERR_SCREENSHOT_SCALE_LIMIT.replace('%s',widthLimit).replace('%l',heightLimit);
+            }
+            if(callback) callback(result);    
+        }   
         img.src = fileBase64;
-        var width = img.width;
-        var height = img.height;
-        if(width != widthLimit || height != heightLimit){
-            result =  Messages.ERR_SCREENSHOT_SCALE_LIMIT.replace('%s',widthLimit).replace('%l',heightLimit);
-        }
-        return result;
+    }
+
+    var imageSize = function(url, callback) {
+        var img = new Image();
+        img.onload = function(){        
+          if(callback) callback(img.width,img.height);    
+        }   
+        img.src = url;    
     }
 
     $("body").on("change", ".js-upl-overlap", function (){
@@ -124,7 +137,7 @@ $(function (){
     });
 
     $("body").on("click", ".js-screen-file", function (e){
-        $(e.target.children[2]).trigger('click');
+       $(e.target.children[2]).trigger('click');
     });
 
     $("body").on("click", ".js-screen-file > div", function (e){

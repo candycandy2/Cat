@@ -118,8 +118,10 @@ return [
     | Here you may configure the qply api server settings for your application.
     |
     */
+   
     'qplay_api_server' => env('QPLAY_API_SERVER'),
-     /*
+
+    /*
     |--------------------------------------------------------------------------
     | QMessage Api Server
     |--------------------------------------------------------------------------
@@ -127,7 +129,20 @@ return [
     | Here you may configure the qMessage api server settings for your application.
     |
     */
+   
     'qmessage_api_server' => env('QMESSAGE_API_SERVER'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Secret Key
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the a secret_key for your application.
+    | this secret comes from qplay project.
+    |
+    */
+    'secret_key' => 'dd88f6e1eea34e77a9ab75439d327363',
+    
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -138,6 +153,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+   
     'providers' => [
 
         /*
