@@ -258,11 +258,9 @@ function callProductDetailAPIReduce() {
 }
 
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
-    if($(".ui-page-active").jqmData("panel") === "open") {
-        $("#mypanel").panel( "close");
-    }
-    // portraint
+    
     // if (window.orientation === 180 || window.orientation === 0) {
+    //     /*do somrthing when device is in portraint mode*/
     // }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
