@@ -10,14 +10,21 @@ $("#viewEventAdd").pagecontainer({
         var loctionFunctionData = [];
         var loctionFunctionID = 0;
         var eventRelatedData;
+        var eventRelatedID = 0;
 
         /********************************** function *************************************/
 
         function getUnrelatedEventList(action) {
 
             action = action || null;
+            //If Edit Event, do not relate itself, API add parameter
+            if (action === "edit") {
+                var newParameter = "<event_row_id>" + eventRowID + "</event_row_id>";
+            } else {
+                var newParameter = "";
+            }
             var self = this;
-            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no></LayoutHeader>";
+            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no>" + newParameter + "</LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -32,8 +39,19 @@ $("#viewEventAdd").pagecontainer({
                 }
 
                 //UI Dropdown List : Event Additional
+                var ID = eventRelatedID;
+                var oldID = parseInt(ID) - 1;
+                eventRelatedID++;
+
+                $("#eventaAdditionalSelectContent").html("");
+                if (oldID >= 0) {
+                    $("#eventAdditional" + oldID).remove();
+                    $(document).off("click", "#eventAdditional" + oldID + "-option");
+                    $("#eventAdditional" + oldID + "-option").popup("destroy");
+                }
+
                 eventRelatedData = {
-                    id: "eventAdditional",
+                    id: "eventAdditional" + ID,
                     defaultText: "添加事件",
                     title: "請選擇-關聯事件",
                     option: [],
@@ -52,11 +70,11 @@ $("#viewEventAdd").pagecontainer({
                     }
                 }
 
-                $("#eventaAdditionalSelectContent").html("");
+
                 tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventRelatedData);
 
                 if (relatedEventExist) {
-                    $(document).on("change", "#eventAdditional", function() {
+                    $(document).on("change", "#eventAdditional" + ID, function() {
                         var selectedValue = $(this).val();
                         relatedEventList(selectedValue);
                     });
@@ -69,9 +87,9 @@ $("#viewEventAdd").pagecontainer({
 
                 } else {
                     //off event which set in template.js
-                    $(document).off("click", "#eventAdditional");
+                    $(document).off("click", "#eventAdditional" + ID);
 
-                    $(document).on("click", "#eventAdditional", function() {
+                    $(document).on("click", "#eventAdditional" + ID, function() {
                         $("#noRelatedEventExist").popup("open");
                     });
 

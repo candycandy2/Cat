@@ -373,7 +373,7 @@ $("#viewEventList").pagecontainer({
 
                     $('html, body').animate({
                         scrollTop: scrollPageTop
-                    }, 'fast');
+                    }, 0);
                 }
             }
         }
