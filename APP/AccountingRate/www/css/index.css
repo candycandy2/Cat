@@ -19,15 +19,17 @@
     display       : inline-block; 
     float         : left; 
     width         : 50% ;  
-    margin-left   : 3.71VW;
+    padding-left: 3.71vw;
     position      : relative;
+    background-color: white !important;
 }
 
 .buttontwo {
     display       : inline-block; 
     float         : left; 
     width         : 42% ;  
-    margin-left   : 3.71VW;
+    padding-left: 3.71vw;
+    background-color: white !important;
 }
 
 
@@ -99,6 +101,7 @@
 .frag .frag0{   
     margin-top                 : 3.99VW;
     padding                    : 0 2VW;
+    background-color: white !important;
 
 }
 
