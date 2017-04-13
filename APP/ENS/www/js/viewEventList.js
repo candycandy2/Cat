@@ -501,9 +501,14 @@ $("#viewEventList").pagecontainer({
             for (var i=0; i<data.task_detail.length; i++) {
                 if (data.task_detail[i].task_status === "完成") {
                     //After Done
+                    var completeTime = new Date(data.task_detail[i].close_task_date * 1000);
+                    var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                    padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                    padLeft(completeTime.getMinutes(), 2);
+
                     var eventFunctionListLi = $(eventFunctionListAfterHTML);
                     eventFunctionListLi.find(".user").html(data.task_detail[i].close_task_user_id);
-                    eventFunctionListLi.find(".datetime").html(data.task_detail[i].close_task_date);
+                    eventFunctionListLi.find(".datetime").html(completeTimeText);
                 } else {
                     //Before Done
                     var eventFunctionListLi = $(eventFunctionListBeforeHTML);
