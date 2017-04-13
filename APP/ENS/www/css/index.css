@@ -94,8 +94,10 @@ input[type=radio]:checked + label {
 }
 
 .ui-mobile label {
-    font-size: 2.9vh;
+    font-family: "Arial", "微軟中黑體";
+    font-size: 4.18vw;
     font-weight: bold;
+    color: #0f0f0f;
 }
 
 /*Event List*/
@@ -483,15 +485,17 @@ input[type=radio]:checked + label {
 .textarea-template {
     height: 16.63vw;
     max-height: 16.63vw;
-    font-size: 2.9vh;
+    font-size: 4.18vw;
     margin: 2.14vw 0;
+    color: #323232;
 }
 
 .textarea-description {
     height: 27.92vw;
     max-height: 27.92vw;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     margin: 2.14vw 0;
+    color: #323232;
 }
 
 #eventLevelContent {
