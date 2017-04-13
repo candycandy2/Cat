@@ -2,6 +2,7 @@
 $("#viewEventList").pagecontainer({
     create: function(event, ui) {
 
+        window.tabActiveID = "#reportDiv";
         var callGetAuthority = false;
         var callBasicInfo = false;
         var eventListData;
@@ -373,7 +374,7 @@ $("#viewEventList").pagecontainer({
 
                     $('html, body').animate({
                         scrollTop: scrollPageTop
-                    }, 'fast');
+                    }, 0);
                 }
             }
         }
@@ -571,6 +572,12 @@ $("#viewEventList").pagecontainer({
             }
         };
 
+        window.changeTabToEventList = function() {
+            $("#tabEventList a:eq(0)").addClass("ui-btn-active");
+            $("#tabEventList a:eq(1)").removeClass("ui-btn-active");
+            $("#tabEventList").tabs({ active: 0 });
+        };
+
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
 
@@ -713,6 +720,8 @@ $("#viewEventList").pagecontainer({
 
         //Tabs Change
         $(document).on("tabsactivate", "#tabEventList", function(event, ui) {
+            tabActiveID = ui.newPanel.selector;
+
             if (ui.newPanel.selector === "#memberDiv") {
                 $("#addEvent").hide();
             } else {
