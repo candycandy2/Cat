@@ -450,7 +450,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     border: none;
     color: #1678E5;
     height: 3rem;
-    font-size: 1rem;
+    font-size: 5.02vw;
     width: 50%;
     bottom: 0;
     cursor: pointer;
@@ -471,9 +471,10 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     right: 0;
 }
 
-.ui-mobile .ui-page:not(#viewInitial) { padding-top: 14vw !important;}
-.ui-mobile .ui-page:not(#viewInitial).ui-page-ios{ padding-top: calc(14vw + 20px) !important;}
+.ui-mobile .ui-page:not(#viewInitial):not(#viewUpdateAppVersion):not(#viewNotSignedIn):not(#viewMaintain):not(#viewGetQPush) { padding-top: 11.45vw !important;}
+.ui-mobile .ui-page:not(#viewInitial):not(#viewUpdateAppVersion):not(#viewNotSignedIn):not(#viewMaintain):not(#viewGetQPush).ui-page-ios{ padding-top: calc(11.45vw + 20px) !important;}
 .page-main{ margin-top: 0 !important;}
+.ui-page{ min-height: 100% !important; box-sizing: border-box;}
 
 /*initial page layout setting when landscape*/
 @media all and (orientation: landscape){
