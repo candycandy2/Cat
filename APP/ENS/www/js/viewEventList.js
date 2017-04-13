@@ -2,6 +2,7 @@
 $("#viewEventList").pagecontainer({
     create: function(event, ui) {
 
+        window.tabActiveID = "#reportDiv";
         var callGetAuthority = false;
         var callBasicInfo = false;
         var eventListData;
@@ -373,7 +374,7 @@ $("#viewEventList").pagecontainer({
 
                     $('html, body').animate({
                         scrollTop: scrollPageTop
-                    }, 'fast');
+                    }, 0);
                 }
             }
         }
@@ -500,9 +501,14 @@ $("#viewEventList").pagecontainer({
             for (var i=0; i<data.task_detail.length; i++) {
                 if (data.task_detail[i].task_status === "完成") {
                     //After Done
+                    var completeTime = new Date(data.task_detail[i].close_task_date * 1000);
+                    var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                    padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                    padLeft(completeTime.getMinutes(), 2);
+
                     var eventFunctionListLi = $(eventFunctionListAfterHTML);
                     eventFunctionListLi.find(".user").html(data.task_detail[i].close_task_user_id);
-                    eventFunctionListLi.find(".datetime").html(data.task_detail[i].close_task_date);
+                    eventFunctionListLi.find(".datetime").html(completeTimeText);
                 } else {
                     //Before Done
                     var eventFunctionListLi = $(eventFunctionListBeforeHTML);
@@ -569,6 +575,13 @@ $("#viewEventList").pagecontainer({
             if (openData) {
                 var eventDetail = new getEventDetail(eventID, action);
             }
+        };
+
+        window.changeTabToEventList = function() {
+            $("#tabEventList a:eq(0)").addClass("ui-btn-active");
+            $("#tabEventList a:eq(1)").removeClass("ui-btn-active");
+            $("#tabEventList").tabs({ active: 0 });
+            footerFixed();
         };
 
         /********************************** page event *************************************/
@@ -713,6 +726,8 @@ $("#viewEventList").pagecontainer({
 
         //Tabs Change
         $(document).on("tabsactivate", "#tabEventList", function(event, ui) {
+            tabActiveID = ui.newPanel.selector;
+
             if (ui.newPanel.selector === "#memberDiv") {
                 $("#addEvent").hide();
             } else {

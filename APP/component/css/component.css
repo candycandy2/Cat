@@ -100,7 +100,7 @@ body, input, select, textarea, button, .ui-btn {
 }
 
 .ui-title > div { 
-    font-size: 5vw;
+    font-size: 4.39vw;
     font-weight: normal;
     pointer-events: none;
 }
@@ -471,6 +471,9 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     right: 0;
 }
 
+.ui-mobile .ui-page:not(#viewInitial) { padding-top: 14vw !important;}
+.ui-mobile .ui-page:not(#viewInitial).ui-page-ios{ padding-top: calc(14vw + 20px) !important;}
+.page-main{ margin-top: 0 !important;}
 
 /*initial page layout setting when landscape*/
 @media all and (orientation: landscape){
