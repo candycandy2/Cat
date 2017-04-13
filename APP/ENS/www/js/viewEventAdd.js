@@ -147,7 +147,8 @@ $("#viewEventAdd").pagecontainer({
             }
 
             //Related Event
-            var relatedEventVal = $("#eventAdditional").val();
+            var nowRelatedID = parseInt(eventRelatedID) - 1;
+            var relatedEventVal = $("#eventAdditional" + nowRelatedID).val();
             if (!$.isNumeric(relatedEventVal)) {
                 relatedEventVal = "";
             }
@@ -630,8 +631,10 @@ $("#viewEventAdd").pagecontainer({
             if (prevPageID === "viewEventList") {
                 //Set Default
                 $("#eventLevel").val("1");
-                $("#eventTemplateTextarea").val("請選擇範本或輸入標題");
-                $("#eventDescriptionTextarea").val("描述文字");
+                $("#eventTemplateTextarea").val("");
+                $('#eventTemplateTextarea').prop('placeholder', "請選擇範本或輸入標題");
+                $("#eventDescriptionTextarea").val("");
+                $('#eventDescriptionTextarea').prop('placeholder', "描述文字");
                 $("#setNow").prop("checked", "checked");
                 setDateTime = "setNow";
 
