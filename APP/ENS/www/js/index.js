@@ -286,7 +286,11 @@ function onBackKeyDown() {
         if (checkPopupShown()) {
             $.mobile.changePage('#viewEventList');
         } else {
-            navigator.app.exitApp();
+            if (tabActiveID === "#memberDiv") {
+                changeTabToEventList();
+            } else {
+                navigator.app.exitApp();
+            }
         }
 
     } else if (activePageID === "viewEventContent") {

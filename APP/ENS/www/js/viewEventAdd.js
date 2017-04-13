@@ -771,14 +771,14 @@ $("#viewEventAdd").pagecontainer({
         //Radio Button : Finish Time
         $(document).on("change", "input[name=setDateTime]", function() {
             setDateTime = $('input[name=setDateTime]:checked').val();
-
             if (setDateTime === "setNow") {
                 $("#textDateTime").html("");
-            } else if (setDateTime === "setTime") {
-                $("#doneDate").trigger('datebox', {'method':'open'});
-
-                tplJS.preventPageScroll();
             }
+        });
+
+        $(document).on("click", "#setTime", function() {
+            $("#doneDate").trigger('datebox', {'method':'open'});
+            tplJS.preventPageScroll();
         });
 
         //No Related Event Exist
