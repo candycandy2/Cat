@@ -581,6 +581,7 @@ $("#viewEventList").pagecontainer({
             $("#tabEventList a:eq(0)").addClass("ui-btn-active");
             $("#tabEventList a:eq(1)").removeClass("ui-btn-active");
             $("#tabEventList").tabs({ active: 0 });
+            footerFixed();
         };
 
         /********************************** page event *************************************/
