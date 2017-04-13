@@ -46,12 +46,11 @@ $("#viewAccount").pagecontainer({
         $(".buttononeCountry1").text(FromStatus);
         $(".buttononeCountry2").text(ToStatus);   
 
-        //var todayYearmod   = "2015";  
+
         todayYearmod  = todayYear;        
-       // var todayYearmod   = todayYear.substring(2,3); //20170405 pm 
-        var todayYearmod   = todayYearmod.toString().substring(2,4);    //20170405 pm   OK~
-    //  $(".frag1").text(todayMonth+" "+todayYear);
-    //  $(".frag2").text(lastMonth+" "+todayYear);
+
+        var todayYearmod   = todayYearmod.toString().substring(2,4);   
+
         $(".frag1").text(MonthWord[todayMonth-1]+"-"+todayYearmod);
         $(".frag2").text(MonthWord[todayMonth-2]+"-"+todayYearmod);
         
@@ -63,16 +62,11 @@ $("#viewAccount").pagecontainer({
 
 
      
-    
-    
-
- 
-  
 
 
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
-           // Addhtml();
+
            
 
         });
@@ -82,16 +76,16 @@ $("#viewAccount").pagecontainer({
             Favorite();
             Buttonimg(); 
    
-            var eventConfirmA = { //Add
-                id: "eventWorkConfirmA",  //template id
+            var eventConfirmA = { 
+                id: "eventWorkConfirmA",  
                 content: $("template#tplAddConfirmA").html()
             };
 
-        //   tplJS.Popup("viewExample2", "contentID", "append", eventCancelWorkDoneConfirmData);
-        //Pop2
-            var eventConfirmB = {  //Remove
-                id: "eventWorkConfirmB",        // html template id  
-                content: $("template#tplRemoveB").html()  //
+      
+        
+            var eventConfirmB = {  
+                id: "eventWorkConfirmB",        
+                content: $("template#tplRemoveB").html()  
             };
              
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);  
@@ -129,7 +123,7 @@ $("#viewAccount").pagecontainer({
                  $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus  +" ");  
                 //Buttonimg(); 
                 // Addhtml();  
-                 //$("#fragment-1").html(" "); 
+        
                  Buttonimg(); 
         });
    //  Transfer   ************************************************************************** 
@@ -280,39 +274,52 @@ $("#viewAccount").pagecontainer({
         });
         /********************************** Favorite*************************************/
         function Favorite(){  
-
-           /*
-            if ($("ul").children(".favorite")) //use favorite to contrl star (not nontstar) 
+            //add
+           
+             /*
+            for (var i=0 ; i< arrayadd.length; i++)
+          
+            {    statuscountrypop=arrayadd[i];
+                {
+                    $("#"+statuscountrypop).addClass("favorite");
+                }
+            }
+          
+           
+           //check
+            if ($("li").children(".favorite")) //use favorite to contrl star (not nontstar) 
             {
-                $("ul").children(".favorite").children(".star_icon").css("opacity","1"); //li id 
-                $("ul").children(".favorite").children(".nonstar_icon").css("opacity","1"); //li id 
+                $("li").children(".favorite").children(".star_icon").css("opacity","1"); //li id 
+                $("li").children(".favorite").children(".nonstar_icon").css("opacity","1"); //li id 
 
             }       
 
-          
-
+         */
+/*
             if ($(".Listdiv1").hasClass("favorite")) //use favorite to contrl star (not nontstar) 
             {
                 $(".Listdiv1").children(".star_icon").css("opacity","1"); //li id 
                 $(".Listdiv1").children(".nonstar_icon").css("opacity","1");
 
             }  
-            */
-             /*
+        
+        
             if ($("#"+statuscountrypop).hasClass("favorite")) 
             {
                 array.splice(array.indexOf(arrayadd)).sort();   
                 array.splice(array.indexOf(statuscountrypop)).sort();      
+                array.sort();
                 arrayadd.unshift(statuscountrypop);
                 arraycomb = arrayadd.concat(array);
 
 
-                
+                console.log("arrayinit_GBP-AED-SGD-AUD 3");
+                console.log("arrayadd_NTD_EUR_AUD 3");
                 console.log("283_array_"+array);
-                console.log("283_arrayadd_"+arrayadd);
-                console.log("283_arraycomb_"+arraycomb);
+                console.log("306_arrayadd_"+arrayadd);
+                console.log("307_arraycomb_"+arraycomb);
             }
-            */
+    */
         }
         /********************************** dom event *************************************/
 

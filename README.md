@@ -18,18 +18,22 @@
 
 ```
 $ cordova --version
-6.1.1
+6.5.0
 FISH-Air:QPlay faulfish$ cordova platform
 Installed platforms:
-  android 5.2.0
-  ios 4.2.0
+android 6.0.0
+ios 4.3.1
 FISH-Air:QPlay faulfish$ cordova plugins
-cordova-connectivity-monitor 1.2.2 "Connectivity Monitoring"
-cordova-plugin-dialogs 1.2.1 "Notification"
-cordova-plugin-network-information 1.2.1 "Network Information"
+cordova-plugin-appavailability 0.4.2 "AppAvailability"
+cordova-plugin-appversion 1.0.0 "App Version"
+cordova-plugin-console 1.0.5 "Console"
+cordova-plugin-customurlscheme 4.2.0 "Custom URL scheme"
+cordova-plugin-device 1.1.5 "Device"
+cordova-plugin-inappbrowser 1.6.1 "InAppBrowser"
+cordova-plugin-qlogin 1.0.0 "QLoginPlugin"
+cordova-plugin-qpush 1.0.0 "QPush Plugin"
 cordova-plugin-qsecurity 1.0.0 "QSecurityPlugin"
-cordova-plugin-splashscreen 3.2.2 "Splashscreen"
-cordova-plugin-statusbar 2.1.3 "StatusBar"
+cordova-plugin-whitelist 1.3.1 "Whitelist"
 ```
 
 目錄結構
@@ -44,15 +48,19 @@ cordova-plugin-statusbar 2.1.3 "StatusBar"
 - /WEB                  …放置WEB的地方,Login, Download...
 
 Requirements check results for android:
- - Java JDK: installed .
- - Android SDK: installed 
- - Android target: installed android-23
+ - Requirements check results for android:
+ - Java JDK: installed 1.8.0
+ - Android SDK: installed true
+ - Android target: installed android-23,android-24,android-25
  - Gradle: installed 
 
 Requirements check results for ios:
+ - Requirements check results for ios:
  - Apple OS X: installed darwin
- - Xcode: installed 7.3
- - ios-deploy: installed 2.0.0
+ - Xcode: installed 8.2.1
+ - ios-deploy: installed 1.9.0
+ - CocoaPods: not installed 
+ - CocoaPods was not found. Please install version 1.0.1 or greater from https://cocoapods.org/
 
 Third-party Library:
  - jquery-1.12.3.min.js https://jquery.com
