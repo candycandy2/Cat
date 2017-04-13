@@ -68,7 +68,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 .tpl-dropdown-list {
     outline: none;
     padding: 5px;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     border: 0;
     background: url('../img/component/dropdown.png') right transparent;
     background-size: 2.9vw 2vw;

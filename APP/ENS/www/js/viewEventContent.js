@@ -151,9 +151,14 @@ $("#viewEventContent").pagecontainer({
                                 var eventTaskList = $(eventTaskListBeforeHTML);
                             } else {
                                 //After Done
+                                var completeTime = new Date(data['Content'].task_detail[i].close_task_date * 1000);
+                                var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                                padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                                padLeft(completeTime.getMinutes(), 2);
+
                                 var eventTaskList = $(eventTaskListAfterHTML);
                                 eventTaskList.find(".user").html(data['Content'].task_detail[i].close_task_user_id);
-                                eventTaskList.find(".datetime").html(data['Content'].task_detail[i].close_task_date);
+                                eventTaskList.find(".datetime").html(completeTimeText);
                             }
                             eventTaskList.find(".title").html(data['Content'].task_detail[i].task_location);
                             eventTaskList.find(".function").html(data['Content'].task_detail[i].task_function);
