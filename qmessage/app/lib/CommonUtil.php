@@ -8,6 +8,7 @@ namespace App\lib;
  */
 
 use App\Model\Log;
+use App\Model\Message;
 use Config;
 use Request;
 use JMessage\JMessage;
@@ -140,7 +141,6 @@ class CommonUtil
             }
         }
         $logMode = Config::get('app.log_mode');
-        $logMode = "ALL";
         //Mysql
         if ($logMode == 'ALL' || $logMode == 'MYSQL'){
             \DB::connection("qmessage")
@@ -282,6 +282,35 @@ class CommonUtil
             -> update([
                 'lpath'=>$lpath
             ]);
+        self::UpdateHistory2MongoDB($msg_id,$lpath);
+    }
+
+    public static function SaveHistory2MongoDB($data,$hasFile="N"){
+        $message = new Message();
+        $message->msg_id=$data->msg_id;
+        $message->msg_type=$data->msg_type;
+        $message->from_id=$data->from_id;
+        $message->from_type=$data->from_type;
+        $message->target_id=$data->target_id;
+        $message->target_type=$data->target_type;
+        $message->target_name=$data->target_name;
+        $message->ctime=$data->ctime;
+        $message->content=$data->content;
+
+        if ($hasFile=='Y'){
+            $message->fname =$data->fname;
+            $message->fsize =$data->extras->fsize;
+            $message->format =substr(strrchr($data->fname, '.'), 1);
+            $message->npath =$data->extras->media_id;
+            $message->lpath ="";
+        }
+        $message->save();
+    }
+
+    public static function UpdateHistory2MongoDB($msg_id,$lpath){
+        $message = Message::all()->where('msg_id', (int)$msg_id)->first();
+        $message->lpath = $lpath;
+        $message->save();
     }
 
     public static function http_get_data($url) {
