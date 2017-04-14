@@ -329,6 +329,7 @@ $(document).one("pagebeforecreate", function(){
         else if (device.platform === "iOS"){
             $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display','block');
+            $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
         }
 
         //For some APP Page, if page's header has second level [button / title],

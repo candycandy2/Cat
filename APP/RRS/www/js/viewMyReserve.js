@@ -63,7 +63,7 @@
 
                     } else if (data['ResultCode'] === "002901") {
                         //Not Found Reserve Data
-                        popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '返回一般預約', '');
+                        popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '確定', '');
                         $('#todayLine').addClass('disable');
                         $('#otherDayLine').addClass('disable');
                     }
