@@ -1,9 +1,19 @@
 
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
+        var FromStatus  = "All Currency";  
+        //var FromStatus  = "NTD";//"All Currency";  
+        var ToStatus    = "USD";
+
         var statuscountrypop;
-        var array =[ "GBP","AED","SGD","AUD"
-                     ];
+        //var array =[ "GBP","AED","SGD","AUD"       ];
+
+        var array = ["AED","BDT","BRL","CAD",
+                    "CHF","CZK","EUR","GBP","HKD",
+                    "IDR","INR","JPY","KRW","MMK",
+                    "MXN","MYR","NTD","NZD","PHP",
+                    "RMB","RUB","SEK","SGD","THB",
+                    "TRL","VND","ZAR" ]; 
 
         var arrayadd =["NTD","EUR","AUD"
                       ];
@@ -39,8 +49,8 @@ $("#viewAccount").pagecontainer({
         var todayDate   = Today.getDate();
         var lastMonth   = Today.getMonth();
        
-        var FromStatus  = "All Currency";  
-        var ToStatus    = "USD";
+
+    
 
 
         $(".buttononeCountry1").text(FromStatus);
@@ -73,9 +83,15 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-            Favorite();
+           
+            Test();         
             Buttonimg(); 
+
+            //AddhtmlOne();
+            AddhtmlFirst(); 
    
+            Favorite();   //wait for html
+
             var eventConfirmA = { 
                 id: "eventWorkConfirmA",  
                 content: $("template#tplAddConfirmA").html()
@@ -273,10 +289,18 @@ $("#viewAccount").pagecontainer({
             $("#popupB").popup('close');
         });
         /********************************** Favorite*************************************/
+        function Test(){
+
+           // array.splice(array.indexOf(arrayadd)).sort();   
+            //array.splice(array.indexOf(statuscountrypop)).sort();      
+           // array.sort(); //delect by favorite one or two
+           // arrayadd.unshift(statuscountrypop);
+            arraycomb = arrayadd.concat(array);   
+        }
+
+
         function Favorite(){  
             //add
-           
-             /*
             for (var i=0 ; i< arrayadd.length; i++)
           
             {    statuscountrypop=arrayadd[i];
@@ -284,18 +308,33 @@ $("#viewAccount").pagecontainer({
                     $("#"+statuscountrypop).addClass("favorite");
                 }
             }
-          
-           
+                     
            //check
             if ($("li").children(".favorite")) //use favorite to contrl star (not nontstar) 
             {
                 $("li").children(".favorite").children(".star_icon").css("opacity","1"); //li id 
                 $("li").children(".favorite").children(".nonstar_icon").css("opacity","1"); //li id 
 
-            }       
+            } 
+           
+         /*      
+            if ($("#"+statuscountrypop).hasClass("favorite")) 
+            {
+                array.splice(array.indexOf(arrayadd)).sort();   
+                array.splice(array.indexOf(statuscountrypop)).sort();      
+                array.sort();
+                arrayadd.unshift(statuscountrypop);
+                arraycomb = arrayadd.concat(array);
 
-         */
-/*
+
+                console.log("arrayinit_GBP-AED-SGD-AUD 3");
+                console.log("arrayadd_NTD_EUR_AUD 3");
+                console.log("283_array_"+array);
+                console.log("306_arrayadd_"+arrayadd);
+                console.log("307_arraycomb_"+arraycomb);
+            }
+        
+
             if ($(".Listdiv1").hasClass("favorite")) //use favorite to contrl star (not nontstar) 
             {
                 $(".Listdiv1").children(".star_icon").css("opacity","1"); //li id 
@@ -321,6 +360,157 @@ $("#viewAccount").pagecontainer({
             }
     */
         }
+
+     /********************************** html *************************************/
+        function AddhtmlOne()           
+        {   
+            var htmltemp = "";               
+            for (var i=0 ; i< 1; i++){ //array initial.lenggth
+                           
+                var country  = 'Candy';
+                var index    = "";                       
+                content  = htmltemp + CountrylisthtmlOne(i ,country);
+                 htmltemp = content;  
+            }                      
+            $("#ultestA").html(" "); 
+            $("#ultestA").append(content);                    
+        }
+
+
+        function AddhtmlFirst()     //First is All    
+        {   
+            var htmltemp = "";               
+            for (var i=0 ; i< arraycomb.length; i++)
+            { 
+                var country = 'Candy';                   
+                var index    = "";
+                content  = htmltemp + CountrylisthtmlFirst(i ,country);
+                htmltemp = content;           
+            }  
+            $("#ultestA").html(" "); 
+            $("#ultestA").append(content);            
+        }
+
+        function AddhtmlSecond()      //Second is All     
+        {                
+            var htmltemp = "";               
+            for (var i=0 ; i< arrayTo.length; i++){ 
+                    var country = 'Candy';                    
+                    var index    = "";
+                    content  = htmltemp + CountrylisthtmlSecond(i ,country);
+                    htmltemp = content;               
+            }                
+            $("#ultestA").html(" "); 
+            $("#ultestA").append(content);            
+        }
+     /********************************** html  *************************************/
+        function CountrylisthtmlOne(index){// one to one
+                    return '<li data-icon="false" class="1_li CountryA firstli" id="litest">'
+                    +'<div class="Listdiv1" id='
+                    + FromStatus
+                    +'>'
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
+                    +'<img  class="ListviewFlag1" src ="img/tmp/'
+                    + FromStatus
+                    +'.png"> '        
+                    +'<span class="ListRate1">'                
+                    +'1 '
+                    + FromStatus
+                    +'</span>  '        
+                    +'<div  class="Listdiv1equalmark4">=</div>'
+                    +'</div>'
+                    +'<div class="Listdiv2">'       
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
+                    +'<img  class="ListviewFlag2" src ="img/tmp/'
+                    + ToStatus 
+                    +'.png">'                   
+                    +'<div class="Listdiv3">'    
+                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListRate2">'
+                    + ToStatus 
+                    +'</span>'    
+                    +'<br> '    
+                    +'</div>'    
+                    +'</div>'   
+                    +'</li>' ;   
+                    +'<br>'
+                    +'<br>'
+                    +'<hr>';
+                    
+        }
+
+        function CountrylisthtmlFirst(index,country){ //First is all
+                    return '<li data-icon="false" class="1_li CountryA" id="litest">'
+                    +'<div class="Listdiv1" id='
+                    + arraycomb[index]
+                    +'>'
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
+                    +'<img  class="ListviewFlag1" src ="img/tmp/'
+                    + arraycomb[index]
+                    +'.png"> '        
+                    +'<span class="ListRate1">'                
+                    +'1 '
+                    + arraycomb[index]
+                    +'</span>  '        
+                    +'<div  class="Listdiv1equalmark4">=</div>'
+                    +'</div>'
+                    +'<div class="Listdiv2">'       
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
+                    +'<img  class="ListviewFlag2" src ="img/tmp/'
+                    + ToStatus 
+                    +'.png">'                   
+                    +'<div class="Listdiv3">'    
+                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListRate2">'
+                    + ToStatus 
+                    +'</span>'    
+                    +'<br> '    
+                    +'</div>'    
+                    +'</div>'   
+                    +'</li>';              
+                    +'<hr>';                         
+        }
+
+        function CountrylisthtmlSecond(index,country){//Second is all
+                    return '<li data-icon="false" class="1_li CountryA firstli" id="litest">'
+                    +'<div class="Listdiv1" id='
+                    +
+                    +'>'
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
+                    +'<img  class="ListviewFlag1" src ="img/tmp/'
+                    + FromStatus
+                    +'.png"> '        
+                    +'<span class="ListRate1">'                
+                    +'1 '
+                    + FromStatus
+                    +'</span>  '        
+                    +'<div  class="Listdiv1equalmark4">=</div>'
+                    +'</div>'
+                    +'<div class="Listdiv2" id='
+                    + arrayTo[index]
+                    +'>'       
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
+                    +'<img  class="ListviewFlag2" src ="img/tmp/'
+                    + arrayTo[index] 
+                    +'.png">'                   
+                    +'<div class="Listdiv3">'    
+                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListRate2">'
+                    + arrayTo[index]  
+                    +'</span>'    
+                    +'<br> '    
+                    +'</div>'    
+                    +'</div>'   
+                    +'</li>' ;   
+                    /*+'<br>'
+                    +'<br>'
+                    +'<hr>';
+                    */         
+        }
+
+
+
+        /********************************** html *************************************/
         /********************************** dom event *************************************/
 
 
