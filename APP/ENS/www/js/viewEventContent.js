@@ -330,8 +330,8 @@ $("#viewEventContent").pagecontainer({
             //Only [admin] & Function Member can do report
             var isAdmin = checkAuthority("admin");
             var isMember = false;
-            var location = $(dom).find(".title").html();
-            var functionName = $(dom).find(".function").html();
+            var location = $(dom).find(".title").text();
+            var functionName = $(dom).find(".function").text();
 
             for (var i=0; i<taskData.length; i++) {
                 if (taskData[i].task_location === location && taskData[i].task_function === functionName) {
