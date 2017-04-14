@@ -512,6 +512,7 @@ $("#viewEventList").pagecontainer({
                 } else {
                     //Before Done
                     var eventFunctionListLi = $(eventFunctionListBeforeHTML);
+                    eventFunctionListLi.find(".user-datetime").remove();
                 }
                 eventFunctionListLi.find(".title").html(data.task_detail[i].task_location);
                 eventFunctionListLi.find(".function").html(data.task_detail[i].task_function);
