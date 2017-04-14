@@ -290,7 +290,7 @@ class EventService
                     "task_status" => self::STATUS_FINISHED
                 );
         $openedTask = $this->taskRepository->getOpenTaskByEventId($eventId);
-        if(count($openedTask) == 1){
+        if(count($openedTask) == 1 && $openedTask->row_id == $taskId){
             $updateResult = $this->updateEvent($empNo, $eventId, array("event_status"=>self::STATUS_FINISHED), $queryParam);
         }
         return $this->taskRepository->updateTaskById($empNo, $taskId, $data);
