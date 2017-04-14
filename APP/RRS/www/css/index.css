@@ -207,7 +207,7 @@ a {
     font-size: 2.5vh;
 }
 
-#viewSettingList .app-font-small{ font-size: 3.97vw;}
+#viewSettingList .app-font-small{ font-size: 3.768vw;}
 #viewSettingList .ui-linear-gradient-green span, .ui-linear-gradient-gary span{ margin-left: 0;}
 #viewSettingList .page-main > div:nth-of-type(3){ margin-top: 3.99vw !important;}
 
@@ -329,7 +329,7 @@ div.square {
     padding: 3.5 0;
 }
 
-.setting-img { width: 4.5vw; height: auto; position: absolute; top: 3.8vw; right: 4vw;}
+.setting-img { width: 4.5vw; height: auto; position: absolute; top: 2vw; right: 4vw;}
 
 .div-radius {
     border-radius: 5px;
