@@ -218,9 +218,9 @@ function formatNumber(n) {
 
 function zoomInChart() {
     if(screen.width < screen.height) {
-        chartLandscape.setSize(screen.height, screen.width*0.8, false);
+        chartLandscape.setSize(screen.height, screen.width*0.9, false);
     }else {
-        chartLandscape.setSize(screen.width, screen.height*0.8, false);
+        chartLandscape.setSize(screen.width, screen.height*0.9, false);
     }
 }
 
@@ -258,7 +258,9 @@ function callProductDetailAPIReduce() {
 }
 
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
-    
+    if($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel( "close");     
+    }
     // if (window.orientation === 180 || window.orientation === 0) {
     //     /*do somrthing when device is in portraint mode*/
     // }

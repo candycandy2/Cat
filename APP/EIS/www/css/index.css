@@ -35,6 +35,7 @@
 
 .page-main{
 	background-color: #fff;
+	margin-top: 0px !important;
 }
 
 .page-main .page-tabs{
@@ -325,7 +326,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewYTDHitRate div > .scrollmenu, #viewYTDHitRate #viewYTDHitRate-hc-canvas{
 		display: none;
 	}
-	#viewHitRate .page-header, #viewMonthlyHitRate .page-header, #viewYTDHitRate .page-header{ opacity: 0;}
+	#viewHitRate .page-header, #viewMonthlyHitRate .page-header, #viewYTDHitRate .page-header { display: none;}
+	#viewHitRate, #viewMonthlyHitRate, #viewYTDHitRate { padding-top: 1.5VH !important;}
 	.viewIndex.ui-page {
 		background-color: #fff;
 	}
