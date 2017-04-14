@@ -519,9 +519,10 @@ hr.ui-color-green {
 }
 
 #viewSettingList .ui-linear-gradient-gary, #viewSettingList .ui-linear-gradient-green{ background-color: transparent !important; border: 1px solid #d6d6d6;
-    margin-bottom: 4.3vw !important; padding: 2.14vw 0 !important;}
+    margin-bottom: 4.3vw !important; padding: 2.6vw 2.4vw !important;}
 
 #viewSettingList .ui-linear-gradient-gary .inline, #viewSettingList .ui-linear-gradient-green .inline{ margin-left: 2.4vw;}
+#viewSettingList hr{ margin: 1.42vw 0 2.3vw !important;}
 
 .ui-linear-gradient-green {
     color: #323232 !important;
