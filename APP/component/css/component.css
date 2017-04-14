@@ -471,10 +471,12 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     right: 0;
 }
 
+
 .ui-mobile .ui-page:not(#viewInitial):not(#viewUpdateAppVersion):not(#viewNotSignedIn):not(#viewMaintain):not(#viewGetQPush) { padding-top: 11.45vw !important;}
 .ui-mobile .ui-page:not(#viewInitial):not(#viewUpdateAppVersion):not(#viewNotSignedIn):not(#viewMaintain):not(#viewGetQPush).ui-page-ios{ padding-top: calc(11.45vw + 20px) !important;}
 .page-main{ margin-top: 0 !important;}
 .ui-page{ min-height: 100% !important; box-sizing: border-box;}
+
 
 /*initial page layout setting when landscape*/
 @media all and (orientation: landscape){
