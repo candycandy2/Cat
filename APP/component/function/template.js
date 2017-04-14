@@ -114,6 +114,7 @@ var tplJS = {
         //Prevent Background Page to be scroll, when Option Popup is shown,
         //Change the [height / overflow-y] of Background Page,
         //And then, when Option Popup is close, recovery the [height / overflow-y] of Background Page.
+        /*
         var adjustHeight = this.getRealContentHeight();
         var adjustPaddingBottom = 0;
 
@@ -140,9 +141,27 @@ var tplJS = {
 
             $(".ui-popup-screen.in").height(popupScreenHeight);
         }
+        */
+        $('.ui-popup-screen').css({
+            'overflow': 'hidden',
+            'touch-action': 'none'
+        });
+
+        $('body').css('overflow', 'hidden').on('touchmove', function(e) {
+            if ($(e.target).data('role') !== "listview") {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        $('body').one('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
     },
     recoveryPageScroll: function() {
         //Padding
+        /*
         var paddingTop = parseInt($.mobile.activePage.css("padding-top"), 10);
         var paddingBottom = parseInt($.mobile.activePage.css("padding-bottom"), 10);
 
@@ -157,6 +176,9 @@ var tplJS = {
             "padding-bottom": 0,
             "overflow-y": "auto"
         });
+        */
+        $('body').css('overflow', 'auto').off('touchmove');
+        $('body').off('touchstart');
     },
     Tab: function(pageID, contentID, renderAction, data) {
         var tabHTML = $("template#tplTab").html();
@@ -366,17 +388,24 @@ var tplJS = {
             tplJS.preventPageScroll();
         });
 
+        $(document).on("popupbeforeposition", "#" + popupID, function() {
+            tplJS.preventPageScroll();
+        });
+
         //Initialize Popup
         $('#' + popupID).popup();
 
         $(document).on("click", "#" + data.id, function() {
             //Scroll Page to top
+            /*
             $("#" + pageID).animate({
                 "scrollTop": 0
             }, 0, function() {
                 $('#' + popupID).popup('open');
                 tplJS.preventPageScroll();
             });
+            */
+            $('#' + popupID).popup('open');
         });
 
         $(document).on("click", "#" + popupID + " .close", function() {
@@ -503,7 +532,6 @@ var tplJS = {
 
         //Initialize Popup
         $('#' + data.id).popup();
-        //this.pageContentHeight = $.mobile.activePage.outerHeight();
 
         $(document).one("popupafteropen", "#" + data.id, function() {
             var popupHeight = popup.height();
@@ -533,13 +561,20 @@ var tplJS = {
             }
         });
 
+        $(document).on("popupafteropen", "#" + data.id, function() {
+            tplJS.preventPageScroll();
+        });
+
         $(document).on("popupbeforeposition", "#" + data.id, function() {
             //Scroll Page to top
+            /*
             $.mobile.activePage.animate({
                 "scrollTop": 0
             }, 0, function() {
                 tplJS.preventPageScroll();
             });
+            */
+            tplJS.preventPageScroll();
         });
 
         $(document).on("popupafterclose", "#" + data.id, function() {
