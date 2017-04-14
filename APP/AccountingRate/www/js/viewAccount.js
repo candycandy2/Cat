@@ -4,7 +4,7 @@ $("#viewAccount").pagecontainer({
         var FromStatus  = "All Currency";  
         //var FromStatus  = "NTD";//"All Currency";  
         var ToStatus    = "USD";
-
+        var test;
         var statuscountrypop;
         //var array =[ "GBP","AED","SGD","AUD"       ];
 
