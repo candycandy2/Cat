@@ -698,6 +698,7 @@ input[type=radio]:checked + label {
     height: 100vh;
     overflow: hidden;
     background-color: #000;
+    touch-action: none;
 }
 
 .event-content-photo-full-screen .button-content {

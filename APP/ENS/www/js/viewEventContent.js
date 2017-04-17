@@ -373,12 +373,13 @@ $("#viewEventContent").pagecontainer({
 
         //For Plugin Camera
         function openFilePicker(selection) {
-            var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            //var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            //var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            var srcType = Camera.PictureSourceType.CAMERA;
             var options = setOptions(srcType);
             var func = createNewFileEntry;
 
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
-
                 photoUrl = imageUri;
 
                 $("<img id='myTempImage' style='display:none;' src='" + photoUrl + "'>").load(function() {
@@ -421,12 +422,34 @@ $("#viewEventContent").pagecontainer({
             var buttonContent = '<div class="button-content bottom font-style3"><span id="photoCancel">重新選擇</span><span id="photoConfirm">使用照片</span></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
-            tplJS.preventPageScroll();
+            if (device.platform === "iOS") {
+                $(".event-content-photo-full-screen img").css("padding-top", "20px");
+            }
+
+            $('body').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            $('body').one('touchstart', function(e) {
+                console.log("----touchstart");
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            $('body').on('touchmove', function(e) {
+                console.log("----touchmove");
+                var scrollHeight = $(window).scrollTop();
+                e.preventDefault();
+                e.stopPropagation();
+                $(".event-content-photo-full-screen").css("top", scrollHeight + "px");
+            });
 
             //Photo Confirm - Button Event
             $("#photoCancel").on("click", function() {
                 confirmPhotoClose();
-                openFilePicker();
+                //openFilePicker();
+                $("#msgPhoto").trigger("click");
             });
 
             $("#photoConfirm").on("click", function() {
@@ -448,23 +471,109 @@ $("#viewEventContent").pagecontainer({
 
             $(".event-content-photo-full-screen").remove();
 
-            tplJS.recoveryPageScroll();
+            $('body').css({
+                'overflow': 'auto',
+                'touch-action': 'auto'
+            });
+            $('body').off('touchmove');
+            $('body').off('touchstart');
         }
 
         function fullScreenPhoto() {
-            var imageContent = '<img src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
+            var imageContent = '<img id="fullScreenImg" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
             var buttonContent = '<div class="button-content top"><div class="back-button"><span class="back"></span></div></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
-            tplJS.preventPageScroll();
+            if (device.platform === "iOS") {
+                $(".event-content-photo-full-screen .button-content").css("padding-top", "20px");
+                $(".event-content-photo-full-screen #fullScreenImg").css("padding-top", "20px");
+            }
+
+            var file = $("input[type=file]")[0].files[0];
+            var img = document.getElementById("fullScreenImg");
+            var reader;
+
+            reader = new FileReader();
+            reader.onload = (function (theImg) {
+                return function (evt) {
+                    theImg.src = evt.target.result;
+                    loadingMask("hide");
+                };
+            }(img));
+            reader.readAsDataURL(file);
+
+            loadingMask("show");
+
+            $('body').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            $('body').one('touchstart', function(e) {
+                console.log("----touchstart");
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            $('body').on('touchmove', function(e) {
+                console.log("----touchmove");
+                var scrollHeight = $(window).scrollTop();
+                e.preventDefault();
+                e.stopPropagation();
+                $(".event-content-photo-full-screen").css("top", scrollHeight + "px");
+            });
 
             //Back Button
             $(".button-content .back-button").on("click", function() {
                 $(".event-content-photo-full-screen").remove();
                 $(".event-content-footer").removeClass("ui-fixed-hidden");
 
-                tplJS.recoveryPageScroll();
+                $('body').css({
+                    'overflow': 'auto',
+                    'touch-action': 'auto'
+                });
+                $('body').off('touchmove');
+                $('body').off('touchstart');
             });
+        }
+
+        function callFileReader(file) {
+            if (typeof FileReader !== "undefined") {
+                //var container = document.getElementById(containerid);
+                //var img = document.createElement("img");
+                //container.appendChild(img);
+                var imgSmall = document.getElementById("finalImage");
+                var imgOriginal = document.getElementById("myTempImage");
+                var reader;
+
+                //small preview image
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        $(".previewImageDiv").show();
+                        $(".previewImageDiv-AddHeight").show();
+
+                        loadingMask("hide");
+                    };
+                }(imgSmall));
+                reader.readAsDataURL(file);
+
+                //original image
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        photoUrl = theImg.src;
+                        confirmPhoto($(theImg).width(), $(theImg).height());
+                    };
+                }(imgOriginal));
+                reader.readAsDataURL(file);
+
+                loadingMask("show");
+            } else {
+                console.log("FileReader------------------no support");
+            }
         }
 
         /********************************** page event *************************************/
@@ -496,6 +605,9 @@ $("#viewEventContent").pagecontainer({
                 $("#eventEdit").show();
             }
 
+            $(".previewImageDiv").hide();
+            $(".previewImageDiv-AddHeight").hide();
+
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -518,7 +630,18 @@ $("#viewEventContent").pagecontainer({
 
         //Open Photo Library
         $(document).on("click", "#viewEventContent #cameraButton", function() {
-            openFilePicker();
+            //openFilePicker();
+            $("#msgPhoto").trigger("click");
+        });
+
+        $("input[type=file]").change(function(){
+            var file = $("input[type=file]")[0].files[0];
+            console.log(file.name + "\n" +
+                  file.type + "\n" +
+                  file.size + "\n" +
+                  file.lastModifiedDate);
+
+            callFileReader(file);
         });
 
         //Photo - Small Preview
@@ -582,6 +705,7 @@ $("#viewEventContent").pagecontainer({
 
         //Chatroom Msg Button
         $(document).on("click", "#msgButton", function() {
+
             var msgEmpty = false;
             var msg = $("#msgText").val();
 
@@ -624,6 +748,50 @@ $("#viewEventContent").pagecontainer({
                     });
                 }
             }
+
+            /*
+            var gid = chatroomID;
+            var gname = chatroomID + "-room";
+            var fid = "msgTest";
+            console.log(photoUrl);
+            var fid2 = {
+                lastModified: 1486018042410,
+                lastModifiedDate: "Thu Feb 02 2017 14:47:22 GMT+0800 (CST)",
+                name: "123",
+                size: 74983,
+                type: "image/png",
+                webkitRelativePath: ""
+            };
+
+            msgController.SendImage(gid, gname, fid, function(successResult) {
+                console.log("---------------successResult");
+                console.log(successResult);
+                loadingMask("show");
+                /*
+                if (successResult["result"]["code"] === 0) {
+                    var chatRoomID = successResult["result"]["target_gid"];
+                    var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                    var createTime = new Date(ctime * 1000);
+
+                    var objData = {
+                        msg_id: successResult["result"]["msg_id"],
+                        ctime: ctime,
+                        ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                            padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                            padLeft(createTime.getMinutes(), 2),
+                        from_id: successResult["content"]["from_id"],
+                        msg_type: successResult["content"]["msg_type"],
+                        msg_body: successResult["content"]["msg_body"]["text"]
+                    };
+
+                    chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                }
+                *
+            }, function(errorResult) {
+                console.log("---------------errorResult");
+                console.log(errorResult);
+            });
+            */
         });
     }
 });
