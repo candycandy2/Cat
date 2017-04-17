@@ -354,13 +354,13 @@ input[type=radio]:checked + label {
 .event-member-list li .left {
     clear: left;
     float: left;
-    width: 10%;
+    width: 5.6vw;
 }
 
 .event-member-list li .right {
     float: left;
-    width: 88%;
-    padding-left: 2%;
+    padding-left: 1.6vw;
+    width: 62vw;
 }
 
 .right .title {
@@ -376,7 +376,6 @@ input[type=radio]:checked + label {
 
 .user-datetime {
     color: #989898;
-    margin-bottom: 5.07vw;
 }
 
 .user-datetime .user {
@@ -392,6 +391,7 @@ input[type=radio]:checked + label {
 
 .event-member-list li {
     margin-bottom: 5.07vw;
+    display: inline-block;
 }
 
 .event-member-list li:last-child {
@@ -629,6 +629,11 @@ input[type=radio]:checked + label {
 .event-content-data-list .right {
     float: left;
     width: 92%;
+    margin-bottom: 2.73vw;
+}
+
+.event-content-data-list .right.relate-event {
+    margin-bottom: 0vw;
 }
 
 .event-content-data-list .img {

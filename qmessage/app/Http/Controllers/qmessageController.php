@@ -292,6 +292,7 @@ class qmessageController extends Controller
         $ACTION = "storeHistoryText";
         $data = json_decode(file_get_contents('php://input'));
         $id = CommonUtil::saveHistory($data);
+        CommonUtil::SaveHistory2MongoDB($data);
     }
 
     public static function storeHistoryPic(){
@@ -306,6 +307,7 @@ class qmessageController extends Controller
             "npath"=>$data->extras->media_id,
         ];
         CommonUtil::saveHistoryFile($fileInfo);
+        CommonUtil::SaveHistory2MongoDB($data,"Y");
         $baseUrl = "http://media.file.jpush.cn/";
         $fp=fsockopen('localhost',80,$errno,$errstr,5);
         if($fp){
@@ -329,6 +331,7 @@ class qmessageController extends Controller
             "npath"=>$data->extras->media_id,
         ];
         CommonUtil::saveHistoryFile($fileInfo);
+        CommonUtil::SaveHistory2MongoDB($data,"Y");
         $baseUrl = "http://media.file.jpush.cn/";
         $fp=fsockopen('localhost',80,$errno,$errstr,5);
         $url = url()->current()."/downloadfile?filename=".urlencode($data->fname)."&url=".urlencode($baseUrl.($data->extras->media_id))."&msgid=".urlencode($data->msg_id).(PHP_OS=="WINNT"?"\r\n":"\n");
