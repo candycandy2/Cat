@@ -148,15 +148,43 @@ var tplJS = {
         });
 
         $('body').css('overflow', 'hidden').on('touchmove', function(e) {
-            if ($(e.target).data('role') !== "listview") {
+            var preventScroll = true;
+            var offsetParent = e.target.offsetParent;
+            console.log("----touchmove");
+            if ($(offsetParent).hasClass("ui-datebox-container")) {
+                preventScroll = false;
+            } else if ($(offsetParent).hasClass("ui-popup")) {
+                var listview = $(offsetParent).find("ul[data-role=listview]");
+
+                if ($(listview).prop("scrollHeight") > $(listview).height()) {
+                    preventScroll = false;
+                }
+            }
+
+            if (preventScroll) {
                 e.preventDefault();
                 e.stopPropagation();
             }
         });
 
         $('body').one('touchstart', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            var preventScroll = true;
+            var offsetParent = e.target.offsetParent;
+            console.log("----touchstart");
+            if ($(offsetParent).hasClass("ui-datebox-container")) {
+                preventScroll = false;
+            } else if ($(offsetParent).hasClass("ui-popup")) {
+                var listview = $(offsetParent).find("ul[data-role=listview]");
+
+                if ($(listview).prop("scrollHeight") > $(listview).height()) {
+                    preventScroll = false;
+                }
+            }
+
+            if (preventScroll) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
         });
     },
     recoveryPageScroll: function() {
