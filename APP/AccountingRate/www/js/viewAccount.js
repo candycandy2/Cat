@@ -1,9 +1,19 @@
 
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
-        var FromStatus  = "All Currency";  
-        //var FromStatus  = "NTD";//"All Currency";  
-        var ToStatus    = "USD";
+       // First
+       // var FromStatus  = "All Currency";          
+       //var ToStatus    = "USD";
+
+
+        // Sencod
+        var FromStatus  = "NTD";  
+        var ToStatus    = "All Currency";
+
+        // One
+        //var FromStatus  = "NTD";//var ToStatus  = "NTD";  
+
+
         var test;
         var statuscountrypop;
         //var array =[ "GBP","AED","SGD","AUD"       ];
@@ -15,8 +25,7 @@ $("#viewAccount").pagecontainer({
                     "RMB","RUB","SEK","SGD","THB",
                     "TRL","VND","ZAR" ]; 
 
-        var arrayadd =["NTD","EUR","AUD"
-                      ];
+        var arrayadd =["NTD","EUR","AUD"];
         var arraycomb =[
                       ];
         
@@ -88,7 +97,8 @@ $("#viewAccount").pagecontainer({
             Buttonimg(); 
 
             //AddhtmlOne();
-            AddhtmlFirst(); 
+            //AddhtmlFirst(); 
+            AddhtmlSecond(); 
    
             Favorite();   //wait for html
 
@@ -152,7 +162,7 @@ $("#viewAccount").pagecontainer({
              {    // Bug for img show 
                $(".buttonone1").removeClass('buttononeFlag1');
                $(".buttonone1").addClass('buttononeFlag1non');
-              // AddhtmlFirst();
+               //AddhtmlFirst();
              }
             else
              {
@@ -165,7 +175,7 @@ $("#viewAccount").pagecontainer({
             {   // Bug for img show 
               $(".buttontwo1").removeClass('buttononeFlag2');
               $(".buttontwo1").addClass('buttononeFlag1non');
-            //  AddhtmlSecond();
+                //AddhtmlSecond();
 
             }
             else
@@ -175,12 +185,14 @@ $("#viewAccount").pagecontainer({
 
             }            
 
-            /*
+            
             if ((FromStatus !="All Currency")&&(ToStatus !="All Currency"))
             {
                 //  AddhtmlOne();
             }
-            */
+
+            //Favorite();
+           // Test();
 
         }     
 
@@ -214,9 +226,11 @@ $("#viewAccount").pagecontainer({
             array.splice(array.indexOf(statuscountrypop));
 
            */
+            arrayadd.push(statuscountrypop);//20170416
+            array.splice (array.indexOf(arrayadd))  ;
 
-             Test(); //reoragionize array
-             Buttonimg();//html reset
+            Test(); //reoragionize array
+            //Buttonimg();//html reset => would be error
 
             $("#eventWorkConfirmA").popup('close');
         });
@@ -233,8 +247,10 @@ $("#viewAccount").pagecontainer({
             $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","0");   
             $("#"+statuscountrypop).removeClass("favorite"); 
 
-
-       
+           //20170416
+            arrayadd.splice (arrayadd.indexOf(statuscountrypop));
+            array.push(statuscountrypop);
+            Test(); 
 
             $("#eventWorkConfirmB").popup('close');
         });
@@ -268,7 +284,7 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry2").text(ToStatus);   
            
              Buttonimg();
-                      
+             Favorite();         
 
             $("#popupA").popup('close');
 
@@ -298,24 +314,20 @@ $("#viewAccount").pagecontainer({
      
             
              Buttonimg();
+             Favorite();
             $("#popupB").popup('close');
         });
         /********************************** Favorite*************************************/
         function Test(){
-
-           // array.splice(array.indexOf(arrayadd)).sort();   
-            //array.splice(array.indexOf(statuscountrypop)).sort();      
-           // array.sort(); //delect by favorite one or two
-           // arrayadd.unshift(statuscountrypop);
-
            /*move 20170416
-            arrayadd.push(statuscountrypop);//20170416
-            array.splice (array.indexOf(arrayadd))
-
-            Favorite();
+            
 
             */
+            //array.splice (arrayadd.indexOf(arrayadd));           
+            
             arraycomb = arrayadd.concat(array);   
+            Buttonimg(); //20170416
+            Favorite();  //20170416
         }
 
 
@@ -342,49 +354,7 @@ $("#viewAccount").pagecontainer({
 
             } 
            
-           // Test(); 
-         /*      
-            if ($("#"+statuscountrypop).hasClass("favorite")) 
-            {
-                array.splice(array.indexOf(arrayadd)).sort();   
-                array.splice(array.indexOf(statuscountrypop)).sort();      
-                array.sort();
-                arrayadd.unshift(statuscountrypop);
-                arraycomb = arrayadd.concat(array);
-
-
-                console.log("arrayinit_GBP-AED-SGD-AUD 3");
-                console.log("arrayadd_NTD_EUR_AUD 3");
-                console.log("283_array_"+array);
-                console.log("306_arrayadd_"+arrayadd);
-                console.log("307_arraycomb_"+arraycomb);
-            }
-        
-
-            if ($(".Listdiv1").hasClass("favorite")) //use favorite to contrl star (not nontstar) 
-            {
-                $(".Listdiv1").children(".star_icon").css("opacity","1"); //li id 
-                $(".Listdiv1").children(".nonstar_icon").css("opacity","1");
-
-            }  
-        
-        
-            if ($("#"+statuscountrypop).hasClass("favorite")) 
-            {
-                array.splice(array.indexOf(arrayadd)).sort();   
-                array.splice(array.indexOf(statuscountrypop)).sort();      
-                array.sort();
-                arrayadd.unshift(statuscountrypop);
-                arraycomb = arrayadd.concat(array);
-
-
-                console.log("arrayinit_GBP-AED-SGD-AUD 3");
-                console.log("arrayadd_NTD_EUR_AUD 3");
-                console.log("283_array_"+array);
-                console.log("306_arrayadd_"+arrayadd);
-                console.log("307_arraycomb_"+arraycomb);
-            }
-    */
+      
         }
 
      /********************************** html *************************************/
@@ -420,7 +390,7 @@ $("#viewAccount").pagecontainer({
         function AddhtmlSecond()      //Second is All     
         {                
             var htmltemp = "";               
-            for (var i=0 ; i< arrayTo.length; i++){ 
+            for (var i=0 ; i< arraycomb.length; i++){ 
                     var country = 'Candy';                    
                     var index    = "";
                     content  = htmltemp + CountrylisthtmlSecond(i ,country);
@@ -431,7 +401,7 @@ $("#viewAccount").pagecontainer({
         }
      /********************************** html  *************************************/
         function CountrylisthtmlOne(index){// one to one
-                    return '<li data-icon="false" class="1_li CountryA firstli" id="litest">'
+                    return '<li data-icon="false" class="1_li CountryA" id="litest">'
                     +'<div class="Listdiv1 select" id='
                     + FromStatus
                     +'>'
@@ -458,10 +428,7 @@ $("#viewAccount").pagecontainer({
                     +'<br> '    
                     +'</div>'    
                     +'</div>'   
-                    +'</li>' ;   
-                    +'<br>'
-                    +'<br>'
-                    +'<hr>';
+                    +'</li>' ;                     
                     
         }
 
@@ -513,16 +480,16 @@ $("#viewAccount").pagecontainer({
                     +'<div  class="Listdiv1equalmark4">=</div>'
                     +'</div>'
                     +'<div class="Listdiv2 select" id='
-                    + arrayTo[index]
+                    + arraycomb[index]
                     +'>'       
                     +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
                     +'<img  class="ListviewFlag2" src ="img/tmp/'
-                    + arrayTo[index] 
+                    + arraycomb[index] 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
                     +'<span class="ListDollar1" >10.032 </span> '    
                     +'<span class="ListRate2">'
-                    + arrayTo[index]  
+                    + arraycomb[index]
                     +'</span>'    
                     +'<br> '    
                     +'</div>'    
@@ -660,4 +627,71 @@ $("#viewAccount").pagecontainer({
         });
 
     }
+
+     /********************************** API*************************************/
+    /*
+     function getEventList(eventType) {
+
+            eventType = eventType || null;
+            var self = this;
+
+            //queryData Type: (According to Dropdown List [Event Type])
+            //value:0 [All Event] >       <emp_no>0407731</emp_no>
+            //value:1 [undone Event] >    <event_status>0</event_status><emp_no>0407731</emp_no>
+            //value:2 [done Event] >      <event_status>1</event_status><emp_no>0407731</emp_no>
+            //value:3 [emergency Event] > <event_type_parameter_value>1</event_type_parameter_value><emp_no>0407731</emp_no>
+            //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
+            var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
+
+            if (eventType === "1") {
+                queryDataParameter = "<event_status>0</event_status>" + queryDataParameter;
+            } else if (eventType === "2") {
+                queryDataParameter = "<event_status>1</event_status>" + queryDataParameter;
+            } else if (eventType === "3") {
+                queryDataParameter = "<event_type_parameter_value>1</event_type_parameter_value>" + queryDataParameter;
+            } else if (eventType === "4") {
+                queryDataParameter = "<event_type_parameter_value>2</event_type_parameter_value>" + queryDataParameter;
+            }
+
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+
+                var resultCode = data['ResultCode'];
+                var chatroomIDList = [];
+
+                if (resultCode === 1) {
+                    $(".event-list-no-data").hide();
+
+                    eventListData = data['Content'];
+
+                    for (var i=0; i<data['Content'].length; i++) {
+                        //Chatroom ID
+                        if (data['Content'][i].chatroom_id !== null && data['Content'][i].chatroom_id.length != 0) {
+                            chatroomIDList.push(data['Content'][i].chatroom_id);
+                        }
+                    }
+
+                    //Update Message Count
+                    getMessageCount(chatroomIDList);
+
+                } else if (resultCode === "014904") {
+                    //Clear Event List Data
+                    $("#reportDiv .event-list-msg").remove();
+
+                    //No Event exist
+                    $("#eventListNoDataPopup").popup("open");
+                }
+
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "getEventList", self.successCallback, self.failCallback, queryData, "");
+            }();
+
+        }
+        */
+    /********************************** API*************************************/
 });
