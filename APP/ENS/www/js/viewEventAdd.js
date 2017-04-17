@@ -383,12 +383,23 @@ $("#viewEventAdd").pagecontainer({
             var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
             var clientWidth = document.documentElement.clientWidth;
             var clientHeight = document.documentElement.clientHeight;
-            var top = parseInt((clientHeight - heightPopup) / 2, 10 );
+
+            //Add Location/Function content height
+            var loctionFunctionHeight = $("#eventLocationListContent").height();
+            if (device.platform === "iOS") {
+                loctionFunctionHeight += 20;
+            }
+            var top = parseInt(((clientHeight - heightPopup) / 2) + loctionFunctionHeight, 10 );
             var left = parseInt((clientWidth - widthPopup), 10 );
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
                 "top": top,
                 "left": left
+            });
+
+            $('.ui-popup-screen.in').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
             });
         };
 
@@ -399,6 +410,7 @@ $("#viewEventAdd").pagecontainer({
             doneDateTime["day"] = this.callFormat('%d', setDate);
 
             $("#doneTime").trigger('datebox', {'method':'open'});
+            tplJS.preventPageScroll();
         };
 
         window.setDoneDateTime = function(obj) {

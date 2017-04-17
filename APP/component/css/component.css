@@ -29,7 +29,7 @@ html .ui-panel-page-container-a, .ui-page-theme-a .ui-bar-inherit, .ui-bar-a .ui
 .ui-mobile .ui-page-active{
     display: block;
     overflow: visible;
-    /*overflow-x:hidden*/
+    overflow-x: hidden;
 }
 
 .ui-field-contain {
@@ -160,7 +160,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1001;
     height: 100%;
     width: 100%;
     background: rgba(35,31,32,0.3);
