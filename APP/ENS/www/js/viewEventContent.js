@@ -7,6 +7,7 @@ $("#viewEventContent").pagecontainer({
         window.eventContentData;
         var taskData;
         var taskRowID;
+        window.chatroomID;
         var photoUrl;
         var resizePhotoWidth;
         var resizePhotoHeight;
@@ -40,7 +41,6 @@ $("#viewEventContent").pagecontainer({
                         //Define in viewEventList
                         functionListPopup(data['Content']);
                     } else {
-                        loadingMask("hide");
 
                         eventContentData = data['Content'];
 
@@ -108,7 +108,9 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
 
                         //Message Count
+                        chatroomID = data['Content'].chatroom_id;
                         var msgCount = 0;
+
                         for (j=0; j<messageCountData.length; j++) {
                             if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
                                 msgCount = messageCountData[j]["count"];
@@ -121,9 +123,10 @@ $("#viewEventContent").pagecontainer({
 
                         //Complete Datetime
                         var completeTime = new Date(parseInt(data['Content'].estimated_complete_date * 1000, 10));
-                        var completeTimeConvert = completeTime.TimeZoneConvert();
-                        completeTimeConvert = completeTimeConvert.substr(0, parseInt(completeTimeConvert.length - 3, 10));
-                        $("#contentEventContent .datetime").html(completeTimeConvert);
+                        var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                        padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                        padLeft(completeTime.getMinutes(), 2);
+                        $("#contentEventContent .datetime").html(completeTimeText);
 
                         //Related Event
                         if (data['Content'].related_event_row_id === 0) {
@@ -148,9 +151,14 @@ $("#viewEventContent").pagecontainer({
                                 var eventTaskList = $(eventTaskListBeforeHTML);
                             } else {
                                 //After Done
+                                var completeTime = new Date(data['Content'].task_detail[i].close_task_date * 1000);
+                                var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
+                                padLeft(completeTime.getUTCDate(), 2) + " " + padLeft(completeTime.getHours(), 2) + ":" +
+                                padLeft(completeTime.getMinutes(), 2);
+
                                 var eventTaskList = $(eventTaskListAfterHTML);
                                 eventTaskList.find(".user").html(data['Content'].task_detail[i].close_task_user_id);
-                                eventTaskList.find(".datetime").html(data['Content'].task_detail[i].close_task_date);
+                                eventTaskList.find(".datetime").html(completeTimeText);
                             }
                             eventTaskList.find(".title").html(data['Content'].task_detail[i].task_location);
                             eventTaskList.find(".function").html(data['Content'].task_detail[i].task_function);
@@ -160,8 +168,23 @@ $("#viewEventContent").pagecontainer({
 
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
 
-                        //Message List
-                        //$('<hr class="ui-hr ui-hr-absolute">').insertAfter("#eventTaskListContent");
+                        //ChatRoom Message List
+                        chatRoomListView();
+
+                        //Update User Read Status & Time
+                        //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
+                        if (!eventFinish) {
+                            if (loginData["loginid"] !== data['Content'].created_user) {
+                                for (var i=0; i<data['Content'].user_event.length; i++) {
+                                    if (data['Content'].user_event[i].emp_no === loginData["emp_no"]) {
+                                        if (data['Content'].user_event[i].read_time === 0) {
+                                            var updateEventStatusObj = new updateEventStatus();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                 } else if (resultCode === "014904") {
@@ -183,6 +206,82 @@ $("#viewEventContent").pagecontainer({
             }();
 
         };
+
+        window.chatRoomListView = function() {
+            var messages = chatRoom.getMsg(chatroomID);
+
+            if (messages) {
+                $("#msgContentHR").show();
+                $(".message-content").show();
+                $("#messageContent .message-data-list").remove();
+
+                //Message List
+                var messageListHTML = $("template#tplMessageList").html();
+
+                for (var i=0; i<messages.length; i++) {
+                    var messageList = $(messageListHTML);
+
+                    if (messages[i]["msg_type"] === "text") {
+                        messageList.find(".user").html(messages[i]["from_id"]);
+                        messageList.find(".datetime").html(messages[i]["ctimeText"]);
+                        messageList.find(".text").html(messages[i]["msg_body"]);
+                    }
+
+                    if ((i+1) == messages.length) {
+                        messageList.find(".ui-hr").remove();
+                    }
+
+                    $("#messageContent").append(messageList);
+                }
+            } else {
+                //empty message
+                $("#msgContentHR").hide();
+                $(".message-content").hide();
+            }
+
+            loadingMask("hide");
+        };
+
+        function updateEventStatus() {
+            //Update 1. [event_status] 2. [read_time]
+            //Now only for read_time
+            var self = this;
+
+            var specificDoneDateTime = new Date();
+            var specificTimeStamp = specificDoneDateTime.TimeStamp();
+
+            var queryDataObj = {
+                lang: "zh-tw",
+                need_push: "Y",
+                app_key: appKey,
+                event_row_id: eventRowID,
+                read_time: specificTimeStamp,
+                emp_no: loginData["emp_no"]
+            };
+
+            var queryDataParameter = processLocalData.createXMLDataString(queryDataObj);
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+
+                var resultCode = data['ResultCode'];
+
+                if (resultCode === "014901") {
+                    //Update Success, then update count of viewer in Top of Page
+                    var countView = $("#viewEventContent .event-list-msg .view .text").html();
+                    var newCountView = parseInt(countView, 10) + 1;
+                    $("#viewEventContent .event-list-msg .view .text").html(newCountView);
+                } else if (resultCode === "014910") {
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "updateEventStatus", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
 
         function updateTaskStatus(status) {
             //status
@@ -231,8 +330,8 @@ $("#viewEventContent").pagecontainer({
             //Only [admin] & Function Member can do report
             var isAdmin = checkAuthority("admin");
             var isMember = false;
-            var location = $(dom).find(".title").html();
-            var functionName = $(dom).find(".function").html();
+            var location = $(dom).find(".title").text();
+            var functionName = $(dom).find(".function").text();
 
             for (var i=0; i<taskData.length; i++) {
                 if (taskData[i].task_location === location && taskData[i].task_function === functionName) {
@@ -274,12 +373,13 @@ $("#viewEventContent").pagecontainer({
 
         //For Plugin Camera
         function openFilePicker(selection) {
-            var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            //var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            //var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            var srcType = Camera.PictureSourceType.CAMERA;
             var options = setOptions(srcType);
             var func = createNewFileEntry;
 
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
-
                 photoUrl = imageUri;
 
                 $("<img id='myTempImage' style='display:none;' src='" + photoUrl + "'>").load(function() {
@@ -322,12 +422,34 @@ $("#viewEventContent").pagecontainer({
             var buttonContent = '<div class="button-content bottom font-style3"><span id="photoCancel">重新選擇</span><span id="photoConfirm">使用照片</span></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
-            tplJS.preventPageScroll();
+            if (device.platform === "iOS") {
+                $(".event-content-photo-full-screen img").css("padding-top", "20px");
+            }
+
+            $('body').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            $('body').one('touchstart', function(e) {
+                console.log("----touchstart");
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            $('body').on('touchmove', function(e) {
+                console.log("----touchmove");
+                var scrollHeight = $(window).scrollTop();
+                e.preventDefault();
+                e.stopPropagation();
+                $(".event-content-photo-full-screen").css("top", scrollHeight + "px");
+            });
 
             //Photo Confirm - Button Event
             $("#photoCancel").on("click", function() {
                 confirmPhotoClose();
-                openFilePicker();
+                //openFilePicker();
+                $("#msgPhoto").trigger("click");
             });
 
             $("#photoConfirm").on("click", function() {
@@ -349,23 +471,109 @@ $("#viewEventContent").pagecontainer({
 
             $(".event-content-photo-full-screen").remove();
 
-            tplJS.recoveryPageScroll();
+            $('body').css({
+                'overflow': 'auto',
+                'touch-action': 'auto'
+            });
+            $('body').off('touchmove');
+            $('body').off('touchstart');
         }
 
         function fullScreenPhoto() {
-            var imageContent = '<img src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
+            var imageContent = '<img id="fullScreenImg" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
             var buttonContent = '<div class="button-content top"><div class="back-button"><span class="back"></span></div></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
-            tplJS.preventPageScroll();
+            if (device.platform === "iOS") {
+                $(".event-content-photo-full-screen .button-content").css("padding-top", "20px");
+                $(".event-content-photo-full-screen #fullScreenImg").css("padding-top", "20px");
+            }
+
+            var file = $("input[type=file]")[0].files[0];
+            var img = document.getElementById("fullScreenImg");
+            var reader;
+
+            reader = new FileReader();
+            reader.onload = (function (theImg) {
+                return function (evt) {
+                    theImg.src = evt.target.result;
+                    loadingMask("hide");
+                };
+            }(img));
+            reader.readAsDataURL(file);
+
+            loadingMask("show");
+
+            $('body').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            $('body').one('touchstart', function(e) {
+                console.log("----touchstart");
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            $('body').on('touchmove', function(e) {
+                console.log("----touchmove");
+                var scrollHeight = $(window).scrollTop();
+                e.preventDefault();
+                e.stopPropagation();
+                $(".event-content-photo-full-screen").css("top", scrollHeight + "px");
+            });
 
             //Back Button
             $(".button-content .back-button").on("click", function() {
                 $(".event-content-photo-full-screen").remove();
                 $(".event-content-footer").removeClass("ui-fixed-hidden");
 
-                tplJS.recoveryPageScroll();
+                $('body').css({
+                    'overflow': 'auto',
+                    'touch-action': 'auto'
+                });
+                $('body').off('touchmove');
+                $('body').off('touchstart');
             });
+        }
+
+        function callFileReader(file) {
+            if (typeof FileReader !== "undefined") {
+                //var container = document.getElementById(containerid);
+                //var img = document.createElement("img");
+                //container.appendChild(img);
+                var imgSmall = document.getElementById("finalImage");
+                var imgOriginal = document.getElementById("myTempImage");
+                var reader;
+
+                //small preview image
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        $(".previewImageDiv").show();
+                        $(".previewImageDiv-AddHeight").show();
+
+                        loadingMask("hide");
+                    };
+                }(imgSmall));
+                reader.readAsDataURL(file);
+
+                //original image
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        photoUrl = theImg.src;
+                        confirmPhoto($(theImg).width(), $(theImg).height());
+                    };
+                }(imgOriginal));
+                reader.readAsDataURL(file);
+
+                loadingMask("show");
+            } else {
+                console.log("FileReader------------------no support");
+            }
         }
 
         /********************************** page event *************************************/
@@ -397,6 +605,9 @@ $("#viewEventContent").pagecontainer({
                 $("#eventEdit").show();
             }
 
+            $(".previewImageDiv").hide();
+            $(".previewImageDiv-AddHeight").hide();
+
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -419,7 +630,18 @@ $("#viewEventContent").pagecontainer({
 
         //Open Photo Library
         $(document).on("click", "#viewEventContent #cameraButton", function() {
-            openFilePicker();
+            //openFilePicker();
+            $("#msgPhoto").trigger("click");
+        });
+
+        $("input[type=file]").change(function(){
+            var file = $("input[type=file]")[0].files[0];
+            console.log(file.name + "\n" +
+                  file.type + "\n" +
+                  file.size + "\n" +
+                  file.lastModifiedDate);
+
+            callFileReader(file);
         });
 
         //Photo - Small Preview
@@ -465,7 +687,7 @@ $("#viewEventContent").pagecontainer({
             updateTaskStatus(1);
         });
 
-        //Cancel Event Work
+        //Cancel Event Work Done
         $(document).on("click", ".work-after", function() {
             checkReportAuthority(this, "cancel");
         });
@@ -479,6 +701,97 @@ $("#viewEventContent").pagecontainer({
             $("#eventCancelWorkDoneConfirm").popup("close");
             footerFixed();
             updateTaskStatus(0);
+        });
+
+        //Chatroom Msg Button
+        $(document).on("click", "#msgButton", function() {
+
+            var msgEmpty = false;
+            var msg = $("#msgText").val();
+
+            if (msg.length === 0 || msg === "請輸入訊息") {
+                msgEmpty = true;
+            }
+
+            if (!msgEmpty) {
+                if (msgController.isInited) {
+                    var gid = chatroomID;
+                    var gname = chatroomID + "-room";
+                    var text = msg;
+
+                    msgController.SendText(gid, gname, text, function(successResult) {
+                        console.log("---------------successResult");
+                        console.log(successResult);
+                        loadingMask("show");
+
+                        if (successResult["result"]["code"] === 0) {
+                            var chatRoomID = successResult["result"]["target_gid"];
+                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                            var createTime = new Date(ctime * 1000);
+
+                            var objData = {
+                                msg_id: successResult["result"]["msg_id"],
+                                ctime: ctime,
+                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                                    padLeft(createTime.getMinutes(), 2),
+                                from_id: successResult["content"]["from_id"],
+                                msg_type: successResult["content"]["msg_type"],
+                                msg_body: successResult["content"]["msg_body"]["text"]
+                            };
+
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                        }
+                    }, function(errorResult) {
+                        console.log("---------------errorResult");
+                        console.log(errorResult);
+                    });
+                }
+            }
+
+            /*
+            var gid = chatroomID;
+            var gname = chatroomID + "-room";
+            var fid = "msgTest";
+            console.log(photoUrl);
+            var fid2 = {
+                lastModified: 1486018042410,
+                lastModifiedDate: "Thu Feb 02 2017 14:47:22 GMT+0800 (CST)",
+                name: "123",
+                size: 74983,
+                type: "image/png",
+                webkitRelativePath: ""
+            };
+
+            msgController.SendImage(gid, gname, fid, function(successResult) {
+                console.log("---------------successResult");
+                console.log(successResult);
+                loadingMask("show");
+                /*
+                if (successResult["result"]["code"] === 0) {
+                    var chatRoomID = successResult["result"]["target_gid"];
+                    var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                    var createTime = new Date(ctime * 1000);
+
+                    var objData = {
+                        msg_id: successResult["result"]["msg_id"],
+                        ctime: ctime,
+                        ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                            padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                            padLeft(createTime.getMinutes(), 2),
+                        from_id: successResult["content"]["from_id"],
+                        msg_type: successResult["content"]["msg_type"],
+                        msg_body: successResult["content"]["msg_body"]["text"]
+                    };
+
+                    chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                }
+                *
+            }, function(errorResult) {
+                console.log("---------------errorResult");
+                console.log(errorResult);
+            });
+            */
         });
     }
 });

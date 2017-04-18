@@ -19,15 +19,17 @@
     display       : inline-block; 
     float         : left; 
     width         : 50% ;  
-    margin-left   : 3.71VW;
+    padding-left: 3.71vw;
     position      : relative;
+    background-color: white !important;
 }
 
 .buttontwo {
     display       : inline-block; 
     float         : left; 
     width         : 42% ;  
-    margin-left   : 3.71VW;
+    padding-left: 3.71vw;
+    background-color: white !important;
 }
 
 
@@ -99,6 +101,7 @@
 .frag .frag0{   
     margin-top                 : 3.99VW;
     padding                    : 0 2VW;
+    background-color: white !important;
 
 }
 
@@ -146,9 +149,17 @@
 /*list        ----------------------------*/
 
 .CountryA {
-    background-color          : #f9f9f9!important;;
+    background-color          : #f9f9f9!important;
 }
 
+#ultestA li{
+    /*
+    border-bottom: #DDDDDD 0.1px solid;
+    float: left;
+    width: 100VW;
+     
+    */  /* 20170414*/
+}
 
 .firstli{
     border-top: honeydew !important; 
@@ -239,6 +250,7 @@
 .nonstar_icon {  
     /*visibility : hidden ;*/
     opacity   : 0;   
+    margin-top: 4.5VW;
     float     : left;   
     width     : 3.54vw;  
 }
@@ -784,6 +796,12 @@ element.style {
 .popListdiv1{
     height                     : 10VW;
 }
+
+
+.popListdiv2{
+    height                     : 10VW;
+}
+
 
 /* mvpn select popup window for yellow page */
 #numSelectPopupWindow #msgTitle{ margin: 0 5%; padding: 5% 0; font-size: 5vw; border-bottom: 1px solid #d4d4d4; position: relative;}

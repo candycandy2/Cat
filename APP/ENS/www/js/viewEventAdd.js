@@ -10,14 +10,21 @@ $("#viewEventAdd").pagecontainer({
         var loctionFunctionData = [];
         var loctionFunctionID = 0;
         var eventRelatedData;
+        var eventRelatedID = 0;
 
         /********************************** function *************************************/
 
         function getUnrelatedEventList(action) {
 
             action = action || null;
+            //If Edit Event, do not relate itself, API add parameter
+            if (action === "edit") {
+                var newParameter = "<event_row_id>" + eventRowID + "</event_row_id>";
+            } else {
+                var newParameter = "";
+            }
             var self = this;
-            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no></LayoutHeader>";
+            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no>" + newParameter + "</LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -32,8 +39,19 @@ $("#viewEventAdd").pagecontainer({
                 }
 
                 //UI Dropdown List : Event Additional
+                var ID = eventRelatedID;
+                var oldID = parseInt(ID) - 1;
+                eventRelatedID++;
+
+                $("#eventaAdditionalSelectContent").html("");
+                if (oldID >= 0) {
+                    $("#eventAdditional" + oldID).remove();
+                    $(document).off("click", "#eventAdditional" + oldID + "-option");
+                    $("#eventAdditional" + oldID + "-option").popup("destroy");
+                }
+
                 eventRelatedData = {
-                    id: "eventAdditional",
+                    id: "eventAdditional" + ID,
                     defaultText: "添加事件",
                     title: "請選擇-關聯事件",
                     option: [],
@@ -52,11 +70,11 @@ $("#viewEventAdd").pagecontainer({
                     }
                 }
 
-                $("#eventaAdditionalSelectContent").html("");
+
                 tplJS.DropdownList("viewEventAdd", "eventaAdditionalSelectContent", "append", "typeB", eventRelatedData);
 
                 if (relatedEventExist) {
-                    $(document).on("change", "#eventAdditional", function() {
+                    $(document).on("change", "#eventAdditional" + ID, function() {
                         var selectedValue = $(this).val();
                         relatedEventList(selectedValue);
                     });
@@ -69,9 +87,9 @@ $("#viewEventAdd").pagecontainer({
 
                 } else {
                     //off event which set in template.js
-                    $(document).off("click", "#eventAdditional");
+                    $(document).off("click", "#eventAdditional" + ID);
 
-                    $(document).on("click", "#eventAdditional", function() {
+                    $(document).on("click", "#eventAdditional" + ID, function() {
                         $("#noRelatedEventExist").popup("open");
                     });
 
@@ -129,7 +147,8 @@ $("#viewEventAdd").pagecontainer({
             }
 
             //Related Event
-            var relatedEventVal = $("#eventAdditional").val();
+            var nowRelatedID = parseInt(eventRelatedID) - 1;
+            var relatedEventVal = $("#eventAdditional" + nowRelatedID).val();
             if (!$.isNumeric(relatedEventVal)) {
                 relatedEventVal = "";
             }
@@ -220,9 +239,9 @@ $("#viewEventAdd").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             if (data.event_type === "一般通報") {
-                $("#eventLevel").val("1");
-            } else {
                 $("#eventLevel").val("2");
+            } else {
+                $("#eventLevel").val("1");
             }
 
             //Event Title
@@ -236,16 +255,15 @@ $("#viewEventAdd").pagecontainer({
             setDateTime = "setTime";
 
             var completeTime = new Date(parseInt(data.estimated_complete_date * 1000, 10));
-            var completeTimeConvert = completeTime.TimeZoneConvert();
-            var completeTimeData = new Date(completeTimeConvert);
 
-            doneDateTime["year"] = completeTimeData.getFullYear();
-            doneDateTime["month"] = padLeft(parseInt(completeTimeData.getMonth() + 1, 10), 2);
-            doneDateTime["day"] = padLeft(completeTimeData.getUTCDate(), 2);
-            doneDateTime["hour"] = padLeft(completeTimeData.getHours(), 2);
-            doneDateTime["minute"] = padLeft(completeTimeData.getMinutes(), 2);
+            doneDateTime["year"] = completeTime.getFullYear();
+            doneDateTime["month"] = padLeft(parseInt(completeTime.getMonth() + 1, 10), 2);
+            doneDateTime["day"] = padLeft(completeTime.getUTCDate(), 2);
+            doneDateTime["hour"] = padLeft(completeTime.getHours(), 2);
+            doneDateTime["minute"] = padLeft(completeTime.getMinutes(), 2);
 
-            var completeTimeText = completeTimeConvert.substr(0, parseInt(completeTimeConvert.length - 3, 10));
+            var completeTimeText = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
+            doneDateTime["hour"] + ":" + doneDateTime["minute"];
             $("#textDateTime").html(completeTimeText);
 
             //Related Event
@@ -365,12 +383,23 @@ $("#viewEventAdd").pagecontainer({
             var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
             var clientWidth = document.documentElement.clientWidth;
             var clientHeight = document.documentElement.clientHeight;
-            var top = parseInt((clientHeight - heightPopup) / 2, 10 );
+
+            //Add Location/Function content height
+            var loctionFunctionHeight = $("#eventLocationListContent").height();
+            if (device.platform === "iOS") {
+                loctionFunctionHeight += 20;
+            }
+            var top = parseInt(((clientHeight - heightPopup) / 2) + loctionFunctionHeight, 10 );
             var left = parseInt((clientWidth - widthPopup), 10 );
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
                 "top": top,
                 "left": left
+            });
+
+            $('.ui-popup-screen.in').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
             });
         };
 
@@ -381,6 +410,7 @@ $("#viewEventAdd").pagecontainer({
             doneDateTime["day"] = this.callFormat('%d', setDate);
 
             $("#doneTime").trigger('datebox', {'method':'open'});
+            tplJS.preventPageScroll();
         };
 
         window.setDoneDateTime = function(obj) {
@@ -613,8 +643,10 @@ $("#viewEventAdd").pagecontainer({
             if (prevPageID === "viewEventList") {
                 //Set Default
                 $("#eventLevel").val("1");
-                $("#eventTemplateTextarea").val("請選擇範本或輸入標題");
-                $("#eventDescriptionTextarea").val("描述文字");
+                $("#eventTemplateTextarea").val("");
+                $('#eventTemplateTextarea').prop('placeholder', "請選擇範本或輸入標題");
+                $("#eventDescriptionTextarea").val("");
+                $('#eventDescriptionTextarea').prop('placeholder', "描述文字");
                 $("#setNow").prop("checked", "checked");
                 setDateTime = "setNow";
 
@@ -754,14 +786,14 @@ $("#viewEventAdd").pagecontainer({
         //Radio Button : Finish Time
         $(document).on("change", "input[name=setDateTime]", function() {
             setDateTime = $('input[name=setDateTime]:checked').val();
-
             if (setDateTime === "setNow") {
                 $("#textDateTime").html("");
-            } else if (setDateTime === "setTime") {
-                $("#doneDate").trigger('datebox', {'method':'open'});
-
-                tplJS.preventPageScroll();
             }
+        });
+
+        $(document).on("click", "#setTime", function() {
+            $("#doneDate").trigger('datebox', {'method':'open'});
+            tplJS.preventPageScroll();
         });
 
         //No Related Event Exist
