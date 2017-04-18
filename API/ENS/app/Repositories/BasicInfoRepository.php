@@ -54,6 +54,26 @@ class BasicInfoRepository
     }
 
     /**
+     * 取得basic Info基本資料
+     * @return mixed
+     */
+    public function getAllBasicInfoRawData()
+    {   
+
+        return  $this->basicInfo
+            ->select(
+                'location',
+                'function',
+                'master',
+                'emp_no'
+                )
+            ->orderBy('location','asc')
+            ->orderBy('function','asc')
+            ->orderBy('emp_no','asc')
+            ->get();
+    }
+
+    /**
      * 使用location-function 取得資本資料
      * @param  String $location 地點
      * @param  String $function 分類
