@@ -89,7 +89,7 @@ use App\lib\ResultCode;
                     }else if(d.ResultCode == {{ResultCode::_014905_fieldFormatError}}){
                         showMessageDialog('錯誤','上傳檔案錯誤',d.Content);
                     }else if(d.ResultCode == {{ResultCode::_014908_accountNotExist}}){
-                        showMessageDialog('錯誤','文件有誤, 請修正以下所有錯誤後重新上傳',d.Content);
+                        showMessageDialog('錯誤','匯入失敗, 請修正以下所有錯誤後重新上傳',d.Content);
                     }else{
                         showMessageDialog('錯誤','匯入失敗, 請聯絡系統管理員');
                     }
