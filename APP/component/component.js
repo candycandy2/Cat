@@ -332,26 +332,7 @@ $(document).one("pagebeforecreate", function(){
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
         }
 
-        //For some APP Page, if page's header has second level [button / title],
-        //auto resize the margin-top of page-main.
-        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-        var activePageID = activePage[0].id;
-
-        if (activePageID.length !== 0) {
-
-            var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
-            var headerStyleHeight = $("#" + activePageID + " .header-style").height();
-            var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
-
-            if (device.platform === "iOS") {
-                mainMarginTop = mainMarginTop + 20;
-            }
-
-            $(".page-main").css({
-                "margin-top": mainMarginTop + "px"
-            });
-
-        }
+        adjustPageMarginTop();
 
         // tab title, open version, uuid window
         $(".ui-title").on("taphold", function(){
@@ -387,6 +368,16 @@ $(document).one("pagebeforecreate", function(){
             }
         }
     });
+
+    window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+        if (window.orientation === 180 || window.orientation === 0) {
+            /*do somrthing when device is in portraint mode*/
+            if (device.platform === "iOS") {
+                adjustPageMarginTop();
+            }
+        }
+    }, false);
+
 });
 
 /********************************** QPlay APP function *************************************/
