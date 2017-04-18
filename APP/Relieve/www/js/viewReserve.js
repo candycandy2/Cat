@@ -4,27 +4,40 @@ $("#viewReserve").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        window.APIRequest = function() {
+        window.QueryReserveDetail = function() {
             
             var self = this;
 
             this.successCallback = function(data) {
                 loadingMask("hide");
-
                 var resultcode = data['ResultCode'];
-                //do something
             };
 
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
+                CustomAPI("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, QueryReserveDetailQuerydata, "");
             }();
+        };
 
+        window.ReserveRelieve = function() {
+            
+            var self = this;
+
+            this.successCallback = function(data) {
+                loadingMask("hide");
+                var resultcode = data['ResultCode'];
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
+            }();
         };
 
         // time init
-        function timeInit(){
+        function timeInit() {
             $('.timeRemind').each(function() {
                 var oriTime = $(this).parent('div').find('>div:nth-of-type(1)').text();
                $(this).html('~' + addThirtyMins(oriTime)); 
@@ -37,6 +50,7 @@ $("#viewReserve").pagecontainer({
             $('#pageTwo').hide();
             $('#pageThree').hide();
             timeInit();
+            pullToRefersh();
         });
 
         /********************************** dom event *************************************/
@@ -113,7 +127,7 @@ $("#viewReserve").pagecontainer({
         });
 
         // reserve btn click
-        $('body').on('click', '#reserveBtn', function(){
+        $('body').on('click', '#reserveBtn', function() {
             if ($(this).hasClass('btn-disable')) {
                 popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
             } else {
@@ -185,5 +199,13 @@ $("#viewReserve").pagecontainer({
         $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
         });
+
+        function pullToRefersh() {
+            PullToRefresh.init({
+              mainElement: 'body',
+              // onRefresh: function(){ window.location.reload(); }
+              onRefresh: function() { alert('refresh'); }
+            });
+        }
     }
 });

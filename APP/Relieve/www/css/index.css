@@ -1,5 +1,4 @@
 /********************************** override jQuery Mobile *************************************/
-
 hr {
     border: 0;
     height: 1px;
@@ -155,7 +154,7 @@ a {
 #reserveBtn{ margin: 4.3vw auto 0 !important; padding: 1.8vw 0; height: auto;}
 
 /* notice area */
-#reserveNotice{ text-align: left;}
+/*#reserveNotice{ text-align: left;}
 .noticeArea{ padding-bottom: 4.3vw;}
 .noticeArea:nth-of-type(1){ margin-bottom: 6.44vw; position: relative; border-bottom: 1px solid #d6d6d6;}
 .notice-company{ color: #0f0f0f;}
@@ -178,7 +177,7 @@ a {
 .color-blue{ border-color: #2bb8eb;}
 
 .notice-timeTable{ margin-bottom: 2.14vw;}
-.timeTable-td{ width: 16.7%;}
+.timeTable-td{ width: 16.7%;}*/
 
 /* reserve info */
 .reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
