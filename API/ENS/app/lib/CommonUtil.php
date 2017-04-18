@@ -188,4 +188,44 @@ class CommonUtil
         }
         return $key;
     }
+
+    /**
+     * 檢查用戶狀態
+     * @param  String $loginId 使用者帳號
+     * @return int             使用這狀態(0:用戶不存在|1:已離職|2:已停權|3.正常)
+     */
+    public static function getUserStatusJustByUserID($loginId)
+    {
+        $userList = \DB::connection('mysql_qplay')->table('qp_user')
+            -> where('qp_user.login_id', '=', $loginId)
+            -> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+        if(count($userList) < 1) {
+            return 0; //用户不存在
+        }
+
+        if(count($userList) == 1) {
+            $user = $userList[0];
+            if($user->resign != "N") {
+                return 1; //用户已离职
+            }
+
+            if($user->status != "Y") {
+                return 2; //用户已停权
+            }
+        } else {
+            foreach ($userList as $user)
+            {
+                if($user->resign == "N") {
+                    if($user->status == "Y") {
+                        return 3; //正常
+                    } else {
+                        return 2; //停权
+                    }
+                }
+            }
+            return 1;  //离职
+        }
+
+        return 3; //正常
+    }
 }

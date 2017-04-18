@@ -11,9 +11,6 @@
 |
 */
 
-// Route::get('v101/ens/basicInfoMaintain', function () {
-//     return view('basic_info/basic_info_maintain');
-// });
 Route::any('/v101/ens/getAuthority', 'UserController@getAuthority');
 Route::any('/v101/ens/getBasicInfo', 'BasicInfoController@getBasicInfo');
 Route::any('/v101/ens/newEvent', 'EventController@newEvent');
@@ -27,3 +24,4 @@ Route::any('/v101/ens/getMessageCount', 'MessageController@getMessageCount');
 
 Route::any('v101/ens/uploaBasicInfo','BasicInfoController@uploaBasicInfo');
 Route::any('v101/ens/basicInfoMaintain','BasicInfoController@basicInfoMaintain');
+Route::any('v101/ens/registerSuperUserToMessage','BasicInfoController@registerSuperUserToMessage');

@@ -9,6 +9,7 @@ use Config;
 
 class Message
 {   
+     const _998002_userAlreadyExist = "998002";  //用戶已註冊
     /**
      * 聊天室群組資訊
      * @var array
