@@ -22,7 +22,7 @@ class UserRepository
     public function __construct(QP_User $user, EN_Usergroup $userGroup)
     {
         $this->user = $user;
-         $this->userGroup = $userGroup;
+        $this->userGroup = $userGroup;
     }
 
     /**
@@ -49,9 +49,11 @@ class UserRepository
      * @return mixed
      */
     public function getUserInfoByEmpNo(Array $empNoArr){
+
          return $this->user
          ->whereIn('emp_no', $empNoArr)
          ->select('row_id','login_id','ext_no','email','emp_no','user_domain')
+         ->orderBy('login_id','asc')
          ->get();
     }
 
@@ -64,6 +66,7 @@ class UserRepository
          return $this->user
          ->where('login_id','=', $loginId)
          ->select('row_id','login_id','ext_no','email','emp_no','user_domain','register_message')
+         ->orderBy('login_id','asc')
          ->first();
     }
 
@@ -81,5 +84,18 @@ class UserRepository
         return $this->user
         ->where('login_id','=', $loginId)
         ->update($updateData);
+    }
+
+    public function getSuperUserLoginId(){
+
+        $ensDataBaseName = \Config::get('database.connections.mysql.database');
+        $userTableName = $this->user->getTableName();
+
+        return $this->user
+            ->where($userTableName . '.register_message', '=', 'N')
+            ->join( $ensDataBaseName . '.en_usergroup as en_usergroup', $userTableName . '.emp_no', '=', 'en_usergroup.emp_no')
+            ->distinct('login_id')->select('login_id')
+            ->get();
+
     }
 }
