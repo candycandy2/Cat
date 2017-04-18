@@ -289,11 +289,12 @@ class EventService
                     "close_task_date" => time(),
                     "task_status" => self::STATUS_FINISHED
                 );
+        $this->taskRepository->updateTaskById($empNo, $taskId, $data);
+        //已無開啟中task,將事件關閉
         $openedTask = $this->taskRepository->getOpenTaskByEventId($eventId);
-        if(count($openedTask) == 1){
+        if(count($openedTask) == 0){
             $updateResult = $this->updateEvent($empNo, $eventId, array("event_status"=>self::STATUS_FINISHED), $queryParam);
         }
-        return $this->taskRepository->updateTaskById($empNo, $taskId, $data);
    }
 
    /**

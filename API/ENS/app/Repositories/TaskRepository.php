@@ -45,6 +45,8 @@ class TaskRepository
          return  $this->task
             ->select('row_id','task_function','task_location')
             ->where('event_row_id','=',$eventId)
+            ->orderBy('task_location','asc')
+            ->orderBy('task_function','asc')
             ->get();
     }
 
@@ -60,6 +62,8 @@ class TaskRepository
                 'close_task_emp_no','close_task_date',
                 DB::raw("CONCAT(user_domain,'\\\\',login_id) as close_task_user_id"))
             ->where('event_row_id','=',$eventId)
+            ->orderBy('task_location','asc')
+            ->orderBy('task_function','asc')
             ->get();
 
         return $result->toArray();
@@ -79,6 +83,8 @@ class TaskRepository
                 'read_time',
                 DB::raw("CONCAT(user_domain,'\\\\',login_id) as login_id")
                 )
+            ->orderBy('user_domain')
+            ->orderBy('login_id')
             ->get();
     }
 
