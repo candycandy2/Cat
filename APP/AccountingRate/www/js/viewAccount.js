@@ -2,13 +2,13 @@
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
        // First
-       // var FromStatus  = "All Currency";          
-       //var ToStatus    = "USD";
+        var FromStatus  = "All Currency";          
+        var ToStatus    = "USD";
 
 
         // Sencod
-        var FromStatus  = "NTD";  
-        var ToStatus    = "All Currency";
+        //var FromStatus  = "NTD";  
+        //var ToStatus    = "All Currency";
 
         // One
         //var FromStatus  = "NTD";//var ToStatus  = "NTD";  
@@ -16,7 +16,6 @@ $("#viewAccount").pagecontainer({
 
         var test;
         var statuscountrypop;
-        //var array =[ "GBP","AED","SGD","AUD"       ];
 
         var array = ["AED","BDT","BRL","CAD",
                     "CHF","CZK","EUR","GBP","HKD",
@@ -24,6 +23,13 @@ $("#viewAccount").pagecontainer({
                     "MXN","MYR","NTD","NZD","PHP",
                     "RMB","RUB","SEK","SGD","THB",
                     "TRL","VND","ZAR" ]; 
+
+        var arrayRate =["10.032","2","3","4","5",
+                    "1","2","3","4","5",
+                    "1","2","3","4","5",
+                    "1","2","3","4","5",
+                    "1","2","3","4","5",
+        ];
 
         var arrayadd =["NTD","EUR","AUD"];
         var arraycomb =[
@@ -92,13 +98,13 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-           
+            //Jsonparse(1);
             Test();         
             Buttonimg(); 
 
             //AddhtmlOne();
-            //AddhtmlFirst(); 
-            AddhtmlSecond(); 
+            AddhtmlFirst(); 
+            //AddhtmlSecond(); 
    
             Favorite();   //wait for html
 
@@ -149,8 +155,9 @@ $("#viewAccount").pagecontainer({
                  $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus  +" ");  
                 //Buttonimg(); 
                 // Addhtml();  
-        
+                 Jsonparse(1); 
                  Buttonimg(); 
+                 Favorite();  //bugfix
         });
    //  Transfer   ************************************************************************** 
         function Buttonimg()    
@@ -162,7 +169,7 @@ $("#viewAccount").pagecontainer({
              {    // Bug for img show 
                $(".buttonone1").removeClass('buttononeFlag1');
                $(".buttonone1").addClass('buttononeFlag1non');
-               //AddhtmlFirst();
+               AddhtmlFirst();
              }
             else
              {
@@ -175,7 +182,7 @@ $("#viewAccount").pagecontainer({
             {   // Bug for img show 
               $(".buttontwo1").removeClass('buttononeFlag2');
               $(".buttontwo1").addClass('buttononeFlag1non');
-                //AddhtmlSecond();
+                AddhtmlSecond();
 
             }
             else
@@ -188,7 +195,7 @@ $("#viewAccount").pagecontainer({
             
             if ((FromStatus !="All Currency")&&(ToStatus !="All Currency"))
             {
-                //  AddhtmlOne();
+                  AddhtmlOne();
             }
 
             //Favorite();
@@ -227,7 +234,9 @@ $("#viewAccount").pagecontainer({
 
            */
             arrayadd.push(statuscountrypop);//20170416
-            array.splice (array.indexOf(arrayadd))  ;
+            var a = array.indexOf(statuscountrypop);
+            array.splice(a,1);
+            //array.splice(array.indexOf(statuscountrypop),1);
 
             Test(); //reoragionize array
             //Buttonimg();//html reset => would be error
@@ -248,7 +257,7 @@ $("#viewAccount").pagecontainer({
             $("#"+statuscountrypop).removeClass("favorite"); 
 
            //20170416
-            arrayadd.splice (arrayadd.indexOf(statuscountrypop));
+            arrayadd.splice (arrayadd.indexOf(statuscountrypop),1);
             array.push(statuscountrypop);
             Test(); 
 
@@ -283,6 +292,9 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry1").text(FromStatus);
             $(".buttononeCountry2").text(ToStatus);   
            
+             Jsonparse(1);
+             Test();  
+
              Buttonimg();
              Favorite();         
 
@@ -312,7 +324,9 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry1").text(FromStatus);
             $(".buttononeCountry2").text(ToStatus);   
      
-            
+             Jsonparse(1);
+             Test(); 
+
              Buttonimg();
              Favorite();
             $("#popupB").popup('close');
@@ -324,8 +338,8 @@ $("#viewAccount").pagecontainer({
 
             */
             //array.splice (arrayadd.indexOf(arrayadd));           
-            
-            arraycomb = arrayadd.concat(array);   
+         
+            arraycomb = arrayadd.concat(array.sort());   
             Buttonimg(); //20170416
             Favorite();  //20170416
         }
@@ -421,7 +435,10 @@ $("#viewAccount").pagecontainer({
                     + ToStatus 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListDollar1" >'
+                    + arrayRate[index]
+                    //+ 10.032 
+                    +'</span> '    
                     +'<span class="ListRate2">'
                     + ToStatus 
                     +'</span>'    
@@ -453,15 +470,17 @@ $("#viewAccount").pagecontainer({
                     + ToStatus 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListDollar1" >'
+                    + arrayRate[index] 
+                   // +'10.032'
+                    +'</span> '    
                     +'<span class="ListRate2">'
                     + ToStatus 
                     +'</span>'    
                     +'<br> '    
                     +'</div>'    
                     +'</div>'   
-                    +'</li>';              
-                    +'<hr>';                         
+                    +'</li>';         
         }
 
         function CountrylisthtmlSecond(index,country){//Second is all
@@ -487,7 +506,10 @@ $("#viewAccount").pagecontainer({
                     + arraycomb[index] 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListDollar1" >'
+                    + arrayRate[index] 
+                    // +'10.032'
+                    +'</span> '    
                     +'<span class="ListRate2">'
                     + arraycomb[index]
                     +'</span>'    
@@ -507,10 +529,44 @@ $("#viewAccount").pagecontainer({
         /********************************** dom event *************************************/
 
         /********************************** API*************************************/
-   /*  
+
         //Initial , pop
         function Jsonparse(Jsonflag) {
             var packJson =[
+
+                { 
+                    "From_Currency" : "AED",
+                    "To_Currency"   : "USD", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "61.134"
+                },
+
+                { 
+                    "From_Currency" : "NTD",
+                    "To_Currency"   : "USD", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "0.0333"
+                },
+
+                { 
+                    "From_Currency" : "USD",
+                    "To_Currency"   : "NTD", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "31.125"
+                },
+                { 
+                    "From_Currency" : "USD",
+                    "To_Currency"   : "AED", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "0.001"
+                },
+
+                { 
+                    "From_Currency" : "AED",
+                    "To_Currency"   : "EUR", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "61.134"
+                }, 
 
                 { 
                     "From_Currency" : "AED",
@@ -527,27 +583,6 @@ $("#viewAccount").pagecontainer({
                 },
 
                 { 
-                    "From_Currency" : "AED",
-                    "To_Currency"   : "USD", 
-                    "Ex_Date"       : "2017/3/1",
-                    "Ex_Rate"       : "61.134"
-                },
-
-                { 
-                    "From_Currency" : "AED",
-                    "To_Currency"   : "EUR", 
-                    "Ex_Date"       : "2017/3/1",
-                    "Ex_Rate"       : "61.134"
-                }, 
-
-                { 
-                    "From_Currency" : "NTD",
-                    "To_Currency"   : "USD", 
-                    "Ex_Date"       : "2017/3/1",
-                    "Ex_Rate"       : "8"
-                },
-
-                { 
                     "From_Currency" : "NTD",
                     "To_Currency"   : "EUR", 
                     "Ex_Date"       : "2017/3/1",
@@ -561,12 +596,12 @@ $("#viewAccount").pagecontainer({
                 } 
             ];
 
-            var arraygetrate    =[];
-            var arraygetFrom    =[];
-            var arraygetTo      =[];
-            var cleartest       = 0;
+                var arraygetrate    =[];
+                var arraygetFrom    =[];
+                var arraygetTo      =[];
+                var cleartest       = 0;
 
-            if (cleartest == "1"){
+           /* if (cleartest == "1"){
                   array=[];
                   arrayTo=[];
                   arraygetrate=[];
@@ -575,50 +610,68 @@ $("#viewAccount").pagecontainer({
                     //arraygetrate.length = 0;          //clear  rate 
                     //if ((getfrom == "EUR") &&(getto =="RUB"))
                 }
+            */
 
+                for (var i=0; i<packJson.length; i++)
+                {
 
-            for (var i=0; i<packJson.length; i++){
+                    getrate     = packJson[i].Ex_Rate;   //variable
+                    getfrom     = packJson[i].From_Currency;
+                    getto       = packJson[i].To_Currency;
+                  
+                      //variable to array 
+                    arraygetTo.push(getto);    
 
-                getrate     = packJson[i].Ex_Rate;   //rate
-                getfrom     = packJson[i].From_Currency;
-                getto       = packJson[i].To_Currency;
-              
-                arraygetFrom.push(getfrom);    
-                arraygetTo.push(getto);    
+                   //clear for array and rate 
 
-               //clear for array and rate 
-               if (Jsonflag == 0)
-               { 
-                    if ((getfrom == FromStatus) && (getto ==ToStatus)) //FromStatus   ToStatus 
-                    {  //Json data i item == FromStatus
-                      arraygetrate.push(getrate);                      // AddhtmlOne();
+                    if (FromStatus =="All Currency") //First 
+                    { 
+                        if (getto == ToStatus) //To NTD 's  ; from save
+                            {
+                                arraygetFrom.push(getfrom);       
+                                arraygetrate.push(getrate);  
+
+                                array= arraygetFrom;
+                                arrayRate= arraygetrate;
+                                //change
+                            }
+                            //
                     }
-               }
-               
-               if (Jsonflag == 1) //From =All    TO =NTD
-               {
-                    if ((getto == ToStatus) && (getto != ToStatus))                   
-                    {  //To checked , From all save
-                      array.push(getfrom);                            // AddhtmlFirst(); 
-                      arraygetrate.push(getrate);       
-                    }
-               }
+                    //array= arraygetFrom;
+                    //Buttonimg();
 
-               if (Jsonflag == 2) //To =All  then save from   From NTD
-               {
-                    if ((getfrom == FromStatus) && (getto != FromStatus))
-                    {  //From checked , To all save
-                     arrayTo.push(getto);               // AddhtmlSecond();  i1 = usa , i2 =EUR 
-                     arraygetrate.push(getrate);        //                   i1 =5    , i2 =2
-                     var test = arraygetrate;
+                    
+                    else if (ToStatus =="All Currency")//Second 
+                    {   // Bug for img show 
+                      
+                        if (getfrom == FromStatus) // NTD 's from save
+                            {
+                                arraygetTo.push(getto);      
+                                arraygetrate.push(getrate);  
+
+                                array= arraygetFrom;
+                                arrayRate= arraygetrate;
+                                //change
+                            }
+                        
                     }
-               }     
-            }
-            //for loop
-            cleartest == "1";
+                                             
+                    else if ((FromStatus != "All Currency") && (ToStatus !="All Currency"))
+                    {
+                        if ((getfrom == FromStatus) && (getto ==ToStatus)) //FromStatus   ToStatus 
+                        {  //Json data i item == FromStatus
+                          arraygetrate.push(getrate);                  
+                          arrayRate= arraygetrate;    
+                        }   
+                    
+                    } 
+                 
+                }                
+
+                
         }
 
-        */
+ 
         /********************************** API*************************************/
 
 
@@ -630,7 +683,7 @@ $("#viewAccount").pagecontainer({
 
      /********************************** API*************************************/
     /*
-     function getEventList(eventType) {
+     function getEventList(eventType) {//getEventList
 
             eventType = eventType || null;
             var self = this;
@@ -653,7 +706,10 @@ $("#viewAccount").pagecontainer({
                 queryDataParameter = "<event_type_parameter_value>2</event_type_parameter_value>" + queryDataParameter;
             }
 
-            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+            //var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+
+            var queryData = "";//UTD
 
             this.successCallback = function(data) {
 
@@ -675,13 +731,8 @@ $("#viewAccount").pagecontainer({
                     //Update Message Count
                     getMessageCount(chatroomIDList);
 
-                } else if (resultCode === "014904") {
-                    //Clear Event List Data
-                    $("#reportDiv .event-list-msg").remove();
+                } 
 
-                    //No Event exist
-                    $("#eventListNoDataPopup").popup("open");
-                }
 
             };
 
