@@ -83,6 +83,7 @@ class TaskRepository
                 'read_time',
                 DB::raw("CONCAT(user_domain,'\\\\',login_id) as login_id")
                 )
+            ->orderBy('user_domain')
             ->orderBy('login_id')
             ->get();
     }
