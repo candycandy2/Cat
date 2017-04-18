@@ -7,6 +7,8 @@ namespace App\lib;
  * Time: 9:11
  */
 
+use App\Model\Log;
+use App\Model\Message;
 use Config;
 use Request;
 use JMessage\JMessage;
@@ -126,24 +128,67 @@ class CommonUtil
         $now = date('Y-m-d H:i:s',time());
         $ip = self::getIP();
         $url_parameter = $_SERVER["QUERY_STRING"];
-        $request_header = response()->json(apache_request_headers());
+        $request_header = apache_request_headers();
         $request_body = self::prepareJSON(file_get_contents('php://input'));
+        $requestHeaderInfo = [];
+        $needToLogArray = ["app-key", "signature", "signature-time", "token",
+            "domain", "loginid", "redirect-uri", "push-token"];
 
-        \DB::connection("qmessage")
-            ->table("qm_api_log")
-            -> insert([
-                'user_row_id'=>$userId,
-                'app_key'=>$appKey,
-                'api_version'=>$version,
-                'action'=>$action,
-                'ip'=>$ip,
-                'url_parameter'=>$url_parameter,
-                'request_header'=>$request_header,
-                'request_body'=>$request_body,
-                'response_header'=>$responseHeader,
-                'response_body'=>$responseBody,
-                'created_at'=>$now,
-            ]);
+        foreach ($request_header as $key => $value) {
+            $loweheaderKey = strtolower($key);
+            if(in_array($loweheaderKey,$needToLogArray)){
+                $requestHeaderInfo[$loweheaderKey] = $value;
+            }
+        }
+        $logMode = Config::get('app.log_mode');
+        //Mysql
+        if ($logMode == 'ALL' || $logMode == 'MYSQL'){
+            \DB::connection("qmessage")
+                ->table("qm_api_log")
+                -> insert([
+                    'user_row_id'=>$userId,
+                    'app_key'=>$appKey,
+                    'api_version'=>$version,
+                    'action'=>$action,
+                    'ip'=>$ip,
+                    'url_parameter'=>$url_parameter,
+                    'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
+                    'request_body'=>self::unicodeDecode($request_body),
+                    'response_header'=>self::unicodeDecode(json_encode($responseHeader)),
+                    'response_body'=>self::unicodeDecode(json_encode($responseBody)),
+                    'created_at'=>$now,
+                ]);
+        }
+
+        //MongoDB
+        if ($logMode == 'ALL' || $logMode == 'MONGODB'){
+            $log = new Log();
+            $log->user_row_id = $userId;
+            $log->app_key = $appKey;
+            $log->api_version = $version;
+            $log->action = $action;
+            $log->latitude = '';
+            $log->longitude = '';
+            $log->ip = $ip;
+            $log->county = '';
+            $log->city = '';
+            $log->url_parameter = $url_parameter;
+            $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
+            $log->request_body= self::unicodeDecode($request_body);
+            $log->response_header= self::unicodeDecode(json_encode($responseHeader));
+            $log->response_body= self::unicodeDecode(json_encode($responseBody));
+            $log->created_at= $now;
+            $log->save();
+        }
+    }
+
+    public static function replace_unicode_escape_sequence($match) {
+        return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+
+    }
+
+    public static function unicodeDecode($data) {
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'self::replace_unicode_escape_sequence', $data);
     }
 
     public static function getApiVersionFromUrl() {
@@ -237,6 +282,35 @@ class CommonUtil
             -> update([
                 'lpath'=>$lpath
             ]);
+        self::UpdateHistory2MongoDB($msg_id,$lpath);
+    }
+
+    public static function SaveHistory2MongoDB($data,$hasFile="N"){
+        $message = new Message();
+        $message->msg_id=$data->msg_id;
+        $message->msg_type=$data->msg_type;
+        $message->from_id=$data->from_id;
+        $message->from_type=$data->from_type;
+        $message->target_id=$data->target_id;
+        $message->target_type=$data->target_type;
+        $message->target_name=$data->target_name;
+        $message->ctime=$data->ctime;
+        $message->content=$data->content;
+
+        if ($hasFile=='Y'){
+            $message->fname =$data->fname;
+            $message->fsize =$data->extras->fsize;
+            $message->format =substr(strrchr($data->fname, '.'), 1);
+            $message->npath =$data->extras->media_id;
+            $message->lpath ="";
+        }
+        $message->save();
+    }
+
+    public static function UpdateHistory2MongoDB($msg_id,$lpath){
+        $message = Message::all()->where('msg_id', (int)$msg_id)->first();
+        $message->lpath = $lpath;
+        $message->save();
     }
 
     public static function http_get_data($url) {

@@ -165,6 +165,11 @@ return [
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
+        /*
+         * MongoDB
+         * */
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
+
     ],
 
     /*
@@ -217,5 +222,13 @@ return [
     'appKey'=>env('APP_ID'),
     'masterSecret' => env('SECRET_KEY'),
     'filePath' => env('FILE_PATH'),
-    'registerKey' => env('REGISTER_KEY')
+    'registerKey' => env('REGISTER_KEY'),
+
+    /*
+     * Log记录模式：
+     *All: mysql,mongodb
+     *MYSQL:mysql
+     *MONGODB:mongodb
+     * */
+    'log_mode' => env('LOG_MODE','All'),
 ];

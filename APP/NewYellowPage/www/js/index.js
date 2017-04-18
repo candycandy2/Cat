@@ -3,7 +3,7 @@
 var initialAppName = "Yellow Page";
 var appKeyOriginal = "appyellowpage";
 var appKey = "appyellowpage";
-var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo", "viewPhonebook"];
+var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo"];
 var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
 
 var employeeData = {};
@@ -42,7 +42,11 @@ function onBackKeyDown() {
         if (checkPopupShown()) {
             $.mobile.changePage('#viewDataInput');
         } else {
-            navigator.app.exitApp();
+            if ($("#reserveTab :radio:checked").val() == 'tab1') {
+                navigator.app.exitApp();
+            } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
+                $("input[id=tab1]").trigger('click');
+            }
         }
 
     } else if (activePageID === "viewQueryResult") {
@@ -56,20 +60,6 @@ function onBackKeyDown() {
             $('#' + popupID).popup('close');
         } else {
             $.mobile.changePage('#' + prevPageID);
-        }
-
-    } else if (activePageID === "viewPhonebook") {
-
-        //If User is doing edit phonebook, cancel edit mode.
-        if ($("#phonebookEditBtn").css("display") === "block") {
-            cancelEditMode();
-        } else if (checkPopupShown()) {
-            if (popupID === "phonebookDelectAlert" || popupID === "phonebookDelectConfirm") {
-                $('#' + popupID).popup('close');
-                $("#phonebookEditBtn").show();
-            }
-        } else {
-            $.mobile.changePage('#viewDataInput');
         }
 
     }

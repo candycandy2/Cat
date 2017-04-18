@@ -94,8 +94,10 @@ input[type=radio]:checked + label {
 }
 
 .ui-mobile label {
-    font-size: 2.9vh;
+    font-family: "Arial", "微軟中黑體";
+    font-size: 4.18vw;
     font-weight: bold;
+    color: #0f0f0f;
 }
 
 /*Event List*/
@@ -352,13 +354,13 @@ input[type=radio]:checked + label {
 .event-member-list li .left {
     clear: left;
     float: left;
-    width: 10%;
+    width: 5.6vw;
 }
 
 .event-member-list li .right {
     float: left;
-    width: 88%;
-    padding-left: 2%;
+    padding-left: 1.6vw;
+    width: 62vw;
 }
 
 .right .title {
@@ -374,7 +376,6 @@ input[type=radio]:checked + label {
 
 .user-datetime {
     color: #989898;
-    margin-bottom: 5.07vw;
 }
 
 .user-datetime .user {
@@ -390,6 +391,7 @@ input[type=radio]:checked + label {
 
 .event-member-list li {
     margin-bottom: 5.07vw;
+    display: inline-block;
 }
 
 .event-member-list li:last-child {
@@ -483,15 +485,17 @@ input[type=radio]:checked + label {
 .textarea-template {
     height: 16.63vw;
     max-height: 16.63vw;
-    font-size: 2.9vh;
+    font-size: 4.18vw;
     margin: 2.14vw 0;
+    color: #323232;
 }
 
 .textarea-description {
     height: 27.92vw;
     max-height: 27.92vw;
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     margin: 2.14vw 0;
+    color: #323232;
 }
 
 #eventLevelContent {
@@ -625,6 +629,11 @@ input[type=radio]:checked + label {
 .event-content-data-list .right {
     float: left;
     width: 92%;
+    margin-bottom: 2.73vw;
+}
+
+.event-content-data-list .right.relate-event {
+    margin-bottom: 0vw;
 }
 
 .event-content-data-list .img {
@@ -689,6 +698,7 @@ input[type=radio]:checked + label {
     height: 100vh;
     overflow: hidden;
     background-color: #000;
+    touch-action: none;
 }
 
 .event-content-photo-full-screen .button-content {
@@ -755,4 +765,29 @@ input[type=radio]:checked + label {
     width: 20vw;
     height: 20vw;
     margin: 2.5vw 0 0 2.5vw;
+}
+
+.message-content .message-user-datetime {
+    margin-bottom: 0.98vw;
+}
+
+.message-content .user {
+    color: #0f0f0f;
+    display: inline-block;
+    width: 53%;
+}
+
+.message-content .datetime {
+    color: #989898;
+    display: inline-block;
+    width: 45%;
+    text-align: right;
+}
+
+.message-content .text {
+    color: #323232;
+}
+
+.ui-hr-message {
+    margin: 2.73vw 0;
 }

@@ -103,14 +103,13 @@ window.initialSuccess = function() {
         currentMonth = currentMonth - 1;
     }
     if(localStorage.getItem("eisdata") === null) {
+        callProductDetailAPIReduce();
         callProductDetailAPI();
     }else {
         eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
         var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        // set 'mm' for the temporary test
         if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
-            localStorage.removeItem("eisdata");
-            callProductDetailAPI();
+            callProductDetailAPIReduce();
         }
     }
 
@@ -219,34 +218,51 @@ function formatNumber(n) {
 
 function zoomInChart() {
     if(screen.width < screen.height) {
-        chartLandscape.setSize(screen.height, screen.width*0.8, false);
+        chartLandscape.setSize(screen.height, screen.width*0.9, false);
     }else {
-        chartLandscape.setSize(screen.width, screen.height*0.8, false);
+        chartLandscape.setSize(screen.width, screen.height*0.9, false);
     }
 }
 
 function callProductDetailAPI() {
-    //review by alan : add callLaste2MonothsProductDetailAPI for reduce data
+    var maxMonth, k = 0;
     for(var i=0; i<=3; i++) {
-        var maxMonth = (i == 0) ? Number(currentMonth) : 12;
+        if (i == 0 && currentMonth > 2) {
+            maxMonth = Number(currentMonth-2);
+        }else{
+            maxMonth = 12;
+            k++;
+        };
         for(var j=maxMonth; j>0; j--) {
             j = (j < 10) ? "0"+j : j;
             productDetailQueryData = "<LayoutHeader><StartYearMonth>"
-                        + (currentYear - i) + "/" + j
+                        + (currentYear - k) + "/" + j
                         + "</StartYearMonth><EndYearMonth>"
-                        + (currentYear - i) + "/" + j
+                        + (currentYear - k) + "/" + j
                         + "</EndYearMonth></LayoutHeader>";
             ProductDetail();
         }
     }
 }
 
+function callProductDetailAPIReduce() {
+    for(var j=0; j<2; j++) {
+        var i = ((Number(currentMonth)-j) < 10) ? "0"+(Number(currentMonth)-j) : Number(currentMonth)-j;
+        productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                    + currentYear + "/" + i
+                    + "</StartYearMonth><EndYearMonth>"
+                    + currentYear + "/" + i
+                    + "</EndYearMonth></LayoutHeader>";
+        ProductDetail();
+    }
+}
+
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
     if($(".ui-page-active").jqmData("panel") === "open") {
-        $("#mypanel").panel( "close");
+        $("#mypanel").panel( "close");     
     }
-    // portraint
     // if (window.orientation === 180 || window.orientation === 0) {
+    //     /*do somrthing when device is in portraint mode*/
     // }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
