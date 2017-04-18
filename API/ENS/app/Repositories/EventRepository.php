@@ -202,6 +202,7 @@ class EventRepository
                 'login_id',
                 'user_domain'
                 )
+            ->orderBy('login_id')
             ->get();
     }
 
