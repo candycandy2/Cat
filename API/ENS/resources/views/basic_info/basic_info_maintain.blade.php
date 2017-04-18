@@ -7,9 +7,7 @@ use App\lib\ResultCode;
     <div class="panel panel-default">
       <div class="panel-body">
         <button id="importBasicIfo" class="btn btn-primary openDialog" data-loading-text="Processing...">匯入成員資訊</button>
-        @if( Config::get('app.env') == 'dev')
-        <button id="registerSuperUser" class="btn btn-primary" data-loading-text="Processing...">註冊QMessage</button>
-        @endif
+        <button id="registerSuperUser" class="btn btn-primary" data-loading-text="Processing...">新管理者註冊QMessage</button>
       </div>
     </div>
    
@@ -30,17 +28,15 @@ use App\lib\ResultCode;
         <tbody>
         <?php $index = 0?>
         @foreach ($basicInfo as $members)
-            {{--  @foreach ($members['user_list'] as $member) --}}
-              <?php $index++ ?>
-              <tr>
-                <td>{{$index}}</td>
-                <td>{{$members['location']}}</td>
-                <td>{{$members['function']}}</td>
-                <td>{{$members['login_id']}}</td>
-                <td>{{$members['emp_no']}}</td>
-                <td>{{$members['master']}}</td>
-              </tr>
-           {{--  @endforeach --}}
+          <?php $index++ ?>
+          <tr>
+            <td>{{$index}}</td>
+            <td>{{$members['location']}}</td>
+            <td>{{$members['function']}}</td>
+            <td>{{$members['login_id']}}</td>
+            <td>{{$members['emp_no']}}</td>
+            <td>{{$members['master']}}</td>
+          </tr>
         @endforeach
         </tbody>
       </table>
