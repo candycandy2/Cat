@@ -1,4 +1,5 @@
 var QueryReserveDetailQuerydata, ReserveRelieveQuerydata;
+var currentMonth, currentDate, QueryReserveDetailCallBackData;
 var reserveSite = "QTT";
 var initialAppName = "Relieve";
 var appKeyOriginal = "apprelieve";
@@ -6,14 +7,22 @@ var appKey = "apprelieve";
 var pageList = ["viewReserve"];
 var appSecretKey = "00a87a05c855809a0600388425c55f0b";
 var prevPageID;
+var time = new Date(Date.now());
 var arrOtherTimeBlock = [];
 
 window.initialSuccess = function() {
-    //loadingMask("show");
-    QueryReserveDetailQuerydata = "<LayoutHeader><Site>QTY</Site><ReserveDate>20170318</ReserveDate></LayoutHeader>";
+    loadingMask("show");
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    currentDate = time.getFullYear().toString() + currentMonth + time.getDate().toString();
+    
+    QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
+                                  + reserveSite
+                                  + "</Site><ReserveDate>"
+                                  + currentDate
+                                  + "</ReserveDate></LayoutHeader>";
     QueryReserveDetail();
-    ReserveRelieveQuerydata = "<LayoutHeader><Site>QTY</Site><ReserveDate>20170318</ReserveDate><ReserveUser>1501005</ReserveUser><BTime>08:30,09:00</BTime ></LayoutHeader>";
-    ReserveRelieve();
+    // ReserveRelieveQuerydata = "<LayoutHeader><Site>QTY</Site><ReserveDate>20170318</ReserveDate><ReserveUser>1501005</ReserveUser><BTime>08:30,09:00</BTime ></LayoutHeader>";
+    // ReserveRelieve();
     $.mobile.changePage('#viewReserve');
     if (device.platform === "iOS") {
         $('.page-main').css({'padding-top': '0.1vw'});
