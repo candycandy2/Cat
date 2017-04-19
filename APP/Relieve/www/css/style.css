@@ -27,7 +27,7 @@ pre {
   overflow: auto;
   padding: 5px;
 }
-#relieveInfo {
+#main {
   flex: 1;
   padding-top: 20px;
   transition: transform .3s;

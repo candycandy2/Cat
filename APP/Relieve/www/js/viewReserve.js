@@ -83,7 +83,7 @@ $("#viewReserve").pagecontainer({
             // no reserve
             if ($(this).hasClass('ui-color-noreserve')){
                 $(this).toggleClass('hover');
-                // $(this).find('div:nth-child(2)').toggleClass('iconSelect');
+                $(this).find('div:nth-child(2)').toggleClass('iconSelect');
                 $(this).find('div:nth-child(2)').toggleClass('iconSelected');
                 $(this).find('.timeRemind').toggleClass('timeShow');
                 var timeExit = false;
