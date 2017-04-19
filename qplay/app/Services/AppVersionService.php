@@ -262,17 +262,19 @@ class AppVersionService
                     $this->unPublishVersion($appId, $versionItem['device_type'], \Auth::user()->row_id);
                 }
                 $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
-                $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-                $files = new \RecursiveIteratorIterator($it,
-                             \RecursiveIteratorIterator::CHILD_FIRST);
-                foreach($files as $file) {
-                    if ($file->isDir()){
-                        rmdir($file->getRealPath());
-                    } else {
-                        unlink($file->getRealPath());
+                if(file_exists($destinationPath)){
+                    $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+                    $files = new \RecursiveIteratorIterator($it,
+                                 \RecursiveIteratorIterator::CHILD_FIRST);
+                    foreach($files as $file) {
+                        if ($file->isDir()){
+                            rmdir($file->getRealPath());
+                        } else {
+                            unlink($file->getRealPath());
+                        }
                     }
+                    rmdir($destinationPath);
                 }
-                rmdir($destinationPath);
             }
         }
         $this->appVersionRepository->deleteAppVersionById($delVersionArr);
