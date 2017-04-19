@@ -150,32 +150,11 @@ var tplJS = {
         $('body').css('overflow', 'hidden').on('touchmove', function(e) {
             var preventScroll = true;
             var offsetParent = e.target.offsetParent;
-            console.log("----touchmove");
+
             if ($(offsetParent).hasClass("ui-datebox-container")) {
                 preventScroll = false;
             } else if ($(offsetParent).hasClass("ui-popup")) {
                 var listview = $(offsetParent).find("ul[data-role=listview]");
-
-                if ($(listview).prop("scrollHeight") > $(listview).height()) {
-                    preventScroll = false;
-                }
-            }
-
-            if (preventScroll) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        });
-
-        $('body').one('touchstart', function(e) {
-            var preventScroll = true;
-            var offsetParent = e.target.offsetParent;
-            console.log("----touchstart");
-            if ($(offsetParent).hasClass("ui-datebox-container")) {
-                preventScroll = false;
-            } else if ($(offsetParent).hasClass("ui-popup")) {
-                var listview = $(offsetParent).find("ul[data-role=listview]");
-
                 if ($(listview).prop("scrollHeight") > $(listview).height()) {
                     preventScroll = false;
                 }
@@ -206,7 +185,6 @@ var tplJS = {
         });
         */
         $('body').css('overflow', 'auto').off('touchmove');
-        $('body').off('touchstart');
     },
     Tab: function(pageID, contentID, renderAction, data) {
         var tabHTML = $("template#tplTab").html();
