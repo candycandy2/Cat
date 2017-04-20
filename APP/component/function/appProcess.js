@@ -285,6 +285,7 @@ function loadingMask(action) {
         } else {
             $(".loader").show();
         }
+        $(".loader").css("top", $(document).scrollTop());
     } else if (action === "hide") {
         $(".loader").hide();
     }

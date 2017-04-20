@@ -219,6 +219,8 @@ function getAPIQueryMyReserveTime() {
                 var strBeginTime = item.ReserveBeginTime;
                 var strEndTime = item.ReserveEndTime;
                 var searchRoomNode = searchTree(meetingRoomData, item.MeetingRoomName, 'MeetingRoomName');
+                if(searchRoomNode == null)
+                    continue;
                 var searchSiteNode = searchRoomNode.parent.parent.data;
 
                 if (strBeginTime == strEndTime) {

@@ -2,13 +2,13 @@
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
        // First
-       // var FromStatus  = "All Currency";          
-       //var ToStatus    = "USD";
+        var FromStatus  = "All Currency";          
+        var ToStatus    = "USD";
 
-
+        var tabActiveIDs = "#fragment-1";
         // Sencod
-        var FromStatus  = "NTD";  
-        var ToStatus    = "All Currency";
+        //var FromStatus  = "NTD";  
+        //var ToStatus    = "All Currency";
 
         // One
         //var FromStatus  = "NTD";//var ToStatus  = "NTD";  
@@ -16,18 +16,30 @@ $("#viewAccount").pagecontainer({
 
         var test;
         var statuscountrypop;
-        //var array =[ "GBP","AED","SGD","AUD"       ];
 
-        var array = ["AED","BDT","BRL","CAD",
-                    "CHF","CZK","EUR","GBP","HKD",
-                    "IDR","INR","JPY","KRW","MMK",
-                    "MXN","MYR","NTD","NZD","PHP",
-                    "RMB","RUB","SEK","SGD","THB",
-                    "TRL","VND","ZAR" ]; 
+        var array = [
+                     "AED","BDT","BRL","CAD",
+                     "CHF","CZK","EUR","GBP","HKD",
+                     "IDR","INR","JPY","KRW","MMK",
+                     "MXN","MYR","NTD","NZD","PHP",
+                     "RMB","RUB","SEK","SGD","THB",
+                     "TRL","VND","ZAR" ]; 
 
-        var arrayadd =["NTD","EUR","AUD"];
-        var arraycomb =[
-                      ];
+        var arrayRate =[
+                    "10.032","2","3","4","5",
+                    "1","2","3","4","5",
+                    "1","2","3","4","5",
+                    "1","2","3","4","5",
+                    "1","2","3","4","5",
+        ];
+
+        //var arrayadd =["NTD","EUR","AUD"];
+        var arrayadd =[];
+        var arrayaddtemp=[];
+        var arrayrateadd=[];
+        var arraycomb =[   ];
+        var arrayratecomb =[   ];
+                    
         
         /********************************** function *************************************/
         window.APIRequest = function() {
@@ -52,12 +64,13 @@ $("#viewAccount").pagecontainer({
     // Date Month for head main 20170324 ************************************************************************
 
         window.Today    = new Date();
-        var MonthWord =["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var MonthWord   = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         var todayYear   = Today.getFullYear();
         var todayMonth  = Today.getMonth()+1;
         var todayDate   = Today.getDate();
         var lastMonth   = Today.getMonth();
-       
+
+        var UTC         = Math.round(new Date().getTime()/1000);
 
     
 
@@ -92,13 +105,16 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-           
+            var EventList = new GetAccountingRate(); //add for test 20170418 API 
+
+
+            Jsonparse(1);
             Test();         
             Buttonimg(); 
 
             //AddhtmlOne();
             //AddhtmlFirst(); 
-            AddhtmlSecond(); 
+            //AddhtmlSecond(); 
    
             Favorite();   //wait for html
 
@@ -149,8 +165,9 @@ $("#viewAccount").pagecontainer({
                  $(".mainword1").text("From "+ FromStatus  +" to "+ ToStatus  +" ");  
                 //Buttonimg(); 
                 // Addhtml();  
-        
+                 Jsonparse(1); 
                  Buttonimg(); 
+                 Favorite();  //bugfix
         });
    //  Transfer   ************************************************************************** 
         function Buttonimg()    
@@ -162,7 +179,7 @@ $("#viewAccount").pagecontainer({
              {    // Bug for img show 
                $(".buttonone1").removeClass('buttononeFlag1');
                $(".buttonone1").addClass('buttononeFlag1non');
-               //AddhtmlFirst();
+               AddhtmlFirst();
              }
             else
              {
@@ -175,7 +192,7 @@ $("#viewAccount").pagecontainer({
             {   // Bug for img show 
               $(".buttontwo1").removeClass('buttononeFlag2');
               $(".buttontwo1").addClass('buttononeFlag1non');
-                //AddhtmlSecond();
+              AddhtmlSecond();
 
             }
             else
@@ -188,14 +205,28 @@ $("#viewAccount").pagecontainer({
             
             if ((FromStatus !="All Currency")&&(ToStatus !="All Currency"))
             {
-                //  AddhtmlOne();
+              AddhtmlOne();
             }
 
             //Favorite();
            // Test();
 
         }     
+        /********************************** Event *************************************/
+        //$(document).on("tabsactivate", "#tabevent", function(event,ui) { 
+        
+         $(document).on("tabsactivate", function(event,ui) { 
+            tabActiveIDs = ui.newPanel.selector;
+         
+            if (ui.newPanel.selector === "#fragment-1"){
+                console.log("tab1");
 
+            }
+            else if (ui.newPanel.selector === "#fragment-2"){
+                 console.log("tab2");
+            }
+
+         });
         /********************************** Event *************************************/
        // $(document).on("click", ".Listdiv1", function() {  //20170416 sunday ,modify
         $(document).on("click", ".select", function() {  //20170416 sunday ,modify for page2
@@ -227,7 +258,9 @@ $("#viewAccount").pagecontainer({
 
            */
             arrayadd.push(statuscountrypop);//20170416
-            array.splice (array.indexOf(arrayadd))  ;
+            var a = array.indexOf(statuscountrypop);
+            array.splice(a,1);
+            //array.splice(array.indexOf(statuscountrypop),1);
 
             Test(); //reoragionize array
             //Buttonimg();//html reset => would be error
@@ -248,7 +281,7 @@ $("#viewAccount").pagecontainer({
             $("#"+statuscountrypop).removeClass("favorite"); 
 
            //20170416
-            arrayadd.splice (arrayadd.indexOf(statuscountrypop));
+            arrayadd.splice (arrayadd.indexOf(statuscountrypop),1);
             array.push(statuscountrypop);
             Test(); 
 
@@ -283,6 +316,9 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry1").text(FromStatus);
             $(".buttononeCountry2").text(ToStatus);   
            
+             Jsonparse(1);
+             Test();  
+
              Buttonimg();
              Favorite();         
 
@@ -312,7 +348,9 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry1").text(FromStatus);
             $(".buttononeCountry2").text(ToStatus);   
      
-            
+             Jsonparse(1);
+             Test(); 
+
              Buttonimg();
              Favorite();
             $("#popupB").popup('close');
@@ -321,11 +359,30 @@ $("#viewAccount").pagecontainer({
         function Test(){
            /*move 20170416
             
-
+            var arrayadd =["NTD","EUR","AUD"];
             */
+            /* 20170419 Issue 
+           
+            for (var j=0 ; j< arrayadd.length; j++)//3 
+            {  for (var i=0 ; i< array.length; i++)//29 if it doesn't have one? 
+          
+                {   if ( array[i] = arrayadd[j])
+                    {
+                        //array[i] delete 
+                    array.splice(array.indexOf(arrayadd[j]),1);
+                    //arrayaddtemp
+                    arrayrateadd.push(arrayRate[i]);
+
+                    } 
+                }
+            }
+            */
+
             //array.splice (arrayadd.indexOf(arrayadd));           
-            
-            arraycomb = arrayadd.concat(array);   
+         
+            arraycomb = arrayadd.concat(array.sort()); 
+            arrayratecomb =arrayrateadd.concat(arrayRate.sort());
+
             Buttonimg(); //20170416
             Favorite();  //20170416
         }
@@ -367,9 +424,20 @@ $("#viewAccount").pagecontainer({
                 var index    = "";                       
                 content  = htmltemp + CountrylisthtmlOne(i ,country);
                  htmltemp = content;  
-            }                      
-            $("#ultestA").html(" "); 
-            $("#ultestA").append(content);                    
+            }      
+
+           
+
+            if (tabActiveIDs  === "#fragment-1")
+            {
+                $("#ultestA").html(" "); 
+                $("#ultestA").append(content);  
+            }
+            if (tabActiveIDs  === "#fragment-2"){
+                $("#ultestB").html(" "); 
+                $("#ultestB").append(content);   
+            } 
+                     
         }
 
 
@@ -383,8 +451,19 @@ $("#viewAccount").pagecontainer({
                 content  = htmltemp + CountrylisthtmlFirst(i ,country);
                 htmltemp = content;           
             }  
-            $("#ultestA").html(" "); 
-            $("#ultestA").append(content);            
+            if (tabActiveIDs  === "#fragment-1")
+            {
+                $("#ultestA").html(" "); 
+                $("#ultestA").append(content);  
+            }
+              
+
+           
+            if (tabActiveIDs  === "#fragment-2"){
+                $("#ultestB").html(" "); 
+                $("#ultestB").append(content);   
+            } 
+                    
         }
 
         function AddhtmlSecond()      //Second is All     
@@ -395,9 +474,19 @@ $("#viewAccount").pagecontainer({
                     var index    = "";
                     content  = htmltemp + CountrylisthtmlSecond(i ,country);
                     htmltemp = content;               
-            }                
-            $("#ultestA").html(" "); 
-            $("#ultestA").append(content);            
+            }     
+
+            if (tabActiveIDs  === "#fragment-1")
+            {
+                $("#ultestA").html(" "); 
+                $("#ultestA").append(content);  
+            }
+         
+            if (tabActiveIDs  === "#fragment-2"){
+                $("#ultestB").html(" "); 
+                $("#ultestB").append(content);   
+            } 
+                
         }
      /********************************** html  *************************************/
         function CountrylisthtmlOne(index){// one to one
@@ -421,7 +510,10 @@ $("#viewAccount").pagecontainer({
                     + ToStatus 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListDollar1" >'
+                    + arrayRate[index]
+                    //+ 10.032 
+                    +'</span> '    
                     +'<span class="ListRate2">'
                     + ToStatus 
                     +'</span>'    
@@ -453,15 +545,18 @@ $("#viewAccount").pagecontainer({
                     + ToStatus 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListDollar1" >'
+                    + arrayratecomb[index] 
+                   // + arrayRate[index] 
+                   // +'10.032'
+                    +'</span> '    
                     +'<span class="ListRate2">'
                     + ToStatus 
                     +'</span>'    
                     +'<br> '    
                     +'</div>'    
                     +'</div>'   
-                    +'</li>';              
-                    +'<hr>';                         
+                    +'</li>';         
         }
 
         function CountrylisthtmlSecond(index,country){//Second is all
@@ -487,8 +582,13 @@ $("#viewAccount").pagecontainer({
                     + arraycomb[index] 
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >10.032 </span> '    
+                    +'<span class="ListDollar1" >'
+                   // + arrayRate[index] 
+                    + arrayratecomb[index] 
+                    // +'10.032'
+                    +'</span> '    
                     +'<span class="ListRate2">'
+                    
                     + arraycomb[index]
                     +'</span>'    
                     +'<br> '    
@@ -507,30 +607,44 @@ $("#viewAccount").pagecontainer({
         /********************************** dom event *************************************/
 
         /********************************** API*************************************/
-   /*  
+
         //Initial , pop
         function Jsonparse(Jsonflag) {
+            //
+            //var packJson  = data["Content"]; //API
             var packJson =[
 
-                { 
-                    "From_Currency" : "AED",
-                    "To_Currency"   : "NTD", 
-                    "Ex_Date"       : "2017/3/1",
-                    "Ex_Rate"       : "8.3523"
-                },
-
-                { 
-                    "From_Currency" : "EUR",
-                    "To_Currency"   : "RUB", 
-                    "Ex_Date"       : "2017/3/1",
-                    "Ex_Rate"       : "61.134"
-                },
-
-                { 
+                {   //var arrayadd =["NTD","EUR","AUD"];
                     "From_Currency" : "AED",
                     "To_Currency"   : "USD", 
                     "Ex_Date"       : "2017/3/1",
                     "Ex_Rate"       : "61.134"
+                },
+
+                { 
+                    "From_Currency" : "NTD",//
+                    "To_Currency"   : "USD", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "0.0333"
+                },
+                { 
+                    "From_Currency" : "NTD",//
+                    "To_Currency"   : "USD", 
+                    "Ex_Date"       : "2017/4/1",
+                    "Ex_Rate"       : "0.035"
+                },
+
+                { 
+                    "From_Currency" : "USD",
+                    "To_Currency"   : "NTD", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "31.125"
+                },
+                { 
+                    "From_Currency" : "USD",
+                    "To_Currency"   : "AED", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "0.001"
                 },
 
                 { 
@@ -541,10 +655,17 @@ $("#viewAccount").pagecontainer({
                 }, 
 
                 { 
-                    "From_Currency" : "NTD",
-                    "To_Currency"   : "USD", 
+                    "From_Currency" : "AED",
+                    "To_Currency"   : "NTD", 
                     "Ex_Date"       : "2017/3/1",
-                    "Ex_Rate"       : "8"
+                    "Ex_Rate"       : "8.3523"
+                },
+
+                { 
+                    "From_Currency" : "EUR",//
+                    "To_Currency"   : "RUB", 
+                    "Ex_Date"       : "2017/3/1",
+                    "Ex_Rate"       : "61.134"
                 },
 
                 { 
@@ -558,15 +679,16 @@ $("#viewAccount").pagecontainer({
                     "To_Currency"   : "CAD", 
                     "Ex_Date"       : "2017/3/1",
                     "Ex_Rate"       : "2"
-                } 
+                }              
+
             ];
 
-            var arraygetrate    =[];
-            var arraygetFrom    =[];
-            var arraygetTo      =[];
-            var cleartest       = 0;
+                var arraygetrate    =[];
+                var arraygetFrom    =[];
+                var arraygetTo      =[];
+                var cleartest       = 0;
 
-            if (cleartest == "1"){
+           /* if (cleartest == "1"){
                   array=[];
                   arrayTo=[];
                   arraygetrate=[];
@@ -575,50 +697,71 @@ $("#viewAccount").pagecontainer({
                     //arraygetrate.length = 0;          //clear  rate 
                     //if ((getfrom == "EUR") &&(getto =="RUB"))
                 }
+            */
 
+                for (var i=0; i<packJson.length; i++)
+                {
 
-            for (var i=0; i<packJson.length; i++){
+                    getrate     = packJson[i].Ex_Rate;   //variable
+                    getfrom     = packJson[i].From_Currency;
+                    getto       = packJson[i].To_Currency;
+                    exdate      = packJson[i].Ex_Date;
+                      //variable to array 
+                    arraygetTo.push(getto);    
 
-                getrate     = packJson[i].Ex_Rate;   //rate
-                getfrom     = packJson[i].From_Currency;
-                getto       = packJson[i].To_Currency;
-              
-                arraygetFrom.push(getfrom);    
-                arraygetTo.push(getto);    
+                   //clear for array and rate 
 
-               //clear for array and rate 
-               if (Jsonflag == 0)
-               { 
-                    if ((getfrom == FromStatus) && (getto ==ToStatus)) //FromStatus   ToStatus 
-                    {  //Json data i item == FromStatus
-                      arraygetrate.push(getrate);                      // AddhtmlOne();
+                    if ((FromStatus =="All Currency")&&(exdate =='2017/3/1'))
+                     //First &&(Ex_Date =='2017/3/1')
+                        //First &&(Ex_Date =='2017/'++'/1')
+                    { 
+                        if (getto == ToStatus) //To NTD 's  ; from save
+                            {
+                                arraygetFrom.push(getfrom);       
+                                arraygetrate.push(getrate);  
+
+                                array= arraygetFrom;
+                                arrayRate= arraygetrate;
+                                //change
+                            }
+                            //
                     }
-               }
-               
-               if (Jsonflag == 1) //From =All    TO =NTD
-               {
-                    if ((getto == ToStatus) && (getto != ToStatus))                   
-                    {  //To checked , From all save
-                      array.push(getfrom);                            // AddhtmlFirst(); 
-                      arraygetrate.push(getrate);       
-                    }
-               }
+                    //array= arraygetFrom;
+                    //Buttonimg();
 
-               if (Jsonflag == 2) //To =All  then save from   From NTD
-               {
-                    if ((getfrom == FromStatus) && (getto != FromStatus))
-                    {  //From checked , To all save
-                     arrayTo.push(getto);               // AddhtmlSecond();  i1 = usa , i2 =EUR 
-                     arraygetrate.push(getrate);        //                   i1 =5    , i2 =2
-                     var test = arraygetrate;
+                    
+                    else if (ToStatus =="All Currency")//Second 
+                    {   // Bug for img show 
+                      
+                        if (getfrom == FromStatus) // NTD 's from save
+                            {
+                                arraygetTo.push(getto);      
+                                arraygetrate.push(getrate);  
+
+                                array= arraygetFrom;
+                                arrayRate= arraygetrate;
+                                //change
+                            }
+                        
                     }
-               }     
-            }
-            //for loop
-            cleartest == "1";
+                                             
+                    else if ((FromStatus != "All Currency") && (ToStatus !="All Currency"))
+                    {
+                        if ((getfrom == FromStatus) && (getto ==ToStatus)) //FromStatus   ToStatus 
+                        {  //Json data i item == FromStatus
+                          arraygetrate.push(getrate);                  
+                          arrayRate= arraygetrate;    
+                        }   
+                    
+                    } 
+
+                 
+                }                
+
+                
         }
 
-        */
+ 
         /********************************** API*************************************/
 
 
@@ -626,11 +769,11 @@ $("#viewAccount").pagecontainer({
 
         });
 
-    }
+ 
 
      /********************************** API*************************************/
-    /*
-     function getEventList(eventType) {
+   
+     function GetAccountingRate(eventType) {//getEventList  //Unexpected token function 717 - 62
 
             eventType = eventType || null;
             var self = this;
@@ -641,24 +784,19 @@ $("#viewAccount").pagecontainer({
             //value:2 [done Event] >      <event_status>1</event_status><emp_no>0407731</emp_no>
             //value:3 [emergency Event] > <event_type_parameter_value>1</event_type_parameter_value><emp_no>0407731</emp_no>
             //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
-            var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
-
-            if (eventType === "1") {
-                queryDataParameter = "<event_status>0</event_status>" + queryDataParameter;
-            } else if (eventType === "2") {
-                queryDataParameter = "<event_status>1</event_status>" + queryDataParameter;
-            } else if (eventType === "3") {
-                queryDataParameter = "<event_type_parameter_value>1</event_type_parameter_value>" + queryDataParameter;
-            } else if (eventType === "4") {
-                queryDataParameter = "<event_type_parameter_value>2</event_type_parameter_value>" + queryDataParameter;
-            }
+            var queryDataParameter = "<Last_update_date>" + '1492570457' + "</Last_update_date>";
+        
 
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+
+            //var queryData = "999";//UTD
 
             this.successCallback = function(data) {
 
                 var resultCode = data['ResultCode'];
                 var chatroomIDList = [];
+                console.log('APIreturn _'+resultCode);
 
                 if (resultCode === 1) {
                     $(".event-list-no-data").hide();
@@ -675,23 +813,23 @@ $("#viewAccount").pagecontainer({
                     //Update Message Count
                     getMessageCount(chatroomIDList);
 
-                } else if (resultCode === "014904") {
-                    //Clear Event List Data
-                    $("#reportDiv .event-list-msg").remove();
+                } 
 
-                    //No Event exist
-                    $("#eventListNoDataPopup").popup("open");
-                }
 
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) { 
+
+
+            };
 
             var __construct = function() {
-                CustomAPI("POST", true, "getEventList", self.successCallback, self.failCallback, queryData, "");
+                CustomAPI("POST", true, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "");
             }();
 
-        }
-        */
+        }//function getEventList(eventType)
+      
+    }  
+    
     /********************************** API*************************************/
 });

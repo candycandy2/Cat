@@ -1,5 +1,4 @@
 /********************************** override jQuery Mobile *************************************/
-
 hr {
     border: 0;
     height: 1px;
@@ -154,31 +153,56 @@ a {
 #reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 #reserveBtn{ margin: 4.3vw auto 0 !important; padding: 1.8vw 0; height: auto;}
 
-/* notice area */
-#reserveNotice{ text-align: left;}
-.noticeArea{ padding-bottom: 4.3vw;}
-.noticeArea:nth-of-type(1){ margin-bottom: 6.44vw; position: relative; border-bottom: 1px solid #d6d6d6;}
-.notice-company{ color: #0f0f0f;}
-.notice-company, .notice-title-area{ margin-bottom: 2.14vw;}
-.notice-info{ color: #666;}
-.notice-info ul{ padding-left: 0; margin: 0; list-style: none; color: #323232;}
-.notice-info li{ line-height: 1.7; position: relative; padding-left: 3vw;}
-.notice-info li:before{ content: '*'; position: absolute; top: 0; left: 0;}
-.notice-title-area{ overflow: hidden; color; #0f0f0f;}
-.notice-title{ float: left;}
-.notice-diagram-area{ float: right; margin-top: -1vw;}
-.notice-diagram{ display: inline-block;}
-.notice-diagram:nth-of-type(1){ margin-right: 2vw;}
-.diagram-square, .diagram-triangle{ display: inline-block;}
-.diagram-square{ width: 0; height: 0; border: 1.415vw solid; margin-right: 1.3vw;}
-.diagram-triangle{ height: 0; width: 0; border: solid; border-width: 2vw 2vw 3vw; border-top-color: transparent !important; border-right-color: transparent !important;
-    border-left-color: transparent !important; margin-right: 0.8vw;}
-.color-orange{ border-color: #f69e1e;}
-.color-green{ border-color: #1cad5a;}
-.color-blue{ border-color: #2bb8eb;}
-
-.notice-timeTable{ margin-bottom: 2.14vw;}
-.timeTable-td{ width: 16.7%;}
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  font: 15px / 1.15 Helvetica, Arial, sans-serif;
+}
+.wrap {
+  max-width: 800px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+header {
+  background: #33c;
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  z-index: 1;
+}
+header h1 {
+  margin: 0;
+}
+pre {
+  background: rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  overflow: auto;
+  padding: 5px;
+}
+#relieveInfo {
+  flex: 1;
+  padding-top: 20px;
+  transition: transform .3s;
+}
+.trigger {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  float: right;
+  display: block;
+  border: 1px solid white;
+}
+.links a ~ a {
+  margin-left: 1em;
+}
+#footer {
+  background: #eef;
+  padding: 10px 0;
+}
 
 /* reserve info */
 .reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
