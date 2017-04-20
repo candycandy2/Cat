@@ -113,8 +113,9 @@ class AppVersionService
      * @param  String $deviceType  裝置類型(ios|android)
      * @param  int    $versionCode 版本號
      * @param  file   $versionFile 檔案
+     * @param  String $appKey
      */
-    public function uploadAndPublishVersion($appId, $versionData, $versionFile, $userRowId){
+    public function uploadAndPublishVersion($appId, $versionData, $versionFile, $userRowId, $appKey){
     
         //insert DB
         $insertData = array(
@@ -135,7 +136,7 @@ class AppVersionService
         $this->appVersionRepository->newAppVersion($insertData);
 
         //upload File
-        $this->uploadApkFile($appId, $versionData, $versionFile);
+        $this->uploadApkFile($appId, $versionData, $versionFile, $appKey);
         
         $destinationPath = FilePath::getApkUploadPath($appId,$versionData['device_type'],$versionData['version_code']);
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$versionData['device_type']);
@@ -182,12 +183,13 @@ class AppVersionService
      * @param  String $deviceType  裝置類型(ios|android)
      * @param  int    $versionCode 版本號
      * @param  file   $versionFile 檔案
+     * @param  String $appKey      appKey
      */
-    private function uploadApkFile($appId, $versionData, $versionFile){
+    private function uploadApkFile($appId, $versionData, $versionFile, $appKey){
         
         $deviceType =  $versionData['device_type'];
         $versionCode = $versionData['version_code'];
-        $appKey =  $versionData['app_key'];
+        $appKey = $appKey;
 
         $destinationPath = FilePath::getApkUploadPath($appId, $deviceType, $versionCode);
 

@@ -705,4 +705,20 @@ SQL;
         return $key;
     }
 
+    /**
+     * 根據appKey 取得secretKey
+     * @param  String $appKey app-key (ex:appqplaydev)
+     * @return mixed  
+     */
+    public static function getSecretKeyByAppKey($appKey) {
+        $projectList = \DB::table('qp_project')
+            -> where('qp_project.app_key', '=', $appKey)
+            -> select('qp_project.row_id', 'qp_project.secret_key')->get();
+        if(count($projectList) > 0) {
+            return $projectList[0]->secret_key;
+        }
+
+        return null;
+    }
+
 }
