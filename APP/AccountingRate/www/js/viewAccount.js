@@ -5,7 +5,7 @@ $("#viewAccount").pagecontainer({
         var FromStatus  = "All Currency";          
         var ToStatus    = "USD";
 
-
+        var tabActiveIDs = "#fragment-1";
         // Sencod
         //var FromStatus  = "NTD";  
         //var ToStatus    = "All Currency";
@@ -17,23 +17,29 @@ $("#viewAccount").pagecontainer({
         var test;
         var statuscountrypop;
 
-        var array = ["AED","BDT","BRL","CAD",
-                    "CHF","CZK","EUR","GBP","HKD",
-                    "IDR","INR","JPY","KRW","MMK",
-                    "MXN","MYR","NTD","NZD","PHP",
-                    "RMB","RUB","SEK","SGD","THB",
-                    "TRL","VND","ZAR" ]; 
+        var array = [
+                     "AED","BDT","BRL","CAD",
+                     "CHF","CZK","EUR","GBP","HKD",
+                     "IDR","INR","JPY","KRW","MMK",
+                     "MXN","MYR","NTD","NZD","PHP",
+                     "RMB","RUB","SEK","SGD","THB",
+                     "TRL","VND","ZAR" ]; 
 
-        var arrayRate =["10.032","2","3","4","5",
+        var arrayRate =[
+                    "10.032","2","3","4","5",
                     "1","2","3","4","5",
                     "1","2","3","4","5",
                     "1","2","3","4","5",
                     "1","2","3","4","5",
         ];
 
-        var arrayadd =["NTD","EUR","AUD"];
-        var arraycomb =[
-                      ];
+        //var arrayadd =["NTD","EUR","AUD"];
+        var arrayadd =[];
+        var arrayaddtemp=[];
+        var arrayrateadd=[];
+        var arraycomb =[   ];
+        var arrayratecomb =[   ];
+                    
         
         /********************************** function *************************************/
         window.APIRequest = function() {
@@ -58,12 +64,13 @@ $("#viewAccount").pagecontainer({
     // Date Month for head main 20170324 ************************************************************************
 
         window.Today    = new Date();
-        var MonthWord =["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var MonthWord   = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         var todayYear   = Today.getFullYear();
         var todayMonth  = Today.getMonth()+1;
         var todayDate   = Today.getDate();
         var lastMonth   = Today.getMonth();
-       
+
+        var UTC         = Math.round(new Date().getTime()/1000);
 
     
 
@@ -98,12 +105,15 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-            //Jsonparse(1);
+            var EventList = new GetAccountingRate(); //add for test 20170418 API 
+
+
+            Jsonparse(1);
             Test();         
             Buttonimg(); 
 
             //AddhtmlOne();
-            AddhtmlFirst(); 
+            //AddhtmlFirst(); 
             //AddhtmlSecond(); 
    
             Favorite();   //wait for html
@@ -182,7 +192,7 @@ $("#viewAccount").pagecontainer({
             {   // Bug for img show 
               $(".buttontwo1").removeClass('buttononeFlag2');
               $(".buttontwo1").addClass('buttononeFlag1non');
-                AddhtmlSecond();
+              AddhtmlSecond();
 
             }
             else
@@ -195,14 +205,28 @@ $("#viewAccount").pagecontainer({
             
             if ((FromStatus !="All Currency")&&(ToStatus !="All Currency"))
             {
-                  AddhtmlOne();
+              AddhtmlOne();
             }
 
             //Favorite();
            // Test();
 
         }     
+        /********************************** Event *************************************/
+        //$(document).on("tabsactivate", "#tabevent", function(event,ui) { 
+        
+         $(document).on("tabsactivate", function(event,ui) { 
+            tabActiveIDs = ui.newPanel.selector;
+         
+            if (ui.newPanel.selector === "#fragment-1"){
+                console.log("tab1");
 
+            }
+            else if (ui.newPanel.selector === "#fragment-2"){
+                 console.log("tab2");
+            }
+
+         });
         /********************************** Event *************************************/
        // $(document).on("click", ".Listdiv1", function() {  //20170416 sunday ,modify
         $(document).on("click", ".select", function() {  //20170416 sunday ,modify for page2
@@ -335,11 +359,30 @@ $("#viewAccount").pagecontainer({
         function Test(){
            /*move 20170416
             
-
+            var arrayadd =["NTD","EUR","AUD"];
             */
+            /* 20170419 Issue 
+           
+            for (var j=0 ; j< arrayadd.length; j++)//3 
+            {  for (var i=0 ; i< array.length; i++)//29 if it doesn't have one? 
+          
+                {   if ( array[i] = arrayadd[j])
+                    {
+                        //array[i] delete 
+                    array.splice(array.indexOf(arrayadd[j]),1);
+                    //arrayaddtemp
+                    arrayrateadd.push(arrayRate[i]);
+
+                    } 
+                }
+            }
+            */
+
             //array.splice (arrayadd.indexOf(arrayadd));           
          
-            arraycomb = arrayadd.concat(array.sort());   
+            arraycomb = arrayadd.concat(array.sort()); 
+            arrayratecomb =arrayrateadd.concat(arrayRate.sort());
+
             Buttonimg(); //20170416
             Favorite();  //20170416
         }
@@ -381,9 +424,20 @@ $("#viewAccount").pagecontainer({
                 var index    = "";                       
                 content  = htmltemp + CountrylisthtmlOne(i ,country);
                  htmltemp = content;  
-            }                      
-            $("#ultestA").html(" "); 
-            $("#ultestA").append(content);                    
+            }      
+
+           
+
+            if (tabActiveIDs  === "#fragment-1")
+            {
+                $("#ultestA").html(" "); 
+                $("#ultestA").append(content);  
+            }
+            if (tabActiveIDs  === "#fragment-2"){
+                $("#ultestB").html(" "); 
+                $("#ultestB").append(content);   
+            } 
+                     
         }
 
 
@@ -397,8 +451,19 @@ $("#viewAccount").pagecontainer({
                 content  = htmltemp + CountrylisthtmlFirst(i ,country);
                 htmltemp = content;           
             }  
-            $("#ultestA").html(" "); 
-            $("#ultestA").append(content);            
+            if (tabActiveIDs  === "#fragment-1")
+            {
+                $("#ultestA").html(" "); 
+                $("#ultestA").append(content);  
+            }
+              
+
+           
+            if (tabActiveIDs  === "#fragment-2"){
+                $("#ultestB").html(" "); 
+                $("#ultestB").append(content);   
+            } 
+                    
         }
 
         function AddhtmlSecond()      //Second is All     
@@ -409,9 +474,19 @@ $("#viewAccount").pagecontainer({
                     var index    = "";
                     content  = htmltemp + CountrylisthtmlSecond(i ,country);
                     htmltemp = content;               
-            }                
-            $("#ultestA").html(" "); 
-            $("#ultestA").append(content);            
+            }     
+
+            if (tabActiveIDs  === "#fragment-1")
+            {
+                $("#ultestA").html(" "); 
+                $("#ultestA").append(content);  
+            }
+         
+            if (tabActiveIDs  === "#fragment-2"){
+                $("#ultestB").html(" "); 
+                $("#ultestB").append(content);   
+            } 
+                
         }
      /********************************** html  *************************************/
         function CountrylisthtmlOne(index){// one to one
@@ -471,7 +546,8 @@ $("#viewAccount").pagecontainer({
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
                     +'<span class="ListDollar1" >'
-                    + arrayRate[index] 
+                    + arrayratecomb[index] 
+                   // + arrayRate[index] 
                    // +'10.032'
                     +'</span> '    
                     +'<span class="ListRate2">'
@@ -507,10 +583,12 @@ $("#viewAccount").pagecontainer({
                     +'.png">'                   
                     +'<div class="Listdiv3">'    
                     +'<span class="ListDollar1" >'
-                    + arrayRate[index] 
+                   // + arrayRate[index] 
+                    + arrayratecomb[index] 
                     // +'10.032'
                     +'</span> '    
                     +'<span class="ListRate2">'
+                    
                     + arraycomb[index]
                     +'</span>'    
                     +'<br> '    
@@ -532,9 +610,11 @@ $("#viewAccount").pagecontainer({
 
         //Initial , pop
         function Jsonparse(Jsonflag) {
+            //
+            //var packJson  = data["Content"]; //API
             var packJson =[
 
-                { 
+                {   //var arrayadd =["NTD","EUR","AUD"];
                     "From_Currency" : "AED",
                     "To_Currency"   : "USD", 
                     "Ex_Date"       : "2017/3/1",
@@ -542,10 +622,16 @@ $("#viewAccount").pagecontainer({
                 },
 
                 { 
-                    "From_Currency" : "NTD",
+                    "From_Currency" : "NTD",//
                     "To_Currency"   : "USD", 
                     "Ex_Date"       : "2017/3/1",
                     "Ex_Rate"       : "0.0333"
+                },
+                { 
+                    "From_Currency" : "NTD",//
+                    "To_Currency"   : "USD", 
+                    "Ex_Date"       : "2017/4/1",
+                    "Ex_Rate"       : "0.035"
                 },
 
                 { 
@@ -576,7 +662,7 @@ $("#viewAccount").pagecontainer({
                 },
 
                 { 
-                    "From_Currency" : "EUR",
+                    "From_Currency" : "EUR",//
                     "To_Currency"   : "RUB", 
                     "Ex_Date"       : "2017/3/1",
                     "Ex_Rate"       : "61.134"
@@ -593,7 +679,8 @@ $("#viewAccount").pagecontainer({
                     "To_Currency"   : "CAD", 
                     "Ex_Date"       : "2017/3/1",
                     "Ex_Rate"       : "2"
-                } 
+                }              
+
             ];
 
                 var arraygetrate    =[];
@@ -618,13 +705,15 @@ $("#viewAccount").pagecontainer({
                     getrate     = packJson[i].Ex_Rate;   //variable
                     getfrom     = packJson[i].From_Currency;
                     getto       = packJson[i].To_Currency;
-                  
+                    exdate      = packJson[i].Ex_Date;
                       //variable to array 
                     arraygetTo.push(getto);    
 
                    //clear for array and rate 
 
-                    if (FromStatus =="All Currency") //First 
+                    if ((FromStatus =="All Currency")&&(exdate =='2017/3/1'))
+                     //First &&(Ex_Date =='2017/3/1')
+                        //First &&(Ex_Date =='2017/'++'/1')
                     { 
                         if (getto == ToStatus) //To NTD 's  ; from save
                             {
@@ -665,6 +754,7 @@ $("#viewAccount").pagecontainer({
                         }   
                     
                     } 
+
                  
                 }                
 
@@ -679,11 +769,11 @@ $("#viewAccount").pagecontainer({
 
         });
 
-    }
+ 
 
      /********************************** API*************************************/
-    /*
-     function getEventList(eventType) {//getEventList
+   
+     function GetAccountingRate(eventType) {//getEventList  //Unexpected token function 717 - 62
 
             eventType = eventType || null;
             var self = this;
@@ -694,27 +784,19 @@ $("#viewAccount").pagecontainer({
             //value:2 [done Event] >      <event_status>1</event_status><emp_no>0407731</emp_no>
             //value:3 [emergency Event] > <event_type_parameter_value>1</event_type_parameter_value><emp_no>0407731</emp_no>
             //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
-            var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
+            var queryDataParameter = "<Last_update_date>" + '1492570457' + "</Last_update_date>";
+        
 
-            if (eventType === "1") {
-                queryDataParameter = "<event_status>0</event_status>" + queryDataParameter;
-            } else if (eventType === "2") {
-                queryDataParameter = "<event_status>1</event_status>" + queryDataParameter;
-            } else if (eventType === "3") {
-                queryDataParameter = "<event_type_parameter_value>1</event_type_parameter_value>" + queryDataParameter;
-            } else if (eventType === "4") {
-                queryDataParameter = "<event_type_parameter_value>2</event_type_parameter_value>" + queryDataParameter;
-            }
-
-            //var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
 
 
-            var queryData = "";//UTD
+            //var queryData = "999";//UTD
 
             this.successCallback = function(data) {
 
                 var resultCode = data['ResultCode'];
                 var chatroomIDList = [];
+                console.log('APIreturn _'+resultCode);
 
                 if (resultCode === 1) {
                     $(".event-list-no-data").hide();
@@ -736,13 +818,18 @@ $("#viewAccount").pagecontainer({
 
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) { 
+
+
+            };
 
             var __construct = function() {
-                CustomAPI("POST", true, "getEventList", self.successCallback, self.failCallback, queryData, "");
+                CustomAPI("POST", true, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "");
             }();
 
-        }
-        */
+        }//function getEventList(eventType)
+      
+    }  
+    
     /********************************** API*************************************/
 });
