@@ -16,22 +16,11 @@ class Verify
     static $TOKEN_VALIDATE_TIME = 2 * 86400;  //TODO 未来从DB取
 
     /**
-     * 1. 確認傳送資料是否為json
-     *     Accept: application/json
-     *     Content-Type: application/json
-     *
-     *     這三種方法是用來檢查 request 的 header。
-     *     a. Request::isJson() 用來檢查 HTTP_CONTENT_TYPE是否存在 application/json
-     *     b. Request::wantsJson用來檢查 HTTP_ACCEPT 是否存在 application/json
-     *     c. Request::format 用來檢查 request 要求的回傳格式
-     *
-     * 2. 確認以下必要參數是否傳遞
+     * 驗證模擬form post 呼叫後台API
+     * 1. 確認以下必要參數是否傳遞
      *     a. app-key
      *     b. signature-time
      *     c. signature
-     *     d. content-type已于第1點檢查
-     *
-     *
      */
     public static function verify()
     {
@@ -47,48 +36,31 @@ class Verify
             || $headerSignature == null || $headerSignatureTime == null
             || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect));
+                //"message"=> "傳入參數不足或傳入參數格式錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+            );
         }
 
-        if($headerAppKey != "qplay") {
+        if(!self::chkAppKeyExist($headerAppKey)) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
-                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect));
+                //"message"=> "app-key參數錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect)
+            );
         }
 
-        //verify language input
-        if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
-            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999004_parameterLangLostOrIncorrect));
-        }
-        
-        //verify content-type
-        if (!stristr($headerContentType,'application/json')) {
-            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid));
-        }
-
-        /*
-        //TODO for test
-        if($headerSignature == "Moses824")
-        {
-            return array("code"=>ResultCode::_1_reponseSuccessful,
-                "message"=>"");
-        }
-        */
-
-//        if (!self::chkSignature($headerSignature, $headerSignatureTime)) {
-//            return array("code"=>ResultCode::_999011_signatureOvertime,
-//                "message"=>"signature參數錯誤或誤差超過15分鐘");
-
-        $sigResult = self::chkSignature($headerSignature, $headerSignatureTime);
+        $sigResult = self::chkSignature($headerSignature, $headerSignatureTime, $headerAppKey);
         if ($sigResult == 1) {
             return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid));
+                //"message"=>"Signature驗證碼不正確"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid)
+            );
         }
 
         if($sigResult == 2) {
             return array("code"=>ResultCode::_999011_signatureOvertime,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime));
+                //"message"=>"signature參數錯誤或誤差超過15分鐘"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime)
+            );
         }
 
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -204,10 +176,11 @@ class Verify
         }
     }
 
-    public static function chkSignature($signature, $signatureTime)
+     public static function chkSignature($signature, $signatureTime, $appKey)
     {
         $nowTime = time();
-        $serverSignature = self::getSignature($signatureTime);
+
+        $serverSignature = self::getSignature($signatureTime, $appKey);
         if(strcmp($serverSignature, $signature) != 0) {
             return 1; //不匹配
         }
@@ -219,97 +192,12 @@ class Verify
         return 3;
     }
 
-    public static function getSignature($signatureTime)
+    public static function getSignature($signatureTime, $appKey)
     {
-        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, 'swexuc453refebraXecujeruBraqAc4e', true));
+        $key = CommonUtil::getSecretKeyByAppKey($appKey);
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
         return $ServerSignature;
 
     }
-
-    public static function chkSignatureYellowPage($signature, $signatureTime)
-    {
-        //TODO
-        return 3;
-    }
-
-    public static function verifyYellowPage() {
-        $request = Request::instance();
-        $input = Input::get();
-        $headerContentType = $request->header('Content-Type');
-        $headerAppKey = $request->header('App-Key');
-        $headerSignature = $request->header('Signature');
-        $headerSignatureTime = $request->header('Signature-Time');
-
-        //verify parameter count
-        if($headerContentType == null || $headerAppKey == null
-            || $headerSignature == null || $headerSignatureTime == null
-            || trim($headerContentType) == "" || trim($headerAppKey) == "" || trim($headerSignature) == "" || trim($headerSignatureTime) == "") {
-            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect));
-        }
-
-        if($headerAppKey != "yellowpage") {
-            return array("code"=>ResultCode::_999010_appKeyIncorrect,
-                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect));
-        }
-
-        //verify language input
-        if(!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
-            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999004_parameterLangLostOrIncorrect));
-        }
-
-        //verify content-type
-        if (!stristr($headerContentType,'application/json')) {
-            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999006_contentTypeParameterInvalid));
-        }
-
-        /*
-        //TODO for test
-        if($headerSignature == "Moses824")
-        {
-//            return array("code"=>ResultCode::_1_reponseSuccessful,
-//                "message"=>"");
-        } else {
-            $sigResult = self::chkSignatureYellowPage($headerSignature, $headerSignatureTime);
-            if ($sigResult == 1) {
-                return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                    "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid));
-            }
-
-            if($sigResult == 2) {
-                return array("code"=>ResultCode::_999011_signatureOvertime,
-                    "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime));
-            }
-        }
-        */
-        $sigResult = self::chkSignatureYellowPage($headerSignature, $headerSignatureTime);
-        if ($sigResult == 1) {
-            return array("code"=>ResultCode::_999008_signatureIsInvalid,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999008_signatureIsInvalid));
-        }
-
-        if($sigResult == 2) {
-            return array("code"=>ResultCode::_999011_signatureOvertime,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999011_signatureOvertime));
-        }
-
-        //通用api參數判斷
-        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "")
-        {
-            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect));
-        }
-
-        $token = $request->header('token');
-        $uuid = $input["uuid"];
-
-        if(!self::chkUuidExist($uuid)) {
-            return array("code"=>ResultCode::_000911_uuidNotExist,
-                "message"=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist));
-        }
-
-        return self::verifyToken($uuid, $token);
-    }
+    
 }

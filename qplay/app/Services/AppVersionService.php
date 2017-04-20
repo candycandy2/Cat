@@ -113,8 +113,9 @@ class AppVersionService
      * @param  String $deviceType  裝置類型(ios|android)
      * @param  int    $versionCode 版本號
      * @param  file   $versionFile 檔案
+     * @param  String $appKey
      */
-    public function uploadAndPublishVersion($appId, $versionData, $versionFile, $userRowId){
+    public function uploadAndPublishVersion($appId, $versionData, $versionFile, $userRowId, $appKey){
     
         //insert DB
         $insertData = array(
@@ -135,7 +136,7 @@ class AppVersionService
         $this->appVersionRepository->newAppVersion($insertData);
 
         //upload File
-        $this->uploadApkFile($appId, $versionData, $versionFile);
+        $this->uploadApkFile($appId, $versionData, $versionFile, $appKey);
         
         $destinationPath = FilePath::getApkUploadPath($appId,$versionData['device_type'],$versionData['version_code']);
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$versionData['device_type']);
@@ -182,12 +183,13 @@ class AppVersionService
      * @param  String $deviceType  裝置類型(ios|android)
      * @param  int    $versionCode 版本號
      * @param  file   $versionFile 檔案
+     * @param  String $appKey      appKey
      */
-    private function uploadApkFile($appId, $versionData, $versionFile){
+    private function uploadApkFile($appId, $versionData, $versionFile, $appKey){
         
         $deviceType =  $versionData['device_type'];
         $versionCode = $versionData['version_code'];
-        $appKey =  $versionData['app_key'];
+        $appKey = $appKey;
 
         $destinationPath = FilePath::getApkUploadPath($appId, $deviceType, $versionCode);
 
@@ -262,17 +264,19 @@ class AppVersionService
                     $this->unPublishVersion($appId, $versionItem['device_type'], \Auth::user()->row_id);
                 }
                 $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
-                $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-                $files = new \RecursiveIteratorIterator($it,
-                             \RecursiveIteratorIterator::CHILD_FIRST);
-                foreach($files as $file) {
-                    if ($file->isDir()){
-                        rmdir($file->getRealPath());
-                    } else {
-                        unlink($file->getRealPath());
+                if(file_exists($destinationPath)){
+                    $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+                    $files = new \RecursiveIteratorIterator($it,
+                                 \RecursiveIteratorIterator::CHILD_FIRST);
+                    foreach($files as $file) {
+                        if ($file->isDir()){
+                            rmdir($file->getRealPath());
+                        } else {
+                            unlink($file->getRealPath());
+                        }
                     }
+                    rmdir($destinationPath);
                 }
-                rmdir($destinationPath);
             }
         }
         $this->appVersionRepository->deleteAppVersionById($delVersionArr);
