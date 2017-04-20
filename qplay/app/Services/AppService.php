@@ -42,4 +42,14 @@ class AppService
         $appInfo = $this->appRepository->getAppInfoByAppKey($appKey);
         return $appInfo;
     }
+
+    /**
+     * 依據qp_app_head.row_id更新事件資料
+     * @param  int    $appId      qp_app_head.row_id
+     * @param  Array  $updateData 欲更新的資料
+     * @return mixed
+     */
+    public function updateAppInfoById($appId, Array $updateData){
+        return $this->appRepository->updateAppInfoById($appId, $updateData);
+    }
 }
