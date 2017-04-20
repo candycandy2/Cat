@@ -4,6 +4,7 @@ $("#viewEventAdd").pagecontainer({
         
         var setDateTime = "setNow";
         var doneDateTime = {};
+        var tempDateTime = {};
         var eventTemplateID = 0;
         var eventTemplateData;
         var eventLocationData;
@@ -343,27 +344,62 @@ $("#viewEventAdd").pagecontainer({
                 'overflow': 'hidden',
                 'touch-action': 'none'
             });
+
+            if (doneDateTime["year"] !== undefined) {
+                $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
+                $("#doneTime").datebox('setTheDate', doneDateTime["hour"] + ":" + doneDateTime["minute"]);
+            } else {
+                var now = new Date();
+                $("#doneDate").datebox('setTheDate', 
+                    now.getFullYear() + "-" +
+                    parseInt(now.getMonth() + 1, 10) + "-" +
+                    now.getDate()
+                );
+            }
         };
 
         window.openDoneTime = function(obj) {
-            var setDate = obj.date;
-            doneDateTime["year"] = this.callFormat('%Y', setDate);
-            doneDateTime["month"] = this.callFormat('%m', setDate);
-            doneDateTime["day"] = this.callFormat('%d', setDate);
+            if (!obj.cancelClose) {
+                var setDate = obj.date;
 
-            $("#doneTime").trigger('datebox', {'method':'open'});
-            tplJS.preventPageScroll();
+                doneDateTime["year"] = this.callFormat('%Y', setDate);
+                doneDateTime["month"] = this.callFormat('%m', setDate);
+                doneDateTime["day"] = this.callFormat('%d', setDate);
+
+                $("#doneTime").trigger('datebox', {'method':'open'});
+                tplJS.preventPageScroll();
+            } else {
+                if (doneDateTime["year"] === undefined) {
+                    $("#setNow").click();
+                } else {
+                    $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
+                }
+            }
         };
 
         window.setDoneDateTime = function(obj) {
-            var setTime = obj.date;
-            doneDateTime["hour"] = this.callFormat('%H', setTime);
-            doneDateTime["minute"] = this.callFormat('%M', setTime);
+            if (!obj.cancelClose) {
+                var setTime = obj.date;
+                doneDateTime["hour"] = this.callFormat('%H', setTime);
+                doneDateTime["minute"] = this.callFormat('%M', setTime);
 
-            var textDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
-            doneDateTime["hour"] + ":" + doneDateTime["minute"];
-            $("#textDateTime").html(textDateTime);
+                var textDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
+                doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                $("#textDateTime").html(textDateTime);
 
+                //Create temporary data
+                tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+            } else {
+                if (doneDateTime["hour"] === undefined) {
+                    doneDateTime = {};
+                    $("#setNow").click();
+                } else {
+                    //Recover year/month/day
+                    doneDateTime["year"] = tempDateTime["year"];
+                    doneDateTime["month"] = tempDateTime["month"];
+                    doneDateTime["day"] = tempDateTime["day"];
+                }
+            }
             tplJS.recoveryPageScroll();
         };
 
@@ -442,9 +478,8 @@ $("#viewEventAdd").pagecontainer({
 
         function checkTemplateDesc() {
             var tempalte = $("#eventTemplateTextarea").val();
-            var description = $("#eventDescriptionTextarea").val();
 
-            if (tempalte.length === 0 || description.length === 0) {
+            if (tempalte.length === 0) {
                 $("#templateDescEmpty").popup("open");
             } else {
                 checkFunctionData();
@@ -601,6 +636,7 @@ $("#viewEventAdd").pagecontainer({
         });
 
         $("#viewEventAdd").on("pageshow", function(event, ui) {
+            doneDateTime = {};
             loctionFunctionData = [];
 
             $("#textDateTime").html("");
