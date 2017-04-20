@@ -11,7 +11,7 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                 if (prevPageID === "viewQueryResult") {
                     $("#addStar").show();
                     $("#deleteStar").hide();
-                } else if (prevPageID === "viewPhonebook") {
+                } else if (prevPageID === "viewDataInput") {
                     employeeData = phonebookData;
                     $("#addStar").hide();
                     $("#deleteStar").show();
