@@ -122,98 +122,150 @@ git add AccountingRate/config.xml
 git commit -m "v1.0.0.$dailyver[Develop]"
 git push
 
-# ------ auto deploy ------
+# ====== auto deploy start ======
 cd $binfolder
 
-response=$(curl -X POST -F "userfile=@./appqplay.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appqplaydev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- qplay android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "swexuc453refebraXecujeruBraqAc4e" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appqplaydev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appqplay.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy QPlay(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./appqplay.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appqplaydev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appqplaydev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appqplay.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./appyellowpage.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appyellowpagedev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- yellowpage android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "c103dd9568f8493187e02d4680e1bf2f" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appyellowpagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appyellowpage.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy YellowPage(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./appyellowpage.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appyellowpagedev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appyellowpagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appyellowpage.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./apprrs.apk" -F "user_id=Samuel.Hsieh" -F "app_key=apprrsdev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- rrs android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "2e936812e205445490efb447da16ca13" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprrsdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./apprrs.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy RRS(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./apprrs.apk" -F "user_id=Samuel.Hsieh" -F "app_key=apprrsdev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprrsdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./apprrs.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./appeis.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appeisdev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- eis android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "af8973de05c940f98a2c5e20b2ba649b" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeisdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appeis.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy EIS(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./appeis.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appeisdev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeisdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appeis.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./appens.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appensdev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- ens android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "dd88f6e1eea34e77a9ab75439d327363" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appensdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appens.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy ENS(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./appens.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appensdev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appensdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appens.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./apprelieve.apk" -F "user_id=Samuel.Hsieh" -F "app_key=apprelievedev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- relieve android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "00a87a05c855809a0600388425c55f0b" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprelievedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./apprelieve.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy Relieve(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./apprelieve.apk" -F "user_id=Samuel.Hsieh" -F "app_key=apprelievedev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprelievedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./apprelieve.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./appaccountingrate.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appaccountingratedev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- accounoting rate android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "35ee8716067626e225d38b9a97ee49f8" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appaccountingratedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appaccountingrate.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy AccountingRate(android) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./appaccountingrate.apk" -F "user_id=Samuel.Hsieh" -F "app_key=appaccountingratedev" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appaccountingratedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appaccountingrate.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
 #curl -X POST -F 'userfile=@./QPlay.ipa' http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 
-response=$(curl -X POST -F "userfile=@./YellowPage.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appyellowpagedev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- yellowpage ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "c103dd9568f8493187e02d4680e1bf2f" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appyellowpagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./YellowPage.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy YellowPage(iOS) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./YellowPage.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appyellowpagedev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appyellowpagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./YellowPage.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./RRS.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=apprrsdev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- rrs ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "2e936812e205445490efb447da16ca13" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprrsdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./RRS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy RRS(iOS) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./RRS.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=apprrsdev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprrsdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./RRS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./EIS.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appeisdev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- eis ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "af8973de05c940f98a2c5e20b2ba649b" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeisdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./EIS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy EIS(iOS) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./EIS.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appeisdev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeisdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./EIS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./ENS.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appensdev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- ens ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "dd88f6e1eea34e77a9ab75439d327363" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appensdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./ENS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy ENS(iOS) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./ENS.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appensdev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appensdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./ENS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./Relieve.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=apprelievedev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- relieve ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "00a87a05c855809a0600388425c55f0b" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprelievedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Relieve.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy Relieve(iOS) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./Relieve.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=apprelievedev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: apprelievedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Relieve.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-response=$(curl -X POST -F "userfile=@./AccountingRate.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appaccountingratedev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+# --- accounting rate ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "35ee8716067626e225d38b9a97ee49f8" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appaccountingratedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./AccountingRate.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy AccountingRate(iOS) fail!!! try again!!!"
-    curl -X POST -F "userfile=@./AccountingRate.ipa" -F "user_id=Samuel.Hsieh" -F "app_key=appaccountingratedev" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appaccountingratedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./AccountingRate.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
