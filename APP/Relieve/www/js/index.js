@@ -1,19 +1,46 @@
-
-/*global variable, function*/
+var QueryReserveDetailQuerydata, ReserveRelieveQuerydata;
+var queryDate, QueryReserveDetailCallBackData;
+var reserveSite = "QTT";
 var initialAppName = "Relieve";
 var appKeyOriginal = "apprelieve";
 var appKey = "apprelieve";
 var pageList = ["viewReserve"];
 var appSecretKey = "00a87a05c855809a0600388425c55f0b";
-
 var prevPageID;
-
+var time = new Date(Date.now());
+var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
+var currentYear = time.getFullYear();
+var currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+var currentDate = time.getDate();
+var currentDay = time.getDay();
 var arrOtherTimeBlock = [];
+var dayTable = {
+    "0" : "(日)",
+    "1" : "(一)",
+    "2" : "(二)",
+    "3" : "(三)",
+    "4" : "(四)",
+    "5" : "(五)",
+    "6" : "(六)"
+};
+
+$(document).one("pagebeforeshow", function() {
+    scorllDateInit(10);
+});
 
 window.initialSuccess = function() {
+    loadingMask("show");
 
-    //loadingMask("show");
+    queryDate = currentYear.toString() + currentMonth + currentDate.toString();
 
+    QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
+                                  + reserveSite
+                                  + "</Site><ReserveDate>"
+                                  + queryDate
+                                  + "</ReserveDate></LayoutHeader>";
+    QueryReserveDetail();
+    // ReserveRelieveQuerydata = "<LayoutHeader><Site>QTY</Site><ReserveDate>20170318</ReserveDate><ReserveUser>1501005</ReserveUser><BTime>08:30,09:00</BTime ></LayoutHeader>";
+    // ReserveRelieve();
     $.mobile.changePage('#viewReserve');
     if (device.platform === "iOS") {
         $('.page-main').css({'padding-top': '0.1vw'});
@@ -29,7 +56,6 @@ function onBackKeyDown() {
         popupClose();
     } else {
         if (activePageID === "viewReserve") {
-
             if ($("#reserveTab :radio:checked").val() == 'tab1') {
                 navigator.app.exitApp();
             } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
@@ -44,7 +70,6 @@ function onBackKeyDown() {
                 $("label[for=tab2]").removeClass('ui-btn-active');
                 $("label[for=tab3]").removeClass('ui-btn-active');
             }
-
         }
     }
 }
@@ -60,4 +85,53 @@ function popupSchemeMsg(attr, title, content, href1, href2) {
     $('#reservePopupSchemeMsg').popup(); //initialize the popup
     $('#reservePopupSchemeMsg').show();
     $('#reservePopupSchemeMsg').popup('open');
+}
+
+function scorllDateInit(upper) {
+    var scrollDate ="";
+    var day = currentDay;
+    var date = (currentDate < 10) ? "0"+currentDate : currentDate;
+    var month = currentMonth;
+    // var day = 6;
+    // var date = 25;
+    // var month = 2
+    for(var i=0; i<upper; i++) {
+        if(day < 6 && day > 0) {
+            scrollDate += '<a id="' + month + date + '" class="ui-link">' + month + '/' + date + '&nbsp;' + dayTable[day] + '</a>';
+            day++;
+            if(day == 6) {
+                day = 1;
+                if((Number(date) + 3) <= lastDateOfMonth) {
+                    date = ((Number(date) + 3) < 10) ? "0"+(Number(date) + 3) : (Number(date) + 3);    
+                }else if((Number(date) + 3) > lastDateOfMonth) {
+                    month++;
+                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);    
+                }
+            }else if((Number(date) + 1) <= lastDateOfMonth) {
+                date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
+            }else if((Number(date) + 1) > lastDateOfMonth) {
+                month++;
+                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
+            }
+        }else if(day == 6) {
+            day = 1;
+            if((Number(date) + 2) <= lastDateOfMonth) {
+                date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);    
+            }else if((Number(date) + 2) > lastDateOfMonth) {
+                month++;
+                date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);    
+            }
+        }else if(day == 0) {
+            day = 1;
+            if((Number(date) + 1) <= lastDateOfMonth) {
+                date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);    
+            }else if((Number(date) + 1) > lastDateOfMonth) {
+                month++;
+                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);    
+            }
+        }
+    }
+    $("#scrollDate").html("");
+    $("#scrollDate").append(scrollDate).enhanceWithin();
+    $("#scrollDate #" + currentMonth + currentDate).addClass('hover');
 }

@@ -221,10 +221,18 @@ $("#viewEventContent").pagecontainer({
                 for (var i=0; i<messages.length; i++) {
                     var messageList = $(messageListHTML);
 
+                    messageList.find(".user").html(messages[i]["from_id"]);
+                    messageList.find(".datetime").html(messages[i]["ctimeText"]);
+
                     if (messages[i]["msg_type"] === "text") {
-                        messageList.find(".user").html(messages[i]["from_id"]);
-                        messageList.find(".datetime").html(messages[i]["ctimeText"]);
+                        messageList.find(".text").removeClass("hide");
                         messageList.find(".text").html(messages[i]["msg_body"]);
+                    } else if (messages[i]["msg_type"] === "image") {
+                        messageList.find(".image").removeClass("hide");
+                        messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
+                        //messageList.find(".image img").prop("src", "https://dl.im.jiguang.cn/qiniu/image/j/54BAF99DD8326F50087B260036BFE6A9");
+                        messageList.find(".image img").data("width", messages[i]["msg_body"]["width"]);
+                        messageList.find(".image img").data("height", messages[i]["msg_body"]["height"]);
                     }
 
                     if ((i+1) == messages.length) {
@@ -373,12 +381,13 @@ $("#viewEventContent").pagecontainer({
 
         //For Plugin Camera
         function openFilePicker(selection) {
-            var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            //var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            //var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            var srcType = Camera.PictureSourceType.CAMERA;
             var options = setOptions(srcType);
             var func = createNewFileEntry;
 
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
-
                 photoUrl = imageUri;
 
                 $("<img id='myTempImage' style='display:none;' src='" + photoUrl + "'>").load(function() {
@@ -411,27 +420,46 @@ $("#viewEventContent").pagecontainer({
         function confirmPhoto(imageWidth, imageHeight) {
             var clientHeight = document.documentElement.clientHeight;
             var clientWidth = document.documentElement.clientWidth;
-            var resizeWidthPercent = parseFloat(clientWidth / imageWidth).toFixed(2)
+            var resizeWidthPercent = parseFloat(clientWidth / imageWidth).toFixed(2);
+            var buttonHeight = parseFloat($(window).height() * 0.1306).toFixed(2);
 
             resizePhotoWidth = parseInt(imageWidth * resizeWidthPercent, 10);
-            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent, 10);
+            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent - buttonHeight, 10);
 
             var imageContent = '<img src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
 
             var buttonContent = '<div class="button-content bottom font-style3"><span id="photoCancel">重新選擇</span><span id="photoConfirm">使用照片</span></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
-            tplJS.preventPageScroll();
+            if (device.platform === "iOS") {
+                $(".event-content-photo-full-screen img").css("padding-top", "20px");
+            }
+
+            $(".event-content-photo-full-screen").css("top", $(document).scrollTop());
+
+            $('body').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            $('body').on('touchmove', function(e) {
+                $(window).scrollTop(0);
+                e.preventDefault();
+                e.stopPropagation();
+            });
 
             //Photo Confirm - Button Event
             $("#photoCancel").on("click", function() {
                 confirmPhotoClose();
-                openFilePicker();
+                //openFilePicker();
+                $("#msgPhoto").trigger("click");
             });
 
             $("#photoConfirm").on("click", function() {
                 confirmPhotoOK();
             });
+
+            loadingMask("hide");
         }
 
         function confirmPhotoClose() {
@@ -448,23 +476,113 @@ $("#viewEventContent").pagecontainer({
 
             $(".event-content-photo-full-screen").remove();
 
-            tplJS.recoveryPageScroll();
+            $('body').css({
+                'overflow': 'auto',
+                'touch-action': 'auto'
+            });
+            $('body').off('touchmove');
         }
 
-        function fullScreenPhoto() {
-            var imageContent = '<img src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
+        function fullScreenPhoto(action) {
+
+            var imgSrc = "";
+            if (action === "download") {
+                imgSrc = photoUrl;
+            }
+
+            var imageContent = '<img id="fullScreenImg" src="' + imgSrc + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
             var buttonContent = '<div class="button-content top"><div class="back-button"><span class="back"></span></div></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
-            tplJS.preventPageScroll();
+            var buttonHeight = $(".event-content-photo-full-screen .button-content").height();
+
+            if (device.platform === "iOS") {
+                $(".event-content-photo-full-screen .button-content").css("padding-top", "20px");
+                var paddingTop = buttonHeight + 20;
+            } else {
+                var paddingTop = buttonHeight;
+            }
+
+            $(".event-content-photo-full-screen #fullScreenImg").css("padding-top", paddingTop + "px");
+            $(".event-content-photo-full-screen").css("top", $(document).scrollTop());
+
+            if (action === "upload") {
+                var file = $("input[type=file]")[0].files[0];
+                var img = document.getElementById("fullScreenImg");
+                var reader;
+
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        loadingMask("hide");
+                    };
+                }(img));
+                reader.readAsDataURL(file);
+            } else {
+                loadingMask("hide");
+            }
+
+            $('body').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            $('body').on('touchmove', function(e) {
+                $(window).scrollTop(0);
+                e.preventDefault();
+                e.stopPropagation();
+            });
 
             //Back Button
             $(".button-content .back-button").on("click", function() {
                 $(".event-content-photo-full-screen").remove();
                 $(".event-content-footer").removeClass("ui-fixed-hidden");
 
-                tplJS.recoveryPageScroll();
+                $('body').css({
+                    'overflow': 'auto',
+                    'touch-action': 'auto'
+                });
+                $('body').off('touchmove');
             });
+        }
+
+        function callFileReader(file) {
+            if (typeof FileReader !== "undefined") {
+                //var container = document.getElementById(containerid);
+                //var img = document.createElement("img");
+                //container.appendChild(img);
+                var imgSmall = document.getElementById("finalImage");
+                var imgOriginal = document.getElementById("myTempImage");
+                var reader;
+
+                //small preview image
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        $(".previewImageDiv").show();
+                        $(".previewImageDiv-AddHeight").show();
+                    };
+                }(imgSmall));
+                reader.readAsDataURL(file);
+
+                //original image
+                reader = new FileReader();
+                reader.onload = (function (theImg) {
+                    return function (evt) {
+                        theImg.src = evt.target.result;
+                        photoUrl = theImg.src;
+
+                        $("<img/>").attr("src", theImg.src).load(function() {
+                            confirmPhoto(this.width, this.height);
+                        });
+                    };
+                }(imgOriginal));
+                reader.readAsDataURL(file);
+            } else {
+                console.log("FileReader------------------no support");
+            }
         }
 
         /********************************** page event *************************************/
@@ -496,6 +614,9 @@ $("#viewEventContent").pagecontainer({
                 $("#eventEdit").show();
             }
 
+            $(".previewImageDiv").hide();
+            $(".previewImageDiv-AddHeight").hide();
+
             /*
             //Open Camera in Mobile Phone
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -518,7 +639,21 @@ $("#viewEventContent").pagecontainer({
 
         //Open Photo Library
         $(document).on("click", "#viewEventContent #cameraButton", function() {
-            openFilePicker();
+            loadingMask("show");
+            //openFilePicker();
+            var msgPhoto = $("#msgPhoto").clone();
+            $("#viewEventContent .event-content-footer #msgPhoto").remove();
+            $(msgPhoto).appendTo("#viewEventContent .event-content-footer .center").trigger("click");
+        });
+
+        $(document).on("change", "#msgPhoto", function() {
+            var file = $("input[type=file]")[0].files[0];
+            console.log(file.name + "\n" +
+                  file.type + "\n" +
+                  file.size + "\n" +
+                  file.lastModifiedDate);
+
+            callFileReader(file);
         });
 
         //Photo - Small Preview
@@ -527,12 +662,13 @@ $("#viewEventContent").pagecontainer({
             $(".previewImageDiv").hide();
             $(".previewImageDiv-AddHeight").hide();
 
-            $(".event-content-footer").removeClass("ui-fixed-hidden");
+            footerFixed();
         });
 
         //Photo - FullScreen Preview
         $(document).on("click", "#finalImage", function() {
-            fullScreenPhoto();
+            loadingMask("show");
+            fullScreenPhoto("upload");
         });
 
         //Event Related Content
@@ -582,20 +718,24 @@ $("#viewEventContent").pagecontainer({
 
         //Chatroom Msg Button
         $(document).on("click", "#msgButton", function() {
-            var msgEmpty = false;
+
+            var gid = chatroomID;
+            var gname = chatroomID + "-room";
+
+            var uploadText = true;
             var msg = $("#msgText").val();
 
+            var uploadImg = false;
+            var fid = "msgPhoto";
+
             if (msg.length === 0 || msg === "請輸入訊息") {
-                msgEmpty = true;
+                uploadText = false;
             }
 
-            if (!msgEmpty) {
+            if (uploadText) {
                 if (msgController.isInited) {
-                    var gid = chatroomID;
-                    var gname = chatroomID + "-room";
-                    var text = msg;
 
-                    msgController.SendText(gid, gname, text, function(successResult) {
+                    msgController.SendText(gid, gname, msg, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
                         loadingMask("show");
@@ -624,6 +764,63 @@ $("#viewEventContent").pagecontainer({
                     });
                 }
             }
+
+            if ($(".previewImageDiv").css("display") === "block") {
+                uploadImg = true;
+            }
+
+            if (uploadImg) {
+                //console.log(photoUrl);
+                msgController.SendImage(gid, gname, fid, function(successResult) {
+                    console.log("---------------successResult");
+                    console.log(successResult);
+                    loadingMask("show");
+
+                    if (successResult["result"]["code"] === 0) {
+                        var chatRoomID = successResult["result"]["target_gid"];
+                        var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                        var createTime = new Date(ctime * 1000);
+
+                        var objData = {
+                            msg_id: successResult["result"]["msg_id"],
+                            ctime: ctime,
+                            ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                                padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                                padLeft(createTime.getMinutes(), 2),
+                            from_id: successResult["content"]["from_id"],
+                            msg_type: successResult["content"]["msg_type"],
+                            msg_body: successResult["content"]["msg_body"]
+                        };
+
+                        chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+
+                        $(".previewImageDiv").hide();
+                        $(".previewImageDiv-AddHeight").hide();
+                        loadingMask("hide");
+                    }
+
+                }, function(errorResult) {
+                    console.log("---------------errorResult");
+                    console.log(errorResult);
+                });
+            }
+        });
+
+        //Chatroom msg-image click full screen
+        $(document).on("click", ".chat-img", function() {
+            var imageWidth = $(this).data("width");
+            var imageHeight = $(this).data("height");
+            var clientHeight = document.documentElement.clientHeight;
+            var clientWidth = document.documentElement.clientWidth;
+            var resizeWidthPercent = parseFloat(clientWidth / imageWidth).toFixed(2);
+            var buttonHeight = parseFloat($(window).height() * 0.1306).toFixed(2);
+
+            resizePhotoWidth = parseInt(imageWidth * resizeWidthPercent, 10);
+            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent - buttonHeight, 10);
+
+            photoUrl = $(this).prop("src");
+
+            fullScreenPhoto("download");
         });
     }
 });

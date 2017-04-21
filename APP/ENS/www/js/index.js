@@ -217,11 +217,12 @@ function checkEventTemplateData(action, data) {
     data = data || null;
 
     if (window.localStorage.getItem("template") !== null) {
+        var templateDataMaxLength = 20;
         var tempDate = window.localStorage.getItem("template");
         templateData = JSON.parse(tempDate);
 
         if (action === "update") {
-            if (templateData.length < 20) {
+            if (templateData.length < templateDataMaxLength) {
                 var value = templateData.length+1;
                 var text = data;
                 var tempObj = {
@@ -231,7 +232,6 @@ function checkEventTemplateData(action, data) {
 
                 templateData.push(tempObj);
             } else {
-
                 var templateUpdateIndex = 1;
 
                 if (window.localStorage.getItem("templateUpdateIndex") !== null) {
@@ -251,6 +251,11 @@ function checkEventTemplateData(action, data) {
                     }
                 }
                 templateUpdateIndex++;
+
+                if (templateUpdateIndex > templateDataMaxLength) {
+                    templateUpdateIndex = 1;
+                }
+
                 window.localStorage.setItem("templateUpdateIndex", templateUpdateIndex);
             }
 
@@ -274,6 +279,7 @@ function checkEventTemplateData(action, data) {
 
 function footerFixed() {
     $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
 }
 
 //[Android]Handle the back button

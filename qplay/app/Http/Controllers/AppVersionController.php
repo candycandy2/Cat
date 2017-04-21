@@ -9,6 +9,7 @@ use App\lib\CommonUtil;
 use App\lib\FilePath;
 use App\Services\AppVersionService;
 use App\Services\AppService;
+use App\lib\Verify;
 
 class AppVersionController extends Controller
 {
@@ -33,73 +34,88 @@ class AppVersionController extends Controller
     public function uploadAppVersion(Request $request){
         \DB::beginTransaction();
         try{
-             $validator = \Validator::make($request->all(), [
-                'app_key' => 'required',
+            $request->request->add(['lang' => 'zh-tw']);
+            $Verify = new Verify();
+            $verifyResult = $Verify->verify();
+            if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+            {
+
+                $validator = \Validator::make($request->all(), [
                 'device_type' => 'required|in:android,ios',
                 'version_code' => 'required|integer',
                 'version_name' => 'required',
                 'version_log' => 'required',
                 'userfile'=>'required',
                 'user_id' => 'required|is_user_exist'
-            ],
-            [
-                'is_user_exist' => 'user is not exist'
-            ]);
+                ],
+                [
+                    'is_user_exist' => 'user is not exist'
+                ]);
 
-            if ($validator->fails()) {
-                 return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,'Message'=>$validator->messages()], 200);
-            }
-        
-            $input = Input::all();
-            $appKey     = trim($input['app_key']);
-            $deviceType = trim($input['device_type']);
-            $userId     = trim($input['user_id']);
-            $versionCode = trim($input['version_code']);
-            $versionName = trim($input['version_name']);
-            $versionFile =  Input::file('userfile');
+                if ($validator->fails()) {
+                     return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,'Message'=>$validator->messages()], 200);
+                }
             
-            if(is_null($versionFile)){
-                $errorMsg['userfile'] = ['userfile must be file type'];
-                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                    'Message'=>$errorMsg]);
-            }
+                $input = Input::all();
+                $appKey     = $request->header('App-Key');
+                $deviceType = trim($input['device_type']);
+                $userId     = trim($input['user_id']);
+                $versionCode = trim($input['version_code']);
+                $versionName = trim($input['version_name']);
+                $versionFile =  Input::file('userfile');
+                
+                if(is_null($versionFile)){
+                    $errorMsg['userfile'] = ['userfile must be file type'];
+                    return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        'Message'=>$errorMsg]);
+                }
 
-            $isApkFile = $this->validatAppFileType($deviceType, $versionFile->getClientOriginalName());
-            if(!$isApkFile){
-                $errorMsg['userfile'] = ['userfile type error'];
-                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                    'Message'=>$errorMsg]);
-            }
+                $isApkFile = $this->validatAppFileType($deviceType, $versionFile->getClientOriginalName());
+                if(!$isApkFile){
+                    $errorMsg['userfile'] = ['userfile type error'];
+                    return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        'Message'=>$errorMsg]);
+                }
 
-            $userInfo = CommonUtil::getUserInfoJustByUserID($userId);
-            $userRowId = $userInfo->row_id;
-            $appInfo = $this->appService->getAppInfoByAppKey($appKey);
-            if(is_null($appInfo)){
-                return response()->json(['ResultCode'=>ResultCode::_000909_appKeyNotExist,
-                    'Message'=>'there is no app whith this app key']);
-            }
-            $appId = $appInfo->row_id;
-            if(!$this->appVersionService->validateVersionCode($appId, $deviceType, $versionCode)){
-                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                    'Message'=>'the version_code must bigger than before version']);
-            }
-             if(!$this->appVersionService->validateVersionName($appId, $deviceType, $versionName)){
-                return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                    'Message'=>'version name is already exist']);
-            }
+                $userInfo = CommonUtil::getUserInfoJustByUserID($userId);
+                $userRowId = $userInfo->row_id;
+                $appInfo = $this->appService->getAppInfoByAppKey($appKey);
+                if(is_null($appInfo)){
+                    return response()->json(['ResultCode'=>ResultCode::_999010_appKeyIncorrect,
+                        'Message'=>'there is no app whith this app key']);
+                }
+                $appId = $appInfo->row_id;
+                if(!$this->appVersionService->validateVersionCode($appId, $deviceType, $versionCode)){
+                    return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        'Message'=>'the version_code must bigger than before version']);
+                }
+                 if(!$this->appVersionService->validateVersionName($appId, $deviceType, $versionName)){
+                    return response()->json(['ResultCode'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                        'Message'=>'version name is already exist']);
+                }
 
 
-            //step1:下架舊版本
-            $this->appVersionService->unPublishVersion($appId, $deviceType, $userRowId);
-             
-            //step2:上傳新版本並將版本設定為上架中
-            $this->appVersionService->uploadAndPublishVersion($appId, $input, $versionFile, $userRowId);
-            
-            \DB::commit();
-              return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                'Message'=>trans("messages.MSG_OPERATION_SUCCESS"),
-                'Content'=>''
-            ]);
+                //step1:下架舊版本
+                $this->appVersionService->unPublishVersion($appId, $deviceType, $userRowId);
+                 
+                //step2:上傳新版本並將版本設定為上架中
+                $this->appVersionService->uploadAndPublishVersion($appId, $input, $versionFile, $userRowId, $appKey);
+                
+                //step3:更新qp_app_head.update_at
+                $this->appService->updateAppInfoById($appId,['updated_at'=>date('Y-m-d H:i:s',time())]);
+
+                \DB::commit();
+                  return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>trans("messages.MSG_OPERATION_SUCCESS"),
+                    'Content'=>''
+                ]);
+            }else{
+                $result = ['ResultCode'=>$verifyResult["code"],
+                'Message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
+                'Content'=>''];
+                $result = response()->json($result);
+                return $result;
+            }
 
         }catch(\Exception $e){
            \DB::rollBack();

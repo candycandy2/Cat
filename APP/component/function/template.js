@@ -148,15 +148,22 @@ var tplJS = {
         });
 
         $('body').css('overflow', 'hidden').on('touchmove', function(e) {
-            if ($(e.target).data('role') !== "listview") {
+            var preventScroll = true;
+            var offsetParent = e.target.offsetParent;
+
+            if ($(offsetParent).hasClass("ui-datebox-container")) {
+                preventScroll = false;
+            } else if ($(offsetParent).hasClass("ui-popup")) {
+                var listview = $(offsetParent).find("ul[data-role=listview]");
+                if ($(listview).prop("scrollHeight") > $(listview).height()) {
+                    preventScroll = false;
+                }
+            }
+
+            if (preventScroll) {
                 e.preventDefault();
                 e.stopPropagation();
             }
-        });
-
-        $('body').one('touchstart', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
         });
     },
     recoveryPageScroll: function() {
@@ -178,7 +185,6 @@ var tplJS = {
         });
         */
         $('body').css('overflow', 'auto').off('touchmove');
-        $('body').off('touchstart');
     },
     Tab: function(pageID, contentID, renderAction, data) {
         var tabHTML = $("template#tplTab").html();
@@ -277,12 +283,23 @@ var tplJS = {
         dropdownList.prop("id", data.id);
 
         //DropdownList Default Selected Option Value
-        var defaultValue = data.defaultValue;
+        var defaultValue = "";
+        if (data.defaultValue !== undefined) {
+            defaultValue = data.defaultValue;
+            $("#" + data.id).data("multiVal", defaultValue);
+        }
 
         //DropdownList AutoResize
         var autoResize = true;
         if (data.autoResize !== undefined) {
             autoResize = data.autoResize;
+        }
+
+        //DropdownList Multiple Select
+        var multiSelect = false;
+        if (data.multiSelect !== undefined) {
+            multiSelect = data.multiSelect;
+            dropdownList.data("multiple", multiSelect);
         }
 
         //DropdownList Background IMG
@@ -409,6 +426,20 @@ var tplJS = {
         });
 
         $(document).on("click", "#" + popupID + " .close", function() {
+            if (type === "typeA") {
+                if (multiSelect) {
+                    var dataArray = $("#" + data.id).data("multiVal").split("|");
+                    var indexAll = dataArray.indexOf("all");
+                    if (indexAll > -1) {
+                        $("#" + data.id).data("multiVal", "all");
+                        $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
+                        $("#" + popupID + " ul li:eq(0)").addClass("tpl-dropdown-list-selected");
+                    }
+                    //Trigger drowdown list 'change' event
+                    $("#" + data.id).trigger("change");
+                }
+            }
+
             $('#' + popupID).popup('close');
 
             if (type === "typeA") {
@@ -421,13 +452,40 @@ var tplJS = {
 
         //Click Li to change the value of Dropdown List
         $(document).on("click", "#" + popupID + " ul li", function() {
-            $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
-            $(this).addClass("tpl-dropdown-list-selected");
+            if (!multiSelect) {
+                $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
+                $(this).addClass("tpl-dropdown-list-selected");
+            } else {
+                $(this).toggleClass("tpl-dropdown-list-selected");
+            }
 
             if (type === "typeA") {
-                $("#" + data.id).val($(this).data("value"));
-                if (autoResize) {
-                    tplJS.reSizeDropdownList(data.id, type);
+                if (!multiSelect) {
+                    $("#" + data.id).val($(this).data("value"));
+                    if (autoResize) {
+                        tplJS.reSizeDropdownList(data.id, type);
+                    }
+                } else {
+                    //Drowdown List set Multiple Value
+                    var multiVal = $("#" + data.id).data("multiVal");
+                    if (multiVal !== undefined && multiVal.length > 0) {
+                        var dataString = "";
+                        var dataArray = multiVal.split("|");
+                        var index = dataArray.indexOf($(this).data("value"));
+
+                        if (index > -1) {
+                            dataArray.splice(index, 1);
+                        } else {
+                            dataArray.push($(this).data("value"));
+                        }
+
+                        if (dataArray.length > 0) {
+                            var dataString = dataArray.join("|");
+                        }
+                        $("#" + data.id).data("multiVal", dataString);
+                    } else {
+                        $("#" + data.id).data("multiVal", $(this).data("value"));
+                    }
                 }
             } else if (type === "typeB") {
                 //Find drowdown list, set selected option value
@@ -443,13 +501,15 @@ var tplJS = {
                 $("#" + data.id).find("option").remove().end().append(newOption);
             }
 
-            //Trigger drowdown list 'change' event
-            $("#" + data.id).trigger("change");
+            if (!multiSelect) {
+                //Trigger drowdown list 'change' event
+                $("#" + data.id).trigger("change");
 
-            //Close Popup
-            $('#' + popupID).popup('close');
+                //Close Popup
+                $('#' + popupID).popup('close');
 
-            tplJS.recoveryPageScroll();
+                tplJS.recoveryPageScroll();
+            }
         });
 
         //Auto Resize DropdownList Width
