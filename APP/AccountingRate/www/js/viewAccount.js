@@ -13,30 +13,33 @@ $("#viewAccount").pagecontainer({
         //var FromStatus  = "NTD";//var ToStatus  = "NTD";  
         var test;
         var statuscountrypop;
-        var array = [
+        /*var array = [
                      "AED","BDT","BRL","CAD",
                      "CHF","CZK","EUR","GBP","HKD",
                      "IDR","INR","JPY","KRW","MMK",
                      "MXN","MYR","NTD","NZD","PHP",
                      "RMB","RUB","SEK","SGD","THB",
                      "TRL","VND","ZAR" ]; 
-        var arrayRate =[
+
+         ar arrayRate =[
                     "1","2","3","4","5",
                     "6","7","8","9","10",
                     "11","12","13","14","15",
                     "16","17","18","19","20",
                     "21","22","23","24","25",
         ];
+        */
 
+        var array     = [    ];   
+        var arrayRate = [    ];        
         //var arrayadd =["NTD","EUR","AUD"];
-        var arrayadd =[];
-        var arrayaddtemp=[];
-        var arrayrateadd=[];
-        var arraycomb =[   ];
-        var arrayratecomb =[   ];
-
-        var packJsontemp =[];
-                    
+        var arrayadd            =[];
+        var arrayaddtemp        =[];
+        var arrayrateadd        =[];
+        var arrayratecomb       =[];
+        var arrayratecomb       =[];
+        var packJsontemp        =[];
+                          
         
         /********************************** function *************************************/
         window.APIRequest = function() {
@@ -67,8 +70,11 @@ $("#viewAccount").pagecontainer({
         var todayDate   = Today.getDate();
         var lastMonth   = Today.getMonth();
 
-        var UTC         = Math.round(new Date().getTime()/1000);
+        window.UTC = Math.round(Date.UTC(todayYear,todayMonth-3,todayDate)/1000);
 
+        var nowTimstamp = window.Today.TimeStamp();
+        //var Jsonflagnow ='3'; //todayMonth
+        window.Jsonflagnow = todayMonth; 
     
 
 
@@ -96,8 +102,8 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             
-
-            var EventList = new GetAccountingRate(); //add for test 20170418 API 
+            Jsonparse(1);
+            //var EventList = new GetAccountingRate(); //add for test 20170418 API 
 
 
         });
@@ -105,8 +111,6 @@ $("#viewAccount").pagecontainer({
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
            
-            Jsonparse(1);
-
             //Jsonparse(1);
             Test();         
             Buttonimg(); 
@@ -218,12 +222,22 @@ $("#viewAccount").pagecontainer({
             tabActiveIDs = ui.newPanel.selector;
          
             if (ui.newPanel.selector === "#fragment-1"){
-                Buttonimg(); 
+                /*
+                Jsonflagnow =todayMonth-1;  
+                */ 
+                Jsonflagnow =todayMonth;
+                Jsonparse(1);            
+                //Buttonimg(); 
                 console.log("tab1");
 
             }
             else if (ui.newPanel.selector === "#fragment-2"){
-                Buttonimg(); 
+                 /*
+                Jsonflagnow =todayMonth;
+                 */
+                Jsonflagnow =todayMonth-1;
+                Jsonparse(1);
+                //Buttonimg(); 
                 console.log("tab2");
             }
 
@@ -263,9 +277,16 @@ $("#viewAccount").pagecontainer({
             array.splice(a,1);
 
             //arrayrateadd.push(statuscountrypop);
-            $("#"+statuscountrypop).parent()(".star_icon").css("opacity","1"); 
+            //$("#"+statuscountrypop).parent()(".star_icon").css("opacity","1"); 
+            //$("#NZD").next().children(".Listdiv3").children(".ListDollar1").text()
+           
+            //var b= $("#"+statuscountrypop).next().children(".Listdiv3").children(".ListDollar1").text();//20160421
+            
+            /*20170421 
+            var b= $("#"+statuscountrypop).parent().find(".ListDollar1").text(); //20160421
+            */
 
-            // $("#NTD").parent().children(".Listdiv3").children("ListDollar1").text();
+            //$("#NTD").parent().children(".Listdiv3").children("ListDollar1").text();
             //array.splice(array.indexOf(statuscountrypop),1);
 
             Test(); //reoragionize array
@@ -309,7 +330,7 @@ $("#viewAccount").pagecontainer({
 
             if ((FromStatus =="All Currency") && (ToStatus =="All Currency")) 
             {                
-                alert("NO!不可以喔!~");
+                alert("NO!不可以喔!~ ^-^ ");
                 FromStatus    = "NTD";
             }
                
@@ -394,7 +415,8 @@ $("#viewAccount").pagecontainer({
         }
 
 
-        function Favorite(){  
+        function Favorite(){            
+
             //Get] Initial  from array and add to the id 
             for (var i=0 ; i< arrayadd.length; i++)
           
@@ -439,11 +461,13 @@ $("#viewAccount").pagecontainer({
                 //Jsonparse(4);
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);  
+
             }
             if (tabActiveIDs  === "#fragment-2"){
                 //Jsonparse(3);
                 $("#ultestB").html(" "); 
-                $("#ultestB").append(content);   
+                $("#ultestB").append(content); 
+
             } 
                      
         }
@@ -611,6 +635,47 @@ $("#viewAccount").pagecontainer({
 
 
 
+       function Pophtml(){
+                    return '<li data-icon="false" class="1_li CountryA" id="litest">'
+                    +'<div class="Listdiv1" id='
+                    +
+                    +'>'
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
+                    +'<img  class="ListviewFlag1" src ="img/tmp/'
+                    + FromStatus
+                    +'.png"> '        
+                    +'<span class="ListRate1">'                
+                    +'1 '
+                    + FromStatus
+                    +'</span>  '        
+                    +'<div  class="Listdiv1equalmark4">=</div>'
+                    +'</div>'
+                    +'<div class="Listdiv2 select" id='
+                    + arraycomb[index]
+                    +'>'       
+                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
+                    +'<img  class="ListviewFlag2" src ="img/tmp/'
+                    + arraycomb[index] 
+                    +'.png">'                   
+                    +'<div class="Listdiv3">'    
+                    +'<span class="ListDollar1" >'
+                   // + arrayRate[index] 
+                    + arrayratecomb[index] 
+                    // +'10.032'
+                    +'</span> '    
+                    +'<span class="ListRate2">'
+                    
+                    + arraycomb[index]
+                    +'</span>'    
+                    +'<br> '    
+                    +'</div>'    
+                    +'</div>'   
+                    +'</li>' ;   
+                    /*+'<br>'
+                    +'<br>'
+                    +'<hr>';
+                    */         
+        }
         /********************************** html *************************************/
         /********************************** dom event *************************************/
 
@@ -619,11 +684,11 @@ $("#viewAccount").pagecontainer({
         //Initial , pop
         function Jsonparse(Jsonflag) {
             //packJsontemp = []; 
-            var EventList = new GetAccountingRate();
+            var EventList = new GetAccountingRate();  //20170420 5pm mark for test 
             //window.setTimeout(sleepgo,10000);
             // window.setTimeout(Jsonparsenext,3000);
             //sleep(10000);
-            Jsonparsenext(Jsonflag);
+            //Jsonparsenext(Jsonflag);  // 20170421
         }
 
        function sleep(milliseconds) {
@@ -636,6 +701,8 @@ $("#viewAccount").pagecontainer({
         }
 
         function Jsonparsenext(Jsonflag) {        
+
+
             var packJson = packJsontemp ;
 
             if (packJsontemp == 0) //test for data from back 
@@ -717,10 +784,10 @@ $("#viewAccount").pagecontainer({
 
         */
 
-
-                var arraygetrate    =[];
-                var arraygetFrom    =[];
-                var arraygetTo      =[];
+                arrayRate           = ["undefine"]; 
+                var arraygetrate    = [];
+                var arraygetFrom    = [];
+                var arraygetTo      = [];
                 var cleartest       = 0;
 
            /* if (cleartest == "1"){
@@ -746,8 +813,9 @@ $("#viewAccount").pagecontainer({
                     //arraygetTo.push(getto);    
 
                    //clear for array and rate 
-
-                    if ((FromStatus =="All Currency")&&(exdate =='2017/03/01'))
+//Jsonflagnow
+                    //if ((FromStatus =="All Currency")&&(exdate =='2017/03/01'))
+                    if ((FromStatus =="All Currency")&&(exdate =='2017/0'+Jsonflagnow+'/01'))
                      //First &&(Ex_Date =='2017/3/1')
                         //First &&(Ex_Date =='2017/'++'/1')
                     { 
@@ -766,7 +834,8 @@ $("#viewAccount").pagecontainer({
                     //Buttonimg();
 
                     
-                    else if ((ToStatus =="All Currency")&&(exdate =='2017/03/01'))//Second 
+                    //else if ((ToStatus =="All Currency")&&(exdate =='2017/03/01'))//Second 
+                    else if ((ToStatus =="All Currency")&&(exdate =='2017/0'+Jsonflagnow+'/01'))//Second 
                     {   // Bug for img show 
                       
                         if (getfrom == FromStatus) // NTD 's from save
@@ -782,14 +851,26 @@ $("#viewAccount").pagecontainer({
                         
                     }
                                              
-                    else if ((FromStatus != "All Currency") && (ToStatus !="All Currency") && (exdate =='2017/03/01'))
+                    else if ((FromStatus != "All Currency")&&(ToStatus !="All Currency"))
                     {
-                        if ((getfrom == FromStatus) && (getto ==ToStatus)) //FromStatus   ToStatus 
-                            console.log('OK i:'+i+'Rate:'+getrate+'from:'+getfrom+'to:'+getto +'Data:'+exdate); 
-                        {  //Json data i item == FromStatus
-                          arraygetrate.push(getrate);                  
-                          arrayRate= arraygetrate;    
-                        }   
+                        
+                        if ((getfrom == FromStatus)&&(getto ==ToStatus)&&(exdate =='2017/03/01')) //FromStatus   ToStatus 
+                            {  //Json data i item == FromStatus
+                              arraygetrate.push(getrate);                  
+                              arrayRate= arraygetrate;     //issue for last rate 20170421
+                              console.log('OK i:'+i+'Rate:'+getrate+'from:'+getfrom+'to:'+getto +'Data:'+exdate); 
+                             
+
+                             //if arrayRate
+
+                            }
+
+                        /*if ((getfrom == FromStatus)&&(getto ==ToStatus)&&(exdate =='2017/03/01'))   
+                            {
+                                arrayRate= ["undefine"];   
+
+                            }
+                         */      
                     //undefine need to declare 
                     } 
 
@@ -797,7 +878,7 @@ $("#viewAccount").pagecontainer({
                 }
                 Test();         
                 Buttonimg();                 
-
+                Favorite(); 
                 
         }
 
@@ -826,12 +907,14 @@ $("#viewAccount").pagecontainer({
             //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
           
            // var queryDataParameter = "<Last_update_date>" + '1492570457' + "</Last_update_date>";
+        
+           //var queryDataParameter = "<Last_update_date>" +  UTC + "</Last_update_date>";
             var queryDataParameter = "<Last_update_date>" + '1483356362' + "</Last_update_date>";
         
 
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
 
-
+            console.log("UTC_"+UTC);
             //var queryData = "999";//UTD
 
             this.successCallback = function(data) {
@@ -846,6 +929,9 @@ $("#viewAccount").pagecontainer({
                    // eventListData = data['Content'];
                     packJsontemp  = data['Content']; //API
                     console.log(packJsontemp);//not show
+                    
+                     
+                    Jsonparsenext(1);  
 
                     /*for (var i=0; i<data['Content'].length; i++) {
                         //Chatroom ID

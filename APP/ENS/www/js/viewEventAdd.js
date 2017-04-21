@@ -110,18 +110,18 @@ $("#viewEventAdd").pagecontainer({
         function relatedEventList(selectedValue) {
             //create new Event Additional List, set new ID by count number
             var ID = parseInt($(".event-add-additional-list").length + 1, 10);
-            var eventRowID = selectedValue;
+            var relatedeventRowID = selectedValue;
 
             $.each(eventRelatedData.option, function(key, obj) {
                 if (obj.value == selectedValue) {
-                    eventRowID = obj.value;
+                    relatedeventRowID = obj.value;
                 }
             });
 
             var eventAdditionalListHTML = $("template#tplEventAdditionalList").html();
             var eventAdditionalList = $(eventAdditionalListHTML);
             //set Additional Event Number Text
-            eventAdditionalList.find(".event-additional-number").html(eventRowID);
+            eventAdditionalList.find(".event-additional-number").html(relatedeventRowID);
 
             $("#eventaAdditionalContent .event-add-additional-list").remove();
             $("#eventaAdditionalContent").append(eventAdditionalList);
@@ -149,7 +149,7 @@ $("#viewEventAdd").pagecontainer({
             }
 
             //Related Event
-            var nowRelatedID = parseInt(eventRelatedID) - 1;
+            var nowRelatedID = parseInt(eventRelatedID - 1, 10);
             var relatedEventVal = $("#eventAdditional" + nowRelatedID).val();
             if (!$.isNumeric(relatedEventVal)) {
                 relatedEventVal = "";
@@ -270,8 +270,9 @@ $("#viewEventAdd").pagecontainer({
 
             //Related Event
             if (data.related_event_row_id !== 0) {
+                var nowRelatedID = parseInt(eventRelatedID - 1, 10);
                 var newOption = '<option value="' + data.related_event_row_id + '" hidden selected>添加事件</option>';
-                $("#eventAdditional").find("option").remove().end().append(newOption);
+                $("#eventAdditional" + nowRelatedID).find("option").remove().end().append(newOption);
                 relatedEventList(data.related_event_row_id);
             }
 
@@ -809,9 +810,10 @@ $("#viewEventAdd").pagecontainer({
 
         //Event Related delete
         $(document).on("click", ".event-add-additional-list .delete", function() {
+            var nowRelatedID = parseInt(eventRelatedID - 1, 10);
             $("#eventaAdditionalContent .event-add-additional-list").remove();
             var newOption = '<option value="添加事件" hidden selected>添加事件</option>';
-            $("#eventAdditional").find("option").remove().end().append(newOption);
+            $("#eventAdditional" + nowRelatedID).find("option").remove().end().append(newOption);
         });
 
         //Location-Function delete
