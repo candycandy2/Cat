@@ -11,6 +11,8 @@ $("#viewReserve").pagecontainer({
             this.successCallback = function(data) {
                 loadingMask("hide");
                 QueryReserveDetailCallBackData = data["Content"];
+                
+
             };
 
             this.failCallback = function(data) {};
