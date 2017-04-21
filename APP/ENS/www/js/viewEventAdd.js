@@ -4,6 +4,8 @@ $("#viewEventAdd").pagecontainer({
         
         var setDateTime = "setNow";
         var doneDateTime = {};
+        var tempDateTime = {};
+        var eventTemplateID = 0;
         var eventTemplateData;
         var eventLocationData;
         window.eventFunctionData;
@@ -47,7 +49,7 @@ $("#viewEventAdd").pagecontainer({
                 if (oldID >= 0) {
                     $("#eventAdditional" + oldID).remove();
                     $(document).off("click", "#eventAdditional" + oldID + "-option");
-                    $("#eventAdditional" + oldID + "-option").popup("destroy");
+                    $("#eventAdditional" + oldID + "-option").popup("destroy").remove();
                 }
 
                 eventRelatedData = {
@@ -285,35 +287,11 @@ $("#viewEventAdd").pagecontainer({
                         var ID = loctionFunctionID;
                         loctionFunctionID++;
 
-                        //UI Dropdown List : Event Function
-                        eventFunctionData = {
-                            id: "eventFunction-" + ID,
-                            defaultText: selectedFunctionText,
-                            title: "IT Function",
-                            autoResize: false,
-                            option: [{
-                                value: "all",
-                                text: "All Function"
-                            }],
-                            attr: {
-                                class: "tpl-dropdown-list-icon-arrow"
-                            }
-                        };
-
                         for (var j=0; j<functionData.length; j++) {
                             if (data.task_detail[i].task_function === functionData[j]) {
                                 selectedFunctionText = data.task_detail[i].task_function;
                             }
-                            var tempData = {
-                                value: functionData[j],
-                                text: functionData[j]
-                            };
-
-                            eventFunctionData["option"].push(tempData);
                         }
-
-                        eventFunctionData["defaultValue"] = selectedFunctionText;
-                        $("#eventFunction-" + ID).val(selectedFunctionText);
 
                         var eventLocationListHTML = $("template#tplEventLocationList").html();
 
@@ -330,45 +308,10 @@ $("#viewEventAdd").pagecontainer({
                                 eventLocationList.find(".event-function").prop("id", functionContentID);
 
                                 $("#eventLocationListContent").append(eventLocationList);
-
-                                //create Event Function drowdown list
-                                tplJS.DropdownList("viewEventAdd", functionContentID, "append", "typeA", eventFunctionData);
+                                $("#" + functionContentID).html(selectedFunctionText);
 
                                 //Remove Class[delete]
                                 $(".event-add-location-list .delete").removeClass("delete");
-
-                                //Off DropdownList Click Event
-                                $(document).off("click", "#" + eventFunctionData.id);
-
-                                //set Event Function
-                                $("#" + eventFunctionData.id).val();
-
-                                //resize Event Function drowdown list
-                                tplJS.reSizeDropdownList(eventFunctionData.id, null, 81);
-
-                                //bind Event Function change event
-                                $(document).on("change", "#" + eventFunctionData.id, function() {
-                                    var selectID = $(this).prop("id");
-                                    var selectedValue = $(this).val();
-
-                                    $.each(eventFunctionData.option, function(key, obj) {
-                                        if (obj.value == selectedValue) {
-                                            $("#" + selectID).find("option:selected").html(obj.text);
-                                        }
-                                    });
-
-                                    //Update loctionFunctionData
-                                    updateLoctionFunctionData("update", selectID);
-                                });
-
-                                //Insert loctionFunctionData
-                                var tempData = {
-                                    domID: eventFunctionData.id,
-                                    location: location,
-                                    function: selectedFunctionText
-                                };
-
-                                loctionFunctionData.push(tempData);
                             }
                         });
                     }
@@ -401,27 +344,62 @@ $("#viewEventAdd").pagecontainer({
                 'overflow': 'hidden',
                 'touch-action': 'none'
             });
+
+            if (doneDateTime["year"] !== undefined) {
+                $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
+                $("#doneTime").datebox('setTheDate', doneDateTime["hour"] + ":" + doneDateTime["minute"]);
+            } else {
+                var now = new Date();
+                $("#doneDate").datebox('setTheDate', 
+                    now.getFullYear() + "-" +
+                    parseInt(now.getMonth() + 1, 10) + "-" +
+                    now.getDate()
+                );
+            }
         };
 
         window.openDoneTime = function(obj) {
-            var setDate = obj.date;
-            doneDateTime["year"] = this.callFormat('%Y', setDate);
-            doneDateTime["month"] = this.callFormat('%m', setDate);
-            doneDateTime["day"] = this.callFormat('%d', setDate);
+            if (!obj.cancelClose) {
+                var setDate = obj.date;
 
-            $("#doneTime").trigger('datebox', {'method':'open'});
-            tplJS.preventPageScroll();
+                doneDateTime["year"] = this.callFormat('%Y', setDate);
+                doneDateTime["month"] = this.callFormat('%m', setDate);
+                doneDateTime["day"] = this.callFormat('%d', setDate);
+
+                $("#doneTime").trigger('datebox', {'method':'open'});
+                tplJS.preventPageScroll();
+            } else {
+                if (doneDateTime["year"] === undefined) {
+                    $("#setNow").click();
+                } else {
+                    $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
+                }
+            }
         };
 
         window.setDoneDateTime = function(obj) {
-            var setTime = obj.date;
-            doneDateTime["hour"] = this.callFormat('%H', setTime);
-            doneDateTime["minute"] = this.callFormat('%M', setTime);
+            if (!obj.cancelClose) {
+                var setTime = obj.date;
+                doneDateTime["hour"] = this.callFormat('%H', setTime);
+                doneDateTime["minute"] = this.callFormat('%M', setTime);
 
-            var textDateTime = doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"] + " " +
-            doneDateTime["hour"] + ":" + doneDateTime["minute"];
-            $("#textDateTime").html(textDateTime);
+                var textDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
+                doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                $("#textDateTime").html(textDateTime);
 
+                //Create temporary data
+                tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+            } else {
+                if (doneDateTime["hour"] === undefined) {
+                    doneDateTime = {};
+                    $("#setNow").click();
+                } else {
+                    //Recover year/month/day
+                    doneDateTime["year"] = tempDateTime["year"];
+                    doneDateTime["month"] = tempDateTime["month"];
+                    doneDateTime["day"] = tempDateTime["day"];
+                }
+            }
             tplJS.recoveryPageScroll();
         };
 
@@ -487,8 +465,12 @@ $("#viewEventAdd").pagecontainer({
         }
 
         function checkFunctionData() {
-            if (loctionFunctionData.length === 0) {
-                $("#selectLocationFunction").popup("open");
+            if (prevPageID === "viewEventList") {
+                if (loctionFunctionData.length === 0) {
+                    $("#selectLocationFunction").popup("open");
+                } else {
+                    checkDoneDateTime();
+                }
             } else {
                 checkDoneDateTime();
             }
@@ -496,9 +478,8 @@ $("#viewEventAdd").pagecontainer({
 
         function checkTemplateDesc() {
             var tempalte = $("#eventTemplateTextarea").val();
-            var description = $("#eventDescriptionTextarea").val();
 
-            if (tempalte.length === 0 || description.length === 0) {
+            if (tempalte.length === 0) {
                 $("#templateDescEmpty").popup("open");
             } else {
                 checkFunctionData();
@@ -507,19 +488,6 @@ $("#viewEventAdd").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
-
-            //UI Dropdown List : Event Template
-            eventTemplateData = {
-                id: "eventTemplate",
-                defaultText: "選擇範本",
-                title: "標題範本",
-                option: templateData,
-                attr: {
-                    class: "text-bold"
-                }
-            };
-
-            tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
 
             //UI Dropdown List : Event Location
             eventLocationData = {
@@ -611,6 +579,40 @@ $("#viewEventAdd").pagecontainer({
 
         $("#viewEventAdd").on("pagebeforeshow", function(event, ui) {
 
+            //UI Dropdown List : Event Template
+            var ID = eventTemplateID;
+            var oldID = parseInt(ID) - 1;
+            eventTemplateID++;
+
+            if ($("#eventTemplate" + oldID).length) {
+                $("#eventTemplate" + oldID).remove();
+                $("#eventTemplate" + oldID + "-option").popup("destroy").remove();
+            }
+
+            eventTemplateData = {
+                id: "eventTemplate" + ID,
+                defaultText: "選擇範本",
+                title: "標題範本",
+                option: templateData,
+                attr: {
+                    class: "text-bold"
+                }
+            };
+
+            tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
+
+            $(document).on("change", "#eventTemplate" + ID, function() {
+                var selectedValue = $(this).val();
+
+                $("#eventTemplateTextarea").val("");
+
+                $.each(eventTemplateData.option, function(key, obj) {
+                    if (obj.value == selectedValue) {
+                        $("#eventTemplateTextarea").val(obj.text);
+                    }
+                });
+            });
+
             //UI Dropdown List : Event Level
             $("#eventLevelContent").html("");
 
@@ -634,6 +636,7 @@ $("#viewEventAdd").pagecontainer({
         });
 
         $("#viewEventAdd").on("pageshow", function(event, ui) {
+            doneDateTime = {};
             loctionFunctionData = [];
 
             $("#textDateTime").html("");
@@ -675,18 +678,6 @@ $("#viewEventAdd").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-        $(document).on("change", "#eventTemplate", function() {
-            var selectedValue = $(this).val();
-
-            $("#eventTemplateTextarea").val("");
-
-            $.each(eventTemplateData.option, function(key, obj) {
-                if (obj.value == selectedValue) {
-                    $("#eventTemplateTextarea").val(obj.text);
-                }
-            });
-        });
-
         $(document).on("change", "#eventLocation", function() {
             var selectedLocation = $(this).val();
 
@@ -781,6 +772,10 @@ $("#viewEventAdd").pagecontainer({
 
             //Update loctionFunctionData
             updateLoctionFunctionData("delete", domID);
+
+            $("#" + domID).remove();
+            $(document).off("click", "#" + domID + "-option");
+            $("#" + domID + "-option").popup("destroy").remove();
         });
 
         //Radio Button : Finish Time

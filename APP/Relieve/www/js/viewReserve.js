@@ -10,7 +10,9 @@ $("#viewReserve").pagecontainer({
 
             this.successCallback = function(data) {
                 loadingMask("hide");
-                var resultcode = data['ResultCode'];
+                QueryReserveDetailCallBackData = data["Content"];
+                
+
             };
 
             this.failCallback = function(data) {};
@@ -27,6 +29,7 @@ $("#viewReserve").pagecontainer({
             this.successCallback = function(data) {
                 loadingMask("hide");
                 var resultcode = data['ResultCode'];
+
             };
 
             this.failCallback = function(data) {};
@@ -50,7 +53,6 @@ $("#viewReserve").pagecontainer({
             $('#pageTwo').hide();
             $('#pageThree').hide();
             timeInit();
-            pullToRefersh();
         });
 
         /********************************** dom event *************************************/
@@ -180,7 +182,7 @@ $("#viewReserve").pagecontainer({
         });
 
         // my reserve cancel btn click
-        $('body').on('click', '.reserveInfo .btn-area', function(){
+        $('body').on('click', '.reserveInfo .btn-area', function() {
             var tmpParent = $(this).parents('.reserveInfo'), 
                 tmpCompany = tmpParent.find('.reserveInfo-company').html(), 
                 msgContent = tmpParent.find('.reserveInfo-time').html(), 
@@ -199,13 +201,5 @@ $("#viewReserve").pagecontainer({
         $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
         });
-
-        function pullToRefersh() {
-            PullToRefresh.init({
-              mainElement: 'body',
-              // onRefresh: function(){ window.location.reload(); }
-              onRefresh: function() { alert('refresh'); }
-            });
-        }
     }
 });
