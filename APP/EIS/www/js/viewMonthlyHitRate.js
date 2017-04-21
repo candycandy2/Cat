@@ -31,7 +31,8 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
                 $(".Product").html("");
                 $(".Product").append(productList).enhanceWithin();
-
+                $(".Ro #ALL").addClass('hover');
+                $(".Product #ALL").addClass('hover');
                 loadingMask("hide");
             };
             this.failCallback = function(data) {

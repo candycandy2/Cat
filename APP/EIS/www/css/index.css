@@ -5,7 +5,6 @@
 
 .ui-panel-inner { 
   	padding: 0 !important;
-  	margin-top: 0.1VH !important;
 }
 
 .ui-controlgroup-controls {
@@ -30,12 +29,13 @@
 	background-color: initial !important;
 	border-style: none;
 	padding:0px;
-	margin-top: 1VH !important;
+	margin-top: 2.1VH !important;
 	margin-left: 1.5VW;
 }
 
 .page-main{
 	background-color: #fff;
+	/*margin-top: 0px !important;*/
 }
 
 .page-main .page-tabs{
@@ -58,7 +58,7 @@
 
 .page-main .page-date{
 	font-family: Arial;
-	font-size: 2.5VH;
+	height: 3VH;
 	color: #0f0f0f;
 	text-align:center;
 	width: 80%;
@@ -70,7 +70,7 @@
 	background-color: #f2f2f3;
 	display: -webkit-flex;
 	flex-flow: row wrap;
-	height: 5.8VH;
+	height: 7VH;
 }
 
 #viewHitRate .data-title{
@@ -275,19 +275,19 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	color:#fff; 
 	font-size: 4VW;
 	font-family:Arial;
-	height:7.3VH;
+	height: 7.3VH;
 }
 
 #mypanel .panel-text{
-	margin-left:3.7VW;
+	margin-left: 3.7VW;
 }
 
 #mypanel .panel-content{
 	background-color: #f6f6f6;
-	color:#0f0f0f;
+	color: #0f0f0f;
 	font-size: 3.8VW;
 	font-family: Arial;
-	height:6.8VH;
+	height: 6.8VH;
 
 }
 
@@ -326,7 +326,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewYTDHitRate div > .scrollmenu, #viewYTDHitRate #viewYTDHitRate-hc-canvas{
 		display: none;
 	}
-	#viewHitRate .page-header, #viewMonthlyHitRate .page-header, #viewYTDHitRate .page-header{ opacity: 0;}
+	#viewHitRate .page-header, #viewMonthlyHitRate .page-header, #viewYTDHitRate .page-header { display: none;}
+	#viewHitRate, #viewMonthlyHitRate, #viewYTDHitRate { padding-top: 1.5VH !important;}
 	.viewIndex.ui-page {
 		background-color: #fff;
 	}

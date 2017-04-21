@@ -1,9 +1,9 @@
 
 /*global variable, function*/
-var initialAppName = "appaccountingrate";
+var initialAppName = "Account Rate";
 var appKeyOriginal = "appaccountingrate";
 var appKey = "appaccountingrate";
-var pageList = ["viewExample","viewAccount"];
+var pageList = ["viewAccount"];
 var appSecretKey = "35ee8716067626e225d38b9a97ee49f8";
 
 var prevPageID;

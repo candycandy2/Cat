@@ -1,4 +1,4 @@
-﻿# QMessage Web API
+# QMessage Web API
 
 ## Part Ⅰ.  Restful API
 ### User API
@@ -23,6 +23,27 @@ POST /v101/qmessage/register
  1. 1 Success,return username in 'Content'
  2. 998001 username is empty or invalid
  3. 998002 call Jmessage API failed,check details in 'Content'
+ 
+#### 2. User State
+##### Resuest
+```
+GET /v101/qmessage/userstate/{username} 
+```
+##### Request Params
+ 1. {username}: user name that has registered inJMessage 
+##### Response
+```json
+{
+    "ResultCode": 1,
+    "Message": "Success",
+    "Content": {
+        "login": false,
+        "online": false
+    }
+}
+```
+##### Response Data
+ 1. 1 Success,return user login and online state
 
 ### Group API
 #### 1. Add Group
