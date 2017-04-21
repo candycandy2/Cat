@@ -110,18 +110,18 @@ $("#viewEventAdd").pagecontainer({
         function relatedEventList(selectedValue) {
             //create new Event Additional List, set new ID by count number
             var ID = parseInt($(".event-add-additional-list").length + 1, 10);
-            var eventRowID = selectedValue;
+            var relatedeventRowID = selectedValue;
 
             $.each(eventRelatedData.option, function(key, obj) {
                 if (obj.value == selectedValue) {
-                    eventRowID = obj.value;
+                    relatedeventRowID = obj.value;
                 }
             });
 
             var eventAdditionalListHTML = $("template#tplEventAdditionalList").html();
             var eventAdditionalList = $(eventAdditionalListHTML);
             //set Additional Event Number Text
-            eventAdditionalList.find(".event-additional-number").html(eventRowID);
+            eventAdditionalList.find(".event-additional-number").html(relatedeventRowID);
 
             $("#eventaAdditionalContent .event-add-additional-list").remove();
             $("#eventaAdditionalContent").append(eventAdditionalList);
@@ -149,7 +149,7 @@ $("#viewEventAdd").pagecontainer({
             }
 
             //Related Event
-            var nowRelatedID = parseInt(eventRelatedID) - 1;
+            var nowRelatedID = parseInt(eventRelatedID - 1, 10);
             var relatedEventVal = $("#eventAdditional" + nowRelatedID).val();
             if (!$.isNumeric(relatedEventVal)) {
                 relatedEventVal = "";
@@ -270,8 +270,9 @@ $("#viewEventAdd").pagecontainer({
 
             //Related Event
             if (data.related_event_row_id !== 0) {
+                var nowRelatedID = parseInt(eventRelatedID - 1, 10);
                 var newOption = '<option value="' + data.related_event_row_id + '" hidden selected>添加事件</option>';
-                $("#eventAdditional").find("option").remove().end().append(newOption);
+                $("#eventAdditional" + nowRelatedID).find("option").remove().end().append(newOption);
                 relatedEventList(data.related_event_row_id);
             }
 
@@ -403,14 +404,35 @@ $("#viewEventAdd").pagecontainer({
             tplJS.recoveryPageScroll();
         };
 
-        function updateLoctionFunctionData(action, domID) {
-            for (var i=0; i<loctionFunctionData.length; i++) {
-                if (loctionFunctionData[i]["domID"] === domID) {
-                    if (action === "update") {
-                        loctionFunctionData[i]["function"] = $("#" + domID).val();
-                    } else if (action === "delete") {
+        function updateLoctionFunctionData(action, domID, location, functionData) {
+            functionData = functionData || null;
+
+            if (action === "delete") {
+                for (var i=parseInt(loctionFunctionData.length - 1, 10); i>=0; i--) {
+                    if (loctionFunctionData[i]["location"] === location) {
                         loctionFunctionData.splice(i, 1);
-                        $("#" + domID).parents(".event-add-location-list").remove();
+                    }
+                }
+            } else if (action === "update") {
+                var IDArray = domID.split("-");
+                var IDNumber = IDArray[1];
+                $("#eventFunctionSelectContent-" + IDNumber + " .event-funciton-list").remove();
+
+                if (typeof functionData === "string") {
+                    $("#" + domID).val(functionData);
+                } else {
+                    for (var i=0; i<functionData.length; i++) {
+                        if (i == 0) {
+                            $("#" + domID).val(functionData[i]);
+                        } else {
+                            $("#eventFunctionSelectContent-" + IDNumber).append('<div class="event-funciton-list">' + functionData[i] + '</div>');
+                        }
+                    }
+                }
+            } else if (action === "remove") {
+                for (var i=parseInt(loctionFunctionData.length - 1, 10); i>=0; i--) {
+                    if (loctionFunctionData[i]["domID"] === domID) {
+                        loctionFunctionData.splice(i, 1);
                     }
                 }
             }
@@ -485,6 +507,7 @@ $("#viewEventAdd").pagecontainer({
                 checkFunctionData();
             }
         }
+
 
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
@@ -681,6 +704,13 @@ $("#viewEventAdd").pagecontainer({
         $(document).on("change", "#eventLocation", function() {
             var selectedLocation = $(this).val();
 
+            //Check if this Location has Exist in Data List
+            for (var i=0; i<loctionFunctionData.length; i++) {
+                if (loctionFunctionData[i]["location"] === selectedLocation) {
+                    return;
+                }
+            }
+
             //create new Event Location List, set new ID by count number
             var ID = loctionFunctionID;
             loctionFunctionID++;
@@ -691,6 +721,8 @@ $("#viewEventAdd").pagecontainer({
                 defaultText: "All Function",
                 title: "IT Function",
                 autoResize: false,
+                multiSelect: true,
+                defaultValue: "all",
                 option: [{
                     value: "all",
                     text: "All Function"
@@ -734,17 +766,33 @@ $("#viewEventAdd").pagecontainer({
 
                     //bind Event Function change event
                     $(document).on("change", "#" + eventFunctionData.id, function() {
+                        var dataArray = $(this).data("multiVal").split("|");
+                        var indexAll = dataArray.indexOf("all");
                         var selectID = $(this).prop("id");
-                        var selectedValue = $(this).val();
 
-                        $.each(eventFunctionData.option, function(key, obj) {
-                            if (obj.value == selectedValue) {
-                                $("#" + selectID).find("option:selected").html(obj.text);
+                        updateLoctionFunctionData("delete", selectID, selectedLocation);
+
+                        if (indexAll > -1) {
+                            var tempData = {
+                                domID: selectID,
+                                location: selectedLocation,
+                                function: "all"
+                            };
+                            loctionFunctionData.push(tempData);
+
+                            updateLoctionFunctionData("update", selectID, selectedLocation, "all");
+                            $("#" + eventFunctionData.id).data("multiVal", "all");
+                        } else {
+                            for (var i=0; i<dataArray.length; i++) {
+                                var tempData = {
+                                    domID: selectID,
+                                    location: selectedLocation,
+                                    function: dataArray[i]
+                                };
+                                loctionFunctionData.push(tempData);
                             }
-                        });
-
-                        //Update loctionFunctionData
-                        updateLoctionFunctionData("update", selectID);
+                            updateLoctionFunctionData("update", selectID, selectedLocation, dataArray);
+                        }
                     });
 
                     //Insert loctionFunctionData
@@ -755,27 +803,32 @@ $("#viewEventAdd").pagecontainer({
                     };
 
                     loctionFunctionData.push(tempData);
+                    $("#" + eventFunctionData.id).data("multiVal", "all");
                 }
             });
         });
 
         //Event Related delete
         $(document).on("click", ".event-add-additional-list .delete", function() {
+            var nowRelatedID = parseInt(eventRelatedID - 1, 10);
             $("#eventaAdditionalContent .event-add-additional-list").remove();
             var newOption = '<option value="添加事件" hidden selected>添加事件</option>';
-            $("#eventAdditional").find("option").remove().end().append(newOption);
+            $("#eventAdditional" + nowRelatedID).find("option").remove().end().append(newOption);
         });
 
         //Location-Function delete
         $(document).on("click", ".event-add-location-list .delete", function() {
             var domID = $(this).parent().siblings().find("select").prop("id");
+            var location = $(this).parent().siblings().find(".event-loction").text();
 
             //Update loctionFunctionData
-            updateLoctionFunctionData("delete", domID);
+            updateLoctionFunctionData("remove", domID, location);
 
             $("#" + domID).remove();
             $(document).off("click", "#" + domID + "-option");
             $("#" + domID + "-option").popup("destroy").remove();
+
+            $(this).parent().parent().remove();
         });
 
         //Radio Button : Finish Time
