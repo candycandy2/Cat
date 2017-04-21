@@ -43,8 +43,9 @@ class Push
                         'destination_role_id' => array(
                             )
                         );
-            $data = json_encode($header);
+            $data = json_encode($data);
             $result = CommonUtil::callAPI('POST', $url,  $header, $data);
+            var_dump($result);exit();
             return $result;
     }
 
