@@ -135,12 +135,25 @@ class EventController extends Controller
                 );
             //create event
             $eventId = $this->eventService->newEvent($empNo, $data, $queryParam);
+            //send push
+            $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
+            if($sendPushMessageRes->result_code != 1){
+                //新增事件時會發送推播，如遇到有人員離職或停權，則擋下提示修改BasicInfo
+                if($sendPushMessageRes->result_code == '000914' || $sendPushMessageRes->result_code == '000912'){
+                    \DB::rollBack();
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014921_pushUserError,
+                    'Message'=>'成員資訊有誤，請修改成員資訊',
+                    'Content'=>'']);
+                }
+                
+            }
             //create chat room
             $createChatRoomRes =  json_decode($this->eventService->createChatRoomByEvent($empNo, $eventId, $data['event_title']));
             if($createChatRoomRes->ResultCode != 1){
+                \DB::rollBack();
                 if($createChatRoomRes->ResultCode == '998002'){
                     return $result = response()->json(['ResultCode'=>ResultCode::_014918_memberNotRegistered,
-                    'Message'=>"新增聊天室失敗, 成員未註冊",
+                    'Message'=>"新增聊天室失敗，成員未註冊",
                     'Content'=>""]);
 
                 }else if($createChatRoomRes->ResultCode== '998003' ||
@@ -155,10 +168,8 @@ class EventController extends Controller
             }
             $updateData['chatroom_id'] =  $createChatRoomRes->Content->gid;
             $this->eventRepository->updateEventById($empNo, $eventId, $updateData);
+           
             \DB::commit();
-            //send push
-            $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
-            
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>$createChatRoomRes->Content]);
         } catch (Exception $e){
