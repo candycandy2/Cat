@@ -32,8 +32,8 @@ $("#viewAccount").pagecontainer({
 
         var array     = [    ];   
         var arrayRate = [    ];        
-        //var arrayadd =["NTD","EUR","AUD"];
-        var arrayadd            =[];
+        var arrayadd =["NTD"];//,"EUR","AUD"
+        //var arrayadd            =[];
         var arrayaddtemp        =[];
         var arrayrateadd        =[];
         var arrayratecomb       =[];
@@ -273,8 +273,19 @@ $("#viewAccount").pagecontainer({
 
            */
             arrayadd.push(statuscountrypop);//20170416
-            var a = array.indexOf(statuscountrypop);
+            /*var a = array.indexOf(statuscountrypop);
             array.splice(a,1);
+            */
+
+            var statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); //20160421
+            arrayrateadd.push(statuscountryrate);
+            
+            /*20170422
+            arrayrateadd =.push(statuscountryrate);
+            var b = arrayrate.indexOf(statuscountryrate);
+            arrayrate.splice(b,1);
+            */
+
 
             //arrayrateadd.push(statuscountrypop);
             //$("#"+statuscountrypop).parent()(".star_icon").css("opacity","1"); 
@@ -309,7 +320,17 @@ $("#viewAccount").pagecontainer({
 
            //20170416
             arrayadd.splice (arrayadd.indexOf(statuscountrypop),1);
-            array.push(statuscountrypop);
+            arrayrateadd.splice(array.indexOf(statuscountryrate),1);
+            //array.push(statuscountrypop);
+
+
+   
+            /*20170422 follow       
+               arrayrateadd.splice(arrayadd.indexOf(statuscountryrate),1);
+
+            */
+
+
             Test(); 
 
             $("#eventWorkConfirmB").popup('close');
@@ -633,48 +654,19 @@ $("#viewAccount").pagecontainer({
                     */         
         }
 
-
-
-       function Pophtml(){
+        function Pophtmlfirst(){ //0422 for prepare
                     return '<li data-icon="false" class="1_li CountryA" id="litest">'
                     +'<div class="Listdiv1" id='
-                    +
-                    +'>'
-                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
-                    +'<img  class="ListviewFlag1" src ="img/tmp/'
-                    + FromStatus
-                    +'.png"> '        
-                    +'<span class="ListRate1">'                
-                    +'1 '
-                    + FromStatus
-                    +'</span>  '        
-                    +'<div  class="Listdiv1equalmark4">=</div>'
-                    +'</div>'
-                    +'<div class="Listdiv2 select" id='
-                    + arraycomb[index]
-                    +'>'       
-                    +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
-                    +'<img  class="ListviewFlag2" src ="img/tmp/'
-                    + arraycomb[index] 
-                    +'.png">'                   
-                    +'<div class="Listdiv3">'    
-                    +'<span class="ListDollar1" >'
-                   // + arrayRate[index] 
-                    + arrayratecomb[index] 
-                    // +'10.032'
-                    +'</span> '    
-                    +'<span class="ListRate2">'
-                    
-                    + arraycomb[index]
-                    +'</span>'    
-                    +'<br> '    
-                    +'</div>'    
+                    +'</li>' ;   
+                 
+        }
+
+        function Pophtmlnext(){
+                    return '<li data-icon="false" class="1_li CountryA" id="litest">'
+                    +'<div class="Listdiv1" id='             
                     +'</div>'   
                     +'</li>' ;   
-                    /*+'<br>'
-                    +'<br>'
-                    +'<hr>';
-                    */         
+     
         }
         /********************************** html *************************************/
         /********************************** dom event *************************************/
@@ -691,7 +683,7 @@ $("#viewAccount").pagecontainer({
             //Jsonparsenext(Jsonflag);  // 20170421
         }
 
-       function sleep(milliseconds) {
+        function sleep(milliseconds) {
           var start = new Date().getTime();
           for (var i = 0; i < 1e7; i++) {
             if ((new Date().getTime() - start) > milliseconds){
@@ -789,6 +781,7 @@ $("#viewAccount").pagecontainer({
                 var arraygetFrom    = [];
                 var arraygetTo      = [];
                 var cleartest       = 0;
+                var arrayrateadd    = [];  //but add not clear re to next time
 
            /* if (cleartest == "1"){
                   array=[];
@@ -817,7 +810,7 @@ $("#viewAccount").pagecontainer({
                     //if ((FromStatus =="All Currency")&&(exdate =='2017/03/01'))
                     if ((FromStatus =="All Currency")&&(exdate =='2017/0'+Jsonflagnow+'/01'))
                      //First &&(Ex_Date =='2017/3/1')
-                        //First &&(Ex_Date =='2017/'++'/1')
+                     //First &&(Ex_Date =='2017/'++'/1')
                     { 
                         if (getto == ToStatus) //To NTD 's  ; from save
                             {
@@ -876,10 +869,23 @@ $("#viewAccount").pagecontainer({
 
                  
                 }
+             
+
+               
+               /*4/22
+              
+               */ 
+
+                for (var i=0; i<arrayadd.length; i++)  //NTD USA
+                {
+                  var statuscountryrate = $("#"+arrayadd[i]).parent().find(".ListDollar1").text(); 
+                  arrayrateadd.push(statuscountryrate);
+                }
+
                 Test();         
                 Buttonimg();                 
                 Favorite(); 
-                
+
         }
 
  
