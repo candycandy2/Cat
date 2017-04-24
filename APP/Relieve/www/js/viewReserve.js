@@ -10,11 +10,38 @@ $("#viewReserve").pagecontainer({
             var self = this;
 
             this.successCallback = function(data) {
-                
+
                 QueryReserveDetailCallBackData = data["Content"];
-                queryReserveDetailConvertData();
+                var BTime;
+                for(var i=0; i<QueryReserveDetailCallBackData.length; i++) {
+                    BTime = QueryReserveDetailCallBackData[i]["BTime"].replace(":","-");
+                    $("#time" + BTime + " .time").text(QueryReserveDetailCallBackData[i]["BTime"]);
 
+                    if(QueryReserveDetailCallBackData[i]["Name_EN"] === "") {
+                        $("#time" + BTime).addClass("ui-color-noreserve");
+                        $("#time" + BTime).removeClass("ui-color-myreserve");
+                        $("#time" + BTime).removeClass("ui-color-reserve");
+                        $("#time" + BTime).find('div:nth-child(2)').addClass("circleIcon");
+                        $("#time" + BTime).find('div:nth-child(2)').addClass("iconSelect");
+                    }else if(QueryReserveDetailCallBackData[i]["Name_EN"] === userID) {
+                        $("#time" + BTime).removeClass("ui-color-noreserve");
+                        $("#time" + BTime).addClass("ui-color-myreserve");
+                        $("#time" + BTime).removeClass("ui-color-reserve");
+                        $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                        $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);                        
+                        /*fill up the attr*/
 
+                    }else {
+                        $("#time" + BTime).removeClass("ui-color-noreserve");
+                        $("#time" + BTime).removeClass("ui-color-myreserve");
+                        $("#time" + BTime).addClass("ui-color-reserve");
+                        $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                        $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
+                        /*fill up the attr*/
+                    }
+                }
                 loadingMask("hide");
             };
 
@@ -42,16 +69,11 @@ $("#viewReserve").pagecontainer({
         //     }();
         // };
 
-        // time init
         function timeInit() {
             $('.timeRemind').each(function() {
                 var oriTime = $(this).parent('div').find('>div:nth-of-type(1)').text();
                $(this).html('~' + addThirtyMins(oriTime)); 
             });
-        }
-
-        function queryReserveDetailConvertData() {
-
         }
 
         /********************************** page event *************************************/
@@ -141,20 +163,19 @@ $("#viewReserve").pagecontainer({
                 $(this).find('div:nth-child(2)').toggleClass('iconSelected');
                 $(this).find('.timeRemind').toggleClass('timeShow');
                 var timeExit = false;
-                if ($('#reserveDateSelect').find('.timeShow').length > 0){
+                if ($('#reserveDateSelect').find('.timeShow').length > 0) {
                     timeExit = true;
                 }
                 if (!timeExit) {
-                    $('#reserveBtn').removeClass('btn-benq');
+                    $('#reserveBtn').removeClass('btn-enable');
                     $('#reserveBtn').addClass('btn-disable');
                 } else {
                     $('#reserveBtn').removeClass('btn-disable');
-                    $('#reserveBtn').addClass('btn-benq');
+                    $('#reserveBtn').addClass('btn-enable');
                 }
             }
             // my reserve
             else if ($(this).hasClass('ui-color-myreserve')){
-                $('.trace').removeClass('trace')
                 $(this).addClass('trace');
                 var tempEname = 'Ariel.H.Yih', roomName = 'T01', strDate = '2017/09/08', timeName = '10:00~10:30',
                     headerContent = tempEname + ' 已預約 ' + roomName,
