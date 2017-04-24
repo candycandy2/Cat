@@ -105,7 +105,7 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             
-            
+            Jsonparse(1);
             //var EventList = new GetAccountingRate(); //add for test 20170418 API 
 
 
@@ -113,7 +113,7 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-           Jsonparse(1);
+           //Jsonparse(1);
             //Jsonparse(1);
             //Test();         
             //Buttonimg(); 
