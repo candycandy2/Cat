@@ -1,4 +1,5 @@
 var bReserveCancelConfirm = false;
+var month, date;
 
 $("#viewReserve").pagecontainer({
     create: function(event, ui) {
@@ -9,10 +10,12 @@ $("#viewReserve").pagecontainer({
             var self = this;
 
             this.successCallback = function(data) {
-                loadingMask("hide");
-                QueryReserveDetailCallBackData = data["Content"];
                 
+                QueryReserveDetailCallBackData = data["Content"];
+                queryReserveDetailConvertData();
 
+
+                loadingMask("hide");
             };
 
             this.failCallback = function(data) {};
@@ -22,22 +25,22 @@ $("#viewReserve").pagecontainer({
             }();
         };
 
-        window.ReserveRelieve = function() {
+        // window.ReserveRelieve = function() {
             
-            var self = this;
+        //     var self = this;
 
-            this.successCallback = function(data) {
-                loadingMask("hide");
-                var resultcode = data['ResultCode'];
+        //     this.successCallback = function(data) {
+        //         loadingMask("hide");
+        //         var resultcode = data['ResultCode'];
 
-            };
+        //     };
 
-            this.failCallback = function(data) {};
+        //     this.failCallback = function(data) {};
 
-            var __construct = function() {
-                CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
-            }();
-        };
+        //     var __construct = function() {
+        //         CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
+        //     }();
+        // };
 
         // time init
         function timeInit() {
@@ -47,12 +50,20 @@ $("#viewReserve").pagecontainer({
             });
         }
 
+        function queryReserveDetailConvertData() {
+
+        }
+
         /********************************** page event *************************************/
         $("#viewReserve").on("pagebeforeshow", function(event, ui) {
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
             timeInit();
+        });
+
+        $("#viewReserve").on("pageshow", function(event, ui) {
+            $("#scrollDate #" + currentMonth + currentDate).trigger('click');
         });
 
         /********************************** dom event *************************************/
@@ -75,9 +86,18 @@ $("#viewReserve").pagecontainer({
         });
 
         // date pick
-        $('body').on('click', '#scrollDate .ui-link', function(){
+        $('body').on('click', '#scrollDate .ui-link', function() {
             $('#scrollDate').find('.hover').removeClass('hover');
             $(this).addClass('hover');
+            month = cutStringToArray($(this).context.id, ["2", "2"])[1];
+            date = cutStringToArray($(this).context.id, ["2", "2"])[2];
+            queryDate = currentYear.toString() + month + date;
+            QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
+                                          + reserveSite
+                                          + "</Site><ReserveDate>"
+                                          + queryDate
+                                          + "</ReserveDate></LayoutHeader>";
+            QueryReserveDetail();
         });
 
         // time pick
