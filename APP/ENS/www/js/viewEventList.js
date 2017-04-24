@@ -479,8 +479,8 @@ $("#viewEventList").pagecontainer({
             //Type: 緊急通報 / 一般通報
             var event_type = data.event_type;
             if (event_type === "一般通報") {
-                eventFunctionList.siblings(".header .number .normal").show();
-                eventFunctionList.siblings(".header .number .urgent").hide();
+                eventFunctionList.siblings(".header").find(".number .normal").show();
+                eventFunctionList.siblings(".header").find(".number .urgent").hide();
             }
 
             //Event ID Number
