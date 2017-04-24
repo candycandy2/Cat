@@ -84,6 +84,8 @@ class BasicInfoService
                       $member['login_id'] = $userInfo->login_id;
                       $member['email'] = $userInfo->email;
                       $member['user_ext_no'] = $userInfo->ext_no;
+                      $member['status'] = $value->status;
+                      $member['resign'] = $value->resign;
                       $members[] = $member;
                 }
              }

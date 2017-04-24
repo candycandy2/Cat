@@ -61,15 +61,19 @@ class BasicInfoRepository
     {   
 
         return  $this->basicInfo
+            
+            ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_basic_info.emp_no')
+            ->orderBy('location','asc')
+            ->orderBy('function','asc')
+            ->orderBy('emp_no','asc')
             ->select(
                 'location',
                 'function',
                 'master',
-                'emp_no'
+                'en_basic_info.emp_no as emp_no',
+                $this->userTableName.'.'.'status as status',
+                $this->userTableName.'.'.'resign as resign'
                 )
-            ->orderBy('location','asc')
-            ->orderBy('function','asc')
-            ->orderBy('emp_no','asc')
             ->get();
     }
 

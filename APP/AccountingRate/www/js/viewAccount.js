@@ -716,13 +716,13 @@ $("#viewAccount").pagecontainer({
         /********************************** API*************************************/
   
         //Initial , pop
-        function Jsonparse(Jsonflag) {
+        function Jsonparse(Jsonflag) { 
             //packJsontemp = []; 
             var EventList = new GetAccountingRate();  //20170420 5pm mark for test 
             //window.setTimeout(sleepgo,10000);
             // window.setTimeout(Jsonparsenext,3000);
             //sleep(10000);         
-            //Jsonparsenext(Jsonflag);  // 20170421
+            //Jsonparsenext(Jsonflag);  // 20170421 test
         }
 
         function sleep(milliseconds) {
