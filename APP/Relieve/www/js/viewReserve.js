@@ -60,6 +60,14 @@ $("#viewReserve").pagecontainer({
             $('#pageTwo').hide();
             $('#pageThree').hide();
             timeInit();
+                
+            /* global PullToRefresh */
+            PullToRefresh.init({
+                mainElement: '#pageOne',
+                onRefresh: function() {
+                    //do something for refresh
+                }
+            });
         });
 
         $("#viewReserve").on("pageshow", function(event, ui) {
@@ -73,15 +81,39 @@ $("#viewReserve").pagecontainer({
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
+                
+                /* global PullToRefresh */
+                PullToRefresh.init({
+                    mainElement: '#pageOne',
+                    onRefresh: function() {
+                        //do something for refresh
+                    }
+                });
             } else if (tabValue == 'tab2'){
                 $('#pageTwo').show();
                 $('#pageOne').hide();
                 $('#pageThree').hide();
+                
+                /* global PullToRefresh */
+                PullToRefresh.init({
+                    mainElement: '#pageTwo',
+                    onRefresh: function() {
+                        //do something for refresh
+                    }
+                });
             }
             else{
                 $('#pageThree').show();
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
+                
+                /* global PullToRefresh */
+                PullToRefresh.init({
+                    mainElement: '#scrollDate',
+                    onRefresh: function() {
+                        //do something for refresh
+                    }
+                });
             }
         });
 
