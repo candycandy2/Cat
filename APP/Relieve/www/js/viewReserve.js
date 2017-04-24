@@ -33,8 +33,13 @@ $("#viewReserve").pagecontainer({
                         /*fill up the attr*/
 
                     }else {
+                        $("#time" + BTime).removeClass("ui-color-noreserve");
+                        $("#time" + BTime).removeClass("ui-color-myreserve");
                         $("#time" + BTime).addClass("ui-color-reserve");
-                        
+                        $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                        $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
+                        /*fill up the attr*/
                     }
                 }
                 loadingMask("hide");
