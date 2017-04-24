@@ -25,5 +25,3 @@ Route::any('/v101/ens/getMessageCount', 'MessageController@getMessageCount');
 Route::any('v101/ens/uploaBasicInfo','BasicInfoController@uploaBasicInfo');
 Route::any('v101/ens/basicInfoMaintain','BasicInfoController@basicInfoMaintain');
 Route::any('v101/ens/registerSuperUserToMessage','BasicInfoController@registerSuperUserToMessage');
-
-Route::any('v101/ens/sendPushMessageToUser','TestController@sendPushMessageToUser');
