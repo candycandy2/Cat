@@ -13,6 +13,7 @@ $("#viewAccount").pagecontainer({
         //var FromStatus  = "NTD";//var ToStatus  = "NTD";  
         var test;
         var statuscountrypop;
+        var statuscountryrate;
         /*var array = [
                      "AED","BDT","BRL","CAD",
                      "CHF","CZK","EUR","GBP","HKD",
@@ -31,14 +32,16 @@ $("#viewAccount").pagecontainer({
         */
 
         var array     = [    ];   
-        var arrayRate = [    ];        
-        var arrayadd =["NTD"];//,"EUR","AUD"
+        var arrayRate = [    ];     
+
+        var arrayadd =["NTD","USD","EUR"];//,"EUR","AUD"
         //var arrayadd            =[];
         var arrayaddtemp        =[];
         var arrayrateadd        =[];
         var arrayratecomb       =[];
         var arrayratecomb       =[];
         var packJsontemp        =[];
+
                           
         
         /********************************** function *************************************/
@@ -102,7 +105,7 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             
-            Jsonparse(1);
+            
             //var EventList = new GetAccountingRate(); //add for test 20170418 API 
 
 
@@ -110,16 +113,16 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-           
+           Jsonparse(1);
             //Jsonparse(1);
-            Test();         
-            Buttonimg(); 
+            //Test();         
+            //Buttonimg(); 
 
             //AddhtmlOne();
             //AddhtmlFirst(); 
             //AddhtmlSecond(); 
    
-            Favorite();   //wait for html
+            //Favorite();   //wait for html
 
             var eventConfirmA = { 
                 id: "eventWorkConfirmA",  
@@ -170,7 +173,7 @@ $("#viewAccount").pagecontainer({
                 // Addhtml();  
                  Jsonparse(1); 
                  Buttonimg(); 
-                 Favorite();  //bugfix
+                 //Favorite();  //bugfix
         });
    //  Transfer   ************************************************************************** 
         function Buttonimg()    
@@ -226,6 +229,7 @@ $("#viewAccount").pagecontainer({
                 Jsonflagnow =todayMonth-1;  
                 */ 
                 Jsonflagnow =todayMonth;
+                //Favorite();
                 Jsonparse(1);            
                 //Buttonimg(); 
                 console.log("tab1");
@@ -236,6 +240,7 @@ $("#viewAccount").pagecontainer({
                 Jsonflagnow =todayMonth;
                  */
                 Jsonflagnow =todayMonth-1;
+                //Favorite();//20170424test
                 Jsonparse(1);
                 //Buttonimg(); 
                 console.log("tab2");
@@ -277,7 +282,7 @@ $("#viewAccount").pagecontainer({
             array.splice(a,1);
             */
 
-            var statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); //20160421
+            statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); //20160421
             arrayrateadd.push(statuscountryrate);
             
             /*20170422
@@ -300,6 +305,7 @@ $("#viewAccount").pagecontainer({
             //$("#NTD").parent().children(".Listdiv3").children("ListDollar1").text();
             //array.splice(array.indexOf(statuscountrypop),1);
 
+
             Test(); //reoragionize array
             //Buttonimg();//html reset => would be error
 
@@ -318,9 +324,10 @@ $("#viewAccount").pagecontainer({
             $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","0");   
             $("#"+statuscountrypop).removeClass("favorite"); 
 
+            statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); 
            //20170416
             arrayadd.splice (arrayadd.indexOf(statuscountrypop),1);
-            arrayrateadd.splice(array.indexOf(statuscountryrate),1);
+            arrayrateadd.splice(arrayrateadd.indexOf(statuscountryrate),1);
             //array.push(statuscountrypop);
 
 
@@ -365,10 +372,10 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry2").text(ToStatus);   
            
              Jsonparse(1);
-             Test();  
+             //Test();  
 
-             Buttonimg();
-             Favorite();         
+             //Buttonimg();
+             //Favorite();         
 
             $("#popupA").popup('close');
 
@@ -397,10 +404,10 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry2").text(ToStatus);   
      
              Jsonparse(1);
-             Test(); 
+             //Test(); 
 
-             Buttonimg();
-             Favorite();
+             //Buttonimg();
+             //Favorite();
             $("#popupB").popup('close');
         });
         /********************************** Favorite*************************************/
@@ -430,9 +437,10 @@ $("#viewAccount").pagecontainer({
          
             arraycomb      = arrayadd.concat(array.sort()); 
             arrayratecomb  = arrayrateadd.concat(arrayRate); // would ot match the country 
+            console.log("908 "+arrayrateadd);
 
             Buttonimg(); //20170416
-            Favorite();  //20170416
+           // Favorite();  //20170416
         }
 
 
@@ -443,7 +451,8 @@ $("#viewAccount").pagecontainer({
           
             {    statuscountrypop = arrayadd[i];
                 {
-                    $("#"+statuscountrypop).addClass("favorite");
+                   // $("#"+statuscountrypop).addClass("favorite");
+                    $("."+statuscountrypop).addClass("favorite");
                     // 20170416 
                     // arrayadd
 
@@ -460,6 +469,7 @@ $("#viewAccount").pagecontainer({
 
             } 
            
+
       
         }
 
@@ -482,12 +492,15 @@ $("#viewAccount").pagecontainer({
                 //Jsonparse(4);
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);  
+                Favorite();
+
 
             }
             if (tabActiveIDs  === "#fragment-2"){
                 //Jsonparse(3);
                 $("#ultestB").html(" "); 
                 $("#ultestB").append(content); 
+                Favorite();
 
             } 
                      
@@ -508,6 +521,8 @@ $("#viewAccount").pagecontainer({
             {
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);  
+                Favorite();//add for test 20170424
+
             }
               
 
@@ -515,6 +530,8 @@ $("#viewAccount").pagecontainer({
             if (tabActiveIDs  === "#fragment-2"){
                 $("#ultestB").html(" "); 
                 $("#ultestB").append(content);   
+                Favorite();//add for test 20170424
+
             } 
                     
         }
@@ -533,20 +550,31 @@ $("#viewAccount").pagecontainer({
             {
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);    //insert month
+                Favorite();//add for test 20170424
             }
          
             if (tabActiveIDs  === "#fragment-2"){
                 $("#ultestB").html(" "); 
                 $("#ultestB").append(content);    //insert month  
+                Favorite();//add for test 20170424
             } 
                 
         }
      /********************************** html  *************************************/
         function CountrylisthtmlOne(index){// one to one
                     return '<li data-icon="false" class="1_li CountryA" id="litest">'
-                    +'<div class="Listdiv1 select" id='
+                    //+'<div class="Listdiv1 select" id='
+                    //+ FromStatus
+                    //+'>'
+
+
+                    +'<div class="Listdiv1 select ' 
+                    + FromStatus
+                    +'"'
+                    +'id='
                     + FromStatus
                     +'>'
+
                     +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
                     +'<img  class="ListviewFlag1" src ="img/tmp/'
                     + FromStatus
@@ -579,8 +607,14 @@ $("#viewAccount").pagecontainer({
 
         function CountrylisthtmlFirst(index,country){ //First is all
                     return '<li data-icon="false" class="1_li CountryA" id="litest">'
-                    +'<div class="Listdiv1 select" id='
+                    //+'<div class="Listdiv1 select" id='
+                    //+ arraycomb[index]
+                    +'<div class="Listdiv1 select ' 
                     + arraycomb[index]
+                    +'"'
+                    +'id='
+                    + arraycomb[index]
+
                     +'>'
                     +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '  
                     +'<img  class="ListviewFlag1" src ="img/tmp/'
@@ -627,9 +661,17 @@ $("#viewAccount").pagecontainer({
                     +'</span>  '        
                     +'<div  class="Listdiv1equalmark4">=</div>'
                     +'</div>'
-                    +'<div class="Listdiv2 select" id='
+                    
+                    +'<div class="Listdiv2 select ' 
                     + arraycomb[index]
-                    +'>'       
+                    +'"'
+                    +'id='
+                    + arraycomb[index]
+
+                    +'>'
+                    //+'<div class="Listdiv2 select" id='
+                    //+ arraycomb[index]
+                    //+'>'       
                     +'<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '        
                     +'<img  class="ListviewFlag2" src ="img/tmp/'
                     + arraycomb[index] 
@@ -674,13 +716,13 @@ $("#viewAccount").pagecontainer({
         /********************************** API*************************************/
   
         //Initial , pop
-        function Jsonparse(Jsonflag) {
+        function Jsonparse(Jsonflag) { 
             //packJsontemp = []; 
             var EventList = new GetAccountingRate();  //20170420 5pm mark for test 
             //window.setTimeout(sleepgo,10000);
             // window.setTimeout(Jsonparsenext,3000);
-            //sleep(10000);
-            //Jsonparsenext(Jsonflag);  // 20170421
+            //sleep(10000);         
+            //Jsonparsenext(Jsonflag);  // 20170421 test
         }
 
         function sleep(milliseconds) {
@@ -781,7 +823,8 @@ $("#viewAccount").pagecontainer({
                 var arraygetFrom    = [];
                 var arraygetTo      = [];
                 var cleartest       = 0;
-                var arrayrateadd    = [];  //but add not clear re to next time
+                arrayrateadd    = [];   //but add not clear re to next time 
+                //arrayadd auto find arrayrateadd
 
            /* if (cleartest == "1"){
                   array=[];
@@ -863,8 +906,7 @@ $("#viewAccount").pagecontainer({
                                 arrayRate= ["undefine"];   
 
                             }
-                         */      
-                    //undefine need to declare 
+                         */         
                     } 
 
                  
@@ -873,21 +915,41 @@ $("#viewAccount").pagecontainer({
 
                
                /*4/22
-              
-               */ 
 
                 for (var i=0; i<arrayadd.length; i++)  //NTD USA
                 {
                   var statuscountryrate = $("#"+arrayadd[i]).parent().find(".ListDollar1").text(); 
                   arrayrateadd.push(statuscountryrate);
                 }
+              
+               */ 
+             
+               for (var i=0; i<arrayadd.length; i++)  //NTD USA //renew for rate //pop for head
+                {
+                  var rateindex = array.indexOf(arrayadd[i]);
+                  var ratetemp  = arrayRate[rateindex];
+                  
+                  if (rateindex > 0) 
+                    { 
+                        arrayrateadd.push(ratetemp);
+                        console.log("908 "+arrayrateadd);
+                    } //renew for rate 3.9158 
+                      
+                  else if (rateindex < 0)
+                    {
+                        arrayrateadd.push("undefine");
+                    }                
+                }
+
+                
 
                 Test();         
                 Buttonimg();                 
-                Favorite(); 
+              
 
         }
 
+  
  
         /********************************** API*************************************/
 
