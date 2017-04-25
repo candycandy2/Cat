@@ -220,8 +220,7 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
 
     if (window.localStorage.getItem("urgentTitle") !== null) {
         var dataExist = false;
-        //var templateDataMaxLength = 20;
-        var templateDataMaxLength = 5;
+        var templateDataMaxLength = 20;
         var tempTitleData;
         var tempContentData;
 
