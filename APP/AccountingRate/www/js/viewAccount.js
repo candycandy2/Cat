@@ -43,7 +43,17 @@ $("#viewAccount").pagecontainer({
         var arrayratecomb       =[];
         var packJsontemp        =[];
 
-                          
+       /* var storage =JSON.parse(localStorage.getItem("arrayadd"));
+        if (storage !=0){
+                arrayadd=storage; 
+            }
+        else if (storage == 0) 
+            {
+                console.log('YA-52');
+                arrayadd  =["NTD","USD"];
+            }
+        console.log('arrayadd_'+arrayadd);
+        */                  
         
         /********************************** function *************************************/
         window.APIRequest = function() {
@@ -211,12 +221,14 @@ $("#viewAccount").pagecontainer({
         $(document).on("click", ".select", function() {  //20170416 sunday ,modify for page2
            
 
-                /* 20170425 mark for test
+                
             statuscountrypop = $(this).prop("id");
            
           
-            
-          
+            //$("#fragment-1 #NTD")   favorite
+            //$("#fragment-2 #NTD")   
+             
+          /* 20170425 mark for test
             if ($("#"+statuscountrypop).hasClass("favorite")) 
             {
                 $("#eventWorkConfirmB").popup('open');
@@ -250,6 +262,10 @@ $("#viewAccount").pagecontainer({
               Test(); //reoragionize array
             //Buttonimg();//html reset => would be error
 
+
+             /*20170426   
+            localStorage.setItem("arrayadd",JSON.stringify(arrayadd));  //2017 05 add
+            */
             $("#eventWorkConfirmA").popup('close');
              /*20170424 8pm   */
 
@@ -308,6 +324,10 @@ $("#viewAccount").pagecontainer({
             arrayadd.splice (arrayadd.indexOf(statuscountrypop),1);
             arrayrateadd.splice(arrayrateadd.indexOf(statuscountryrate),1);
             Test(); 
+
+            /* 20170426
+            localStorage.setItem("arrayadd",JSON.stringify(arrayadd)); 
+             */
             $("#eventWorkConfirmB").popup('close');
             /*20170424 8:pm  */
 
@@ -752,14 +772,16 @@ $("#viewAccount").pagecontainer({
                 for (var i=0; i<arrayadd.length; i++)  
                 {
                       var rateindex = array.indexOf(arrayadd[i]);
-                      var ratetemp  = arrayRate[rateindex];                      
-                      if (rateindex > 0) 
-                        { 
+                      //                     
+                      if (rateindex >= 0) 
+                        {   var ratetemp  = arrayRate[rateindex]; 
                             arrayrateadd.push(ratetemp);
+                            console.log(arrayadd[i]+'_'+ratetemp);
                         }                           
                       else if (rateindex < 0)
-                        {
-                            arrayrateadd.push("undefine");
+                        {   var ratetemp  = "undefine";
+                            arrayrateadd.push(ratetemp);
+                            console.log(arrayadd[i]+'_'+ratetemp);
                         }                
                 }
 

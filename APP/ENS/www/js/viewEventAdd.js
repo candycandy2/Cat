@@ -579,28 +579,6 @@ $("#viewEventAdd").pagecontainer({
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
 
-            //UI Dropdown List : Event Location
-            eventLocationData = {
-                id: "eventLocation",
-                defaultText: "添加位置/IT Function",
-                title: "請選擇-機房位置",
-                option: [],
-                attr: {
-                    class: "text-bold"
-                }
-            };
-
-            $.each(loginData["BasicInfo"]["location"], function(key, vlaue) {
-                var tempData = {
-                    value: key,
-                    text: key
-                };
-
-                eventLocationData["option"].push(tempData);
-            });
-
-            tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
-
             //UI Popup : No Related Event Exist
             var noRelatedEventExistData = {
                 id: "noRelatedEventExist",
@@ -669,8 +647,45 @@ $("#viewEventAdd").pagecontainer({
 
         $("#viewEventAdd").on("pagebeforeshow", function(event, ui) {
 
+            //UI Dropdown List : Event Location
+            $("#eventLocationSelectContent").html("");
+            $("#eventLocation").remove();
+            $(document).off("click", "#eventLocation-option");
+            $("#eventLocation-option").popup("destroy").remove();
+
+            eventLocationData = {
+                id: "eventLocation",
+                defaultText: "添加位置/IT Function",
+                title: "請選擇-機房位置",
+                option: [],
+                attr: {
+                    class: "text-bold"
+                }
+            };
+
+            $.each(loginData["BasicInfo"]["location"], function(key, vlaue) {
+                var tempData = {
+                    value: key,
+                    text: key
+                };
+
+                eventLocationData["option"].push(tempData);
+            });
+
+            tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
+
             //UI Dropdown List : Event Level
             $("#eventLevelContent").html("");
+            $("#eventLevel").remove();
+            $(document).off("click", "#eventLevel-option");
+            $("#eventLevel-option").popup("destroy").remove();
+
+            var defaultEventLevel = "1";
+            if (prevPageID === "viewEventContent") {
+                if (eventContentData.event_type === "一般通報") {
+                    defaultEventLevel = "2";
+                }
+            }
 
             var eventLevelData = {
                 id: "eventLevel",
@@ -684,7 +699,7 @@ $("#viewEventAdd").pagecontainer({
                 attr: {
                     class: "text-bold"
                 },
-                defaultValue: "1"
+                defaultValue: defaultEventLevel
             };
 
             tplJS.DropdownList("viewEventAdd", "eventLevelContent", "append", "typeA", eventLevelData);
@@ -804,6 +819,7 @@ $("#viewEventAdd").pagecontainer({
 
                     //bind Event Function change event
                     $(document).on("change", "#" + eventFunctionData.id, function() {
+                        console.log($(this));
                         var dataArray = $(this).data("multiVal").split("|");
                         var indexAll = dataArray.indexOf("all");
                         var selectID = $(this).prop("id");
@@ -819,7 +835,6 @@ $("#viewEventAdd").pagecontainer({
                             loctionFunctionData.push(tempData);
 
                             updateLoctionFunctionData("update", selectID, selectedLocation, "all");
-                            $("#" + eventFunctionData.id).data("multiVal", "all");
                         } else {
                             for (var i=0; i<dataArray.length; i++) {
                                 var tempData = {

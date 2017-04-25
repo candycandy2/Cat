@@ -432,6 +432,7 @@ var tplJS = {
         //When Popup open, Auto Resize height of Popup main,
         //and change height of page, prevent User to scroll the page behind Popup.
         $(document).on("popupafteropen", "#" + popupID, function() {
+            var popup = $(this);
             var popupHeight = popup.height();
             var popupHeaderHeight = popup.find("div[data-role='main'] .header").height();
             var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
@@ -486,92 +487,112 @@ var tplJS = {
             $('#' + popupID).popup('open');
         });
 
-        $(document).on("click", "#" + popupID + " .close", function() {
-            if (type === "typeA") {
-                if (multiSelect) {
-                    var dataArray = $("#" + data.id).data("multiVal").split("|");
-                    var indexAll = dataArray.indexOf("all");
-                    if (indexAll > -1) {
-                        $("#" + data.id).data("multiVal", "all");
-                        $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
-                        $("#" + popupID + " ul li:eq(0)").addClass("tpl-dropdown-list-selected");
-                    }
-                    //Trigger drowdown list 'change' event
-                    $("#" + data.id).trigger("change");
-                }
-            }
-
-            $('#' + popupID).popup('close');
-
-            if (type === "typeA") {
-                if (autoResize) {
-                    tplJS.reSizeDropdownList(data.id, type);
-                }
-            }
-            tplJS.recoveryPageScroll();
-        });
-
-        //Click Li to change the value of Dropdown List
-        $(document).on("click", "#" + popupID + " ul li", function() {
-            if (!multiSelect) {
-                $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
-                $(this).addClass("tpl-dropdown-list-selected");
-            } else {
-                $(this).toggleClass("tpl-dropdown-list-selected");
-            }
-
-            if (type === "typeA") {
-                if (!multiSelect) {
-                    $("#" + data.id).val($(this).data("value"));
-                    if (autoResize) {
-                        tplJS.reSizeDropdownList(data.id, type);
-                    }
-                } else {
-                    //Drowdown List set Multiple Value
-                    var multiVal = $("#" + data.id).data("multiVal");
-                    if (multiVal !== undefined && multiVal.length > 0) {
-                        var dataString = "";
-                        var dataArray = multiVal.split("|");
-                        var index = dataArray.indexOf($(this).data("value"));
-
-                        if (index > -1) {
-                            dataArray.splice(index, 1);
-                        } else {
-                            dataArray.push($(this).data("value"));
-                        }
-
-                        if (dataArray.length > 0) {
-                            var dataString = dataArray.join("|");
-                        }
-                        $("#" + data.id).data("multiVal", dataString);
-                    } else {
-                        $("#" + data.id).data("multiVal", $(this).data("value"));
+        (function(dropdownListID){
+            $(document).on("click", "#" + popupID + " .close", function() {
+                if (type === "typeA") {
+                    if (multiSelect) {
+                        $("#" + dropdownListID).trigger("change");
                     }
                 }
-            } else if (type === "typeB") {
-                //Find drowdown list, set selected option value
-                var defaultText;
-                $("#" + data.id + " option").each(function(index, el) {
-                    if (index === 0) {
-                        defaultText = $(el).text();
-                    }
-                });
 
-                var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
-
-                $("#" + data.id).find("option").remove().end().append(newOption);
-            }
-
-            if (!multiSelect) {
-                //Trigger drowdown list 'change' event
-                $("#" + data.id).trigger("change");
-
-                //Close Popup
                 $('#' + popupID).popup('close');
 
+                if (type === "typeA") {
+                    if (autoResize) {
+                        tplJS.reSizeDropdownList(dropdownListID, type);
+                    }
+                }
                 tplJS.recoveryPageScroll();
-            }
-        });
+            });
+        }(data.id));
+
+        //Click Li to change the value of Dropdown List
+        (function(dropdownListID){
+            $(document).on("click", "#" + popupID + " ul li", function() {
+                if (!multiSelect) {
+                    $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
+                    $(this).addClass("tpl-dropdown-list-selected");
+                } else {
+                    $(this).toggleClass("tpl-dropdown-list-selected");
+                }
+
+                if (type === "typeA") {
+                    if (!multiSelect) {
+                        $("#" + dropdownListID).val($(this).data("value"));
+                        if (autoResize) {
+                            tplJS.reSizeDropdownList(dropdownListID, type);
+                        }
+                    } else {
+                        //Drowdown List set Multiple Value
+                        var multiVal = $("#" + dropdownListID).data("multiVal");
+                        if (multiVal !== undefined && multiVal.length > 0) {
+                            var dataString = "";
+                            var selectAll = false;
+                            var dataArray = multiVal.split("|");
+                            var optionValue = $(this).data("value");
+                            var index = dataArray.indexOf(optionValue);
+                            var indexAll = dataArray.indexOf("all");
+
+                            if (optionValue === "all") {
+                                if (indexAll === -1) {
+                                    selectAll = true;
+                                } else {
+                                    dataArray.splice(indexAll, 1);
+                                }
+                            } else {
+                                if (index > -1) {
+                                    dataArray.splice(index, 1);
+                                } else {
+                                    dataArray.push($(this).data("value"));
+
+                                    if (indexAll > -1) {
+                                        dataArray.splice(indexAll, 1);
+                                    }
+                                }
+                            }
+
+                            if (selectAll) {
+                                $("#" + dropdownListID).data("multiVal", "all");
+                                $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
+                                $("#" + popupID + " ul li:eq(0)").addClass("tpl-dropdown-list-selected");
+                            } else {
+                                $("#" + popupID + " ul li:eq(0)").removeClass("tpl-dropdown-list-selected");
+
+                                if (dataArray.length > 0) {
+                                    dataString = dataArray.join("|");
+                                }
+                                $("#" + dropdownListID).data("multiVal", dataString);
+                            }
+
+                        } else {
+                            $("#" + dropdownListID).data("multiVal", $(this).data("value"));
+                        }
+                    }
+                } else if (type === "typeB") {
+                    //Find drowdown list, set selected option value
+                    var defaultText;
+                    $("#" + dropdownListID + " option").each(function(index, el) {
+                        if (index === 0) {
+                            defaultText = $(el).text();
+                        }
+                    });
+
+                    var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
+
+                    $("#" + dropdownListID).find("option").remove().end().append(newOption);
+                }
+
+                if (!multiSelect) {
+                    //Trigger drowdown list 'change' event
+                    $("#" + dropdownListID).trigger("change");
+
+                    //Close Popup
+                    $('#' + popupID).popup('close');
+
+                    tplJS.recoveryPageScroll();
+                }
+            });
+        }(data.id));
 
         //Auto Resize DropdownList Width
         this.reSizeDropdownList = function(ID, type, setWidth) {
