@@ -570,6 +570,7 @@ input[type=radio]:checked + label {
 }
 
 .event-funciton-list {
+    font-size: 4.18vw;
     margin-bottom: 1vw;
 }
 
