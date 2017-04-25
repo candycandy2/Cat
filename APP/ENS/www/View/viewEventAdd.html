@@ -22,7 +22,7 @@
             
         </div>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="title">
             <span>標題 : (限40個字)</span>
@@ -32,14 +32,14 @@
         </div>
         <textarea id="eventTemplateTextarea" data-autogrow="false" maxlength="40" class="textarea-template"></textarea>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="title">
             <span>描述 : (限80個字)</span>
         </div>
         <textarea id="eventDescriptionTextarea" data-autogrow="false" maxlength="80" class="textarea-description"></textarea>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="title">
             <span>位置 / IT Function :</span>
@@ -65,7 +65,7 @@
             </template>
         </div>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="title">
             <span>希望完成時間 :</span>
@@ -95,7 +95,7 @@
             "closeCallback": "setDoneDateTime"}' readonly="readonly">
         </div>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="title" id="eventaAdditionalTitle">
             <span>關聯事件 :</span>
@@ -187,21 +187,6 @@
             </div>
         </template>
 
-        <!--template @popup content > Event Edit Confirm-->
-        <template id="tplEventEditConfirm">
-            <!--header: Title or Button-->
-            <div class="header font-style1">
-                確定修改且重送緊急通報?
-            </div>
-            <!--footer: Button-->
-            <div class="footer">
-                <div class="btn-two font-style8">
-                    <div class="cancel">取消</div>
-                    <div class="confirm">確認</div>
-                </div>
-            </div>
-        </template>
-
         <!--template @popup content > Event Edit Cancel Confirm-->
         <template id="tplEventEditCancelConfirm">
             <!--header: Title or Button-->
@@ -222,6 +207,20 @@
             <!--header: Title or Button-->
             <div class="header font-style1">
                 通訊異常，請聯絡 ITS
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">確認</div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Member Error-->
+        <template id="tplEventMemberError">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                成員資訊有誤，請修改成員資訊
             </div>
             <!--footer: Button-->
             <div class="footer">
