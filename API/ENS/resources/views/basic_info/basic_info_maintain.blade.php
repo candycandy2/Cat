@@ -14,7 +14,6 @@ use App\lib\ResultCode;
     @if (count($basicInfo) > 0)
     <div class="table-responsive">
      <table class="table">
-     <table class="table">
         <thead>
           <tr>
             <th>#</th>
@@ -23,23 +22,44 @@ use App\lib\ResultCode;
             <th>PIC</th>
             <th>EmpNo</th>
             <th>Master</th>
+            <th>權限</th>
+            <th>在職</th>
           </tr>
         </thead>
         <tbody>
         <?php $index = 0?>
         @foreach ($basicInfo as $members)
           <?php $index++ ?>
-          <tr>
+          <?php
+            $class = "";
+            if($members['status'] == 'N' || $members['resign'] == 'Y'){
+                $class = "danger";
+            }
+          ?>
+          <tr class="{{$class}}">
             <td>{{$index}}</td>
             <td>{{$members['location']}}</td>
             <td>{{$members['function']}}</td>
             <td>{{$members['login_id']}}</td>
             <td>{{$members['emp_no']}}</td>
             <td>{{$members['master']}}</td>
+            <td>
+                @if ($members['status'] == 'N')
+                    <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="帳號已停權"></span>
+                @else
+                    <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+                @endif
+            </td>
+            <td> 
+                @if ($members['resign'] == 'Y')
+                    <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="員工已離職"></span>
+                @else
+                    <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+                @endif
+            </td>
           </tr>
         @endforeach
         </tbody>
-      </table>
       </table>
       @endif
     </div>

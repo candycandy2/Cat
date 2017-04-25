@@ -88,3 +88,5 @@ storage
 /qplayApi/qplayApi/public/.htaccess
 /qplayApi/qplayApi/public/jpush.log
 .idea
+
+APP/AccountingRate/config.xml

@@ -129,10 +129,6 @@ class BasicInfoController extends Controller
      * @return View 成員基本資料維護頁
      */
     public function basicInfoMaintain(){
-        // $registerManager = $this->registerSuperUserToMessage();
-        // $data = $registerManager->getData();
-        // dd($data);exit();
-        // var_dump( $registerManager::getData());exit();
         $basicInfo = $this->basicInfoService->getBasicInfoMemberRawData();
         return view('basic_info/basic_info_maintain')->with('basicInfo',$basicInfo );
     }

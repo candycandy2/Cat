@@ -213,44 +213,87 @@ function checkAuthority(level) {
 }
 
 //Check Event Template Data
-function checkEventTemplateData(action, data) {
-    data = data || null;
+function checkEventTemplateData(action, eventType, titleData, contentData) {
+    eventType = eventType || null;
+    titleData = titleData || null;
+    contentData = contentData || null;
 
-    if (window.localStorage.getItem("template") !== null) {
+    if (window.localStorage.getItem("urgentTitle") !== null) {
+        var dataExist = false;
         var templateDataMaxLength = 20;
-        var tempDate = window.localStorage.getItem("template");
-        templateData = JSON.parse(tempDate);
+        var tempTitleData;
+        var tempContentData;
+
+        var urgentTitleData = window.localStorage.getItem("urgentTitle");
+        urgentTitle = JSON.parse(urgentTitleData);
+
+        var urgentContentData = window.localStorage.getItem("urgentContent");
+        urgentContent = JSON.parse(urgentContentData);
+
+        var normalTitleData = window.localStorage.getItem("normalTitle");
+        normalTitle = JSON.parse(normalTitleData);
+
+        var normalContentData = window.localStorage.getItem("normalContent");
+        normalContent = JSON.parse(normalContentData);
+
+        if (eventType === "1") {
+            //urgent
+            tempTitleData = urgentTitle;
+            tempContentData = urgentContent;
+        } else {
+            //normal
+            tempTitleData = normalTitle;
+            tempContentData = normalContent;
+        }
 
         if (action === "update") {
-            if (templateData.length < templateDataMaxLength) {
-                var value = templateData.length+1;
-                var text = data;
-                var tempObj = {
-                    value: value,
-                    text: text
-                };
 
-                templateData.push(tempObj);
+            //Check if title data has exist
+            for (var i=0; i<tempTitleData.length; i++) {
+                if (titleData === tempTitleData[i]["text"]) {
+                    dataExist = true;
+                }
+            }
+
+            if (tempTitleData.length < templateDataMaxLength) {
+                if (!dataExist) {
+                    var tempObj = {
+                        value: tempTitleData.length+1,
+                        text: titleData
+                    };
+                    tempTitleData.push(tempObj);
+
+                    var tempObj = {
+                        value: tempTitleData.length+1,
+                        text: contentData
+                    };
+                    tempContentData.push(tempObj);
+                }
             } else {
+                var dataIndex;
                 var templateUpdateIndex = 1;
 
                 if (window.localStorage.getItem("templateUpdateIndex") !== null) {
                     templateUpdateIndex = window.localStorage.getItem("templateUpdateIndex");
                 }
 
-                for (var i=0; i<templateData.length; i++) {
-                    if (templateUpdateIndex == parseInt(i+1, 10)) {
-                        var value = templateUpdateIndex;
-                        var text = data;
-                        var tempObj = {
-                            value: value,
-                            text: text
-                        };
+                if (!dataExist) {
+                    dataIndex = parseInt(templateUpdateIndex - 1, 10);
 
-                        templateData[i] = tempObj;
-                    }
+                    var tempObj = {
+                        value: templateUpdateIndex,
+                        text: titleData
+                    };
+                    tempTitleData[dataIndex] = tempObj;
+
+                    var tempObj = {
+                        value: templateUpdateIndex,
+                        text: contentData
+                    };
+                    tempContentData[dataIndex] = tempObj;
+
+                    templateUpdateIndex++;
                 }
-                templateUpdateIndex++;
 
                 if (templateUpdateIndex > templateDataMaxLength) {
                     templateUpdateIndex = 1;
@@ -259,21 +302,59 @@ function checkEventTemplateData(action, data) {
                 window.localStorage.setItem("templateUpdateIndex", templateUpdateIndex);
             }
 
-            window.localStorage.setItem("template", JSON.stringify(templateData));
+            if (eventType === "1") {
+                //urgent
+                urgentTitle = tempTitleData;
+                window.localStorage.setItem("urgentTitle", JSON.stringify(urgentTitle));
+
+                urgentContent = tempContentData;
+                window.localStorage.setItem("urgentContent", JSON.stringify(urgentContent));
+            } else {
+                //normal
+                normalTitle = tempTitleData;
+                window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));
+
+                normalContent = tempContentData;
+                window.localStorage.setItem("normalContent", JSON.stringify(normalContent));
+            }
         }
     } else {
-        templateData = [{
+        normalTitle = [{
             value: "1",
-            text: "罐頭範本-1"
+            text: "[電力維護公告] XX機房將進行電力保養及維護,請協助關機"
         }, {
             value: "2",
-            text: "罐頭範本-2"
-        }, {
-            value: "3",
-            text: "罐頭範本-3"
+            text: "[空調維護公告] XX機房將進行空調保養及維護,請協助關機"
         }];
 
-        window.localStorage.setItem("template", JSON.stringify(templateData));
+        normalContent = [{
+            value: "1",
+            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業"
+        }, {
+            value: "2",
+            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業"
+        }];
+
+        urgentTitle = [{
+            value: "1",
+            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常,請協助緊急關機"
+        }, {
+            value: "2",
+            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障,請協助緊急關機"
+        }];
+
+        urgentContent = [{
+            value: "1",
+            text: "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+        }, {
+            value: "2",
+            text: "目前(2:30PM) XX機房因空調系統故障. 機房温度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+        }];
+
+        window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));
+        window.localStorage.setItem("normalContent", JSON.stringify(normalContent));
+        window.localStorage.setItem("urgentTitle", JSON.stringify(urgentTitle));
+        window.localStorage.setItem("urgentContent", JSON.stringify(urgentContent));
     }
 }
 

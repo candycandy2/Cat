@@ -283,9 +283,10 @@ function loadingMask(action) {
         if ($(".loader").length === 0) {
             $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
         } else {
-            $(".loader").show();
+            $(".loader").show("fast", function(){
+                $(".loader").css("top", $(document).scrollTop());
+            });
         }
-        $(".loader").css("top", $(document).scrollTop());
     } else if (action === "hide") {
         $(".loader").hide();
     }
