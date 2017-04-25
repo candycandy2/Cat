@@ -34,8 +34,8 @@ $("#viewAccount").pagecontainer({
         var array     = [    ];   
         var arrayRate = [    ];     
 
-        var arrayadd =["NTD","USD","EUR"];//,"EUR","AUD"
-        //var arrayadd            =[];
+        //var arrayadd =["NTD","USD","EUR"];//,"EUR","AUD"
+        var arrayadd            =[];
         var arrayaddtemp        =[];
         var arrayrateadd        =[];
         var arrayratecomb       =[];
@@ -105,7 +105,7 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             
-            
+            Jsonparse(1);
             //var EventList = new GetAccountingRate(); //add for test 20170418 API 
 
 
@@ -113,7 +113,7 @@ $("#viewAccount").pagecontainer({
 
         $("#viewAccount").on("pageshow", function(event, ui) {
          //  
-           Jsonparse(1);
+           //Jsonparse(1);
             //Jsonparse(1);
             //Test();         
             //Buttonimg(); 
@@ -268,23 +268,38 @@ $("#viewAccount").pagecontainer({
 
         $(document).on("click", "#eventWorkConfirmA .confirm", function() { // B window OK   
 
+            /*20170424 8pm
             $("#"+statuscountrypop).children(".star_icon").css("opacity","1"); //li id 
             $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","1");
             $("#"+statuscountrypop).addClass("favorite");
             
-           /*move 20170416
+           
             arrayadd.push(statuscountrypop);//20170416
-            array.splice(array.indexOf(statuscountrypop));
+            
 
-           */
-            arrayadd.push(statuscountrypop);//20170416
+            statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); //20160421
+            arrayrateadd.push(statuscountryrate);
+
+
+              Test(); //reoragionize array
+            //Buttonimg();//html reset => would be error
+
+            $("#eventWorkConfirmA").popup('close');
+            */
+
+
+
             /*var a = array.indexOf(statuscountrypop);
             array.splice(a,1);
             */
 
-            statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); //20160421
-            arrayrateadd.push(statuscountryrate);
-            
+
+            /*move 20170416
+            arrayadd.push(statuscountrypop);//20170416
+            array.splice(array.indexOf(statuscountrypop));
+
+           */
+
             /*20170422
             arrayrateadd =.push(statuscountryrate);
             var b = arrayrate.indexOf(statuscountryrate);
@@ -306,10 +321,7 @@ $("#viewAccount").pagecontainer({
             //array.splice(array.indexOf(statuscountrypop),1);
 
 
-            Test(); //reoragionize array
-            //Buttonimg();//html reset => would be error
-
-            $("#eventWorkConfirmA").popup('close');
+          
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {  // B window OK
@@ -319,15 +331,21 @@ $("#viewAccount").pagecontainer({
 
         /********************************** Popup  *************************************/
 
-        $(document).on("click", "#eventWorkConfirmB .confirm", function() { // B window OK   
+        $(document).on("click", "#eventWorkConfirmB .confirm", function() { // B window OK  
+            /*20170424 8:pm
             $("#"+statuscountrypop).children(".star_icon").css("opacity","0");  
             $("#"+statuscountrypop).children(".nonstar_icon").css("opacity","0");   
             $("#"+statuscountrypop).removeClass("favorite"); 
 
             statuscountryrate = $("#"+statuscountrypop).parent().find(".ListDollar1").text(); 
-           //20170416
+          
             arrayadd.splice (arrayadd.indexOf(statuscountrypop),1);
             arrayrateadd.splice(arrayrateadd.indexOf(statuscountryrate),1);
+            Test(); 
+            $("#eventWorkConfirmB").popup('close');
+            */
+
+            //20170416
             //array.push(statuscountrypop);
 
 
@@ -338,9 +356,9 @@ $("#viewAccount").pagecontainer({
             */
 
 
-            Test(); 
-
-            $("#eventWorkConfirmB").popup('close');
+           
+ 
+           
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() {  // B window OK
@@ -446,6 +464,7 @@ $("#viewAccount").pagecontainer({
 
         function Favorite(){            
 
+            /*
             //Get] Initial  from array and add to the id 
             for (var i=0 ; i< arrayadd.length; i++)
           
@@ -453,22 +472,18 @@ $("#viewAccount").pagecontainer({
                 {
                    // $("#"+statuscountrypop).addClass("favorite");
                     $("."+statuscountrypop).addClass("favorite");
-                    // 20170416 
-                    // arrayadd
+             
 
                 }
             }
 
-
-            //Favorite//click//html       
-           //check for show 
             if ($("li").children(".favorite")) //use favorite to contrl star (not nontstar) 
             {
                 $("li").children(".favorite").children(".star_icon").css("opacity","1"); //li id 
                 $("li").children(".favorite").children(".nonstar_icon").css("opacity","1"); //li id 
 
             } 
-           
+           */
 
       
         }
@@ -492,7 +507,7 @@ $("#viewAccount").pagecontainer({
                 //Jsonparse(4);
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);  
-                Favorite();
+                //Favorite();
 
 
             }
@@ -500,7 +515,8 @@ $("#viewAccount").pagecontainer({
                 //Jsonparse(3);
                 $("#ultestB").html(" "); 
                 $("#ultestB").append(content); 
-                Favorite();
+                //$("#ultestA").html(" "); 
+                //Favorite();
 
             } 
                      
@@ -521,7 +537,7 @@ $("#viewAccount").pagecontainer({
             {
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);  
-                Favorite();//add for test 20170424
+                //Favorite();//add for test 20170424
 
             }
               
@@ -530,7 +546,8 @@ $("#viewAccount").pagecontainer({
             if (tabActiveIDs  === "#fragment-2"){
                 $("#ultestB").html(" "); 
                 $("#ultestB").append(content);   
-                Favorite();//add for test 20170424
+                //$("#ultestA").html(" "); 
+                //Favorite();//add for test 20170424
 
             } 
                     
@@ -550,13 +567,14 @@ $("#viewAccount").pagecontainer({
             {
                 $("#ultestA").html(" "); 
                 $("#ultestA").append(content);    //insert month
-                Favorite();//add for test 20170424
+                //Favorite();//add for test 20170424
             }
          
             if (tabActiveIDs  === "#fragment-2"){
                 $("#ultestB").html(" "); 
                 $("#ultestB").append(content);    //insert month  
-                Favorite();//add for test 20170424
+                //$("#ultestA").html(" "); 
+                //Favorite();//add for test 20170424
             } 
                 
         }
