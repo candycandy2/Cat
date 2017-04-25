@@ -208,12 +208,13 @@ $("#viewEventAdd").pagecontainer({
                 var resultCode = data['ResultCode'];
 
                 if (action === "newEvent") {
+                    loadingMask("hide");
                     if (resultCode === "014901") {
-                        loadingMask("hide");
                         eventAddSuccess();
                     } else if (resultCode === "014918") {
-                        loadingMask("hide");
                         $("#eventAddFail").popup("open");
+                    } else if (resultCode === "014921") {
+                        $("#eventMemberError").popup("open");
                     }
                 } else {
                     if (resultCode === "014901") {
@@ -221,6 +222,9 @@ $("#viewEventAdd").pagecontainer({
                         eventAddSuccess();
                     } else if (resultCode === "014910") {
                         //Can not edit closed Event
+                    } else if (resultCode === "014921") {
+                        loadingMask("hide");
+                        $("#eventMemberError").popup("open");
                     }
                 }
             };
@@ -327,13 +331,14 @@ $("#viewEventAdd").pagecontainer({
             var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
             var clientWidth = document.documentElement.clientWidth;
             var clientHeight = document.documentElement.clientHeight;
+            var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
 
             //Add Location/Function content height
             var loctionFunctionHeight = $("#eventLocationListContent").height();
             if (device.platform === "iOS") {
                 loctionFunctionHeight += 20;
             }
-            var top = parseInt(((clientHeight - heightPopup) / 2) + loctionFunctionHeight, 10 );
+            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight + loctionFunctionHeight, 10 );
             var left = parseInt((clientWidth - widthPopup), 10 );
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
@@ -479,10 +484,18 @@ $("#viewEventAdd").pagecontainer({
                 }
             }
 
+            //Event Level
+            var eventLevelStr = "";
+            if ($("#eventLevel").val() === "1") {
+                eventLevelStr = "緊急";
+            } else {
+                eventLevelStr = "一般";
+            }
+
             if (prevPageID === "viewEventList") {
-                $("#eventAddConfirm .header .header").html("確定發送緊急通報?");
+                $("#eventAddConfirm .header .header").html("確定發送" + eventLevelStr + "通報?");
             } else if (prevPageID === "viewEventContent") {
-                $("#eventAddConfirm .header .header").html("確定修改且重送緊急通報?");
+                $("#eventAddConfirm .header .header").html("確定修改且重送" + eventLevelStr + "通報?");
             }
         }
 
@@ -574,14 +587,6 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddConfirmData);
 
-            //UI Popup : Event Edit Confirm
-            var eventEditConfirmData = {
-                id: "eventEditConfirm",
-                content: $("template#tplEventEditConfirm").html()
-            };
-
-            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditConfirmData);
-
             //UI Popup : Event Edit Cancel Confirm
             var eventEditCancelConfirmData = {
                 id: "eventEditCancelConfirm",
@@ -597,6 +602,14 @@ $("#viewEventAdd").pagecontainer({
             };
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddFailData);
+
+            //UI Popup : Event Member Error
+            var eventMemerErrorData = {
+                id: "eventMemberError",
+                content: $("template#tplEventMemberError").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventMemerErrorData);
 
         });
 
@@ -875,11 +888,6 @@ $("#viewEventAdd").pagecontainer({
             var event = new newEvent();
         });
 
-        //Event Edit Button
-        $(document).on("click", "#eventEditConfirm .cancel", function() {
-            $("#eventEditConfirm").popup("close");
-        });
-
         //Event Edit Cancel Button
         $(document).on("click", "#eventEditCancelConfirm .cancel", function() {
             $("#eventEditCancelConfirm").popup("close");
@@ -895,6 +903,11 @@ $("#viewEventAdd").pagecontainer({
         //Event Add Fail
         $(document).on("click", "#eventAddFail .confirm", function() {
             $("#eventAddFail").popup("close");
+        });
+
+        //Event Member Error
+        $(document).on("click", "#eventMemberError .confirm", function() {
+            $("#eventMemberError").popup("close");
         });
 
         //Back Button
