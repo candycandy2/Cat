@@ -234,7 +234,7 @@ $("#viewEventAdd").pagecontainer({
             var __construct = function() {
                 $("#eventAddConfirm").popup("close");
                 loadingMask("show");
-                checkEventTemplateData("update", $("#eventTemplateTextarea").val());
+                checkEventTemplateData("update", $("#eventLevel").val(), $("#eventTemplateTextarea").val(), $("#eventDescriptionTextarea").val());
 
                 CustomAPI("POST", true, action, self.successCallback, self.failCallback, queryData, "");
             }();
@@ -521,6 +521,60 @@ $("#viewEventAdd").pagecontainer({
             }
         }
 
+        function createTemplateDropdownList() {
+            var titleData;
+            var contentData;
+
+            if ($("#eventLevel").val() === "1") {
+                //urgent
+                titleData = urgentTitle;
+                contentData = urgentContent;
+            } else {
+                //normal
+                titleData = normalTitle;
+                contentData = normalContent;
+            }
+
+            //UI Dropdown List : Event Template
+            var ID = eventTemplateID;
+            var oldID = parseInt(ID) - 1;
+            eventTemplateID++;
+
+            if ($("#eventTemplate" + oldID).length) {
+                $("#eventTemplate" + oldID).remove();
+                $("#eventTemplate" + oldID + "-option").popup("destroy").remove();
+            }
+
+            eventTemplateData = {
+                id: "eventTemplate" + ID,
+                defaultText: "選擇範本",
+                title: "標題範本",
+                option: titleData,
+                attr: {
+                    class: "text-bold"
+                }
+            };
+
+            tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
+
+            $(document).on("change", "#eventTemplate" + ID, function() {
+                var selectedValue = $(this).val();
+
+                $("#eventTemplateTextarea").val("");
+
+                $.each(eventTemplateData.option, function(key, obj) {
+                    if (obj.value == selectedValue) {
+                        $("#eventTemplateTextarea").val(obj.text);
+                    }
+                });
+
+                $.each(contentData, function(key, obj) {
+                    if (obj.value == selectedValue) {
+                        $("#eventDescriptionTextarea").val(obj.text);
+                    }
+                });
+            });
+        }
 
         /********************************** page event *************************************/
         $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
@@ -615,40 +669,6 @@ $("#viewEventAdd").pagecontainer({
 
         $("#viewEventAdd").on("pagebeforeshow", function(event, ui) {
 
-            //UI Dropdown List : Event Template
-            var ID = eventTemplateID;
-            var oldID = parseInt(ID) - 1;
-            eventTemplateID++;
-
-            if ($("#eventTemplate" + oldID).length) {
-                $("#eventTemplate" + oldID).remove();
-                $("#eventTemplate" + oldID + "-option").popup("destroy").remove();
-            }
-
-            eventTemplateData = {
-                id: "eventTemplate" + ID,
-                defaultText: "選擇範本",
-                title: "標題範本",
-                option: templateData,
-                attr: {
-                    class: "text-bold"
-                }
-            };
-
-            tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
-
-            $(document).on("change", "#eventTemplate" + ID, function() {
-                var selectedValue = $(this).val();
-
-                $("#eventTemplateTextarea").val("");
-
-                $.each(eventTemplateData.option, function(key, obj) {
-                    if (obj.value == selectedValue) {
-                        $("#eventTemplateTextarea").val(obj.text);
-                    }
-                });
-            });
-
             //UI Dropdown List : Event Level
             $("#eventLevelContent").html("");
 
@@ -669,6 +689,11 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.DropdownList("viewEventAdd", "eventLevelContent", "append", "typeA", eventLevelData);
 
+            $(document).on("change", "#eventLevel", function() {
+                createTemplateDropdownList();
+            });
+
+            createTemplateDropdownList();
         });
 
         $("#viewEventAdd").on("pageshow", function(event, ui) {
