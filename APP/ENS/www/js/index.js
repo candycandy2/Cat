@@ -217,40 +217,52 @@ function checkEventTemplateData(action, data) {
     data = data || null;
 
     if (window.localStorage.getItem("template") !== null) {
+        var dataExist = false;
+        var templateDataMaxLength = 20;
         var tempDate = window.localStorage.getItem("template");
         templateData = JSON.parse(tempDate);
 
         if (action === "update") {
-            if (templateData.length < 20) {
-                var value = templateData.length+1;
-                var text = data;
-                var tempObj = {
-                    value: value,
-                    text: text
-                };
 
-                templateData.push(tempObj);
+            //Check if template data has exist
+            for (var i=0; i<templateData.length; i++) {
+                if (data === templateData[i]["text"]) {
+                    dataExist = true;
+                }
+            }
+
+            if (templateData.length < templateDataMaxLength) {
+                if (!dataExist) {
+                    var tempObj = {
+                        value: templateData.length+1,
+                        text: data
+                    };
+                    templateData.push(tempObj);
+                }
             } else {
-
+                var dataIndex;
                 var templateUpdateIndex = 1;
 
                 if (window.localStorage.getItem("templateUpdateIndex") !== null) {
                     templateUpdateIndex = window.localStorage.getItem("templateUpdateIndex");
                 }
 
-                for (var i=0; i<templateData.length; i++) {
-                    if (templateUpdateIndex == parseInt(i+1, 10)) {
-                        var value = templateUpdateIndex;
-                        var text = data;
-                        var tempObj = {
-                            value: value,
-                            text: text
-                        };
+                if (!dataExist) {
+                    dataIndex = parseInt(templateUpdateIndex - 1, 10);
 
-                        templateData[i] = tempObj;
-                    }
+                    var tempObj = {
+                        value: templateUpdateIndex,
+                        text: data
+                    };
+                    templateData[dataIndex] = tempObj;
+
+                    templateUpdateIndex++;
                 }
-                templateUpdateIndex++;
+
+                if (templateUpdateIndex > templateDataMaxLength) {
+                    templateUpdateIndex = 1;
+                }
+
                 window.localStorage.setItem("templateUpdateIndex", templateUpdateIndex);
             }
 
@@ -274,6 +286,7 @@ function checkEventTemplateData(action, data) {
 
 function footerFixed() {
     $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
 }
 
 //[Android]Handle the back button

@@ -285,6 +285,7 @@ function loadingMask(action) {
         } else {
             $(".loader").show();
         }
+        $(".loader").css("top", $(document).scrollTop());
     } else if (action === "hide") {
         $(".loader").hide();
     }
@@ -338,3 +339,28 @@ function popupCancelClose() {
     });
 }
 
+function adjustPageMarginTop() {
+    //For some APP Page, if page's header has second level [button / title],
+    //auto resize the margin-top of page-main.
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+    if (activePageID.length !== 0) {
+
+        var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+        var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+        var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+        if (mainMarginTop < 0) {
+            mainMarginTop = 0;
+        }
+
+        if (device.platform === "iOS") {
+            mainMarginTop = mainMarginTop + 20;
+        }
+
+        $(".page-main").css({
+            "margin-top": mainMarginTop + "px"
+        });
+    }
+}

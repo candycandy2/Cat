@@ -149,9 +149,28 @@
 /*list        ----------------------------*/
 
 .CountryA {
-    background-color          : #f9f9f9!important;;
+    background-color          : #f9f9f9!important;
 }
 
+#ultestA li{
+    
+    border-bottom: #DDDDDD 0.1px solid;
+    float: left;
+    width: 100VW;
+    
+    /* 20170414 */
+    /* 20170419 */
+}
+
+#ultestB li{
+    
+    border-bottom: #DDDDDD 0.1px solid;
+    float: left;
+    width: 100VW;
+    
+    /* 20170414 */
+    /* 20170419 */
+}
 
 .firstli{
     border-top: honeydew !important; 

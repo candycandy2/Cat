@@ -390,6 +390,7 @@ input[type=radio]:checked + label {
 }
 
 .event-member-list li {
+    width: 100%;
     margin-bottom: 5.07vw;
     display: inline-block;
 }
@@ -568,6 +569,10 @@ input[type=radio]:checked + label {
     padding: 10px 20px;
 }
 
+.event-funciton-list {
+    margin-bottom: 1vw;
+}
+
 /*Event Content*/
 .back {
     background: url(../img/component/back_nav.png) no-repeat;
@@ -698,6 +703,7 @@ input[type=radio]:checked + label {
     height: 100vh;
     overflow: hidden;
     background-color: #000;
+    touch-action: none;
 }
 
 .event-content-photo-full-screen .button-content {

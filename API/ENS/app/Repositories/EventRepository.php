@@ -202,6 +202,31 @@ class EventRepository
                 'login_id',
                 'user_domain'
                 )
+            ->orderBy('user_domain')
+            ->orderBy('login_id')
+            ->get();
+    }
+
+     /**
+     * 依事件取得參與者並過濾掉離職或停權人員
+     * @param  int $eventId  事件id en_event.row_id
+     * @return mixed
+     */
+    public function getUserByEventIdWithRight($eventId){
+        
+        return $this->userEvent
+            ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_user_event.emp_no')
+            ->where('event_row_id',$eventId)
+            ->where($this->userTableName.'.status','<>','N')
+            ->where($this->userTableName.'.resign','<>','Y')
+            ->select(
+                'en_user_event.emp_no as emp_no',
+                'read_time',
+                'login_id',
+                'user_domain'
+                )
+            ->orderBy('user_domain')
+            ->orderBy('login_id')
             ->get();
     }
 

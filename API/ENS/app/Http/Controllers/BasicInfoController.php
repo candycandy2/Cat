@@ -9,20 +9,24 @@ use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
 use App\Services\BasicInfoService;
+use App\Services\UserService;
 use DB;
+use Excel;
 
 class BasicInfoController extends Controller
 {
 
     protected $basicInfoService;
+    protected $userService;
 
     /**
      * 建構子，初始化引入相關服務
      * @param BasicInfoService $basicInfoService 地點基本資訊服務
      */
-    public function __construct(BasicInfoService $basicInfoService)
+    public function __construct(BasicInfoService $basicInfoService, UserService $userService)
     {
         $this->basicInfoService = $basicInfoService;
+        $this->userService = $userService;
     }
     /**
      * 取得地點等基本資訊
@@ -64,22 +68,70 @@ class BasicInfoController extends Controller
      * @return json
      */
     public function uploaBasicInfo(Request $request){
-    
-       $validator = Validator::make($request->all(), [
-            'basicInfoFile' => 'required|mimes:xls,xlsx'
-        ]);
-        if ($validator->fails()) {
-            return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
+        
+        \DB::beginTransaction();
+        try{
+
+           $validator = Validator::make($request->all(), [
+                    'basicInfoFile' => 'required|mimes:xls,xlsx'
+                ],[
+                    'required'=>'請上傳檔案',
+                    'mimes'=>'請上傳檔案格式 :values'
+                ]);
+            if ($validator->fails()) {
+                return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                        'Message'=>"validate error",
+                        'Content'=> $validator->errors()->all()]);
+            }
+       
+            $input = $request->all();
+            $validRes = $this->basicInfoService->validateUploadBasicInfo($input['basicInfoFile']);
+            if($validRes['ResultCode'] == ResultCode::_1_reponseSuccessful){
+               $this->basicInfoService->importBasicInfo($input['basicInfoFile']);
+               $registerManager = $this->registerSuperUserToMessage()->getData();
+               if($registerManager->ResultCode != ResultCode::_1_reponseSuccessful){
+                    return $registerManager;
+               }
+               return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful]);
+            }else{
+               return $result = response()->json($validRes);  
+            }
+            
+          \DB::commit();
+        } catch (Exception $e){
+            \DB::rollBack();
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+            'Content'=>"",
+            'Message'=>$e->getMessage()]);
         }
-       $input = $request->all();
-       $this->basicInfoService->importBasicInfo($input['basicInfoFile']);
+      
     }
 
+    /**
+     * 向QMessage註冊主管與管理員
+     * @return json
+     */
+    public function registerSuperUserToMessage(){
+        try{
+            
+            $res = $this->userService->registerSuperUserToMessage();
+
+         } catch (Exception $e){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+            'Content'=>"",
+            'Message'=>$e->getMessage()]);
+        }
+            return $result = response()->json($res);
+    }
+
+    /**
+     * 成員基本資料管理
+     * @return View 成員基本資料維護頁
+     */
     public function basicInfoMaintain(){
-        $basicInfo = $this->basicInfoService->getBasicInfo();
+        $basicInfo = $this->basicInfoService->getBasicInfoMemberRawData();
         return view('basic_info/basic_info_maintain')->with('basicInfo',$basicInfo );
     }
+
 }
 

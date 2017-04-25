@@ -193,11 +193,19 @@ class EventService
 
    /**
     * 取得事件參與者當作推播接收訊者清單
-    * @param  int $eventId 事件id en_event.row_id
+    * @param  int $eventId      事件id en_event.row_id
+    * @param  string $action    呼叫推播時的場景 (new:新增事件|update:更新事件|close:事件已完成)
     * @return Array|array  array('Domain\\LoginId')
     */
-   public function getPushUserListByEvent($eventId){
-         $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
+   public function getPushUserListByEvent($eventId, $action){
+         $eventUserDetail = [];
+         //新增事件的時候，不過濾掉離職或沒有權限的用戶，若有失敗則提示用戶錯誤，提醒修改Basic Info
+         if(strtolower($action) == 'new'){
+            $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
+         }else{
+            $eventUserDetail = $this->eventRepository->getUserByEventIdWithRight($eventId);
+         }
+
          $userList = [];
          foreach ($eventUserDetail as $user) {
             $userList[] = $user->user_domain."\\".$user->login_id;
@@ -289,11 +297,12 @@ class EventService
                     "close_task_date" => time(),
                     "task_status" => self::STATUS_FINISHED
                 );
+        $this->taskRepository->updateTaskById($empNo, $taskId, $data);
+        //已無開啟中task,將事件關閉
         $openedTask = $this->taskRepository->getOpenTaskByEventId($eventId);
-        if(count($openedTask) == 1){
+        if(count($openedTask) == 0){
             $updateResult = $this->updateEvent($empNo, $eventId, array("event_status"=>self::STATUS_FINISHED), $queryParam);
         }
-        return $this->taskRepository->updateTaskById($empNo, $taskId, $data);
    }
 
    /**
@@ -504,13 +513,15 @@ class EventService
     * 發送推播訊息給事件參與者
     * @param  int      $eventId    事件id en_event.row_id
     * @param  Array    $queryParam 呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
-    * @param  string   $empNo       
+    * @param  string   $empNo
+    * @param  string   $action     推播時的情境(new:新增事件|update:更新 事件|close:事件已完成)
     * @return json
     */
    public function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo, $action){
        
        $result = null;
-       $to = $this->getPushUserListByEvent($eventId);
+       $to = $this->getPushUserListByEvent($eventId, $action);
+
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($eventId, $empNo);
        
@@ -519,7 +530,7 @@ class EventService
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['text'])));
       
        $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, $queryParam);
-       
+
        $result = json_decode($pushResult);
        return $result;
     }

@@ -29,7 +29,7 @@ html .ui-panel-page-container-a, .ui-page-theme-a .ui-bar-inherit, .ui-bar-a .ui
 .ui-mobile .ui-page-active{
     display: block;
     overflow: visible;
-    /*overflow-x:hidden*/
+    overflow-x: hidden;
 }
 
 .ui-field-contain {
@@ -160,7 +160,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1001;
     height: 100%;
     width: 100%;
     background: rgba(35,31,32,0.3);
@@ -471,12 +471,12 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     right: 0;
 }
 
-
+/*Darren - #13709, #13678
 .ui-mobile .ui-page:not(#viewInitial):not(#viewUpdateAppVersion):not(#viewNotSignedIn):not(#viewMaintain):not(#viewGetQPush) { padding-top: 11.45vw !important;}
 .ui-mobile .ui-page:not(#viewInitial):not(#viewUpdateAppVersion):not(#viewNotSignedIn):not(#viewMaintain):not(#viewGetQPush).ui-page-ios{ padding-top: calc(11.45vw + 20px) !important;}
 .page-main{ margin-top: 0 !important;}
 .ui-page{ min-height: 100% !important; box-sizing: border-box;}
-
+*/
 
 /*initial page layout setting when landscape*/
 @media all and (orientation: landscape){
