@@ -72,7 +72,7 @@ a {
     background-color: initial;
 }
 
-#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.692vw;}
+#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.692vw; height: 4VH;}
 
 .ui-radio-30 div.ui-radio {
     width: 33%;
@@ -532,7 +532,7 @@ hr.ui-color-green {
     background-color: #6bbfcf;
 }
 
-.btn-benq {
+.btn-enable {
     background-color: #2a88bc !important;
     color: white !important;
 }
