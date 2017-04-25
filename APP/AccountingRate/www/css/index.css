@@ -158,7 +158,18 @@
     float: left;
     width: 100VW;
     
-    /* 20170414*/
+    /* 20170414 */
+    /* 20170419 */
+}
+
+#ultestB li{
+    
+    border-bottom: #DDDDDD 0.1px solid;
+    float: left;
+    width: 100VW;
+    
+    /* 20170414 */
+    /* 20170419 */
 }
 
 .firstli{

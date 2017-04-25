@@ -569,6 +569,10 @@ input[type=radio]:checked + label {
     padding: 10px 20px;
 }
 
+.event-funciton-list {
+    margin-bottom: 1vw;
+}
+
 /*Event Content*/
 .back {
     background: url(../img/component/back_nav.png) no-repeat;
