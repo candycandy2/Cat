@@ -1,5 +1,7 @@
 var bReserveCancelConfirm = false;
 var month, date;
+var queryTime = "";
+var timeQueue = {};
 
 $("#viewReserve").pagecontainer({
     create: function(event, ui) {
@@ -10,7 +12,6 @@ $("#viewReserve").pagecontainer({
             var self = this;
 
             this.successCallback = function(data) {
-
                 QueryReserveDetailCallBackData = data["Content"];
                 var BTime;
                 for(var i=0; i<QueryReserveDetailCallBackData.length; i++) {
@@ -29,9 +30,8 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).removeClass("ui-color-reserve");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);                        
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);                       
                         /*fill up the attr*/
-
                     }else {
                         $("#time" + BTime).removeClass("ui-color-noreserve");
                         $("#time" + BTime).removeClass("ui-color-myreserve");
@@ -52,22 +52,22 @@ $("#viewReserve").pagecontainer({
             }();
         };
 
-        // window.ReserveRelieve = function() {
+        window.ReserveRelieve = function() {
             
-        //     var self = this;
+            var self = this;
 
-        //     this.successCallback = function(data) {
-        //         loadingMask("hide");
-        //         var resultcode = data['ResultCode'];
+            this.successCallback = function(data) {
+                
+                var resultcode = data['ResultCode'];
+                loadingMask("hide");
+            };
 
-        //     };
+            this.failCallback = function(data) {};
 
-        //     this.failCallback = function(data) {};
-
-        //     var __construct = function() {
-        //         CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
-        //     }();
-        // };
+            var __construct = function() {
+                CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
+            }();
+        };
 
         function timeInit() {
             $('.timeRemind').each(function() {
@@ -82,14 +82,13 @@ $("#viewReserve").pagecontainer({
             $('#pageTwo').hide();
             $('#pageThree').hide();
             timeInit();
-                
             /* global PullToRefresh */
-            PullToRefresh.init({
-                mainElement: '#pageOne',
-                onRefresh: function() {
-                    //do something for refresh
-                }
-            });
+            // PullToRefresh.init({
+            //     mainElement: '#pageOne',
+            //     onRefresh: function() {
+            //         //do something for refresh
+            //     }
+            // });
         });
 
         $("#viewReserve").on("pageshow", function(event, ui) {
@@ -111,7 +110,7 @@ $("#viewReserve").pagecontainer({
                         //do something for refresh
                     }
                 });
-            } else if (tabValue == 'tab2'){
+            } else if (tabValue == 'tab2') {
                 $('#pageTwo').show();
                 $('#pageOne').hide();
                 $('#pageThree').hide();
@@ -123,19 +122,18 @@ $("#viewReserve").pagecontainer({
                         //do something for refresh
                     }
                 });
-            }
-            else{
+            } else {
                 $('#pageThree').show();
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
                 
                 /* global PullToRefresh */
-                PullToRefresh.init({
-                    mainElement: '#scrollDate',
-                    onRefresh: function() {
-                        //do something for refresh
-                    }
-                });
+                // PullToRefresh.init({
+                //     mainElement: '#scrollDate',
+                //     onRefresh: function() {
+                //         //do something for refresh
+                //     }
+                // });
             }
         });
 
@@ -154,14 +152,32 @@ $("#viewReserve").pagecontainer({
             QueryReserveDetail();
         });
 
+        $("#reserveSite").change(function() {
+            reserveSite = $("#reserveSite").val();
+            QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
+                                          + reserveSite
+                                          + "</Site><ReserveDate>"
+                                          + queryDate
+                                          + "</ReserveDate></LayoutHeader>";
+            QueryReserveDetail();
+        });
+
         // time pick
         $('body').on('click', 'div[id^=time]', function() {
+            if ($(this).hasClass("hover")) {
+                $(this).removeClass("hover");
+                $(this).find('div:nth-child(2)').addClass('iconSelect');
+                $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                $(this).find('.timeRemind').removeClass('timeShow');
+                delete timeQueue[$(this).find('div:nth-child(1)')[1].textContent];
+            }
             // no reserve
-            if ($(this).hasClass('ui-color-noreserve')){
+            else if ($(this).hasClass('ui-color-noreserve')) {
                 $(this).toggleClass('hover');
-                $(this).find('div:nth-child(2)').toggleClass('iconSelect');
-                $(this).find('div:nth-child(2)').toggleClass('iconSelected');
-                $(this).find('.timeRemind').toggleClass('timeShow');
+                $(this).find('div:nth-child(2)').removeClass('iconSelect');
+                $(this).find('div:nth-child(2)').addClass('iconSelected');
+                $(this).find('.timeRemind').addClass('timeShow');
+                timeQueue[$(this).find('div:nth-child(1)')[1].textContent] = $(this).find('div:nth-child(1)')[1].textContent;
                 var timeExit = false;
                 if ($('#reserveDateSelect').find('.timeShow').length > 0) {
                     timeExit = true;
@@ -175,7 +191,7 @@ $("#viewReserve").pagecontainer({
                 }
             }
             // my reserve
-            else if ($(this).hasClass('ui-color-myreserve')){
+            else if ($(this).hasClass('ui-color-myreserve')) {
                 $(this).addClass('trace');
                 var tempEname = 'Ariel.H.Yih', roomName = 'T01', strDate = '2017/09/08', timeName = '10:00~10:30',
                     headerContent = tempEname + ' 已預約 ' + roomName,
@@ -206,6 +222,20 @@ $("#viewReserve").pagecontainer({
             if ($(this).hasClass('btn-disable')) {
                 popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
             } else {
+                /*ReserveRelieve()*/
+                for(var time in timeQueue) {
+                    queryTime += time + ",";
+                }
+                ReserveRelieveQuerydata =    "<LayoutHeader><Site>"
+                                          +  reserveSite
+                                          +  "</Site><ReserveDate>"
+                                          +  queryDate
+                                          +  "</ReserveDate><ReserveUser>"
+                                          +  empNum
+                                          +  "</ReserveUser><BTime>"
+                                          +  queryTime
+                                          +  "</BTime></LayoutHeader>";
+                ReserveRelieve();
                 var roomName = 'T01', strDate = '2017/09/08', timeName = '10:00~10:30',
                     headerContent = roomName + ' 會議室預約成功';
                     msgContent = strDate + '&nbsp;&nbsp' + timeName;
@@ -218,6 +248,7 @@ $("#viewReserve").pagecontainer({
                 $('#reserveDateSelect').find('.hover').removeClass('hover').removeClass('ui-color-noreserve').addClass('ui-color-myreserve');
             }
         });
+
 
         // cancel my reserve
         $('body').on('click', 'div[for=myReserveMsg] .btn-confirm', function() {
