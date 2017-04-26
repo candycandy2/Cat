@@ -10,6 +10,7 @@ var QMessageSecretKey = "62f87cad6de67db6c968ba50";
 
 var prevPageID;
 var openEventFromQPlay = false;
+var getEventListFinish = false;
 
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
@@ -408,7 +409,13 @@ function onBackKeyDown() {
 //Open By Other APP
 function handleOpenByScheme(queryData) {
     if (queryData["callbackApp"] === qplayAppKey && queryData["action"] === "openevent") {
-        openEventFromQPlay = true;
         eventRowID = queryData["eventID"];
+
+        if (getEventListFinish) {
+            $.mobile.changePage('#viewEventContent');
+            var eventDetail = new getEventDetail(eventRowID);
+        } else {
+            openEventFromQPlay = true;
+        }
     }
 }
