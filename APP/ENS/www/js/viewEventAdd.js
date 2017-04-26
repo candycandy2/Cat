@@ -333,12 +333,10 @@ $("#viewEventAdd").pagecontainer({
             var clientHeight = document.documentElement.clientHeight;
             var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
 
-            //Add Location/Function content height
-            var loctionFunctionHeight = $("#eventLocationListContent").height();
             if (device.platform === "iOS") {
-                loctionFunctionHeight += 20;
+                pageScrollHeight += 20;
             }
-            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight + loctionFunctionHeight, 10 );
+            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10 );
             var left = parseInt((clientWidth - widthPopup), 10 );
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
@@ -819,7 +817,6 @@ $("#viewEventAdd").pagecontainer({
 
                     //bind Event Function change event
                     $(document).on("change", "#" + eventFunctionData.id, function() {
-                        console.log($(this));
                         var dataArray = $(this).data("multiVal").split("|");
                         var indexAll = dataArray.indexOf("all");
                         var selectID = $(this).prop("id");
