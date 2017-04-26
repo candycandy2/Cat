@@ -208,12 +208,13 @@ $("#viewEventAdd").pagecontainer({
                 var resultCode = data['ResultCode'];
 
                 if (action === "newEvent") {
+                    loadingMask("hide");
                     if (resultCode === "014901") {
-                        loadingMask("hide");
                         eventAddSuccess();
                     } else if (resultCode === "014918") {
-                        loadingMask("hide");
                         $("#eventAddFail").popup("open");
+                    } else if (resultCode === "014921") {
+                        $("#eventMemberError").popup("open");
                     }
                 } else {
                     if (resultCode === "014901") {
@@ -221,6 +222,9 @@ $("#viewEventAdd").pagecontainer({
                         eventAddSuccess();
                     } else if (resultCode === "014910") {
                         //Can not edit closed Event
+                    } else if (resultCode === "014921") {
+                        loadingMask("hide");
+                        $("#eventMemberError").popup("open");
                     }
                 }
             };
@@ -230,7 +234,7 @@ $("#viewEventAdd").pagecontainer({
             var __construct = function() {
                 $("#eventAddConfirm").popup("close");
                 loadingMask("show");
-                checkEventTemplateData("update", $("#eventTemplateTextarea").val());
+                checkEventTemplateData("update", $("#eventLevel").val(), $("#eventTemplateTextarea").val(), $("#eventDescriptionTextarea").val());
 
                 CustomAPI("POST", true, action, self.successCallback, self.failCallback, queryData, "");
             }();
@@ -327,13 +331,14 @@ $("#viewEventAdd").pagecontainer({
             var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
             var clientWidth = document.documentElement.clientWidth;
             var clientHeight = document.documentElement.clientHeight;
+            var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
 
             //Add Location/Function content height
             var loctionFunctionHeight = $("#eventLocationListContent").height();
             if (device.platform === "iOS") {
                 loctionFunctionHeight += 20;
             }
-            var top = parseInt(((clientHeight - heightPopup) / 2) + loctionFunctionHeight, 10 );
+            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight + loctionFunctionHeight, 10 );
             var left = parseInt((clientWidth - widthPopup), 10 );
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
@@ -479,10 +484,18 @@ $("#viewEventAdd").pagecontainer({
                 }
             }
 
+            //Event Level
+            var eventLevelStr = "";
+            if ($("#eventLevel").val() === "1") {
+                eventLevelStr = "緊急";
+            } else {
+                eventLevelStr = "一般";
+            }
+
             if (prevPageID === "viewEventList") {
-                $("#eventAddConfirm .header .header").html("確定發送緊急通報?");
+                $("#eventAddConfirm .header .header").html("確定發送" + eventLevelStr + "通報?");
             } else if (prevPageID === "viewEventContent") {
-                $("#eventAddConfirm .header .header").html("確定修改且重送緊急通報?");
+                $("#eventAddConfirm .header .header").html("確定修改且重送" + eventLevelStr + "通報?");
             }
         }
 
@@ -508,31 +521,63 @@ $("#viewEventAdd").pagecontainer({
             }
         }
 
+        function createTemplateDropdownList() {
+            var titleData;
+            var contentData;
 
-        /********************************** page event *************************************/
-        $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
+            if ($("#eventLevel").val() === "1") {
+                //urgent
+                titleData = urgentTitle;
+                contentData = urgentContent;
+            } else {
+                //normal
+                titleData = normalTitle;
+                contentData = normalContent;
+            }
 
-            //UI Dropdown List : Event Location
-            eventLocationData = {
-                id: "eventLocation",
-                defaultText: "添加位置/IT Function",
-                title: "請選擇-機房位置",
-                option: [],
+            //UI Dropdown List : Event Template
+            var ID = eventTemplateID;
+            var oldID = parseInt(ID) - 1;
+            eventTemplateID++;
+
+            if ($("#eventTemplate" + oldID).length) {
+                $("#eventTemplate" + oldID).remove();
+                $("#eventTemplate" + oldID + "-option").popup("destroy").remove();
+            }
+
+            eventTemplateData = {
+                id: "eventTemplate" + ID,
+                defaultText: "選擇範本",
+                title: "標題範本",
+                option: titleData,
                 attr: {
                     class: "text-bold"
                 }
             };
 
-            $.each(loginData["BasicInfo"]["location"], function(key, vlaue) {
-                var tempData = {
-                    value: key,
-                    text: key
-                };
+            tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
 
-                eventLocationData["option"].push(tempData);
+            $(document).on("change", "#eventTemplate" + ID, function() {
+                var selectedValue = $(this).val();
+
+                $("#eventTemplateTextarea").val("");
+
+                $.each(eventTemplateData.option, function(key, obj) {
+                    if (obj.value == selectedValue) {
+                        $("#eventTemplateTextarea").val(obj.text);
+                    }
+                });
+
+                $.each(contentData, function(key, obj) {
+                    if (obj.value == selectedValue) {
+                        $("#eventDescriptionTextarea").val(obj.text);
+                    }
+                });
             });
+        }
 
-            tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
+        /********************************** page event *************************************/
+        $("#viewEventAdd").one("pagebeforeshow", function(event, ui) {
 
             //UI Popup : No Related Event Exist
             var noRelatedEventExistData = {
@@ -574,14 +619,6 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddConfirmData);
 
-            //UI Popup : Event Edit Confirm
-            var eventEditConfirmData = {
-                id: "eventEditConfirm",
-                content: $("template#tplEventEditConfirm").html()
-            };
-
-            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditConfirmData);
-
             //UI Popup : Event Edit Cancel Confirm
             var eventEditCancelConfirmData = {
                 id: "eventEditCancelConfirm",
@@ -598,46 +635,57 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddFailData);
 
+            //UI Popup : Event Member Error
+            var eventMemerErrorData = {
+                id: "eventMemberError",
+                content: $("template#tplEventMemberError").html()
+            };
+
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventMemerErrorData);
+
         });
 
         $("#viewEventAdd").on("pagebeforeshow", function(event, ui) {
 
-            //UI Dropdown List : Event Template
-            var ID = eventTemplateID;
-            var oldID = parseInt(ID) - 1;
-            eventTemplateID++;
+            //UI Dropdown List : Event Location
+            $("#eventLocationSelectContent").html("");
+            $("#eventLocation").remove();
+            $(document).off("click", "#eventLocation-option");
+            $("#eventLocation-option").popup("destroy").remove();
 
-            if ($("#eventTemplate" + oldID).length) {
-                $("#eventTemplate" + oldID).remove();
-                $("#eventTemplate" + oldID + "-option").popup("destroy").remove();
-            }
-
-            eventTemplateData = {
-                id: "eventTemplate" + ID,
-                defaultText: "選擇範本",
-                title: "標題範本",
-                option: templateData,
+            eventLocationData = {
+                id: "eventLocation",
+                defaultText: "添加位置/IT Function",
+                title: "請選擇-機房位置",
+                option: [],
                 attr: {
                     class: "text-bold"
                 }
             };
 
-            tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
+            $.each(loginData["BasicInfo"]["location"], function(key, vlaue) {
+                var tempData = {
+                    value: key,
+                    text: key
+                };
 
-            $(document).on("change", "#eventTemplate" + ID, function() {
-                var selectedValue = $(this).val();
-
-                $("#eventTemplateTextarea").val("");
-
-                $.each(eventTemplateData.option, function(key, obj) {
-                    if (obj.value == selectedValue) {
-                        $("#eventTemplateTextarea").val(obj.text);
-                    }
-                });
+                eventLocationData["option"].push(tempData);
             });
+
+            tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
 
             //UI Dropdown List : Event Level
             $("#eventLevelContent").html("");
+            $("#eventLevel").remove();
+            $(document).off("click", "#eventLevel-option");
+            $("#eventLevel-option").popup("destroy").remove();
+
+            var defaultEventLevel = "1";
+            if (prevPageID === "viewEventContent") {
+                if (eventContentData.event_type === "一般通報") {
+                    defaultEventLevel = "2";
+                }
+            }
 
             var eventLevelData = {
                 id: "eventLevel",
@@ -651,11 +699,16 @@ $("#viewEventAdd").pagecontainer({
                 attr: {
                     class: "text-bold"
                 },
-                defaultValue: "1"
+                defaultValue: defaultEventLevel
             };
 
             tplJS.DropdownList("viewEventAdd", "eventLevelContent", "append", "typeA", eventLevelData);
 
+            $(document).on("change", "#eventLevel", function() {
+                createTemplateDropdownList();
+            });
+
+            createTemplateDropdownList();
         });
 
         $("#viewEventAdd").on("pageshow", function(event, ui) {
@@ -766,6 +819,7 @@ $("#viewEventAdd").pagecontainer({
 
                     //bind Event Function change event
                     $(document).on("change", "#" + eventFunctionData.id, function() {
+                        console.log($(this));
                         var dataArray = $(this).data("multiVal").split("|");
                         var indexAll = dataArray.indexOf("all");
                         var selectID = $(this).prop("id");
@@ -781,7 +835,6 @@ $("#viewEventAdd").pagecontainer({
                             loctionFunctionData.push(tempData);
 
                             updateLoctionFunctionData("update", selectID, selectedLocation, "all");
-                            $("#" + eventFunctionData.id).data("multiVal", "all");
                         } else {
                             for (var i=0; i<dataArray.length; i++) {
                                 var tempData = {
@@ -875,11 +928,6 @@ $("#viewEventAdd").pagecontainer({
             var event = new newEvent();
         });
 
-        //Event Edit Button
-        $(document).on("click", "#eventEditConfirm .cancel", function() {
-            $("#eventEditConfirm").popup("close");
-        });
-
         //Event Edit Cancel Button
         $(document).on("click", "#eventEditCancelConfirm .cancel", function() {
             $("#eventEditCancelConfirm").popup("close");
@@ -895,6 +943,11 @@ $("#viewEventAdd").pagecontainer({
         //Event Add Fail
         $(document).on("click", "#eventAddFail .confirm", function() {
             $("#eventAddFail").popup("close");
+        });
+
+        //Event Member Error
+        $(document).on("click", "#eventMemberError .confirm", function() {
+            $("#eventMemberError").popup("close");
         });
 
         //Back Button
