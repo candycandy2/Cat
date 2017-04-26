@@ -13,7 +13,7 @@ class FilePath
     public static function getApkDownloadUrl($appRowId,$deviceType,$versionCode,$fileName){
 
        $url="";
-        if($deviceType == 'ios'){
+        if(strtolower($deviceType) == 'ios'){
              $url = self::getApkUrl($appRowId,$deviceType,$versionCode,'manifest.plist');
              $url = 'itms-services://?action=download-manifest&url='. $url;
         }else{
