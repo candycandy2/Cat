@@ -349,7 +349,7 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
             text: "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
         }, {
             value: "2",
-            text: "目前(2:30PM) XX機房因空調系統故障. 機房温度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+            text: "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
         }];
 
         window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));

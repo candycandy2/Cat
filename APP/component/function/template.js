@@ -431,17 +431,22 @@ var tplJS = {
 
         //When Popup open, Auto Resize height of Popup main,
         //and change height of page, prevent User to scroll the page behind Popup.
-        $(document).on("popupafteropen", "#" + popupID, function() {
+        $(document).one("popupafteropen", "#" + popupID, function() {
             var popup = $(this);
             var popupHeight = popup.height();
-            var popupHeaderHeight = popup.find("div[data-role='main'] .header").height();
+            var popupHeaderHeight;
             var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+            if (type === "typeA") {
+                popupHeaderHeight = parseInt(document.documentElement.clientWidth * 4 / 100, 10);
+            } else if (type === "typeB") {
+                popupHeaderHeight = parseInt(document.documentElement.clientWidth * 8.18 / 100, 10);
+            }
 
-            //ui-content paddint-top/padding-bottom:2.9vh
-            var uiContentPaddingHeight = parseInt(document.documentElement.clientHeight * 2.9 * 2 / 100, 10);
+            //ui-content paddint-top/padding-bottom:3.07vw
+            var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
 
-            //Ul margin-top:2.9vh
-            var ulMarginTop = parseInt(document.documentElement.clientHeight * 2.9 / 100, 10);
+            //Ul margin-top:2.17vw
+            var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
 
             var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
             $(this).find("div[data-role='main'] .main").height(popupMainHeight);
