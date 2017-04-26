@@ -24,6 +24,7 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).removeClass("ui-color-reserve");
                         $("#time" + BTime).find('div:nth-child(2)').addClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').addClass("iconSelect");
+                        $("#time" + BTime).find('div:nth-child(2)').html("");
                     }else if(QueryReserveDetailCallBackData[i]["Name_EN"] === userID) {
                         $("#time" + BTime).removeClass("ui-color-noreserve");
                         $("#time" + BTime).addClass("ui-color-myreserve");
@@ -58,8 +59,49 @@ $("#viewReserve").pagecontainer({
 
             this.successCallback = function(data) {
                 
+                ReserveRelieveCallBackData = data;
                 var resultcode = data['ResultCode'];
-                loadingMask("hide");
+                if(resultcode === "023902") {
+                    var strDate = currentYear + "/" + month + "/" + date, 
+                        timeName = timeQueue,
+                        headerContent = "預約成功";
+                        msgContent = strDate + '&nbsp;&nbsp' + timeName;
+                    popupMsgInit('.reserveResultPopup');
+                    $('.reserveResultPopup').find('.header-text').html(headerContent);
+                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
+                    $('#reserveDateSelect').find('.hover').find('.timeShow').removeClass('timeShow');
+                    $('#reserveDateSelect').find('.hover').find('.circleIcon').remove();
+                    $('<div>' + userID + '</div>').insertAfter($('#reserveDateSelect').find('.hover').find('.ui-bar>div:nth-of-type(1)'));
+                    $('#reserveDateSelect').find('.hover').removeClass('hover').removeClass('ui-color-noreserve').addClass('ui-color-myreserve');
+                
+                }else if(resultcode === "023903") {
+                    var headerContent = "預約失敗";
+                        msgContent = "已超出可預約的時數限制";
+                    $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
+                    popupMsgInit('.reserveResultPopup');
+                    $('.reserveResultPopup').find('.header-text').html(headerContent);
+                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
+
+                    $('#reserveDateSelect').find('.hover').find('.timeShow').removeClass('timeShow');
+                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").removeClass("iconSelected");
+                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").addClass("iconSelect");
+                    $('#reserveDateSelect').find('.hover').removeClass("hover");
+
+                }else if(resultcode === "023904") {
+                    var headerContent = "預約失敗";
+                        msgContent = "已被預約";
+                    $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
+                    popupMsgInit('.reserveResultPopup');
+                    $('.reserveResultPopup').find('.header-text').html(headerContent);
+                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
+
+                    $('#reserveDateSelect').find('.hover').find('.timeShow').removeClass('timeShow');
+                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").removeClass("iconSelected");
+                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").addClass("iconSelect");
+                    $('#reserveDateSelect').find('.hover').removeClass("hover");
+                }
+                $('#reserveBtn').removeClass('btn-enable');
+                $('#reserveBtn').addClass('btn-disable');
             };
 
             this.failCallback = function(data) {};
@@ -173,27 +215,19 @@ $("#viewReserve").pagecontainer({
             }
             // no reserve
             else if ($(this).hasClass('ui-color-noreserve')) {
-                $(this).toggleClass('hover');
+                $(this).addClass('hover');
                 $(this).find('div:nth-child(2)').removeClass('iconSelect');
                 $(this).find('div:nth-child(2)').addClass('iconSelected');
                 $(this).find('.timeRemind').addClass('timeShow');
                 timeQueue[$(this).find('div:nth-child(1)')[1].textContent] = $(this).find('div:nth-child(1)')[1].textContent;
-                var timeExit = false;
-                if ($('#reserveDateSelect').find('.timeShow').length > 0) {
-                    timeExit = true;
-                }
-                if (!timeExit) {
-                    $('#reserveBtn').removeClass('btn-enable');
-                    $('#reserveBtn').addClass('btn-disable');
-                } else {
-                    $('#reserveBtn').removeClass('btn-disable');
-                    $('#reserveBtn').addClass('btn-enable');
-                }
             }
             // my reserve
             else if ($(this).hasClass('ui-color-myreserve')) {
                 $(this).addClass('trace');
-                var tempEname = 'Ariel.H.Yih', roomName = 'T01', strDate = '2017/09/08', timeName = '10:00~10:30',
+                var tempEname = userID,
+                    roomName = 'T01', 
+                    strDate = currentYear + "/" + month + "/" + date, 
+                    timeName = $(this).find('div:nth-child(1)')[1].textContent,
                     headerContent = tempEname + ' 已預約 ' + roomName,
                     msgContent = strDate + '&nbsp;&nbsp;' + timeName;
                 popupMsgInit('.hasReservePopup');
@@ -201,19 +235,26 @@ $("#viewReserve").pagecontainer({
                 $('.hasReservePopup').find('.main-paragraph').html(msgContent);
             }
             // other reserve
-            else{
-                var tempEname = $(this).attr('ename'),
-                    arrMsgValue = $(this).attr('msg').split(','),
-                    arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']),
-                    strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3],
-                    tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2],
-                    headerContent = tempEname + ' 已預約 ' + arrMsgValue[1],
-                    msgContent = strDate + '&nbsp;&nbsp' + arrMsgValue[2];
-                popupMsgInit('.otherReservePopup');
-                $('.otherReservePopup').find('.header-text').html(headerContent);
-                $('.otherReservePopup').find('.main-paragraph').html(msgContent);
-                $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
-                $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
+            else {
+                // var tempEname = $(this).attr('ename'),
+                //     arrMsgValue = $(this).attr('msg').split(','),
+                //     arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']),
+                //     strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3],
+                //     tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2],
+                //     headerContent = tempEname + ' 已預約 ' + arrMsgValue[1],
+                //     msgContent = strDate + '&nbsp;&nbsp' + arrMsgValue[2];
+                // popupMsgInit('.otherReservePopup');
+                // $('.otherReservePopup').find('.header-text').html(headerContent);
+                // $('.otherReservePopup').find('.main-paragraph').html(msgContent);
+                // $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
+                // $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
+            }
+            if ($('#reserveDateSelect').find('.timeShow').length > 0) {
+                $('#reserveBtn').removeClass('btn-disable');
+                $('#reserveBtn').addClass('btn-enable');
+            }else {
+                $('#reserveBtn').removeClass('btn-enable');
+                $('#reserveBtn').addClass('btn-disable');
             }
         });
 
@@ -222,33 +263,21 @@ $("#viewReserve").pagecontainer({
             if ($(this).hasClass('btn-disable')) {
                 popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
             } else {
-                /*ReserveRelieve()*/
                 for(var time in timeQueue) {
                     queryTime += time + ",";
                 }
-                ReserveRelieveQuerydata =    "<LayoutHeader><Site>"
-                                          +  reserveSite
-                                          +  "</Site><ReserveDate>"
-                                          +  queryDate
-                                          +  "</ReserveDate><ReserveUser>"
-                                          +  empNum
-                                          +  "</ReserveUser><BTime>"
-                                          +  queryTime
-                                          +  "</BTime></LayoutHeader>";
+                ReserveRelieveQuerydata =   "<LayoutHeader><Site>"
+                                          + reserveSite
+                                          + "</Site><ReserveDate>"
+                                          + queryDate
+                                          + "</ReserveDate><ReserveUser>"
+                                          + empNum
+                                          + "</ReserveUser><BTime>"
+                                          + queryTime
+                                          + "</BTime></LayoutHeader>";
                 ReserveRelieve();
-                var roomName = 'T01', strDate = '2017/09/08', timeName = '10:00~10:30',
-                    headerContent = roomName + ' 會議室預約成功';
-                    msgContent = strDate + '&nbsp;&nbsp' + timeName;
-                popupMsgInit('.reserveSuccessPopup');
-                $('.reserveSuccessPopup').find('.header-text').html(headerContent);
-                $('.reserveSuccessPopup').find('.main-paragraph').html(msgContent);
-                $('#reserveDateSelect').find('.hover').find('.timeShow').removeClass('timeShow');
-                $('#reserveDateSelect').find('.hover').find('.circleIcon').remove();
-                $('<div>Ariel.H.Yih</div>').insertAfter($('#reserveDateSelect').find('.hover').find('.ui-bar>div:nth-of-type(1)'));
-                $('#reserveDateSelect').find('.hover').removeClass('hover').removeClass('ui-color-noreserve').addClass('ui-color-myreserve');
             }
         });
-
 
         // cancel my reserve
         $('body').on('click', 'div[for=myReserveMsg] .btn-confirm', function() {
