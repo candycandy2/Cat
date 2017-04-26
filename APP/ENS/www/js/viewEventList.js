@@ -253,6 +253,7 @@ $("#viewEventList").pagecontainer({
             this.successCallback = function(data) {
                 var resultCode = data['ResultCode'];
                 var openEventDetail = false;
+                getEventListFinish = true;
 
                 if (resultCode === "014901") {
                     messageCountData = data['Content'];
