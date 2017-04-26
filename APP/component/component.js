@@ -8,6 +8,7 @@
 var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
+var download_url = "";
 
 if (window.localStorage.getItem("appKey") !== null) {
     appKey = window.localStorage.getItem("appKey");
@@ -605,6 +606,7 @@ function checkAppVersion() {
 
         if (resultcode == 1) {
 
+            download_url = data['content']['download_url'];
             // need to update app
             window.checkVerTimer = setInterval(function() {
                 $.mobile.changePage('#viewUpdateAppVersion');
@@ -633,8 +635,11 @@ function checkAppVersion() {
                     document.getElementById("updateLink").click();
                     $("#updateLink").remove();
                 } else {
+                    //Download link without QPlay
+                    window.open(download_url, '_system');
+                    
                     //Open QPlay > APP detail page
-                    openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
+                    //openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
                 }
             });
 
