@@ -94,14 +94,14 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 }
 
 .tpl-option-msg-list {
-    font-size: 2.8vh;
-    padding: 1.3vh 2.4vw;
+    font-size: 4.18vw;
+    padding: 2.33vw 2.36vw;
     color: #0f0f0f;
 }
 
 /* Popup Msg */
 .app-popup {
-    /*min-height: 36.2vw;*/
+    min-height: 36.2vw;
     max-height: 112.7vw;
     overflow-y: hidden;
     color: #0f0f0f;
@@ -131,7 +131,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-top: 2.9vh;
+    margin-top: -1.07vw;
     overflow-y: scroll;
 }
 
@@ -165,11 +165,18 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     position: relative;
 }
 
+.app-popup .ui-content .header.typeB {
+    height: 8.18vw;
+}
+
 .app-popup .ui-content .header .title {
     width: 100%;
-    /*font-size: 2.8vh;
-    font-weight: bold;*/
+    color: #0f0f0f;
+    font-size: 4.18vw;
+    font-weight: bold;
     text-align: center;
+    position: relative;
+    top: -7.93vw;
 }
 
 .app-popup .ui-content .header.all-center {
@@ -182,12 +189,16 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 /* ---common--- */
 .app-popup .header {
     text-align: center;
-    padding-bottom: 0.98vw;
 }
 
 .app-popup .close {
-    text-align: right;
-    font-weight: bold;
+    width: 4vw;
+    height: 4vw;
+    position: relative;
+    top: -3.07vw;
+    left: 90%;
+    padding: 3.07vw 3vw 3vw 3vw;
+    z-index: 10;
 }
 
 /* use when info is not enough which makes footer is not at the bottom*/

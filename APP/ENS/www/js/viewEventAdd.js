@@ -813,7 +813,7 @@ $("#viewEventAdd").pagecontainer({
                     tplJS.DropdownList("viewEventAdd", functionContentID, "append", "typeA", eventFunctionData);
 
                     //resize Event Function drowdown list
-                    tplJS.reSizeDropdownList(eventFunctionData.id, null, 81);
+                    tplJS.reSizeDropdownList(eventFunctionData.id, null, 80);
 
                     //bind Event Function change event
                     $(document).on("change", "#" + eventFunctionData.id, function() {
@@ -859,7 +859,7 @@ $("#viewEventAdd").pagecontainer({
         });
 
         //Event Related delete
-        $(document).on("click", ".event-add-additional-list .delete", function() {
+        $(document).on("click", ".event-add-additional-list .delete-event-additional", function() {
             var nowRelatedID = parseInt(eventRelatedID - 1, 10);
             $("#eventaAdditionalContent .event-add-additional-list").remove();
             var newOption = '<option value="添加事件" hidden selected>添加事件</option>';
