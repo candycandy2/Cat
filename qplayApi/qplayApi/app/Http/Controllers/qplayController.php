@@ -2537,7 +2537,7 @@ SQL;
 
                     $message_type = strtolower($jsonContent['message_type']);
                     $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
-                    if(strlen($message_title) > 99) {
+                    if(mb_strlen($message_title,'utf-8') > 99) {
                         $result = ['result_code'=>ResultCode::_000916_titleLengthTooLong,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000916_titleLengthTooLong),
                             'content'=>''];
