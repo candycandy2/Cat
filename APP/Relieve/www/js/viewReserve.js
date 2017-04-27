@@ -25,14 +25,16 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).find('div:nth-child(2)').addClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').addClass("iconSelect");
                         $("#time" + BTime).find('div:nth-child(2)').html("");
+
                     }else if(QueryReserveDetailCallBackData[i]["Name_EN"] === userID) {
                         $("#time" + BTime).removeClass("ui-color-noreserve");
                         $("#time" + BTime).addClass("ui-color-myreserve");
                         $("#time" + BTime).removeClass("ui-color-reserve");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);                       
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
                         /*fill up the attr*/
+                        // $("#time" + BTime).attr("", );
                     }else {
                         $("#time" + BTime).removeClass("ui-color-noreserve");
                         $("#time" + BTime).removeClass("ui-color-myreserve");
@@ -41,6 +43,17 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
                         $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
                         /*fill up the attr*/
+                        var msg =  currentYear + "/" + month + "/" + date 
+                                 + "," 
+                                 + QueryReserveDetailCallBackData[i]["BTime"]
+                                 + "-"
+                                 + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                 + "," 
+                                 + QueryReserveDetailCallBackData[i]["Name_EN"];
+                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name_EN"]);
+                        $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                        $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                        $("#time" + BTime).attr("msg", msg);
                     }
                 }
                 loadingMask("hide");
@@ -225,10 +238,9 @@ $("#viewReserve").pagecontainer({
             else if ($(this).hasClass('ui-color-myreserve')) {
                 $(this).addClass('trace');
                 var tempEname = userID,
-                    roomName = 'T01', 
                     strDate = currentYear + "/" + month + "/" + date, 
                     timeName = $(this).find('div:nth-child(1)')[1].textContent,
-                    headerContent = tempEname + ' 已預約 ' + roomName,
+                    headerContent = tempEname + ' 已預約',
                     msgContent = strDate + '&nbsp;&nbsp;' + timeName;
                 popupMsgInit('.hasReservePopup');
                 $('.hasReservePopup').find('.header-text').html(headerContent);
@@ -236,18 +248,15 @@ $("#viewReserve").pagecontainer({
             }
             // other reserve
             else {
-                // var tempEname = $(this).attr('ename'),
-                //     arrMsgValue = $(this).attr('msg').split(','),
-                //     arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']),
-                //     strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3],
-                //     tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2],
-                //     headerContent = tempEname + ' 已預約 ' + arrMsgValue[1],
-                //     msgContent = strDate + '&nbsp;&nbsp' + arrMsgValue[2];
-                // popupMsgInit('.otherReservePopup');
-                // $('.otherReservePopup').find('.header-text').html(headerContent);
-                // $('.otherReservePopup').find('.main-paragraph').html(msgContent);
-                // $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
-                // $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
+                var arrMsgValue = $(this).attr('msg').split(','),
+                    tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2],
+                    headerContent = arrMsgValue[2] + "已預約",
+                    msgContent = arrMsgValue[0] + '&nbsp;&nbsp' + arrMsgValue[1];
+                popupMsgInit('.otherReservePopup');
+                $('.otherReservePopup').find('.header-text').html(headerContent);
+                $('.otherReservePopup').find('.main-paragraph').html(msgContent);
+                $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
+                $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
             }
             if ($('#reserveDateSelect').find('.timeShow').length > 0) {
                 $('#reserveBtn').removeClass('btn-disable');
