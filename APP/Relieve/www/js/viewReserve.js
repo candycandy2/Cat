@@ -33,8 +33,18 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
                         $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
-                        /*fill up the attr*/
-                        // $("#time" + BTime).attr("", );
+                        
+                        var msg =  currentYear + "/" + month + "/" + date
+                                 + ","
+                                 + QueryReserveDetailCallBackData[i]["BTime"]
+                                 + "-"
+                                 + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                 + ","
+                                 + QueryReserveDetailCallBackData[i]["Name_EN"];
+                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name_EN"]);
+                        $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                        $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                        $("#time" + BTime).attr("msg", msg);
                     }else {
                         $("#time" + BTime).removeClass("ui-color-noreserve");
                         $("#time" + BTime).removeClass("ui-color-myreserve");
@@ -42,13 +52,13 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
                         $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
-                        /*fill up the attr*/
+                        
                         var msg =  currentYear + "/" + month + "/" + date 
-                                 + "," 
+                                 + ","
                                  + QueryReserveDetailCallBackData[i]["BTime"]
                                  + "-"
                                  + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                 + "," 
+                                 + ","
                                  + QueryReserveDetailCallBackData[i]["Name_EN"];
                         $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name_EN"]);
                         $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
