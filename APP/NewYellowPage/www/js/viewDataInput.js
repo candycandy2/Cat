@@ -109,6 +109,46 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                         + '</li>';
             }
 
+            function FillMyPhoneBook(responsecontent) {
+
+                phonebookData = {};
+                var htmlContent = "";
+
+                if(responsecontent.length !== 0) {
+                    $('#phonebookEdit').show();
+                    phoneBookNone = false;
+                    $('#viewDataInput .error-msg').addClass('hide');
+                }
+
+                for (var i=0; i<responsecontent.length; i++) {
+                    var tempData = {};
+
+                    tempData["company"] = responsecontent[i].Company;
+                    tempData["ename"] = responsecontent[i].Name_EN;
+                    tempData["cname"] = responsecontent[i].Name_CH;
+                    tempData["extnum"] = responsecontent[i].Ext_No;
+                    tempData["employeeid"] = responsecontent[i].EmployeeID;
+
+                    phonebookData[i] = tempData;
+
+                    var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"]);
+                    htmlContent = content;
+                }
+
+                $("#myPhonebookList").html(htmlContent).enhanceWithin();
+                $('#myPhonebookList').listview('refresh');
+                loadingMask("hide");
+
+                $('a[name="detailIndex"]').click(function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+
+                    prevPageID = "viewDataInput";
+                    employeeSelectedIndex = $(this).attr("value");
+                    $.mobile.changePage('#viewDetailInfo');
+                });
+            }
+
             window.QueryMyPhoneBook = function() {
                 var self = this;
                 var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
@@ -118,42 +158,19 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
 
                     if (resultcode === "1") {
 
-                        phonebookData = {};
-                        var htmlContent = "";
+                        var responsecontent = data['Content'];
 
-                        if(data['Content'].length !== 0) {
-                            $('#phonebookEdit').show();
-                            phoneBookNone = false;
-                            $('#viewDataInput .error-msg').addClass('hide');
-                        }
+                        //1. save to local data
+                        window.localStorage.removeItem('QueryMyPhoneBookData');
+                        var jsonData = {};
+                        jsonData = {
+                            lastUpdateTime: new Date(),
+                            content: responsecontent
+                        };
+                        window.localStorage.setItem('QueryMyPhoneBookData', JSON.stringify(jsonData));
 
-                        for (var i=0; i<data['Content'].length; i++) {
-                            var tempData = {};
-
-                            tempData["company"] = data['Content'][i].Company;
-                            tempData["ename"] = data['Content'][i].Name_EN;
-                            tempData["cname"] = data['Content'][i].Name_CH;
-                            tempData["extnum"] = data['Content'][i].Ext_No;
-                            tempData["employeeid"] = data['Content'][i].EmployeeID;
-
-                            phonebookData[i] = tempData;
-
-                            var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"]);
-                            htmlContent = content;
-                        }
-
-                        $("#myPhonebookList").html(htmlContent).enhanceWithin();
-                        $('#myPhonebookList').listview('refresh');
-                        loadingMask("hide");
-
-                        $('a[name="detailIndex"]').click(function(e) {
-                            e.stopImmediatePropagation();
-                            e.preventDefault();
-
-                            prevPageID = "viewDataInput";
-                            employeeSelectedIndex = $(this).attr("value");
-                            $.mobile.changePage('#viewDetailInfo');
-                        });
+                        //2. show data in view
+                        FillMyPhoneBook(responsecontent);
                     } else {
                         //ResultCode = 001901, [no data]
                         loadingMask("hide");
@@ -166,7 +183,15 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    CustomAPI("POST", true, "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
+
+                    var lifecycleData = JSON.parse(window.localStorage.getItem('QueryMyPhoneBookData'));
+                    if (lifecycleData === null || checkDataExpired(lifecycleData['lastUpdateTime'], 7, 'dd')) {
+                        CustomAPI("POST", true, "QueryMyPhoneBook", self.successCallback, self.failCallback, queryData, "");
+                    } else {
+                        var responsecontent = JSON.parse(window.localStorage.getItem('QueryMyPhoneBookData'))['content'];
+                        FillMyPhoneBook(responsecontent);
+                    }
+
                 }();
 
             }
@@ -197,7 +222,8 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                     } else {
                         //ResultCode = 001905, [fail]
                     }
-                    QueryMyPhoneBook();
+                    window.localStorage.removeItem('QueryMyPhoneBookData');//set dirty
+                    QueryMyPhoneBook();//need update list for compare 
                 };
 
                 this.failCallback = function(data) {};
@@ -264,12 +290,15 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                     $('#pageTwo').show();
                     $('#phoneDelete').addClass('noneSelect');
 
+                    QueryMyPhoneBook();//normal update by lifecycle
+                    
                     /* global PullToRefresh */
                     PullToRefresh.init({
                         mainElement: '#pageTwo',
                         onRefresh: function() {
                             //do something for refresh
-                            QueryMyPhoneBook();
+                            window.localStorage.removeItem('QueryMyPhoneBookData');//set dirty
+                            QueryMyPhoneBook();//force to refresh
                         }
                     });
                 }
@@ -341,14 +370,15 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                         $('#viewDataInput .error-msg').addClass('hide');
                     }
 
-                    QueryMyPhoneBook();
+                    QueryMyPhoneBook();//normal update by lifecycle
 
                     /* global PullToRefresh */
                     PullToRefresh.init({
                         mainElement: '#pageTwo',
                         onRefresh: function() {
                             //do something for refresh
-                            QueryMyPhoneBook();
+                            window.localStorage.removeItem('QueryMyPhoneBookData');//set dirty
+                            QueryMyPhoneBook();//force to update
                         }
                     });
                 }
