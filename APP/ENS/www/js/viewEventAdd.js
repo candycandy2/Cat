@@ -344,6 +344,8 @@ $("#viewEventAdd").pagecontainer({
                 "left": left
             });
 
+            $(".ui-datebox-container").css("opacity", "1");
+
             $('.ui-popup-screen.in').css({
                 'overflow': 'hidden',
                 'touch-action': 'none'
@@ -379,6 +381,8 @@ $("#viewEventAdd").pagecontainer({
                     $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
                 }
             }
+
+            $(".ui-datebox-container").css("opacity", "0");
         };
 
         window.setDoneDateTime = function(obj) {
@@ -405,6 +409,8 @@ $("#viewEventAdd").pagecontainer({
                 }
             }
             tplJS.recoveryPageScroll();
+
+            $(".ui-datebox-container").css("opacity", "0");
         };
 
         function updateLoctionFunctionData(action, domID, location, functionData) {
@@ -867,9 +873,9 @@ $("#viewEventAdd").pagecontainer({
         });
 
         //Location-Function delete
-        $(document).on("click", ".event-add-location-list .delete", function() {
-            var domID = $(this).parent().siblings().find("select").prop("id");
-            var location = $(this).parent().siblings().find(".event-loction").text();
+        $(document).on("click", ".event-add-location-list .delete-event-location", function() {
+            var domID = $(this).siblings().find("select").prop("id");
+            var location = $(this).siblings().find(".event-loction").text();
 
             //Update loctionFunctionData
             updateLoctionFunctionData("remove", domID, location);
@@ -878,7 +884,7 @@ $("#viewEventAdd").pagecontainer({
             $(document).off("click", "#" + domID + "-option");
             $("#" + domID + "-option").popup("destroy").remove();
 
-            $(this).parent().parent().remove();
+            $(this).parent().remove();
         });
 
         //Radio Button : Finish Time

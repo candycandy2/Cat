@@ -35,25 +35,31 @@ $("#viewAccount").pagecontainer({
         var arrayRate = [    ];  
 
 
-        //var arrayadd =["NTD","USD","EUR"];//,"EUR","AUD"
-        var arrayadd            =[];
+        var arrayadd =["NTD","USD","EUR"];//,"EUR","AUD"
+        //var arrayadd            =[];
         var arrayaddtemp        =[];
         var arrayrateadd        =[];
         var arraycomb           =[];
         var arrayratecomb       =[];
         var packJsontemp        =[];
 
-       /* var storage =JSON.parse(localStorage.getItem("arrayadd"));
-        if (storage !=0){
-                arrayadd=storage; 
+       
+       var storage =JSON.parse(localStorage.getItem("arrayadd"));
+        
+        function initial(){
+            if (storage != null){ //0 error ?
+                    arrayadd = storage; 
+                    console.log('YA-already10');
             }
-        else if (storage == 0) 
+            else if (storage == null) 
             {
-                console.log('YA-52');
+                console.log('YA-52 initial');
                 arrayadd  =["NTD","USD"];
+                localStorage.setItem("arrayadd",JSON.stringify(arrayadd));
             }
-        console.log('arrayadd_'+arrayadd);
-        */                  
+            console.log('arrayadd_'+arrayadd);
+        }
+        /* 20170426 mark for test  */                  
         
         /********************************** function *************************************/
         window.APIRequest = function() {
@@ -83,8 +89,8 @@ $("#viewAccount").pagecontainer({
         var todayDate   = Today.getDate();
         var lastMonth   = Today.getMonth();
 
-        window.UTC = Math.round(Date.UTC(todayYear,todayMonth-3,todayDate)/1000);
-
+       // window.UTC = Math.round(Date.UTC(todayYear,todayMonth-3,todayDate)/1000);
+        window.UTC = Math.round(Date.UTC(todayYear,todayMonth-4,todayDate)/1000);
         var nowTimstamp = window.Today.TimeStamp();
         //var Jsonflagnow ='3'; //todayMonth
         window.Jsonflagnow = todayMonth; 
@@ -116,6 +122,7 @@ $("#viewAccount").pagecontainer({
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             
             Jsonparse(1);
+            initial();
           
         });
 
@@ -228,7 +235,7 @@ $("#viewAccount").pagecontainer({
             //$("#fragment-1 #NTD")   favorite
             //$("#fragment-2 #NTD")   
              
-          /* 20170425 mark for test
+         
             if ($("#"+statuscountrypop).hasClass("favorite")) 
             {
                 $("#eventWorkConfirmB").popup('open');
@@ -237,7 +244,7 @@ $("#viewAccount").pagecontainer({
             {
                 $("#eventWorkConfirmA").popup('open');             
             }
-
+            /* 20170426 mark for test
               */
         });
 
@@ -263,9 +270,9 @@ $("#viewAccount").pagecontainer({
             //Buttonimg();//html reset => would be error
 
 
-             /*20170426   
+            
             localStorage.setItem("arrayadd",JSON.stringify(arrayadd));  //2017 05 add
-            */
+             /*20170426   */
             $("#eventWorkConfirmA").popup('close');
              /*20170424 8pm   */
 
@@ -325,9 +332,9 @@ $("#viewAccount").pagecontainer({
             arrayrateadd.splice(arrayrateadd.indexOf(statuscountryrate),1);
             Test(); 
 
-            /* 20170426
+            
             localStorage.setItem("arrayadd",JSON.stringify(arrayadd)); 
-             */
+             /* 20170426*/
             $("#eventWorkConfirmB").popup('close');
             /*20170424 8:pm  */
 
@@ -691,6 +698,10 @@ $("#viewAccount").pagecontainer({
         /********************************** API*************************************/
          
         function Jsonparse(Jsonflag) {          
+            //var EventList = new GetAccountingRatenow(); 
+            //if packJsontemp  = 0 packJsontemp 
+            //else { 
+            //    var EventList = new GetAccountingRulate()};  
             var EventList = new GetAccountingRate();  
         }
 
@@ -707,6 +718,7 @@ $("#viewAccount").pagecontainer({
 
 
             var packJson = packJsontemp ;
+           
 
             if (packJsontemp == 0) //test for data from back 
                 { console.log("621packJsontemp NO");}
@@ -714,7 +726,7 @@ $("#viewAccount").pagecontainer({
                 { console.log("621packJsontemp OK");}         
           
 
-                arrayRate           = ["undefine"]; 
+                arrayRate           = ["undefined"]; 
                 var arraygetrate    = [];
                 var arraygetFrom    = [];
                 var arraygetTo      = [];
@@ -779,7 +791,7 @@ $("#viewAccount").pagecontainer({
                             console.log(arrayadd[i]+'_'+ratetemp);
                         }                           
                       else if (rateindex < 0)
-                        {   var ratetemp  = "undefine";
+                        {   var ratetemp  = "undefined";
                             arrayrateadd.push(ratetemp);
                             console.log(arrayadd[i]+'_'+ratetemp);
                         }                
@@ -808,8 +820,10 @@ $("#viewAccount").pagecontainer({
             //value:3 [emergency Event] > <event_type_parameter_value>1</event_type_parameter_value><emp_no>0407731</emp_no>
             //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
           
-           
-            var queryDataParameter = "<Last_update_date>" + '1483356362' + "</Last_update_date>";
+
+           // Add  if UTCnow call =0 then no renew use json 
+            var Parameter =UTC;
+            var queryDataParameter = "<Last_update_date>" + Parameter+ "</Last_update_date>"; //20170427 test
         
 
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
@@ -822,7 +836,7 @@ $("#viewAccount").pagecontainer({
                 var chatroomIDList = [];               
 
                 if (resultCode == 1) {      
-                    $(".event-list-no-data").hide();
+                  //  $(".event-list-no-data").hide();
 
                    
                     packJsontemp  = data['Content'];                      
