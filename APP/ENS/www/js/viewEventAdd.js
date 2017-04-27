@@ -344,6 +344,8 @@ $("#viewEventAdd").pagecontainer({
                 "left": left
             });
 
+            $(".ui-datebox-container").css("opacity", "1");
+
             $('.ui-popup-screen.in').css({
                 'overflow': 'hidden',
                 'touch-action': 'none'
@@ -379,6 +381,8 @@ $("#viewEventAdd").pagecontainer({
                     $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
                 }
             }
+
+            $(".ui-datebox-container").css("opacity", "0");
         };
 
         window.setDoneDateTime = function(obj) {
@@ -405,6 +409,8 @@ $("#viewEventAdd").pagecontainer({
                 }
             }
             tplJS.recoveryPageScroll();
+
+            $(".ui-datebox-container").css("opacity", "0");
         };
 
         function updateLoctionFunctionData(action, domID, location, functionData) {
