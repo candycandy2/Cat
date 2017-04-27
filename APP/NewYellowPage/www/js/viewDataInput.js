@@ -14,7 +14,6 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                 
                 var self = this, storageTime;
                 
-                // review
                 if (localStorage.getItem('companyInfo') === null){
                     this.successCallback = function(data) {
                         loadingMask("hide");
@@ -43,7 +42,6 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                 }
             };
 
-            // review
             // insert value into html
             function insertCompanyValue(dataContent){
                 $('#Company').html('<option value="All Company">All Company</option>');
@@ -51,7 +49,6 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                     var companyname = dataContent[i].CompanyName;
                     $('#Company').append('<option value="' + companyname + '">' + companyname + '</option>');
                 }
-                QueryMyPhoneBook();
             }
 
             function checkInputData() {
@@ -266,6 +263,27 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                     $('#pageOne').hide();
                     $('#pageTwo').show();
                     $('#phoneDelete').addClass('noneSelect');
+
+                    /* global PullToRefresh */
+                    PullToRefresh.init({
+                        mainElement: '#pageTwo',
+                        onRefresh: function() {
+                            //do something for refresh
+                            QueryMyPhoneBook();
+                        }
+                    });
+                }
+                else {
+
+                    /* global PullToRefresh */
+                    PullToRefresh.init({
+                        mainElement: '#pageOne',
+                        onRefresh: function() {
+                            //do something for refresh
+                            localStorage.removeItem('companyInfo');
+                            var companyData = new QueryCompanyData();
+                        }
+                    });
                 }
                 if (device.platform === "iOS") {
                     $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
@@ -301,6 +319,16 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                     $('#phonebookEdit').show();
                     $('#myPhonebookList').removeClass('editClick');
                     $('#phoneDelete').addClass('noneSelect');
+
+                    /* global PullToRefresh */
+                    PullToRefresh.init({
+                        mainElement: '#pageOne',
+                        onRefresh: function() {
+                            //do something for refresh
+                            localStorage.removeItem('companyInfo');
+                            var companyData = new QueryCompanyData();
+                        }
+                    });
                 } else if (tabValue == 'tab2'){
                     $('#pageTwo').show();
                     $('#pageOne').hide();
@@ -312,6 +340,17 @@ var companyInfoAry = [], phoneBookNone = false, expiredTime = 3;   // exporedTim
                         $('#phonebookEdit').show();
                         $('#viewDataInput .error-msg').addClass('hide');
                     }
+
+                    QueryMyPhoneBook();
+
+                    /* global PullToRefresh */
+                    PullToRefresh.init({
+                        mainElement: '#pageTwo',
+                        onRefresh: function() {
+                            //do something for refresh
+                            QueryMyPhoneBook();
+                        }
+                    });
                 }
             });
 
