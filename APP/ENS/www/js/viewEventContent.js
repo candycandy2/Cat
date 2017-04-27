@@ -78,10 +78,13 @@ $("#viewEventContent").pagecontainer({
 
                         //Type: 緊急通報 / 一般通報
                         var event_type = data['Content'].event_type;
+                        var pageTitle = "緊急";
                         if (event_type === "一般通報") {
+                            pageTitle = "一般";
                             eventListMsg.find(".event-list-msg-top .link .normal").show();
                             eventListMsg.find(".event-list-msg-top .link .urgent").hide();
                         }
+                        $("#pageTitle").html(pageTitle);
 
                         //Status: 未完成 / 完成
                         var event_status = data['Content'].event_status;

@@ -873,9 +873,9 @@ $("#viewEventAdd").pagecontainer({
         });
 
         //Location-Function delete
-        $(document).on("click", ".event-add-location-list .delete", function() {
-            var domID = $(this).parent().siblings().find("select").prop("id");
-            var location = $(this).parent().siblings().find(".event-loction").text();
+        $(document).on("click", ".event-add-location-list .delete-event-location", function() {
+            var domID = $(this).siblings().find("select").prop("id");
+            var location = $(this).siblings().find(".event-loction").text();
 
             //Update loctionFunctionData
             updateLoctionFunctionData("remove", domID, location);
@@ -884,7 +884,7 @@ $("#viewEventAdd").pagecontainer({
             $(document).off("click", "#" + domID + "-option");
             $("#" + domID + "-option").popup("destroy").remove();
 
-            $(this).parent().parent().remove();
+            $(this).parent().remove();
         });
 
         //Radio Button : Finish Time
