@@ -115,8 +115,8 @@ gulp.task('install', shell.task([
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appleave' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist'//,
-  'cordova plugin add cordova-plugin-inappbrowser',
+  'cordova plugin add cordova-plugin-whitelist',
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -129,8 +129,8 @@ gulp.task('jenkinsinstall', shell.task([
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appleave' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1'//,
-  'cordova plugin add cordova-plugin-inappbrowser',
+  'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
