@@ -96,6 +96,7 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove cordova-plugin-inappbrowser',
   'cordova plugin remove cordova-plugin-camera',
   'cordova plugin remove cordova-plugin-ios-camera-permissions',
   //'cordova plugin remove cordova-plugin-file',
@@ -109,6 +110,7 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appens' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
+  'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save'
   //'cordova plugin add cordova-plugin-file'
@@ -123,6 +125,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appens' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add cordova-plugin-camera@2.3.1',
   'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save'
   //'cordova plugin add cordova-plugin-file@4.3.1'
