@@ -10,6 +10,7 @@ var QMessageSecretKey = "62f87cad6de67db6c968ba50";
 
 var prevPageID;
 var openEventFromQPlay = false;
+var getEventListFinish = false;
 
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
@@ -348,7 +349,7 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
             text: "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
         }, {
             value: "2",
-            text: "目前(2:30PM) XX機房因空調系統故障. 機房温度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+            text: "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
         }];
 
         window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));
@@ -408,7 +409,13 @@ function onBackKeyDown() {
 //Open By Other APP
 function handleOpenByScheme(queryData) {
     if (queryData["callbackApp"] === qplayAppKey && queryData["action"] === "openevent") {
-        openEventFromQPlay = true;
         eventRowID = queryData["eventID"];
+
+        if (getEventListFinish) {
+            $.mobile.changePage('#viewEventContent');
+            var eventDetail = new getEventDetail(eventRowID);
+        } else {
+            openEventFromQPlay = true;
+        }
     }
 }

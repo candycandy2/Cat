@@ -106,6 +106,9 @@
 
                         loadingMask("hide");
                         $("#appcontent").show();
+
+                        //for jump to detail page
+                        openAppDetailCheck();
             }
 
             function QueryAppList() {
@@ -132,8 +135,6 @@
                     } else {
 
                     }
-
-                    openAppDetailCheck();
                 }; 
 
                 this.failCallback = function(data) {};
@@ -246,6 +247,7 @@
                             $.mobile.changePage('#viewAppDetail2-2');
 
                             loginData['openAppDetailPage'] = false;
+                            break;
                         }
                      }
                 }
