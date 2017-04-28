@@ -34,6 +34,7 @@ var appNameDecorate = "";
 var appVersionDecorate = "Production";
 var apiPath = "qplayApi";
 var patchFolder = "patch";
+var productionextra = ""; // production app id is com.qplay.apprelieve1
 
 if (env === "test") {
     appNameDecorate = "test";
@@ -44,12 +45,15 @@ if (env === "test") {
     appNameDecorate = "dev";
     appVersionDecorate = "Development";
 }
+else { // production case
+    productionextra ="1";
+}
 //set scheme name appXXXX, XXXX should in lowercase.
 var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>apprelieve" + appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     //set app id = com.qplay.appXXXX, XXXX should in lowercase.
-                    '<widget id="com.qplay.apprelieve' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
+                    '<widget id="com.qplay.apprelieve' + productionextra + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         //set APP Name
                         '<name>Relieve</name>' +
