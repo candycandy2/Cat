@@ -44,12 +44,33 @@ $("#viewEventContent").pagecontainer({
 
                         eventContentData = data['Content'];
 
-                        $("#contentEventContent .event-list-msg").remove();
-
                         //Event List Msg
                         var eventListMsgHTML = $("template#tplEventListMsg").html();
                         var eventListMsg = $(eventListMsgHTML);
                         eventListMsg.css("margin-bottom", "2.14vw");
+
+                        //Status: 未完成 / 完成
+                        var event_status = data['Content'].event_status;
+                        if (event_status === "完成") {
+                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
+                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
+
+                            eventFinish = true;
+                        } else {
+                            eventFinish = false;
+                        }
+
+                        //Before Edit, check Event Status again
+                        if (action === "checkStatusBeforeEdit") {
+                            if (!eventFinish) {
+                                $.mobile.changePage('#viewEventAdd');
+                            } else {
+                                $("#eventFinishedConfirm").popup("open");
+                            }
+                            return;
+                        }
+
+                        $("#contentEventContent .event-list-msg").remove();
 
                         //Created User
                         eventListMsg.find(".event-list-msg-top .name").html(data['Content'].created_user);
@@ -85,17 +106,6 @@ $("#viewEventContent").pagecontainer({
                             eventListMsg.find(".event-list-msg-top .link .urgent").hide();
                         }
                         $("#pageTitle").html(pageTitle);
-
-                        //Status: 未完成 / 完成
-                        var event_status = data['Content'].event_status;
-                        if (event_status === "完成") {
-                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
-                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
-
-                            eventFinish = true;
-                        } else {
-                            eventFinish = false;
-                        }
 
                         //Event Desc
                         var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
@@ -607,6 +617,13 @@ $("#viewEventContent").pagecontainer({
 
             tplJS.Popup("viewEventContent", "contentEventContent", "append", eventCancelWorkDoneConfirmData);
 
+            //UI Popup : Event has finished Confirm
+            var eventFinishedConfirmData = {
+                id: "eventFinishedConfirm",
+                content: $("template#tplEventFinishedConfirm").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventFinishedConfirmData);
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
@@ -614,7 +631,9 @@ $("#viewEventContent").pagecontainer({
 
             //Only [admin] can Edit Event
             if (checkAuthority("admin")) {
-                $("#eventEdit").show();
+                if (!eventFinish) {
+                    $("#eventEdit").show();
+                }
             }
 
             $(".previewImageDiv").hide();
@@ -683,7 +702,8 @@ $("#viewEventContent").pagecontainer({
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
             if (!eventFinish) {
-                $.mobile.changePage('#viewEventAdd');
+                //check Event finish status again
+                var eventDetail = new getEventDetail(eventRowID, "checkStatusBeforeEdit");
             }
         });
 
@@ -717,6 +737,12 @@ $("#viewEventContent").pagecontainer({
             $("#eventCancelWorkDoneConfirm").popup("close");
             footerFixed();
             updateTaskStatus(0);
+        });
+
+        //Event Finished
+        $(document).on("click", "#eventFinishedConfirm .confirm", function() {
+            $("#eventFinishedConfirm").popup("close");
+            footerFixed();
         });
 
         //Chatroom Msg Button
