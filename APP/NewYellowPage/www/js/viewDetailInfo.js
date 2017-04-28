@@ -139,7 +139,8 @@ var detailHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "001902") {
-                        QueryMyPhoneBook();
+                        window.localStorage.removeItem('QueryMyPhoneBookData');//set dirty
+                        QueryMyPhoneBook();//need update list for compare
                         $("#addStar").hide();
                         $("#deleteStar").show();
                     } else if (resultcode === "000908" || resultcode === "000907" || resultcode === "000914") {
