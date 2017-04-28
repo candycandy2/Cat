@@ -153,6 +153,12 @@ var tplJS = {
         var footerHeight = $(".ui-page-active .ui-footer").height();
         var tempHeight = windowHeight - headerHeight - footerHeight - 5;
 
+        if (tplJS.originalPageMainHeight < tempHeight) {
+            tplJS.originalPageMainHeight = tempHeight;
+        }
+        if (tplJS.originalUITabsHeight < tempHeight) {
+            tplJS.originalUITabsHeight = tempHeight;
+        }
         tplJS.originalUIPageScrollHeight = tplJS.originalUIPageScrollHeight - headerHeight - footerHeight;
 
         $('.ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
