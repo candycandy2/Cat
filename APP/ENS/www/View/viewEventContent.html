@@ -8,7 +8,7 @@
             </div>
         </a>
         <div class="header-style">
-            <h1 class="ui-title">緊急通報</h1>
+            <h1 class="ui-title"><span id="pageTitle"></span>通報</h1>
         </div>
         <a id="eventEdit" href="#" data-role="none" class="ui-btn-right hide">
             <span>編輯</span>
@@ -16,7 +16,7 @@
     </div>
     <div data-role="main" class="page-main event-content" id="contentEventContent">
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="title">
             <span>希望完成時間 :</span>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-            <hr class="ui-hr ui-hr-absolute">
+            <hr class="ui-hr">
 
         <div class="relate-event-content hide">
             <div class="title">
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-            <!--<hr class="ui-hr ui-hr-absolute">-->
+            <!--<hr class="ui-hr">-->
 
         <div class="title">
             <span>工作分配 :</span>
@@ -85,7 +85,7 @@
             </template>
         </div>
 
-            <hr id="msgContentHR" class="ui-hr ui-hr-absolute hide">
+            <hr id="msgContentHR" class="ui-hr hide">
 
         <div class="message-content hide">
             <div class="title">
@@ -129,11 +129,9 @@
 
         <!--template @popup content > Report Event Work Done Confirm-->
         <template id="tplEventReportWorkDoneConfirm">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 確認回報工作完成?
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-two font-style8">
                     <div class="cancel">取消</div>
@@ -144,14 +142,24 @@
 
         <!--template @popup content > Cancel Event Work Done Confirm-->
         <template id="tplEventCancelWorkDoneConfirm">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 確定取消回報?
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-two font-style8">
                     <div class="cancel">取消</div>
+                    <div class="confirm">確認</div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event has finished Confirm-->
+        <template id="tplEventFinishedConfirm">
+            <div class="header font-style1">
+                事件已經處理完畢，無法編輯
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
                 </div>
             </div>

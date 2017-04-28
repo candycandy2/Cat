@@ -1,5 +1,5 @@
 var QueryReserveDetailQuerydata, ReserveRelieveQuerydata;
-var queryDate, QueryReserveDetailCallBackData;
+var queryDate, QueryReserveDetailCallBackData, ReserveRelieveCallBackData, userID, empNum;
 var reserveSite = "QTT";
 var initialAppName = "Relieve";
 var appKeyOriginal = "apprelieve";
@@ -27,6 +27,8 @@ $(document).one("pagebeforeshow", function() {
 });
 
 window.initialSuccess = function() {
+    userID = localStorage["loginid"];
+    empNum = localStorage["emp_no"];
     loadingMask("show");
     // ReserveRelieveQuerydata = "<LayoutHeader><Site>QTY</Site><ReserveDate>20170318</ReserveDate><ReserveUser>1501005</ReserveUser><BTime>08:30,09:00</BTime ></LayoutHeader>";
     // ReserveRelieve();

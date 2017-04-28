@@ -20,6 +20,7 @@
 .ui-datebox-container { 
     width: 290px;
     -webkit-transform:translate3d(0,0,0);
+    opacity: 0;
 }
 .ui-popup-container .ui-datebox-gridrow { 
     display: table;

@@ -98,6 +98,7 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove cordova-plugin-inappbrowser',
   //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android',
@@ -108,7 +109,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appcalendar' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist'//,
+  'cordova plugin add cordova-plugin-whitelist',
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -120,7 +122,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-appversion@1.0.0',
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appyellowpage' + appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1'//,
+  'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 

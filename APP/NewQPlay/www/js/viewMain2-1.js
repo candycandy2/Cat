@@ -7,16 +7,8 @@
             var tempVersionArrData;
             var tempVersionData;
             /********************************** function *************************************/
-            function QueryAppList() {
-                var self = this;
+            function FillAppList(responsecontent) {
 
-                this.successCallback = function(data) {
-                    var resultcode = data['result_code'];
-
-                    if (resultcode == 1) {
-
-                        //record APP all data
-                        var responsecontent = data['content'];
                         appcategorylist = responsecontent.app_category_list;
                         applist = responsecontent.app_list;
                         appmultilang = responsecontent.multi_lang;
@@ -112,20 +104,52 @@
                             $.mobile.changePage('#viewAppDetail2-2');
                         });
 
+                        loadingMask("hide");
+                        $("#appcontent").show();
+
+                        //for jump to detail page
+                        openAppDetailCheck();
+            }
+
+            function QueryAppList() {
+                var self = this;
+
+                this.successCallback = function(data) {
+                    var resultcode = data['result_code'];
+
+                    if (resultcode == 1) {
+
+                        //save to local data
+                        window.localStorage.removeItem('QueryAppListData');
+                        var jsonData = {};
+                        jsonData = {
+                            lastUpdateTime: new Date(),
+                            content: data['content']
+                        };
+                        window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
+
+                        //record APP all data
+                        var responsecontent = data['content'];
+                        FillAppList(responsecontent);
+
                     } else {
 
                     }
-
-                    loadingMask("hide");
-
-                    $("#appcontent").show();
-                    openAppDetailCheck();
                 }; 
 
                 this.failCallback = function(data) {};
 
                 var __construct = function() {
-                    QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
+
+                    var QueryAppListData = JSON.parse(window.localStorage.getItem('QueryAppListData'));
+                    if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], 7, 'dd')) {
+                        QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
+                    } else {
+                        var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
+                        FillAppList(responsecontent);
+                    }
+
+                    
                 }();
 
             }
@@ -223,6 +247,7 @@
                             $.mobile.changePage('#viewAppDetail2-2');
 
                             loginData['openAppDetailPage'] = false;
+                            break;
                         }
                      }
                 }
@@ -237,6 +262,17 @@
                 var appList = new QueryAppList();
 
                 $('#logoutConfirm').popup('close');
+
+                
+                /* global PullToRefresh */
+                PullToRefresh.init({
+                    mainElement: '#appcontent',
+                    onRefresh: function() {
+                        //do something for refresh
+                        window.localStorage.removeItem('QueryAppListData');//enforce to refresh
+                        var appList = new QueryAppList();
+                    }
+                });
             });
 
             /********************************** dom event *************************************/
