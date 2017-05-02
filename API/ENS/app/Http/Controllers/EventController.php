@@ -167,7 +167,7 @@ class EventController extends Controller
                 }
             }
             $updateData['chatroom_id'] =  $createChatRoomRes->Content->gid;
-            $this->eventRepository->updateEventById($empNo, $eventId, $updateData);
+            $this->eventRepository->updateEventById($eventId, $updateData);
            
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,

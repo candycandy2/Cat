@@ -18,7 +18,7 @@ $("#viewReserve").pagecontainer({
                     BTime = QueryReserveDetailCallBackData[i]["BTime"].replace(":","-");
                     $("#time" + BTime + " .time").text(QueryReserveDetailCallBackData[i]["BTime"]);
 
-                    if(QueryReserveDetailCallBackData[i]["Name_EN"] === "") {
+                    if(QueryReserveDetailCallBackData[i]["Emp_No"] === "") {
                         $("#time" + BTime).addClass("ui-color-noreserve");
                         $("#time" + BTime).removeClass("ui-color-myreserve");
                         $("#time" + BTime).removeClass("ui-color-reserve");
@@ -26,13 +26,13 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).find('div:nth-child(2)').addClass("iconSelect");
                         $("#time" + BTime).find('div:nth-child(2)').html("");
 
-                    }else if(QueryReserveDetailCallBackData[i]["Name_EN"] === userID) {
+                    }else if(QueryReserveDetailCallBackData[i]["Emp_No"] === myEmpNo) {
                         $("#time" + BTime).removeClass("ui-color-noreserve");
                         $("#time" + BTime).addClass("ui-color-myreserve");
                         $("#time" + BTime).removeClass("ui-color-reserve");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
                         
                         var msg =  currentYear + "/" + month + "/" + date
                                  + ","
@@ -40,8 +40,8 @@ $("#viewReserve").pagecontainer({
                                  + "-"
                                  + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
                                  + ","
-                                 + QueryReserveDetailCallBackData[i]["Name_EN"];
-                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name_EN"]);
+                                 + QueryReserveDetailCallBackData[i]["Name"];
+                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
                         $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
                         $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
                         $("#time" + BTime).attr("msg", msg);
@@ -51,7 +51,7 @@ $("#viewReserve").pagecontainer({
                         $("#time" + BTime).addClass("ui-color-reserve");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
                         $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name_EN"]);
+                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
                         
                         var msg =  currentYear + "/" + month + "/" + date 
                                  + ","
@@ -59,8 +59,8 @@ $("#viewReserve").pagecontainer({
                                  + "-"
                                  + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
                                  + ","
-                                 + QueryReserveDetailCallBackData[i]["Name_EN"];
-                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name_EN"]);
+                                 + QueryReserveDetailCallBackData[i]["Name"];
+                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
                         $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
                         $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
                         $("#time" + BTime).attr("msg", msg);
@@ -88,7 +88,8 @@ $("#viewReserve").pagecontainer({
                     var strDate = currentYear + "/" + month + "/" + date, 
                         timeName = timeQueue,
                         headerContent = "預約成功";
-                        msgContent = strDate + '&nbsp;&nbsp' + timeName;
+                        // msgContent = strDate + '&nbsp;&nbsp' + timeName;
+                        msgContent = strDate;
                     popupMsgInit('.reserveResultPopup');
                     $('.reserveResultPopup').find('.header-text').html(headerContent);
                     $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
@@ -131,6 +132,22 @@ $("#viewReserve").pagecontainer({
 
             var __construct = function() {
                 CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
+            }();
+        };
+
+        window.ReserveCancel = function() {
+            
+            var self = this;
+
+            this.successCallback = function(data) {
+                ReserveCancelCallBackData = data;
+                var resultcode = data['ResultCode'];
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, ReserveCancelQuerydata, "");
             }();
         };
 
@@ -290,7 +307,7 @@ $("#viewReserve").pagecontainer({
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate><ReserveUser>"
-                                          + empNum
+                                          + myEmpNo
                                           + "</ReserveUser><BTime>"
                                           + queryTime
                                           + "</BTime></LayoutHeader>";
@@ -314,7 +331,7 @@ $("#viewReserve").pagecontainer({
                     popupMsgInit('.myReserveCancelSuccessPopupMsg');
                 }
                 bReserveCancelConfirm = false;
-            } 
+            }
             // cancel cancel
             else {
                 $('.hasReservePopup').find('.header-icon img').attr('src', 'img/warn_icon.png');

@@ -77,7 +77,14 @@ class EventService
     */
    public function updateEvent($empNo, $eventId, $data, $queryParam){
            $action = 'update';
-           $this->eventRepository->updateEventById($empNo, $eventId, $data);
+            //事件完成
+           if(isset($data['event_status']) && $data['event_status'] == self::STATUS_FINISHED){
+                $action = 'close';
+           }
+           if($action == 'update'){
+                $data['updated_user'] = $empNo;
+           }
+           $this->eventRepository->updateEventById($eventId, $data);
            
            if(isset($data['related_event_row_id'])){
                 $this->eventRepository->unBindRelatedEvent($eventId, $empNo);
@@ -85,11 +92,7 @@ class EventService
                     $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $empNo);
                 }
            }
-           //事件完成
-           if(isset($data['event_status']) && $data['event_status'] == self::STATUS_FINISHED){
-                $action = 'close';
-           }
-
+          
            $result = $this->sendPushMessageToEventUser($eventId, $queryParam, $empNo, $action);
            
            return $result;
@@ -478,6 +481,7 @@ class EventService
                 'event_row_id'=>$eventId,
                 'emp_no'=>(string)$user,
                 'created_user'=>$createdUser,
+                'updated_user'=>$createdUser,
                 'created_at'=>$createdDate
                 ];
         }
@@ -491,6 +495,7 @@ class EventService
     */
    private function arrangeEventList($event){
 
+
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
         $item = [];
         $item['event_row_id'] = $event->event_row_id;
@@ -501,11 +506,23 @@ class EventService
         $item['related_event_row_id'] = $event->related_event_row_id;
         $item['event_status'] = ($event->event_status == 0)?'未完成':'完成';
         $item['chatroom_id'] = $event->chatroom_id;
-        $userInfo = $this->userRepository->getUserInfoByEmpNo(array($event->created_user));
-        $item['created_user_ext_no'] = $userInfo[0]['ext_no'];
-        $item['created_user'] = $userInfo[0]['login_id'];
+        $createdUserInfo = $this->userRepository->getUserInfoByEmpNo(array($event->created_user));
+        $updatedUserInfo = $this->userRepository->getUserInfoByEmpNo(array($event->updated_user));
         $item['created_at'] = $event->created_at->format('Y-m-d H:i:s');
-
+        $item['created_user_ext_no'] = null;
+        $item['created_user'] = null;
+        if(count($createdUserInfo) > 0 ){
+            $item['created_user_ext_no'] = $createdUserInfo[0]['ext_no'];
+            $item['created_user'] = $createdUserInfo[0]['login_id'];
+        }
+        $item['updated_at'] = $event->updated_at->format('Y-m-d H:i:s');
+        $item['updated_user_ext_no'] = null;
+        $item['updated_user'] = null;
+        if(count($updatedUserInfo) > 0 ){
+            $item['updated_user_ext_no'] = $updatedUserInfo[0]['ext_no'];
+            $item['updated_user'] = $updatedUserInfo[0]['login_id'];
+        }
+        
         return $item;
    }
 
