@@ -623,13 +623,13 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddConfirmData);
 
-            //UI Popup : Event Edit Cancel Confirm
-            var eventEditCancelConfirmData = {
-                id: "eventEditCancelConfirm",
-                content: $("template#tplEventEditCancelConfirm").html()
+            //UI Popup : Event Add / Edit Cancel Confirm
+            var eventAddEditCancelConfirmData = {
+                id: "eventAddEditCancelConfirm",
+                content: $("template#tplEventAddEditCancelConfirm").html()
             };
 
-            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditCancelConfirmData);
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddEditCancelConfirmData);
 
             //UI Popup : Event Add Fail
             var eventAddFailData = {
@@ -931,16 +931,28 @@ $("#viewEventAdd").pagecontainer({
             var event = new newEvent();
         });
 
-        //Event Edit Cancel Button
-        $(document).on("click", "#eventEditCancelConfirm .cancel", function() {
-            $("#eventEditCancelConfirm").popup("close");
+        //Event Add / Edit Cancel Button
+        $(document).on("popupafteropen", "#eventAddEditCancelConfirm", function() {
+            if (prevPageID === "viewEventList") {
+               $("#eventAddEditCancelConfirm .header-text").html("確定取消新增?");
+            } else if (prevPageID === "viewEventContent") {
+                $("#eventAddEditCancelConfirm .header-text").html("確定取消編輯?");
+            }
         });
 
-        $(document).on("click", "#eventEditCancelConfirm .confirm", function() {
-            $("#eventEditCancelConfirm").popup("close");
+        $(document).on("click", "#eventAddEditCancelConfirm .cancel", function() {
+            $("#eventAddEditCancelConfirm").popup("close");
+        });
 
-            var eventDetail = new getEventDetail(eventRowID);
-            $.mobile.changePage('#viewEventContent');
+        $(document).on("click", "#eventAddEditCancelConfirm .confirm", function() {
+            $("#eventAddEditCancelConfirm").popup("close");
+
+            if (prevPageID === "viewEventList") {
+                $.mobile.changePage('#viewEventList');
+            } else if (prevPageID === "viewEventContent") {
+                var eventDetail = new getEventDetail(eventRowID);
+                $.mobile.changePage('#viewEventContent');
+            }
         });
 
         //Event Add Fail
