@@ -164,5 +164,61 @@ class testController extends Controller
         }
    }
 
+
+    public static function replace_unicode_escape_sequence($match) {
+        return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+
+    }
+
+    public static function unicodeDecode($data) {
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'self::replace_unicode_escape_sequence', $data);
+    }
+
+   public function test(){
+
+
+       $a = array(array
+        (
+            "ResultCode" => 1,
+            "token_valid" => '1493687793',
+            "Message" => '',
+            "Content" => array(array
+                (
+                "event_row_id" => "10242",
+                "event_type" => "緊急通報",
+                "event_title" => "一堆表情",
+                "event_desc" => "wrk",
+                "estimated_complete_date" => "1524884220",
+                "related_event_row_id" => "0",
+                "event_status" => "未完成",
+                "chatroom_id" => "22924029",
+                "created_user_ext_no" =>"",
+                "created_user" => "Steven.Yan",
+                "created_at" => "2017-04-28 01:50:34",
+                "user_count" => "14",
+                "seen_count" => "4",
+                "task_finish_count" => "0"
+            ))
+        ));
+        //$input = json_decode(file_get_contents('php://input'),true);
+        //var_dump($input);exit();
+        //$desc = $input->desc;
+        //var_dump(json_encode($input));
+        $desc  =self::unicodeDecode($a);
+        var_dump($desc);
+        //var_dump( $input->desc);
+        // return $desc;
+        //
+     //  $title_str = $desc;
+      
+     //  $encodeStr =  base64_encode($this->jsEscape(html_entity_decode('\u767c\u9001\u63a8\u64ad\u6d88\u606f\u6210\u529f')));
+     //  $decodeStr =  $this->jsUnescape(base64_decode($encodeStr));
+       //return $decodeStr;
+   }
+
+   public function testlog(){
+        $rs = \DB::connection('mysql_qplay')->table("qp_api_log")->where('row_id','138897')->get();
+        var_dump($rs);
+   }
 }
 
