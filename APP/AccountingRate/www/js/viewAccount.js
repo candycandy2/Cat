@@ -8,9 +8,13 @@ $("#viewAccount").pagecontainer({
         var test;
         var statuscountrypop;
         var statuscountryrate;
+
+        //review by alan
+        //assign meaningful variable 
         var flag1 = 0;
         var flag2 = 0;
         var array = [];
+
         var arrayRate = [];
         var arrayadd = ["NTD", "USD"];
         var arrayaddtemp = [];
@@ -389,18 +393,24 @@ $("#viewAccount").pagecontainer({
 
         /********************************** API*************************************/
 
+        //review by alan
+        //remove unsued variable:Jsonflag
         function Jsonparse(Jsonflag) {
             console.log('680.Jsonparse - API');
             var EventList = new GetAccountingRate(); //call API1
         }
 
 
+        //review by alan
+        //remove unsued variable:Jsonflag
         function Jsonparsecheck(Jsonflag) {
 
             if (packJsontemp == 0) {
                 flag2 = 1;
             }
 
+            //review by alan
+            //assign meaningful variable : flag1, flag2
             /* 20170502  add by 新增需求*/
             if (flag2 == 1) {
                 packJsontemp = JSON.parse(localStorage.getItem('packJsontemp'));
@@ -418,6 +428,8 @@ $("#viewAccount").pagecontainer({
         }
 
 
+        //review by alan
+        //assign meaningful variable : Jsonflag
         function Jsonparsenext(Jsonflag) {
             var packJson = packJsontemp;
             localStorage.setItem("packJsontemp", JSON.stringify(packJsontemp));
@@ -478,6 +490,8 @@ $("#viewAccount").pagecontainer({
         }
         /********************************** API*************************************/
 
+        //review by alan
+        //remove unused function
         $('#viewAccount').keypress(function(event) {
 
         });
