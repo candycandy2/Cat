@@ -307,7 +307,7 @@ $("#viewReserve").pagecontainer({
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate><ReserveUser>"
-                                          + empNum
+                                          + myEmpNo
                                           + "</ReserveUser><BTime>"
                                           + queryTime
                                           + "</BTime></LayoutHeader>";
@@ -331,7 +331,7 @@ $("#viewReserve").pagecontainer({
                     popupMsgInit('.myReserveCancelSuccessPopupMsg');
                 }
                 bReserveCancelConfirm = false;
-            } 
+            }
             // cancel cancel
             else {
                 $('.hasReservePopup').find('.header-icon img').attr('src', 'img/warn_icon.png');
