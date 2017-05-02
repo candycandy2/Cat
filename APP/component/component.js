@@ -952,7 +952,8 @@ function handleOpenURL(url) {
                 }
             });
 
-            hideInitialPage();
+            //force to check APP version
+            //hideInitialPage();
         } else {
             //For Other APP, which was be opened by dynamic action,
             //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
