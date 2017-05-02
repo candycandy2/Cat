@@ -344,6 +344,8 @@ $("#viewEventAdd").pagecontainer({
                 "left": left
             });
 
+            $(".ui-datebox-container").css("opacity", "1");
+
             $('.ui-popup-screen.in').css({
                 'overflow': 'hidden',
                 'touch-action': 'none'
@@ -379,6 +381,8 @@ $("#viewEventAdd").pagecontainer({
                     $("#doneDate").datebox('setTheDate', doneDateTime["year"] + "-" + doneDateTime["month"] + "-" + doneDateTime["day"]);
                 }
             }
+
+            $(".ui-datebox-container").css("opacity", "0");
         };
 
         window.setDoneDateTime = function(obj) {
@@ -405,6 +409,8 @@ $("#viewEventAdd").pagecontainer({
                 }
             }
             tplJS.recoveryPageScroll();
+
+            $(".ui-datebox-container").css("opacity", "0");
         };
 
         function updateLoctionFunctionData(action, domID, location, functionData) {
@@ -617,13 +623,13 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddConfirmData);
 
-            //UI Popup : Event Edit Cancel Confirm
-            var eventEditCancelConfirmData = {
-                id: "eventEditCancelConfirm",
-                content: $("template#tplEventEditCancelConfirm").html()
+            //UI Popup : Event Add / Edit Cancel Confirm
+            var eventAddEditCancelConfirmData = {
+                id: "eventAddEditCancelConfirm",
+                content: $("template#tplEventAddEditCancelConfirm").html()
             };
 
-            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventEditCancelConfirmData);
+            tplJS.Popup("viewEventAdd", "contentEventAdd", "append", eventAddEditCancelConfirmData);
 
             //UI Popup : Event Add Fail
             var eventAddFailData = {
@@ -867,9 +873,9 @@ $("#viewEventAdd").pagecontainer({
         });
 
         //Location-Function delete
-        $(document).on("click", ".event-add-location-list .delete", function() {
-            var domID = $(this).parent().siblings().find("select").prop("id");
-            var location = $(this).parent().siblings().find(".event-loction").text();
+        $(document).on("click", ".event-add-location-list .delete-event-location", function() {
+            var domID = $(this).siblings().find("select").prop("id");
+            var location = $(this).siblings().find(".event-loction").text();
 
             //Update loctionFunctionData
             updateLoctionFunctionData("remove", domID, location);
@@ -878,7 +884,7 @@ $("#viewEventAdd").pagecontainer({
             $(document).off("click", "#" + domID + "-option");
             $("#" + domID + "-option").popup("destroy").remove();
 
-            $(this).parent().parent().remove();
+            $(this).parent().remove();
         });
 
         //Radio Button : Finish Time
@@ -925,16 +931,28 @@ $("#viewEventAdd").pagecontainer({
             var event = new newEvent();
         });
 
-        //Event Edit Cancel Button
-        $(document).on("click", "#eventEditCancelConfirm .cancel", function() {
-            $("#eventEditCancelConfirm").popup("close");
+        //Event Add / Edit Cancel Button
+        $(document).on("popupafteropen", "#eventAddEditCancelConfirm", function() {
+            if (prevPageID === "viewEventList") {
+               $("#eventAddEditCancelConfirm .header-text").html("確定取消新增?");
+            } else if (prevPageID === "viewEventContent") {
+                $("#eventAddEditCancelConfirm .header-text").html("確定取消編輯?");
+            }
         });
 
-        $(document).on("click", "#eventEditCancelConfirm .confirm", function() {
-            $("#eventEditCancelConfirm").popup("close");
+        $(document).on("click", "#eventAddEditCancelConfirm .cancel", function() {
+            $("#eventAddEditCancelConfirm").popup("close");
+        });
 
-            var eventDetail = new getEventDetail(eventRowID);
-            $.mobile.changePage('#viewEventContent');
+        $(document).on("click", "#eventAddEditCancelConfirm .confirm", function() {
+            $("#eventAddEditCancelConfirm").popup("close");
+
+            if (prevPageID === "viewEventList") {
+                $.mobile.changePage('#viewEventList');
+            } else if (prevPageID === "viewEventContent") {
+                var eventDetail = new getEventDetail(eventRowID);
+                $.mobile.changePage('#viewEventContent');
+            }
         });
 
         //Event Add Fail
