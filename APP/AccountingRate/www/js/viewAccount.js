@@ -63,6 +63,9 @@ $("#viewAccount").pagecontainer({
         var todayDate = Today.getDate();
         var lastMonth = Today.getMonth();
 
+        //review by alan
+        //assign meaningful variable : UTC => TWOMonthDate
+        //replace calc time function, 2017/1, 2017,2...5/31 -> 2/31
         window.UTC = Math.round(Date.UTC(todayYear, todayMonth - 3, todayDate) / 1000); //two month
         var nowTimstamp = window.Today.TimeStamp();
         window.Jsonflagnow = todayMonth;
@@ -267,6 +270,8 @@ $("#viewAccount").pagecontainer({
             $("#popupB").popup('close');
         });
         /********************************** Favorite*************************************/
+        //review by alan
+        //Meaningful variable: Test 
         function Test() {
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
@@ -419,7 +424,7 @@ $("#viewAccount").pagecontainer({
             } else if ((flag2 != 0) && (flag1 == 0)) {
                 Parameter = UTC;
                 var EventList = new GetAccountingRate();
-                flag1 = 1;
+                flag1 = 1;//Had got all data
                 console.log("690-2 .Call again API");
                 console.log(flag1);
             }
