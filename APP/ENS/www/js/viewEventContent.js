@@ -73,10 +73,20 @@ $("#viewEventContent").pagecontainer({
                         $("#contentEventContent .event-list-msg").remove();
 
                         //Created User
-                        eventListMsg.find(".event-list-msg-top .name").html(data['Content'].created_user);
+                        if (data['Content'].updated_user === null) {
+                            var eventOwner = data['Content'].created_user;
+                        } else {
+                            var eventOwner = data['Content'].updated_user;
+                        }
+                        eventListMsg.find(".event-list-msg-top .name").html(eventOwner);
 
                         //Create Datetime - Convert with TimeZone
-                        var tempDate = dateFormatYMD(data['Content'].created_at);
+                        if (data['Content'].updated_at === null) {
+                            var eventDateTime = data['Content'].created_at;
+                        } else {
+                            var eventDateTime = data['Content'].updated_at;
+                        }
+                        var tempDate = dateFormatYMD(eventDateTime);
                         var createTime = new Date(tempDate);
                         var createTimeConvert = createTime.TimeZoneConvert();
                         createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
@@ -429,6 +439,22 @@ $("#viewEventContent").pagecontainer({
             }, onErrorResolveUrl);
         }
 
+        //For Plugin Camera
+        function getFileEntry(imgUri) {
+            window.resolveLocalFileSystemURL(imgUri, function success(fileEntry) {
+
+                // Do something with the FileEntry object, like write to it, upload it, etc.
+                // writeFile(fileEntry, imgUri);
+                console.log("got file: " + fileEntry.fullPath);
+                //displayFileData(fileEntry.nativeURL, "Native URL");
+
+            }, function () {
+              // If don't get the FileEntry (which may happen when testing
+              // on some emulators), copy to a new FileEntry.
+                createNewFileEntry(imgUri);
+            });
+        }
+
         //Full-screen Photo to confirm > cancel or confirm
         function confirmPhoto(imageWidth, imageHeight) {
             var clientHeight = document.documentElement.clientHeight;
@@ -674,6 +700,20 @@ $("#viewEventContent").pagecontainer({
                   file.type + "\n" +
                   file.size + "\n" +
                   file.lastModifiedDate);
+
+            var test = new File(
+                [""],
+                "Screenshot_2017-02-17-10-19-35.png",
+                {
+                    type: "image/png",
+                    lastModified: 1487297975850,
+                    lastModifiedDate: new Date(),
+                    name: "Screenshot_2017-02-17-10-19-35.png",
+                    size: 137032,
+                    webkitRelativePath: ""
+                }
+            )
+            console.log(test);
 
             callFileReader(file);
         });
