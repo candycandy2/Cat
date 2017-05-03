@@ -16,7 +16,7 @@ $("#viewAccount").pagecontainer({
         var array = [];
 
         var arrayRate = [];
-        var arrayadd = ["NTD", "USD"];
+        var arrayadd = ["NTD","EUR","GBP"];
         var arrayaddtemp = [];
         var arrayrateadd = [];
         var arraycomb = [];
@@ -31,7 +31,7 @@ $("#viewAccount").pagecontainer({
                 console.log('YA-already10 favorite');
             } else if (storage == null) {
                 console.log('YA-52 initial');
-                arrayadd = ["NTD", "USD"];
+                arrayadd = ["NTD","EUR","GBP"];
                 localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             }
             console.log('arrayadd_' + arrayadd);
@@ -45,17 +45,21 @@ $("#viewAccount").pagecontainer({
 
             this.successCallback = function(data) {
                 loadingMask("hide");
-
                 var resultcode = data['ResultCode'];
-
             };
 
             this.failCallback = function(data) {};
-
             var __construct = function() {}();
-
         };
 
+        /********************************** function *************************************/
+        var date = new Date('2011', '01', '02');
+        var newDate = new Date(date);
+        console.log('63.date' + date);
+        newDate.setDate(newDate.getDate() - 60);
+        var nd = new Date(newDate);
+        console.log('66' + nd);
+        /********************************** function *************************************/
         window.Today = new Date();
         var MonthWord = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var todayYear = Today.getFullYear();
@@ -66,10 +70,20 @@ $("#viewAccount").pagecontainer({
         //review by alan
         //assign meaningful variable : UTC => TWOMonthDate
         //replace calc time function, 2017/1, 2017,2...5/31 -> 2/31
-        window.UTC = Math.round(Date.UTC(todayYear, todayMonth - 3, todayDate) / 1000); //two month
+
+        var date = new Date(todayYear, todayMonth - 1, todayDate);
+        var newDate = new Date(date);
+        console.log('63.date' + date);
+        newDate.setDate(newDate.getDate() - 60);
+        var nd = new Date(newDate);
+        window.TWOMonthDate = Math.round(nd / 1000);
+
+        //window.UTC = Math.round(Date.UTC(todayYear, todayMonth - 3, todayDate) / 1000); //two month
+
+
         var nowTimstamp = window.Today.TimeStamp();
         window.Jsonflagnow = todayMonth;
-        var Parameter = UTC;
+        var Parameter = TWOMonthDate;
 
         $(".buttononeCountry1").text(FromStatus);
         $(".buttononeCountry2").text(ToStatus);
@@ -85,8 +99,8 @@ $("#viewAccount").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
-            Expiretime(); //UTC - two    Parameter = UTCtime; 
-            Jsonparse(1); //call 1  => 2   //call API1 then check for two or not
+            Expiretime(); 
+            Jsonparse(1); 
             initial();
         });
 
@@ -187,8 +201,7 @@ $("#viewAccount").pagecontainer({
             arrayadd.push(statuscountrypop);
             statuscountryrate = $("#" + statuscountrypop).parent().find(".ListDollar1").text();
             arrayrateadd.push(statuscountryrate);
-
-            Test();
+            Reorganization();
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             $("#eventWorkConfirmA").popup('close');
         });
@@ -208,11 +221,10 @@ $("#viewAccount").pagecontainer({
             statuscountryrate = $("#" + statuscountrypop).parent().find(".ListDollar1").text();
             arrayadd.splice(arrayadd.indexOf(statuscountrypop), 1);
             arrayrateadd.splice(arrayrateadd.indexOf(statuscountryrate), 1);
-            Test();
+            Reorganization();
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
 
             $("#eventWorkConfirmB").popup('close');
-
 
         });
 
@@ -270,9 +282,8 @@ $("#viewAccount").pagecontainer({
             $("#popupB").popup('close');
         });
         /********************************** Favorite*************************************/
-        //review by alan
-        //Meaningful variable: Test 
-        function Test() {
+ 
+        function Reorganization() {
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
             Buttonimg();
@@ -287,7 +298,6 @@ $("#viewAccount").pagecontainer({
                     $("#" + statuscountrypop).addClass("favorite");
                 }
             }
-
             if ($("li").children(".favorite")) //use favorite to contrl star (not nontstar) 
             {
                 $("li").children(".favorite").children(".star_icon").css("opacity", "1"); //li id 
@@ -397,18 +407,12 @@ $("#viewAccount").pagecontainer({
         /********************************** dom event *************************************/
 
         /********************************** API*************************************/
-
-        //review by alan
-        //remove unsued variable:Jsonflag
-        function Jsonparse(Jsonflag) {
+        function Jsonparse() {
             console.log('680.Jsonparse - API');
             var EventList = new GetAccountingRate(); //call API1
         }
 
-
-        //review by alan
-        //remove unsued variable:Jsonflag
-        function Jsonparsecheck(Jsonflag) {
+        function Jsonparsecheck() {
 
             if (packJsontemp == 0) {
                 flag2 = 1;
@@ -422,9 +426,9 @@ $("#viewAccount").pagecontainer({
                 console.log("690-1. Null use local");
 
             } else if ((flag2 != 0) && (flag1 == 0)) {
-                Parameter = UTC;
+                Parameter = TWOMonthDate;
                 var EventList = new GetAccountingRate();
-                flag1 = 1;//Had got all data
+                flag1 = 1; //Had got all data
                 console.log("690-2 .Call again API");
                 console.log(flag1);
             }
@@ -432,14 +436,11 @@ $("#viewAccount").pagecontainer({
             Jsonparsenext(1);
         }
 
-
-        //review by alan
-        //assign meaningful variable : Jsonflag
-        function Jsonparsenext(Jsonflag) {
+        function Jsonparsenext() {
             var packJson = packJsontemp;
             localStorage.setItem("packJsontemp", JSON.stringify(packJsontemp));
             console.log("720. Jsonparsenext");
-            arrayRate = ["undefined"];
+            arrayRate = ["NaN"];
             var arraygetrate = [];
             var arraygetFrom = [];
             var arraygetTo = [];
@@ -485,12 +486,12 @@ $("#viewAccount").pagecontainer({
                     arrayrateadd.push(ratetemp);
                     console.log(arrayadd[i] + '_' + ratetemp);
                 } else if (rateindex < 0) {
-                    var ratetemp = "undefined";
+                    var ratetemp = "NaN";
                     arrayrateadd.push(ratetemp);
                     console.log(arrayadd[i] + '_' + ratetemp);
                 }
             }
-            Test();
+            Reorganization();           
             Buttonimg();
         }
         /********************************** API*************************************/
@@ -513,7 +514,7 @@ $("#viewAccount").pagecontainer({
 
             var queryDataParameter = "<Last_update_date>" + Parameter + "</Last_update_date>"; //20170427 test
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
-            console.log("UTC_API" + UTC);
+            console.log("UTC_API" + TWOMonthDate);
             this.successCallback = function(data) {
                 var resultCode = data['ResultCode'];
                 if (resultCode == 1) {
@@ -542,8 +543,8 @@ $("#viewAccount").pagecontainer({
                 Parameter = UTCtime;
                 console.log("use local" + UTCtime);
             } else if (storagetimeMon == null) {
-                Parameter = UTC;
-                console.log("use first time" + UTC);
+                Parameter = TWOMonthDate;
+                console.log("use first time" + TWOMonthDate);
             }
             localStorage.setItem("localYear", JSON.stringify(todayYear));
             localStorage.setItem("localMonth", JSON.stringify(todayMonth));
