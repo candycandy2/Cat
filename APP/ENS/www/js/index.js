@@ -322,26 +322,41 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
     } else {
         normalTitle = [{
             value: "1",
-            text: "[電力維護公告] XX機房將進行電力保養及維護,請協助關機"
+            text: "[電力維護公告] XX機房將進行電力保養及維護，請協助關機"
         }, {
             value: "2",
-            text: "[空調維護公告] XX機房將進行空調保養及維護,請協助關機"
+            text: "[空調維護公告] XX機房將進行空調保養及維護，請協助關機"
+        }, {
+            value: "3",
+            text: "[維護公告] 2017/MM/DD(星期X) [台北]辦公室網路維護工程，辦公室網路將無法使用"
+        }, {
+            value: "4",
+            text: "[電力/空調維護公告] XX機房[電力/空調]保養及維護已經完成，請協助開機"
         }];
 
         normalContent = [{
             value: "1",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業"
+            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
         }, {
             value: "2",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業"
+            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
+        }, {
+            value: "3",
+            text: "[台北]辦公室將於2017/MM/DD 9:00AM - 5:00PM進行網路維修工程,辦公室網路將無法使用,請通知相關IT系統使用人員"
+        }, {
+            value: "4",
+            text: "XX機房[電力/空調]在下午4:00PM已經完成保養及維護,請協助開機及回報"
         }];
 
         urgentTitle = [{
             value: "1",
-            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常,請協助緊急關機"
+            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常，請協助緊急關機"
         }, {
             value: "2",
-            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障,請協助緊急關機"
+            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障，請協助緊急關機"
+        }, {
+            value: "3",
+            text: "[機房電力／空調正常]目前(4:30PM)  XX機房[電力/空調]已經恢復正常，請協助開機"
         }];
 
         urgentContent = [{
@@ -350,6 +365,9 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
         }, {
             value: "2",
             text: "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+        }, {
+            value: "3",
+            text: "目前(4:30PM)XX機房[電力/空調]已經恢復正常,請機房系統管理員協助開機及回報"
         }];
 
         window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));
