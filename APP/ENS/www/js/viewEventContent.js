@@ -405,8 +405,8 @@ $("#viewEventContent").pagecontainer({
         //For Plugin Camera
         function openFilePicker(selection) {
             //var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
-            //var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
-            var srcType = Camera.PictureSourceType.CAMERA;
+            var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            //var srcType = Camera.PictureSourceType.CAMERA;
             var options = setOptions(srcType);
             var func = createNewFileEntry;
 
@@ -664,6 +664,8 @@ $("#viewEventContent").pagecontainer({
 
             $(".previewImageDiv").hide();
             $(".previewImageDiv-AddHeight").hide();
+            $('#msgText').prop('placeholder', "請輸入訊息");
+            $("#msgText").val("");
 
             /*
             //Open Camera in Mobile Phone
@@ -797,13 +799,12 @@ $("#viewEventContent").pagecontainer({
             var uploadImg = false;
             var fid = "msgPhoto";
 
-            if (msg.length === 0 || msg === "請輸入訊息") {
+            if (msg.length === 0) {
                 uploadText = false;
             }
 
             if (uploadText) {
                 if (msgController.isInited) {
-
                     msgController.SendText(gid, gname, msg, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
@@ -826,6 +827,7 @@ $("#viewEventContent").pagecontainer({
                             };
 
                             chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            $("#msgText").val("");
                         }
                     }, function(errorResult) {
                         console.log("---------------errorResult");
@@ -839,39 +841,40 @@ $("#viewEventContent").pagecontainer({
             }
 
             if (uploadImg) {
-                //console.log(photoUrl);
-                msgController.SendImage(gid, gname, fid, function(successResult) {
-                    console.log("---------------successResult");
-                    console.log(successResult);
-                    loadingMask("show");
+                if (msgController.isInited) {
+                    msgController.SendImage(gid, gname, fid, function(successResult) {
+                        console.log("---------------successResult");
+                        console.log(successResult);
+                        loadingMask("show");
 
-                    if (successResult["result"]["code"] === 0) {
-                        var chatRoomID = successResult["result"]["target_gid"];
-                        var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
-                        var createTime = new Date(ctime * 1000);
+                        if (successResult["result"]["code"] === 0) {
+                            var chatRoomID = successResult["result"]["target_gid"];
+                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                            var createTime = new Date(ctime * 1000);
 
-                        var objData = {
-                            msg_id: successResult["result"]["msg_id"],
-                            ctime: ctime,
-                            ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                                padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                                padLeft(createTime.getMinutes(), 2),
-                            from_id: successResult["content"]["from_id"],
-                            msg_type: successResult["content"]["msg_type"],
-                            msg_body: successResult["content"]["msg_body"]
-                        };
+                            var objData = {
+                                msg_id: successResult["result"]["msg_id"],
+                                ctime: ctime,
+                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                                    padLeft(createTime.getMinutes(), 2),
+                                from_id: successResult["content"]["from_id"],
+                                msg_type: successResult["content"]["msg_type"],
+                                msg_body: successResult["content"]["msg_body"]
+                            };
 
-                        chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
 
-                        $(".previewImageDiv").hide();
-                        $(".previewImageDiv-AddHeight").hide();
-                        loadingMask("hide");
-                    }
+                            $(".previewImageDiv").hide();
+                            $(".previewImageDiv-AddHeight").hide();
+                            loadingMask("hide");
+                        }
 
-                }, function(errorResult) {
-                    console.log("---------------errorResult");
-                    console.log(errorResult);
-                });
+                    }, function(errorResult) {
+                        console.log("---------------errorResult");
+                        console.log(errorResult);
+                    });
+                }
             }
         });
 
