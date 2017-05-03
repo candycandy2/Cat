@@ -23,21 +23,21 @@ var langStr = {};
 var logFileName;
 
 var loginData = {
-    versionName:         "",
-    versionCode:         "",
-    deviceType:          "",
-    pushToken:           "",
-    token:               "",
-    token_valid:         "",
-    uuid:                "",
-    checksum:            "",
-    domain:              "",
-    emp_no:              "",
-    loginid:             "",
-    messagecontent:      null,
-    msgDateFrom:         null,  //timestamp, latest time of update message from server
+    versionName: "",
+    versionCode: "",
+    deviceType: "",
+    pushToken: "",
+    token: "",
+    token_valid: "",
+    uuid: "",
+    checksum: "",
+    domain: "",
+    emp_no: "",
+    loginid: "",
+    messagecontent: null,
+    msgDateFrom: null, //timestamp, latest time of update message from server
     doLoginDataCallBack: false,
-    openMessage:         false
+    openMessage: false
 };
 var queryData = {};
 var getDataFromServer = false;
@@ -51,7 +51,7 @@ var showNetworkDisconnected = false;
 var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
-var closeInfoMsgInit = false;   // let closeInfoMsg click event init once
+var closeInfoMsgInit = false; // let closeInfoMsg click event init once
 
 /********************************** Corodva APP initial *************************************/
 var app = {
@@ -124,7 +124,7 @@ var app = {
         //console.log(cordova.file);
         //LogFile.checkOldFile();
     },
-    onGetRegistradionID: function (data) {
+    onGetRegistradionID: function(data) {
         if (data.length !== 0) {
 
             loginData["deviceType"] = device.platform;
@@ -144,7 +144,7 @@ var app = {
 
             // set need to qpush's layout when landscape
             if (window.orientation === 90 || window.orientation === -90)
-                $('.main-GetQPush').css('top', (screen.height-$('.main-GetQPush').height())/4);
+                $('.main-GetQPush').css('top', (screen.height - $('.main-GetQPush').height()) / 4);
 
             if (checkTimerCount >= 30) {
                 $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
@@ -230,14 +230,14 @@ var app = {
                 $('#iOSGetNewMessage').show();
                 $('#iOSGetNewMessage').popup('open');
 
-                $("#openNewMessage").one("click", function(){
+                $("#openNewMessage").one("click", function() {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
                     openNewMessage();
                 });
 
-                $("#cancelNewMessage").one("click", function(){
+                $("#cancelNewMessage").one("click", function() {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
@@ -256,14 +256,14 @@ var app = {
 app.initialize();
 
 /********************************** jQuery Mobile Event *************************************/
-$(document).one("pagebeforecreate", function(){
+$(document).one("pagebeforecreate", function() {
 
     $(':mobile-pagecontainer').html("");
 
     //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
-        (function(pageID){
+        (function(pageID) {
             /*
             var s = document.createElement("script");
             s.type = "text/javascript";
@@ -285,7 +285,7 @@ $(document).one("pagebeforecreate", function(){
     //According to the data [pageList] which set in index.js ,
     //add View template into index.html
     $.map(pageList, function(value, key) {
-        (function(pageID){
+        (function(pageID) {
             $.get("View/" + pageID + ".html", function(data) {
                 $.mobile.pageContainer.append(data);
                 $("#" + pageID).page().enhanceWithin();
@@ -306,14 +306,14 @@ $(document).one("pagebeforecreate", function(){
     }
 
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
-        //language string exist
-        getLanguageString();
-    })
-    .fail(function() {
-        //language string does not exist
-        browserLanguage = "zh-tw";
-        getLanguageString();
-    });
+            //language string exist
+            getLanguageString();
+        })
+        .fail(function() {
+            //language string does not exist
+            browserLanguage = "zh-tw";
+            getLanguageString();
+        });
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
@@ -325,18 +325,16 @@ $(document).one("pagebeforecreate", function(){
             if (version === "6") {
                 $(".ui-footer-fixed").css("position", "fixed");
             }
-        }
-
-        else if (device.platform === "iOS"){
+        } else if (device.platform === "iOS") {
             $('.page-header').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display','block');
+            $('.ios-fix-overlap-div').css('display', 'block');
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
         }
 
         adjustPageMarginTop();
 
         // tab title, open version, uuid window
-        $(".ui-title").on("taphold", function(){
+        $(".ui-title").on("taphold", function() {
             //Set for iOS, control text select
             document.documentElement.style.webkitTouchCallout = "none";
             document.documentElement.style.webkitUserSelect = "none";
@@ -345,8 +343,8 @@ $(document).one("pagebeforecreate", function(){
         });
 
         // close ifo msg init
-        if (!closeInfoMsgInit){
-            $(document).on('click', '#infoMsg #closeInfoMsg', function(){
+        if (!closeInfoMsgInit) {
+            $(document).on('click', '#infoMsg #closeInfoMsg', function() {
                 $('#infoMsg').popup('close');
                 $('#infoMsg').hide();
             });
@@ -383,12 +381,13 @@ $(document).one("pagebeforecreate", function(){
 
 /********************************** QPlay APP function *************************************/
 
+//review by alan
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
-    successCallback =  successCallback || null;
+    successCallback = successCallback || null;
     tokenValid = tokenValid || null;
-    data =  data || null;
+    data = data || null;
 
     resultCode = resultCode.toString();
 
@@ -618,7 +617,7 @@ function checkAppVersion() {
 
                     // set update app version's layout when landscape
                     if (window.orientation === 90 || window.orientation === -90)
-                        $('.main-updateAppVersion').css('top', (screen.height-$('.main-updateAppVersion').height())/4);
+                        $('.main-updateAppVersion').css('top', (screen.height - $('.main-updateAppVersion').height()) / 4);
                     stopcheckVerTimer();
                 }
             }, 1000);
@@ -629,7 +628,7 @@ function checkAppVersion() {
                 loadingMask("hide");
             };
 
-            $("#UpdateAPP").on("click", function(){
+            $("#UpdateAPP").on("click", function() {
                 if (appKey === qplayAppKey) {
                     $("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
                     document.getElementById("updateLink").click();
@@ -637,7 +636,7 @@ function checkAppVersion() {
                 } else {
                     //Download link without QPlay
                     window.open(download_url, '_system');
-                    
+
                     //Open QPlay > APP detail page
                     //openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
                 }
@@ -698,7 +697,7 @@ function setWhiteList() {
 
         if (device.platform === "iOS") {
             $('.page-header').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display','block');
+            $('.ios-fix-overlap-div').css('display', 'block');
         }
     };
 
@@ -853,7 +852,7 @@ function getServerData() {
         var args = [];
         args[0] = "initialSuccess"; //set in APP's index.js
         //args[1] = device.uuid;    //return by cordova-plugin-device
-        args[1] = window.localStorage.getItem("pushToken");   //return by plugin QPush
+        args[1] = window.localStorage.getItem("pushToken"); //return by plugin QPush
 
         window.plugins.qlogin.openCertificationPage(null, null, args);
     } else {
@@ -882,10 +881,11 @@ function getSecurityList() {
 
 }
 
+//review by alan
 function createAPPSchemeURL() {
     return "://callbackApp=" + appKey + "&action=retrunLoginData&token=" + loginData['token'] +
-           "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
-           "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
+        "&token_valid=" + loginData['token_valid'] + "&uuid=" + loginData['uuid'] + "&checksum=" + loginData['checksum'] +
+        "&domain=" + loginData['domain'] + "&emp_no=" + loginData['emp_no'] + "&loginid=" + loginData['loginid'];
 }
 
 //Return Login Data from QPlay
@@ -952,6 +952,7 @@ function handleOpenURL(url) {
                 }
             });
 
+            //review by alan
             //force to check APP version
             //hideInitialPage();
         } else {
