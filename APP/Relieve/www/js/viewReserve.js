@@ -173,6 +173,80 @@ $("#viewReserve").pagecontainer({
             }();
         };
 
+        window.QueryMyReserve = function() {
+
+            var self = this;
+
+            this.successCallback = function(data) {
+                QueryMyReserveCallBackdata = data["Content"];
+                $("#today-reserve-area").html("");
+                $("#later-reserve-area").html("");
+                var site, beginTime, endtime;
+                var nowContent = "";
+                var laterContent = "";
+                var nowDateHTML = '<div class="reserve-area-time font-style7">本日</div>';
+                var laterDateHTML = '<div class="reserve-area-time font-style7">未來</div>';
+                var nowDate = currentMonth + "/" + currentDate;
+                var reserveTimeArry, reserveDateArry;
+                // if(data["ResultCode"] === "1") {
+                    for(var i in QueryMyReserveCallBackdata) {
+                        site = QueryMyReserveCallBackdata[i]["Site"];
+                        reserveDate = QueryMyReserveCallBackdata[i]["ReserveDate"].match(/(.*?)\s.*?\s/)[1];
+                        reserveDateArry = reserveDate.split("/");
+                        reserveDateArry[0] = Number(reserveDateArry[0] < 10) ? "0"+reserveDateArry[0] : reserveDateArry[0];
+                        reserveDateArry[1] = Number(reserveDateArry[1] < 10) ? "0"+reserveDateArry[1] : reserveDateArry[1];
+                        reserveDate = reserveDateArry[0] + "/" + reserveDateArry[1];
+                        reserveTimeArry = QueryMyReserveCallBackdata[i]["ReserveBeginTime"].split(" ");
+                        if(reserveTimeArry[2] === "PM") {
+                            beginTime = (12 + Number(reserveTimeArry[1].match(/([0-9]+):([0-9]+)/)[1])) + ":"
+                                        + reserveTimeArry[1].match(/([0-9]+):([0-9]+)/)[2];
+                            endtime = addThirtyMins(beginTime);
+                        }else{
+                            beginTime = reserveTimeArry[1].match(/([0-9]+:[0-9]+)/)[1] 
+                            endtime = addThirtyMins(beginTime);
+                        }
+                        if(nowDate === reserveDate) {
+                            nowContent +=   '<div class="reserveInfo">'
+                                          +     '<div class="reserveInfo-area-left reserveInfo-area">'
+                                          +         '<div class="reserveInfo-company">'+ site + '</div>'
+                                          +         '<div class="reserveInfo-time">' + beginTime + "-" + endtime + '</div>'
+                                          +     '</div>'
+                                          +     '<div class="reserveInfo-area-right reserveInfo-area">'
+                                          +         '<div class="btn-area">'
+                                          +             '<a href="#" class="btn-myreserve-cancel ui-link"><img src="img/delete_empty.png"></a>'
+                                          +         '</div>'
+                                          +     '</div>'
+                                          + '</div>'
+                        }else {
+                            laterContent += '<div class="reserveInfo">'
+                                          +     '<div class="reserveInfo-area-left reserveInfo-area">'
+                                          +         '<div class="reserveInfo-company">'+ site + '</div>'
+                                          +         '<div class="reserveInfo-time">' + reserveDate + "&nbsp;&nbsp;" + beginTime + "-" + endtime + '</div>'
+                                          +     '</div>'
+                                          +     '<div class="reserveInfo-area-right reserveInfo-area">'
+                                          +         '<div class="btn-area">'
+                                          +             '<a href="#" class="btn-myreserve-cancel ui-link"><img src="img/delete_empty.png"></a>'
+                                          +         '</div>'
+                                          +     '</div>'
+                                          + '</div>'
+                        }
+                    }
+                    nowDateHTML += nowContent;
+                    $("#today-reserve-area").append($(nowDateHTML)).enhanceWithin();
+                    laterDateHTML += laterContent;
+                    $("#later-reserve-area").append($(laterDateHTML)).enhanceWithin();
+                // }else if(data["ResultCode"] === "023901") {
+
+                // }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, QueryMyReserveQuerydata, "");
+            }();
+        };
+
         function timeInit() {
             $('.timeRemind').each(function() {
                 var oriTime = $(this).parent('div').find('>div:nth-of-type(1)').text();
@@ -187,12 +261,12 @@ $("#viewReserve").pagecontainer({
             $('#pageThree').hide();
             timeInit();
             /* global PullToRefresh */
-            // PullToRefresh.init({
-            //     mainElement: '#pageOne',
-            //     onRefresh: function() {
-            //         //do something for refresh
-            //     }
-            // });
+            PullToRefresh.init({
+                mainElement: '#pageOne',
+                onRefresh: function() {
+                    //do something for refresh
+                }
+            });
         });
 
         $("#viewReserve").on("pageshow", function(event, ui) {
@@ -218,7 +292,13 @@ $("#viewReserve").pagecontainer({
                 $('#pageTwo').show();
                 $('#pageOne').hide();
                 $('#pageThree').hide();
-                
+                QueryMyReserveQuerydata =   "<LayoutHeader><ReserveUser>"
+                                          + myEmpNo
+                                          + "</ReserveUser><NowDate>"
+                                          + currentYear + currentMonth + currentDate
+                                          + "</NowDate></LayoutHeader>"
+                QueryMyReserve();
+
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
