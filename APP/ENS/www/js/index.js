@@ -25,33 +25,48 @@ window.initialSuccess = function() {
     $.mobile.changePage('#viewEventList');
 
     //QMessage
-    var api_url = serverURL.substr(8);
     var opts = {
         'username': loginData["loginid"],
         'eventHandler': chatRoom.eventHandler,
         'messageHandler': chatRoom.messageHandler,
         'message_key': QMessageKey,
         'message_secret': QMessageSecretKey,
-        'message_api_url_prefix': api_url + "/qmessage/public/"
+        'message_api_url_prefix': serverURL.substr(8) + "/qmessage/public/"
     };
-    msgController = window.QMessage(opts);
 
-    window.checkTimer = setInterval(function() {
+    message = function() {
+        var self = this;
+        this.checkTimeCount = 0;
 
-        if (msgController.isInited) {
-            console.log("-------------isInited:true");
-            stopCheck();
-        } else {
-            console.log("-------------isInited:false");
-        }
+        this.checkTimer = setInterval(function() {
+            self.checkTimeCount++;
+            if (self.isInited) {
+                console.log("-------------isInited:true");
+                self.stopCheck();
+            } else {
+                console.log("-------------isInited:false");
+                if (self.checkTimeCount === 10) {
+                    self.checkTimeCount = 0;
+                    self.stopCheck();
+                    initialMessage();
+                }
+            }
+        }, 1000);
 
-    }, 1000);
-
-    window.stopCheck = function() {
-        if (window.checkTimer != null) {
-            clearInterval(window.checkTimer);
-        }
+        this.stopCheck = function() {
+            if (self.checkTimer != null) {
+                clearInterval(self.checkTimer);
+            }
+        };
     };
+    message.prototype = new window.QMessage(opts);
+    message.prototype.constructor = message;
+
+    initialMessage = function () {
+        msgController = null;
+        msgController = new message();
+    };
+    initialMessage();
 
 }
 
