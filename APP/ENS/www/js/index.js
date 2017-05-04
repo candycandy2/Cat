@@ -392,11 +392,6 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
     }
 }
 
-function footerFixed() {
-    $(".ui-footer").removeClass("ui-fixed-hidden");
-    $(".ui-header").removeClass("ui-fixed-hidden");
-}
-
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
