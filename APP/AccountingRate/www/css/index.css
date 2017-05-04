@@ -170,11 +170,7 @@
     background-color: #f9f9f9!important;
 }
 
-#ultestA{
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling :touch;
-}
+
 
 #ultestA li {
     border-bottom: #DDDDDD 0.1px solid !important;;
@@ -460,15 +456,16 @@ element.style {
 }
 
 .ui-content {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling :touch;
+    overflow-x: hidden;    
     padding: 0px;
     padding-left: 3.7VW;
 }
+/*0504 test 5/03 */
 
-.fragment-1{
-  
+.ultestA{
+   overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling :touch;
 } 
 
 

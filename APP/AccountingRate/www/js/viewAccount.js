@@ -9,8 +9,7 @@ $("#viewAccount").pagecontainer({
         var statuscountrypop;
         var statuscountryrate;
 
-        //review by alan
-        //assign meaningful variable 
+
         var CheckifReloadflag1 = 0;
         var CheckifReloadflag2 = 0;
         var array = [];
@@ -22,7 +21,13 @@ $("#viewAccount").pagecontainer({
         var arraycomb = [];
         var arrayratecomb = [];
         var packJsontemp = [];
+   
+
+        //Scenario 0504
         var ScenarioUTC = 0;
+        var testday =0;
+
+        //Scenario 0504
 
         var storage = JSON.parse(localStorage.getItem("arrayadd"));
 
@@ -94,7 +99,7 @@ $("#viewAccount").pagecontainer({
 
         }
 
-        function Monthchange() //don't move it
+        function Monthchange() //Warning : don't modify it 
         {
             $(".buttononeCountry1").text(FromStatus);
             $(".buttononeCountry2").text(ToStatus);
@@ -111,44 +116,47 @@ $("#viewAccount").pagecontainer({
 
         }
 
-        $(document).on("click", ".buttonScenario1", function() { //add to html
-
-
+         function MonthCalculator() 
+         {
+            var Twomonthdate=60; 
             var date = new Date(todayYear, todayMonth - 1, todayDate);
             var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() + 1);
+            newDate.setDate(newDate.getDate() + testday );
             var nd = new Date(newDate);
             console.log("Scenario1" + nd);
             ScenarioUTC = Math.round(nd / 1000);
             console.log("ScenarioUTC1" + ScenarioUTC);
 
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() + 1 - 60);
+
+            newDate.setDate(newDate.getDate() + testday - 60);
             var nd = new Date(newDate);
-            console.log("Scenario1" + nd);
+            console.log("Scenario1two month" + nd);
             ScenarioTWOMonthUTC = Math.round(nd / 1000);
-            console.log("ScenarioUTC1" + ScenarioUTC);
+            console.log("ScenarioUTC1 month" + ScenarioUTC);
+         }
 
+        $(document).on("click", ".buttonScenario1", function() { //add to html
 
+            testday =1;
+            
             TWOMonthDate = ScenarioTWOMonthUTC;
+            MonthCalculator() ;
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-
-            //$(".buttononeCountry1").html(tmpsetT);
-            // $(".buttononeCountry2").html(tmpsetF);
+      
             ModifyScenario();
             Monthchange();
             var EventList = new GetAccountingRate(); //call API1
         });
+
         $(document).on("click", ".buttonScenario2", function() { //add to html
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-
-            //$(".buttononeCountry1").html(tmpsetT);
-            // $(".buttononeCountry2").html(tmpsetF);
+            testday =2;
+            MonthCalculator() ;
+            
             ModifyScenario();
             Monthchange();
             var EventList = new GetAccountingRate(); //call API1
@@ -157,9 +165,7 @@ $("#viewAccount").pagecontainer({
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-
-            //$(".buttononeCountry1").html(tmpsetT);
-            // $(".buttononeCountry2").html(tmpsetF);
+            testday =3;
             ModifyScenario();
             Monthchange();
             var EventList = new GetAccountingRate(); //call API1
