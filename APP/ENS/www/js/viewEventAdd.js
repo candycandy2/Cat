@@ -125,6 +125,12 @@ $("#viewEventAdd").pagecontainer({
 
             $("#eventaAdditionalContent .event-add-additional-list").remove();
             $("#eventaAdditionalContent").append(eventAdditionalList);
+
+            var deleteButton = $(".event-add-additional-list .left");
+            var dataHeight = $(".event-add-additional-list .right")[0].clientHeight;
+            var deleteButtonHeight = parseInt(document.documentElement.clientWidth * 7.407 / 100, 10);
+            var deleteButtonPaddingTop = (dataHeight - deleteButtonHeight) / 2;
+            $(deleteButton).css("padding-top", deleteButtonPaddingTop + "px");
         }
 
         function newEvent() {
@@ -438,6 +444,8 @@ $("#viewEventAdd").pagecontainer({
                         }
                     }
                 }
+
+                verticalCenterDeleteButton("eventFunctionSelectContent-" + IDNumber);
             } else if (action === "remove") {
                 for (var i=parseInt(loctionFunctionData.length - 1, 10); i>=0; i--) {
                     if (loctionFunctionData[i]["domID"] === domID) {
@@ -445,6 +453,14 @@ $("#viewEventAdd").pagecontainer({
                     }
                 }
             }
+        }
+
+        function verticalCenterDeleteButton(ID) {
+            var deleteButton = $("#" + ID).parent().siblings(".left");
+            var dataHeight = $("#" + ID).parent()[0].clientHeight;
+            var deleteButtonHeight = parseInt(document.documentElement.clientWidth * 7.407 / 100, 10);
+            var deleteButtonPaddingTop = (dataHeight - deleteButtonHeight) / 2;
+            $(deleteButton).css("padding-top", deleteButtonPaddingTop + "px");
         }
 
         function eventAddSuccess() {
@@ -820,6 +836,8 @@ $("#viewEventAdd").pagecontainer({
 
                     //resize Event Function drowdown list
                     tplJS.reSizeDropdownList(eventFunctionData.id, null, 80);
+
+                    verticalCenterDeleteButton(functionContentID);
 
                     //bind Event Function change event
                     $(document).on("change", "#" + eventFunctionData.id, function() {
