@@ -237,6 +237,16 @@
                 var appList = new QueryAppList();
 
                 $('#logoutConfirm').popup('close');
+
+                
+                /* global PullToRefresh */
+                PullToRefresh.init({
+                    mainElement: '#appcontent',
+                    onRefresh: function() {
+                        //do something for refresh
+                        var appList = new QueryAppList();
+                    }
+                });
             });
 
             /********************************** dom event *************************************/
