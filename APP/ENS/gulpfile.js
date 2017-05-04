@@ -219,7 +219,7 @@ gulp.task('QMessage', function() {
     return gulp.src(['../../qmessage/public/js/qmessage.js',
         '../../qmessage/public/js/lib/jmessage-sdk-web-2.1.0.min.js',
         '../../qmessage/public/js/lib/md5.min.js'])
-        .pipe(gulp.dest('www/js/'));
+        .pipe(gulp.dest('www/js/Library/'));
 });
 
 gulp.task('commonString', function() {

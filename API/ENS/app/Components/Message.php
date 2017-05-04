@@ -53,6 +53,21 @@ class Message
         return $result;
     }
 
+
+    /**
+     * 刪除聊天室
+     * @param  int  $chatRoomId 欲刪除的聊天室id
+     * @return json
+     */
+    public function deleteChatRoom($chatRoomId){
+        
+        $data['gid'] = $chatRoomId;
+        $apiFunction = 'group/delete';
+        $result = $this->callQmessageAPI($apiFunction, $data);
+        return $result;
+
+    }
+
     /**
      * 獲得留言總數
      * @param  Array  $targetId 欲取得的target_id Array ( array('target_id'=>array('123456','456789') )
@@ -66,7 +81,6 @@ class Message
         return $result;
 
     }
-
 
     /**
      * 呼叫QMessageAPI

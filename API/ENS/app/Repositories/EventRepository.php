@@ -60,6 +60,7 @@ class EventRepository
         $this->event->created_at = $now;
         $this->event->updated_user = $empNo;
         $this->event->updated_at = $now;
+        $this->event->chatroom_id = $data['chatroom_id'];
         $this->event->save();
         $queries = DB::getQueryLog();
 
@@ -178,8 +179,6 @@ class EventRepository
      * @return mixed
      */
     public function getEventDetail($eventId, $empNo){
-        // $selectField = $this->eventField;
-        // array_push($selectField,$this->userTableName.'.ext_no as created_user_ext_no');
         return $this->event
             ->join('en_user_event','en_user_event.event_row_id','=','en_event.row_id')
             ->join($this->userDataBaseName.'.'.$this->userTableName,$this->userTableName.'.emp_no','=','en_event.created_user')

@@ -41,26 +41,19 @@ class EventService
      * @param  Array  $queryParam 推播必要參數
      * @return int                新增成功的事件Id
      */
-    public function newEvent($empNo, Array $data, Array $queryParam){
+    public function newEvent($empNo, Array $data, Array $taskUserList, Array $eventUserList, Array $queryParam){
 
        $eventId = $this->eventRepository->saveEvent($empNo, $data);
 
        $nowTimestamp = time();
        $now = date('Y-m-d H:i:s',$nowTimestamp);
 
-       $uniqueTask = $this->getUniqueTask($data['basicList']);
-       $this->insertTask($eventId, $uniqueTask, $empNo, $now);
+       $this->insertTask($eventId, $taskUserList, $empNo, $now);
+
        if(isset($data['related_event_row_id']) && $data['related_event_row_id'] !="" ){
             $this->eventRepository->bindRelatedEvent($eventId, $data['related_event_row_id'], $data['emp_no']);
        }
-
-       $taskInfo = $this->taskRepository->getTaskByEventId($eventId);
-       $this->insertUserTask($taskInfo, $empNo, $now);
-               
-
-       $eventUsers =  $this->findEventUser($eventId);
-       $this->insertUserEvent($eventId, $eventUsers, $empNo, $now);
-
+       $this->insertUserEvent($eventId, $eventUserList, $empNo, $now);
 
        $this->eventRepository->updateReadTime($eventId, $empNo);
 
@@ -197,23 +190,16 @@ class EventService
    /**
     * 取得事件參與者當作推播接收訊者清單
     * @param  int $eventId      事件id en_event.row_id
-    * @param  string $action    呼叫推播時的場景 (new:新增事件|update:更新事件|close:事件已完成)
     * @return Array|array  array('Domain\\LoginId')
     */
-   public function getPushUserListByEvent($eventId, $action){
-         $eventUserDetail = [];
-         //新增事件的時候，不過濾掉離職或沒有權限的用戶，若有失敗則提示用戶錯誤，提醒修改Basic Info
-         if(strtolower($action) == 'new'){
-            $eventUserDetail = $this->eventRepository->getUserByEventId($eventId);
-         }else{
-            $eventUserDetail = $this->eventRepository->getUserByEventIdWithRight($eventId);
-         }
-
-         $userList = [];
+   public function getPushUserListByEvent($eventId){
+        $eventUserDetail = [];
+        $eventUserDetail = $this->eventRepository->getUserByEventIdWithRight($eventId);
+        $userList = [];
          foreach ($eventUserDetail as $user) {
             $userList[] = $user->user_domain."\\".$user->login_id;
          }
-         return $userList;
+        return $userList;
    }
 
    /**
@@ -245,26 +231,6 @@ class EventService
             $userList[] = $userData;
          }
          return $userList;
-   }
-
-   /**
-    * 找出不重複的事件參與者(被指派任務的人、主管以及機房管理者)
-    * @param  int $eventId 事件id en_event.row_id
-    * @return Array
-    */
-   public function findEventUser($eventId){
-        $eventUser = [];
-        $taskUser = $this->taskRepository->getAllUserFromTaskbyEventId($eventId);
-        foreach ($taskUser as $tu) {
-            $eventUser[] = (string)$tu->emp_no;
-        }
-        $superUser = $this->userRepository->getSuperUser();
-        
-        foreach ($superUser as $su) {
-            $eventUser[] = (string)$su->emp_no;
-        }
-
-        return array_unique($eventUser);
    }
    
    /**
@@ -371,37 +337,42 @@ class EventService
             return false;
         }
    }
-
-   /**
-    * 根據Event產生聊天室
-    * @param  string    $empNo   員工編號
-    * @param  int       $eventId en_event.row_id
-    * @param  array     $desc    聊天室簡述
-    * @return json
-    */
-   public function createChatRoomByEvent($empNo, $eventId, $desc){
-        
-        $owner = $this->userRepository->getUserInfoByEmpNo(array($empNo))[0]->login_id;
+    
+    /**
+     * 建立事件聊天室
+     * @param  Strgin $owner      事件建立者
+     * @param  Array  $eventUsers 事件參與人資訊清單
+     * @param  String $desc       聊天室描述(事件標題)
+     * @return json               聊天室建立結果
+     */
+   public function createChatRoom($owner, $eventUsers, $desc){
         $members = array();
-        $eventUsersEmpNo = $this->findEventUser($eventId);
-        $eventUsers = $this->userRepository->getUserInfoByEmpNo($eventUsersEmpNo);
         foreach ($eventUsers as $user) {
             //加入不與owner重複的用戶
            if($user->login_id != $owner){
              array_push($members, $user->login_id);
            }
         }
-    
         $qMessage = new Message();
         return $qMessage->createChatRoom($owner, $members, $desc);
-    }
-   
+   }
+
+   /**
+    * 刪除聊天室
+    * @param  int $chatRoomId 聊天室gid
+    * @return json            刪除結果
+    */
+   public function deleteChatRoom($chatRoomId){
+        $qMessage = new Message();
+        return $qMessage->deleteChatRoom($chatRoomId);
+   }
+
    /**
     * 取得不重複的任務清單(function-location)
     * @param  Array|array    $basicList 地點等資訊列表
     * @return Array|array    不重複的任務清單
     */
-   private function getUniqueTask($basicList){
+   public function getUniqueTask($basicList){
         
         $uniqueTask = [];
          foreach ($basicList as $value) {
@@ -420,50 +391,38 @@ class EventService
    /**
     * 寫入task 資料
     * @param  int    $eventId     event_row_id
-    * @param  Array  $tasks       所屬該事件的任務列表
+    * @param  Array  $taskUserList       所屬該事件的任務列表
     * @param  string $createdUser 建立者員工編號
     * @param  date   $createdDate 建立日期
     * @return bool
     */
-   private function insertTask($eventId, $tasks, $createdUser, $createdDate){
-        $TaskData = [];
-         foreach ($tasks as $location => $functions) {
-            foreach ($functions as $function) {
-             $TaskData[] = array(
+   private function insertTask($eventId, $taskUserList, $createdUser, $createdDate){
+        $taskData = [];
+        $userTaskData = [];
+         foreach ($taskUserList as $location => $function) {
+            
+            foreach ($function as $functionName => $user) {
+                $taskData = array(
                 'event_row_id'=>$eventId,
                 'task_location'=>$location,
-                'task_function'=>$function,
+                'task_function'=>$functionName,
                 'created_user'=>$createdUser,
                 'created_at'=>$createdDate
                 );
-            }
-        }
-        return $this->taskRepository->saveTask($TaskData);
-   }
-
-   /**
-    * 寫入任務包含哪些成員
-    * @param  Array  $taskInfo    task 資料
-    * @param  string $createdUser 建立者員工編號
-    * @param  date   $createdDate 建立日期
-    * @return bool
-    */
-   private function insertUserTask($taskInfo, $createdUser, $createdDate){
-        $UserTaskData = [];
-        foreach ($taskInfo as $task) {
-           
-            $res = $this->basicInfoRepository->getUserByLocationFunction($task->task_location, $task->task_function);
-           
-              foreach ($res as $user) {
-                   $UserTaskData[] = array(
-                    'emp_no'=>$user->emp_no,
-                    'task_row_id'=>$task->row_id,
+                $taskId = $this->taskRepository->saveTask($taskData);
+                foreach ($user as $empNo) {
+                   $userTaskData[] = array(
+                    'emp_no'=>$empNo,
+                    'task_row_id'=>$taskId,
                     'created_user'=>$createdUser,
                     'created_at'=>$createdDate
                     );
-              }
+                }
+
+            }
+           
         }
-        return $this->taskRepository->saveUserTask($UserTaskData);
+        return $this->taskRepository->saveUserTask($userTaskData);
    }
 
    /**
@@ -537,7 +496,7 @@ class EventService
    public function sendPushMessageToEventUser($eventId, Array $queryParam, $empNo, $action){
        
        $result = null;
-       $to = $this->getPushUserListByEvent($eventId, $action);
+       $to = $this->getPushUserListByEvent($eventId);
 
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($eventId, $empNo);

@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use Mockery\CountValidator\Exception;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -57,7 +56,7 @@ class BasicInfoController extends Controller
                     'Content'=>$resultList]);
             }
 
-        } catch (Exception $e){
+        } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
@@ -98,7 +97,7 @@ class BasicInfoController extends Controller
             }
             
           \DB::commit();
-        } catch (Exception $e){
+        } catch (\Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>"",
@@ -116,7 +115,7 @@ class BasicInfoController extends Controller
             
             $res = $this->userService->registerSuperUserToMessage();
 
-         } catch (Exception $e){
+         } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>"",
             'Message'=>$e->getMessage()]);

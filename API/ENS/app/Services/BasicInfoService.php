@@ -115,8 +115,8 @@ class BasicInfoService
      * 用funciotn-location查詢有哪些成員
      * @return Collection     query result  
      */
-    public function getUserByFunctionLocation(){
-        $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($location, $function);
+    public function getUserByLocationFunction($location, $function){
+        return $this->basicInfoRepository->getUserByLocationFunction($location, $function);
     }
 
     /**
