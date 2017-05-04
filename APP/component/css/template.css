@@ -192,12 +192,9 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 }
 
 .app-popup .close {
-    /*width: 4vw;
-    height: 4vw;*/
     position: relative;
     top: -5.07vw;
     left: 90%;
-    /*padding: 3.07vw 3vw 3vw 3vw;*/
     z-index: 10;
     width: 9.661vw;
     height: 9.661vw;
