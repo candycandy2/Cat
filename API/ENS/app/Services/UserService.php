@@ -61,4 +61,21 @@ class UserService
         }
         return ['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>'用戶註冊成功','Content'=>implode(',',$registeredUser)];
     }
+
+    /**
+     * 取得管理員及主管
+     * @return mixed
+     */
+    public function getSuperUser(){
+        return $this->userRepository->getSuperUser();
+    }
+
+     /**
+     * 依員工編號取得使用者資訊
+     * @param  Array  $empNoArr 員工編號清單
+     * @return mixed
+     */
+    public function getUserInfoByEmpNo(Array $empNoArr){
+        return $this->userRepository->getUserInfoByEmpNo($empNoArr);
+    }
 }
