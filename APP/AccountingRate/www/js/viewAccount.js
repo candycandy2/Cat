@@ -200,6 +200,12 @@ $("#viewAccount").pagecontainer({
               $("#popupA").popup( { dismissible : false});
               $("#popupB").popup( { dismissible : false });
             */
+
+            //Adjust margin-top of Tab content
+            var navbarHeight = $(".tabs-top-fixed").height();
+            var mainPaddingTop = parseInt(document.documentElement.clientWidth * 3.99 / 100, 10);
+            var mainwordMarginTop = parseInt(navbarHeight - mainPaddingTop, 10);
+            $(".mainword").css("margin-top", mainwordMarginTop + "px");
         });
 
 
@@ -282,11 +288,13 @@ $("#viewAccount").pagecontainer({
             Reorganization();
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             $("#eventWorkConfirmA").popup('close');
+
+            footerFixed();
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
-
+            footerFixed();
         });
 
         /********************************** Popup  *************************************/
@@ -303,12 +311,12 @@ $("#viewAccount").pagecontainer({
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
 
             $("#eventWorkConfirmB").popup('close');
-
+            footerFixed();
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
             $("#eventWorkConfirmB").popup('close');
-
+            footerFixed();
         });
 
         /********************************** Popup  *************************************/
@@ -332,6 +340,7 @@ $("#viewAccount").pagecontainer({
 
             Jsonparsenext(1);
             $("#popupA").popup('close');
+            footerFixed();
         });
 
         /********************************** Popup *************************************/
@@ -358,6 +367,7 @@ $("#viewAccount").pagecontainer({
 
 
             $("#popupB").popup('close');
+            footerFixed();
         });
         /********************************** Favorite*************************************/
 
