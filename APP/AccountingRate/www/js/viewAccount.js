@@ -11,17 +11,18 @@ $("#viewAccount").pagecontainer({
 
         //review by alan
         //assign meaningful variable 
-        var flag1 = 0;
-        var flag2 = 0;
+        var CheckifReloadflag1 = 0;
+        var CheckifReloadflag2 = 0;
         var array = [];
 
         var arrayRate = [];
-        var arrayadd = ["NTD","EUR","GBP"];
+        var arrayadd = ["NTD", "EUR", "GBP"];
         var arrayaddtemp = [];
         var arrayrateadd = [];
         var arraycomb = [];
         var arrayratecomb = [];
         var packJsontemp = [];
+        var ScenarioUTC = 0;
 
         var storage = JSON.parse(localStorage.getItem("arrayadd"));
 
@@ -31,7 +32,7 @@ $("#viewAccount").pagecontainer({
                 console.log('YA-already10 favorite');
             } else if (storage == null) {
                 console.log('YA-52 initial');
-                arrayadd = ["NTD","EUR","GBP"];
+                arrayadd = ["NTD", "EUR", "GBP"];
                 localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             }
             console.log('arrayadd_' + arrayadd);
@@ -84,23 +85,94 @@ $("#viewAccount").pagecontainer({
         var nowTimstamp = window.Today.TimeStamp();
         window.Jsonflagnow = todayMonth;
         var Parameter = TWOMonthDate;
+        /********************************** Scenario  *************************************/
 
-        $(".buttononeCountry1").text(FromStatus);
-        $(".buttononeCountry2").text(ToStatus);
+        function ModifyScenario() {
+            //todayYear   = ScenarioYear  ;  //global
+            //todayMonth  = ScenarioMonth ;
+            //Parameter   = UTCtime;
 
-        todayYearmod = todayYear;
-        var todayYearmod = todayYearmod.toString().substring(2, 4);
+        }
 
-        $(".frag1").text(MonthWord[todayMonth - 1] + "-" + todayYearmod);
-        $(".frag2").text(MonthWord[todayMonth - 2] + "-" + todayYearmod);
+        function Monthchange() //don't move it
+        {
+            $(".buttononeCountry1").text(FromStatus);
+            $(".buttononeCountry2").text(ToStatus);
 
-        $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
-        $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
+            todayYearmod = todayYear;
+            var todayYearmod = todayYearmod.toString().substring(2, 4);
 
+            $(".frag1").text(MonthWord[todayMonth - 1] + "-" + todayYearmod);
+            $(".frag2").text(MonthWord[todayMonth - 2] + "-" + todayYearmod);
+
+            $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
+            $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
+
+
+        }
+
+        $(document).on("click", ".buttonScenario1", function() { //add to html
+
+
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() + 1);
+            var nd = new Date(newDate);
+            console.log("Scenario1" + nd);
+            ScenarioUTC = Math.round(nd / 1000);
+            console.log("ScenarioUTC1" + ScenarioUTC);
+
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() + 1 - 60);
+            var nd = new Date(newDate);
+            console.log("Scenario1" + nd);
+            ScenarioTWOMonthUTC = Math.round(nd / 1000);
+            console.log("ScenarioUTC1" + ScenarioUTC);
+
+
+            TWOMonthDate = ScenarioTWOMonthUTC;
+            // var ScenarioYear  = todayYear;
+            //var ScenarioMonth  = todayMonth;
+            //var ScenarioDay    = todayDate;
+
+            //$(".buttononeCountry1").html(tmpsetT);
+            // $(".buttononeCountry2").html(tmpsetF);
+            ModifyScenario();
+            Monthchange();
+            var EventList = new GetAccountingRate(); //call API1
+        });
+        $(document).on("click", ".buttonScenario2", function() { //add to html
+            // var ScenarioYear  = todayYear;
+            //var ScenarioMonth  = todayMonth;
+            //var ScenarioDay    = todayDate;
+
+            //$(".buttononeCountry1").html(tmpsetT);
+            // $(".buttononeCountry2").html(tmpsetF);
+            ModifyScenario();
+            Monthchange();
+            var EventList = new GetAccountingRate(); //call API1
+        });
+        $(document).on("click", ".buttonScenario3", function() { //add to html
+            // var ScenarioYear  = todayYear;
+            //var ScenarioMonth  = todayMonth;
+            //var ScenarioDay    = todayDate;
+
+            //$(".buttononeCountry1").html(tmpsetT);
+            // $(".buttononeCountry2").html(tmpsetF);
+            ModifyScenario();
+            Monthchange();
+            var EventList = new GetAccountingRate(); //call API1
+        });
+
+
+
+        /********************************** Scenario  *************************************/
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
-            Expiretime(); 
-            Jsonparse(1); 
+            Expiretime();
+            Jsonparse(1);
+            Monthchange();
             initial();
         });
 
@@ -282,7 +354,7 @@ $("#viewAccount").pagecontainer({
             $("#popupB").popup('close');
         });
         /********************************** Favorite*************************************/
- 
+
         function Reorganization() {
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
@@ -292,14 +364,17 @@ $("#viewAccount").pagecontainer({
 
 
         function Favorite() {
-            //Get] Initial  from array and add to the id 
             for (var i = 0; i < arrayadd.length; i++) {
                 statuscountrypop = arrayadd[i]; {
-                    $("#" + statuscountrypop).addClass("favorite");
+                    //$(["class='chooseNTD'"][id="#NTD"]).addClass("favorite")
+                    //$(".choose" + statuscountrypop).addClass("favorite");
+                    //$(".choose"+ statuscountrypop).addClass("favorite"); //twice X must use id **
+                    //$("#choose" + statuscountrypop).addClass("favorite"); //only for add by array id
+                    $(".choose#" + statuscountrypop).addClass("favorite"); //twice X must use only id **
+
                 }
             }
-            if ($("li").children(".favorite")) //use favorite to contrl star (not nontstar) 
-            {
+            if ($("li").children(".favorite")) {
                 $("li").children(".favorite").children(".star_icon").css("opacity", "1"); //li id 
                 $("li").children(".favorite").children(".nonstar_icon").css("opacity", "1"); //li id 
 
@@ -387,11 +462,11 @@ $("#viewAccount").pagecontainer({
         }
 
         function CountrylisthtmlFirst(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1 select ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA " id="litest">' + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function CountrylisthtmlSecond(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2 select ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"' + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function Pophtmlfirst() {
@@ -415,22 +490,22 @@ $("#viewAccount").pagecontainer({
         function Jsonparsecheck() {
 
             if (packJsontemp == 0) {
-                flag2 = 1;
+                CheckifReloadflag2 = 1;
             }
 
             //review by alan
             //assign meaningful variable : flag1, flag2
             /* 20170502  add by 新增需求*/
-            if (flag2 == 1) {
+            if (CheckifReloadflag2 == 1) {
                 packJsontemp = JSON.parse(localStorage.getItem('packJsontemp'));
                 console.log("690-1. Null use local");
 
-            } else if ((flag2 != 0) && (flag1 == 0)) {
+            } else if ((CheckifReloadflag2 != 0) && (CheckifReloadflag1 == 0)) {
                 Parameter = TWOMonthDate;
                 var EventList = new GetAccountingRate();
-                flag1 = 1; //Had got all data
+                CheckifReloadflag1 = 1; //Had got all data
                 console.log("690-2 .Call again API");
-                console.log(flag1);
+
             }
             console.log("690-3 .run local");
             Jsonparsenext(1);
@@ -491,7 +566,7 @@ $("#viewAccount").pagecontainer({
                     console.log(arrayadd[i] + '_' + ratetemp);
                 }
             }
-            Reorganization();           
+            Reorganization();
             Buttonimg();
         }
         /********************************** API*************************************/

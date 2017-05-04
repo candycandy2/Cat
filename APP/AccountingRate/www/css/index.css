@@ -138,7 +138,7 @@
 
 .mainword {
     height: 16VW;
-    margin-top: 3.999VW;
+    margin-top: 2.999VW;
     border-top: #AAAAAA 0.1px solid !important;
 }
 
@@ -168,6 +168,12 @@
 
 .CountryA {
     background-color: #f9f9f9!important;
+}
+
+#ultestA{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling :touch;
 }
 
 #ultestA li {
@@ -461,6 +467,12 @@ element.style {
     padding-left: 3.7VW;
 }
 
+.fragment-1{
+  
+} 
+
+
+
 .header-style {
     background-color: #492f7f;
 }
@@ -551,9 +563,9 @@ element.style {
 
 .popAmsgli {
     margin-top: 8VW;
-    margin-left: 5VW;
+    margin-left: 2.36VW;
     /* All currency*/
-    padding-left: 5VW;
+    padding-left: 2.36VW;
     background: #2c89bc;
     font-size: 5VW;
     color: white;
@@ -561,11 +573,9 @@ element.style {
 }
 
 .popAmsg {
-    font-size: 5VW;
-    background: #2c89bc;
-    color: white;
+    font-size: 3.97VW;   
     width: 100%;
-    padding: 2.33VW 0;
+    padding-left: 2.36VW;
     display: inline-block;
 }
 
