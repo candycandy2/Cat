@@ -65,7 +65,7 @@ class MessageController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>$getMessageCountRes->Content]);
             
-        } catch (Exception $e){
+        } catch (\Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);

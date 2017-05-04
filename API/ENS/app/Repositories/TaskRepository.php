@@ -94,7 +94,7 @@ class TaskRepository
      * @return bool
      */
     public function saveTask(Array $data){
-        return $this->task->insert($data);
+        return $this->task->insertGetId($data);
     }
 
     /**
@@ -105,19 +105,7 @@ class TaskRepository
     public function saveUserTask(Array $data){
         return $this->userTask->insert($data);
     }
-
-    /**
-     * 取得事件相關人
-     * @param  int $eventId en_event.row_id 
-     * @return mixed 
-     */
-    public function getAllUserFromTaskbyEventId($eventId){
-       return $this->userTask
-            ->join( 'en_task', 'en_task.row_id', '=', 'en_user_task.task_row_id')
-            ->where('event_row_id', '=', $eventId)
-            ->select('emp_no')
-            ->get();
-    }
+    
     /**
      * 依據任務id更新事件
      * @param  String   $empNo      員工編號
