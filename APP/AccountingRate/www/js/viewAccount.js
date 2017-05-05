@@ -73,9 +73,7 @@ $("#viewAccount").pagecontainer({
         var todayDate = Today.getDate();
         var lastMonth = Today.getMonth();
 
-        //review by alan
-        //assign meaningful variable : UTC => TWOMonthDate
-        //replace calc time function, 2017/1, 2017,2...5/31 -> 2/31
+       
 
         var date = new Date(todayYear, todayMonth - 1, todayDate);
         var newDate = new Date(date);
@@ -196,10 +194,10 @@ $("#viewAccount").pagecontainer({
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
 
-            /*201704test
+          
               $("#popupA").popup( { dismissible : false});
               $("#popupB").popup( { dismissible : false });
-            */
+          
 
             //Adjust margin-top of Tab content
             var navbarHeight = $(".tabs-top-fixed").height();
@@ -223,6 +221,7 @@ $("#viewAccount").pagecontainer({
             FromStatus = tmpsetT;
             ToStatus = tmpsetF;
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
+            Favorite();
             Jsonparsenext(1);
             Buttonimg();
         });
@@ -474,15 +473,34 @@ $("#viewAccount").pagecontainer({
         }
         /********************************** html  *************************************/
         function CountrylisthtmlOne(index) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1 select ' + FromStatus + '"' + 'id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayRate[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
+            + '<div class="Listdiv1 select choose ' + FromStatus + '"' + 'id=' 
+            + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
+            + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
+            + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' 
+            + '<div class="Listdiv2 select choose"'+'id=' 
+            + ToStatus + '>'  
+            + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag2" src ="img/tmp/' 
+            + ToStatus + '.png">' + '<div class="Listdiv3">' 
+            + '<span class="ListDollar1" >' + arrayRate[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function CountrylisthtmlFirst(index, country) {
-            return '<li data-icon="false" class="1_li CountryA " id="litest">' + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA " id="litest">' 
+            + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function CountrylisthtmlSecond(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"' + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">'
+             + '<div class="Listdiv1" id=' + FromStatus + '>' 
+             + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+             + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
+             + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
+             + '<div  class="Listdiv1equalmark4">=</div>' + '</div>'
+              + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"'
+               + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function Pophtmlfirst() {
@@ -509,8 +527,6 @@ $("#viewAccount").pagecontainer({
                 CheckifReloadflag2 = 1;
             }
 
-            //review by alan
-            //assign meaningful variable : flag1, flag2
             /* 20170502  add by 新增需求*/
             if (CheckifReloadflag2 == 1) {
                 packJsontemp = JSON.parse(localStorage.getItem('packJsontemp'));
@@ -584,14 +600,7 @@ $("#viewAccount").pagecontainer({
             }
             Reorganization();
             Buttonimg();
-        }
-        /********************************** API*************************************/
-
-        //review by alan
-        //remove unused function
-        $('#viewAccount').keypress(function(event) {
-
-        });
+        }     
 
         /********************************** API*************************************/
 
