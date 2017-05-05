@@ -283,9 +283,7 @@ function loadingMask(action) {
         if ($(".loader").length === 0) {
             $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
         } else {
-            $(".loader").show("fast", function(){
-                $(".loader").css("top", $(document).scrollTop());
-            });
+            $(".loader").show();
         }
     } else if (action === "hide") {
         $(".loader").hide();
@@ -364,4 +362,9 @@ function adjustPageMarginTop() {
             "margin-top": mainMarginTop + "px"
         });
     }
+}
+
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
 }

@@ -50,7 +50,7 @@
         <div id="eventLocationListContent">
             <template id="tplEventLocationList">
                 <div class="event-add-location-list">
-                    <div class="left">
+                    <div class="left delete-event-location">
                         <span class="delete"></span>
                     </div>
                     <div class="right">
@@ -106,7 +106,7 @@
         <div id="eventaAdditionalContent">
             <template id="tplEventAdditionalList">
                 <div class="event-add-additional-list">
-                    <div class="left">
+                    <div class="left delete-event-additional">
                         <span class="delete"></span>
                     </div>
                     <div class="right event-additional-number">
@@ -118,11 +118,9 @@
 
         <!--template @popup content > Template / Descirption were empty-->
         <template id="tplTemplateDescEmpty">
-            <!--header: Title or Button-->
             <div class="header font-style1">
-                請輸入範本
+                請輸入標題
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
@@ -132,11 +130,9 @@
 
         <!--template @popup content > No Related Event Exist-->
         <template id="tplNoRelatedEventExist">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 無可選事件
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
@@ -146,11 +142,9 @@
 
         <!--template @popup content > Location / Function does not select-->
         <template id="tplSelectLocationFunction">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 請選擇位置 / IT Function
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
@@ -160,11 +154,9 @@
 
         <!--template @popup content > Done DateTime less then Now-->
         <template id="tplDoneDateTimeAlert">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 希望完成時間需要大於現在時間
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
@@ -174,11 +166,9 @@
 
         <!--template @popup content > Event Add Confirm-->
         <template id="tplEventAddConfirm">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 確定發送緊急通報?
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-two font-style8">
                     <div class="cancel">取消</div>
@@ -188,12 +178,10 @@
         </template>
 
         <!--template @popup content > Event Edit Cancel Confirm-->
-        <template id="tplEventEditCancelConfirm">
-            <!--header: Title or Button-->
-            <div class="header font-style1">
+        <template id="tplEventAddEditCancelConfirm">
+            <div class="header font-style1 header-text">
                 確定取消編輯?
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-two font-style8">
                     <div class="cancel">取消</div>
@@ -204,11 +192,9 @@
 
         <!--template @popup content > Event Add Fail-->
         <template id="tplEventAddFail">
-            <!--header: Title or Button-->
             <div class="header font-style1">
                 通訊異常，請聯絡 ITS
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-one font-style8">
                     <div class="confirm">確認</div>
@@ -218,11 +204,9 @@
 
         <!--template @popup content > Event Member Error-->
         <template id="tplEventMemberError">
-            <!--header: Title or Button-->
             <div class="header font-style1">
-                成員資訊有誤，請修改成員資訊
+                IT Function管理員資料不正確，請至後台修正
             </div>
-            <!--footer: Button-->
             <div class="footer">
                 <div class="btn-one font-style8">
                     <div class="confirm">確認</div>

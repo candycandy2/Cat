@@ -100,7 +100,6 @@ class EventController extends Controller
                 'Content'=>""]);
             }
             
-
             //has related
             if(isset($data['related_event_row_id']) && $data['related_event_row_id'] != ""){
 
@@ -112,7 +111,8 @@ class EventController extends Controller
                     return $result;
                 }
 
-            }            
+            } 
+                  
             //check task
             foreach ($data['basicList'] as $key => $basicInfo) {
                 if(trim($basicInfo['location']) == "" || trim($basicInfo['function']) == ""){
@@ -128,27 +128,38 @@ class EventController extends Controller
                 }
             }
 
+            //取得任務參與者
+            $eventUser = $this->getEventAndTaskUser($data['basicList'])['eventUser'];
+            $taskUserList =  $this->getEventAndTaskUser($data['basicList'])['taskUserList'];
+
+            //檢查設備管理員及主管資訊，有一個錯誤就失敗
+            foreach ($eventUser as $preUserEmpNo) {
+                $checkUserRegisterMessageRes = CommonUtil::checkUserStatusByUserEmpNo($preUserEmpNo);
+                if(!$checkUserRegisterMessageRes ){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014921_pushUserError,
+                    'Message'=>'IT Function管理員資料不正確, 請至後台修正',
+                    'Content'=>'']);
+                }
+            }
+
             $queryParam =  array(
                 'lang' => $data['lang'],
                 'need_push' =>  $data['need_push'],
                 'app_key' =>  $data['app_key']
                 );
-            //create event
-            $eventId = $this->eventService->newEvent($empNo, $data, $queryParam);
-            //send push
-            $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
-            if($sendPushMessageRes->result_code != 1){
-                //新增事件時會發送推播，如遇到有人員離職或停權，則擋下提示修改BasicInfo
-                if($sendPushMessageRes->result_code == '000914' || $sendPushMessageRes->result_code == '000912'){
-                    \DB::rollBack();
-                    return $result = response()->json(['ResultCode'=>ResultCode::_014921_pushUserError,
-                    'Message'=>'成員資訊有誤，請修改成員資訊',
-                    'Content'=>'']);
-                }
-                
+            
+            //Step 1. create chat room
+            $owner = $this->userService->getUserInfoByEmpNo(array($empNo))[0]->login_id;
+            $eventUsers = $this->userService->getUserInfoByEmpNo($eventUser);
+            $desc = $data['event_title'];
+            $createChatRoomRes = $this->eventService->createChatRoom($owner, $eventUsers, $desc);
+
+            if(is_null($createChatRoomRes)){
+                 \DB::rollBack();
+                    return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+                'Content'=>""]);
             }
-            //create chat room
-            $createChatRoomRes =  json_decode($this->eventService->createChatRoomByEvent($empNo, $eventId, $data['event_title']));
+            $createChatRoomRes = json_decode($createChatRoomRes);
             if($createChatRoomRes->ResultCode != 1){
                 \DB::rollBack();
                 if($createChatRoomRes->ResultCode == '998002'){
@@ -166,17 +177,58 @@ class EventController extends Controller
                      'Content'=>""]);
                 }
             }
-            $updateData['chatroom_id'] =  $createChatRoomRes->Content->gid;
-            $this->eventRepository->updateEventById($empNo, $eventId, $updateData);
-           
+
+            //Step2. create event
+            $chatroomId = $createChatRoomRes->Content->gid;
+            $data['chatroom_id'] = $chatroomId;
+            $eventId = $this->eventService->newEvent($empNo, $data, $taskUserList, $eventUser, $queryParam);
             \DB::commit();
+
+            //Step3. send push
+            $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
+        
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
-                    'Content'=>$createChatRoomRes->Content]);
-        } catch (Exception $e){
+                'Content'=>$createChatRoomRes->Content]);
+
+        } catch (\Exception $e){
             \DB::rollBack();
+            if(isset($chatroomId)){
+                $this->eventService->deleteChatRoom($chatroomId);
+            }
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
+    }
+
+    /**
+     * 取得事件及任務參與者
+     * @param  array $basicList location-function 列表
+     * @return array array('eventUser'=>array(),'taskUserList'=>array());
+     */
+    private function getEventAndTaskUser($basicList){
+        $result = array('eventUser'=>array(),'taskUserList'=>array());
+
+         $UniqueTask = $this->eventService->getUniqueTask($basicList);
+            foreach ($UniqueTask as $location => $functionList) {
+                foreach ($functionList as $index =>$function) {
+                    $result['taskUserList'][$location][$function] = [];
+                    $taskUser = $this->basicInfoService->getUserByLocationFunction( $location ,$function);
+                   
+                    if(!is_null($taskUser)){
+                        foreach ($taskUser as $user) {
+                            $result['taskUserList'][$location][$function][] = $user->emp_no;
+                            $result['eventUser'][] = $user->emp_no;
+                        } 
+                    }
+                }
+            }
+            //取得事件參與者
+            $superUser = $this->userService->getSuperUser();
+            foreach ($superUser as $user) {
+                 $result['eventUser'][] = $user->emp_no;
+            }
+            $result['eventUser'] = array_unique($result['eventUser']);
+        return $result;
     }
 
     /**
@@ -226,7 +278,7 @@ class EventController extends Controller
             }
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
-        } catch (Exception $e){
+        } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
@@ -274,7 +326,7 @@ class EventController extends Controller
 
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
-        } catch (Exception $e){
+        } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
@@ -399,7 +451,7 @@ class EventController extends Controller
            return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                     'Content'=>""]);
 
-        } catch (Exception $e){
+        } catch (\Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);           
@@ -519,7 +571,7 @@ class EventController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                         'Content'=>""]);
 
-        } catch (Exception $e){
+        } catch (\Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
@@ -573,7 +625,7 @@ class EventController extends Controller
             }
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Content'=>$eventList]);
-        } catch (Exception $e){
+        } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }

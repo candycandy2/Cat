@@ -253,6 +253,7 @@ $("#viewEventList").pagecontainer({
             this.successCallback = function(data) {
                 var resultCode = data['ResultCode'];
                 var openEventDetail = false;
+                getEventListFinish = true;
 
                 if (resultCode === "014901") {
                     messageCountData = data['Content'];
@@ -300,10 +301,20 @@ $("#viewEventList").pagecontainer({
                 eventListMsg.prop("id", "event-list-msg-" + eventListData[i].event_row_id);
 
                 //Created User
-                eventListMsg.find(".event-list-msg-top .name").html(eventListData[i].created_user);
+                if (eventListData[i].updated_user === null) {
+                    var eventOwner = eventListData[i].created_user;
+                } else {
+                    var eventOwner = eventListData[i].updated_user;
+                }
+                eventListMsg.find(".event-list-msg-top .name").html(eventOwner);
 
                 //Create Datetime - Convert with TimeZone
-                var tempDate = dateFormatYMD(eventListData[i].created_at);
+                if (eventListData[i].updated_at === null) {
+                    var eventDateTime = eventListData[i].created_at;
+                } else {
+                    var eventDateTime = eventListData[i].updated_at;
+                }
+                var tempDate = dateFormatYMD(eventDateTime);
                 var createTime = new Date(tempDate);
                 var createTimeConvert = createTime.TimeZoneConvert();
                 createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
@@ -721,6 +732,10 @@ $("#viewEventList").pagecontainer({
             }
 
             footerFixed();
+
+            //set padding bottom
+            var paddingBottom = parseInt(document.documentElement.clientWidth * 18 / 100, 10);
+            $("#viewEventList").css("padding-bottom", paddingBottom + "px");
         });
 
         /********************************** dom event *************************************/
@@ -765,7 +780,7 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#eventFunctionList .confirm", function() {
             $("#eventFunctionList").popup("close");
-            $("#eventFunctionList").remove();
+            $("#eventFunctionList").popup("destroy").remove();
             footerFixed();
         });
 

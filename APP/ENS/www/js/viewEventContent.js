@@ -44,18 +44,49 @@ $("#viewEventContent").pagecontainer({
 
                         eventContentData = data['Content'];
 
-                        $("#contentEventContent .event-list-msg").remove();
-
                         //Event List Msg
                         var eventListMsgHTML = $("template#tplEventListMsg").html();
                         var eventListMsg = $(eventListMsgHTML);
                         eventListMsg.css("margin-bottom", "2.14vw");
 
+                        //Status: 未完成 / 完成
+                        var event_status = data['Content'].event_status;
+                        if (event_status === "完成") {
+                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
+                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
+
+                            eventFinish = true;
+                        } else {
+                            eventFinish = false;
+                        }
+
+                        //Before Edit, check Event Status again
+                        if (action === "checkStatusBeforeEdit") {
+                            if (!eventFinish) {
+                                $.mobile.changePage('#viewEventAdd');
+                            } else {
+                                $("#eventFinishedConfirm").popup("open");
+                            }
+                            return;
+                        }
+
+                        $("#contentEventContent .event-list-msg").remove();
+
                         //Created User
-                        eventListMsg.find(".event-list-msg-top .name").html(data['Content'].created_user);
+                        if (data['Content'].updated_user === null) {
+                            var eventOwner = data['Content'].created_user;
+                        } else {
+                            var eventOwner = data['Content'].updated_user;
+                        }
+                        eventListMsg.find(".event-list-msg-top .name").html(eventOwner);
 
                         //Create Datetime - Convert with TimeZone
-                        var tempDate = dateFormatYMD(data['Content'].created_at);
+                        if (data['Content'].updated_at === null) {
+                            var eventDateTime = data['Content'].created_at;
+                        } else {
+                            var eventDateTime = data['Content'].updated_at;
+                        }
+                        var tempDate = dateFormatYMD(eventDateTime);
                         var createTime = new Date(tempDate);
                         var createTimeConvert = createTime.TimeZoneConvert();
                         createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
@@ -78,21 +109,13 @@ $("#viewEventContent").pagecontainer({
 
                         //Type: 緊急通報 / 一般通報
                         var event_type = data['Content'].event_type;
+                        var pageTitle = "緊急";
                         if (event_type === "一般通報") {
+                            pageTitle = "一般";
                             eventListMsg.find(".event-list-msg-top .link .normal").show();
                             eventListMsg.find(".event-list-msg-top .link .urgent").hide();
                         }
-
-                        //Status: 未完成 / 完成
-                        var event_status = data['Content'].event_status;
-                        if (event_status === "完成") {
-                            eventListMsg.find(".event-list-msg-top .event-status .done").show();
-                            eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
-
-                            eventFinish = true;
-                        } else {
-                            eventFinish = false;
-                        }
+                        $("#pageTitle").html(pageTitle);
 
                         //Event Desc
                         var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
@@ -382,8 +405,8 @@ $("#viewEventContent").pagecontainer({
         //For Plugin Camera
         function openFilePicker(selection) {
             //var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
-            //var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
-            var srcType = Camera.PictureSourceType.CAMERA;
+            var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            //var srcType = Camera.PictureSourceType.CAMERA;
             var options = setOptions(srcType);
             var func = createNewFileEntry;
 
@@ -414,6 +437,22 @@ $("#viewEventContent").pagecontainer({
                 }, onErrorCreateFile);
 
             }, onErrorResolveUrl);
+        }
+
+        //For Plugin Camera
+        function getFileEntry(imgUri) {
+            window.resolveLocalFileSystemURL(imgUri, function success(fileEntry) {
+
+                // Do something with the FileEntry object, like write to it, upload it, etc.
+                // writeFile(fileEntry, imgUri);
+                console.log("got file: " + fileEntry.fullPath);
+                //displayFileData(fileEntry.nativeURL, "Native URL");
+
+            }, function () {
+              // If don't get the FileEntry (which may happen when testing
+              // on some emulators), copy to a new FileEntry.
+                createNewFileEntry(imgUri);
+            });
         }
 
         //Full-screen Photo to confirm > cancel or confirm
@@ -604,6 +643,13 @@ $("#viewEventContent").pagecontainer({
 
             tplJS.Popup("viewEventContent", "contentEventContent", "append", eventCancelWorkDoneConfirmData);
 
+            //UI Popup : Event has finished Confirm
+            var eventFinishedConfirmData = {
+                id: "eventFinishedConfirm",
+                content: $("template#tplEventFinishedConfirm").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", eventFinishedConfirmData);
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
@@ -611,11 +657,15 @@ $("#viewEventContent").pagecontainer({
 
             //Only [admin] can Edit Event
             if (checkAuthority("admin")) {
-                $("#eventEdit").show();
+                if (!eventFinish) {
+                    $("#eventEdit").show();
+                }
             }
 
             $(".previewImageDiv").hide();
             $(".previewImageDiv-AddHeight").hide();
+            $('#msgText').prop('placeholder', "請輸入訊息");
+            $("#msgText").val("");
 
             /*
             //Open Camera in Mobile Phone
@@ -653,6 +703,20 @@ $("#viewEventContent").pagecontainer({
                   file.size + "\n" +
                   file.lastModifiedDate);
 
+            var test = new File(
+                [""],
+                "Screenshot_2017-02-17-10-19-35.png",
+                {
+                    type: "image/png",
+                    lastModified: 1487297975850,
+                    lastModifiedDate: new Date(),
+                    name: "Screenshot_2017-02-17-10-19-35.png",
+                    size: 137032,
+                    webkitRelativePath: ""
+                }
+            )
+            console.log(test);
+
             callFileReader(file);
         });
 
@@ -680,7 +744,8 @@ $("#viewEventContent").pagecontainer({
         //Event Edit Button
         $(document).on("click", "#eventEdit", function() {
             if (!eventFinish) {
-                $.mobile.changePage('#viewEventAdd');
+                //check Event finish status again
+                var eventDetail = new getEventDetail(eventRowID, "checkStatusBeforeEdit");
             }
         });
 
@@ -716,6 +781,12 @@ $("#viewEventContent").pagecontainer({
             updateTaskStatus(0);
         });
 
+        //Event Finished
+        $(document).on("click", "#eventFinishedConfirm .confirm", function() {
+            $("#eventFinishedConfirm").popup("close");
+            footerFixed();
+        });
+
         //Chatroom Msg Button
         $(document).on("click", "#msgButton", function() {
 
@@ -728,13 +799,12 @@ $("#viewEventContent").pagecontainer({
             var uploadImg = false;
             var fid = "msgPhoto";
 
-            if (msg.length === 0 || msg === "請輸入訊息") {
+            if (msg.length === 0) {
                 uploadText = false;
             }
 
             if (uploadText) {
                 if (msgController.isInited) {
-
                     msgController.SendText(gid, gname, msg, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
@@ -757,6 +827,7 @@ $("#viewEventContent").pagecontainer({
                             };
 
                             chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            $("#msgText").val("");
                         }
                     }, function(errorResult) {
                         console.log("---------------errorResult");
@@ -770,39 +841,40 @@ $("#viewEventContent").pagecontainer({
             }
 
             if (uploadImg) {
-                //console.log(photoUrl);
-                msgController.SendImage(gid, gname, fid, function(successResult) {
-                    console.log("---------------successResult");
-                    console.log(successResult);
-                    loadingMask("show");
+                if (msgController.isInited) {
+                    msgController.SendImage(gid, gname, fid, function(successResult) {
+                        console.log("---------------successResult");
+                        console.log(successResult);
+                        loadingMask("show");
 
-                    if (successResult["result"]["code"] === 0) {
-                        var chatRoomID = successResult["result"]["target_gid"];
-                        var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
-                        var createTime = new Date(ctime * 1000);
+                        if (successResult["result"]["code"] === 0) {
+                            var chatRoomID = successResult["result"]["target_gid"];
+                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
+                            var createTime = new Date(ctime * 1000);
 
-                        var objData = {
-                            msg_id: successResult["result"]["msg_id"],
-                            ctime: ctime,
-                            ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                                padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                                padLeft(createTime.getMinutes(), 2),
-                            from_id: successResult["content"]["from_id"],
-                            msg_type: successResult["content"]["msg_type"],
-                            msg_body: successResult["content"]["msg_body"]
-                        };
+                            var objData = {
+                                msg_id: successResult["result"]["msg_id"],
+                                ctime: ctime,
+                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                                    padLeft(createTime.getMinutes(), 2),
+                                from_id: successResult["content"]["from_id"],
+                                msg_type: successResult["content"]["msg_type"],
+                                msg_body: successResult["content"]["msg_body"]
+                            };
 
-                        chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
 
-                        $(".previewImageDiv").hide();
-                        $(".previewImageDiv-AddHeight").hide();
-                        loadingMask("hide");
-                    }
+                            $(".previewImageDiv").hide();
+                            $(".previewImageDiv-AddHeight").hide();
+                            loadingMask("hide");
+                        }
 
-                }, function(errorResult) {
-                    console.log("---------------errorResult");
-                    console.log(errorResult);
-                });
+                    }, function(errorResult) {
+                        console.log("---------------errorResult");
+                        console.log(errorResult);
+                    });
+                }
             }
         });
 

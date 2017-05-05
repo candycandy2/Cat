@@ -142,7 +142,7 @@ class testController extends Controller
         $members = array("Steven.Yan","Sammi.Yao");
         $desc = "cleo test create chatRoom";
         //var_dump($messageGroupInfo);exit();
-        $qMessage = new Message($owner, $members, $desc);
+        $qMessage = new Message();
         $res = json_decode($qMessage->createChatRoom());
         if($res->ResultCode != 1){
             if($res->ResultCode == '998002'){
@@ -164,5 +164,38 @@ class testController extends Controller
         }
    }
 
+
+    public static function replace_unicode_escape_sequence($match) {
+        return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+
+    }
+
+    public static function unicodeDecode($data) {
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'self::replace_unicode_escape_sequence', $data);
+    }
+
+   public function testlog(){
+        $rs = \DB::connection('mysql_qplay')->table("qp_api_log")->where('row_id','138897')->get();
+        var_dump($rs);
+   }
+
+   /**
+    * 取得事件聊天室清單
+    * @return [type] [description]
+    */
+   public function getChatRoomList(){
+        $userName = 'Cleo.W.Chan';
+        $qMessage = new Message();
+       $res = json_decode($qMessage->getChatRoomList($userName));
+       var_dump($res);
+   }
+
+
+   public function deleteChatRoom(){
+       $gid = '22957935';
+       $qMessage = new Message();
+       $res = json_decode($qMessage->deleteChatRoom($gid));
+       var_dump($res);
+   }
 }
 
