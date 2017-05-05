@@ -38,7 +38,7 @@
 }
 /* Navbar */
 .ui-navbar li .ui-btn {
-    font-size: 2.8vh;
+    font-size: 4.18vw;
     font-weight: bold;
     color: #0f0f0f;
     border-color: #2a88bc;
@@ -176,7 +176,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     font-weight: bold;
     text-align: center;
     position: relative;
-    top: -7.93vw;
+    top: -9.661vw;
 }
 
 .app-popup .ui-content .header.all-center {
@@ -192,13 +192,12 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 }
 
 .app-popup .close {
-    width: 4vw;
-    height: 4vw;
     position: relative;
-    top: -3.07vw;
+    top: -5.07vw;
     left: 90%;
-    padding: 3.07vw 3vw 3vw 3vw;
     z-index: 10;
+    width: 9.661vw;
+    height: 9.661vw;
 }
 
 /* use when info is not enough which makes footer is not at the bottom*/

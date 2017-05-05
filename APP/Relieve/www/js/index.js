@@ -1,5 +1,5 @@
-var QueryReserveDetailQuerydata, ReserveRelieveQuerydata, ReserveCancelQuerydata;
-var queryDate, QueryReserveDetailCallBackData, ReserveRelieveCallBackData, ReserveCancelCallBackData, userID, myEmpNo;
+var QueryReserveDetailQuerydata, ReserveRelieveQuerydata, ReserveCancelQuerydata, QueryMyReserveQuerydata;
+var queryDate, QueryReserveDetailCallBackData, ReserveRelieveCallBackData, ReserveCancelCallBackData, QueryMyReserveCallBackdata, userID, myEmpNo;
 var reserveSite = "QTT";
 var initialAppName = "Relieve";
 var appKeyOriginal = "apprelieve";

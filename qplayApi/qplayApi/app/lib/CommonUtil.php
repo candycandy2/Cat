@@ -484,6 +484,33 @@ class CommonUtil
         return false;
     }
 
+    /**
+     * 把輸入的本文轉譯(主要針對特殊符號和emoji表情)
+     * @param  string     $str 欲編碼的字串
+     * @return object
+     */
+    public static function userTextEncode($str){
+        $str = json_encode($str);
+        $text = preg_replace_callback("/(\\\u[ed][0-9a-f]{3})/i",function($str){
+            return addslashes($str[0]);
+        },$str); //將emoji的unicode留下，其他不動，\ud開頭的emoji改為\\ud
+        return json_decode($text);
+    }
+    
+    /**
+     * 解碼userTextEncode
+     * @param  string     $str 與解碼的字串
+     * @return string
+     */
+    public static function userTextDecode($str){
+        $str = json_encode($str,JSON_UNESCAPED_UNICODE); //暴露出unicode
+        $text = preg_replace_callback('/\\\\\\\\u/i',function($str){
+            return '\\u';
+        },$str); //將\\u改為\u其他不動
+    
+        return $text;
+    }
+
     public static function replace_unicode_escape_sequence($match) {
         return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
 
@@ -556,7 +583,7 @@ class CommonUtil
                     'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
                     'request_body'=>self::unicodeDecode($request_body),
                     'response_header'=>self::unicodeDecode($responseHeader),
-                    'response_body'=>self::unicodeDecode((json_encode($responseBody))),
+                    'response_body'=>self::userTextDecode(self::userTextEncode($responseBody)),
                     'signature_time'=> $SignatureTime,
                     'operation_time'=> number_format($operationTime,3),
                     'created_at'=>$now,
@@ -579,7 +606,7 @@ class CommonUtil
             $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
             $log->request_body= self::unicodeDecode($request_body);
             $log->response_header= self::unicodeDecode($responseHeader);
-            $log->response_body= self::unicodeDecode((json_encode($responseBody)));
+            $log->response_body= self::userTextDecode(self::userTextEncode($responseBody));
             $log->signature_time= (int)$SignatureTime;
             $log->operation_time= (float)(number_format($operationTime,3));
             $log->created_at= $now;
@@ -637,7 +664,7 @@ class CommonUtil
                 'request_header'=>self::unicodeDecode(json_encode($requestHeaderInfo)),
                 'request_body'=>self::unicodeDecode($request_body),
                 'response_header'=>self::unicodeDecode($responseHeader),
-                'response_body'=>self::unicodeDecode(json_encode($responseBody)),
+                'response_body'=>self::userTextDecode(self::userTextEncode($responseBody)),
                 'signature_time'=> $SignatureTime,
                 'operation_time'=> number_format($operationTime,3),
                 'created_at'=>$now,
@@ -660,7 +687,7 @@ class CommonUtil
             $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
             $log->request_body= self::unicodeDecode($request_body);
             $log->response_header= self::unicodeDecode($responseHeader);
-            $log->response_body= self::unicodeDecode((json_encode($responseBody)));
+            $log->response_body= self::userTextDecode(self::userTextEncode($responseBody));
             $log->signature_time= (int)$SignatureTime;
             $log->operation_time= (float)(number_format($operationTime,3));
             $log->created_at= $now;

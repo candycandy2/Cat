@@ -220,8 +220,8 @@ pre {
 .reserveInfo-company{ margin-right: 4.5vw;}
 #today-reserve-area{ margin-bottom: 6.44vw;}
 #today-reserve-area .reserveInfo{ background-color: #fff;}
-#earlier-reserve-area{ color: #666;}
-#earlier-reserve-area .reserveInfo{ background-color: #f6f6f6;}
+#later-reserve-area{ color: #666;}
+#later-reserve-area .reserveInfo{ background-color: #f6f6f6;}
 
 /********************************** public area *************************************/
 *{ box-sizing: border-box;}

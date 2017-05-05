@@ -5,8 +5,8 @@ var appKeyOriginal = "appens";
 var appKey = "appens";
 var pageList = ["viewEventList", "viewEventAdd", "viewEventContent"];
 var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
-var QMessageKey = "e343504d536ebce16b70167e";
-var QMessageSecretKey = "62f87cad6de67db6c968ba50";
+//var QMessageKey = "e343504d536ebce16b70167e";
+//var QMessageSecretKey = "62f87cad6de67db6c968ba50";
 
 var prevPageID;
 var openEventFromQPlay = false;
@@ -25,33 +25,48 @@ window.initialSuccess = function() {
     $.mobile.changePage('#viewEventList');
 
     //QMessage
-    var api_url = serverURL.substr(8);
     var opts = {
         'username': loginData["loginid"],
         'eventHandler': chatRoom.eventHandler,
         'messageHandler': chatRoom.messageHandler,
         'message_key': QMessageKey,
         'message_secret': QMessageSecretKey,
-        'message_api_url_prefix': api_url + "/qmessage/public/"
+        'message_api_url_prefix': serverURL.substr(8) + "/qmessage/public/"
     };
-    msgController = window.QMessage(opts);
 
-    window.checkTimer = setInterval(function() {
+    message = function() {
+        var self = this;
+        this.checkTimeCount = 0;
 
-        if (msgController.isInited) {
-            console.log("-------------isInited:true");
-            stopCheck();
-        } else {
-            console.log("-------------isInited:false");
-        }
+        this.checkTimer = setInterval(function() {
+            self.checkTimeCount++;
+            if (self.isInited) {
+                console.log("-------------isInited:true");
+                self.stopCheck();
+            } else {
+                console.log("-------------isInited:false");
+                if (self.checkTimeCount === 10) {
+                    self.checkTimeCount = 0;
+                    self.stopCheck();
+                    initialMessage();
+                }
+            }
+        }, 1000);
 
-    }, 1000);
-
-    window.stopCheck = function() {
-        if (window.checkTimer != null) {
-            clearInterval(window.checkTimer);
-        }
+        this.stopCheck = function() {
+            if (self.checkTimer != null) {
+                clearInterval(self.checkTimer);
+            }
+        };
     };
+    message.prototype = new window.QMessage(opts);
+    message.prototype.constructor = message;
+
+    initialMessage = function () {
+        msgController = null;
+        msgController = new message();
+    };
+    initialMessage();
 
 }
 
@@ -322,26 +337,41 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
     } else {
         normalTitle = [{
             value: "1",
-            text: "[電力維護公告] XX機房將進行電力保養及維護,請協助關機"
+            text: "[電力維護公告] XX機房將進行電力保養及維護，請協助關機"
         }, {
             value: "2",
-            text: "[空調維護公告] XX機房將進行空調保養及維護,請協助關機"
+            text: "[空調維護公告] XX機房將進行空調保養及維護，請協助關機"
+        }, {
+            value: "3",
+            text: "[維護公告] 2017/MM/DD(星期X) [台北]辦公室網路維護工程，辦公室網路將無法使用"
+        }, {
+            value: "4",
+            text: "[電力/空調維護公告] XX機房[電力/空調]保養及維護已經完成，請協助開機"
         }];
 
         normalContent = [{
             value: "1",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業"
+            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
         }, {
             value: "2",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業"
+            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
+        }, {
+            value: "3",
+            text: "[台北]辦公室將於2017/MM/DD 9:00AM - 5:00PM進行網路維修工程,辦公室網路將無法使用,請通知相關IT系統使用人員"
+        }, {
+            value: "4",
+            text: "XX機房[電力/空調]在下午4:00PM已經完成保養及維護,請協助開機及回報"
         }];
 
         urgentTitle = [{
             value: "1",
-            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常,請協助緊急關機"
+            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常，請協助緊急關機"
         }, {
             value: "2",
-            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障,請協助緊急關機"
+            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障，請協助緊急關機"
+        }, {
+            value: "3",
+            text: "[機房電力／空調正常]目前(4:30PM)  XX機房[電力/空調]已經恢復正常，請協助開機"
         }];
 
         urgentContent = [{
@@ -350,6 +380,9 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
         }, {
             value: "2",
             text: "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+        }, {
+            value: "3",
+            text: "目前(4:30PM)XX機房[電力/空調]已經恢復正常,請機房系統管理員協助開機及回報"
         }];
 
         window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));
@@ -357,11 +390,6 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
         window.localStorage.setItem("urgentTitle", JSON.stringify(urgentTitle));
         window.localStorage.setItem("urgentContent", JSON.stringify(urgentContent));
     }
-}
-
-function footerFixed() {
-    $(".ui-footer").removeClass("ui-fixed-hidden");
-    $(".ui-header").removeClass("ui-fixed-hidden");
 }
 
 //[Android]Handle the back button
