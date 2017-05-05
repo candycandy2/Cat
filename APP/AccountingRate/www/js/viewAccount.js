@@ -409,6 +409,7 @@ $("#viewAccount").pagecontainer({
 
                 $("#ultestA").html(" ");
                 $("#ultestA").append(content);
+                $("#ultestA").listview('refresh');
                 $("#ultestB").html(" ");
                 Favorite(); //add for test 20170424
 
@@ -417,6 +418,7 @@ $("#viewAccount").pagecontainer({
 
                 $("#ultestB").html(" ");
                 $("#ultestB").append(content);
+                $("#ultestB").listview('refresh');
                 $("#ultestA").html(" ");
                 Favorite();
 
@@ -434,6 +436,7 @@ $("#viewAccount").pagecontainer({
             if (tabActiveIDs === "#fragment-1") {
                 $("#ultestA").html(" ");
                 $("#ultestA").append(content);
+                $("#ultestA").listview('refresh');
                 $("#ultestB").html(" ");
                 Favorite(); //add for test 20170424
 
@@ -441,6 +444,7 @@ $("#viewAccount").pagecontainer({
             if (tabActiveIDs === "#fragment-2") {
                 $("#ultestB").html(" ");
                 $("#ultestB").append(content);
+                $("#ultestB").listview('refresh');
                 $("#ultestA").html(" ");
                 Favorite();
             }
@@ -458,6 +462,7 @@ $("#viewAccount").pagecontainer({
             if (tabActiveIDs === "#fragment-1") {
                 $("#ultestA").html(" ");
                 $("#ultestA").append(content);
+                $("#ultestA").listview('refresh');
                 $("#ultestB").html(" ");
                 Favorite();
 
@@ -466,6 +471,7 @@ $("#viewAccount").pagecontainer({
             if (tabActiveIDs === "#fragment-2") {
                 $("#ultestB").html(" ");
                 $("#ultestB").append(content); //insert month  
+                $("#ultestB").listview('refresh');
                 $("#ultestA").html(" ");
                 Favorite(); //add for test 20170424
             }
