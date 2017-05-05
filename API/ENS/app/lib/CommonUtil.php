@@ -161,7 +161,9 @@ class CommonUtil
      */
     public static function utf8_str_to_unicode($utf8_str) {
         $conv = json_encode($utf8_str);
-        $conv = preg_replace('/\\\u/', '%u', $conv);
+        $cov = preg_replace_callback("/(\\\u[0-9a-cf]{4})/i",function($conv){
+            return '%'.$conv[0];
+        },$conv); //emoji的unicode留下，其他改為%uXXXX
         return  json_decode($conv);
     }
 
