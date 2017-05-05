@@ -371,6 +371,9 @@ $("#viewAccount").pagecontainer({
         /********************************** Favorite*************************************/
 
         function Reorganization() {
+
+            arrayadd.sort();
+
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
             Buttonimg();
@@ -506,7 +509,14 @@ $("#viewAccount").pagecontainer({
              + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
              + '<div  class="Listdiv1equalmark4">=</div>' + '</div>'
               + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"'
-               + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+               + 'id= ' + arraycomb[index] + '>' 
+               + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+               + '<img  class="ListviewFlag2" src ="img/tmp/' 
+               + arraycomb[index] + '.png">' + '<div class="Listdiv3">' 
+               + '<span class="ListDollar1" >'
+                + arrayratecomb[index] + '</span> '
+                + '<span class="ListRate2">' + arraycomb[index] 
+                + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function Pophtmlfirst() {
@@ -560,6 +570,9 @@ $("#viewAccount").pagecontainer({
             var cleartest = 0;
             arrayrateadd = [];
 
+ //Favorite 
+
+
             for (var i = 0; i < packJson.length; i++) {
                 getrate = packJson[i].Ex_Rate;
                 getfrom = packJson[i].From_Currency;
@@ -580,6 +593,7 @@ $("#viewAccount").pagecontainer({
                         arraygetrate.push(getrate);
                         array = arraygetTo;
                         arrayRate = arraygetrate;
+                        
                         console.log('OK i:' + i + 'Rate:' + getrate + 'from:' + getfrom + 'to:' + getto + 'Data:' + exdate);
                     }
                 } else if ((FromStatus != "All Currency") && (ToStatus != "All Currency")) {
@@ -604,6 +618,7 @@ $("#viewAccount").pagecontainer({
                     console.log(arrayadd[i] + '_' + ratetemp);
                 }
             }
+
             Reorganization();
             Buttonimg();
         }     
