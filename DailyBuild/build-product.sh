@@ -75,6 +75,16 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="2c55a708-4e9a-4eba-ba4e-d6874f49907c" --packageType="enterprise"
 
 pwd
+cd ../QPlayProduct-Multijob/APP/AccountingRate
+pwd
+# ------ build AccountingRate Staging ------
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env test
+gulp jenkinsdefault --env test
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7c0aeb3e-9fb3-4475-a664-1e522c3ddd28" --packageType="enterprise"
+
+pwd
 cd ../QPlayProduct-Multijob/Production/NewQPlay
 pwd
 # ------ build QPlay Production ------
@@ -133,6 +143,16 @@ gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="c7562e87-ca38-410a-9391-1a260ff70cd9" --packageType="enterprise"
 
+pwd
+cd ../QPlayProduct-Multijob/Production/AccountingRate
+pwd
+# ------ build AccountingRate Production ------
+gulp config --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall
+gulp jenkinsdefault
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="dfd41448-4fda-482c-ba00-b8df8584e734" --packageType="enterprise"
+
 
 ############# Multijob #############
 ####################################
@@ -156,6 +176,8 @@ cp $appfolder/ENS/platforms/android/build/outputs/apk/android-release.apk $binfo
 cp $appfolder/ENS/platforms/iOS/build/device/ENS.ipa $binfolder/ENS.ipa
 cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $binfolder/apprelieve.apk
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
+cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
+cp $appfolder/AccountingRate/platforms/iOS/build/device/appaccountingrate.ipa $binfolder/AccountingRate.ipa
 
 # ------ make directory of Production for apk and ipa ------
 binfolder=~/Documents/QPlayProduct/1.0.0.$dailyver
@@ -174,6 +196,8 @@ cp $appfolder/ENS/platforms/android/build/outputs/apk/android-release.apk $binfo
 cp $appfolder/ENS/platforms/iOS/build/device/ENS.ipa $binfolder/ENS.ipa
 cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $binfolder/apprelieve.apk
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
+cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
+cp $appfolder/AccountingRate/platforms/iOS/build/device/appaccountingrate.ipa $binfolder/AccountingRate.ipa
 
 # ------ copy source code of Staging------
 rm -Rf ~/Documents/QPlayStaging/QPlayStaging/
