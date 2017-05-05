@@ -9,19 +9,25 @@ $("#viewAccount").pagecontainer({
         var statuscountrypop;
         var statuscountryrate;
 
-        //review by alan
-        //assign meaningful variable 
-        var flag1 = 0;
-        var flag2 = 0;
+
+        var CheckifReloadflag1 = 0;
+        var CheckifReloadflag2 = 0;
         var array = [];
 
         var arrayRate = [];
-        var arrayadd = ["NTD","EUR","GBP"];
+        var arrayadd = ["NTD", "EUR", "GBP"];
         var arrayaddtemp = [];
         var arrayrateadd = [];
         var arraycomb = [];
         var arrayratecomb = [];
         var packJsontemp = [];
+   
+
+        //Scenario 0504
+        var ScenarioUTC = 0;
+        var testday =0;
+
+        //Scenario 0504
 
         var storage = JSON.parse(localStorage.getItem("arrayadd"));
 
@@ -31,7 +37,7 @@ $("#viewAccount").pagecontainer({
                 console.log('YA-already10 favorite');
             } else if (storage == null) {
                 console.log('YA-52 initial');
-                arrayadd = ["NTD","EUR","GBP"];
+                arrayadd = ["NTD", "EUR", "GBP"];
                 localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             }
             console.log('arrayadd_' + arrayadd);
@@ -67,9 +73,7 @@ $("#viewAccount").pagecontainer({
         var todayDate = Today.getDate();
         var lastMonth = Today.getMonth();
 
-        //review by alan
-        //assign meaningful variable : UTC => TWOMonthDate
-        //replace calc time function, 2017/1, 2017,2...5/31 -> 2/31
+       
 
         var date = new Date(todayYear, todayMonth - 1, todayDate);
         var newDate = new Date(date);
@@ -84,23 +88,95 @@ $("#viewAccount").pagecontainer({
         var nowTimstamp = window.Today.TimeStamp();
         window.Jsonflagnow = todayMonth;
         var Parameter = TWOMonthDate;
+        /********************************** Scenario  *************************************/
 
-        $(".buttononeCountry1").text(FromStatus);
-        $(".buttononeCountry2").text(ToStatus);
+        function ModifyScenario() {
+            //todayYear   = ScenarioYear  ;  //global
+            //todayMonth  = ScenarioMonth ;
+            //Parameter   = UTCtime;
 
-        todayYearmod = todayYear;
-        var todayYearmod = todayYearmod.toString().substring(2, 4);
+        }
 
-        $(".frag1").text(MonthWord[todayMonth - 1] + "-" + todayYearmod);
-        $(".frag2").text(MonthWord[todayMonth - 2] + "-" + todayYearmod);
+        function Monthchange() //Warning : don't modify it 
+        {
+            $(".buttononeCountry1").text(FromStatus);
+            $(".buttononeCountry2").text(ToStatus);
 
-        $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
-        $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
+            todayYearmod = todayYear;
+            var todayYearmod = todayYearmod.toString().substring(2, 4);
 
+            $(".frag1").text(MonthWord[todayMonth - 1] + "-" + todayYearmod);
+            $(".frag2").text(MonthWord[todayMonth - 2] + "-" + todayYearmod);
+
+            $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
+            $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
+
+
+        }
+
+         function MonthCalculator() 
+         {
+            var Twomonthdate=60; 
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() + testday );
+            var nd = new Date(newDate);
+            console.log("Scenario1" + nd);
+            ScenarioUTC = Math.round(nd / 1000);
+            console.log("ScenarioUTC1" + ScenarioUTC);
+
+
+            newDate.setDate(newDate.getDate() + testday - 60);
+            var nd = new Date(newDate);
+            console.log("Scenario1two month" + nd);
+            ScenarioTWOMonthUTC = Math.round(nd / 1000);
+            console.log("ScenarioUTC1 month" + ScenarioUTC);
+         }
+
+        $(document).on("click", ".buttonScenario1", function() { //add to html
+
+            testday =1;
+            
+            TWOMonthDate = ScenarioTWOMonthUTC;
+            MonthCalculator() ;
+            // var ScenarioYear  = todayYear;
+            //var ScenarioMonth  = todayMonth;
+            //var ScenarioDay    = todayDate;
+      
+            ModifyScenario();
+            Monthchange();
+            var EventList = new GetAccountingRate(); //call API1
+        });
+
+        $(document).on("click", ".buttonScenario2", function() { //add to html
+            // var ScenarioYear  = todayYear;
+            //var ScenarioMonth  = todayMonth;
+            //var ScenarioDay    = todayDate;
+            testday =2;
+            MonthCalculator() ;
+            
+            ModifyScenario();
+            Monthchange();
+            var EventList = new GetAccountingRate(); //call API1
+        });
+        $(document).on("click", ".buttonScenario3", function() { //add to html
+            // var ScenarioYear  = todayYear;
+            //var ScenarioMonth  = todayMonth;
+            //var ScenarioDay    = todayDate;
+            testday =3;
+            ModifyScenario();
+            Monthchange();
+            var EventList = new GetAccountingRate(); //call API1
+        });
+
+
+
+        /********************************** Scenario  *************************************/
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
-            Expiretime(); 
-            Jsonparse(1); 
+            Expiretime();
+            Jsonparse(1);
+            Monthchange();
             initial();
         });
 
@@ -118,10 +194,16 @@ $("#viewAccount").pagecontainer({
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
 
-            /*201704test
+          
               $("#popupA").popup( { dismissible : false});
               $("#popupB").popup( { dismissible : false });
-            */
+          
+
+            //Adjust margin-top of Tab content
+            var navbarHeight = $(".tabs-top-fixed").height();
+            var mainPaddingTop = parseInt(document.documentElement.clientWidth * 3.99 / 100, 10);
+            var mainwordMarginTop = parseInt(navbarHeight - mainPaddingTop, 10);
+            $(".mainword").css("margin-top", mainwordMarginTop + "px");
         });
 
 
@@ -139,6 +221,7 @@ $("#viewAccount").pagecontainer({
             FromStatus = tmpsetT;
             ToStatus = tmpsetF;
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
+            Favorite();
             Jsonparsenext(1);
             Buttonimg();
         });
@@ -204,11 +287,13 @@ $("#viewAccount").pagecontainer({
             Reorganization();
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             $("#eventWorkConfirmA").popup('close');
+
+            footerFixed();
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
-
+            footerFixed();
         });
 
         /********************************** Popup  *************************************/
@@ -225,12 +310,12 @@ $("#viewAccount").pagecontainer({
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
 
             $("#eventWorkConfirmB").popup('close');
-
+            footerFixed();
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
             $("#eventWorkConfirmB").popup('close');
-
+            footerFixed();
         });
 
         /********************************** Popup  *************************************/
@@ -254,6 +339,7 @@ $("#viewAccount").pagecontainer({
 
             Jsonparsenext(1);
             $("#popupA").popup('close');
+            footerFixed();
         });
 
         /********************************** Popup *************************************/
@@ -280,9 +366,10 @@ $("#viewAccount").pagecontainer({
 
 
             $("#popupB").popup('close');
+            footerFixed();
         });
         /********************************** Favorite*************************************/
- 
+
         function Reorganization() {
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
@@ -292,14 +379,17 @@ $("#viewAccount").pagecontainer({
 
 
         function Favorite() {
-            //Get] Initial  from array and add to the id 
             for (var i = 0; i < arrayadd.length; i++) {
                 statuscountrypop = arrayadd[i]; {
-                    $("#" + statuscountrypop).addClass("favorite");
+                    //$(["class='chooseNTD'"][id="#NTD"]).addClass("favorite")
+                    //$(".choose" + statuscountrypop).addClass("favorite");
+                    //$(".choose"+ statuscountrypop).addClass("favorite"); //twice X must use id **
+                    //$("#choose" + statuscountrypop).addClass("favorite"); //only for add by array id
+                    $(".choose#" + statuscountrypop).addClass("favorite"); //twice X must use only id **
+
                 }
             }
-            if ($("li").children(".favorite")) //use favorite to contrl star (not nontstar) 
-            {
+            if ($("li").children(".favorite")) {
                 $("li").children(".favorite").children(".star_icon").css("opacity", "1"); //li id 
                 $("li").children(".favorite").children(".nonstar_icon").css("opacity", "1"); //li id 
 
@@ -383,15 +473,34 @@ $("#viewAccount").pagecontainer({
         }
         /********************************** html  *************************************/
         function CountrylisthtmlOne(index) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1 select ' + FromStatus + '"' + 'id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayRate[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
+            + '<div class="Listdiv1 select choose ' + FromStatus + '"' + 'id=' 
+            + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
+            + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
+            + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' 
+            + '<div class="Listdiv2 select choose"'+'id=' 
+            + ToStatus + '>'  
+            + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag2" src ="img/tmp/' 
+            + ToStatus + '.png">' + '<div class="Listdiv3">' 
+            + '<span class="ListDollar1" >' + arrayRate[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function CountrylisthtmlFirst(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1 select ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA " id="litest">' 
+            + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function CountrylisthtmlSecond(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2 select ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">'
+             + '<div class="Listdiv1" id=' + FromStatus + '>' 
+             + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+             + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
+             + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
+             + '<div  class="Listdiv1equalmark4">=</div>' + '</div>'
+              + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"'
+               + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
         }
 
         function Pophtmlfirst() {
@@ -415,22 +524,20 @@ $("#viewAccount").pagecontainer({
         function Jsonparsecheck() {
 
             if (packJsontemp == 0) {
-                flag2 = 1;
+                CheckifReloadflag2 = 1;
             }
 
-            //review by alan
-            //assign meaningful variable : flag1, flag2
             /* 20170502  add by 新增需求*/
-            if (flag2 == 1) {
+            if (CheckifReloadflag2 == 1) {
                 packJsontemp = JSON.parse(localStorage.getItem('packJsontemp'));
                 console.log("690-1. Null use local");
 
-            } else if ((flag2 != 0) && (flag1 == 0)) {
+            } else if ((CheckifReloadflag2 != 0) && (CheckifReloadflag1 == 0)) {
                 Parameter = TWOMonthDate;
                 var EventList = new GetAccountingRate();
-                flag1 = 1; //Had got all data
+                CheckifReloadflag1 = 1; //Had got all data
                 console.log("690-2 .Call again API");
-                console.log(flag1);
+
             }
             console.log("690-3 .run local");
             Jsonparsenext(1);
@@ -491,16 +598,9 @@ $("#viewAccount").pagecontainer({
                     console.log(arrayadd[i] + '_' + ratetemp);
                 }
             }
-            Reorganization();           
+            Reorganization();
             Buttonimg();
-        }
-        /********************************** API*************************************/
-
-        //review by alan
-        //remove unused function
-        $('#viewAccount').keypress(function(event) {
-
-        });
+        }     
 
         /********************************** API*************************************/
 

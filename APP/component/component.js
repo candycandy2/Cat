@@ -9,6 +9,8 @@ var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var download_url = "";
+var QMessageKey = "";
+var QMessageSecretKey = "";
 
 if (window.localStorage.getItem("appKey") !== null) {
     appKey = window.localStorage.getItem("appKey");
@@ -486,6 +488,15 @@ function readConfig() {
         window.localStorage.setItem("qplayAppKey", qplayAppKey);
     }
 
+    //JMessage Config
+    if (loginData["versionName"].indexOf("Staging") !== -1) {
+        QMessageKey = "33938c8b001b601c1e647cbd";
+        QMessageSecretKey = "aa15c71a5071f539240b5c83";
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        QMessageKey = "e343504d536ebce16b70167e";
+        QMessageSecretKey = "62f87cad6de67db6c968ba50";
+    }
+
     //Plugin-QPush
     if (appKey === qplayAppKey) {
         //後台打开通知
@@ -954,7 +965,7 @@ function handleOpenURL(url) {
 
             //review by alan
             //force to check APP version
-            //hideInitialPage();
+            hideInitialPage();
         } else {
             //For Other APP, which was be opened by dynamic action,
             //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js

@@ -363,3 +363,8 @@ function adjustPageMarginTop() {
         });
     }
 }
+
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
+}
