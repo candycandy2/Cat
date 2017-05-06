@@ -593,6 +593,7 @@ $("#viewAccount").pagecontainer({
                 getto = packJson[i].To_Currency;
                 exdate = packJson[i].Ex_Date;
                 //Last_update = packJson[i].LAST_UPDATE_DATE;//0506
+                //arrayLast_update_date.push(Last_update); //
 
                 if ((FromStatus == "All Currency") && (exdate == todayYear + '/0' + Jsonflagnow + '/01')) {
                     if (getto == ToStatus) {
