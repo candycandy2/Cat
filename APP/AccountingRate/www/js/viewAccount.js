@@ -21,6 +21,8 @@ $("#viewAccount").pagecontainer({
         var arraycomb = [];
         var arrayratecomb = [];
         var packJsontemp = [];
+        var arrayLast_update_date =[];
+        var Last_date = 0;
    
 
         //Scenario 0504
@@ -110,7 +112,10 @@ $("#viewAccount").pagecontainer({
 
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
             $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
-
+            //var d =Last_date.substr(0,10);
+           // $(".mainword3").text("Updated on "+d);
+            //Last_date
+           
 
         }
 
@@ -373,7 +378,15 @@ $("#viewAccount").pagecontainer({
         function Reorganization() {
 
             arrayadd.sort();
-
+            var index = arrayadd.indexOf(NTD);
+            if (index>=0)
+            {
+                arrayadd.splice(arrayadd.indexOf(index), 1);
+                arrayadd.unshift("NTD");    
+            }
+            
+        }
+            
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
             Buttonimg();
@@ -567,6 +580,7 @@ $("#viewAccount").pagecontainer({
             var arraygetrate = [];
             var arraygetFrom = [];
             var arraygetTo = [];
+          
             var cleartest = 0;
             arrayrateadd = [];
 
@@ -578,6 +592,9 @@ $("#viewAccount").pagecontainer({
                 getfrom = packJson[i].From_Currency;
                 getto = packJson[i].To_Currency;
                 exdate = packJson[i].Ex_Date;
+                //Last_update = packJson[i].LAST_UPDATE_DATE;//0506
+                //arrayLast_update_date.push(Last_update); //
+
                 if ((FromStatus == "All Currency") && (exdate == todayYear + '/0' + Jsonflagnow + '/01')) {
                     if (getto == ToStatus) {
                         arraygetFrom.push(getfrom);
@@ -621,7 +638,13 @@ $("#viewAccount").pagecontainer({
 
             Reorganization();
             Buttonimg();
+            //Monthchange()
+            //0506    
+            //var test = ["2017/03/07 21:03:41", "2017/03/28 12:08:07", "2017/02/24 20:02:43", "2017/03/28 12:03:07"];
+            //arrayLast_update_date.sort();
+            //Last_date = arrayLast_update_date[0];
         }     
+
 
         /********************************** API*************************************/
 
@@ -657,7 +680,9 @@ $("#viewAccount").pagecontainer({
         function Expiretime() {
             var storagetimeYear = JSON.parse(localStorage.getItem('localYear'));
             var storagetimeMon = JSON.parse(localStorage.getItem('localMonth'));
-            var storagetimeDate = JSON.parse(localStorage.getItem('localDate'));
+            var storagetimeDate = JSON.parse(localStorage.getItem('localDate'));//0506
+            //var storagelastupdate = JSON.parse(localStorage.getItem('lastupdateDate'));
+
             window.UTCtime = Math.round(Date.UTC(storagetimeYear, storagetimeMon - 1, storagetimeDate) / 1000);
 
             if (storagetimeMon != null) {
@@ -670,6 +695,7 @@ $("#viewAccount").pagecontainer({
             localStorage.setItem("localYear", JSON.stringify(todayYear));
             localStorage.setItem("localMonth", JSON.stringify(todayMonth));
             localStorage.setItem("localDate", JSON.stringify(todayDate));
+            //localStorage.setItem("lastupdateDate", JSON.stringify(d)); //0506
         }
     }
 
