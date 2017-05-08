@@ -383,7 +383,7 @@ $("#viewReserve").pagecontainer({
             // other reserve
             else {
                 var arrMsgValue = $(this).attr('msg').split(','),
-                    tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2],
+                    tempMailContent = $(this).attr('email') + '?subject=健康職能時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
                     headerContent = arrMsgValue[2] + "已預約",
                     msgContent = arrMsgValue[0] + '&nbsp;&nbsp' + arrMsgValue[1];
                 popupMsgInit('.otherReservePopup');
