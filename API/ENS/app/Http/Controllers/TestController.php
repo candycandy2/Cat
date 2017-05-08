@@ -77,9 +77,11 @@ class testController extends Controller
      * @param  string $utf8_str Utf-8字符
      * @return string           Unicode字符
      */
-    public function utf8_str_to_unicode($utf8_str) {
+    public static function utf8_str_to_unicode($utf8_str) {
         $conv = json_encode($utf8_str);
-        $conv = preg_replace('/\\\u/', '%u', $conv);
+        $cov = preg_replace_callback("/(\\\u[0-9a-cf]{4})/i",function($conv){
+            return '%'.$conv[0];
+        },$conv); //emoji的unicode留下，其他改為%uXXXX
         return  json_decode($conv);
     }
 
@@ -123,15 +125,15 @@ class testController extends Controller
                 );
        $to = array("BenQ\\Cleo.W.Chan");
        $from = "BenQ\\Cleo.W.Chan";
-       $title_str = "CLEO TEST";
+       $title_str = "中文CLEO TEST\ud83d\udc7f";
        $text_str = "test";
        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($title_str)));
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($text_str)));
-     
+        var_dump($this->jsUnescape(base64_decode($title)));
        //TODO append ENS event link
-       $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
+       //$pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
        
-       $result = json_encode($pushResult);
+       //$result = json_encode($pushResult);
        return $result;
    }
 
@@ -142,7 +144,7 @@ class testController extends Controller
         $members = array("Steven.Yan","Sammi.Yao");
         $desc = "cleo test create chatRoom";
         //var_dump($messageGroupInfo);exit();
-        $qMessage = new Message($owner, $members, $desc);
+        $qMessage = new Message();
         $res = json_decode($qMessage->createChatRoom());
         if($res->ResultCode != 1){
             if($res->ResultCode == '998002'){
@@ -174,51 +176,28 @@ class testController extends Controller
         return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'self::replace_unicode_escape_sequence', $data);
     }
 
-   public function test(){
-
-
-       $a = array(array
-        (
-            "ResultCode" => 1,
-            "token_valid" => '1493687793',
-            "Message" => '',
-            "Content" => array(array
-                (
-                "event_row_id" => "10242",
-                "event_type" => "緊急通報",
-                "event_title" => "一堆表情",
-                "event_desc" => "wrk",
-                "estimated_complete_date" => "1524884220",
-                "related_event_row_id" => "0",
-                "event_status" => "未完成",
-                "chatroom_id" => "22924029",
-                "created_user_ext_no" =>"",
-                "created_user" => "Steven.Yan",
-                "created_at" => "2017-04-28 01:50:34",
-                "user_count" => "14",
-                "seen_count" => "4",
-                "task_finish_count" => "0"
-            ))
-        ));
-        //$input = json_decode(file_get_contents('php://input'),true);
-        //var_dump($input);exit();
-        //$desc = $input->desc;
-        //var_dump(json_encode($input));
-        $desc  =self::unicodeDecode($a);
-        var_dump($desc);
-        //var_dump( $input->desc);
-        // return $desc;
-        //
-     //  $title_str = $desc;
-      
-     //  $encodeStr =  base64_encode($this->jsEscape(html_entity_decode('\u767c\u9001\u63a8\u64ad\u6d88\u606f\u6210\u529f')));
-     //  $decodeStr =  $this->jsUnescape(base64_decode($encodeStr));
-       //return $decodeStr;
-   }
-
    public function testlog(){
         $rs = \DB::connection('mysql_qplay')->table("qp_api_log")->where('row_id','138897')->get();
         var_dump($rs);
+   }
+
+   /**
+    * 取得事件聊天室清單
+    * @return [type] [description]
+    */
+   public function getChatRoomList(){
+        $userName = 'Cleo.W.Chan';
+        $qMessage = new Message();
+       $res = json_decode($qMessage->getChatRoomList($userName));
+       var_dump($res);
+   }
+
+
+   public function deleteChatRoom(){
+       $gid = '22957935';
+       $qMessage = new Message();
+       $res = json_decode($qMessage->deleteChatRoom($gid));
+       var_dump($res);
    }
 }
 

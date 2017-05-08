@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Request;
-use Mockery\CountValidator\Exception;
 use Illuminate\Support\Facades\Input;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
@@ -48,7 +47,7 @@ class UserController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                     'Content'=>array("RoleList"=>$roleList)]);
 
-        } catch (Exception $e){
+        } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
