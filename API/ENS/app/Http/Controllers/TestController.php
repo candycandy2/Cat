@@ -77,9 +77,11 @@ class testController extends Controller
      * @param  string $utf8_str Utf-8字符
      * @return string           Unicode字符
      */
-    public function utf8_str_to_unicode($utf8_str) {
+    public static function utf8_str_to_unicode($utf8_str) {
         $conv = json_encode($utf8_str);
-        $conv = preg_replace('/\\\u/', '%u', $conv);
+        $cov = preg_replace_callback("/(\\\u[0-9a-cf]{4})/i",function($conv){
+            return '%'.$conv[0];
+        },$conv); //emoji的unicode留下，其他改為%uXXXX
         return  json_decode($conv);
     }
 
@@ -123,15 +125,15 @@ class testController extends Controller
                 );
        $to = array("BenQ\\Cleo.W.Chan");
        $from = "BenQ\\Cleo.W.Chan";
-       $title_str = "CLEO TEST";
+       $title_str = "中文CLEO TEST\ud83d\udc7f";
        $text_str = "test";
        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($title_str)));
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($text_str)));
-     
+        var_dump($this->jsUnescape(base64_decode($title)));
        //TODO append ENS event link
-       $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
+       //$pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
        
-       $result = json_encode($pushResult);
+       //$result = json_encode($pushResult);
        return $result;
    }
 
