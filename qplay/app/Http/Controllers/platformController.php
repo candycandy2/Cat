@@ -36,26 +36,34 @@ class platformController extends Controller
         }
         CommonUtil::setLanguage();
 
-        /*
+
         $input = Input::get();
-        $order = $input["order"];
+        $order = "login_id";
+        if($input["order"] != null) {
+            $order = $input["order"];
+        }
         $offset = $input["offset"];
         $limit = $input["limit"];
+        $sort = "asc"; ;
+        if($input["sort"] != null) {
+            $sort = $input["sort"];
+        }
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
             -> select()
-            -> orderBy("department")
-            -> orderBy("login_id")
+            -> orderBy($sort, $order)
+            //-> orderBy("department")
+            //-> orderBy("login_id")
             -> Paginate($limit,['*'],null,($offset/$limit)+1);
         return response()->json(["total"=>$userList->total(),"rows"=>$userList->items()]);
-        */
-        $userList = \DB::table("qp_user")
-            -> where("resign", "=", "N")
-            -> select()
-            -> orderBy("department")
-            -> orderBy("login_id")
-            -> get();
-        return response()->json($userList);
+
+//        $userList = \DB::table("qp_user")
+//            -> where("resign", "=", "N")
+//            -> select()
+//            -> orderBy("department")
+//            -> orderBy("login_id")
+//            -> get();
+//        return response()->json($userList);
     }
 
     public function getUserListWithoutGroup() {
