@@ -39,11 +39,13 @@ class platformController extends Controller
 
         $input = Input::get();
         $order = "login_id";
+      
         if(array_key_exists("order", $input) && $input["order"] != null) {
             $order = $input["order"];
         }
         $offset = $input["offset"];
         $limit = $input["limit"];
+      
         $sort = "asc";
         if(array_key_exists("sort", $input) && $input["sort"] != null) {
             $sort = $input["sort"];
@@ -54,6 +56,7 @@ class platformController extends Controller
             $search = $input["search"];
         }
         $searchContent = "%" . $search . "%";
+
 
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
