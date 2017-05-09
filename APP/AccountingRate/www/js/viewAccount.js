@@ -2,8 +2,8 @@ $("#viewAccount").pagecontainer({
     create: function(event, ui) {
         // First
 
-        var FromStatus = "All Currency";
-        var ToStatus = "USD";
+        var FromStatus = "USD" ;
+        var ToStatus = "All Currency";
         var tabActiveIDs = "#fragment-1";
         var test;
         var statuscountrypop;
@@ -12,25 +12,28 @@ $("#viewAccount").pagecontainer({
 
         var CheckifReloadflag1 = 0;
         var CheckifReloadflag2 = 0;
-        var array = [];
+        window.array = [];
 
-        var arrayRate = [];
-        var arrayadd = ["NTD", "USD", "EUR"];
+        window.arrayRate = [];
+        window.arrayadd = ["NTD", "USD", "EUR"];
+
         var arrayaddtemp = [];
-        var arrayrateadd = [];
-        var arraycomb = [];
+        window.arrayrateadd = [];
+        window.arraycomb = [];
         var arrayratecomb = [];
         var packJsontemp = [];
         var arrayLast_update_date = [];
-        //var Last_date = 0;
-       // window.dateshow = "2020/01/01";
-        var dateshow = "2020/01/01";
-        var Last_date = 0;
+        window.Last_date = "0";
+        window.dateshow = "2020/01/01";
+        //var dateshow = "2020/01/01";
+        //window.Last_date = "0";
 
 
         //Scenario 0504
         var ScenarioUTC = 0;
         var testday = 0;
+        var TWOMonthDate =0;
+        var test =0;
 
         //Scenario 0504
 
@@ -42,7 +45,7 @@ $("#viewAccount").pagecontainer({
                 console.log('YA-already10 favorite');
             } else if (storage == null) {
                 console.log('YA-52 initial');
-                arrayadd = ["NTD", "EUR", "GBP"];
+                arrayadd = ["NTD", "USD", "EUR"];
                 localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             }
             console.log('arrayadd_' + arrayadd);
@@ -85,7 +88,7 @@ $("#viewAccount").pagecontainer({
         console.log('63.date' + date);
         newDate.setDate(newDate.getDate() - 60);
         var nd = new Date(newDate);
-        window.TWOMonthDate = Math.round(nd / 1000);
+        TWOMonthDate = Math.round(nd / 1000);
 
         //window.UTC = Math.round(Date.UTC(todayYear, todayMonth - 3, todayDate) / 1000); //two month
 
@@ -115,11 +118,11 @@ $("#viewAccount").pagecontainer({
 
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
             // $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
-
-            //dateshow = Last_date.toString().substr(0, 10);
+            console.log('Last_date'+Last_date);
+            dateshow = Last_date.toString().substr(0, 10);
             // console.log("dateshow_" + dateshow);
-            // $(".mainword3").text("Updated on "+ dateshow);
-            $(".mainword3").text("Updated on " + Last_date);
+            $(".mainword3").text("Updated on "+ dateshow);
+            //$(".mainword3").text("Updated on " + Last_date);
             //Last_date
 
 
@@ -144,17 +147,26 @@ $("#viewAccount").pagecontainer({
         }
 
         $(document).on("click", ".buttonScenario1", function() { // 0510
+
             //0510 1494403200            
             //testday =1;
-            Parameter = '1494403200';
-            TWOMonthDate = '1489132800';
-            console.log("Day1");
 
-            // TWOMonthDate = ScenarioTWOMonthUTC;
-            // MonthCalculator() ;
-            // var ScenarioYear  = todayYear;
-            // var ScenarioMonth  = todayMonth;
-            // var ScenarioDay    = todayDate;
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+    
+
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate) / 1000); //5/09
+            Parameter = UTCtime;
+
+            console.log('Day1.date' + date);
+            console.log("Day2"+UTCtime);
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() - 60);
+            var nd = new Date(newDate);
+            TWOMonthDate = Math.round(nd / 1000);   
+            console.log('Day1.TWOMonthDate' + TWOMonthDate);  
+            test==1     
 
             // ModifyScenario();
             // Monthchange();
@@ -166,10 +178,14 @@ $("#viewAccount").pagecontainer({
             // var ScenarioYear  = todayYear;
             // var ScenarioMonth  = todayMonth;
             // var ScenarioDay    = todayDate;
-            console.log("Day2");
-            Parameter = '1494489600';
-            TWOMonthDate = '1489219200';
-            Jsonparse();
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate) / 1000); //yesterday
+            Parameter = UTCtime;
+
+            console.log("Day2"+UTCtime);
+            //Parameter = '1494489600';
+            //TWOMonthDate = '1489219200';
+            var EventList = new GetAccountingRate(); //call API1
+           // Jsonparse();
             // testday =2;
             // MonthCalculator() ;
 
@@ -184,70 +200,98 @@ $("#viewAccount").pagecontainer({
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-            console.log("Day3");
-            Parameter = '1494576000';
-            TWOMonthDate = '1489305600';
+            
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate+1) / 1000); //yesterday
+            Parameter = UTCtime;
+
+            console.log("Day3"+ UTCtime);
+            //Parameter = '1494576000';
+            //TWOMonthDate = '1489305600';
             Jsonparse();
             //testday =3;
             //ModifyScenario();
             //Monthchange();
-            //var EventList = new GetAccountingRate(); //call API1
+       
         });
 
         $(document).on("click", ".buttonScenario70", function() { //0509 +70 
             console.log("Day70 _0719(0510)) 1500364800");
+            
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate+2) / 1000); //yesterday
+            Parameter = UTCtime;           
+
+            console.log('Day70.date_510' + UTCtime);
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() +70-60);
+            var nd = new Date(newDate);
+            TWOMonthDate = Math.round(nd / 1000);
             //1500364800 
             //  testday =3;
             //  ModifyScenario();
             //  Monthchange();
 
-            Parameter = '1500451200';
-            TWOMonthDate = '1495180800';
-            Jsonparse();
-            //var EventList = new GetAccountingRate(); //call API1
-
-
-            /*
-                var date = new Date(2017, 5 - 1, 8);
-                var newDate = new Date(date);
-                newDate.setDate(newDate.getDate());
-                var nd = new Date(newDate);
-                console.log("Scenario1" + nd);
-                ScenarioUTC = Math.round(nd / 1000);
-                console.log("ScenarioUTC1" + ScenarioUTC);
-
-
-                newDate.setDate(newDate.getDate() +70);
-                var nd = new Date(newDate);
-                console.log("Scenario1two month" + nd);
-            */
+            //  Parameter = '1500451200';
+            //  TWOMonthDate = '1495180800';
+           // Jsonparse();
+        
+          
 
         });
         /********************************** function *************************************/
-        $(document).on("click", ".buttonScenario1U", function() { //0509
+        $(document).on("click", ".buttonScenario1U", function() { //0508
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+    
+
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate-1) / 1000); //5/09
+            Parameter = UTCtime;
+
+            console.log('Day1.date' + date);
+            console.log("Day2"+UTCtime);
+            var date = new Date(todayYear, todayMonth - 1, todayDate-1);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() - 60);
+            var nd = new Date(newDate);
+            TWOMonthDate = Math.round(nd / 1000);   
+            console.log('Day1.TWOMonthDate' + TWOMonthDate);       
+
+            // ModifyScenario();
+            // Monthchange();
+            var EventList = new GetAccountingRate(); //call API1 
+
+
+
+
             //1494316800
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-            console.log("Day1USD 5/09 ,Taiwan 5/10");
-            Parameter = '1494316800';
-            TWOMonthDate = '1489046400';
-            Jsonparse();
+            console.log("Day1USD 5/09 ,Taiwan 5/10"+Parameter);
+           // Parameter = '1494316800';
+           // TWOMonthDate = '1489046400';
+           // Jsonparse();
+           
             //testday =3;
             //ModifyScenario();
             //Monthchange();
             //var EventList = new GetAccountingRate(); //call API1
         });
 
-        $(document).on("click", ".buttonScenario2U", function() { //0510 
+        $(document).on("click", ".buttonScenario2U", function() { //0509
             //1494316800
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-            console.log("Day1USD 5/10 ,Taiwan 5/09");
-            Parameter = '1494403200';
+
+
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate-1) / 1000); //yesterday
+            Parameter = UTCtime;
+            console.log("Day2U"+UTCtime);
+            //console.log("Day1USD 5/10 ,Taiwan 5/09");
+            //Parameter = '1494403200';
             TWOMonthDate = '1489132800';
-            Jsonparse();
+           // Jsonparse();
             //testday =3;
             //ModifyScenario();
             //Monthchange();
@@ -259,10 +303,15 @@ $("#viewAccount").pagecontainer({
             // var ScenarioYear  = todayYear;
             //var ScenarioMonth  = todayMonth;
             //var ScenarioDay    = todayDate;
-            console.log("Day1USD 5/11 ,Taiwan 5/10");
-            Parameter = '1494489600';
-            TWOMonthDate = '1489219200';
-            Jsonparse();
+            
+            //console.log("Day1USD 5/11 ,Taiwan 5/10");
+
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate) / 1000); //yesterday
+            Parameter = UTCtime;
+            console.log("Day3U"+UTCtime);
+           // Parameter = '1494489600';
+           // TWOMonthDate = '1489219200';
+            //Jsonparse();
             //testday =3;
             //ModifyScenario();
             //Monthchange();
@@ -272,9 +321,23 @@ $("#viewAccount").pagecontainer({
         $(document).on("click", ".buttonScenario70U", function() { //0511+70
 
             console.log("Day1USD 7/18 ,509");
-            Parameter = '1500364800';
-            TWOMonthDate = '1495094400';
-            Jsonparse();
+
+
+            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate+1) / 1000); //yesterday
+            Parameter = UTCtime;           
+
+           // Parameter = '1500364800';
+           // TWOMonthDate = '1495094400';
+
+
+            console.log('Day70.dateU' + UTCtime);
+            var date = new Date(todayYear, todayMonth - 1, todayDate);
+            var newDate = new Date(date);
+            newDate.setDate(newDate.getDate() +70-60);
+            var nd = new Date(newDate);
+            TWOMonthDate = Math.round(nd / 1000);
+            console.log('Day70.dateU TWOMonthDate' + TWOMonthDate);
+            //Jsonparse();
 
         });
         /********************************** Scenario  *************************************/
@@ -394,12 +457,12 @@ $("#viewAccount").pagecontainer({
             localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
             $("#eventWorkConfirmA").popup('close');
 
-            footerFixed();
+            //footerFixed();
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
-            footerFixed();
+            //footerFixed();
         });
 
         /********************************** Popup  *************************************/
@@ -478,15 +541,8 @@ $("#viewAccount").pagecontainer({
 
         function Reorganization() {
 
-            arrayadd.sort();
-            var index = arrayadd.indexOf("NTD");
-            if (index >= 0) {
-                arrayadd.splice(arrayadd.indexOf(index), 1);
-                arrayadd.unshift("NTD");
-            }
-
-
-
+            arrayadd.sort();        
+                     
 
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
@@ -497,14 +553,10 @@ $("#viewAccount").pagecontainer({
 
         function Favorite() {
             for (var i = 0; i < arrayadd.length; i++) {
-                statuscountrypop = arrayadd[i]; {
-                    //$(["class='chooseNTD'"][id="#NTD"]).addClass("favorite")
-                    //$(".choose" + statuscountrypop).addClass("favorite");
-                    //$(".choose"+ statuscountrypop).addClass("favorite"); //twice X must use id **
-                    //$("#choose" + statuscountrypop).addClass("favorite"); //only for add by array id
-                    $(".choose#" + statuscountrypop).addClass("favorite"); //twice X must use only id **
+                statuscountrypop = arrayadd[i]; 
+                $(".choose#" + statuscountrypop).addClass("favorite"); 
 
-                }
+                
             }
             if ($("li").children(".favorite")) {
                 $("li").children(".favorite").children(".star_icon").css("opacity", "1"); //li id 
@@ -596,15 +648,48 @@ $("#viewAccount").pagecontainer({
         }
         /********************************** html  *************************************/
         function CountrylisthtmlOne(index) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1 select choose ' + FromStatus + '"' + 'id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2 select choose"' + 'id=' + ToStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayRate[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
+            + '<div class="Listdiv1 select choose ' 
+            + '"' + 'id=' + FromStatus + '>' 
+            + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
+            + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
+            + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' 
+            + '<div class="Listdiv2 select choose"' + 'id=' + ToStatus + '>' 
+            + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
+            + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayRate[index] 
+            + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> '
+             + '</div>' + '</div>' + '</li>';
         }
 
         function CountrylisthtmlFirst(index, country) {
-            return '<li data-icon="false" class="1_li CountryA " id="litest">' + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA " id="litest">' 
+            + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' 
+            + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+            + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' 
+            + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  '
+             + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' 
+             + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '
+             + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
+             + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] 
+             + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' 
+             + '</div>' + '</li>';
         }
 
         function CountrylisthtmlSecond(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + FromStatus + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"' + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">' + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> ' + '</div>' + '</div>' + '</li>';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
+            + '<div class="Listdiv1" id=' + FromStatus + '>'
+             + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+             + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus 
+             + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus 
+             + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>'
+              + '</div>' + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"' 
+              + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+              + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">'
+               + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] 
+               + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> '
+             + '</div>' + '</div>' + '</li>';
         }
 
         function Pophtmlfirst() {
@@ -621,15 +706,15 @@ $("#viewAccount").pagecontainer({
 
         /********************************** API*************************************/
         function Jsonparse() {
-            console.log('680.Jsonparse - API');
-            CheckifReloadflag1 = JSON.parse(localStorage.getItem('CheckifReloadflag1'));
-            if ((CheckifReloadflag1) != 1) //first
-            {
-                console.log("599.first");
-                Jsonparsecheck();
-            } else {
+           // console.log('680.Jsonparse - API');
+           // CheckifReloadflag1 = JSON.parse(localStorage.getItem('CheckifReloadflag1'));
+           // if ((CheckifReloadflag1) != 1) //first
+           // {
+           //     console.log("599.first");
+           //     Jsonparsecheck();
+           // } else {
                 var EventList = new GetAccountingRate(); //call API1
-            }
+           // }
         }
 
 
@@ -642,21 +727,23 @@ $("#viewAccount").pagecontainer({
             }
 
             /* 20170502  add by 新增需求*/
-            if ((CheckifReloadflag2 == 1) && (CheckifReloadflag1 == 1)) {
+            if ((CheckifReloadflag2 == 1)&&(CheckifReloadflag1 == 1)) {
                 packJsontemp = JSON.parse(localStorage.getItem('packJsontemp'));
                 console.log("690-1. Null use local");
+                console.log("690-3 .run local");
 
-            } else if ((CheckifReloadflag2 != 0) && (CheckifReloadflag1 != 0)) { //first
+            } else if ((CheckifReloadflag2 != 0)&&(CheckifReloadflag1 != 1)) { 
                 Parameter = TWOMonthDate;
                 var EventList = new GetAccountingRate();
                 CheckifReloadflag1 = 1; //Had got all data
                 localStorage.setItem("CheckifReloadflag1", JSON.stringify(CheckifReloadflag1));
                 console.log("690-2 .Call again API");
-
-            }
-            console.log("690-3 .run local");
+                test=0;
+            }            
+            
             Jsonparsenext(1);
         }
+
 
         function Jsonparsenext() {
             var packJson = packJsontemp;
@@ -671,8 +758,6 @@ $("#viewAccount").pagecontainer({
             arrayrateadd = [];
 
             //Favorite 
-
-
             for (var i = 0; i < packJson.length; i++) {
                 getrate = packJson[i].Ex_Rate;
                 getfrom = packJson[i].From_Currency;
@@ -687,6 +772,8 @@ $("#viewAccount").pagecontainer({
                         arraygetrate.push(getrate);
 
                         //0508  /**/
+
+
 
                         //0508                    
 
@@ -712,16 +799,7 @@ $("#viewAccount").pagecontainer({
                     }
                 }
             }
-
-
-            /* for (var i = 0; i < arrayadd.length; i++) {
-
-                                var rateindex = arraygetFrom.indexOf(arrayadd[i]);
-                                var ratetemp =  arraygetrate[rateindex];
-                                arraygetFrom.splice(arrayadd.indexOf(rateindex), 1);
-                                arraygetrate.splice(arrayadd.indexOf(ratetemp), 1);
-            }*/
-
+       
 
             for (var i = 0; i < arrayadd.length; i++) {
                 var rateindex = array.indexOf(arrayadd[i]);
@@ -737,8 +815,6 @@ $("#viewAccount").pagecontainer({
             }
 
 
-            //0506    
-            //var test = ["2017/03/07 21:03:41", "2017/03/28 12:08:07", "2017/02/24 20:02:43", "2017/03/28 12:03:07"];
             arrayLast_update_date.sort();
             var b = arrayLast_update_date.length - 1;
             Last_date = arrayLast_update_date[b]; //arrayLast_update_date[0];
@@ -753,10 +829,9 @@ $("#viewAccount").pagecontainer({
         /********************************** API*************************************/
 
         function GetAccountingRate(eventType) {
-
             eventType = eventType || null;
             var self = this;
-            //loadingMask("show");
+            loadingMask("show");
             console.log("我呼叫" + Parameter);
             //Parameter = '1488412800';
 
@@ -766,13 +841,13 @@ $("#viewAccount").pagecontainer({
             this.successCallback = function(data) {
                 var resultCode = data['ResultCode'];
                 if (resultCode == 1) {
-                    //loadingMask("hide");
+                    loadingMask("hide");
                     packJsontemp = data['Content'];
                     Jsonparsecheck();
                 }
             };
             this.failCallback = function(data) {
-                //loadingMask("hide");
+                loadingMask("hide");
             };
 
             var __construct = function() {
@@ -788,7 +863,6 @@ $("#viewAccount").pagecontainer({
             //var storagelastupdate = JSON.parse(localStorage.getItem('lastupdateDate'));
 
             window.UTCtime = Math.round(Date.UTC(storagetimeYear, storagetimeMon - 1, storagetimeDate) / 1000);
-
             if (storagetimeMon != null) {
                 Parameter = UTCtime;
                 console.log("use local" + UTCtime);
