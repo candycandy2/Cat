@@ -455,7 +455,7 @@ if(array_key_exists('with_msg_id', $input)) {
 
         $('.bootstrapTable').on('load-success.bs.table', function() {
             $('.bootstrapTable').off('page-change.bs.table');
-            if($(this).attr("id") != "gridAllUserList") {
+            if($(this).attr("id") != "gridAllUserList" && $(this).attr("id") != "gridUserList") {
                 if ($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST")) {
                     var st = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST");
                     $(this).bootstrapTable('resetSearch', st); //resetSearch
