@@ -1,4 +1,4 @@
 
-var pageList = ["viewMain"];
+var pageList = ["viewMain","viewGame"];
 
 
