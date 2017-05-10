@@ -29,7 +29,7 @@ alan:Badminton alan$
 http://demos.jquerymobile.com/1.4.5/listview/
 
 ## 啟動步驟
-1. 確認裝好需要的平台, 此範例為iOS
+1. 確認裝好需要的平台, 此範例為iOS, 呼叫 cordova platform add ios
 ```
 alan:Badminton alan$ cordova platform
 Installed platforms:
@@ -46,3 +46,6 @@ alan:Badminton alan$
 ```
 2. 呼叫 cordova run ios
 
+![img_1121](https://cloud.githubusercontent.com/assets/1924451/25879530/bbf50076-3564-11e7-90d4-c6ee4a8f8b4f.PNG)
+![img_1123](https://cloud.githubusercontent.com/assets/1924451/25879536/bf6ba02a-3564-11e7-8ebf-7febb77feeb1.PNG)
+![img_1122](https://cloud.githubusercontent.com/assets/1924451/25879539/c2752bba-3564-11e7-943e-cb2a86175258.PNG)
