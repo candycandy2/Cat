@@ -25,6 +25,9 @@ alan:Badminton alan$
 4. 如何在模擬器上操作Debug
 5. 如何使用JQueryMobile開發GUI
 
+此範例以listview示範
+http://demos.jquerymobile.com/1.4.5/listview/
+
 啟動步驟
 1. 確認裝好需要的平台, 此範例為iOS
 ```
