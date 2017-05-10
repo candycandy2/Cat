@@ -39,17 +39,34 @@ class platformController extends Controller
 
         $input = Input::get();
         $order = "login_id";
-        if($input["order"] != null) {
+      
+        if(array_key_exists("order", $input) && $input["order"] != null) {
             $order = $input["order"];
         }
         $offset = $input["offset"];
         $limit = $input["limit"];
-        $sort = "asc"; ;
-        if($input["sort"] != null) {
+      
+        $sort = "asc";
+        if(array_key_exists("sort", $input) && $input["sort"] != null) {
             $sort = $input["sort"];
         }
+
+        $search = "";
+        if(array_key_exists("search", $input) && $input["search"] != null) {
+            $search = $input["search"];
+        }
+        $searchContent = "%" . $search . "%";
+
+
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
+            -> where(function($query) use($searchContent) {
+                $query -> where("department", "like", $searchContent)
+                       -> orWhere("login_id", "like", $searchContent)
+                       -> orWhere("emp_name", "like", $searchContent)
+                       -> orWhere("user_domain", "like", $searchContent)
+                       -> orWhere("company", "like", $searchContent);
+            })
             -> select()
             -> orderBy($sort, $order)
             //-> orderBy("department")

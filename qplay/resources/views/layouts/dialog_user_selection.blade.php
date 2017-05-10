@@ -6,8 +6,8 @@
                 <h1 class="modal-title" id="roleDetailMaintainDialogTitle">{{trans("messages.SELECT_USER")}}</h1>
             </div>
             <div class="modal-body">
-                <table id="gridAllUserList" class="bootstrapTable" data-toggle="table"
-                       data-url="platform/getUserList" data-height="298" data-pagination="true"
+                <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
+                       data-height="298" data-pagination="true"
                        data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                        data-show-toggle="true"  data-sortable="true"
                        data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -53,7 +53,16 @@
 
     var selectUserDialog_Show = function () {
         $("#gridAllUserList").bootstrapTable('uncheckAll');
-        $("#gridAllUserList").bootstrapTable('refresh');
+        //$("#gridAllUserList").bootstrapTable('refresh');
         $("#selectUserDialog").modal('show');
     };
+
+    $(function() {
+        var $table = $('#gridAllUserList');
+        $table.bootstrapTable({
+            "url": "platform/getUserList",
+            "dataType": "json",
+            "sidePagination": "server" //服务端处理分页
+        });
+    });
 </script>
