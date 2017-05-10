@@ -30,12 +30,12 @@ http://demos.jquerymobile.com/1.4.5/listview/
 
 ## 目錄結構
 
- - config.xml
+ - config.xml <= cordova 自動產生,但有時需要修改, 此範例無此必要
  - readme.md
- - /hooks/
- - /Images/
- - /platforms_demo/
- - /www/index.html <= app啟動點,該檔已作修改
+ - /hooks/ <= cordova 自動產生,但有時需要修改, 此範例無此必要
+ - /Images/ <= 所需的圖檔, Icon放這裡, 覆蓋project用,該目錄已作修改
+ - /platforms_demo/ios/ <= cordova 自動產生ios project, 在此做說明用
+ - /www/index.html <= app啟動點,該檔案已作修改
   ```
 <html>
     <head>
@@ -63,11 +63,11 @@ http://demos.jquerymobile.com/1.4.5/listview/
     </body>
 </html>
  ```
- - /www/js/index.js <= 包含要引進的頁面,該檔已作修改
+ - /www/js/index.js <= 包含要引進的頁面,該檔案已作修改
  ```
  var pageList = ["viewMain","viewGame"];
  ```
- - /www/js/app-common.js <= app啟動點,該檔已作修改
+ - /www/js/app-common.js <= app啟動點,該檔案已作修改
  ```節錄
  var app = {
     // Application Constructor
@@ -127,9 +127,9 @@ $(document).one("pagebeforecreate", function() {
 
 });
 ```
-- /www/View/viewMain.html <= app啟動點,該檔已作修改
+- /www/View/viewMain.html <= 第一個頁面,該檔已作修改
 ```
- <span id="tmp_option_width" class="hidden" style="font-size:2.8vh"></span>
+<span id="tmp_option_width" class="hidden" style="font-size:2.8vh"></span>
 <div data-role="page" id="viewMain">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
@@ -147,7 +147,7 @@ $(document).one("pagebeforecreate", function() {
     </div>
 </div>
 ```
-- /www/js/viewMain.js <= app啟動點,該檔已作修改
+- /www/js/viewMain.js <= 第一個頁面,該檔案已作修改
 ```
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -155,8 +155,8 @@ $("#viewMain").pagecontainer({
     }
 });
 ```
-- /www/View/viewGame.html <= 第二個頁面,該檔已作修改
-- /www/js/viewGame.js <= 第二個頁面,該檔已作修改
+- /www/View/viewGame.html <= 第二個頁面,該檔案已作修改
+- /www/js/viewGame.js <= 第二個頁面,該檔案已作修改
 
 ## 啟動步驟
 1. 確認裝好需要的平台, 此範例為iOS, 呼叫 cordova platform add ios
