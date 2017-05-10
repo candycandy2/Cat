@@ -63,7 +63,7 @@ http://demos.jquerymobile.com/1.4.5/listview/
     </body>
 </html>
  ```
- - /www/js/index.js <= 包含要引進的頁面,該檔案已作修改
+ - /www/js/index.js <= 包含要引進的頁面, 應包含一個以及一個以上, 此範例為兩個頁面, 該檔案已作修改
  ```
  var pageList = ["viewMain","viewGame"];
  ```
