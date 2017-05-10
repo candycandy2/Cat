@@ -23,7 +23,7 @@ var dayTable = {
 };
 
 $(document).one("pagebeforeshow", function() {
-    scorllDateInit(11);
+    scorllDateInit(10);
 });
 
 window.initialSuccess = function() {

@@ -36,26 +36,51 @@ class platformController extends Controller
         }
         CommonUtil::setLanguage();
 
-        /*
+
         $input = Input::get();
-        $order = $input["order"];
+        $order = "login_id";
+      
+        if(array_key_exists("order", $input) && $input["order"] != null) {
+            $order = $input["order"];
+        }
         $offset = $input["offset"];
         $limit = $input["limit"];
+      
+        $sort = "asc";
+        if(array_key_exists("sort", $input) && $input["sort"] != null) {
+            $sort = $input["sort"];
+        }
+
+        $search = "";
+        if(array_key_exists("search", $input) && $input["search"] != null) {
+            $search = $input["search"];
+        }
+        $searchContent = "%" . $search . "%";
+
+
         $userList = \DB::table("qp_user")
             -> where("resign", "=", "N")
+            -> where(function($query) use($searchContent) {
+                $query -> where("department", "like", $searchContent)
+                       -> orWhere("login_id", "like", $searchContent)
+                       -> orWhere("emp_name", "like", $searchContent)
+                       -> orWhere("user_domain", "like", $searchContent)
+                       -> orWhere("company", "like", $searchContent);
+            })
             -> select()
-            -> orderBy("department")
-            -> orderBy("login_id")
+            -> orderBy($sort, $order)
+            //-> orderBy("department")
+            //-> orderBy("login_id")
             -> Paginate($limit,['*'],null,($offset/$limit)+1);
         return response()->json(["total"=>$userList->total(),"rows"=>$userList->items()]);
-        */
-        $userList = \DB::table("qp_user")
-            -> where("resign", "=", "N")
-            -> select()
-            -> orderBy("department")
-            -> orderBy("login_id")
-            -> get();
-        return response()->json($userList);
+
+//        $userList = \DB::table("qp_user")
+//            -> where("resign", "=", "N")
+//            -> select()
+//            -> orderBy("department")
+//            -> orderBy("login_id")
+//            -> get();
+//        return response()->json($userList);
     }
 
     public function getUserListWithoutGroup() {
