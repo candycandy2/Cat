@@ -119,7 +119,8 @@ class AppVersionRepository
      * @param  String $search     查詢字串
      * @return mixed
      */
-    public function getAppVersion($appId, $deviceType, Array $whereCondi, Array $selectData, $offset=0, $limit=10, $sort='version_code', $order='desc', $search=null){
+    public function getAppVersion($appId, $deviceType, Array $whereCondi, Array $selectData, $offset=null, $limit=null, $sort='version_code', $order='desc', $search=null){
+
          $query =  QP_App_Version::select($selectData)
                         ->where('app_row_id','=',$appId)
                         ->where('device_type','=',$deviceType);
@@ -135,7 +136,11 @@ class AppVersionRepository
                                 });   
                         }
                   $query-> orderBy($sort, $order);
-                  $version = $query->Paginate($limit,['*'],null,($offset/$limit)+1);  
+                  if(is_null($offset) || is_null($limit)){
+                    $version = $query->get();
+                  }else{
+                    $version = $query->Paginate($limit,['*'],null,($offset/$limit)+1);
+                  }
         return $version;
 
     }
