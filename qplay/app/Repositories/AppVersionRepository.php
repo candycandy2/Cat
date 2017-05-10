@@ -112,23 +112,35 @@ class AppVersionRepository
      * @param  String $deviceType 裝置類型(ios|android)
      * @param  Array  $whereCondi 查詢條件([["field"=>"欄位","op"=>"運算子","value"=>"值"]])
      * @param  Array  $selectData 欲查詢的欄位
-     * @param  Array  $orderBy    排序
+     * @param   int   $offset     從第幾筆開始
+     * @param   int   $limit      每次最多查詢筆數
+     * @param  String $sort       排序的欄位
+     * @param  String $order      排序方式(asc|desc)
+     * @param  String $search     查詢字串
      * @return mixed
      */
-    public function getAppVersion($appId, $deviceType, Array $whereCondi, Array $selectData, $orderBy=null){
+    public function getAppVersion($appId, $deviceType, Array $whereCondi, Array $selectData, $offset=null, $limit=null, $sort='version_code', $order='desc', $search=null){
 
          $query =  QP_App_Version::select($selectData)
                         ->where('app_row_id','=',$appId)
                         ->where('device_type','=',$deviceType);
                         foreach ($whereCondi as $condi) {
-                          $query ->where($condi['field'], $condi['op'], $condi['value']);
+                          $query->where($condi['field'], $condi['op'], $condi['value']);
                         }
-                        if(!is_null($orderBy)){
-                            foreach ($orderBy as $field=>$type) {
-                              $query ->orderBy($field,$type);
-                            }
+                        if(!is_null($search)){
+                               $query->where(function ($query) use ($search) {
+                                    $query->where("version_code", "LIKE","%$search%")
+                                        ->orWhere("version_name", "LIKE", "%$search%")
+                                        ->orWhere("url", "LIKE", "%$search%")
+                                        ->orWhere("version_log", "LIKE", "%$search%");
+                                });   
                         }
-                   $version =  $query->get();    
+                  $query-> orderBy($sort, $order);
+                  if(is_null($offset) || is_null($limit)){
+                    $version = $query->get();
+                  }else{
+                    $version = $query->Paginate($limit,['*'],null,($offset/$limit)+1);
+                  }
         return $version;
 
     }

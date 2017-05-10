@@ -455,7 +455,12 @@ if(array_key_exists('with_msg_id', $input)) {
 
         $('.bootstrapTable').on('load-success.bs.table', function() {
             $('.bootstrapTable').off('page-change.bs.table');
-            if($(this).attr("id") != "gridAllUserList" && $(this).attr("id") != "gridUserList") {
+            var setDefault = true;
+            if($(this).attr("id") == 'gridAllUserList' || $(this).attr("id") =='gridUserList' ||
+               $(this).bootstrapTable('getOptions').sidePagination == 'server'){
+                setDefault = false;
+            }
+            if(setDefault) {
                 if ($.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST")) {
                     var st = $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___ST");
                     $(this).bootstrapTable('resetSearch', st); //resetSearch
