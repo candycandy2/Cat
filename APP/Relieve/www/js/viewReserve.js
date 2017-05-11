@@ -2,6 +2,7 @@ var bReserveCancelConfirm = false;
 var month, date, trace, reserveCancelMonth, reserveCancelDate, reserveCancelID;
 var queryTime = "";
 var timeQueue = {};
+var myReserver_dirtyFlag = true;
 
 $("#viewReserve").pagecontainer({
     create: function(event, ui) {
@@ -116,6 +117,7 @@ $("#viewReserve").pagecontainer({
                         headerContent = "預約成功";
                         // msgContent = strDate + '&nbsp;&nbsp' + timeName;
                         msgContent = strDate;
+                    myReserver_dirtyFlag = true;
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/select.png");
                     popupMsgInit('.reserveResultPopup');
                     $('.reserveResultPopup').find('.header-text').html(headerContent);
@@ -178,6 +180,8 @@ $("#viewReserve").pagecontainer({
                     }else {
                         $('.myReservePopupMsg').popup('close');
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
+                        myReserver_dirtyFlag = true;
+                        //QueryMyReserve();
                         popupMsgInit('.myReserveCancelResult');
                     }
                 }else if(data['ResultCode'] === "023906") {
@@ -211,6 +215,7 @@ $("#viewReserve").pagecontainer({
                 var nowDate = currentMonth + "/" + currentDate;
                 var reserveTimeArry, reserveDateArry;
                 if(data["ResultCode"] === "1") {
+                    myReserver_dirtyFlag = false;
                     for(var i in QueryMyReserveCallBackdata) {
                         site = QueryMyReserveCallBackdata[i]["Site"];
                         reserveTimeArry = QueryMyReserveCallBackdata[i]["ReserveBeginTime"].split(" ");
@@ -320,13 +325,15 @@ $("#viewReserve").pagecontainer({
                                           + "</ReserveUser><NowDate>"
                                           + currentYear + currentMonth + currentDate
                                           + "</NowDate></LayoutHeader>"
-                QueryMyReserve();
+                if(myReserver_dirtyFlag == true)
+                    QueryMyReserve();
                 loadingMask("show");
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
                     onRefresh: function() {
                         //do something for refresh
+                        QueryMyReserve();
                     }
                 });
             } else {
