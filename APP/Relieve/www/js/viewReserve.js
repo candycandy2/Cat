@@ -2,6 +2,7 @@ var bReserveCancelConfirm = false;
 var month, date, trace, reserveCancelMonth, reserveCancelDate, reserveCancelID;
 var queryTime = "";
 var timeQueue = {};
+var myReserver_dirtyFlag = true;
 
 $("#viewReserve").pagecontainer({
     create: function(event, ui) {
@@ -116,6 +117,7 @@ $("#viewReserve").pagecontainer({
                         headerContent = "預約成功";
                         // msgContent = strDate + '&nbsp;&nbsp' + timeName;
                         msgContent = strDate;
+                    myReserver_dirtyFlag = true;
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/select.png");
                     popupMsgInit('.reserveResultPopup');
                     $('.reserveResultPopup').find('.header-text').html(headerContent);
@@ -154,6 +156,7 @@ $("#viewReserve").pagecontainer({
                 $('#reserveBtn').removeClass('btn-enable');
                 $('#reserveBtn').addClass('btn-disable');
                 loadingMask("hide");
+                timeQueue = {};
             };
 
             this.failCallback = function(data) {};
@@ -177,6 +180,8 @@ $("#viewReserve").pagecontainer({
                     }else {
                         $('.myReservePopupMsg').popup('close');
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
+                        myReserver_dirtyFlag = true;
+                        //QueryMyReserve();
                         popupMsgInit('.myReserveCancelResult');
                     }
                 }else if(data['ResultCode'] === "023906") {
@@ -210,14 +215,14 @@ $("#viewReserve").pagecontainer({
                 var nowDate = currentMonth + "/" + currentDate;
                 var reserveTimeArry, reserveDateArry;
                 if(data["ResultCode"] === "1") {
+                    myReserver_dirtyFlag = false;
                     for(var i in QueryMyReserveCallBackdata) {
                         site = QueryMyReserveCallBackdata[i]["Site"];
-                        reserveDate = QueryMyReserveCallBackdata[i]["ReserveDate"].match(/(.*?)\s.*?\s/)[1];
-                        reserveDateArry = reserveDate.split("/");
-                        reserveDateArry[0] = Number(reserveDateArry[0] < 10) ? "0"+reserveDateArry[0] : reserveDateArry[0];
-                        reserveDateArry[1] = Number(reserveDateArry[1] < 10) ? "0"+reserveDateArry[1] : reserveDateArry[1];
-                        reserveDate = reserveDateArry[0] + "/" + reserveDateArry[1];
                         reserveTimeArry = QueryMyReserveCallBackdata[i]["ReserveBeginTime"].split(" ");
+                        reserveDateArry = reserveTimeArry[0].split("/");
+                        reserveDateArry[0] = reserveDateArry[0] < 10 ? "0"+reserveDateArry[0] : reserveDateArry[0];
+                        reserveDateArry[1] = reserveDateArry[1] < 10 ? "0"+reserveDateArry[1] : reserveDateArry[1];
+                        reserveDate = reserveDateArry[0] + "/" + reserveDateArry[1];
                         if(reserveTimeArry[2] === "PM") {
                             beginTime = (12 + Number(reserveTimeArry[1].match(/([0-9]+):([0-9]+)/)[1])) + ":"
                                         + reserveTimeArry[1].match(/([0-9]+):([0-9]+)/)[2];
@@ -227,17 +232,17 @@ $("#viewReserve").pagecontainer({
                             endtime = addThirtyMins(beginTime);
                         }
                         if(nowDate === reserveDate) {
-                            nowContent +=   '<div class="reserveInfo">'
-                                          +     '<div class="reserveInfo-area-left reserveInfo-area" reserveid = "' + QueryMyReserveCallBackdata[i]["ReserveID"] + '">'
-                                          +         '<div class="reserveInfo-company">'+ site + '</div>'
-                                          +         '<div class="reserveInfo-time">' + beginTime + "-" + endtime + '</div>'
-                                          +     '</div>'
-                                          +     '<div class="reserveInfo-area-right reserveInfo-area">'
-                                          +         '<div class="btn-area">'
-                                          +             '<a href="#" class="btn-myreserve-cancel ui-link"><img src="img/delete_empty.png"></a>'
-                                          +         '</div>'
-                                          +     '</div>'
-                                          + '</div>'
+                            nowContent += '<div class="reserveInfo">'
+                                        +     '<div class="reserveInfo-area-left reserveInfo-area" reserveid = "' + QueryMyReserveCallBackdata[i]["ReserveID"] + '">'
+                                        +         '<div class="reserveInfo-company">'+ site + '</div>'
+                                        +         '<div class="reserveInfo-time">' + beginTime + "-" + endtime + '</div>'
+                                        +     '</div>'
+                                        +     '<div class="reserveInfo-area-right reserveInfo-area">'
+                                        +         '<div class="btn-area">'
+                                        +             '<a href="#" class="btn-myreserve-cancel ui-link"><img src="img/delete_empty.png"></a>'
+                                        +         '</div>'
+                                        +     '</div>'
+                                        + '</div>'
                         }else {
                             laterContent += '<div class="reserveInfo">'
                                           +     '<div class="reserveInfo-area-left reserveInfo-area" reserveid = "' + QueryMyReserveCallBackdata[i]["ReserveID"] + '">'
@@ -320,13 +325,15 @@ $("#viewReserve").pagecontainer({
                                           + "</ReserveUser><NowDate>"
                                           + currentYear + currentMonth + currentDate
                                           + "</NowDate></LayoutHeader>"
-                QueryMyReserve();
+                if(myReserver_dirtyFlag == true)
+                    QueryMyReserve();
                 loadingMask("show");
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
                     onRefresh: function() {
                         //do something for refresh
+                        QueryMyReserve();
                     }
                 });
             } else {
@@ -426,6 +433,7 @@ $("#viewReserve").pagecontainer({
 
         // reserve btn click
         $('body').on('click', '#reserveBtn', function() {
+            queryTime = "";
             if ($(this).hasClass('btn-disable')) {
                 popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
             } else {

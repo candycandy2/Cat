@@ -44,7 +44,7 @@ function onBackKeyDown() {
     var activePageID = activePage[0].id;
 
     if (checkPopupShown()) {
-        popupClose();
+        // popupClose();
     } else {
         if (activePageID === "viewReserve") {
             if ($("#reserveTab :radio:checked").val() == 'tab1') {
