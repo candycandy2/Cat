@@ -9,14 +9,8 @@ var appSecretKey = "35ee8716067626e225d38b9a97ee49f8";
 var prevPageID;
 
 window.initialSuccess = function() {
-
-    //loadingMask("show");
-
     $.mobile.changePage('#viewAccount');
-  //  var APIRequest = new APIRequest();
-
 }
-
 
 //[Android]Handle the back button
 function onBackKeyDown() {
