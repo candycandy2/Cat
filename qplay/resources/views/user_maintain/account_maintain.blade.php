@@ -10,9 +10,9 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
         </button>
     </div>
     <table id="gridUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-           data-url="platform/getUserList" data-height="398" data-pagination="true"
+           data-height="398" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-           data-show-toggle="true"  data-sortable="true" data-side-pagination="server"
+           data-show-toggle="true"  data-sortable="true"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
            data-click-to-select="false" data-single-select="false">
         <thead>
@@ -65,9 +65,6 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
                         }
                     },
                     error: function (e) {
-                        if(handleAJAXError(this,e)){
-                            return false;
-                        }
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REMOVE_RIGHT_FAILED")}}", e.responseText);
                     }
                 });
@@ -76,12 +73,22 @@ $menu_name = "USER_ACCOUNT_MAINTAIN";
 
         $(function() {
             //$("#toolbar").hide();
+            initUserList();
             $('#gridUserList').on('check.bs.table', selectedChanged);
             $('#gridUserList').on('uncheck.bs.table', selectedChanged);
             $('#gridUserList').on('check-all.bs.table', selectedChanged);
             $('#gridUserList').on('uncheck-all.bs.table', selectedChanged);
             //$('#gridUserList').on('page-change.bs.table', selectedChanged);
         });
+
+        var initUserList = function () {
+            var $table = $('#gridUserList');
+            $table.bootstrapTable({
+                "url": "platform/getUserList",
+                "dataType": "json",
+                "sidePagination": "server" //服务端处理分页
+            });
+        };
 
         var selectedChanged = function (row, $element) {
             var selectedUsers = $("#gridUserList").bootstrapTable('getSelections');

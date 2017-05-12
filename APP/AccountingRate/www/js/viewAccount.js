@@ -378,14 +378,15 @@ $("#viewAccount").pagecontainer({
         function Reorganization() {
 
             arrayadd.sort();
-            var index = arrayadd.indexOf(NTD);
+            var index = arrayadd.indexOf("NTD");
             if (index>=0)
             {
                 arrayadd.splice(arrayadd.indexOf(index), 1);
                 arrayadd.unshift("NTD");    
             }
             
-        }
+            
+      
             
             arraycomb = arrayadd.concat(array.sort());
             arrayratecomb = arrayrateadd.concat(arrayRate);
