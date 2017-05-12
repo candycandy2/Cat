@@ -299,6 +299,10 @@ $("#viewReserve").pagecontainer({
         });
 
         $("#viewReserve").on("pageshow", function(event, ui) {
+            if(localStorage.getItem("Site") !== null) {
+                $("#reserveSite").val(localStorage.getItem("Site"));
+                reserveSite = localStorage.getItem("Site");
+            }
             $("#scrollDate #" + currentMonth + currentDate).trigger('click');
         });
 
@@ -370,13 +374,14 @@ $("#viewReserve").pagecontainer({
 
         $("#reserveSite").change(function() {
             reserveSite = $("#reserveSite").val();
+            localStorage.setItem("Site", reserveSite);
             QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
             QueryReserveDetail();
-            loadingMask("show"); 
+            loadingMask("show");
         });
 
         // time pick
