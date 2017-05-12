@@ -411,6 +411,9 @@ $("#viewReserve").pagecontainer({
                 popupMsgInit('.hasReservePopup');
                 $('.hasReservePopup').find('.header-text').html(headerContent);
                 $('.hasReservePopup').find('.main-paragraph').html(msgContent);
+                $('.hasReservePopup').find('.header-icon img').attr('src', 'img/select.png');
+                $('.hasReservePopup').find('.btn-cancel').html('關閉');
+                $('.hasReservePopup').find('.btn-confirm').html('取消預約');
             }
             // other reserve
             else if($(this).hasClass('ui-color-reserve')) {
