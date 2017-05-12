@@ -63,6 +63,7 @@ return [
     //About
     'SYS_VERSION' => 'System Version',
     'SYS_SUGGEST_BROWSER' => 'Suggest Browser: Chrome, IE Above version 10',
+    'JENKINS_DEPLOY_INFORMATION' => 'Jenkins Deploy Information',
 
     //Account Maintain
     'USER_LOGIN_ID' => 'Login ID',
