@@ -9,11 +9,9 @@
     </div>
     <!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    -->
     <template id="tplAddConfirmA">
-        <!--header: Title or Button-->
         <div class="header font-style1">
             Add to favorite ~
         </div>
-        <!--footer: Button-->
         <div class="footer">
             <div class="btn-two font-style8">
                 <div class="cancel">Cancel</div>
@@ -22,11 +20,9 @@
         </div>
     </template>
     <template id="tplRemoveB">
-        <!--header: Title or Button-->
         <div class="header font-style1">
             Remove from favorite~
         </div>
-        <!--footer: Button-->
         <div class="footer">
             <div class="btn-two font-style8">
                 <div class="cancel"> Cancel</div>
@@ -66,7 +62,6 @@
             <br>
             <br>
             <div class="mainword">
-           <!--            <hr color ='#AAAAAA' size ="0.1" >-->
                 <center class="mainword1">From All currency to USD </center>
                 <center class="mainword3">2020 Candy</center>
             </div>
@@ -74,10 +69,10 @@
             <div id="fragment-1" class="ui-content">
                 <ul data-role="listview" class="test1" id="ultestA">
                     <li data-icon="false" class="1_li CountryA firstli" id="litest">
-                        <span class="ListRate2">
+                        <!--<span class="ListRate2">
                         <br>Please hold on a second ~
                         <br>for loading first time :)  
-                        <br>Then press the button to start ~ Thank you! ^ - ^ </span>
+                        <br>Then press the button to start ~ Thank you! ^ - ^ </span>-->
                     </li>
                     <!-- 2========================================================== -->
                     <li data-icon="false" class="1_li CountryA" id="litest">
@@ -100,24 +95,13 @@
                 </ul>
 
             <!-- 0509 for test =========================================================== -->
-               <hr>
-               <span> Test Scenario 05 </span>
-               <button type="button" class = "buttonScenario1">Click Me D1! </button>
-               <button type="button" class = "buttonScenario2">Click Me D2</button>
-               <button type="button" class = "buttonScenario3">Click Me D3</button>
-               <button type="button" class = "buttonScenario70">Click Me D70</button>
-               <hr>
-            <!-- 0508 for test =========================================================== -->
-            <!-- 0508 for test =========================================================== 
-               <button type="button" class = "buttonScenario1U">Click Me D1 USD</button>
-               <button type="button" class = "buttonScenario2U">Click Me D2 USD</button>
-               <button type="button" class = "buttonScenario3U">Click Me D3 USD</button>
-               <button type="button" class = "buttonScenario70U">Click Me D70 USD</button>
-               -->
-            <!-- 0508 for test =========================================================== -->
-
-
-
+                <div id="testContent">
+                   <span> Test Scenario <input data-role="none" type="button" id="deleteTest" value="Delete"></span>
+                   <button type="button" id="scenario1" class="buttonScenario">D1</button>
+                   <button type="button" id="scenario2" class="buttonScenario">D2</button>
+                   <button type="button" id="scenario3" class="buttonScenario">D3</button>
+                   <button type="button" id="scenario70" class="buttonScenario">D70</button>
+               </div>
             </div>
             <!-- Fragment 1  ============================================================= -->
             <!-- Fragment 2  ============================================================= -->
@@ -128,441 +112,34 @@
             <!-- Fragment 2  ============================================================= -->
         </div>
         <!-- Popup ================================================================================ -->
-        <div id="popupA" data-role="popup" data-position-to="window" class="popupAclass" data-history="false">
-            <div data-icon="false" class="popListdiv2 popAdeleteli" id="litest">
-                <a data-rel="back" class="deletepopa">
-                    <img class="deletepop" src="img/tmp/close_btn.png"> </a>
+        <div id="popupA" class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false">
+            <div data-role="main" class="ui-content">
+                <div class="header typeA close">
+                    <img src="img/component/close_new.png" width="100%" height="100%" class="close-popup">
+                </div>
+                <ul data-role="listview" class="main">
+                </ul>
             </div>
-            <ul data-role="listview" data-inset="false">
-                <!-- popmsg & delete-->
-                <li data-icon="false" class="popAmsgli popListdiv1">
-                    <span class="popAmsg ListRate1popup">All Currency</span>
-                </li>
-                <!-- popmsg & delete-->
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/NTD.png"> </img>
-                        <span class="ListRate1popup">NTD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/USD.png"> </img>
-                        <span class="ListRate1popup">USD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/EUR.png"> </img>
-                        <span class="ListRate1popup">EUR  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/AED.png"> </img>
-                        <span class="ListRate1popup">AED  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/AUD.png"> </img>
-                        <span class="ListRate1popup">AUD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/BDT.png"> </img>
-                        <span class="ListRate1popup">BDT  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/BRL.png"> </img>
-                        <span class="ListRate1popup">BRL  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/CAD.png"> </img>
-                        <span class="ListRate1popup">CAD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/CHF.png"> </img>
-                        <span class="ListRate1popup">CHF  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/CZK.png"> </img>
-                        <span class="ListRate1popup">CZK  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/GBP.png"> </img>
-                        <span class="ListRate1popup">GBP </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/HKD.png"> </img>
-                        <span class="ListRate1popup">HKD </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/IDR.png"> </img>
-                        <span class="ListRate1popup">IDR </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/INR.png"> </img>
-                        <span class="ListRate1popup">INR </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/JPY.png"> </img>
-                        <span class="ListRate1popup">JPY  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/KRW.png"> </img>
-                        <span class="ListRate1popup">KRW  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/MMK.png"> </img>
-                        <span class="ListRate1popup">MMK </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/MXN.png"> </img>
-                        <span class="ListRate1popup">MXN  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/MYR.png"> </img>
-                        <span class="ListRate1popup">MYR  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/NZD.png"> </img>
-                        <span class="ListRate1popup">NZD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/PHP.png"> </img>
-                        <span class="ListRate1popup">PHP  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/RMB.png"> </img>
-                        <span class="ListRate1popup">RMB  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/RUB.png"> </img>
-                        <span class="ListRate1popup">RUB  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/SEK.png"> </img>
-                        <span class="ListRate1popup">SEK </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/SGD.png"> </img>
-                        <span class="ListRate1popup">SGD </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/THB.png"> </img>
-                        <span class="ListRate1popup">THB </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/TRL.png"> </img>
-                        <span class="ListRate1popup">TRL </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/VND.png"> </img>
-                        <span class="ListRate1popup">VND </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/ZAR.png"> </img>
-                        <span class="ListRate1popup">ZAR </span>
-                    </div>
-                </li>
-            </ul>
         </div>
-        <!-- Popup  ===================================================================== -->
-        <!-- Popup ====================================================================== -->
-        <div id="popupB" data-role="popup" data-position-to="window" class="popupAclass" data-history="false">
-            <div data-icon="false" class="popListdiv2 popAdeleteli" id="litest">
-                <a data-rel="back" class="deletepopa">
-                    <img class="deletepop" src="img/tmp/close_btn.png">
-                </a>
+
+        <div id="popupB" class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false">
+            <div data-role="main" class="ui-content">
+                <div class="header typeA close">
+                    <img src="img/component/close_new.png" width="100%" height="100%" class="close-popup">
+                </div>
+                <ul data-role="listview" class="main">
+                </ul>
             </div>
-            <ul data-role="listview" data-inset="false">
-                <!-- popmsg & delete-->
-                <li data-icon="false" class="popAmsgli popListdiv1">
-                    <span class="popAmsg ListRate1popup">All Currency</span>
-                </li>
-                <!-- popmsg & delete-->
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/NTD.png"> </img>
-                        <span class="ListRate1popup">NTD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/USD.png"> </img>
-                        <span class="ListRate1popup">USD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/EUR.png"> </img>
-                        <span class="ListRate1popup">EUR  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/AED.png"> </img>
-                        <span class="ListRate1popup">AED  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/AUD.png"> </img>
-                        <span class="ListRate1popup">AUD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/BDT.png"> </img>
-                        <span class="ListRate1popup">BDT  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/BRL.png"> </img>
-                        <span class="ListRate1popup">BRL  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/CAD.png"> </img>
-                        <span class="ListRate1popup">CAD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/CHF.png"> </img>
-                        <span class="ListRate1popup">CHF  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/CZK.png"> </img>
-                        <span class="ListRate1popup">CZK  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/GBP.png"> </img>
-                        <span class="ListRate1popup">GBP </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/HKD.png"> </img>
-                        <span class="ListRate1popup">HKD </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/IDR.png"> </img>
-                        <span class="ListRate1popup">IDR </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/INR.png"> </img>
-                        <span class="ListRate1popup">INR </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/JPY.png"> </img>
-                        <span class="ListRate1popup">JPY  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/KRW.png"> </img>
-                        <span class="ListRate1popup">KRW  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/MMK.png"> </img>
-                        <span class="ListRate1popup">MMK </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/MXN.png"> </img>
-                        <span class="ListRate1popup">MXN  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/MYR.png"> </img>
-                        <span class="ListRate1popup">MYR  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/NZD.png"> </img>
-                        <span class="ListRate1popup">NZD  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/PHP.png"> </img>
-                        <span class="ListRate1popup">PHP  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/RMB.png"> </img>
-                        <span class="ListRate1popup">RMB  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/RUB.png"> </img>
-                        <span class="ListRate1popup">RUB  </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/SEK.png"> </img>
-                        <span class="ListRate1popup">SEK </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/SGD.png"> </img>
-                        <span class="ListRate1popup">SGD </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/THB.png"> </img>
-                        <span class="ListRate1popup">THB </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/TRL.png"> </img>
-                        <span class="ListRate1popup">TRL </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/VND.png"> </img>
-                        <span class="ListRate1popup">VND </span>
-                    </div>
-                </li>
-                <li data-icon="false" class="popListdiv1" id="litest">
-                    <div class="Listdiv1">
-                        <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                        <img class="ListviewFlag1popup" src="img/tmp/ZAR.png"> </img>
-                        <span class="ListRate1popup">ZAR </span>
-                    </div>
-                </li>
-            </ul>
         </div>
+        <template id="tplPopupListLi">
+            <li class="popListdiv1 tpl-option-msg-list">
+                <div class="ListdivPopup">
+                    <img class="ListviewFlag1popup" src="img/tmp/AED.png"> </img>
+                    <span class="ListRate1popup">AED</span>
+                </div>
+            </li>
+            <hr class="ui-hr ui-hr-option">
+        </template>
         <!-- Popup  ================================================================================ -->
     </div>
 </div>

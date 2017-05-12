@@ -92,7 +92,7 @@ var chatRoom = {
                     padLeft(createTime.getMinutes(), 2),
                 from_id: data["messages"][i]["content"]["from_id"],
                 msg_type: data["messages"][i]["content"]["msg_type"],
-                msg_body: data["messages"][i]["content"]["msg_body"]["text"]
+                msg_body: data["messages"][i]["content"]["msg_body"]
             };
 
             chatRoom.newMsgChatRoomID = data["messages"][i]["from_gid"];

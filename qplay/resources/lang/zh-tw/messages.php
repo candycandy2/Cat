@@ -63,6 +63,7 @@ return [
     //About
     'SYS_VERSION' => '系統版本',
     'SYS_SUGGEST_BROWSER' => '系統建議瀏覽器: Chrome, IE10以上版本',
+    'JENKINS_DEPLOY_INFORMATION' => 'Jenkins部署資訊',
 
     //Account Maintain
     'USER_LOGIN_ID' => '帳號',

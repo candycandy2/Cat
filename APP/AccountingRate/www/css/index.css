@@ -1,4 +1,3 @@
-/*Tag Frag*/
 
 /*Tag Frag-----------------------------------------------*/
 .tabs-top-fixed {
@@ -6,14 +5,12 @@
     width: 100%;
     z-index: 10;
     border-bottom: #d6d6d6 0.1px solid !important;
-    margin-top: -3.99vw;
+    margin-top: -4.2vw;
     margin-left: -4.3vw;
     padding-top: 3.99vw;
     padding-left: 4.3vw;
     background-color: #FFF;
 }
-
-.test {}
 
 .buttonfirst {
     display: inline-block;
@@ -22,9 +19,7 @@
     margin-left: 3.71VW;
 }
 
-
 /*head button*/
-
 .buttonone {
     display: inline-block;
     float: left;
@@ -74,7 +69,6 @@
     font-weight: lighter;
 }
 
-
 .buttonone4img {
     float: left;    
     display: inline-block;
@@ -91,13 +85,7 @@
     margin-top: 5.5VW;
     position: absolute;
     right: 11.42VW;
-
-    /* position: absolute;
-    right: 2VW;
-    */
 }
-
-
 
 .buttontransferdiv {
     display: inline-block;
@@ -114,9 +102,7 @@
     top: 30%;
 }
 
-
 /*head button ----------------------------0 2VW;*/
-
 .frag .frag0 {
     background-color: white !important;
 }
@@ -125,21 +111,16 @@
     font-size: 4.18VW;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    height: 4VW;
     font-weight: normal!important;
-    ;
 }
 
 .frag1 {
     /* top for the Nov Oct */
-    margin-top: 3.99VW;
     font-size: 4.18VW;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    height: 4VW;
     font-weight: normal!important;
 }
-
 
 /*Main        ----------------------------*/
 .page-main {
@@ -147,11 +128,10 @@
 }
 
 .mainword {
-
+    margin-bottom: 2.17vw;
 }
 
 .mainword1 {
-    /*  text-align : center;*/
     font-size: 4.18VW;
     color: #0F0F0F;
 }
@@ -160,6 +140,7 @@
 .mainword3 {
     font-size: 3.349VW;
     color: #666;
+    margin-top: 0.691vw;
 }
 
 
@@ -177,16 +158,16 @@
     background-color: #f9f9f9!important;
 }
 
-
-
 #ultestA li {
     float: left;
     width: 92.58VW;
+    margin-bottom: 1px;
 }
 
 #ultestB li {
     float: left;
     width: 92.58VW;
+    margin-bottom: 1px;
 }
 
 .firstli {
@@ -198,7 +179,7 @@
     display: inline-block;
     float: left;
     width: 47%;
-    padding-left: 5.3VW;
+    padding-left: 3.71VW;
     overflow: hidden;
     position: relative;
 }
@@ -211,25 +192,25 @@
     overflow: hidden;
 }
 
+.ListdivPopup {
+    display: inline-block;
+    float: left;
+    width: 60%;
+    padding-left: 5.3VW;
+    overflow: hidden;
+    position: relative;
+}
 
 /* Flag */
-
 .ListviewFlag1,
 .ListviewFlag2 {
     float: left;
-    margin-left: 1VW;
     width: 7.24VW;
     display: inline-block;
-    /* background-repeat: no-repeat;
-    background-size:5vw;   
-    float: left;           
-    */
     padding: 2.33vw 0;
 }
 
-
 /* Flag Popup*/
-
 .ListviewFlag1popup {
     float: left;
     margin-left: 1VW;
@@ -251,43 +232,41 @@
     display: inline-block;
     float: left;
     position: absolute;
-    right: 2VW;
+    right: 3.71VW;
     margin-top: 3.5VW;
 }
 
 .ListRate1popup {
     float: left;
     margin-left: 5VW;
-    color: #0F0F0F;
     font-size: 3.97VW;
-    width: 15VW;
+    width: 60%;
     display: inline-block;
     padding: 2.33vw 0;
 }
 
 .ListRate1 {
     float: left;
-    margin-left: 5VW;
     color: #0F0F0F;
     font-size: 3.97VW;
     width: 15VW;
     display: inline-block;
     margin-top: 4VW;
+    margin-left: 4.486VW;
 }
 
 .nonstar_icon {
-    /*visibility : hidden ;*/
     opacity: 0;
-    margin-top: 4.5VW;
     float: left;
     width: 3.54vw;
+    margin: 4.5VW 1.567vw 0;
 }
 
 .star_icon {
-    margin-top: 4.5VW;
     opacity: 1;
     float: left;
     width: 3.54vw;
+    margin: 4.5VW 1.567vw 0;
 }
 
 .ListDollar1 {
@@ -309,9 +288,7 @@
     margin-top: 5VW;
 }
 
-
 /*list       ----------------------------*/
-
 .Maccount {
     background-color: #7700FF;
     height: 6VH;
@@ -329,12 +306,6 @@
     height: 1VH;
     color: #000000;
 }
-
-
-/*1 ;*/
-
-
-/*2 ;*/
 
 .Flag {
     width: 20%;
@@ -359,9 +330,7 @@ img.Flagpop2 {
     margin-left: 5VW;
 }
 
-
 /* POPUP*/
-
 #popup.Flagpop2 {
     width: 20%;
     margin-left: 5VW;
@@ -369,19 +338,11 @@ img.Flagpop2 {
     display: inline;
 }
 
-
-/*img.Flagpop{ 
-    width: 10VW;
-    height:5VH ;
-    float: left; 
-}*/
-
 .Country2pop {
     color: #AAAAAA;
     display: inline;
     float: left;
     margin-left: -5VW;
-    /*   float: right;  */
 }
 
 .Country {
@@ -415,9 +376,6 @@ img.Flagpop2 {
     float: left;
 }
 
-
-/*4 ;*/
-
 .account {
     border-radius: 2px;
 }
@@ -429,7 +387,6 @@ img.Flagpop2 {
     margin-top: 1VH;
     margin-left: 5VW;
 }
-
 
 #mark {
     position: absolute;
@@ -485,10 +442,24 @@ element.style {
     white-space: normal;
 }
 
+.ui-popup.ui-content, .ui-popup .ui-content {
+    overflow-x: hidden;
+}
+
+.app-popup .ui-content {
+    padding: 2.5vh 3vw 2.9vh;
+}
+
+
+.tpl-option-msg-list {
+    padding: 2.33vw 0;
+}
+
+/*
 .ui-popup-container {
     width: 80%;
 }
-
+*/
 #detail-data .ui-btn {
     border: none;
 }
@@ -496,29 +467,7 @@ element.style {
 .page-header {}
 
 
-/**********************  viewDetialInfo  **********************/
-/*.popup-msg {
-    height: 100px;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    color: #FFF;
-    background-color: #4B0082;
-    font-weight: bold;
-}*/
-
-
-/*.popup-msg .ui-btn {
-    padding: 5px 10px;
-    background-color: #28004D;
-    border: none;
-    color: #FFF;
-}*/
-
-
 /*  Delete*/
-
 .popAdeleteli {
     width: 100%;
     background-color: white!important;
@@ -540,9 +489,8 @@ element.style {
     background-color: white!important;
 }
 
-
 /*  Delete*/
-
+/*
 #popupA,
 #popupB {
     height: 80VW;
@@ -556,16 +504,13 @@ element.style {
     padding-left: 2VW;
     padding-right: 2VW;
 }
-
-
+*/
 /* For pop All Curency*/
-
 .popAmsgli {
     margin-top: 8VW;
     margin-left: 2.36VW;
     /* All currency*/
     padding-left: 2.36VW;
-    background: #2c89bc;
     font-size: 5VW;
     color: white;
     padding: 2.33vw 0;
@@ -578,24 +523,24 @@ element.style {
     display: inline-block;
 }
 
-
 /* For pop All Curency*/
-
 .popListdiv1 {
     height: 10VW;
+    color: #0F0F0F;
 }
 
 .popListdiv2 {
     height: 10VW;
+    color: #0F0F0F;
 }
 
 
 /* 0505 alan high promote Moth translate*/
-
 #fragment-1,#fragment-2 ul {
     animation: fadein 2s;
     -webkit-animation: fadein 2s; / Safari and Chrome /
 }
+
 @keyframes fadein {
     from {
         opacity:0;
@@ -604,6 +549,7 @@ element.style {
         opacity:1;
     }
 }
+
 @-webkit-keyframes fadein { / Safari and Chrome /
     from {
         opacity:0;
@@ -612,4 +558,3 @@ element.style {
         opacity:1;
     }
 }
-
