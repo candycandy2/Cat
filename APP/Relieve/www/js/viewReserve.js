@@ -405,11 +405,9 @@ $("#viewReserve").pagecontainer({
             // my reserve
             else if ($(this).hasClass('ui-color-myreserve')) {
                 trace = $(this);
-                var tempEname = userID,
-                    strDate = currentYear + "/" + month + "/" + date, 
-                    timeName = $(this).find('div:nth-child(1)')[1].textContent,
-                    headerContent = tempEname + ' 已預約',
-                    msgContent = strDate + '&nbsp;&nbsp;' + timeName;
+                var arrMsgValue = $(this).attr('msg').split(','),
+                    headerContent = arrMsgValue[2] + ' 已預約',
+                    msgContent = arrMsgValue[0] + '&nbsp;&nbsp;' + arrMsgValue[1];
                 popupMsgInit('.hasReservePopup');
                 $('.hasReservePopup').find('.header-text').html(headerContent);
                 $('.hasReservePopup').find('.main-paragraph').html(msgContent);
@@ -417,9 +415,9 @@ $("#viewReserve").pagecontainer({
             // other reserve
             else if($(this).hasClass('ui-color-reserve')) {
                 var arrMsgValue = $(this).attr('msg').split(','),
-                    tempMailContent = $(this).attr('email') + '?subject=健康職能時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
                     headerContent = arrMsgValue[2] + "已預約",
                     msgContent = arrMsgValue[0] + '&nbsp;&nbsp' + arrMsgValue[1];
+                    tempMailContent = $(this).attr('email') + '?subject=健康職能時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
                 popupMsgInit('.otherReservePopup');
                 $('.otherReservePopup').find('.header-text').html(headerContent);
                 $('.otherReservePopup').find('.main-paragraph').html(msgContent);
