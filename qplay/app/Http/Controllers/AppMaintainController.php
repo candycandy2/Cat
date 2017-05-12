@@ -588,14 +588,14 @@ class AppMaintainController extends Controller
                 }
             }
             if(isset($input['delVersionArr'])){
-                $this->deleteAppVersion($appId,explode(',',$input['delVersionArr']));
+                $this->appVersionService->deleteAppVersion($appId,explode(',',$input['delVersionArr']));
             }
             
             $versionList = array();
             if(isset($input['versionList']) && is_array($input['versionList'])){
                 $versionList = $input['versionList'];
             }
-            $this->saveAppVersionList($appkey, $appId, $versionList);
+            $this->appVersionService->saveAppVersionList($appkey, $appId, $versionList);
             
             $customApiList = array();
             if(isset($input['customApiList']) && is_array($input['customApiList'])){
@@ -1105,104 +1105,6 @@ class AppMaintainController extends Controller
         } catch (Exception $e) {
             throw new Exception($e); 
         }
-    }
-
-    /**
-     * 刪除App版本
-     * @param  Int    $appId         qp_app_head.row_id
-     * @param  Array  $delVersionArr 欲刪除的版本qp_version.row_id陣列
-     * @return 
-     */
-    private function deleteAppVersion(Int $appId, Array $delVersionArr){
-
-        $this->appVersionService->deleteAppVersion($appId, $delVersionArr);
-    }
-
-    /**
-     * save the changre of app version list
-     * @param  Int    $appId       target app id
-     * @param  Array  $versionList version object array
-     */
-    private function saveAppVersionList($appKey ,Int $appId, Array $versionList){
-
-        
-        $appStatus = $this->appVersionService->getAllPublishedAppStatus($appId);
-        $insertArray = [];
-        $updateArray = [];
-        $saveId = [];
-        $now = date('Y-m-d H:i:s',time());
-        
-
-        foreach ($versionList as $deviceType => $versionItems) {
-           
-            $deletePublishFile = true;
-
-            foreach ($versionItems as $value) {    
-                
-                $data = array(
-                    'app_row_id'=>$appId,
-                    'version_code'=>$value['version_code'],
-                    'version_name'=>$value['version_name'],
-                    'url'=>$value['url'],
-                    'external_app'=>$value['external_app'],
-                    'version_log'=>($value['version_log'] == 'null')?NULL:$value['version_log'],
-                    'status'=>$value['status'],
-                    'device_type'=>$deviceType,
-                );
-
-                if($value['status'] == 'ready'){
-                    //首次上架
-                    if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
-                        $data ['ready_date'] = time();
-                    }
-                }
-                if(isset($value['row_id'])){//update
-                     $data['row_id'] = $value['row_id'];
-                     $data['updated_user'] = \Auth::user()->row_id;
-                     $data['updated_at'] = $now;
-                     $updateArray[] = $data;
-                     $saveId[] = $value['row_id'];
-                }else{//new
-                    if($value['external_app']==0){//file upload
-                        $data['size'] =($value['size'] == 'null')?0:$value['size'];
-                        $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                        if(isset($value['version_file'])){
-                            $value['version_file']->move($destinationPath,$value['url']);
-                            if($deviceType == 'ios'){
-                                $manifestContent = $this->getManifest($appId, $appKey, $deviceType, $value['version_code'],$value['url']);
-                                 if(isset($manifestContent)){
-                                    $file = fopen($destinationPath."manifest.plist","w"); 
-                                    fwrite($file,$manifestContent );
-                                    fclose($file);
-                                 }
-                            }
-                        }
-                    }
-                    //arrange data
-                    $data['created_user'] = \Auth::user()->row_id;
-                    $data['created_at'] = $value['created_at'];
-                    $insertArray[]=$data;
-                }
-                
-                if($value['status'] == 'ready' && $value['external_app'] == 0){
-                    $deletePublishFile = false;
-                    $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
-                    $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                    $alsoCopyManifest = ($deviceType == 'ios')?true:false;
-                    $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
-                    $this->appVersionService->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $alsoCopyManifest);
-                }
-            }
-            
-            if($deletePublishFile){
-                $this->appVersionService->deleteApkFileFromPublish($appId, $deviceType);
-            }
-        }
-        
-        $this->appVersionService->updateVersion($updateArray);
-        $this->appVersionService->insertVersion($insertArray);
-
-        
     }
 
     /**
