@@ -426,6 +426,8 @@ class AppVersionService
                     if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
                         $data ['ready_date'] = time();
                     }
+                }else{
+                    $data ['ready_date'] = NULL;
                 }
                 if(isset($value['row_id'])){//update
                      $data['row_id'] = $value['row_id'];
@@ -435,7 +437,7 @@ class AppVersionService
                      $saveId[] = $value['row_id'];
                 }else{//new
                     if($value['external_app']==0){//file upload
-                        $data['size'] =($value['size'] == 'null')?0:$value['size'];
+                        
                         $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
                         if(isset($value['version_file'])){
                             $value['version_file']->move($destinationPath,$value['url']);
@@ -450,6 +452,7 @@ class AppVersionService
                         }
                     }
                     //arrange data
+                    $data['size'] =(!isset($value['size']) || $value['size'] == 'null')?0:$value['size'];
                     $data['created_user'] = \Auth::user()->row_id;
                     $data['created_at'] = $value['created_at'];
                     $insertArray[]=$data;

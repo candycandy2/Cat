@@ -18,10 +18,10 @@ if(isset($_COOKIE[$iosHistoryPageSizeCookie])){
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridIOSVersionList')" id="btnIOSVersion">
                 {{trans("messages.DELETE")}}
             </button>
-            <button type="button" class="btn btn-primary" onclick="newAppVersion('ios')" id="btnNewIOSVersion">
+            <button type="button" class="btn btn-primary" onclick="newAppVersion('ios')" id="btnNewIOSVersionFile">
                 {{trans('messages.UPLOAD_NEW_VERSION')}}
             </button>
-            <button type="button" class="btn btn-primary" onclick="newExternalLink('ios')" id="btnNewIOSVersion">
+            <button type="button" class="btn btn-primary" onclick="newExternalLink('ios')" id="btnNewIOSVersionExtern">
                 {{trans('messages.UPLOAD_NEW_EXTERNAL_LINK')}}
             </button>
         </div>

@@ -18,10 +18,10 @@ if(isset($_COOKIE[$androidHistoryPageSizeCookie])){
             <button type="button" class="btn btn-danger" style="display: none" onclick="delAppVersion('gridAndroidVersionList')" id="btnDelAndroidVersion">
                 {{trans("messages.DELETE")}}
             </button>
-            <button type="button" class="btn btn-primary" onclick="newAppVersion('android')" id="btnNewAndroidVersion">
+            <button type="button" class="btn btn-primary" onclick="newAppVersion('android')" id="btnNewAndroidVersionFile">
                 {{trans('messages.UPLOAD_NEW_VERSION')}}
             </button>
-            <button type="button" class="btn btn-primary" onclick="newExternalLink('android')" id="btnNewAndroidVersion">
+            <button type="button" class="btn btn-primary" onclick="newExternalLink('android')" id="btnNewAndroidVersionExternalLink">
                 {{trans('messages.UPLOAD_NEW_EXTERNAL_LINK')}}
             </button>
         </div>
