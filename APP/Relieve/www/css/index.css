@@ -560,11 +560,15 @@ hr.ui-color-green {
     background-color: #eaeaea !important;
 }
 
+.ui-color-disable {
+    background-color: #eaeaea !important;
+}
+
 .ui-color-myreserve {
     background-color: #CBF1EC !important;
 }
 
-.ui-color-myreserve .timeRemind, .ui-color-reserve .timeRemind{ display: none;}
+.ui-color-myreserve .timeRemind, .ui-color-reserve .timeRemind { display: none;}
 
 .ui-linear-gradient-gary {
     background: -webkit-linear-gradient(#a1a3a5, #747679);

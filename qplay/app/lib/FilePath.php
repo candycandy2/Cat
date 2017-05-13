@@ -79,4 +79,12 @@ class FilePath
         return base_path('public'. DIRECTORY_SEPARATOR .'doc'). DIRECTORY_SEPARATOR .$docCat. DIRECTORY_SEPARATOR.$fileName;    
     }
 
+    /**
+     * 取得Jenkins部屬資訊(deploy.jenkins)的檔案存放路徑
+     * @return [type] [description]
+     */
+    public static function getDeployJenkinsPath(){
+        return base_path(). DIRECTORY_SEPARATOR .'deploy.jenkins';
+    } 
+
 }
