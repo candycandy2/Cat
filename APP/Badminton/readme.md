@@ -28,7 +28,10 @@ alan:Badminton alan$
 這篇是給有一定web開發基礎的人閱讀, 請確認下面幾件事能夠理解
 1. 可以判斷或找出每一行的出處, 從原生, 從Third-party Lib, 或是由我們自行修改的
 2. 可以說明網頁的啟動原理, 從index.htm, 然後載入, 然後如何產生DOM
+![browser-page-load-timeline](https://cloud.githubusercontent.com/assets/1924451/26050748/65e7e766-3992-11e7-8e52-10b50ea7a63e.png)
+![analysis-dom-css-nb-js-async](https://cloud.githubusercontent.com/assets/1924451/26050859/dfb53742-3992-11e7-87f1-6b86ff18cd8a.png)
 3. 可以說明DOM的原理以及作用
+![pic_htmltree](https://cloud.githubusercontent.com/assets/1924451/26050849/d3edf002-3992-11e7-9856-732906b35f66.gif)
 4. 可以操作Javascript 變數, function
 5. 可以理解CSS的作用以及操作
 若以上無法講得清楚, 請先從上面的學習開始, 如果沒有問題, 那就可以開始往下看
