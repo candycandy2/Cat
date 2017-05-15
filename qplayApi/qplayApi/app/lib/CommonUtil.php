@@ -595,7 +595,7 @@ class CommonUtil
         //MongoDB
         if ($logMode == 'ALL' || $logMode == 'MONGODB'){
             $log = new Log();
-            $log->user_row_id = $userId;
+            $log->user_row_id = (int)$userId;
             $log->app_key = $appKey;
             $log->api_version = $version;
             $log->action = $action;
@@ -669,7 +669,7 @@ class CommonUtil
         if ($logMode == 'ALL' || $logMode == 'MYSQL') {
         \DB::table("qp_api_log")
             -> insert([
-                'user_row_id'=> self::getUserRowIDByUUID($uuid),
+                'user_row_id'=> (int)self::getUserRowIDByUUID($uuid),
                 'app_key'=>$appKey,
                 'api_version'=>$version,
                 'action'=>$action,
