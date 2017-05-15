@@ -21,15 +21,17 @@ use Config;
 
 class CommonUtil
 {
-    public static function getUserInfoByUUID($uuid)
+    public static function getUserInfoByUUID($uuid,$auth=true)
     {
-        $userList = \DB::table('qp_user')
+        $query = \DB::table('qp_user')
             -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
-            -> where('qp_register.uuid', '=', $uuid)
-            -> where('qp_register.status', '=', 'A')
-            -> where('qp_user.status', '=', 'Y')
-            -> where('qp_user.resign', '=', 'N')
-            -> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
+            -> where('qp_register.uuid', '=', $uuid);
+            if($auth){
+               $query -> where('qp_register.status', '=', 'A');
+               $query -> where('qp_user.status', '=', 'Y');
+               $query -> where('qp_user.resign', '=', 'N');
+            }
+           $userList = $query-> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
                 'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
                 'qp_user.department','qp_user.status', 'qp_user.resign'  )->get();
         if(count($userList) < 1) {
@@ -602,9 +604,21 @@ class CommonUtil
             $log->ip = $ip;
             $log->county = '';
             $log->city = '';
+            $userInfo = self::getUserInfoByRowID($userId);
+            if(!is_null($userInfo)){
+                $log->login_id = $userInfo->login_id;
+                $log->user_domain = $userInfo->user_domain;
+                $log->company = $userInfo->company;
+                $log->emp_no = $userInfo->emp_no;
+                $log->login_id = $userInfo->login_id;
+                $log->status = $userInfo->status;
+            }
             $log->url_parameter = $url_parameter;
             $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
             $log->request_body= self::unicodeDecode($request_body);
+            $requestTime = explode(" ",gmdate('Y-m-d H:i:s', (int)$SignatureTime));
+            $log->request_date= $requestTime[0];
+            $log->request_time= $requestTime[1];
             $log->response_header= self::unicodeDecode($responseHeader);
             $log->response_body= self::userTextDecode(self::userTextEncode($responseBody));
             $log->signature_time= (int)$SignatureTime;
@@ -683,9 +697,21 @@ class CommonUtil
             $log->ip = $ip;
             $log->county = '';
             $log->city = '';
+            $userInfo = self::getUserInfoByUUID($uuid);
+            if(!is_null($userInfo)){
+                $log->login_id = $userInfo->login_id;
+                $log->user_domain = $userInfo->user_domain;
+                $log->company = $userInfo->company;
+                $log->emp_no = $userInfo->emp_no;
+                $log->login_id = $userInfo->login_id;
+                $log->status = $userInfo->status;
+            }
             $log->url_parameter = $url_parameter;
             $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
             $log->request_body= self::unicodeDecode($request_body);
+            $requestTime = explode(" ",gmdate('Y-m-d H:i:s', (int)$SignatureTime));
+            $log->request_date= $requestTime[0];
+            $log->request_time= $requestTime[1];
             $log->response_header= self::unicodeDecode($responseHeader);
             $log->response_body= self::userTextDecode(self::userTextEncode($responseBody));
             $log->signature_time= (int)$SignatureTime;
