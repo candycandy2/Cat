@@ -151,7 +151,7 @@ var tplJS = {
         var windowHeight = $(window).height();
         var headerHeight = $(".ui-page-active .ui-header").height();
         var footerHeight = $(".ui-page-active .ui-footer").height();
-        var tempHeight = windowHeight - headerHeight - footerHeight - 5;
+        var tempHeight = windowHeight - headerHeight - footerHeight;
 
         if (tplJS.originalPageMainHeight < tempHeight) {
             tplJS.originalPageMainHeight = tempHeight;
