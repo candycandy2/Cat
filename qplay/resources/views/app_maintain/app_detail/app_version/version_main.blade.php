@@ -367,7 +367,13 @@ var uploadNewVersion = function(){
     newVersion.version_file = $('#versionFile')[0].files[0];
     newVersion.size = $('#versionFile')[0].files[0].size;
     newVersion.external_app = 0;
+
+    if(typeof currentData[0] != 'undefined'){
+        delVersionArr.push(currentData[0].row_id);
+    }
+
     currentData.splice(0,1,newVersion);
+
     $gridList.bootstrapTable('load', currentData);
     $("#newAppVersionDialog").modal('hide');
 }
@@ -433,6 +439,9 @@ var uploadNewExternalLink = function(){
     newVersion.version_name = externalName;
     newVersion.version_log  = externalLog;
     newVersion.external_app = 1;
+    if(typeof currentData[0] != 'undefined'){
+        delVersionArr.push(currentData[0].row_id);
+    }
     currentData.splice(0,1,newVersion);
     $gridList.bootstrapTable('load', currentData);
     $("#appNewExternalLinkDialog").modal('hide');
