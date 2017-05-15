@@ -143,9 +143,7 @@
     margin-top: 0.691vw;
 }
 
-
 /*Main       ----------------------------*/
-
 #contentID {
     margin-top: 4.3VW;
     margin-bottom: 4.3VW;
@@ -153,7 +151,6 @@
 
 
 /*list        ----------------------------*/
-
 .CountryA {
     background-color: #f9f9f9!important;
 }
@@ -455,17 +452,11 @@ element.style {
     padding: 2.33vw 0;
 }
 
-/*
-.ui-popup-container {
-    width: 80%;
-}
-*/
 #detail-data .ui-btn {
     border: none;
 }
 
 .page-header {}
-
 
 /*  Delete*/
 .popAdeleteli {
@@ -489,22 +480,6 @@ element.style {
     background-color: white!important;
 }
 
-/*  Delete*/
-/*
-#popupA,
-#popupB {
-    height: 80VW;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling :touch;
-    overflow: scroll;
-    padding-left: 2VW;
-    padding-right: 2VW;
-}
-*/
 /* For pop All Curency*/
 .popAmsgli {
     margin-top: 8VW;
@@ -533,7 +508,6 @@ element.style {
     height: 10VW;
     color: #0F0F0F;
 }
-
 
 /* 0505 alan high promote Moth translate*/
 #fragment-1,#fragment-2 ul {
