@@ -1,8 +1,8 @@
-# 建立一個範本, 便於學習如何使用cordova撰寫APP
-#### 該範本可以單獨使用, 不需要QPlay, Gulp, Plugin支援
+# 建立一個範例, 便於學習如何使用cordova撰寫APP
+#### 此範例不需要QPlay, Gulp, Plugin支援
 #### 目的是為了進入QPlay APP開發建立基礎條件
 #### 滿足該課程後, 繼續學習Plugin的使用->Gulp的基本原理->QPlay Component->QPlay API
-#### 使用該範例, 必須先安裝好Cordova
+#### 使用該範例, 請先安裝好Cordova
 1. 安裝完成Cordova https://cordova.apache.org/#getstarted
 2. 確認方式, 下command line,  cordova requirements, 會出現下面資訊
 ```
@@ -16,6 +16,22 @@ CocoaPods: installed
 
 alan:Badminton alan$
 ```
+
+## 自行學習步驟
+如果可以請從 0 到 1 建立相同功能的專案
+1. 建立 hello-world cordova app
+2. 新增一個 platform support (此範例以 ios 為例，需要安裝ios開發環境xcode）
+3. 新增一個 view （使用 jQuery & jQuery mobile）
+
+## 基礎知識
+
+這篇是給有一定web開發基礎的人閱讀, 請確認下面幾件事能夠理解
+1. 可以判斷或找出每一行的出處, 從原生, 從Third-party Lib, 或是由我們自行修改的
+2. 可以說明網頁的啟動原理, 從index.htm, 然後載入, 然後如何產生DOM
+3. 可以說明DOM的原理以及作用
+4. 可以操作Javascript 變數, function
+5. 可以理解CSS的作用以及操作
+若以上無法講得清楚, 請先從上面的學習開始, 如果沒有問題, 那就可以開始往下看
 
 ## 主要目的有下列幾點
 
@@ -159,6 +175,7 @@ $("#viewMain").pagecontainer({
 - /www/js/viewGame.js <= 第二個頁面,該檔案已作修改
 
 ## 啟動步驟
+
 1. 確認裝好需要的平台, 此範例為iOS, 呼叫 cordova platform add ios
 ```
 alan:Badminton alan$ cordova platform
