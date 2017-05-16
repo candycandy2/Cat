@@ -155,6 +155,10 @@
     background-color: #f9f9f9!important;
 }
 
+#ultestA, #ultestB ul.main {
+    -webkit-overflow-scrolling: touch;
+}
+
 #ultestA li {
     float: left;
     width: 92.58VW;
@@ -447,13 +451,16 @@ element.style {
     padding: 2.5vh 3vw 2.9vh;
 }
 
-
 .tpl-option-msg-list {
     padding: 2.33vw 0;
 }
 
 #detail-data .ui-btn {
     border: none;
+}
+
+.app-popup .ui-content > .header {
+    margin-top: 0;
 }
 
 .page-header {}

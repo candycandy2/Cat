@@ -33,7 +33,7 @@ class CommonUtil
             }
            $userList = $query-> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
                 'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
-                'qp_user.department','qp_user.status', 'qp_user.resign'  )->get();
+                'qp_user.department','qp_user.site','qp_user.status', 'qp_user.resign'  )->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -609,6 +609,8 @@ class CommonUtil
                 $log->login_id = $userInfo->login_id;
                 $log->user_domain = $userInfo->user_domain;
                 $log->company = $userInfo->company;
+                $log->site = $userInfo->site;
+                $log->department = $userInfo->department;
                 $log->emp_no = $userInfo->emp_no;
                 $log->login_id = $userInfo->login_id;
                 $log->status = $userInfo->status;
@@ -702,6 +704,8 @@ class CommonUtil
                 $log->login_id = $userInfo->login_id;
                 $log->user_domain = $userInfo->user_domain;
                 $log->company = $userInfo->company;
+                $log->site = $userInfo->site;
+                $log->department = $userInfo->department;
                 $log->emp_no = $userInfo->emp_no;
                 $log->login_id = $userInfo->login_id;
                 $log->status = $userInfo->status;
