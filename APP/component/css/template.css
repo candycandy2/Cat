@@ -121,7 +121,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 }
 
 .app-popup .ui-content {
-    padding: 2.5vh 3vw 2.9vh;
+    padding: 0;
     overflow-y: hidden;
     min-height: inherit;
     max-height: inherit;
@@ -133,10 +133,6 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     margin: 0;
     margin-top: -1.07vw;
     overflow-y: scroll;
-}
-
-.app-popup .ui-content {
-    padding: 5.07vw 0 0;
 }
 
 .app-popup.msg .ui-content {
@@ -163,6 +159,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 
 .app-popup .ui-content > .header {
     position: relative;
+    margin-top: 10%;
 }
 
 .app-popup .ui-content .header.typeB {
