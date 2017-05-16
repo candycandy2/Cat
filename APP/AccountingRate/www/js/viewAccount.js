@@ -16,8 +16,9 @@ $("#viewAccount").pagecontainer({
         var MonthWord = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var FromStatus = "USD" ;
         var ToStatus = "All Currency";
-        var tabActiveIDs = "#fragment-1";
-        window.packJsontemp = [];
+        var tabActiveIDs;
+        var checkDefaultActiveTab = false;
+        var packJsontemp = [];
         var arrayLast_update_date = [];
         var statuscountrypop;
         var TWOMonthDate = 0;
@@ -363,13 +364,23 @@ $("#viewAccount").pagecontainer({
 
             allCountry.sort();
             window.localStorage.setItem("allCountry", JSON.stringify(allCountry));
-            window.localStorage.setItem("allCurrencyData", JSON.stringify(allCurrencyData));
 
             //According to the Ex_Date, only display the latest 2 month's data
             showDataMonth.sort().reverse();
             showDataMonth.splice(2);
             showDataMonth.reverse();
             window.localStorage.setItem("showDataMonth", JSON.stringify(showDataMonth));
+
+            //Remove the old data
+            //ex: if now have data of month [4,5,6], and now date is June, then remove data of month [4]
+            $.each(allCurrencyData, function(countryFrom, toData){
+                $.each(toData, function(month, currencyData){
+                    if (showDataMonth.indexOf(parseInt(month, 10)) == -1) {
+                        delete allCurrencyData[countryFrom][month];
+                    }
+                });
+            });
+            window.localStorage.setItem("allCurrencyData", JSON.stringify(allCurrencyData));
 
             //Decide the latest_update_datetime
             if (arrayLast_update_date.length > 0) { 
@@ -466,6 +477,24 @@ $("#viewAccount").pagecontainer({
         function dataListView(popupID) {
             popupID = popupID || null;
 
+            //According to the date of device, decide the default month
+            if (checkDefaultActiveTab == false) {
+                var activeTabIndex;
+
+                if (todayMonth == showDataMonth[0]) {
+                    activeTabIndex = 0;
+                    tabActiveIDs = "#fragment-1";
+                } else if (todayMonth == showDataMonth[1]) {
+                    activeTabIndex = 1;
+                    tabActiveIDs = "#fragment-2";
+                }
+
+                $("#tabevent a:eq(" + activeTabIndex + ")").addClass("ui-btn-active");
+                $("#tabevent").tabs({ active: activeTabIndex });
+
+                checkDefaultActiveTab = true;
+            }
+
             //Decide to show which month
             if (tabActiveIDs === "#fragment-1") {
                 dataMonth = showDataMonth[0];
@@ -555,7 +584,7 @@ $("#viewAccount").pagecontainer({
             var selectedCountry;
             var hiddenCountry;
             var showAllCountryOption = false;
-            var noDataCountry = allCountry.slice();
+            var dataListCountry = [];
             var dataListContent = "";
 
             if (popupID === "popupA") {
@@ -576,24 +605,17 @@ $("#viewAccount").pagecontainer({
 
                         $.each(toData[dataMonth], function(countryTo, currencyData){
                             if (countryTo === ToStatus) {
-                                currencyExist = true;
+                                dataListCountry.push(countryFrom);
                             }
                         });
-
-                        if (currencyExist) {
-                            var countryIndex = noDataCountry.indexOf(countryFrom);
-                            if (countryIndex != -1) {
-                                noDataCountry.splice(countryIndex, 1);
-                            }
-                        }
                     });
 
                     showAllCountryOption = true;
                 } else if (FromStatus != "All Currency" && ToStatus == "All Currency") {
                     $.each(allCurrencyData, function(countryFrom, toData){
-                        var countryIndex = noDataCountry.indexOf(countryFrom);
+                        var countryIndex = allCountry.indexOf(countryFrom);
                         if (countryIndex != -1) {
-                            noDataCountry.splice(countryIndex, 1);
+                            dataListCountry.push(countryFrom);
                         }
                     });
                 }
@@ -604,21 +626,17 @@ $("#viewAccount").pagecontainer({
                     $.each(allCurrencyData, function(countryFrom, toData){
                         if (countryFrom === FromStatus) {
                             $.each(toData[dataMonth], function(countryTo, currencyData){
-                                var countryIndex = noDataCountry.indexOf(countryTo);
-                                if (countryIndex != -1) {
-                                    noDataCountry.splice(countryIndex, 1);
-                                }
+                                dataListCountry.push(countryTo);
                             });
                         }
                     });
 
                     showAllCountryOption = true;
                 } else if (FromStatus == "All Currency") {
-                    noDataCountry = [];
+                    dataListCountry = allCountry;
                 }
             }
 
-            //Create Data List in Popup
             var popupListLiHTML = $("template#tplPopupListLi").html();
 
             if (showAllCountryOption) {
@@ -633,17 +651,16 @@ $("#viewAccount").pagecontainer({
                 dataListContent += popupListLi[0].outerHTML + popupListLi[2].outerHTML;
             }
 
-            for (var i=0; i<allCountry.length; i++) {
+            for (var i=0; i<dataListCountry.length; i++) {
                 var popupListLi = $(popupListLiHTML);
-                if (noDataCountry.indexOf(allCountry[i]) == -1) {
-                    if (selectedCountry === allCountry[i]) {
-                        popupListLi.addClass("tpl-dropdown-list-selected");
-                    }
 
-                    popupListLi.find(".ListviewFlag1popup").prop("src", "img/tmp/" + allCountry[i] + ".png");
-                    popupListLi.find(".ListRate1popup").html(allCountry[i]);
-                    dataListContent += popupListLi[0].outerHTML + popupListLi[2].outerHTML;
+                if (selectedCountry === dataListCountry[i]) {
+                    popupListLi.addClass("tpl-dropdown-list-selected");
                 }
+
+                popupListLi.find(".ListviewFlag1popup").prop("src", "img/tmp/" + dataListCountry[i] + ".png");
+                popupListLi.find(".ListRate1popup").html(dataListCountry[i]);
+                dataListContent += popupListLi[0].outerHTML + popupListLi[2].outerHTML;
             }
 
             $("#" + popupID).find("ul").html("");
