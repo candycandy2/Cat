@@ -170,7 +170,6 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            $(tabActiveIDs + " ul").listview('refresh');
 
             recoveryPageHeight();
         }
@@ -206,7 +205,6 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            $(tabActiveIDs + " ul").listview('refresh');
             
             recoveryPageHeight();
         }
@@ -237,7 +235,7 @@ $("#viewAccount").pagecontainer({
                 + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
                 + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> '
-                + '</div>' + '</div>' + '</li>';
+                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function CountrylisthtmlFirst(country, rate, cssClass, favorite) {
@@ -257,7 +255,7 @@ $("#viewAccount").pagecontainer({
                 + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate 
                 + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' 
-                + '</div>' + '</li>';
+                + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function CountrylisthtmlSecond(country, rate, cssClass, favorite) {
@@ -278,7 +276,7 @@ $("#viewAccount").pagecontainer({
                 + '<img  class="ListviewFlag2" src ="img/tmp/' + country + '.png">'
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
                 + '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> '
-                + '</div>' + '</div>' + '</li>';
+                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function Expiretime() {
@@ -421,7 +419,8 @@ $("#viewAccount").pagecontainer({
                 favoriteCurrencyData.sort();
             } else {
                 var NTD = ["NTD"];
-                favoriteCurrencyData.splice(0, 1);
+                var NTDIndex = favoriteCurrencyData.indexOf("NTD");
+                favoriteCurrencyData.splice(NTDIndex, 1);
 
                 var tempData = favoriteCurrencyData;
                 tempData.sort();
