@@ -1,6 +1,6 @@
 
 /*global variable, function*/
-var initialAppName = "Account Rate";
+var initialAppName = "Accounting Rate";
 var appKeyOriginal = "appaccountingrate";
 var appKey = "appaccountingrate";
 var pageList = ["viewAccount"];
