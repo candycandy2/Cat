@@ -155,6 +155,10 @@
     background-color: #f9f9f9!important;
 }
 
+#ultestA, #ultestB ul.main {
+    -webkit-overflow-scrolling: touch;
+}
+
 #ultestA li {
     float: left;
     width: 92.58VW;
