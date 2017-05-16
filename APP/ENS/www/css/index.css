@@ -17,6 +17,10 @@ a {
     position: static;
 }
 
+.app-popup .ui-content > .header {
+    margin-top: 0;
+}
+
 /*new class*/
 .event-list-msg-top .description {
     font-size: 4.18vw;

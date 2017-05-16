@@ -30,14 +30,15 @@
             </div>
         </div>
     </template>
-    <!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <!-- Tab -->
+    <!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    -->
+    <!-- Main   ====================================================================== -->
     <div data-role="main" class="page-main" class="ui-content" id="contentID">
+        <!-- Tab -->
         <div data-role="tabs" class="frag" id="tabevent">
             <div class="tabs-top-fixed">
                 <div class="frag0" data-role="navbar" data-iconpos="bottom" data-position="fixed">
                     <ul>
-                        <li><a href="#fragment-1" class="ui-btn-active frag1">Apr-17</a></li>
+                        <li><a href="#fragment-1" class="frag1">Apr-17</a></li>
                         <li><a href="#fragment-2" class="frag2">Mar-17</a></li>
                     </ul>
                 </div>
@@ -57,51 +58,37 @@
                         <img class="buttonone3img" src="img/tmp/dropdown_n.png">
                     </a>
                 </div>
+                <!-- Button1 head========================================================== -->
             </div>
-            <!-- Button1 head======================================================================== -->
             <br>
             <br>
             <div class="mainword">
                 <center class="mainword1">From All currency to USD </center>
                 <center class="mainword3">2020 Candy</center>
             </div>
-            <!-- Main   ====================================================================== -->
+            <!-- Fragment 1  ============================================================= -->
             <div id="fragment-1" class="ui-content">
                 <ul data-role="listview" class="test1" id="ultestA">
-                    <li data-icon="false" class="1_li CountryA firstli" id="litest">
-                        <!--<span class="ListRate2">
-                        <br>Please hold on a second ~
-                        <br>for loading first time :)  
-                        <br>Then press the button to start ~ Thank you! ^ - ^ </span>-->
-                    </li>
-                    <!-- 2========================================================== -->
-                    <li data-icon="false" class="1_li CountryA" id="litest">
-                        <div class="Listdiv1" id="MYR">
-                            <img class="star_icon" src="img/tmp/favorite.png"> </img>
-                            <img class="ListviewFlag1" src="img/tmp/NTD.png"> </img>
-                            <span class="ListRate1">1 NTD</span>
-                            <div class="Listdiv1equalmark4">=</div>
-                        </div>
-                        <div class="Listdiv2">
-                            <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
-                            <img class="ListviewFlag2" src="img/tmp/USD.png"> </img>
-                            <div class="Listdiv3">
-                                <span class="ListDollar1">hello</span>
-                                <span class="ListRate2">USD</span>
-                                <br>
+                    <template>
+                        <li data-icon="false" class="1_li CountryA" id="litest">
+                            <div class="Listdiv1" id="MYR">
+                                <img class="star_icon" src="img/tmp/favorite.png"> </img>
+                                <img class="ListviewFlag1" src="img/tmp/NTD.png"> </img>
+                                <span class="ListRate1">1 NTD</span>
+                                <div class="Listdiv1equalmark4">=</div>
                             </div>
-                        </div>
-                    </li>
+                            <div class="Listdiv2">
+                                <img class="nonstar_icon" src="img/tmp/favorite.png"> </img>
+                                <img class="ListviewFlag2" src="img/tmp/USD.png"> </img>
+                                <div class="Listdiv3">
+                                    <span class="ListDollar1">hello</span>
+                                    <span class="ListRate2">USD</span>
+                                    <br>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
                 </ul>
-
-            <!-- 0509 for test =========================================================== -->
-                <div id="testContent">
-                   <span> Test Scenario <input data-role="none" type="button" id="deleteTest" value="Delete"></span>
-                   <button type="button" id="scenario1" class="buttonScenario">D1</button>
-                   <button type="button" id="scenario2" class="buttonScenario">D2</button>
-                   <button type="button" id="scenario3" class="buttonScenario">D3</button>
-                   <button type="button" id="scenario70" class="buttonScenario">D70</button>
-               </div>
             </div>
             <!-- Fragment 1  ============================================================= -->
             <!-- Fragment 2  ============================================================= -->

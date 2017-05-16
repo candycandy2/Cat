@@ -329,8 +329,10 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
-        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
-        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size() + 
+                            $('#gridIOSOnlineVersionList').find('div.switch-success').size() ;
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size() + 
+                                $('#gridAndroidOnlineVersionList').find('div.switch-success').size();
         if(androidPublishCnt + iosPublishCnt ==0){
             return true;
         }
@@ -341,8 +343,10 @@ $(function () {
     });
 
     jQuery.validator.addMethod("screenshot", function(value, element) {
-        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size();
-        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size();
+        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size() + 
+                            $('#gridIOSOnlineVersionList').find('div.switch-success').size() ;
+        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size() + 
+                                $('#gridAndroidOnlineVersionList').find('div.switch-success').size();
         var ios = new RegExp('^iosScreenUpload_');
         var android = new RegExp('^androidScreenUpload_');
         if($(element).parent().parent().find('li.imgLi').length == 0){
