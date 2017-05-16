@@ -419,7 +419,8 @@ $("#viewAccount").pagecontainer({
                 favoriteCurrencyData.sort();
             } else {
                 var NTD = ["NTD"];
-                favoriteCurrencyData.splice(0, 1);
+                var NTDIndex = favoriteCurrencyData.indexOf("NTD");
+                favoriteCurrencyData.splice(NTDIndex, 1);
 
                 var tempData = favoriteCurrencyData;
                 tempData.sort();
