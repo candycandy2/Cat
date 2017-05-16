@@ -300,6 +300,7 @@ $("#viewReserve").pagecontainer({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         //do something for refresh
+                        console.log("one");
                     }
                 });
             } else if (tabValue == 'tab2') {
@@ -320,6 +321,7 @@ $("#viewReserve").pagecontainer({
                     onRefresh: function() {
                         //do something for refresh
                         QueryMyReserve();
+                        console.log("two");
                     }
                 });
             } else {
@@ -508,8 +510,8 @@ $("#viewReserve").pagecontainer({
         });
 
         // close popup msg
-        $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
-            $('#viewPopupMsg').popup('close');
-        });
+        // $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
+        //     $('#viewPopupMsg').popup('close');
+        // });
     }
 });
