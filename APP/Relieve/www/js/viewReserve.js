@@ -13,67 +13,84 @@ $("#viewReserve").pagecontainer({
 
             this.successCallback = function(data) {
                 QueryReserveDetailCallBackData = data["Content"];
-                var BTime;
+                var BTime, status, reserveID;
                 for(var i=0; i<QueryReserveDetailCallBackData.length; i++) {
                     BTime = QueryReserveDetailCallBackData[i]["BTime"].replace(":","-");
+                    status = QueryReserveDetailCallBackData[i]["Status"];
+                    reserveID = QueryReserveDetailCallBackData[i]["ReserveID"];
                     $("#time" + BTime + " .time").text(QueryReserveDetailCallBackData[i]["BTime"]);
+                    
+                    $("#time" + BTime).removeClass("hover");
+                    $("#time" + BTime).removeClass("ui-color-disable");
+                    $("#time" + BTime).addClass("ui-color-noreserve");
+                    $("#time" + BTime).removeClass("ui-color-myreserve");
+                    $("#time" + BTime).removeClass("ui-color-reserve");
+                    $("#time" + BTime).find('div:nth-child(2)').addClass("circleIcon");
+                    $("#time" + BTime).find('div:nth-child(2)').addClass("iconSelect");
+                    $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelected");
+                    $("#time" + BTime).find('div:nth-child(2)').html("");
+                    $("#time" + BTime).find('.timeRemind').removeClass('timeShow');
 
-                    if(QueryReserveDetailCallBackData[i]["Emp_No"] === "") {
-                        $("#time" + BTime).addClass("ui-color-noreserve");
-                        $("#time" + BTime).removeClass("ui-color-myreserve");
-                        $("#time" + BTime).removeClass("ui-color-reserve");
-                        $("#time" + BTime).find('div:nth-child(2)').addClass("circleIcon");
-                        $("#time" + BTime).find('div:nth-child(2)').addClass("iconSelect");
-                        $("#time" + BTime).find('div:nth-child(2)').html("");
-
-                        $("#time" + BTime).attr("ename", "");
-                        $("#time" + BTime).attr("email", "");
-                        $("#time" + BTime).attr("ext", "");
-                        $("#time" + BTime).attr("reserveid", "");
-                        $("#time" + BTime).attr("msg", "");
-
-                    }else if(QueryReserveDetailCallBackData[i]["Emp_No"] === myEmpNo) {
-                        $("#time" + BTime).removeClass("ui-color-noreserve");
-                        $("#time" + BTime).addClass("ui-color-myreserve");
-                        $("#time" + BTime).removeClass("ui-color-reserve");
-                        $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                        $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                        
-                        var msg =  currentYear + "/" + month + "/" + date
-                                 + ","
-                                 + QueryReserveDetailCallBackData[i]["BTime"]
-                                 + "-"
-                                 + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                 + ","
-                                 + QueryReserveDetailCallBackData[i]["Name"];
-                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                        $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                        $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                        $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                        $("#time" + BTime).attr("msg", msg);
-
-                    }else {
-                        $("#time" + BTime).removeClass("ui-color-noreserve");
-                        $("#time" + BTime).removeClass("ui-color-myreserve");
-                        $("#time" + BTime).addClass("ui-color-reserve");
-                        $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                        $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                        $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                        
-                        var msg =  currentYear + "/" + month + "/" + date 
-                                 + ","
-                                 + QueryReserveDetailCallBackData[i]["BTime"]
-                                 + "-"
-                                 + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                 + ","
-                                 + QueryReserveDetailCallBackData[i]["Name"];
-                        $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                        $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                        $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                        $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                        $("#time" + BTime).attr("msg", msg);
+                    $("#time" + BTime).attr("ename", "");
+                    $("#time" + BTime).attr("email", "");
+                    $("#time" + BTime).attr("ext", "");
+                    $("#time" + BTime).attr("reserveid", "");
+                    $("#time" + BTime).attr("msg", "");
+                    if(status === "1") {
+                        if(reserveID === "0") {
+                            $("#time" + BTime).addClass("ui-color-disable");
+                            $("#time" + BTime).removeClass("ui-color-noreserve");
+                            $("#time" + BTime).removeClass("ui-color-myreserve");
+                            $("#time" + BTime).removeClass("ui-color-reserve");
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                        }else if(reserveID !== "0") {
+                            if(QueryReserveDetailCallBackData[i]["Emp_No"] === myEmpNo) {
+                                $("#time" + BTime).removeClass("ui-color-disable");
+                                $("#time" + BTime).removeClass("ui-color-noreserve");
+                                $("#time" + BTime).addClass("ui-color-myreserve");
+                                $("#time" + BTime).removeClass("ui-color-reserve");
+                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
+                                
+                                var msg =  currentYear + "/" + month + "/" + date
+                                         + ","
+                                         + QueryReserveDetailCallBackData[i]["BTime"]
+                                         + "-"
+                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                         + ","
+                                         + QueryReserveDetailCallBackData[i]["Name"];
+                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
+                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
+                                $("#time" + BTime).attr("msg", msg);
+                            }else {
+                                $("#time" + BTime).removeClass("ui-color-disable");
+                                $("#time" + BTime).removeClass("ui-color-noreserve");
+                                $("#time" + BTime).removeClass("ui-color-myreserve");
+                                $("#time" + BTime).addClass("ui-color-reserve");
+                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
+                                
+                                var msg =  currentYear + "/" + month + "/" + date 
+                                         + ","
+                                         + QueryReserveDetailCallBackData[i]["BTime"]
+                                         + "-"
+                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                         + ","
+                                         + QueryReserveDetailCallBackData[i]["Name"];
+                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
+                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
+                                $("#time" + BTime).attr("msg", msg);
+                            }
+                        }
                     }
+                    $('#reserveBtn').removeClass('btn-enable');
+                    $('#reserveBtn').addClass('btn-disable');
                 }
                 loadingMask("hide");
             };
@@ -136,6 +153,7 @@ $("#viewReserve").pagecontainer({
                 }
                 $('#reserveBtn').removeClass('btn-enable');
                 $('#reserveBtn').addClass('btn-disable');
+                loadingMask("hide");
             };
 
             this.failCallback = function(data) {};
@@ -157,7 +175,6 @@ $("#viewReserve").pagecontainer({
                         $(trace).removeClass('ui-color-myreserve').addClass('ui-color-noreserve');
                         $('.hasReservePopup').popup('close');
                     }else {
-                        // $('.myReserveCancel').parents('.reserveInfo').remove();
                         $('.myReservePopupMsg').popup('close');
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
                         popupMsgInit('.myReserveCancelResult');
@@ -243,6 +260,7 @@ $("#viewReserve").pagecontainer({
                     $('.queryMyReserveResult').find('.main-paragraph').html("沒有您的預約資料");
                     popupMsgInit('.queryMyReserveResult');
                 }
+                loadingMask("hide");
             };
 
             this.failCallback = function(data) {};
@@ -303,7 +321,7 @@ $("#viewReserve").pagecontainer({
                                           + currentYear + currentMonth + currentDate
                                           + "</NowDate></LayoutHeader>"
                 QueryMyReserve();
-
+                loadingMask("show");
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
@@ -333,12 +351,16 @@ $("#viewReserve").pagecontainer({
             month = cutStringToArray($(this).context.id, ["2", "2"])[1];
             date = cutStringToArray($(this).context.id, ["2", "2"])[2];
             queryDate = currentYear.toString() + month + date;
+            
+
+
             QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
             QueryReserveDetail();
+            loadingMask("show");
         });
 
         $("#reserveSite").change(function() {
@@ -349,6 +371,7 @@ $("#viewReserve").pagecontainer({
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
             QueryReserveDetail();
+            loadingMask("show"); 
         });
 
         // time pick
@@ -381,7 +404,7 @@ $("#viewReserve").pagecontainer({
                 $('.hasReservePopup').find('.main-paragraph').html(msgContent);
             }
             // other reserve
-            else {
+            else if($(this).hasClass('ui-color-reserve')) {
                 var arrMsgValue = $(this).attr('msg').split(','),
                     tempMailContent = $(this).attr('email') + '?subject=健康職能時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
                     headerContent = arrMsgValue[2] + "已預約",
@@ -419,6 +442,7 @@ $("#viewReserve").pagecontainer({
                                           + queryTime
                                           + "</BTime></LayoutHeader>";
                 ReserveRelieve();
+                loadingMask("show");
             }
         });
 
@@ -482,8 +506,15 @@ $("#viewReserve").pagecontainer({
             popupMsgInit('.myReservePopupMsg');
             $('.myReservePopupMsg').find('.header-text').html(headerContent);
             $('.myReservePopupMsg').find('.main-paragraph').html(msgContent);
-            // $(this).addClass('myReserveCancel');
             bReserveCancelConfirm = true;
+        });
+
+        // my reserve cancel btn click
+        $('body').on('click', 'div[for=queryMyReserveResult] .btn-cancel', function() {
+            $("input[id=tab1]").trigger('click');
+            $("label[for=tab1]").addClass('ui-btn-active');
+            $("label[for=tab2]").removeClass('ui-btn-active');
+            $("label[for=tab3]").removeClass('ui-btn-active');
         });
 
         // close popup msg
