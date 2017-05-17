@@ -77,7 +77,7 @@ $("#viewAccount").pagecontainer({
                 mainElement: '#fragment-1',
                 onRefresh: function() {
                     //do something for refresh
-                    var AccountingRate = new GetAccountingRate();
+                    Expiretime();
                 }
             });
         });
@@ -301,10 +301,6 @@ $("#viewAccount").pagecontainer({
                 Parameter = TWOMonthDate;
             }
 
-            Jsonparse();
-        }
-
-        function Jsonparse() {
             var AccountingRate = new GetAccountingRate(); //call API1
         }
 
