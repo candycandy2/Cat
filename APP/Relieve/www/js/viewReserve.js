@@ -15,12 +15,15 @@ $("#viewReserve").pagecontainer({
             this.successCallback = function(data) {
                 QueryReserveDetailCallBackData = data["Content"];
                 var BTime, status, reserveID;
+
                 for(var i=0; i<QueryReserveDetailCallBackData.length; i++) {
                     BTime = QueryReserveDetailCallBackData[i]["BTime"].replace(":","-");
                     status = QueryReserveDetailCallBackData[i]["Status"];
                     reserveID = QueryReserveDetailCallBackData[i]["ReserveID"];
                     $("#time" + BTime + " .time").text(QueryReserveDetailCallBackData[i]["BTime"]);
-                    
+                    if((currentMonth + "/" + currentDate === month + "/" + date) && (time+"").match(/.*?\s.*?\s.*?\s.*?\s(.*?)\s/)[1] > QueryReserveDetailCallBackData[i]["BTime"]) {
+                        status = "1";
+                    }
                     $("#time" + BTime).removeClass("hover");
                     $("#time" + BTime).removeClass("ui-color-disable");
                     $("#time" + BTime).addClass("ui-color-noreserve");
@@ -50,49 +53,33 @@ $("#viewReserve").pagecontainer({
                                 $("#time" + BTime).removeClass("ui-color-noreserve");
                                 $("#time" + BTime).addClass("ui-color-myreserve");
                                 $("#time" + BTime).removeClass("ui-color-reserve");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                                
-                                var msg =  currentYear + "/" + month + "/" + date
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["BTime"]
-                                         + "-"
-                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["Name"];
-                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                                $("#time" + BTime).attr("msg", msg);
                             }else {
                                 $("#time" + BTime).removeClass("ui-color-disable");
                                 $("#time" + BTime).removeClass("ui-color-noreserve");
                                 $("#time" + BTime).removeClass("ui-color-myreserve");
                                 $("#time" + BTime).addClass("ui-color-reserve");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                                
-                                var msg =  currentYear + "/" + month + "/" + date 
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["BTime"]
-                                         + "-"
-                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["Name"];
-                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                                $("#time" + BTime).attr("msg", msg);
                             }
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                            $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
+                            
+                            var msg =  currentYear + "/" + month + "/" + date 
+                                     + ","
+                                     + QueryReserveDetailCallBackData[i]["BTime"]
+                                     + "-"
+                                     + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                     + ","
+                                     + QueryReserveDetailCallBackData[i]["Name"];
+                            $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
+                            $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                            $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                            $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
+                            $("#time" + BTime).attr("msg", msg);
                         }
                     }
-                    $('#reserveBtn').removeClass('btn-enable');
-                    $('#reserveBtn').addClass('btn-disable');
                 }
+                $('#reserveBtn').removeClass('btn-enable');
+                $('#reserveBtn').addClass('btn-disable');
                 loadingMask("hide");
             };
 
