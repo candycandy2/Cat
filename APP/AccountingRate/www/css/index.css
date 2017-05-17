@@ -143,6 +143,11 @@
     margin-top: 0.691vw;
 }
 
+.error-string {
+    font-size: 4.18VW;
+    color: #666;
+}
+
 /*Main       ----------------------------*/
 #contentID {
     margin-top: 4.3VW;

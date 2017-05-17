@@ -136,7 +136,7 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            $(tabActiveIDs + " ul").listview('refresh');
+
             footerFixed();
         }
 
@@ -501,25 +501,36 @@ $("#viewAccount").pagecontainer({
                 dataMonth = showDataMonth[1];
             }
 
-            if (FromStatus == "All Currency") {
-                AddhtmlFirst();
-            }
+            if (FromStatus == "All Currency" && ToStatus == "All Currency") {
+                $("ul[data-role='listview'][class^='test']").html("");
+                $(".info-string").hide();
+                $(".error-string").show();
+                tplJS.preventPageScroll();
+            } else {
+                $(".info-string").show();
+                $(".error-string").hide();
+                tplJS.recoveryPageScroll();
 
-            if (ToStatus == "All Currency") {
-                AddhtmlSecond();
-            }
+                if (FromStatus == "All Currency") {
+                    AddhtmlFirst();
+                }
 
-            if (FromStatus != "All Currency" && ToStatus != "All Currency") {
-                AddhtmlOne(popupID);
+                if (ToStatus == "All Currency") {
+                    AddhtmlSecond();
+                }
 
-                //Prevent Page Scorll
-                $('.ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
-                    'height': deviceHeight
-                });
+                if (FromStatus != "All Currency" && ToStatus != "All Currency") {
+                    AddhtmlOne(popupID);
 
-                $('.ui-page-active.ui-page').css({
-                    'min-height': deviceHeight
-                });
+                    //Prevent Page Scorll
+                    $('.ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                        'height': deviceHeight
+                    });
+
+                    $('.ui-page-active.ui-page').css({
+                        'min-height': deviceHeight
+                    });
+                }
             }
         }
 
@@ -582,7 +593,7 @@ $("#viewAccount").pagecontainer({
         function popupDataProcess(popupID) {
             var selectedCountry;
             var hiddenCountry;
-            var showAllCountryOption = false;
+            var showAllCountryOption = true;
             var dataListCountry = [];
             var dataListContent = "";
 
@@ -617,6 +628,8 @@ $("#viewAccount").pagecontainer({
                             dataListCountry.push(countryFrom);
                         }
                     });
+                } else if (FromStatus == "All Currency" && ToStatus == "All Currency") {
+                    dataListCountry = allCountry;
                 }
             }
 
