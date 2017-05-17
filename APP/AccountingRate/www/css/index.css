@@ -198,8 +198,6 @@
     float: left;
     width: 60%;
     padding-left: 5.3VW;
-    overflow: hidden;
-    position: relative;
 }
 
 /* Flag */
@@ -216,6 +214,7 @@
     float: left;
     margin-left: 1VW;
     width: 7.24VW;
+    height: 7.24VW;
     display: inline-block;
     margin-top: 1.5VW;
 }
