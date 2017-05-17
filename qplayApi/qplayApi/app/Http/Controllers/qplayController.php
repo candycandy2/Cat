@@ -215,7 +215,7 @@ class qplayController extends Controller
             return $result;
         }
         $uuid = $input["uuid"];
-
+        $userId = CommonUtil::getUserRowIDByUUID($uuid);
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $uuidList = \DB::table("qp_register")
@@ -227,7 +227,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'content'=>array("is_register"=>1)];
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi( $userId, $ACTION,
                     response()->json(apache_response_headers()), $result);
                 $result = response()->json($result);
                 return $result;
@@ -237,7 +237,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_DEVICE_HAS_NOT_REGISTERED"),
                     'content'=>array("is_register"=>0)];
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi( $userId, $ACTION,
                     response()->json(apache_response_headers()), $result);
                 $result = response()->json($result);
                 return $result;
@@ -248,7 +248,7 @@ class qplayController extends Controller
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
+            CommonUtil::logApi( $userId, $ACTION,
                 response()->json(apache_response_headers()), $result);
             $result = response()->json($result);
             return $result;

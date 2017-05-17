@@ -143,9 +143,12 @@
     margin-top: 0.691vw;
 }
 
+.error-string {
+    font-size: 4.18VW;
+    color: #666;
+}
 
 /*Main       ----------------------------*/
-
 #contentID {
     margin-top: 4.3VW;
     margin-bottom: 4.3VW;
@@ -153,9 +156,12 @@
 
 
 /*list        ----------------------------*/
-
 .CountryA {
     background-color: #f9f9f9!important;
+}
+
+#ultestA, #ultestB ul.main {
+    -webkit-overflow-scrolling: touch;
 }
 
 #ultestA li {
@@ -197,8 +203,6 @@
     float: left;
     width: 60%;
     padding-left: 5.3VW;
-    overflow: hidden;
-    position: relative;
 }
 
 /* Flag */
@@ -215,6 +219,7 @@
     float: left;
     margin-left: 1VW;
     width: 7.24VW;
+    height: 7.24VW;
     display: inline-block;
     margin-top: 1.5VW;
 }
@@ -450,22 +455,19 @@ element.style {
     padding: 2.5vh 3vw 2.9vh;
 }
 
-
 .tpl-option-msg-list {
     padding: 2.33vw 0;
 }
 
-/*
-.ui-popup-container {
-    width: 80%;
-}
-*/
 #detail-data .ui-btn {
     border: none;
 }
 
-.page-header {}
+.app-popup .ui-content > .header {
+    margin-top: 0;
+}
 
+.page-header {}
 
 /*  Delete*/
 .popAdeleteli {
@@ -489,22 +491,6 @@ element.style {
     background-color: white!important;
 }
 
-/*  Delete*/
-/*
-#popupA,
-#popupB {
-    height: 80VW;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling :touch;
-    overflow: scroll;
-    padding-left: 2VW;
-    padding-right: 2VW;
-}
-*/
 /* For pop All Curency*/
 .popAmsgli {
     margin-top: 8VW;
@@ -533,7 +519,6 @@ element.style {
     height: 10VW;
     color: #0F0F0F;
 }
-
 
 /* 0505 alan high promote Moth translate*/
 #fragment-1,#fragment-2 ul {

@@ -481,7 +481,7 @@
                 </div>
                 <div class="modal-body">
                     <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
-                           data-url="platform/getUserList" data-height="298" data-pagination="true"
+                           data-url="platform/getUserList" data-height="298" data-pagination="true" data-side-pagination="server"
                            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                            data-show-toggle="true"  data-sortable="true"
                            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"

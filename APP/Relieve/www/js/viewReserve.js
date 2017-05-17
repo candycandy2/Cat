@@ -15,12 +15,15 @@ $("#viewReserve").pagecontainer({
             this.successCallback = function(data) {
                 QueryReserveDetailCallBackData = data["Content"];
                 var BTime, status, reserveID;
+
                 for(var i=0; i<QueryReserveDetailCallBackData.length; i++) {
                     BTime = QueryReserveDetailCallBackData[i]["BTime"].replace(":","-");
                     status = QueryReserveDetailCallBackData[i]["Status"];
                     reserveID = QueryReserveDetailCallBackData[i]["ReserveID"];
                     $("#time" + BTime + " .time").text(QueryReserveDetailCallBackData[i]["BTime"]);
-                    
+                    if((currentMonth + "/" + currentDate === month + "/" + date) && (time+"").match(/.*?\s.*?\s.*?\s.*?\s(.*?)\s/)[1] > QueryReserveDetailCallBackData[i]["BTime"]) {
+                        status = "1";
+                    }
                     $("#time" + BTime).removeClass("hover");
                     $("#time" + BTime).removeClass("ui-color-disable");
                     $("#time" + BTime).addClass("ui-color-noreserve");
@@ -50,49 +53,33 @@ $("#viewReserve").pagecontainer({
                                 $("#time" + BTime).removeClass("ui-color-noreserve");
                                 $("#time" + BTime).addClass("ui-color-myreserve");
                                 $("#time" + BTime).removeClass("ui-color-reserve");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                                
-                                var msg =  currentYear + "/" + month + "/" + date
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["BTime"]
-                                         + "-"
-                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["Name"];
-                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                                $("#time" + BTime).attr("msg", msg);
                             }else {
                                 $("#time" + BTime).removeClass("ui-color-disable");
                                 $("#time" + BTime).removeClass("ui-color-noreserve");
                                 $("#time" + BTime).removeClass("ui-color-myreserve");
                                 $("#time" + BTime).addClass("ui-color-reserve");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                                
-                                var msg =  currentYear + "/" + month + "/" + date 
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["BTime"]
-                                         + "-"
-                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["Name"];
-                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                                $("#time" + BTime).attr("msg", msg);
                             }
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                            $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
+                            
+                            var msg =  currentYear + "/" + month + "/" + date 
+                                     + ","
+                                     + QueryReserveDetailCallBackData[i]["BTime"]
+                                     + "-"
+                                     + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                     + ","
+                                     + QueryReserveDetailCallBackData[i]["Name"];
+                            $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
+                            $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                            $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                            $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
+                            $("#time" + BTime).attr("msg", msg);
                         }
                     }
-                    $('#reserveBtn').removeClass('btn-enable');
-                    $('#reserveBtn').addClass('btn-disable');
                 }
+                $('#reserveBtn').removeClass('btn-enable');
+                $('#reserveBtn').addClass('btn-disable');
                 loadingMask("hide");
             };
 
@@ -112,43 +99,24 @@ $("#viewReserve").pagecontainer({
                 ReserveRelieveCallBackData = data;
                 var resultcode = data['ResultCode'];
                 if(resultcode === "023902") {
-                    var strDate = currentYear + "/" + month + "/" + date, 
-                        timeName = timeQueue,
-                        headerContent = "預約成功";
-                        // msgContent = strDate + '&nbsp;&nbsp' + timeName;
-                        msgContent = strDate;
+                    var headerContent = "預約成功";
+                        msgContent = currentYear + "/" + month + "/" + date;
                     myReserver_dirtyFlag = true;
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/select.png");
-                    $('.reserveResultPopup').find('.header-text').html(headerContent);
-                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
-                    popupMsgInit('.reserveResultPopup');
-                    QueryReserveDetail();
+                    localStorage.setItem("Site", reserveSite);
                 }else if(resultcode === "023903") {
                     var headerContent = "預約失敗";
                         msgContent = "已超出可預約的時數限制";
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
-                    popupMsgInit('.reserveResultPopup');
-                    $('.reserveResultPopup').find('.header-text').html(headerContent);
-                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
-
-                    $('#reserveDateSelect').find('.hover').find('.timeShow').removeClass('timeShow');
-                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").removeClass("iconSelected");
-                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").addClass("iconSelect");
-                    $('#reserveDateSelect').find('.hover').removeClass("hover");
-
                 }else if(resultcode === "023904") {
                     var headerContent = "預約失敗";
                         msgContent = "已被預約";
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
-                    popupMsgInit('.reserveResultPopup');
-                    $('.reserveResultPopup').find('.header-text').html(headerContent);
-                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
-
-                    $('#reserveDateSelect').find('.hover').find('.timeShow').removeClass('timeShow');
-                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").removeClass("iconSelected");
-                    $('#reserveDateSelect').find('.hover').find(".ui-bar>div:nth-of-type(2)").addClass("iconSelect");
-                    $('#reserveDateSelect').find('.hover').removeClass("hover");
                 }
+                QueryReserveDetail();
+                $('.reserveResultPopup').find('.header-text').html(headerContent);
+                $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
+                popupMsgInit('.reserveResultPopup');
                 $('#reserveBtn').removeClass('btn-enable');
                 $('#reserveBtn').addClass('btn-disable');
                 loadingMask("hide");
@@ -319,6 +287,7 @@ $("#viewReserve").pagecontainer({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         //do something for refresh
+                        console.log("one");
                     }
                 });
             } else if (tabValue == 'tab2') {
@@ -339,6 +308,7 @@ $("#viewReserve").pagecontainer({
                     onRefresh: function() {
                         //do something for refresh
                         QueryMyReserve();
+                        console.log("two");
                     }
                 });
             } else {
@@ -374,7 +344,6 @@ $("#viewReserve").pagecontainer({
 
         $("#reserveSite").change(function() {
             reserveSite = $("#reserveSite").val();
-            localStorage.setItem("Site", reserveSite);
             QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite
                                           + "</Site><ReserveDate>"
@@ -528,8 +497,8 @@ $("#viewReserve").pagecontainer({
         });
 
         // close popup msg
-        $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
-            $('#viewPopupMsg').popup('close');
-        });
+        // $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
+        //     $('#viewPopupMsg').popup('close');
+        // });
     }
 });

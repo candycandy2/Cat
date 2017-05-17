@@ -177,7 +177,7 @@ cp $appfolder/ENS/platforms/iOS/build/device/ENS.ipa $binfolder/ENS.ipa
 cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $binfolder/apprelieve.apk
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
 cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
-cp $appfolder/AccountingRate/platforms/iOS/build/device/appaccountingrate.ipa $binfolder/AccountingRate.ipa
+cp $appfolder/AccountingRate/platforms/iOS/build/device/Acct.Rate.ipa $binfolder/AccountingRate.ipa
 
 # ------ make directory of Production for apk and ipa ------
 binfolder=~/Documents/QPlayProduct/1.0.0.$dailyver
@@ -197,7 +197,7 @@ cp $appfolder/ENS/platforms/iOS/build/device/ENS.ipa $binfolder/ENS.ipa
 cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $binfolder/apprelieve.apk
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
 cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
-cp $appfolder/AccountingRate/platforms/iOS/build/device/appaccountingrate.ipa $binfolder/AccountingRate.ipa
+cp $appfolder/AccountingRate/platforms/iOS/build/device/Acct.Rate.ipa $binfolder/AccountingRate.ipa
 
 # ------ copy source code of Staging------
 rm -Rf ~/Documents/QPlayStaging/QPlayStaging/
