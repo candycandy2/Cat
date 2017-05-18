@@ -22,7 +22,7 @@ $menu_name = "APP_MAINTAIN";
             <th data-field="app_name" data-sortable="true" data-formatter="appEditFormatter" data-search-formatter="false">{{trans("messages.APP_NAME")}}</th>
             <th data-field="package_name" data-sortable="true">{{trans("messages.APP_PACKAGE_NAME")}}</th>
             <th data-field="updated_at" data-sortable="true" data-formatter="updateDateFormatter">{{trans("messages.LAST_UPDATED_DATE")}}</th>
-            <th data-field="released" data-sortable="true">{{trans("messages.RELEASED")}}</th>
+            <th data-field="released" data-sortable="false" data-formatter="releasedFormatter">{{trans("messages.RELEASED")}}</th>
         </tr>
         </thead>
     </table>
@@ -44,6 +44,10 @@ $menu_name = "APP_MAINTAIN";
         return convertUTCToLocalDateTime(value);
     }
     
+    function releasedFormatter(value, row){
+        return 'Android - ' + row.android_release + '<br>' + 'IOS - ' + row.ios_release;
+    }
+
     var newApp = function(){
          $("#newAppDialog").find('.modal-title').text('{{trans('messages.NEW_APP')}}');
          $("#newAppDialog").find('input').val('');

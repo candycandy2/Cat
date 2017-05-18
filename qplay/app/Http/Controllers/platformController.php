@@ -262,7 +262,7 @@ class platformController extends Controller
                             'created_at'=>$now]);
                     }
                 }
-
+                $pushResult = null;
                 if($status == "N") {
                     $userInfo = CommonUtil::getUserInfoByRowId($userId);
                     $tag = PushUtil::GetTagByUserInfo($userInfo);
@@ -293,7 +293,7 @@ class platformController extends Controller
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,'jpush-result'=>$pushResult]);
             } catch (\Exception $e) {
                 \DB::rollBack();
-                return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,'content']);
             }
         } else {
             return response()->json(['result_code'=>ResultCode::_999999_unknownError]);
