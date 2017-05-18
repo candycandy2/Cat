@@ -56,6 +56,7 @@ $("#viewAccount").pagecontainer({
                     localStorage.setItem("localMonth", JSON.stringify(todayMonth));
                     localStorage.setItem("localDate", JSON.stringify(todayDate));
                 }
+                dataListView();
             };
 
             this.failCallback = function(data) {
@@ -70,6 +71,15 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             Expiretime();
+
+            /* global PullToRefresh */
+            PullToRefresh.init({
+                mainElement: '#fragment-1',
+                onRefresh: function() {
+                    //do something for refresh
+                    Expiretime();
+                }
+            });
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
@@ -291,10 +301,6 @@ $("#viewAccount").pagecontainer({
                 Parameter = TWOMonthDate;
             }
 
-            Jsonparse();
-        }
-
-        function Jsonparse() {
             var AccountingRate = new GetAccountingRate(); //call API1
         }
 
