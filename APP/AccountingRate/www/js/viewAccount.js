@@ -56,6 +56,7 @@ $("#viewAccount").pagecontainer({
                     localStorage.setItem("localMonth", JSON.stringify(todayMonth));
                     localStorage.setItem("localDate", JSON.stringify(todayDate));
                 }
+                dataListView();
             };
 
             this.failCallback = function(data) {
@@ -70,6 +71,15 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             Expiretime();
+
+            /* global PullToRefresh */
+            //PullToRefresh.init({
+            //    mainElement: '#fragment-1',
+            //    onRefresh: function() {
+            //        //do something for refresh
+            //        Expiretime();
+            //    }
+            //});
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
@@ -136,7 +146,7 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            $(tabActiveIDs + " ul").listview('refresh');
+
             footerFixed();
         }
 
@@ -170,7 +180,6 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            $(tabActiveIDs + " ul").listview('refresh');
 
             recoveryPageHeight();
         }
@@ -206,7 +215,6 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            $(tabActiveIDs + " ul").listview('refresh');
             
             recoveryPageHeight();
         }
@@ -237,7 +245,7 @@ $("#viewAccount").pagecontainer({
                 + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
                 + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> '
-                + '</div>' + '</div>' + '</li>';
+                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function CountrylisthtmlFirst(country, rate, cssClass, favorite) {
@@ -257,7 +265,7 @@ $("#viewAccount").pagecontainer({
                 + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate 
                 + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' 
-                + '</div>' + '</li>';
+                + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function CountrylisthtmlSecond(country, rate, cssClass, favorite) {
@@ -278,7 +286,7 @@ $("#viewAccount").pagecontainer({
                 + '<img  class="ListviewFlag2" src ="img/tmp/' + country + '.png">'
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
                 + '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> '
-                + '</div>' + '</div>' + '</li>';
+                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function Expiretime() {
@@ -293,10 +301,6 @@ $("#viewAccount").pagecontainer({
                 Parameter = TWOMonthDate;
             }
 
-            Jsonparse();
-        }
-
-        function Jsonparse() {
             var AccountingRate = new GetAccountingRate(); //call API1
         }
 
@@ -421,7 +425,8 @@ $("#viewAccount").pagecontainer({
                 favoriteCurrencyData.sort();
             } else {
                 var NTD = ["NTD"];
-                favoriteCurrencyData.splice(0, 1);
+                var NTDIndex = favoriteCurrencyData.indexOf("NTD");
+                favoriteCurrencyData.splice(NTDIndex, 1);
 
                 var tempData = favoriteCurrencyData;
                 tempData.sort();
@@ -502,25 +507,36 @@ $("#viewAccount").pagecontainer({
                 dataMonth = showDataMonth[1];
             }
 
-            if (FromStatus == "All Currency") {
-                AddhtmlFirst();
-            }
+            if (FromStatus == "All Currency" && ToStatus == "All Currency") {
+                $("ul[data-role='listview'][class^='test']").html("");
+                $(".info-string").hide();
+                $(".error-string").show();
+                tplJS.preventPageScroll();
+            } else {
+                $(".info-string").show();
+                $(".error-string").hide();
+                tplJS.recoveryPageScroll();
 
-            if (ToStatus == "All Currency") {
-                AddhtmlSecond();
-            }
+                if (FromStatus == "All Currency") {
+                    AddhtmlFirst();
+                }
 
-            if (FromStatus != "All Currency" && ToStatus != "All Currency") {
-                AddhtmlOne(popupID);
+                if (ToStatus == "All Currency") {
+                    AddhtmlSecond();
+                }
 
-                //Prevent Page Scorll
-                $('.ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
-                    'height': deviceHeight
-                });
+                if (FromStatus != "All Currency" && ToStatus != "All Currency") {
+                    AddhtmlOne(popupID);
 
-                $('.ui-page-active.ui-page').css({
-                    'min-height': deviceHeight
-                });
+                    //Prevent Page Scorll
+                    $('.ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                        'height': deviceHeight
+                    });
+
+                    $('.ui-page-active.ui-page').css({
+                        'min-height': deviceHeight
+                    });
+                }
             }
         }
 
@@ -583,7 +599,7 @@ $("#viewAccount").pagecontainer({
         function popupDataProcess(popupID) {
             var selectedCountry;
             var hiddenCountry;
-            var showAllCountryOption = false;
+            var showAllCountryOption = true;
             var dataListCountry = [];
             var dataListContent = "";
 
@@ -618,6 +634,8 @@ $("#viewAccount").pagecontainer({
                             dataListCountry.push(countryFrom);
                         }
                     });
+                } else if (FromStatus == "All Currency" && ToStatus == "All Currency") {
+                    dataListCountry = allCountry;
                 }
             }
 

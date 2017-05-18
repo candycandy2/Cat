@@ -15,12 +15,15 @@ $("#viewReserve").pagecontainer({
             this.successCallback = function(data) {
                 QueryReserveDetailCallBackData = data["Content"];
                 var BTime, status, reserveID;
+
                 for(var i=0; i<QueryReserveDetailCallBackData.length; i++) {
                     BTime = QueryReserveDetailCallBackData[i]["BTime"].replace(":","-");
                     status = QueryReserveDetailCallBackData[i]["Status"];
                     reserveID = QueryReserveDetailCallBackData[i]["ReserveID"];
                     $("#time" + BTime + " .time").text(QueryReserveDetailCallBackData[i]["BTime"]);
-                    
+                    if((currentMonth + "/" + currentDate === month + "/" + date) && (time+"").match(/.*?\s.*?\s.*?\s.*?\s(.*?)\s/)[1] > QueryReserveDetailCallBackData[i]["BTime"]) {
+                        status = "1";
+                    }
                     $("#time" + BTime).removeClass("hover");
                     $("#time" + BTime).removeClass("ui-color-disable");
                     $("#time" + BTime).addClass("ui-color-noreserve");
@@ -50,49 +53,33 @@ $("#viewReserve").pagecontainer({
                                 $("#time" + BTime).removeClass("ui-color-noreserve");
                                 $("#time" + BTime).addClass("ui-color-myreserve");
                                 $("#time" + BTime).removeClass("ui-color-reserve");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                                
-                                var msg =  currentYear + "/" + month + "/" + date
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["BTime"]
-                                         + "-"
-                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["Name"];
-                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                                $("#time" + BTime).attr("msg", msg);
                             }else {
                                 $("#time" + BTime).removeClass("ui-color-disable");
                                 $("#time" + BTime).removeClass("ui-color-noreserve");
                                 $("#time" + BTime).removeClass("ui-color-myreserve");
                                 $("#time" + BTime).addClass("ui-color-reserve");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
-                                $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
-                                $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
-                                
-                                var msg =  currentYear + "/" + month + "/" + date 
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["BTime"]
-                                         + "-"
-                                         + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
-                                         + ","
-                                         + QueryReserveDetailCallBackData[i]["Name"];
-                                $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
-                                $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
-                                $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
-                                $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
-                                $("#time" + BTime).attr("msg", msg);
                             }
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("circleIcon");
+                            $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
+                            $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
+                            
+                            var msg =  currentYear + "/" + month + "/" + date 
+                                     + ","
+                                     + QueryReserveDetailCallBackData[i]["BTime"]
+                                     + "-"
+                                     + addThirtyMins(QueryReserveDetailCallBackData[i]["BTime"])
+                                     + ","
+                                     + QueryReserveDetailCallBackData[i]["Name"];
+                            $("#time" + BTime).attr("ename", QueryReserveDetailCallBackData[i]["Name"]);
+                            $("#time" + BTime).attr("email", QueryReserveDetailCallBackData[i]["EMail"]);
+                            $("#time" + BTime).attr("ext", QueryReserveDetailCallBackData[i]["Ext_No"]);
+                            $("#time" + BTime).attr("reserveid", QueryReserveDetailCallBackData[i]["ReserveID"]);
+                            $("#time" + BTime).attr("msg", msg);
                         }
                     }
-                    $('#reserveBtn').removeClass('btn-enable');
-                    $('#reserveBtn').addClass('btn-disable');
                 }
+                $('#reserveBtn').removeClass('btn-enable');
+                $('#reserveBtn').addClass('btn-disable');
                 loadingMask("hide");
             };
 
@@ -130,6 +117,7 @@ $("#viewReserve").pagecontainer({
                 $('.reserveResultPopup').find('.header-text').html(headerContent);
                 $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
                 popupMsgInit('.reserveResultPopup');
+                tplJS.preventPageScroll();
                 $('#reserveBtn').removeClass('btn-enable');
                 $('#reserveBtn').addClass('btn-disable');
                 loadingMask("hide");
@@ -148,24 +136,23 @@ $("#viewReserve").pagecontainer({
             var self = this;
 
             this.successCallback = function(data) {
+                $('.hasReservePopup').popup('close');
                 if(data['ResultCode'] === "023905") {
                     if ($('#pageOne').css('display') === 'block') {
                         $(trace).find('.ui-bar>div:nth-of-type(2)').remove();
                         $('<div class="circleIcon iconSelect"></div>').insertAfter($(trace).find('.ui-bar>div:nth-of-type(1)'));
                         $(trace).removeClass('ui-color-myreserve').addClass('ui-color-noreserve');
-                        $('.hasReservePopup').popup('close');
                     }else {
-                        $('.myReservePopupMsg').popup('close');
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
                         // myReserver_dirtyFlag = true;
                         QueryMyReserve();
                         popupMsgInit('.myReserveCancelResult');
+                        tplJS.preventPageScroll();
                     }
                 }else if(data['ResultCode'] === "023906") {
-                    $('.hasReservePopup').popup('close');
-                    $('.myReservePopupMsg').popup('close');
                     $('.myReserveCancelResult').find('.main-paragraph').html("兩日內預約無法取消");
                     popupMsgInit('.myReserveCancelResult');
+                    tplJS.preventPageScroll();
                 }
             };
 
@@ -246,6 +233,7 @@ $("#viewReserve").pagecontainer({
                 }else if(data["ResultCode"] === "023901") {
                     $('.queryMyReserveResult').find('.main-paragraph').html("沒有您的預約資料");
                     popupMsgInit('.queryMyReserveResult');
+                    tplJS.preventPageScroll();
                 }
                 loadingMask("hide");
             };
@@ -389,6 +377,7 @@ $("#viewReserve").pagecontainer({
                     headerContent = arrMsgValue[2] + ' 已預約',
                     msgContent = arrMsgValue[0] + '&nbsp;&nbsp;' + arrMsgValue[1];
                 popupMsgInit('.hasReservePopup');
+                tplJS.preventPageScroll();
                 $('.hasReservePopup').find('.header-text').html(headerContent);
                 $('.hasReservePopup').find('.main-paragraph').html(msgContent);
                 $('.hasReservePopup').find('.header-icon img').attr('src', 'img/select.png');
@@ -402,6 +391,7 @@ $("#viewReserve").pagecontainer({
                     msgContent = arrMsgValue[0] + '&nbsp;&nbsp' + arrMsgValue[1];
                     tempMailContent = $(this).attr('email') + '?subject=健康職能時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
                 popupMsgInit('.otherReservePopup');
+                tplJS.preventPageScroll();
                 $('.otherReservePopup').find('.header-text').html(headerContent);
                 $('.otherReservePopup').find('.main-paragraph').html(msgContent);
                 $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
@@ -440,7 +430,7 @@ $("#viewReserve").pagecontainer({
         });
 
         // cancel my reserve
-        $('body').on('click', 'div[for=myReserveMsg] .btn-confirm', function() {
+        $('body').on('click', 'div[for=hasReservePopup] .btn-confirm', function() {
             var tempMonth, tempDate, tempReserveID;
             // cancel sure
             if (bReserveCancelConfirm == true) {
@@ -462,6 +452,7 @@ $("#viewReserve").pagecontainer({
                                          + "</ReserveID></LayoutHeader>"
                 ReserveCancel();
                 bReserveCancelConfirm = false;
+                tplJS.recoveryPageScroll();
             }
             // cancel cancel
             else {
@@ -474,8 +465,9 @@ $("#viewReserve").pagecontainer({
         });
 
         // close canel popup
-        $('body').on('click', 'div[for=myReserveMsg] .btn-cancel', function() {
+        $('body').on('click', 'div[for=hasReservePopup] .btn-cancel', function() {
             bReserveCancelConfirm = false;
+            tplJS.recoveryPageScroll();
         });
 
         // my reserve cancel btn click
@@ -493,9 +485,10 @@ $("#viewReserve").pagecontainer({
                 reserveCancelMonth = msgContent.match(/([0-9]+)\/([0-9]+)/)[1];
                 reserveCancelDate = msgContent.match(/([0-9]+)\/([0-9]+)/)[2];
             }
-            popupMsgInit('.myReservePopupMsg');
-            $('.myReservePopupMsg').find('.header-text').html(headerContent);
-            $('.myReservePopupMsg').find('.main-paragraph').html(msgContent);
+            popupMsgInit('.hasReservePopup');
+            tplJS.preventPageScroll();
+            $('.hasReservePopup').find('.header-text').html(headerContent);
+            $('.hasReservePopup').find('.main-paragraph').html(msgContent);
             bReserveCancelConfirm = true;
         });
 
@@ -505,11 +498,19 @@ $("#viewReserve").pagecontainer({
             $("label[for=tab1]").addClass('ui-btn-active');
             $("label[for=tab2]").removeClass('ui-btn-active');
             $("label[for=tab3]").removeClass('ui-btn-active');
+            tplJS.recoveryPageScroll();
         });
 
-        // close popup msg
-        $('body').on('click', 'div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm', function() {
-            $('#viewPopupMsg').popup('close');
+        $('body').on('click', 'div[for=reserveResultPopup] .btn-cancel', function() {
+            tplJS.recoveryPageScroll();
+        });
+
+        $('body').on('click', 'div[for=myReserveCancelResult] .btn-cancel', function() {
+            tplJS.recoveryPageScroll();
+        });
+
+        $('body').on('click', 'div[for=otherReservePopup] .btn-cancel', function() {
+            tplJS.recoveryPageScroll();
         });
     }
 });

@@ -19,7 +19,7 @@
         </div>
         <div class="ui-margin-public" id="pageOne">
             <select name="reserveSite" id="reserveSite" data-role="none" class="dropdown-icon" style="margin-bottom: 1vh;">
-                <option value="QTT" selected="selected">BQT/QTT</option>
+                <option value="QTT">BQT/QTT</option>
                 <option value="QTY">QTY</option>
             </select>
             <div id="scrollDate" class="scrollmenu">
@@ -201,7 +201,7 @@
     </div>
 
     <!-- other reserve popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup otherReservePopup" for="reserveMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo otherReservePopup" for="otherReservePopup">
         <div data-role="main" class="ui-content">
             <div class="header header-closeX">
                 <div class="font-style3 header-title-main">
@@ -222,7 +222,7 @@
         </div>
     </div>
     <!-- has reserve popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup hasReservePopup" for="myReserveMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo hasReservePopup" for="hasReservePopup">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -242,7 +242,7 @@
         </div>
     </div>
     <!-- reserve success msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup reserveResultPopup" for="reserveSuccessMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo reserveResultPopup" for="reserveResultPopup">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -261,7 +261,7 @@
         </div>
     </div>
     <!-- my reserve page cancel popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup myReservePopupMsg" for="myReserveMsg">
+<!--     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReservePopupMsg" >
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -279,10 +279,17 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- my reserve page cancel success popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReserveCancelResult">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReserveCancelResult" for="myReserveCancelResult">
         <div data-role="main" class="ui-content">
+            
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+
             <div class="main">
                 <p class="main-paragraph font-style3"></p>
             </div>
@@ -295,6 +302,13 @@
     </div>
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo queryMyReserveResult" for="queryMyReserveResult">
         <div data-role="main" class="ui-content">
+            
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+
             <div class="main">
                 <p class="main-paragraph font-style3"></p>
             </div>
