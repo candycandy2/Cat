@@ -50,7 +50,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appaccountingrate' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         //set APP Name
-                        '<name>Acct.Rate</name>' +
+                        '<name>Corp.Rate</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
                         '</description>' +
