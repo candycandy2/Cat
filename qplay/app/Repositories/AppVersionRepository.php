@@ -166,5 +166,19 @@ class AppVersionRepository
                             ->delete();
     }
 
-
+    /**
+     * 依app_row_id取得版本資訊
+     * @param  int $appId app_row_id
+     * @return mixed
+     */
+    public function getAppVersionByAppId($appId, Array $whereCondi=[]){
+        $query = QP_App_Version::where('app_row_id', '=', $appId);
+                    foreach ($whereCondi as $condi) {
+                          $query->where($condi['field'], $condi['op'], $condi['value']);
+                    }
+                    $query->select('app_row_id','version_name','device_type','status','updated_at');
+                    $query->orderBy('status','device_type','updated_at');
+                    $versionInfo =  $query->get();
+        return $versionInfo;
+    }
 }
