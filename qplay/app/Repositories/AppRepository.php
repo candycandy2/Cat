@@ -98,4 +98,24 @@ class AppRepository
         $appInfo =  $this->appHead::where('row_id',$appId)->update($updateData);
         return $appInfo;
     }
+
+    /**
+     * 取得基本App列表,App名稱為預設語言所對應到的名稱
+     * @return mixed
+     */
+    public function getAppList($whereCondi=[]){
+        $query = $this->appHead
+            -> join('qp_project as p','qp_app_head.project_row_id', '=', 'p.row_id');
+            foreach ($whereCondi as $condi) {
+               $query ->where( $condi['field'],$condi['op'],$condi['value']);
+            }
+             $query -> select('qp_app_head.row_id','qp_app_head.package_name','qp_app_head.icon_url',
+                      'qp_app_head.app_category_row_id','qp_app_head.default_lang_row_id',
+                      'qp_app_head.updated_at','qp_app_head.created_at',
+                      'p.created_user as p_created_user','p.project_pm as pm','p.project_code');
+             $query ->orderBy('p.project_code','asc');
+             $appsList = $query -> get();
+         
+        return $appsList;
+    }
 } 

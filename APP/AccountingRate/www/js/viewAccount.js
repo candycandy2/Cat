@@ -22,6 +22,7 @@ $("#viewAccount").pagecontainer({
         var arrayLast_update_date = [];
         var statuscountrypop;
         var TWOMonthDate = 0;
+        var PullToRefreshDestory = null;
 
         /********************************** Calculate Date *************************************/
         window.Today = new Date();
@@ -73,7 +74,7 @@ $("#viewAccount").pagecontainer({
             Expiretime();
 
             /* global PullToRefresh */
-            PullToRefresh.init({
+            PullToRefreshDestory = PullToRefresh.init({
                 mainElement: '#fragment-1',
                 onRefresh: function() {
                     //do something for refresh
@@ -773,6 +774,10 @@ $("#viewAccount").pagecontainer({
             },
             popupbeforeposition: function() {
                 tplJS.preventPageScroll();
+                if (PullToRefreshDestory != null) {
+                    PullToRefreshDestory.destroy();
+                    PullToRefreshDestory = null;
+                }
             },
             popupafterclose: function() {
                 footerFixed();
@@ -784,6 +789,15 @@ $("#viewAccount").pagecontainer({
                 if ($(event.target).hasClass("close-popup")) {
                     $("#" + domID).popup("close");
                     tplJS.recoveryPageScroll();
+                    
+                    /* global PullToRefresh */
+                    PullToRefreshDestory = PullToRefresh.init({
+                        mainElement: '#fragment-1',
+                        onRefresh: function() {
+                            //do something for refresh
+                            Expiretime();
+                        }
+                    });
                 }
 
                 //select country
