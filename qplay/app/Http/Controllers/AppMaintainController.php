@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Input;
 use App\Model\QP_App_Head;
 use App\Model\QP_App_Line;
 use App\Model\QP_App_Pic;
-use App\Model\QP_App_Version;
 use App\Model\QP_App_Custom_Api;
 use App\Model\QP_Role_App;
 use App\Model\QP_User_App;
@@ -50,8 +49,9 @@ class AppMaintainController extends Controller
             -> orderBy('app_category')
             -> get();
         foreach ($appCategoryList as $category) {
-            $appList = $this->getAppList($category->row_id,'=');
-            $category->app_count = count($appList);
+            $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$category->row_id));
+            $appList = $this->getAppList($whereCondi);
+            $category->app_count = count(json_decode($appList));
         }
          return response()->json($appCategoryList);
     }
@@ -136,8 +136,9 @@ class AppMaintainController extends Controller
         }
 
         $categoryId = $input["category_id"];
-        $categoryAppsList = $this->formatVersionStatus($this->getAppList($categoryId,'='));
-        return response()->json($categoryAppsList);
+        $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$categoryId));
+        $categoryAppsList = $this->getAppList($whereCondi);
+        return $categoryAppsList;
     }
 
 
@@ -153,8 +154,9 @@ class AppMaintainController extends Controller
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
         $categoryId = $input["category_id"];
-        $otherAppsList = $this->formatVersionStatus($this->getAppList($categoryId,'<>'));
-        return response()->json($otherAppsList);
+        $whereCondi = array(array('field'=>'app_category_row_id','op'=>'<>','value'=>$categoryId));
+        $otherAppsList = $this->getAppList($whereCondi);
+        return $otherAppsList;
     }
 
 
@@ -276,6 +278,10 @@ class AppMaintainController extends Controller
         return null;
     }
 
+    /**
+     * App管理,App列表頁
+     * @return view
+     */
     public function appList(){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -287,6 +293,10 @@ class AppMaintainController extends Controller
         return view("app_maintain/app_list")->with('data',$data);
     }
 
+    /**
+     * 取得App列表(管理清單)
+     * @return json
+     */
     public function getMaintainAppList(){
          if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -294,10 +304,14 @@ class AppMaintainController extends Controller
         }
         $data = array();
 
-        $appList = $this->formatVersionStatus($this->getAppList());
-        return json_encode($appList);
+        $appList = $this->getAppList();
+        return $appList;
     }
 
+    /**
+     * App管理,詳細頁
+     * @return view
+     */
     public function appDetail(){
 
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -418,7 +432,7 @@ class AppMaintainController extends Controller
                     'new_app_row_id'=>$newAppRowId]
                     );
 
-            }catch(Exception $e){
+            }catch(\Exception $e){
                 return response()->json(['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>trans("messages.MSG_SAVE_APP_ERROR"),
                     'content'=>''
@@ -841,92 +855,19 @@ class AppMaintainController extends Controller
     }
 
     /**
-     * get App List
-     * @param  int $categoryId    To set the categoryId to find app list depends on category;
-     *                            default:null,retutn all app list.
-     * @param  String $op         The operator of category query condition.
-     * @return Object             Query result of app list.
-     * @author Cleo.W.Chan
+     * 取得App列表
+     * (預設檢查權限，當沒有App管理權限者，僅能維護自己申請或為PM的App)
+     * @param  Array $whereCondi  查詢條件清單array(array('field'=>'欄位',
+     *                                                    'op'=>'比對方式(=|<>)',
+     *                                                    'value'=>'比對值'
+     *                                                    ))
+     * @param  String $auth       是否檢查權限
+     * @return json
      */
-    private function getAppList($categoryId=null,$op=null){
-       
-       try{
-            $appsList = \DB::table("qp_app_head as h")
-                -> join('qp_project as p','h.project_row_id', '=', 'p.row_id')
-                -> where(function($query) use ($categoryId,$op){
-            if(isset($categoryId) && is_numeric($categoryId) && isset($op))
+    private function getAppList($whereCondi=[],$auth=true){
 
-                $query->where('h.app_category_row_id', $op, $categoryId);
-            })
-            -> select('h.row_id','h.package_name','h.icon_url',
-                        'h.app_category_row_id','h.default_lang_row_id',
-                        'h.updated_at','h.created_at','p.created_user as p_created_user','p.project_pm as pm')
-            -> get();
-
-            foreach ($appsList as $index => $app) {
-                if(!\Auth::user()->isAppAdmin()){
-                    if($app->p_created_user!=\Auth::user()->row_id && $app->pm!=\Auth::user()->login_id){
-                            unset($appsList[$index]);
-                    }
-                }
-                $appLineInfo = \DB::table('qp_app_line')
-                    ->where('app_row_id', '=', $app->row_id)
-                    ->where('lang_row_id', '=', $app->default_lang_row_id)
-                    ->select('app_row_id', 'app_name', 'updated_at')
-                    ->first();
-
-                $app->app_name = "-";
-                $app->updated_at = ($app->updated_at == '0000-00-00 00:00:00')?$app->created_at:$app->updated_at;
-                $app->app_name = $appLineInfo->app_name;
-
-                $appVersionInfo = \DB::table('qp_app_version')
-                    ->where('app_row_id', '=', $app->row_id)
-                    ->where('status', '=', 'ready')
-                    ->select('app_row_id','version_name','device_type','status','updated_at')
-                    ->orderBy('status','device_type','updated_at')
-                    ->get();
-                
-                $app->released['android'] = 'Android-Unpublish';
-                $app->released['ios'] = 'IOS-Unpublish';
-
-                foreach ( $appVersionInfo as $version) {
-                    $deviceStr = (strtolower($version->device_type == 'ios'))?'IOS':'Android';
-                    $app->released[$version->device_type] = $deviceStr.'-'.$version->version_name;
-                }
-            }
-        }catch(Exception $e){
-            return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                'message'=>trans('messages.MSG_GET_APP_LIST_ERROR'),
-                'content'=>''
-            ]);
-        }
-        $appsListRes = array_values($appsList);
-        return $appsListRes;
-
-    }
-
-    /**
-     * [formatVersionStatus description]
-     * @param  Object $appList Query Result frin getAppList.
-     * @return Object          Query Result frin getAppList that status formated.
-     * @author Cleo.W.Chan   
-     */
-    private function formatVersionStatus($appList){
-        
-         foreach($appList as $app){
-            $tmpStr = "";
-            $tag = 1;
-            foreach($app->released as $deviceType => $versionStatus){
-                if($tag == 1){ 
-                    $tmpStr = $versionStatus;
-                }else{
-                    $tmpStr = $tmpStr.'<br>'.$versionStatus;
-                }
-                $tag++;
-            }
-            $app->released = $tmpStr;
-        }
-        return $appList;
+        $appList = $this->appService->getAppList($whereCondi, $auth);
+        return json_encode( $appList );
     }
 
     /**
@@ -1102,8 +1043,8 @@ class AppMaintainController extends Controller
             if (file_exists($errorCodeFile)){
                 unlink($errorCodeFile);
             }
-        } catch (Exception $e) {
-            throw new Exception($e); 
+        } catch (\Exception $e) {
+            throw new \Exception($e); 
         }
     }
 
