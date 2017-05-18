@@ -73,13 +73,13 @@ $("#viewAccount").pagecontainer({
             Expiretime();
 
             /* global PullToRefresh */
-            PullToRefresh.init({
-                mainElement: '#fragment-1',
-                onRefresh: function() {
-                    //do something for refresh
-                    Expiretime();
-                }
-            });
+            //PullToRefresh.init({
+            //    mainElement: '#fragment-1',
+            //    onRefresh: function() {
+            //        //do something for refresh
+            //        Expiretime();
+            //    }
+            //});
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
