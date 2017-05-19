@@ -28,7 +28,7 @@ var _defaults = {
   iconArrow: '&#8675;',
   iconRefreshing: '&hellip;',
   instructionsPullToRefresh: 'Pull down to refresh',
-  instructionsReleaseToRefresh: 'Release to refresh',
+  instructionsReleaseToRefresh: 'Refresh Data',
   instructionsRefreshing: 'Refreshing',
   refreshTimeout: 500,
   getMarkup: _ptrMarkup,
