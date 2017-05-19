@@ -823,7 +823,7 @@ $("#viewEventContent").pagecontainer({
                                     padLeft(createTime.getMinutes(), 2),
                                 from_id: successResult["content"]["from_id"],
                                 msg_type: successResult["content"]["msg_type"],
-                                msg_body: successResult["content"]["msg_body"]["text"]
+                                msg_body: successResult["content"]["msg_body"]
                             };
 
                             chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
