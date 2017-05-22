@@ -1125,7 +1125,7 @@ class AppMaintainController extends Controller
         }
         $deleteWhiteList = QP_White_List::where('app_row_id','=',$appId)
                             ->whereNotIn('row_id',$saveId)
-                            ->where('deleted_at','=','0000-00-00')
+                            ->where('deleted_at','=','0000-00-00 00:00:00')
                             ->update(['deleted_at' => $now,
                                     'updated_user' =>\Auth::user()->row_id]);
 
