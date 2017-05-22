@@ -84,7 +84,6 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/common.css') }}" rel="stylesheet">
     <!---Highcharts-5.0.11-->
-    {{-- <link href="{{ asset('/Highcharts-5.0.11/code/css/highcharts.css') }}" rel="stylesheet"> --}}
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('/js/common.js') }}"></script>
@@ -95,7 +94,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
-    <script src="{{ asset('/Highcharts-5.0.11/code/highcharts.js') }}"></script>
+    <script src="{{ asset('/js/highcharts.js') }}"></script>
     {{-- <script src="{{ asset('/Highcharts-5.0.11/code/js/modules/exporting.js') }}"></script> --}}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
