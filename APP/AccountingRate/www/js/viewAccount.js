@@ -22,6 +22,7 @@ $("#viewAccount").pagecontainer({
         var arrayLast_update_date = [];
         var statuscountrypop;
         var TWOMonthDate = 0;
+        var PullToRefreshDestory = null;
 
         /********************************** Calculate Date *************************************/
         window.Today = new Date();
@@ -71,15 +72,7 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             Expiretime();
-
-            /* global PullToRefresh */
-            //PullToRefresh.init({
-            //    mainElement: '#fragment-1',
-            //    onRefresh: function() {
-            //        //do something for refresh
-            //        Expiretime();
-            //    }
-            //});
+            initialPullRefresh();
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
@@ -287,6 +280,17 @@ $("#viewAccount").pagecontainer({
                 + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
                 + '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> '
                 + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+        }
+
+        function initialPullRefresh() {
+            /* global PullToRefresh */
+            PullToRefreshDestory = PullToRefresh.init({
+                mainElement: '.fragment',
+                onRefresh: function() {
+                    //do something for refresh
+                    Expiretime();
+                }
+            });
         }
 
         function Expiretime() {
@@ -727,11 +731,13 @@ $("#viewAccount").pagecontainer({
 
             $("#eventWorkConfirmA").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         /********************************** Popup  *************************************/
@@ -744,11 +750,13 @@ $("#viewAccount").pagecontainer({
 
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         /********************************** Add/Remove Favorite *************************************/
@@ -773,6 +781,10 @@ $("#viewAccount").pagecontainer({
             },
             popupbeforeposition: function() {
                 tplJS.preventPageScroll();
+                if (PullToRefreshDestory != null) {
+                    PullToRefreshDestory.destroy();
+                    PullToRefreshDestory = null;
+                }
             },
             popupafterclose: function() {
                 footerFixed();
@@ -784,6 +796,7 @@ $("#viewAccount").pagecontainer({
                 if ($(event.target).hasClass("close-popup")) {
                     $("#" + domID).popup("close");
                     tplJS.recoveryPageScroll();
+                    initialPullRefresh();
                 }
 
                 //select country
@@ -803,6 +816,7 @@ $("#viewAccount").pagecontainer({
                     $("#" + domID).popup('close');
                     footerFixed();
                     tplJS.recoveryPageScroll();
+                    initialPullRefresh();
 
                     Monthchange();
                     dataListView();

@@ -287,7 +287,7 @@ $("#viewReserve").pagecontainer({
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
-                        //do something for refresh
+                        QueryReserveDetail();
                     }
                 });
             } else if (tabValue == 'tab2') {
@@ -368,7 +368,7 @@ $("#viewReserve").pagecontainer({
                 $(this).find('div:nth-child(2)').addClass('iconSelected');
                 $(this).find('.timeRemind').addClass('timeShow');
                 timeQueue[$(this).find('div:nth-child(1)')[1].textContent] = $(this).find('div:nth-child(1)')[1].textContent;
-                timeQueue = Object.keys(timeQueue).sort().reduce((r, k) => (r[k] = timeQueue[k], r), {});
+                // timeQueue = Object.keys(timeQueue).sort().reduce((r, k) => (r[k] = timeQueue[k], r), {});
             }
             // my reserve
             else if ($(this).hasClass('ui-color-myreserve')) {
@@ -410,7 +410,8 @@ $("#viewReserve").pagecontainer({
         $('body').on('click', '#reserveBtn', function() {
             queryTime = "";
             if ($(this).hasClass('btn-disable')) {
-                popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
+                tplJS.preventPageScroll();
+                popupMsgInit('.noSelectTimeMsg');
             } else {
                 for(var time in timeQueue) {
                     queryTime += time + ",";
@@ -510,6 +511,10 @@ $("#viewReserve").pagecontainer({
         });
 
         $('body').on('click', 'div[for=otherReservePopup] .btn-cancel', function() {
+            tplJS.recoveryPageScroll();
+        });
+
+        $('body').on('click', 'div[for=noSelectTimeMsg] .btn-cancel', function() {
             tplJS.recoveryPageScroll();
         });
     }

@@ -2,7 +2,7 @@
 # backup original
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 rm -rf /var/www/html/jenkinsbackup/qplayApi
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 mkdir -p /var/www/html/jenkinsbackup/qplayApi
-sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -r /var/www/html/qplayApi/. /var/www/html/jenkinsbackup/qplayApi
+sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -Rp /var/www/html/qplayApi/. /var/www/html/jenkinsbackup/qplayApi
 
 # sync new files
 sshpass -p "readrsync" rsync -rvh --delete qplayApi/qplayApi/config/ rsyncuser@10.82.246.95:/var/www/html/qplayApi/config
@@ -29,7 +29,7 @@ sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/
 # backup original
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 rm -rf /var/www/html/jenkinsbackup/qmessage
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 mkdir -p /var/www/html/jenkinsbackup/qmessage
-sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -r /var/www/html/qmessage/. /var/www/html/jenkinsbackup/qmessage
+sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -Rp /var/www/html/qmessage/. /var/www/html/jenkinsbackup/qmessage
 
 # sync new files
 sshpass -p "readrsync" rsync -rvh --delete qmessage/config/ rsyncuser@10.82.246.95:/var/www/html/qmessage/config
@@ -55,7 +55,7 @@ sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/
 # backup original
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 rm -rf /var/www/html/jenkinsbackup/qplay
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 mkdir -p /var/www/html/jenkinsbackup/qplay
-sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -r /var/www/html/qplay/. /var/www/html/jenkinsbackup/qplay
+sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -Rp /var/www/html/qplay/. /var/www/html/jenkinsbackup/qplay
 
 # sync new files
 sshpass -p "readrsync" rsync -rvh --delete qplay/config/ rsyncuser@10.82.246.95:/var/www/html/qplay/config
@@ -82,7 +82,7 @@ sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/
 # backup original
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 rm -rf /var/www/html/jenkinsbackup/ENSApi
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 mkdir -p /var/www/html/jenkinsbackup/ENSApi
-sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -r /var/www/html/API/ENS/. /var/www/html/jenkinsbackup/ENSApi
+sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 cp -Rp /var/www/html/API/ENS/. /var/www/html/jenkinsbackup/ENSApi
 
 # sync new files
 sshpass -p "readrsync" rsync -rvh --delete API/ENS/config/ rsyncuser@10.82.246.95:/var/www/html/API/ENS/config
