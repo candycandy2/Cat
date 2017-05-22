@@ -117,6 +117,7 @@ var chatRoom = {
         window.localStorage.setItem("Messages", JSON.stringify(Messages));
 
         if (typeof callback === "function") {
+            chatRoom.newMsgChatRoomID = chatroomID;
             callback();
         }
     },
@@ -144,7 +145,7 @@ var chatRoom = {
 
         if (activePageID === "viewEventContent") {
             if (chatroomID === chatRoom.newMsgChatRoomID.toString()) {
-                chatRoomListView();
+                chatRoomListView("showPreview");
             }
         }
     }
