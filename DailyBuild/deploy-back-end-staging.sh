@@ -2,7 +2,7 @@
 # backup original
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com rm -rf /var/www/html/jenkinsbackup/qplayApi
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com mkdir -p /var/www/html/jenkinsbackup/qplayApi
-sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -r /var/www/html/qplayApi/. /var/www/html/jenkinsbackup/qplayApi
+sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -Rp /var/www/html/qplayApi/. /var/www/html/jenkinsbackup/qplayApi
 
 # sync new files
 sshpass -p "kDsl24D1S" rsync -rvh --delete qplayApi/qplayApi/config/ rsyncuser@qplaytest.benq.com:/var/www/html/qplayApi/config
@@ -29,7 +29,7 @@ sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@qplaytest.benq.com:/va
 # backup original
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com rm -rf /var/www/html/jenkinsbackup/qmessage
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com mkdir -p /var/www/html/jenkinsbackup/qmessage
-sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -r /var/www/html/qmessage/. /var/www/html/jenkinsbackup/qmessage
+sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -Rp /var/www/html/qmessage/. /var/www/html/jenkinsbackup/qmessage
 
 # sync new files
 sshpass -p "kDsl24D1S" rsync -rvh --delete qmessage/config/ rsyncuser@qplaytest.benq.com:/var/www/html/qmessage/config
@@ -55,7 +55,7 @@ sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@qplaytest.benq.com:/va
 # backup original
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com rm -rf /var/www/html/jenkinsbackup/qplay
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com mkdir -p /var/www/html/jenkinsbackup/qplay
-sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -r /var/www/html/qplay/. /var/www/html/jenkinsbackup/qplay
+sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -Rp /var/www/html/qplay/. /var/www/html/jenkinsbackup/qplay
 
 # sync new files
 sshpass -p "kDsl24D1S" rsync -rvh --delete qplay/config/ rsyncuser@qplaytest.benq.com:/var/www/html/qplay/config
@@ -82,7 +82,7 @@ sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@qplaytest.benq.com:/va
 # backup original
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com rm -rf /var/www/html/jenkinsbackup/ENSApi
 sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com mkdir -p /var/www/html/jenkinsbackup/ENSApi
-sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -r /var/www/html/API/ENS/. /var/www/html/jenkinsbackup/ENSApi
+sshpass -p "kDsl24D1S" ssh rsyncuser@qplaytest.benq.com cp -Rp /var/www/html/API/ENS/. /var/www/html/jenkinsbackup/ENSApi
 
 # sync new files
 sshpass -p "kDsl24D1S" rsync -rvh --delete API/ENS/config/ rsyncuser@qplaytest.benq.com:/var/www/html/API/ENS/config
