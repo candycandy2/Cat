@@ -30,7 +30,7 @@ class ReportAppListController extends Controller
     public function getReportAppList(){
         $reportAppList = $this->appService->getAppList();
         foreach ($reportAppList as $index=>&$app) {
-            $app->register_rate = $this->reportService->getRegisterRate();
+            $app['register_rate'] = $this->reportService->getRegisterRate();
         }
         return json_encode( $reportAppList );
     }
