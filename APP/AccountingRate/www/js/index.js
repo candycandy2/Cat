@@ -1,6 +1,6 @@
 
 /*global variable, function*/
-var initialAppName = "Account Rate";
+var initialAppName = "Accounting Rate";
 var appKeyOriginal = "appaccountingrate";
 var appKey = "appaccountingrate";
 var pageList = ["viewAccount"];
@@ -9,14 +9,8 @@ var appSecretKey = "35ee8716067626e225d38b9a97ee49f8";
 var prevPageID;
 
 window.initialSuccess = function() {
-
-    //loadingMask("show");
-
     $.mobile.changePage('#viewAccount');
-  //  var APIRequest = new APIRequest();
-
 }
-
 
 //[Android]Handle the back button
 function onBackKeyDown() {
@@ -26,18 +20,11 @@ function onBackKeyDown() {
     if (activePageID === "viewAccount") {
 
         if (checkPopupShown()) {
-           // $.mobile.changePage('#viewExample3');
+            $('#' + popupID).popup('close');
+            footerFixed();
         } else {
             navigator.app.exitApp();
         }
 
-    }/* else if (activePageID === "viewDetailInfo") {
-
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            $.mobile.changePage('#' + prevPageID);
-        }
-
-    }*/
+    }
 }

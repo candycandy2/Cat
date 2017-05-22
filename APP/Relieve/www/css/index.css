@@ -130,6 +130,7 @@ a {
     border-color: #d6d6d6;
     border-width: 0px 1px 1px 0px;
     padding: 0 1.3vw 0 2vw;
+    height: 8.5VH;
 }
 
 #reserveDateSelect > div.ui-grid-c {
@@ -201,7 +202,7 @@ pre {
 }
 #footer {
   background: #eef;
-  padding: 10px 0;
+  /*padding: 10px 0;*/
 }
 
 /* reserve info */
@@ -759,7 +760,6 @@ div.scrollmenu a {
     right: 0;
     border-radius: 0 0 10px 0;
 }
-
 
 /********************************** timepicker *************************************/
 

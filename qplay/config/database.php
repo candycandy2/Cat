@@ -73,8 +73,8 @@ return [
             'database' => env('DB_DATABASE_PRODUCTION'),
             'username' => env('DB_USERNAME_PRODUCTION'),
             'password' => env('DB_PASSWORD_PRODUCTION'),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
             'strict' => false,
             'engine' => null,
@@ -87,8 +87,8 @@ return [
             'database' => env('DB_DATABASE_TEST'),
             'username' => env('DB_USERNAME_TEST'),
             'password' => env('DB_PASSWORD_TEST'),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
             'strict' => false,
             'engine' => null,
@@ -101,11 +101,25 @@ return [
             'database' => env('DB_DATABASE_DEV'),
             'username' => env('DB_USERNAME_DEV'),
             'password' => env('DB_PASSWORD_DEV'),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
             'strict' => false,
             'engine' => null,
+        ],
+
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGO_HOST'),
+            'port'     => env('MONGO_PORT'),
+            'database' => env('MONGO_DB'),
+            'username' => env('MONGO_USERNAME'),
+            'password' => env('MONGO_PWD'),
+            'options' => [
+                'database' => env('MONGO_AUTH_DB'), // sets the authentication database required by mongo 3
+                'username' => env('MONGO_AUTH_USERNAME'),
+                'password' => env('MONGO_AUTH_PWD'),
+            ]
         ],
 
         'pgsql' => [
