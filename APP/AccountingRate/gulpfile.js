@@ -50,7 +50,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appaccountingrate' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
                         'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         //set APP Name
-                        '<name>Acct.Rate</name>' +
+                        '<name>Corp.Rate</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
                         '</description>' +
@@ -137,12 +137,12 @@ gulp.task('copyAndroidImages', function() {
 
 gulp.task('copyIOSImages', function() {
     return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
-        .pipe(gulp.dest('platforms/ios/Acct.Rate/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/Corp.Rate/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
 });
 
 gulp.task('copyIOSLaunchImages', function() {
     return gulp.src('../component/LaunchImage.launchimage/*')
-        .pipe(gulp.dest('platforms/ios/Acct.Rate/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
+        .pipe(gulp.dest('platforms/ios/Corp.Rate/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
 gulp.task('build', shell.task([

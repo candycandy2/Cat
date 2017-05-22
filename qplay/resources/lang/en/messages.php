@@ -55,6 +55,7 @@ return [
     'TITLE_SYS_PARAMETER_MAINTAIN' => 'Parameter Setting',
     'TITLE_SYS_PROJECT_MAINTAIN' => 'Project Maintain',
     'TITLE_SECRETARY_PUSH' => 'Secretary Push',
+    'TITLE_REPORT' => 'Report',
 
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
@@ -304,6 +305,15 @@ return [
     'HINT_APP_KEY'=>'Please input the project abbreviation name  ex:flower',
     'HINT_PROJECT_PM'=>'Please input the PM’s AD account ex:Steven.Yan',
     'HINT_PROJECT_DESC'=>'Please input the purpose of this App',
+
+    //Report
+    'APPS_LIST'=>'Apps List',
+    'RELEASED_STATUS_PUBLISH'=>'Published',
+    'RELEASED_STATUS_UNBLISH'=>'Unpublishd',
+    'APPLICATION_NAME'=>'Application Name',
+    'SUPPORT_DEVICE_TYPE'=>'Support Device Type',
+    'REGISTER_USER_COUNT'=>'Registered Users',
+    'REGISTER_DEVICE_COUNT'=>'Devices',
 
     'ERR_EXIST_ROLE' => 'Same role exist in this company!',
     'ERR_GROUP_NAME_EXIST' => 'Group name exist!',

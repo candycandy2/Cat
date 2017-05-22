@@ -22,6 +22,7 @@ $("#viewAccount").pagecontainer({
         var arrayLast_update_date = [];
         var statuscountrypop;
         var TWOMonthDate = 0;
+        var PullToRefreshDestory = null;
 
         /********************************** Calculate Date *************************************/
         window.Today = new Date();
@@ -56,6 +57,7 @@ $("#viewAccount").pagecontainer({
                     localStorage.setItem("localMonth", JSON.stringify(todayMonth));
                     localStorage.setItem("localDate", JSON.stringify(todayDate));
                 }
+                dataListView();
             };
 
             this.failCallback = function(data) {
@@ -70,6 +72,7 @@ $("#viewAccount").pagecontainer({
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             Expiretime();
+            initialPullRefresh();
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
@@ -279,6 +282,17 @@ $("#viewAccount").pagecontainer({
                 + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
+        function initialPullRefresh() {
+            /* global PullToRefresh */
+            PullToRefreshDestory = PullToRefresh.init({
+                mainElement: '.fragment',
+                onRefresh: function() {
+                    //do something for refresh
+                    Expiretime();
+                }
+            });
+        }
+
         function Expiretime() {
             var storagetimeYear = JSON.parse(localStorage.getItem('localYear'));
             var storagetimeMon = JSON.parse(localStorage.getItem('localMonth'));
@@ -291,10 +305,6 @@ $("#viewAccount").pagecontainer({
                 Parameter = TWOMonthDate;
             }
 
-            Jsonparse();
-        }
-
-        function Jsonparse() {
             var AccountingRate = new GetAccountingRate(); //call API1
         }
 
@@ -721,11 +731,13 @@ $("#viewAccount").pagecontainer({
 
             $("#eventWorkConfirmA").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         /********************************** Popup  *************************************/
@@ -738,11 +750,13 @@ $("#viewAccount").pagecontainer({
 
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         /********************************** Add/Remove Favorite *************************************/
@@ -767,6 +781,10 @@ $("#viewAccount").pagecontainer({
             },
             popupbeforeposition: function() {
                 tplJS.preventPageScroll();
+                if (PullToRefreshDestory != null) {
+                    PullToRefreshDestory.destroy();
+                    PullToRefreshDestory = null;
+                }
             },
             popupafterclose: function() {
                 footerFixed();
@@ -778,6 +796,7 @@ $("#viewAccount").pagecontainer({
                 if ($(event.target).hasClass("close-popup")) {
                     $("#" + domID).popup("close");
                     tplJS.recoveryPageScroll();
+                    initialPullRefresh();
                 }
 
                 //select country
@@ -797,6 +816,7 @@ $("#viewAccount").pagecontainer({
                     $("#" + domID).popup('close');
                     footerFixed();
                     tplJS.recoveryPageScroll();
+                    initialPullRefresh();
 
                     Monthchange();
                     dataListView();
