@@ -40,7 +40,7 @@ $("#viewEventList").pagecontainer({
                     if (window.localStorage.getItem("eventType") !== null) {
                         var EventList = new getEventList(window.localStorage.getItem("eventType"));
                     } else {
-                        var EventList = new getEventList();
+                        var EventList = new getEventList("1");
                     }
                     var basicInfo = new getBasicInfo();
 
@@ -675,7 +675,7 @@ $("#viewEventList").pagecontainer({
             if (window.localStorage.getItem("eventType") !== null) {
                 var eventTypeDefaultVal = window.localStorage.getItem("eventType");
             } else {
-                var eventTypeDefaultVal = "0";
+                var eventTypeDefaultVal = "1";
             }
 
             var eventTypeData = {
