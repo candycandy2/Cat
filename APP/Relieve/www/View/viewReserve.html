@@ -19,24 +19,13 @@
         </div>
         <div class="ui-margin-public" id="pageOne">
             <select name="reserveSite" id="reserveSite" data-role="none" class="dropdown-icon" style="margin-bottom: 1vh;">
-                <option value="QTT" selected="selected">BQT/QTT</option>
+                <option value="QTT">BQT/QTT</option>
                 <option value="QTY">QTY</option>
             </select>
             <div id="scrollDate" class="scrollmenu">
-<!--                 <a id="one20170322" href="#" class="ui-link hover">03/22&nbsp;(三)</a>
-                <a id="one20170323" href="#" class="ui-link">03/23&nbsp;(四)</a>
-                <a id="one20170324" href="#" class="ui-link">03/24&nbsp;(五)</a>
-                <a id="one20170327" href="#" class="ui-link">03/27&nbsp;(一)</a>
-                <a id="one20170328" href="#" class="ui-link">03/28&nbsp;(二)</a>
-                <a id="one20170329" href="#" class="ui-link">03/29&nbsp;(三)</a>
-                <a id="one20170330" href="#" class="ui-link">03/30&nbsp;(四)</a>
-                <a id="one20170331" href="#" class="ui-link">03/31&nbsp;(五)</a>
-                <a id="one20170403" href="#" class="ui-link">04/03&nbsp;(一)</a>
-                <a id="one20170404" href="#" class="ui-link">04/04&nbsp;(二)</a>
-                <a id="reserveDefault" href="#" class="disable ui-link">ReserveDay&nbsp;ReserveDict</a> -->
             </div>
             <div style="margin: 6.4vw 0 2.14vw 0; font-size: 3.55vw;text-align: left;">
-                <div class="inline">會議室使用時間</div>
+                <div class="inline">開始使用時間:</div>
                 <div id="reserveColorDiagram" style="display: inline-block;position: absolute;right: 4vw;">
                     <div class="inline square ui-color-reserve"></div>
                     <div class="inline" style="margin-right: 2vw;">不可預約</div>
@@ -207,12 +196,12 @@
             </div>
         </div>
         <div class="ui-margin-public" id="pageThree">
-            <iframe src="http://www.myqisda.com/relieve/relieveInfo.html" style="width:93VW; height:79VH; border-style: none;"></iframe>
+            <iframe src="http://www.myqisda.com/relieve/relieveInfo.html" style="width:93VW; height:75VH; border-style: none;"></iframe>
         </div>
     </div>
 
     <!-- other reserve popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup otherReservePopup" for="reserveMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo otherReservePopup" for="otherReservePopup">
         <div data-role="main" class="ui-content">
             <div class="header header-closeX">
                 <div class="font-style3 header-title-main">
@@ -233,7 +222,7 @@
         </div>
     </div>
     <!-- has reserve popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup hasReservePopup" for="myReserveMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo hasReservePopup" for="hasReservePopup">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -253,7 +242,7 @@
         </div>
     </div>
     <!-- reserve success msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup reserveResultPopup" for="reserveSuccessMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo reserveResultPopup" for="reserveResultPopup">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -272,7 +261,7 @@
         </div>
     </div>
     <!-- my reserve page cancel popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup myReservePopupMsg" for="myReserveMsg">
+<!--     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReservePopupMsg" >
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -290,10 +279,17 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- my reserve page cancel success popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReserveCancelResult">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReserveCancelResult" for="myReserveCancelResult">
         <div data-role="main" class="ui-content">
+            
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+
             <div class="main">
                 <p class="main-paragraph font-style3"></p>
             </div>
@@ -304,8 +300,15 @@
             </div>
         </div>
     </div>
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo queryMyReserveResult">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo queryMyReserveResult" for="queryMyReserveResult">
         <div data-role="main" class="ui-content">
+            
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+
             <div class="main">
                 <p class="main-paragraph font-style3"></p>
             </div>

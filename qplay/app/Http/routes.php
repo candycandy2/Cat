@@ -65,6 +65,7 @@ Route::any('/platform/newProject', ['middleware' => 'auth','uses'=>'platformCont
 Route::any('/platform/updateProject', ['middleware' => 'auth','uses'=>'platformController@updateProject']);
 Route::any('/platform/sendProjectInformation', ['middleware' => 'auth','uses'=>'platformController@sendProjectInformation']);
 
+//appMaintain
 Route::any('/AppMaintain/getCategoryList', ['middleware' => 'auth','uses'=>'AppMaintainController@getCategoryList']);
 Route::any('/AppMaintain/saveCategory', ['middleware' => 'auth','uses'=>'AppMaintainController@saveCategory']);
 Route::any('/AppMaintain/deleteCategory', ['middleware' => 'auth','uses'=>'AppMaintainController@deleteCategory']);
@@ -85,6 +86,9 @@ Route::any('/AppVersion/getAppOnlineVersion', ['middleware' => 'auth','uses'=>'A
 Route::any('/AppVersion/getAppNewVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppNewVersion']);
 Route::any('/AppVersion/getAppHistoryVersion', ['middleware' => 'auth','uses'=>'AppVersionController@getAppHistoryVersion']);
 Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVersionController@ajxValidVersion']);
+
+//Report
+Route::any('Report/ReportAppList/getReportAppList', 'Report\ReportAppListController@getReportAppList');
 
 /*
 Route::any('/platform/getUserList', 'platformController@getUserList');
@@ -259,6 +263,9 @@ Route::any('projectMaintain', ['middleware' => 'auth', function() {
 }]);
 Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
     return view("sys_maintain/project_detail_maintain");
+}]);
+Route::any('report', ['middleware' => 'auth', function() {
+    return view("report/report_app_list");
 }]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {

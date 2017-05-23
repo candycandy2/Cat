@@ -249,7 +249,7 @@ $("#viewEventContent").pagecontainer({
 
                     if (messages[i]["msg_type"] === "text") {
                         messageList.find(".text").removeClass("hide");
-                        messageList.find(".text").html(messages[i]["msg_body"]);
+                        messageList.find(".text").html(messages[i]["msg_body"]["text"]);
                     } else if (messages[i]["msg_type"] === "image") {
                         messageList.find(".image").removeClass("hide");
                         messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
@@ -823,7 +823,7 @@ $("#viewEventContent").pagecontainer({
                                     padLeft(createTime.getMinutes(), 2),
                                 from_id: successResult["content"]["from_id"],
                                 msg_type: successResult["content"]["msg_type"],
-                                msg_body: successResult["content"]["msg_body"]["text"]
+                                msg_body: successResult["content"]["msg_body"]
                             };
 
                             chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);

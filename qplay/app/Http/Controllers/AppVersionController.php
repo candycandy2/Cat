@@ -179,14 +179,21 @@ class AppVersionController extends Controller
             return null;
         }
         $input = Input::get();
-         if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
+
+        if( !isset($input["app_row_id"]) || !is_numeric($input["app_row_id"])){
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
+
         $appRowId = $input["app_row_id"];
         $deviceType = $input["device_type"];
+        $offset = $input["offset"];
+        $limit = $input["limit"];
+        $sort = $input["sort"];
+        $order = $input["order"];
+        $search = (isset($input["search"]) && $input["search"]!="")?$input["search"]:null;
 
-        $appVersionList = $this->appVersionService->getAppHistoryVersion($appRowId, $deviceType);
-        return $appVersionList;
+        $appVersionList = $this->appVersionService->getAppHistoryVersion($appRowId, $deviceType, $offset, $limit, $sort, $order, $search);
+        return response()->json(["total"=>$appVersionList->total(),"rows"=>$appVersionList->items()]);
     }
 
     public function ajxValidVersion(){

@@ -1,352 +1,78 @@
 $("#viewAccount").pagecontainer({
     create: function(event, ui) {
-        // First
 
+        var showDataMonth = []; //Which months should be displayed
+        var allCurrencyData = {};
+        var favoriteCurrencyData = ["NTD", "USD", "EUR"];
+        var dataMonth;
+        var allCountry = [];
+        var deviceHeight;
+        var getFavoriteData = false;
+        var latestUpdateDatetime = "0";
+        var resizePopupA = false;
+        var resizePopupB = false;
+        var popupMinHeight = 0;
+
+        var MonthWord = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var FromStatus = "USD" ;
         var ToStatus = "All Currency";
-        var tabActiveIDs = "#fragment-1";
-        var test;
-        var statuscountrypop;
-        var statuscountryrate;
-
-
-        var CheckifReloadflag1 = 0;
-        var CheckifReloadflag2 = 0;
-        window.array = [];
-
-        window.arrayRate = [];
-        window.arrayadd = ["NTD", "USD", "EUR"];
-
-        var arrayaddtemp = [];
-        window.arrayrateadd = [];
-        window.arraycomb = [];
-        var arrayratecomb = [];
+        var tabActiveIDs;
+        var checkDefaultActiveTab = false;
         var packJsontemp = [];
         var arrayLast_update_date = [];
-        window.Last_date = "0";
-        window.dateshow = "2020/01/01";
-        //var dateshow = "2020/01/01";
-        //window.Last_date = "0";
+        var statuscountrypop;
+        var TWOMonthDate = 0;
+        var PullToRefreshDestory = null;
 
-
-        //Scenario 0504
-        var ScenarioUTC = 0;
-        var testday = 0;
-        var TWOMonthDate =0;
-        var test =0;
-
-        //Scenario 0504
-
-        var storage = JSON.parse(localStorage.getItem("arrayadd"));
-
-        function initial() {
-            if (storage != null) {
-                arrayadd = storage;
-                console.log('YA-already10 favorite');
-            } else if (storage == null) {
-                console.log('YA-52 initial');
-                arrayadd = ["NTD", "USD", "EUR"];
-                localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
-            }
-            console.log('arrayadd_' + arrayadd);
-        }
-
-
-        /********************************** function *************************************/
-        window.APIRequest = function() {
-
-            var self = this;
-
-            this.successCallback = function(data) {
-                loadingMask("hide");
-                var resultcode = data['ResultCode'];
-            };
-
-            this.failCallback = function(data) {};
-            var __construct = function() {}();
-        };
-
-        /********************************** function *************************************/
-        var date = new Date('2011', '01', '02');
-        var newDate = new Date(date);
-        console.log('63.date' + date);
-        newDate.setDate(newDate.getDate() - 60);
-        var nd = new Date(newDate);
-        console.log('66' + nd);
-        /********************************** function *************************************/
+        /********************************** Calculate Date *************************************/
         window.Today = new Date();
-        var MonthWord = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var todayYear = Today.getFullYear();
         var todayMonth = Today.getMonth() + 1;
         var todayDate = Today.getDate();
         var lastMonth = Today.getMonth();
-
-
-
         var date = new Date(todayYear, todayMonth - 1, todayDate);
         var newDate = new Date(date);
-        console.log('63.date' + date);
         newDate.setDate(newDate.getDate() - 60);
         var nd = new Date(newDate);
         TWOMonthDate = Math.round(nd / 1000);
-
-        //window.UTC = Math.round(Date.UTC(todayYear, todayMonth - 3, todayDate) / 1000); //two month
-
-
-        var nowTimstamp = window.Today.TimeStamp();
-        window.Jsonflagnow = todayMonth;
         var Parameter = TWOMonthDate;
-        /********************************** Scenario  *************************************/
 
-        function ModifyScenario() {
-            //todayYear   = ScenarioYear  ;  //global
-            //todayMonth  = ScenarioMonth ;
-            //Parameter   = UTCtime;
+        /********************************** API*************************************/
+        function GetAccountingRate() {
+            var self = this;
 
+            loadingMask("show");
+
+            var queryDataParameter = "<Last_update_date>" + Parameter + "</Last_update_date>";
+            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+            this.successCallback = function(data) {
+                var resultCode = data['ResultCode'];
+                if (resultCode == 1) {
+                    loadingMask("hide");
+                    packJsontemp = data['Content'];
+                    Jsonparsecheck();
+
+                    localStorage.setItem("localYear", JSON.stringify(todayYear));
+                    localStorage.setItem("localMonth", JSON.stringify(todayMonth));
+                    localStorage.setItem("localDate", JSON.stringify(todayDate));
+                }
+                dataListView();
+            };
+
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "");
+            }();
         }
 
-        function Monthchange() //Warning : don't modify it 
-        {
-            $(".buttononeCountry1").text(FromStatus);
-            $(".buttononeCountry2").text(ToStatus);
-
-            todayYearmod = todayYear;
-            var todayYearmod = todayYearmod.toString().substring(2, 4);
-
-            $(".frag1").text(MonthWord[todayMonth - 1] + "-" + todayYearmod);
-            $(".frag2").text(MonthWord[todayMonth - 2] + "-" + todayYearmod);
-
-            $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
-            // $(".mainword3").text("Updated on " + todayYear + "/" + todayMonth + "/" + todayDate);
-            console.log('Last_date'+Last_date);
-            dateshow = Last_date.toString().substr(0, 10);
-            // console.log("dateshow_" + dateshow);
-            $(".mainword3").text("Updated on "+ dateshow);
-            //$(".mainword3").text("Updated on " + Last_date);
-            //Last_date
-
-
-        }
-
-        function MonthCalculator() {
-            var Twomonthdate = 60;
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() + testday);
-            var nd = new Date(newDate);
-            console.log("Scenario1" + nd);
-            ScenarioUTC = Math.round(nd / 1000);
-            console.log("ScenarioUTC1" + ScenarioUTC);
-
-
-            newDate.setDate(newDate.getDate() + testday - 60);
-            var nd = new Date(newDate);
-            console.log("Scenario1two month" + nd);
-            ScenarioTWOMonthUTC = Math.round(nd / 1000);
-            console.log("ScenarioUTC1 month" + ScenarioUTC);
-        }
-
-        $(document).on("click", ".buttonScenario1", function() { // 0510
-
-            //0510 1494403200            
-            //testday =1;
-
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-    
-
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate) / 1000); //5/09
-            Parameter = UTCtime;
-
-            console.log('Day1.date' + date);
-            console.log("Day2"+UTCtime);
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() - 60);
-            var nd = new Date(newDate);
-            TWOMonthDate = Math.round(nd / 1000);   
-            console.log('Day1.TWOMonthDate' + TWOMonthDate);  
-            test==1     
-
-            // ModifyScenario();
-            // Monthchange();
-            var EventList = new GetAccountingRate(); //call API1
-        });
-
-        $(document).on("click", ".buttonScenario2", function() { //0511
-            //1494489600
-            // var ScenarioYear  = todayYear;
-            // var ScenarioMonth  = todayMonth;
-            // var ScenarioDay    = todayDate;
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate) / 1000); //yesterday
-            Parameter = UTCtime;
-
-            console.log("Day2"+UTCtime);
-            //Parameter = '1494489600';
-            //TWOMonthDate = '1489219200';
-            var EventList = new GetAccountingRate(); //call API1
-           // Jsonparse();
-            // testday =2;
-            // MonthCalculator() ;
-
-            // ModifyScenario();
-            // Monthchange();
-            //var EventList = new GetAccountingRate(); //call API1
-        });
-
-
-        $(document).on("click", ".buttonScenario3", function() { //0512
-            //1494576000
-            // var ScenarioYear  = todayYear;
-            //var ScenarioMonth  = todayMonth;
-            //var ScenarioDay    = todayDate;
-            
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate+1) / 1000); //yesterday
-            Parameter = UTCtime;
-
-            console.log("Day3"+ UTCtime);
-            //Parameter = '1494576000';
-            //TWOMonthDate = '1489305600';
-            Jsonparse();
-            //testday =3;
-            //ModifyScenario();
-            //Monthchange();
-       
-        });
-
-        $(document).on("click", ".buttonScenario70", function() { //0509 +70 
-            console.log("Day70 _0719(0510)) 1500364800");
-            
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate+2) / 1000); //yesterday
-            Parameter = UTCtime;           
-
-            console.log('Day70.date_510' + UTCtime);
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() +70-60);
-            var nd = new Date(newDate);
-            TWOMonthDate = Math.round(nd / 1000);
-            //1500364800 
-            //  testday =3;
-            //  ModifyScenario();
-            //  Monthchange();
-
-            //  Parameter = '1500451200';
-            //  TWOMonthDate = '1495180800';
-           // Jsonparse();
-        
-          
-
-        });
-        /********************************** function *************************************/
-        $(document).on("click", ".buttonScenario1U", function() { //0508
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-    
-
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate-1) / 1000); //5/09
-            Parameter = UTCtime;
-
-            console.log('Day1.date' + date);
-            console.log("Day2"+UTCtime);
-            var date = new Date(todayYear, todayMonth - 1, todayDate-1);
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() - 60);
-            var nd = new Date(newDate);
-            TWOMonthDate = Math.round(nd / 1000);   
-            console.log('Day1.TWOMonthDate' + TWOMonthDate);       
-
-            // ModifyScenario();
-            // Monthchange();
-            var EventList = new GetAccountingRate(); //call API1 
-
-
-
-
-            //1494316800
-            // var ScenarioYear  = todayYear;
-            //var ScenarioMonth  = todayMonth;
-            //var ScenarioDay    = todayDate;
-            console.log("Day1USD 5/09 ,Taiwan 5/10"+Parameter);
-           // Parameter = '1494316800';
-           // TWOMonthDate = '1489046400';
-           // Jsonparse();
-           
-            //testday =3;
-            //ModifyScenario();
-            //Monthchange();
-            //var EventList = new GetAccountingRate(); //call API1
-        });
-
-        $(document).on("click", ".buttonScenario2U", function() { //0509
-            //1494316800
-            // var ScenarioYear  = todayYear;
-            //var ScenarioMonth  = todayMonth;
-            //var ScenarioDay    = todayDate;
-
-
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate-1) / 1000); //yesterday
-            Parameter = UTCtime;
-            console.log("Day2U"+UTCtime);
-            //console.log("Day1USD 5/10 ,Taiwan 5/09");
-            //Parameter = '1494403200';
-            TWOMonthDate = '1489132800';
-           // Jsonparse();
-            //testday =3;
-            //ModifyScenario();
-            //Monthchange();
-            //var EventList = new GetAccountingRate(); //call API1
-        });
-
-        $(document).on("click", ".buttonScenario3U", function() { //0511
-            //1494316800
-            // var ScenarioYear  = todayYear;
-            //var ScenarioMonth  = todayMonth;
-            //var ScenarioDay    = todayDate;
-            
-            //console.log("Day1USD 5/11 ,Taiwan 5/10");
-
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate) / 1000); //yesterday
-            Parameter = UTCtime;
-            console.log("Day3U"+UTCtime);
-           // Parameter = '1494489600';
-           // TWOMonthDate = '1489219200';
-            //Jsonparse();
-            //testday =3;
-            //ModifyScenario();
-            //Monthchange();
-            //var EventList = new GetAccountingRate(); //call API1
-        });
-
-        $(document).on("click", ".buttonScenario70U", function() { //0511+70
-
-            console.log("Day1USD 7/18 ,509");
-
-
-            window.UTCtime = Math.round(Date.UTC(todayYear, todayMonth - 1, todayDate+1) / 1000); //yesterday
-            Parameter = UTCtime;           
-
-           // Parameter = '1500364800';
-           // TWOMonthDate = '1495094400';
-
-
-            console.log('Day70.dateU' + UTCtime);
-            var date = new Date(todayYear, todayMonth - 1, todayDate);
-            var newDate = new Date(date);
-            newDate.setDate(newDate.getDate() +70-60);
-            var nd = new Date(newDate);
-            TWOMonthDate = Math.round(nd / 1000);
-            console.log('Day70.dateU TWOMonthDate' + TWOMonthDate);
-            //Jsonparse();
-
-        });
-        /********************************** Scenario  *************************************/
         /********************************** page event *************************************/
         $("#viewAccount").on("pagebeforeshow", function(event, ui) {
             Expiretime();
-            Jsonparse(1);
-            // Monthchange();
-            initial();
+            initialPullRefresh();
         });
 
         $("#viewAccount").on("pageshow", function(event, ui) {
@@ -363,20 +89,620 @@ $("#viewAccount").pagecontainer({
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmA);
             tplJS.Popup("viewAccount", "contentID", "append", eventConfirmB);
 
-
             $("#popupA").popup({ dismissible: false });
             $("#popupB").popup({ dismissible: false });
 
-
             //Adjust margin-top of Tab content
             var navbarHeight = $(".tabs-top-fixed").height();
-            var mainPaddingTop = parseInt(document.documentElement.clientWidth * 3.99 / 100, 10);
+            var mainPaddingTop = parseInt(document.documentElement.clientWidth * 4.3 / 100, 10);
             var mainwordMarginTop = parseInt(navbarHeight - mainPaddingTop, 10);
             $(".mainword").css("margin-top", mainwordMarginTop + "px");
+
+            deviceHeight = parseInt(document.documentElement.clientWidth - mainwordMarginTop, 10);
         });
 
+        /********************************** html *************************************/
+        function AddhtmlOne() {
 
-        //   ************************************************************************** 
+            var content = "";
+            var currencyRate;
+
+            $.each(allCurrencyData, function(countryFrom, toData){
+                if (countryFrom === FromStatus) {
+                    $.each(toData[dataMonth], function(countryTo, currencyData){
+                        if (countryTo === ToStatus) {
+                            currencyRate = currencyData["Ex_Rate"];
+                            return false;
+                        }
+                    });
+                }
+            });
+
+            //check if FromStatus/ToStatus are exist in favorite
+            if (favoriteCurrencyData.indexOf(FromStatus) == -1) {
+                var cssClassFrom = "nonstar_icon";
+                var favoriteFrom = false;
+            } else {
+                var cssClassFrom = "star_icon";
+                var favoriteFrom = true;
+            }
+
+            if (favoriteCurrencyData.indexOf(ToStatus) == -1) {
+                var cssClassTo = "nonstar_icon";
+                var favoriteTo = false;
+            } else {
+                var cssClassTo = "star_icon";
+                var favoriteTo = true;
+            }
+
+            content += CountrylisthtmlOne(currencyRate, cssClassFrom, favoriteFrom, cssClassTo, favoriteTo);
+
+            $("ul[data-role='listview'][class^='test']").html("");
+            $(tabActiveIDs + " ul").append(content);
+
+            footerFixed();
+        }
+
+        function AddhtmlFirst() {
+
+            var content = "";
+
+            for (var i=0; i<favoriteCurrencyData.length; i++) {
+                $.each(allCurrencyData, function(countryFrom, toData){
+                    if (countryFrom === favoriteCurrencyData[i]) {
+                        $.each(toData[dataMonth], function(countryTo, currencyData){
+                            if (countryTo === ToStatus) {
+                                content += CountrylisthtmlFirst(favoriteCurrencyData[i], currencyData["Ex_Rate"], "star_icon", true);
+                                return false;
+                            }
+                        });
+                    }
+                });
+            }
+
+            $.each(allCurrencyData, function(countryFrom, toData){
+                $.each(toData[dataMonth], function(countryTo, currencyData){
+                    if (favoriteCurrencyData.indexOf(countryFrom) == -1) {
+                        if (countryTo === ToStatus) {
+                            content += CountrylisthtmlFirst(countryFrom, currencyData["Ex_Rate"], "nonstar_icon", false);
+                            return false;
+                        }
+                    }
+                });
+            });
+
+            $("ul[data-role='listview'][class^='test']").html("");
+            $(tabActiveIDs + " ul").append(content);
+
+            recoveryPageHeight();
+        }
+
+        function AddhtmlSecond() {
+
+            var content = "";
+
+            for (var i=0; i<favoriteCurrencyData.length; i++) {
+                $.each(allCurrencyData, function(countryFrom, toData){
+                    if (countryFrom === FromStatus) {
+                        $.each(toData[dataMonth], function(countryTo, currencyData){
+                            if (countryTo === favoriteCurrencyData[i]) {
+                                content += CountrylisthtmlSecond(countryTo, currencyData["Ex_Rate"], "star_icon", true);
+                                return false;
+                            }
+                        });
+                        return false;
+                    }
+                });
+            }
+
+            $.each(allCurrencyData, function(countryFrom, toData){
+                if (countryFrom === FromStatus) {
+                    $.each(toData[dataMonth], function(countryTo, currencyData){
+                        if (favoriteCurrencyData.indexOf(countryTo) == -1) {
+                            content += CountrylisthtmlSecond(countryTo, currencyData["Ex_Rate"], "nonstar_icon", false);
+                        }
+                    });
+                    return false;
+                }
+            });
+
+            $("ul[data-role='listview'][class^='test']").html("");
+            $(tabActiveIDs + " ul").append(content);
+            
+            recoveryPageHeight();
+        }
+
+        /********************************** html  *************************************/
+        function CountrylisthtmlOne(rate, cssClassFrom, favoriteFrom, cssClassTo, favoriteTo) {
+            if (favoriteFrom) {
+                var favoriteClassFrom = " favorite";
+            } else {
+                var favoriteClassFrom = "";
+            }
+
+            if (favoriteTo) {
+                var favoriteClassTo = " favorite";
+            } else {
+                var favoriteClassTo = "";
+            }
+
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
+                + '<div class="Listdiv1 select choose ' + FromStatus + favoriteClassFrom
+                + '"' + 'id=' + FromStatus + '>' 
+                + '<img  class="' + cssClassFrom + '" src ="img/tmp/favorite.png"> ' 
+                + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
+                + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
+                + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' 
+                + '<div class="Listdiv2 select choose ' + ToStatus + favoriteClassTo + '"' + 'id=' + ToStatus + '>' 
+                + '<img  class="' + cssClassTo + '" src ="img/tmp/favorite.png"> ' 
+                + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
+                + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
+                + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> '
+                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+        }
+
+        function CountrylisthtmlFirst(country, rate, cssClass, favorite) {
+            if (favorite) {
+                var favoriteClass = " favorite";
+            } else {
+                var favoriteClass = "";
+            }
+
+            return '<li data-icon="false" class="1_li CountryA ">' 
+                + '<div class="Listdiv1 select choose ' + country + favoriteClass + '"' + 'id=' 
+                + country + '>' + '<img  class="' + cssClass + '" src ="img/tmp/favorite.png"> ' 
+                + '<img  class="ListviewFlag1" src ="img/tmp/' + country + '.png"> ' 
+                + '<span class="ListRate1">' + '1 ' + country + '</span>  '
+                + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' 
+                + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '
+                + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
+                + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate 
+                + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' 
+                + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+        }
+
+        function CountrylisthtmlSecond(country, rate, cssClass, favorite) {
+            if (favorite) {
+                var favoriteClass = " favorite";
+            } else {
+                var favoriteClass = "";
+            }
+
+            return '<li data-icon="false" class="1_li CountryA">' 
+                + '<div class="Listdiv1" id=' + FromStatus + '>'
+                + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
+                + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus 
+                + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus 
+                + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>'
+                + '</div>' + '<div class="Listdiv2 select choose ' + country + favoriteClass + '"' 
+                + 'id= ' + country + '>' + '<img  class="' + cssClass + '" src ="img/tmp/favorite.png"> ' 
+                + '<img  class="ListviewFlag2" src ="img/tmp/' + country + '.png">'
+                + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
+                + '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> '
+                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+        }
+
+        function initialPullRefresh() {
+            /* global PullToRefresh */
+            PullToRefreshDestory = PullToRefresh.init({
+                mainElement: '.fragment',
+                onRefresh: function() {
+                    //do something for refresh
+                    Expiretime();
+                }
+            });
+        }
+
+        function Expiretime() {
+            var storagetimeYear = JSON.parse(localStorage.getItem('localYear'));
+            var storagetimeMon = JSON.parse(localStorage.getItem('localMonth'));
+            var storagetimeDate = JSON.parse(localStorage.getItem('localDate'));
+
+            if (storagetimeMon != null) {
+                window.UTCtime = Math.round(Date.UTC(storagetimeYear, storagetimeMon - 1, storagetimeDate) / 1000);
+                Parameter = UTCtime;
+            } else if (storagetimeMon == null) {
+                Parameter = TWOMonthDate;
+            }
+
+            var AccountingRate = new GetAccountingRate(); //call API1
+        }
+
+        function Jsonparsecheck() {
+            Jsonparsenext();
+        }
+
+        function Jsonparsenext() {
+
+            if (window.localStorage.getItem("allCountry") !== null) {
+                allCountry = JSON.parse(window.localStorage.getItem("allCountry"));
+            }
+            if (window.localStorage.getItem("allCurrencyData") !== null) {
+                allCurrencyData = JSON.parse(window.localStorage.getItem("allCurrencyData"));
+            }
+            if (window.localStorage.getItem("showDataMonth") !== null) {
+                showDataMonth = JSON.parse(window.localStorage.getItem("showDataMonth"));
+            }
+            if (window.localStorage.getItem("latestUpdateDatetime") !== null) {
+                latestUpdateDatetime = window.localStorage.getItem("latestUpdateDatetime");
+            }
+
+            var packJson = packJsontemp;
+            localStorage.setItem("packJsontemp", JSON.stringify(packJsontemp));
+
+            for (var i = 0; i < packJson.length; i++) {
+                getrate = packJson[i].Ex_Rate;
+                getfrom = packJson[i].From_Currency;
+                getto = packJson[i].To_Currency;
+                exdate = packJson[i].Ex_Date;
+                Last_update = packJson[i].LAST_UPDATE_DATE;
+                arrayLast_update_date.push(Last_update);
+
+                //Get All Country Data From API
+                if (allCountry.indexOf(getfrom) == -1) {
+                    allCountry.push(getfrom);
+                }
+                if (allCountry.indexOf(getto) == -1) {
+                    allCountry.push(getto);
+                }
+
+                //Check if the month of Ex_Date is exist in showDataMonth
+                var tempExDate = new Date(exdate);
+                var tempExDateMonth = parseInt(tempExDate.getMonth() + 1, 10);
+                if (showDataMonth.indexOf(tempExDateMonth) == -1) {
+                    showDataMonth.push(tempExDateMonth);
+                }
+
+                //Process all currency data
+                if (allCurrencyData[getfrom] === undefined) {
+                    allCurrencyData[getfrom] = {};
+                }
+
+                if (allCurrencyData[getfrom][tempExDateMonth] === undefined) {
+                    allCurrencyData[getfrom][tempExDateMonth] = {};   
+                }
+
+                if (allCurrencyData[getfrom][tempExDateMonth][getto] === undefined) {
+                    allCurrencyData[getfrom][tempExDateMonth][getto] = {};
+                }
+
+                allCurrencyData[getfrom][tempExDateMonth][getto]["Ex_Date"] = exdate;
+                allCurrencyData[getfrom][tempExDateMonth][getto]["Ex_Rate"] = getrate;
+            }
+
+            allCountry.sort();
+            window.localStorage.setItem("allCountry", JSON.stringify(allCountry));
+
+            //According to the Ex_Date, only display the latest 2 month's data
+            showDataMonth.sort().reverse();
+            showDataMonth.splice(2);
+            showDataMonth.reverse();
+            window.localStorage.setItem("showDataMonth", JSON.stringify(showDataMonth));
+
+            //Remove the old data
+            //ex: if now have data of month [4,5,6], and now date is June, then remove data of month [4]
+            $.each(allCurrencyData, function(countryFrom, toData){
+                $.each(toData, function(month, currencyData){
+                    if (showDataMonth.indexOf(parseInt(month, 10)) == -1) {
+                        delete allCurrencyData[countryFrom][month];
+                    }
+                });
+            });
+            window.localStorage.setItem("allCurrencyData", JSON.stringify(allCurrencyData));
+
+            //Decide the latest_update_datetime
+            if (arrayLast_update_date.length > 0) { 
+                arrayLast_update_date.sort();
+                var b = arrayLast_update_date.length - 1;
+                var newDatetime = arrayLast_update_date[b];
+
+                var newDate = new Date(newDatetime);
+                var newTimestamp = newDate.TimeStamp();
+                var oldDate = new Date(latestUpdateDatetime);
+                var oldTimestamp = oldDate.TimeStamp();
+
+                if (newTimestamp > oldTimestamp) {
+                    latestUpdateDatetime = newDatetime;
+                }
+
+                window.localStorage.setItem("latestUpdateDatetime", latestUpdateDatetime);
+            }
+
+            Reorganization();
+            Buttonimg();
+            Monthchange();
+        }
+
+        /********************************** Favorite*************************************/
+        function Reorganization() {
+
+            //Get favorite Only once atfer open APP
+            if (!getFavoriteData) {
+                if (window.localStorage.getItem("favoriteCurrencyData") !== null) {
+                    favoriteCurrencyData = JSON.parse(window.localStorage.getItem("favoriteCurrencyData"));
+                }
+                getFavoriteData = true;
+            }
+
+            //Sort Favorite Data, if [NTD] exist, [NTD] should be the first data
+            if (favoriteCurrencyData.indexOf("NTD") == -1) {
+                favoriteCurrencyData.sort();
+            } else {
+                var NTD = ["NTD"];
+                var NTDIndex = favoriteCurrencyData.indexOf("NTD");
+                favoriteCurrencyData.splice(NTDIndex, 1);
+
+                var tempData = favoriteCurrencyData;
+                tempData.sort();
+                favoriteCurrencyData = NTD.concat(tempData);
+            }
+            window.localStorage.setItem("favoriteCurrencyData", JSON.stringify(favoriteCurrencyData));
+            dataListView();
+        }
+
+        function Buttonimg() {
+            if (FromStatus != "All Currency") {
+                $(".buttonone1").attr("src", "img/tmp/" + FromStatus + ".png");
+            }
+            if (ToStatus != "All Currency") {
+                $(".buttontwo1").attr("src", "img/tmp/" + ToStatus + ".png");
+            }
+
+            if (FromStatus == "All Currency") {
+                $(".buttonone1").removeClass('buttononeFlag1');
+                $(".buttonone1").addClass('buttononeFlag1non');
+            } else {
+                $(".buttonone1").removeClass('buttononeFlag1non');
+                $(".buttonone1").addClass('buttononeFlag1');
+            }
+
+            if (ToStatus == "All Currency") {
+                $(".buttontwo1").removeClass('buttononeFlag2');
+                $(".buttontwo1").addClass('buttononeFlag1non');
+            } else {
+                $(".buttontwo1").removeClass('buttononeFlag1non');
+                $(".buttontwo1").addClass('buttononeFlag2');
+            }
+        }
+
+        function Monthchange() {
+            //Warning : don't modify it
+            $(".buttononeCountry1").text(FromStatus);
+            $(".buttononeCountry2").text(ToStatus);
+
+            var todayYearmod = todayYear.toString().substring(2, 4);
+
+            for (var i=0; i<showDataMonth.length; i++) {
+                var fragNum = parseInt(i + 1, 10);
+                $(".frag" + fragNum).text(MonthWord[showDataMonth[i] - 1] + "-" + todayYearmod);
+            }
+
+            $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
+
+            var dateshow = latestUpdateDatetime.toString().substr(0, 10);
+            $(".mainword3").text("Updated on "+ dateshow);
+        }
+
+        function dataListView(popupID) {
+            popupID = popupID || null;
+
+            //According to the date of device, decide the default month
+            if (checkDefaultActiveTab == false) {
+                var activeTabIndex;
+
+                if (todayMonth == showDataMonth[0]) {
+                    activeTabIndex = 0;
+                    tabActiveIDs = "#fragment-1";
+                } else if (todayMonth == showDataMonth[1]) {
+                    activeTabIndex = 1;
+                    tabActiveIDs = "#fragment-2";
+                }
+
+                $("#tabevent a:eq(" + activeTabIndex + ")").addClass("ui-btn-active");
+                $("#tabevent").tabs({ active: activeTabIndex });
+
+                checkDefaultActiveTab = true;
+            }
+
+            //Decide to show which month
+            if (tabActiveIDs === "#fragment-1") {
+                dataMonth = showDataMonth[0];
+            } else {
+                dataMonth = showDataMonth[1];
+            }
+
+            if (FromStatus == "All Currency" && ToStatus == "All Currency") {
+                $("ul[data-role='listview'][class^='test']").html("");
+                $(".info-string").hide();
+                $(".error-string").show();
+                tplJS.preventPageScroll();
+            } else {
+                $(".info-string").show();
+                $(".error-string").hide();
+                tplJS.recoveryPageScroll();
+
+                if (FromStatus == "All Currency") {
+                    AddhtmlFirst();
+                }
+
+                if (ToStatus == "All Currency") {
+                    AddhtmlSecond();
+                }
+
+                if (FromStatus != "All Currency" && ToStatus != "All Currency") {
+                    AddhtmlOne(popupID);
+
+                    //Prevent Page Scorll
+                    $('.ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                        'height': deviceHeight
+                    });
+
+                    $('.ui-page-active.ui-page').css({
+                        'min-height': deviceHeight
+                    });
+                }
+            }
+        }
+
+        function recoveryPageHeight() {
+            var pageHeight = $(tabActiveIDs).height() + $(".tabs-top-fixed").height() + $(".mainword").height() + parseInt($(".mainword").css("marginTop"), 10);
+            $('.ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                'height': pageHeight + "px"
+            });
+
+            $('.ui-page-active.ui-page').css({
+                'height': parseInt(pageHeight + 5, 10) + "px",
+                'min-height': parseInt(pageHeight + 5, 10) + "px"
+            });
+
+            $('.ui-page-active .ui-tabs').css({
+                'overflow-y': 'hidden'
+            });
+
+            footerFixed();
+        }
+
+        function popupResizeProcess(popupID) {
+            //Resize listview
+            var popupHeight = $("#" + popupID).height();
+            var popupHeaderHeight = $("#" + popupID).find("div[data-role='main'] .header").height();
+            //ui-content paddint-top:5.07vw
+            var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
+            //Ul margin-top:5.07vw
+            var ulMarginTop = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
+            //Ul margin-bottom:5.07vw
+            var ulMarginBottom = parseInt(document.documentElement.clientWidth * 5.07 / 100, 10);
+
+            var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - uiContentPaddingHeight - ulMarginTop - ulMarginBottom, 10);
+
+            if (popupMinHeight === 0) {
+                popupMinHeight = popupMainHeight;
+            } else {
+                if (popupMainHeight < popupMinHeight) {
+                    popupMainHeight = popupMinHeight;
+                }
+            }
+
+            $("#" + popupID).find("div[data-role='main'] .main").height(popupMainHeight);
+
+            popupPositionProcess(popupID);
+        }
+
+        function popupPositionProcess(popupID) {
+            //Set Position
+            var popupWidth = $("#" + popupID + "-popup").width();
+            var popupHeight = $("#" + popupID + "-popup").height();
+            var top = parseInt((document.documentElement.clientHeight - popupHeight) / 2, 10);
+            $("#" + popupID + "-popup").css("top", top + "px");
+
+            //Remove JQM CSS
+            $("#" + popupID).find("div[data-role='main'] .main li").removeClass("ui-li-static ui-body-inherit ui-first-child");
+            $("#" + popupID).find("div[data-role='main'] .main").removeClass("ui-listview");
+        }
+
+        function popupDataProcess(popupID) {
+            var selectedCountry;
+            var hiddenCountry;
+            var showAllCountryOption = true;
+            var dataListCountry = [];
+            var dataListContent = "";
+
+            if (popupID === "popupA") {
+                selectedCountry = FromStatus;
+                hiddenCountry = ToStatus
+            } else if (popupID === "popupB") {
+                selectedCountry = ToStatus;
+                hiddenCountry = FromStatus;
+            }
+
+            //If the ToStatus has no currency data, don't display this counry in datalist
+            if (popupID === "popupA") {
+                if (FromStatus == "All Currency" && ToStatus != "All Currency" || 
+                    FromStatus != "All Currency" && ToStatus != "All Currency") {
+
+                    $.each(allCurrencyData, function(countryFrom, toData){
+                        var currencyExist = false;
+
+                        $.each(toData[dataMonth], function(countryTo, currencyData){
+                            if (countryTo === ToStatus) {
+                                dataListCountry.push(countryFrom);
+                            }
+                        });
+                    });
+
+                    showAllCountryOption = true;
+                } else if (FromStatus != "All Currency" && ToStatus == "All Currency") {
+                    $.each(allCurrencyData, function(countryFrom, toData){
+                        var countryIndex = allCountry.indexOf(countryFrom);
+                        if (countryIndex != -1) {
+                            dataListCountry.push(countryFrom);
+                        }
+                    });
+                } else if (FromStatus == "All Currency" && ToStatus == "All Currency") {
+                    dataListCountry = allCountry;
+                }
+            }
+
+            if (popupID === "popupB") {
+                if (FromStatus != "All Currency") {
+                    $.each(allCurrencyData, function(countryFrom, toData){
+                        if (countryFrom === FromStatus) {
+                            $.each(toData[dataMonth], function(countryTo, currencyData){
+                                dataListCountry.push(countryTo);
+                            });
+                        }
+                    });
+
+                    showAllCountryOption = true;
+                } else if (FromStatus == "All Currency") {
+                    dataListCountry = allCountry;
+                }
+            }
+
+            var popupListLiHTML = $("template#tplPopupListLi").html();
+
+            if (showAllCountryOption) {
+                var popupListLi = $(popupListLiHTML);
+
+                if (selectedCountry === "All Currency") {
+                    popupListLi.addClass("tpl-dropdown-list-selected");
+                }
+
+                popupListLi.find(".ListviewFlag1popup").prop("src", "img/tmp/all.png");
+                popupListLi.find(".ListRate1popup").html("All Currency");
+                dataListContent += popupListLi[0].outerHTML + popupListLi[2].outerHTML;
+            }
+
+            for (var i=0; i<dataListCountry.length; i++) {
+                var popupListLi = $(popupListLiHTML);
+
+                if (selectedCountry === dataListCountry[i]) {
+                    popupListLi.addClass("tpl-dropdown-list-selected");
+                }
+
+                popupListLi.find(".ListviewFlag1popup").prop("src", "img/tmp/" + dataListCountry[i] + ".png");
+                popupListLi.find(".ListRate1popup").html(dataListCountry[i]);
+                dataListContent += popupListLi[0].outerHTML + popupListLi[2].outerHTML;
+            }
+
+            $("#" + popupID).find("ul").html("");
+            $("#" + popupID).find("ul").append(dataListContent);
+
+            if (popupID === "popupA" && !resizePopupA) {
+                popupResizeProcess("popupA");
+                resizePopupA = true;
+            }
+            if (popupID === "popupB" && !resizePopupB) {
+                popupResizeProcess("popupB");
+                resizePopupB = true;
+            }
+        }
+
+        /********************************** dom event *************************************/
+        $(document).on("tabsactivate", function(event, ui) {
+            tabActiveIDs = ui.newPanel.selector;
+            dataListView();
+        });
 
         $(document).on("click", ".buttontransfer", function() {
             var tmpsetF = $(".buttononeCountry1").html();
@@ -384,498 +710,149 @@ $("#viewAccount").pagecontainer({
             $(".buttononeCountry1").html(tmpsetT);
             $(".buttononeCountry2").html(tmpsetF);
 
-            $(".buttonone1").attr("src", "img/tmp/" + tmpsetT + ".png");
-            $(".buttontwo1").attr("src", "img/tmp/" + tmpsetF + ".png");
+            if (tmpsetT != "All Currency") {
+                $(".buttonone1").attr("src", "img/tmp/" + tmpsetT + ".png");
+            }
+            if (tmpsetF != "All Currency") {
+                $(".buttontwo1").attr("src", "img/tmp/" + tmpsetF + ".png");
+            }
 
             FromStatus = tmpsetT;
             ToStatus = tmpsetF;
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
-            Favorite();
-            Jsonparsenext(1);
             Buttonimg();
-        });
-
-        function Buttonimg() {
-            $(".buttonone1").attr("src", "img/tmp/" + FromStatus + ".png");
-            $(".buttontwo1").attr("src", "img/tmp/" + ToStatus + ".png");
-
-            if (FromStatus == "All Currency") {
-                $(".buttonone1").removeClass('buttononeFlag1');
-                $(".buttonone1").addClass('buttononeFlag1non');
-                AddhtmlFirst();
-            } else {
-                $(".buttonone1").removeClass('buttononeFlag1non');
-                $(".buttonone1").addClass('buttononeFlag1');
-
-            }
-
-            if (ToStatus == "All Currency") {
-                $(".buttontwo1").removeClass('buttononeFlag2');
-                $(".buttontwo1").addClass('buttononeFlag1non');
-                AddhtmlSecond();
-            } else {
-                $(".buttontwo1").removeClass('buttononeFlag1non');
-                $(".buttontwo1").addClass('buttononeFlag2');
-
-            }
-
-            if ((FromStatus != "All Currency") && (ToStatus != "All Currency")) {
-                AddhtmlOne();
-            }
-        }
-        /********************************** Event *************************************/
-        $(document).on("tabsactivate", function(event, ui) {
-            tabActiveIDs = ui.newPanel.selector;
-            if (ui.newPanel.selector === "#fragment-1") {
-                Jsonflagnow = todayMonth;
-                Jsonparsenext(1);
-            } else if (ui.newPanel.selector === "#fragment-2") {
-                Jsonflagnow = todayMonth - 1;
-                Jsonparsenext(1);
-            }
-
-        });
-        /********************************** Event *************************************/
-        $(document).on("click", ".select", function() {
-            statuscountrypop = $(this).prop("id");
-            if ($("#" + statuscountrypop).hasClass("favorite")) {
-                $("#eventWorkConfirmB").popup('open');
-            } else {
-                $("#eventWorkConfirmA").popup('open');
-            }
+            dataListView();
         });
 
         /********************************** Popup *************************************/
         $(document).on("click", "#eventWorkConfirmA .confirm", function() {
-            $("#" + statuscountrypop).children(".star_icon").css("opacity", "1");
-            $("#" + statuscountrypop).children(".nonstar_icon").css("opacity", "1");
-            $("#" + statuscountrypop).addClass("favorite");
-            arrayadd.push(statuscountrypop);
-            statuscountryrate = $("#" + statuscountrypop).parent().find(".ListDollar1").text();
-            arrayrateadd.push(statuscountryrate);
+            favoriteCurrencyData.push(statuscountrypop);
             Reorganization();
-            localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
-            $("#eventWorkConfirmA").popup('close');
 
-            //footerFixed();
+            $("#eventWorkConfirmA").popup('close');
+            footerFixed();
+            initialPullRefresh();
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
-            //footerFixed();
+            footerFixed();
+            initialPullRefresh();
         });
 
         /********************************** Popup  *************************************/
-
         $(document).on("click", "#eventWorkConfirmB .confirm", function() {
-
-            $("#" + statuscountrypop).children(".star_icon").css("opacity", "0");
-            $("#" + statuscountrypop).children(".nonstar_icon").css("opacity", "0");
-            $("#" + statuscountrypop).removeClass("favorite");
-            statuscountryrate = $("#" + statuscountrypop).parent().find(".ListDollar1").text();
-            arrayadd.splice(arrayadd.indexOf(statuscountrypop), 1);
-            arrayrateadd.splice(arrayrateadd.indexOf(statuscountryrate), 1);
+            var index = favoriteCurrencyData.indexOf(statuscountrypop);
+            if (index > -1) {
+                favoriteCurrencyData.splice(index, 1);
+            }
             Reorganization();
-            localStorage.setItem("arrayadd", JSON.stringify(arrayadd));
 
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
+            initialPullRefresh();
         });
 
-        /********************************** Popup  *************************************/
-        $(document).on("click", "#popupA .popListdiv1", function() { //.Listdiv1  
-            var statuspop = $(this).find(".ListRate1popup").text().trim();
-            FromStatus = statuspop;
+        /********************************** Add/Remove Favorite *************************************/
+        $(document).on("click", ".select", function() {
+            statuscountrypop = $(this).prop("id");
 
-            if ((FromStatus == "All Currency") && (ToStatus == "All Currency")) {
-                alert("NO!不可以喔!~ ^-^ ");
-                FromStatus = "NTD";
-            }
-
-            $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
-            $(".mainword3").text("Update on " + todayYear + "/" + todayMonth + "/" + todayDate);
-
-            $(".buttonone1").attr("src", "img/tmp/" + FromStatus + ".png");
-            $(".buttontwo1").attr("src", "img/tmp/" + ToStatus + ".png");
-
-            $(".buttononeCountry1").text(FromStatus);
-            $(".buttononeCountry2").text(ToStatus);
-
-            Jsonparsenext(1);
-            $("#popupA").popup('close');
-            footerFixed();
-        });
-
-        /********************************** Popup *************************************/
-        $(document).on("click", "#popupB .popListdiv1", function() {
-
-            var statuspop = $(this).find(".ListRate1popup").text().trim(); //ListRate1popup
-            ToStatus = statuspop;
-
-            if ((FromStatus == "All Currency") && (ToStatus == "All Currency")) {
-                alert("NO!不可以喔!~");
-                ToStatus = "NTD";
-            }
-
-            $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
-            $(".mainword3").text("Update on " + todayYear + "/" + todayMonth + "/" + todayDate);
-
-            $(".buttonone1").attr("src", "img/tmp/" + FromStatus + ".png");
-            $(".buttontwo1").attr("src", "img/tmp/" + ToStatus + ".png");
-
-            $(".buttononeCountry1").text(FromStatus);
-            $(".buttononeCountry2").text(ToStatus);
-
-            Jsonparsenext(1);
-
-
-            $("#popupB").popup('close');
-            footerFixed();
-        });
-        /********************************** Favorite*************************************/
-
-        function Reorganization() {
-
-            arrayadd.sort();        
-                     
-
-            arraycomb = arrayadd.concat(array.sort());
-            arrayratecomb = arrayrateadd.concat(arrayRate);
-            Buttonimg();
-            Favorite();
-        }
-
-
-        function Favorite() {
-            for (var i = 0; i < arrayadd.length; i++) {
-                statuscountrypop = arrayadd[i]; 
-                $(".choose#" + statuscountrypop).addClass("favorite"); 
-
-                
-            }
-            if ($("li").children(".favorite")) {
-                $("li").children(".favorite").children(".star_icon").css("opacity", "1"); //li id 
-                $("li").children(".favorite").children(".nonstar_icon").css("opacity", "1"); //li id 
-
-            }
-        }
-        /********************************** html *************************************/
-        function AddhtmlOne() {
-            var htmltemp = "";
-            for (var i = 0; i < 1; i++) { //array initial.lenggth
-
-                var country = 'Candy';
-                var index = "";
-                content = htmltemp + CountrylisthtmlOne(i, country);
-                htmltemp = content;
-            }
-            if (tabActiveIDs === "#fragment-1") {
-
-                $("#ultestA").html(" ");
-                $("#ultestA").append(content);
-                $("#ultestA").listview('refresh');
-                $("#ultestB").html(" ");
-                Favorite(); //add for test 20170424
-
-            }
-            if (tabActiveIDs === "#fragment-2") {
-
-                $("#ultestB").html(" ");
-                $("#ultestB").append(content);
-                $("#ultestB").listview('refresh');
-                $("#ultestA").html(" ");
-                Favorite();
-
-            }
-        }
-
-        function AddhtmlFirst() {
-            var htmltemp = "";
-            for (var i = 0; i < arraycomb.length; i++) {
-                var country = 'Candy';
-                var index = "";
-                content = htmltemp + CountrylisthtmlFirst(i, country);
-                htmltemp = content;
-            }
-            if (tabActiveIDs === "#fragment-1") {
-                $("#ultestA").html(" ");
-                $("#ultestA").append(content);
-                $("#ultestA").listview('refresh');
-                $("#ultestB").html(" ");
-                Favorite(); //add for test 20170424
-
-            }
-            if (tabActiveIDs === "#fragment-2") {
-                $("#ultestB").html(" ");
-                $("#ultestB").append(content);
-                $("#ultestB").listview('refresh');
-                $("#ultestA").html(" ");
-                Favorite();
-            }
-        }
-
-        function AddhtmlSecond() {
-            var htmltemp = "";
-            for (var i = 0; i < arraycomb.length; i++) {
-                var country = 'Candy';
-                var index = "";
-                content = htmltemp + CountrylisthtmlSecond(i, country);
-                htmltemp = content;
-            }
-
-            if (tabActiveIDs === "#fragment-1") {
-                $("#ultestA").html(" ");
-                $("#ultestA").append(content);
-                $("#ultestA").listview('refresh');
-                $("#ultestB").html(" ");
-                Favorite();
-
-            }
-
-            if (tabActiveIDs === "#fragment-2") {
-                $("#ultestB").html(" ");
-                $("#ultestB").append(content); //insert month  
-                $("#ultestB").listview('refresh');
-                $("#ultestA").html(" ");
-                Favorite(); //add for test 20170424
-            }
-
-        }
-        /********************************** html  *************************************/
-        function CountrylisthtmlOne(index) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
-            + '<div class="Listdiv1 select choose ' 
-            + '"' + 'id=' + FromStatus + '>' 
-            + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
-            + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
-            + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
-            + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' 
-            + '<div class="Listdiv2 select choose"' + 'id=' + ToStatus + '>' 
-            + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
-            + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
-            + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayRate[index] 
-            + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> '
-             + '</div>' + '</div>' + '</li>';
-        }
-
-        function CountrylisthtmlFirst(index, country) {
-            return '<li data-icon="false" class="1_li CountryA " id="litest">' 
-            + '<div class="Listdiv1 select choose ' + arraycomb[index] + '"' + 'id=' 
-            + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
-            + '<img  class="ListviewFlag1" src ="img/tmp/' + arraycomb[index] + '.png"> ' 
-            + '<span class="ListRate1">' + '1 ' + arraycomb[index] + '</span>  '
-             + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' 
-             + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '
-             + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
-             + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] 
-             + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' 
-             + '</div>' + '</li>';
-        }
-
-        function CountrylisthtmlSecond(index, country) {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
-            + '<div class="Listdiv1" id=' + FromStatus + '>'
-             + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
-             + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus 
-             + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus 
-             + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>'
-              + '</div>' + '<div class="Listdiv2 select choose ' + arraycomb[index] + '"' 
-              + 'id= ' + arraycomb[index] + '>' + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
-              + '<img  class="ListviewFlag2" src ="img/tmp/' + arraycomb[index] + '.png">'
-               + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + arrayratecomb[index] 
-               + '</span> ' + '<span class="ListRate2">' + arraycomb[index] + '</span>' + '<br> '
-             + '</div>' + '</div>' + '</li>';
-        }
-
-        function Pophtmlfirst() {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + '</li>';
-
-        }
-
-        function Pophtmlnext() {
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' + '<div class="Listdiv1" id=' + '</div>' + '</li>';
-
-        }
-        /********************************** html *************************************/
-        /********************************** dom event *************************************/
-
-        /********************************** API*************************************/
-        function Jsonparse() {
-           // console.log('680.Jsonparse - API');
-           // CheckifReloadflag1 = JSON.parse(localStorage.getItem('CheckifReloadflag1'));
-           // if ((CheckifReloadflag1) != 1) //first
-           // {
-           //     console.log("599.first");
-           //     Jsonparsecheck();
-           // } else {
-                var EventList = new GetAccountingRate(); //call API1
-           // }
-        }
-
-
-        function Jsonparsecheck() {
-
-            if (packJsontemp == 0) { //norenew
-                CheckifReloadflag2 = 1;
+            if ($("#" + statuscountrypop).hasClass("favorite")) {
+                $("#eventWorkConfirmB .header.font-style1").html("Remove「" + statuscountrypop + "」from favorite ?");
+                $("#eventWorkConfirmB").popup('open');
             } else {
-                CheckifReloadflag2 = 0;
+                $("#eventWorkConfirmA .header.font-style1").html("Add「" + statuscountrypop + "」to favorite ?");
+                $("#eventWorkConfirmA").popup('open');
             }
+        });
 
-            /* 20170502  add by 新增需求*/
-            if ((CheckifReloadflag2 == 1)&&(CheckifReloadflag1 == 1)) {
-                packJsontemp = JSON.parse(localStorage.getItem('packJsontemp'));
-                console.log("690-1. Null use local");
-                console.log("690-3 .run local");
+        //Popup - Select Country
+        $(document).on({
+            popupafteropen: function() {
+                var domID = $(this).prop("id");
+                popupPositionProcess(domID);
+                popupDataProcess(domID);
+            },
+            popupbeforeposition: function() {
+                tplJS.preventPageScroll();
+                if (PullToRefreshDestory != null) {
+                    PullToRefreshDestory.destroy();
+                    PullToRefreshDestory = null;
+                }
+            },
+            popupafterclose: function() {
+                footerFixed();
+            },
+            click: function(event) {
+                var domID = $(this).prop("id");
 
-            } else if ((CheckifReloadflag2 != 0)&&(CheckifReloadflag1 != 1)) { 
-                Parameter = TWOMonthDate;
-                var EventList = new GetAccountingRate();
-                CheckifReloadflag1 = 1; //Had got all data
-                localStorage.setItem("CheckifReloadflag1", JSON.stringify(CheckifReloadflag1));
-                console.log("690-2 .Call again API");
-                test=0;
-            }            
-            
-            Jsonparsenext(1);
-        }
+                //close popup
+                if ($(event.target).hasClass("close-popup")) {
+                    $("#" + domID).popup("close");
+                    tplJS.recoveryPageScroll();
+                    initialPullRefresh();
+                }
 
-
-        function Jsonparsenext() {
-            var packJson = packJsontemp;
-            localStorage.setItem("packJsontemp", JSON.stringify(packJsontemp));
-            console.log("720. Jsonparsenext");
-            arrayRate = ["NaN"];
-            var arraygetrate = [];
-            var arraygetFrom = [];
-            var arraygetTo = [];
-
-            var cleartest = 0;
-            arrayrateadd = [];
-
-            //Favorite 
-            for (var i = 0; i < packJson.length; i++) {
-                getrate = packJson[i].Ex_Rate;
-                getfrom = packJson[i].From_Currency;
-                getto = packJson[i].To_Currency;
-                exdate = packJson[i].Ex_Date;
-                Last_update = packJson[i].LAST_UPDATE_DATE; //0506
-                arrayLast_update_date.push(Last_update); //
-
-                if ((FromStatus == "All Currency") && (exdate == todayYear + '/0' + Jsonflagnow + '/01')) {
-                    if (getto == ToStatus) {
-                        arraygetFrom.push(getfrom);
-                        arraygetrate.push(getrate);
-
-                        //0508  /**/
-
-
-
-                        //0508                    
-
-                        array = arraygetFrom;
-                        arrayRate = arraygetrate;
-                        console.log('OK i:' + i + 'Rate:' + getrate + 'from:' + getfrom + 'to:' + getto + 'Data:' + exdate);
+                //select country
+                if ($(event.target).is("[class*='List']")) {
+                    //Find Country Name
+                    var domParent = $(event.target);
+                    if ($(event.target).hasClass("ListviewFlag1popup") || $(event.target).hasClass("ListRate1popup")) {
+                        domParent = $(event.target).parent();
                     }
-                } else if ((ToStatus == "All Currency") && (exdate == todayYear + '/0' + Jsonflagnow + '/01')) {
-                    if (getfrom == FromStatus) {
-                        arraygetTo.push(getto);
-                        arraygetrate.push(getrate);
-                        array = arraygetTo;
-                        arrayRate = arraygetrate;
 
-                        console.log('OK i:' + i + 'Rate:' + getrate + 'from:' + getfrom + 'to:' + getto + 'Data:' + exdate);
+                    if (domID === "popupA") {
+                        FromStatus = domParent.find(".ListRate1popup").text();
+                    } else if (domID === "popupB") {
+                        ToStatus = domParent.find(".ListRate1popup").text();
                     }
-                } else if ((FromStatus != "All Currency") && (ToStatus != "All Currency")) {
-                    if ((getfrom == FromStatus) && (getto == ToStatus) && (exdate == todayYear + '/0' + Jsonflagnow + '/01')) //FromStatus   ToStatus 
-                    {
-                        arraygetrate.push(getrate);
-                        arrayRate = arraygetrate;
-                        console.log('OK i:' + i + 'Rate:' + getrate + 'from:' + getfrom + 'to:' + getto + 'Data:' + exdate);
-                    }
+
+                    $("#" + domID).popup('close');
+                    footerFixed();
+                    tplJS.recoveryPageScroll();
+                    initialPullRefresh();
+
+                    Monthchange();
+                    dataListView();
+                    Buttonimg();
                 }
             }
-       
+        }, ".app-popup");
 
-            for (var i = 0; i < arrayadd.length; i++) {
-                var rateindex = array.indexOf(arrayadd[i]);
-                if (rateindex >= 0) {
-                    var ratetemp = arrayRate[rateindex];
-                    arrayrateadd.push(ratetemp);
-                    console.log(arrayadd[i] + '_' + ratetemp);
-                } else if (rateindex < 0) {
-                    var ratetemp = "NaN";
-                    arrayrateadd.push(ratetemp);
-                    console.log(arrayadd[i] + '_' + ratetemp);
-                }
+        //Scenario
+        $("#deleteTest").on("click", function() {
+            $("#testContent").hide();
+        });
+
+        $(document).on("click", ".buttonScenario", function() {
+            var id = $(this).prop("id");
+            var testDate = new Date();
+            var tempDate;
+            var dayChange = false;
+
+            if (id === "scenario2") {
+                tempDate = testDate.setDate(testDate.getDate() + 1);
+                dayChange = true;
+            } else if (id === "scenario3") {
+                tempDate = testDate.setDate(testDate.getDate() + 2);
+                dayChange = true;
+            } else if (id === "scenario70") {
+                tempDate = testDate.setDate(testDate.getDate() + 70);
+                dayChange = true;
             }
 
-
-            arrayLast_update_date.sort();
-            var b = arrayLast_update_date.length - 1;
-            Last_date = arrayLast_update_date[b]; //arrayLast_update_date[0];
-            console.log("Last_date_" + Last_date);
-
-            Reorganization();
-            Buttonimg();
-            Monthchange();
-        }
-
-
-        /********************************** API*************************************/
-
-        function GetAccountingRate(eventType) {
-            eventType = eventType || null;
-            var self = this;
-            loadingMask("show");
-            console.log("我呼叫" + Parameter);
-            //Parameter = '1488412800';
-
-            var queryDataParameter = "<Last_update_date>" + Parameter + "</Last_update_date>"; //20170427 test
-            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
-            console.log("UTC_API" + TWOMonthDate);
-            this.successCallback = function(data) {
-                var resultCode = data['ResultCode'];
-                if (resultCode == 1) {
-                    loadingMask("hide");
-                    packJsontemp = data['Content'];
-                    Jsonparsecheck();
-                }
-            };
-            this.failCallback = function(data) {
-                loadingMask("hide");
-            };
-
-            var __construct = function() {
-                CustomAPI("POST", true, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "");
-            }();
-
-        }
-
-        function Expiretime() {
-            var storagetimeYear = JSON.parse(localStorage.getItem('localYear'));
-            var storagetimeMon = JSON.parse(localStorage.getItem('localMonth'));
-            var storagetimeDate = JSON.parse(localStorage.getItem('localDate')); //0506
-            //var storagelastupdate = JSON.parse(localStorage.getItem('lastupdateDate'));
-
-            window.UTCtime = Math.round(Date.UTC(storagetimeYear, storagetimeMon - 1, storagetimeDate) / 1000);
-            if (storagetimeMon != null) {
-                Parameter = UTCtime;
-                console.log("use local" + UTCtime);
-            } else if (storagetimeMon == null) {
-                Parameter = TWOMonthDate;
-                console.log("use first time" + TWOMonthDate);
+            if (dayChange) {
+                testDate = new Date(tempDate);
             }
-            localStorage.setItem("localYear", JSON.stringify(todayYear));
-            localStorage.setItem("localMonth", JSON.stringify(todayMonth));
-            localStorage.setItem("localDate", JSON.stringify(todayDate));
-            //localStorage.setItem("lastupdateDate", JSON.stringify(d)); //0506
-        }
+
+            Parameter = testDate.TimeStamp();
+            var AccountingRate = new GetAccountingRate();
+        });
     }
-
-    /********************************** API*************************************/
 });

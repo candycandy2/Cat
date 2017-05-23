@@ -1,4 +1,4 @@
-﻿var ShowLoading;
+var ShowLoading;
 var HideLoading;
 
 (function ($) {

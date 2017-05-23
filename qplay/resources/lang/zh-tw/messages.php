@@ -55,6 +55,7 @@ return [
     'TITLE_SYS_PARAMETER_MAINTAIN' => '參數設置',
     'TITLE_SYS_PROJECT_MAINTAIN' => '專案管理',
     'TITLE_SECRETARY_PUSH' => '秘書推播',
+    'TITLE_REPORT' => '報表',
 
     //validate
     'VALIDATE_ACCEPT' => '僅接受',
@@ -63,6 +64,7 @@ return [
     //About
     'SYS_VERSION' => '系統版本',
     'SYS_SUGGEST_BROWSER' => '系統建議瀏覽器: Chrome, IE10以上版本',
+    'JENKINS_DEPLOY_INFORMATION' => 'Jenkins部署資訊',
 
     //Account Maintain
     'USER_LOGIN_ID' => '帳號',
@@ -302,6 +304,15 @@ return [
     'HINT_APP_KEY'=>'請填入系統名稱縮寫 ex:flower',
     'HINT_PROJECT_PM'=>'請填入系統負責人的AD帳號 ex:Steven.Yan',
     'HINT_PROJECT_DESC'=>'請填入系統說明',
+
+    //Report
+    'APPS_LIST'=>'所有應用程式',
+    'RELEASED_STATUS_PUBLISH'=>'上架中',
+    'RELEASED_STATUS_UNBLISH'=>'下架中',
+    'APPLICATION_NAME'=>'應用程式名稱',
+    'SUPPORT_DEVICE_TYPE'=>'支援平台',
+    'REGISTER_USER_COUNT'=>'註冊總用戶數',
+    'REGISTER_DEVICE_COUNT'=>'總設備數',
 
     'ERR_EXIST_ROLE' => '角色在當前公司內已存在!',
     'ERR_GROUP_NAME_EXIST' => '群組名稱已存在!',

@@ -59,9 +59,14 @@ class AppVersionService
      * 取得歷史版本列表
      * @param   int    $appId      qp_app_head.row_id
      * @param   String $deviceType 裝置類型(ios|android)
+     * @param   int    $offset     從第幾筆開始
+     * @param   int    $limit      每次最多查詢筆數
+     * @param  String  $sort       排序的欄位
+     * @param  String  $order      排序方式(asc|desc)
+     * @param  String  $search     查詢字串
      * @return  Array
      */
-    public function getAppHistoryVersion($appId, $deviceType){
+    public function getAppHistoryVersion($appId, $deviceType, $offset, $limit, $sort, $order, $search){
          $whereCondi = array(
                         array(
                         "field"=>"status",
@@ -75,8 +80,9 @@ class AppVersionService
                         ),
                     );
          $selectData = array('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'created_at');
-         $appVersionList = $this->appVersionRepository->getAppVersion($appId, $deviceType, $whereCondi, $selectData);
-         $appVersionList = $this->arrangeVersionList($appId, $deviceType, $appVersionList);
+         $appVersionList = $this->appVersionRepository->getAppVersion($appId, $deviceType, $whereCondi, $selectData, $offset, $limit, $sort, $order, $search);
+
+         $appVersionList = $this->arrangeVersionList($appId, $deviceType, $appVersionList); 
        return  $appVersionList;
 
     }
@@ -381,4 +387,95 @@ class AppVersionService
         return $appVersionList;
     }
 
+    /**
+     * 儲存App版本控制的異動
+     * @param  String $appKey      app key
+     * @param  Int    $appId       欲儲存的app_row_id
+     * @param  Array  $versionList 異動的版本列表
+     * @return 
+     */
+    public function saveAppVersionList($appKey ,Int $appId, Array $versionList){
+
+        
+        $appStatus = $this->getAllPublishedAppStatus($appId);
+        $insertArray = [];
+        $updateArray = [];
+        $saveId = [];
+        $now = date('Y-m-d H:i:s',time());
+        
+
+        foreach ($versionList as $deviceType => $versionItems) {
+           
+            $deletePublishFile = true;
+
+            foreach ($versionItems as $value) {    
+                
+                $data = array(
+                    'app_row_id'=>$appId,
+                    'version_code'=>$value['version_code'],
+                    'version_name'=>$value['version_name'],
+                    'url'=>$value['url'],
+                    'external_app'=>$value['external_app'],
+                    'version_log'=>($value['version_log'] == 'null')?NULL:$value['version_log'],
+                    'status'=>$value['status'],
+                    'device_type'=>$deviceType,
+                );
+
+                if($value['status'] == 'ready'){
+                    //首次上架
+                    if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
+                        $data ['ready_date'] = time();
+                    }
+                }else{
+                    $data ['ready_date'] = NULL;
+                }
+                if(isset($value['row_id'])){//update
+                     $data['row_id'] = $value['row_id'];
+                     $data['updated_user'] = \Auth::user()->row_id;
+                     $data['updated_at'] = $now;
+                     $updateArray[] = $data;
+                     $saveId[] = $value['row_id'];
+                }else{//new
+                    if($value['external_app']==0){//file upload
+                        
+                        $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
+                        if(isset($value['version_file'])){
+                            $value['version_file']->move($destinationPath,$value['url']);
+                            if($deviceType == 'ios'){
+                                $manifestContent = $this->getManifest($appId, $appKey, $deviceType, $value['version_code'],$value['url']);
+                                 if(isset($manifestContent)){
+                                    $file = fopen($destinationPath."manifest.plist","w"); 
+                                    fwrite($file,$manifestContent );
+                                    fclose($file);
+                                 }
+                            }
+                        }
+                    }
+                    //arrange data
+                    $data['size'] =(!isset($value['size']) || $value['size'] == 'null')?0:$value['size'];
+                    $data['created_user'] = \Auth::user()->row_id;
+                    $data['created_at'] = $value['created_at'];
+                    $insertArray[]=$data;
+                }
+                
+                if($value['status'] == 'ready' && $value['external_app'] == 0){
+                    $deletePublishFile = false;
+                    $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
+                    $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
+                    $alsoCopyManifest = ($deviceType == 'ios')?true:false;
+                    $this->deleteApkFileFromPublish($appId, $deviceType);
+                    $this->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $alsoCopyManifest);
+                }
+            }
+            
+            if($deletePublishFile){
+                $this->deleteApkFileFromPublish($appId, $deviceType);
+            }
+        }
+        
+        $this->updateVersion($updateArray);
+        $this->insertVersion($insertArray);
+
+        
+    }
 }
