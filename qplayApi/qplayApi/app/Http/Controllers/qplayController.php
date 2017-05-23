@@ -1205,7 +1205,7 @@ class qplayController extends Controller
                 } else {
                     $sql = <<<SQL
 select distinct h.row_id as app_id, p.project_code as app_code,
-h.package_name, c.row_id as category_id, c.app_category, lan.lang_code
+h.package_name, c.row_id as category_id, c.app_category, lan.lang_code,
 v.version_code as version, v.version_name,
 h.security_level,h.avg_score, us.score as user_score,
 h.sequence, v.url, h.icon_url, v.external_app, v.size
