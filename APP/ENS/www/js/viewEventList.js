@@ -641,7 +641,7 @@ $("#viewEventList").pagecontainer({
                 setTimeout(function(){
                     $("#contactUserPopup").popup("option", "dismissible", true);
                     $("#contactUserPopup").popup("open");
-                }, 1000);
+                }, 200);
             }
         }
 
@@ -896,7 +896,7 @@ $("#viewEventList").pagecontainer({
                 setTimeout(function(){
                     $("#contactUserPopup").popup("close");
                     $("#eventMemberList").popup("open");
-                }, 1000);
+                }, 200);
             } else {
                 //Set Active Tab
                 $("#tabEventList a:eq(1)").addClass("ui-btn-active");

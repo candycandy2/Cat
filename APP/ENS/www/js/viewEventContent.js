@@ -264,7 +264,12 @@ $("#viewEventContent").pagecontainer({
                     if ((i+1) == messages.length) {
                         messageList.find(".ui-hr").remove();
                         latestUser = messages[i]["from_id"];
-                        latstMsg = messages[i]["msg_body"]["text"];
+
+                        if (messages[i]["msg_type"] === "text") {
+                            latstMsg = messages[i]["msg_body"]["text"];
+                        } else if (messages[i]["msg_type"] === "image") {
+                            latstMsg = "上傳了一張圖片";
+                        }
                     }
 
                     $("#messageContent").append(messageList);
@@ -821,10 +826,12 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadText) {
                 if (msgController.isInited) {
+
+                    loadingMask("show");
+
                     msgController.SendText(gid, gname, msg, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
-                        loadingMask("show");
 
                         if (successResult["result"]["code"] === 0) {
                             var chatRoomID = successResult["result"]["target_gid"];
@@ -858,10 +865,12 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadImg) {
                 if (msgController.isInited) {
+
+                    loadingMask("show");
+
                     msgController.SendImage(gid, gname, fid, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
-                        loadingMask("show");
 
                         if (successResult["result"]["code"] === 0) {
                             var chatRoomID = successResult["result"]["target_gid"];
@@ -891,6 +900,10 @@ $("#viewEventContent").pagecontainer({
                         console.log(errorResult);
                     });
                 }
+            }
+
+            if (!msgController.isInited) {
+                initialMessage();
             }
         });
 
