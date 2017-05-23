@@ -52,7 +52,7 @@
 
                                     //Find the specific language of APP Name to display,
                                     //if can not find the language to match the browser language,
-                                    //display the default language: zh-tw
+                                    //display the default language of APP, which set in QPlay Website
                                     var packagename = null;
                                     var defaultAPPName = null;
 
@@ -63,7 +63,7 @@
                                                 packagename = appmultilang[multilangIndex].app_name;
                                             }
                                             //match default language: zh-tw
-                                            if (appmultilang[multilangIndex].lang == "zh-tw") {
+                                            if (appmultilang[multilangIndex].lang == applist[appindex].default_lang) {
                                                 defaultAPPName = appmultilang[multilangIndex].app_name;
                                             }
                                         }
