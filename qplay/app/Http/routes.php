@@ -267,6 +267,9 @@ Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
 Route::any('report', ['middleware' => 'auth', function() {
     return view("report/report_app_list");
 }]);
+Route::any('report/reportDetail', ['middleware' => 'auth', function() {
+    return view("report/report_detail");
+}]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {
     Session::set('lang', $lang);
