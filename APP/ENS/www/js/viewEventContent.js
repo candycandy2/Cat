@@ -759,7 +759,6 @@ $("#viewEventContent").pagecontainer({
         //Event Related Content
         $(document).on("click", ".relate-event", function() {
             ahowEventData(this, "authority2");
-            loadingMask("show");
         });
 
         //Event Edit Button

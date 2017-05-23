@@ -40,7 +40,7 @@ $("#viewEventList").pagecontainer({
                     if (window.localStorage.getItem("eventType") !== null) {
                         var EventList = new getEventList(window.localStorage.getItem("eventType"));
                     } else {
-                        var EventList = new getEventList();
+                        var EventList = new getEventList("1");
                     }
                     var basicInfo = new getBasicInfo();
 
@@ -470,6 +470,10 @@ $("#viewEventList").pagecontainer({
                 eventMemberList.siblings(".main").append(eventMemberListLi);
             }
 
+            //Remove old popup
+            $("#eventMemberList").popup("destroy").remove();
+            $("#eventMemberList-option").popup("destroy").remove();
+
             //EventList / EventContent
             var eventMemberListData = {
                 id: "eventMemberList",
@@ -480,6 +484,7 @@ $("#viewEventList").pagecontainer({
 
             $("#eventMemberList").popup("open");
             footerFixed();
+            loadingMask("hide");
         };
 
         window.functionListPopup = function(data) {
@@ -532,6 +537,10 @@ $("#viewEventList").pagecontainer({
                 eventFunctionList.siblings(".main").append(eventFunctionListLi);
             }
 
+            //Remove old popup
+            $("#eventFunctionList").popup("destroy").remove();
+            $("#eventFunctionList-option").popup("destroy").remove();
+
             //EventList / EventContent
             var eventFunctionListData = {
                 id: "eventFunctionList",
@@ -542,6 +551,7 @@ $("#viewEventList").pagecontainer({
 
             $("#eventFunctionList").popup("open");
             footerFixed();
+            loadingMask("hide");
         };
 
         function showEventAdd() {
@@ -554,6 +564,8 @@ $("#viewEventList").pagecontainer({
         window.ahowEventData = function(dom, action) {
             action = action || null;
             var openData = false;
+
+            loadingMask("show");
 
             if (action === "member" || action === "function") {
                 //Only [admin] & [supervisor] can read (member) & (function)
@@ -675,7 +687,7 @@ $("#viewEventList").pagecontainer({
             if (window.localStorage.getItem("eventType") !== null) {
                 var eventTypeDefaultVal = window.localStorage.getItem("eventType");
             } else {
-                var eventTypeDefaultVal = "0";
+                var eventTypeDefaultVal = "1";
             }
 
             var eventTypeData = {
@@ -818,7 +830,8 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#eventMemberList .confirm", function() {
             $("#eventMemberList").popup("close");
-            $("#eventMemberList").remove();
+            $("#eventMemberList").popup("destroy").remove();
+            $("#eventMemberList-option").popup("destroy").remove();
             footerFixed();
         });
 
@@ -839,20 +852,19 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventFunctionList .confirm", function() {
             $("#eventFunctionList").popup("close");
             $("#eventFunctionList").popup("destroy").remove();
+            $("#eventFunctionList-option").popup("destroy").remove();
             footerFixed();
         });
 
         //Event Content
         $(document).on("click", ".event-list-msg .description", function() {
             ahowEventData(this);
-            loadingMask("show");
             $.mobile.changePage('#viewEventContent');
         });
 
         //Event Related Content
         $(document).on("click", ".event-list-msg .link-event", function() {
             ahowEventData(this, "authority");
-            loadingMask("show");
         });
 
         //Event Add
