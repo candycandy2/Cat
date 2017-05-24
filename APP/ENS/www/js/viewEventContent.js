@@ -208,6 +208,11 @@ $("#viewEventContent").pagecontainer({
                                 }
                             }
                         }
+
+                        //For Related Event, Confirm User has authority to read this event
+                        if (typeof callBack === "function") {
+                            callBack(self.readAuthority);
+                        }
                     }
 
                 } else if (resultCode === "014904") {
