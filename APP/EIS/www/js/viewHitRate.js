@@ -23,9 +23,11 @@ $("#viewHitRate").pagecontainer ({
     	    		length = roSummaryCallBackData.length;
     	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
     	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
+                    //review by alan
                     UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
                     UserAuthority();
     	    		convertData();
+                    //review by alan
                     getAllData();
                     $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
                     showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
