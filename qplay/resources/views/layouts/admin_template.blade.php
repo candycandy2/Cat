@@ -82,6 +82,8 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/dist/css/AdminLTE.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/dist/css/skins/_all-skins.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/common.css') }}" rel="stylesheet">
+    <!---Highcharts-5.0.11-->
     {{--<link rel="stylesheet" href="style.css">--}}
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('/js/common.js') }}"></script>
@@ -92,32 +94,14 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
+    <script src="{{ asset('/js/highcharts.js') }}"></script>
+    {{-- <script src="{{ asset('/Highcharts-5.0.11/code/js/modules/exporting.js') }}"></script> --}}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="{{ asset('/oss/html5shiv.min.js') }}"></script>
     <script src="{{ asset('/oss/respond.min.js') }}"></script>
     <![endif]-->
-    <style type="text/css">
-        td.grid_long_column {
-            display:block;
-            white-space:nowrap;
-            overflow:hidden;
-            text-overflow:ellipsis;
-        }
-        td.grid_warp_column {
-            word-break:break-all;
-        }
-        .error{
-            color: red;
-        }
-        .head-version{
-            color: #d73925;
-            font-size: 20px;
-            line-height: 50px;
-            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-        }
-    </style>
 </head>
 <body class="skin-blue fixed" data-spy="scroll" data-target="#scrollspy">
 <div class="wrapper">
@@ -177,14 +161,14 @@ if(array_key_exists('with_msg_id', $input)) {
                         @if($menu->Active)
                             active
                         @endif" id="scrollspy-components">
-                        <a href="{{$menu->Url}}"><i class="fa fa-circle-o"></i> {{$menu->sName}}</a>
+                        <a href="{{asset($menu->Url)}}"><i class="fa fa-circle-o"></i> {{$menu->sName}}</a>
                         @if(count($menu->subMenuList) > 0)
                             <ul class="nav treeview-menu">
                                 @foreach ($menu->subMenuList as $submenu)
                                     <li
                                             @if($submenu->Active)
                                                 class="active"
-                                            @endif><a href="{{$submenu->Url}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$submenu->sName}}</a></li>
+                                            @endif><a href="{{asset($submenu->Url)}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$submenu->sName}}</a></li>
                                 @endforeach
                             </ul>
                         @endif
@@ -510,7 +494,7 @@ if(array_key_exists('with_msg_id', $input)) {
         showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_LOGOUT")}}", "", function () {
             hideConfirmDialog();
 
-            window.location.href = "auth/logout";
+            window.location.href = "{{asset('auth/logout')}}";
         });
     };
 

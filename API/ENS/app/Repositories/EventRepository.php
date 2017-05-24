@@ -145,6 +145,8 @@ class EventRepository
      * @return mixed
      */
     public function getEventList($empNo, $eventType, $eventStatus){
+        
+        $order = "en_event.updated_at desc, en_event.created_at desc";
 
         $result = $this->event->where('en_user_event.emp_no', '=', (string)$empNo)
                  ->join( 'en_user_event', 'en_event.row_id', '=', 'en_user_event.event_row_id');
@@ -153,8 +155,10 @@ class EventRepository
         }
         if($eventStatus!=""){
             $result->where('event_status', '=', $eventStatus);
+             $order = "en_event.event_status asc, event_type asc, en_event.updated_at desc, en_event.created_at desc";
         }
-        return $result->orderByRaw(DB::raw("en_event.event_status asc, event_type asc, en_event.updated_at desc, en_event.created_at desc"))
+        
+        return $result->orderByRaw(DB::raw($order))
              ->select($this->eventField)
              ->get();
     }

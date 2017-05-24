@@ -379,6 +379,22 @@ $(document).one("pagebeforecreate", function() {
         }
     }, false);
 
+    //Prevent JQM sometimes will auto add CSS-class [ui-fixed-hidden] in "ui-header" & "ui-footer",
+    //bind event to remove this CSS-class, to ensure the position of "ui-header" & "ui-footer" were "fixed".
+    $(document).on({
+        popupafterclose: function() {
+            footerFixed();
+        },
+        click: function() {
+            footerFixed();
+        },
+        tabsactivate: function() {
+            footerFixed();
+        },
+        touchmove: function() {
+            footerFixed();
+        }
+    });
 });
 
 /********************************** QPlay APP function *************************************/

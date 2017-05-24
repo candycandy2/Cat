@@ -230,7 +230,8 @@ $("#viewEventContent").pagecontainer({
 
         };
 
-        window.chatRoomListView = function() {
+        window.chatRoomListView = function(action) {
+            action = action || null;
             var messages = chatRoom.getMsg(chatroomID);
 
             if (messages) {
@@ -240,6 +241,8 @@ $("#viewEventContent").pagecontainer({
 
                 //Message List
                 var messageListHTML = $("template#tplMessageList").html();
+                var latestUser;
+                var latstMsg;
 
                 for (var i=0; i<messages.length; i++) {
                     var messageList = $(messageListHTML);
@@ -260,10 +263,27 @@ $("#viewEventContent").pagecontainer({
 
                     if ((i+1) == messages.length) {
                         messageList.find(".ui-hr").remove();
+                        latestUser = messages[i]["from_id"];
+
+                        if (messages[i]["msg_type"] === "text") {
+                            latstMsg = messages[i]["msg_body"]["text"];
+                        } else if (messages[i]["msg_type"] === "image") {
+                            latstMsg = "上傳了一張圖片";
+                        }
                     }
 
                     $("#messageContent").append(messageList);
                 }
+
+                //Message-preview
+                if (action === "showPreview") {
+                    $(".message-preview").html(latestUser + " : " + latstMsg);
+                    $(".message-preview").show();
+                } else {
+                    $(".message-preview").html("");
+                    $(".message-preview").hide();
+                }
+
             } else {
                 //empty message
                 $("#msgContentHR").hide();
@@ -271,6 +291,7 @@ $("#viewEventContent").pagecontainer({
             }
 
             loadingMask("hide");
+            footerFixed();
         };
 
         function updateEventStatus() {
@@ -738,7 +759,6 @@ $("#viewEventContent").pagecontainer({
         //Event Related Content
         $(document).on("click", ".relate-event", function() {
             ahowEventData(this, "authority2");
-            loadingMask("show");
         });
 
         //Event Edit Button
@@ -805,10 +825,12 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadText) {
                 if (msgController.isInited) {
+
+                    loadingMask("show");
+
                     msgController.SendText(gid, gname, msg, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
-                        loadingMask("show");
 
                         if (successResult["result"]["code"] === 0) {
                             var chatRoomID = successResult["result"]["target_gid"];
@@ -826,7 +848,7 @@ $("#viewEventContent").pagecontainer({
                                 msg_body: successResult["content"]["msg_body"]
                             };
 
-                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoom.refreshMsg);
                             $("#msgText").val("");
                         }
                     }, function(errorResult) {
@@ -842,10 +864,12 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadImg) {
                 if (msgController.isInited) {
+
+                    loadingMask("show");
+
                     msgController.SendImage(gid, gname, fid, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
-                        loadingMask("show");
 
                         if (successResult["result"]["code"] === 0) {
                             var chatRoomID = successResult["result"]["target_gid"];
@@ -863,7 +887,7 @@ $("#viewEventContent").pagecontainer({
                                 msg_body: successResult["content"]["msg_body"]
                             };
 
-                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoom.refreshMsg);
 
                             $(".previewImageDiv").hide();
                             $(".previewImageDiv-AddHeight").hide();
@@ -875,6 +899,10 @@ $("#viewEventContent").pagecontainer({
                         console.log(errorResult);
                     });
                 }
+            }
+
+            if (!msgController.isInited) {
+                initialMessage();
             }
         });
 
@@ -893,6 +921,28 @@ $("#viewEventContent").pagecontainer({
             photoUrl = $(this).prop("src");
 
             fullScreenPhoto("download");
+        });
+
+        //Hide message-preview when scrolling page
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() + $("#viewEventContent .ui-footer").height() >= $(document).height()) {
+                $(".message-preview").html("");
+                $(".message-preview").hide();
+            }
+            footerFixed();
+        });
+
+        //iOS open keyboard
+        $(document).on("click", "#msgText", function() {
+            if (device.platform === "iOS") {
+                $(".ui-footer").removeClass("ui-footer-fixed");
+                var scrollHeight = $("body")[0].scrollHeight - $("#viewEventContent .ui-footer").height() - $("#viewEventContent .ui-header").height();
+                $(window).scrollTop(scrollHeight);
+            }
+        });
+
+        $(document).on("focusout", "#msgText", function() {
+            $(".ui-footer").addClass("ui-footer-fixed");
         });
     }
 });

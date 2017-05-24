@@ -19,9 +19,9 @@
 
                 //Find the specific language to display,
                 //if can not find the language to match the browser language,
-                //display the default language: zh-tw
+                //display the default language of APP, which set in QPlay Website
                 var languageIndex;
-                var zhTWIndex;
+                var defaultLangIndex;
 
                 for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
                     if (applist[selectAppIndex].app_code == appmultilang[multilangIndex].project_code) {
@@ -29,15 +29,15 @@
                         if (appmultilang[multilangIndex].lang == browserLanguage) {
                             languageIndex = multilangIndex;
                         }
-                        //match default language: zh-tw
-                        if (appmultilang[multilangIndex].lang == "zh-tw") {
-                            zhTWIndex = multilangIndex;
+                        //match default language of APP
+                        if (appmultilang[multilangIndex].lang == applist[selectAppIndex].default_lang) {
+                            defaultLangIndex = multilangIndex;
                         }
                     }
                 }
 
                 if (languageIndex == null) {
-                    languageIndex = zhTWIndex;
+                    languageIndex = defaultLangIndex;
                 }
 
                 //APP Name substring

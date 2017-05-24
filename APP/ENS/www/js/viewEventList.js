@@ -7,6 +7,7 @@ $("#viewEventList").pagecontainer({
         var callBasicInfo = false;
         var eventListData;
         window.messageCountData;
+        var openMemberList = false;
 
         /********************************** function *************************************/
         window.getAuthority = function() {
@@ -39,7 +40,7 @@ $("#viewEventList").pagecontainer({
                     if (window.localStorage.getItem("eventType") !== null) {
                         var EventList = new getEventList(window.localStorage.getItem("eventType"));
                     } else {
-                        var EventList = new getEventList();
+                        var EventList = new getEventList("1");
                     }
                     var basicInfo = new getBasicInfo();
 
@@ -469,6 +470,10 @@ $("#viewEventList").pagecontainer({
                 eventMemberList.siblings(".main").append(eventMemberListLi);
             }
 
+            //Remove old popup
+            $("#eventMemberList").popup("destroy").remove();
+            $("#eventMemberList-option").popup("destroy").remove();
+
             //EventList / EventContent
             var eventMemberListData = {
                 id: "eventMemberList",
@@ -479,6 +484,7 @@ $("#viewEventList").pagecontainer({
 
             $("#eventMemberList").popup("open");
             footerFixed();
+            loadingMask("hide");
         };
 
         window.functionListPopup = function(data) {
@@ -531,6 +537,10 @@ $("#viewEventList").pagecontainer({
                 eventFunctionList.siblings(".main").append(eventFunctionListLi);
             }
 
+            //Remove old popup
+            $("#eventFunctionList").popup("destroy").remove();
+            $("#eventFunctionList-option").popup("destroy").remove();
+
             //EventList / EventContent
             var eventFunctionListData = {
                 id: "eventFunctionList",
@@ -541,6 +551,7 @@ $("#viewEventList").pagecontainer({
 
             $("#eventFunctionList").popup("open");
             footerFixed();
+            loadingMask("hide");
         };
 
         function showEventAdd() {
@@ -553,6 +564,8 @@ $("#viewEventList").pagecontainer({
         window.ahowEventData = function(dom, action) {
             action = action || null;
             var openData = false;
+
+            loadingMask("show");
 
             if (action === "member" || action === "function") {
                 //Only [admin] & [supervisor] can read (member) & (function)
@@ -596,6 +609,54 @@ $("#viewEventList").pagecontainer({
             footerFixed();
         };
 
+        function contactPopup(userID) {
+            var memberDataExist = false;
+
+            $.each(loginData["BasicInfo"]["userDetail"], function(user, detail) {
+                if (user === userID) {
+                    memberDataExist = true;
+
+                    $("#contactUserPopup #userName").html(detail["login_id"]);
+                    $("#contactUserPopup #extNo").html(detail["user_ext_no"]);
+                    $("#contactUserPopup a").css("color", "#38c");
+
+                    var mailTo = "#";
+                    var tel = "#";
+
+                    if (detail["email"] !== null) {
+                        mailTo = "mailto:" + detail["email"] + "?subject=ENS";
+                    } else {
+                        $("#contactUserPopup #mail").css("color", "#d6d6d6");
+                    }
+
+                    if (detail["user_ext_no"] !== null) {
+                        tel = "tel:" + detail["user_ext_no"];
+                    } else {
+                        $("#contactUserPopup #tel").css("color", "#d6d6d6");
+                    }
+
+                    $("#contactUserPopup #mail").prop("href", mailTo);
+                    $("#contactUserPopup #tel").prop("href", tel);
+                }
+            });
+
+            if (memberDataExist) {
+                if (checkPopupShown()) {
+                    if (popupID === "eventMemberList") {
+                        openMemberList = true;
+                        $("#eventMemberList").popup("close");
+                    } else {
+                        openMemberList = false;
+                    }
+                }
+
+                setTimeout(function(){
+                    $("#contactUserPopup").popup("option", "dismissible", true);
+                    $("#contactUserPopup").popup("open");
+                }, 200);
+            }
+        }
+
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
 
@@ -626,7 +687,7 @@ $("#viewEventList").pagecontainer({
             if (window.localStorage.getItem("eventType") !== null) {
                 var eventTypeDefaultVal = window.localStorage.getItem("eventType");
             } else {
-                var eventTypeDefaultVal = "0";
+                var eventTypeDefaultVal = "1";
             }
 
             var eventTypeData = {
@@ -769,8 +830,18 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#eventMemberList .confirm", function() {
             $("#eventMemberList").popup("close");
-            $("#eventMemberList").remove();
+            $("#eventMemberList").popup("destroy").remove();
+            $("#eventMemberList-option").popup("destroy").remove();
             footerFixed();
+        });
+
+        //Event Member List Popup - open Mail / Tel
+        $(document).on("click", "#eventMemberList .event-member-list .text", function() {
+            var user = $(this).html();
+            var userData = user.split('\\');
+            var userID = userData[1];
+
+            contactPopup(userID);
         });
 
         //Event Function List Popup
@@ -781,20 +852,19 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventFunctionList .confirm", function() {
             $("#eventFunctionList").popup("close");
             $("#eventFunctionList").popup("destroy").remove();
+            $("#eventFunctionList-option").popup("destroy").remove();
             footerFixed();
         });
 
         //Event Content
         $(document).on("click", ".event-list-msg .description", function() {
             ahowEventData(this);
-            loadingMask("show");
             $.mobile.changePage('#viewEventContent');
         });
 
         //Event Related Content
         $(document).on("click", ".event-list-msg .link-event", function() {
             ahowEventData(this, "authority");
-            loadingMask("show");
         });
 
         //Event Add
@@ -829,40 +899,21 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", ".event-member-data-list ul li", function() {
             var userID = $(this).html();
 
-            $.each(loginData["BasicInfo"]["userDetail"], function(user, detail) {
-                if (user === userID) {
-                    $("#contactUserPopup #userName").html(detail["login_id"]);
-                    $("#contactUserPopup #extNo").html(detail["user_ext_no"]);
-                    $("#contactUserPopup a").css("color", "#38c");
-
-                    var mailTo = "#";
-                    var tel = "#";
-
-                    if (detail["email"] !== null) {
-                        mailTo = "mailto:" + detail["email"] + "?subject=ENS";
-                    } else {
-                        $("#contactUserPopup #mail").css("color", "#d6d6d6");
-                    }
-
-                    if (detail["user_ext_no"] !== null) {
-                        tel = "tel:" + detail["user_ext_no"];
-                    } else {
-                        $("#contactUserPopup #tel").css("color", "#d6d6d6");
-                    }
-
-                    $("#contactUserPopup #mail").prop("href", mailTo);
-                    $("#contactUserPopup #tel").prop("href", tel);
-                }
-            });
-
-            $("#contactUserPopup").popup("option", "dismissible", true);
-            $("#contactUserPopup").popup("open");
+            contactPopup(userID);
         });
 
         $(document).on("popupafterclose", "#contactUserPopup", function() {
-            //Set Active Tab
-            $("#tabEventList a:eq(1)").addClass("ui-btn-active");
-            $("#tabEventList").tabs({ active: 1 });
+            //Check if need to re-open eventMemberList
+            if (openMemberList == true) {
+                setTimeout(function(){
+                    $("#contactUserPopup").popup("close");
+                    $("#eventMemberList").popup("open");
+                }, 200);
+            } else {
+                //Set Active Tab
+                $("#tabEventList a:eq(1)").addClass("ui-btn-active");
+                $("#tabEventList").tabs({ active: 1 });
+            }
         });
     }
 });
