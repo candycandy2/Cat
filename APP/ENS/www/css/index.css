@@ -685,12 +685,20 @@ input[type=radio]:checked + label {
 }
 
 .event-content-footer .center {
-    width: 66vw;
-    padding-top: 1.7vw;
+    width: 80vw;
+    height: 8.134;
+    padding-top: 2.373vw;
+    padding-left: 3vw;
 }
 
 .event-content-footer .center .ui-input-text {
     margin: 0;
+}
+
+#msgText {
+    height: 8.134vw;
+    font-size: 4.18vw;
+    min-height: 8vw;
 }
 
 .event-content-footer .left {
@@ -703,8 +711,8 @@ input[type=radio]:checked + label {
 
 .event-content-footer .right {
     color: #FFF;
-    font-size: 5vw;
-    padding-top: 3.9vw;
+    font-size: 4.18vw;
+    padding-top: 4.1vw;
     text-align: center;
 }
 
