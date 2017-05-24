@@ -17,12 +17,12 @@ function getLanguageString() {
                 langStr[data[i].term] = data[i].definition.trim();
             }
 
-            addConponentView();
+            addComponentView();
         });
     });
 }
 
-function addConponentView() {
+function addComponentView() {
     //add component view template into index.html
     $.get("View/APP.html", function(data) {
         $.mobile.pageContainer.append(data);
