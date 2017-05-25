@@ -1,0 +1,27 @@
+{
+  "name": "cordova-plugin-qpush",
+  "version": "1.0.0",
+  "description": "QPush for cordova plugin",
+  "cordova": {
+    "id": "cordova-plugin-qpush",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "QPush",
+    "push",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ],
+  "author": "QPlay",
+  "license": "Apache 2.0 License"
+}
