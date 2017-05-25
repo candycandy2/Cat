@@ -360,6 +360,7 @@ input[type=radio]:checked + label {
     color: #5C5C5C;
     text-align: center;
     line-height: 1.5;
+    background-color: #FFFFFF;
 }
 
 #appDetailPicList {
