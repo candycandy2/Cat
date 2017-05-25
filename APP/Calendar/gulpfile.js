@@ -4,6 +4,8 @@
 //mac =>sudo npm install -g gulp
 //=>npm install --save-dev gulp
 //=>npm install gulp-concat gulp-less gulp-uglify gulp-copy
+//=>npm i --save-dev gulp-env
+//=>npm install require-dir
 //UglifyJS – a JavaScript parser/compressor/beautifier
 ////////////////////////////////////////
 //Run
@@ -16,39 +18,21 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var less = require('gulp-less');
-var shell = require('gulp-shell')
-//var copy = require('gulp-copy');
+var shell = require('gulp-shell');
+var env = require('gulp-env');
+
+env.set({APP_NAME: "Calendar"});
+
+var requireDir = require('require-dir');
+var gulpTask = requireDir('../component/gulpTask/');
 
 /*-----------------------------------------edit config.xml------------------------------------------*/
-function getArg(key) {
-    var index = process.argv.indexOf(key);
-    var next = process.argv[index + 1];
-    return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
-}
-
-var env = getArg("--env");  // pro=>Product, test=>QA, dev=>Develop
-var vname = getArg("--vname");
-var vcode = getArg("--vcode");
-
-var appNameDecorate = "";
-var appVersionDecorate = "Production";
-var patchFolder = "patch";
-
-if (env === "test") {
-    appNameDecorate = "test";
-    appVersionDecorate = "NewStaging";
-    patchFolder = "patchTest";
-} else if (env === "dev") {
-    appNameDecorate = "dev";
-    appVersionDecorate = "Development";
-}
-
-var schemeSetting = "<string>appqplay" + appNameDecorate + "</string><string>appcalendar" + appNameDecorate + "</string>";
+var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appcalendar" + process.env.appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appcalendar' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
-                        'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
-                        '<name>Calendar</name>' +
+                    '<widget id="com.qplay.appcalendar' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                        'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
+                        '<name>' + process.env.APP_NAME + '</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
                         '</description>' +
@@ -66,7 +50,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="sms:*" />' +
                         '<allow-intent href="mailto:*" />' +
                         '<allow-intent href="geo:*" />' +
-                        '<allow-intent href="appqplay' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appqplay' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="*:*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
@@ -107,7 +91,7 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add cordova-plugin-console',
   'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appcalendar' + appNameDecorate,
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appcalendar' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-inappbrowser'
@@ -120,109 +104,11 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-device@1.1.4',
   'cordova plugin add cordova-plugin-console@1.0.5',
   'cordova plugin add cordova-plugin-appversion@1.0.0',
-  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appyellowpage' + appNameDecorate,
+  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appyellowpage' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
   'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
-]));
-
-gulp.task('copyAndroidImages', function() {
-    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/Launch_icon/android/'})
-        .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
-});
-
-gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
-});
-
-gulp.task('copyIOSLaunchImages', function() {
-    return gulp.src('../component/LaunchImage.launchimage/*')
-        .pipe(gulp.dest('platforms/ios/yellowpage/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
-});
-
-gulp.task('build', shell.task([
-    'cordova build ios --debug --device --buildConfig=build.json',
-]))
-
-gulp.task('appCSS', function(){
-    return gulp.src(['../component/css/component.css','../component/css/template.css'])
-        .pipe(concat('APP.css'))
-        .pipe(gulp.dest('www/css/'));
-});
-
-gulp.task('componentCSS', ['appCSS'], function() {
-    return gulp.src('../component/css/jquery.mobile-1.4.5.min.css')
-        .pipe(gulp.dest('www/css/'));
-});
-
-/*
-gulp.task('less',function(){
-    return gulp.src('www/src/css/*.less')
-        .pipe(less())
-        .pipe(gulp.dest('www/src/css/'));
-});
-
-gulp.task('concat:css', ['less'], function(){
-    return gulp.src('www/src/css/*.css')
-        .pipe(concat('style.css'))
-        .pipe(gulp.dest('www/dist/css'));
-});
-*/
-
-gulp.task('templateHTML', function() {
-    return gulp.src('../component/template/*.html')
-        .pipe(concat('template.html'))
-        .pipe(gulp.dest('../component/'));
-});
-
-gulp.task('appHTML', ['templateHTML'], function(){
-    return gulp.src(['../component/component.html','../component/template.html'])
-        .pipe(concat('APP.html'))
-        .pipe(gulp.dest('www/View/'));
-});
-
-gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ../component/template.html'
-]));
-
-gulp.task('componentIMG', function() {
-    return gulp.src('../component/image/*')
-        .pipe(gulp.dest('www/img/component/'));
-});
-
-gulp.task('libJS', function() {
-    return gulp.src('../component/lib/*')
-        .pipe(gulp.dest('www/js/lib/'));
-});
-
-gulp.task('functionJS', function() {
-    return gulp.src('../component/function/*.js')
-        .pipe(concat('function.js'))
-        .pipe(gulp.dest('../component/'));
-});
-
-gulp.task('appJS', ['functionJS'], function(){
-    return gulp.src(['../component/component.js','../component/function.js'])
-        //.pipe(uglify())
-        //.pipe(concat('app.min.js'))
-        .pipe(concat('APP.js'))
-        .pipe(gulp.dest('www/js/'));
-});
-
-gulp.task('commonString', function() {
-    return gulp.src('../component/string/*')
-        .pipe(gulp.dest('www/string/'));
-});
-
-gulp.task('String', ['commonString'], function() {
-    return gulp.src('string/*')
-        .pipe(gulp.dest('www/string/'));
-});
-
-gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ../component/function.js'
 ]));
 
 //ex: gulp default
