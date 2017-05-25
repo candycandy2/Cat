@@ -788,7 +788,7 @@ $("#viewEventList").pagecontainer({
                 if (window.localStorage.getItem("eventType") !== null) {
                     var EventList = new getEventList(window.localStorage.getItem("eventType"));
                 } else {
-                    var EventList = new getEventList();
+                    var EventList = new getEventList("1");
                 }
             }
 
