@@ -263,6 +263,7 @@ $("#viewReserve").pagecontainer({
             PullToRefresh.init({
                 mainElement: '#pageOne',
                 onRefresh: function() {
+                    time = new Date(Date.now());
                     QueryReserveDetail();
                 }
             });
@@ -288,6 +289,7 @@ $("#viewReserve").pagecontainer({
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
+                        time = new Date(Date.now());
                         QueryReserveDetail();
                     }
                 });
