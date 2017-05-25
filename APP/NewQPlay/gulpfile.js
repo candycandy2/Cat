@@ -175,7 +175,7 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 gulp.task('patch', function() {
-    return gulp.src(patchFolder + '/LoginActivity.java', { base: patchFolder + '/' })
+    return gulp.src(process.env.patchFolder + '/LoginActivity.java', { base: process.env.patchFolder + '/' })
         .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
 });
 
