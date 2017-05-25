@@ -1,10 +1,11 @@
 /*global variable, function*/
-var currentYear, currentMonth, currentDate, ROSummaryQueryData, productDetailQueryData, UserAuthorityQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, ROSummaryQueryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
 var monthlyPageDateExist = true;
 var ytdPageDateExist = true;
+var UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
 var ytdPageDateList = "";
