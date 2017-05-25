@@ -767,7 +767,7 @@ $("#viewEventList").pagecontainer({
                 content: $("template#tplContactUserPopup").html()
             };
 
-            tplJS.Popup("viewEventList", "contentEventList", "append", contactUserPopupData);
+            tplJS.Popup(null, null, "append", contactUserPopupData);
 
         });
 

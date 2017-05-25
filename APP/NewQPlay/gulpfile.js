@@ -4,6 +4,8 @@
 //mac =>sudo npm install -g gulp
 //=>npm install --save-dev gulp
 //=>npm install gulp-concat gulp-less gulp-uglify gulp-copy
+//=>npm i --save-dev gulp-env
+//=>npm install require-dir
 //UglifyJS – a JavaScript parser/compressor/beautifier
 ////////////////////////////////////////
 //Run
@@ -16,76 +18,51 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var less = require('gulp-less');
-var shell = require('gulp-shell')
-//var copy = require('gulp-copy');
+var shell = require('gulp-shell');
+var env = require('gulp-env');
+
+env.set({APP_NAME: "QPlay"});
+
+var requireDir = require('require-dir');
+var gulpTask = requireDir('../component/gulpTask/');
 
 /*-----------------------------------------edit config.xml------------------------------------------*/
-function getArg(key) {
-    var index = process.argv.indexOf(key);
-    var next = process.argv[index + 1];
-    return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
-}
-
-var env = getArg("--env");  // pro=>Product, test=>QA, dev=>Develop
-var vname = getArg("--vname");
-var vcode = getArg("--vcode");
-
-var appNameDecorate = "";
-var appVersionDecorate = "Production";
-var apiServerURL = "https://qplay.benq.com/";
-var QPushAPPKey = "1dd3ebb8bb12f1895b4a5e25";
-var patchFolder = "patch";
-
-if (env === "test") {
-    appNameDecorate = "test";
-    appVersionDecorate = "NewStaging";
-    apiServerURL = "https://qplaytest.benq.com/";
-    QPushAPPKey = "33938c8b001b601c1e647cbd";
-    patchFolder = "patchTest";
-} else if (env === "dev") {
-    appNameDecorate = "dev";
-    appVersionDecorate = "Development";
-    apiServerURL = "https://qplaydev.benq.com/";
-    QPushAPPKey = "e343504d536ebce16b70167e";
-    patchFolder = "patchDev";
-}
-
-var schemeSetting =   "<string>appqplay"    + appNameDecorate + "</string>"
-                    + "<string>appyellowpage"+appNameDecorate + "</string>"
-                    + "<string>appcalendar" + appNameDecorate + "</string>"
-                    + "<string>apprrs"      + appNameDecorate + "</string>"
-                    + "<string>appaccountingrate"+appNameDecorate + "</string>"
-                    + "<string>appens"      + appNameDecorate + "</string>"
-                    + "<string>appeis"      + appNameDecorate + "</string>"
-                    + "<string>appleave"    + appNameDecorate + "</string>"
-					+ "<string>apprelieve"  + appNameDecorate + "</string>"
-					+ "<string>appmas"    + appNameDecorate + "</string>"
-					+ "<string>appim"    + appNameDecorate + "</string>"
-                    + "<string>appscheme01" + appNameDecorate + "</string>"
-                    + "<string>appscheme02" + appNameDecorate + "</string>"
-                    + "<string>appscheme03" + appNameDecorate + "</string>"
-                    + "<string>appscheme04" + appNameDecorate + "</string>"
-                    + "<string>appscheme05" + appNameDecorate + "</string>"
-                    + "<string>appscheme06" + appNameDecorate + "</string>"
-                    + "<string>appscheme07" + appNameDecorate + "</string>"
-                    + "<string>appscheme08" + appNameDecorate + "</string>"
-                    + "<string>appscheme09" + appNameDecorate + "</string>"
-                    + "<string>appscheme10" + appNameDecorate + "</string>"
-                    + "<string>appscheme11" + appNameDecorate + "</string>"
-                    + "<string>appscheme12" + appNameDecorate + "</string>"
-                    + "<string>appscheme13" + appNameDecorate + "</string>"
-                    + "<string>appscheme14" + appNameDecorate + "</string>"
-                    + "<string>appscheme15" + appNameDecorate + "</string>"
-                    + "<string>appscheme16" + appNameDecorate + "</string>"
-                    + "<string>appscheme17" + appNameDecorate + "</string>"
-                    + "<string>appscheme18" + appNameDecorate + "</string>"
-                    + "<string>appscheme19" + appNameDecorate + "</string>"
-                    + "<string>appscheme20" + appNameDecorate + "</string>";
+var schemeSetting =   "<string>appqplay"    + process.env.appNameDecorate + "</string>"
+                    + "<string>appyellowpage"+process.env.appNameDecorate + "</string>"
+                    + "<string>appcalendar" + process.env.appNameDecorate + "</string>"
+                    + "<string>apprrs"      + process.env.appNameDecorate + "</string>"
+                    + "<string>appaccountingrate"+process.env.appNameDecorate + "</string>"
+                    + "<string>appens"      + process.env.appNameDecorate + "</string>"
+                    + "<string>appeis"      + process.env.appNameDecorate + "</string>"
+                    + "<string>appleave"    + process.env.appNameDecorate + "</string>"
+					+ "<string>apprelieve"  + process.env.appNameDecorate + "</string>"
+					+ "<string>appmas"    + process.env.appNameDecorate + "</string>"
+					+ "<string>appim"    + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme01" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme02" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme03" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme04" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme05" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme06" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme07" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme08" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme09" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme10" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme11" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme12" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme13" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme14" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme15" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme16" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme17" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme18" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme19" + process.env.appNameDecorate + "</string>"
+                    + "<string>appscheme20" + process.env.appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appqplay' + appNameDecorate + '" android-versionCode="' + vcode + '" ios-CFBundleVersion="' + vcode + '" ' +
-                        'version="' + vname + '[' + appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
-                        '<name>QPlay</name>' +
+                    '<widget id="com.qplay.appqplay' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                        'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
+                        '<name>' + process.env.APP_NAME + '</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
                         '</description>' +
@@ -102,36 +79,36 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="sms:*" />' +
                         '<allow-intent href="mailto:*" />' +
                         '<allow-intent href="geo:*" />' +
-                        '<allow-intent href="appyellowpage'+appNameDecorate + ':*" />' +
-                        '<allow-intent href="apprrs' +      appNameDecorate + ':*" />' +
-                        '<allow-intent href="appeis' +      appNameDecorate + ':*" />' +
-                        '<allow-intent href="appcalendar' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appens' +      appNameDecorate + ':*" />' +
-                        '<allow-intent href="appaccountingrate'+appNameDecorate + ':*" />' +
-						'<allow-intent href="appleave'+appNameDecorate + ':*" />' +
-						'<allow-intent href="apprelieve'+appNameDecorate + ':*" />' +
-						'<allow-intent href="appmas'+appNameDecorate + ':*" />' +
-						'<allow-intent href="appim'+appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme01' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme02' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme03' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme04' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme05' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme06' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme07' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme08' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme09' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme10' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme11' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme12' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme13' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme14' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme15' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme16' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme17' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme18' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme19' + appNameDecorate + ':*" />' +
-                        '<allow-intent href="appscheme20' + appNameDecorate + ':*" />' +
+                        '<allow-intent href="appyellowpage'+process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprrs' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeis' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appcalendar' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appens' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appaccountingrate'+process.env.appNameDecorate + ':*" />' +
+						'<allow-intent href="appleave'+process.env.appNameDecorate + ':*" />' +
+						'<allow-intent href="apprelieve'+process.env.appNameDecorate + ':*" />' +
+						'<allow-intent href="appmas'+process.env.appNameDecorate + ':*" />' +
+						'<allow-intent href="appim'+process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme01' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme02' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme03' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme04' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme05' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme06' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme07' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme08' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme09' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme10' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme11' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme12' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme13' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme14' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme15' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme16' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme17' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme18' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme19' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appscheme20' + process.env.appNameDecorate + ':*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
@@ -151,7 +128,6 @@ gulp.task('config', function(){
 });
 
 /*-------------------------------------------------------------------------------------------------*/
-
 //ex: gulp install --env test
 gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-qlogin',
@@ -169,12 +145,12 @@ gulp.task('install', shell.task([
     'cordova platform rm android',
     'cordova platform add ios',
     'cordova platform add android',
-    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
-    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
+    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
+    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey,
     'cordova plugin add cordova-plugin-device',
     'cordova plugin add cordova-plugin-console',
     'cordova plugin add cordova-plugin-appversion',
-    'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + appNameDecorate,
+    'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add cordova-plugin-whitelist',
     'cordova plugin add cordova-plugin-inappbrowser',
@@ -185,12 +161,12 @@ gulp.task('install', shell.task([
 gulp.task('jenkinsinstall', shell.task([
     'cordova platform add ios@4.3.1',
     'cordova platform add android@6.0.0',
-    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + apiServerURL + 'qplayApi/public/qplayauth_register',
-    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + QPushAPPKey,
+    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
+    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey,
     'cordova plugin add cordova-plugin-device@1.1.4',
     'cordova plugin add cordova-plugin-console@1.0.5',
     'cordova plugin add cordova-plugin-appversion@1.0.0',
-    'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appqplay' + appNameDecorate,
+    'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add cordova-plugin-whitelist@1.3.1',
     'cordova plugin add cordova-plugin-inappbrowser@1.6.1',
@@ -199,106 +175,9 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 gulp.task('patch', function() {
-    return gulp.src(patchFolder + '/LoginActivity.java', { base: patchFolder + '/' })
+    return gulp.src(process.env.patchFolder + '/LoginActivity.java', { base: process.env.patchFolder + '/' })
         .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
 });
-
-gulp.task('copyAndroidImages', function() {
-    return gulp.src('Images/Launch_icon/android/**/*', { base: 'Images/Launch_icon/android/' })
-        .pipe(gulp.dest('platforms/android/res/', { overwrite: true }));
-});
-
-gulp.task('copyIOSImages', function() {
-    return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
-        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));
-});
-
-gulp.task('copyIOSLaunchImages', function() {
-    return gulp.src('../component/LaunchImage.launchimage/*')
-        .pipe(gulp.dest('platforms/ios/QPlay/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
-});
-
-gulp.task('build', shell.task([
-    'cordova build ios --debug --device --buildConfig=build.json',
-]))
-
-gulp.task('appCSS', function(){
-    return gulp.src(['../component/css/component.css','../component/css/template.css'])
-        .pipe(concat('APP.css'))
-        .pipe(gulp.dest('www/css/'));
-});
-
-gulp.task('componentCSS', ['appCSS'], function() {
-    return gulp.src('../component/css/jquery.mobile-1.4.5.min.css')
-        .pipe(gulp.dest('www/css/'));
-});
-
-/*
-gulp.task('less',function(){
-    return gulp.src('www/src/css/*.less')
-        .pipe(less())
-        .pipe(gulp.dest('www/src/css/'));
-});
-gulp.task('concat:css', ['less'], function(){
-    return gulp.src('www/src/css/*.css')
-        .pipe(concat('style.css'))
-        .pipe(gulp.dest('www/dist/css'));
-});
-*/
-
-gulp.task('templateHTML', function() {
-    return gulp.src('../component/template/*.html')
-        .pipe(concat('template.html'))
-        .pipe(gulp.dest('./'));
-});
-
-gulp.task('appHTML', ['templateHTML'], function(){
-    return gulp.src(['../component/component.html','./template.html'])
-        .pipe(concat('APP.html'))
-        .pipe(gulp.dest('www/View/'));
-});
-
-gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ./template.html'
-]));
-
-gulp.task('componentIMG', function() {
-    return gulp.src('../component/image/*')
-        .pipe(gulp.dest('www/img/component/'));
-});
-
-gulp.task('libJS', function() {
-    return gulp.src('../component/lib/*')
-        .pipe(gulp.dest('www/js/lib/'));
-});
-
-gulp.task('functionJS', function() {
-    return gulp.src('../component/function/*.js')
-        .pipe(concat('function.js'))
-        .pipe(gulp.dest('./'));
-});
-
-gulp.task('appJS', ['functionJS'], function(){
-    return gulp.src(['../component/component.js','./function.js'])
-        //.pipe(uglify())
-        //.pipe(concat('app.min.js'))
-        .pipe(concat('APP.js'))
-        .pipe(gulp.dest('www/js/'));
-});
-
-gulp.task('commonString', function() {
-    return gulp.src('../component/string/*')
-        .pipe(gulp.dest('www/string/'));
-});
-
-gulp.task('String', ['commonString'], function() {
-    return gulp.src('string/*')
-        .pipe(gulp.dest('www/string/'));
-});
-
-gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ./function.js'
-]));
 
 //ex: gulp default --env test
 gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
