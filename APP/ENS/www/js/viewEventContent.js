@@ -208,6 +208,11 @@ $("#viewEventContent").pagecontainer({
                                 }
                             }
                         }
+
+                        //For Related Event, Confirm User has authority to read this event
+                        if (typeof callBack === "function") {
+                            callBack(self.readAuthority);
+                        }
                     }
 
                 } else if (resultCode === "014904") {
@@ -759,7 +764,6 @@ $("#viewEventContent").pagecontainer({
         //Event Related Content
         $(document).on("click", ".relate-event", function() {
             ahowEventData(this, "authority2");
-            loadingMask("show");
         });
 
         //Event Edit Button

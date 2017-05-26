@@ -139,9 +139,7 @@ $("#viewReserve").pagecontainer({
                 $('.hasReservePopup').popup('close');
                 if(data['ResultCode'] === "023905") {
                     if ($('#pageOne').css('display') === 'block') {
-                        $(trace).find('.ui-bar>div:nth-of-type(2)').remove();
-                        $('<div class="circleIcon iconSelect"></div>').insertAfter($(trace).find('.ui-bar>div:nth-of-type(1)'));
-                        $(trace).removeClass('ui-color-myreserve').addClass('ui-color-noreserve');
+                        QueryReserveDetail();
                     }else {
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
                         // myReserver_dirtyFlag = true;
@@ -188,17 +186,17 @@ $("#viewReserve").pagecontainer({
                         reserveDateArry[0] = reserveDateArry[0] < 10 ? "0"+reserveDateArry[0] : reserveDateArry[0];
                         reserveDateArry[1] = reserveDateArry[1] < 10 ? "0"+reserveDateArry[1] : reserveDateArry[1];
                         reserveDate = reserveDateArry[0] + "/" + reserveDateArry[1];
-                        if(reserveBegintimeArry[2] === "PM") {
+                        if(reserveBegintimeArry[2] === "PM" && reserveEndtimeArry[1] !== "12:00:00") {
                             beginTime = (12 + Number(reserveBegintimeArry[1].match(/([0-9]+):([0-9]+)/)[1])) + ":"
                                         + reserveBegintimeArry[1].match(/([0-9]+):([0-9]+)/)[2];
                         }else {
                             beginTime = reserveBegintimeArry[1].match(/([0-9]+:[0-9]+)/)[1];
                         }
-                        if(reserveEndtimeArry[2] === "PM") {
+                        if(reserveEndtimeArry[2] === "PM" && reserveEndtimeArry[1] !== "12:00:00") {
                             endTime = (12 + Number(reserveEndtimeArry[1].match(/([0-9]+):([0-9]+)/)[1])) + ":"
                                         + reserveEndtimeArry[1].match(/([0-9]+):([0-9]+)/)[2];
                         }else {
-                            endTime = reserveEndtimeArry[1].match(/([0-9]+:[0-9]+)/)[1];   
+                            endTime = reserveEndtimeArry[1].match(/([0-9]+:[0-9]+)/)[1];
                         }
                         if(nowDate === reserveDate) {
                             nowContent += '<div class="reserveInfo">'
@@ -262,7 +260,8 @@ $("#viewReserve").pagecontainer({
             PullToRefresh.init({
                 mainElement: '#pageOne',
                 onRefresh: function() {
-                    //do something for refresh
+                    time = new Date(Date.now());
+                    QueryReserveDetail();
                 }
             });
         });
@@ -287,6 +286,7 @@ $("#viewReserve").pagecontainer({
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
+                        time = new Date(Date.now());
                         QueryReserveDetail();
                     }
                 });
@@ -306,7 +306,6 @@ $("#viewReserve").pagecontainer({
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
                     onRefresh: function() {
-                        //do something for refresh
                         QueryMyReserve();
                     }
                 });
@@ -314,14 +313,6 @@ $("#viewReserve").pagecontainer({
                 $('#pageThree').show();
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
-                
-                /* global PullToRefresh */
-                // PullToRefresh.init({
-                //     mainElement: '#scrollDate',
-                //     onRefresh: function() {
-                //         //do something for refresh
-                //     }
-                // });
             }
         });
 
@@ -368,7 +359,6 @@ $("#viewReserve").pagecontainer({
                 $(this).find('div:nth-child(2)').addClass('iconSelected');
                 $(this).find('.timeRemind').addClass('timeShow');
                 timeQueue[$(this).find('div:nth-child(1)')[1].textContent] = $(this).find('div:nth-child(1)')[1].textContent;
-                // timeQueue = Object.keys(timeQueue).sort().reduce((r, k) => (r[k] = timeQueue[k], r), {});
             }
             // my reserve
             else if ($(this).hasClass('ui-color-myreserve')) {
@@ -408,13 +398,19 @@ $("#viewReserve").pagecontainer({
 
         // reserve btn click
         $('body').on('click', '#reserveBtn', function() {
+            var index = 0;
             queryTime = "";
             if ($(this).hasClass('btn-disable')) {
                 tplJS.preventPageScroll();
                 popupMsgInit('.noSelectTimeMsg');
             } else {
                 for(var time in timeQueue) {
-                    queryTime += time + ",";
+                    index++;
+                    if(index == Object.keys(timeQueue).length) {
+                        queryTime += time;
+                    }else {
+                        queryTime += time + ",";
+                    }
                 }
                 ReserveRelieveQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite

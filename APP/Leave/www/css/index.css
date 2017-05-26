@@ -1,4 +1,65 @@
 
-/*override jQuery Mobile*/
+/***************************************override jQuery Mobile***************************************/
+.ui-content{
+	padding: 0px;
+}
 
-/*new class*/
+.ui-panel-inner { 
+  	padding: 0 !important;
+}
+
+.ui-radio {
+	width:46.29VW;
+}
+
+.page-tabs > div > div > label {
+	border: 1px solid #2b87ba !important;
+}
+
+/********************************************common use**********************************************/
+.page-main .page-tabs{
+	margin-top: 1.8VH;
+	margin-bottom: 0VH;
+	margin-right: 3.7VW;
+	margin-left: 3.7VW;
+	text-align: center;
+}
+
+.page-main .tabs-title{
+	height: 5VH;
+	font-size: 2.5VH;
+	font-family: Arial;
+	font-weight: 500;
+	line-height: 5.6VH;
+	text-align: center;
+	padding: 0px;
+}
+/********************************************** mypanel *********************************************/
+#mypanel .panel-text{
+	margin: 4.3VW 0VW 3.71VW 3.71VW;
+}
+
+#mypanel .panel-content{
+	background-color: #f6f6f6;
+	color: #0f0f0f;
+	font-size: 3.8VW;
+	font-family: Arial;
+	height: 8VH;
+}
+
+#mypanel .panel-content{
+	border-bottom: solid;
+    border-bottom-color: #e4e4e4;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel #mypanelCalendar{
+	border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel div.panel-content:hover {
+    background-color: #503f81;
+    color: #fff;
+}
