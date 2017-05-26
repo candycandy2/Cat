@@ -61,7 +61,7 @@ if (process.env.env === "test") {
     env.set({patchFolder: "patchDev"});
 } else { 
     // production case
-    productionextra = "1";
+    env.set({productionextra: "1"});
 }
 
 //Common Task
