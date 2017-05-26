@@ -1,4 +1,4 @@
-$("#personalLeave").pagecontainer({
+$("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
@@ -22,7 +22,28 @@ $("#personalLeave").pagecontainer({
         // };
 
         function initSlider() {
-            $("#personalLeaveSlider").slick({
+            if(personalLeaveDateExist) {   
+                var index = 0;
+                year = thisYear-1;
+                month = thisMonth;
+                while(index < 13) {
+                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
+                    monthlyPageDate[index] = month + "." + year;
+                    if(month == 12){
+                        year++;
+                        month = 0;
+                    }
+                    month++;
+                    index++;
+                }
+                $(".personalLeaveSlider").html("");
+                $(".personalLeaveSlider").append(monthlyPageDateList).enhanceWithin();
+            }
+            personalLeaveDateExist = false;
+            if($(".personalLeaveSlider").hasClass("slick-slider") || $(".personalLeaveSlider").hasClass("slick-initialized")){
+                $(".personalLeaveSlider").slick("unslick");
+            }
+            $(".personalLeaveSlider").slick({
                 initialSlide: 0,
                 autopaly: false,
                 dots: false,
@@ -39,26 +60,24 @@ $("#personalLeave").pagecontainer({
             });
         }
 
-        /********************************** page event *************************************/
-        $("#personalLeave").on("pagebeforeshow", function(event, ui) {
-            // initSlider();
-            $(document).ready(function() {
-                $("#myCalendar").zabuto_calendar({
-                    language: "en",
-                    year: 2017,
-                    month: 5,
-                    show_previous: true,
-                    show_next: true
-                });
+        $(document).ready(function() {
+            $("#myCalendar").zabuto_calendar({
+                language: "en",
             });
         });
 
-        $("#personalLeave").on("pageshow", function(event, ui) {
-            initSlider();
+        /********************************** page event *************************************/
+        $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
+            // initSlider();
+        });
+
+        $("#viewPersonalLeave").on("pageshow", function(event, ui) {
+            // initSlider();
+            loadingMask("hide");
         });
 
         /********************************** dom event *************************************/
-        $("#personalLeave").keypress(function(event) {
+        $("#viewPersonalLeave").keypress(function(event) {
 
         });
 

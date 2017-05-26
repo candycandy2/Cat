@@ -397,44 +397,44 @@ $("#viewMonthlyHitRate").pagecontainer({
             }
         }
 
-        function initSlider() {
-            if(monthlyPageDateExist) {   
-                var index = 0;
-                year = thisYear-1;
-                month = thisMonth;
-                while(index < 13) {
-                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
-                    monthlyPageDate[index] = month + "." + year;
-                    if(month == 12){
-                        year++;
-                        month = 0;
-                    }
-                    month++;
-                    index++;
-                }
-                $(".sliderMonthly").html("");
-                $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
-            }
-            monthlyPageDateExist = false;
-            if($(".sliderMonthly").hasClass("slick-slider") || $(".sliderMonthly").hasClass("slick-initialized")){
-                $(".sliderMonthly").slick("unslick");
-            }
-            $(".sliderMonthly").slick({
-                initialSlide: 0,
-                autopaly: false,
-                dots: false,
-                responseive: [{
-                    breakpoint: 500,
-                    settings: {
-                        arrows: true,
-                        infinite: false,
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                }],
-                infinite: false
-            });
-        }
+        // function initSlider() {
+        //     if(monthlyPageDateExist) {   
+        //         var index = 0;
+        //         year = thisYear-1;
+        //         month = thisMonth;
+        //         while(index < 13) {
+        //             monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
+        //             monthlyPageDate[index] = month + "." + year;
+        //             if(month == 12){
+        //                 year++;
+        //                 month = 0;
+        //             }
+        //             month++;
+        //             index++;
+        //         }
+        //         $(".sliderMonthly").html("");
+        //         $(".sliderMonthly").append(monthlyPageDateList).enhanceWithin();
+        //     }
+        //     monthlyPageDateExist = false;
+        //     if($(".sliderMonthly").hasClass("slick-slider") || $(".sliderMonthly").hasClass("slick-initialized")){
+        //         $(".sliderMonthly").slick("unslick");
+        //     }
+        //     $(".sliderMonthly").slick({
+        //         initialSlide: 0,
+        //         autopaly: false,
+        //         dots: false,
+        //         responseive: [{
+        //             breakpoint: 500,
+        //             settings: {
+        //                 arrows: true,
+        //                 infinite: false,
+        //                 slidesToShow: 2,
+        //                 slidesToScroll: 2
+        //             }
+        //         }],
+        //         infinite: false
+        //     });
+        // }
 
         $(".sliderMonthly").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = monthlyPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
