@@ -9,7 +9,7 @@ $menu_name = "REPORT";
     </div>
     <div>
     <table id="gridReportAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-           data-url="Report/ReportAppList/getReportAppList" data-height="600" data-pagination="true"
+           data-url="report/reportAppList/getReportAppList" data-height="600" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"   data-sort-name="project_code" data-sort-order="asc"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -68,7 +68,6 @@ $menu_name = "REPORT";
     }
      $(function () {
         $('#gridReportAppList').on('click-cell.bs.table', function(e, value, row, $element){
-                console.log($element);
                 $(location).attr('href', '{{asset('report/reportDetail')}}' + '?app_row_id=' + $element.row_id);
         });
     });

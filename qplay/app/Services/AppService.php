@@ -117,4 +117,12 @@ class AppService
         return $appsList;
     }
 
+    /**
+     * 依app.row_id取得基本資訊
+     * @param  int $appId qp_qpp_head.row_id
+     * @return mixed
+     */
+    public function getAppBasicIfnoByAppId($appId){
+        return $this->appRepository->getAppBasicIfnoByAppId($appId);
+    }
 }
