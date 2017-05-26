@@ -51,11 +51,11 @@ $(document).one("pagebeforeshow", function() {
         $("#mypanel").panel("open");
     });
 
-    $("#personalLeave").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open") {
-            $("#mypanel").panel( "open");
-        }
-    });
+    // $("#personalLeave").on("swiperight", function(event) {
+    //     if($(".ui-page-active").jqmData("panel") !== "open") {
+    //         $("#mypanel").panel( "open");
+    //     }
+    // });
 });
 
 //[Android]Handle the back button
