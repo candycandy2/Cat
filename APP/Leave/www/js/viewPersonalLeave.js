@@ -81,5 +81,20 @@ $("#viewPersonalLeave").pagecontainer({
 
         });
 
+        $(document).on("click", "#flip1", function() {
+            if($("#panel1").css("display") === "none") {
+                $("#panel1").slideDown("slow");
+            }else if($("#panel1").css("display") === "block") {
+                $("#panel1").slideUp("slow");
+            }
+        });
+
+        $(document).on("click", "#flip2", function() {
+            if($("#panel2").css("display") === "none") {
+                $("#panel2").slideDown("slow");
+            }else if($("#panel2").css("display") === "block") {
+                $("#panel2").slideUp("slow");
+            }
+        });
     }
 });
