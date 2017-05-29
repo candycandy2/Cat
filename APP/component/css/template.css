@@ -39,10 +39,12 @@
 /* Navbar */
 .ui-navbar li .ui-btn {
     font-size: 4.18vw;
-    font-weight: bold;
     color: #0f0f0f;
     border-color: #2a88bc;
     border-right-width: 1px;
+    font-weight: normal;
+    padding: 1.829vw 0;
+    line-height: 1;
 }
 
 .ui-navbar li:last-child .ui-btn {
@@ -71,8 +73,9 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     font-size: 4.18vw;
     border: 0;
     background: url('../img/component/dropdown.png') right transparent;
-    background-size: 2.9vw 2vw;
+    background-size: 8vw 5vw;
     background-repeat: no-repeat;
+    background-position-y: 40%;
     -webkit-appearance: none;
 }
 
@@ -80,11 +83,12 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     background: url('../img/add_icon.png') right transparent;
     background-size: 4vw 4vw;
     background-repeat: no-repeat;
+    background-position-y: 45%;
 }
 
 .tpl-dropdown-list-icon-arrow {
     background: url('../img/component/dropdown.png') right transparent;
-    background-size: 2.9vw 2vw;
+    background-size: 8vw 5vw;
     background-repeat: no-repeat;
 }
 
