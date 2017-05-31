@@ -51,8 +51,6 @@ class ApiLogRespository
             ['$group' =>
                 ['_id' => ['action'=>'$_id.action',
                            'company_site'=>['$concat'=>['$_id.company','_','$_id.site_code']],
-                           // 'company'=>'$_id.company',
-                           // 'site_code'=>'$_id.site_code',
                            'department'=>'$_id.department',
                            'user_row_id'=>'$_id.user_row_id'
                            ],
@@ -62,7 +60,24 @@ class ApiLogRespository
             ]
         ]);
 
-       
+    }
+
+    public function getApiLogByTimeInteval($appKey){
+
+        //Perform an aggregate function and get a cursor
+          return $this->apiLog::raw()->aggregate([
+            ['$match'=>
+                ['app_key'=>$appKey]
+            ],
+            ['$group' =>
+                ['_id' => [
+                           'created_at'=>'$created_at',
+                           'user_row_id'=>'$user_row_id'
+                           ],
+                 'count' => ['$sum' => 1]
+                ]
+            ]
+        ]);
     }
     
 }

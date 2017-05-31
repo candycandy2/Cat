@@ -91,6 +91,7 @@ Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVe
 Route::any('report/reportAppList/getReportAppList', 'Report\ReportAppListController@getReportAppList');
 Route::any('report/reportDetail', 'Report\ReportDetailController@getApiReport');
 Route::any('report/reportDetail/getCallApiReport', 'Report\ReportDetailController@getCallApiReport');
+Route::any('report/reportDetail/getCallApiReportBasicLine', 'Report\ReportDetailController@getCallApiReportBasicLine');
 
 /*
 Route::any('/platform/getUserList', 'platformController@getUserList');
