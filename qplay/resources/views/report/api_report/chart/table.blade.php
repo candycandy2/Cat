@@ -51,82 +51,10 @@ $.ajax({
                     titleArray.push(companySite);
                 }
             });
-            createTable(r, titleArray, actionArray);
         });
+        createTable(r, titleArray, actionArray);
+        sortTable('#report_table');
     }
-
-  //   //dynamic colspan
-  //   $('.js-data-title').attr('colspan',titleArray.length);
-  //   //call api times
-  //   var td = '<td class="js-v-t text-blod">0</td><td class="js-v-d text-blod">0</td>';
-  //   $.each(titleArray, function(index, title){
-  //       var th = '<th class="table-title bg-colot-blue"><div class="th-inner fit-cell">'+title+'</div></th>';
-  //       td+= '<td class="js-'+title+'_t">0</td>';
-  //       $('.js-company-site').append(th);
-  //   });
-  //   //call api user
-  //   $.each(titleArray, function(index, title){
-  //       var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+title+'</div></th>';
-  //       td+= '<td class="js-'+title+'_d">0</td>';
-  //       $('.js-company-site').append(th);
-  //   });
-  //   //api action row
-  //   $.each(actionArray, function(index, apiName){
-  //       var tr = '<tr class="js-'+apiName+'"><th scope="row">'+apiName+'</th>'+td+'</tr>';
-  //       $('.js-row').append(tr);
-  //   });
-  //   $('.js-row').append('<tr class="js-total"><th scope="row"></th>'+td+'</tr>');
-  //   //append result data
-    
-  //   $.each(actionArray, function(index, action){
-  //       $.each(titleArray, function(subIndex, companySite){
-  //           if(typeof r[action][companySite] !== 'undefined'){
-  //               var sumTotalCount = 0
-  //               var sumDistinctCount = 0
-  //               $.each(r[action][companySite], function(department,count){
-  //                 sumTotalCount=sumTotalCount + parseInt(count.totalCount);
-  //                 sumDistinctCount=sumDistinctCount + parseInt(count.distinctCount);
-  //               });
-  //           }
-  //           $('#report_table .js-'+action+' .js-'+companySite+'_t').html(sumTotalCount);
-  //           $('#report_table .js-'+action+' .js-'+companySite+'_d').html(sumDistinctCount);
-  //       });
-
-  //   });
-  //   var htotalArr = {'t':[],'d':[]};
-  //    //  operate company-side total
-  //    $.each(titleArray, function(index, companySite){
-  //       var vtotalArr = {'t':0,'d':0};
-  //       $.each(vtotalArr, function(type,cnt){
-  //          $companySiteObj = $('td.js-' + companySite + '_' + type);
-  //          var i=0;
-  //           $.each($companySiteObj, function(subIndexnx,companySiteDataObj){
-  //               if(typeof htotalArr[type][i] =='undefined'){
-  //                   htotalArr[type][i] = 0;
-  //               }
-  //               if(typeof vtotalArr[type][i] =='undefined'){
-  //                   vtotalArr[type][i] = 0;
-  //               }
-  //               htotalArr[type][i] =  parseInt(htotalArr[type][i]) + parseInt($(companySiteDataObj).html())
-  //               vtotalArr[type] =  parseInt(vtotalArr[type]) + parseInt($(companySiteDataObj).html());
-  //               i++;
-  //           });
-  //           //modify last one
-  //           htotalArr[type][i-1] = parseInt(htotalArr[type][i-1]) + parseInt(vtotalArr[type]);
-  //           $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).html( vtotalArr[type]);
-  //           $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).addClass('text-blod');
-  //       });   
-         
-  //    });
-  //    $.each(htotalArr,function(type,hTotal){
-  //       $vTotalObj = $('#report_table').find('.js-v-' + type);
-  //       $.each($vTotalObj, function(index){
-  //           var percent = (htotalArr[type][index]/htotalArr[type][$vTotalObj.length-1]) * 100 ;
-  //           $(this).html(htotalArr[type][index] + '<span>(' + Math.round(percent * 10) / 10 + ' % )</span>');
-  //       });
-  //    });
-  //    $('.js-v-t span').css('color','#8085e9');
-  //    $('.js-v-d span').css('color','Orange');
    }
 });
 
@@ -155,7 +83,6 @@ var createTable = function(data, titleArray, actionArray){
     });
     $('.js-row').append('<tr class="js-total"><th scope="row"></th>'+td+'</tr>');
     //append result data
-    console.log(data);
     $.each(actionArray, function(index, action){
         $.each(titleArray, function(subIndex, companySite){
             if(typeof data[action][companySite] !== 'undefined'){
@@ -205,5 +132,32 @@ var createTable = function(data, titleArray, actionArray){
      });
      $('.js-v-t span').css('color','#8085e9');
      $('.js-v-d span').css('color','Orange');
+}
+
+sortTable = function(table){
+    var rows = $(table + ' tbody  tr').not('.js-total').get();
+
+    rows.sort(function(a, b) {
+
+    var A = $(a).children('td').eq(0).text().toUpperCase();
+    var B = $(b).children('td').eq(0).text().toUpperCase();
+    A=parseInt(A.split('(')[0]);
+    B=parseInt(B.split('(')[0]);
+
+    if(A < B) {
+    return -1;
+    }
+
+    if(A > B) {
+    return 1;
+    }
+
+    return 0;
+
+    });
+
+    $.each(rows, function(index, row) {
+    $(table).children('tbody').prepend(row);
+    });
 }
 </script>
