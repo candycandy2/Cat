@@ -28,6 +28,82 @@ class ReportService
     }
 
     public function getApiReport($appKey){
-        return $this->apiLogRepository->getApiLog($appKey);
+        $retArr = [];
+
+        $cursor = $this->apiLogRepository->getApiLog($appKey);
+        $res = $cursor->toArray();
+            foreach ($res as $key => $value) {
+                if(!isset($retArr[$value->_id->action])){
+                    $retArr[$value->_id->action]=array();
+                    if(!isset( $retArr[$value->_id->action][$value->_id->company_site])){
+                        $retArr[$value->_id->action][$value->_id->company_site]=array();
+                        if(!isset($retArr[$value->_id->action][$value->_id->company_site][$value->_id->department]['totalCount'])){
+                            $retArr[$value->_id->action][$value->_id->company_site][$value->_id->department]['totalCount']=array();
+                        }
+                        if(!isset($retArr[$value->_id->action][$value->_id->company_site][$value->_id->department]['distinctCount'])){
+                            $retArr[$value->_id->action][$value->_id->company_site][$value->_id->department]['distinctCount']=array();
+                        }
+                    }
+                }
+                $retArr[$value->_id->action][$value->_id->company_site][$value->_id->department]['totalCount'][]=$value->totalCount;
+                 $retArr[$value->_id->action][$value->_id->company_site][$value->_id->department]['distinctCount'][]=$value->distinctCount;
+            }
+        return  $retArr;
     }
+
+    public function getApiLogByTimeInteval($appKey){
+        $tmpArr = [];
+        $totalCount = [];
+        $distinctCount = [];
+        $retArr = ['totalCount'=>[],'distinctCount'=>[]];
+        $cursor =  $this->apiLogRepository->getApiLogByTimeInteval($appKey);
+        $res = $cursor->toArray();
+        foreach ($res as $key => $value) {
+            $date = $value->_id->created_at->toDateTime()->format('U.u');
+            $date = date('Y-m-d', $date);
+            if(!isset($tmpArr[$date])){
+                $tmpArr[$date]=array();
+                if(!isset($tmpArr[$date]['totalCount'])){
+                        $tmpArr[$date]['totalCount'] = 0;
+                    }
+                if(!isset($tmpArr[$date]['distinctCount'])){
+                    $tmpArr[$date]['distinctCount'] = 0;
+                }
+            }
+            $tmpArr[$date]['totalCount']= $tmpArr[$date]['totalCount'] + $value->count;
+            $tmpArr[$date]['distinctCount']= $value->count;
+        }
+        $startDate = date('Y-m-d', $res[count($res)-1]->_id->created_at->toDateTime()->format('U.u'));
+        $endDate =  date('Y-m-d', $res[0]->_id->created_at->toDateTime()->format('U.u'));
+        $begin = new \DateTime($startDate);
+        $end = new \DateTime($endDate);
+        $end = $end->modify( '+1 day' );  // 不包含结束日期当天，需要人为的加一天
+        $interval = new \DateInterval('P1D');
+        //$interval = \DateInterval::createFromDateString('1 day');  // 等同于上一条
+
+        // 如果第4个参数为\DatePeriod::EXCLUDE_START_DATE，则不包含开始日期当天
+        $daterange = new \DatePeriod($begin, $interval ,$end);
+
+        foreach($daterange as $date){
+            if (!array_key_exists($date->format("Y-m-d"), $tmpArr)) {
+                $tmpArr[$date->format("Y-m-d")]['totalCount'] = 0;
+                $tmpArr[$date->format("Y-m-d")]['distinctCount'] = 0;
+           }
+        }
+        $retArr['startDate'] =  $startDate;
+        $retArr['endDate'] =  $endDate;
+        foreach ($tmpArr as $key => $value) {
+            $retArr['totalCount'][] =  $value['totalCount'];
+            $retArr['distinctCount'][] =  $value['distinctCount'];
+        }
+        
+        return  $retArr;
+    }
+
+    public function getApiLogByDepartment(){
+        $retArr = [];
+        $cursor = $this->apiLogRepository->getApiLog($appKey);
+    }
+
+    
 }
