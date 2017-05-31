@@ -118,4 +118,27 @@ class AppRepository
          
         return $appsList;
     }
+
+    /**
+     * 依app.row_id取得基本資訊
+     * @param  int $appId qp_qpp_head.row_id
+     * @return mixed
+     */
+    public function getAppBasicIfnoByAppId($appId){
+       
+        $appInfo = $this->appHead
+            -> where('qp_app_head.row_id','=',$appId)
+            -> join('qp_project','qp_project.row_id','=','qp_app_head.project_row_id')
+            -> join('qp_app_line','qp_app_line.app_row_id','=','qp_app_head.row_id')
+            -> select('qp_app_head.row_id','qp_project.app_key','icon_url','qp_app_head.default_lang_row_id')
+            -> first();
+        $appLine = $this->appLine
+            ->where('app_row_id', '=', $appId)
+            ->where('lang_row_id', '=', $appInfo->default_lang_row_id)
+            ->select('app_name')
+            ->first();
+        $appInfo->app_name  = $appLine->app_name;
+
+        return $appInfo;
+    }
 } 

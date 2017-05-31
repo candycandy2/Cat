@@ -88,7 +88,9 @@ Route::any('/AppVersion/getAppHistoryVersion', ['middleware' => 'auth','uses'=>'
 Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVersionController@ajxValidVersion']);
 
 //Report
-Route::any('Report/ReportAppList/getReportAppList', 'Report\ReportAppListController@getReportAppList');
+Route::any('report/reportAppList/getReportAppList', 'Report\ReportAppListController@getReportAppList');
+Route::any('report/reportDetail', 'Report\ReportDetailController@getApiReport');
+Route::any('report/reportDetail/getCallApiReport', 'Report\ReportDetailController@getCallApiReport');
 
 /*
 Route::any('/platform/getUserList', 'platformController@getUserList');
@@ -267,9 +269,9 @@ Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
 Route::any('report', ['middleware' => 'auth', function() {
     return view("report/report_app_list");
 }]);
-Route::any('report/reportDetail', ['middleware' => 'auth', function() {
-    return view("report/report_detail");
-}]);
+// Route::any('report/reportDetail', ['middleware' => 'auth', function() {
+//     return view("report/report_detail");
+// }]);
 
 Route::any('lang/{lang}/{uri}', function($lang, $uri) {
     Session::set('lang', $lang);
