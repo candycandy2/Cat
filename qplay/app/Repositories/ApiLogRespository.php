@@ -5,7 +5,7 @@
  */
 namespace App\Repositories;
 
-use App\Model\MNG_Api_Log;
+use App\Model\QP_Api_Log;
 use DB;
 
 class ApiLogRespository
@@ -15,9 +15,9 @@ class ApiLogRespository
 
      /*
      * ApiLogRespository constructor.
-     * @param MNG_Api_Log $apiLog
+     * @param QP_Api_Log $apiLog
      */
-    public function __construct(MNG_Api_Log $apiLog)
+    public function __construct(QP_Api_Log $apiLog)
     {     
         $this->apiLog = $apiLog;
     }

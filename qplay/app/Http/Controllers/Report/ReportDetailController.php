@@ -62,14 +62,12 @@ class ReportDetailController extends Controller
     }
 
     public function getCallApiReport(){
-        // if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        // {
-        //     return null;
-        // }
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
         
-        // CommonUtil::setLanguage();
-        // 
-        // 
+        CommonUtil::setLanguage();
         
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -82,29 +80,25 @@ class ReportDetailController extends Controller
         //$appKey = $input['app_key'];
        // $appKey = 'appqplaydev';
 
-        // $cursor = $this->reportService->getApiReport($appKey);
+         $cursor = $this->reportService->getApiReport($appKey);
         // return json_encode($cursor->toArray());
         // json_encode($result, JSON_PRETTY_PRINT);
-        $retArr = [];
-            $res = '[
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI30"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI40"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI50"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI60"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI70"},"totalCount":2,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTA","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QTA","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getAppList","company_site":"BenQ_QQQQ","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getUser","company_site":"BenQ_QTC","department":"BI80"},"totalCount":20,"distinctCount":1},
-                        {"_id":{"action":"getSecurityList","company_site":"BenQ_QTA","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getSecurityList","company_site":"BenQ_QTB","department":"BI80"},"totalCount":1,"distinctCount":1},
-                         {"_id":{"action":"getSecurityList","company_site":"BenQ_QTAss","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getSecurityList","company_site":"BenQ_QTBaa","department":"BI80"},"totalCount":1,"distinctCount":1},
-                        {"_id":{"action":"getSecurityList","company_site":"BenQ_QTC","department":"BI80"},"totalCount":1,"distinctCount":1},
-                         {"_id":{"action":"isRegister","company_site":"Qisda_QTT","department":"BI10"},"totalCount":10,"distinctCount":5}
-                    ]';
-            $res = json_decode($res);
+        // $retArr = [];
+        //     $res = '[
+        //                 {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI50"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI60"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI70"},"totalCount":2,"distinctCount":1},
+        //                 {"_id":{"action":"getAppList","company_site":"BenQ_QTT","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getAppList","company_site":"BenQ_QTA","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getUser","company_site":"BenQ_QTC","department":"BI80"},"totalCount":20,"distinctCount":1},
+        //                 {"_id":{"action":"getSecurityList","company_site":"BenQ_QTA","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getSecurityList","company_site":"BenQ_QTB","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                  {"_id":{"action":"getSecurityList","company_site":"BenQ_QTA","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getSecurityList","company_site":"BenQ_QTB","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                 {"_id":{"action":"getSecurityList","company_site":"BenQ_QTC","department":"BI80"},"totalCount":1,"distinctCount":1},
+        //                  {"_id":{"action":"isRegister","company_site":"Qisda_QTT","department":"BI10"},"totalCount":10,"distinctCount":5}
+        //             ]';
+            $res = $cursor->toArray();
             foreach ($res as $key => $value) {
                 if(!isset($retArr[$value->_id->action])){
                     $retArr[$value->_id->action]=array();

@@ -1,26 +1,21 @@
 <div class="table-responsive">
-    <table id="table" class="table table-bordered table-striped ">
+    <table id="report_table" class="table table-bordered table-striped ">
        <thead>
           <tr>
              <th rowspan="2" data-field="_id.action" class="table-title">
                 <div class="th-inner ">API 名稱</div>
-                {{-- <div class="fht-cell"></div> --}}
              </th>
              <th rowspan="2" data-field="1" class="table-title bg-colot-blue">
                 <div class="th-inner ">API 呼叫次數</div>
-               {{--  <div class="fht-cell"></div> --}}
              </th>
              <th rowspan="2" data-field="2" class="table-title bg-color-pink">
                 <div class="th-inner ">API 呼叫人數</div>
-             {{--    <div class="fht-cell"></div> --}}
              </th>
              <th class="js-data-title table-title bg-colot-blue">
                 <div class="th-inner">API 呼叫次數_公司+地區</div>
-              {{--   <div class="fht-cell"></div> --}}
              </th>
              <th class="js-data-title table-title bg-color-pink">
                 <div class="th-inner">API 呼叫人數_公司+地區</div>
-                {{-- <div class="fht-cell"></div> --}}
              </th>
           </tr>
           <tr class="js-company-site">
@@ -61,7 +56,7 @@ $.ajax({
     //dynamic colspan
     $('.js-data-title').attr('colspan',titleArray.length);
     //call api times
-    var td = '<td class="js-v-t">0</td><td class="js-v-d">0</td>';
+    var td = '<td class="js-v-t text-blod">0</td><td class="js-v-d text-blod">0</td>';
     $.each(titleArray, function(index, title){
         var th = '<th class="table-title bg-colot-blue"><div class="th-inner fit-cell">'+title+'</div></th>';
         td+= '<td class="js-'+title+'_t">0</td>';
@@ -91,8 +86,8 @@ $.ajax({
                   sumDistinctCount=sumDistinctCount + parseInt(count.distinctCount);
                 });
             }
-            $('#table .js-'+action+' .js-'+companySite+'_t').html(sumTotalCount);
-            $('#table .js-'+action+' .js-'+companySite+'_d').html(sumDistinctCount);
+            $('#report_table .js-'+action+' .js-'+companySite+'_t').html(sumTotalCount);
+            $('#report_table .js-'+action+' .js-'+companySite+'_d').html(sumDistinctCount);
         });
 
     });
@@ -116,18 +111,20 @@ $.ajax({
             });
             //modify last one
             htotalArr[type][i-1] = parseInt(htotalArr[type][i-1]) + parseInt(vtotalArr[type]);
-            $('#table .js-'+'total'+' .js-'+companySite+'_' + type).html( vtotalArr[type]);
+            $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).html( vtotalArr[type]);
+            $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).addClass('text-blod');
         });   
          
      });
      $.each(htotalArr,function(type,hTotal){
-        $vTotalObj = $('#table').find('.js-v-' + type);
+        $vTotalObj = $('#report_table').find('.js-v-' + type);
         $.each($vTotalObj, function(index){
-
             var percent = (htotalArr[type][index]/htotalArr[type][$vTotalObj.length-1]) * 100 ;
-            $(this).html(htotalArr[type][index] + ' (' + Math.round(percent * 10) / 10 + ' % )');
+            $(this).html(htotalArr[type][index] + '<span>(' + Math.round(percent * 10) / 10 + ' % )</span>');
         });
      });
+     $('.js-v-t span').css('color','#8085e9');
+     $('.js-v-d span').css('color','Orange');
   }
 });
 </script>
