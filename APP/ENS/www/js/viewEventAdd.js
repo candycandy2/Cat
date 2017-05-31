@@ -56,10 +56,7 @@ $("#viewEventAdd").pagecontainer({
                     id: "eventAdditional" + ID,
                     defaultText: "添加事件",
                     title: "請選擇-關聯事件",
-                    option: [],
-                    attr: {
-                        class: "text-bold"
-                    }
+                    option: []
                 };
 
                 if (relatedEventExist) {
@@ -569,10 +566,7 @@ $("#viewEventAdd").pagecontainer({
                 id: "eventTemplate" + ID,
                 defaultText: "選擇範本",
                 title: "標題範本",
-                option: titleData,
-                attr: {
-                    class: "text-bold"
-                }
+                option: titleData
             };
 
             tplJS.DropdownList("viewEventAdd", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
@@ -677,10 +671,7 @@ $("#viewEventAdd").pagecontainer({
                 id: "eventLocation",
                 defaultText: "添加位置/IT Function",
                 title: "請選擇-機房位置",
-                option: [],
-                attr: {
-                    class: "text-bold"
-                }
+                option: []
             };
 
             $.each(loginData["BasicInfo"]["location"], function(key, vlaue) {
@@ -716,9 +707,6 @@ $("#viewEventAdd").pagecontainer({
                     value: "2",
                     text: "一般通報"
                 }],
-                attr: {
-                    class: "text-bold"
-                },
                 defaultValue: defaultEventLevel
             };
 

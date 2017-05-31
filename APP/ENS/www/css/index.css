@@ -100,16 +100,15 @@ input[type=radio]:checked + label {
 }
 
 .overlap-label-text {
-    line-height: 6.5vw;
+    line-height: 1;
     padding-left: 8.6vw;
+    padding-top: 0.9vw;
     width: 85%;
     color: #0F0F0F;
 }
 
 .ui-mobile label {
-    font-family: "Arial", "微軟中黑體";
     font-size: 4.18vw;
-    font-weight: bold;
     color: #0f0f0f;
 }
 
@@ -523,6 +522,7 @@ input[type=radio]:checked + label {
     font-size: 4.18vw;
     margin: 2.14vw 0;
     color: #323232;
+    line-height: 1;
 }
 
 .textarea-description {
