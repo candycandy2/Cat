@@ -1,0 +1,22 @@
+{
+  "name": "cordova-plugin-qlogin",
+  "version": "1.0.0",
+  "description": "QPlay QLogin Plugin",
+  "cordova": {
+    "id": "cordova-plugin-qlogin",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "qlogin",
+    "policy",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "QPlay",
+  "license": "Apache 2.0"
+}

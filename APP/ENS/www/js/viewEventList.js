@@ -7,6 +7,7 @@ $("#viewEventList").pagecontainer({
         var callBasicInfo = false;
         var eventListData;
         window.messageCountData;
+        var openMemberList = false;
 
         /********************************** function *************************************/
         window.getAuthority = function() {
@@ -39,7 +40,7 @@ $("#viewEventList").pagecontainer({
                     if (window.localStorage.getItem("eventType") !== null) {
                         var EventList = new getEventList(window.localStorage.getItem("eventType"));
                     } else {
-                        var EventList = new getEventList();
+                        var EventList = new getEventList("1");
                     }
                     var basicInfo = new getBasicInfo();
 
@@ -291,7 +292,7 @@ $("#viewEventList").pagecontainer({
             $("#reportDiv .event-list-msg").remove();
 
             //Event List Msg
-            var eventListMsgHTML = $("template#tplEventListMsg").html();
+            var eventListMsgHTML = $("template#tplEventListMsg2").html();
 
             for (var i=0; i<eventListData.length; i++) {
 
@@ -323,15 +324,6 @@ $("#viewEventList").pagecontainer({
                 //Event ID Number
                 eventListMsg.find(".event-list-msg-top .link .text").html(eventListData[i].event_row_id);
 
-                //Event Related Link
-                eventListMsg.find(".event-list-msg-top .link .text").html(eventListData[i].event_row_id);
-
-                if (eventListData[i].related_event_row_id !== 0) {
-                    eventListMsg.find(".event-list-msg-top .link-event").data("value", eventListData[i].related_event_row_id);
-                } else {
-                    eventListMsg.find(".event-list-msg-top .link-event").hide();
-                }
-
                 //Event Title
                 eventListMsg.find(".event-list-msg-top .description").html(eventListData[i].event_title);
 
@@ -342,6 +334,20 @@ $("#viewEventList").pagecontainer({
                     eventListMsg.find(".event-list-msg-top .link .urgent").hide();
                 }
 
+                //Event Related Link
+                if (eventListData[i].related_event_row_id !== 0) {
+                    eventListMsg.find(".event-list-msg-top .link-event").data("value", eventListData[i].related_event_row_id);
+
+                    var widthEventNumber = parseInt(eventListData[i].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
+                    var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
+                    if (event_type === "一般通報") {
+                        widthImg = 0;
+                    }
+                    eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
+                } else {
+                    eventListMsg.find(".event-list-msg-top .link-event").hide();
+                }
+
                 //Status: 未完成 / 完成
                 var event_status = eventListData[i].event_status;
                 if (event_status === "完成") {
@@ -349,24 +355,25 @@ $("#viewEventList").pagecontainer({
                     eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                 }
 
-                //User Count
-                eventListMsg.find(".event-list-msg-bottom .member .text").html(eventListData[i].user_count);
-
-                //Seen Count
-                eventListMsg.find(".event-list-msg-bottom .view .text").html(eventListData[i].seen_count);
+                //User Count / Seen Count
+                var userSeenCount = eventListData[i].user_count + "(" + eventListData[i].seen_count + "人已讀)";
+                eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                 //Task finish Count
-                eventListMsg.find(".event-list-msg-bottom .member-done .text").html(eventListData[i].task_finish_count);
+                var taskCount = eventListData[i].task_count + "(" + eventListData[i].task_finish_count + "項完成)"
+                eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                 //Message Count
-                var msgCount = 0;
+                var msgCount;
                 for (j=0; j<messageCountData.length; j++) {
                     if (messageCountData[j]["target_id"] === eventListData[i].chatroom_id) {
                         msgCount = messageCountData[j]["count"];
                         break;
                     }
                 }
-                eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
+
+                if (msgCount == 0) msgCount = "";
+                eventListMsg.find(".message .count").html(msgCount);
 
                 $("#reportDiv").append(eventListMsg);
             }
@@ -437,9 +444,11 @@ $("#viewEventList").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             var event_type = data.event_type;
+            var className = "urgent";
             if (event_type === "一般通報") {
                 eventMemberList.siblings(".header").find(".number .normal").show();
                 eventMemberList.siblings(".header").find(".number .urgent").hide();
+                className = "normal";
             }
 
             //Event ID Number
@@ -469,6 +478,10 @@ $("#viewEventList").pagecontainer({
                 eventMemberList.siblings(".main").append(eventMemberListLi);
             }
 
+            //Remove old popup
+            $("#eventMemberList").popup("destroy").remove();
+            $("#eventMemberList-option").popup("destroy").remove();
+
             //EventList / EventContent
             var eventMemberListData = {
                 id: "eventMemberList",
@@ -479,6 +492,12 @@ $("#viewEventList").pagecontainer({
 
             $("#eventMemberList").popup("open");
             footerFixed();
+            loadingMask("hide");
+
+            //Center title content
+            var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
+            var widthText = $(".event-member-list ." + className + " .img-text .text").width();
+            $(".event-member-list .img-text").width(widthImg + widthText);
         };
 
         window.functionListPopup = function(data) {
@@ -489,9 +508,11 @@ $("#viewEventList").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             var event_type = data.event_type;
+            var className = "urgent";
             if (event_type === "一般通報") {
                 eventFunctionList.siblings(".header").find(".number .normal").show();
                 eventFunctionList.siblings(".header").find(".number .urgent").hide();
+                className = "normal";
             }
 
             //Event ID Number
@@ -531,6 +552,10 @@ $("#viewEventList").pagecontainer({
                 eventFunctionList.siblings(".main").append(eventFunctionListLi);
             }
 
+            //Remove old popup
+            $("#eventFunctionList").popup("destroy").remove();
+            $("#eventFunctionList-option").popup("destroy").remove();
+
             //EventList / EventContent
             var eventFunctionListData = {
                 id: "eventFunctionList",
@@ -541,6 +566,12 @@ $("#viewEventList").pagecontainer({
 
             $("#eventFunctionList").popup("open");
             footerFixed();
+            loadingMask("hide");
+
+            //Center title content
+            var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
+            var widthText = $(".event-member-list ." + className + " .img-text .text").width();
+            $(".event-member-list .img-text").width(widthImg + widthText);
         };
 
         function showEventAdd() {
@@ -553,6 +584,8 @@ $("#viewEventList").pagecontainer({
         window.ahowEventData = function(dom, action) {
             action = action || null;
             var openData = false;
+
+            loadingMask("show");
 
             if (action === "member" || action === "function") {
                 //Only [admin] & [supervisor] can read (member) & (function)
@@ -596,6 +629,54 @@ $("#viewEventList").pagecontainer({
             footerFixed();
         };
 
+        function contactPopup(userID) {
+            var memberDataExist = false;
+
+            $.each(loginData["BasicInfo"]["userDetail"], function(user, detail) {
+                if (user === userID) {
+                    memberDataExist = true;
+
+                    $("#contactUserPopup #userName").html(detail["login_id"]);
+                    $("#contactUserPopup #extNo").html(detail["user_ext_no"]);
+                    $("#contactUserPopup a").css("color", "#38c");
+
+                    var mailTo = "#";
+                    var tel = "#";
+
+                    if (detail["email"] !== null) {
+                        mailTo = "mailto:" + detail["email"] + "?subject=ENS";
+                    } else {
+                        $("#contactUserPopup #mail").css("color", "#d6d6d6");
+                    }
+
+                    if (detail["user_ext_no"] !== null) {
+                        tel = "tel:" + detail["user_ext_no"];
+                    } else {
+                        $("#contactUserPopup #tel").css("color", "#d6d6d6");
+                    }
+
+                    $("#contactUserPopup #mail").prop("href", mailTo);
+                    $("#contactUserPopup #tel").prop("href", tel);
+                }
+            });
+
+            if (memberDataExist) {
+                if (checkPopupShown()) {
+                    if (popupID === "eventMemberList") {
+                        openMemberList = true;
+                        $("#eventMemberList").popup("close");
+                    } else {
+                        openMemberList = false;
+                    }
+                }
+
+                setTimeout(function(){
+                    $("#contactUserPopup").popup("option", "dismissible", true);
+                    $("#contactUserPopup").popup("open");
+                }, 200);
+            }
+        }
+
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
 
@@ -626,7 +707,7 @@ $("#viewEventList").pagecontainer({
             if (window.localStorage.getItem("eventType") !== null) {
                 var eventTypeDefaultVal = window.localStorage.getItem("eventType");
             } else {
-                var eventTypeDefaultVal = "0";
+                var eventTypeDefaultVal = "1";
             }
 
             var eventTypeData = {
@@ -706,7 +787,7 @@ $("#viewEventList").pagecontainer({
                 content: $("template#tplContactUserPopup").html()
             };
 
-            tplJS.Popup("viewEventList", "contentEventList", "append", contactUserPopupData);
+            tplJS.Popup(null, null, "append", contactUserPopupData);
 
         });
 
@@ -727,7 +808,7 @@ $("#viewEventList").pagecontainer({
                 if (window.localStorage.getItem("eventType") !== null) {
                     var EventList = new getEventList(window.localStorage.getItem("eventType"));
                 } else {
-                    var EventList = new getEventList();
+                    var EventList = new getEventList("1");
                 }
             }
 
@@ -769,8 +850,18 @@ $("#viewEventList").pagecontainer({
 
         $(document).on("click", "#eventMemberList .confirm", function() {
             $("#eventMemberList").popup("close");
-            $("#eventMemberList").remove();
+            $("#eventMemberList").popup("destroy").remove();
+            $("#eventMemberList-option").popup("destroy").remove();
             footerFixed();
+        });
+
+        //Event Member List Popup - open Mail / Tel
+        $(document).on("click", "#eventMemberList .event-member-list .text", function() {
+            var user = $(this).html();
+            var userData = user.split('\\');
+            var userID = userData[1];
+
+            contactPopup(userID);
         });
 
         //Event Function List Popup
@@ -781,20 +872,19 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", "#eventFunctionList .confirm", function() {
             $("#eventFunctionList").popup("close");
             $("#eventFunctionList").popup("destroy").remove();
+            $("#eventFunctionList-option").popup("destroy").remove();
             footerFixed();
         });
 
         //Event Content
-        $(document).on("click", ".event-list-msg .description", function() {
+        $(document).on("click", ".event-list-msg .description, .event-list-msg .name-time, .event-list-msg .message", function() {
             ahowEventData(this);
-            loadingMask("show");
             $.mobile.changePage('#viewEventContent');
         });
 
         //Event Related Content
         $(document).on("click", ".event-list-msg .link-event", function() {
             ahowEventData(this, "authority");
-            loadingMask("show");
         });
 
         //Event Add
@@ -829,40 +919,21 @@ $("#viewEventList").pagecontainer({
         $(document).on("click", ".event-member-data-list ul li", function() {
             var userID = $(this).html();
 
-            $.each(loginData["BasicInfo"]["userDetail"], function(user, detail) {
-                if (user === userID) {
-                    $("#contactUserPopup #userName").html(detail["login_id"]);
-                    $("#contactUserPopup #extNo").html(detail["user_ext_no"]);
-                    $("#contactUserPopup a").css("color", "#38c");
-
-                    var mailTo = "#";
-                    var tel = "#";
-
-                    if (detail["email"] !== null) {
-                        mailTo = "mailto:" + detail["email"] + "?subject=ENS";
-                    } else {
-                        $("#contactUserPopup #mail").css("color", "#d6d6d6");
-                    }
-
-                    if (detail["user_ext_no"] !== null) {
-                        tel = "tel:" + detail["user_ext_no"];
-                    } else {
-                        $("#contactUserPopup #tel").css("color", "#d6d6d6");
-                    }
-
-                    $("#contactUserPopup #mail").prop("href", mailTo);
-                    $("#contactUserPopup #tel").prop("href", tel);
-                }
-            });
-
-            $("#contactUserPopup").popup("option", "dismissible", true);
-            $("#contactUserPopup").popup("open");
+            contactPopup(userID);
         });
 
         $(document).on("popupafterclose", "#contactUserPopup", function() {
-            //Set Active Tab
-            $("#tabEventList a:eq(1)").addClass("ui-btn-active");
-            $("#tabEventList").tabs({ active: 1 });
+            //Check if need to re-open eventMemberList
+            if (openMemberList == true) {
+                setTimeout(function(){
+                    $("#contactUserPopup").popup("close");
+                    $("#eventMemberList").popup("open");
+                }, 200);
+            } else {
+                //Set Active Tab
+                $("#tabEventList a:eq(1)").addClass("ui-btn-active");
+                $("#tabEventList").tabs({ active: 1 });
+            }
         });
     }
 });

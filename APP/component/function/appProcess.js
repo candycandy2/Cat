@@ -17,12 +17,12 @@ function getLanguageString() {
                 langStr[data[i].term] = data[i].definition.trim();
             }
 
-            addConponentView();
+            addComponentView();
         });
     });
 }
 
-function addConponentView() {
+function addComponentView() {
     //add component view template into index.html
     $.get("View/APP.html", function(data) {
         $.mobile.pageContainer.append(data);
@@ -280,10 +280,13 @@ function getSignature(action, signatureTime) {
 //Loading Mask
 function loadingMask(action) {
     if (action === "show") {
+        var scrollHeight = $(window).scrollTop();
+
         if ($(".loader").length === 0) {
-            $('<div class="loader"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
+            $('<div class="loader" style="top:' + scrollHeight + 'px;"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
         } else {
             $(".loader").show();
+            $(".loader").css("top", scrollHeight + "px");
         }
     } else if (action === "hide") {
         $(".loader").hide();

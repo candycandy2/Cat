@@ -71,8 +71,8 @@ class AppService
      */
     public function getAppList($whereCondi=[], $auth=false){
         
-        $appsList = $this->appRepository->getAppList($whereCondi);
-     
+        $appsList = $this->appRepository->getAppList($whereCondi)->toArray();
+
         foreach ($appsList as $index => &$app) {
                 if($auth){
                     if(!\Auth::user()->isAppAdmin()){
@@ -85,14 +85,17 @@ class AppService
                 $selLineCondi =array(array(
                         'field'=>'lang_row_id',
                         'op'=>'=',
-                        'value'=> $app->default_lang_row_id
+                        'value'=> $app['default_lang_row_id']
                     ));
 
-                $appLineInfo = $this->appLineRepository->getAppLineInfo($app->row_id,$selLine,$selLineCondi);
+                $appLineInfo = $this->appLineRepository->getAppLineInfo($app['row_id'],$selLine,$selLineCondi);
 
-                $app->app_name = "-";
-                $app->updated_at = ($app->updated_at == '0000-00-00 00:00:00')?$app->created_at:$app->updated_at;
-                $app->app_name = $appLineInfo->app_name;
+                $app['app_name'] = "-";
+                $app['updated_at'] = ($app['updated_at'] == '-0001-11-30 00:00:00')?$app['created_at']:$app['updated_at'];
+                if($app['updated_at'] == '-0001-11-30 00:00:00'){
+                    $app['updated_at'] = '0000-00-00 00:00:00';
+                }
+                $app['app_name'] = $appLineInfo['app_name'];
                 
                 $selVersionCondi = array(array(
                                     'field'=>'status',
@@ -100,18 +103,26 @@ class AppService
                                     'value'=>'ready'
                                     ));
 
-                $appPublishedVersionInfo = $this->appVersionRepository->getAppVersionByAppId($app->row_id,$selVersionCondi);                
-                $app->android_release = 'Unpublish';
-                $app->ios_release = 'Unpublish';
-                $app->release_status = '0';
+                $appPublishedVersionInfo = $this->appVersionRepository->getAppVersionByAppId($app['row_id'],$selVersionCondi);                
+                $app['android_release'] = 'Unpublish';
+                $app['ios_release'] = 'Unpublish';
+                $app['release_status'] = '0';
 
                 foreach ( $appPublishedVersionInfo as $version) {
-                    $app->release_status = '1';
-                    $deviceTypeRelease = $version->device_type.'_release';
-                    $app->$deviceTypeRelease = $version->version_name;
+                    $app['release_status'] = '1';
+                    $deviceTypeRelease = $version['device_type'].'_release';
+                    $app[$deviceTypeRelease] = $version['version_name'];
                 }
             }
         return $appsList;
     }
 
+    /**
+     * 依app.row_id取得基本資訊
+     * @param  int $appId qp_qpp_head.row_id
+     * @return mixed
+     */
+    public function getAppBasicIfnoByAppId($appId){
+        return $this->appRepository->getAppBasicIfnoByAppId($appId);
+    }
 }

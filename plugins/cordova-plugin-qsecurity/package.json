@@ -1,0 +1,28 @@
+{
+  "name": "cordova-plugin-qsecurity",
+  "version": "1.0.0",
+  "description": "QPlay QSecurity Plugin",
+  "cordova": {
+    "id": "cordova-plugin-qsecurity",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "qsecurity",
+    "policy",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "engines": [
+    {
+      "name": "cordova-android",
+      "version": ">=4.0.0"
+    }
+  ],
+  "author": "QPlay",
+  "license": "Apache 2.0"
+}

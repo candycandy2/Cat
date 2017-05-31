@@ -45,7 +45,7 @@ $("#viewEventContent").pagecontainer({
                         eventContentData = data['Content'];
 
                         //Event List Msg
-                        var eventListMsgHTML = $("template#tplEventListMsg").html();
+                        var eventListMsgHTML = $("template#tplEventListMsg2").html();
                         var eventListMsg = $(eventListMsgHTML);
                         eventListMsg.css("margin-bottom", "2.14vw");
 
@@ -100,6 +100,13 @@ $("#viewEventContent").pagecontainer({
 
                         if (data['Content'].related_event_row_id !== 0) {
                             eventListMsg.find(".event-list-msg-top .link-event").data("value", data['Content'].related_event_row_id);
+
+                            var widthEventNumber = parseInt(data['Content'].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
+                            var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
+                            if (event_type === "一般通報") {
+                                widthImg = 0;
+                            }
+                            eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
                         } else {
                             eventListMsg.find(".event-list-msg-top .link-event").hide();
                         }
@@ -121,18 +128,13 @@ $("#viewEventContent").pagecontainer({
                         var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
                         eventListMsg.find(".event-list-msg-top").append(desc);
 
-                        //User Count
-                        eventListMsg.find(".event-list-msg-bottom .member .text").html(data['Content'].user_count);
-
-                        //Seen Count
-                        eventListMsg.find(".event-list-msg-bottom .view .text").html(data['Content'].seen_count);
-
-                        //Task finish Count
-                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
+                        //User Count / Seen Count
+                        var userSeenCount = data['Content'].user_count + "(" + data['Content'].seen_count + "人已讀)";
+                        eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
                         chatroomID = data['Content'].chatroom_id;
-                        var msgCount = 0;
+                        var msgCount;
 
                         for (j=0; j<messageCountData.length; j++) {
                             if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
@@ -140,7 +142,9 @@ $("#viewEventContent").pagecontainer({
                                 break;
                             }
                         }
-                        eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
+
+                        if (msgCount == 0) msgCount = "";
+                        eventListMsg.find(".message .count").html(msgCount);
 
                         $("#contentEventContent").prepend(eventListMsg);
 
@@ -191,6 +195,10 @@ $("#viewEventContent").pagecontainer({
 
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
 
+                        //Task finish Count
+                        var taskCount = data['Content'].task_detail.length + "(" + data['Content'].task_finish_count + "項完成)"
+                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
+
                         //ChatRoom Message List
                         chatRoomListView();
 
@@ -207,6 +215,11 @@ $("#viewEventContent").pagecontainer({
                                     }
                                 }
                             }
+                        }
+
+                        //For Related Event, Confirm User has authority to read this event
+                        if (typeof callBack === "function") {
+                            callBack(self.readAuthority);
                         }
                     }
 
@@ -230,7 +243,8 @@ $("#viewEventContent").pagecontainer({
 
         };
 
-        window.chatRoomListView = function() {
+        window.chatRoomListView = function(action) {
+            action = action || null;
             var messages = chatRoom.getMsg(chatroomID);
 
             if (messages) {
@@ -240,6 +254,8 @@ $("#viewEventContent").pagecontainer({
 
                 //Message List
                 var messageListHTML = $("template#tplMessageList").html();
+                var latestUser;
+                var latstMsg;
 
                 for (var i=0; i<messages.length; i++) {
                     var messageList = $(messageListHTML);
@@ -260,10 +276,27 @@ $("#viewEventContent").pagecontainer({
 
                     if ((i+1) == messages.length) {
                         messageList.find(".ui-hr").remove();
+                        latestUser = messages[i]["from_id"];
+
+                        if (messages[i]["msg_type"] === "text") {
+                            latstMsg = messages[i]["msg_body"]["text"];
+                        } else if (messages[i]["msg_type"] === "image") {
+                            latstMsg = "上傳了一張圖片";
+                        }
                     }
 
                     $("#messageContent").append(messageList);
                 }
+
+                //Message-preview
+                if (action === "showPreview") {
+                    $(".message-preview").html(latestUser + " : " + latstMsg);
+                    $(".message-preview").show();
+                } else {
+                    $(".message-preview").html("");
+                    $(".message-preview").hide();
+                }
+
             } else {
                 //empty message
                 $("#msgContentHR").hide();
@@ -271,6 +304,7 @@ $("#viewEventContent").pagecontainer({
             }
 
             loadingMask("hide");
+            footerFixed();
         };
 
         function updateEventStatus() {
@@ -738,7 +772,6 @@ $("#viewEventContent").pagecontainer({
         //Event Related Content
         $(document).on("click", ".relate-event", function() {
             ahowEventData(this, "authority2");
-            loadingMask("show");
         });
 
         //Event Edit Button
@@ -805,10 +838,12 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadText) {
                 if (msgController.isInited) {
+
+                    loadingMask("show");
+
                     msgController.SendText(gid, gname, msg, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
-                        loadingMask("show");
 
                         if (successResult["result"]["code"] === 0) {
                             var chatRoomID = successResult["result"]["target_gid"];
@@ -826,7 +861,7 @@ $("#viewEventContent").pagecontainer({
                                 msg_body: successResult["content"]["msg_body"]
                             };
 
-                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoom.refreshMsg);
                             $("#msgText").val("");
                         }
                     }, function(errorResult) {
@@ -842,10 +877,12 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadImg) {
                 if (msgController.isInited) {
+
+                    loadingMask("show");
+
                     msgController.SendImage(gid, gname, fid, function(successResult) {
                         console.log("---------------successResult");
                         console.log(successResult);
-                        loadingMask("show");
 
                         if (successResult["result"]["code"] === 0) {
                             var chatRoomID = successResult["result"]["target_gid"];
@@ -863,7 +900,7 @@ $("#viewEventContent").pagecontainer({
                                 msg_body: successResult["content"]["msg_body"]
                             };
 
-                            chatRoom.storeMsg(chatRoomID, objData, chatRoomListView);
+                            chatRoom.storeMsg(chatRoomID, objData, chatRoom.refreshMsg);
 
                             $(".previewImageDiv").hide();
                             $(".previewImageDiv-AddHeight").hide();
@@ -875,6 +912,10 @@ $("#viewEventContent").pagecontainer({
                         console.log(errorResult);
                     });
                 }
+            }
+
+            if (!msgController.isInited) {
+                initialMessage();
             }
         });
 
@@ -893,6 +934,28 @@ $("#viewEventContent").pagecontainer({
             photoUrl = $(this).prop("src");
 
             fullScreenPhoto("download");
+        });
+
+        //Hide message-preview when scrolling page
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() + $("#viewEventContent .ui-footer").height() >= $(document).height()) {
+                $(".message-preview").html("");
+                $(".message-preview").hide();
+            }
+            footerFixed();
+        });
+
+        //iOS open keyboard
+        $(document).on("click", "#msgText", function() {
+            if (device.platform === "iOS") {
+                $(".ui-footer").removeClass("ui-footer-fixed");
+                var scrollHeight = $("body")[0].scrollHeight - $("#viewEventContent .ui-footer").height() - $("#viewEventContent .ui-header").height();
+                $(window).scrollTop(scrollHeight);
+            }
+        });
+
+        $(document).on("focusout", "#msgText", function() {
+            $(".ui-footer").addClass("ui-footer-fixed");
         });
     }
 });

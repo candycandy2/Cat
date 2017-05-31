@@ -318,6 +318,7 @@ $(document).one("pagebeforecreate", function() {
         });
 
     //For APP scrolling in [Android ver:5], set CSS
+    //For font-family, set diff in iOS/Android
     $(document).on("pageshow", function() {
         if (device.platform === "Android") {
             $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
@@ -327,10 +328,12 @@ $(document).one("pagebeforecreate", function() {
             if (version === "6") {
                 $(".ui-footer-fixed").css("position", "fixed");
             }
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
             $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display', 'block');
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
         }
 
         adjustPageMarginTop();
@@ -379,6 +382,22 @@ $(document).one("pagebeforecreate", function() {
         }
     }, false);
 
+    //Prevent JQM sometimes will auto add CSS-class [ui-fixed-hidden] in "ui-header" & "ui-footer",
+    //bind event to remove this CSS-class, to ensure the position of "ui-header" & "ui-footer" were "fixed".
+    $(document).on({
+        popupafterclose: function() {
+            footerFixed();
+        },
+        click: function() {
+            footerFixed();
+        },
+        tabsactivate: function() {
+            footerFixed();
+        },
+        touchmove: function() {
+            footerFixed();
+        }
+    });
 });
 
 /********************************** QPlay APP function *************************************/
