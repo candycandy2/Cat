@@ -81,6 +81,7 @@ class ReportDetailController extends Controller
        // $appKey = 'appqplaydev';
 
          $cursor = $this->reportService->getApiReport($appKey);
+         $retArr = [];
         // return json_encode($cursor->toArray());
         // json_encode($result, JSON_PRETTY_PRINT);
         // $retArr = [];
