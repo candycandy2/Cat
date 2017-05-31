@@ -7,7 +7,6 @@ $("#viewEventContent").pagecontainer({
         window.eventContentData;
         var taskData;
         var taskRowID;
-        window.chatroomID;
         var photoUrl;
         var resizePhotoWidth;
         var resizePhotoHeight;
