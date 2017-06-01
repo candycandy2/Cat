@@ -98,5 +98,26 @@ class ReportDetailController extends Controller
             $result = $this->reportService->getApiLogByTimeInteval($appKey);
             return json_encode($result);
         }
-    } 
+    }
+
+    public function getCallApiReportDonutChart(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        
+        CommonUtil::setLanguage();
+        
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $appKey = $jsonContent['app_key'];
+           
+            $result = $this->reportService->getApiLogByDepartment($appKey);
+            return json_encode($result);
+        }
+
+    }
 }
