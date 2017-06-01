@@ -1,4 +1,15 @@
 /*override jQuery Mobile*/
+#viewNewsEvents2-3  {
+    height: 100% !important;
+}
+
+#viewMain2-3  {
+    height: 100% !important;
+}
+
+#viewMain2-1  {
+    height: 100% !important;
+}
 
 .ui-page .ui-header {
     background-color: #492f7f;
