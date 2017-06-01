@@ -40,8 +40,10 @@ a {
     /* fix problem when last visible word doesn't adjoin right side  */
     text-align: justify;
     margin-right: -1em;
+    margin-bottom: 2.14vw;
     padding-right: 1em;
     white-space: pre-wrap;
+    clear: both;
 }
 
 .event-list-msg-top .description:before {
@@ -98,26 +100,25 @@ input[type=radio]:checked + label {
 }
 
 .overlap-label-text {
-    line-height: 6.5vw;
+    line-height: 1;
     padding-left: 8.6vw;
+    padding-top: 0.9vw;
     width: 85%;
     color: #0F0F0F;
 }
 
 .ui-mobile label {
-    font-family: "Arial", "微軟中黑體";
     font-size: 4.18vw;
-    font-weight: bold;
     color: #0f0f0f;
 }
 
 /*Event List*/
 #contentEventList {
-    padding: 1.8vh 3.7vw 0;
+    padding: 3.99vw 3.7vw 0;
 }
 
 #reportDiv {
-    padding-top: 2.2vh;
+    padding-top: 3.99vw;
 }
 
 #eventTypeContent {
@@ -126,43 +127,45 @@ input[type=radio]:checked + label {
 
 .event-list-msg {
     width: 84.5vw;
-    border: 1px solid #000;
+    border: 1px solid #d6d6d6;
     border-radius: 5px;
-    margin-bottom: 10px;
-    padding: 1.5vh 3.7vw 0.5vh;
+    margin-bottom: 2.14vw;
+    padding: 2.73vw 3.7vw 1vw;
 }
 
 .event-list-msg-hr {
     width: 100%;
     height: 1px;
-    background-color: #989898;
+    background-color: #d6d6d6;
     border: none;
     opacity: 0.5;
     margin: 0;
-    margin-top: 0.8vh;
-    margin-bottom: 1.4vh;
+    margin-top: 2.14vw;
+    margin-bottom: 2.73vw;
 }
 
 .event-list-msg-top {
     width: 100%;
-    /*height: 70%;*/
 }
 
 .event-list-msg-top span {
     display:inline-block;
 }
 
+.event-list-msg-top .name-time {
+    line-height: 1;
+}
+
 .event-list-msg-top .name {
-    width: 65%;
-    font-size: 2.8vh;
-    color: #0f0f0f;
-    font-weight: bold;
+    font-size: 3.14vw;
+    color: #666666;
 }
 
 .event-list-msg-top .event-status {
     width: 33%;
-    font-size: 2.6vh;
+    font-size: 3.55vw;
     text-align: right;
+    float: left;
 }
 
 .event-list-msg-top .done .text {
@@ -174,12 +177,10 @@ input[type=radio]:checked + label {
 }
 
 .event-list-msg-top .done .img {
-    background: url(../img/done.png) no-repeat;
     background-size: 3.2vw;
 }
 
 .event-list-msg-top .unfinished .img {
-    background: url(../img/unfinished.png) no-repeat;
     background-size: 3.2vw;
 }
 
@@ -190,69 +191,89 @@ input[type=radio]:checked + label {
 }
 
 .event-list-msg-top .link {
-    width: 50%;
-    font-size: 2.8vh;
-    color: #0f0f0f;
-    font-weight: bold;
-    margin-bottom: 0.8vh;
+    width: 65%;
+    font-size: 4.18vw;
+    color: #323232;
+    margin-bottom: 2.73vw;
+    float: left;
 }
 
 .event-list-msg-top .normal, .event-list-msg-top .urgent,
 .event-member-list .normal, .event-member-list .urgent {
     position: relative;
+    height: 5vw;
 }
 
 .event-list-msg-top .link .text,
 .event-member-list .number .text {
     margin-left: 5.8vw;
+    position: absolute;
+    line-height: 1.2;
 }
 
-.event-list-msg-top .normal .img {
-    background: url(../img/normal.png) no-repeat;
-    background-size: 4.2vw;
+.event-list-msg-top .normal, .event-list-msg-top .urgent, .event-list-msg-top .link-event  {
+    float: left;
 }
 
 .event-list-msg-top .urgent .img {
     background: url(../img/urgent.png) no-repeat;
-    background-size: 4.2vw;
+    background-size: 5vw;
 }
 
 .event-list-msg-top .link-event {
     background: url(../img/link.png) no-repeat;
-    background-size: 6vw;
-    width: 6vw;
-    height: 2.5vw;
-    margin-left: 1.6vw;
+    background-size: 6.038vw;
+    width: 6.038vw;
+    height: 4vw;
 }
 
 .event-list-msg-top .link .img {
-    width: 4.2vw;
-    height: 4.2vw;
+    width: 5vw;
+    height: 5vw;
     position: absolute;
-    top: 10%;
 }
 
 .event-list-msg-top .time {
-    width: 48%;
-    font-size: 2.6vh;
-    color: #989898;
+    font-size: 3.14vw;
+    color: #666666;
     text-align: right;
+    margin-left: 2vw;
+}
+
+.event-list-msg-top .message {
+    font-size: 3.14vw;
+    color: #989898;
+    margin: 2.14vw 0;
 }
 
 .event-list-msg-bottom {
-    width: 95%;
+    width: 100%;
     text-align: right;
     display: inline-block;
 }
 
 .event-list-msg-bottom .text {
-    font-size: 2.8vh;
+    color: #2D89BC;
+    font-size: 3.55vw;
     display: table-caption;
     margin-left: 1.8vw;
+    line-height: 1;
+    text-align: left;
+    width: 60%;
+    height: 5.6vw;
+    padding-top: 1.025vw;
 }
 
 .event-list-msg-bottom span {
     float: left;
+    width: 50%;
+}
+
+.event-list-msg-bottom .img {
+    width: 5.6vw;
+    height: 5.6vw;
+    display: inline-block;
+    margin-left: 6.595vw;
 }
 
 .event-list-msg-bottom .member .img {
@@ -263,28 +284,11 @@ input[type=radio]:checked + label {
 .event-list-msg-bottom .view .img {
     background: url(../img/view.png) no-repeat;
     background-size: 5.6vw;
-    margin-left: 5.4vw;
 }
 
 .event-list-msg-bottom .member-done .img {
     background: url(../img/memberdone.png) no-repeat;
     background-size: 5.6vw;
-    margin-left: 5.4vw;
-}
-
-.event-list-msg-bottom .message {
-    float: right;
-}
-
-.event-list-msg-bottom .message .img {
-    background: url(../img/message.png) no-repeat;
-    background-size: 5.6vw;
-}
-
-.event-list-msg-bottom .img {
-    width: 5.6vw;
-    height: 5.6vw;
-    display: inline-block;
 }
 
 .event-list-footer {
@@ -313,8 +317,8 @@ input[type=radio]:checked + label {
 .event-member-list.header .img {
     display: inline-block;
     position: absolute;
-    width: 4.2vw;
-    height: 4.2vw;
+    width: 5vw;
+    height: 5vw;
 }
 
 .event-member-list.header .title {
@@ -333,14 +337,20 @@ input[type=radio]:checked + label {
     margin-bottom: 0.95vh;
 }
 
-.event-member-list .normal .img {
-    background: url(../img/normal.png) no-repeat;
-    background-size: 4.2vw;
+.event-member-list .normal .img-text, .event-member-list .urgent .img-text {
+    position: relative;
+    height: 5vw;
+    display: -webkit-inline-box;
+}
+
+.event-member-list .normal .img-text .img, .event-member-list .urgent .img-text .img,
+.event-member-list .normal .img-text .text, .event-member-list .urgent .img-text .text {
+    position: absolute;
 }
 
 .event-member-list .urgent .img {
     background: url(../img/urgent.png) no-repeat;
-    background-size: 4.2vw;
+    background-size: 5vw;
 }
 
 .event-member-list .number, .event-member-list .title {
@@ -358,8 +368,7 @@ input[type=radio]:checked + label {
 .event-member-list li .text {
     font-size: 4.18vw;
     color: #0f0f0f;
-    margin-left: 1.6vw;
-    line-height: 1.6;
+    margin-left: 7.2vw;
 }
 
 .event-member-list li .left {
@@ -408,6 +417,17 @@ input[type=radio]:checked + label {
 
 .event-member-list li:last-child {
     /*margin-bottom: 0;*/
+}
+
+.view-before, .view-after {
+    position: relative;
+    height: 5.6vw;
+}
+
+.view-before .img, .view-before .text, .view-after .img, .view-after .text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .view-before .img {
@@ -492,6 +512,8 @@ input[type=radio]:checked + label {
 #contentEventAdd .title {
     display: inline-block;
     margin-top: 4.3vw;
+    font-size: 3.349vw;
+    color: #0f0f0f;
 }
 
 .textarea-template {
@@ -500,6 +522,7 @@ input[type=radio]:checked + label {
     font-size: 4.18vw;
     margin: 2.14vw 0;
     color: #323232;
+    line-height: 1;
 }
 
 .textarea-description {
@@ -524,7 +547,7 @@ input[type=radio]:checked + label {
 
 .event-add-location-list {
     display: inline-block;
-    border: 1px solid #989898;
+    border: 1px solid #d6d6d6;
     width: 92.82vw;
 }
 
@@ -544,7 +567,7 @@ input[type=radio]:checked + label {
 
 .event-add-additional-list {
     display: inline-block;
-    border: 1px solid #989898;
+    border: 1px solid #d6d6d6;
     width: 92.82vw;
 }
 
@@ -616,6 +639,8 @@ input[type=radio]:checked + label {
 .event-content .title{
     display: inline-block;
     margin-top: 4.3vw;
+    font-size: 3.349vw;
+    color: #0f0f0f;
 }
 
 .event-content .event-list-msg-top .description {
@@ -633,7 +658,7 @@ input[type=radio]:checked + label {
 
 .event-content-data-list {
     display: inline-block;
-    border: 1px solid #989898;
+    border: 1px solid #d6d6d6;
     width: 85.4vw;
     padding: 2.73vw 3.71vw;
     margin: 2.14vw 0;
@@ -660,10 +685,12 @@ input[type=radio]:checked + label {
     float: left;
     width: 5.6vw;
     height: 5.6vw;
+    margin-top: 0.71vw;
 }
 
 .event-content-data-list .title {
     margin-top: 0;
+    line-height: 1;
 }
 
 .event-content-data-list div:last-child .user-datetime {

@@ -96,7 +96,8 @@ class EventService
    * @param  String $empNo       員工編號
    * @param  String $eventType   1:緊急通報 | 2:一般通報 (非必填，不需要篩選時傳入空字串)
    * @param  int $eventStatus 事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
-   * @return Array              事件列表包含參與人數(user_count),seen_count(已讀人數),task_finish_count(任務完成數)
+   * @return Array              事件列表包含參與人數(user_count),seen_count(已讀人數),
+   *                            task_finish_count(任務完成數),task_count(總任務數)
    */
    public function getEventList($empNo, $eventType, $eventStatus){
         $oraEventList = $this->eventRepository->getEventList($empNo, $eventType, $eventStatus);
@@ -109,6 +110,7 @@ class EventService
             $item['user_count'] = $this->eventRepository->getUserCountByEventId($eventId);
             $item['seen_count'] = $this->eventRepository->getSeenCountByEventId($eventId);
             $item['task_finish_count'] = $this->taskRepository->getCloseTaskCntByEventId($eventId);
+            $item['task_count'] = $this->taskRepository->getAllTaskByEventId($eventId);
             $eventList[] = $item;                
         }
           return $eventList;

@@ -280,7 +280,7 @@ class EventController extends Controller
                 'Content'=>$eventList]);
         } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>""]);
+            'Content'=>$e->getMessage()]);
         }
 
     }

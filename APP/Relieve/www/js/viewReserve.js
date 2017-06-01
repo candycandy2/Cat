@@ -139,10 +139,7 @@ $("#viewReserve").pagecontainer({
                 $('.hasReservePopup').popup('close');
                 if(data['ResultCode'] === "023905") {
                     if ($('#pageOne').css('display') === 'block') {
-                        QueryReserveDetail();                        
-                        /* $(trace).find('.ui-bar>div:nth-of-type(2)').remove();
-                        $('<div class="circleIcon iconSelect"></div>').insertAfter($(trace).find('.ui-bar>div:nth-of-type(1)'));
-                        $(trace).removeClass('ui-color-myreserve').addClass('ui-color-noreserve');*/
+                        QueryReserveDetail();
                     }else {
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
                         // myReserver_dirtyFlag = true;
@@ -263,6 +260,7 @@ $("#viewReserve").pagecontainer({
             PullToRefresh.init({
                 mainElement: '#pageOne',
                 onRefresh: function() {
+                    time = new Date(Date.now());
                     QueryReserveDetail();
                 }
             });
@@ -288,6 +286,7 @@ $("#viewReserve").pagecontainer({
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
+                        time = new Date(Date.now());
                         QueryReserveDetail();
                     }
                 });
@@ -399,13 +398,19 @@ $("#viewReserve").pagecontainer({
 
         // reserve btn click
         $('body').on('click', '#reserveBtn', function() {
+            var index = 0;
             queryTime = "";
             if ($(this).hasClass('btn-disable')) {
                 tplJS.preventPageScroll();
                 popupMsgInit('.noSelectTimeMsg');
             } else {
                 for(var time in timeQueue) {
-                    queryTime += time + ",";
+                    index++;
+                    if(index == Object.keys(timeQueue).length) {
+                        queryTime += time;
+                    }else {
+                        queryTime += time + ",";
+                    }
                 }
                 ReserveRelieveQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite

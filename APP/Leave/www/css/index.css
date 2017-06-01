@@ -9,7 +9,7 @@
 }
 
 .ui-radio {
-	width:46.29VW;
+	width: 46.29VW;
 }
 
 .page-tabs > div > div > label {
@@ -17,15 +17,16 @@
 }
 
 /********************************************common use**********************************************/
-.page-main .page-tabs{
-	margin-top: 1.8VH;
-	margin-bottom: 0VH;
-	margin-right: 3.7VW;
-	margin-left: 3.7VW;
+.page-main {
+	margin-top: 3.99VW;
+}
+
+.page-main .page-tabs {
+	margin: 1.8VH 3.71VW 0VH 3.71VW;
 	text-align: center;
 }
 
-.page-main .tabs-title{
+.page-main .tabs-title {
 	height: 5VH;
 	font-size: 2.5VH;
 	font-family: Arial;
@@ -33,6 +34,53 @@
 	line-height: 5.6VH;
 	text-align: center;
 	padding: 0px;
+}
+
+/******************************************* personal leave *****************************************/
+#zabuto_calendar_1t1z {
+	margin: 0VW 3.71VW 0VW 3.71VW;
+}
+
+#infoList {
+	margin-top: 5VW;
+	background-color: white;
+}
+
+.infoContainer {
+	padding: 4.3VW 0VW 3.71VW 6.71VW;
+	border-bottom-width: 0.1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d6d6d6;
+}
+
+.infoTitle {
+	overflow: auto;
+}
+
+.listDown {
+	height:3.542VW;
+	margin-top: -2.6VH;
+	margin-right: 6.71VW;
+	float: right;
+}
+
+.infoContent {
+	display: none;
+}
+
+.infoContent ul {
+	list-style-type: none;
+	display: inline;
+	-webkit-padding-start: 0px;
+}
+
+.infoContent ul > li {
+	display: -webkit-flex;
+	margin-top: 4.66VW;
+}
+
+.infoContent ul > li > div > span {
+	color: #666666;
 }
 /********************************************** mypanel *********************************************/
 #mypanel .panel-text{

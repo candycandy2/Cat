@@ -158,7 +158,7 @@ class TaskRepository
     /**
      * 取得事件未完成的任務
      * @param  int      $eventId 事件id event.row_id
-     * @return mixed             已完成的任務數
+     * @return mixed             未完成的任務數
      */
     public function getOpenTaskByEventId($eventId){
         return $this->task
@@ -166,5 +166,16 @@ class TaskRepository
             ->where('task_status', '=', 0)
             ->select('row_id')
             ->get();
+    }
+
+    /**
+     * 取得事件所有任務數量
+     * @return int 所有任務數量
+     */
+    public function getAllTaskByEventId($eventId){
+        return $this->task
+            ->where('event_row_id',$eventId)
+            ->select('row_id')
+            ->count();
     }
 }

@@ -292,7 +292,7 @@ $("#viewEventList").pagecontainer({
             $("#reportDiv .event-list-msg").remove();
 
             //Event List Msg
-            var eventListMsgHTML = $("template#tplEventListMsg").html();
+            var eventListMsgHTML = $("template#tplEventListMsg2").html();
 
             for (var i=0; i<eventListData.length; i++) {
 
@@ -324,15 +324,6 @@ $("#viewEventList").pagecontainer({
                 //Event ID Number
                 eventListMsg.find(".event-list-msg-top .link .text").html(eventListData[i].event_row_id);
 
-                //Event Related Link
-                eventListMsg.find(".event-list-msg-top .link .text").html(eventListData[i].event_row_id);
-
-                if (eventListData[i].related_event_row_id !== 0) {
-                    eventListMsg.find(".event-list-msg-top .link-event").data("value", eventListData[i].related_event_row_id);
-                } else {
-                    eventListMsg.find(".event-list-msg-top .link-event").hide();
-                }
-
                 //Event Title
                 eventListMsg.find(".event-list-msg-top .description").html(eventListData[i].event_title);
 
@@ -343,6 +334,20 @@ $("#viewEventList").pagecontainer({
                     eventListMsg.find(".event-list-msg-top .link .urgent").hide();
                 }
 
+                //Event Related Link
+                if (eventListData[i].related_event_row_id !== 0) {
+                    eventListMsg.find(".event-list-msg-top .link-event").data("value", eventListData[i].related_event_row_id);
+
+                    var widthEventNumber = parseInt(eventListData[i].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
+                    var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
+                    if (event_type === "一般通報") {
+                        widthImg = 0;
+                    }
+                    eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
+                } else {
+                    eventListMsg.find(".event-list-msg-top .link-event").hide();
+                }
+
                 //Status: 未完成 / 完成
                 var event_status = eventListData[i].event_status;
                 if (event_status === "完成") {
@@ -350,24 +355,25 @@ $("#viewEventList").pagecontainer({
                     eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                 }
 
-                //User Count
-                eventListMsg.find(".event-list-msg-bottom .member .text").html(eventListData[i].user_count);
-
-                //Seen Count
-                eventListMsg.find(".event-list-msg-bottom .view .text").html(eventListData[i].seen_count);
+                //User Count / Seen Count
+                var userSeenCount = eventListData[i].user_count + "(" + eventListData[i].seen_count + "人已讀)";
+                eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                 //Task finish Count
-                eventListMsg.find(".event-list-msg-bottom .member-done .text").html(eventListData[i].task_finish_count);
+                var taskCount = eventListData[i].task_count + "(" + eventListData[i].task_finish_count + "項完成)"
+                eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                 //Message Count
-                var msgCount = 0;
+                var msgCount;
                 for (j=0; j<messageCountData.length; j++) {
                     if (messageCountData[j]["target_id"] === eventListData[i].chatroom_id) {
                         msgCount = messageCountData[j]["count"];
                         break;
                     }
                 }
-                eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
+
+                if (msgCount == 0) msgCount = "";
+                eventListMsg.find(".message .count").html(msgCount);
 
                 $("#reportDiv").append(eventListMsg);
             }
@@ -438,9 +444,11 @@ $("#viewEventList").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             var event_type = data.event_type;
+            var className = "urgent";
             if (event_type === "一般通報") {
                 eventMemberList.siblings(".header").find(".number .normal").show();
                 eventMemberList.siblings(".header").find(".number .urgent").hide();
+                className = "normal";
             }
 
             //Event ID Number
@@ -485,6 +493,11 @@ $("#viewEventList").pagecontainer({
             $("#eventMemberList").popup("open");
             footerFixed();
             loadingMask("hide");
+
+            //Center title content
+            var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
+            var widthText = $(".event-member-list ." + className + " .img-text .text").width();
+            $(".event-member-list .img-text").width(widthImg + widthText);
         };
 
         window.functionListPopup = function(data) {
@@ -495,9 +508,11 @@ $("#viewEventList").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             var event_type = data.event_type;
+            var className = "urgent";
             if (event_type === "一般通報") {
                 eventFunctionList.siblings(".header").find(".number .normal").show();
                 eventFunctionList.siblings(".header").find(".number .urgent").hide();
+                className = "normal";
             }
 
             //Event ID Number
@@ -552,6 +567,11 @@ $("#viewEventList").pagecontainer({
             $("#eventFunctionList").popup("open");
             footerFixed();
             loadingMask("hide");
+
+            //Center title content
+            var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
+            var widthText = $(".event-member-list ." + className + " .img-text .text").width();
+            $(".event-member-list .img-text").width(widthImg + widthText);
         };
 
         function showEventAdd() {
@@ -857,7 +877,7 @@ $("#viewEventList").pagecontainer({
         });
 
         //Event Content
-        $(document).on("click", ".event-list-msg .description", function() {
+        $(document).on("click", ".event-list-msg .description, .event-list-msg .name-time, .event-list-msg .message", function() {
             ahowEventData(this);
             $.mobile.changePage('#viewEventContent');
         });
