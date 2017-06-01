@@ -183,7 +183,8 @@ $("#viewEventContent").pagecontainer({
                                 padLeft(completeTime.getMinutes(), 2);
 
                                 var eventTaskList = $(eventTaskListAfterHTML);
-                                eventTaskList.find(".user").html(data['Content'].task_detail[i].close_task_user_id);
+                                var userData = data['Content'].task_detail[i].close_task_user_id.split("\\");
+                                eventTaskList.find(".user").html(userData[1]);
                                 eventTaskList.find(".datetime").html(completeTimeText);
                             }
                             eventTaskList.find(".title").html(data['Content'].task_detail[i].task_location);
