@@ -255,21 +255,17 @@
                 }
             }
             /********************************** page event *************************************/
-            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
-           
-                var eventListNoDataPopupData = {
+            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {           
+                var eventLogoutConfirmPopupData = {
                     id: "logoutConfirm",
                     content: $("template#tplContactUserPopup").html()
                 };
-
-                tplJS.Popup("viewMain2-1", "appcontent", "append", eventListNoDataPopupData);
-
+                tplJS.Popup("viewMain2-1", "appcontent", "append", eventLogoutConfirmPopupData);
                 });
 
             $("#viewMain2-1").on("pageshow", function(event, ui) {
                 loadingMask("show");
-                var appList = new QueryAppList();            
-
+                var appList = new QueryAppList();
                 PullToRefresh.init({
                     mainElement: '#appcontent',
                     onRefresh: function() {
@@ -279,12 +275,10 @@
                     }
                 });
             });
-
             /********************************** dom event *************************************/
             $("#logout").on("click", function() {
                 $('#logoutConfirm').popup('open');
             });
-       
             $(document).on("click", "#logoutConfirm #confirm", function() {
                 $('#logoutConfirm').popup('close');
                 loadingMask("show");

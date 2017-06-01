@@ -251,9 +251,9 @@
                 //If News or Events has no message, hide delete button
                 if (activeNvrBar === "navNews") {
                     if (countNews === 0) {
-                        $("#deleteMessage").hide();                        
+                        $("#deleteMessage").hide();
                     } else {
-                        $("#deleteMessage").show();   
+                        $("#deleteMessage").show();
                     }
                 }
 
@@ -432,17 +432,17 @@
                 if (!callGetMessageList) {
                     if (loginData["msgDateFrom"] === null) {
                         loadingMask("hide");
-                        $('#selectMsgDateFrom').popup('open');                      
+                        $('#selectMsgDateFrom').popup('open');
                     }
                 }
             });
 
             $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {               
-                var eventListDataPopupHistory = {
+                var eventPopupselectMsg = {
                     id: "selectMsgDateFrom",
                     content: $("template#tplEventListNoDataPopup30").html()
                 };
-                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventListDataPopupHistory);
+                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventPopupselectMsg);
     
               
                 var eventListDataPopupHistorydelete = {
@@ -451,7 +451,6 @@
                 };
                 tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventListDataPopupHistorydelete);
     
-        
                 messagePageShow = true;
                 loadingMask("show");
                 //QueryMessageList() will be called in initialSuccess(),
@@ -493,8 +492,7 @@
                 $("#newNews").hide();
                 $("#newEvents").hide();
             });
-
-          
+        
 
             $(document).on("click", "#selectMsgDateFromOK", function() {
              
@@ -527,7 +525,6 @@
                 checkboxChange();
             });
 
-
             $(document).on("click", "#delMsgBtn", function() {         
                 if (!$("#delMsgBtn a").is(".btn-disabled")) {
                     $('#deleteConfirm').popup('open');
@@ -535,7 +532,6 @@
             });
 
             $(document).on("click", "#deleteConfirm #cancel", function() {
-
                 $('#deleteConfirm').popup('close');
             });
 
