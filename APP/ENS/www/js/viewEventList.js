@@ -539,7 +539,8 @@ $("#viewEventList").pagecontainer({
                     padLeft(completeTime.getMinutes(), 2);
 
                     var eventFunctionListLi = $(eventFunctionListAfterHTML);
-                    eventFunctionListLi.find(".user").html(data.task_detail[i].close_task_user_id);
+                    var userData = data.task_detail[i].close_task_user_id.split("\\");
+                    eventFunctionListLi.find(".user").html(userData[1]);
                     eventFunctionListLi.find(".datetime").html(completeTimeText);
                 } else {
                     //Before Done
