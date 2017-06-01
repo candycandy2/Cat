@@ -1,4 +1,5 @@
-![untitled 2](https://cloud.githubusercontent.com/assets/1924451/26397908/62adabca-40aa-11e7-878b-0a6ba4f373b0.png)
+
+![new](https://cloud.githubusercontent.com/assets/1924451/26670155/25dc41e0-46e3-11e7-9811-983ba2ff5ba1.png)
 
 # 建立一個範例, 便於學習如何使用cordova撰寫APP
 #### 此範例不需要QPlay, Gulp, Plugin支援
