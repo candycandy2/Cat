@@ -9,23 +9,24 @@
 
 <script>
 
-var mydata = {app_key:"{{$data['app_key']}}"};
-var mydataStr = $.toJSON(mydata);
-$.ajax({
-  url:"reportDetail/getCallApiReportDonutChart",
-  type:"POST",
-  dataType:"json",
-  contentType: "application/json",
-  data:mydataStr,
-  success: function(r){
-        if(!$.isEmptyObject(r)){
-            var queryAction = $('#report_table tbody tr th').eq(0).text();
-            createTotalChart(r, queryAction);
-            createDistinctChart(r,queryAction);
-        }
-   }
-});
-
+var getApiLogDonutChart = function(){
+    var mydata = {app_key:"{{$data['app_key']}}"};
+    var mydataStr = $.toJSON(mydata);
+    $.ajax({
+      url:"reportDetail/getCallApiReportDonutChart",
+      type:"POST",
+      dataType:"json",
+      contentType: "application/json",
+      data:mydataStr,
+      success: function(r){
+            if(!$.isEmptyObject(r)){
+                var queryAction = $('#report_table tbody tr th').eq(0).text();
+                createTotalChart(r, queryAction);
+                createDistinctChart(r,queryAction);
+            }
+       }
+    });
+}
 
 var createTotalChart = function(r, queryAction){
     var title='API【'+ queryAction +'】呼叫次數比例(依部門)';

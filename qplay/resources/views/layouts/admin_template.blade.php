@@ -102,6 +102,8 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/oss/html5shiv.min.js') }}"></script>
     <script src="{{ asset('/oss/respond.min.js') }}"></script>
     <![endif]-->
+    @section('head')
+    @show
 </head>
 <body class="skin-blue fixed" data-spy="scroll" data-target="#scrollspy">
 <div class="wrapper">
