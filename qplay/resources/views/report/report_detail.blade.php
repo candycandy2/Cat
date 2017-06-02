@@ -3,6 +3,16 @@
 $menu_name = "REPORT";
 ?>
 @extends('layouts.admin_template')
+
+{{--
+
+TODO append js
+ @section('head')
+    @parent
+    <script src="{{ asset('/js/appMaintain/app_pic.js') }}"></script>
+@stop --}}
+
+
 @section('content')
 
     <div class="col-lg-12 col-xs-12">
@@ -59,38 +69,17 @@ $(function () {
     });
 
     $('.dropdown-menu > li > a').click(function(){
-        
         $('.nav-tabs > li.active').removeClass('active');
         $('#api_report > li.active').removeClass('active');
         var openId = $(this).data('tabid');
+        if(openId == 'api_call_frequency_report'){
+            getApiLogBasicLine();
+        }
         $(this).parents('li').addClass('active');
         $('.tab-content > div.active').removeClass('active').removeClass('in')
         $('#' + openId).addClass('active').addClass('in');
         
     });
-
-    // var mydata = {app_row_id:getUrlVar('app_row_id')};
-    // var mydataStr = $.toJSON(mydata);
-    // $.ajax({
-    //     url: "reportDetail/getApiReport",
-    //     dataType: "json",
-    //     type: "POST",
-    //     contentType: "application/json",
-    //     data: mydataStr,
-    //     success: function (d, status, xhr) {
-    //         if(d.icon_url!=""){
-    //             $('#appInfo').prepend('<img id="app_icon" src="'+d.icon_url+'" class="img-rounded" width="60" height="60">');
-    //         }
-    //         $('#app_name').text(d.app_name);
-    //         appKey = d.appKey;
-    //     },
-    //     error: function (e) {
-    //         if(handleAJAXError(this,e)){
-    //             return false;
-    //         }
-    //         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
-    //     }
-    // });
 });
 </script>
 @endsection

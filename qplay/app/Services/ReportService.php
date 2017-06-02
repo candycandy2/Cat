@@ -26,6 +26,19 @@ class ReportService
     public function getRegisterRate(){
         return $this->registerRepository->getRegisterUserCount().'/'.$this->registerRepository->getRegisterDeviceCount();
     }
+    /**
+     * 取得該app最後的log日期
+     * @param  String $appKey app key
+     * @return mixed
+     */
+    public function getApiLogEndDate($appKey){
+        $lastRecord = $this->apiLogRepository->getApiLogLastRecord($appKey);
+        $endDate = null;
+        if(!is_null($lastRecord )){
+             $endDate = $this->apiLogRepository->getApiLogLastRecord($appKey)->created_at;
+        }
+        return  $endDate;
+    }
 
     public function getApiReport($appKey){
         $retArr = [];
