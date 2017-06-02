@@ -152,11 +152,11 @@ input[type=radio]:checked + label {
 
 .overlap-label-text {
     line-height: 6.5vw;
-    padding-left: 7vw;
+    padding-left: 9vw;
     width: 85%;
     color: #0F0F0F;
     font-size: 3vh;
-    /*height: 3.5vh;*/
+    text-align: left;
 }
 
 .overlap-label-checkbox {
