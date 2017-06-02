@@ -9,8 +9,8 @@ var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var download_url = "";
-var QMessageKey = "";
-var QMessageSecretKey = "";
+var QMessageKey = "1dd3ebb8bb12f1895b4a5e25";
+var QMessageSecretKey = "4a9664f480e6c206469617a9";
 
 if (window.localStorage.getItem("appKey") !== null) {
     appKey = window.localStorage.getItem("appKey");
