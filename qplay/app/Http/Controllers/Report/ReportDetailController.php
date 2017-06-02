@@ -40,7 +40,7 @@ class ReportDetailController extends Controller
     }
 
     /**
-     * Api報表入口
+     * Api報表詳細頁入口
      */
     public function getApiReport(){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -52,13 +52,14 @@ class ReportDetailController extends Controller
         $appId = $input['app_row_id'];
         $appInfo = $this->appService->getAppBasicIfnoByAppId($appId);
         $data = [];
-         $data['app_row_id'] =   $appId;
+        $data['app_row_id'] =   $appId;
         $data['app_name'] =  $appInfo->app_name;
         $data['icon_url'] =  ($appInfo->icon_url == "")?"":FilePath::getIconUrl($appId, $appInfo->icon_url);
         $data['app_key'] =  $appInfo->app_key;
-       // $data['api_report'] = $this->reportService->getApiReport($appKey)->toArray;
+        $endDate = $this->reportService->getApiLogEndDate($appInfo->app_key);
+        $data['reportEndDate'] = (is_null($endDate))?"":$endDate->format('Y-M-d');
         return view("report/report_detail")->with('data',$data);
-       //return json_encode($data);
+
     }
 
     public function getCallApiReport(){
