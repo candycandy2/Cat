@@ -32,7 +32,7 @@
             <div id="myCalendar"></div>
             <div id="infoList">
                 <div class="infoContainer">
-                    <div class="infoTitle" id="title-1">             
+                    <div class="infoTitle" id="infoTitle-1">
                         <div class="title">個人剩餘假別資訊</div>
                         <img class="listDown" src="img/list_down.png">
                     </div>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="infoContainer">
-                    <div class="infoTitle" id="title-2">
+                    <div class="infoTitle" id="infoTitle-2">
                         <div class="title">本年度請假統計</div>
                         <img class="listDown" src="img/list_down.png">
                     </div>
@@ -140,23 +140,23 @@
                 </div>
             </div>
         </div>
-        <div id="tab-2">
+        <div id="tab-2" style="margin: 4.3VW 3.71VW 0VW 3.71VW;">
             <div>
                 <span>假別</span>
             </div>
-            <select data-role="none" class="dropdown-icon" style="margin-top: 1.16VW;">
-                <option value="">去年特休</option>
-                <option value="">去年彈休</option>
-                <option value="">本期特休</option>
-                <option value="">生理假</option>
-            </select>
+            <div data-role="none" id="leaveType" style="margin-top: 1.16VW;">
+                <span style="font-size: 4.8VW">請選擇</span>
+                <img  class="dropdown-icon" src="img/dropdown.png">
+                <sapn></sapn>
+            </div>
 
             <div style="margin-top: 5VW;">
                 <span>代理人</span>
             </div>
-            <select data-role="none" class="dropdown-icon" style="margin-top: 1.16VW;">
-                <option value="">請選擇</option>
-            </select>
+            <div data-role="none" id="agent" style="margin-top: 1.16VW;">
+                <span style="font-size: 4.8VW;">請選擇</span>
+                <img  class="dropdown-icon" src="img/dropdown.png">
+            </div>
 
             <div style="margin-top: 5VW;">
                 <span>請假日期</span>
@@ -164,10 +164,10 @@
             <form>
                 <fieldset data-role="controlgroup" data-type="horizontal" id="leaveDate">
                     <input type="radio" name="radio-choice-h-2" id="leaveDate-tab1" value="leaveDate-tab1" checked="checked">
-                    <label for="leaveDate-tab1" class="leaveDateTitle">8/30(一)</label>
+                    <label for="leaveDate-tab1" class="leaveDateTitle">8/30&nbsp;(一)</label>
 
                     <input type="radio" name="radio-choice-h-2" id="leaveDate-tab2" value="leaveDate-tab2">
-                    <label for="leaveDate-tab2" class="leaveDateTitle">8/31(二)</label>
+                    <label for="leaveDate-tab2" class="leaveDateTitle">8/31&nbsp;(二)</label>
                 </fieldset>
             </form>
 
