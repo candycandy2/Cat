@@ -68,11 +68,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
-            // initSlider();
+            $("#tab-1").show();
+            $("#tab-2").hide();
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
-            // initSlider();
             loadingMask("hide");
         });
 
@@ -93,20 +93,20 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).on("click", "#title-1", function() {
             if($("#infoContent-1").css("display") === "none") {
-                $("#infoContent-1").slideDown("slow");
+                $("#infoContent-1").slideDown(500);
                 $("#title-1").find(".listDown").attr("src", "img/list_up.png");
             }else if($("#infoContent-1").css("display") === "block") {
-                $("#infoContent-1").slideUp("slow");
+                $("#infoContent-1").slideUp(500);
                 $("#title-1").find(".listDown").attr("src", "img/list_down.png")
             }
         });
 
         $(document).on("click", "#title-2", function() {
             if($("#infoContent-2").css("display") === "none") {
-                $("#infoContent-2").slideDown("slow");
+                $("#infoContent-2").slideDown(500);
                 $("#title-2").find(".listDown").attr("src", "img/list_up.png")
             }else if($("#infoContent-2").css("display") === "block") {
-                $("#infoContent-2").slideUp("slow");
+                $("#infoContent-2").slideUp(500);
                 $("#title-2").find(".listDown").attr("src", "img/list_down.png")
             }
         });
