@@ -6,7 +6,9 @@
 
             var tempVersionArrData;
             var tempVersionData;
+            
             /********************************** function *************************************/
+              //Event List No Data Popup  
             function FillAppList(responsecontent) {
 
                         appcategorylist = responsecontent.app_category_list;
@@ -253,18 +255,17 @@
                 }
             }
             /********************************** page event *************************************/
-            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
-
-            });
+            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {           
+                var eventLogoutConfirmPopupData = {
+                    id: "logoutConfirm",
+                    content: $("template#tplContactUserPopup").html()
+                };
+                tplJS.Popup("viewMain2-1", "appcontent", "append", eventLogoutConfirmPopupData);
+                });
 
             $("#viewMain2-1").on("pageshow", function(event, ui) {
                 loadingMask("show");
                 var appList = new QueryAppList();
-
-                $('#logoutConfirm').popup('close');
-
-                
-                /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#appcontent',
                     onRefresh: function() {
@@ -274,23 +275,19 @@
                     }
                 });
             });
-
             /********************************** dom event *************************************/
             $("#logout").on("click", function() {
                 $('#logoutConfirm').popup('open');
             });
-
-            $("#logoutConfirm #cancel").on("click", function() {
-                $('#logoutConfirm').popup('close');
-            });
-
-            $("#logoutConfirm #confirm").on("click", function() {
-
+            $(document).on("click", "#logoutConfirm #confirm", function() {
                 $('#logoutConfirm').popup('close');
                 loadingMask("show");
-
                 var logout = new doLogOut();
-            });
+             });
+
+            $(document).on("click", "#logoutConfirm #cancel", function() {
+                      $('#logoutConfirm').popup('close');
+             });
 
             $("#newseventspage").on("click", function() {
                 $.mobile.changePage('#viewNewsEvents2-3');
@@ -298,4 +295,3 @@
         }
     });
 
-//});
