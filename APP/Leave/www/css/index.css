@@ -8,11 +8,15 @@
   	padding: 0 !important;
 }
 
-.page-main .ui-radio {
+#viewPersonalLeave .page-main .ui-radio {
 	width: 46.29VW;
 }
 
-.page-main #leaveTime .ui-radio {
+#viewPersonalLeave .page-main #leaveTime .ui-radio {
+	width: 30.86VW;
+}
+
+#viewCalendar .page-main .ui-radio {
 	width: 30.86VW;
 }
 

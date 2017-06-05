@@ -1,3 +1,22 @@
+var leaveTypeData = {
+    id: "eventType",
+    option: [{
+        value: "0",
+        text: "去年特休"
+    }, {
+        value: "1",
+        text: "去年彈休"
+    }, {
+        value: "2",
+        text: "本期特休"
+    }, {
+        value: "3",
+        text: "生理假"
+    }],
+    defaultValue: 1
+};
+
+
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
         
@@ -21,48 +40,57 @@ $("#viewPersonalLeave").pagecontainer({
 
         // };
 
-        function initSlider() {
-            if(personalLeaveDateExist) {   
-                var index = 0;
-                year = thisYear-1;
-                month = thisMonth;
-                while(index < 13) {
-                    monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
-                    monthlyPageDate[index] = month + "." + year;
-                    if(month == 12){
-                        year++;
-                        month = 0;
-                    }
-                    month++;
-                    index++;
-                }
-                $(".personalLeaveSlider").html("");
-                $(".personalLeaveSlider").append(monthlyPageDateList).enhanceWithin();
-            }
-            personalLeaveDateExist = false;
-            if($(".personalLeaveSlider").hasClass("slick-slider") || $(".personalLeaveSlider").hasClass("slick-initialized")){
-                $(".personalLeaveSlider").slick("unslick");
-            }
-            $(".personalLeaveSlider").slick({
-                initialSlide: 0,
-                autopaly: false,
-                dots: false,
-                responseive: [{
-                    breakpoint: 500,
-                    settings: {
-                        arrows: true,
-                        infinite: false,
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                }],
-                infinite: false
-            });
-        }
+        // function initSlider() {
+        //     if(personalLeaveDateExist) {   
+        //         var index = 0;
+        //         year = thisYear-1;
+        //         month = thisMonth;
+        //         while(index < 13) {
+        //             monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
+        //             monthlyPageDate[index] = month + "." + year;
+        //             if(month == 12){
+        //                 year++;
+        //                 month = 0;
+        //             }
+        //             month++;
+        //             index++;
+        //         }
+        //         $(".personalLeaveSlider").html("");
+        //         $(".personalLeaveSlider").append(monthlyPageDateList).enhanceWithin();
+        //     }
+        //     personalLeaveDateExist = false;
+        //     if($(".personalLeaveSlider").hasClass("slick-slider") || $(".personalLeaveSlider").hasClass("slick-initialized")){
+        //         $(".personalLeaveSlider").slick("unslick");
+        //     }
+        //     $(".personalLeaveSlider").slick({
+        //         initialSlide: 0,
+        //         autopaly: false,
+        //         dots: false,
+        //         responseive: [{
+        //             breakpoint: 500,
+        //             settings: {
+        //                 arrows: true,
+        //                 infinite: false,
+        //                 slidesToShow: 2,
+        //                 slidesToScroll: 2
+        //             }
+        //         }],
+        //         infinite: false
+        //     });
+        // }
 
         $(document).ready(function() {
-            $("#myCalendar").zabuto_calendar({
+            $("#viewPersonalLeave #myCalendar").zabuto_calendar({
                 language: "en",
+                show_previous: true,
+                show_next: true,
+                cell_border: true,
+                show_days: true,
+                weekstartson: 0,
+                nav_icon: {
+                    prev: '<i class="fa fa-chevron-circle-left"></i>',
+                    next: '<i class="fa fa-chevron-circle-right"></i>'
+                }
             });
         });
 
@@ -70,6 +98,7 @@ $("#viewPersonalLeave").pagecontainer({
         $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
             $("#tab-1").show();
             $("#tab-2").hide();
+            tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {

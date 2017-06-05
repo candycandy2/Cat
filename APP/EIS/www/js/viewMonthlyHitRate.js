@@ -1,11 +1,10 @@
-var year, month, actualValue, budgetHitRate, yoyGrowth;
+var year, month, actualValue, budgetHitRate, yoyGrowth, productList;
 var ro = "ALL";
 var product = "ALL";
 var tab = "AMT";
 var hcRo = "All";
 var hcProduct = "All product";
 var hcTitle = "(USD$)";
-var productList = '<a id="ALL">ALL</a>';
 var monthlyHighchartsData = {
 	"Actual QTY" : {},
 	"Actual AMT" : {},
@@ -22,6 +21,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             this.successCallback = function(data) {
                 userAuthorityCallBackData = data["Content"]["DataList"];
                 length = userAuthorityCallBackData.length;
+                productList = '<a id="ALL">ALL</a>';
                 for(var i=0; i<length; i++) {
                     productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>' ;
                 }
