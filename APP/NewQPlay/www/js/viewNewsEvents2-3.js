@@ -426,6 +426,18 @@
                 activeNvrDiv = "newspage2-3";
                 inactiveNvrBar = "navEvents";
                 inactiveNvrDiv = "eventspage2-3b";
+
+                var eventPopupselectMsg = {
+                    id: "selectMsgDateFrom",
+                    content: $("template#tplEventListNoDataPopup30").html()
+                };
+                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventPopupselectMsg);
+
+                var eventListDataPopupHistorydelete = {
+                    id: "deleteConfirm",
+                    content: $("template#tplContactUserPopupdeleteConfirm").html()
+                };
+                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventListDataPopupHistorydelete);
             });
 
             $("#viewNewsEvents2-3").on("pageshow", function(event, ui) {
@@ -438,19 +450,6 @@
             });
 
             $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {               
-                var eventPopupselectMsg = {
-                    id: "selectMsgDateFrom",
-                    content: $("template#tplEventListNoDataPopup30").html()
-                };
-                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventPopupselectMsg);
-    
-              
-                var eventListDataPopupHistorydelete = {
-                    id: "deleteConfirm",
-                    content: $("template#tplContactUserPopupdeleteConfirm").html()
-                };
-                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventListDataPopupHistorydelete);
-    
                 messagePageShow = true;
                 loadingMask("show");
                 //QueryMessageList() will be called in initialSuccess(),

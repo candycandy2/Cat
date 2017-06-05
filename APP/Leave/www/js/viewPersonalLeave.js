@@ -68,11 +68,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
-            // initSlider();
+            $("#tab-1").show();
+            $("#tab-2").hide();
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
-            // initSlider();
             loadingMask("hide");
         });
 
@@ -89,25 +89,29 @@ $("#viewPersonalLeave").pagecontainer({
         $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
             $("#tab-1").hide();
             $("#tab-2").show();
-        });        
+        });
 
-        $(document).on("click", "#title-1", function() {
+        $("#leaveType").on("click", function() {
+            
+        });
+
+        $("#infoTitle-1").on("click", function() {
             if($("#infoContent-1").css("display") === "none") {
-                $("#infoContent-1").slideDown("slow");
-                $("#title-1").find(".listDown").attr("src", "img/list_up.png");
+                $("#infoContent-1").slideDown(500);
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
             }else if($("#infoContent-1").css("display") === "block") {
-                $("#infoContent-1").slideUp("slow");
-                $("#title-1").find(".listDown").attr("src", "img/list_down.png")
+                $("#infoContent-1").slideUp(500);
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
             }
         });
 
-        $(document).on("click", "#title-2", function() {
+        $("#infoTitle-2").on("click", function() {
             if($("#infoContent-2").css("display") === "none") {
-                $("#infoContent-2").slideDown("slow");
-                $("#title-2").find(".listDown").attr("src", "img/list_up.png")
+                $("#infoContent-2").slideDown(500);
+                $("#infoTitle-2").find(".listDown").attr("src", "img/list_up.png")
             }else if($("#infoContent-2").css("display") === "block") {
-                $("#infoContent-2").slideUp("slow");
-                $("#title-2").find(".listDown").attr("src", "img/list_down.png")
+                $("#infoContent-2").slideUp(500);
+                $("#infoTitle-2").find(".listDown").attr("src", "img/list_down.png")
             }
         });
     }

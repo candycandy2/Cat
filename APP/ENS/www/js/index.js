@@ -5,8 +5,6 @@ var appKeyOriginal = "appens";
 var appKey = "appens";
 var pageList = ["viewEventList", "viewEventAdd", "viewEventContent"];
 var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
-//var QMessageKey = "e343504d536ebce16b70167e";
-//var QMessageSecretKey = "62f87cad6de67db6c968ba50";
 
 var prevPageID;
 var openEventFromQPlay = false;
