@@ -9,6 +9,19 @@
         </div>
     </div>
     <div data-role="main" class="page-main">
+        <form>
+            <fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs" id="viewCalendarTab">
+                <input type="radio" name="radio-choice-h-2" id="viewCalendar-tab-1" value="viewCalendar-tab-1" checked="checked">
+                <label for="viewCalendar-tab-1" class="tabs-title">QTY / BQT</label>
 
+                <input type="radio" name="radio-choice-h-2" id="viewCalendar-tab-2" value="viewCalendar-tab-2">
+                <label for="viewCalendar-tab-2" class="tabs-title">BQC</label>
+
+                <input type="radio" name="radio-choice-h-2" id="viewCalendar-tab-3" value="viewCalendar-tab-3">
+                <label for="viewCalendar-tab-3" class="tabs-title">QCS</label>
+            </fieldset>
+        </form>
+        
+        <div id="myCalendar"></div>
     </div>
 </div>
