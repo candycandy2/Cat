@@ -23,11 +23,7 @@ $("#viewMonthlyHitRate").pagecontainer({
                 userAuthorityCallBackData = data["Content"]["DataList"];
                 length = userAuthorityCallBackData.length;
                 for(var i=0; i<length; i++) {
-                    for(var j in userAuthorityCallBackData[i]) {
-                        if(userAuthorityCallBackData[i][j] == "PRODUCT") {
-                            productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>' ;
-                        }
-                    }
+                    productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>' ;
                 }
                 $(".Product").html("");
                 $(".Product").append(productList).enhanceWithin();
@@ -614,7 +610,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = "PRJ";
+                product = userAuthorityCallBackData[0]["PVALUE"];
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
@@ -632,7 +628,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = "PRJ";
+                product = userAuthorityCallBackData[0]["PVALUE"];
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "";
