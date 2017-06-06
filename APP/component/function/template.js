@@ -440,13 +440,8 @@ var tplJS = {
         $(document).one("popupafteropen", "#" + popupID, function() {
             var popup = $(this);
             var popupHeight = popup.height();
-            var popupHeaderHeight;
+            var popupHeaderHeight = $("#" + popupID + " .header").height();
             var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
-            if (type === "typeA") {
-                popupHeaderHeight = parseInt(document.documentElement.clientWidth * 4 / 100, 10);
-            } else if (type === "typeB") {
-                popupHeaderHeight = parseInt(document.documentElement.clientWidth * 8.18 / 100, 10);
-            }
 
             //ui-content paddint-top/padding-bottom:3.07vw
             var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
@@ -609,18 +604,22 @@ var tplJS = {
         this.reSizeDropdownList = function(ID, type, setWidth) {
             type = type || null;
             var tempWidth;
+            //Background Image Width
+            var imgWidth;
 
             if (type === "typeA") {
-                tempWidth = 7;
+                tempWidth = 3.54;
+                imgWidth = 8;
             } else if (type === "typeB") {
-                tempWidth = 7.5;
+                tempWidth = 4.04;
+                imgWidth = 5;
             }
 
             if (type !== null) {
                 $("span[data-id='tmp_option_width']").html($('#' + ID + ' option:selected').text());
                 var pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
                 //px conver to vw
-                var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + tempWidth;
+                var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + tempWidth + imgWidth;
                 $("#" + ID).css('width', vwWidth + 'vw');
             } else {
                 $("#" + ID).css('width', setWidth + 'vw');
@@ -707,6 +706,7 @@ var tplJS = {
                 $(this).find("div[data-role='main'] .main").height(popupMainHeight);
                 $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
             } else {
+                $(this).find("div[data-role='main'].ui-content").css("padding-top", "0");
                 $(this).find("div[data-role='main'] .main").height(0);
                 var popupHeaderHeight = parseInt(popupHeight - popupFooterHeight, 10);
                 $(this).find("div[data-role='main'] > .header").height(popupHeaderHeight);

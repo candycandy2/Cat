@@ -7,7 +7,6 @@ $("#viewEventContent").pagecontainer({
         window.eventContentData;
         var taskData;
         var taskRowID;
-        window.chatroomID;
         var photoUrl;
         var resizePhotoWidth;
         var resizePhotoHeight;
@@ -45,7 +44,7 @@ $("#viewEventContent").pagecontainer({
                         eventContentData = data['Content'];
 
                         //Event List Msg
-                        var eventListMsgHTML = $("template#tplEventListMsg").html();
+                        var eventListMsgHTML = $("template#tplEventListMsg2").html();
                         var eventListMsg = $(eventListMsgHTML);
                         eventListMsg.css("margin-bottom", "2.14vw");
 
@@ -100,6 +99,13 @@ $("#viewEventContent").pagecontainer({
 
                         if (data['Content'].related_event_row_id !== 0) {
                             eventListMsg.find(".event-list-msg-top .link-event").data("value", data['Content'].related_event_row_id);
+
+                            var widthEventNumber = parseInt(data['Content'].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
+                            var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
+                            if (event_type === "一般通報") {
+                                widthImg = 0;
+                            }
+                            eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
                         } else {
                             eventListMsg.find(".event-list-msg-top .link-event").hide();
                         }
@@ -121,18 +127,13 @@ $("#viewEventContent").pagecontainer({
                         var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
                         eventListMsg.find(".event-list-msg-top").append(desc);
 
-                        //User Count
-                        eventListMsg.find(".event-list-msg-bottom .member .text").html(data['Content'].user_count);
-
-                        //Seen Count
-                        eventListMsg.find(".event-list-msg-bottom .view .text").html(data['Content'].seen_count);
-
-                        //Task finish Count
-                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(data['Content'].task_finish_count);
+                        //User Count / Seen Count
+                        var userSeenCount = data['Content'].user_count + "(" + data['Content'].seen_count + "人已讀)";
+                        eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
                         chatroomID = data['Content'].chatroom_id;
-                        var msgCount = 0;
+                        var msgCount;
 
                         for (j=0; j<messageCountData.length; j++) {
                             if (messageCountData[j]["target_id"] === data['Content'].chatroom_id) {
@@ -140,7 +141,9 @@ $("#viewEventContent").pagecontainer({
                                 break;
                             }
                         }
-                        eventListMsg.find(".event-list-msg-bottom .message .text").html(msgCount);
+
+                        if (msgCount == 0) msgCount = "";
+                        eventListMsg.find(".message .count").html(msgCount);
 
                         $("#contentEventContent").prepend(eventListMsg);
 
@@ -180,7 +183,8 @@ $("#viewEventContent").pagecontainer({
                                 padLeft(completeTime.getMinutes(), 2);
 
                                 var eventTaskList = $(eventTaskListAfterHTML);
-                                eventTaskList.find(".user").html(data['Content'].task_detail[i].close_task_user_id);
+                                var userData = data['Content'].task_detail[i].close_task_user_id.split("\\");
+                                eventTaskList.find(".user").html(userData[1]);
                                 eventTaskList.find(".datetime").html(completeTimeText);
                             }
                             eventTaskList.find(".title").html(data['Content'].task_detail[i].task_location);
@@ -190,6 +194,10 @@ $("#viewEventContent").pagecontainer({
                         }
 
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
+
+                        //Task finish Count
+                        var taskCount = data['Content'].task_detail.length + "(" + data['Content'].task_finish_count + "項完成)"
+                        eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                         //ChatRoom Message List
                         chatRoomListView();

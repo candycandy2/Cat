@@ -9,8 +9,8 @@ var serverURL = "https://qplay.benq.com"; // Production API Server
 var appApiPath = "qplayApi";
 var qplayAppKey = "appqplay";
 var download_url = "";
-var QMessageKey = "";
-var QMessageSecretKey = "";
+var QMessageKey = "1dd3ebb8bb12f1895b4a5e25";
+var QMessageSecretKey = "4a9664f480e6c206469617a9";
 
 if (window.localStorage.getItem("appKey") !== null) {
     appKey = window.localStorage.getItem("appKey");
@@ -318,6 +318,7 @@ $(document).one("pagebeforecreate", function() {
         });
 
     //For APP scrolling in [Android ver:5], set CSS
+    //For font-family, set diff in iOS/Android
     $(document).on("pageshow", function() {
         if (device.platform === "Android") {
             $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
@@ -327,10 +328,12 @@ $(document).one("pagebeforecreate", function() {
             if (version === "6") {
                 $(".ui-footer-fixed").css("position", "fixed");
             }
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
             $('.page-header').addClass('ios-fix-overlap');
             $('.ios-fix-overlap-div').css('display', 'block');
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
         }
 
         adjustPageMarginTop();

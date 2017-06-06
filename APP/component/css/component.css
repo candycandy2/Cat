@@ -143,7 +143,8 @@ html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html h
 }
 
 textarea, textarea.ui-input-text {
-    padding: 1.5vh 0 1.5vh 3.7vw;
+    padding: 2.73vw 3.71vw;
+    line-height: 1;
 }
 
 textarea.ui-body-inherit {

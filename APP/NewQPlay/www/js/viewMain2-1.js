@@ -6,109 +6,111 @@
 
             var tempVersionArrData;
             var tempVersionData;
+            
             /********************************** function *************************************/
+              //Event List No Data Popup  
             function FillAppList(responsecontent) {
 
-                        appcategorylist = responsecontent.app_category_list;
-                        applist = responsecontent.app_list;
-                        appmultilang = responsecontent.multi_lang;
+                appcategorylist = responsecontent.app_category_list;
+                applist = responsecontent.app_list;
+                appmultilang = responsecontent.multi_lang;
 
-                        $('#appcontent').html("");
+                $('#appcontent').html("");
 
-                        for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
-                            var catetoryName = appcategorylist[categoryindex].app_category;
-                            var catetoryID = appcategorylist[categoryindex].category_id;
-                            var content = "";
-                            var catetoryAPPCount = 0;
+                for (var categoryindex=0; categoryindex<appcategorylist.length; categoryindex++) {
+                    var catetoryName = appcategorylist[categoryindex].app_category;
+                    var catetoryID = appcategorylist[categoryindex].category_id;
+                    var content = "";
+                    var catetoryAPPCount = 0;
 
-                            if (categoryindex > 0) {
-                                content += '<hr class="app-list-hr">';
+                    if (categoryindex > 0) {
+                        content += '<hr class="app-list-hr">';
+                    }
+                    content += '<span class="app-list-category">' + catetoryName + '</span>';
+                    content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '" style="width:auto;">';
+
+                    for (var appindex=0; appindex<applist.length; appindex++) {
+
+                        var appcategory = applist[appindex].app_category_id;
+
+                        if (appcategory == catetoryID) {
+
+                            //APP version record
+                            if (appVersionRecord[applist[appindex].package_name] === undefined) {
+                                appVersionRecord[applist[appindex].package_name] = {};
+
+                                //For old APP Version
+                                var packageName = applist[appindex].package_name;
+                                var packageNameArr = packageName.split(".");
+                                checkAPPKey = packageNameArr[2];
+
+                                checkAPPInstalled(checkAPPOldVersion, "appList");
+                                tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];
+                                tempVersionData = applist[appindex].app_version.toString();
                             }
-                            content += '<span class="app-list-category">' + catetoryName + '</span>';
-                            content += '<div id="qplayapplist' + categoryindex + '" class="app-list-scroll-area"><div id="qplayapplistContent' + categoryindex + '" style="width:auto;">';
+                            appVersionRecord[applist[appindex].package_name]["latest_version"] = applist[appindex].app_version.toString();
 
-                            for (var appindex=0; appindex<applist.length; appindex++) {
+                            catetoryAPPCount++;
 
-                                var appcategory = applist[appindex].app_category_id;
+                            //Find the specific language of APP Name to display,
+                            //if can not find the language to match the browser language,
+                            //display the default language of APP, which set in QPlay Website
+                            var packagename = null;
+                            var defaultAPPName = null;
 
-                                if (appcategory == catetoryID) {
-
-                                    //APP version record
-                                    if (appVersionRecord[applist[appindex].package_name] === undefined) {
-                                        appVersionRecord[applist[appindex].package_name] = {};
-
-                                        //For old APP Version
-                                        var packageName = applist[appindex].package_name;
-                                        var packageNameArr = packageName.split(".");
-                                        checkAPPKey = packageNameArr[2];
-
-                                        checkAPPInstalled(checkAPPOldVersion, "appList");
-                                        tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];
-                                        tempVersionData = applist[appindex].app_version.toString();
+                            for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
+                                if (applist[appindex].app_code == appmultilang[multilangIndex].project_code) {
+                                    //match browser language
+                                    if (appmultilang[multilangIndex].lang == browserLanguage) {
+                                        packagename = appmultilang[multilangIndex].app_name;
                                     }
-                                    appVersionRecord[applist[appindex].package_name]["latest_version"] = applist[appindex].app_version.toString();
-
-                                    catetoryAPPCount++;
-
-                                    //Find the specific language of APP Name to display,
-                                    //if can not find the language to match the browser language,
-                                    //display the default language of APP, which set in QPlay Website
-                                    var packagename = null;
-                                    var defaultAPPName = null;
-
-                                    for (var multilangIndex=0; multilangIndex < appmultilang.length; multilangIndex++) {
-                                        if (applist[appindex].app_code == appmultilang[multilangIndex].project_code) {
-                                            //match browser language
-                                            if (appmultilang[multilangIndex].lang == browserLanguage) {
-                                                packagename = appmultilang[multilangIndex].app_name;
-                                            }
-                                            //match default language: zh-tw
-                                            if (appmultilang[multilangIndex].lang == applist[appindex].default_lang) {
-                                                defaultAPPName = appmultilang[multilangIndex].app_name;
-                                            }
-                                        }
+                                    //match default language: zh-tw
+                                    if (appmultilang[multilangIndex].lang == applist[appindex].default_lang) {
+                                        defaultAPPName = appmultilang[multilangIndex].app_name;
                                     }
-
-                                    if (packagename == null) {
-                                        packagename = defaultAPPName;
-                                    }
-
-                                    var appurl = applist[appindex].url;
-                                    var appurlicon = applist[appindex].icon_url;
-
-                                    content += "<div class='app-list-item'><a value=" + appindex.toString() + " id='application" + appindex.toString() + "'  href='#appdetail2-2'>";
-                                    content += "<img src='" + applist[appindex].icon_url + "' style='width:25vw;'></a>";
-                                    content += "<p class='app-list-name'>" + packagename + "</p></div>";
-                                }
-
-                                if (parseInt(appindex + 1, 10) == applist.length) {
-                                    content += '</div></div>';
-                                    $('#appcontent').append(content);
                                 }
                             }
 
-                            //auto set with of qplayapplistContent
-                            var pageWidth = $("#viewMain2-1").width();
-                            //Add (APP width) and (Margin width)
-                            var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * (pageWidth * 0.04));
-                            $("#qplayapplistContent" + categoryindex).css("width", catetoryAPPWidth + "px");
+                            if (packagename == null) {
+                                packagename = defaultAPPName;
+                            }
+
+                            var appurl = applist[appindex].url;
+                            var appurlicon = applist[appindex].icon_url;
+
+                            content += "<div class='app-list-item'><a value=" + appindex.toString() + " id='application" + appindex.toString() + "'  href='#appdetail2-2'>";
+                            content += "<img src='" + applist[appindex].icon_url + "' style='width:25vw;'></a>";
+                            content += "<p class='app-list-name'>" + packagename + "</p></div>";
                         }
 
-                        checkAPPVersionRecord("updateFromAPI");
+                        if (parseInt(appindex + 1, 10) == applist.length) {
+                            content += '</div></div>';
+                            $('#appcontent').append(content);
+                        }
+                    }
 
-                        $('a[id^="application"]').click(function(e) {
-                            e.stopImmediatePropagation();
-                            e.preventDefault();
-                            
-                            selectAppIndex = this.getAttribute('value');
-                            $.mobile.changePage('#viewAppDetail2-2');
-                        });
+                    //auto set with of qplayapplistContent
+                    var pageWidth = $("#viewMain2-1").width();
+                    //Add (APP width) and (Margin width)
+                    var catetoryAPPWidth = (catetoryAPPCount * pageWidth * 0.25) + (catetoryAPPCount * (pageWidth * 0.04));
+                    $("#qplayapplistContent" + categoryindex).css("width", catetoryAPPWidth + "px");
+                }
 
-                        loadingMask("hide");
-                        $("#appcontent").show();
+                checkAPPVersionRecord("updateFromAPI");
 
-                        //for jump to detail page
-                        openAppDetailCheck();
+                $('a[id^="application"]').click(function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+
+                    selectAppIndex = this.getAttribute('value');
+                    $.mobile.changePage('#viewAppDetail2-2');
+                });
+
+                loadingMask("hide");
+                $("#appcontent").show();
+
+                //for jump to detail page
+                openAppDetailCheck();
             }
 
             function QueryAppList() {
@@ -253,18 +255,17 @@
                 }
             }
             /********************************** page event *************************************/
-            $("#viewMain2-1").on("pagebeforeshow", function(event, ui) {
-
+            $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
+                var eventLogoutConfirmPopupData = {
+                    id: "logoutConfirm",
+                    content: $("template#tplContactUserPopup").html()
+                };
+                tplJS.Popup("viewMain2-1", "appcontent", "append", eventLogoutConfirmPopupData);
             });
 
             $("#viewMain2-1").on("pageshow", function(event, ui) {
                 loadingMask("show");
                 var appList = new QueryAppList();
-
-                $('#logoutConfirm').popup('close');
-
-                
-                /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#appcontent',
                     onRefresh: function() {
@@ -274,23 +275,20 @@
                     }
                 });
             });
-
             /********************************** dom event *************************************/
             $("#logout").on("click", function() {
                 $('#logoutConfirm').popup('open');
             });
 
-            $("#logoutConfirm #cancel").on("click", function() {
-                $('#logoutConfirm').popup('close');
-            });
-
-            $("#logoutConfirm #confirm").on("click", function() {
-
+            $(document).on("click", "#logoutConfirm #confirm", function() {
                 $('#logoutConfirm').popup('close');
                 loadingMask("show");
-
                 var logout = new doLogOut();
             });
+
+            $(document).on("click", "#logoutConfirm #cancel", function() {
+                $('#logoutConfirm').popup('close');
+             });
 
             $("#newseventspage").on("click", function() {
                 $.mobile.changePage('#viewNewsEvents2-3');
@@ -298,4 +296,3 @@
         }
     });
 
-//});

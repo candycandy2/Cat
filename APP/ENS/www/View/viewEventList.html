@@ -11,15 +11,25 @@
     <div data-role="main" class="page-main" id="contentEventList">
 
         <!--template @Event List Msg-->
-        <template id="tplEventListMsg">
+        <template id="tplEventListMsg2">
             <div class="event-list-msg">
                 <div class="event-list-msg-top">
                     <div>
-                        <span class="name">Michael Yang</span>
+                        <span class="link">
+                            <div class="normal hide">
+                                <span class="img hide"></span>
+                                <span class="text" style="margin-left:0;">16003</span>
+                            </div>
+                            <div class="urgent">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="link-event"></div>
+                        </span>
                         <span class="event-status">
                             <div class="done hide">
                                 <span class="img"></span>
-                                <span class="text">已完成</span>
+                                <span class="text"><!--已完成--></span>
                             </div>
                             <div class="unfinished">
                                 <span class="img"></span>
@@ -27,22 +37,14 @@
                             </div>
                         </span>
                     </div>
-                    <div>
-                        <span class="link">
-                            <div class="normal hide">
-                                <span class="img"></span>
-                                <span class="text">16003</span>
-                                <span class="link-event"></span>
-                            </div>
-                            <div class="urgent">
-                                <span class="img"></span>
-                                <span class="text">16003</span>
-                                <span class="link-event"></span>
-                            </div>
-                        </span>
+                    <div class="description">[機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業
+                    </div>
+                    <div class="name-time">
+                        <span class="name">Michael Yang</span>
                         <span class="time">2017-01-01 12:30</span>
                     </div>
-                    <div class="description">[機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業
+                    <div class="message">
+                        <span class="count"></span>留言
                     </div>
                 </div>
                 <hr class="event-list-msg-hr">
@@ -51,18 +53,18 @@
                         <span class="img"></span>
                         <span class="text">1</span>
                     </span>
-                    <span class="view">
+                    <!--<span class="view">
                         <span class="img"></span>
                         <span class="text">2</span>
-                    </span>
+                    </span>-->
                     <span class="member-done">
                         <span class="img"></span>
                         <span class="text">3</span>
                     </span>
-                    <span class="message">
+                    <!--<span class="message">
                         <span class="img"></span>
                         <span class="text">0</span>
-                    </span>
+                    </span>-->
                 </div>
             </div>
         </template>
@@ -73,12 +75,16 @@
             <div class="header event-member-list">
                 <div class="number">
                     <div class="normal hide">
-                        <span class="img"></span>
-                        <span class="text">16003</span>
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
                     </div>
                     <div class="urgent">
-                        <span class="img"></span>
-                        <span class="text">16003</span>
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
                     </div>
                 </div>
                 <div class="title">
@@ -121,12 +127,16 @@
             <div class="header event-member-list">
                 <div class="number">
                     <div class="normal hide">
-                        <span class="img"></span>
-                        <span class="text">16003</span>
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
                     </div>
                     <div class="urgent">
-                        <span class="img"></span>
-                        <span class="text">16003</span>
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
                     </div>
                 </div>
                 <div class="title">
@@ -151,8 +161,8 @@
                                 Function A
                             </div>
                             <div class="user-datetime">
-                                <sapn class="user font-style6"></sapn>
-                                <sapn class="datetime font-style7"></sapn>
+                                <sapn class="user font-style12"></sapn>
+                                <sapn class="datetime font-style12"></sapn>
                             </div>
                         </div>
                     </li>
@@ -170,8 +180,8 @@
                                 Function A
                             </div>
                             <div class="user-datetime">
-                                <sapn class="user font-style6">Kevin.CM.Huang</sapn>
-                                <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                                <sapn class="user font-style12">Kevin.CM.Huang</sapn>
+                                <sapn class="datetime font-style12">2017/01/01 12:00</sapn>
                             </div>
                         </div>
                     </li>

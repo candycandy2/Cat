@@ -1,4 +1,4 @@
-<div data-role="page" id="personalLeave">
+<div data-role="page" id="viewPersonalLeave">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
@@ -18,16 +18,175 @@
                 <label for="viewPersonalLeave-tab-2" class="tabs-title">快速請假</label>
             </fieldset>
         </form>
-        <div id="personalLeaveSlider">
-            <div>五月. 2017</div>
-            <div>六月. 2017</div>
-            <div>七月. 2017</div>
-            <div>八月. 2017</div>
-            <div>九月. 2017</div>
-            <div>十月. 2017</div>
-            <div>十一月. 2017</div>
-            <div>十二月. 2017</div>
+        <div id="tab-1">
+            <div id="personalLeaveSlider">
+                <!-- <div>五月. 2017</div>
+                <div>六月. 2017</div>
+                <div>七月. 2017</div>
+                <div>八月. 2017</div>
+                <div>九月. 2017</div>
+                <div>十月. 2017</div>
+                <div>十一月. 2017</div>
+                <div>十二月. 2017</div> -->
+            </div>
+            <div id="myCalendar"></div>
+            <div id="infoList">
+                <div class="infoContainer">
+                    <div class="infoTitle" id="infoTitle-1">
+                        <div class="title">個人剩餘假別資訊</div>
+                        <img class="listDown" src="img/list_down.png">
+                    </div>
+                    <div class="infoContent" id="infoContent-1">
+                        <ul>
+                            <li style="margin-top: 6.04VW;">
+                                <div>
+                                    <span>本期特休</span>
+                                </div>
+                                <div>
+                                    <span>12</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>去年特休</span>
+                                </div>
+                                <div>
+                                    <span>8</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>去年彈休</span>
+                                </div>
+                                <div>
+                                    <span>12</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>預支特休</span>
+                                </div>
+                                <div>
+                                    <span>5</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>逾期未使用</span>
+                                </div>
+                                <div>
+                                    <span>2</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="infoContainer">
+                    <div class="infoTitle" id="infoTitle-2">
+                        <div class="title">本年度請假統計</div>
+                        <img class="listDown" src="img/list_down.png">
+                    </div>
+                    <div class="infoContent" id="infoContent-2"> 
+                        <ul>
+                            <li style="margin-top: 6.04VW;">
+                                <div>
+                                    <span>事假</span>
+                                </div>
+                                <div>
+                                    <span>0</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>本期特休</span>
+                                </div>
+                                <div>
+                                    <span>10</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>病假</span>
+                                </div>
+                                <div>
+                                    <span>10</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <span>其他假</span>
+                                </div>
+                                <div>
+                                    <span>0</span>
+                                    <span>天</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="infoContainer">
+                    <div class="infoTitle" id="title-3">
+                        <div class="title">注意事項</div>
+                        <img class="listDown" src="img/list_down.png">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="myCalendar"></div>
+        <div id="tab-2" style="margin: 4.3VW 3.71VW 0VW 3.71VW;">
+            <div>
+                <span>假別</span>
+            </div>
+            <div data-role="none" id="leaveType" style="margin-top: 1.16VW;">
+                <!-- <span style="font-size: 4.8VW">請選擇</span>
+                <img  class="dropdown-icon" src="img/dropdown.png"> -->
+                <sapn>123天</sapn>
+            </div>
+
+            <div style="margin-top: 5VW;">
+                <span>代理人</span>
+            </div>
+            <div data-role="none" id="agent" style="margin-top: 1.16VW;">
+                <span style="font-size: 4.8VW;">請選擇</span>
+                <img  class="dropdown-icon" src="img/dropdown.png">
+            </div>
+
+            <div style="margin-top: 5VW;">
+                <span>請假日期</span>
+            </div>
+            <form>
+                <fieldset data-role="controlgroup" data-type="horizontal" id="leaveDate">
+                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab1" value="leaveDate-tab1" checked="checked">
+                    <label for="leaveDate-tab1" class="leaveDateTitle">8/30&nbsp;(一)</label>
+
+                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab2" value="leaveDate-tab2">
+                    <label for="leaveDate-tab2" class="leaveDateTitle">8/31&nbsp;(二)</label>
+                </fieldset>
+            </form>
+
+            <div style="margin-top: 5VW;">
+                <span>請假時段</span>
+            </div>
+            <form>
+                <fieldset data-role="controlgroup" data-type="horizontal" id="leaveTime">
+                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab1" value="leaveTime-tab1" checked="checked">
+                    <label for="leaveTime-tab1" class="leaveTimeTitle">全天</label>
+
+                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab2" value="leaveTime-tab2">
+                    <label for="leaveTime-tab2" class="leaveTimeTitle">上午</label>
+
+                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab3" value="leaveTime-tab3">
+                    <label for="leaveTime-tab3" class="leaveTimeTitle">下午</label>
+                </fieldset>
+            </form>
+            <div class="btn-disable radius-btn" style="margin: 10VW auto; margin-bottom: 0;">我要請假</div>
+        </div>
     </div>
 </div>

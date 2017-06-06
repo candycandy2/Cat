@@ -107,62 +107,41 @@
             </div>
         </div>
     </div>
-
-    <div data-role="popup" data-history="false" id="selectMsgDateFrom" class="popup-div" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content">
-            <p>
+    <div data-role="main" class="ui-content" id="appcontent2-3" >
+        <template id="tplEventListNoDataPopup30">
+            <div class="header font-style3">
                 <input type="radio" data-role="none" name="selectDateFrom" id="month" value='month' checked="checked">
                 <label data-role="none" class="overlap-label-icon"></label>
                 <label data-role="none" class="overlap-label-text" for="month">
                     <!--重新載入30天歷史訊息-->
                     <span class="langStr" data-id="str_033"></span>
                 </label>
-            </p>
-            <p>
                 <input type="radio" data-role="none" name="selectDateFrom" id="skip" value='skip'>
                 <label data-role="none" class="overlap-label-icon"></label>
                 <label data-role="none" class="overlap-label-text" for="skip">
                     <!--不載入歷史訊息-->
                     <span class="langStr" data-id="str_034"></span>
                 </label>
-            </p>
-
-            <hr class="hr-style">
-
-            <div class="bottom">
-                <div class="button-content">
-                    <span id="selectMsgDateFromOK">
-                        <!--確定-->
-                        <span class="langStr" data-id="str_016"></span>
-                    </span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style0">
+                    <div class="confirm " id="selectMsgDateFromOK">確定</div>
                 </div>
             </div>
-
-        </div>
-    </div>
-
-    <div data-role="popup" data-history="false" id="deleteConfirm" class="popup-div" data-overlay-theme="b" data-dismissible="false">
-        <div data-role="main" class="ui-content">
-            <p>
-                <!--確定刪除公告嗎？-->
-                <span class="langStr" data-id="str_042"></span>
-            </p>
-
-            <hr class="hr-style">
-
-            <div class="bottom">
-                <div class="button-content">
-                    <div id="cancel">
-                        <!--取消-->
+        </template>
+        <template id="tplContactUserPopupdeleteConfirm"">
+            <div class="header font-style3">
+                確定刪除通知嗎？
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style0">
+                    <div id="cancel">                    
                         <span class="langStr" data-id="str_023"></span>
                     </div>
-                    <div class="vertical-line">&nbsp;</div>
-                    <div id="yes">
-                        <!--刪除-->
-                        <span class="langStr" data-id="str_037"></span>
-                    </div>
+                <div id="yes">
+                    <span class="langStr" data-id="str_037"></span>
+                </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
-</div>
