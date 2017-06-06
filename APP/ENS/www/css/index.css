@@ -292,9 +292,10 @@ input[type=radio]:checked + label {
 }
 
 .event-list-footer {
-    width: 18vw;
+    width: 17.71vw;
     left: initial;
-    right: 4.9vw;
+    right: 4.89vw;
+    bottom: 2.37vw;
 }
 
 .event-list-footer.ui-bar-inherit {
@@ -304,9 +305,9 @@ input[type=radio]:checked + label {
 
 .event-list-add-button {
     background: url(../img/notice.png) no-repeat;
-    background-size: 18vw;
-    width: 18vw;
-    height: 18vw;
+    background-size: 17.71vw;
+    width: 17.71vw;
+    height: 17.71vw;
 }
 
 .event-member-list.header .text {
