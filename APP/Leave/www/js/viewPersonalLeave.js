@@ -81,16 +81,15 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).ready(function() {
             $("#viewPersonalLeave #myCalendar").zabuto_calendar({
-                language: "en",
+                language: "default",
                 show_previous: true,
                 show_next: true,
-                cell_border: true,
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {
-                    prev: '<i class="fa fa-chevron-circle-left"></i>',
-                    next: '<i class="fa fa-chevron-circle-right"></i>'
-                }
+                    prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
+                    next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+                },
             });
         });
 
