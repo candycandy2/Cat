@@ -61,3 +61,30 @@ td.grid_warp_column {
 .dropdown-menu>li>a {
     cursor: pointer;
 }
+.label-published {
+    color: #fff;
+    background-color: #5cb85c;
+    border-radius: 3px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+}
+.label-unpublished {
+    color: #5cb85c;
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: 3px;
+    border-color:#5cb85c;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+}
