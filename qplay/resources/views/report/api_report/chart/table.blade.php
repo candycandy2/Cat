@@ -40,8 +40,8 @@ var createTable = function(res, date){
         return false;
     }
     var dataArray = res[date].actions
-    var htotalArr = {'t':[],'d':[]};
-    var vtotalArr = {'t':0,'d':0};
+    //var htotalArr = {'t':[],'d':[]};
+    //var vtotalArr = {'t':0,'d':0};
     var actionArray =[];
     var companySiteArray = [];
     var departmentArray = [];
@@ -98,9 +98,14 @@ var createTable = function(res, date){
 
     });
 
-    //add last total row and operate total
+    //add last total row
     $('.js-row').append('<tr class="js-total"><th scope="row"></th>'+td+'</tr>');
     $('.js-row > tr.js-total td').html(0);
+
+    //  operate company-side total
+    var htotalArr = {'t':[],'d':[]};
+    $.each(companySiteArray, function(index, companySite){
+        var vtotalArr = {'t':0,'d':0};
         $.each(vtotalArr, function(type,cnt){
            $companySiteObj = $('td.js-' + companySite + '_' + type);
            var i=0;
@@ -120,7 +125,9 @@ var createTable = function(res, date){
             $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).html( vtotalArr[type]);
             $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).addClass('text-blod');
         });   
-
+         
+     });
+    // operate times and  users total
     $.each(htotalArr,function(type,hTotal){
         $vTotalObj = $('#report_table').find('.js-v-' + type);
         $.each($vTotalObj, function(index){
