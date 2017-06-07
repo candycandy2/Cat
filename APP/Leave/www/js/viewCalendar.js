@@ -12,9 +12,9 @@ $("#viewCalendar").pagecontainer({
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {
-                    prev: '<i class="fa fa-chevron-circle-left"></i>',
-                    next: '<i class="fa fa-chevron-circle-right"></i>'
-                }
+                    prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
+                    next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+                },
             });
         });
 
@@ -26,8 +26,6 @@ $("#viewCalendar").pagecontainer({
             loadingMask("hide");
         });
 
-
-        
 
         /********************************** dom event *************************************/
         $("#viewCalendar").keypress(function(event) {

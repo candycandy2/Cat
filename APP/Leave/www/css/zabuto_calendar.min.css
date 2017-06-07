@@ -7,12 +7,6 @@ div.zabuto_calendar {
     padding: 0;
 }
 
-div.zabuto_calendar .table {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
 div.zabuto_calendar .table th,
 div.zabuto_calendar .table td {
     padding: 4px 2px;
@@ -24,35 +18,37 @@ div.zabuto_calendar .table tr td {
     background-color: #ffffff;
 }
 
-div.zabuto_calendar .table tr.calendar-month-header th {
+div.zabuto_calendar tr.calendar-month-header th {
     background-color: #fafafa;
 }
 
-div.zabuto_calendar .table tr.calendar-month-header th span {
-    cursor: pointer;
+div.zabuto_calendar tr.calendar-month-header th span {
+    /*cursor: pointer;*/
     display: inline-block;
     padding-bottom: 10px;
 }
 
-div.zabuto_calendar .table tr.calendar-dow-header th {
-    background-color: #f0f0f0;
+div.zabuto_calendar .table tr.calendar-dow-header {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #0f0f0f;
 }
 
 div.zabuto_calendar .table tr:last-child {
     border-bottom: 1px solid #dddddd;
 }
 
-div.zabuto_calendar .table tr.calendar-month-header th {
+div.zabuto_calendar tr.calendar-month-header th {
     padding-top: 12px;
     padding-bottom: 4px;
 }
 
-div.zabuto_calendar .table-bordered tr.calendar-month-header th {
+div.zabuto_calendar tr.calendar-month-header th {
     border-left: 0;
     border-right: 0;
 }
 
-div.zabuto_calendar .table-bordered tr.calendar-month-header th:first-child {
+div.zabuto_calendar tr.calendar-month-header th:first-child {
     border-left: 1px solid #dddddd;
 }
 
@@ -63,10 +59,10 @@ div.zabuto_calendar div.calendar-month-navigation {
     padding-top: 5px;
 }
 
-div.zabuto_calendar tr.calendar-dow-header th,
+/*div.zabuto_calendar tr.calendar-dow-header th,
 div.zabuto_calendar tr.calendar-dow td {
     width: 14%;
-}
+}*/
 
 div.zabuto_calendar .table tr td div.day {
     margin: 0;
@@ -172,4 +168,32 @@ div.zabuto_calendar div.legend span.badge {
     div.zabuto_calendar .table td {
         padding: 2px 1px;
     }
+}
+
+/*css style of customization */
+.nav_icon {
+    width: 4.934VW;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    width: 92.58VW;
+    margin: 0VW 3.71VW 0VW 3.71VW;
+    border-spacing: 0px;
+    border-style: solid;
+    border-width: 0.1px;
+    border-color: #d6d6d6;
+}
+
+tr {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #0f0f0f;
+}
+
+div.zabuto_calendar .table .calendar-dow-header th {
+    margin: 0;
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
