@@ -73,7 +73,7 @@ $(function () {
         $('#api_report > li.active').removeClass('active');
         var openId = $(this).data('tabid');
         if(openId == 'api_call_frequency_report'){
-            getApiLogBasicLine();
+            createApiLogMultiLine();
         }
         $(this).parents('li').addClass('active');
         $('.tab-content > div.active').removeClass('active').removeClass('in')

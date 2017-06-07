@@ -43,7 +43,7 @@ td.grid_warp_column {
 .bg-color-pink{
     background-color: #f9edf7;
 }
-.bg-colot-blue{
+.bg-color-blue{
     background-color: #d9edf7;
 }
 .text-blod
@@ -52,4 +52,12 @@ td.grid_warp_column {
 }
 #report_table td{
     text-align: center;
+}
+.dropdown-menu>.active>a,
+.dropdown-menu>.active>a:focus,
+.dropdown-menu>.active>a:hover {
+    cursor: default;
+}
+.dropdown-menu>li>a {
+    cursor: pointer;
 }
