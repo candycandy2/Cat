@@ -8,11 +8,15 @@
   	padding: 0 !important;
 }
 
-.page-main .ui-radio {
+#viewPersonalLeave .page-main .ui-radio {
 	width: 46.29VW;
 }
 
-.page-main #leaveTime .ui-radio {
+#viewPersonalLeave .page-main #leaveTime .ui-radio {
+	width: 30.86VW;
+}
+
+#viewCalendar .page-main .ui-radio {
 	width: 30.86VW;
 }
 
@@ -37,24 +41,6 @@
 	line-height: 5.6VH;
 	text-align: center;
 	padding: 0px;
-}
-
-#tab-2 {
-	margin: 4.3VW 3.71VW 0VW 3.71VW;
-}
-
-#leaveDate, #leaveTime {
-	margin-top: 2.14VW;
-	margin-bottom: 0VW !important;
-}
-
-#leaveDate .leaveDateTitle, #leaveTime .leaveTimeTitle {
-	text-align: center;
-}
-
-#leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
-	background-color: #0fb6b7;
-	border-color: #0fb6b7;
 }
 /******************************************* personal leave *****************************************/
 #infoList {
@@ -106,15 +92,23 @@
 }
 
 .dropdown-icon {
-    outline: none;
-    font-size: 4.18vw;
-    border: 0;
-    background: url('../img/dropdown.png') 100% 45% transparent;
-    background-size: 3.54vw auto;
-    background-repeat: no-repeat;
-    -webkit-appearance: none;
-    padding-right: 6.74vw;
-    /*margin-bottom: 2.14vw !important;*/
+	width: 3.54VW;
+	margin: 0VW 3.2VW 0.35VH 3.2VW;
+}
+
+#leaveDate, #leaveTime {
+	margin-top: 2.14VW;
+	margin-bottom: 0VW !important;
+}
+
+#leaveDate .leaveDateTitle, #leaveTime .leaveTimeTitle {
+	text-align: center;
+	font-weight: 300;
+}
+
+#leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
+	background-color: #0fb6b7;
+	border-color: #0fb6b7;
 }
 
 .radius-btn {

@@ -586,8 +586,6 @@ $("#viewEventList").pagecontainer({
             action = action || null;
             var openData = false;
 
-            loadingMask("show");
-
             if (action === "member" || action === "function") {
                 //Only [admin] & [supervisor] can read (member) & (function)
                 if (checkAuthority("admin") || checkAuthority("supervisor")) {
@@ -606,6 +604,8 @@ $("#viewEventList").pagecontainer({
                     }
                 }
 
+                loadingMask("show");
+
                 if (action === "authority") {
                     var eventRelatedID = $(dom).data("value");
                 } else if (action === "authority2") {
@@ -619,6 +619,7 @@ $("#viewEventList").pagecontainer({
             }
 
             if (openData) {
+                loadingMask("show");
                 var eventDetail = new getEventDetail(eventID, action);
             }
         };
