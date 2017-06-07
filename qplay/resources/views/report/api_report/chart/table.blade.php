@@ -41,32 +41,64 @@ var createTable = function(res, date){
     }
     var dataArray = res[date].actions
     var htotalArr = {'t':[],'d':[]};
-
-    $('.js-data-title').attr('colspan',dataArray.length);
+    var vtotalArr = {'t':0,'d':0};
+    var actionArray =[];
+    var companySiteArray = [];
+    var departmentArray = [];
     for(var actionName in dataArray){
-        var vtotalArr = {'t':0,'d':0};
-        var td = '<td class="js-v-t text-blod">0</td><td class="js-v-d text-blod">0</td>'; 
-         for(var companySite in dataArray[actionName]){
-             var bgcolor = {'t':'blue','d':'pink'};
-             for(var type in bgcolor){
-                if($('tr.js-company-site > th.bg-color-' + bgcolor[type] + ':contains(' + companySite + ')').length == 0){
-                        var th = '<th class="table-title bg-color-' + bgcolor[type] + '"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-                       $('.js-company-site').append(th);
-                     }
-                var tmpCount = 0;
-                for(var department in dataArray[actionName][companySite]){
-                    if(type == 't'){
-                        tmpCount = tmpCount +  dataArray[actionName][companySite][department].times;
-                    }else{
-                        tmpCount = tmpCount +  dataArray[actionName][companySite][department].users.length;
-                    }
+        if($.inArray(actionName,actionArray) == -1){
+            actionArray.push(actionName);
+        }
+        for(var companySite in dataArray[actionName]){
+            if($.inArray(companySite,companySiteArray) == -1){
+                companySiteArray.push(companySite);
+            }
+
+            for(var department in dataArray[actionName][companySite]){
+                if($.inArray(department,departmentArray) == -1){
+                    departmentArray.push(department);
                 }
-                td += '<td class="js-'+companySite+'_' + type + '">'+ tmpCount +'</td>';
-             }
-         }
-        var tr = '<tr class="js-' + actionName + '" style="cursor:pointer"><th scope="row"><u>' + actionName + '</u></th>' + td + '</tr>';
-            $('.js-row').append(tr); 
+            }
+        }
     }
+    $('.js-data-title').attr('colspan',companySiteArray.length);
+    //call api times
+    var td = '<td class="js-v-t text-blod">0</td><td class="js-v-d text-blod">0</td>';
+    $.each(companySiteArray, function(index, companySite){
+        var th = '<th class="table-title bg-color-blue"><div class="th-inner fit-cell">'+companySite+'</div></th>';
+        td+= '<td class="js-'+companySite+'_t">0</td>';
+        $('.js-company-site').append(th);
+    });
+    //call api user
+    $.each(companySiteArray, function(index, companySite){
+        var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+companySite+'</div></th>';
+        td+= '<td class="js-'+companySite+'_d">0</td>';
+        $('.js-company-site').append(th);
+    });
+    //api action row
+    $.each(actionArray, function(index, actionName){
+        var tr = '<tr class="js-' + actionName + '" style="cursor:pointer"><th scope="row"><u>' + actionName + '</u></th>' + td + '</tr>';
+        $('.js-row').append(tr);
+    });
+
+    //append result data
+    $.each(actionArray, function(index, action){
+        $.each(companySiteArray, function(subIndex, companySite){
+             var tmpTimesCount = 0;
+             var tmpUsersCount = 0;
+            $.each(departmentArray, function(nodeIndex, department){
+                if( (typeof dataArray[action][companySite] != 'undefined') && (typeof dataArray[action][companySite][department] != 'undefined')){
+                    tmpTimesCount = tmpTimesCount + dataArray[action][companySite][department].times;
+                    tmpUsersCount = tmpTimesCount + dataArray[action][companySite][department].users.length;
+                }
+            });
+            $('#report_table .js-'+action+' .js-'+companySite+'_t').html(tmpTimesCount);
+            $('#report_table .js-'+action+' .js-'+companySite+'_d').html(tmpUsersCount);
+        });
+
+    });
+
+    //add last total row and operate total
     $('.js-row').append('<tr class="js-total"><th scope="row"></th>'+td+'</tr>');
     $('.js-row > tr.js-total td').html(0);
         $.each(vtotalArr, function(type,cnt){
