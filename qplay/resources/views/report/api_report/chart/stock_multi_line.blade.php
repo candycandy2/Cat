@@ -90,15 +90,13 @@ function createMultiLineChart(container, seriesOptions, res) {
     Highcharts.stockChart('container_stock', {
 
         rangeSelector: {
-            allButtonsEnabled: true,
-
             buttons: [{
                 type: 'week',
                 count: 1,
                 text: '7天',
                 dataGrouping: {
                     forced: true,
-                    units: [['week', [1]]]
+                    units: [['day', [1]]]
                 }
             }, {
                 type: 'month',

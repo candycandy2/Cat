@@ -9,12 +9,6 @@
 </div>
 
 <script>
-var iniApiLogDonutChart = function(r, queryAction){
-    createdDunutChart('container_donut_chart_t');
-    createdDunutChart('container_donut_chart_d');
-    setDonutChartData(r,'t', queryAction, $('#container_donut_chart_t').highcharts());
-    setDonutChartData(r,'d', queryAction, $('#container_donut_chart_d').highcharts());
-}
 var updateApiLogDonutChart = function(r, queryAction){
     setDonutChartData(r,'t', queryAction, $('#container_donut_chart_t').highcharts());
     setDonutChartData(r,'d', queryAction, $('#container_donut_chart_d').highcharts());
