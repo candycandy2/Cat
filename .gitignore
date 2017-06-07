@@ -93,3 +93,5 @@ storage
 /qplayApi/qplayApi/public/jpush.log
 .idea
 
+package-lock.json
+package.json
