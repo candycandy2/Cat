@@ -1,47 +1,60 @@
-<div><label class="text-muted" id="table_date">2017-03-03</label></div>
-<div class="table-responsive">
-    <table id="report_table" class="table table-bordered table-striped ">
-       <thead>
-          <tr>
-             <th rowspan="2" data-field="_id.action" class="table-title">
-                <div class="th-inner ">API 名稱</div>
-             </th>
-             <th rowspan="2" data-field="1" class="table-title bg-color-blue">
-                <div class="th-inner ">API 呼叫次數</div>
-             </th>
-             <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                <div class="th-inner ">API 呼叫人數</div>
-             </th>
-             <th class="js-data-title table-title bg-color-blue">
-                <div class="th-inner">API 呼叫次數_公司+地區</div>
-             </th>
-             <th class="js-data-title table-title bg-color-pink">
-                <div class="th-inner">API 呼叫人數_公司+地區</div>
-             </th>
-          </tr>
-          <tr class="js-company-site">
-          </tr>
-       </thead>
-       <tbody class="js-row">
-       </tbody>
-    </table>
+<div id="call_api_table">
+    <div><label class="text-muted" id="table_date">2017-03-03</label></div>
+    <div class="table-responsive">
+        <table id="report_table" class="table table-bordered table-striped ">
+           <thead>
+              <tr>
+                 <th rowspan="2" data-field="_id.action" class="table-title">
+                    <div class="th-inner ">API 名稱</div>
+                 </th>
+                 <th rowspan="2" data-field="1" class="table-title bg-color-blue">
+                    <div class="th-inner ">API 呼叫次數</div>
+                 </th>
+                 <th rowspan="2" data-field="2" class="table-title bg-color-pink">
+                    <div class="th-inner ">API 呼叫人數</div>
+                 </th>
+                 <th class="js-data-title table-title bg-color-blue">
+                    <div class="th-inner">API 呼叫次數_公司+地區</div>
+                 </th>
+                 <th class="js-data-title table-title bg-color-pink">
+                    <div class="th-inner">API 呼叫人數_公司+地區</div>
+                 </th>
+              </tr>
+              <tr class="js-company-site">
+              </tr>
+           </thead>
+           <tbody class="js-row">
+           </tbody>
+        </table>
+    </div>
 </div>
 <script>
 
 var createTableChart = function(res,date){
+    
     $('#table_date').text(date);
     $('thead > tr.js-company-site').empty();
     $('tbody').empty();
+    
     createTable(res,date);
     sortTable('#report_table');
+    
+    //set donut chart
+    if(typeof res[date] == 'undefined'){
+       $('#call_api_table').hide();
+       $('#call_api_donutchart').hide();
+    }else{
+        $('#call_api_table').show();
+        $('#call_api_donutchart').show();
+        updateApiLogDonutChart(res[date].actions,$.trim($('#report_table u').eq(0).text()));
+    }
+    
 }
 var createTable = function(res, date){
     if(typeof res[date] == 'undefined'){
         return false;
     }
     var dataArray = res[date].actions
-    //var htotalArr = {'t':[],'d':[]};
-    //var vtotalArr = {'t':0,'d':0};
     var actionArray =[];
     var companySiteArray = [];
     var departmentArray = [];
@@ -137,8 +150,7 @@ var createTable = function(res, date){
      });
      $('.js-v-t span').css('color','#8085e9');
      $('.js-v-d span').css('color','Orange');
-
-     iniApiLogDonutChart(dataArray,$.trim($('#report_table u').eq(0).text()));
+     
      $('#report_table u').click(function(){
        updateApiLogDonutChart(dataArray,$.trim($(this).text()));
      })

@@ -1,13 +1,7 @@
 <div class="col-lg-12 col-md-12 col-xs-12" id="">
-<div id="container_stock" style="height: 400px; min-width: 310px"></div>
+    <div id="container_stock" style="height: 400px; min-width: 310px"></div>
 </div>
 <script>
-
-$(function () {
-
-    
-
-});
 
 var createApiLogMultiLine = function(){
 
@@ -77,8 +71,11 @@ var createApiLogMultiLine = function(){
                     name:"呼叫人數",
                     data:callUsersData
                 }
+                createdDunutChart('container_donut_chart_t');
+                createdDunutChart('container_donut_chart_d');
                 createMultiLineChart('container_stock',seriesOptions, res);
                 createTableChart(res,reportEndDate);
+               
             }
        }
     });

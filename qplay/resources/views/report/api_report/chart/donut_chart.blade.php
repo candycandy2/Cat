@@ -1,11 +1,12 @@
-
-<div class="col-lg-6 col-md-6 col-xs-12">
-    <div id="container_donut_chart_t"></div>
+<div id="call_api_donutchart">
+    <div><label class="text-muted">詳細資料</label></div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <div id="container_donut_chart_t"></div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <div id="container_donut_chart_d"></div>    
+    </div>
 </div>
-<div class="col-lg-6 col-md-6 col-xs-12">
-    <div id="container_donut_chart_d"></div>    
-</div>
-
 
 <script>
 var iniApiLogDonutChart = function(r, queryAction){
@@ -21,20 +22,23 @@ var updateApiLogDonutChart = function(r, queryAction){
 
 var setDonutChartData = function(r,type,queryAction,chart){
      var colors = Highcharts.getOptions().colors,
+        companySiteArray = [],
         categories = [],
         data = [],
         siteData = [],
         departmentData = [],
         i,
         j,
+        x = 0,
         dataLen = data.length,
         drillDataLen,
         brightness,
         sum = 0;
+
     for (var companySite in r[queryAction]){
         var tmpData = {
             y: 0,
-            color: colors[0],
+            color: colors[x],
             drilldown: {
                 name: companySite,
                 categories: [],
@@ -43,6 +47,7 @@ var setDonutChartData = function(r,type,queryAction,chart){
             }
         }
         var tmpSubSum = 0;
+        categories.push(companySite);
         for (var department in r[queryAction][companySite]){
             tmpData.drilldown.categories.push(department);
             if(type == 't'){
@@ -56,34 +61,36 @@ var setDonutChartData = function(r,type,queryAction,chart){
         sum = sum + tmpSubSum;
         tmpData.y = tmpSubSum;
         data.push(tmpData);
+        x++;
+    }
 
-        var dataLen = data.length;
-        // Build the data arrays
-        for (i = 0; i < dataLen; i += 1) {
+     var dataLen = data.length;
+    // Build the data arrays
+    for (i = 0; i < dataLen; i += 1) {
+        // add site data
+        siteData.push({
+            name: categories[i],
+            y:  Math.round(data[i].y / sum * 100 * 10) / 10,
+            color: data[i].color
+        });
 
-            // add site data
-            siteData.push({
-                name: categories[i],
-                y: data[i].y / sum * 100,
-                color: data[i].color
+        // add department data
+        drillDataLen = data[i].drilldown.data.length;
+        for (j = 0; j < drillDataLen; j += 1) {
+            brightness = 0.2 - (j / drillDataLen) / 5;
+            departmentData.push({
+                name: data[i].drilldown.categories[j],
+                y: Math.round(data[i].drilldown.data[j] / sum * 100 * 10) / 10,
+                color: Highcharts.Color(data[i].color).brighten(brightness).get()
             });
-
-            // add department data
-            drillDataLen = data[i].drilldown.data.length;
-            for (j = 0; j < drillDataLen; j += 1) {
-                brightness = 0.2 - (j / drillDataLen) / 5;
-                departmentData.push({
-                    name: data[i].drilldown.categories[j],
-                    y:   Math.round(data[i].drilldown.data[j] / sum * 10) / 10 * 100,
-                    color: Highcharts.Color(data[i].color).brighten(brightness).get()
-                });
-            }
         }
     }
+
     title='API【'+ queryAction +'】呼叫次數比例(依部門)';
     if(type == 'd'){
         title='API【'+ queryAction +'】呼叫人數比例(依部門)';
     }
+
     chart.setTitle({ text: title });
     chart.series[0].setData(siteData);
     chart.series[1].setData(departmentData);
@@ -118,7 +125,7 @@ var createdDunutChart = function(container){
         },
         series: [{
             name: 'Sites',
-            data: [],
+            data: [1],
             size: '60%',
             dataLabels: {
                 formatter: function () {
@@ -129,7 +136,7 @@ var createdDunutChart = function(container){
             }
         }, {
             name: 'Departments',
-            data: [],
+            data: [1],
             size: '80%',
             innerSize: '60%',
             dataLabels: {

@@ -24,7 +24,6 @@
 <div class="row"  style="margin:5% 0 5% 0">
      <div class="col-lg-1" id=""></div>
     <div class="col-lg-10 col-xs-12" id="">
-        <div><label class="text-muted">詳細資料</label></div>
         @include('report.api_report.chart.donut_chart')
     </div>
 </div>
