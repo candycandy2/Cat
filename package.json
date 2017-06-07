@@ -16,5 +16,6 @@
   "bugs": {
     "url": "https://github.com/candycandy2/EnterpriseAPPPlatform/issues"
   },
-  "homepage": "https://github.com/candycandy2/EnterpriseAPPPlatform#readme"
+  "homepage": "https://github.com/candycandy2/EnterpriseAPPPlatform#readme",
+  "dependencies": {}
 }
