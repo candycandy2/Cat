@@ -23,74 +23,6 @@ class ApiLogRespository
     }
 
     /**
-     * 取得Api Log
-     * @param  String $appKey app key
-     * @return cursor
-     */
-    public function getApiLog($appKey){
-
-        //Perform an aggregate function and get a cursor
-        return $this->apiLog::raw()->aggregate([
-            ['$match'=>
-                ['app_key'=>$appKey,
-                 'action'=>[ '$exists'=>true, '$ne'=>null ],
-                 'company'=>[ '$exists'=>true, '$ne'=>null ],
-                 'site_code'=>[ '$exists'=>true, '$ne'=>null ],
-                 'department'=>[ '$exists'=>true, '$ne'=>null ]
-                ]
-            ],
-            ['$group' =>
-                ['_id' => ['action'=>'$action',
-                           'company'=>'$company',
-                           'site_code'=>'$site_code',
-                           'department'=>'$department'
-                           ],
-                 'count' => ['$sum' => 1]
-                ]
-            ],
-            ['$group' =>
-                ['_id' => ['action'=>'$_id.action',
-                           'company_site'=>['$concat'=>['$_id.company','_','$_id.site_code']],
-                           'department'=>'$_id.department',
-                           'user_row_id'=>'$_id.user_row_id'
-                           ],
-                 'totalCount' => ['$sum'=>'$count'],
-                 'distinctCount' => ['$sum' => 1]
-                ]
-            ]
-        ]);
-
-    }
-
-    /**
-     * 依時間區間取得所有呼叫數 group by created_at,user_row_id
-     * @param  String $appKey app key
-     * @return cursor
-     */
-    public function getApiLogByTimeInteval($appKey){
-
-        //Perform an aggregate function and get a cursor
-          return $this->apiLog::raw()->aggregate([
-            ['$match'=>
-                ['app_key'=>$appKey,
-                 'action'=>[ '$exists'=>true, '$ne'=>null ],
-                 'company'=>[ '$exists'=>true, '$ne'=>null ],
-                 'site_code'=>[ '$exists'=>true, '$ne'=>null ],
-                 'department'=>[ '$exists'=>true, '$ne'=>null ]
-                ]
-            ],
-            ['$group' =>
-                ['_id' => [
-                           'created_at'=>'$created_at',
-                           'user_row_id'=>'$user_row_id'
-                           ],
-                 'count' => ['$sum' => 1]
-                ]
-            ]
-        ]);
-    }
-
-    /**
      * 取得該app最後的log日期
      * @param  String $appKey app key
      * @return mixed
@@ -102,6 +34,37 @@ class ApiLogRespository
                       ->orderBy('created_at','desc')
                       ->first();
 
+    }
+
+    /**
+     * 取得當天該user呼叫Api幾次
+     * @param  String $appKey app_key
+     * @return cursor
+     */
+    public function getApiLogCountEachUserByDate($appKey){
+
+        return $this->apiLog::raw()->aggregate([
+            ['$match'=>
+                ['app_key'=>$appKey,
+                 'action'=>[ '$exists'=>true, '$ne'=>null ],
+                 'company'=>[ '$exists'=>true, '$ne'=>null ],
+                 'site_code'=>[ '$exists'=>true, '$ne'=>null ],
+                 'department'=>[ '$exists'=>true, '$ne'=>null ]
+                ]
+            ],
+            ['$sort'=>['created_at' => -1]
+            ],
+            ['$group' =>
+                ['_id' => ['created_at'=>['$dateToString'=>['format'=>'%Y-%m-%d','date'=>'$created_at']],
+                           'action'=>'$action',
+                           'company_site'=>['$concat'=>['$company','_','$site_code']],
+                           'department'=>'$department',
+                           'user_row_id'=>'$user_row_id'
+                           ],
+                 'count' => ['$sum' => 1]
+                ]
+            ]
+        ]);
     }
     
 }

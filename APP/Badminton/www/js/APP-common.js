@@ -81,5 +81,17 @@ $(document).one("pagebeforecreate", function() {
             /*do somrthing when device is in portraint mode*/
         }
     }, false);
-
 });
+
+function popupMsgInit(popupClass){
+    $(popupClass).popup(); //initialize the popup
+    $(popupClass).show();
+    $(popupClass).popup('open');
+    popupMsgCloseInit(popupClass);
+}
+
+function popupMsgCloseInit(popupClass){
+    $('body').one('click', popupClass  + ' .btn-cancel', function() {
+        $(popupClass).popup('close');
+    });
+}

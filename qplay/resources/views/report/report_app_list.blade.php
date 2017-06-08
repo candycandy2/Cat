@@ -20,7 +20,7 @@ $menu_name = "REPORT";
             <th data-field="app_name" data-sortable="false" data-formatter="iconFormatter" data-searchable="true">{{trans("messages.APPLICATION_NAME")}}</th>
             <th data-field="android_release" data-formatter="deviceSupportFormatter" data-search-formatter="true">{{trans("messages.SUPPORT_DEVICE_TYPE")}}</th>
             <th data-field="register_rate" >{{trans("messages.REGISTER_USER_COUNT")}}/{{trans("messages.REGISTER_DEVICE_COUNT")}}</th>
-            <th data-field="release_status" data-formatter="releaseFormatter" data-sortable="true" data-search-formatter="true" >{{trans("messages.RELEASED")}}</th>
+            <th data-field="release_status" data-formatter="releaseFormatter" data-align="center" data-sortable="true" data-search-formatter="true" >{{trans("messages.RELEASED")}}</th>
         </tr>
         </thead>
     </table>
@@ -45,9 +45,9 @@ $menu_name = "REPORT";
     }
 
     function releaseFormatter(value, row){
-        var status = '{{trans("messages.RELEASED_STATUS_UNBLISH")}}';
+        var status = '<label class="label-unpublished">{{trans("messages.RELEASED_STATUS_UNBLISH")}}</label>';
         if(row.release_status == 1){
-                status = '{{trans("messages.RELEASED_STATUS_PUBLISH")}}';
+                status = '<label class="label-published">{{trans("messages.RELEASED_STATUS_PUBLISH")}}</label>';
         }
         return status;
     }

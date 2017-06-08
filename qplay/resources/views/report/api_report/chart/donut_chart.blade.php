@@ -1,111 +1,104 @@
-
-<div class="col-lg-6 col-md-6 col-xs-12">
-    <div id="container_donut_chart_t"></div>
+<div id="call_api_donutchart">
+    <div><label class="text-muted">詳細資料</label></div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <div id="container_donut_chart_t"></div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <div id="container_donut_chart_d"></div>    
+    </div>
 </div>
-<div class="col-lg-6 col-md-6 col-xs-12">
-    <div id="container_donut_chart_d"></div>    
-</div>
-
 
 <script>
-
-var getApiLogDonutChart = function(){
-    var mydata = {app_key:"{{$data['app_key']}}"};
-    var mydataStr = $.toJSON(mydata);
-    $.ajax({
-      url:"reportDetail/getCallApiReportDonutChart",
-      type:"POST",
-      dataType:"json",
-      contentType: "application/json",
-      data:mydataStr,
-      success: function(r){
-            if(!$.isEmptyObject(r)){
-                var queryAction = $('#report_table tbody tr th').eq(0).text();
-                createTotalChart(r, queryAction);
-                createDistinctChart(r,queryAction);
-            }
-       }
-    });
+var updateApiLogDonutChart = function(r, queryAction){
+    setDonutChartData(r,'t', queryAction, $('#container_donut_chart_t').highcharts());
+    setDonutChartData(r,'d', queryAction, $('#container_donut_chart_d').highcharts());
 }
 
-var createTotalChart = function(r, queryAction){
-    var title='API【'+ queryAction +'】呼叫次數比例(依部門)';
-    createdDunutChart(r,'t',title, 'container_donut_chart_t', queryAction);
-}
-var createDistinctChart = function(r, queryAction){
-    var title='API【'+ queryAction +'】呼叫人數比例(依部門)';
-    createdDunutChart(r,'d',title, 'container_donut_chart_d', queryAction);
-}
-var createdDunutChart = function(r, type, title, id, queryAction){
-    var colors = Highcharts.getOptions().colors,
+var setDonutChartData = function(r,type,queryAction,chart){
+     var colors = Highcharts.getOptions().colors,
+        companySiteArray = [],
         categories = [],
         data = [],
-        browserData = [],
-        versionsData = [],
+        siteData = [],
+        departmentData = [],
         i,
         j,
+        x = 0,
+        dataLen = data.length,
         drillDataLen,
         brightness,
-        x=0;
-    $.each(r[queryAction], function(site, value) {
-         var dataRow = [];
-         var subDataRow = [];
+        sum = 0;
 
-         categories.push(site);
-       
-         dataRow.color = colors[x];
-         subDataRow.name = site + ' departments';
-         var subCategories = [];
-         var subValue = [];
-         var subValueSum = 0;
-         $.each(value, function(department, value) {
-            subCategories.push(department);
-            var tmpValue = value.totalCountPercent;
-            if(type == 'd'){
-                tmpValue = value.distinctCountPercent;
+    for (var companySite in r[queryAction]){
+        var tmpData = {
+            y: 0,
+            color: colors[x],
+            drilldown: {
+                name: companySite,
+                categories: [],
+                data: [],
+                color: colors[0]
             }
-            subValue.push(tmpValue);
-            subValueSum = subValueSum + tmpValue;
-         });
-         dataRow.y = subValueSum;
-         subDataRow.categories = subCategories;
-         subDataRow.data = subValue;
-         subDataRow.color =  colors[x];
-         dataRow.drilldown = subDataRow;
-         data.push(dataRow)
-         x++;
-    });
-    var dataLen = data.length;
+        }
+        var tmpSubSum = 0;
+        categories.push(companySite);
+        for (var department in r[queryAction][companySite]){
+            tmpData.drilldown.categories.push(department);
+            if(type == 't'){
+                tmpData.drilldown.data.push(r[queryAction][companySite][department].times);
+                tmpSubSum = tmpSubSum + r[queryAction][companySite][department].times;
+            }else{
+                tmpData.drilldown.data.push(r[queryAction][companySite][department].users.length);
+                tmpSubSum = tmpSubSum + r[queryAction][companySite][department].users.length;
+            }
+        }
+        sum = sum + tmpSubSum;
+        tmpData.y = tmpSubSum;
+        data.push(tmpData);
+        x++;
+    }
 
+     var dataLen = data.length;
     // Build the data arrays
     for (i = 0; i < dataLen; i += 1) {
-
-        // add browser data
-        browserData.push({
+        // add site data
+        siteData.push({
             name: categories[i],
-            y: data[i].y,
+            y:  Math.round(data[i].y / sum * 100 * 10) / 10,
             color: data[i].color
         });
 
-        // add version data
+        // add department data
         drillDataLen = data[i].drilldown.data.length;
         for (j = 0; j < drillDataLen; j += 1) {
             brightness = 0.2 - (j / drillDataLen) / 5;
-            versionsData.push({
+            departmentData.push({
                 name: data[i].drilldown.categories[j],
-                y: data[i].drilldown.data[j],
+                y: Math.round(data[i].drilldown.data[j] / sum * 100 * 10) / 10,
                 color: Highcharts.Color(data[i].color).brighten(brightness).get()
             });
         }
     }
 
+    title='API【'+ queryAction +'】呼叫次數比例(依部門)';
+    if(type == 'd'){
+        title='API【'+ queryAction +'】呼叫人數比例(依部門)';
+    }
+
+    chart.setTitle({ text: title });
+    chart.series[0].setData(siteData);
+    chart.series[1].setData(departmentData);
+}
+
+var createdDunutChart = function(container){
+
     // Create the chart
-    Highcharts.chart(id, {
+    var chart = Highcharts.chart(container, {
         chart: {
             type: 'pie'
         },
         title: {
-            text: title
+            text: ''
         },
         subtitle: {
             text: ''
@@ -126,7 +119,7 @@ var createdDunutChart = function(r, type, title, id, queryAction){
         },
         series: [{
             name: 'Sites',
-            data: browserData,
+            data: [1],
             size: '60%',
             dataLabels: {
                 formatter: function () {
@@ -137,7 +130,7 @@ var createdDunutChart = function(r, type, title, id, queryAction){
             }
         }, {
             name: 'Departments',
-            data: versionsData,
+            data: [1],
             size: '80%',
             innerSize: '60%',
             dataLabels: {
@@ -165,6 +158,7 @@ var createdDunutChart = function(r, type, title, id, queryAction){
             }]
         }
     });
-}
 
+    return chart;
+}
 </script>

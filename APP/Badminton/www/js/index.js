@@ -1,4 +1,1 @@
-
 var pageList = ["viewMain","viewGame"];
-
-

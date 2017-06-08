@@ -130,3 +130,12 @@ function handleAJAXError(ajax,error) {
         return false;
     }
 }
+
+function dateToUTC(value){
+     value = value.split('-');
+    return Date.UTC(
+        parseInt(value[0]),
+        parseInt(value[1]) - 1,
+        parseInt(value[2])
+    );
+}
