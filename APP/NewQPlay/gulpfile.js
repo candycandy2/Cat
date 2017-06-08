@@ -161,8 +161,8 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-    'cordova platform add ios@4.3.1',
-    'cordova platform add android@6.0.0',
+    'cordova platform add ios',
+    'cordova platform add android',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey,
     'cordova plugin add cordova-plugin-device@1.1.4',
