@@ -104,14 +104,14 @@ function createMultiLineChart(container, seriesOptions, res) {
                 text: '3個月',
                 dataGrouping: {
                     forced: true,
-                    units: [['month', [1]]]
+                    units: [['day', [1]]]
                 }
             }, {
                 type: 'all',
                 text: 'All',
                 dataGrouping: {
                     forced: true,
-                    units: [['month', [1]]]
+                    units: [['day', [1]]]
                 }
             }],
 
