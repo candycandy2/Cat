@@ -57,11 +57,12 @@ class ReportDetailController extends Controller
         $data['icon_url'] =  ($appInfo->icon_url == "")?"":FilePath::getIconUrl($appId, $appInfo->icon_url);
         $data['app_key'] =  $appInfo->app_key;
         $endDate = $this->reportService->getApiLogEndDate($appInfo->app_key);
-        $data['reportEndDate'] = (is_null($endDate))?"":$endDate->format('Y-M-d');
+        $data['reportEndDate'] = (is_null($endDate))?"":$endDate->format('Y-m-d');
+       
         return view("report/report_detail")->with('data',$data);
 
     }
-
+    
     public function getCallApiReport(){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -72,53 +73,12 @@ class ReportDetailController extends Controller
         
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
-
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
             $result = $this->reportService->getApiReport($appKey);
             return json_encode($result);
         }
-    
-    }
-
-    public function getCallApiReportBasicLine(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
         
-        CommonUtil::setLanguage();
-        
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appKey = $jsonContent['app_key'];
-           
-            $result = $this->reportService->getApiLogByTimeInteval($appKey);
-            return json_encode($result);
-        }
-    }
-
-    public function getCallApiReportDonutChart(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        
-        CommonUtil::setLanguage();
-        
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $appKey = $jsonContent['app_key'];
-           
-            $result = $this->reportService->getApiLogByDepartment($appKey);
-            return json_encode($result);
-        }
-
     }
 }
