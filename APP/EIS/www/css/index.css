@@ -61,10 +61,18 @@
 	height: 3VH;
 	color: #0f0f0f;
 	text-align:center;
-	width: 80%;
-	margin: 2vh auto 0;
+	width: 100%;
+	margin-top: 2VH;
 }
 
+.page-main #YTD-Str{
+	display: none;
+	margin-top: -2.931VH;
+	overflow: auto;
+	float: right;
+	margin-right: 8VW;
+	font-size: 4VW;
+}
 /******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
 	background-color: #f2f2f3;
