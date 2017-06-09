@@ -426,6 +426,18 @@
                 activeNvrDiv = "newspage2-3";
                 inactiveNvrBar = "navEvents";
                 inactiveNvrDiv = "eventspage2-3b";
+
+                var eventPopupselectMsg = {
+                    id: "selectMsgDateFrom",
+                    content: $("template#tplEventListNoDataPopup30").html()
+                };
+                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventPopupselectMsg);
+
+                var eventListDataPopupHistorydelete = {
+                    id: "deleteConfirm",
+                    content: $("template#tplContactUserPopupdeleteConfirm").html()
+                };
+                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventListDataPopupHistorydelete);
             });
 
             $("#viewNewsEvents2-3").on("pageshow", function(event, ui) {
@@ -437,11 +449,9 @@
                 }
             });
 
-            $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {
-
+            $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {               
                 messagePageShow = true;
                 loadingMask("show");
-
                 //QueryMessageList() will be called in initialSuccess(),
                 //if API is not finished after User change page into viewNewsEvents2-3, do nothing,
                 //if API is finished, than call get Messaage List again.
@@ -481,8 +491,10 @@
                 $("#newNews").hide();
                 $("#newEvents").hide();
             });
+        
 
-            $("#selectMsgDateFromOK").on("click", function() {
+            $(document).on("click", "#selectMsgDateFromOK", function() {
+             
                 msgDateFromType = $('input[name=selectDateFrom]:checked').val();
 
                 var clientTimestamp = getTimestamp();
@@ -498,7 +510,7 @@
                 $('#selectMsgDateFrom').popup('close');
             });
 
-            $("#deleteMessage").on("click", function() {
+            $(document).on("click", "#deleteMessage", function() {
                 editModeChange();
             });
 
@@ -512,17 +524,18 @@
                 checkboxChange();
             });
 
-            $("#delMsgBtn").on("click", function() {
+            $(document).on("click", "#delMsgBtn", function() {         
                 if (!$("#delMsgBtn a").is(".btn-disabled")) {
                     $('#deleteConfirm').popup('open');
                 }
             });
 
-            $("#deleteConfirm #cancel").on("click", function() {
+            $(document).on("click", "#deleteConfirm #cancel", function() {
                 $('#deleteConfirm').popup('close');
             });
 
-            $("#deleteConfirm #yes").on("click", function() {
+   
+            $(document).on("click", "#deleteConfirm #yes", function() {    
                 var messageList;
                 var msgIndex;
                 var msgIndexList;
@@ -551,4 +564,3 @@
         }
     });
 
-//});

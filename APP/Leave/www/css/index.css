@@ -8,8 +8,12 @@
   	padding: 0 !important;
 }
 
-.ui-radio {
-	width:46.29VW;
+.page-main .ui-radio {
+	width: 46.29VW;
+}
+
+.page-main #leaveTime .ui-radio {
+	width: 30.86VW;
 }
 
 .page-tabs > div > div > label {
@@ -17,15 +21,15 @@
 }
 
 /********************************************common use**********************************************/
-.page-main .page-tabs{
-	margin-top: 1.8VH;
-	margin-bottom: 0VH;
-	margin-right: 3.7VW;
-	margin-left: 3.7VW;
-	text-align: center;
+.page-main {
+	margin-top: 3.99VW;
 }
 
-.page-main .tabs-title{
+.page-main .page-tabs {
+	margin: 1.8VH 3.71VW 0VH 3.71VW;
+}
+
+.page-main .tabs-title {
 	height: 5VH;
 	font-size: 2.5VH;
 	font-family: Arial;
@@ -34,12 +38,93 @@
 	text-align: center;
 	padding: 0px;
 }
-
 /******************************************* personal leave *****************************************/
-#panel1, #panel2 {
+#infoList {
+	margin-top: 5VW;
+	background-color: white;
+}
+
+.infoContainer {
+	padding: 4.3VW 0VW 3.71VW 6.71VW;
+	border-bottom-width: 0.1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d6d6d6;
+}
+
+.infoTitle {
+	overflow: auto;
+}
+
+.listDown {
+	height: 3.542VW;
+	margin-top: -2.6VH;
+	margin-right: 6.71VW;
+	float: right;
+}
+
+.infoContent {
 	display: none;
 }
 
+.infoContent ul {
+	list-style-type: none;
+	display: inline;
+	-webkit-padding-start: 0px;
+}
+
+.infoContent ul > li {
+	overflow: auto;
+	margin-top: 4.66VW;
+}
+
+.infoContent ul > li > div > span {
+	color: #666666;
+}
+
+.infoContent ul > li > div:nth-of-type(2) {
+	float: right;
+	margin-top: -3.5VH;
+	margin-right: 6.71VW;
+}
+
+.dropdown-icon {
+	width: 3.54VW;
+	margin: 0VW 3.2VW 0.35VH 3.2VW;
+}
+
+#leaveDate, #leaveTime {
+	margin-top: 2.14VW;
+	margin-bottom: 0VW !important;
+}
+
+#leaveDate .leaveDateTitle, #leaveTime .leaveTimeTitle {
+	text-align: center;
+	font-weight: 300;
+}
+
+#leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
+	background-color: #0fb6b7;
+	border-color: #0fb6b7;
+}
+
+.radius-btn {
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border: 0px;
+    background-color: #2a88bc;
+    color: white;
+    width: 64vw;
+    height: 5vh;
+    text-align: center;
+    padding-top: 1.5vh;
+    font-size: 4.5vw;
+}
+
+.btn-disable {
+    background-color: #ddd !important;
+    color: #666 !important;
+}
 /********************************************** mypanel *********************************************/
 #mypanel .panel-text{
 	margin: 4.3VW 0VW 3.71VW 3.71VW;

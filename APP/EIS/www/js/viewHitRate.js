@@ -50,7 +50,6 @@ $("#viewHitRate").pagecontainer ({
                 hitRateEisData = JSON.parse(localStorage.getItem("hitRateEisData"))[0];
                 thisYear = JSON.parse(localStorage.getItem("thisYear"))[0];
                 thisMonth = JSON.parse(localStorage.getItem("thisMonth"))[0];
-                UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
                 UserAuthority();
                 getAllData();
                 $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);

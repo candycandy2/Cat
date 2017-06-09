@@ -27,36 +27,46 @@
 </div>
 <script>
 
-var mydata = {app_key:"{{$data['app_key']}}"};
-var mydataStr = $.toJSON(mydata);
-$.ajax({
-  url:"reportDetail/getCallApiReport",
-  type:"POST",
-  dataType:"json",
-  contentType: "application/json",
-  data:mydataStr,
-  success: function(r){
-    var titleArray = [];
-    var actionArray =[];
-    if(r.length == 0){
-        $('#report_table').hide();
-    }else{
-        $('#report_table').show();
-        $.each(r, function(action, value) {
-            if($.inArray(action,actionArray) == -1){
-                actionArray.push(action);
-            }
-            $.each(value, function(companySite, svalue){
-                if($.inArray(companySite,titleArray) == -1){
-                    titleArray.push(companySite);
+var getTableView = function(){
+    
+    //init table
+    $('#report_table tr.js-company-site').html('');
+    $('#report_table tbody').html('');
+
+    //get data
+    var mydata = {app_key:"{{$data['app_key']}}"};
+    var mydataStr = $.toJSON(mydata);
+    $.ajax({
+      url:"reportDetail/getCallApiReport",
+      type:"POST",
+      dataType:"json",
+      contentType: "application/json",
+      data:mydataStr,
+      success: function(r){
+        var titleArray = [];
+        var actionArray =[];
+        if(r.length == 0){
+            $('#report_table').hide();
+        }else{
+            $('#report_table').show();
+            $.each(r, function(action, value) {
+                if($.inArray(action,actionArray) == -1){
+                    actionArray.push(action);
                 }
+                $.each(value, function(companySite, svalue){
+                    if($.inArray(companySite,titleArray) == -1){
+                        titleArray.push(companySite);
+                    }
+                });
             });
-        });
-        createTable(r, titleArray, actionArray);
-        sortTable('#report_table');
-    }
-   }
-});
+            createTable(r, titleArray, actionArray);
+            sortTable('#report_table');
+            getApiLogDonutChart();
+        }
+       }
+    });
+
+}
 
 var createTable = function(data, titleArray, actionArray){
     var sumTotalCount = 0;

@@ -539,7 +539,8 @@ $("#viewEventList").pagecontainer({
                     padLeft(completeTime.getMinutes(), 2);
 
                     var eventFunctionListLi = $(eventFunctionListAfterHTML);
-                    eventFunctionListLi.find(".user").html(data.task_detail[i].close_task_user_id);
+                    var userData = data.task_detail[i].close_task_user_id.split("\\");
+                    eventFunctionListLi.find(".user").html(userData[1]);
                     eventFunctionListLi.find(".datetime").html(completeTimeText);
                 } else {
                     //Before Done
@@ -585,8 +586,6 @@ $("#viewEventList").pagecontainer({
             action = action || null;
             var openData = false;
 
-            loadingMask("show");
-
             if (action === "member" || action === "function") {
                 //Only [admin] & [supervisor] can read (member) & (function)
                 if (checkAuthority("admin") || checkAuthority("supervisor")) {
@@ -605,6 +604,8 @@ $("#viewEventList").pagecontainer({
                     }
                 }
 
+                loadingMask("show");
+
                 if (action === "authority") {
                     var eventRelatedID = $(dom).data("value");
                 } else if (action === "authority2") {
@@ -618,6 +619,7 @@ $("#viewEventList").pagecontainer({
             }
 
             if (openData) {
+                loadingMask("show");
                 var eventDetail = new getEventDetail(eventID, action);
             }
         };

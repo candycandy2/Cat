@@ -529,7 +529,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = "PRJ";
+                product = userAuthorityCallBackData[0]["PVALUE"];
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
@@ -546,7 +546,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = "PRJ";
+                product = userAuthorityCallBackData[0]["PVALUE"];
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "";

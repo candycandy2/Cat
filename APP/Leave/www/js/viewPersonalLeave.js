@@ -68,11 +68,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
-            // initSlider();
+            $("#tab-1").show();
+            $("#tab-2").hide();
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
-            // initSlider();
             loadingMask("hide");
         });
 
@@ -81,19 +81,37 @@ $("#viewPersonalLeave").pagecontainer({
 
         });
 
-        $(document).on("click", "#flip1", function() {
-            if($("#panel1").css("display") === "none") {
-                $("#panel1").slideDown("slow");
-            }else if($("#panel1").css("display") === "block") {
-                $("#panel1").slideUp("slow");
+        $(".page-tabs #viewPersonalLeave-tab-1").on("click", function() {
+            $("#tab-1").show();
+            $("#tab-2").hide();
+        });
+
+        $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
+            $("#tab-1").hide();
+            $("#tab-2").show();
+        });
+
+        $("#leaveType").on("click", function() {
+            
+        });
+
+        $("#infoTitle-1").on("click", function() {
+            if($("#infoContent-1").css("display") === "none") {
+                $("#infoContent-1").slideDown(500);
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
+            }else if($("#infoContent-1").css("display") === "block") {
+                $("#infoContent-1").slideUp(500);
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
             }
         });
 
-        $(document).on("click", "#flip2", function() {
-            if($("#panel2").css("display") === "none") {
-                $("#panel2").slideDown("slow");
-            }else if($("#panel2").css("display") === "block") {
-                $("#panel2").slideUp("slow");
+        $("#infoTitle-2").on("click", function() {
+            if($("#infoContent-2").css("display") === "none") {
+                $("#infoContent-2").slideDown(500);
+                $("#infoTitle-2").find(".listDown").attr("src", "img/list_up.png")
+            }else if($("#infoContent-2").css("display") === "block") {
+                $("#infoContent-2").slideUp(500);
+                $("#infoTitle-2").find(".listDown").attr("src", "img/list_down.png")
             }
         });
     }

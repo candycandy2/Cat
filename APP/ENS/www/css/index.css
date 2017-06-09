@@ -292,9 +292,10 @@ input[type=radio]:checked + label {
 }
 
 .event-list-footer {
-    width: 18vw;
+    width: 17.71vw;
     left: initial;
-    right: 4.9vw;
+    right: 4.89vw;
+    bottom: 2.37vw;
 }
 
 .event-list-footer.ui-bar-inherit {
@@ -304,9 +305,9 @@ input[type=radio]:checked + label {
 
 .event-list-add-button {
     background: url(../img/notice.png) no-repeat;
-    background-size: 18vw;
-    width: 18vw;
-    height: 18vw;
+    background-size: 17.71vw;
+    width: 17.71vw;
+    height: 17.71vw;
 }
 
 .event-member-list.header .text {
@@ -323,9 +324,8 @@ input[type=radio]:checked + label {
 
 .event-member-list.header .title {
     font-size: 4.18vw;
-    font-weight: bold;
+    font-weight: normal;
     color: #0f0f0f;
-    margin-bottom: 0.6vh;
 }
 
 .event-member-list.header .description {
@@ -395,18 +395,17 @@ input[type=radio]:checked + label {
 }
 
 .user-datetime {
-    color: #989898;
+    color: #666666;
 }
 
 .user-datetime .user {
-    display: inline-block;
-    width: 53%;
+    display: block;
+    width: 100%;
 }
 
 .user-datetime .datetime {
-    display: inline-block;
-    width: 45%;
-    text-align: right;
+    display: block;
+    width: 100%;
 }
 
 .event-member-list li {
@@ -460,7 +459,7 @@ input[type=radio]:checked + label {
 
 .event-member-data-list {
     display: inline-block;
-    border: 1px solid #989898;
+    border: 1px solid #d6d6d6;
     width: 84.5vw;
     padding: 2.73vw 3.71vw;
     margin-bottom: 2.14vw;

@@ -706,6 +706,7 @@ var tplJS = {
                 $(this).find("div[data-role='main'] .main").height(popupMainHeight);
                 $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
             } else {
+                $(this).find("div[data-role='main'].ui-content").css("padding-top", "0");
                 $(this).find("div[data-role='main'] .main").height(0);
                 var popupHeaderHeight = parseInt(popupHeight - popupFooterHeight, 10);
                 $(this).find("div[data-role='main'] > .header").height(popupHeaderHeight);
