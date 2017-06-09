@@ -23,7 +23,6 @@ $("#viewHitRate").pagecontainer ({
     	    		length = roSummaryCallBackData.length;
     	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
     	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
-                    // thisMonth = "1";
                     UserAuthority();
     	    		convertData();
                     //review by alan
@@ -330,6 +329,7 @@ $("#viewHitRate").pagecontainer ({
         $("#viewHitRate").on("pageshow", function(event, ui) {
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
+            $("#YTD-Str").hide();
             $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
             $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');

@@ -61,8 +61,8 @@
 	height: 3VH;
 	color: #0f0f0f;
 	text-align:center;
-	width: 100%;
-	margin-top: 2VH;
+	width: 80%;
+	margin: 2VH auto 0;
 }
 
 .page-main #YTD-Str{
