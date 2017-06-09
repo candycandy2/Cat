@@ -162,7 +162,7 @@ $("#viewYTDHitRate").pagecontainer({
             }
         }
 		
-		function getHighchartsData(ro, product, year, month) {
+		function getHighchartsData(ro, product, year, ytdMonth) {
             var rtAQ = 0;
             var rtBQ = 0;
             var rtAA = 0;
@@ -171,9 +171,10 @@ $("#viewYTDHitRate").pagecontainer({
                 ytdHighchartsData[i] = [];
             }
             if(ro == "ALL" && product == "ALL") {
-                for(var month in eisdata[year]) {
-                    for(var i in ytdHighchartsData) {
-                        ytdHighchartsData[i][Number(month)-1] = 0;
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
+                    for(var j in ytdHighchartsData) {
+                        ytdHighchartsData[j][Number(month)-1] = 0;
                     }
                     for(var ro in eisdata[year][month]) {
                         for(var product in eisdata[year][month][ro]) {
@@ -205,7 +206,8 @@ $("#viewYTDHitRate").pagecontainer({
                     }
                 }
             }else if(ro != "ALL" && product == "ALL") {
-                for(var month in eisdata[year]) {
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
                     for(var i in ytdHighchartsData) {
                         ytdHighchartsData[i][Number(month)-1] = 0;
                     }
@@ -236,8 +238,9 @@ $("#viewYTDHitRate").pagecontainer({
                         ytdHighchartsData["RT Budget ASP"][Number(month)-1] = (ytdHighchartsData["RT Budget AMT"][Number(month)-1] / ytdHighchartsData["RT Budget QTY"][Number(month)-1]);
                     }
                 }
-            }else if(ro == "ALL" && product != "ALL") {    
-                for(var month in eisdata[year]) {
+            }else if(ro == "ALL" && product != "ALL") {
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
                     for(var i in ytdHighchartsData) {
                         ytdHighchartsData[i][Number(month)-1] = 0;
                     }
@@ -271,7 +274,8 @@ $("#viewYTDHitRate").pagecontainer({
                     }
                 }
             }else {
-                for(var month in eisdata[year]) {
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
                     for(var i in ytdHighchartsData) {
                         ytdHighchartsData[i][Number(month)-1] = 0;
                     }
@@ -320,12 +324,12 @@ $("#viewYTDHitRate").pagecontainer({
         function initSlider() {
             if (ytdPageDateExist) {
                 var index = 0;
-                year = thisYear-1;
-                month = thisMonth;
+                year = ytdYear-1;
+                month = ytdMonth;
                 while(index < 2) {
                     ytdPageDateList += "<div>" + year + "</div>";
-                    if(year == thisYear) {
-                        ytdPageDate[index] = thisMonth + "." + year;
+                    if(year == ytdYear) {
+                        ytdPageDate[index] = ytdMonth + "." + year;
                     }else{
                         ytdPageDate[index] = 12 + "." + year;
                     }
@@ -359,7 +363,7 @@ $("#viewYTDHitRate").pagecontainer({
         $(".sliderYTD").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
-            getHighchartsData(ro, product, year, month);  
+            getHighchartsData(ro, product, year, month);
             showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
@@ -502,8 +506,8 @@ $("#viewYTDHitRate").pagecontainer({
             ro = "ALL";
             product = "ALL";
             tab = "AMT";
-            year = thisYear;
-            month = thisMonth;
+            year = ytdYear;
+            month = ytdMonth;
             hcRo = "All";
             hcProduct = "All product";
 			showHighchart();
