@@ -363,6 +363,13 @@ $("#viewYTDHitRate").pagecontainer({
         $(".sliderYTD").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
+            if(year == ytdYear && month != 12) {
+                $(".YTD-Str").css("display", "block");
+                ytdStrExist = true;
+            }else {
+                $(".YTD-Str").css("display", "none");
+                ytdStrExist = false;
+            }
             getHighchartsData(ro, product, year, month);
             showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
