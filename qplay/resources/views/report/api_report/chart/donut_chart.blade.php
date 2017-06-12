@@ -1,9 +1,9 @@
 <div id="call_api_donutchart">
     <div><label class="text-muted">詳細資料</label></div>
-    <div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="col-lg-6 col-md-12 col-xs-12">
         <div id="container_donut_chart_t"></div>
     </div>
-    <div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="col-lg-6 col-md-12 col-xs-12">
         <div id="container_donut_chart_d"></div>    
     </div>
 </div>
@@ -151,7 +151,11 @@ var createdDunutChart = function(container){
                     series: [{
                         id: 'sites',
                         dataLabels: {
-                            enabled: false
+                            formatter: function () {
+                                // display only if larger than 1
+                                return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+                                    this.y + '%' : null;
+                            }
                         }
                     }]
                 }

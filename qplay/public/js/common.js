@@ -139,3 +139,10 @@ function dateToUTC(value){
         parseInt(value[2])
     );
 }
+
+function sortObject(obj){
+    obj = obj.sort(function (a, b) {
+     return a[0] < b[0] ? -1 : 1;
+    });
+    return obj;
+}

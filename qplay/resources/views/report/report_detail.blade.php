@@ -4,13 +4,10 @@ $menu_name = "REPORT";
 ?>
 @extends('layouts.admin_template')
 
-{{--
-
-TODO append js
- @section('head')
+@section('head')
     @parent
-    <script src="{{ asset('/js/appMaintain/app_pic.js') }}"></script>
-@stop --}}
+    <script src="{{asset('/js/report/report_detail.js')}}"></script>
+@stop
 
 
 @section('content')
@@ -60,26 +57,10 @@ TODO append js
             @include('report.api_report.api_crash_report')
         </div>
     </div>
+
 <script>
-
-$(function () {
-    
-    $('#goBack').click(function(){
-        window.location='{{asset('report')}}';
-    });
-
-    $('.dropdown-menu > li > a').click(function(){
-        $('.nav-tabs > li.active').removeClass('active');
-        $('#api_report > li.active').removeClass('active');
-        var openId = $(this).data('tabid');
-        if(openId == 'api_call_frequency_report'){
-            createApiLogMultiLine();
-        }
-        $(this).parents('li').addClass('active');
-        $('.tab-content > div.active').removeClass('active').removeClass('in')
-        $('#' + openId).addClass('active').addClass('in');
-        
-    });
-});
+var appKey = "{{$data['app_key']}}",
+    reportEndDate = "{{$data['reportEndDate']}}";
 </script>
+
 @endsection
