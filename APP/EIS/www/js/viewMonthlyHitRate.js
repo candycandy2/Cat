@@ -22,8 +22,15 @@ $("#viewMonthlyHitRate").pagecontainer({
                 userAuthorityCallBackData = data["Content"]["DataList"];
                 length = userAuthorityCallBackData.length;
                 productList = '<a id="ALL">ALL</a>';
+                var firstProductFlag = true;
                 for(var i=0; i<length; i++) {
-                    productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>' ;
+                    if(userAuthorityCallBackData[i]["PNAME"] == "PRODUCT") {
+                        productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>';
+                        if(firstProductFlag) {
+                            firstProduct = userAuthorityCallBackData[i]["PVALUE"];
+                            firstProductFlag = false;
+                        }
+                    }
                 }
                 $(".Product").html("");
                 $(".Product").append(productList).enhanceWithin();
@@ -83,14 +90,26 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
             }else if(ro == "ALL" && product != "ALL") {
                 for(var i in eisdata[year][month]) {
-                    Actual += eisdata[year][month][i][product][actualIndex];
-                    totalQTY += eisdata[year][month][i][product][0];
-                    totalAMT += eisdata[year][month][i][product][2];
+                    if(eisdata[year][month][i].hasOwnProperty(product)) {
+                        Actual += eisdata[year][month][i][product][actualIndex];
+                        totalQTY += eisdata[year][month][i][product][0];
+                        totalAMT += eisdata[year][month][i][product][2];
+                    }else {
+                        Actual += 0;
+                        totalQTY += 0;
+                        totalAMT += 0;
+                    }
                 }
             }else {
-                Actual = eisdata[year][month][ro][product][actualIndex];
-                totalQTY = eisdata[year][month][ro][product][0];
-                totalAMT = eisdata[year][month][ro][product][2];
+                if(eisdata[year][month][ro].hasOwnProperty(product)) {
+                    Actual = eisdata[year][month][ro][product][actualIndex];
+                    totalQTY = eisdata[year][month][ro][product][0];
+                    totalAMT = eisdata[year][month][ro][product][2];
+                }else {
+                    Actual = 0;
+                    totalQTY = 0;
+                    totalAMT = 0;
+                }
             }
             if(type == "ASP") {
                 if(totalQTY != 0) {
@@ -139,20 +158,38 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
             }else if(ro == "ALL" && product != "ALL") {
                 for(var i in eisdata[year][month]) {
-                    Actual += eisdata[year][month][i][product][actualIndex];
-                    Budget += eisdata[year][month][i][product][budgetIndex];
-                    ActualQTY += eisdata[year][month][i][product][0];
-                    BudgetQTY += eisdata[year][month][i][product][1];
-                    ActualAMT += eisdata[year][month][i][product][2];
-                    BudgetAMT += eisdata[year][month][i][product][3];
+                    if(eisdata[year][month][i].hasOwnProperty(product)) {
+                        Actual += eisdata[year][month][i][product][actualIndex];
+                        Budget += eisdata[year][month][i][product][budgetIndex];
+                        ActualQTY += eisdata[year][month][i][product][0];
+                        BudgetQTY += eisdata[year][month][i][product][1];
+                        ActualAMT += eisdata[year][month][i][product][2];
+                        BudgetAMT += eisdata[year][month][i][product][3];
+                    }else {
+                        Actual += 0;
+                        Budget += 0;
+                        ActualQTY += 0;
+                        BudgetQTY += 0;
+                        ActualAMT += 0;
+                        BudgetAMT += 0;
+                    }
                 }
             }else {
-                Actual = eisdata[year][month][ro][product][actualIndex];
-                Budget = eisdata[year][month][ro][product][budgetIndex];
-                ActualQTY = eisdata[year][month][ro][product][0];
-                BudgetQTY = eisdata[year][month][ro][product][1];
-                ActualAMT = eisdata[year][month][ro][product][2];
-                BudgetAMT = eisdata[year][month][ro][product][3];
+                if(eisdata[year][month][ro].hasOwnProperty(product)) {
+                    Actual = eisdata[year][month][ro][product][actualIndex];
+                    Budget = eisdata[year][month][ro][product][budgetIndex];
+                    ActualQTY = eisdata[year][month][ro][product][0];
+                    BudgetQTY = eisdata[year][month][ro][product][1];
+                    ActualAMT = eisdata[year][month][ro][product][2];
+                    BudgetAMT = eisdata[year][month][ro][product][3];
+                }else {
+                    Actual = 0;
+                    Budget = 0;
+                    ActualQTY = 0;
+                    BudgetQTY = 0;
+                    ActualAMT = 0;
+                    BudgetAMT = 0;
+                }
             }
             if(type == "ASP") {
                 if(BudgetQTY != 0 && BudgetAMT != 0 && ActualQTY != 0) {
@@ -207,9 +244,11 @@ $("#viewMonthlyHitRate").pagecontainer({
                 }
             }else if(ro == "ALL" && product != "ALL") {
                 for(var i in eisdata[year][month]) {
-                    Actual += eisdata[year][month][i][product][actualIndex];
-                    ActualQTY += eisdata[year][month][i][product][0];
-                    ActualAMT += eisdata[year][month][i][product][2];
+                    if(eisdata[year][month][i].hasOwnProperty(product)) {
+                        Actual += eisdata[year][month][i][product][actualIndex];
+                        ActualQTY += eisdata[year][month][i][product][0];
+                        ActualAMT += eisdata[year][month][i][product][2];
+                    }
                     if(eisdata[year-1][month][i].hasOwnProperty(product)) {
                         lastActual += eisdata[year-1][month][i][product][actualIndex];
                         lastActualQTY += eisdata[year-1][month][i][product][0];
@@ -217,11 +256,13 @@ $("#viewMonthlyHitRate").pagecontainer({
                     }
                 }
             }else {
-                if(eisdata[year-1][month][ro].hasOwnProperty(product)) {
+                if(eisdata[year][month][ro].hasOwnProperty(product)) {
                     Actual = eisdata[year][month][ro][product][actualIndex];
-                    lastActual = eisdata[year-1][month][ro][product][actualIndex];
                     ActualQTY = eisdata[year][month][ro][product][0];
-                    ActualAMT = eisdata[year][month][ro][product][2];                    
+                    ActualAMT = eisdata[year][month][ro][product][2];
+                }
+                if(eisdata[year-1][month][ro].hasOwnProperty(product)) {
+                    lastActual = eisdata[year-1][month][ro][product][actualIndex];                 
                     lastActualQTY = eisdata[year-1][month][ro][product][0];
                     lastActualAMT = eisdata[year-1][month][ro][product][2];
                 }
@@ -610,7 +651,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = userAuthorityCallBackData[0]["PVALUE"];
+                product = firstProduct;
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
@@ -628,7 +669,7 @@ $("#viewMonthlyHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = userAuthorityCallBackData[0]["PVALUE"];
+                product = firstProduct;
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "";
