@@ -18,11 +18,16 @@ div.zabuto_calendar .table tr td {
     background-color: #ffffff;
 }
 
+div.zabuto_calendar tr.calendar-month-header {
+    width: 100VW;
+    display: inline-table;
+}
+
 div.zabuto_calendar tr.calendar-month-header th {
     background-color: #fafafa;
 }
 
-div.zabuto_calendar tr.calendar-month-header th span {
+div.zabuto_calendar .calendar-month-header th span {
     /*cursor: pointer;*/
     display: inline-block;
     padding-bottom: 10px;
@@ -40,7 +45,7 @@ div.zabuto_calendar .table tr:last-child {
 
 div.zabuto_calendar tr.calendar-month-header th {
     padding-top: 12px;
-    padding-bottom: 4px;
+    /*padding-bottom: 4px;*/
 }
 
 div.zabuto_calendar tr.calendar-month-header th {
@@ -48,15 +53,15 @@ div.zabuto_calendar tr.calendar-month-header th {
     border-right: 0;
 }
 
-div.zabuto_calendar tr.calendar-month-header th:first-child {
+/*div.zabuto_calendar tr.calendar-month-header th:first-child {
     border-left: 1px solid #dddddd;
-}
+}*/
 
 div.zabuto_calendar div.calendar-month-navigation {
     cursor: pointer;
     margin: 0;
     padding: 0;
-    padding-top: 5px;
+    /*padding-top: 5px;*/
 }
 
 /*div.zabuto_calendar tr.calendar-dow-header th,
@@ -186,11 +191,11 @@ table {
     border-color: #d6d6d6;
 }
 
-tr {
+/*tr {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: #0f0f0f;
-}
+}*/
 
 div.zabuto_calendar .table .calendar-dow-header th {
     margin: 0;
