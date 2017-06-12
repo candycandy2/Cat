@@ -15,10 +15,12 @@ $.ajax({
   contentType: "application/json",
   data:mydataStr,
   success: function(r){
-    totalCountArr = r.totalCount;
-    distinctCountArr = r.distinctCount;
-    startDate = r.startDate.split('-');
-    creatBasicLine(totalCountArr, distinctCountArr)
+        if(!$.isEmptyObject(r)){
+            totalCountArr = r.totalCount;
+            distinctCountArr = r.distinctCount;
+            startDate = r.startDate.split('-');
+            creatBasicLine(totalCountArr, distinctCountArr);
+        }
    }
 });
 
