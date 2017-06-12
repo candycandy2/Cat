@@ -17,6 +17,8 @@ APP/*/www/img/component/QPlay_logo_noword.svg
 APP/*/www/img/component/QPlay_logo.svg
 APP/*/node_modules/
 APP/*/package.json
+APP/*/package-lock.json
+node_modules/*
 
 # Xcode
 #
@@ -91,3 +93,5 @@ storage
 /qplayApi/qplayApi/public/jpush.log
 .idea
 
+package-lock.json
+package.json

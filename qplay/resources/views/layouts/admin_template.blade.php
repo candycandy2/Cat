@@ -94,7 +94,9 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
-    <script src="{{ asset('/js/highcharts.js') }}"></script>
+    {{-- <script src="{{ asset('/js/highcharts.js') }}"></script> --}}
+    <script src="{{ asset('/js/highstock.js') }}"></script>
+    
     {{-- <script src="{{ asset('/Highcharts-5.0.11/code/js/modules/exporting.js') }}"></script> --}}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -102,6 +104,8 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/oss/html5shiv.min.js') }}"></script>
     <script src="{{ asset('/oss/respond.min.js') }}"></script>
     <![endif]-->
+    @section('head')
+    @show
 </head>
 <body class="skin-blue fixed" data-spy="scroll" data-target="#scrollspy">
 <div class="wrapper">
