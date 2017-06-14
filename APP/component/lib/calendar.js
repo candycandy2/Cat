@@ -131,7 +131,6 @@ $.fn.calendar = function (options) {
                 }
             });
         }
-
         return $legendObj;
     }
 
@@ -220,7 +219,11 @@ $.fn.calendar = function (options) {
 
             var $dowHeaderRow = $('<tr class="calendar-dow-header"></tr>');
             $(dowLabels).each(function (index, value) {
-                $dowHeaderRow.append('<th>' + value + '</th>');
+                $day = $("<th></th>");
+                if(value == "日" || value == "六") {
+                    $day.addClass("calendar-header-hoildayStyle");
+                }
+                $dowHeaderRow.append($day.append(value));
             });
             $tableObj.append($dowHeaderRow);
         }
@@ -255,8 +258,8 @@ $.fn.calendar = function (options) {
                 if (dow < firstDow || currDayOfMonth > lastDayinMonth) {
                     $dowRow.append('<td></td>');
                 } else {
-                    var dateId = $calendarElement.attr('id') + '_' + dateAsString(year, month, currDayOfMonth);
-                    var dayId = dateId + '_day';
+                    var dateId = $calendarElement.attr('id') + '-' + dateAsString(year, month, currDayOfMonth);
+                    var dayId = dateId + '-day';
 
                     var $dayElement = $('<div id="' + dayId + '" class="day" >' + currDayOfMonth + '</div>');
                     $dayElement.data('day', currDayOfMonth);
@@ -289,7 +292,6 @@ $.fn.calendar = function (options) {
                     firstDow = 0;
                 }
             }
-
             $tableObj.append($dowRow);
         }
         return $tableObj;
