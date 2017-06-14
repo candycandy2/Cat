@@ -1,5 +1,5 @@
 /*global variable, function*/
-var currentYear, currentMonth, currentDate, ytdYear, ytdMonth, ROSummaryQueryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, ytdYear, ytdMonth, firstProduct, ROSummaryQueryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
