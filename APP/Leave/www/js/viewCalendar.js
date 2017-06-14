@@ -5,7 +5,7 @@ $("#viewCalendar").pagecontainer({
 
         $(document).ready(function() {
             $("#viewCalendar #myCalendar").calendar({
-                language: "en",
+                language: "default",
                 show_previous: true,
                 show_next: true,
                 show_days: true,
