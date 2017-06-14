@@ -17,8 +17,8 @@ if (typeof jQuery == 'undefined') {
  * @returns {*}
  */
 $.fn.calendar = function (options) {
-    var opts = $.extend({}, $.fn.zabuto_calendar_defaults(), options);
-    var languageSettings = $.fn.zabuto_calendar_language(opts.language);
+    var opts = $.extend({}, $.fn.calendar_defaults(), options);
+    var languageSettings = $.fn.calendar_language(opts.language);
     opts = $.extend({}, opts, languageSettings);
 
     var $calendarElement = $(this);
@@ -221,7 +221,7 @@ $.fn.calendar = function (options) {
             $(dowLabels).each(function (index, value) {
                 $day = $("<th></th>");
                 if(value == "日" || value == "六") {
-                    $day.addClass("calendar-header-hoildayStyle");
+                    $day.addClass("calendar-hoildayStyle");
                 }
                 $dowHeaderRow.append($day.append(value));
             });
@@ -269,8 +269,11 @@ $.fn.calendar = function (options) {
                             $dayElement.html('<span class="badge badge-today">' + currDayOfMonth + '</span>');
                         }
                     }
-
-                    var $dowElement = $('<td id="' + dateId + '"></td>');
+                    var $dowElement = $("<td></td>"); 
+                    if(dow == 0 || dow == 6) {
+                        $dowElement.addClass("calendar-hoildayStyle");
+                    }
+                    $dowElement.attr("id", dateId);
                     $dowElement.append($dayElement);
 
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
@@ -283,9 +286,7 @@ $.fn.calendar = function (options) {
                         });
                         $dowElement.click($calendarElement.data('actionFunction'));
                     }
-
                     $dowRow.append($dowElement);
-
                     currDayOfMonth++;
                 }
                 if (dow == 6) {
@@ -531,7 +532,7 @@ $.fn.calendar = function (options) {
  *   action:            function
  *   action_nav:        function
  */
-$.fn.zabuto_calendar_defaults = function () {
+$.fn.calendar_defaults = function () {
     var now = new Date();
     var year = now.getFullYear();
     var month = now.getMonth() + 1;
@@ -561,7 +562,7 @@ $.fn.zabuto_calendar_defaults = function () {
  * @param lang
  * @returns {{month_labels: Array, dow_labels: Array}}
  */
-$.fn.zabuto_calendar_language = function (lang) {
+$.fn.calendar_language = function (lang) {
     if (typeof(lang) == 'undefined' || lang === false) {
         lang = 'default';
     }
