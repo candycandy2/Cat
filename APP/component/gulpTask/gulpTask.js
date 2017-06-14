@@ -127,7 +127,7 @@ gulp.task('appHTML', ['templateHTML'], function(){
 });
 
 gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ./template.html'
+    //'rm ./template.html'
 ]));
 
 //Process Image
@@ -168,5 +168,5 @@ gulp.task('String', ['commonString'], function() {
 });
 
 gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ./function.js'
+    //'rm ./function.js'
 ]));
