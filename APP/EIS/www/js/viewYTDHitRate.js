@@ -528,6 +528,21 @@ $("#viewYTDHitRate").pagecontainer({
         }
 
         /********************************** page event *************************************/
+        $("#viewYTDHitRate").on("pagebeforeshow", function(event, ui) {
+            /* global PullToRefresh */
+            PullToRefresh.init({
+                mainElement: '.sliderYTD',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewYTDHitRate") {
+                        eisdata = {};
+                        localStorage.removeItem("eisdata");
+                        callProductDetailAPIReduce();
+                        callProductDetailAPI();
+                    }
+                }
+            });
+        });
+
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
             initSlider();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");

@@ -78,7 +78,7 @@ public class MsgBox {
             // 取消更新
             //builder.setNegativeButton(msgHelper.getString("update_cancel"), onClickListener);
             //转到后台更新
-            builder.setNegativeButton(msgHelper.getString(MsgHelper.UPDATE_BG), onClickListenerNeg);
+            //builder.setNegativeButton(msgHelper.getString(MsgHelper.UPDATE_BG), onClickListenerNeg);
             builder.setNeutralButton(msgHelper.getString(MsgHelper.DOWNLOAD_COMPLETE_NEU_BTN), onClickListenerNeu);
             builder.setPositiveButton(msgHelper.getString(MsgHelper.DOWNLOAD_COMPLETE_POS_BTN), onClickListenerPos);
             downloadDialog = builder.create();
