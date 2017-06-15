@@ -23,6 +23,7 @@ var updateApiOperationTimeAreaRangeLineChart = function (date,actionName){
           contentType: "application/json",
           data:mydataStr,
             success: function(r){
+                r = sortByInterval(r);
                 $.each(r,function(i,data){
                     var tmpRange = [dateToUTC(data._id.interval), data.min * 1000, data.max * 1000];
                     ranges.push(tmpRange);
@@ -41,5 +42,12 @@ var updateApiOperationTimeAreaRangeLineChart = function (date,actionName){
 }
 var createApiOperationTimeRangeLineChart = function(options){
     Highcharts.chart('container_api_operation_time_area_range_line_1',options);
+}
+
+function sortByInterval(obj){
+    obj = obj.sort(function (a, b) {
+     return a._id.interval < b._id.interval ? -1 : 1;
+    });
+    return obj;
 }
 </script>
