@@ -36,9 +36,15 @@ td.grid_warp_column {
     vertical-align: middle;
     border: 1px solid transparent;
 }
-.table-title{
+.report-table .table-title{
     text-align: center !important;
     vertical-align: middle !important;
+}
+.report-table td{
+    text-align: center;
+}
+.report-table .js-total{
+    font-weight:bold;
 }
 .bg-color-pink{
     background-color: #f9edf7;
@@ -46,13 +52,10 @@ td.grid_warp_column {
 .bg-color-blue{
     background-color: #d9edf7;
 }
-.text-blod
-{
+.text-blod{
     font-weight:bold;
 }
-#report_table td{
-    text-align: center;
-}
+
 .dropdown-menu>.active>a,
 .dropdown-menu>.active>a:focus,
 .dropdown-menu>.active>a:hover {
@@ -87,4 +90,12 @@ td.grid_warp_column {
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
+}
+.loader{
+   content:url('./images/loading.gif');
+   height: 50px;
+   width: 50px;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
 }

@@ -63,6 +63,10 @@ class ReportDetailController extends Controller
 
     }
     
+    /**
+     * 取得呼叫API人數與次數資料
+     * @return json
+     */
     public function getCallApiReport(){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -80,5 +84,51 @@ class ReportDetailController extends Controller
             return json_encode($result);
         }
         
+    }
+
+    /**
+     * 取得API執行時間資料
+     * @return json
+     */
+    public function getApiOperationTimeReport(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        
+        CommonUtil::setLanguage();
+        
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $appKey = $jsonContent['app_key'];
+            $result = $this->reportService->getApiOperationTimeReport($appKey);
+            return json_encode($result);
+        }
+    }
+
+    /**
+     * 取得API執行時間該日期每小時資料
+     * @return json
+     */
+    public function getApiOperationTimeDetailReport(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        
+        CommonUtil::setLanguage();
+        
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $appKey = $jsonContent['app_key'];
+            $date = $jsonContent['date'];
+            $actionName = $jsonContent['action'];
+            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $actionName);
+            return json_encode($result);
+        }
     }
 }

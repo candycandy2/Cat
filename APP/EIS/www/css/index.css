@@ -65,13 +65,10 @@
 	margin: 2VH auto 0;
 }
 
-.page-main #YTD-Str{
+.page-main .YTD-Str {
 	display: none;
-	margin-top: -2.931VH;
-	overflow: auto;
-	float: right;
-	margin-right: 8VW;
-	font-size: 4VW;
+	font-size: 3VW;
+	text-align: center;
 }
 /******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
