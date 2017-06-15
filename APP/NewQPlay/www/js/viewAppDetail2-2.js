@@ -155,8 +155,19 @@ $("#viewAppDetail2-2").pagecontainer({
 
         /********************************** dom event *************************************/
         $("#InstallApp #InstallAppStr01").on("click", function() { //下載
-            if (selectAppIndex != null) {
-                window.open(applist[selectAppIndex].url, '_system'); //download app
+            if (device.platform === "iOS") {
+
+                if (selectAppIndex != null) {
+                    window.open(applist[selectAppIndex].url, '_system'); //download app
+                }
+            } else {
+
+                var updateUrl = applist[selectAppIndex].url;
+                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                function onFail() {}
+
+                function onSuccess() {}
             }
         });
 
