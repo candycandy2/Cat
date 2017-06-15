@@ -1,7 +1,7 @@
 <div id="call_api_table">
-    <div><label class="text-muted" id="table_date">2017-03-03</label></div>
+    <div><label class="text-muted">2017-03-03</label></div>
     <div class="table-responsive">
-        <table id="report_table" class="table table-bordered table-striped ">
+        <table class="table table-bordered table-striped report-table">
            <thead>
               <tr>
                  <th rowspan="2" data-field="_id.action" class="table-title">
@@ -20,7 +20,7 @@
                     <div class="th-inner">API 呼叫人數_公司+地區</div>
                  </th>
               </tr>
-              <tr class="js-company-site">
+              <tr class="js-sub-title">
               </tr>
            </thead>
            <tbody class="js-row">
@@ -31,22 +31,22 @@
 <script>
 
 var createTableChart = function(res,date){
-    
-    $('#table_date').text(date);
-    $('thead > tr.js-company-site').empty();
-    $('tbody').empty();
+    var $tableChartDiv = $('#call_api_table');
+    $tableChartDiv.find('.text-muted').text(date);
+    $tableChartDiv.find('thead > tr.js-sub-title').empty();
+    $tableChartDiv.find('tbody').empty();
     
     createTable(res,date);
-    sortTable('#report_table');
+    sortTable('call_api_table');
     
     //set donut chart
     if(typeof res[date] == 'undefined'){
-       $('#call_api_table').hide();
+       $tableChartDiv.hide();
        $('#call_api_donutchart').hide();
     }else{
-        $('#call_api_table').show();
+        $tableChartDiv.show();
         $('#call_api_donutchart').show();
-        updateApiLogDonutChart(res[date].actions,$.trim($('#report_table u').eq(0).text()));
+        updateApiLogDonutChart(res[date].actions,$.trim($tableChartDiv.find('table u').eq(0).text()));
     }
     
 }
@@ -74,27 +74,30 @@ var createTable = function(res, date){
             }
         }
     }
-    $('.js-data-title').attr('colspan',companySiteArray.length);
+
+    var $tableChartDiv = $('#call_api_table');
+    $tableChartDiv.find('.js-data-title').attr('colspan',companySiteArray.length);
     //call api times
     var td = '<td class="js-v-t text-blod">0</td><td class="js-v-d text-blod">0</td>';
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-blue"><div class="th-inner fit-cell">'+companySite+'</div></th>';
         td+= '<td class="js-'+companySite+'_t">0</td>';
-        $('.js-company-site').append(th);
+        $tableChartDiv.find('.js-sub-title').append(th);
     });
     //call api user
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+companySite+'</div></th>';
         td+= '<td class="js-'+companySite+'_d">0</td>';
-        $('.js-company-site').append(th);
+        $tableChartDiv.find('.js-sub-title').append(th);
     });
     //api action row
     $.each(actionArray, function(index, actionName){
         var tr = '<tr class="js-' + actionName + '" style="cursor:pointer"><th scope="row"><u>' + actionName + '</u></th>' + td + '</tr>';
-        $('.js-row').append(tr);
+        $tableChartDiv.find('.js-row').append(tr);
     });
 
     //append result data
+    var totalDistinctUserCount = [];
     $.each(actionArray, function(index, action){
         $.each(companySiteArray, function(subIndex, companySite){
              var tmpTimesCount = 0;
@@ -102,18 +105,23 @@ var createTable = function(res, date){
             $.each(departmentArray, function(nodeIndex, department){
                 if( (typeof dataArray[action][companySite] != 'undefined') && (typeof dataArray[action][companySite][department] != 'undefined')){
                     tmpTimesCount = tmpTimesCount + dataArray[action][companySite][department].times;
-                    tmpUsersCount = tmpTimesCount + dataArray[action][companySite][department].users.length;
+                    tmpUsersCount = tmpUsersCount + dataArray[action][companySite][department].users.length;
+                    $.each(dataArray[action][companySite][department].users,function(i,user){
+                        if($.inArray(user, totalDistinctUserCount ) == -1){
+                            totalDistinctUserCount.push(user);
+                        }
+                    });
                 }
             });
-            $('#report_table .js-'+action+' .js-'+companySite+'_t').html(tmpTimesCount);
-            $('#report_table .js-'+action+' .js-'+companySite+'_d').html(tmpUsersCount);
+            $tableChartDiv.find('table .js-'+action+' .js-'+companySite+'_t').html(tmpTimesCount);
+            $tableChartDiv.find('table .js-'+action+' .js-'+companySite+'_d').html(tmpUsersCount);
         });
 
     });
 
     //add last total row
-    $('.js-row').append('<tr class="js-total"><th scope="row"></th>'+td+'</tr>');
-    $('.js-row > tr.js-total td').html(0);
+    $tableChartDiv.find('.js-row').append('<tr class="js-total"><th scope="row"></th>'+td+'</tr>');
+    $tableChartDiv.find('.js-row > tr.js-total td').html(0);
 
     //  operate company-side total
     var htotalArr = {'t':[],'d':[]};
@@ -134,53 +142,30 @@ var createTable = function(res, date){
                 i++;
             });
             //modify last one
-            htotalArr[type][i-1] = parseInt(htotalArr[type][i-1]) + parseInt(vtotalArr[type]);
-            $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).html( vtotalArr[type]);
-            $('#report_table .js-'+'total'+' .js-'+companySite+'_' + type).addClass('text-blod');
+            if(type == 't'){
+                htotalArr[type][i-1] = parseInt(htotalArr[type][i-1]) + parseInt(vtotalArr[type]);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(vtotalArr[type]);
+            }else{
+                htotalArr[type][i-1] = totalDistinctUserCount.length;//real distinct user count
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(vtotalArr[type]);
+            }
         });   
          
      });
     // operate times and  users total
     $.each(htotalArr,function(type,hTotal){
-        $vTotalObj = $('#report_table').find('.js-v-' + type);
+        $vTotalObj = $tableChartDiv.find('table').find('.js-v-' + type);
         $.each($vTotalObj, function(index){
             var percent = (htotalArr[type][index]/htotalArr[type][$vTotalObj.length-1]) * 100 ;
             $(this).html(htotalArr[type][index] + '<span>(' + Math.round(percent * 10) / 10 + ' % )</span>');
         });
      });
-     $('.js-v-t span').css('color','#8085e9');
-     $('.js-v-d span').css('color','Orange');
+     $tableChartDiv.find('.js-v-t span').css('color','#8085e9');
+     $tableChartDiv.find('.js-v-d span').css('color','Orange');
      
-     $('#report_table u').click(function(){
+     $tableChartDiv.find('table u').click(function(){
        updateApiLogDonutChart(dataArray,$.trim($(this).text()));
-     })
+     });
 
-}
-
-var sortTable = function(table){
-    var rows = $(table + ' tbody  tr').not('.js-total').get();
-
-    rows.sort(function(a, b) {
-
-    var A = $(a).children('td').eq(0).text().toUpperCase();
-    var B = $(b).children('td').eq(0).text().toUpperCase();
-    A=parseInt(A.split('(')[0]);
-    B=parseInt(B.split('(')[0]);
-
-    if(A < B) {
-    return -1;
-    }
-
-    if(A > B) {
-    return 1;
-    }
-
-    return 0;
-
-    });
-
-    $.each(rows, function(index, row) {
-    $(table).children('tbody').prepend(row);
-    });
 }
 </script>
