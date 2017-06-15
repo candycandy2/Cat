@@ -90,79 +90,8 @@ var setDonutChartData = function(r,type,queryAction,chart){
     chart.series[1].setData(departmentData);
 }
 
-var createdDunutChart = function(container){
-
-    // Create the chart
-    var chart = Highcharts.chart(container, {
-        chart: {
-            type: 'pie'
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ''
-        },
-        yAxis: {
-            title: {
-                text: 'Total percent market share'
-            }
-        },
-        plotOptions: {
-            pie: {
-                shadow: false,
-                center: ['50%', '50%']
-            }
-        },
-        tooltip: {
-            valueSuffix: '%'
-        },
-        series: [{
-            name: 'Sites',
-            data: [1],
-            size: '60%',
-            dataLabels: {
-                formatter: function () {
-                    return this.y > 5 ? this.point.name : null;
-                },
-                color: '#ffffff',
-                distance: -30
-            }
-        }, {
-            name: 'Departments',
-            data: [1],
-            size: '80%',
-            innerSize: '60%',
-            dataLabels: {
-                formatter: function () {
-                    // display only if larger than 1
-                    return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-                        this.y + '%' : null;
-                }
-            },
-            id: 'sites'
-        }],
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 400
-                },
-                chartOptions: {
-                    series: [{
-                        id: 'sites',
-                        dataLabels: {
-                            formatter: function () {
-                                // display only if larger than 1
-                                return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-                                    this.y + '%' : null;
-                            }
-                        }
-                    }]
-                }
-            }]
-        }
-    });
-
-    return chart;
+var createdCallApiDunutChart = function(options){
+    Highcharts.chart('container_donut_chart_t',options);
+    Highcharts.chart('container_donut_chart_d',options);
 }
 </script>
