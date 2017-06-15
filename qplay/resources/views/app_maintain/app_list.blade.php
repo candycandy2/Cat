@@ -9,7 +9,8 @@ $menu_name = "APP_MAINTAIN";
           {{trans("messages.NEW_APP")}}
         </button>
     </div>
-     <table id="gridAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
+     <table id="gridAppList" class="bootstrapTable" data-toggle="table" 
+           data-sort-name="updated_at"  data-sort-order="desc" data-toolbar="#toolbar"
            data-url="AppMaintain/getMaintainAppList" data-height="600" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
