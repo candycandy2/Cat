@@ -17,9 +17,9 @@ $menu_name = "REPORT";
         <thead>
         <tr>
             <th data-field="project_code" data-sortable="true" data-visible="false" data-searchable="false">Project Code</th>
-            <th data-field="app_name" data-sortable="false" data-formatter="iconFormatter" data-searchable="true">{{trans("messages.APPLICATION_NAME")}}</th>
+            <th data-field="app_name" data-sortable="false" data-formatter="iconFormatter" data-search-formatter="false">{{trans("messages.APPLICATION_NAME")}}</th>
             <th data-field="android_release" data-formatter="deviceSupportFormatter" data-search-formatter="true">{{trans("messages.SUPPORT_DEVICE_TYPE")}}</th>
-            <th data-field="register_rate" >{{trans("messages.REGISTER_USER_COUNT")}}/{{trans("messages.REGISTER_DEVICE_COUNT")}}</th>
+            <th data-field="register_rate" data-searchable="false">{{trans("messages.REGISTER_USER_COUNT")}}/{{trans("messages.REGISTER_DEVICE_COUNT")}}</th>
             <th data-field="release_status" data-formatter="releaseFormatter" data-align="center" data-sortable="true" data-search-formatter="true" >{{trans("messages.RELEASED")}}</th>
         </tr>
         </thead>

@@ -1,12 +1,5 @@
 var tab = "thisMonth";
-var lytmTotalActualAMT = 0;
-var lylmTotalActualAMT = 0;
-var thisMonthBudgetAMT = [];
-var thisMonthActualAMT = [];
-var lastMonthBudgetAMT = [];
-var lastMonthActualAMT = [];
-var YTDBudgetAMT = [];
-var YTDActualAMT = [];
+var lytmTotalActualAMT, lylmTotalActualAMT, thisMonthBudgetAMT, thisMonthActualAMT, lastMonthBudgetAMT, lastMonthActualAMT, YTDBudgetAMT, YTDActualAMT;
 var lastYTDActualAMT = {};
 var thisMonthData = {};
 var lastMonthData = {};
@@ -68,6 +61,14 @@ $("#viewHitRate").pagecontainer ({
         };
 
         function getAllData() {
+            lytmTotalActualAMT = 0;
+            lylmTotalActualAMT = 0;
+            thisMonthBudgetAMT = [];
+            thisMonthActualAMT = [];
+            lastMonthBudgetAMT = [];
+            lastMonthActualAMT = [];
+            YTDBudgetAMT = [];
+            YTDActualAMT = [];
             if(thisMonth == 1) {
                 ytdMonth = 12;
                 ytdYear = thisYear - 1;
@@ -326,6 +327,26 @@ $("#viewHitRate").pagecontainer ({
         }
 
 		/********************************** page event *************************************/
+        $("#viewHitRate").on("pagebeforeshow", function(event, ui) {
+            /* global PullToRefresh */
+            PullToRefresh.init({
+                mainElement: '.page-date',
+                onRefresh: function() {
+                    localStorage.removeItem("hitRateEisData");
+                    ROSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
+                    ROSummary();
+                    $("input[id=viewHitRate-tab-1]").trigger('click');
+                    $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
+                    $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
+                    $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active'); 
+                }
+            });
+        });
+
         $("#viewHitRate").on("pageshow", function(event, ui) {
             showHighchart();
             $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
