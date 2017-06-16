@@ -73,9 +73,6 @@ class ReportDetailController extends Controller
         {
             return null;
         }
-        
-        // CommonUtil::setLanguage();
-        
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
@@ -96,9 +93,6 @@ class ReportDetailController extends Controller
         {
             return null;
         }
-        
-        // CommonUtil::setLanguage();
-        
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
@@ -118,9 +112,6 @@ class ReportDetailController extends Controller
         {
             return null;
         }
-        
-        // CommonUtil::setLanguage();
-        
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
