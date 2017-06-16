@@ -80,7 +80,7 @@ $("#viewPersonalLeave").pagecontainer({
         // }
 
         $(document).ready(function() {
-            $("#viewPersonalLeave #myCalendar").zabuto_calendar({
+            $("#viewPersonalLeave #myCalendar").calendar({
                 language: "default",
                 show_previous: true,
                 show_next: true,

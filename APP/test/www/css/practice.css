@@ -1,0 +1,105 @@
+/*html*/
+/*长按不显示复制粘贴*/
+*{   
+    -webkit-touch-callout:none;  /*系统默认菜单被禁用*/   
+    -webkit-user-select:none; /*webkit浏览器*/   
+    -khtml-user-select:none; /*早期浏览器*/   
+    -moz-user-select:none;/*火狐*/   
+    -ms-user-select:none; /*IE10*/   
+    user-select:none;   
+}
+input{
+	-webkit-user-select:auto; /*webkit浏览器*/ 
+}
+a{
+	text-decoration: none;
+}
+li{
+	list-style-type: none;
+}
+/*theme*/
+.ui-bar-f,.ui-body-f,.ui-page-theme-f{
+	background-color: #543888;
+	color: white;
+}
+/*panel*/
+
+/*dialog*/
+.dialog-high{
+	height: 60px;
+	line-height: 80px;;
+	text-align: center;
+}
+.dialog-short{
+	height: 43px;
+	line-height: 43px;
+	text-align: center;
+}
+.btn-large{
+	width: 200px;
+	border: none;
+	outline: none;
+	border-top: 1px solid black;
+}
+/*table*/
+#rateTable{
+	width: 100%;
+}
+#rateTable td{
+	text-align: center;
+	height: 36px;
+}
+#rateTable tr td:nth-child(1),#rateTable tr td:nth-child(2){
+	width: 20%;
+}
+#rateTable tr td:nth-child(3){
+	width: 30%;
+}
+#rateTable tr td:nth-child(4){
+	width: 30%;
+}
+#rateTable tr:nth-child(1){
+	color: #7B7B7D;
+}
+#rateTable tr:last-child td{
+	background-color: #C6C6C6;
+	border-bottom: none;
+	border-top: 1px solid black;
+}
+#rateTable tr td:nth-child(1){
+	color: #7B7B7D;
+}
+#rateTable tr:nth-child(n+2) td:nth-child(2){
+	font-weight: bold;
+}
+#rateTable tr:last-child td:first-child{
+	font-weight: bold;
+	color: black;
+}
+#rateTable tr td:nth-child(n+2){
+	border-bottom: 1px solid #DCDBDE;
+}
+.span-block{
+	display: inline-block;
+	width: 80%;
+	height: 70%;
+	line-height: 100%;
+	color: white;
+	border-radius: 4px;
+	padding: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

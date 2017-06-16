@@ -28,8 +28,8 @@ $menu_name = "SYS_PROJECT_MAINTAIN";
             <th data-field="app_key" data-sortable="true">{{trans("messages.APP_KEY")}}</th>
             <th data-field="secret_key" data-sortable="true" data-class="grid_warp_column">Secret Key</th>
             <th data-field="project_pm" data-sortable="true">{{trans("messages.PROJECT_PM")}}</th>
-            <th data-field="app_row_id" data-sortable="false" data-width="200px" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
-            <th data-field="row_id" data-sortable="false" data-width="200px" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_EMAIL")}}</th>
+            <th data-field="app_row_id" data-sortable="false" data-searchable="false" data-width="200px" data-formatter="appMaintainFormatter" >{{trans("messages.APP_MAINTAIN")}}</th>
+            <th data-field="row_id" data-sortable="false" data-width="200px" data-searchable="false" data-formatter="sendAgainFormatter" >{{trans("messages.SEND_EMAIL")}}</th>
         </tr>
         </thead>
     </table>

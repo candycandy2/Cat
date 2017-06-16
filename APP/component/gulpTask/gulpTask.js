@@ -126,9 +126,10 @@ gulp.task('appHTML', ['templateHTML'], function(){
         .pipe(gulp.dest('www/View/'));
 });
 
-gulp.task('componentHTML', ['appHTML'], shell.task([
-    'rm ./template.html'
-]));
+gulp.task('componentHTML', ['appHTML'], function() {
+    fs.unlink('./template.html', (err) => {
+    });
+});
 
 //Process Image
 gulp.task('componentIMG', function() {
@@ -167,6 +168,7 @@ gulp.task('String', ['commonString'], function() {
         .pipe(gulp.dest('www/string/'));
 });
 
-gulp.task('componentJS', ['libJS', 'appJS', 'String'], shell.task([
-    'rm ./function.js'
-]));
+gulp.task('componentJS', ['libJS', 'appJS', 'String'], function() {
+    fs.unlink('./function.js', (err) => {
+    });
+});

@@ -59,17 +59,29 @@ $("#viewYTDHitRate").pagecontainer({
             }else if(ro == "ALL" && product != "ALL") {
                 while(index <= Number(month)) {
                     for(var ro in eisdata[year][index]) {
-                        Actual += eisdata[year][index][ro][product][actualIndex];
-                        totalQTY += eisdata[year][index][ro][product][0];
-                        totalAMT += eisdata[year][index][ro][product][2];
+                        if(eisdata[year][index][ro].hasOwnProperty(product)) {
+                            Actual += eisdata[year][index][ro][product][actualIndex];
+                            totalQTY += eisdata[year][index][ro][product][0];
+                            totalAMT += eisdata[year][index][ro][product][2];
+                        }else {
+                            Actual += 0;
+                            totalQTY += 0;
+                            totalAMT += 0;
+                        }
                     }
                     index++;
                 }
             }else {
                 while(index <= Number(month)) {
-                    Actual += eisdata[year][index][ro][product][actualIndex];
-                    totalQTY += eisdata[year][index][ro][product][0];
-                    totalAMT += eisdata[year][index][ro][product][2];
+                    if(eisdata[year][index][ro].hasOwnProperty(product)) {
+                        Actual += eisdata[year][index][ro][product][actualIndex];
+                        totalQTY += eisdata[year][index][ro][product][0];
+                        totalAMT += eisdata[year][index][ro][product][2];
+                    }else {
+                        Actual += 0;
+                        totalQTY += 0;
+                        totalAMT += 0;
+                    }
                     index++;
                 }
             }
@@ -128,23 +140,41 @@ $("#viewYTDHitRate").pagecontainer({
             }else if(ro == "ALL" && product != "ALL") {
                 while(index <= Number(month)) {
                     for(var ro in eisdata[year][index]) {
+                        if(eisdata[year][index][ro].hasOwnProperty(product)) {
+                            Actual += eisdata[year][index][ro][product][actualIndex];
+                            Budget += eisdata[year][index][ro][product][budgetIndex];
+                            ActualQTY += eisdata[year][index][ro][product][0];
+                            BudgetQTY += eisdata[year][index][ro][product][1];
+                            ActualAMT += eisdata[year][index][ro][product][2];
+                            BudgetAMT += eisdata[year][index][ro][product][3];
+                        }else {
+                            Actual += 0;
+                            Budget += 0;
+                            ActualQTY += 0;
+                            BudgetQTY += 0;
+                            ActualAMT += 0;
+                            BudgetAMT += 0;
+                        }
+                    }
+                    index++;
+                }
+            }else {
+                while(index <= Number(month)){
+                    if(eisdata[year][index][ro].hasOwnProperty(product)) {
                         Actual += eisdata[year][index][ro][product][actualIndex];
                         Budget += eisdata[year][index][ro][product][budgetIndex];
                         ActualQTY += eisdata[year][index][ro][product][0];
                         BudgetQTY += eisdata[year][index][ro][product][1];
                         ActualAMT += eisdata[year][index][ro][product][2];
                         BudgetAMT += eisdata[year][index][ro][product][3];
+                    }else {
+                        Actual += 0;
+                        Budget += 0;
+                        ActualQTY += 0;
+                        BudgetQTY += 0;
+                        ActualAMT += 0;
+                        BudgetAMT += 0;
                     }
-                    index++;
-                }
-            }else {
-                while(index <= Number(month)){
-                    Actual += eisdata[year][index][ro][product][actualIndex];
-                    Budget += eisdata[year][index][ro][product][budgetIndex];
-                    ActualQTY += eisdata[year][index][ro][product][0];
-                    BudgetQTY += eisdata[year][index][ro][product][1];
-                    ActualAMT += eisdata[year][index][ro][product][2];
-                    BudgetAMT += eisdata[year][index][ro][product][3];
                     index++;
                 }
             }
@@ -162,7 +192,7 @@ $("#viewYTDHitRate").pagecontainer({
             }
         }
 		
-		function getHighchartsData(ro, product, year, month) {
+		function getHighchartsData(ro, product, year, ytdMonth) {
             var rtAQ = 0;
             var rtBQ = 0;
             var rtAA = 0;
@@ -171,9 +201,10 @@ $("#viewYTDHitRate").pagecontainer({
                 ytdHighchartsData[i] = [];
             }
             if(ro == "ALL" && product == "ALL") {
-                for(var month in eisdata[year]) {
-                    for(var i in ytdHighchartsData) {
-                        ytdHighchartsData[i][Number(month)-1] = 0;
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
+                    for(var j in ytdHighchartsData) {
+                        ytdHighchartsData[j][Number(month)-1] = 0;
                     }
                     for(var ro in eisdata[year][month]) {
                         for(var product in eisdata[year][month][ro]) {
@@ -205,7 +236,8 @@ $("#viewYTDHitRate").pagecontainer({
                     }
                 }
             }else if(ro != "ALL" && product == "ALL") {
-                for(var month in eisdata[year]) {
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
                     for(var i in ytdHighchartsData) {
                         ytdHighchartsData[i][Number(month)-1] = 0;
                     }
@@ -236,8 +268,9 @@ $("#viewYTDHitRate").pagecontainer({
                         ytdHighchartsData["RT Budget ASP"][Number(month)-1] = (ytdHighchartsData["RT Budget AMT"][Number(month)-1] / ytdHighchartsData["RT Budget QTY"][Number(month)-1]);
                     }
                 }
-            }else if(ro == "ALL" && product != "ALL") {    
-                for(var month in eisdata[year]) {
+            }else if(ro == "ALL" && product != "ALL") {
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
                     for(var i in ytdHighchartsData) {
                         ytdHighchartsData[i][Number(month)-1] = 0;
                     }
@@ -271,7 +304,8 @@ $("#viewYTDHitRate").pagecontainer({
                     }
                 }
             }else {
-                for(var month in eisdata[year]) {
+                for(var month=1; month<=ytdMonth; month++) {
+                // for(var month in eisdata[year]) {
                     for(var i in ytdHighchartsData) {
                         ytdHighchartsData[i][Number(month)-1] = 0;
                     }
@@ -320,12 +354,12 @@ $("#viewYTDHitRate").pagecontainer({
         function initSlider() {
             if (ytdPageDateExist) {
                 var index = 0;
-                year = thisYear-1;
-                month = thisMonth;
+                year = ytdYear-1;
+                month = ytdMonth;
                 while(index < 2) {
                     ytdPageDateList += "<div>" + year + "</div>";
-                    if(year == thisYear) {
-                        ytdPageDate[index] = thisMonth + "." + year;
+                    if(year == ytdYear) {
+                        ytdPageDate[index] = ytdMonth + "." + year;
                     }else{
                         ytdPageDate[index] = 12 + "." + year;
                     }
@@ -359,7 +393,14 @@ $("#viewYTDHitRate").pagecontainer({
         $(".sliderYTD").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
-            getHighchartsData(ro, product, year, month);  
+            if(year == ytdYear && month != 12) {
+                $(".YTD-Str").css("display", "block");
+                ytdStrExist = true;
+            }else {
+                $(".YTD-Str").css("display", "none");
+                ytdStrExist = false;
+            }
+            getHighchartsData(ro, product, year, month);
             showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
             budgetHitRate = getBudgetHitRate(ro, product, year, month, tab);
@@ -487,6 +528,21 @@ $("#viewYTDHitRate").pagecontainer({
         }
 
         /********************************** page event *************************************/
+        $("#viewYTDHitRate").on("pagebeforeshow", function(event, ui) {
+            /* global PullToRefresh */
+            PullToRefresh.init({
+                mainElement: '.sliderYTD',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewYTDHitRate") {
+                        eisdata = {};
+                        localStorage.removeItem("eisdata");
+                        callProductDetailAPIReduce();
+                        callProductDetailAPI();
+                    }
+                }
+            });
+        });
+
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
             initSlider();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
@@ -502,8 +558,8 @@ $("#viewYTDHitRate").pagecontainer({
             ro = "ALL";
             product = "ALL";
             tab = "AMT";
-            year = thisYear;
-            month = thisMonth;
+            year = ytdYear;
+            month = ytdMonth;
             hcRo = "All";
             hcProduct = "All product";
 			showHighchart();
@@ -529,7 +585,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = userAuthorityCallBackData[0]["PVALUE"];
+                product = firstProduct;
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
@@ -546,7 +602,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = userAuthorityCallBackData[0]["PVALUE"];
+                product = firstProduct;
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "";
