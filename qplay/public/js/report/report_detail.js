@@ -89,41 +89,48 @@ var creatChart = function(res,reportEndDate){
 
 var iniApiOperationTimeReport = function(appKey){
 
+    var storage = ExtSessionStorage(appKey);
     $('.loader').show();
     var mydata = {app_key:appKey},
         mydataStr = $.toJSON(mydata),
         res={};
+    if(storage("apiOperationTime")){
+        $('.loader').hide();
+        res =JSON.parse(storage("apiOperationTime"));
+        creatChartOpTime(res,reportEndDate);
+    }else{
         
-    var storage = ExtSessionStorage(appKey);
-    $.ajax({
-          url:"reportDetail/getApiOperationTimeReport",
-          type:"POST",
-          dataType:"json",
-          contentType: "application/json",
-          data:mydataStr,
-            success: function(r){
-                $.each(r,function(i,data){
-                    var d = data._id;
-                    if(!res.hasOwnProperty(d.created_at)){
-                         res[d.created_at] = {};
-                    }
-                    if(!res[d.created_at].hasOwnProperty(d.action)){
-                        res[d.created_at][d.action] = {'max' : 0, 'min' : 0, 'avg':0};
-                    }
-                    var actionArray =  res[d.created_at][d.action];
-                    actionArray.max = data.max * 1000;
-                    actionArray.min = data.min * 1000;
-                    actionArray.avg = data.avg * 1000;
-                    actionArray.count = data.count;
-                });
-                creatChartOpTime(res,reportEndDate);
-            },
-            error: function (e) {
-                showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
-            }
-        }).done(function() {
-            $('.loader').hide();
-        });
+        $.ajax({
+              url:"reportDetail/getApiOperationTimeReport",
+              type:"POST",
+              dataType:"json",
+              contentType: "application/json",
+              data:mydataStr,
+                success: function(r){
+                    $.each(r,function(i,data){
+                        var d = data._id;
+                        if(!res.hasOwnProperty(d.created_at)){
+                             res[d.created_at] = {};
+                        }
+                        if(!res[d.created_at].hasOwnProperty(d.action)){
+                            res[d.created_at][d.action] = {'max' : 0, 'min' : 0, 'avg':0};
+                        }
+                        var actionArray =  res[d.created_at][d.action];
+                        actionArray.max = data.max * 1000;
+                        actionArray.min = data.min * 1000;
+                        actionArray.avg = data.avg * 1000;
+                        actionArray.count = data.count;
+                    });
+                    storage("apiOperationTime",JSON.stringify(res));
+                    creatChartOpTime(res,reportEndDate);
+                },
+                error: function (e) {
+                    showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+                }
+            }).done(function() {
+                $('.loader').hide();
+            });
+    }
 
 }
 
