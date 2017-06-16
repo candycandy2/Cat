@@ -138,9 +138,9 @@ if(array_key_exists('with_msg_id', $input)) {
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="lang/en-us/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">English</a></li>
-                            <li><a href="lang/zh-cn/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">简体中文</a></li>
-                            <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">繁體中文</a></li>
+                            <li><a href="{{asset('lang/en-us/'.Route::current()->getUri().urlencode('?'.Request::getQueryString()))}}">English</a></li>
+                            <li><a href="{{asset('lang/zh-cn/'.Route::current()->getUri().urlencode('?'.Request::getQueryString()))}}">简体中文</a></li>
+                            <li><a href="{{asset('lang/zh-tw/'.Route::current()->getUri().urlencode('?'.Request::getQueryString()))}}">繁體中文</a></li>
                         </ul>
                     </li>
                     <li>
