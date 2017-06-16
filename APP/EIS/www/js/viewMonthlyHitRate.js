@@ -609,6 +609,7 @@ $("#viewMonthlyHitRate").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMonthlyHitRate").on("pageshow", function(event, ui) {
+            // localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
             initSlider();
             $("#viewMonthlyHitRate #title-container > #title > #actualValue > p").text("Adj. Sales");
             $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
