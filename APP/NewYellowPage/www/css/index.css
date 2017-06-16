@@ -1,3 +1,16 @@
+.confirmfornoquery{
+    padding-top: 3vw; color: #2c89bc
+}
+
+.noqueryconditioncss{
+    padding-top: 10vw;
+    padding-bottom: 10vw
+}
+
+.deletecondition{
+   padding-top: 10vw;
+   padding-bottom: 10vw
+}
 
 .custom-navbar ul li a {
     border-style: none;
