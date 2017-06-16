@@ -18,6 +18,14 @@ var getMultiLineChartOpt = function(){
                     units: [['day', [1]]]
                 }
             }, {
+                type: 'month',
+                count: 6,
+                text: '6個月',
+                dataGrouping: {
+                    forced: true,
+                    units: [['day', [1]]]
+                }
+            }, {
                 type: 'all',
                 text: 'All',
                 dataGrouping: {
@@ -98,7 +106,7 @@ var getDonutChartOpt = function(){
         },
         yAxis: {
             title: {
-                text: 'Total percent market share'
+                text: ''
             }
         },
         plotOptions: {
@@ -115,6 +123,8 @@ var getDonutChartOpt = function(){
             data: [1],
             size: '60%',
             dataLabels: {
+                enabled: true,
+                style: { fontSize: '12px' },
                 formatter: function () {
                     return this.y > 5 ? this.point.name : null;
                 },
@@ -127,6 +137,8 @@ var getDonutChartOpt = function(){
             size: '80%',
             innerSize: '60%',
             dataLabels: {
+                enabled: true,
+                style: { fontSize: '12px' },
                 formatter: function () {
                     // display only if larger than 1
                     return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +

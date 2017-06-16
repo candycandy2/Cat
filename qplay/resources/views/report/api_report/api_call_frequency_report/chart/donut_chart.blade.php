@@ -1,10 +1,10 @@
 <div id="call_api_donutchart">
     <div><label class="text-muted">詳細資料</label></div>
-    <div class="col-lg-6 col-md-12 col-xs-12">
-        <div id="container_donut_chart_t"></div>
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        <div id="container_donut_chart_t"  style="height: 500px;"></div>
     </div>
-    <div class="col-lg-6 col-md-12 col-xs-12">
-        <div id="container_donut_chart_d"></div>    
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        <div id="container_donut_chart_d"  style="height: 500px;"></div>    
     </div>
 </div>
 
