@@ -262,6 +262,13 @@ $.fn.calendar = function (options) {
 
                     var $dayElement = $('<div id="' + dayId + '" class="day" >' + currDayOfMonth + '</div>');
                     $dayElement.data('day', currDayOfMonth);
+                    if(currDayOfMonth == 12 || currDayOfMonth == 13) {
+                        $dayElement.addClass("day-selected");
+                    }
+
+                    if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                        $dayElement.addClass("day-select");
+                    }
 
                     if ($calendarElement.data('showToday') === true) {
                         if (isToday(year, month, currDayOfMonth)) {

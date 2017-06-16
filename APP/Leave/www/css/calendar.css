@@ -26,9 +26,7 @@
 }
 
 #calendar .table tr td div.day {
-    margin: 0;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    margin: 0VW 2.5VW 0VW 2.5VW;
 }
 
 .nav_icon {
@@ -80,4 +78,19 @@ th {
     border-bottom-style: solid;
     border-color: #0f0f0f;
     border-width: 0.5px;
+}
+
+.day-selected {
+    background-color: #0db6b7;
+    border-style: solid;
+    border-color: #0db6b7;
+    border-radius: 5VW;
+    color: white;
+}
+
+.day-select {
+    border-style: solid;
+    border-color: #0db6b7;
+    border-radius: 5VW;
+    border-width: 0.1px;
 }
