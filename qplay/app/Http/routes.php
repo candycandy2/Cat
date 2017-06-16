@@ -273,10 +273,10 @@ Route::any('report', ['middleware' => 'auth', function() {
     return view("report/report_app_list");
 }]);
 
-Route::any('lang/{lang}/{uri}', function($lang, $uri) {
-    Session::set('lang', $lang);
-    return redirect()->to(urldecode($uri));
-});
+Route::any('/lang/{lang}/{uri}', function($lang, $uri){
+  Session::set('lang', $lang);
+  return redirect()->to(urldecode($uri));
+})->where('uri','.*');
 
 Route::any('testJpush', ['middleware' => 'auth', function() {
     return view("test/jpush_test");
