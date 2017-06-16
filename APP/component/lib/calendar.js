@@ -216,7 +216,6 @@ $.fn.calendar = function (options) {
                 var sunArray = new Array(dowFull.pop());
                 dowLabels = sunArray.concat(dowFull);
             }
-
             var $dowHeaderRow = $('<tr class="calendar-dow-header"></tr>');
             $(dowLabels).each(function (index, value) {
                 $day = $("<th></th>");
@@ -292,6 +291,9 @@ $.fn.calendar = function (options) {
                 if (dow == 6) {
                     firstDow = 0;
                 }
+            }
+            if(wk < weeksInMonth-1) {
+                $dowRow.find('td').addClass("td-bottom-border");
             }
             $tableObj.append($dowRow);
         }
