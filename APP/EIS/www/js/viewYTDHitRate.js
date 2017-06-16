@@ -534,6 +534,7 @@ $("#viewYTDHitRate").pagecontainer({
                 mainElement: '.sliderYTD',
                 onRefresh: function() {
                     if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewYTDHitRate") {
+                        nowTime = new Date();
                         eisdata = {};
                         localStorage.removeItem("eisdata");
                         callProductDetailAPIReduce();
@@ -544,6 +545,7 @@ $("#viewYTDHitRate").pagecontainer({
         });
 
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
+            // localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
             initSlider();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
