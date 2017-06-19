@@ -248,7 +248,7 @@ function callProductDetailAPI() {
 }
 
 function callProductDetailAPIReduce() {
-    for(var j=0; j<2; j++) {
+    for(var j=0; j<4; j++) {
         var i = ((Number(currentMonth)-j) < 10) ? "0"+(Number(currentMonth)-j) : Number(currentMonth)-j;
         productDetailQueryData = "<LayoutHeader><StartYearMonth>"
                     + currentYear + "/" + i

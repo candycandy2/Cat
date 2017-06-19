@@ -1,4 +1,3 @@
-
 /***************************************override jQuery Mobile***************************************/
 .ui-content{
 	padding: 0px;
@@ -68,6 +67,10 @@
 
 .infoContent {
 	display: none;
+}
+
+.title {
+	font-size: 4.4VW;
 }
 
 .infoContent ul {
