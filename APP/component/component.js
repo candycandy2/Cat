@@ -668,11 +668,38 @@ function checkAppVersion() {
                     } else {
 
                         var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
-                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                        function onFail() {}
+                        var permissions = cordova.plugins.permissions;
+                        permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
+                            if (status.hasPermission) {
+                                console.log("Yes :D ");
 
-                        function onSuccess() {}
+                                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                function onFail() {}
+
+                                function onSuccess() {}
+                            } else {
+                                console.warn("No :( ");
+                                permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+                                function error() {
+                                    console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
+                                }
+
+                                function success(status) {
+                                    if (status.hasPermission) {
+                                        console.log("Yes :D ");
+
+                                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                        function onFail() {}
+
+                                        function onSuccess() {}
+                                    }
+                                }
+                            }
+                        });
                     }
                 } else {
                     //Download link without QPlay
