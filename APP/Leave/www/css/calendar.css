@@ -1,0 +1,96 @@
+#calendar {
+    margin-top: 3.71VW;
+}
+
+#calendar .table th, #calendar .table td {
+    text-align: center;
+}
+
+#calendar tr.calendar-month-header th {
+    background-color: #fafafa;
+}
+#calendar .table tr.calendar-dow-header {
+    height: 11.513VW;
+}
+
+#calendar .calendar-month-header {
+    flex-flow: row wrap;
+    display: -webkit-flex;
+    margin-bottom: 4.3VW;
+}
+
+#calendar div.calendar-month-navigation {
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+#calendar .table tr td div.day {
+    margin: 0VW 2.5VW 0VW 2.5VW;
+}
+
+.nav_icon {
+    width: 4.934VW;
+}
+
+#calendar-navPrev{
+    margin-left: 3.71VW;
+}
+
+#calendar #dateTitle {
+    width: 82.712VW;
+    text-align: center;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0px;
+    border-style: solid;
+    border-width: 0.1px;
+    border-color: #d6d6d6;
+    width: 92.58VW;
+    height: 66.663VW;
+    margin: 0VW 3.71VW 0VW 3.71VW;
+    padding: 0VW 3VW 0VW 3VW;
+}
+
+#calendar .table .calendar-dow-header th {
+    margin: 0;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-family: Arial;
+    font-weight: 600;
+    font-size: 4VW;
+}
+
+.calendar-hoildayStyle {
+    color: #2e89bc;
+}
+
+.td-bottom-border {
+    border-bottom-style: solid;
+    border-color: #989898;
+    border-width: 0.5px;
+}
+
+th {
+    border-bottom-style: solid;
+    border-color: #0f0f0f;
+    border-width: 0.5px;
+}
+
+.day-selected {
+    background-color: #0db6b7;
+    border-style: solid;
+    border-color: #0db6b7;
+    border-radius: 5VW;
+    color: white;
+}
+
+.day-select {
+    border-style: solid;
+    border-color: #0db6b7;
+    border-radius: 5VW;
+    border-width: 0.1px;
+}

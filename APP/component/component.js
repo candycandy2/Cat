@@ -660,9 +660,20 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function() {
                 if (appKey === qplayAppKey) {
-                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
-                    document.getElementById("updateLink").click();
-                    $("#updateLink").remove();
+                    //$("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
+                    //document.getElementById("updateLink").click();
+                    //$("#updateLink").remove();
+                    if (device.platform === "iOS") {
+                        window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
+                    } else {
+
+                        var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
+                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                        function onFail() {}
+
+                        function onSuccess() {}
+                    }
                 } else {
                     //Download link without QPlay
                     window.open(download_url, '_system');

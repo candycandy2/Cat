@@ -88,9 +88,12 @@ Route::any('/AppVersion/getAppHistoryVersion', ['middleware' => 'auth','uses'=>'
 Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVersionController@ajxValidVersion']);
 
 //Report
-Route::any('report/reportAppList/getReportAppList', 'Report\ReportAppListController@getReportAppList');
-Route::any('report/reportDetail', 'Report\ReportDetailController@getApiReport');
-Route::any('report/reportDetail/getCallApiReport', 'Report\ReportDetailController@getCallApiReport');
+Route::any('report/reportAppList/getReportAppList', ['middleware' => 'auth','uses'=>'Report\ReportAppListController@getReportAppList']);
+Route::any('report/reportDetail', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getApiReport']);
+Route::any('report/reportDetail/getCallApiReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getCallApiReport']);
+Route::any('report/reportDetail/getApiOperationTimeReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getApiOperationTimeReport']);
+Route::any('report/reportDetail/getApiOperationTimeDetailReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getApiOperationTimeDetailReport']);
+
 
 /*
 Route::any('/platform/getUserList', 'platformController@getUserList');
@@ -269,14 +272,11 @@ Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
 Route::any('report', ['middleware' => 'auth', function() {
     return view("report/report_app_list");
 }]);
-// Route::any('report/reportDetail', ['middleware' => 'auth', function() {
-//     return view("report/report_detail");
-// }]);
 
-Route::any('lang/{lang}/{uri}', function($lang, $uri) {
-    Session::set('lang', $lang);
-    return redirect()->to(urldecode($uri));
-});
+Route::any('/lang/{lang}/{uri}', function($lang, $uri){
+  Session::set('lang', $lang);
+  return redirect()->to(urldecode($uri));
+})->where('uri','.*');
 
 Route::any('testJpush', ['middleware' => 'auth', function() {
     return view("test/jpush_test");

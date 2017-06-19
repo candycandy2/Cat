@@ -132,10 +132,27 @@ function handleAJAXError(ajax,error) {
 }
 
 function dateToUTC(value){
-     value = value.split('-');
+     var dateTimeParts = value.split(' '),
+        dateParts = dateTimeParts[0].split('-'),
+        timeString = '00:00:00';
+        if(typeof dateTimeParts[1] != 'undefined'){
+            timeString = dateTimeParts[1];
+        }
+        timeParts = timeString.split(':');
+
     return Date.UTC(
-        parseInt(value[0]),
-        parseInt(value[1]) - 1,
-        parseInt(value[2])
-    );
+         parseInt(dateParts[0]),
+         parseInt(dateParts[1], 10) - 1,
+         parseInt(dateParts[2]),
+         timeParts[0],
+         timeParts[1],
+         timeParts[2]
+        );
+}
+
+function sortObject(obj){
+    obj = obj.sort(function (a, b) {
+     return a[0] < b[0] ? -1 : 1;
+    });
+    return obj;
 }

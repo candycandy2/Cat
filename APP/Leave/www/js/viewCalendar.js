@@ -4,11 +4,10 @@ $("#viewCalendar").pagecontainer({
         /********************************** function *************************************/
 
         $(document).ready(function() {
-            $("#viewCalendar #myCalendar").zabuto_calendar({
-                language: "en",
+            $("#viewCalendar #myCalendar").calendar({
+                language: "default",
                 show_previous: true,
                 show_next: true,
-                cell_border: true,
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {

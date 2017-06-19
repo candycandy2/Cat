@@ -7,7 +7,7 @@
         </div>
     </div>
     
-    <div data-role="main" class="page-main">
+    <div data-role="main" class="page-main" id="DataInputMain">
         <div data-role="tabs">
             <div class="ui-margin-public" style="text-align: center;">
                 <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
@@ -20,10 +20,16 @@
         </div>
         <div class="ui-margin-public" id="pageOne">
             <div class="ui-field-contain">
+
                 <label for="Company"><h4>公司名稱</h4></label>
-                <select name="Company" id="Company">
+            
+                 <select name="Company" id="Company">
                     <option value="All Company">All Company</option>
                 </select>
+            <!--
+                <span id ="CompanyChoose"> </span>  
+            -->
+            <!--   mark for 20170612-->
             </div>
             <div class="ui-field-contain">
                 <label for="CName-title"><h4>中文姓名</h4></label>
@@ -50,7 +56,7 @@
             <!-- Start of viewPhonebook -->
             <div class="ios-fix-overlap-div"></div>
 
-            <div data-role="main" class="page-main">
+            <div data-role="main" class="page-main" id="phoneBook">
                 <div class="phoneBook-btnArea">
                     <a href="#" id="phonebookEdit">編輯</a>
                     <div id="phonebookEditBtn" class="hide">
@@ -66,23 +72,79 @@
                 </div>
                 <ul data-role="listview" data-icon="false" class="q-result-grid" id="myPhonebookList">
                 </ul>
+
+
+                <template id="tplaskQuePhonebook">
+                    <div class="header font-style3">
+                        請輸入查詢條件!!
+                    </div>
+                    <div class="footer">
+                        <div class="btn-one font-style8">
+                          <div id="confirm" class= "confirm"> 確定</div>
+                        </div>
+                    </div>
+                </template>
+
+                <template id="tplaskDelPhonebook">
+                    <div class="header font-style3">
+                        是否刪除選擇的聯絡人?!!!~
+                    </div>
+                    <div class="footer">
+                        <div class="btn-two font-style8">
+                            <div id="cancel" class="cancel"> 取消</div>
+                            <div id= "confirm" class= "btn-confirm"> 確定</div>
+                        </div>
+                    </div>
+                </template>               
             </div>
             <!-- myphonebook confirm delete -->
-            <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup phonebookDeleteConfirm">
-                <div data-role="main" class="ui-content">
-                    <div class="main">
-                        <p class="main-paragraph font-style3">
-                            是否刪除選擇的聯絡人?
+        <!--   
+            <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup phonebookDeleteConfirm" id="phonebookDeleteConfirm" ;>
+                <div data-role="main" class="ui-content" >
+                    <div style="height: 25VW">
+                    <div class="main" >
+                        <p class="main-paragraph font-style3"     style="padding-top: 13VW">
+                            是否刪除選擇的聯絡人?!
                         </p>
+                    </div>
                     </div>
                     <div class="footer">
                         <div class="btn-two font-style1 btnArea">
-                            <div class="btn-cancel">取消</div>
+                            <div class="cancel">取消</div>
                             <div class="btn-confirm">確定</div>
                         </div>
                     </div>
                 </div>
             </div>
+        -->
+          
+        <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b"        data-dismissible="false" id='noQueryConditionRule'>
+            <div class="header font-style3" >
+                <div class="font-style3 header-title-main noqueryconditioncss">請輸入查詢條件!
+                </div>
+            </div>
+            <hr class="ui-hr ui-hr-bottom">
+            <div class="footer">
+                <div class="btn-one font-style0">                    
+                    <center class="confirm confirmfornoquery">確認</center>
+                </div>
+            </div>
+        </div>
+        <!-- Candy -->        
+         <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b"       data-dismissible="false" id='phonebookDeleteConfirmRule'>
+            <div class="header font-style3" >
+                <div class="font-style3 header-title-main deletecondition">是否刪除選擇的聯絡人?!</div>
+            </div>
+            <hr class="ui-hr ui-hr-bottom">
+            <div class="footer">
+                <div class="btn-two font-style0">                  
+                    
+                    <div class="cancel" style="padding-top: 3vw; padding-left: 14vw;color: #2c89bc">取消</div>
+                    <div class="btn-confirm" style="padding-top: 3vw; padding-left: 14vw;color: #2c89bc">確認</div>
+
+                </div>
+            </div>
+        </div>
             <!-- if no data in phonoe book -->
             <div class="error-msg hidden">
                 您尚未加入任何聯絡資訊
