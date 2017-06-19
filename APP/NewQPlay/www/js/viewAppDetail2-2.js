@@ -166,6 +166,13 @@ $("#viewAppDetail2-2").pagecontainer({
                 permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
                     if (status.hasPermission) {
                         console.log("Yes :D ");
+
+                        var updateUrl = applist[selectAppIndex].url;
+                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                        function onFail() {}
+
+                        function onSuccess() {}
                     } else {
                         console.warn("No :( ");
                         permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
@@ -175,21 +182,17 @@ $("#viewAppDetail2-2").pagecontainer({
                         }
 
                         function success(status) {
-                            if (!status.hasPermission) error();
+                            if (status.hasPermission) {
+                                console.log("Yes :D ");
+
+                                var updateUrl = applist[selectAppIndex].url;
+                                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                function onFail() {}
+
+                                function onSuccess() {}
+                            }
                         }
-                    }
-                });
-
-                permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
-                    if (status.hasPermission) {
-                        console.log("Yes :D ");
-
-                        var updateUrl = applist[selectAppIndex].url;
-                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
-
-                        function onFail() {}
-
-                        function onSuccess() {}
                     }
                 });
             }
@@ -214,6 +217,13 @@ $("#viewAppDetail2-2").pagecontainer({
                 permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
                     if (status.hasPermission) {
                         console.log("Yes :D ");
+
+                        var updateUrl = applist[selectAppIndex].url;
+                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                        function onFail() {}
+
+                        function onSuccess() {}
                     } else {
                         console.warn("No :( ");
                         permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
@@ -223,21 +233,17 @@ $("#viewAppDetail2-2").pagecontainer({
                         }
 
                         function success(status) {
-                            if (!status.hasPermission) error();
+                            if (status.hasPermission) {
+                                console.log("Yes :D ");
+
+                                var updateUrl = applist[selectAppIndex].url;
+                                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                function onFail() {}
+
+                                function onSuccess() {}
+                            }
                         }
-                    }
-                });
-
-                permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
-                    if (status.hasPermission) {
-                        console.log("Yes :D ");
-
-                        var updateUrl = applist[selectAppIndex].url;
-                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
-
-                        function onFail() {}
-
-                        function onSuccess() {}
                     }
                 });
             }
