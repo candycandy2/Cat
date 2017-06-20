@@ -132,10 +132,10 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#infoTitle-3").on("click", function() {
             if($("#infoContent-3").css("display") === "none") {
-                $("#infoContent-3").slideDown(500);
+                $("#infoContent-3").slideDown(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png")
             }else if($("#infoContent-3").css("display") === "block") {
-                $("#infoContent-3").slideUp(500);
+                $("#infoContent-3").slideUp(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
         });
