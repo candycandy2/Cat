@@ -100,6 +100,25 @@ gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="e6f796b2-ffb9-4ab7-bc0e-513f789056f8" --packageType="enterprise"
 
+pwd
+cd ../QPlayDailyBuild-Multijob/APP/test
+pwd
+# ------ build Eagle ------
+gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env dev
+gulp jenkinsdefault --env dev
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="a0b653a6-2979-42fc-b761-938dbe68b686" --packageType="enterprise"
+
+pwd
+cd ../QPlayDailyBuild-Multijob/APP/Badminton
+pwd
+# ------ build Badminton ------
+gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env dev
+gulp jenkinsdefault --env dev
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="93d1cb3f-f041-4ea3-b1b0-a02411b1f6d2" --packageType="enterprise"
 
 
 ############# Multijob #############
@@ -129,6 +148,10 @@ cp $appfolder/CMAPP/platforms/android/build/outputs/apk/android-release.apk $bin
 cp $appfolder/CMAPP/platforms/iOS/build/device/CM.ipa $binfolder/CM.ipa
 cp $appfolder/Leave/platforms/android/build/outputs/apk/android-release.apk $binfolder/appleave.apk
 cp $appfolder/Leave/platforms/iOS/build/device/Leave.ipa $binfolder/Leave.ipa
+cp $appfolder/test/platforms/android/build/outputs/apk/android-release.apk $binfolder/appeagle.apk
+cp $appfolder/test/platforms/iOS/build/device/Eagle.ipa $binfolder/Eagle.ipa
+cp $appfolder/Badminton/platforms/android/build/outputs/apk/android-release.apk $binfolder/appbadminton.apk
+cp $appfolder/Badminton/platforms/iOS/build/device/Badminton.ipa $binfolder/Badminton.ipa
 
 
 # ------ copy source code ------
@@ -148,6 +171,8 @@ git add Relieve/config.xml
 git add AccountingRate/config.xml
 git add CMAPP/config.xml
 git add Leave/config.xml
+git add test/config.xml
+git add Badminton/config.xml
 git commit -m "v1.0.0.$dailyver[Develop]"
 git push
 
@@ -253,6 +278,28 @@ if [ $result != 1 ]; then
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appleavedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appleave.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
+# --- eagle(test) android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "92ddf02ac5741a04012627e42834d501" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeagledev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appeagle.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Eagle(android) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeagledev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appeagle.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
+# --- badminton android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "feaecfb7537578d58daba7408a93ca92" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appbadmintondev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appbadminton.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Badminton(android) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appbadmintondev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appbadminton.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
 #curl -X POST -F 'userfile=@./QPlay.ipa' http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 
 # --- yellowpage ios ---
@@ -341,4 +388,26 @@ result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy AccountingRate(iOS) fail!!! try again!!!"
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appleavedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Leave.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
+# --- eagle ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "92ddf02ac5741a04012627e42834d501" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeagledev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Eagle.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Eagle(iOS) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appeagledev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Eagle.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
+# --- badminton ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "feaecfb7537578d58daba7408a93ca92" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appbadmintondev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Badminton.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Eagle(iOS) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appbadmintondev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Badminton.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
