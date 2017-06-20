@@ -42,12 +42,36 @@ class ReportService
     }
 
     /**
-     * 取得Api呼叫人數與次數資料
+     * 取得API呼叫人數與次數資料
      * @param  String $appKey app_key
      * @return Array  
      */
     public function getApiReport($appKey){
-        $cursor =  $this->apiLogRepository->getApiLogCountEachUserByDate($appKey);
+        $cursor =  $this->apiLogRepository->getApiLogCountEachUserByAppKey($appKey);
+        $res = $cursor->toArray();
+        return $res;
+    }
+
+     /**
+     * 取得API執行時間資料
+     * @param  String $appKey app_key
+     * @return Array  
+     */
+    public function getApiOperationTimeReport($appKey){
+        $cursor =  $this->apiLogRepository->getApiOperationTimeByAppKey($appKey);
+        $res = $cursor->toArray();
+        return $res;
+    }
+
+    /**
+     * 取得API執行時間每小時知詳細資料
+     * @param  String $appKey     app_key
+     * @param  String $date       欲查詢的日期
+     * @param  String $actionName 欲查詢的API名稱
+     * @return Array
+     */
+    public function getApiOperationTimeDetailReport($appKey, $date, $actionName){
+        $cursor = $this->apiLogRepository->getApiOperationTimeDetail($appKey, $date, $actionName);
         $res = $cursor->toArray();
         return $res;
     }

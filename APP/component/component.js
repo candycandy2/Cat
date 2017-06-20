@@ -660,9 +660,47 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function() {
                 if (appKey === qplayAppKey) {
-                    $("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
-                    document.getElementById("updateLink").click();
-                    $("#updateLink").remove();
+                    //$("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
+                    //document.getElementById("updateLink").click();
+                    //$("#updateLink").remove();
+                    if (device.platform === "iOS") {
+                        window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
+                    } else {
+
+                        var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
+
+                        var permissions = cordova.plugins.permissions;
+                        permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
+                            if (status.hasPermission) {
+                                console.log("Yes :D ");
+
+                                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                function onFail() {}
+
+                                function onSuccess() {}
+                            } else {
+                                console.warn("No :( ");
+                                permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+                                function error() {
+                                    console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
+                                }
+
+                                function success(status) {
+                                    if (status.hasPermission) {
+                                        console.log("Yes :D ");
+
+                                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                        function onFail() {}
+
+                                        function onSuccess() {}
+                                    }
+                                }
+                            }
+                        });
+                    }
                 } else {
                     //Download link without QPlay
                     window.open(download_url, '_system');

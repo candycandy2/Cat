@@ -59,17 +59,29 @@ $("#viewYTDHitRate").pagecontainer({
             }else if(ro == "ALL" && product != "ALL") {
                 while(index <= Number(month)) {
                     for(var ro in eisdata[year][index]) {
-                        Actual += eisdata[year][index][ro][product][actualIndex];
-                        totalQTY += eisdata[year][index][ro][product][0];
-                        totalAMT += eisdata[year][index][ro][product][2];
+                        if(eisdata[year][index][ro].hasOwnProperty(product)) {
+                            Actual += eisdata[year][index][ro][product][actualIndex];
+                            totalQTY += eisdata[year][index][ro][product][0];
+                            totalAMT += eisdata[year][index][ro][product][2];
+                        }else {
+                            Actual += 0;
+                            totalQTY += 0;
+                            totalAMT += 0;
+                        }
                     }
                     index++;
                 }
             }else {
                 while(index <= Number(month)) {
-                    Actual += eisdata[year][index][ro][product][actualIndex];
-                    totalQTY += eisdata[year][index][ro][product][0];
-                    totalAMT += eisdata[year][index][ro][product][2];
+                    if(eisdata[year][index][ro].hasOwnProperty(product)) {
+                        Actual += eisdata[year][index][ro][product][actualIndex];
+                        totalQTY += eisdata[year][index][ro][product][0];
+                        totalAMT += eisdata[year][index][ro][product][2];
+                    }else {
+                        Actual += 0;
+                        totalQTY += 0;
+                        totalAMT += 0;
+                    }
                     index++;
                 }
             }
@@ -128,23 +140,41 @@ $("#viewYTDHitRate").pagecontainer({
             }else if(ro == "ALL" && product != "ALL") {
                 while(index <= Number(month)) {
                     for(var ro in eisdata[year][index]) {
+                        if(eisdata[year][index][ro].hasOwnProperty(product)) {
+                            Actual += eisdata[year][index][ro][product][actualIndex];
+                            Budget += eisdata[year][index][ro][product][budgetIndex];
+                            ActualQTY += eisdata[year][index][ro][product][0];
+                            BudgetQTY += eisdata[year][index][ro][product][1];
+                            ActualAMT += eisdata[year][index][ro][product][2];
+                            BudgetAMT += eisdata[year][index][ro][product][3];
+                        }else {
+                            Actual += 0;
+                            Budget += 0;
+                            ActualQTY += 0;
+                            BudgetQTY += 0;
+                            ActualAMT += 0;
+                            BudgetAMT += 0;
+                        }
+                    }
+                    index++;
+                }
+            }else {
+                while(index <= Number(month)){
+                    if(eisdata[year][index][ro].hasOwnProperty(product)) {
                         Actual += eisdata[year][index][ro][product][actualIndex];
                         Budget += eisdata[year][index][ro][product][budgetIndex];
                         ActualQTY += eisdata[year][index][ro][product][0];
                         BudgetQTY += eisdata[year][index][ro][product][1];
                         ActualAMT += eisdata[year][index][ro][product][2];
                         BudgetAMT += eisdata[year][index][ro][product][3];
+                    }else {
+                        Actual += 0;
+                        Budget += 0;
+                        ActualQTY += 0;
+                        BudgetQTY += 0;
+                        ActualAMT += 0;
+                        BudgetAMT += 0;
                     }
-                    index++;
-                }
-            }else {
-                while(index <= Number(month)){
-                    Actual += eisdata[year][index][ro][product][actualIndex];
-                    Budget += eisdata[year][index][ro][product][budgetIndex];
-                    ActualQTY += eisdata[year][index][ro][product][0];
-                    BudgetQTY += eisdata[year][index][ro][product][1];
-                    ActualAMT += eisdata[year][index][ro][product][2];
-                    BudgetAMT += eisdata[year][index][ro][product][3];
                     index++;
                 }
             }
@@ -363,6 +393,13 @@ $("#viewYTDHitRate").pagecontainer({
         $(".sliderYTD").on('beforeChange', function(event, slick, currentSlide, nextSlide) {
             year = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[2];
             month = ytdPageDate[nextSlide].match(/([0-9]{0,2})\.([0-9]{0,4})/)[1];
+            if(year == ytdYear && month != 12) {
+                $(".YTD-Str").css("display", "block");
+                ytdStrExist = true;
+            }else {
+                $(".YTD-Str").css("display", "none");
+                ytdStrExist = false;
+            }
             getHighchartsData(ro, product, year, month);
             showHighchart();
             actualValue = getActualValue(ro, product, year, month, tab);
@@ -491,7 +528,24 @@ $("#viewYTDHitRate").pagecontainer({
         }
 
         /********************************** page event *************************************/
+        $("#viewYTDHitRate").on("pagebeforeshow", function(event, ui) {
+            /* global PullToRefresh */
+            PullToRefresh.init({
+                mainElement: '.sliderYTD',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewYTDHitRate") {
+                        nowTime = new Date();
+                        eisdata = {};
+                        localStorage.removeItem("eisdata");
+                        callProductDetailAPIReduce();
+                        callProductDetailAPI();
+                    }
+                }
+            });
+        });
+
         $("#viewYTDHitRate").on("pageshow", function(event, ui) {
+            // localStorage.setItem("eisdata", JSON.stringify([eisdata, nowTime]));
             initSlider();
             $("#viewYTDHitRate #title-container > #title > #actualValue > p").text("YTD Adj. Sales");
             $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
@@ -533,7 +587,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = userAuthorityCallBackData[0]["PVALUE"];
+                product = firstProduct;
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "(USD$)";
@@ -550,7 +604,7 @@ $("#viewYTDHitRate").pagecontainer({
             $(".Product #" + product).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(".Product #ALL").addClass('disableHover');
             if(product == "ALL") {
-                product = userAuthorityCallBackData[0]["PVALUE"];
+                product = firstProduct;
             }
             $(".Product #" + product).addClass('hover');
             hcTitle = "";

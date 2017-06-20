@@ -144,7 +144,7 @@
                 var __construct = function() {
 
                     var QueryAppListData = JSON.parse(window.localStorage.getItem('QueryAppListData'));
-                    if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], 7, 'dd')) {
+                    if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], 1, 'dd')) {
                         QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
                     } else {
                         var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];

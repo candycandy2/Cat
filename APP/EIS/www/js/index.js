@@ -1,10 +1,11 @@
 /*global variable, function*/
-var currentYear, currentMonth, currentDate, ytdYear, ytdMonth, ROSummaryQueryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
+var currentYear, currentMonth, currentDate, ytdYear, ytdMonth, firstProduct, ROSummaryQueryData, productDetailQueryData, roSummaryCallBackData, userAuthorityCallBackData, productDetailCallBackData, length, thisYear, thisMonth;
 var options, chart, chartLandscape;
 var allExpiredTime = 1;
 var thisMonthExpiredTime = 1;
 var monthlyPageDateExist = true;
 var ytdPageDateExist = true;
+var ytdStrExist = false;
 var UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewHitRate";
 var monthlyPageDateList = "";
@@ -247,7 +248,7 @@ function callProductDetailAPI() {
 }
 
 function callProductDetailAPIReduce() {
-    for(var j=0; j<2; j++) {
+    for(var j=0; j<4; j++) {
         var i = ((Number(currentMonth)-j) < 10) ? "0"+(Number(currentMonth)-j) : Number(currentMonth)-j;
         productDetailQueryData = "<LayoutHeader><StartYearMonth>"
                     + currentYear + "/" + i
@@ -262,11 +263,14 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     if($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel( "close");     
     }
-    // if (window.orientation === 180 || window.orientation === 0) {
-    //     /*do somrthing when device is in portraint mode*/
-    // }
+    if(window.orientation === 180 || window.orientation === 0) {
+        if(ytdStrExist == true) {
+            $(".YTD-Str").css("display", "block");
+        }
+    }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
         zoomInChart();
+        $(".YTD-Str").css("display", "none");
     }
 }, false);

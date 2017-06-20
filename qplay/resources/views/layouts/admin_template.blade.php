@@ -94,9 +94,8 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
-    {{-- <script src="{{ asset('/js/highcharts.js') }}"></script> --}}
     <script src="{{ asset('/js/highstock.js') }}"></script>
-    
+    <script src="{{ asset('/js/highcharts-more.js') }}"></script>
     {{-- <script src="{{ asset('/Highcharts-5.0.11/code/js/modules/exporting.js') }}"></script> --}}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -139,9 +138,9 @@ if(array_key_exists('with_msg_id', $input)) {
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="lang/en-us/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">English</a></li>
-                            <li><a href="lang/zh-cn/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">简体中文</a></li>
-                            <li><a href="lang/zh-tw/{{urlencode(Route::current()->getUri().'?'.Request::getQueryString())}}">繁體中文</a></li>
+                            <li><a href="{{asset('lang/en-us/'.Route::current()->getUri().urlencode('?'.Request::getQueryString()))}}">English</a></li>
+                            <li><a href="{{asset('lang/zh-cn/'.Route::current()->getUri().urlencode('?'.Request::getQueryString()))}}">简体中文</a></li>
+                            <li><a href="{{asset('lang/zh-tw/'.Route::current()->getUri().urlencode('?'.Request::getQueryString()))}}">繁體中文</a></li>
                         </ul>
                     </li>
                     <li>

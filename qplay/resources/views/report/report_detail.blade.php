@@ -6,6 +6,7 @@ $menu_name = "REPORT";
 
 @section('head')
     @parent
+    <script src="{{asset('/js/report/basic_chart_option.js')}}"></script>
     <script src="{{asset('/js/report/report_detail.js')}}"></script>
 @stop
 
@@ -48,13 +49,13 @@ $menu_name = "REPORT";
             
         </div>
         <div class="tab-pane fade" id="api_call_frequency_report">
-            @include('report.api_report.api_call_frequency_report')
+            @include('report.api_report.api_call_frequency_report.report_layout')
         </div>
         <div class="tab-pane fade" id="api_operation_time_report">
-            @include('report.api_report.api_operation_time_report')
+            @include('report.api_report.api_operation_time_report.report_layout')
         </div>
         <div class="tab-pane fade" id="api_crash_report">
-            @include('report.api_report.api_crash_report')
+            @include('report.api_report.api_crash_report.report_layout')
         </div>
     </div>
 

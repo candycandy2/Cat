@@ -19,6 +19,8 @@ APP/*/node_modules/
 APP/*/package.json
 APP/*/package-lock.json
 node_modules/*
+APP/*/template.html
+APP/*/function.js
 
 # Xcode
 #
