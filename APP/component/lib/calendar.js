@@ -55,9 +55,10 @@ $.fn.calendar = function (options) {
         $legendObj = drawLegend($calendarElement);
         $dateScroller = prependMonthHeader($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
         
-        $calendarElement.prepend($dateScroller);
-        $calendarElement.append($tableObj);
+        $calendarElement.append($dateScroller);
         $calendarElement.append($legendObj);
+        $calendarElement.append($tableObj);
+        
         var jsonData = $calendarElement.data('jsonData');
         if (false !== jsonData) {
             checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
@@ -76,7 +77,7 @@ $.fn.calendar = function (options) {
     }
 
     function drawLegend($calendarElement) {
-        var $legendObj = $('<div class="legend" id="' + $calendarElement.attr('id') + '_legend"></div>');
+        var $legendObj = $('<div class="legend" id="' + $calendarElement.attr('id') + '-legend"></div>');
         var legend = $calendarElement.data('legendList');
         if (typeof(legend) == 'object' && legend.length > 0) {
             $(legend).each(function (index, item) {
@@ -97,7 +98,21 @@ $.fn.calendar = function (options) {
                                         } else {
                                             var badgeClassName = item.classname;
                                         }
-                                        itemBadge = '<span class="badge ' + badgeClassName + '">' + item.badge + '</span> ';
+                                        itemBadge = '<span class=' + badgeClassName + '>' + item.badge + '</span> ';
+                                    }
+                                    $legendObj.append('<span class="legend-' + item.type + '">' + itemBadge + itemLabel + '</span>');
+                                }
+                                break;
+                            case 'img-text':
+                                if (itemLabel !== '') {
+                                    var itemBadge = '';
+                                    if ('badge' in item) {
+                                        if (typeof(item.classname) === 'undefined') {
+                                            var badgeClassName = 'badge-event';
+                                        } else {
+                                            var badgeClassName = item.classname;
+                                        }
+                                        itemBadge = '<img class=' + badgeClassName + '>';
                                     }
                                     $legendObj.append('<span class="legend-' + item.type + '">' + itemBadge + itemLabel + '</span>');
                                 }
@@ -220,7 +235,7 @@ $.fn.calendar = function (options) {
             $(dowLabels).each(function (index, value) {
                 $day = $("<th></th>");
                 if(value == "日" || value == "六") {
-                    $day.addClass("calendar-hoildayStyle");
+                    $day.addClass("calendar-weekendStyle");
                 }
                 $dowHeaderRow.append($day.append(value));
             });
@@ -262,13 +277,6 @@ $.fn.calendar = function (options) {
 
                     var $dayElement = $('<div id="' + dayId + '" class="day" >' + currDayOfMonth + '</div>');
                     $dayElement.data('day', currDayOfMonth);
-                    if(currDayOfMonth == 12 || currDayOfMonth == 13) {
-                        $dayElement.addClass("day-selected");
-                    }
-
-                    if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                        $dayElement.addClass("day-select");
-                    }
 
                     if ($calendarElement.data('showToday') === true) {
                         if (isToday(year, month, currDayOfMonth)) {
@@ -277,13 +285,21 @@ $.fn.calendar = function (options) {
                     }
                     var $dowElement = $("<td></td>"); 
                     if(dow == 0 || dow == 6) {
-                        $dowElement.addClass("calendar-hoildayStyle");
+                        $dowElement.addClass("calendar-weekendStyle");
                     }
                     $dowElement.attr("id", dateId);
                     $dowElement.append($dayElement);
 
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
                     $dowElement.data('hasEvent', false);
+
+                    if(currDayOfMonth == 12 || currDayOfMonth == 13) {
+                        $dayElement.parent('#' + dateId).addClass("day-selected");
+                    }
+
+                    if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                        $dayElement.parent('#' + dateId).addClass("day-select");
+                    }
 
                     if (typeof($calendarElement.data('actionFunction')) === 'function') {
                         $dowElement.addClass('dow-clickable');
