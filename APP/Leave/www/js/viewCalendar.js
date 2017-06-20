@@ -31,6 +31,19 @@ $("#viewCalendar").pagecontainer({
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
                 },
+                legend: [
+                    {
+                        type: "img-text", 
+                        label: "星期六日",
+                        badge: "",
+                        classname: "weekend"
+                    }, {
+                        type: "img-text",
+                        label: "放假節日",
+                        badge: "",
+                        classname: "holiday"
+                    }
+                ]
             });
         });
 

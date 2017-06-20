@@ -25,10 +25,6 @@
     padding: 0;
 }
 
-#calendar .table tr td div.day {
-    margin: 0VW 2.5VW 0VW 2.5VW;
-}
-
 .nav_icon {
     width: 4.934VW;
 }
@@ -64,7 +60,7 @@ table {
     font-size: 4VW;
 }
 
-.calendar-hoildayStyle {
+.calendar-weekendStyle {
     color: #2e89bc;
 }
 
@@ -81,16 +77,42 @@ th {
 }
 
 .day-selected {
-    background-color: #0db6b7;
-    border-style: solid;
-    border-color: #0db6b7;
-    border-radius: 5VW;
     color: white;
+    background-image: url("../img/today_date.png");
+    background-repeat: no-repeat;
+    background-size: 7.165VW;
+    background-position-x: 2.67VW;
+    background-position-y: 1.53VW;
 }
 
 .day-select {
-    border-style: solid;
-    border-color: #0db6b7;
-    border-radius: 5VW;
-    border-width: 0.1px;
+    background-image: url("../img/event_date.png");
+    background-repeat: no-repeat;
+    background-size: 7.165VW;
+    background-position-x: 2.67VW;
+    background-position-y: 1.53VW;  
+}
+
+/* legend */
+#calendar div.legend {
+    margin-right: 3.71Vw;
+    margin-bottom: 2.14VW;
+    text-align: right;
+}
+
+#calendar div.legend .legend-img-text {
+    font-size: small;
+    margin-left: 3.71Vw;
+}
+
+.weekend {
+    content: url("../img/weekend_icon.png");
+    width: 2.415VW;
+    margin-right: 1.5VW;
+}
+
+.holiday {
+    content: url("../img/holiday_icon.png");
+    width: 2.415VW;
+    margin-right: 1.5VW;
 }
