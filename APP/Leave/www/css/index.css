@@ -24,12 +24,12 @@
 }
 
 /********************************************common use**********************************************/
-.page-main {
+.page-main > form {
 	margin-top: 3.99VW;
 }
 
 .page-main .page-tabs {
-	margin: 1.8VH 3.71VW 0VH 3.71VW;
+	margin: 0VH 3.71VW 0VH 3.71VW;
 }
 
 .page-main .tabs-title {
@@ -142,6 +142,17 @@
     color: #666 !important;
 }
 
+.tpl-dropdown-list {
+	font-size: 5.18VW;
+	background-position-x: 20VW;
+	background-position-y: 40%;
+	padding: 0px;
+	width: 100VW;
+}
+
+#eventType-option div.close, #agent-option div.close {
+	top: 0VW;
+}
 /******************************************** viewCalendar ******************************************/
 
 #viewCalendar .infoList ul > li {
