@@ -13,7 +13,25 @@ var leaveTypeData = {
         value: "3",
         text: "生理假"
     }],
-    defaultValue: 1
+    defaultValue: 0
+};
+
+var agentData = {
+    id: "agent",
+    option: [{
+        value: "0",
+        text: "請選擇"
+    }, {
+        value: "1",
+        text: "去年彈休"
+    }, {
+        value: "2",
+        text: "本期特休"
+    }, {
+        value: "3",
+        text: "生理假"
+    }],
+    defaultValue: 0
 };
 
 
@@ -21,63 +39,24 @@ $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        // window.APIRequest = function() {
+        /*window.APIRequest = function() {
             
-        //     var self = this;
+            var self = this;
 
-        //     this.successCallback = function(data) {
-        //         loadingMask("hide");
+            this.successCallback = function(data) {
+                loadingMask("hide");
 
-        //         var resultcode = data['ResultCode'];
-        //         //do something
-        //     };
+                var resultcode = data['ResultCode'];
+                //do something
+            };
 
-        //     this.failCallback = function(data) {};
+            this.failCallback = function(data) {};
 
-        //     var __construct = function() {
-        //         //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
-        //     }();
+            var __construct = function() {
+                //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
+            }();
 
-        // };
-
-        // function initSlider() {
-        //     if(personalLeaveDateExist) {   
-        //         var index = 0;
-        //         year = thisYear-1;
-        //         month = thisMonth;
-        //         while(index < 13) {
-        //             monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
-        //             monthlyPageDate[index] = month + "." + year;
-        //             if(month == 12){
-        //                 year++;
-        //                 month = 0;
-        //             }
-        //             month++;
-        //             index++;
-        //         }
-        //         $(".personalLeaveSlider").html("");
-        //         $(".personalLeaveSlider").append(monthlyPageDateList).enhanceWithin();
-        //     }
-        //     personalLeaveDateExist = false;
-        //     if($(".personalLeaveSlider").hasClass("slick-slider") || $(".personalLeaveSlider").hasClass("slick-initialized")){
-        //         $(".personalLeaveSlider").slick("unslick");
-        //     }
-        //     $(".personalLeaveSlider").slick({
-        //         initialSlide: 0,
-        //         autopaly: false,
-        //         dots: false,
-        //         responseive: [{
-        //             breakpoint: 500,
-        //             settings: {
-        //                 arrows: true,
-        //                 infinite: false,
-        //                 slidesToShow: 2,
-        //                 slidesToScroll: 2
-        //             }
-        //         }],
-        //         infinite: false
-        //     });
-        // }
+        };*/
 
         $(document).ready(function() {
             $("#viewPersonalLeave #myCalendar").calendar({
@@ -97,7 +76,15 @@ $("#viewPersonalLeave").pagecontainer({
         $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
             $("#tab-1").show();
             $("#tab-2").hide();
-            tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+            if(lastPageID === "viewPersonalLeave") {
+                tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                $("#eventType-option #eventType-option-list").css("height", "55VW");
+
+                tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeA", agentData);
+                $("#agent-option #agent-option-list").css("height", "55VW");
+            }
+            $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
+            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
@@ -145,10 +132,10 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#infoTitle-3").on("click", function() {
             if($("#infoContent-3").css("display") === "none") {
-                $("#infoContent-3").slideDown(500);
+                $("#infoContent-3").slideDown(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png")
             }else if($("#infoContent-3").css("display") === "block") {
-                $("#infoContent-3").slideUp(500);
+                $("#infoContent-3").slideUp(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
         });
