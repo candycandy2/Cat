@@ -125,7 +125,7 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 }
 
 .app-popup .ui-content {
-    padding: 0;
+    padding: 5.07vw 3vw 5.07vw;
     overflow-y: hidden;
     min-height: inherit;
     max-height: inherit;

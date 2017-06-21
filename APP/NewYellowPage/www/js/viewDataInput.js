@@ -296,6 +296,53 @@ $("#viewDataInput").pagecontainer({
             tplJS.Popup("viewDataInput", "DataInputMain", "append", eventQueConfirmPopupData);
         });
 
+        var pullControl_Two = null;
+        var pullControl_One = null;
+
+        function initpullrefresh_pagetwo() {
+
+            destorypullrefresh_pageone();
+            if (pullControl_Two == null) {
+                pullControl_Two = PullToRefresh.init({
+                    mainElement: '#pageTwo',
+                    onRefresh: function() {
+                        //do something for refresh
+                        window.localStorage.removeItem('QueryMyPhoneBookData'); //set dirty
+                        QueryMyPhoneBook(); //force to refresh
+                    }
+                });
+            }
+        }
+
+        function destorypullrefresh_pageone() {
+            if (pullControl_One != null) {
+                pullControl_One.destroy();
+                pullControl_One = null;
+            }
+        }
+
+        function initpullrefresh_pageone() {
+
+            destorypullrefresh_pagetwo();
+            if (pullControl_One == null) {
+                pullControl_One = PullToRefresh.init({
+                    mainElement: '#pageOne',
+                    onRefresh: function() {
+                        //do something for refresh
+                        window.localStorage.removeItem('QueryMyPhoneBookData'); //set dirty
+                        QueryMyPhoneBook(); //force to refresh
+                    }
+                });
+            }
+        }
+
+        function destorypullrefresh_pagetwo() {
+            if (pullControl_Two != null) {
+                pullControl_Two.destroy();
+                pullControl_Two = null;
+            }
+        }
+
         $("#viewDataInput").on("pagebeforeshow", function(event, ui) {
             if (doClearInputData) {
                 clearInputData();
@@ -320,39 +367,13 @@ $("#viewDataInput").pagecontainer({
 
                 QueryMyPhoneBook(); //normal update by lifecycle
 
-                /* global PullToRefresh */
-                PullToRefresh.init({
-                    mainElement: '#pageTwo',
-                    onRefresh: function() {
-                        //do something for refresh
-                        window.localStorage.removeItem('QueryMyPhoneBookData'); //set dirty
-                        QueryMyPhoneBook(); //force to refresh
-                    }
-                });
+                initpullrefresh_pagetwo();
             } else {
-
-                /* global PullToRefresh */
-                PullToRefresh.init({
-                    mainElement: '#pageOne',
-                    onRefresh: function() {
-                        //do something for refresh
-                        localStorage.removeItem('companyInfo');
-                        var companyData = new QueryCompanyData();
-                    }
-                });
+                initpullrefresh_pageone();
             }
             if (device.platform === "iOS") {
                 $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
             }
-
-
-            /*
-                            var eventAddConfirmPopupData2 = {
-                                id: "phonebookDeleteConfirm",
-                                content: $("template#tplaskDelPhonebook").html()
-                            };
-                            tplJS.Popup("viewDataInput", "DataInputMain", "append", eventAddConfirmPopupData2);
-            */
 
         });
 
@@ -375,13 +396,6 @@ $("#viewDataInput").pagecontainer({
 
         });
 
-
-        // $('#viewDataInput').keydown(function(event) {
-        //     /* keyCode of 'Enter' key is 13 */
-        //     if (event.keyCode === 13)
-        //         checkInputData();
-        // });
-
         $('#reserveTab').change(function() {
             var tabValue = $("#reserveTab :radio:checked").val();
             if (tabValue == 'tab1') {
@@ -391,16 +405,7 @@ $("#viewDataInput").pagecontainer({
                 $('#phonebookEdit').show();
                 $('#myPhonebookList').removeClass('editClick');
                 $('#phoneDelete').addClass('noneSelect');
-
-                /* global PullToRefresh */
-                PullToRefresh.init({
-                    mainElement: '#pageOne',
-                    onRefresh: function() {
-                        //do something for refresh
-                        localStorage.removeItem('companyInfo');
-                        var companyData = new QueryCompanyData();
-                    }
-                });
+                initpullrefresh_pageone()
             } else if (tabValue == 'tab2') {
                 $('#pageTwo').show();
                 $('#pageOne').hide();
@@ -411,18 +416,8 @@ $("#viewDataInput").pagecontainer({
                     $('#phonebookEdit').show();
                     $('#viewDataInput .error-msg').addClass('hide');
                 }
-
                 QueryMyPhoneBook(); //normal update by lifecycle
-
-                /* global PullToRefresh */
-                PullToRefresh.init({
-                    mainElement: '#pageTwo',
-                    onRefresh: function() {
-                        //do something for refresh
-                        window.localStorage.removeItem('QueryMyPhoneBookData'); //set dirty
-                        QueryMyPhoneBook(); //force to update
-                    }
-                });
+                initpullrefresh_pagetwo()
             }
         });
 
@@ -437,8 +432,11 @@ $("#viewDataInput").pagecontainer({
                 $('#myPhonebookList').addClass('editClick');
                 $('.img-info').hide();
                 $('#phonebookEdit').hide();
+                destorypullrefresh_pagetwo();
+                destorypullrefresh_pageone();
             } else {
                 cancelEditMode();
+                initpullrefresh_pagetwo();
             }
         });
 
@@ -448,11 +446,12 @@ $("#viewDataInput").pagecontainer({
             $('#myPhonebookList').removeClass('editClick');
             $('#phoneDelete').addClass('noneSelect');
             $('.img-info').show();
+            initpullrefresh_pagetwo();
         });
 
         $(document).on("click", "#phoneDelete", function() {
             var checkboxCheckedCount = $('#pageTwo :checkbox:checked').length;
-            if (checkboxCheckedCount === 0) {} else {               
+            if (checkboxCheckedCount === 0) {} else {
                 $('#phonebookDeleteConfirmRule').popup('open');
             }
         });
@@ -467,8 +466,8 @@ $("#viewDataInput").pagecontainer({
 
         $(document).on("click", "#phonebookDeleteConfirmRule .cancel", function() {
             $("#phonebookDeleteConfirmRule").popup("close");
-        });  
-        $(document).on("click",'#phonebookDeleteConfirmRule .btn-confirm', function() {    
+        });
+        $(document).on("click", '#phonebookDeleteConfirmRule .btn-confirm', function() {
             console.log("561");
             var doDeleteCount = 0;
             var checkboxCheckedCount = $('#pageTwo :checkbox:checked').length;
@@ -496,12 +495,13 @@ $("#viewDataInput").pagecontainer({
                     tempPhonebookData[key] = tempData;
                 }
             });
-          
+
             $("#phonebookDeleteConfirmRule").popup("close");
             $('#phonebookEditBtn').hide();
             $('#phonebookEdit').show();
             $('#myPhonebookList').removeClass('editClick');
             $('#phoneDelete').addClass('noneSelect');
+            initpullrefresh_pagetwo();
         });
 
         $('body').on('click', 'div[for=phonebookSelectAlert] #confirm', function() {
