@@ -260,17 +260,46 @@ $("#viewMain2-1").pagecontainer({
             tplJS.Popup("viewMain2-1", "appcontent", "append", eventLogoutConfirmPopupData);
         });
 
+        $("#viewMain2-1").scroll(function() {
+            if ($('#appcontent').offset().top < 50) {
+                if (pullControl != null) {
+                    pullControl.destroy();
+                    pullControl = null;
+                }
+            } else {
+                if (pullControl == null) {
+
+                    pullControl = PullToRefresh.init({
+                        mainElement: '#appcontent',
+                        onRefresh: function() {
+                            //do something for refresh
+                            window.localStorage.removeItem('QueryAppListData'); //enforce to refresh
+                            var appList = new QueryAppList();
+                        }
+                    });
+                }
+            }
+        });
+
+        var pullControl = null;
         $("#viewMain2-1").on("pageshow", function(event, ui) {
             loadingMask("show");
             var appList = new QueryAppList();
-            // PullToRefresh.init({
-            //     mainElement: '#appcontent',
-            //     onRefresh: function() {
-            //         //do something for refresh
-            //         window.localStorage.removeItem('QueryAppListData');//enforce to refresh
-            //         var appList = new QueryAppList();
-            //     }
-            // });
+            pullControl = PullToRefresh.init({
+                mainElement: '#appcontent',
+                onRefresh: function() {
+                    //do something for refresh
+                    window.localStorage.removeItem('QueryAppListData'); //enforce to refresh
+                    var appList = new QueryAppList();
+                }
+            });
+        });
+
+        $("#viewMain2-1").on("pagehide", function(event, ui) {
+            if (pullControl != null) {
+                pullControl.destroy();
+                pullControl = null;
+            }
         });
         /********************************** dom event *************************************/
         $("#logout").on("click", function() {
