@@ -142,16 +142,40 @@
     color: #666 !important;
 }
 
-.tpl-dropdown-list {
-	font-size: 5.18VW;
-	background-position-x: 20VW;
-	background-position-y: 40%;
-	padding: 0px;
-	width: 100VW;
+#searchBar {
+	width: 100%;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #d6d6d6;
+	border-radius: 4px;
+	background-color: #ffffff;
+	background-image: url("../img/search.png");
+	background-repeat: no-repeat;
+	background-size: 3.945VW;
+	background-position-x: 2.71VW;
+	background-position-y: 2VW;  
+	height: 8VW;
+	margin: 5.07VW 0VW 5VW 0VW;
+	text-indent: 8VW;
 }
 
-#eventType-option div.close, #agent-option div.close {
-	top: 0VW;
+/*#searchBar:focus {
+	background-image: none;
+}*/
+
+.typeB {
+	height: 20VW !important;
+}
+
+.tpl-option-msg-list {
+	border-top-style: solid;
+	border-top-color: #efefef;
+	border-width: 0.1px;
+}
+
+.ui-hr {
+	opacity: 0;
+	height: 0px;
 }
 /******************************************** viewCalendar ******************************************/
 
