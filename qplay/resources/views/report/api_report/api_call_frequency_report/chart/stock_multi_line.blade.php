@@ -1,5 +1,5 @@
 <div class="col-lg-12 col-md-12 col-xs-12" id="">
-    <div id="container_stock" style="height: 400px; min-width: 310px"></div>
+    <div id="container_stock_{{$REPORT_TYPE}}_1" style="height: 400px; min-width: 310px"></div>
 </div>
 <script>
 
@@ -31,18 +31,18 @@ var createCallApiMultiLine = function (res){
 
     options.plotOptions.series.point.events = {
         click: function (e) {
-             createTableChart(res, Highcharts.dateFormat('%Y-%m-%d',this.x));
+             createCallApiTableChart(res, Highcharts.dateFormat('%Y-%m-%d',this.x));
         }
     };
     createCallApiMultiLineChart(options);
-    var chart = $('#container_stock').highcharts();
+    var chart = $('#container_stock_{{$REPORT_TYPE}}_1').highcharts();
     chart.series[0].setData(callTimesData);
     chart.series[1].setData(callUsersData);
 }
 
 function createCallApiMultiLineChart(options) {
     
-    Highcharts.stockChart('container_stock', options,
+    Highcharts.stockChart('container_stock_{{$REPORT_TYPE}}_1', options,
     function (chart) {
             // apply the date pickers
             setTimeout(function () {

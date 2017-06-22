@@ -90,7 +90,7 @@ var setDonutChartData = function(r,type,queryAction,chart){
     chart.series[1].setData(departmentData);
 }
 
-var createCallApiDunutChart = function(options){
+var createdCallApiDunutChart = function(options){
     Highcharts.chart('container_donut_chart_{{$REPORT_TYPE}}_t',options);
     Highcharts.chart('container_donut_chart_{{$REPORT_TYPE}}_d',options);
 }
