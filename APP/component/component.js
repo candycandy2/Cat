@@ -622,6 +622,45 @@ function readConfig() {
     }
 }
 
+function updateAPP(updateUrl) {
+
+    if (device.platform === "iOS") {
+        window.open(updateUrl, '_system');
+    } else {
+        var permissions = cordova.plugins.permissions;
+        permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
+            if (status.hasPermission) {
+
+                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                function onFail() {}
+
+                function onSuccess() {}
+            } else {
+                permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+                function error() {
+                    console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
+                }
+
+                function success(status) {
+                    if (status.hasPermission) {
+
+                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                        function onFail() {}
+
+                        function onSuccess() {}
+                    }
+                }
+            }
+        });
+    }
+}
+
+
+
+
 //API Check APP Version
 function checkAppVersion() {
     var self = this;
@@ -660,53 +699,21 @@ function checkAppVersion() {
 
             $("#UpdateAPP").on("click", function() {
                 if (appKey === qplayAppKey) {
-                    //$("body").append('<a id="updateLink" href="#" onclick="window.open(\'' + serverURL + '/InstallQPlay/\', \'_system\');"></a>');
-                    //document.getElementById("updateLink").click();
-                    //$("#updateLink").remove();
+                    //qplay
                     if (device.platform === "iOS") {
                         window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
-                    } else {
-
+                    } else {//android
                         var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
-
-                        var permissions = cordova.plugins.permissions;
-                        permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
-                            if (status.hasPermission) {
-                                console.log("Yes :D ");
-
-                                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
-
-                                function onFail() {}
-
-                                function onSuccess() {}
-                            } else {
-                                console.warn("No :( ");
-                                permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
-
-                                function error() {
-                                    console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
-                                }
-
-                                function success(status) {
-                                    if (status.hasPermission) {
-                                        console.log("Yes :D ");
-
-                                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
-
-                                        function onFail() {}
-
-                                        function onSuccess() {}
-                                    }
-                                }
-                            }
-                        });
+                        updateAPP(updateUrl);
                     }
                 } else {
                     //Download link without QPlay
-                    window.open(download_url, '_system');
-
-                    //Open QPlay > APP detail page
-                    //openAPP(qplayAppKey + "://callbackApp=" + appKey + "&action=openAppDetailPage&versionCode=" + loginData["versionCode"]);
+                    if (device.platform === "iOS") {
+                        window.open(download_url, '_system');
+                    } else {//android
+                        var updateUrl = download_url;
+                        updateAPP(updateUrl);
+                    }
                 }
             });
 
