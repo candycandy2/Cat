@@ -6,6 +6,7 @@
 namespace App\Repositories;
 
 use App\Model\QP_Register;
+use Carbon\Carbon;
 
 class RegisterRepository
 {
@@ -35,7 +36,20 @@ class RegisterRepository
      */
     public function getRegisterDeviceCount(){
         return $this->register::distinct('uuid')->count('uuid');
-    }
+    }   
 
-    
+     /**
+     * 取得每日註冊設備用戶數
+     * @return mixed
+     */
+    public function getRegisterDataEachDay(){
+        return $data = $this->register
+        ->join('qp_user', 'qp_register.user_row_id', '=', 'qp_user.row_id')
+        ->select(\DB::raw("COUNT(DISTINCT uuid) as count"),
+                 \DB::raw("DATE_FORMAT(register_date, '%Y-%m-%d') as register_date"),
+                 'device_type','company','site_code','department','user_row_id')
+        ->orderBy('register_date','asc')
+        ->groupBy(\DB::raw("DATE_FORMAT(register_date, '%Y-%m-%d')"),'device_type','company','site_code','department')
+        ->get();
+    }
 }

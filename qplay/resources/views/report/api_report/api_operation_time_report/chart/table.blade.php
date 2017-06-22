@@ -1,4 +1,4 @@
-<div id="api_operation_time_table">
+<div id="table_{{$REPORT_TYPE}}_1">
     <div><label class="text-muted js-table_date">2017-03-03</label></div>
     <div class="table-responsive">
         <table class="table table-bordered table-striped report-table">
@@ -31,16 +31,16 @@
 <script>
 
 var createOperationTimeTableChart = function(res,date){
-    $tableChartDiv = $('#api_operation_time_table');
+    $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     $tableChartDiv.find('.text-muted').text(date);
     $tableChartDiv.find('tbody').empty();
     createOperationTimeTable(res,date);
-    sortTable('api_operation_time_table');
+    sortTable('table_{{$REPORT_TYPE}}_1');
     updateApiOperationTimeAreaRangeLineChart(date,$.trim($tableChartDiv.find('table u').eq(0).text()));
 }
 
 var createOperationTimeTable = function(res,date){
-    $tableChartDiv = $('#api_operation_time_table');
+    $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     if(typeof res[date] == 'undefined'){
         return false;
     }

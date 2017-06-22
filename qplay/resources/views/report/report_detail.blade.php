@@ -28,13 +28,18 @@ $menu_name = "REPORT";
     </div>
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="#tab_content_summary_report" data-toggle="tab">總覽</a></li>
-        <li role="presentation"><a href="#tab_content_pic" data-toggle="tab">註冊統計</a></li>
-        <li role="presentation"><a href="#tab_content_version" data-toggle="tab">用戶使用資料</a></li>
+        <li class="dropdown" id="regist"><a class="dropdown-toggle" data-toggle="dropdown" href="#">註冊統計<span class="caret"></span></a>
+            <ul class="dropdown-menu" id="register_report">
+                <li><a data-tabid="register_daily_report">每日註冊設備/用戶數</a></li>
+                <li><a data-tabid="register_cumulative_report">累計註冊設備/用戶數</a></li>
+            </ul>
+        </li>
+        {{-- <li role="presentation"><a href="#tab_content_version" data-toggle="tab">用戶使用資料</a></li> --}}
         <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">API統計<span class="caret"></span></a>
             <ul class="dropdown-menu" id="api_report">
                 <li><a data-tabid="api_call_frequency_report">Api呼叫次數與人數</a></li>
                 <li><a data-tabid="api_operation_time_report">平均處理時間</a></li>
-                <li><a data-tabid="api_crash_report">當機報告</a></li>
+                {{-- <li><a data-tabid="api_crash_report">當機報告</a></li> --}}
             </ul>
         </li>
     </ul>
@@ -42,12 +47,20 @@ $menu_name = "REPORT";
         <div class="tab-pane fade" id="tab_content_summary_report">
             @include('report.summary_report.active_users_report')
         </div> 
-        <div class="tab-pane fade" id="tab_content_pic">
+        <div class="tab-pane fade" id="register_report">
             
         </div>
         <div class="tab-pane fade" id="tab_content_version">
             
         </div>
+        {{-- 註冊統計 --}}
+        <div class="tab-pane fade" id="register_daily_report">
+            @include('report.register_report.register_daily_report.report_layout')
+        </div>
+        <div class="tab-pane fade" id="register_cumulative_report">
+            @include('report.register_report.register_cumulative_report.report_layout')
+        </div>
+        {{-- API統計 --}}
         <div class="tab-pane fade" id="api_call_frequency_report">
             @include('report.api_report.api_call_frequency_report.report_layout')
         </div>
