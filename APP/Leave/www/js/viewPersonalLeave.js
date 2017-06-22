@@ -14,7 +14,8 @@ var leaveTypeData = {
         value: "3",
         text: "生理假"
     }],
-    defaultValue: 0
+    defaultValue: 0,
+    // defaultText: "請選擇"
 };
 
 var agentData = {
@@ -81,8 +82,6 @@ $("#viewPersonalLeave").pagecontainer({
         $(document).ready(function() {
             $("#viewPersonalLeave #myCalendar").calendar({
                 language: "default",
-                show_previous: true,
-                show_next: true,
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {

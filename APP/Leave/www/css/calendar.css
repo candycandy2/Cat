@@ -13,6 +13,10 @@
     height: 11.513VW;
 }
 
+#calendar .table tr.calendar-dow {
+    height: 11.03VW;
+}
+
 #calendar .calendar-month-header {
     flex-flow: row wrap;
     display: -webkit-flex;
@@ -46,7 +50,6 @@ table {
     border-width: 0.1px;
     border-color: #d6d6d6;
     width: 92.58VW;
-    height: 66.663VW;
     margin: 0VW 3.71VW 0VW 3.71VW;
     padding: 0VW 3VW 0VW 3VW;
 }
@@ -83,6 +86,8 @@ th {
     background-size: 7.165VW;
     background-position-x: 2.67VW;
     background-position-y: 1.53VW;
+    /*background-position-x: 50.67%;
+    background-position-y: 50.53%;*/
 }
 
 .day-select {
@@ -90,7 +95,9 @@ th {
     background-repeat: no-repeat;
     background-size: 7.165VW;
     background-position-x: 2.67VW;
-    background-position-y: 1.53VW;  
+    background-position-y: 1.53VW; 
+    /*background-position-x: 50.67%;
+    background-position-y: 50.53%;  */
 }
 
 /* legend */
