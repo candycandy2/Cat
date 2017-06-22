@@ -4,7 +4,7 @@ $(function () {
     });  
     $('.dropdown-menu > li > a').click(function(){
         $('.nav-tabs > li.active').removeClass('active');
-        $('#api_report > li.active').removeClass('active');
+        $('.dropdown-menu > li.active').removeClass('active');
         var openId = $(this).data('tabid');
         switch (openId) {
             case 'api_call_frequency_report':
@@ -13,6 +13,8 @@ $(function () {
             case 'api_operation_time_report':
                 iniApiOperationTimeReport(appKey);
                 break;
+            case 'register_daily_report':
+                iniRegisterDailyReport(appKey);
         }
         $(this).parents('li').addClass('active');
         $('.tab-content > div.active').removeClass('active').removeClass('in')
@@ -70,7 +72,7 @@ var iniApiCallFrequencyReport = function(appKey){
                     }
                 });
                 storage("callApiFrequency",JSON.stringify(res));
-                creatChart(res,reportEndDate);
+                creatChart(res);
             },
             error: function (e) {
                 showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
@@ -81,10 +83,11 @@ var iniApiCallFrequencyReport = function(appKey){
     } 
 }
 
-var creatChart = function(res,reportEndDate){
-    createdCallApiDunutChart(getDonutChartOpt());
+var creatChart = function(res){
+    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    createCallApiDunutChart(getDonutChartOpt());
     createCallApiMultiLine(res);
-    createTableChart(res,reportEndDate);
+    createCallApiTableChart(res,reportEndDate);
 }
 
 var iniApiOperationTimeReport = function(appKey){
@@ -122,7 +125,7 @@ var iniApiOperationTimeReport = function(appKey){
                         actionArray.count = data.count;
                     });
                     storage("apiOperationTime",JSON.stringify(res));
-                    creatChartOpTime(res,reportEndDate);
+                    creatChartOpTime(res);
                 },
                 error: function (e) {
                     showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
@@ -134,11 +137,77 @@ var iniApiOperationTimeReport = function(appKey){
 
 }
 
-var creatChartOpTime = function(res,reportEndDate){
+var creatChartOpTime = function(res){
+    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
     createApiOperationTimeMultiLine(res);
     createApiOperationTimeRangeLineChart(getRangeLineChartOpt());
     createOperationTimeTableChart(res,reportEndDate);
-    
+}
+
+
+var iniRegisterDailyReport = function(appKey){
+    var res={};
+    var storage = ExtSessionStorage(appKey);
+    $('.loader').show();
+  
+    if(storage("RegisterDaily")){
+        $('.loader').hide();
+        res =JSON.parse(storage("RegisterDaily"));
+        createChartDailyRegister(res);
+    }else{
+        
+        $.ajax({
+              url:"reportDetail/getRegisterDailyReport",
+              type:"POST",
+              dataType:"json",
+              contentType: "application/json",
+                success: function(r){
+                    $.each(r,function(i,d){
+                        if(!res.hasOwnProperty(d.register_date)){
+                            res[d.register_date] = {'count' : 0, 'users' : [], 'device_type':{}};
+                        }
+                        res[d.register_date].count =  parseInt(res[d.register_date].count) + parseInt(d.count);
+                      
+                        if($.inArray(d.user_row_id,  res[d.register_date].users) == -1){
+                            res[d.register_date].users.push(d.user_row_id);
+                        }
+
+                        if(!res[d.register_date].device_type.hasOwnProperty(d.device_type)){
+                            res[d.register_date].device_type[d.device_type] = {};
+                        }
+                        var actionArray =  res[d.register_date].device_type[d.device_type];
+                        if(!actionArray.hasOwnProperty(d.company +'_'+ d.site_code)){
+                            actionArray[d.company +'_'+ d.site_code] = {};
+                        }
+                        var companySiteArray =  actionArray[d.company +'_'+ d.site_code];
+                        if(!companySiteArray.hasOwnProperty(d.department)){
+                            companySiteArray[d.department] = {'count' : 0, 'users' : []};
+                        }
+                        var departmentArray =  companySiteArray[d.department];
+                        departmentArray.count =  parseInt(departmentArray.count) + parseInt(d.count);
+                        if($.inArray(d.user_row_id,  departmentArray.users) == -1){
+                            departmentArray.users.push(d.user_row_id);
+                        }
+                    });
+                    storage("RegisterDaily",JSON.stringify(res));
+                    createChartDailyRegister(res);
+                },
+                error: function (e) {
+                    showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+                }
+            }).done(function() {
+                $('.loader').hide();
+            });
+    }
+
+}
+
+var createChartDailyRegister = function(res){
+    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    createDailyRegisterMultiLine(res);
+    createDailyRegisterTableChart(res, reportEndDate);
+    creatDailyRegisterDunutChart(getDonutChartOpt());
+    updateDailyRegisterDonutChart(res,reportEndDate)
 }
 
 var sortTable = function(table){

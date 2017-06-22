@@ -75,4 +75,12 @@ class ReportService
         $res = $cursor->toArray();
         return $res;
     }
+
+    /**
+     * 取得App註冊設備與用戶資料
+     * @return [type] [description]
+     */
+    public function getDailyRegisterReport(){
+        return $this->registerRepository->getRegisterDataEachDay();
+    }
 }

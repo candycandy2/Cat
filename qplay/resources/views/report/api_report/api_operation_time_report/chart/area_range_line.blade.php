@@ -1,4 +1,4 @@
-<div class="col-lg-12 col-md-12 col-xs-12" id="api_operation_time_area_range_line">
+<div id="area_range_line_{{$REPORT_TYPE}}_1" class="col-lg-12 col-md-12 col-xs-12">
     <div><label class="text-muted">詳細資料</label></div>
     <div id="container_api_operation_time_area_range_line_1" style="height: 400px; min-width: 310px"></div>
 </div>
