@@ -13,10 +13,6 @@ a {
 }
 
 /*override APP CSS*/
-.app-popup .ui-content {
-    padding: 5.07vw 3vw 5.07vw;
-}
-
 .app-popup .ui-content .event-member-list.header .title {
     position: static;
 }

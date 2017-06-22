@@ -1,4 +1,3 @@
-
 /***************************************override jQuery Mobile***************************************/
 .ui-content{
 	padding: 0px;
@@ -25,12 +24,12 @@
 }
 
 /********************************************common use**********************************************/
-.page-main {
+.page-main > form {
 	margin-top: 3.99VW;
 }
 
 .page-main .page-tabs {
-	margin: 1.8VH 3.71VW 0VH 3.71VW;
+	margin: 0VH 3.71VW 0VH 3.71VW;
 }
 
 .page-main .tabs-title {
@@ -43,7 +42,7 @@
 	padding: 0px;
 }
 /******************************************* personal leave *****************************************/
-#infoList {
+.infoList {
 	margin-top: 5VW;
 	background-color: white;
 }
@@ -70,7 +69,11 @@
 	display: none;
 }
 
-.infoContent ul {
+.title {
+	font-size: 4.4VW;
+}
+
+#viewPersonalLeave .infoContent ul, #viewCalendar .infoList ul {
 	list-style-type: none;
 	display: inline;
 	-webkit-padding-start: 0px;
@@ -89,6 +92,15 @@
 	float: right;
 	margin-top: -3.5VH;
 	margin-right: 6.71VW;
+}
+
+#infoContent-3 {
+	margin-top: 3.71VW;
+	margin-right: 5.6VW;
+}
+
+#infoContent-3 span {
+	font-size: smaller;
 }
 
 .dropdown-icon {
@@ -129,6 +141,50 @@
     background-color: #ddd !important;
     color: #666 !important;
 }
+
+#searchBar {
+	width: 100%;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #d6d6d6;
+	border-radius: 4px;
+	background-color: #ffffff;
+	background-image: url("../img/search.png");
+	background-repeat: no-repeat;
+	background-size: 3.945VW;
+	background-position-x: 2.71VW;
+	background-position-y: 2VW;  
+	height: 8VW;
+	margin: 5.07VW 0VW 5VW 0VW;
+	text-indent: 8VW;
+}
+
+/*#searchBar:focus {
+	background-image: none;
+}*/
+
+.typeB {
+	height: 20VW !important;
+}
+
+.tpl-option-msg-list {
+	border-top-style: solid;
+	border-top-color: #efefef;
+	border-width: 0.1px;
+}
+
+.ui-hr {
+	opacity: 0;
+	height: 0px;
+}
+/******************************************** viewCalendar ******************************************/
+
+#viewCalendar .infoList ul > li {
+	margin-left: 6.71Vw;
+	margin-top: 3.71VW;
+	font-size: smaller;
+}
+
 /********************************************** mypanel *********************************************/
 #mypanel .panel-text{
 	margin: 4.3VW 0VW 3.71VW 3.71VW;

@@ -39,6 +39,9 @@ var schemeSetting =   "<string>appqplay"    + process.env.appNameDecorate + "</s
                     + "<string>appmas"      + process.env.appNameDecorate + "</string>"
                     + "<string>appim"       + process.env.appNameDecorate + "</string>"
                     + "<string>appcm"       + process.env.appNameDecorate + "</string>"
+                    + "<string>appeagle"    + process.env.appNameDecorate + "</string>"
+                    + "<string>appbadminton"+ process.env.appNameDecorate + "</string>"
+                    + "<string>appqisdaeis" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme01" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme02" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme03" + process.env.appNameDecorate + "</string>"
@@ -81,16 +84,19 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="mailto:*" />' +
                         '<allow-intent href="geo:*" />' +
                         '<allow-intent href="appyellowpage'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="apprrs' +      process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appeis' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprrs'      + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeis'      + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appcalendar' + process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appens' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appens'      + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appaccountingrate'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appleave'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="apprelieve'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appmas'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appim'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appcm'+process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appleave'    + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprelieve'  + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appmas'      + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appim'       + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appcm'       + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeagle'    + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appbadminton'+ process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appqisdaeis' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + process.env.appNameDecorate + ':*" />' +
@@ -140,6 +146,7 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-customurlscheme',
     'cordova plugin remove cordova-plugin-qsecurity',
     'cordova plugin remove cordova-plugin-app-update',
+    'cordova plugin remove cordova-plugin-android-permissions',
     'cordova plugin remove cordova-plugin-whitelist',
     //'cordova plugin remove cordova-plugin-inappbrowser',
     'cordova plugin remove cordova-plugin-appavailability',
@@ -156,6 +163,7 @@ gulp.task('install', shell.task([
     'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add ../../plugins/cordova-plugin-app-update',
+    'cordova plugin add cordova-plugin-android-permissions',
     'cordova plugin add cordova-plugin-whitelist',
     //'cordova plugin add cordova-plugin-inappbrowser',
     'cordova plugin add cordova-plugin-appavailability'//,
@@ -173,6 +181,7 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add ../../plugins/cordova-plugin-app-update',
+    'cordova plugin add cordova-plugin-android-permissions',
     'cordova plugin add cordova-plugin-whitelist@1.3.1',
     'cordova plugin add cordova-plugin-appavailability@0.4.2'//,
     //'cordova plugin add cordova-plugin-file@4.3.1'
