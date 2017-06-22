@@ -80,8 +80,7 @@ class ReportDetailController extends Controller
             $appKey = $jsonContent['app_key'];
             $result = $this->reportService->getApiReport($appKey);
             return json_encode($result);
-        }
-        
+        } 
     }
 
     /**
@@ -123,4 +122,21 @@ class ReportDetailController extends Controller
             return json_encode($result);
         }
     }
+
+    /**
+     * 取得API註冊設備與用戶資料
+     * @return json
+     */
+    public function getRegisterDailyReport(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            return json_encode($this->reportService->getDailyRegisterReport());
+        }
+    }
+
 }
