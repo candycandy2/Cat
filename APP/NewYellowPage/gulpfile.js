@@ -98,8 +98,8 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-  'cordova platform add ios@4.3.1',
-  'cordova platform add android@6.0.0',
+  'cordova platform add ios',
+  'cordova platform add android',
   'cordova plugin add cordova-plugin-device@1.1.4',
   'cordova plugin add cordova-plugin-console@1.0.5',
   'cordova plugin add cordova-plugin-appversion@1.0.0',
