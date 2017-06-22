@@ -1,5 +1,6 @@
+var searchBar = '<input type="text" id="searchBar">';
 var leaveTypeData = {
-    id: "eventType",
+    id: "LeaveType-popup",
     option: [{
         value: "0",
         text: "去年特休"
@@ -17,21 +18,40 @@ var leaveTypeData = {
 };
 
 var agentData = {
-    id: "agent",
+    id: "agent-popup",
     option: [{
         value: "0",
-        text: "請選擇"
+        text: "Colin Chen"
     }, {
         value: "1",
-        text: "去年彈休"
+        text: "Jennifer Y Wang"
     }, {
         value: "2",
-        text: "本期特休"
+        text: "Marvin Lin"
     }, {
         value: "3",
-        text: "生理假"
+        text: "Vinny YC Tang"
+    }, {
+        value: "4",
+        text: "Eee Tsai"
+    }, {
+        value: "5",
+        text: "Darren K Ti"
+    }, {
+        value: "6",
+        text: "Samuel Hsieh"
+    }, {
+        value: "7",
+        text: "Wendy Hsu"
+    }, {
+        value: "8",
+        text: "Alan Tu"
     }],
-    defaultValue: 0
+    title: searchBar,
+    defaultText: "請選擇",
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
 };
 
 
@@ -78,10 +98,9 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").hide();
             if(lastPageID === "viewPersonalLeave") {
                 tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
-                $("#eventType-option #eventType-option-list").css("height", "55VW");
-
-                tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeA", agentData);
-                $("#agent-option #agent-option-list").css("height", "55VW");
+                tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
+                // var a = '<input type="text" placeholder="Search">';
+                // $("#agent-popup-option div.title").append(a);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
