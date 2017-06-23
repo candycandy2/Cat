@@ -15,7 +15,6 @@ var leaveTypeData = {
         text: "生理假"
     }],
     defaultValue: 0,
-    // defaultText: "請選擇"
 };
 
 var agentData = {
@@ -81,6 +80,7 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).ready(function() {
             $("#viewPersonalLeave #myCalendar").calendar({
+                id: "viewPersonalLeave",
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
@@ -98,11 +98,10 @@ $("#viewPersonalLeave").pagecontainer({
             if(lastPageID === "viewPersonalLeave") {
                 tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
-                // var a = '<input type="text" placeholder="Search">';
-                // $("#agent-popup-option div.title").append(a);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
+            
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
