@@ -21,20 +21,17 @@ var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
 
-env.set({APP_NAME: "Example"});
+env.set({APP_NAME: "Badminton"});
 
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
 
 /*-----------------------------------------edit config.xml------------------------------------------*/
-//set scheme name appXXXX, XXXX should in lowercase.
-var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appexample" + process.env.appNameDecorate + "</string>";
+var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appbadminton" + process.env.appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    //set app id = com.qplay.appXXXX, XXXX should in lowercase.
-                    '<widget id="com.qplay.appexample' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                    '<widget id="com.qplay.appbadminton' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
                         'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
-                        //set APP Name
                         '<name>' + process.env.APP_NAME + '</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
@@ -43,7 +40,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
-                        '<preference name="orientation" value="portrait" />' +
+                        '<preference name="Orientation" value="default" />' +
                         '<access origin="*" />' +
                         '<access origin="tel:*" launch-external="yes" />' +
                         '<allow-navigation href="*" />' +
@@ -77,33 +74,27 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  /*
-  //These following steps only cancel in first time you run this task.
-  //After first time finished this task, you should run these steps in this task all the time.
-  //
-  'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
-  'cordova plugin remove cordova-plugin-inappbrowser',
-  'cordova plugin remove cordova-plugin-file',
-  'cordova platform rm ios',
+  // 'cordova plugin remove cordova-plugin-device',
+  // 'cordova plugin remove cordova-plugin-console',
+  // 'cordova plugin remove cordova-plugin-appversion',
+  // 'cordova plugin remove cordova-plugin-customurlscheme',
+  // 'cordova plugin remove cordova-plugin-qsecurity',
+  // 'cordova plugin remove cordova-plugin-whitelist',
+  // 'cordova plugin remove cordova-plugin-inappbrowser',
+  //'cordova plugin remove cordova-plugin-file',
+  // 'cordova platform rm ios',
   'cordova platform rm android',
-  'cordova platform add ios', 
+  // 'cordova platform add ios',
   'cordova platform add android',
-  */
   'cordova plugin add cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
   //'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add cordova-plugin-android-permissions',
-  //set scheme name appXXXX, XXXX should in lowercase.
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appexample' + process.env.appNameDecorate,
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appbadminton' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist'//,
-  'cordova plugin add cordova-plugin-inappbrowser',
+  'cordova plugin add cordova-plugin-whitelist',
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -115,11 +106,10 @@ gulp.task('jenkinsinstall', shell.task([
   //'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add cordova-plugin-android-permissions',
-  //set scheme name appXXXX, XXXX should in lowercase.
-  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appexample' + process.env.appNameDecorate,
+  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appbadminton' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1'//,
-  'cordova plugin add cordova-plugin-inappbrowser',
+  'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 

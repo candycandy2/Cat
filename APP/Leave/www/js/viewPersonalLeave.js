@@ -1,5 +1,6 @@
+var searchBar = '<input type="text" id="searchBar">';
 var leaveTypeData = {
-    id: "eventType",
+    id: "LeaveType-popup",
     option: [{
         value: "0",
         text: "去年特休"
@@ -13,7 +14,44 @@ var leaveTypeData = {
         value: "3",
         text: "生理假"
     }],
-    defaultValue: 1
+    defaultValue: 0,
+};
+
+var agentData = {
+    id: "agent-popup",
+    option: [{
+        value: "0",
+        text: "Colin Chen"
+    }, {
+        value: "1",
+        text: "Jennifer Y Wang"
+    }, {
+        value: "2",
+        text: "Marvin Lin"
+    }, {
+        value: "3",
+        text: "Vinny YC Tang"
+    }, {
+        value: "4",
+        text: "Eee Tsai"
+    }, {
+        value: "5",
+        text: "Darren K Ti"
+    }, {
+        value: "6",
+        text: "Samuel Hsieh"
+    }, {
+        value: "7",
+        text: "Wendy Hsu"
+    }, {
+        value: "8",
+        text: "Alan Tu"
+    }],
+    title: searchBar,
+    defaultText: "請選擇",
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
 };
 
 
@@ -21,69 +59,29 @@ $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        // window.APIRequest = function() {
+        /*window.APIRequest = function() {
             
-        //     var self = this;
+            var self = this;
 
-        //     this.successCallback = function(data) {
-        //         loadingMask("hide");
+            this.successCallback = function(data) {
+                loadingMask("hide");
 
-        //         var resultcode = data['ResultCode'];
-        //         //do something
-        //     };
+                var resultcode = data['ResultCode'];
+                //do something
+            };
 
-        //     this.failCallback = function(data) {};
+            this.failCallback = function(data) {};
 
-        //     var __construct = function() {
-        //         //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
-        //     }();
+            var __construct = function() {
+                //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
+            }();
 
-        // };
-
-        // function initSlider() {
-        //     if(personalLeaveDateExist) {   
-        //         var index = 0;
-        //         year = thisYear-1;
-        //         month = thisMonth;
-        //         while(index < 13) {
-        //             monthlyPageDateList += "<div>" + monTable[month] + year + "</div>";
-        //             monthlyPageDate[index] = month + "." + year;
-        //             if(month == 12){
-        //                 year++;
-        //                 month = 0;
-        //             }
-        //             month++;
-        //             index++;
-        //         }
-        //         $(".personalLeaveSlider").html("");
-        //         $(".personalLeaveSlider").append(monthlyPageDateList).enhanceWithin();
-        //     }
-        //     personalLeaveDateExist = false;
-        //     if($(".personalLeaveSlider").hasClass("slick-slider") || $(".personalLeaveSlider").hasClass("slick-initialized")){
-        //         $(".personalLeaveSlider").slick("unslick");
-        //     }
-        //     $(".personalLeaveSlider").slick({
-        //         initialSlide: 0,
-        //         autopaly: false,
-        //         dots: false,
-        //         responseive: [{
-        //             breakpoint: 500,
-        //             settings: {
-        //                 arrows: true,
-        //                 infinite: false,
-        //                 slidesToShow: 2,
-        //                 slidesToScroll: 2
-        //             }
-        //         }],
-        //         infinite: false
-        //     });
-        // }
+        };*/
 
         $(document).ready(function() {
             $("#viewPersonalLeave #myCalendar").calendar({
+                id: "viewPersonalLeave",
                 language: "default",
-                show_previous: true,
-                show_next: true,
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {
@@ -97,7 +95,13 @@ $("#viewPersonalLeave").pagecontainer({
         $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
             $("#tab-1").show();
             $("#tab-2").hide();
-            tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+            if(lastPageID === "viewPersonalLeave") {
+                tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
+            }
+            $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
+            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
+            
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
@@ -145,10 +149,10 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#infoTitle-3").on("click", function() {
             if($("#infoContent-3").css("display") === "none") {
-                $("#infoContent-3").slideDown(500);
+                $("#infoContent-3").slideDown(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png")
             }else if($("#infoContent-3").css("display") === "block") {
-                $("#infoContent-3").slideUp(500);
+                $("#infoContent-3").slideUp(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
         });

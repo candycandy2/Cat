@@ -39,6 +39,9 @@ var schemeSetting =   "<string>appqplay"    + process.env.appNameDecorate + "</s
                     + "<string>appmas"      + process.env.appNameDecorate + "</string>"
                     + "<string>appim"       + process.env.appNameDecorate + "</string>"
                     + "<string>appcm"       + process.env.appNameDecorate + "</string>"
+                    + "<string>appeagle"    + process.env.appNameDecorate + "</string>"
+                    + "<string>appbadminton"+ process.env.appNameDecorate + "</string>"
+                    + "<string>appqisdaeis" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme01" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme02" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme03" + process.env.appNameDecorate + "</string>"
@@ -81,16 +84,19 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="mailto:*" />' +
                         '<allow-intent href="geo:*" />' +
                         '<allow-intent href="appyellowpage'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="apprrs' +      process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appeis' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprrs'      + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeis'      + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appcalendar' + process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appens' +      process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appens'      + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appaccountingrate'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appleave'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="apprelieve'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appmas'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appim'+process.env.appNameDecorate + ':*" />' +
-                        '<allow-intent href="appcm'+process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appleave'    + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="apprelieve'  + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appmas'      + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appim'       + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appcm'       + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appeagle'    + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appbadminton'+ process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appqisdaeis' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + process.env.appNameDecorate + ':*" />' +
