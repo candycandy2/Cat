@@ -5,6 +5,7 @@
  * - jQuery (2.0.3)
  * - Twitter Bootstrap (3.0.2)
  */
+var monthLabels, $currMonthLabel;
 
 if (typeof jQuery == 'undefined') {
     throw new Error('jQuery is not loaded');
@@ -163,9 +164,9 @@ $.fn.calendar = function (options) {
         }
 
         var prevIsValid = $calendarElement.data('showPrevious');
-        if (typeof(prevIsValid) === 'number' || prevIsValid === false) {
-            prevIsValid = checkMonthLimit($calendarElement.data('showPrevious'), true);
-        }
+        // if (typeof(prevIsValid) === 'number' || prevIsValid === false) {
+        //     prevIsValid = checkMonthLimit($calendarElement.data('showPrevious'), true);
+        // }
 
         $prevMonthNav.attr('id', $calendarElement.attr('id') + '-navPrev');
         $prevMonthNav.data('navigation', 'prev');
@@ -176,12 +177,15 @@ $.fn.calendar = function (options) {
                 prevYear = (prevYear - 1);
                 prevMonth = 11;
             }
-            $prevMonthNav.data('to', {year: prevYear, month: (prevMonth + 1)});
+            // $prevMonthNav.data('to', {year: prevYear, month: (prevMonth + 1)});
             if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                 $prevMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $prevMonthNav.click(function (e) {
+                prevMonth = 4;
                 drawTable($calendarElement, $tableObj, prevYear, prevMonth);
+                $("#dateTitle span").html(monthLabels[prevMonth] + ' ' + prevYear);
+
             });
         }
 
@@ -204,13 +208,15 @@ $.fn.calendar = function (options) {
                 $nextMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $nextMonthNav.click(function (e) {
+                nextMonth = 6;
                 drawTable($calendarElement, $tableObj, nextYear, nextMonth);
+                $("#dateTitle span").html(monthLabels[nextMonth] + ' ' + nextYear);
             });
         }
 
-        var monthLabels = $calendarElement.data('monthLabels');
+        monthLabels = $calendarElement.data('monthLabels');
 
-        var $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
+        $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
         $currMonthLabel.dblclick(function () {
             var dateInitObj = $calendarElement.data('initDate');
             drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());

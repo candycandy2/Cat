@@ -104,8 +104,15 @@ sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/
 
 # ======== EMS API End ========
 
+# ======== Additional Process Start ========
+
 # modify owner
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/html/qplay/storage
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/html/qplay/public
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/html/qplay/bootstrap/cache
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/html/qplay/public/jpush.log
+
+# remove temporary files
+sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 rm /var/www/html/qplay/storage/framework/views/*
+
+# ======== Additional Process End ========

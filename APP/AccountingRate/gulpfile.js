@@ -77,8 +77,10 @@ gulp.task('install', shell.task([
   //These following steps only cancel in first time you run this task.
   //After first time finished this task, you should run these steps in this task all the time.
   'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
+  //'cordova plugin remove cordova-plugin-console',
+  //'cordova plugin remove cordova-plugin-appversion',
+  'cordova plugin remove cordova-plugin-app-update',
+  'cordova plugin readme cordova-plugin-android-permissions',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
@@ -89,8 +91,10 @@ gulp.task('install', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-console',
-  'cordova plugin add cordova-plugin-appversion',
+  //'cordova plugin add cordova-plugin-console',
+  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update',
+  'cordova plugin add cordova-plugin-android-permissions',
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appaccountingrate' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
@@ -100,11 +104,13 @@ gulp.task('install', shell.task([
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
-  'cordova platform add ios@4.3.1',
-  'cordova platform add android@6.0.0',
+  'cordova platform add ios',
+  'cordova platform add android',
   'cordova plugin add cordova-plugin-device@1.1.4',
-  'cordova plugin add cordova-plugin-console@1.0.5',
-  'cordova plugin add cordova-plugin-appversion@1.0.0',
+  //'cordova plugin add cordova-plugin-console',
+  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update',
+  'cordova plugin add cordova-plugin-android-permissions',
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appaccountingrate' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
