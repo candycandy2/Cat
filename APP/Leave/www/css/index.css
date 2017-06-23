@@ -42,7 +42,7 @@
 	padding: 0px;
 }
 /******************************************* personal leave *****************************************/
-#infoList {
+.infoList {
 	margin-top: 5VW;
 	background-color: white;
 }
@@ -73,7 +73,7 @@
 	font-size: 4.4VW;
 }
 
-.infoContent ul {
+#viewPersonalLeave .infoContent ul, #viewCalendar .infoList ul {
 	list-style-type: none;
 	display: inline;
 	-webkit-padding-start: 0px;
@@ -92,6 +92,15 @@
 	float: right;
 	margin-top: -3.5VH;
 	margin-right: 6.71VW;
+}
+
+#infoContent-3 {
+	margin-top: 3.71VW;
+	margin-right: 5.6VW;
+}
+
+#infoContent-3 span {
+	font-size: smaller;
 }
 
 .dropdown-icon {
@@ -132,6 +141,15 @@
     background-color: #ddd !important;
     color: #666 !important;
 }
+
+/******************************************** viewCalendar ******************************************/
+
+#viewCalendar .infoList ul > li {
+	margin-left: 6.71Vw;
+	margin-top: 3.71VW;
+	font-size: smaller;
+}
+
 /********************************************** mypanel *********************************************/
 #mypanel .panel-text{
 	margin: 4.3VW 0VW 3.71VW 3.71VW;
