@@ -31,7 +31,6 @@
 <script>
 
 var createCallApiTableChart = function(res,date){
-
     var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     $tableChartDiv.find('.text-muted').text(date);
     $tableChartDiv.find('thead > tr.js-sub-title').empty();
