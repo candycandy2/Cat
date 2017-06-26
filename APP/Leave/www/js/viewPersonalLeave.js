@@ -156,5 +156,9 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
         });
+
+        $("#leaveConfirm").on("click", function() {
+            $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+        });
     }
 });
