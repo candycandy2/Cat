@@ -22,6 +22,7 @@ $("#viewCalendar").pagecontainer({
         /********************************** function *************************************/
         $(document).ready(function() {
             $("#viewCalendar #myCalendar").calendar({
+                id: "viewCalendar",
                 language: "default",
                 show_previous: true,
                 show_next: true,

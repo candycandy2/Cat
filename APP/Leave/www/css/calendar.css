@@ -46,9 +46,9 @@ table {
     display: table;
     border-collapse: separate;
     border-spacing: 0px;
-    border-style: solid;
+/*    border-style: solid;
     border-width: 0.1px;
-    border-color: #d6d6d6;
+    border-color: #d6d6d6;*/
     width: 92.58VW;
     margin: 0VW 3.71VW 0VW 3.71VW;
     padding: 0VW 3VW 0VW 3VW;

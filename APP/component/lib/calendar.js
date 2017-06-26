@@ -5,8 +5,7 @@
  * - jQuery (2.0.3)
  * - Twitter Bootstrap (3.0.2)
  */
-var monthLabels, $currMonthLabel;
-
+var calendarID;
 if (typeof jQuery == 'undefined') {
     throw new Error('jQuery is not loaded');
 }
@@ -25,6 +24,7 @@ $.fn.calendar = function (options) {
     var $calendarElement = $(this);
     $calendarElement.attr('id', "calendar");
 
+    $calendarElement.data('id', opts.id);
     $calendarElement.data('initYear', opts.year);
     $calendarElement.data('initMonth', opts.month);
     $calendarElement.data('monthLabels', opts.month_labels);
@@ -42,6 +42,7 @@ $.fn.calendar = function (options) {
     $calendarElement.data('actionFunction', opts.action);
     $calendarElement.data('actionNavFunction', opts.action_nav);
 
+    // calendarID = $calendarElement.data("id");
     drawCalendar();
 
     function drawCalendar() {
@@ -152,6 +153,14 @@ $.fn.calendar = function (options) {
 
     function prependMonthHeader($calendarElement, $tableObj, year, month) {
         var navIcons = $calendarElement.data('navIcons');
+        var monthLabels = $calendarElement.data('monthLabels');
+        var $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
+        $currMonthLabel.dblclick(function () {
+            var dateInitObj = $calendarElement.data('initDate');
+            drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
+        });
+
+        var $currMonthCell = $('<div id="dateTitle"></div>').append($currMonthLabel);
         var $prevMonthNav = $('<span class="calendar-month-navigation"></span>');
         var $nextMonthNav = $('<span class="calendar-month-navigation"></span>');
         if (typeof(navIcons) === 'object') {
@@ -164,28 +173,30 @@ $.fn.calendar = function (options) {
         }
 
         var prevIsValid = $calendarElement.data('showPrevious');
-        // if (typeof(prevIsValid) === 'number' || prevIsValid === false) {
-        //     prevIsValid = checkMonthLimit($calendarElement.data('showPrevious'), true);
-        // }
+        if (typeof(prevIsValid) === 'number' || prevIsValid === false) {
+            prevIsValid = checkMonthLimit($calendarElement.data('showPrevious'), true);
+        }
 
+        $currMonthLabel.data($calendarElement.data("id") + "year", year);
+        $currMonthLabel.data($calendarElement.data("id") + "month", month);
         $prevMonthNav.attr('id', $calendarElement.attr('id') + '-navPrev');
         $prevMonthNav.data('navigation', 'prev');
+        
         if (prevIsValid !== false) {
-            prevMonth = (month - 1);
-            prevYear = year;
-            if (prevMonth == -1) {
-                prevYear = (prevYear - 1);
-                prevMonth = 11;
-            }
-            // $prevMonthNav.data('to', {year: prevYear, month: (prevMonth + 1)});
             if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                 $prevMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $prevMonthNav.click(function (e) {
-                prevMonth = 4;
+                var prevYear = $currMonthLabel.data($calendarElement.data("id") + "year");
+                var prevMonth = $currMonthLabel.data($calendarElement.data("id") + "month") - 1;
+                if (prevMonth == -1) {
+                    prevYear = (prevYear - 1);
+                    prevMonth = 11;
+                }
+                $currMonthLabel.data($calendarElement.data("id") + "year", prevYear);
+                $currMonthLabel.data($calendarElement.data("id") + "month", prevMonth);
                 drawTable($calendarElement, $tableObj, prevYear, prevMonth);
-                $("#dateTitle span").html(monthLabels[prevMonth] + ' ' + prevYear);
-
+                $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[prevMonth] + ' ' + prevYear);
             });
         }
 
@@ -197,34 +208,24 @@ $.fn.calendar = function (options) {
         $nextMonthNav.attr('id', $calendarElement.attr('id') + '-navNext');
         $nextMonthNav.data('navigation', 'next');
         if (nextIsValid !== false) {
-            nextMonth = (month + 1);
-            nextYear = year;
-            if (nextMonth == 12) {
-                nextYear = (nextYear + 1);
-                nextMonth = 0;
-            }
-            $nextMonthNav.data('to', {year: nextYear, month: (nextMonth + 1)});
             if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                 $nextMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $nextMonthNav.click(function (e) {
-                nextMonth = 6;
+                var nextYear = $currMonthLabel.data($calendarElement.data("id") + "year");
+                var nextMonth = $currMonthLabel.data($calendarElement.data("id") + "month") + 1;
+                if (nextMonth == 12) {
+                    nextYear = (nextYear + 1);
+                    nextMonth = 0;
+                }
+                $currMonthLabel.data($calendarElement.data("id") + "year", nextYear);
+                $currMonthLabel.data($calendarElement.data("id") + "month", nextMonth);
                 drawTable($calendarElement, $tableObj, nextYear, nextMonth);
-                $("#dateTitle span").html(monthLabels[nextMonth] + ' ' + nextYear);
+                $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[nextMonth] + ' ' + nextYear);
             });
         }
 
-        monthLabels = $calendarElement.data('monthLabels');
-
-        $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
-        $currMonthLabel.dblclick(function () {
-            var dateInitObj = $calendarElement.data('initDate');
-            drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
-        });
-
-        var $currMonthCell = $('<div id="dateTitle"></div>').append($currMonthLabel);
         var $monthHeaderRow = $('<div class="calendar-month-header"></div>').append($prevMonthNav, $currMonthCell, $nextMonthNav);
-
         return $monthHeaderRow;
     }
 
@@ -568,6 +569,7 @@ $.fn.calendar_defaults = function () {
     var year = now.getFullYear();
     var month = now.getMonth() + 1;
     var settings = {
+        id: "calendar_ID",
         language: false,
         year: year,
         month: month,
