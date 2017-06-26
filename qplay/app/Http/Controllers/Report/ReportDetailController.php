@@ -57,9 +57,6 @@ class ReportDetailController extends Controller
         $data['app_name'] =  $appInfo->app_name;
         $data['icon_url'] =  ($appInfo->icon_url == "")?"":FilePath::getIconUrl($appId, $appInfo->icon_url);
         $data['app_key'] =  $appInfo->app_key;
-        $endDate = $this->reportService->getApiLogEndDate($appInfo->app_key);
-        $data['reportEndDate'] = (is_null($endDate))?"":$endDate->format('Y-m-d');
-       
         return view("report/report_detail")->with('data',$data);
 
     }
@@ -78,7 +75,8 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
-            $result = $this->reportService->getApiReport($appKey);
+            $timeZone = $jsonContent['timeZone'];
+            $result = $this->reportService->getApiReport($appKey, $timeZone);
             return json_encode($result);
         } 
     }
@@ -97,7 +95,8 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
-            $result = $this->reportService->getApiOperationTimeReport($appKey);
+            $timeZone = $jsonContent['timeZone'];
+            $result = $this->reportService->getApiOperationTimeReport($appKey, $timeZone);
             return json_encode($result);
         }
     }
@@ -118,7 +117,8 @@ class ReportDetailController extends Controller
             $appKey = $jsonContent['app_key'];
             $date = $jsonContent['date'];
             $actionName = $jsonContent['action'];
-            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $actionName);
+            $timeZone = $jsonContent['timeZone'];
+            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $timeZone, $actionName);
             return json_encode($result);
         }
     }
@@ -135,7 +135,9 @@ class ReportDetailController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
-            return json_encode($this->reportService->getDailyRegisterReport());
+            $jsonContent = json_decode($content, true);
+            $timeZone = $jsonContent['timeZone'];
+            return json_encode($this->reportService->getDailyRegisterReport($timeZone));
         }
     }
 

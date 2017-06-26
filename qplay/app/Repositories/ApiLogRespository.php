@@ -24,25 +24,14 @@ class ApiLogRespository
     }
 
     /**
-     * 取得該app最後的log日期
-     * @param  String $appKey app key
-     * @return mixed
-     */
-    public function getApiLogLastRecord($appKey){
-
-          return $this->apiLog
-                      ->where('app_key','=',$appKey)
-                      ->orderBy('created_at','desc')
-                      ->first();
-
-    }
-
-    /**
      * 依App Key取得當天該user呼叫Api幾次
      * @param  String $appKey app_key
+     * @param  int    $timeZone 時區
      * @return cursor
      */
-    public function getApiLogCountEachUserByAppKey($appKey){
+    public function getApiLogCountEachUserByAppKey($appKey, $timeZone){
+    
+        $timeOffset = $this->getTimeOffset($timeZone);
 
         return $this->apiLog::raw()->aggregate([
             ['$match'=>
@@ -52,6 +41,16 @@ class ApiLogRespository
                  'site_code'=>[ '$exists'=>true, '$ne'=>null ],
                  'department'=>[ '$exists'=>true, '$ne'=>null ],
                  'user_row_id'=>[ '$exists'=>true, '$ne'=>null ]
+                ]
+            ],
+            ['$project'=>
+                ['action'=>1,
+                 'operation_time'=>1,
+                 'company'=>1,
+                 'site_code'=>1,
+                 'department'=>1,
+                 'created_at'=>['$add'=>['$created_at',$timeOffset]
+                 ]
                 ]
             ],
             ['$sort'=>['created_at' => -1]
@@ -72,13 +71,24 @@ class ApiLogRespository
     /**
      * 依App Key 取得API執行最大時間、最小時間、平均時間
      * @param  String $appKey app_key
+     * @param   @param  int    $timeZone 時區
      * @return cursor
      */
-    public function getApiOperationTimeByAppKey($appKey){
+    public function getApiOperationTimeByAppKey($appKey, $timeZone){
+        
+        $timeOffset = $this->getTimeOffset($timeZone);
+
         return $this->apiLog::raw()->aggregate([
             ['$match'=>
                 ['app_key'=>$appKey,
                  'action'=>[ '$exists'=>true, '$ne'=>null ],
+                ]
+            ],
+            ['$project'=>
+                ['action'=>1,
+                 'operation_time'=>1,
+                 'created_at'=>['$add'=>['$created_at',$timeOffset]
+                 ]
                 ]
             ],
             ['$sort'=>['created_at' => -1]
@@ -100,12 +110,24 @@ class ApiLogRespository
      * 取得該日期每小時API執行時間(最大、最小、平均)
      * @param  String $appKey     app_key
      * @param  String $date       查詢的日期
+     * @param   @param  int    $timeZone 時區
      * @param  String $actionName 查詢的API名稱
      * @return cursor
      */
-    public function getApiOperationTimeDetail($appKey, $date, $actionName){
-
+    public function getApiOperationTimeDetail($appKey, $date, $timeZone, $actionName){
+        
+        $timeOffset = $this->getTimeOffset($timeZone);
+        $date = explode(' ',$date)[0];
+        
         return $this->apiLog::raw()->aggregate([
+            ['$project'=>
+                ['action'=>1,
+                 'app_key'=>1,
+                 'operation_time'=>1,
+                 'created_at'=>['$add'=>['$created_at',$timeOffset]
+                 ]
+                ]
+            ],
             ['$match'=>
                 ['app_key'=>$appKey,
                  'action'=>$actionName,
@@ -127,5 +149,13 @@ class ApiLogRespository
                 ]
             ]
         ]);
+    }
+
+    private function getTimeOffset($timeZone){
+        $dtz = new \DateTimeZone($timeZone);
+        $time = new \DateTime('now', $dtz);
+        $offset = $dtz->getOffset( $time ) / 3600;
+        $timeOffset  = (int)($offset < 0 ? "-".$offset : $offset) * 1000 * 60 * 60;
+        return $timeOffset;
     }
 }
