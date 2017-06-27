@@ -5,7 +5,7 @@
  * - jQuery (2.0.3)
  * - Twitter Bootstrap (3.0.2)
  */
-var calendarID;
+var holidayData;
 if (typeof jQuery == 'undefined') {
     throw new Error('jQuery is not loaded');
 }
@@ -282,10 +282,9 @@ $.fn.calendar = function (options) {
                 if (dow < firstDow || currDayOfMonth > lastDayinMonth) {
                     $dowRow.append('<td></td>');
                 } else {
-                    var dateId = $calendarElement.attr('id') + '-' + dateAsString(year, month, currDayOfMonth);
-                    var dayId = dateId + '-day';
+                    var dateId = dateAsString(year, month, currDayOfMonth);
 
-                    var $dayElement = $('<div id="' + dayId + '" class="day" >' + currDayOfMonth + '</div>');
+                    var $dayElement = $('<div id="' + currDayOfMonth + '" class="day" >' + currDayOfMonth + '</div>');
                     $dayElement.data('day', currDayOfMonth);
 
                     if ($calendarElement.data('showToday') === true) {
@@ -315,10 +314,10 @@ $.fn.calendar = function (options) {
                     }
                     if($calendarElement.data("id") === "viewCalendar") {
                         if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                            $dayElement.parent('#' + dateId).addClass("holiday");
+                            $dayElement.addClass("holiday");
                         }
                     }
-
+                    
                     if (typeof($calendarElement.data('actionFunction')) === 'function') {
                         $dowElement.addClass('dow-clickable');
                         $dowElement.click(function () {
@@ -337,6 +336,16 @@ $.fn.calendar = function (options) {
                 $dowRow.find('td').addClass("td-bottom-border");
             }
             $tableObj.append($dowRow);
+        }
+        if($calendarElement.data("id") === "viewCalendar") {
+            if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                $dayElement.addClass("holiday");
+            }
+            // var dateArray = holidayData[month]["holiday"]["date"].split(",");
+            // for(var i=0; i<dateArray.length; i++) {
+
+            // }
+
         }
         return $tableObj;
     }
