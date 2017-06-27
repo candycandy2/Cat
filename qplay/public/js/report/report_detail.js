@@ -37,7 +37,7 @@ var iniApiCallFrequencyReport = function(appKey){
     if(storage("callApiFrequency")){
         $('.loader').hide();
         res =JSON.parse(storage("callApiFrequency"));
-        creatChart(res);
+        creatApiCallFrequencyChart(res);
     }else{
         $.ajax({
           url:"reportDetail/getCallApiReport",
@@ -75,7 +75,7 @@ var iniApiCallFrequencyReport = function(appKey){
                     }
                 });
                 storage("callApiFrequency",JSON.stringify(res));
-                creatChart(res);
+                creatApiCallFrequencyChart(res);
             },
             error: function (e) {
                 showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
@@ -86,8 +86,8 @@ var iniApiCallFrequencyReport = function(appKey){
     } 
 }
 
-var creatChart = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+var creatApiCallFrequencyChart = function(res){
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createCallApiDunutChart(getDonutChartOpt());
     createCallApiMultiLine(res);
     createCallApiTableChart(res,reportEndDate);
@@ -141,7 +141,7 @@ var iniApiOperationTimeReport = function(appKey){
 }
 
 var creatChartOpTime = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createApiOperationTimeMultiLine(res);
     createApiOperationTimeRangeLineChart(getRangeLineChartOpt());
     createOperationTimeTableChart(res,reportEndDate);
@@ -209,7 +209,7 @@ var iniRegisterDailyReport = function(appKey){
 }
 
 var createChartDailyRegister = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createDailyRegisterMultiLine(res);
     createDailyRegisterTableChart(res, reportEndDate);
     creatDailyRegisterDunutChart(getDonutChartOpt());
@@ -310,7 +310,7 @@ var iniRegisterCumulativeReport = function(appKey){
 }
 
 var createChartCumulatvieRegister = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createCumulativeRegisterMultiLine(res);
     createCumulativeRegisterTableChart(res, reportEndDate);
     creatCumulativeRegisterDunutChart(getDonutChartOpt());

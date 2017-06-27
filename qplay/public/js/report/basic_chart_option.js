@@ -85,6 +85,17 @@ var getMultiLineChartOpt = function(){
         },
 
         series: {},
+         lang: {
+            noData: "沒有匹配的記錄"
+        },
+
+        noData: {
+            style: {
+                fontWeight: 'bold',
+                fontSize: '15px',
+                color: '#303030'
+            }
+        },
 
         exporting: {
             dateFormat:"%Y-%m-%d",
@@ -120,7 +131,7 @@ var getDonutChartOpt = function(){
         },
         series: [{
             name: 'Sites',
-            data: [1],
+            data: [],
             size: '60%',
             dataLabels: {
                 enabled: true,
@@ -133,7 +144,7 @@ var getDonutChartOpt = function(){
             }
         }, {
             name: 'Departments',
-            data: [1],
+            data: [],
             size: '80%',
             innerSize: '60%',
             dataLabels: {
@@ -147,6 +158,18 @@ var getDonutChartOpt = function(){
             },
             id: 'sites'
         }],
+
+        lang: {
+            noData: "沒有匹配的記錄"
+        },
+        
+        noData: {
+            style: {
+                fontWeight: 'bold',
+                fontSize: '15px',
+                color: '#303030'
+            }
+        },
         responsive: {
             rules: [{
                 condition: {
@@ -215,6 +238,17 @@ var getRangeLineChartOpt = function(){
                 marker: {
                     enabled: false
                 }
-            }]
+            }],
+            lang: {
+            noData: "沒有匹配的記錄"
+            },
+            
+            noData: {
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '15px',
+                    color: '#303030'
+                }
+            },
         };
 }
