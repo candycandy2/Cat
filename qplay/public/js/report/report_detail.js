@@ -6,27 +6,32 @@ $(function () {
         $('.nav-tabs > li.active').removeClass('active');
         $('.dropdown-menu > li.active').removeClass('active');
         var openId = $(this).data('tabid');
-        switch (openId) {
-            case 'api_call_frequency_report':
-                iniApiCallFrequencyReport(appKey);
-                break;
-            case 'api_operation_time_report':
-                iniApiOperationTimeReport(appKey);
-                break;
-            case 'register_daily_report':
-                iniRegisterDailyReport(appKey);
-                break;
-            case 'register_cumulative_report':
-                iniRegisterCumulativeReport(appKey);
-                break;
-        }
         $(this).parents('li').addClass('active');
-        $('.tab-content > div.active').removeClass('active').removeClass('in')
-        $('#' + openId).addClass('active').addClass('in');
-        
+        setActiveTab(openId, appKey);
     });
+    setActiveTab($('#navReport>li>ul>li>a').first().data('tabid'), appKey);
+    $('#navReport>li>ul>li>a').first().parents('li').addClass('active');
 });
 
+var setActiveTab = function(openId, appKey){
+    switch (openId) {
+        case 'api_call_frequency_report':
+            iniApiCallFrequencyReport(appKey);
+            break;
+        case 'api_operation_time_report':
+            iniApiOperationTimeReport(appKey);
+            break;
+        case 'register_daily_report':
+            iniRegisterDailyReport(appKey);
+            break;
+        case 'register_cumulative_report':
+            iniRegisterCumulativeReport(appKey);
+            break;
+    }
+
+    $('.tab-content > div.active').removeClass('active').removeClass('in')
+    $('#' + openId).addClass('active').addClass('in');
+}
 var iniApiCallFrequencyReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);

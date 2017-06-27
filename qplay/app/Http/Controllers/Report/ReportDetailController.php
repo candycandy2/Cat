@@ -45,6 +45,7 @@ class ReportDetailController extends Controller
         $data['app_name'] =  $appInfo->app_name;
         $data['icon_url'] =  ($appInfo->icon_url == "")?"":FilePath::getIconUrl($appId, $appInfo->icon_url);
         $data['app_key'] =  $appInfo->app_key;
+        $data['project_code'] =  $appInfo->project_code;
         return view("report/report_detail")->with('data',$data);
 
     }
