@@ -27,18 +27,6 @@ class ReportDetailController extends Controller
         $this->reportService = $reportService;
     }
 
-    public function getSummaryReport(){
-
-    }
-    
-    public function getRegisterReport(){
-        
-    }
-    
-    public function getUserInfoReport(){
-        
-    }
-
     /**
      * Api報表詳細頁入口
      */
@@ -124,7 +112,7 @@ class ReportDetailController extends Controller
     }
 
     /**
-     * 取得API註冊設備與用戶資料
+     * 取得每日註冊設備與用戶資料
      * @return json
      */
     public function getRegisterDailyReport(){
@@ -138,6 +126,24 @@ class ReportDetailController extends Controller
             $jsonContent = json_decode($content, true);
             $timeZone = $jsonContent['timeZone'];
             return json_encode($this->reportService->getDailyRegisterReport($timeZone));
+        }
+    }
+
+    /**
+     * 取得累計註冊設備與用戶資料
+     * @return json
+     */
+    public function getRegisterCumulativeReport(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $timeZone = $jsonContent['timeZone'];
+            return json_encode($this->reportService->getCumulativeRegisterReport($timeZone));
         }
     }
 

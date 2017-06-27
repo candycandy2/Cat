@@ -721,4 +721,17 @@ SQL;
         return null;
     }
 
+    /**
+     * 依時區取得與UTC時間的時差
+     * @param  String $timeZone 時區
+     * @return String +/-毫秒
+     */
+    public static function getTimeOffset($timeZone){
+        $dtz = new \DateTimeZone($timeZone);
+        $time = new \DateTime('now', $dtz);
+        $offset = $dtz->getOffset( $time ) / 3600;
+        $timeOffset  = (int)($offset < 0 ? "-".$offset : $offset) * 1000 * 60 * 60;
+        return $timeOffset;
+    }
+
 }
