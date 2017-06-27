@@ -1,4 +1,4 @@
-var currentYear;
+var currentYear, jsonDataEsist = false;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -104,6 +104,12 @@ function onBackKeyDown() {
         }
     }*/
 }
+$(document).ready(function() {
+    $.getJSON("string/holiday.json", function(data) {
+        holidayData = data;
+        jsonDataExist = true;
+    });
+});
 
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {
