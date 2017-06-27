@@ -15,6 +15,10 @@ $(function () {
                 break;
             case 'register_daily_report':
                 iniRegisterDailyReport(appKey);
+                break;
+            case 'register_cumulative_report':
+                iniRegisterCumulativeReport(appKey);
+                break;
         }
         $(this).parents('li').addClass('active');
         $('.tab-content > div.active').removeClass('active').removeClass('in')
@@ -163,6 +167,7 @@ var iniRegisterDailyReport = function(appKey){
               data:mydataStr,
               contentType: "application/json",
                 success: function(r){
+
                     $.each(r,function(i,d){
                         if(!res.hasOwnProperty(d.register_date)){
                             res[d.register_date] = {'count' : 0, 'users' : [], 'device_type':{}};
@@ -209,6 +214,107 @@ var createChartDailyRegister = function(res){
     createDailyRegisterTableChart(res, reportEndDate);
     creatDailyRegisterDunutChart(getDonutChartOpt());
     updateDailyRegisterDonutChart(res,reportEndDate)
+}
+
+var iniRegisterCumulativeReport = function(appKey){
+    var storage = ExtSessionStorage(appKey);
+    $('.loader').show();
+    var mydata = {timeZone:timeZone},
+        mydataStr = $.toJSON(mydata),
+        res={};
+    if(storage("RegisterCumulative")){
+        $('.loader').hide();
+        res =JSON.parse(storage("RegisterCumulative"));
+        createChartCumulatvieRegister(res);
+    }else{
+        $.ajax({
+              url:"reportDetail/getRegisterCumulativeReport",
+              type:"POST",
+              dataType:"json",
+              data:mydataStr,
+              contentType: "application/json",
+                success: function(r){
+                    var devices = [];
+                    var users = [];
+                    $.each(r,function(i,d){
+                        if(!res.hasOwnProperty(d.register_date)){
+                            res[d.register_date] = {'devices' : [], 'users' : [], 'device_type':{}};
+                        }
+                        if($.inArray(d.uuid,  res[d.register_date].devices) == -1){
+                            res[d.register_date].devices.push(d.uuid);
+                        }
+
+                        if($.inArray(d.user_row_id,  res[d.register_date].users) == -1){
+                            res[d.register_date].users.push(d.user_row_id);
+                        }
+
+                        if(!res[d.register_date].device_type.hasOwnProperty(d.device_type)){
+                            res[d.register_date].device_type[d.device_type] = {};
+                        }
+                        var actionArray =  res[d.register_date].device_type[d.device_type];
+                        if(!actionArray.hasOwnProperty(d.company +'_'+ d.site_code)){
+                            actionArray[d.company +'_'+ d.site_code] = {};
+                        }
+                        var companySiteArray =  actionArray[d.company +'_'+ d.site_code];
+                        if(!companySiteArray.hasOwnProperty(d.department)){
+                            companySiteArray[d.department] = {'devices' : [], 'users' : []};
+                        }
+                        var departmentArray =  companySiteArray[d.department];
+                        if($.inArray(d.devices,  departmentArray.devices) == -1){
+                            departmentArray.devices.push(d.uuid);
+                        }
+                        if($.inArray(d.user_row_id,  departmentArray.users) == -1){
+                            departmentArray.users.push(d.user_row_id);
+                        }
+                    });
+                    //caculate cumulative
+                    var tmpDate;
+                    $.each(res,function(i,d){
+                        if(typeof tmpDate !='undefined'){
+                            d.devices = unionArrays(res[tmpDate].devices,d.devices);
+                            d.users = unionArrays(res[tmpDate].users,d.users);
+                            var preObj = res[tmpDate].device_type;
+                            var currentObj = d.device_type;
+                            $.each(preObj,function(j,deviceTypeDetail){
+                                if(!currentObj.hasOwnProperty(j)){
+                                    currentObj[j] = {};
+                                }
+                                $.each(deviceTypeDetail,function(k,companySiteDetail){
+                                    if(!currentObj[j].hasOwnProperty(k)){
+                                        currentObj[j][k] = {};
+                                    }
+                                    $.each(companySiteDetail,function(l,departmentDetail){
+                                        if(!currentObj[j][k].hasOwnProperty(l)){
+                                            currentObj[j][k][l] = {'devices':[],'users':[]};
+                                        }
+                                        currentObj[j][k][l].devices = unionArrays(preObj[j][k][l].devices,currentObj[j][k][l].devices);
+                                        currentObj[j][k][l].users = unionArrays(preObj[j][k][l].users,currentObj[j][k][l].users);
+                                    });
+                                });
+                            });
+                            
+                        }
+                        tmpDate = i;
+                    });
+                    storage("RegisterCumulative",JSON.stringify(res));
+                    createChartCumulatvieRegister(res);
+                },
+                error: function (e) {
+                    showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+                }
+            }).done(function() {
+                $('.loader').hide();
+            });
+    }
+
+}
+
+var createChartCumulatvieRegister = function(res){
+    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    createCumulativeRegisterMultiLine(res);
+    createCumulativeRegisterTableChart(res, reportEndDate);
+    creatCumulativeRegisterDunutChart(getDonutChartOpt());
+    updateCumulativeRegisterDonutChart(res,reportEndDate)
 }
 
 var sortTable = function(table){

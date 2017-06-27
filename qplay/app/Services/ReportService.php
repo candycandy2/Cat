@@ -66,11 +66,20 @@ class ReportService
     }
 
     /**
-     * 取得App註冊設備與用戶資料
+     * 取得每日設備與用戶資料
      * @param  int    $timeZone 時區
      * @return mixed
      */
     public function getDailyRegisterReport($timeZone){
         return $this->registerRepository->getRegisterDataEachDay($timeZone);
+    }
+
+    /**
+     * 取得累計註冊設備與用戶詳細資料
+     * @param  int    $timeZone 時區
+     * @return mixed
+     */
+    public function getCumulativeRegisterReport($timeZone){
+        return $this->registerRepository->getRegisterDetail($timeZone);
     }
 }

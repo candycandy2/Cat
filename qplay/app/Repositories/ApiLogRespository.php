@@ -8,6 +8,7 @@ namespace App\Repositories;
 use App\Model\QP_Api_Log;
 use DB;
 use DateTime;
+use App\lib\CommonUtil;
 
 class ApiLogRespository
 {
@@ -31,7 +32,7 @@ class ApiLogRespository
      */
     public function getApiLogCountEachUserByAppKey($appKey, $timeZone){
     
-        $timeOffset = $this->getTimeOffset($timeZone);
+        $timeOffset = CommonUtil::getTimeOffset($timeZone);
 
         return $this->apiLog::raw()->aggregate([
             ['$match'=>
@@ -76,7 +77,7 @@ class ApiLogRespository
      */
     public function getApiOperationTimeByAppKey($appKey, $timeZone){
         
-        $timeOffset = $this->getTimeOffset($timeZone);
+        $timeOffset = CommonUtil::getTimeOffset($timeZone);
 
         return $this->apiLog::raw()->aggregate([
             ['$match'=>
@@ -116,7 +117,7 @@ class ApiLogRespository
      */
     public function getApiOperationTimeDetail($appKey, $date, $timeZone, $actionName){
         
-        $timeOffset = $this->getTimeOffset($timeZone);
+        $timeOffset = CommonUtil::getTimeOffset($timeZone);
         $date = explode(' ',$date)[0];
         
         return $this->apiLog::raw()->aggregate([
@@ -149,13 +150,5 @@ class ApiLogRespository
                 ]
             ]
         ]);
-    }
-
-    private function getTimeOffset($timeZone){
-        $dtz = new \DateTimeZone($timeZone);
-        $time = new \DateTime('now', $dtz);
-        $offset = $dtz->getOffset( $time ) / 3600;
-        $timeOffset  = (int)($offset < 0 ? "-".$offset : $offset) * 1000 * 60 * 60;
-        return $timeOffset;
     }
 }

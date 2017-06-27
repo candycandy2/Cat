@@ -1,23 +1,23 @@
 <div id="table_{{$REPORT_TYPE}}_1">
-    <div><label class="text-muted">2017-03-03</label></div>
+    <div><label class="text-muted"></label></div>
     <div class="table-responsive">
         <table class="table table-bordered table-striped report-table">
            <thead>
               <tr>
                  <th rowspan="2" data-field="_id.action" class="table-title">
-                    <div class="th-inner ">API 名稱</div>
+                    <div class="th-inner ">系統 名稱</div>
                  </th>
                  <th rowspan="2" data-field="1" class="table-title bg-color-blue">
-                    <div class="th-inner ">API 呼叫次數</div>
+                    <div class="th-inner ">註冊設備數</div>
                  </th>
                  <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                    <div class="th-inner ">API 呼叫人數</div>
+                    <div class="th-inner ">註冊用戶數</div>
                  </th>
                  <th class="js-data-title table-title bg-color-blue">
-                    <div class="th-inner">API 呼叫次數_公司+地區</div>
+                    <div class="th-inner">註冊設備數_公司+地區</div>
                  </th>
                  <th class="js-data-title table-title bg-color-pink">
-                    <div class="th-inner">API 呼叫人數_公司+地區</div>
+                    <div class="th-inner">註冊用戶數_公司+地區</div>
                  </th>
               </tr>
               <tr class="js-sub-title">
@@ -30,46 +30,35 @@
 </div>
 <script>
 
-var createTableChart = function(res,date){
+var createCumulativeRegisterTableChart = function(res,date){
 
     var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     $tableChartDiv.find('.text-muted').text(date);
     $tableChartDiv.find('thead > tr.js-sub-title').empty();
     $tableChartDiv.find('tbody').empty();
-    
-    createTable(res,date);
-    sortTable('table_{{$REPORT_TYPE}}_1');
-    
-    //set donut chart
-    if(typeof res[date] == 'undefined'){
-       $tableChartDiv.hide();
-       $('#{{$REPORT_TYPE}}_donutchart').hide();
-    }else{
-        $tableChartDiv.show();
-        $('#{{$REPORT_TYPE}}_donutchart').show();
-        updateApiLogDonutChart(res[date].actions,$.trim($tableChartDiv.find('table u').eq(0).text()));
-    }
-    
+    createCumulativeRegisterTable(res,date);
+    sortTable('table_{{$REPORT_TYPE}}_1');    
 }
-var createTable = function(res, date){
-
+var createCumulativeRegisterTable = function(res, date){
     if(typeof res[date] == 'undefined'){
         return false;
     }
-    var dataArray = res[date].actions
-    var actionArray =[];
+    
+    var dataArray = res[date].device_type;
+    console.log(dataArray);
+    var deviceTypeArray =[];
     var companySiteArray = [];
     var departmentArray = [];
-    for(var actionName in dataArray){
-        if($.inArray(actionName,actionArray) == -1){
-            actionArray.push(actionName);
+    for(var deviceType in dataArray){
+        if($.inArray(deviceType,deviceTypeArray) == -1){
+            deviceTypeArray.push(deviceType);
         }
-        for(var companySite in dataArray[actionName]){
+        for(var companySite in dataArray[deviceType]){
             if($.inArray(companySite,companySiteArray) == -1){
                 companySiteArray.push(companySite);
             }
 
-            for(var department in dataArray[actionName][companySite]){
+            for(var department in dataArray[deviceType][companySite]){
                 if($.inArray(department,departmentArray) == -1){
                     departmentArray.push(department);
                 }
@@ -79,44 +68,50 @@ var createTable = function(res, date){
 
     var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     $tableChartDiv.find('.js-data-title').attr('colspan',companySiteArray.length);
-    //call api times
+    //register device
     var td = '<td class="js-v-t text-blod" nowrap="nowrap" >0</td><td class="js-v-d text-blod" nowrap="nowrap">0</td>';
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-blue"><div class="th-inner fit-cell">'+companySite+'</div></th>';
         td+= '<td class="js-'+companySite+'_t">0</td>';
         $tableChartDiv.find('.js-sub-title').append(th);
     });
-    //call api user
+    //register users
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+companySite+'</div></th>';
         td+= '<td class="js-'+companySite+'_d">0</td>';
         $tableChartDiv.find('.js-sub-title').append(th);
     });
-    //api action row
-    $.each(actionArray, function(index, actionName){
-        var tr = '<tr class="js-' + actionName + '" style="cursor:pointer"><th scope="row"><u>' + actionName + '</u></th>' + td + '</tr>';
+    //api deviceType row
+    $.each(deviceTypeArray, function(index, deviceType){
+        var tr = '<tr class="js-' + deviceType + '" ><th scope="row">' + deviceType + '</th>' + td + '</tr>';
         $tableChartDiv.find('.js-row').append(tr);
     });
 
     //append result data
     var totalDistinctUserCount = [];
-    $.each(actionArray, function(index, action){
+    var totalDistinctDeviceCount = [];
+    $.each(deviceTypeArray, function(index, deviceType){
         $.each(companySiteArray, function(subIndex, companySite){
-             var tmpTimesCount = 0;
+             var tmpDeviceCount = 0;
              var tmpUsersCount = 0;
             $.each(departmentArray, function(nodeIndex, department){
-                if( (typeof dataArray[action][companySite] != 'undefined') && (typeof dataArray[action][companySite][department] != 'undefined')){
-                    tmpTimesCount = tmpTimesCount + dataArray[action][companySite][department].times;
-                    tmpUsersCount = tmpUsersCount + dataArray[action][companySite][department].users.length;
-                    $.each(dataArray[action][companySite][department].users,function(i,user){
+                if( (typeof dataArray[deviceType][companySite] != 'undefined') && (typeof dataArray[deviceType][companySite][department] != 'undefined')){
+                    tmpDeviceCount = tmpDeviceCount + dataArray[deviceType][companySite][department].devices.length;
+                    tmpUsersCount = tmpUsersCount + dataArray[deviceType][companySite][department].users.length;
+                    $.each(dataArray[deviceType][companySite][department].users,function(i,user){
                         if($.inArray(user, totalDistinctUserCount ) == -1){
                             totalDistinctUserCount.push(user);
                         }
                     });
+                    $.each(dataArray[deviceType][companySite][department].devices,function(i,device){
+                        if($.inArray(device, totalDistinctDeviceCount ) == -1){
+                            totalDistinctDeviceCount.push(device);
+                        }
+                    });
                 }
             });
-            $tableChartDiv.find('table .js-'+action+' .js-'+companySite+'_t').html(tmpTimesCount);
-            $tableChartDiv.find('table .js-'+action+' .js-'+companySite+'_d').html(tmpUsersCount);
+            $tableChartDiv.find('table .js-'+deviceType+' .js-'+companySite+'_t').html(tmpDeviceCount);
+            $tableChartDiv.find('table .js-'+deviceType+' .js-'+companySite+'_d').html(tmpUsersCount);
         });
 
     });
@@ -130,7 +125,7 @@ var createTable = function(res, date){
     $.each(companySiteArray, function(index, companySite){
         var vtotalArr = {'t':0,'d':0};
         $.each(vtotalArr, function(type,cnt){
-           $companySiteObj = $('td.js-' + companySite + '_' + type);
+           $companySiteObj =  $tableChartDiv.find('td.js-' + companySite + '_' + type);
            var i=0;
             $.each($companySiteObj, function(subIndexnx,companySiteDataObj){
                 if(typeof htotalArr[type][i] =='undefined'){
@@ -145,7 +140,7 @@ var createTable = function(res, date){
             });
             //modify last one
             if(type == 't'){
-                htotalArr[type][i-1] = parseInt(htotalArr[type][i-1]) + parseInt(vtotalArr[type]);
+                htotalArr[type][i-1] = totalDistinctDeviceCount.length;//real distinct device count
                 $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(vtotalArr[type]);
             }else{
                 htotalArr[type][i-1] = totalDistinctUserCount.length;//real distinct user count
@@ -154,7 +149,7 @@ var createTable = function(res, date){
         });   
          
      });
-    // operate times and  users total
+    // operate device and  users total
     $.each(htotalArr,function(type,hTotal){
         $vTotalObj = $tableChartDiv.find('table').find('.js-v-' + type);
         $.each($vTotalObj, function(index){
@@ -164,10 +159,5 @@ var createTable = function(res, date){
      });
      $tableChartDiv.find('.js-v-t span').css('color','#8085e9');
      $tableChartDiv.find('.js-v-d span').css('color','Orange');
-     
-     $tableChartDiv.find('table u').click(function(){
-       updateApiLogDonutChart(dataArray,$.trim($(this).text()));
-     });
-
 }
 </script>

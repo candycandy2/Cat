@@ -94,6 +94,7 @@ Route::any('report/reportDetail/getCallApiReport', ['middleware' => 'auth','uses
 Route::any('report/reportDetail/getApiOperationTimeReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getApiOperationTimeReport']);
 Route::any('report/reportDetail/getApiOperationTimeDetailReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getApiOperationTimeDetailReport']);
 Route::any('report/reportDetail/getRegisterDailyReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getRegisterDailyReport']);
+Route::any('report/reportDetail/getRegisterCumulativeReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getRegisterCumulativeReport']);
 
 
 /*
