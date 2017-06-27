@@ -26,15 +26,14 @@ $(function () {
 var iniApiCallFrequencyReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);
-    
     $('.loader').show();
-    var mydata = {app_key:appKey},
+    var mydata = {app_key:appKey, timeZone:timeZone},
         mydataStr = $.toJSON(mydata),
         res={};
     if(storage("callApiFrequency")){
         $('.loader').hide();
         res =JSON.parse(storage("callApiFrequency"));
-        creatChart(res,reportEndDate);
+        creatChart(res);
     }else{
         $.ajax({
           url:"reportDetail/getCallApiReport",
@@ -94,13 +93,13 @@ var iniApiOperationTimeReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);
     $('.loader').show();
-    var mydata = {app_key:appKey},
+    var mydata = {app_key:appKey,timeZone:timeZone},
         mydataStr = $.toJSON(mydata),
         res={};
     if(storage("apiOperationTime")){
         $('.loader').hide();
         res =JSON.parse(storage("apiOperationTime"));
-        creatChartOpTime(res,reportEndDate);
+        creatChartOpTime(res);
     }else{
         
         $.ajax({
@@ -146,10 +145,11 @@ var creatChartOpTime = function(res){
 
 
 var iniRegisterDailyReport = function(appKey){
-    var res={};
     var storage = ExtSessionStorage(appKey);
     $('.loader').show();
-  
+    var mydata = {timeZone:timeZone},
+        mydataStr = $.toJSON(mydata),
+        res={};
     if(storage("RegisterDaily")){
         $('.loader').hide();
         res =JSON.parse(storage("RegisterDaily"));
@@ -160,6 +160,7 @@ var iniRegisterDailyReport = function(appKey){
               url:"reportDetail/getRegisterDailyReport",
               type:"POST",
               dataType:"json",
+              data:mydataStr,
               contentType: "application/json",
                 success: function(r){
                     $.each(r,function(i,d){

@@ -73,8 +73,9 @@ $menu_name = "REPORT";
     </div>
 
 <script>
-var appKey = "{{$data['app_key']}}",
-    reportEndDate = "{{$data['reportEndDate']}}";
+var d=new Date();
+var appKey = "{{$data['app_key']}}"
+    timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 </script>
 
 @endsection
