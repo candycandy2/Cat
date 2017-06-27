@@ -24,8 +24,6 @@ $("#viewCalendar").pagecontainer({
             $("#viewCalendar #myCalendar").calendar({
                 id: "viewCalendar",
                 language: "default",
-                show_previous: true,
-                show_next: true,
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {
@@ -37,12 +35,12 @@ $("#viewCalendar").pagecontainer({
                         type: "img-text", 
                         label: "星期六日",
                         badge: "",
-                        classname: "weekend"
+                        classname: "weekend-icon"
                     }, {
                         type: "img-text",
                         label: "放假節日",
                         badge: "",
-                        classname: "holiday"
+                        classname: "holiday-icon"
                     }
                 ]
             });
