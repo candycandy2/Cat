@@ -1,3 +1,4 @@
+var holidayData;
 var htmlContent = "";
 var holidayList = htmlContent
                 + '<li>'
@@ -21,6 +22,9 @@ $("#viewCalendar").pagecontainer({
         
         /********************************** function *************************************/
         $(document).ready(function() {
+            $.getJSON("string/holiday.json", function(data) {
+                holidayData = data;
+            });
             $("#viewCalendar #myCalendar").calendar({
                 id: "viewCalendar",
                 language: "default",
