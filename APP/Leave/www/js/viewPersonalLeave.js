@@ -47,7 +47,8 @@ var agentData = {
         value: "8",
         text: "Alan Tu"
     }],
-    title: searchBar,
+    // title: searchBar,
+    title: "a",
     defaultText: "請選擇",
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
