@@ -22,9 +22,6 @@ $("#viewCalendar").pagecontainer({
         
         /********************************** function *************************************/
         $(document).ready(function() {
-            $.getJSON("string/holiday.json", function(data) {
-                holidayData = data;
-            });
             $("#viewCalendar #myCalendar").calendar({
                 id: "viewCalendar",
                 language: "default",
@@ -52,6 +49,7 @@ $("#viewCalendar").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewCalendar").on("pagebeforeshow", function(event, ui) {
+            
         });
 
         $("#viewCalendar").on("pageshow", function(event, ui) {
