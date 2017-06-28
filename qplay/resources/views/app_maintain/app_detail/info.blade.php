@@ -98,6 +98,7 @@
                     </table>
                 </div>
             </div>
+            <input name="customApiDeleteList" id="customApiDeleteList" type="hidden" value="">
         </form>
         <form class="form-horizontal" id="errorCodeForm">
             <div class="form-group">
@@ -493,8 +494,13 @@
             var $gridList = $("#gridCustomApi");
             var $toolbar  =  $($gridList.data('toolbar'));
             var selectedCustomApi = $gridList.bootstrapTable('getSelections');
-            var currentData = $gridList.bootstrapTable('getData');             
+            var currentData = $gridList.bootstrapTable('getData'); 
+            var deleteArray = [];            
            $.each(selectedCustomApi, function(i, api) {
+                if(typeof api.row_id != 'undefined'){
+                    deleteArray.push(api.row_id);
+                }
+                $('#customApiDeleteList').val(deleteArray.join());
                var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
                currentData.splice(index,1);
                $gridList.bootstrapTable('load', currentData);

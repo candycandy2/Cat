@@ -495,13 +495,13 @@ class AppMaintainController extends Controller
             return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
         }
         $appRowId = $input["app_row_id"];
-        $customApiList = \DB::table("qp_user_app as uapp")
+        $appUser = \DB::table("qp_user_app as uapp")
                 -> join('qp_user as u','uapp.user_row_id', '=', 'u.row_id')
                 -> where('app_row_id', '=', $appRowId)
                 -> select('u.row_id', 'u.login_id', 'u.company', 'u.department')
                 -> get();
 
-        return response()->json($customApiList);
+        return response()->json($appUser);
     }
 
     public function getAppVersionList(){
@@ -615,7 +615,8 @@ class AppMaintainController extends Controller
             if(isset($input['customApiList']) && is_array($input['customApiList'])){
                 $customApiList = $input['customApiList'];
             }
-            $this->saveCustomApi($appkey, $appId, $customApiList);
+            $customApideleteList = $input['customApiDeleteList'];
+            $this->saveCustomApi($appkey, $appId, $customApiList, $customApideleteList);
            
             $whiteList = array();
             if(isset($input['whiteList']) && is_array($input['whiteList'])){
@@ -1053,8 +1054,9 @@ class AppMaintainController extends Controller
      * @param  Int    $appkey        target app key
      * @param  Int    $appId         target app id
      * @param  Array  $customApiList custom api object array
+     * @param  String $customApideleteList row_id to delete
      */
-    private function saveCustomApi( String $appkey, Int $appId, Array $customApiList){
+    private function saveCustomApi( String $appkey, Int $appId, Array $customApiList, String $customApideleteList){
 
         $insertArray = [];
         $updateArray = [];
@@ -1081,7 +1083,7 @@ class AppMaintainController extends Controller
             }
         }
         $deleteApiRows = QP_App_Custom_Api::where('app_row_id','=',$appId)
-                            ->whereNotIn('row_id',$saveId)
+                            ->whereIn('row_id',explode(',',$customApideleteList))
                             ->delete();
         
         foreach($updateArray as $value){
