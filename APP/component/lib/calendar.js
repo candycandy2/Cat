@@ -5,7 +5,7 @@
  * - jQuery (2.0.3)
  * - Twitter Bootstrap (3.0.2)
  */
-var calendarID;
+var holidayData;
 if (typeof jQuery == 'undefined') {
     throw new Error('jQuery is not loaded');
 }
@@ -63,6 +63,13 @@ $.fn.calendar = function (options) {
         var jsonData = $calendarElement.data('jsonData');
         if (false !== jsonData) {
             checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
+        }
+
+        if($calendarElement.data("id") === "viewCalendar") {
+            var dateArray = holidayData[dateInitObj.getMonth()]["holiday"]["date"].split(",");
+            for(var i=0; i<dateArray.length; i++) {
+                $("#viewCalendar #" + dateArray[i]).addClass("holiday");
+            }
         }
     }
 
@@ -197,6 +204,12 @@ $.fn.calendar = function (options) {
                     if(prevMonth == 0) {
                          $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "0");
                     }
+                    if($calendarElement.data("id") === "viewCalendar") {
+                        var dateArray = holidayData[prevMonth]["holiday"]["date"].split(",");
+                        for(var i=0; i<dateArray.length; i++) {
+                            $("#viewCalendar #" + dateArray[i]).addClass("holiday");
+                        }
+                    }
                 }
             });
         }
@@ -223,6 +236,12 @@ $.fn.calendar = function (options) {
                     $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[nextMonth] + ' ' + nextYear);
                     if(nextMonth == 11) {
                         $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "0");
+                    }
+                    if($calendarElement.data("id") === "viewCalendar") {
+                        var dateArray = holidayData[nextMonth]["holiday"]["date"].split(",");
+                        for(var i=0; i<dateArray.length; i++) {
+                            $("#viewCalendar #" + dateArray[i]).addClass("holiday");
+                        }
                     }
                 }
             });
@@ -282,10 +301,9 @@ $.fn.calendar = function (options) {
                 if (dow < firstDow || currDayOfMonth > lastDayinMonth) {
                     $dowRow.append('<td></td>');
                 } else {
-                    var dateId = $calendarElement.attr('id') + '-' + dateAsString(year, month, currDayOfMonth);
-                    var dayId = dateId + '-day';
+                    var dateId = dateAsString(year, month, currDayOfMonth);
 
-                    var $dayElement = $('<div id="' + dayId + '" class="day" >' + currDayOfMonth + '</div>');
+                    var $dayElement = $('<div id="' + currDayOfMonth + '" class="day" >' + currDayOfMonth + '</div>');
                     $dayElement.data('day', currDayOfMonth);
 
                     if ($calendarElement.data('showToday') === true) {
@@ -313,12 +331,12 @@ $.fn.calendar = function (options) {
                     if(dow == 0 || dow == 6) {
                         $dowElement.addClass("weekend");
                     }
-                    if($calendarElement.data("id") === "viewCalendar") {
-                        if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                            $dayElement.parent('#' + dateId).addClass("holiday");
-                        }
-                    }
-
+                    // if($calendarElement.data("id") === "viewCalendar") {
+                    //     if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                    //         $dayElement.addClass("holiday");
+                    //     }
+                    // }
+                    
                     if (typeof($calendarElement.data('actionFunction')) === 'function') {
                         $dowElement.addClass('dow-clickable');
                         $dowElement.click(function () {
