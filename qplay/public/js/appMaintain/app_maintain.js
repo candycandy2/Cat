@@ -266,7 +266,7 @@ $(function () {
                             formData.append('customApiList[' + i + '][' + j + ']',data);
                         }); 
                     });
-
+                    formData.append('customApiDeleteList',$('#customApiDeleteList').val());
                     var whiteList =  $("#gridWhiteList").bootstrapTable('getData');
                     $.each(whiteList, function(i, white) {
                          $.each(white, function(j,data){
