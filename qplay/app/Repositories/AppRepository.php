@@ -130,7 +130,8 @@ class AppRepository
             -> where('qp_app_head.row_id','=',$appId)
             -> join('qp_project','qp_project.row_id','=','qp_app_head.project_row_id')
             -> join('qp_app_line','qp_app_line.app_row_id','=','qp_app_head.row_id')
-            -> select('qp_app_head.row_id','qp_project.app_key','icon_url','qp_app_head.default_lang_row_id')
+            -> select('qp_app_head.row_id','qp_project.app_key','icon_url','qp_app_head.default_lang_row_id',
+                        'qp_project.project_code')
             -> first();
         $appLine = $this->appLine
             ->where('app_row_id', '=', $appId)

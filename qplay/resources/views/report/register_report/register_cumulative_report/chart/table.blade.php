@@ -40,12 +40,15 @@ var createCumulativeRegisterTableChart = function(res,date){
     sortTable('table_{{$REPORT_TYPE}}_1');    
 }
 var createCumulativeRegisterTable = function(res, date){
+    
+    var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
+
     if(typeof res[date] == 'undefined'){
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
         return false;
     }
     
     var dataArray = res[date].device_type;
-    console.log(dataArray);
     var deviceTypeArray =[];
     var companySiteArray = [];
     var departmentArray = [];
@@ -66,7 +69,6 @@ var createCumulativeRegisterTable = function(res, date){
         }
     }
 
-    var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     $tableChartDiv.find('.js-data-title').attr('colspan',companySiteArray.length);
     //register device
     var td = '<td class="js-v-t text-blod" nowrap="nowrap" >0</td><td class="js-v-d text-blod" nowrap="nowrap">0</td>';

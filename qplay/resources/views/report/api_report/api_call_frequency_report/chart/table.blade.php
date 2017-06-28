@@ -36,25 +36,22 @@ var createCallApiTableChart = function(res,date){
     $tableChartDiv.find('thead > tr.js-sub-title').empty();
     $tableChartDiv.find('tbody').empty();
     
-    createCallApiTableTable(res,date);
+    createCallApiTable(res,date);
     sortTable('table_{{$REPORT_TYPE}}_1');
-    
     //set donut chart
-    if(typeof res[date] == 'undefined'){
-       $tableChartDiv.hide();
-       $('#{{$REPORT_TYPE}}_donutchart').hide();
-    }else{
-        $tableChartDiv.show();
-        $('#{{$REPORT_TYPE}}_donutchart').show();
-        updateApiLogDonutChart(res[date].actions,$.trim($tableChartDiv.find('table u').eq(0).text()));
+    if(typeof res[date] != 'undefined'){
+         updateApiLogDonutChart(res[date].actions,$.trim($tableChartDiv.find('table u').eq(0).text()));
     }
-    
 }
-var createCallApiTableTable = function(res, date){
-
+var createCallApiTable = function(res, date){
+    
+    var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
+    
     if(typeof res[date] == 'undefined'){
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
         return false;
     }
+
     var dataArray = res[date].actions
     var actionArray =[];
     var companySiteArray = [];
@@ -75,8 +72,6 @@ var createCallApiTableTable = function(res, date){
             }
         }
     }
-
-    var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     $tableChartDiv.find('.js-data-title').attr('colspan',companySiteArray.length);
     //call api times
     var td = '<td class="js-v-t text-blod" nowrap="nowrap" >0</td><td class="js-v-d text-blod" nowrap="nowrap">0</td>';

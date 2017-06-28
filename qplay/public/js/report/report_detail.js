@@ -6,27 +6,32 @@ $(function () {
         $('.nav-tabs > li.active').removeClass('active');
         $('.dropdown-menu > li.active').removeClass('active');
         var openId = $(this).data('tabid');
-        switch (openId) {
-            case 'api_call_frequency_report':
-                iniApiCallFrequencyReport(appKey);
-                break;
-            case 'api_operation_time_report':
-                iniApiOperationTimeReport(appKey);
-                break;
-            case 'register_daily_report':
-                iniRegisterDailyReport(appKey);
-                break;
-            case 'register_cumulative_report':
-                iniRegisterCumulativeReport(appKey);
-                break;
-        }
         $(this).parents('li').addClass('active');
-        $('.tab-content > div.active').removeClass('active').removeClass('in')
-        $('#' + openId).addClass('active').addClass('in');
-        
+        setActiveTab(openId, appKey);
     });
+    setActiveTab($('#navReport>li>ul>li>a').first().data('tabid'), appKey);
+    $('#navReport>li>ul>li>a').first().parents('li').addClass('active');
 });
 
+var setActiveTab = function(openId, appKey){
+    switch (openId) {
+        case 'api_call_frequency_report':
+            iniApiCallFrequencyReport(appKey);
+            break;
+        case 'api_operation_time_report':
+            iniApiOperationTimeReport(appKey);
+            break;
+        case 'register_daily_report':
+            iniRegisterDailyReport(appKey);
+            break;
+        case 'register_cumulative_report':
+            iniRegisterCumulativeReport(appKey);
+            break;
+    }
+
+    $('.tab-content > div.active').removeClass('active').removeClass('in')
+    $('#' + openId).addClass('active').addClass('in');
+}
 var iniApiCallFrequencyReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);
@@ -37,7 +42,7 @@ var iniApiCallFrequencyReport = function(appKey){
     if(storage("callApiFrequency")){
         $('.loader').hide();
         res =JSON.parse(storage("callApiFrequency"));
-        creatChart(res);
+        creatApiCallFrequencyChart(res);
     }else{
         $.ajax({
           url:"reportDetail/getCallApiReport",
@@ -75,7 +80,7 @@ var iniApiCallFrequencyReport = function(appKey){
                     }
                 });
                 storage("callApiFrequency",JSON.stringify(res));
-                creatChart(res);
+                creatApiCallFrequencyChart(res);
             },
             error: function (e) {
                 showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
@@ -86,8 +91,8 @@ var iniApiCallFrequencyReport = function(appKey){
     } 
 }
 
-var creatChart = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+var creatApiCallFrequencyChart = function(res){
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createCallApiDunutChart(getDonutChartOpt());
     createCallApiMultiLine(res);
     createCallApiTableChart(res,reportEndDate);
@@ -141,7 +146,7 @@ var iniApiOperationTimeReport = function(appKey){
 }
 
 var creatChartOpTime = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createApiOperationTimeMultiLine(res);
     createApiOperationTimeRangeLineChart(getRangeLineChartOpt());
     createOperationTimeTableChart(res,reportEndDate);
@@ -209,7 +214,7 @@ var iniRegisterDailyReport = function(appKey){
 }
 
 var createChartDailyRegister = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createDailyRegisterMultiLine(res);
     createDailyRegisterTableChart(res, reportEndDate);
     creatDailyRegisterDunutChart(getDonutChartOpt());
@@ -310,7 +315,7 @@ var iniRegisterCumulativeReport = function(appKey){
 }
 
 var createChartCumulatvieRegister = function(res){
-    var reportEndDate = Object.keys(res).sort()[Object.keys(res).length-1];
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createCumulativeRegisterMultiLine(res);
     createCumulativeRegisterTableChart(res, reportEndDate);
     creatCumulativeRegisterDunutChart(getDonutChartOpt());

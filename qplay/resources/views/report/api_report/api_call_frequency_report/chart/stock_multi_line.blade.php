@@ -35,7 +35,7 @@ var createCallApiMultiLine = function (res){
         }
     };
     createCallApiMultiLineChart(options);
-    var chart = $('#container_stock_{{$REPORT_TYPE}}_1').highcharts();
+    var chart = $('#container_stock_{{$REPORT_TYPE}}_1').highcharts();    
     chart.series[0].setData(callTimesData);
     chart.series[1].setData(callUsersData);
 }
