@@ -42,6 +42,7 @@ var createOperationTimeTableChart = function(res,date){
 var createOperationTimeTable = function(res,date){
     $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
     if(typeof res[date] == 'undefined'){
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
         return false;
     }
     var res = res[date];

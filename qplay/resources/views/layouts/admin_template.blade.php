@@ -85,7 +85,9 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/css/common.css') }}" rel="stylesheet">
     <!---Highcharts-5.0.11-->
     {{--<link rel="stylesheet" href="style.css">--}}
+    
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('/js/window.extension.js') }}"></script>
     <script src="{{ asset('/js/common.js') }}"></script>
     <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
@@ -96,7 +98,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
     <script src="{{ asset('/js/highstock.js') }}"></script>
     <script src="{{ asset('/js/highcharts-more.js') }}"></script>
-    {{-- <script src="{{ asset('/Highcharts-5.0.11/code/js/modules/exporting.js') }}"></script> --}}
+    <script src="{{ asset('/js/no-data-to-display.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -491,32 +493,6 @@ if(array_key_exists('with_msg_id', $input)) {
             $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___P", page);
             $.cookie(clID + "___" + location.pathname + "___" + $(this).attr("id") + "___S", size);
         });
-
-
-        var extSessionStorage = function(namespace){
-            var sessionStorage = window.sessionStorage || {}; //為sessionStorage作向下相容
-            if(typeof namespace !== "string") {
-                    throw new Error("extSessionStorage: Namespace must be a string");
-            }
-            var getRealKey = function(key){ //產生正確的sessionStorage key
-                    return [namespace,".",key].join('');
-            };
-            var mainFunction = function(key, value){
-                    var realKey = getRealKey(key);
-                    if(value === undefined){
-                            return sessionStorage[realKey];
-                    } else {
-                            return sessionStorage[realKey] = value;
-                    }
-            };
-            mainFunction.remove = function(key){
-                    var realKey = getRealKey(key);
-                    delete sessionStorage[realKey];
-            };
-            return mainFunction;
-        };
-
-        window.ExtSessionStorage = extSessionStorage; //開啟對外入口，此範例會開在window.ExtSessionStorage
     });
 
     var logout = function () {

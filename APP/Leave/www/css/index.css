@@ -177,6 +177,22 @@
 	opacity: 0;
 	height: 0px;
 }
+
+.toast-style {
+	background-color: #666;
+	bottom: 60VW;
+	border-radius: 1.5px;
+	color: #F0F0F0;
+	font-size: 3.6VW;
+	height: 4VW;
+	margin: auto;
+	opacity: 0.9;
+	padding: 6.2VW 1VW 6.2VW 1VW;
+	position: relative;
+	text-align: center;
+	width: 28VW;
+	z-index: 2;
+}
 /******************************************** viewCalendar ******************************************/
 
 #viewCalendar .infoList ul > li {
@@ -204,7 +220,7 @@
     border-bottom-width: 0.1VH;
 }
 
-#mypanel #mypanelCalendar{
+#mypanel #mypanelviewCalendar{
 	border-bottom: solid;
     border-bottom-color: #666;
     border-bottom-width: 0.1VH;

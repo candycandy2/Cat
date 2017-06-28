@@ -1,4 +1,4 @@
-var currentYear;
+var currentYear, jsonDataEsist = false;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -78,7 +78,7 @@ $(document).one("pagebeforeshow", function() {
         $("#mypanel").panel("open");
     });
 
-    $("#personalLeave").on("swiperight", function(event) {
+    $(document).on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open") {
             $("#mypanel").panel( "open");
         }
@@ -104,6 +104,12 @@ function onBackKeyDown() {
         }
     }*/
 }
+$(document).ready(function() {
+    $.getJSON("string/holiday.json", function(data) {
+        holidayData = data;
+        jsonDataExist = true;
+    });
+});
 
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {

@@ -1,3 +1,4 @@
+var holidayData;
 var htmlContent = "";
 var holidayList = htmlContent
                 + '<li>'
@@ -22,9 +23,8 @@ $("#viewCalendar").pagecontainer({
         /********************************** function *************************************/
         $(document).ready(function() {
             $("#viewCalendar #myCalendar").calendar({
+                id: "viewCalendar",
                 language: "default",
-                show_previous: true,
-                show_next: true,
                 show_days: true,
                 weekstartson: 0,
                 nav_icon: {
@@ -36,12 +36,12 @@ $("#viewCalendar").pagecontainer({
                         type: "img-text", 
                         label: "星期六日",
                         badge: "",
-                        classname: "weekend"
+                        classname: "weekend-icon"
                     }, {
                         type: "img-text",
                         label: "放假節日",
                         badge: "",
-                        classname: "holiday"
+                        classname: "holiday-icon"
                     }
                 ]
             });
@@ -49,6 +49,7 @@ $("#viewCalendar").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewCalendar").on("pagebeforeshow", function(event, ui) {
+            
         });
 
         $("#viewCalendar").on("pageshow", function(event, ui) {

@@ -15,7 +15,6 @@ var leaveTypeData = {
         text: "生理假"
     }],
     defaultValue: 0,
-    // defaultText: "請選擇"
 };
 
 var agentData = {
@@ -48,7 +47,8 @@ var agentData = {
         value: "8",
         text: "Alan Tu"
     }],
-    title: searchBar,
+    // title: searchBar,
+    title: "a",
     defaultText: "請選擇",
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -81,6 +81,7 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).ready(function() {
             $("#viewPersonalLeave #myCalendar").calendar({
+                id: "viewPersonalLeave",
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
@@ -98,11 +99,10 @@ $("#viewPersonalLeave").pagecontainer({
             if(lastPageID === "viewPersonalLeave") {
                 tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
-                // var a = '<input type="text" placeholder="Search">';
-                // $("#agent-popup-option div.title").append(a);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
+            
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
@@ -156,6 +156,10 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#infoContent-3").slideUp(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
+        });
+
+        $("#leaveConfirm").on("click", function() {
+            $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
         });
     }
 });

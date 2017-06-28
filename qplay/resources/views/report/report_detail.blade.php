@@ -26,14 +26,17 @@ $menu_name = "REPORT";
             </a>
         </div>
     </div>
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#tab_content_summary_report" data-toggle="tab">總覽</a></li>
+    <ul class="nav nav-tabs" id="navReport">
+        {{-- <li role="presentation" class="active"><a href="#tab_content_summary_report" data-toggle="tab">總覽</a></li> --}}
+        @if ($data['project_code'] == '000')
         <li class="dropdown" id="regist"><a class="dropdown-toggle" data-toggle="dropdown" href="#">註冊統計<span class="caret"></span></a>
             <ul class="dropdown-menu" id="register_report">
                 <li><a data-tabid="register_daily_report">每日註冊設備/用戶數</a></li>
                 <li><a data-tabid="register_cumulative_report">累計註冊設備/用戶數</a></li>
             </ul>
         </li>
+        @endif
+        
         {{-- <li role="presentation"><a href="#tab_content_version" data-toggle="tab">用戶使用資料</a></li> --}}
         <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">API統計<span class="caret"></span></a>
             <ul class="dropdown-menu" id="api_report">
@@ -73,8 +76,9 @@ $menu_name = "REPORT";
     </div>
 
 <script>
-var appKey = "{{$data['app_key']}}",
-    reportEndDate = "{{$data['reportEndDate']}}";
+var d=new Date();
+var appKey = "{{$data['app_key']}}"
+    timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 </script>
 
 @endsection

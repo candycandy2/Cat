@@ -3,44 +3,41 @@
 </div>
 <script>
 
-var createCallApiMultiLine = function (res){
+var createCumulativeRegisterMultiLine = function (res){
 
-    var callUsersData=[],
-        callTimesData=[],
+    var registerDeviceData=[],
+        registerUSerData=[],
         seriesOptions = [],
         options = getMultiLineChartOpt();
-   
     for (var k in res){
         if (typeof res[k] !== 'function') {
-             var tmpTimesArr = [dateToUTC(k),res[k].times];
+             var tmpDeviceArr = [dateToUTC(k),res[k].devices.length];
              var tmpUsersArr = [dateToUTC(k),res[k].users.length];
-             callTimesData.push(tmpTimesArr);
-             callUsersData.push(tmpUsersArr);
-             callUsersData = sortObject(callUsersData);
-             callTimesData = sortObject(callTimesData);
+             registerDeviceData.push(tmpDeviceArr);
+             registerUSerData.push(tmpUsersArr);
         }
     }
-
     options.series = [{
-        name:"呼叫次數",
+        name:"累計註冊設備數",
         data:[]
     },{
-        name:"呼叫人數",
+        name:"累計註冊用戶數",
         data:[]
     }];
 
     options.plotOptions.series.point.events = {
         click: function (e) {
-             createTableChart(res, Highcharts.dateFormat('%Y-%m-%d',this.x));
+             createCumulativeRegisterTableChart(res, Highcharts.dateFormat('%Y-%m-%d',this.x));
+             updateCumulativeRegisterDonutChart(res, Highcharts.dateFormat('%Y-%m-%d',this.x));
         }
     };
-    createCallApiMultiLineChart(options);
+    createCumulativeRegisterMultiLineChart(options);
     var chart = $('#container_stock_{{$REPORT_TYPE}}_1').highcharts();
-    chart.series[0].setData(callTimesData);
-    chart.series[1].setData(callUsersData);
+    chart.series[0].setData(registerDeviceData);
+    chart.series[1].setData(registerUSerData);
 }
 
-function createCallApiMultiLineChart(options) {
+function createCumulativeRegisterMultiLineChart(options) {
     
     Highcharts.stockChart('container_stock_{{$REPORT_TYPE}}_1', options,
     function (chart) {
