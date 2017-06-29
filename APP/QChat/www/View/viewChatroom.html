@@ -1,0 +1,57 @@
+
+<div data-role="page" id="viewChatroom">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style"><h1 class="ui-title">QChat</h1></div>
+        <a href="#viewIndex" data-role="none">
+            <div class="q-btn-header">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+    </div>
+
+    <div data-role="main" class="page-main" id="viewChatroomContent">
+        <ul data-role="listview" data-inset="true" id="messageListView">
+
+        </ul>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <div>
+            <input name="msgText" id="msgText" type="text">
+        </div>
+        <div>
+            <a id="msgSend" href="#" data-role="button">發送聊天</a>
+            <a id="imgSend" href="#" data-role="button">發送圖片</a>
+            <a id="msgClear" href="#" data-role="button">清空訊息</a>
+            <a id="groupInfo" href="#" data-role="button">聊天室資訊</a>
+            <a id="groupMember" href="#" data-role="button">成員列表</a>
+            <a id="groupMemberAdd" href="#" data-role="button">新增成員</a>
+            <a id="groupMemberRemove" href="#" data-role="button">移除成員</a>
+        </div>
+    </div>
+
+    <template id="tplChatroomDataPopup">
+        <div class="header font-style1">
+            <div class="name"></div>
+            <div class="desc"></div>
+            <div class="owner"></div>
+        </div>
+        <div class="footer">
+            <div class="btn-one font-style8">
+                <div class="confirm">確定</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tplChatroomMemberPopup">
+        <div class="header font-style1">
+            <div class="list"></div>
+        </div>
+        <div class="footer">
+            <div class="btn-one font-style8">
+                <div class="confirm">確定</div>
+            </div>
+        </div>
+    </template>
+</div>
