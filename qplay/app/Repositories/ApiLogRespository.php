@@ -27,13 +27,11 @@ class ApiLogRespository
     /**
      * 依App Key取得當天該user呼叫Api幾次
      * @param  String $appKey app_key
-     * @param  int    $timeZone 時區
+     * @param  int    $timeOffset 時差
      * @return cursor
      */
-    public function getApiLogCountEachUserByAppKey($appKey, $timeZone){
+    public function getApiLogCountEachUserByAppKey($appKey, $timeOffset){
     
-        $timeOffset = CommonUtil::getTimeOffset($timeZone);
-
         return $this->apiLog::raw()->aggregate([
             ['$match'=>
                 ['app_key'=>$appKey,
@@ -72,13 +70,11 @@ class ApiLogRespository
     /**
      * 依App Key 取得API執行最大時間、最小時間、平均時間
      * @param  String $appKey app_key
-     * @param   @param  int    $timeZone 時區
+     * @param   @param  int    $timeOffset 時差
      * @return cursor
      */
-    public function getApiOperationTimeByAppKey($appKey, $timeZone){
+    public function getApiOperationTimeByAppKey($appKey, $timeOffset){
         
-        $timeOffset = CommonUtil::getTimeOffset($timeZone);
-
         return $this->apiLog::raw()->aggregate([
             ['$match'=>
                 ['app_key'=>$appKey,
@@ -111,13 +107,12 @@ class ApiLogRespository
      * 取得該日期每小時API執行時間(最大、最小、平均)
      * @param  String $appKey     app_key
      * @param  String $date       查詢的日期
-     * @param   @param  int    $timeZone 時區
+     * @param   @param  int    $timeOffset 時差
      * @param  String $actionName 查詢的API名稱
      * @return cursor
      */
-    public function getApiOperationTimeDetail($appKey, $date, $timeZone, $actionName){
+    public function getApiOperationTimeDetail($appKey, $date, $timeOffset, $actionName){
         
-        $timeOffset = CommonUtil::getTimeOffset($timeZone);
         $date = explode(' ',$date)[0];
         
         return $this->apiLog::raw()->aggregate([

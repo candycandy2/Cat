@@ -36,7 +36,7 @@ var iniApiCallFrequencyReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);
     $('.loader').show();
-    var mydata = {app_key:appKey, timeZone:timeZone},
+    var mydata = {app_key:appKey, timeOffset:timeOffset},
         mydataStr = $.toJSON(mydata),
         res={};
     if(storage("callApiFrequency")){
@@ -102,7 +102,7 @@ var iniApiOperationTimeReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);
     $('.loader').show();
-    var mydata = {app_key:appKey,timeZone:timeZone},
+    var mydata = {app_key:appKey,timeOffset:timeOffset},
         mydataStr = $.toJSON(mydata),
         res={};
     if(storage("apiOperationTime")){
@@ -156,7 +156,7 @@ var creatChartOpTime = function(res){
 var iniRegisterDailyReport = function(appKey){
     var storage = ExtSessionStorage(appKey);
     $('.loader').show();
-    var mydata = {timeZone:timeZone},
+    var mydata = {timeOffset:timeOffset},
         mydataStr = $.toJSON(mydata),
         res={};
     if(storage("RegisterDaily")){
@@ -224,7 +224,7 @@ var createChartDailyRegister = function(res){
 var iniRegisterCumulativeReport = function(appKey){
     var storage = ExtSessionStorage(appKey);
     $('.loader').show();
-    var mydata = {timeZone:timeZone},
+    var mydata = {timeOffset:timeOffset},
         mydataStr = $.toJSON(mydata),
         res={};
     if(storage("RegisterCumulative")){

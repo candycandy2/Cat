@@ -30,11 +30,11 @@ class ReportService
     /**
      * 取得API呼叫人數與次數資料
      * @param  String $appKey app_key
-     * @param  int    $timeZone 時區
+     * @param  int    $timeOffset 時差
      * @return Array  
      */
-    public function getApiReport($appKey, $timeZone){
-        $cursor =  $this->apiLogRepository->getApiLogCountEachUserByAppKey($appKey, $timeZone);
+    public function getApiReport($appKey, $timeOffset){
+        $cursor =  $this->apiLogRepository->getApiLogCountEachUserByAppKey($appKey, $timeOffset);
         $res = $cursor->toArray();
         return $res;
     }
@@ -42,11 +42,11 @@ class ReportService
      /**
      * 取得API執行時間資料
      * @param  String $appKey app_key
-     * @param  int    $timeZone 時區
+     * @param  int    $timeOffset 時差
      * @return Array  
      */
-    public function getApiOperationTimeReport($appKey, $timeZone){
-        $cursor =  $this->apiLogRepository->getApiOperationTimeByAppKey($appKey, $timeZone);
+    public function getApiOperationTimeReport($appKey, $timeOffset){
+        $cursor =  $this->apiLogRepository->getApiOperationTimeByAppKey($appKey, $timeOffset);
         $res = $cursor->toArray();
         return $res;
     }
@@ -55,31 +55,31 @@ class ReportService
      * 取得API執行時間每小時知詳細資料
      * @param  String $appKey     app_key
      * @param  String $date       欲查詢的日期
-     * @param  int    $timeZone 時區
+     * @param  int    $timeOffset 時差
      * @param  String $actionName 欲查詢的API名稱
      * @return Array
      */
-    public function getApiOperationTimeDetailReport($appKey, $date, $timeZone, $actionName){
-        $cursor = $this->apiLogRepository->getApiOperationTimeDetail($appKey, $date, $timeZone, $actionName);
+    public function getApiOperationTimeDetailReport($appKey, $date, $timeOffset, $actionName){
+        $cursor = $this->apiLogRepository->getApiOperationTimeDetail($appKey, $date, $timeOffset, $actionName);
         $res = $cursor->toArray();
         return $res;
     }
 
     /**
      * 取得每日設備與用戶資料
-     * @param  int    $timeZone 時區
+     * @param  int    $timeOffset 時差
      * @return mixed
      */
-    public function getDailyRegisterReport($timeZone){
-        return $this->registerRepository->getRegisterDataEachDay($timeZone);
+    public function getDailyRegisterReport($timeOffset){
+        return $this->registerRepository->getRegisterDataEachDay($timeOffset);
     }
 
     /**
      * 取得累計註冊設備與用戶詳細資料
-     * @param  int    $timeZone 時區
+     * @param  int    $timeOffset 時差
      * @return mixed
      */
-    public function getCumulativeRegisterReport($timeZone){
-        return $this->registerRepository->getRegisterDetail($timeZone);
+    public function getCumulativeRegisterReport($timeOffset){
+        return $this->registerRepository->getRegisterDetail($timeOffset);
     }
 }
