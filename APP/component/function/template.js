@@ -352,6 +352,12 @@ var tplJS = {
             dropdownList.data("multiple", multiSelect);
         }
 
+        
+        var changeDefaultText = false;
+        if (data.changeDefaultText !== undefined) {
+            changeDefaultText = data.changeDefaultText;
+        }
+
         //DropdownList Background IMG
         if (type === "typeB") {
             dropdownList.addClass("tpl-dropdown-list-icon-add");
@@ -577,11 +583,19 @@ var tplJS = {
                 } else if (type === "typeB") {
                     //Find drowdown list, set selected option value
                     var defaultText;
-                    $("#" + dropdownListID + " option").each(function(index, el) {
-                        if (index === 0) {
-                            defaultText = $(el).text();
-                        }
-                    });
+                    if(!changeDefaultText) {
+                        $("#" + dropdownListID + " option").each(function(index, el) {
+                            if (index === 0) {
+                                defaultText = $(el).text();
+                            }
+                        });
+                    }else {
+                        $("#" + dropdownListUlID + " li").each(function(index, value) {
+                            if($(value).hasClass("tpl-dropdown-list-selected")){
+                                defaultText = $(value).text();
+                            }
+                        });
+                    }
 
                     var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
 
