@@ -46,9 +46,9 @@ table {
     display: table;
     border-collapse: separate;
     border-spacing: 0px;
-    border-style: solid;
+/*    border-style: solid;
     border-width: 0.1px;
-    border-color: #d6d6d6;
+    border-color: #d6d6d6;*/
     width: 92.58VW;
     margin: 0VW 3.71VW 0VW 3.71VW;
     padding: 0VW 3VW 0VW 3VW;
@@ -63,8 +63,12 @@ table {
     font-size: 4VW;
 }
 
-.calendar-weekendStyle {
+.weekend {
     color: #2e89bc;
+}
+
+.holiday {
+    color: #f69e1e;
 }
 
 .td-bottom-border {
@@ -112,13 +116,13 @@ th {
     margin-left: 3.71Vw;
 }
 
-.weekend {
+.weekend-icon {
     content: url("../img/weekend_icon.png");
     width: 2.415VW;
     margin-right: 1.5VW;
 }
 
-.holiday {
+.holiday-icon {
     content: url("../img/holiday_icon.png");
     width: 2.415VW;
     margin-right: 1.5VW;

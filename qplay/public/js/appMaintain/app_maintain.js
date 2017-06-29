@@ -1,10 +1,10 @@
-var submitFormAry = [$("#mainInfoForm"),
-                     $("#errorCodeForm"),
-                     $("#basicInfoForm"),
-                     $('#iconForm'),
-                     $('#screenShotForm'),
-                     $('#customApiForm'),
-                     $('#whistListForm')];
+var submitFormAry = ['mainInfoForm',
+                     'errorCodeForm',
+                     'basicInfoForm',
+                     'iconForm',
+                     'screenShotForm',
+                     'customApiForm',
+                     'whistListForm'];
 
 function SubmitError(tab,val) {
   this.tab = tab;
@@ -103,15 +103,16 @@ SaveAppDetailToDB = function(){
         screenshot: true
         });
     });
-    for (var i=0 ; i < submitFormAry.length; i++) {
+    $.each(submitFormAry,function(i,formId){
         formSubmitcnt ++;
-        submitFormAry[i].submit();
-    }
+        $('#' + formId).submit();
+    });
     formSubmitcnt = 0;
     errorTab = [];
     errorLangIdArr = [];
 }
 $(function () {
+    jQuery.event.handle = jQuery.event.dispatch
     $(document).ajaxStart(function(){
         $( "#saveAppDetail" ).prop( "disabled", true );
     });
@@ -119,8 +120,8 @@ $(function () {
         $( "#saveAppDetail" ).prop( "disabled", false );
     });
 
-    for(var key in submitFormAry){       
-       submitFormAry[key].validate({
+    $.each(submitFormAry,function(i,formId){      
+       $('#' + formId).validate({
             focusInvalid: false,
             ignore: [],
             rules:{
@@ -190,7 +191,8 @@ $(function () {
                     formData.append('appKey',jsAppKey);
                     formData.append('mainInfoForm',$('#mainInfoForm').serialize());
                     formData.append('icon',$('#iconForm').find('.icon-preview').data('url'));
-                    if(typeof ($( '#fileIconUpload' )[0].files[0]) != "undefined"){
+                    if(typeof $( '#fileIconUpload' )[0].files[0] != "undefined" 
+                        && $( '#fileIconUpload' )[0].files[0] !== null){
                         formData.append('fileIconUpload', $( '#fileIconUpload' )[0].files[0]);
                     }
 
@@ -204,7 +206,8 @@ $(function () {
                         formData.append('insPic[]',$(this).data('lang')+'-'+$(this).data('device')+'-'+$(this).data('url'));
                     })
 
-                    if(typeof($('#errorCodeFile')[0].files[0]) != "undefined"){
+                    if(typeof($('#errorCodeFile')[0].files[0]) != "undefined"
+                        &&  $( '#errorCodeFile' )[0].files[0] !== null){
                        formData.append('errorCodeFile',$('#errorCodeFile')[0].files[0]);
                     }else{
                        if($('#errorCodeFileName').find('.link').length >0){
@@ -266,7 +269,7 @@ $(function () {
                             formData.append('customApiList[' + i + '][' + j + ']',data);
                         }); 
                     });
-
+                    formData.append('customApiDeleteList',$('#customApiDeleteList').val());
                     var whiteList =  $("#gridWhiteList").bootstrapTable('getData');
                     $.each(whiteList, function(i, white) {
                          $.each(white, function(j,data){
@@ -281,6 +284,7 @@ $(function () {
                         processData: false,
                         success: function (d, status, xhr) {
                             validate = 0;
+                            console.log(d);
                             if(d.result_code == 1) {
                                  showMessageDialog(Messages.MESSAGE,Messages.MSG_OPERATION_SUCCESS);
                                 $('#messageDialog').find('button').click(function(){
@@ -296,7 +300,7 @@ $(function () {
                                 return false;
                             }
                             validate = 0;
-                             showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
+                            showMessageDialog(Messages.ERROR, Messages.MSG_OPERATION_FAILED, e.responseText)
                         }
                     });
                      
@@ -320,7 +324,7 @@ $(function () {
                 }
             }
         });
-    }    
+    });   
     jQuery.validator.addMethod("setAppUser", function(value, element) {
         if($('.cbxRole:checked').length <= 0 &&　$('#gridUserList').bootstrapTable('getData').length == 0){
             return false;

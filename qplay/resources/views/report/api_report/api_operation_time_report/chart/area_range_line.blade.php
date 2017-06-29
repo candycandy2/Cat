@@ -7,11 +7,10 @@
 var updateApiOperationTimeAreaRangeLineChart = function (date,actionName){
 
     var chart = $('#container_api_operation_time_area_range_line_1').highcharts();
-
     var ranges=[],
         averages=[];
     $('.loader').show();
-    var mydata = {app_key:appKey, date:date, action:actionName},
+    var mydata = {app_key:appKey, date:date, timeOffset:timeOffset, action:actionName},
         mydataStr = $.toJSON(mydata),
         res={};
         

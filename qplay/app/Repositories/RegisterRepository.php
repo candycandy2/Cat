@@ -7,6 +7,7 @@ namespace App\Repositories;
 
 use App\Model\QP_Register;
 use Carbon\Carbon;
+use App\lib\CommonUtil;
 
 class RegisterRepository
 {
@@ -40,16 +41,54 @@ class RegisterRepository
 
      /**
      * 取得每日註冊設備用戶數
+     * @param  String $timeOffset 時差
      * @return mixed
      */
-    public function getRegisterDataEachDay(){
-        return $data = $this->register
+    public function getRegisterDataEachDay($timeOffset){
+
+        $timeOffset = $this->getDateTimeOffset($timeOffset);
+        return $this->register
         ->join('qp_user', 'qp_register.user_row_id', '=', 'qp_user.row_id')
+        ->where('qp_register.register_date','<>',null)
         ->select(\DB::raw("COUNT(DISTINCT uuid) as count"),
                  \DB::raw("DATE_FORMAT(register_date, '%Y-%m-%d') as register_date"),
                  'device_type','company','site_code','department','user_row_id')
         ->orderBy('register_date','asc')
-        ->groupBy(\DB::raw("DATE_FORMAT(register_date, '%Y-%m-%d')"),'device_type','company','site_code','department')
+        ->groupBy(\DB::raw("DATE_FORMAT((CONVERT_TZ(register_date,'+00:00','".$timeOffset."')), '%Y-%m-%d')"),'device_type','company','site_code','department')
         ->get();
     }
+
+    /**
+     * 取得每日註冊設備用戶數
+     * @param  String $timeOffset 時差
+     * @return mixed
+     */
+    public function getRegisterDetail($timeOffset){
+
+        $timeOffset = $this->getDateTimeOffset($timeOffset);
+        return $this->register
+        ->join('qp_user', 'qp_register.user_row_id', '=', 'qp_user.row_id')
+        ->where('qp_register.register_date','<>',null)
+        ->select(\DB::raw("uuid"),
+                 \DB::raw("DATE_FORMAT((CONVERT_TZ(qp_register.register_date,'+00:00','".$timeOffset."')), '%Y-%m-%d') as register_date"),
+                 'device_type','company','site_code','department','user_row_id')
+        ->orderBy('register_date','asc')
+        ->get();
+    }
+
+    /**
+     * 依時區取得時分格式的時差
+     * @param  String $timeOffset 時差
+     * @return string  ex: +08:00 /08:00
+     */
+    private function getDateTimeOffset($timeOffset){
+        
+        $symbol = '+';
+        if((int)$timeOffset < 0){
+            $symbol = '-';
+        }
+        $timeOffset =  $symbol.date("H:i",abs($timeOffset));
+        return $timeOffset;
+    }
 }
+

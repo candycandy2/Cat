@@ -27,18 +27,6 @@ class ReportDetailController extends Controller
         $this->reportService = $reportService;
     }
 
-    public function getSummaryReport(){
-
-    }
-    
-    public function getRegisterReport(){
-        
-    }
-    
-    public function getUserInfoReport(){
-        
-    }
-
     /**
      * Api報表詳細頁入口
      */
@@ -57,9 +45,7 @@ class ReportDetailController extends Controller
         $data['app_name'] =  $appInfo->app_name;
         $data['icon_url'] =  ($appInfo->icon_url == "")?"":FilePath::getIconUrl($appId, $appInfo->icon_url);
         $data['app_key'] =  $appInfo->app_key;
-        $endDate = $this->reportService->getApiLogEndDate($appInfo->app_key);
-        $data['reportEndDate'] = (is_null($endDate))?"":$endDate->format('Y-m-d');
-       
+        $data['project_code'] =  $appInfo->project_code;
         return view("report/report_detail")->with('data',$data);
 
     }
@@ -78,7 +64,8 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
-            $result = $this->reportService->getApiReport($appKey);
+            $timeOffset = $jsonContent['timeOffset'];
+            $result = $this->reportService->getApiReport($appKey, $timeOffset);
             return json_encode($result);
         } 
     }
@@ -97,7 +84,8 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
-            $result = $this->reportService->getApiOperationTimeReport($appKey);
+            $timeOffset = $jsonContent['timeOffset'];
+            $result = $this->reportService->getApiOperationTimeReport($appKey, $timeOffset);
             return json_encode($result);
         }
     }
@@ -118,13 +106,14 @@ class ReportDetailController extends Controller
             $appKey = $jsonContent['app_key'];
             $date = $jsonContent['date'];
             $actionName = $jsonContent['action'];
-            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $actionName);
+            $timeOffset = $jsonContent['timeOffset'];
+            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $timeOffset, $actionName);
             return json_encode($result);
         }
     }
 
     /**
-     * 取得API註冊設備與用戶資料
+     * 取得每日註冊設備與用戶資料
      * @return json
      */
     public function getRegisterDailyReport(){
@@ -135,7 +124,27 @@ class ReportDetailController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
-            return json_encode($this->reportService->getDailyRegisterReport());
+            $jsonContent = json_decode($content, true);
+            $timeOffset = $jsonContent['timeOffset'];
+            return json_encode($this->reportService->getDailyRegisterReport($timeOffset));
+        }
+    }
+
+    /**
+     * 取得累計註冊設備與用戶資料
+     * @return json
+     */
+    public function getRegisterCumulativeReport(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $timeOffset = $jsonContent['timeOffset'];
+            return json_encode($this->reportService->getCumulativeRegisterReport($timeOffset));
         }
     }
 

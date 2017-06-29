@@ -1,4 +1,4 @@
-var currentYear;
+var currentYear, holidayData, holidayList;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -25,22 +25,9 @@ var panel = htmlContent
         +       '<span class="panel-text" style="line-height:7.5VH;">2017 行事曆</span>'
         +   '</div>'
         +'</div>';
-
 var time = new Date(Date.now());
-var monTable = {
-    '1' : "一月.",
-    '2' : "二月.",
-    '3' : "三月.",
-    '4' : "四月.",
-    '5' : "五月.",
-    '6' : "六月.",
-    '7' : "七月.",
-    '8' : "八月.",
-    '9' : "九月.",
-    '10' : "十月.",
-    '11' : "十一月.",
-    '12' : "十二月.",
-};
+var JeniiferTest;
+
 
 window.initialSuccess = function() {
     loadingMask("show");
@@ -78,7 +65,7 @@ $(document).one("pagebeforeshow", function() {
         $("#mypanel").panel("open");
     });
 
-    $("#personalLeave").on("swiperight", function(event) {
+    $(document).on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open") {
             $("#mypanel").panel( "open");
         }
@@ -104,6 +91,11 @@ function onBackKeyDown() {
         }
     }*/
 }
+$(document).ready(function() {
+    $.getJSON("string/holiday.json", function(data) {
+        holidayData = data;
+    });
+});
 
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {

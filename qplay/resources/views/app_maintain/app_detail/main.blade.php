@@ -1,4 +1,10 @@
 @include("layouts.lang")
+@section('head')
+    @parent
+    <script src="{{ asset('/js/appMaintain/switch_lang_tool.js') }}"></script>
+    <script src="{{ asset('/js/appMaintain/app_pic.js') }}"></script>
+    <script src="{{ asset('/js/appMaintain/app_maintain.js') }}"></script>
+@stop
 <?php
 $menu_name = "APP_MAINTAIN";
 $detail_path    = "app_maintain.app_detail";
@@ -175,7 +181,4 @@ $(function () {
     $('#saveAppDetail').show(); 
 });
 </script>
-<script src="{{ asset('/js/appMaintain/switch_lang_tool.js?v=201703311322') }}"></script>
-<script src="{{ asset('/js/appMaintain/app_pic.js?v=201704101719') }}"></script>
-<script src="{{ asset('/js/appMaintain/app_maintain.js?v=201703311322') }}"></script>
 @endsection
