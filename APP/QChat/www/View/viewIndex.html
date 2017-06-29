@@ -1,0 +1,104 @@
+
+<div data-role="page" id="viewIndex">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <div class="ui-title">
+                QChat
+            </div>
+        </div>
+    </div>
+
+    <div data-role="main" class="page-main" id="viewIndexContent">
+        <p>個人資料</p>
+        <div>
+            <ul data-role="listview" data-inset="true" id="myinfoListView">
+
+            </ul>
+        </div>
+        <p>聊天室列表</p>
+        <div>
+            <ul data-role="listview" data-inset="true" id="chatroomListView">
+
+            </ul>
+            <a id="testChatroom" href="#" data-role="button" data-icon="star" class="hide">建立聊天室</a>
+        </div>
+        <p>朋友列表</p>
+        <div>
+            <ul data-role="listview" data-inset="true" id="friendListView">
+
+            </ul>
+        </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <div>
+            <input name="friendIDText" id="friendIDText" type="text">
+        </div>
+        <div>
+            <a id="testFriend" href="#" data-role="button">新增好友</a>
+        </div>
+    </div>
+
+    <template id="tplFriendRemovePopup">
+        <div class="header font-style1">
+            <span class="username"></span>
+            <span>[移除好友?]</span>
+        </div>
+        <div class="footer">
+            <div class="btn-two font-style8">
+                <div class="cancel">取消</div>
+                <div class="confirm">確認</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tplFriendInvitePopup">
+        <div class="header font-style1">
+            <span class="username"></span>
+            <span>[接受好友邀請?]</span>
+        </div>
+        <div class="footer">
+            <div class="btn-two font-style8">
+                <div class="cancel">拒絕</div>
+                <div class="confirm">同意</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tplAcceptFriendInvitePopup">
+        <div class="header font-style1">
+            <span class="username"></span>
+            <span> 接受你的好友邀請</span>
+        </div>
+        <div class="footer">
+            <div class="btn-one font-style8">
+                <div class="confirm">確認</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tplDeclineFriendInvitePopup">
+        <div class="header font-style1">
+            <span class="username"></span>
+            <span> 不想跟你成為朋友</span>
+        </div>
+        <div class="footer">
+            <div class="btn-one font-style8">
+                <div class="confirm">確認</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tplClickChatroomPopup">
+        <div class="header font-style1">
+            <span>聊天室</span>
+        </div>
+        <div class="footer">
+            <div class="btn-two font-style8">
+                <div class="cancel">聊天</div>
+                <div class="confirm">退出</div>
+            </div>
+        </div>
+    </template>
+</div>
