@@ -23,5 +23,4 @@ var extSessionStorage = function(namespace){
 };
 
 window.ExtSessionStorage = extSessionStorage; //開啟對外入口，此範例會開在window.ExtSessionStorage
-
 });

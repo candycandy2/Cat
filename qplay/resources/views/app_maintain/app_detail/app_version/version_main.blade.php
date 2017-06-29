@@ -300,8 +300,9 @@ var uploadNewVersion = function(){
     var _validExtension = (device == 'ios')?'ipa':'apk';
     var errors = new Array();
         errors = validRequired(errors, require);
-    var fileFackPath = $('input[name=versionFile]').val();
-    var fileName = fileFackPath.replace(/C:\\fakepath\\/i, '');
+    //var fileFakePath = $('input[name=versionFile]').val();
+    //console.log($('#versionFile')[0].files[0].name);
+    var fileName = $('#versionFile')[0].files[0].name;
     
     var versionCode = $('input[name=tbxVersionNo]').val();
     var versionName = $('input[name=tbxVersionName]').val();
@@ -315,7 +316,7 @@ var uploadNewVersion = function(){
     var regNum = /^\d+$/;
 
     if($('input[name=versionFile]').val().length > 0){
-        var fileExtension = fileFackPath.split('.').pop();
+        var fileExtension = fileName.split('.').pop();
          if(fileExtension != _validExtension){
             var error = new Error;
             error.field = 'versionFile';

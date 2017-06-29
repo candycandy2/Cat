@@ -76,9 +76,9 @@ $menu_name = "REPORT";
     </div>
 
 <script>
-var d=new Date();
-var appKey = "{{$data['app_key']}}"
-    timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+var appKey = "{{$data['app_key']}}",
+    t = new Date(),
+    timeOffset = t.getTimezoneOffset() * 60 * 1000 * -1;
 </script>
 
 @endsection
