@@ -26,6 +26,8 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
+var JeniiferTest;
+
 
 window.initialSuccess = function() {
     loadingMask("show");
