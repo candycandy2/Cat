@@ -41,12 +41,12 @@ class RegisterRepository
 
      /**
      * 取得每日註冊設備用戶數
-     * @param  String $timeZone 時區  ex:"Asia/Shanghai"
+     * @param  String $timeOffset 時差
      * @return mixed
      */
-    public function getRegisterDataEachDay($timeZone){
+    public function getRegisterDataEachDay($timeOffset){
 
-        $timeOffset = $this->getDateTimeOffset($timeZone);
+        $timeOffset = $this->getDateTimeOffset($timeOffset);
         return $this->register
         ->join('qp_user', 'qp_register.user_row_id', '=', 'qp_user.row_id')
         ->where('qp_register.register_date','<>',null)
@@ -54,18 +54,18 @@ class RegisterRepository
                  \DB::raw("DATE_FORMAT(register_date, '%Y-%m-%d') as register_date"),
                  'device_type','company','site_code','department','user_row_id')
         ->orderBy('register_date','asc')
-        ->groupBy(\DB::raw("DATE_FORMAT((CONVERT_TZ(register_date,'+00:00','".$timeZone."')), '%Y-%m-%d')"),'device_type','company','site_code','department')
+        ->groupBy(\DB::raw("DATE_FORMAT((CONVERT_TZ(register_date,'+00:00','".$timeOffset."')), '%Y-%m-%d')"),'device_type','company','site_code','department')
         ->get();
     }
 
     /**
      * 取得每日註冊設備用戶數
-     * @param  String $timeZone 時區 ex:"Asia/Shanghai"
+     * @param  String $timeOffset 時差
      * @return mixed
      */
-    public function getRegisterDetail($timeZone){
+    public function getRegisterDetail($timeOffset){
 
-        $timeOffset = $this->getDateTimeOffset($timeZone);
+        $timeOffset = $this->getDateTimeOffset($timeOffset);
         return $this->register
         ->join('qp_user', 'qp_register.user_row_id', '=', 'qp_user.row_id')
         ->where('qp_register.register_date','<>',null)
@@ -78,11 +78,11 @@ class RegisterRepository
 
     /**
      * 依時區取得時分格式的時差
-     * @param  String $timeZone 時區 ex:"Asia/Shanghai"
+     * @param  String $timeOffset 時差
      * @return string  ex: +08:00 /08:00
      */
-    private function getDateTimeOffset($timeZone){
-        $timeOffset = CommonUtil::getTimeOffset($timeZone);
+    private function getDateTimeOffset($timeOffset){
+        
         $symbol = '+';
         if((int)$timeOffset < 0){
             $symbol = '-';
