@@ -598,8 +598,8 @@ var tplJS = {
                     }
 
                     var newOption = '<option value="' + $(this).data("value") + '" hidden selected>' + defaultText + '</option>';
-
                     $("#" + dropdownListID).find("option").remove().end().append(newOption);
+                    tplJS.reSizeDropdownList(dropdownListID, type);
                 }
 
                 if (!multiSelect) {
