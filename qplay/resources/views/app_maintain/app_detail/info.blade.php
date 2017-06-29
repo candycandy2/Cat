@@ -98,6 +98,7 @@
                     </table>
                 </div>
             </div>
+            <input name="customApiDeleteList" id="customApiDeleteList" type="hidden" value="">
         </form>
         <form class="form-horizontal" id="errorCodeForm">
             <div class="form-group">
@@ -471,41 +472,7 @@
             </div>
         </div>
     </div>
-
-    <div id="selectUserDialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="roleDetailMaintainDialogTitle">{{trans("messages.SELECT_USER")}}</h1>
-                </div>
-                <div class="modal-body">
-                    <table id="gridAllUserList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
-                           data-url="platform/getUserList" data-height="298" data-pagination="true" data-side-pagination="server"
-                           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-                           data-show-toggle="true"  data-sortable="true"
-                           data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
-                           data-click-to-select="false" data-single-select="false">
-                        <thead>
-                        <tr>
-                            <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="row_id" data-sortable="true" data-visible="false">ID</th>
-                            <th data-field="department" data-sortable="true">{{trans("messages.USER_DEPARTMENT")}}</th>
-                            <th data-field="emp_no" data-sortable="true">{{trans("messages.USER_EMP_NO")}}</th>
-                            <th data-field="login_id" data-sortable="true" >{{trans("messages.USER_LOGIN_ID")}}</th>
-                            <th data-field="emp_name" data-sortable="true">{{trans("messages.USER_EMP_NAME")}}</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="SelectUser()">{{trans("messages.SELECT")}}</button>
-                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    @include('layouts.dialog_user_selection')
 @endsection
 
 
@@ -527,8 +494,13 @@
             var $gridList = $("#gridCustomApi");
             var $toolbar  =  $($gridList.data('toolbar'));
             var selectedCustomApi = $gridList.bootstrapTable('getSelections');
-            var currentData = $gridList.bootstrapTable('getData');             
+            var currentData = $gridList.bootstrapTable('getData'); 
+            var deleteArray = [];            
            $.each(selectedCustomApi, function(i, api) {
+                if(typeof api.row_id != 'undefined'){
+                    deleteArray.push(api.row_id);
+                }
+                $('#customApiDeleteList').val(deleteArray.join());
                var index = $gridList.find('input[name=btSelectItem]:checked').first().data('index');
                currentData.splice(index,1);
                $gridList.bootstrapTable('load', currentData);
@@ -652,11 +624,9 @@
         $("#gridAllUserList").bootstrapTable('refresh');
         $("#selectUserDialog").modal('show');
     };
-    var SelectUser = function() {
+    var afterSelectedUser = function(selectedUserList) {
         var currentData = $("#gridUserList").bootstrapTable('getData');
-        var selectedUsers = $("#gridAllUserList").bootstrapTable('getSelections');
-        $.each(selectedUsers, function(i, newUser) {
-            newUser.state=false;
+        $.each(selectedUserList, function(i, newUser) {
             var exist = false;
             $.each(currentData, function(j, cUser) {
                 if(cUser.row_id == newUser.row_id) {
@@ -669,8 +639,7 @@
             }
         });
         $("#gridUserList").bootstrapTable('load', currentData);
-        $('#selectUserDialog').modal('hide');
-    }
+    };
     /*--Add User to App End --*/
     
     /*-- Error Code Start--*/

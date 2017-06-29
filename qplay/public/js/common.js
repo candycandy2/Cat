@@ -49,6 +49,10 @@ function getDateTime(date){
 }
 
 function convertUTCToLocalDateTime(UTCdate){
+    if (UTCdate === null)
+    {
+       return false;
+    }
     if(UTCdate == '0000-00-00 00:00:00'){
         return '-';
     }

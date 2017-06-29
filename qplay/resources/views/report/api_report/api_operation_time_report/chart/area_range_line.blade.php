@@ -10,7 +10,7 @@ var updateApiOperationTimeAreaRangeLineChart = function (date,actionName){
     var ranges=[],
         averages=[];
     $('.loader').show();
-    var mydata = {app_key:appKey, date:date, timeZone:timeZone, action:actionName},
+    var mydata = {app_key:appKey, date:date, timeOffset:timeOffset, action:actionName},
         mydataStr = $.toJSON(mydata),
         res={};
         

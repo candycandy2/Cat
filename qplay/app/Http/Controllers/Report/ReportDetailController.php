@@ -64,8 +64,8 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
-            $timeZone = $jsonContent['timeZone'];
-            $result = $this->reportService->getApiReport($appKey, $timeZone);
+            $timeOffset = $jsonContent['timeOffset'];
+            $result = $this->reportService->getApiReport($appKey, $timeOffset);
             return json_encode($result);
         } 
     }
@@ -84,8 +84,8 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
-            $timeZone = $jsonContent['timeZone'];
-            $result = $this->reportService->getApiOperationTimeReport($appKey, $timeZone);
+            $timeOffset = $jsonContent['timeOffset'];
+            $result = $this->reportService->getApiOperationTimeReport($appKey, $timeOffset);
             return json_encode($result);
         }
     }
@@ -106,8 +106,8 @@ class ReportDetailController extends Controller
             $appKey = $jsonContent['app_key'];
             $date = $jsonContent['date'];
             $actionName = $jsonContent['action'];
-            $timeZone = $jsonContent['timeZone'];
-            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $timeZone, $actionName);
+            $timeOffset = $jsonContent['timeOffset'];
+            $result = $this->reportService->getApiOperationTimeDetailReport($appKey, $date, $timeOffset, $actionName);
             return json_encode($result);
         }
     }
@@ -125,8 +125,8 @@ class ReportDetailController extends Controller
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
-            $timeZone = $jsonContent['timeZone'];
-            return json_encode($this->reportService->getDailyRegisterReport($timeZone));
+            $timeOffset = $jsonContent['timeOffset'];
+            return json_encode($this->reportService->getDailyRegisterReport($timeOffset));
         }
     }
 
@@ -143,8 +143,8 @@ class ReportDetailController extends Controller
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
-            $timeZone = $jsonContent['timeZone'];
-            return json_encode($this->reportService->getCumulativeRegisterReport($timeZone));
+            $timeOffset = $jsonContent['timeOffset'];
+            return json_encode($this->reportService->getCumulativeRegisterReport($timeOffset));
         }
     }
 

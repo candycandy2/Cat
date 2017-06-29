@@ -5,7 +5,6 @@
  * - jQuery (2.0.3)
  * - Twitter Bootstrap (3.0.2)
  */
-var holidayData;
 if (typeof jQuery == 'undefined') {
     throw new Error('jQuery is not loaded');
 }
@@ -64,12 +63,9 @@ $.fn.calendar = function (options) {
         if (false !== jsonData) {
             checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
         }
-
-        if($calendarElement.data("id") === "viewCalendar") {
-            var dateArray = holidayData[dateInitObj.getMonth()]["holiday"]["date"].split(",");
-            for(var i=0; i<dateArray.length; i++) {
-                $("#viewCalendar #" + dateArray[i]).addClass("holiday");
-            }
+        $("#viewCalendar .infoList").hide();
+        if($calendarElement.data("id") === "viewCalendar" && holidayData[dateInitObj.getMonth()]["status"] == 1) {
+            calendarHolidayInfo(dateInitObj.getMonth());
         }
     }
 
@@ -204,11 +200,9 @@ $.fn.calendar = function (options) {
                     if(prevMonth == 0) {
                          $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "0");
                     }
-                    if($calendarElement.data("id") === "viewCalendar") {
-                        var dateArray = holidayData[prevMonth]["holiday"]["date"].split(",");
-                        for(var i=0; i<dateArray.length; i++) {
-                            $("#viewCalendar #" + dateArray[i]).addClass("holiday");
-                        }
+                    $("#viewCalendar .infoList").hide();
+                    if($calendarElement.data("id") === "viewCalendar" && holidayData[prevMonth]["status"] == 1) {
+                        calendarHolidayInfo(prevMonth);
                     }
                 }
             });
@@ -237,11 +231,9 @@ $.fn.calendar = function (options) {
                     if(nextMonth == 11) {
                         $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "0");
                     }
-                    if($calendarElement.data("id") === "viewCalendar") {
-                        var dateArray = holidayData[nextMonth]["holiday"]["date"].split(",");
-                        for(var i=0; i<dateArray.length; i++) {
-                            $("#viewCalendar #" + dateArray[i]).addClass("holiday");
-                        }
+                    $("#viewCalendar .infoList").hide();
+                    if($calendarElement.data("id") === "viewCalendar" && holidayData[nextMonth]["status"] == 1) {
+                        calendarHolidayInfo(nextMonth);
                     }
                 }
             });
@@ -331,11 +323,6 @@ $.fn.calendar = function (options) {
                     if(dow == 0 || dow == 6) {
                         $dowElement.addClass("weekend");
                     }
-                    // if($calendarElement.data("id") === "viewCalendar") {
-                    //     if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                    //         $dayElement.addClass("holiday");
-                    //     }
-                    // }
                     
                     if (typeof($calendarElement.data('actionFunction')) === 'function') {
                         $dowElement.addClass('dow-clickable');
@@ -499,6 +486,23 @@ $.fn.calendar = function (options) {
     }
 
     /* ----- Helper functions ----- */
+    function calendarHolidayInfo(month) {
+        var dateArray = holidayData[month]["holiday"]["date"].split(",");
+        var strArray = holidayData[month]["holiday"]["str"];
+        for(var i=0; i<dateArray.length; i++) {
+            $("#viewCalendar #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+        }
+        holidayList = "";
+        for(var i=0; i<strArray.length; i++) {
+            holidayList +=  '<li>'
+                         +    '<span>'
+                         +    strArray[i]
+                         +    '</span>'
+                         +  '</li>'
+        }
+        $("#viewCalendar .infoList").show();
+        $("#viewCalendar .infoList > ul").html($(holidayList)).enhanceWithin();
+    }
 
     function isToday(year, month, day) {
         var todayObj = new Date();

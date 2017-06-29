@@ -87,7 +87,7 @@ if(array_key_exists('with_msg_id', $input)) {
     {{--<link rel="stylesheet" href="style.css">--}}
     
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
-    <script src="{{ asset('/js/window.extension.js') }}"></script>
+    <script src="{{ asset('/js/extension.js') }}"></script>
     <script src="{{ asset('/js/common.js') }}"></script>
     <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
