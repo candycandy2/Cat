@@ -1,4 +1,9 @@
 {
+  "_from": "cordova-plugin-qsecurity@~1.0.0",
+  "_id": "cordova-plugin-qsecurity@~1.0.0",
+  "_inBundle": false,
+  "_location": "/cordova-plugin-qsecurity",
+  "_phantomChildren": {},
   "name": "cordova-plugin-qsecurity",
   "version": "1.0.0",
   "description": "QPlay QSecurity Plugin",
