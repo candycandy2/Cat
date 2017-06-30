@@ -449,6 +449,7 @@ class qplayController extends Controller
                         "loginid"=>$userInfo->login_id,
                         "emp_no"=>$userInfo->emp_no,
                         "domain"=>$userInfo->user_domain,
+                        "site_code"=>$userInfo->site_code,
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
@@ -854,6 +855,7 @@ class qplayController extends Controller
                         "loginid"=>$userInfo->login_id,
                         "emp_no"=>$userInfo->emp_no,
                         "domain"=>$userInfo->user_domain,
+                        "site_code"=>$userInfo->site_code,
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
