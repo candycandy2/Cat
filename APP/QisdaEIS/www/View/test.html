@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Highcharts</title>	
+		<link rel="stylesheet" type="text/css" href="../css/highcharts.css" />
+	</head>
+	<body>
+		<div id="myChart" style="width: 500px;height: 400px;border: 1px solid red;"></div>
+		<div id="chartMy" style="width: 500px;height: 400px;border: 1px solid red;"></div>
+		
+		<script type="text/javascript" src="../js/lib/highcharts.js"></script>
+		<script type="text/javascript" src="../js/lib/highcharts-more.js"></script>
+		<script type="text/javascript" src="../js/lib/heatmap.js"></script>
+		<script type="text/javascript" src="../js/lib/treemap.js"></script>
+		<script type="text/javascript" src="../js/lib/jquery.js"></script>
+		<script type="text/javascript">
+			var options = {
+				chart: {
+		            type: 'bubble',
+		            marginTop: 40,
+		            plotBorderWidth: 1,
+		            zoomType: 'xy'
+		        },
+		        legend: {
+		            enabled: false
+		        },
+		        title: {	
+		            text: null
+		        },
+		        xAxis: {
+		            gridLineWidth: 1,
+		            title: {
+		                text: '每天脂肪摄入量'
+		            },
+		            labels: {
+		                format: '{value}'
+		            },
+		            plotLines: [{
+		                color: 'black',
+		                dashStyle: 'dot',
+		                width: 2,
+		                value: 65,
+		                label: {
+		                    rotation: 0,
+		                    y: 15,
+		                    style: {
+		                        fontStyle: 'italic'
+		                    },
+		                    text: '正常脂肪摄入量65g/天'
+		                },
+		                zIndex: 3
+		            }]
+		        },
+		        yAxis: {
+		            startOnTick: false,
+		            endOnTick: false,
+		            title: {
+		                text: '每天糖的摄入量'
+		            },
+		            labels: {
+		                format: '{value}K'
+		            },
+		            maxPadding: 0.2,
+		            plotLines: [{
+		                color: 'black',
+		                dashStyle: 'dot',
+		                width: 2,
+		                value: 50,
+		                label: {
+		                    align: 'right',
+		                    style: {
+		                        fontStyle: 'italic'
+		                    },
+		                    text: '正常糖的摄入量 50g/天',
+		                    x: -10
+		                },
+		                zIndex: 3
+		            }]
+		        },
+		        tooltip: {
+		            useHTML: true,
+		            headerFormat: '<table>',
+		            pointFormat: '<tr><th colspan="2"><h3>{point.country}</h3></th></tr>' +
+		            '<tr><th>脂肪摄取量:</th><td>{point.x}g</td></tr>' +
+		            '<tr><th>糖摄取量:</th><td>{point.y}g</td></tr>' +
+		            '<tr><th>肥胖 (成年人):</th><td>{point.z}%</td></tr>',
+		            footerFormat: '</table>',
+		            followPointer: true
+		        },
+		        plotOptions: {
+		            series: {
+		                dataLabels: {
+		                    enabled: true,
+		                    format: '{point.name}'
+		                }
+		            }
+		        },
+		        series: [{
+		            data: [
+		                { x: 95, y: 95, z: 13.8, name: 'BE', country: '比利时' },
+		                { x: 86.5, y: 102.9, z: 14.7, name: 'DE', country: '德国' },
+		                { x: 80.8, y: 91.5, z: 15.8, name: 'FI', country: '芬兰' },
+		                { x: 80.4, y: 102.5, z: 12, name: 'NL', country: '荷兰' },
+		                { x: 80.3, y: 86.1, z: 11.8, name: 'SE', country: '瑞典' },
+		                { x: 78.4, y: 70.1, z: 16.6, name: 'ES', country: '西班牙' },
+		                { x: 74.2, y: 68.5, z: 14.5, name: 'FR', country: '法国' },
+		                { x: 73.5, y: 83.1, z: 10, name: 'NO', country: '挪威' },
+		                { x: 71, y: 93.2, z: 24.7, name: 'UK', country: '英国' },
+		                { x: 69.2, y: 57.6, z: 10.4, name: 'IT', country: '意大利' },
+		                { x: 68.6, y: 20, z: 16, name: 'RU', country: '俄罗斯' },
+		                { x: 65.5, y: 126.4, z: 35.3, name: 'US', country: '美国' },
+		                { x: 65.4, y: 50.8, z: 28.5, name: 'HU', country: '匈牙利' },
+		                { x: 63.4, y: 51.8, z: 15.4, name: 'PT', country: '葡萄牙' },
+		                { x: 64, y: 82.9, z: 31.3, name: 'NZ', country: '新西兰' }
+		            ]
+		        }]
+			} 
+
+			var chart = new Highcharts.Chart('myChart', options);
+			
+			
+			var optionss = {
+				colorAxis: {
+		            minColor: '#FFFF6A',
+		            maxColor: '#FE0000',
+		        },
+		        series: [{
+		            type: "treemap",
+		            layoutAlgorithm: 'squarified',
+		            data: [{
+		                name: 'A',
+		                value: 6,
+		                colorValue: 1
+		            }, {
+		                name: 'B',
+		                value: 6,
+		                colorValue: 2
+		            }, {
+		                name: 'C',
+		                value: 4,
+		                colorValue: 3
+		            }, {
+		                name: 'D',
+		                value: 3,
+		                colorValue: 4
+		            }, {
+		                name: 'E',
+		                value: 2,
+		                colorValue: 5
+		            }, {
+		                name: 'F',
+		                value: 2,
+		                colorValue: 6
+		            }, {
+		                name: 'G',
+		                value: 1,
+		                colorValue: 7
+		            }]
+		        }],
+		        title: {
+		            text: '矩形树图'
+		        }
+			}
+			
+			var chartss = new Highcharts.Chart('chartMy', optionss);
+			
+		</script>
+	</body>
+</html>
