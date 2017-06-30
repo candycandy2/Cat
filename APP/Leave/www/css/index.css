@@ -15,7 +15,7 @@
 	width: 30.86VW;
 }
 
-#viewCalendar .page-main .ui-radio {
+#viewHolidayCalendar .page-main .ui-radio {
 	width: 30.86VW;
 }
 
@@ -193,9 +193,9 @@
 	width: 28VW;
 	z-index: 2;
 }
-/******************************************** viewCalendar ******************************************/
+/******************************************** viewHolidayCalendar ******************************************/
 
-#viewCalendar .infoList ul > li {
+#viewHolidayCalendar .infoList ul > li {
 	margin-left: 6.71Vw;
 	margin-top: 3.71VW;
 	font-size: smaller;
@@ -220,7 +220,7 @@
     border-bottom-width: 0.1VH;
 }
 
-#mypanel #mypanelviewCalendar{
+#mypanel #mypanelviewHolidayCalendar{
 	border-bottom: solid;
     border-bottom-color: #666;
     border-bottom-width: 0.1VH;
