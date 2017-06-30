@@ -113,6 +113,6 @@ sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/h
 sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/html/qplay/public/jpush.log
 
 # remove temporary files
-sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 rm /var/www/html/qplay/storage/framework/views/*
+sshpass -p "readrsync" rsync -rvh --delete qplay/storage/framework/views/ rsyncuser@10.82.246.95:/var/www/html/qplay/storage/framework/views/
 
 # ======== Additional Process End ========
