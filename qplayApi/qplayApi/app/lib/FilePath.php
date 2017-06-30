@@ -5,23 +5,24 @@ use App\Http\Controllers\Config;
 
 class FilePath
 {
-   
+
     /**
      * 取得Apk/ipa檔案下載路徑
-     * @param  int    $appRowId    qp_app_row_id
-     * @param  String $deviceType  裝置類型 (ios|android) 
-     * @param  int    $versionCode 版號
-     * @param  String $fileName    檔案名稱
-     * @return String              下載路徑
+     * @param  int    $appRowId         qp_app_row_id
+     * @param  String $deviceType       裝置類型 (ios|android) 
+     * @param  int    $versionCode      版號
+     * @param  String $fileName         檔案名稱
+     * @param  String $useResquestUrl   是否使用呼叫路徑
+     * @return String                   下載路徑
      */
-    public static function getApkDownloadUrl($appRowId, $deviceType, $versionCode, $fileName){
+    public static function getApkDownloadUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl=false){
        $deviceType = strtolower($deviceType);
        $url="";
         if($deviceType == 'ios'){
-             $url = self::getApkUrl($appRowId,$deviceType,$versionCode,'manifest.plist');
+             $url = self::getApkUrl($appRowId, $deviceType, $versionCode, 'manifest.plist', $useResquestUrl);
              $url = 'itms-services://?action=download-manifest&url='. $url;
         }else{
-             $url = self::getApkUrl($appRowId,$deviceType,$versionCode,$fileName);
+             $url = self::getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl);
         }
 
         return $url;
@@ -34,7 +35,7 @@ class FilePath
      * @return String           圖片路徑
      */
     public static function getIconUrl($appRowId, $fileName){
-         return \Config::get('app.app_file_url').\Config::get('app.upload_folder').'/'.$appRowId.'/'.'icon'.'/'.$fileName;
+         return self::getDefaultPath().'/'.$appRowId.'/'.'icon'.'/'.$fileName;
     } 
 
     /**
@@ -47,7 +48,7 @@ class FilePath
      */
     public static function getBannerUrl($appRowId, $langRowId, $deviceType, $fileName){
         $deviceType = strtolower($deviceType);
-         return \Config::get('app.app_file_url').\Config::get('app.upload_folder').'/'.$appRowId.'/'.'banner'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
+         return self::getDefaultPath().'/'.$appRowId.'/'.'banner'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
     } 
 
     /**
@@ -60,7 +61,7 @@ class FilePath
      */
     public static function getScreenShotUrl($appRowId, $langRowId,$deviceType, $fileName){
         $deviceType = strtolower($deviceType);
-         return \Config::get('app.app_file_url').\Config::get('app.upload_folder').'/'.$appRowId.'/'.'screenshot'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
+         return self::getDefaultPath().'/'.$appRowId.'/'.'screenshot'.'/'.$langRowId.'/'.$deviceType.'/'.$fileName;
     }
 
     /**
@@ -71,9 +72,22 @@ class FilePath
      * @param  String $fileName    檔案名稱
      * @return String              下載路徑
      */
-    private static function getApkUrl($appRowId, $deviceType, $versionCode, $fileName){
+    public static function getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl=false){
        $deviceType = strtolower($deviceType);
-       return \Config::get('app.app_file_url').\Config::get('app.upload_folder').'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
-    } 
+       $appFileUrl = self::getDefaultPath();
+       if($useResquestUrl){
+            $appFileUrl =  url('/').\Config::get('app.app_file_path');
+       }
+       return $appFileUrl.'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
+    }
+
+    
+    /**
+     * 取得App資料預設路徑
+     * @return [type] [description]
+     */
+    private static function getDefaultPath() {
+       return  \Config::get('app.app_file_server').\Config::get('app.app_file_path');
+    }
 
 }

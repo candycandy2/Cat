@@ -1086,7 +1086,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_NEED_TO_UPDATE"),
                     'content'=>array("version_code"=>$versionLine->version_code,
-                        'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $versionLine->version_code, $versionLine->url))];
+                        'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $versionLine->version_code, $versionLine->url,true))];
                 CommonUtil::logApi("", $ACTION,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
