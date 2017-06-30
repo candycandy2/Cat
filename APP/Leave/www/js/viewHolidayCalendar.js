@@ -1,9 +1,10 @@
-$("#viewCalendar").pagecontainer({
+$("#viewHolidayCalendar").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
         $(document).ready(function() {
-            $("#viewCalendar #myCalendar").calendar({
+            holidayCalendar = new Calendar({
+                renderTo: "#viewHolidayCalendar #myCalendar",
                 id: "viewCalendar",
                 language: "default",
                 show_days: true,
@@ -29,14 +30,24 @@ $("#viewCalendar").pagecontainer({
         });
 
         /********************************** page event *************************************/
-        $("#viewCalendar").on("pagebeforeshow", function(event, ui) {
+        $("#viewHolidayCalendar").on("pagebeforeshow", function(event, ui) {
         });
 
-        $("#viewCalendar").on("pageshow", function(event, ui) {
+        $("#viewHolidayCalendar").on("pageshow", function(event, ui) {
             loadingMask("hide");
         });
 
         /********************************** dom event *************************************/
+        $(".page-tabs #viewHolidayCalendar-tab-1").on("click", function() {
+              
+        });
 
+        $(".page-tabs #viewHolidayCalendar-tab-2").on("click", function() {
+
+        });
+
+        $(".page-tabs #viewHolidayCalendar-tab-3").on("click", function() {
+
+        });
     }
 });
