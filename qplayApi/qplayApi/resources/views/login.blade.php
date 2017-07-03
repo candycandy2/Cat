@@ -389,6 +389,7 @@
                                 + '"loginid" : "' + d.content.loginid + '", '
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
+                                + '"site_code" : "' + d.content.site_code + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                         callPlugin();
@@ -447,6 +448,7 @@
                                 + '"loginid" : "' + d.content.loginid + '", '
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
+                                + '"site_code" : "' + d.content.site_code + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
                         $.mobile.changePage("#pageRegister");
