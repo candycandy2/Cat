@@ -65,7 +65,7 @@ class FilePath
     }
 
     /**
-     * 取得App版本資料路徑
+     * 取得App原始下載路徑
      * @param  int    $appRowId    qp_app_row_id
      * @param  String $deviceType  裝置類型 (ios|android) 
      * @param  int    $versionCode 版號
