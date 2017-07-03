@@ -87,36 +87,7 @@ a{
 .header-style .ui-title{
 	overflow: inherit !important;
 }
-/* panel */
-#panels{
-	width: 60%;
-	box-shadow: none;
-	background-color: #d6d6d6 !important;
-}
-#panels ul{
-	margin: 0;
-}
-.panel-title{
-	margin: 0;
-	background-color: #5E5E5E !important;
-	height: 2em;
-	line-height: 2em;	
-}
-.panel-title a{
-	color: #fff !important;
-}
-.panel-active{
-	background-color: #492f7f !important;
-	color: #fff !important;
-	border:none !important;
-	text-indent: 2VW;
-}
-.panel-normal{
-	background-color: white !important;
-	color: #0f0f0f !important;
-	border: none !important;
-	text-indent: 2VW;
-}
+
 /* navbar */
 .navbar-position{
 	width: 92.58%; 
@@ -138,7 +109,10 @@ a{
 	height: 40VH;*/
 	border-bottom: 1px solid lightgray;
 }
-
+.fontTooltip{
+	font-size: 14px;
+	font-family: "微软雅黑";
+}
 
 /******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
@@ -383,6 +357,11 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     color: #fff;
 }
 
+/*************************************viewOverview highcharts*******************************************/
+#overview-hc-rectangle, #overview-hc-bubble-landscape, #overview-hc-rectangle-landscape{
+	display: none;
+}
+
 /***************************************************** highcharts ************************************************/
 #viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
 	display: none;
@@ -409,6 +388,19 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewHitRate-hc-landscape-canvas {display: inline;}
 	#viewMonthlyHitRate-hc-landscape-canvas {display: inline;}
 	#viewYTDHitRate-hc-landscape-canvas {display: inline;}
+	
+	/*******************overview highcharts*********************/
+	#viewOverview .page-header, #viewOverview .navbar-position, #explainMsg, 
+	#viewOverview #overview-hc-bubble, #viewOverview #overview-hc-rectangle{
+		display: none;
+	}
+	#viewOverview{
+		padding-top: 1.5VH !important;
+	}
+	#overview-hc-bubble-landscape{
+		display: inline;
+	}
+	
 }
 
 @media all and (orientation: portrait) {
