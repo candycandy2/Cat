@@ -40,8 +40,8 @@ return [
     */
 
     'url' => env('APP_URL'),
-    'upload_folder' => env('APP_UPLOAD_FOLDER'),
-    'app_file_url' => env('APP_FILE_SERVER_URL'),
+    'app_file_server'=>env('APP_FILE_SERVER'),
+    'app_file_path'=>env('APP_FILE_PATH'),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-qpush" version="1.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-qpush" version="1.0.1">
     <name>QPush Plugin</name>
     <description>QPush for cordova plugin</description>
     <author>QPush</author>
@@ -42,6 +42,10 @@
         <config-file target="*PushConfig.plist" parent="APP_KEY">
             <string>$API_KEY</string>
         </config-file>
+
+        <hook type="after_platform_add" src="hooks/iosEnablePush.js" />
+        <hook type="after_plugin_install" src="hooks/iosEnablePush.js" />
+        <hook type="before_plugin_uninstall" src="hooks/iosDisablePush.js" />
     </platform>
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
