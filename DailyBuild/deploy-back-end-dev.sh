@@ -1,3 +1,9 @@
+git checkout master
+
+# ------ add release tag ------
+git tag -a BackEnd.Develop.$BUILD_NUMBER -m "$(date +"%b-%d-%y %H:%M:%S")"
+git push origin --tags
+
 chmod -R o=rx *
 
 # ======== QPlay API Start ========
