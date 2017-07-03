@@ -76,7 +76,7 @@ class FilePath
        $deviceType = strtolower($deviceType);
        $appFileUrl = self::getDefaultPath();
        if($useResquestUrl){
-            $appFileUrl =  url('/').\Config::get('app.app_file_path');
+            $appFileUrl =  'https://'.$_SERVER['HTTP_HOST'].\Config::get('app.app_file_path');
        }
        return $appFileUrl.'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
     }
