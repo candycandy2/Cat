@@ -8,7 +8,7 @@ class FilePath
 
     /**
      * 取得Apk/ipa檔案下載路徑
-     * @param  int    $appRowId         qp_app_row_id
+     * @param  int    $appRowId         app_row_id
      * @param  String $deviceType       裝置類型 (ios|android) 
      * @param  int    $versionCode      版號
      * @param  String $fileName         檔案名稱
@@ -30,7 +30,7 @@ class FilePath
 
     /**
      * 取得icon圖片網址
-     * @param  int    $appRowId qp_app_row_id
+     * @param  int    $appRowId app_row_id
      * @param  String $fileName 圖檔名稱
      * @return String           圖片路徑
      */
@@ -40,7 +40,7 @@ class FilePath
 
     /**
      * 取得banner圖片網址
-     * @param  int    $appRowId   qp_app_row_id
+     * @param  int    $appRowId   app_row_id
      * @param  int    $langRowId  language_id
      * @param  String $deviceType 裝置類型 (ios|android)
      * @param  String $fileName   檔案名稱
@@ -53,7 +53,7 @@ class FilePath
 
     /**
      * 取得ScreenShot圖片網址
-     * @param  int    $appRowId   qp_app_row_id
+     * @param  int    $appRowId   app_row_id
      * @param  int    $langRowId  language_id
      * @param  String $deviceType 裝置類型 (ios|android)
      * @param  String $fileName   檔案名稱
@@ -66,10 +66,11 @@ class FilePath
 
     /**
      * 取得App原始下載路徑
-     * @param  int    $appRowId    qp_app_row_id
+     * @param  int    $appRowId    app_row_id
      * @param  String $deviceType  裝置類型 (ios|android) 
      * @param  int    $versionCode 版號
      * @param  String $fileName    檔案名稱
+     * @param  String $useResquestUrl  是否使用呼叫路徑
      * @return String              下載路徑
      */
     public static function getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl=false){
@@ -84,7 +85,7 @@ class FilePath
     
     /**
      * 取得App資料預設路徑
-     * @return [type] [description]
+     * @return String
      */
     private static function getDefaultPath() {
        return  \Config::get('app.app_file_server').\Config::get('app.app_file_path');
