@@ -1,29 +1,29 @@
-#calendar {
+.QPlayCalendar {
     margin-top: 3.71VW;
 }
 
-#calendar .table th, #calendar .table td {
+.QPlayCalendar .table th, .QPlayCalendar .table td {
     text-align: center;
 }
 
-#calendar tr.calendar-month-header th {
+.QPlayCalendar tr.calendar-month-header th {
     background-color: #fafafa;
 }
-#calendar .table tr.calendar-dow-header {
+.QPlayCalendar .table tr.calendar-dow-header {
     height: 11.513VW;
 }
 
-#calendar .table tr.calendar-dow {
+.QPlayCalendar .table tr.calendar-dow {
     height: 11.03VW;
 }
 
-#calendar .calendar-month-header {
+.QPlayCalendar .calendar-month-header {
     flex-flow: row wrap;
     display: -webkit-flex;
     margin-bottom: 4.3VW;
 }
 
-#calendar div.calendar-month-navigation {
+.QPlayCalendar div.calendar-month-navigation {
     cursor: pointer;
     margin: 0;
     padding: 0;
@@ -33,11 +33,11 @@
     width: 4.934VW;
 }
 
-#calendar-navPrev{
+.QPlayCalendar-navPrev{
     margin-left: 3.71VW;
 }
 
-#calendar #dateTitle {
+.QPlayCalendar #dateTitle {
     width: 82.712VW;
     text-align: center;
 }
@@ -54,7 +54,7 @@ table {
     padding: 0VW 3VW 0VW 3VW;
 }
 
-#calendar .table .calendar-dow-header th {
+.QPlayCalendar .table .calendar-dow-header th {
     margin: 0;
     padding-top: 7px;
     padding-bottom: 7px;
@@ -105,13 +105,13 @@ th {
 }
 
 /* legend */
-#calendar div.legend {
+.QPlayCalendar div.legend {
     margin-right: 3.71Vw;
     margin-bottom: 2.14VW;
     text-align: right;
 }
 
-#calendar div.legend .legend-img-text {
+.QPlayCalendar div.legend .legend-img-text {
     font-size: small;
     margin-left: 3.71Vw;
 }
