@@ -1,7 +1,7 @@
 git checkout master
 
 # ------ add release tag ------
-git tag -a BackEnd.Develop.$BUILD_NUMBER -m "$(date +"%b-%d-%y %H:%M:%S")"
+git tag -a v1.3.3.$BUILD_NUMBER.Develop.BackEnd -m "v1.3.3.$BUILD_NUMBER[Develop] BackEnd"
 git push origin --tags
 
 chmod -R o=rx *
@@ -80,7 +80,13 @@ sshpass -p "readrsync" rsync -vh qplay/.env.example rsyncuser@10.82.246.95:/var/
 
 # create deploy version file
 echo "deploy_ver=$(($BUILD_NUMBER)) deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+cp deploy.jenkins qplay/
 sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/html/qplay
+
+git pull
+git add qplay/deploy.jenkins
+git commit -m "v1.3.3.$BUILD_NUMBER[Develop] BackEnd"
+git push
 
 # ======== qplay End ========
 
@@ -110,6 +116,7 @@ sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/
 
 # ======== EMS API End ========
 
+
 # ======== Additional Process Start ========
 
 # modify owner
@@ -120,5 +127,4 @@ sshpass -p "readrsync" ssh rsyncuser@10.82.246.95 chown apache.apache /var/www/h
 
 # remove temporary files
 sshpass -p "readrsync" rsync -rvh --delete qplay/storage/framework/views/ rsyncuser@10.82.246.95:/var/www/html/qplay/storage/framework/views/
-
 # ======== Additional Process End ========
