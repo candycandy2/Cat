@@ -333,17 +333,17 @@ function Calendar(options) {
 
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
                     $dowElement.data('hasEvent', false);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if(_id === "viewPersonalLeave-calendar") {
+                        if(currDayOfMonth == 12 || currDayOfMonth == 13) {
+                            $dayElement.parent('#' + dateId).addClass("day-selected");
+                        }
 
-                    // if($calendarElement.data("id") === "viewPersonalLeave") {
-                    //     if(currDayOfMonth == 12 || currDayOfMonth == 13) {
-                    //         $dayElement.parent('#' + dateId).addClass("day-selected");
-                    //     }
-
-                    //     if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                    //         $dayElement.parent('#' + dateId).addClass("day-select");
-                    //     }
-                    // }
-
+                        if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                            $dayElement.parent('#' + dateId).addClass("day-select");
+                        }
+                    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if(dow == 0 || dow == 6) {
                         $dowElement.addClass("weekend");
                     }
@@ -601,8 +601,12 @@ function Calendar(options) {
         return false;
     }
 
-    this.a = function() {
-
+    this.refreshInfoList = function() {
+        if(holidayData[_month]["status"] == 1) {
+            showCalendarHolidayInfo(_month);
+        }else {
+            $(opts.showInfoListTo).hide();    
+        } 
     }
 };
 

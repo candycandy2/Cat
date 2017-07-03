@@ -49,12 +49,14 @@ $("#viewHolidayCalendar").pagecontainer({
             $.getJSON("string/BQC-holiday.json", function(data) {
                 holidayData = data;
             });
+            holidayCalendar.refreshInfoList();
         });
 
         $(".page-tabs #viewHolidayCalendar-tab-3").on("click", function() {
             $.getJSON("string/QCS-holiday.json", function(data) {
                 holidayData = data;
             });
+            holidayCalendar.refreshInfoList();
         });
     }
 });
