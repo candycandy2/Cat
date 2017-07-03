@@ -80,8 +80,9 @@ $("#viewPersonalLeave").pagecontainer({
         };*/
 
         $(document).ready(function() {
-            $("#viewPersonalLeave #myCalendar").calendar({
-                id: "viewPersonalLeave",
+            prslvsCalendar = new Calendar({
+                renderTo: "#viewPersonalLeave #myCalendar",
+                id: "viewPersonalLeaveCalendar",
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
@@ -122,10 +123,6 @@ $("#viewPersonalLeave").pagecontainer({
         $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
             $("#tab-1").hide();
             $("#tab-2").show();
-        });
-
-        $("#leaveType").on("click", function() {
-            
         });
 
         $("#infoTitle-1").on("click", function() {

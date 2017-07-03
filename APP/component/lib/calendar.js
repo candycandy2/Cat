@@ -15,12 +15,18 @@ if (typeof jQuery == 'undefined') {
  * @param options
  * @returns {*}
  */
-$.fn.calendar = function (options) {
-    var opts = $.extend({}, $.fn.calendar_defaults(), options);
-    var languageSettings = $.fn.calendar_language(opts.language);
+function Calendar(options) {
+    var $calendarElement, _year, _month;
+    var opts = $.extend({}, calendar_defaults(), options);
+    var languageSettings = calendar_language(opts.language);
     opts = $.extend({}, opts, languageSettings);
 
-    var $calendarElement = $(this);
+    if(opts.renderTo !== undefined) {
+        $calendarElement = $(opts.renderTo);
+    }else {
+        throw new Error("The calendar must be rendered to specific element!");
+    }
+
     $calendarElement.attr('id', "calendar");
 
     $calendarElement.data('id', opts.id);
@@ -54,7 +60,8 @@ $.fn.calendar = function (options) {
         $tableObj = drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
         $legendObj = drawLegend($calendarElement);
         $dateScroller = prependMonthHeader($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
-
+        _year = dateInitObj.getFullYear();
+        _month = dateInitObj.getMonth();
         $calendarElement.append($dateScroller);
         $calendarElement.append($legendObj);
         $calendarElement.append($tableObj);
@@ -64,9 +71,9 @@ $.fn.calendar = function (options) {
             checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
         }
         $("#viewCalendar .infoList").hide();
-        if($calendarElement.data("id") === "viewCalendar" && holidayData[dateInitObj.getMonth()]["status"] == 1) {
-            calendarHolidayInfo(dateInitObj.getMonth());
-        }
+        // if($calendarElement.data("id") === "viewCalendar" && holidayData[dateInitObj.getMonth()]["status"] == 1) {
+        //     calendarHolidayInfo(dateInitObj.getMonth());
+        // }
     }
 
     function drawTable($calendarElement, $tableObj, year, month) {
@@ -189,21 +196,21 @@ $.fn.calendar = function (options) {
                 $prevMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $prevMonthNav.click(function (e) {
-                var prevYear = $currMonthLabel.data($calendarElement.data("id") + "year");
-                var prevMonth = $currMonthLabel.data($calendarElement.data("id") + "month") - 1;
+                var prevYear = _year;
+                var prevMonth = _month - 1;
                 if(prevMonth >= 0) {
                     $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "100");
-                    $currMonthLabel.data($calendarElement.data("id") + "year", prevYear);
-                    $currMonthLabel.data($calendarElement.data("id") + "month", prevMonth);
+                    _year =  prevYear;
+                    _month =  prevMonth;
                     drawTable($calendarElement, $tableObj, prevYear, prevMonth);
                     $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[prevMonth] + ' ' + prevYear);
                     if(prevMonth == 0) {
                          $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "0");
                     }
-                    $("#viewCalendar .infoList").hide();
-                    if($calendarElement.data("id") === "viewCalendar" && holidayData[prevMonth]["status"] == 1) {
-                        calendarHolidayInfo(prevMonth);
-                    }
+                    // $("#viewCalendar .infoList").hide();
+                    // if($calendarElement.data("id") === "viewCalendar" && holidayData[prevMonth]["status"] == 1) {
+                    //     calendarHolidayInfo(prevMonth);
+                    // }
                 }
             });
         }
@@ -231,10 +238,10 @@ $.fn.calendar = function (options) {
                     if(nextMonth == 11) {
                         $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "0");
                     }
-                    $("#viewCalendar .infoList").hide();
-                    if($calendarElement.data("id") === "viewCalendar" && holidayData[nextMonth]["status"] == 1) {
-                        calendarHolidayInfo(nextMonth);
-                    }
+                    // $("#viewCalendar .infoList").hide();
+                    // if($calendarElement.data("id") === "viewCalendar" && holidayData[nextMonth]["status"] == 1) {
+                    //     calendarHolidayInfo(nextMonth);
+                    // }
                 }
             });
         }
@@ -311,15 +318,16 @@ $.fn.calendar = function (options) {
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
                     $dowElement.data('hasEvent', false);
 
-                    if($calendarElement.data("id") === "viewPersonalLeave") {
-                        if(currDayOfMonth == 12 || currDayOfMonth == 13) {
-                            $dayElement.parent('#' + dateId).addClass("day-selected");
-                        }
+                    // if($calendarElement.data("id") === "viewPersonalLeave") {
+                    //     if(currDayOfMonth == 12 || currDayOfMonth == 13) {
+                    //         $dayElement.parent('#' + dateId).addClass("day-selected");
+                    //     }
 
-                        if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                            $dayElement.parent('#' + dateId).addClass("day-select");
-                        }
-                    }
+                    //     if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                    //         $dayElement.parent('#' + dateId).addClass("day-select");
+                    //     }
+                    // }
+
                     if(dow == 0 || dow == 6) {
                         $dowElement.addClass("weekend");
                     }
@@ -575,7 +583,10 @@ $.fn.calendar = function (options) {
         }
         return false;
     }
-    return this;
+
+    this.a = function() {
+
+    }
 };
 
 /**
@@ -597,11 +608,12 @@ $.fn.calendar = function (options) {
  *   action:            function
  *   action_nav:        function
  */
-$.fn.calendar_defaults = function () {
+function calendar_defaults() {
     var now = new Date();
     var year = now.getFullYear();
     var month = now.getMonth() + 1;
     var settings = {
+        renderTo: undefined,
         id: "calendar_ID",
         language: false,
         year: year,
@@ -628,7 +640,7 @@ $.fn.calendar_defaults = function () {
  * @param lang
  * @returns {{month_labels: Array, dow_labels: Array}}
  */
-$.fn.calendar_language = function (lang) {
+function calendar_language(lang) {
     if (typeof(lang) == 'undefined' || lang === false) {
         lang = 'default';
     }

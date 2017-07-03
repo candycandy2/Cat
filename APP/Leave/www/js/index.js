@@ -1,10 +1,10 @@
-var currentYear, holidayData, holidayList;
+var currentYear, prslvsCalendar, holidayCalendar, holidayData, holidayList;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewBackLeaveQuery", "viewCalendar"];
+var pageList = ["viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var htmlContent = "";
 var panel = htmlContent
@@ -21,7 +21,7 @@ var panel = htmlContent
         // +   '<div class="panel-content" id="mypanelviewBackLeaveQuery">'
         // +       '<span class="panel-text" style="line-height:7.5VH;">銷假單查詢</span>'
         // +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewCalendar">'
+        +   '<div class="panel-content" id="mypanelviewHolidayCalendar">'
         +       '<span class="panel-text" style="line-height:7.5VH;">2017 行事曆</span>'
         +   '</div>'
         +'</div>';
@@ -55,8 +55,8 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewBackLeaveQuery");
     });
 
-    $("#mypanel #mypanelviewCalendar").on("click", function() {
-        changePageByPanel("viewCalendar");
+    $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
+        changePageByPanel("viewHolidayCalendar");
     });
 
     $(".menu-btn").on("click", function() {
