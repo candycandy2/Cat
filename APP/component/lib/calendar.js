@@ -1,5 +1,5 @@
 /**
- * Zabuto Calendar
+ * Calendar
  *
  * Dependencies
  * - jQuery (2.0.3)
@@ -16,7 +16,8 @@ if (typeof jQuery == 'undefined') {
  * @returns {*}
  */
 function Calendar(options) {
-    var $calendarElement, _year, _month;
+    var $calendarElement, _id, _year, _month, _infoData;
+    var _showInfoList = false;
     var opts = $.extend({}, calendar_defaults(), options);
     var languageSettings = calendar_language(opts.language);
     opts = $.extend({}, opts, languageSettings);
@@ -24,12 +25,27 @@ function Calendar(options) {
     if(opts.renderTo !== undefined) {
         $calendarElement = $(opts.renderTo);
     }else {
-        throw new Error("The calendar must be rendered to specific element!");
+        throw new Error("Calendar must be rendered to the specific element!");
     }
 
-    $calendarElement.attr('id', "calendar");
+    if(opts.id !== "calendar_ID") {
+        _id = opts.id; 
+    }else {
+        throw new Error("There isn't an id in this Calendar!");
+    }
 
-    $calendarElement.data('id', opts.id);
+    if(opts.showInfoListTo !== undefined) {
+        _showInfoList = true;
+        if(opts.infoData !== undefined) {
+            _infoData = opts.infoData;
+        }else {
+            throw new Error("You must assign the infoData for this calendar.");       
+        }
+    }
+
+    $calendarElement.attr('id', _id);
+    $calendarElement.addClass("QPlayCalendar");
+
     $calendarElement.data('initYear', opts.year);
     $calendarElement.data('initMonth', opts.month);
     $calendarElement.data('monthLabels', opts.month_labels);
@@ -53,6 +69,10 @@ function Calendar(options) {
         var dateInitYear = parseInt($calendarElement.data('initYear'));
         var dateInitMonth = parseInt($calendarElement.data('initMonth')) - 1;
         var dateInitObj = new Date(dateInitYear, dateInitMonth, 1, 0, 0, 0, 0);
+        
+        _year = dateInitObj.getFullYear();
+        _month = dateInitObj.getMonth();
+        
         $calendarElement.data('initDate', dateInitObj);
 
         $tableObj = $('<table class="table"></table>');
@@ -60,8 +80,7 @@ function Calendar(options) {
         $tableObj = drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
         $legendObj = drawLegend($calendarElement);
         $dateScroller = prependMonthHeader($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
-        _year = dateInitObj.getFullYear();
-        _month = dateInitObj.getMonth();
+        
         $calendarElement.append($dateScroller);
         $calendarElement.append($legendObj);
         $calendarElement.append($tableObj);
@@ -70,10 +89,14 @@ function Calendar(options) {
         if (false !== jsonData) {
             checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
         }
-        $("#viewCalendar .infoList").hide();
-        // if($calendarElement.data("id") === "viewCalendar" && holidayData[dateInitObj.getMonth()]["status"] == 1) {
-        //     calendarHolidayInfo(dateInitObj.getMonth());
-        // }
+
+        if(_showInfoList) {
+            if(_infoData[dateInitObj.getMonth()]["status"] == 1) {
+                showCalendarHolidayInfo(dateInitObj.getMonth());
+            }else {
+                $(opts.showInfoListTo).hide();
+            }
+        }
     }
 
     function drawTable($calendarElement, $tableObj, year, month) {
@@ -117,7 +140,7 @@ function Calendar(options) {
                             case 'img-text':
                                 if (itemLabel !== '') {
                                     var itemBadge = '';
-                                    if ('badge' in item) {
+                                    if ('classname' in item) {
                                         if (typeof(item.classname) === 'undefined') {
                                             var badgeClassName = 'badge-event';
                                         } else {
@@ -186,9 +209,7 @@ function Calendar(options) {
             prevIsValid = checkMonthLimit($calendarElement.data('showPrevious'), true);
         }
 
-        $currMonthLabel.data($calendarElement.data("id") + "year", year);
-        $currMonthLabel.data($calendarElement.data("id") + "month", month);
-        $prevMonthNav.attr('id', $calendarElement.attr('id') + '-navPrev');
+        $prevMonthNav.addClass($calendarElement.attr('class') + '-navPrev');
         $prevMonthNav.data('navigation', 'prev');
         
         if (prevIsValid !== false) {
@@ -196,21 +217,21 @@ function Calendar(options) {
                 $prevMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $prevMonthNav.click(function (e) {
-                var prevYear = _year;
-                var prevMonth = _month - 1;
-                if(prevMonth >= 0) {
-                    $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "100");
-                    _year =  prevYear;
-                    _month =  prevMonth;
-                    drawTable($calendarElement, $tableObj, prevYear, prevMonth);
-                    $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[prevMonth] + ' ' + prevYear);
-                    if(prevMonth == 0) {
-                         $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "0");
+                if((_month - 1) >= 0) {
+                    _month--;
+                    drawTable($calendarElement, $tableObj, _year, _month);
+                    $("#" + _id + " #right-navigation").css("opacity", "100");
+                    $("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    if(_month == 0) {
+                         $("#" + _id + " #left-navigation").css("opacity", "0");
                     }
-                    // $("#viewCalendar .infoList").hide();
-                    // if($calendarElement.data("id") === "viewCalendar" && holidayData[prevMonth]["status"] == 1) {
-                    //     calendarHolidayInfo(prevMonth);
-                    // }
+                    if(_showInfoList) {
+                        if(_infoData[_month]["status"] == 1) {
+                            showCalendarHolidayInfo(_month);
+                        }else {
+                            $(opts.showInfoListTo).hide();    
+                        }
+                    }
                 }
             });
         }
@@ -220,28 +241,28 @@ function Calendar(options) {
             nextIsValid = checkMonthLimit($calendarElement.data('showNext'), false);
         }
 
-        $nextMonthNav.attr('id', $calendarElement.attr('id') + '-navNext');
+        $nextMonthNav.addClass($calendarElement.attr('class') + '-navNext');
         $nextMonthNav.data('navigation', 'next');
         if (nextIsValid !== false) {
             if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                 $nextMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $nextMonthNav.click(function (e) {
-                var nextYear = $currMonthLabel.data($calendarElement.data("id") + "year");
-                var nextMonth = $currMonthLabel.data($calendarElement.data("id") + "month") + 1;
-                if(nextMonth <= 11) {
-                    $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "100");
-                    $currMonthLabel.data($calendarElement.data("id") + "year", nextYear);
-                    $currMonthLabel.data($calendarElement.data("id") + "month", nextMonth);
-                    drawTable($calendarElement, $tableObj, nextYear, nextMonth);
-                    $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[nextMonth] + ' ' + nextYear);
-                    if(nextMonth == 11) {
-                        $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "0");
+                if((_month + 1) <= 11) {
+                    _month++;
+                    drawTable($calendarElement, $tableObj, _year, _month);
+                    $("#" + _id + " #left-navigation").css("opacity", "100");
+                    $("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    if(_month == 11) {
+                        $("#" + _id + " #right-navigation").css("opacity", "0");
                     }
-                    // $("#viewCalendar .infoList").hide();
-                    // if($calendarElement.data("id") === "viewCalendar" && holidayData[nextMonth]["status"] == 1) {
-                    //     calendarHolidayInfo(nextMonth);
-                    // }
+                    if(_showInfoList) {
+                        if(_infoData[_month]["status"] == 1) {
+                            showCalendarHolidayInfo(_month);
+                        }else {
+                            $(opts.showInfoListTo).hide();
+                        } 
+                    }
                 }
             });
         }
@@ -317,17 +338,17 @@ function Calendar(options) {
 
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
                     $dowElement.data('hasEvent', false);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if(_id === "viewPersonalLeave-calendar") {
+                        if(currDayOfMonth == 12 || currDayOfMonth == 13) {
+                            $dayElement.parent('#' + dateId).addClass("day-selected");
+                        }
 
-                    // if($calendarElement.data("id") === "viewPersonalLeave") {
-                    //     if(currDayOfMonth == 12 || currDayOfMonth == 13) {
-                    //         $dayElement.parent('#' + dateId).addClass("day-selected");
-                    //     }
-
-                    //     if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                    //         $dayElement.parent('#' + dateId).addClass("day-select");
-                    //     }
-                    // }
-
+                        if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
+                            $dayElement.parent('#' + dateId).addClass("day-select");
+                        }
+                    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if(dow == 0 || dow == 6) {
                         $dowElement.addClass("weekend");
                     }
@@ -494,22 +515,23 @@ function Calendar(options) {
     }
 
     /* ----- Helper functions ----- */
-    function calendarHolidayInfo(month) {
-        var dateArray = holidayData[month]["holiday"]["date"].split(",");
-        var strArray = holidayData[month]["holiday"]["str"];
+    function showCalendarHolidayInfo(month) {
+        var holidayList = "";
+        var dateArray = _infoData[month]["holiday"]["date"].split(",");
+        var strArray = _infoData[month]["holiday"]["str"];
+        $(opts.showInfoListTo).empty();
         for(var i=0; i<dateArray.length; i++) {
-            $("#viewCalendar #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+            $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
         }
-        holidayList = "";
         for(var i=0; i<strArray.length; i++) {
             holidayList +=  '<li>'
                          +    '<span>'
                          +    strArray[i]
                          +    '</span>'
-                         +  '</li>'
+                         +  '</li>';
         }
-        $("#viewCalendar .infoList").show();
-        $("#viewCalendar .infoList > ul").html($(holidayList)).enhanceWithin();
+        $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
+        $(opts.showInfoListTo).show();
     }
 
     function isToday(year, month, day) {
@@ -584,8 +606,16 @@ function Calendar(options) {
         return false;
     }
 
-    this.a = function() {
-
+    this.refreshInfoList = function(data) {
+        _infoData = data;
+        drawTable($calendarElement, $tableObj, _year, _month);
+        if(_showInfoList) {
+            if(_infoData[_month]["status"] == 1) {
+                showCalendarHolidayInfo(_month);
+            }else {
+                $(opts.showInfoListTo).hide();
+            }
+        }
     }
 };
 
@@ -629,7 +659,9 @@ function calendar_defaults() {
         ajax: false,
         legend: false,
         action: false,
-        action_nav: false
+        action_nav: false,
+        infoData: undefined,
+        showInfoListTo: undefined,
     };
     return settings;
 };
