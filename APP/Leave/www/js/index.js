@@ -90,7 +90,7 @@ function onBackKeyDown() {
     }*/
 }
 $(document).ready(function() {
-    $.getJSON("string/holiday.json", function(data) {
+    $.getJSON("string/QTY-holiday.json", function(data) {
         holidayData = data;
     });
 });

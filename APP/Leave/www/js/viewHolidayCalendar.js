@@ -5,7 +5,7 @@ $("#viewHolidayCalendar").pagecontainer({
         $(document).ready(function() {
             holidayCalendar = new Calendar({
                 renderTo: "#viewHolidayCalendar #myCalendar",
-                id: "viewCalendar",
+                id: "viewHolidayCalendar-calendar",
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
@@ -25,7 +25,8 @@ $("#viewHolidayCalendar").pagecontainer({
                         badge: "",
                         classname: "holiday-icon"
                     }
-                ]
+                ],
+                showInfoListTo: "#viewHolidayCalendar .infoList"
             });
         });
 
@@ -39,15 +40,23 @@ $("#viewHolidayCalendar").pagecontainer({
 
         /********************************** dom event *************************************/
         $(".page-tabs #viewHolidayCalendar-tab-1").on("click", function() {
-              
+            $.getJSON("string/QTY-holiday.json", function(data) {
+                holidayData = data;
+            });
         });
 
         $(".page-tabs #viewHolidayCalendar-tab-2").on("click", function() {
-
+            $.getJSON("string/BQC-holiday.json", function(data) {
+                holidayData = data;
+            });
+            holidayCalendar.refreshInfoList();
         });
 
         $(".page-tabs #viewHolidayCalendar-tab-3").on("click", function() {
-
+            $.getJSON("string/QCS-holiday.json", function(data) {
+                holidayData = data;
+            });
+            holidayCalendar.refreshInfoList();
         });
     }
 });
