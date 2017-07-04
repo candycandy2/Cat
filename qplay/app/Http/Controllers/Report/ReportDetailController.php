@@ -148,4 +148,20 @@ class ReportDetailController extends Controller
         }
     }
 
+    /**
+     * 取得活躍設備與用戶資料
+     * @return json
+     */
+    public function getActiveRegisterReport(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            return json_encode($this->reportService->getActiveRegisterReport());
+        }
+    }
 }
