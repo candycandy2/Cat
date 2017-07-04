@@ -201,6 +201,17 @@
 	font-size: smaller;
 }
 
+.weekend-icon {
+    content: url("../img/weekend_icon.png");
+    width: 2.415VW;
+    margin-right: 1.5VW;
+}
+
+.holiday-icon {
+    content: url("../img/holiday_icon.png");
+    width: 2.415VW;
+    margin-right: 1.5VW;
+}
 /********************************************** mypanel *********************************************/
 #mypanel .panel-text{
 	margin: 4.3VW 0VW 3.71VW 3.71VW;
