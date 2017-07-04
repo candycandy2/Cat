@@ -82,7 +82,7 @@ $("#viewPersonalLeave").pagecontainer({
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
                 renderTo: "#viewPersonalLeave #myCalendar",
-                id: "viewPersonalLeaveCalendar",
+                id: "viewPersonalLeave-calendar",
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
