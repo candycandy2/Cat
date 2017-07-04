@@ -16,7 +16,7 @@ if (typeof jQuery == 'undefined') {
  * @returns {*}
  */
 function Calendar(options) {
-    var $calendarElement, _id, _year, _month;
+    var $calendarElement, _id, _year, _month, _infoData;
     var _showInfoList = false;
     var opts = $.extend({}, calendar_defaults(), options);
     var languageSettings = calendar_language(opts.language);
@@ -36,6 +36,11 @@ function Calendar(options) {
 
     if(opts.showInfoListTo !== undefined) {
         _showInfoList = true;
+        if(opts.infoData !== undefined) {
+            _infoData = opts.infoData;
+        }else {
+            throw new Error("You must assign the infoData for this calendar.");       
+        }
     }
 
     $calendarElement.attr('id', _id);
@@ -86,7 +91,7 @@ function Calendar(options) {
         }
 
         if(_showInfoList) {
-            if(holidayData[dateInitObj.getMonth()]["status"] == 1) {
+            if(_infoData[dateInitObj.getMonth()]["status"] == 1) {
                 showCalendarHolidayInfo(dateInitObj.getMonth());
             }else {
                 $(opts.showInfoListTo).hide();
@@ -135,7 +140,7 @@ function Calendar(options) {
                             case 'img-text':
                                 if (itemLabel !== '') {
                                     var itemBadge = '';
-                                    if ('badge' in item) {
+                                    if ('classname' in item) {
                                         if (typeof(item.classname) === 'undefined') {
                                             var badgeClassName = 'badge-event';
                                         } else {
@@ -220,8 +225,8 @@ function Calendar(options) {
                     if(_month == 0) {
                          $("#" + _id + " #left-navigation").css("opacity", "0");
                     }
-                    if(_showInfoList){
-                        if(holidayData[_month]["status"] == 1) {
+                    if(_showInfoList) {
+                        if(_infoData[_month]["status"] == 1) {
                             showCalendarHolidayInfo(_month);
                         }else {
                             $(opts.showInfoListTo).hide();    
@@ -251,11 +256,11 @@ function Calendar(options) {
                     if(_month == 11) {
                         $("#" + _id + " #right-navigation").css("opacity", "0");
                     }
-                    if(_showInfoList){
-                        if(holidayData[_month]["status"] == 1) {
+                    if(_showInfoList) {
+                        if(_infoData[_month]["status"] == 1) {
                             showCalendarHolidayInfo(_month);
                         }else {
-                            $(opts.showInfoListTo).hide();    
+                            $(opts.showInfoListTo).hide();
                         } 
                     }
                 }
@@ -511,19 +516,19 @@ function Calendar(options) {
 
     /* ----- Helper functions ----- */
     function showCalendarHolidayInfo(month) {
+        var holidayList = "";
+        var dateArray = _infoData[month]["holiday"]["date"].split(",");
+        var strArray = _infoData[month]["holiday"]["str"];
         $(opts.showInfoListTo).empty();
-        var dateArray = holidayData[month]["holiday"]["date"].split(",");
-        var strArray = holidayData[month]["holiday"]["str"];
         for(var i=0; i<dateArray.length; i++) {
             $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
         }
-        holidayList = "";
         for(var i=0; i<strArray.length; i++) {
             holidayList +=  '<li>'
                          +    '<span>'
                          +    strArray[i]
                          +    '</span>'
-                         +  '</li>'
+                         +  '</li>';
         }
         $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
         $(opts.showInfoListTo).show();
@@ -601,12 +606,16 @@ function Calendar(options) {
         return false;
     }
 
-    this.refreshInfoList = function() {
-        if(holidayData[_month]["status"] == 1) {
-            showCalendarHolidayInfo(_month);
-        }else {
-            $(opts.showInfoListTo).hide();    
-        } 
+    this.refreshInfoList = function(data) {
+        _infoData = data;
+        drawTable($calendarElement, $tableObj, _year, _month);
+        if(_showInfoList) {
+            if(_infoData[_month]["status"] == 1) {
+                showCalendarHolidayInfo(_month);
+            }else {
+                $(opts.showInfoListTo).hide();
+            }
+        }
     }
 };
 
@@ -651,6 +660,7 @@ function calendar_defaults() {
         legend: false,
         action: false,
         action_nav: false,
+        infoData: undefined,
         showInfoListTo: undefined,
     };
     return settings;
