@@ -17,15 +17,14 @@ $("#viewHolidayCalendar").pagecontainer({
                     {
                         type: "img-text", 
                         label: "星期六日",
-                        badge: "",
                         classname: "weekend-icon"
                     }, {
                         type: "img-text",
                         label: "放假節日",
-                        badge: "",
                         classname: "holiday-icon"
                     }
                 ],
+                infoData: QTYholidayData,
                 showInfoListTo: "#viewHolidayCalendar .infoList"
             });
         });
@@ -40,23 +39,15 @@ $("#viewHolidayCalendar").pagecontainer({
 
         /********************************** dom event *************************************/
         $(".page-tabs #viewHolidayCalendar-tab-1").on("click", function() {
-            $.getJSON("string/QTY-holiday.json", function(data) {
-                holidayData = data;
-            });
+            holidayCalendar.refreshInfoList(QTYholidayData);
         });
 
         $(".page-tabs #viewHolidayCalendar-tab-2").on("click", function() {
-            $.getJSON("string/BQC-holiday.json", function(data) {
-                holidayData = data;
-            });
-            holidayCalendar.refreshInfoList();
+            holidayCalendar.refreshInfoList(BQCholidayData);
         });
 
         $(".page-tabs #viewHolidayCalendar-tab-3").on("click", function() {
-            $.getJSON("string/QCS-holiday.json", function(data) {
-                holidayData = data;
-            });
-            holidayCalendar.refreshInfoList();
+            holidayCalendar.refreshInfoList(QCSholidayData);
         });
     }
 });
