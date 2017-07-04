@@ -1,4 +1,4 @@
-var currentYear, prslvsCalendar, holidayCalendar, holidayData, holidayList;
+var currentYear, prslvsCalendar, holidayCalendar, QTYholidayData, BQCholidayData, QCSholidayData;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -91,7 +91,13 @@ function onBackKeyDown() {
 }
 $(document).ready(function() {
     $.getJSON("string/QTY-holiday.json", function(data) {
-        holidayData = data;
+        QTYholidayData = data;
+    });
+    $.getJSON("string/BQC-holiday.json", function(data) {
+        BQCholidayData = data;
+    });
+    $.getJSON("string/QCS-holiday.json", function(data) {
+        QCSholidayData = data;
     });
 });
 
