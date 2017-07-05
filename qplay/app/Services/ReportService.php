@@ -6,17 +6,21 @@
 namespace App\Services;
 
 use App\Repositories\RegisterRepository;
-use App\Repositories\ApiLogRespository;
+use App\Repositories\ApiLogRepository;
+use App\Repositories\SessionRepository;
 
 class ReportService
 {  
     protected $registerRepository;
     protected $apiLogRepository;
+    protected $sessionRepository;
 
-    public function __construct(RegisterRepository $registerRepository, ApiLogRespository $apiLogRepository)
+    public function __construct(RegisterRepository $registerRepository, ApiLogRepository $apiLogRepository,
+                            SessionRepository $sessionRepository)
     {
         $this->registerRepository = $registerRepository;
         $this->apiLogRepository = $apiLogRepository;
+        $this->sessionRepository = $sessionRepository;
     }
 
     /**
@@ -81,5 +85,13 @@ class ReportService
      */
     public function getCumulativeRegisterReport($timeOffset){
         return $this->registerRepository->getRegisterDetail($timeOffset);
+    }
+
+    /**
+     * 取得活躍設備與用戶資料
+     * @return mixed
+     */
+    public function getActiveRegisterReport(){
+        return $this->sessionRepository->getSessionDetail();
     }
 }

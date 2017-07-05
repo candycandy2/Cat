@@ -2,18 +2,23 @@ $(function () {
     $('#goBack').click(function(){
         window.location='../report';
     });  
-    $('.dropdown-menu > li > a').click(function(){
+    $('.dropdown-menu > li > a ,.signle-page > a').click(function(){
         $('.nav-tabs > li.active').removeClass('active');
         $('.dropdown-menu > li.active').removeClass('active');
         var openId = $(this).data('tabid');
         $(this).parents('li').addClass('active');
         setActiveTab(openId, appKey);
     });
-    setActiveTab($('#navReport>li>ul>li>a').first().data('tabid'), appKey);
-    $('#navReport>li>ul>li>a').first().parents('li').addClass('active');
+    var $defaultTab = $('#navReport>li>a').first()
+    if( $defaultTab.parents('li').hasClass('dropdown')){
+        $defaultTab = $('#navReport>li>ul>li>a').first();   
+    }
+    setActiveTab($defaultTab.data('tabid'), appKey);
+    $defaultTab.parents('li').addClass('active');
 });
 
 var setActiveTab = function(openId, appKey){
+
     switch (openId) {
         case 'api_call_frequency_report':
             iniApiCallFrequencyReport(appKey);
@@ -27,11 +32,14 @@ var setActiveTab = function(openId, appKey){
         case 'register_cumulative_report':
             iniRegisterCumulativeReport(appKey);
             break;
+        case 'summary_report':
+            iniSummaryReport(appKey);
+            break;
     }
 
-    $('.tab-content > div.active').removeClass('active').removeClass('in')
+    $('.tab-content > div.active').removeClass('active').removeClass('in');
     $('#' + openId).addClass('active').addClass('in');
-}
+};
 var iniApiCallFrequencyReport = function(appKey){
 
     var storage = ExtSessionStorage(appKey);
@@ -89,14 +97,14 @@ var iniApiCallFrequencyReport = function(appKey){
             $('.loader').hide();
         });
     } 
-}
+};
 
 var creatApiCallFrequencyChart = function(res){
     var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createCallApiDunutChart(getDonutChartOpt());
     createCallApiMultiLine(res);
     createCallApiTableChart(res,reportEndDate);
-}
+};
 
 var iniApiOperationTimeReport = function(appKey){
 
@@ -143,14 +151,14 @@ var iniApiOperationTimeReport = function(appKey){
             });
     }
 
-}
+};
 
 var creatChartOpTime = function(res){
     var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createApiOperationTimeMultiLine(res);
     createApiOperationTimeRangeLineChart(getRangeLineChartOpt());
     createOperationTimeTableChart(res,reportEndDate);
-}
+};
 
 
 var iniRegisterDailyReport = function(appKey){
@@ -211,7 +219,7 @@ var iniRegisterDailyReport = function(appKey){
             });
     }
 
-}
+};
 
 var createChartDailyRegister = function(res){
     var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
@@ -219,7 +227,7 @@ var createChartDailyRegister = function(res){
     createDailyRegisterTableChart(res, reportEndDate);
     creatDailyRegisterDunutChart(getDonutChartOpt());
     updateDailyRegisterDonutChart(res,reportEndDate)
-}
+};
 
 var iniRegisterCumulativeReport = function(appKey){
     var storage = ExtSessionStorage(appKey);
@@ -312,15 +320,85 @@ var iniRegisterCumulativeReport = function(appKey){
             });
     }
 
-}
+};
 
 var createChartCumulatvieRegister = function(res){
     var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
     createCumulativeRegisterMultiLine(res);
     createCumulativeRegisterTableChart(res, reportEndDate);
     creatCumulativeRegisterDunutChart(getDonutChartOpt());
-    updateCumulativeRegisterDonutChart(res,reportEndDate)
-}
+    updateCumulativeRegisterDonutChart(res,reportEndDate);
+};
+
+var iniSummaryReport = function(){
+
+     var mydata = {timeOffset:timeOffset},
+         mydataStr = $.toJSON(mydata),
+         registedDeviceRes={};
+         registedUserRes={};
+         activeDeviceRes = {};
+         activeUserRes = {};
+     /* 註冊設備/用戶數 */
+     $.ajax({
+      url:"reportDetail/getRegisterDailyReport",
+      type:"POST",
+      dataType:"json",
+      data:mydataStr,
+      contentType: "application/json",
+        success: function(r){
+            $.each(r,function(i,d){
+                if(!registedDeviceRes.hasOwnProperty(d.device_type)){
+                    registedDeviceRes[d.device_type] = 0;
+                }
+                var companySite = d.company +'_'+ d.site_code;
+                if(!registedUserRes.hasOwnProperty(companySite)){
+                    registedUserRes[companySite] = [];
+                }
+                if($.inArray(d.user_row_id, registedUserRes[companySite]) == -1){
+                    registedUserRes[companySite].push(d.user_row_id);
+                }
+                registedDeviceRes[d.device_type] = registedDeviceRes[d.device_type]  + d.count;
+            });
+            createSmmaryRegistedDeviceChart(registedDeviceRes);
+            createSmmaryRegistedUserChart(registedUserRes);
+        },
+        error: function (e) {
+            showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+        }
+    }).done(function() {
+        $('.loader').hide();
+    });
+    /* 活躍設備/用戶數 */
+    $.ajax({
+      url:"reportDetail/getActiveRegisterReport",
+      type:"POST",
+      dataType:"json",
+      contentType: "application/json",
+        success: function(r){
+            $.each(r,function(i,d){
+                if(!activeDeviceRes.hasOwnProperty(d.device_type)){
+                    activeDeviceRes[d.device_type] = 0;
+                }
+                var companySite = d.company +'_'+ d.site_code;
+                if(!activeUserRes.hasOwnProperty(companySite)){
+                    activeUserRes[companySite] = [];
+                }
+                if($.inArray(d.user_row_id, activeUserRes[companySite]) == -1){
+                    activeUserRes[companySite].push(d.user_row_id);
+                }
+                activeDeviceRes[d.device_type] = activeDeviceRes[d.device_type]  + d.count;
+            });
+            createSmmaryActiveDeviceChart(activeDeviceRes);
+            createSmmaryActiveUserChart(activeUserRes);
+        },
+        error: function (e) {
+            showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+        }
+    }).done(function() {
+        $('.loader').hide();
+    });
+};
+
 
 var sortTable = function(table){
     var rows = $('#' + table).find('table tbody  tr').not('.js-total').get();
@@ -347,4 +425,4 @@ var sortTable = function(table){
     $.each(rows, function(index, row) {
     $('#' + table).find('table > tbody').prepend(row);
     });
-}
+};
