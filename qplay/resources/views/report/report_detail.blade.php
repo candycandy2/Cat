@@ -9,6 +9,10 @@ $menu_name = "REPORT";
     <script src="{{asset('/js/report/basic_chart_option.js')}}"></script>
     <script src="{{asset('/js/report/report_detail.js')}}"></script>
     <script src="{{asset('/js/report/summary/summary_report.js')}}"></script>
+    <script src="{{asset('/js/report/api_report/api_call_frequency.js')}}"></script>
+    <script src="{{asset('/js/report/api_report/api_operation_time.js')}}"></script>
+    <script src="{{asset('/js/report/register_report/register_cumulative.js')}}"></script>
+    <script src="{{asset('/js/report/register_report/register_daily.js')}}"></script>
 @stop
 
 
@@ -32,8 +36,8 @@ $menu_name = "REPORT";
         <li role="presentation" class="signle-page"><a href="#tab_content_summary_report" data-toggle="tab" data-tabid="summary_report">總覽</a></li>
         <li class="dropdown" id="regist"><a class="dropdown-toggle" data-toggle="dropdown" href="#">註冊統計<span class="caret"></span></a>
             <ul class="dropdown-menu" id="register_report">
-                <li><a data-tabid="register_daily_report">每日註冊設備/用戶數</a></li>
-                <li><a data-tabid="register_cumulative_report">累計註冊設備/用戶數</a></li>
+                <li><a data-tabid="register_daily">每日註冊設備/用戶數</a></li>
+                <li><a data-tabid="register_cumulative">累計註冊設備/用戶數</a></li>
             </ul>
         </li>
         @endif
@@ -41,9 +45,8 @@ $menu_name = "REPORT";
         {{-- <li role="presentation"><a href="#tab_content_version" data-toggle="tab">用戶使用資料</a></li> --}}
         <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">API統計<span class="caret"></span></a>
             <ul class="dropdown-menu" id="api_report">
-                <li><a data-tabid="api_call_frequency_report">Api呼叫次數與人數</a></li>
-                <li><a data-tabid="api_operation_time_report">平均處理時間</a></li>
-                {{-- <li><a data-tabid="api_crash_report">當機報告</a></li> --}}
+                <li><a data-tabid="api_call_frequency">Api呼叫次數與人數</a></li>
+                <li><a data-tabid="api_operation_time">平均處理時間</a></li>
             </ul>
         </li>
     </ul>
@@ -59,21 +62,18 @@ $menu_name = "REPORT";
             
         </div>
         {{-- 註冊統計 --}}
-        <div class="tab-pane fade" id="register_daily_report">
-            @include('report.register_report.register_daily_report.report_layout')
+        <div class="tab-pane fade" id="register_daily">
+            @include('report.register_report.register_daily')
         </div>
-        <div class="tab-pane fade" id="register_cumulative_report">
-            @include('report.register_report.register_cumulative_report.report_layout')
+        <div class="tab-pane fade" id="register_cumulative">
+            @include('report.register_report.register_cumulative')
         </div>
         {{-- API統計 --}}
-        <div class="tab-pane fade" id="api_call_frequency_report">
-            @include('report.api_report.api_call_frequency_report.report_layout')
+        <div class="tab-pane fade" id="api_call_frequency">
+            @include('report.api_report.api_call_frequency')
         </div>
-        <div class="tab-pane fade" id="api_operation_time_report">
-            @include('report.api_report.api_operation_time_report.report_layout')
-        </div>
-        <div class="tab-pane fade" id="api_crash_report">
-            @include('report.api_report.api_crash_report.report_layout')
+        <div class="tab-pane fade" id="api_operation_time">
+            @include('report.api_report.api_operation_time')
         </div>
     </div>
 
