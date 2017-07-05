@@ -12,7 +12,7 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        $.mobile.changePage('#viewOverview');
+        $.mobile.changePage('#viewMain');
     },
     onOpenNotification: function(data) {
         
