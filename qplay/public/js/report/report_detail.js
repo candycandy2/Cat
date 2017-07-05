@@ -331,7 +331,6 @@ var createChartCumulatvieRegister = function(res){
 };
 
 var iniSummaryReport = function(){
-
      var mydata = {timeOffset:timeOffset},
          mydataStr = $.toJSON(mydata),
          registedDeviceRes={};
@@ -339,6 +338,10 @@ var iniSummaryReport = function(){
          activeDeviceRes = {};
          activeUserRes = {};
      /* 註冊設備/用戶數 */
+
+     $('.loader').show();
+     $('.responsive_container').hide();
+
      $.ajax({
       url:"reportDetail/getRegisterDailyReport",
       type:"POST",
@@ -359,14 +362,18 @@ var iniSummaryReport = function(){
                 }
                 registedDeviceRes[d.device_type] = registedDeviceRes[d.device_type]  + d.count;
             });
-            createSmmaryRegistedDeviceChart(registedDeviceRes);
-            createSmmaryRegistedUserChart(registedUserRes);
+           
+            createSmmaryRegistedDeviceChart(sortObjectByKey(registedDeviceRes));
+            createSmmaryRegistedUserChart(sortObjectByKey(registedUserRes));
         },
         error: function (e) {
             showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
         }
     }).done(function() {
-        $('.loader').hide();
+        $('#registed_device_block .loader').hide();
+        $('#registed_user_block .loader').hide();
+        $('#registed_device_block .responsive_container').show();
+        $('#registed_user_block .responsive_container').show();
     });
     /* 活躍設備/用戶數 */
     $.ajax({
@@ -388,14 +395,17 @@ var iniSummaryReport = function(){
                 }
                 activeDeviceRes[d.device_type] = activeDeviceRes[d.device_type]  + d.count;
             });
-            createSmmaryActiveDeviceChart(activeDeviceRes);
-            createSmmaryActiveUserChart(activeUserRes);
+            createSmmaryActiveDeviceChart(sortObjectByKey(activeDeviceRes));
+            createSmmaryActiveUserChart(sortObjectByKey(activeUserRes));
         },
         error: function (e) {
             showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
         }
     }).done(function() {
-        $('.loader').hide();
+        $('#active_device_block .loader').hide();
+        $('#active_user_block .loader').hide();
+        $('#active_device_block .responsive_container').show();
+        $('#active_user_block .responsive_container').show();
     });
 };
 
