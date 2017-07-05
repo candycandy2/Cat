@@ -1,6 +1,10 @@
 /*******************global variable function*****************/
-var htmlContent = "";
+var chartbubble,chartLandscapebubble;
+var overviewRectState = false;
+var ytdStrExist = false;
+var lastPageID = "viewOverview";
 var pageList = ["viewOverview", "viewDetail"];
+var htmlContent = "";
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
         +   '<div id="panel-header">'
@@ -42,15 +46,22 @@ $(document).one('pagebeforeshow', function(){
 });
 
 
-function zoomInChart() {
-    if(screen.width < screen.height) {
-        chartLandscape.setSize(screen.height, screen.width*0.9, false);
-    }else {
-        chartLandscape.setSize(screen.width, screen.height*0.9, false);
-    }
+//[Android]Handle the back button
+function onBackKeyDown() {
+    
 }
 
 
+//根据横竖屏设置图表容器大小
+function zoomInChart() {
+    if(screen.width < screen.height) {
+        chartLandscapebubble.setSize(screen.height, screen.width*0.9, false);
+    }else {
+        chartLandscapebubble.setSize(screen.width, screen.height*0.9, false);
+    }
+}
+
+//根据panel更换page
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {
         //loadingMask("show");
@@ -64,7 +75,24 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
-
+//横竖屏切换
+window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+    if($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel( "close");     
+    }
+    if(window.orientation === 180 || window.orientation === 0) {
+        /*if(ytdStrExist == true) {
+            $(".YTD-Str").css("display", "block");
+        }*/
+       	zoomInChart();
+    }
+    // landscape
+    if(window.orientation === 90 || window.orientation === -90 ) {
+        zoomInChart();
+        overviewRectState = false;
+        //$(".YTD-Str").css("display", "none");
+    }
+}, false);
 
 
 
