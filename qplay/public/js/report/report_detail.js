@@ -20,16 +20,16 @@ $(function () {
 var setActiveTab = function(openId, appKey){
 
     switch (openId) {
-        case 'api_call_frequency_report':
+        case 'api_call_frequency':
             iniApiCallFrequencyReport(appKey);
             break;
-        case 'api_operation_time_report':
+        case 'api_operation_time':
             iniApiOperationTimeReport(appKey);
             break;
-        case 'register_daily_report':
+        case 'register_daily':
             iniRegisterDailyReport(appKey);
             break;
-        case 'register_cumulative_report':
+        case 'register_cumulative':
             iniRegisterCumulativeReport(appKey);
             break;
         case 'summary_report':

@@ -1,43 +1,70 @@
-<div id="table_{{$REPORT_TYPE}}_1">
-    <div><label class="text-muted">2017-03-03</label></div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped report-table">
-           <thead>
-              <tr>
-                 <th rowspan="2" data-field="_id.action" class="table-title">
-                    <div class="th-inner ">API 名稱</div>
-                 </th>
-                 <th rowspan="2" data-field="1" class="table-title bg-color-blue">
-                    <div class="th-inner ">API 呼叫次數</div>
-                 </th>
-                 <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                    <div class="th-inner ">API 呼叫人數</div>
-                 </th>
-                 <th class="js-data-title table-title bg-color-blue">
-                    <div class="th-inner">API 呼叫次數_公司+地區</div>
-                 </th>
-                 <th class="js-data-title table-title bg-color-pink">
-                    <div class="th-inner">API 呼叫人數_公司+地區</div>
-                 </th>
-              </tr>
-              <tr class="js-sub-title">
-              </tr>
-           </thead>
-           <tbody class="js-row">
-           </tbody>
-        </table>
-    </div>
-</div>
-<script>
+/** Multi Line **/
+var createCallApiMultiLine = function (res){
+    var callUsersData=[],
+        callTimesData=[],
+        seriesOptions = [],
+        options = getMultiLineChartOpt();
+   
+    for (var k in res){
+        if (typeof res[k] !== 'function') {
+             var tmpTimesArr = [dateToUTC(k),res[k].times];
+             var tmpUsersArr = [dateToUTC(k),res[k].users.length];
+             callTimesData.push(tmpTimesArr);
+             callUsersData.push(tmpUsersArr);
+             callUsersData = sortObject(callUsersData);
+             callTimesData = sortObject(callTimesData);
+        }
+    }
 
+    options.series = [{
+        name:"呼叫次數",
+        data:[]
+    },{
+        name:"呼叫人數",
+        data:[]
+    }];
+
+    options.plotOptions.series.point.events = {
+        click: function (e) {
+             createCallApiTableChart(res, Highcharts.dateFormat('%Y-%m-%d',this.x));
+        }
+    };
+    createCallApiMultiLineChart(options);
+    var chart = $('#container_stock_api_call_frequency_1').highcharts();    
+    chart.series[0].setData(callTimesData);
+    chart.series[1].setData(callUsersData);
+}
+
+function createCallApiMultiLineChart(options) {
+    Highcharts.stockChart('container_stock_api_call_frequency_1', options,
+    function (chart) {
+            // apply the date pickers
+            setTimeout(function () {
+                $('input.highcharts-range-selector', $(chart.container).parent())
+                    .datepicker();
+            }, 0);       
+        }
+    );
+
+    // Set the datepicker's date format
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        onSelect: function () {
+            this.onchange();
+            this.onblur();
+        }
+    });
+}
+
+/** Table **/
 var createCallApiTableChart = function(res,date){
-    var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
+    var $tableChartDiv = $('#table_api_call_frequency_1');
     $tableChartDiv.find('.text-muted').text(date);
     $tableChartDiv.find('thead > tr.js-sub-title').empty();
     $tableChartDiv.find('tbody').empty();
     
     createCallApiTable(res,date);
-    sortTable('table_{{$REPORT_TYPE}}_1');
+    sortTable('table_api_call_frequency_1');
     //set donut chart
     if(typeof res[date] != 'undefined'){
          updateApiLogDonutChart(res[date].actions,$.trim($tableChartDiv.find('table u').eq(0).text()));
@@ -45,7 +72,7 @@ var createCallApiTableChart = function(res,date){
 }
 var createCallApiTable = function(res, date){
     
-    var $tableChartDiv = $('#table_{{$REPORT_TYPE}}_1');
+    var $tableChartDiv = $('#table_api_call_frequency_1');
     
     if(typeof res[date] == 'undefined'){
         $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
@@ -170,4 +197,89 @@ var createCallApiTable = function(res, date){
      });
 
 }
-</script>
+
+/** Donut Chart **/
+var updateApiLogDonutChart = function(r, queryAction){
+    setDonutChartData(r,'t', queryAction, $('#container_donut_chart_api_call_frequency_t').highcharts());
+    setDonutChartData(r,'d', queryAction, $('#container_donut_chart_api_call_frequency_d').highcharts());
+}
+
+var setDonutChartData = function(r,type,queryAction,chart){
+     var colors = Highcharts.getOptions().colors,
+        companySiteArray = [],
+        categories = [],
+        data = [],
+        siteData = [],
+        departmentData = [],
+        i,
+        j,
+        x = 0,
+        dataLen = data.length,
+        drillDataLen,
+        brightness,
+        sum = 0;
+
+    for (var companySite in r[queryAction]){
+        var tmpData = {
+            y: 0,
+            color: colors[x],
+            drilldown: {
+                name: companySite,
+                categories: [],
+                data: [],
+                color: colors[0]
+            }
+        }
+        var tmpSubSum = 0;
+        categories.push(companySite);
+        for (var department in r[queryAction][companySite]){
+            tmpData.drilldown.categories.push(department);
+            if(type == 't'){
+                tmpData.drilldown.data.push(r[queryAction][companySite][department].times);
+                tmpSubSum = tmpSubSum + r[queryAction][companySite][department].times;
+            }else{
+                tmpData.drilldown.data.push(r[queryAction][companySite][department].users.length);
+                tmpSubSum = tmpSubSum + r[queryAction][companySite][department].users.length;
+            }
+        }
+        sum = sum + tmpSubSum;
+        tmpData.y = tmpSubSum;
+        data.push(tmpData);
+        x++;
+    }
+
+     var dataLen = data.length;
+    // Build the data arrays
+    for (i = 0; i < dataLen; i += 1) {
+        // add site data
+        siteData.push({
+            name: categories[i],
+            y:  Math.round(data[i].y / sum * 100 * 10) / 10,
+            color: data[i].color
+        });
+
+        // add department data
+        drillDataLen = data[i].drilldown.data.length;
+        for (j = 0; j < drillDataLen; j += 1) {
+            brightness = 0.2 - (j / drillDataLen) / 5;
+            departmentData.push({
+                name: data[i].drilldown.categories[j],
+                y: Math.round(data[i].drilldown.data[j] / sum * 100 * 10) / 10,
+                color: Highcharts.Color(data[i].color).brighten(brightness).get()
+            });
+        }
+    }
+
+    title='API【'+ queryAction +'】呼叫次數比例(依部門)';
+    if(type == 'd'){
+        title='API【'+ queryAction +'】呼叫人數比例(依部門)';
+    }
+    chart.setTitle({ text: title });
+    chart.series[0].setData(siteData);
+    chart.series[1].setData(departmentData);
+}
+
+var createCallApiDunutChart = function(options){
+    Highcharts.chart('container_donut_chart_api_call_frequency_t',options);
+    Highcharts.chart('container_donut_chart_api_call_frequency_d',options);
+}
