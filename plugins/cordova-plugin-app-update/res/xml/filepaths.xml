@@ -1,0 +1,4 @@
+<paths>
+    <files-path path="download/" name="downloads" />
+    <external-path name="download" path="download/" />
+</paths>
