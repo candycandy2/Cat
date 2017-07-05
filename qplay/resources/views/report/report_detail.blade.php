@@ -8,6 +8,7 @@ $menu_name = "REPORT";
     @parent
     <script src="{{asset('/js/report/basic_chart_option.js')}}"></script>
     <script src="{{asset('/js/report/report_detail.js')}}"></script>
+    <script src="{{asset('/js/report/summary/summary_report.js')}}"></script>
 @stop
 
 
@@ -27,8 +28,8 @@ $menu_name = "REPORT";
         </div>
     </div>
     <ul class="nav nav-tabs" id="navReport">
-        {{-- <li role="presentation" class="active"><a href="#tab_content_summary_report" data-toggle="tab">總覽</a></li> --}}
         @if ($data['project_code'] == '000')
+        <li role="presentation" class="signle-page"><a href="#tab_content_summary_report" data-toggle="tab" data-tabid="summary_report">總覽</a></li>
         <li class="dropdown" id="regist"><a class="dropdown-toggle" data-toggle="dropdown" href="#">註冊統計<span class="caret"></span></a>
             <ul class="dropdown-menu" id="register_report">
                 <li><a data-tabid="register_daily_report">每日註冊設備/用戶數</a></li>
@@ -47,8 +48,9 @@ $menu_name = "REPORT";
         </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane fade" id="tab_content_summary_report">
-            @include('report.summary_report.active_users_report')
+        {{-- 總覽 --}}
+        <div class="tab-pane fade" id="summary_report">
+            @include('report.summary.summary_report')
         </div> 
         <div class="tab-pane fade" id="register_report">
             
