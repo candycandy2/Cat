@@ -12,7 +12,8 @@
 }
 
 .ui-radio {
-	width:30.86VW;
+	/*width:30.86VW;*/
+	width: 46.29VW;
 }
 
 .page-tabs > div > div > label {
@@ -35,7 +36,7 @@
 
 .page-main{
 	background-color: #fff;
-	/*margin-top: 0px !important;*/
+	margin-top: 0px !important;
 }
 
 .page-main .page-tabs{
@@ -87,40 +88,12 @@ a{
 .header-style .ui-title{
 	overflow: inherit !important;
 }
-/* panel */
-#panels{
-	width: 60%;
-	box-shadow: none;
-	background-color: #d6d6d6 !important;
-}
-#panels ul{
-	margin: 0;
-}
-.panel-title{
-	margin: 0;
-	background-color: #5E5E5E !important;
-	height: 2em;
-	line-height: 2em;	
-}
-.panel-title a{
-	color: #fff !important;
-}
-.panel-active{
-	background-color: #492f7f !important;
-	color: #fff !important;
-	border:none !important;
-	text-indent: 2VW;
-}
-.panel-normal{
-	background-color: white !important;
-	color: #0f0f0f !important;
-	border: none !important;
-	text-indent: 2VW;
-}
+
 /* navbar */
 .navbar-position{
-	width: 92.58%; 
-	margin-left: 3.71%;
+	width: 92.58VW; 
+	margin-left: 3.71VW;
+	margin-right: 3.71VW;
 	margin-top: 2VH;
 	margin-bottom: 3VH;
 }
@@ -133,12 +106,11 @@ a{
 	border-top-right-radius: 5px;
 }
 /* hightcharts */
-#chartBubble{
-	/*width: 100%;
-	height: 40VH;*/
-	border-bottom: 1px solid lightgray;
-}
 
+.fontTooltip{
+	font-size: 14px;
+	font-family: "微软雅黑";
+}
 
 /******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
@@ -383,13 +355,18 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     color: #fff;
 }
 
-/***************************************************** highcharts ************************************************/
-#viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
+/*************************************viewOverview highcharts*******************************************/
+#overview-hc-rectangle, #overview-hc-bubble-landscape, #overview-hc-rectangle-landscape{
 	display: none;
 }
+
+/***************************************************** highcharts ************************************************/
+/*#viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
+	display: none;
+}*/
 /********************************************** highcharts landscape *********************************************/
 @media all and (orientation: landscape) {
-	body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup, .viewIndex.ui-page .ui-content.page-main>form, 
+	/*body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup, .viewIndex.ui-page .ui-content.page-main>form, 
 	
 	#viewHitRate .page-date, #viewHitRate #data-title-bar, #viewHitRate div > ul, 
 	#viewHitRate #viewHitRate-hc-canvas,
@@ -408,7 +385,24 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	}
 	#viewHitRate-hc-landscape-canvas {display: inline;}
 	#viewMonthlyHitRate-hc-landscape-canvas {display: inline;}
-	#viewYTDHitRate-hc-landscape-canvas {display: inline;}
+	#viewYTDHitRate-hc-landscape-canvas {display: inline;}*/
+	
+	/*******************overview highcharts*********************/
+	#viewOverview .page-header, #viewOverview .page-tabs, #viewOverview #explainMsg{
+		display: none;
+	}
+	#viewOverview #overview-hc-bubble, #viewOverview #overview-hc-rectangle-landscape{
+		display: none;
+	}
+	#viewOverview{
+		padding-top: 1.5VH !important;
+	}
+	#overview-hc-bubble-landscape{
+		display: block;
+	}
+	#viewOverview #overview-hc-rectangle{
+		display: none;
+	}
 }
 
 @media all and (orientation: portrait) {

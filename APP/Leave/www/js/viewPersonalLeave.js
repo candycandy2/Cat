@@ -60,29 +60,27 @@ $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        /*window.APIRequest = function() {
-            
-            var self = this;
+        window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
                 loadingMask("hide");
-
                 var resultcode = data['ResultCode'];
                 //do something
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) {
+
+            };
 
             var __construct = function() {
-                //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
+                CustomAPI("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "");
             }();
-
-        };*/
+        };
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
                 renderTo: "#viewPersonalLeave #myCalendar",
-                id: "viewPersonalLeaveCalendar",
+                id: "viewPersonalLeave-calendar",
                 language: "default",
                 show_days: true,
                 weekstartson: 0,

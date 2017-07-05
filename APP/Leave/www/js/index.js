@@ -1,4 +1,5 @@
-var currentYear, prslvsCalendar, holidayCalendar, holidayData, holidayList;
+var currentYear, currentMonth, prslvsCalendar, holidayCalendar, QTYholidayData, BQCholidayData, QCSholidayData, myEmpNo;
+var queryCalendarData;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -30,6 +31,17 @@ var time = new Date(Date.now());
 window.initialSuccess = function() {
     loadingMask("show");
     currentYear = time.getFullYear();
+    currentMonth = time.getMonth() + 1;
+    myEmpNo = localStorage["emp_no"];
+    
+    queryCalendarData = "<LayoutHeader><Year>"
+                      + 2017
+                      + "</Year><Month>"
+                      + 3
+                      + "</Month><EmpNo>"
+                      + "0409132"
+                      + "</EmpNo></LayoutHeader>";
+    QueryCalendarData();
     $.mobile.changePage("#viewPersonalLeave");
 }
 
@@ -89,9 +101,16 @@ function onBackKeyDown() {
         }
     }*/
 }
+
 $(document).ready(function() {
-    $.getJSON("string/holiday.json", function(data) {
-        holidayData = data;
+    $.getJSON("string/QTY-holiday.json", function(data) {
+        QTYholidayData = data;
+    });
+    $.getJSON("string/BQC-holiday.json", function(data) {
+        BQCholidayData = data;
+    });
+    $.getJSON("string/QCS-holiday.json", function(data) {
+        QCSholidayData = data;
     });
 });
 
