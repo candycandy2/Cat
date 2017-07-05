@@ -63,8 +63,11 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
-                loadingMask("hide");
-                var resultcode = data['ResultCode'];
+                var callbackData = data['Content'][0]["Result"];
+                if(data['ResultCode'] === 1) {
+                    var day = 0;
+                    
+                }
             };
 
             this.failCallback = function(data) {
