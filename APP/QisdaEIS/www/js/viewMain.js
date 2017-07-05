@@ -1,4 +1,4 @@
-$('#viewOverview').pagecontainer({
+$('#viewMain').pagecontainer({
 	create: function (event, ui){
 		function showBubble() {
 			var options = {
@@ -100,7 +100,7 @@ $('#viewOverview').pagecontainer({
 		
 		
 		/********************************** page event *************************************/
-		$("#viewOverview").on("pagebeforeshow", function(event, ui) {
+		$("#viewMain").on("pagebeforeshow", function(event, ui) {
 			showBubble();
 			
 			if (window.orientation === 90 || window.orientation === -90 ) {

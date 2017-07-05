@@ -71,7 +71,7 @@
 	font-size: 3VW;
 	text-align: center;
 }
-/***************************** viewOverview ****************************/
+/***************************** viewMain ****************************/
 /* html */
 ul{
 	list-style-type: none;
@@ -355,7 +355,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     color: #fff;
 }
 
-/*************************************viewOverview highcharts*******************************************/
+/*************************************viewMain highcharts*******************************************/
 #overview-hc-rectangle, #overview-hc-bubble-landscape, #overview-hc-rectangle-landscape{
 	display: none;
 }
@@ -388,19 +388,19 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewYTDHitRate-hc-landscape-canvas {display: inline;}*/
 	
 	/*******************overview highcharts*********************/
-	#viewOverview .page-header, #viewOverview .page-tabs, #viewOverview #explainMsg{
+	#viewMain .page-header, #viewMain .page-tabs, #viewMain #explainMsg{
 		display: none;
 	}
-	#viewOverview #overview-hc-bubble, #viewOverview #overview-hc-rectangle-landscape{
+	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle-landscape{
 		display: none;
 	}
-	#viewOverview{
+	#viewMain{
 		padding-top: 1.5VH !important;
 	}
 	#overview-hc-bubble-landscape{
 		display: block;
 	}
-	#viewOverview #overview-hc-rectangle{
+	#viewMain #overview-hc-rectangle{
 		display: none;
 	}
 }
