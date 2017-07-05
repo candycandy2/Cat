@@ -65,7 +65,6 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 loadingMask("hide");
                 var resultcode = data['ResultCode'];
-                //do something
             };
 
             this.failCallback = function(data) {
@@ -88,6 +87,7 @@ $("#viewPersonalLeave").pagecontainer({
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
                 },
+                markToday: true
             });
         });
 

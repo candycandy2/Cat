@@ -34,13 +34,14 @@ window.initialSuccess = function() {
     currentMonth = time.getMonth() + 1;
     myEmpNo = localStorage["emp_no"];
     
-    queryCalendarData = "<LayoutHeader><Year>"
-                      + 2017
-                      + "</Year><Month>"
-                      + 3
-                      + "</Month><EmpNo>"
-                      + "0409132"
-                      + "</EmpNo></LayoutHeader>";
+    // queryCalendarData = "<LayoutHeader><Year>"
+    //                   + currentYear
+    //                   + "</Year><Month>"
+    //                   + currentMonth
+    //                   + "</Month><EmpNo>"
+    //                   + myEmpNo
+    //                   + "</EmpNo></LayoutHeader>";
+    queryCalendarData = "<LayoutHeader><Year>2017</Year><Month>3</Month><EmpNo>0409132</EmpNo></LayoutHeader>";
     QueryCalendarData();
     $.mobile.changePage("#viewPersonalLeave");
 }

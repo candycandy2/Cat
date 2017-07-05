@@ -1,4 +1,9 @@
 {
+  "_from": "cordova-plugin-qpush@~1.0.0",
+  "_id": "cordova-plugin-qpush@~1.0.0",
+  "_inBundle": false,
+  "_location": "/cordova-plugin-qpush",
+  "_phantomChildren": {},
   "name": "cordova-plugin-qpush",
   "version": "1.0.0",
   "description": "QPush for cordova plugin",

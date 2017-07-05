@@ -1,4 +1,9 @@
 {
+  "_from": "cordova-plugin-qlogin@~1.0.0",
+  "_id": "cordova-plugin-qlogin@~1.0.0",
+  "_inBundle": false,
+  "_location": "/cordova-plugin-qlogin",
+  "_phantomChildren": {},
   "name": "cordova-plugin-qlogin",
   "version": "1.0.0",
   "description": "QPlay QLogin Plugin",

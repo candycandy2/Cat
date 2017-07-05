@@ -18,15 +18,27 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
+            <provider
+              android:name="android.support.v4.content.FileProvider"
+              android:authorities="${applicationId}.provider"
+              android:exported="false"
+              android:grantUriPermissions="true">
+              <meta-data
+                  android:name="android.support.FILE_PROVIDER_PATHS"
+                  android:resource="@xml/filepaths"/>
+            </provider>
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
         </config-file>
+
+        <framework src="com.android.support:support-v4:24.1.1+" />
 
         <source-file src="src/android" target-dir="src/com/vaenow/appupdate"/>
         <source-file src="res/values/appupdate_strings.xml" target-dir="res/values"/>
         <source-file src="res/values-en/appupdate_strings.xml" target-dir="res/values-en"/>
         <source-file src="res/values-zh/appupdate_strings.xml" target-dir="res/values-zh"/>
         <source-file src="res/layout/appupdate_progress.xml" target-dir="res/layout"/>
+        <source-file src="res/xml/filepaths.xml" target-dir="res/xml"/>
     </platform>
 </plugin>
