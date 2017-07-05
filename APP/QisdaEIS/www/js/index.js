@@ -2,15 +2,15 @@
 var chartbubble,chartLandscapebubble;
 var overviewRectState = false;
 var ytdStrExist = false;
-var lastPageID = "viewOverview";
-var pageList = ["viewOverview", "viewDetail"];
+var lastPageID = "viewMain";
+var pageList = ["viewMain", "viewDetail"];
 var htmlContent = "";
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
         +   '<div id="panel-header">'
         +       '<span class="panel-text" style="line-height:7.5VH;">AR Overdue Analysis</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewOverview">'
+        +   '<div class="panel-content" id="mypanelviewMain">'
         +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;&nbsp;AR Overdue Overview</span>'
         +   '</div>'
         +   '<div class="panel-content" id="mypanelviewDetail">'
@@ -22,11 +22,11 @@ var panel = htmlContent
 $(document).one('pagebeforeshow', function(){
 	$.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #mypanelviewOverview").css("background", "#503f81");
-    $("#mypanel #mypanelviewOverview").css("color", "#fff");
+    $("#mypanel #mypanelviewMain").css("background", "#503f81");
+    $("#mypanel #mypanelviewMain").css("color", "#fff");
 
-    $("#mypanel #mypanelviewOverview").on("click", function() {
-        changePageByPanel("viewOverview");
+    $("#mypanel #mypanelviewMain").on("click", function() {
+        changePageByPanel("viewMain");
     });
 
     $("#mypanel #mypanelviewDetail").on("click", function() {
@@ -37,7 +37,7 @@ $(document).one('pagebeforeshow', function(){
         $("#mypanel").panel("open");
     });
 
-    $("#viewOverview").on("swiperight", function(event) {
+    $("#viewMain").on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
             $("#mypanel").panel( "open");
         }
