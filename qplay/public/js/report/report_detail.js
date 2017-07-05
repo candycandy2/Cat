@@ -362,9 +362,8 @@ var iniSummaryReport = function(){
                 }
                 registedDeviceRes[d.device_type] = registedDeviceRes[d.device_type]  + d.count;
             });
-           
-            createSmmaryRegistedDeviceChart(sortObjectByKey(registedDeviceRes));
-            createSmmaryRegistedUserChart(sortObjectByKey(registedUserRes));
+            createSmmaryRegistedDeviceChart(registedDeviceRes);
+            createSmmaryRegistedUserChart(registedUserRes);
         },
         error: function (e) {
             showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
@@ -395,8 +394,8 @@ var iniSummaryReport = function(){
                 }
                 activeDeviceRes[d.device_type] = activeDeviceRes[d.device_type]  + d.count;
             });
-            createSmmaryActiveDeviceChart(sortObjectByKey(activeDeviceRes));
-            createSmmaryActiveUserChart(sortObjectByKey(activeUserRes));
+            createSmmaryActiveDeviceChart(activeDeviceRes);
+            createSmmaryActiveUserChart(activeUserRes);
         },
         error: function (e) {
             showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
