@@ -10,7 +10,7 @@ use DB;
 use DateTime;
 use App\lib\CommonUtil;
 
-class ApiLogRespository
+class ApiLogRepository
 {
 
     protected $apiLog;

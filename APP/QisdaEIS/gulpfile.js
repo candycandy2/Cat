@@ -21,18 +21,17 @@ var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
 
-env.set({APP_NAME: "QChat"});
+env.set({APP_NAME: "QisdaEIS"});
 
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
 
 /*-----------------------------------------edit config.xml------------------------------------------*/
-var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appqchat" + process.env.appNameDecorate + "</string>";
+var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appqisdaeis" + process.env.appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appqchat' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                    '<widget id="com.qplay.appqisdaeis' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
                         'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
-                        //set APP Name
                         '<name>' + process.env.APP_NAME + '</name>' +
                         '<description>' +
                             'A sample Apache Cordova application that responds to the deviceready event.' +
@@ -41,7 +40,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
-                        '<preference name="orientation" value="portrait" />' +
+                        '<preference name="Orientation" value="default" />' +
                         '<access origin="*" />' +
                         '<access origin="tel:*" launch-external="yes" />' +
                         '<allow-navigation href="*" />' +
@@ -75,29 +74,27 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  'cordova plugin remove jmessage-phonegap-plugin',
-  'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
-  'cordova plugin remove cordova-plugin-inappbrowser',
-  'cordova plugin remove cordova-plugin-camera',
-  'cordova plugin remove cordova-plugin-ios-camera-permissions',
+  // 'cordova plugin remove cordova-plugin-device',
+  // 'cordova plugin remove cordova-plugin-console',
+  // 'cordova plugin remove cordova-plugin-appversion',
+  // 'cordova plugin remove cordova-plugin-customurlscheme',
+  // 'cordova plugin remove cordova-plugin-qsecurity',
+  // 'cordova plugin remove cordova-plugin-whitelist',
+  // 'cordova plugin remove cordova-plugin-inappbrowser',
   //'cordova plugin remove cordova-plugin-file',
-  'cordova platform rm ios',
+  // 'cordova platform rm ios',
   'cordova platform rm android',
-  'cordova platform add ios',
+  // 'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-appversion',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqchat' + process.env.appNameDecorate,
+  //'cordova plugin add cordova-plugin-console',
+  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update',
+  'cordova plugin add cordova-plugin-android-permissions',
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqisdaeis' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
-  'cordova plugin add cordova-plugin-inappbrowser',
-  'cordova plugin add cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions --save',
-  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -105,13 +102,14 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device@1.1.4',
-  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appqchat' + process.env.appNameDecorate,
+  //'cordova plugin add cordova-plugin-console',
+  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update',
+  'cordova plugin add cordova-plugin-android-permissions',
+  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appqisdaeis' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
-  'cordova plugin add cordova-plugin-inappbrowser',
-  'cordova plugin add cordova-plugin-camera@2.3.1',
-  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save',
-  'cordova plugin add jmessage-phonegap-plugin@2.4.9 --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 

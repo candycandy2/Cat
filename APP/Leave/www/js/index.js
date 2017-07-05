@@ -1,10 +1,11 @@
-var currentYear, holidayData, holidayList;
+var currentYear, currentMonth, prslvsCalendar, holidayCalendar, QTYholidayData, BQCholidayData, QCSholidayData, myEmpNo;
+var queryCalendarData;
 var personalLeaveDateExist = true;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewBackLeaveQuery", "viewCalendar"];
+var pageList = ["viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var htmlContent = "";
 var panel = htmlContent
@@ -21,7 +22,7 @@ var panel = htmlContent
         // +   '<div class="panel-content" id="mypanelviewBackLeaveQuery">'
         // +       '<span class="panel-text" style="line-height:7.5VH;">銷假單查詢</span>'
         // +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewCalendar">'
+        +   '<div class="panel-content" id="mypanelviewHolidayCalendar">'
         +       '<span class="panel-text" style="line-height:7.5VH;">2017 行事曆</span>'
         +   '</div>'
         +'</div>';
@@ -30,6 +31,17 @@ var time = new Date(Date.now());
 window.initialSuccess = function() {
     loadingMask("show");
     currentYear = time.getFullYear();
+    currentMonth = time.getMonth() + 1;
+    myEmpNo = localStorage["emp_no"];
+    
+    queryCalendarData = "<LayoutHeader><Year>"
+                      + 2017
+                      + "</Year><Month>"
+                      + 3
+                      + "</Month><EmpNo>"
+                      + "0409132"
+                      + "</EmpNo></LayoutHeader>";
+    QueryCalendarData();
     $.mobile.changePage("#viewPersonalLeave");
 }
 
@@ -55,8 +67,8 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewBackLeaveQuery");
     });
 
-    $("#mypanel #mypanelviewCalendar").on("click", function() {
-        changePageByPanel("viewCalendar");
+    $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
+        changePageByPanel("viewHolidayCalendar");
     });
 
     $(".menu-btn").on("click", function() {
@@ -89,9 +101,16 @@ function onBackKeyDown() {
         }
     }*/
 }
+
 $(document).ready(function() {
-    $.getJSON("string/holiday.json", function(data) {
-        holidayData = data;
+    $.getJSON("string/QTY-holiday.json", function(data) {
+        QTYholidayData = data;
+    });
+    $.getJSON("string/BQC-holiday.json", function(data) {
+        BQCholidayData = data;
+    });
+    $.getJSON("string/QCS-holiday.json", function(data) {
+        QCSholidayData = data;
     });
 });
 

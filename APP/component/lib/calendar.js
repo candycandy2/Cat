@@ -1,5 +1,5 @@
 /**
- * Zabuto Calendar
+ * Calendar
  *
  * Dependencies
  * - jQuery (2.0.3)
@@ -15,15 +15,37 @@ if (typeof jQuery == 'undefined') {
  * @param options
  * @returns {*}
  */
-$.fn.calendar = function (options) {
-    var opts = $.extend({}, $.fn.calendar_defaults(), options);
-    var languageSettings = $.fn.calendar_language(opts.language);
+function Calendar(options) {
+    var $calendarElement, _id, _year, _month, _infoData;
+    var _showInfoList = false;
+    var opts = $.extend({}, calendar_defaults(), options);
+    var languageSettings = calendar_language(opts.language);
     opts = $.extend({}, opts, languageSettings);
 
-    var $calendarElement = $(this);
-    $calendarElement.attr('id', "calendar");
+    if(opts.renderTo !== undefined) {
+        $calendarElement = $(opts.renderTo);
+    }else {
+        throw new Error("Calendar must be rendered to the specific element!");
+    }
 
-    $calendarElement.data('id', opts.id);
+    if(opts.id !== "calendar_ID") {
+        _id = opts.id; 
+    }else {
+        throw new Error("There isn't an id in this Calendar!");
+    }
+
+    if(opts.showInfoListTo !== undefined) {
+        _showInfoList = true;
+        if(opts.infoData !== undefined) {
+            _infoData = opts.infoData;
+        }else {
+            throw new Error("You must assign the infoData for this calendar.");       
+        }
+    }
+
+    $calendarElement.attr('id', _id);
+    $calendarElement.addClass("QPlayCalendar");
+
     $calendarElement.data('initYear', opts.year);
     $calendarElement.data('initMonth', opts.month);
     $calendarElement.data('monthLabels', opts.month_labels);
@@ -47,6 +69,10 @@ $.fn.calendar = function (options) {
         var dateInitYear = parseInt($calendarElement.data('initYear'));
         var dateInitMonth = parseInt($calendarElement.data('initMonth')) - 1;
         var dateInitObj = new Date(dateInitYear, dateInitMonth, 1, 0, 0, 0, 0);
+        
+        _year = dateInitObj.getFullYear();
+        _month = dateInitObj.getMonth();
+        
         $calendarElement.data('initDate', dateInitObj);
 
         $tableObj = $('<table class="table"></table>');
@@ -54,7 +80,7 @@ $.fn.calendar = function (options) {
         $tableObj = drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
         $legendObj = drawLegend($calendarElement);
         $dateScroller = prependMonthHeader($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
-
+        
         $calendarElement.append($dateScroller);
         $calendarElement.append($legendObj);
         $calendarElement.append($tableObj);
@@ -63,9 +89,13 @@ $.fn.calendar = function (options) {
         if (false !== jsonData) {
             checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
         }
-        $("#viewCalendar .infoList").hide();
-        if($calendarElement.data("id") === "viewCalendar" && holidayData[dateInitObj.getMonth()]["status"] == 1) {
-            calendarHolidayInfo(dateInitObj.getMonth());
+
+        if(_showInfoList) {
+            if(_infoData[dateInitObj.getMonth()]["status"] == 1) {
+                showCalendarHolidayInfo(dateInitObj.getMonth());
+            }else {
+                $(opts.showInfoListTo).hide();
+            }
         }
     }
 
@@ -110,7 +140,7 @@ $.fn.calendar = function (options) {
                             case 'img-text':
                                 if (itemLabel !== '') {
                                     var itemBadge = '';
-                                    if ('badge' in item) {
+                                    if ('classname' in item) {
                                         if (typeof(item.classname) === 'undefined') {
                                             var badgeClassName = 'badge-event';
                                         } else {
@@ -179,9 +209,7 @@ $.fn.calendar = function (options) {
             prevIsValid = checkMonthLimit($calendarElement.data('showPrevious'), true);
         }
 
-        $currMonthLabel.data($calendarElement.data("id") + "year", year);
-        $currMonthLabel.data($calendarElement.data("id") + "month", month);
-        $prevMonthNav.attr('id', $calendarElement.attr('id') + '-navPrev');
+        $prevMonthNav.addClass($calendarElement.attr('class') + '-navPrev');
         $prevMonthNav.data('navigation', 'prev');
         
         if (prevIsValid !== false) {
@@ -189,20 +217,20 @@ $.fn.calendar = function (options) {
                 $prevMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $prevMonthNav.click(function (e) {
-                var prevYear = $currMonthLabel.data($calendarElement.data("id") + "year");
-                var prevMonth = $currMonthLabel.data($calendarElement.data("id") + "month") - 1;
-                if(prevMonth >= 0) {
-                    $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "100");
-                    $currMonthLabel.data($calendarElement.data("id") + "year", prevYear);
-                    $currMonthLabel.data($calendarElement.data("id") + "month", prevMonth);
-                    drawTable($calendarElement, $tableObj, prevYear, prevMonth);
-                    $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[prevMonth] + ' ' + prevYear);
-                    if(prevMonth == 0) {
-                         $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "0");
+                if((_month - 1) >= 0) {
+                    _month--;
+                    drawTable($calendarElement, $tableObj, _year, _month);
+                    $("#" + _id + " #right-navigation").css("opacity", "100");
+                    $("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    if(_month == 0) {
+                         $("#" + _id + " #left-navigation").css("opacity", "0");
                     }
-                    $("#viewCalendar .infoList").hide();
-                    if($calendarElement.data("id") === "viewCalendar" && holidayData[prevMonth]["status"] == 1) {
-                        calendarHolidayInfo(prevMonth);
+                    if(_showInfoList) {
+                        if(_infoData[_month]["status"] == 1) {
+                            showCalendarHolidayInfo(_month);
+                        }else {
+                            $(opts.showInfoListTo).hide();    
+                        }
                     }
                 }
             });
@@ -213,27 +241,27 @@ $.fn.calendar = function (options) {
             nextIsValid = checkMonthLimit($calendarElement.data('showNext'), false);
         }
 
-        $nextMonthNav.attr('id', $calendarElement.attr('id') + '-navNext');
+        $nextMonthNav.addClass($calendarElement.attr('class') + '-navNext');
         $nextMonthNav.data('navigation', 'next');
         if (nextIsValid !== false) {
             if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                 $nextMonthNav.click($calendarElement.data('actionNavFunction'));
             }
             $nextMonthNav.click(function (e) {
-                var nextYear = $currMonthLabel.data($calendarElement.data("id") + "year");
-                var nextMonth = $currMonthLabel.data($calendarElement.data("id") + "month") + 1;
-                if(nextMonth <= 11) {
-                    $("#" + $calendarElement.data("id") + " #left-navigation").css("opacity", "100");
-                    $currMonthLabel.data($calendarElement.data("id") + "year", nextYear);
-                    $currMonthLabel.data($calendarElement.data("id") + "month", nextMonth);
-                    drawTable($calendarElement, $tableObj, nextYear, nextMonth);
-                    $("#" + $calendarElement.data("id") + " #dateTitle span").html(monthLabels[nextMonth] + ' ' + nextYear);
-                    if(nextMonth == 11) {
-                        $("#" + $calendarElement.data("id") + " #right-navigation").css("opacity", "0");
+                if((_month + 1) <= 11) {
+                    _month++;
+                    drawTable($calendarElement, $tableObj, _year, _month);
+                    $("#" + _id + " #left-navigation").css("opacity", "100");
+                    $("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    if(_month == 11) {
+                        $("#" + _id + " #right-navigation").css("opacity", "0");
                     }
-                    $("#viewCalendar .infoList").hide();
-                    if($calendarElement.data("id") === "viewCalendar" && holidayData[nextMonth]["status"] == 1) {
-                        calendarHolidayInfo(nextMonth);
+                    if(_showInfoList) {
+                        if(_infoData[_month]["status"] == 1) {
+                            showCalendarHolidayInfo(_month);
+                        }else {
+                            $(opts.showInfoListTo).hide();
+                        } 
                     }
                 }
             });
@@ -310,8 +338,8 @@ $.fn.calendar = function (options) {
 
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
                     $dowElement.data('hasEvent', false);
-
-                    if($calendarElement.data("id") === "viewPersonalLeave") {
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if(_id === "viewPersonalLeave-calendar") {
                         if(currDayOfMonth == 12 || currDayOfMonth == 13) {
                             $dayElement.parent('#' + dateId).addClass("day-selected");
                         }
@@ -320,6 +348,7 @@ $.fn.calendar = function (options) {
                             $dayElement.parent('#' + dateId).addClass("day-select");
                         }
                     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     if(dow == 0 || dow == 6) {
                         $dowElement.addClass("weekend");
                     }
@@ -486,22 +515,23 @@ $.fn.calendar = function (options) {
     }
 
     /* ----- Helper functions ----- */
-    function calendarHolidayInfo(month) {
-        var dateArray = holidayData[month]["holiday"]["date"].split(",");
-        var strArray = holidayData[month]["holiday"]["str"];
+    function showCalendarHolidayInfo(month) {
+        var holidayList = "";
+        var dateArray = _infoData[month]["holiday"]["date"].split(",");
+        var strArray = _infoData[month]["holiday"]["str"];
+        $(opts.showInfoListTo).empty();
         for(var i=0; i<dateArray.length; i++) {
-            $("#viewCalendar #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+            $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
         }
-        holidayList = "";
         for(var i=0; i<strArray.length; i++) {
             holidayList +=  '<li>'
                          +    '<span>'
                          +    strArray[i]
                          +    '</span>'
-                         +  '</li>'
+                         +  '</li>';
         }
-        $("#viewCalendar .infoList").show();
-        $("#viewCalendar .infoList > ul").html($(holidayList)).enhanceWithin();
+        $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
+        $(opts.showInfoListTo).show();
     }
 
     function isToday(year, month, day) {
@@ -575,7 +605,18 @@ $.fn.calendar = function (options) {
         }
         return false;
     }
-    return this;
+
+    this.refreshInfoList = function(data) {
+        _infoData = data;
+        drawTable($calendarElement, $tableObj, _year, _month);
+        if(_showInfoList) {
+            if(_infoData[_month]["status"] == 1) {
+                showCalendarHolidayInfo(_month);
+            }else {
+                $(opts.showInfoListTo).hide();
+            }
+        }
+    }
 };
 
 /**
@@ -597,11 +638,12 @@ $.fn.calendar = function (options) {
  *   action:            function
  *   action_nav:        function
  */
-$.fn.calendar_defaults = function () {
+function calendar_defaults() {
     var now = new Date();
     var year = now.getFullYear();
     var month = now.getMonth() + 1;
     var settings = {
+        renderTo: undefined,
         id: "calendar_ID",
         language: false,
         year: year,
@@ -617,7 +659,9 @@ $.fn.calendar_defaults = function () {
         ajax: false,
         legend: false,
         action: false,
-        action_nav: false
+        action_nav: false,
+        infoData: undefined,
+        showInfoListTo: undefined,
     };
     return settings;
 };
@@ -628,7 +672,7 @@ $.fn.calendar_defaults = function () {
  * @param lang
  * @returns {{month_labels: Array, dow_labels: Array}}
  */
-$.fn.calendar_language = function (lang) {
+function calendar_language(lang) {
     if (typeof(lang) == 'undefined' || lang === false) {
         lang = 'default';
     }

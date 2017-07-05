@@ -193,7 +193,6 @@ var getDonutChartOpt = function(){
 }
 
 var getRangeLineChartOpt = function(){
-
     return{
             title: {
                 text: ''
@@ -251,4 +250,49 @@ var getRangeLineChartOpt = function(){
                 }
             },
         };
+}
+
+var getSemiDonutChartOpt = function(){
+    return {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false,
+            marginTop: -75,
+        },
+        title: {
+            text: '',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 15
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                size: '100%',
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '75%']
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: []
+        }],
+        lang: {
+            noData: "沒有匹配的記錄"
+        }
+    };
 }

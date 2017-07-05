@@ -99,3 +99,13 @@ td.grid_warp_column {
    margin-left: auto;
    margin-right: auto;
 }
+@media only screen and (max-width: 400px) {
+    .responsive_container{
+        height: 200px;
+    }
+}
+@media only screen and (min-width: 400px) {
+    .responsive_container{
+        height: 400px;
+    }
+}

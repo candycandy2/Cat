@@ -2,19 +2,15 @@
 	{
 		"month" : "1",
 		"holiday" : {
-			"date" : "2, 27, 28, 29, 30, 31",
-			"str" : [
-				"- 1/1開國紀念日逢週日 ‧ 1/2補假一日",
-				"- 1/28初一逢週六 ‧ 1/31補假一日",				
-				"- 1/29初二逢週日 ‧ 2/1補假一日"
-			]
+			"date" : "1,2,3",
+			"str" : ["BQCtest1"]
 		},
 		"status" : 1
 	}, {
 		"month" : "2",
 		"holiday" : {
-			"date" : "1, 27, 28",
-			"str" : ["- 2/28和平紀念日逢週二 ‧ 2/27調整休假"]
+			"date" : "4,10,5",
+			"str" : ["BQCtest2"]
 		},
 		"status" : 1
 	}, {
@@ -27,20 +23,17 @@
 	}, {
 		"month" : "4",
 		"holiday" : {
-			"date" : "3, 4",
-			"str" : ["- 4/4清明節與婦幼節同一日 ‧ 4/3補假一日"]
+			"date" : "",
+			"str" : []
 		},
-		"status" : 1
+		"status" : 0
 	}, {
 		"month" : "5",
 		"holiday" : {
-			"date" : "1, 29, 30",
-			"str" : [
-				"- 5/1 勞動節",
-				"- 5/30端午節逢週二 ‧ 5/29調整休假"
-			]
+			"date" : "",
+			"str" : []
 		},
-		"status" : 1
+		"status" : 0
 	}, {
 		"month" : "6",
 		"holiday" : {
@@ -58,8 +51,8 @@
 	}, {
 		"month" : "8",
 		"holiday" : {
-			"date" : "",
-			"str" : []
+			"date" : "13,    25, 19",
+			"str" : ["BQCtest8","BQCtest8","BQCtest8","BQCtest8"]
 		},
 		"status" : 0
 	}, {
@@ -72,13 +65,10 @@
 	}, {
 		"month" : "10",
 		"holiday" : {
-			"date" : "4, 9, 10",
-			"str" : [
-				"- 10/4 中秋節",
-				"- 10/10 國慶日逢週二 ‧ 10/09調整休假"
-			]
+			"date" : "",
+			"str" : []
 		},
-		"status" : 1
+		"status" : 0
 	}, {
 		"month" : "11",
 		"holiday" : {
@@ -89,9 +79,9 @@
 	}, {
 		"month" : "12",
 		"holiday" : {
-			"date" : "",
-			"str" : []
+			"date" : "15,20,31",
+			"str" : ["BQCtest12", "BQCtest12"]
 		},
-		"status" : 0
+		"status" : 1
 	}
 ]

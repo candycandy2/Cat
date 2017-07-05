@@ -84,7 +84,6 @@ var setDonutChartData = function(r,type,queryAction,chart){
     if(type == 'd'){
         title='API【'+ queryAction +'】呼叫人數比例(依部門)';
     }
-
     chart.setTitle({ text: title });
     chart.series[0].setData(siteData);
     chart.series[1].setData(departmentData);
