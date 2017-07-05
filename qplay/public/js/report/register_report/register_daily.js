@@ -1,3 +1,72 @@
+
+var iniRegisterDailyReport = function(appKey){
+    var storage = ExtSessionStorage(appKey);
+    $('.loader').show();
+    var mydata = {timeOffset:timeOffset},
+        mydataStr = $.toJSON(mydata),
+        res={};
+    if(storage("RegisterDaily")){
+        $('.loader').hide();
+        res =JSON.parse(storage("RegisterDaily"));
+        createChartDailyRegister(res);
+    }else{
+        
+        $.ajax({
+              url:"reportDetail/getRegisterDailyReport",
+              type:"POST",
+              dataType:"json",
+              data:mydataStr,
+              contentType: "application/json",
+                success: function(r){
+
+                    $.each(r,function(i,d){
+                        if(!res.hasOwnProperty(d.register_date)){
+                            res[d.register_date] = {'count' : 0, 'users' : [], 'device_type':{}};
+                        }
+                        res[d.register_date].count =  parseInt(res[d.register_date].count) + parseInt(d.count);
+                      
+                        if($.inArray(d.user_row_id,  res[d.register_date].users) == -1){
+                            res[d.register_date].users.push(d.user_row_id);
+                        }
+
+                        if(!res[d.register_date].device_type.hasOwnProperty(d.device_type)){
+                            res[d.register_date].device_type[d.device_type] = {};
+                        }
+                        var actionArray =  res[d.register_date].device_type[d.device_type];
+                        if(!actionArray.hasOwnProperty(d.company +'_'+ d.site_code)){
+                            actionArray[d.company +'_'+ d.site_code] = {};
+                        }
+                        var companySiteArray =  actionArray[d.company +'_'+ d.site_code];
+                        if(!companySiteArray.hasOwnProperty(d.department)){
+                            companySiteArray[d.department] = {'count' : 0, 'users' : []};
+                        }
+                        var departmentArray =  companySiteArray[d.department];
+                        departmentArray.count =  parseInt(departmentArray.count) + parseInt(d.count);
+                        if($.inArray(d.user_row_id,  departmentArray.users) == -1){
+                            departmentArray.users.push(d.user_row_id);
+                        }
+                    });
+                    storage("RegisterDaily",JSON.stringify(res));
+                    createChartDailyRegister(res);
+                },
+                error: function (e) {
+                    showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+                }
+            }).done(function() {
+                $('.loader').hide();
+            });
+    }
+
+};
+
+var createChartDailyRegister = function(res){
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
+    createDailyRegisterMultiLine(res);
+    createDailyRegisterTableChart(res, reportEndDate);
+    creatDailyRegisterDunutChart(getDonutChartOpt());
+    updateDailyRegisterDonutChart(res,reportEndDate)
+};
+
 /*Multi Line*/
 var createDailyRegisterMultiLine = function (res){
 

@@ -1,3 +1,58 @@
+var iniApiOperationTimeReport = function(appKey){
+
+    var storage = ExtSessionStorage(appKey);
+    $('.loader').show();
+    var mydata = {app_key:appKey,timeOffset:timeOffset},
+        mydataStr = $.toJSON(mydata),
+        res={};
+    if(storage("apiOperationTime")){
+        $('.loader').hide();
+        res =JSON.parse(storage("apiOperationTime"));
+        creatChartOpTime(res);
+    }else{
+        
+        $.ajax({
+              url:"reportDetail/getApiOperationTimeReport",
+              type:"POST",
+              dataType:"json",
+              contentType: "application/json",
+              data:mydataStr,
+                success: function(r){
+                    $.each(r,function(i,data){
+                        var d = data._id;
+                        if(!res.hasOwnProperty(d.created_at)){
+                             res[d.created_at] = {};
+                        }
+                        if(!res[d.created_at].hasOwnProperty(d.action)){
+                            res[d.created_at][d.action] = {'max' : 0, 'min' : 0, 'avg':0};
+                        }
+                        var actionArray =  res[d.created_at][d.action];
+                        actionArray.max = data.max * 1000;
+                        actionArray.min = data.min * 1000;
+                        actionArray.avg = data.avg * 1000;
+                        actionArray.count = data.count;
+                    });
+                    storage("apiOperationTime",JSON.stringify(res));
+                    creatChartOpTime(res);
+                },
+                error: function (e) {
+                    showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+                }
+            }).done(function() {
+                $('.loader').hide();
+            });
+    }
+
+};
+
+var creatChartOpTime = function(res){
+    var reportEndDate = ($.isEmptyObject(res))?"":Object.keys(res).sort()[Object.keys(res).length-1];
+    createApiOperationTimeMultiLine(res);
+    createApiOperationTimeRangeLineChart(getRangeLineChartOpt());
+    createOperationTimeTableChart(res,reportEndDate);
+};
+
+
 /*Multi Line*/
 var createApiOperationTimeMultiLine = function (res){
     var OperationTimeData=[],
