@@ -9,6 +9,9 @@ $("#viewHolidayCalendar").pagecontainer({
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
+                markWeekend: true,
+                infoData: QTYholidayData,
+                showInfoListTo: "#viewHolidayCalendar .infoList",
                 nav_icon: {
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
@@ -23,9 +26,7 @@ $("#viewHolidayCalendar").pagecontainer({
                         label: "放假節日",
                         classname: "holiday-icon"
                     }
-                ],
-                infoData: QTYholidayData,
-                showInfoListTo: "#viewHolidayCalendar .infoList"
+                ]
             });
         });
 

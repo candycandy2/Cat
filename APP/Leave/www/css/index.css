@@ -241,3 +241,12 @@
     background-color: #503f81;
     color: #fff;
 }
+
+/********************************************** Calendar *********************************************/
+.leave {
+    background-image: url("../img/event_date.png");
+    background-repeat: no-repeat;
+    background-size: 7.165VW;
+    background-position-x: 2.67VW;
+    background-position-y: 1.53VW;
+}
