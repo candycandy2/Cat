@@ -16,7 +16,7 @@ $REPORT_TYPE = 'api_operation_time';
         <div class="col-lg-12 col-md-12 col-xs-12" id="">
             <div id="container_stock_{{$REPORT_TYPE}}_1" style="height: 400px; min-width: 310px"></div>
             <div id="report" style="font: 0.8em sans-serif"></div>
-        </div>)
+        </div>
     </div>
 </div>
 
