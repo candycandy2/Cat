@@ -103,5 +103,4 @@ public class DownloadHandler extends Handler {
         //close dialog ?
         mDownloadDialog.dismiss();
     }
-    }
 }
