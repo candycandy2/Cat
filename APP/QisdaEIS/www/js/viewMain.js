@@ -64,8 +64,10 @@ $('#viewMain').pagecontainer({
 			            },
 			            point: {
 			            	events: {
-			            		click: function(){
-			            			$('#overview-hc-rectangle').css('display', 'block');
+			            		click: function(event){
+			            			console.log(this.x+","+this.y);
+			            			hcHidden = true;
+			            			showRect();
 			            			
 			            		}
 			            	}
@@ -78,7 +80,7 @@ $('#viewMain').pagecontainer({
 			            { x: 86.5, y: 95, z: 35, name: 'TF', product: 'LTV(LG/Philips)' },
 			            { x: 80.8, y: 71, z: 35, name: 'TT', product: 'LTV(LG/Philips)' },
 			            { x: 76, y: 79, z: 35, name: 'TN', product: 'LTV(LG/Philips)' },
-			            { x: 80.3, y: 60, z: 35, name: 'TC', product: 'LTV(LG/Philips)' },
+			            { x: 80.3, y: 53, z: 35, name: 'TC', product: 'LTV(LG/Philips)' },
 			            { x: 78.4, y: 25, z: 35, name: 'TU', product: 'LTV(LG/Philips)' },
 			            { x: 62, y: 80, z: 35, name: 'TY', product: 'LTV(LG/Philips)' },
 			            { x: 73.5, y: 63, z: 35, name: 'FL', product: 'LTV(LG/Philips)' },
@@ -89,7 +91,7 @@ $('#viewMain').pagecontainer({
 			    credits: {
 			    	enabled: false
 			    }
-			}
+			};
 			
 			//options.chart.renderTo = "overview-hc-bubble";
 			chartbubble = new Highcharts.Chart('overview-hc-bubble', options);
@@ -99,14 +101,70 @@ $('#viewMain').pagecontainer({
 		}
 		
 		
+		function showRect(){
+			var options = {
+				colorAxis: {
+			        minColor: '#FFFF6A',
+			        maxColor: '#FE0000'
+			        
+			    },
+			    series: [{
+			        type: "treemap",
+			        color: 'black',
+			        layoutAlgorithm: 'squarified',
+			        data: [{
+			            name: '东森电视事业股份有限公司',
+			            value: 15,
+			            colorValue: 2.5
+			        }, {
+			            name: '飞利浦股份有限公司',
+			            value: 7,
+			            colorValue: 0
+			        }, {
+			            name: '东森电视事业股份有限公司',
+			            value: 5,
+			            colorValue: 10
+			        }, {
+			            name: '东森电视事业股份有限公司',
+			            value: 4,
+			            colorValue: 6
+			        }, {
+			            name: '东森电视事业股份有限公司',
+			            value: 4,
+			            colorValue: 2.5
+			        }, {
+			            name: '东森电视事业股份有限公司',
+			            value: 2,
+			            colorValue: 10
+			        }, {
+			            name: '东森电视事业股份有限公司',
+			            value: 2,
+			            colorValue: 0
+			        }]
+			    }],
+			    title: {
+			        text: null
+			    },
+			    credits: {
+			    	enabled: false
+			    }
+			};
+			
+			chartRect = new Highcharts.Chart('overview-hc-rectangle', options);
+			
+			chartLandscapeRect = new Highcharts.Chart('overview-hc-rectangle-landscape', options);
+			
+		}
+		
+		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui) {
 			showBubble();
-			
+						
 			if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart();
             }
-            ytdStrExist = false;
+            //ytdStrExist = false;
 			
 		});
 		
@@ -118,7 +176,7 @@ $('#viewMain').pagecontainer({
 
 /************************* highcharts *******************************/
 
-var option1 = {
+/*var option1 = {
     chart: {
         type: 'bubble',
         marginTop: 40,
@@ -210,7 +268,7 @@ var option1 = {
 };
 
 var bubble1 = new Highcharts.Chart('overview-hc-bubble', option1);
-var bubble2 = new Highcharts.Chart('overview-hc-bubble-landscape', option1);
+var bubble2 = new Highcharts.Chart('overview-hc-bubble-landscape', option1);*/
 
 
 /******************************* highcharts ********************************/
