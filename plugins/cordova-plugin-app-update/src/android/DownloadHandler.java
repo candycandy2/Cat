@@ -83,16 +83,25 @@ public class DownloadHandler extends Handler {
      * 安装APK文件
      */
     private void installApk() {
-        File apkFile = new File(mSavePath, mHashMap.get("name"));
-        if (!apkFile.exists()) {
-            return;
+
+        File file = new File(mSavePath, mHashMap.get("name"));
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        //判读版本是否在7.0以上
+        if (Build.VERSION.SDK_INT >= 24) {
+            //provider authorities
+            String packageName = mContext.getPackageName();
+            Uri apkUri = FileProvider.getUriForFile(mContext, packageName + ".fileprovider", file);
+            //Granting Temporary Permissions to a URI
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         }
-        // 通过Intent安装APK文件
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.setDataAndType(Uri.parse("file://" + apkFile.toString()), "application/vnd.android.package-archive");
-        mContext.startActivity(i);
+
+        mContext.startActivity(intent);
         //close dialog ?
         mDownloadDialog.dismiss();
+    }
     }
 }
