@@ -26,11 +26,17 @@
 }
 
 /******************************************** common use ********************************************/
+.page-header{
+	background-color: #492f7f !important;
+	color: #ffffff !important;
+	text-shadow: none !important;
+}
 .page-header .menu-btn{
 	background-color: initial !important;
 	border-style: none;
 	padding:0px;
-	margin-top: 2.1VH !important;
+	/*margin-top: 2.1VH !important;*/
+	margin-top: 1.2VH !important;
 	margin-left: 1.5VW;
 }
 
@@ -82,9 +88,6 @@ a{
 	text-decoration: none;
 }
 /* header */
-.header-btn-a{
-	background-color: #492f7f !important;
-}
 .header-style .ui-title{
 	overflow: inherit !important;
 }
