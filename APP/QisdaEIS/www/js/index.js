@@ -1,5 +1,6 @@
 /*******************global variable function*****************/
-var chartbubble,chartLandscapebubble;
+var chartbubble,chartLandscapebubble,chartRect,chartLandscapeRect;
+var hcHidden = false;
 var overviewRectState = false;
 var ytdStrExist = false;
 var lastPageID = "viewMain";
@@ -11,10 +12,10 @@ var panel = htmlContent
         +       '<span class="panel-text" style="line-height:7.5VH;">AR Overdue Analysis</span>'
         +   '</div>'
         +   '<div class="panel-content" id="mypanelviewMain">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;&nbsp;AR Overdue Overview</span>'
+        +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;AR Overdue Overview</span>'
         +   '</div>'
         +   '<div class="panel-content" id="mypanelviewDetail">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;&nbsp;AR Overdue Detail</span>'
+        +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;AR Overdue Detail</span>'
         +   '</div>'
         +'</div>';
 
@@ -48,6 +49,25 @@ $(document).one('pagebeforeshow', function(){
 
 //[Android]Handle the back button
 function onBackKeyDown() {
+	var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+    if(activePageID == "viewMain") {
+        if($("body").hasClass("ui-landscape")) {
+            /*** Zoom Out the chart ***/
+            zoomOutChart("overview-hc-bubble"); 
+        }else{
+            /*** change tab and close the panel ***/
+            if($(".ui-page-active").jqmData("panel") === "open") {
+                $("#mypanel").panel( "close");
+            }else if($("#viewMain :radio:checked").val() == "viewMain-tab-1") {
+                navigator.app.exitApp();
+            }else if($("#viewMain :radio:checked").val() == "viewMain-tab-2") {
+                $("input[id=viewMain-tab-1]").trigger('click');
+                $("label[for=viewMain-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+            }
+        }
+    }
     
 }
 
@@ -88,9 +108,11 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     }
     // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
+    	$('#overview-hc-rectangle').hide();
         zoomInChart();
         overviewRectState = false;
         //$(".YTD-Str").css("display", "none");
+        
     }
 }, false);
 
