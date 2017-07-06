@@ -63,9 +63,11 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
-                loadingMask("hide");
-                var resultcode = data['ResultCode'];
-                //do something
+                var callbackData = data['Content'][0]["Result"];
+                if(data['ResultCode'] === 1) {
+                    var day = 0;
+                    
+                }
             };
 
             this.failCallback = function(data) {
@@ -88,6 +90,7 @@ $("#viewPersonalLeave").pagecontainer({
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
                 },
+                markToday: true
             });
         });
 

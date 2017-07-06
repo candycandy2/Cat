@@ -83,25 +83,21 @@ th {
     border-width: 0.5px;
 }
 
-.day-selected {
+.today {
     color: white;
     background-image: url("../img/today_date.png");
     background-repeat: no-repeat;
     background-size: 7.165VW;
     background-position-x: 2.67VW;
     background-position-y: 1.53VW;
-    /*background-position-x: 50.67%;
-    background-position-y: 50.53%;*/
 }
 
-.day-select {
+.leave {
     background-image: url("../img/event_date.png");
     background-repeat: no-repeat;
     background-size: 7.165VW;
     background-position-x: 2.67VW;
-    background-position-y: 1.53VW; 
-    /*background-position-x: 50.67%;
-    background-position-y: 50.53%;  */
+    background-position-y: 1.53VW;
 }
 
 /* legend */
