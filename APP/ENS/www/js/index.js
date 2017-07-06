@@ -339,30 +339,66 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
     } else {
         normalTitle = [{
             value: "1",
-            text: "[電力維護公告] XX機房將進行電力保養及維護，請協助關機"
+            text: "工傷"
         }, {
             value: "2",
-            text: "[空調維護公告] XX機房將進行空調保養及維護，請協助關機"
+            text: "火災、爆炸"
         }, {
             value: "3",
-            text: "[維護公告] 2017/MM/DD(星期X) [台北]辦公室網路維護工程，辦公室網路將無法使用"
+            text: "傳染病"
         }, {
             value: "4",
-            text: "[電力/空調維護公告] XX機房[電力/空調]保養及維護已經完成，請協助開機"
+            text: "營業中斷"
+        }, {
+            value: "5",
+            text: "SCM斷料"
+        }, {
+            value: "6",
+            text: "貨物損失"
+        }, {
+            value: "7",
+            text: "客戶倒閉"
+        }, {
+            value: "8",
+            text: "產品品質"
+        }, {
+            value: "9",
+            text: "IT中斷"
+        }, {
+            value: "10",
+            text: "其他"
         }];
 
         normalContent = [{
             value: "1",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
+            text: ""
         }, {
             value: "2",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
+            text: ""
         }, {
             value: "3",
-            text: "[台北]辦公室將於2017/MM/DD 9:00AM - 5:00PM進行網路維修工程,辦公室網路將無法使用,請通知相關IT系統使用人員"
+            text: ""
         }, {
             value: "4",
-            text: "XX機房[電力/空調]在下午4:00PM已經完成保養及維護,請協助開機及回報"
+            text: ""
+        }, {
+            value: "5",
+            text: ""
+        }, {
+            value: "6",
+            text: ""
+        }, {
+            value: "7",
+            text: ""
+        }, {
+            value: "8",
+            text: ""
+        }, {
+            value: "9",
+            text: ""
+        }, {
+            value: "10",
+            text: ""
         }];
 
         urgentTitle = [{
