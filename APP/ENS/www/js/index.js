@@ -402,26 +402,68 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
         }];
 
         urgentTitle = [{
-            value: "1",
-            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常，請協助緊急關機"
-        }, {
-            value: "2",
-            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障，請協助緊急關機"
-        }, {
-            value: "3",
-            text: "[機房電力／空調正常]目前(4:30PM)  XX機房[電力/空調]已經恢復正常，請協助開機"
-        }];
+                       value: "1",
+                       text: "工傷"
+                       }, {
+                       value: "2",
+                       text: "火災、爆炸"
+                       }, {
+                       value: "3",
+                       text: "傳染病"
+                       }, {
+                       value: "4",
+                       text: "營業中斷"
+                       }, {
+                       value: "5",
+                       text: "SCM斷料"
+                       }, {
+                       value: "6",
+                       text: "貨物損失"
+                       }, {
+                       value: "7",
+                       text: "客戶倒閉"
+                       }, {
+                       value: "8",
+                       text: "產品品質"
+                       }, {
+                       value: "9",
+                       text: "IT中斷"
+                       }, {
+                       value: "10",
+                       text: "其他"
+                       }];
 
         urgentContent = [{
-            value: "1",
-            text: "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
-        }, {
-            value: "2",
-            text: "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
-        }, {
-            value: "3",
-            text: "目前(4:30PM)XX機房[電力/空調]已經恢復正常,請機房系統管理員協助開機及回報"
-        }];
+                         value: "1",
+                         text: ""
+                         }, {
+                         value: "2",
+                         text: ""
+                         }, {
+                         value: "3",
+                         text: ""
+                         }, {
+                         value: "4",
+                         text: ""
+                         }, {
+                         value: "5",
+                         text: ""
+                         }, {
+                         value: "6",
+                         text: ""
+                         }, {
+                         value: "7",
+                         text: ""
+                         }, {
+                         value: "8",
+                         text: ""
+                         }, {
+                         value: "9",
+                         text: ""
+                         }, {
+                         value: "10",
+                         text: ""
+                         }];
 
         window.localStorage.setItem("normalTitle", JSON.stringify(normalTitle));
         window.localStorage.setItem("normalContent", JSON.stringify(normalContent));
