@@ -22,18 +22,25 @@ class pushController extends Controller
         $messageList = array();
         if(\Auth::user()->isAdmin()) {
             $messageList = \DB::table("qp_message")
-                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+                -> leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+                -> leftJoin("qp_message_send",  "qp_message_send.message_row_id", "=", "qp_message.row_id")
                 -> select("qp_message.row_id", "qp_message.message_type",
                     "qp_message.message_title", "qp_user.login_id as created_user",
-                    "qp_message.created_at", "qp_message.visible")
+                    "qp_message.created_at", "qp_message.visible",
+                    "qp_user.department", "qp_user.site_code",
+                    \DB::raw("SUM(qp_message_send.need_push) as need_push" ))
+                -> groupBy("qp_message.row_id")
                 -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
                 -> get();
         } else {
             $messageList = \DB::table("qp_message")
-                ->leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+                -> leftJoin("qp_user",  "qp_user.row_id", "=", "qp_message.created_user")
+                -> leftJoin("qp_message_send",  "qp_message_send.message_row_id", "=", "qp_message.row_id")
                 -> select("qp_message.row_id", "qp_message.message_type",
                     "qp_message.message_title", "qp_user.login_id as created_user",
-                    "qp_message.created_at", "qp_message.visible")
+                    "qp_message.created_at", "qp_message.visible",
+                    "qp_user.department", "qp_user.site_code",
+                    \DB::raw("SUM(qp_message_send.need_push) as need_push" ))
                 -> where("qp_user.row_id", "=", \Auth::user()->row_id)
                 -> orderBy(\DB::raw('qp_message.created_at'),"DESC")
                 -> get();

@@ -8,7 +8,6 @@
 if (typeof jQuery == 'undefined') {
     throw new Error('jQuery is not loaded');
 }
-
 /**
  * Create calendar
  *
@@ -52,10 +51,13 @@ function Calendar(options) {
     $calendarElement.data('weekStartsOn', opts.weekstartson);
     $calendarElement.data('navIcons', opts.nav_icon);
     $calendarElement.data('dowLabels', opts.dow_labels);
-    $calendarElement.data('showToday', opts.today);
+    $calendarElement.data('showToday', opts.markToday);
+    $calendarElement.data('showWeekend', opts.markWeekend);
     $calendarElement.data('showDays', opts.show_days);
     $calendarElement.data('showPrevious', opts.show_previous);
     $calendarElement.data('showNext', opts.show_next);
+    $calendarElement.data('prevEventListener', opts.prevEventListener);
+    $calendarElement.data('nextEventListener', opts.nextEventListener);
     $calendarElement.data('cellBorder', opts.cell_border);
     $calendarElement.data('jsonData', opts.data);
     $calendarElement.data('ajaxSettings', opts.ajax);
@@ -63,8 +65,11 @@ function Calendar(options) {
     $calendarElement.data('actionFunction', opts.action);
     $calendarElement.data('actionNavFunction', opts.action_nav);
 
+    var prevEventListener = $calendarElement.data('prevEventListener');
+    var nextEventListener = $calendarElement.data('nextEventListener');
+    
     drawCalendar();
-
+    
     function drawCalendar() {
         var dateInitYear = parseInt($calendarElement.data('initYear'));
         var dateInitMonth = parseInt($calendarElement.data('initMonth')) - 1;
@@ -232,6 +237,12 @@ function Calendar(options) {
                             $(opts.showInfoListTo).hide();    
                         }
                     }
+                    if($calendarElement.data('prevEventListener') != undefined) {
+                        loadingMask("show");
+                        // var a = $calendarElement.data('prevEventListener');
+                        // a();
+                        prevEventListener(_year, _month);
+                    }
                 }
             });
         }
@@ -263,6 +274,11 @@ function Calendar(options) {
                             $(opts.showInfoListTo).hide();
                         } 
                     }
+                    if($calendarElement.data('nextEventListener') != undefined) {
+                        loadingMask("show");
+                        // $calendarElement.data('nextEventListener');
+                        nextEventListener(_year, _month);
+                    }
                 }
             });
         }
@@ -283,8 +299,10 @@ function Calendar(options) {
             var $dowHeaderRow = $('<tr class="calendar-dow-header"></tr>');
             $(dowLabels).each(function (index, value) {
                 $day = $("<th></th>");
-                if(value == "日" || value == "六") {
-                    $day.addClass("weekend");
+                if($calendarElement.data('showWeekend') === true) {
+                    if(value == "日" || value == "六") {
+                        $day.addClass("weekend");
+                    }
                 }
                 $dowHeaderRow.append($day.append(value));
             });
@@ -294,6 +312,7 @@ function Calendar(options) {
     }
 
     function appendDaysOfMonth($calendarElement, $tableObj, year, month) {
+        var time = new Date();
         var ajaxSettings = $calendarElement.data('ajaxSettings');
         var weeksInMonth = calcWeeksInMonth(year, month);
         var lastDayinMonth = calcLastDayInMonth(year, month);
@@ -321,38 +340,26 @@ function Calendar(options) {
                 if (dow < firstDow || currDayOfMonth > lastDayinMonth) {
                     $dowRow.append('<td></td>');
                 } else {
-                    var dateId = dateAsString(year, month, currDayOfMonth);
-
-                    var $dayElement = $('<div id="' + currDayOfMonth + '" class="day" >' + currDayOfMonth + '</div>');
-                    $dayElement.data('day', currDayOfMonth);
-
-                    if ($calendarElement.data('showToday') === true) {
-                        if (isToday(year, month, currDayOfMonth)) {
-                            $dayElement.html('<span class="badge badge-today">' + currDayOfMonth + '</span>');
-                        }
-                    }
                     var $dowElement = $("<td></td>"); 
+                    var dateId = dateAsString(year, month, currDayOfMonth);
+                    var $dayElement = $('<div id="' + currDayOfMonth + '" class="day" >' + currDayOfMonth + '</div>');
                     
                     $dowElement.attr("id", dateId);
                     $dowElement.append($dayElement);
 
                     $dowElement.data('date', dateAsString(year, month, currDayOfMonth));
                     $dowElement.data('hasEvent', false);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    if(_id === "viewPersonalLeave-calendar") {
-                        if(currDayOfMonth == 12 || currDayOfMonth == 13) {
-                            $dayElement.parent('#' + dateId).addClass("day-selected");
-                        }
-
-                        if(currDayOfMonth == 9 || currDayOfMonth == 21 || currDayOfMonth == 22) {
-                            $dayElement.parent('#' + dateId).addClass("day-select");
-                        }
-                    }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    if(dow == 0 || dow == 6) {
-                        $dowElement.addClass("weekend");
-                    }
                     
+                    if($calendarElement.data('showToday') === true) {
+                        if(month === time.getMonth() && currDayOfMonth === time.getDate()) {
+                            $dayElement.parent('#' + dateId).addClass("today");
+                        }
+                    }
+                    if($calendarElement.data('showWeekend') === true) {
+                        if(dow == 0 || dow == 6) {
+                            $dowElement.addClass("weekend");
+                        }
+                    }
                     if (typeof($calendarElement.data('actionFunction')) === 'function') {
                         $dowElement.addClass('dow-clickable');
                         $dowElement.click(function () {
@@ -534,12 +541,6 @@ function Calendar(options) {
         $(opts.showInfoListTo).show();
     }
 
-    function isToday(year, month, day) {
-        var todayObj = new Date();
-        var dateObj = new Date(year, month, day);
-        return (dateObj.toDateString() == todayObj.toDateString());
-    }
-
     function dateAsString(year, month, day) {
         d = (day < 10) ? '0' + day : day;
         m = month + 1;
@@ -650,8 +651,11 @@ function calendar_defaults() {
         month: month,
         show_previous: true,
         show_next: true,
+        prevEventListener: undefined,
+        nextEventListener: undefined,
         cell_border: false,
-        today: false,
+        markToday: false,
+        markWeekend: false,
         show_days: true,
         weekstartson: 1,
         nav_icon: false,

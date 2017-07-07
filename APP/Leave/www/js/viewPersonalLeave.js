@@ -63,9 +63,24 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                var leaveFlag = "3";
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["Result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var colorTagArry = $("color", htmlDoc);
+                    for(var day = 1; day <= colorTagArry.length; day++) {
+                        if(myCalendarData[$(colorTagArry[day-1]).html()] === undefined ) {
+                            myCalendarData[$(colorTagArry[day-1]).html()] = [];
+                        }
+                        myCalendarData[$(colorTagArry[day-1]).html()].push(day);
+                    }
+                    if(leaveFlag in myCalendarData) {
+                        for(var day in myCalendarData[leaveFlag]) {
+                            $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                        }
+                    }
+                }
                 loadingMask("hide");
-                var resultcode = data['ResultCode'];
-                //do something
             };
 
             this.failCallback = function(data) {
@@ -84,15 +99,41 @@ $("#viewPersonalLeave").pagecontainer({
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
+                markToday: true,
+                markWeekend: true,
+                prevEventListener: function(year, month) {
+                    console.log("prev");
+                    // queryCalendarData = "<LayoutHeader><Year>"
+                    //                   + year
+                    //                   + "</Year><Month>"
+                    //                   + month
+                    //                   + "</Month><EmpNo>"
+                    //                   + myEmpNo
+                    //                   + "</EmpNo></LayoutHeader>";
+                    queryCalendarData = "<LayoutHeader><Year>2017</Year><Month>3</Month><EmpNo>0409132</EmpNo></LayoutHeader>";
+                    QueryCalendarData();
+                },
+                nextEventListener: function(year, month) {
+                    console.log("next");
+                    // queryCalendarData = "<LayoutHeader><Year>"
+                    //                   + year
+                    //                   + "</Year><Month>"
+                    //                   + month
+                    //                   + "</Month><EmpNo>"
+                    //                   + myEmpNo
+                    //                   + "</EmpNo></LayoutHeader>";
+                    queryCalendarData = "<LayoutHeader><Year>2017</Year><Month>3</Month><EmpNo>0409132</EmpNo></LayoutHeader>";
+                    QueryCalendarData();
+                },
                 nav_icon: {
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
-                },
+                }
             });
         });
 
         /********************************** page event *************************************/
-        $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
+        $("#viewPersonalLeave").one("pagebeforeshow", function(event, ui) {
             $("#tab-1").show();
             $("#tab-2").hide();
             if(lastPageID === "viewPersonalLeave") {
@@ -100,8 +141,7 @@ $("#viewPersonalLeave").pagecontainer({
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
-            
+            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');          
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
