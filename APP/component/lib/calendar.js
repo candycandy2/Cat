@@ -67,7 +67,7 @@ function Calendar(options) {
 
     var prevEventListener = $calendarElement.data('prevEventListener');
     var nextEventListener = $calendarElement.data('nextEventListener');
-    
+
     drawCalendar();
     
     function drawCalendar() {
@@ -239,9 +239,7 @@ function Calendar(options) {
                     }
                     if($calendarElement.data('prevEventListener') != undefined) {
                         loadingMask("show");
-                        // var a = $calendarElement.data('prevEventListener');
-                        // a();
-                        prevEventListener(_year, _month);
+                        prevEventListener(_year, _month + 1);
                     }
                 }
             });
@@ -276,8 +274,7 @@ function Calendar(options) {
                     }
                     if($calendarElement.data('nextEventListener') != undefined) {
                         loadingMask("show");
-                        // $calendarElement.data('nextEventListener');
-                        nextEventListener(_year, _month);
+                        nextEventListener(_year, _month + 1);
                     }
                 }
             });

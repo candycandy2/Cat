@@ -1,19 +1,7 @@
 var searchBar = '<input type="text" id="searchBar">';
 var leaveTypeData = {
     id: "LeaveType-popup",
-    option: [{
-        value: "0",
-        text: "去年特休"
-    }, {
-        value: "1",
-        text: "去年彈休"
-    }, {
-        value: "2",
-        text: "本期特休"
-    }, {
-        value: "3",
-        text: "生理假"
-    }],
+    option: [],
     defaultValue: 0,
 };
 
@@ -84,13 +72,36 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             this.failCallback = function(data) {
-
             };
 
             var __construct = function() {
                 CustomAPI("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "");
             }();
         };
+
+        window.GetDefaultSetting = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["quickleavelist"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var leaveTypeArry = $("name", htmlDoc);
+                    for(var i = 0; i < leaveTypeArry.length; i++) {
+                        leaveTypeData["option"][i] = {};
+                        leaveTypeData["option"][i]["value"] = i;
+                        leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+                    }
+                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, GetDefaultSettingQueryData, "");
+            }();
+        };        
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
@@ -102,27 +113,23 @@ $("#viewPersonalLeave").pagecontainer({
                 markToday: true,
                 markWeekend: true,
                 prevEventListener: function(year, month) {
-                    console.log("prev");
-                    // queryCalendarData = "<LayoutHeader><Year>"
-                    //                   + year
-                    //                   + "</Year><Month>"
-                    //                   + month
-                    //                   + "</Month><EmpNo>"
-                    //                   + myEmpNo
-                    //                   + "</EmpNo></LayoutHeader>";
-                    queryCalendarData = "<LayoutHeader><Year>2017</Year><Month>3</Month><EmpNo>0409132</EmpNo></LayoutHeader>";
+                    queryCalendarData = "<LayoutHeader><Year>"
+                                      + year
+                                      + "</Year><Month>"
+                                      + month
+                                      + "</Month><EmpNo>"
+                                      + myEmpNo
+                                      + "</EmpNo></LayoutHeader>";
                     QueryCalendarData();
                 },
                 nextEventListener: function(year, month) {
-                    console.log("next");
-                    // queryCalendarData = "<LayoutHeader><Year>"
-                    //                   + year
-                    //                   + "</Year><Month>"
-                    //                   + month
-                    //                   + "</Month><EmpNo>"
-                    //                   + myEmpNo
-                    //                   + "</EmpNo></LayoutHeader>";
-                    queryCalendarData = "<LayoutHeader><Year>2017</Year><Month>3</Month><EmpNo>0409132</EmpNo></LayoutHeader>";
+                    queryCalendarData = "<LayoutHeader><Year>"
+                                      + year
+                                      + "</Year><Month>"
+                                      + month
+                                      + "</Month><EmpNo>"
+                                      + myEmpNo
+                                      + "</EmpNo></LayoutHeader>";
                     QueryCalendarData();
                 },
                 nav_icon: {
@@ -137,7 +144,7 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-1").show();
             $("#tab-2").hide();
             if(lastPageID === "viewPersonalLeave") {
-                tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                // tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
