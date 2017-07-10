@@ -84,8 +84,10 @@ function onBackKeyDown() {
 function zoomInChart() {
     if(screen.width < screen.height) {
         chartLandscapebubble.setSize(screen.height, screen.width*0.9, false);
+        chartLandscapeRect.setSize(screen.height, screen.width*0.9, false);
     }else {
         chartLandscapebubble.setSize(screen.width, screen.height*0.9, false);
+        chartLandscapeRect.setSize(screen.width, screen.height*0.9, false);
     }
 }
 
