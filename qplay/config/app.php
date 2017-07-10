@@ -29,6 +29,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Static Version
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "version" your .js,.css,imageUrl is currently
+    | running in. 
+    | Set this value to prevent static file cache on client.
+    |
+    */
+   
+    'static_version' => env('STATIC_VERSION'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
     |

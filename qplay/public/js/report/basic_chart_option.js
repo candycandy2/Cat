@@ -4,7 +4,7 @@ var getMultiLineChartOpt = function(){
             buttons: [{
                 type: 'week',
                 count: 1,
-                text: '7天',
+                text: Messages.DAY.replace('%d','7'),
                 dataGrouping: {
                     forced: true,
                     units: [['day', [1]]]
@@ -12,7 +12,7 @@ var getMultiLineChartOpt = function(){
             }, {
                 type: 'month',
                 count: 3,
-                text: '3個月',
+                text: Messages.N_MONTH.replace('%d','3'),
                 dataGrouping: {
                     forced: true,
                     units: [['day', [1]]]
@@ -20,7 +20,7 @@ var getMultiLineChartOpt = function(){
             }, {
                 type: 'month',
                 count: 6,
-                text: '6個月',
+                text:  Messages.N_MONTH.replace('%d','6'),
                 dataGrouping: {
                     forced: true,
                     units: [['day', [1]]]
@@ -86,7 +86,7 @@ var getMultiLineChartOpt = function(){
 
         series: {},
          lang: {
-            noData: "沒有匹配的記錄"
+            noData: Messages.NO_DATA_TO_DISPLAY
         },
 
         noData: {
@@ -160,7 +160,7 @@ var getDonutChartOpt = function(){
         }],
 
         lang: {
-            noData: "沒有匹配的記錄"
+            noData: Messages.NO_DATA_TO_DISPLAY
         },
         
         noData: {
@@ -217,7 +217,7 @@ var getRangeLineChartOpt = function(){
             },
 
             series: [{
-                name: '處理時間',
+                name: Messages.OPERATION_TIME,
                 data: [],
                 zIndex: 1,
                 marker: {
@@ -226,7 +226,7 @@ var getRangeLineChartOpt = function(){
                     lineColor: Highcharts.getOptions().colors[0]
                 }
             }, {
-                name: '停留最大',
+                name: Messages.MAX_STAY_TIME,
                 data: [],
                 type: 'arearange',
                 lineWidth: 0,
@@ -239,7 +239,7 @@ var getRangeLineChartOpt = function(){
                 }
             }],
             lang: {
-            noData: "沒有匹配的記錄"
+            noData: Messages.NO_DATA_TO_DISPLAY
             },
             
             noData: {
@@ -292,7 +292,7 @@ var getSemiDonutChartOpt = function(){
             data: []
         }],
         lang: {
-            noData: "沒有匹配的記錄"
+            noData: Messages.NO_DATA_TO_DISPLAY
         }
     };
 }

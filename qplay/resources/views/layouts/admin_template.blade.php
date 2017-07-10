@@ -82,20 +82,20 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/dist/css/AdminLTE.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/dist/css/skins/_all-skins.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/common.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/common.css?v='.config('app.static_version')) }}" rel="stylesheet">
     <!---Highcharts-5.0.11-->
     {{--<link rel="stylesheet" href="style.css">--}}
     
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
-    <script src="{{ asset('/js/extension.js') }}"></script>
-    <script src="{{ asset('/js/common.js') }}"></script>
+    <script src="{{ asset('/js/extension.js?v='.config('app.static_version')) }}"></script>
+    <script src="{{ asset('/js/common.js?v='.config('app.static_version')) }}"></script>
     <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('/ui/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.cookie.js') }}"></script>
     <script src="{{ asset('/js/jquery.json.js') }}"></script>
     <script src="{{ asset('/js/jquery.ba-resize.js') }}"></script>
-    <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js') }}"></script>
-    <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js') }}"></script>
+    <script src="{{ asset('/js/lang/'.App::getLocale().'/messages.js?v='.config('app.static_version')) }}"></script>
+    <script src="{{ asset('/js/lang/'.App::getLocale().'/validation.js?v='.config('app.static_version')) }}"></script>
     <script src="{{ asset('/js/highstock.js') }}"></script>
     <script src="{{ asset('/js/highcharts-more.js') }}"></script>
     <script src="{{ asset('/js/no-data-to-display.js') }}"></script>
