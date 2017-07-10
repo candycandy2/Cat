@@ -44,6 +44,14 @@ $(document).one('pagebeforeshow', function(){
             $("#mypanel").panel( "open");
         }
     });
+    
+    $('#backBtn').on("click", function(){
+    	$('#overview-hc-rectangle-landscape').hide();
+    	$('#backBtn').hide();
+    	$('#overview-hc-bubble-landscape').show();
+    	
+    	
+    });
 	
 });
 
@@ -101,17 +109,24 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
-        /*if(ytdStrExist == true) {
-            $(".YTD-Str").css("display", "block");
-        }*/
-       	zoomInChart();
+    	chartbubble.tooltip.hide();
+       	chartRect.tooltip.hide();
+       	chartLandscapebubble.tooltip.hide();
+        chartLandscapeRect.tooltip.hide();
+		$('#overview-hc-bubble-landscape').hide();
+		$('#overview-hc-rectangle-landscape').hide();
+		$('#backBtn').hide();
+        
     }
-    // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
-    	$('#overview-hc-rectangle').hide();
         zoomInChart();
-        overviewRectState = false;
-        //$(".YTD-Str").css("display", "none");
+        chartbubble.tooltip.hide();
+       	chartRect.tooltip.hide();
+        chartLandscapebubble.tooltip.hide();
+        chartLandscapeRect.tooltip.hide();
+        $('#overview-hc-rectangle').hide();
+		$('#overview-hc-bubble-landscape').show();
+          
         
     }
 }, false);

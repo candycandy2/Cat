@@ -357,7 +357,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 }
 
 /*************************************viewMain highcharts*******************************************/
-#overview-hc-rectangle, #overview-hc-bubble-landscape, #overview-hc-rectangle-landscape{
+#viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
+#viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
 
@@ -389,23 +390,23 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewYTDHitRate-hc-landscape-canvas {display: inline;}*/
 	
 	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-tabs, #viewMain #explainMsg{
+	#viewMain .page-header, #viewMain .page-tabs, #viewMain #explainMsg, #viewMain #backBtn{
 		display: none;
 	}
-	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle-landscape{
+	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape{
 		display: none;
 	}
 	#viewMain{
 		padding-top: 0 !important;
+		margin-top: 0 !important;
 	}
-	#overview-hc-bubble-landscape{
+	#viewMain #overview-hc-bubble-landscape {
 		display: block;
 	}
-	#viewMain #overview-hc-rectangle{
-		display: none;
-	}
+
 }
 
 @media all and (orientation: portrait) {
 	.ui-mobile .ui-page{ min-height: auto !important}
+	
 }
