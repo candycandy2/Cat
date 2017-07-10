@@ -71,6 +71,15 @@ table {
     color: #f69e1e;
 }
 
+.today {
+    color: white;
+    background-image: url("../img/today_date.png");
+    background-repeat: no-repeat;
+    background-size: 7.165VW;
+    background-position-x: 2.67VW;
+    background-position-y: 1.53VW;
+}
+
 .td-bottom-border {
     border-bottom-style: solid;
     border-color: #989898;
@@ -81,23 +90,6 @@ th {
     border-bottom-style: solid;
     border-color: #0f0f0f;
     border-width: 0.5px;
-}
-
-.today {
-    color: white;
-    background-image: url("../img/today_date.png");
-    background-repeat: no-repeat;
-    background-size: 7.165VW;
-    background-position-x: 2.67VW;
-    background-position-y: 1.53VW;
-}
-
-.leave {
-    background-image: url("../img/event_date.png");
-    background-repeat: no-repeat;
-    background-size: 7.165VW;
-    background-position-x: 2.67VW;
-    background-position-y: 1.53VW;
 }
 
 /* legend */

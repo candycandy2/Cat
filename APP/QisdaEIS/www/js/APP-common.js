@@ -1,3 +1,6 @@
+/*********************************** global variable *****************************************/
+var closeInfoMsgInit = false;
+
 
 /********************************** Corodva APP initial *************************************/
 var app = {
@@ -12,7 +15,18 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        //Beginning of viewMain
         $.mobile.changePage('#viewMain');
+        
+        //[Android] Handle the back button, set in index.js
+        document.addEventListener("backbutton", onBackKeyDown, false);
+        
+        //for touch overflow content Enabled
+        $.mobile.touchOverflowEnabled = true;
+
+        if (device.platform === "iOS") {
+            $.mobile.hashListeningEnabled = false;
+        }
     },
     onOpenNotification: function(data) {
         
@@ -72,7 +86,17 @@ $(document).one("pagebeforecreate", function() {
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
-        //adjustPageMarginTop();
+        
+        // tab title, open version, uuid window
+        $(".ui-title").on("taphold", function() {
+            //Set for iOS, control text select
+            document.documentElement.style.webkitTouchCallout = "none";
+            document.documentElement.style.webkitUserSelect = "none";
+			
+            infoMessage();
+        });
+        
+        
     });
 
 
@@ -81,17 +105,25 @@ $(document).one("pagebeforecreate", function() {
             /*do somrthing when device is in portraint mode*/
         }
     }, false);
+    
+    
 });
 
-function popupMsgInit(popupClass){
-    $(popupClass).popup(); //initialize the popup
-    $(popupClass).show();
-    $(popupClass).popup('open');
-    popupMsgCloseInit(popupClass);
-}
 
-function popupMsgCloseInit(popupClass){
-    $('body').one('click', popupClass  + ' .btn-cancel', function() {
-        $(popupClass).popup('close');
-    });
+
+/************************************ function *******************************************/
+//Taphold APP Header to show Version/AD/UUID
+function infoMessage() {
+    $("#infoLoginid").html("Allen.Z.Yuan");
+    $("#infoUUID").html("da1sd54asdas1d5a3s");
+    $("#infoVersionName").html("1.0.0.408[Development]");
+    $('#infoMsg').popup();
+    $('#infoMsg').show();
+    $('#infoMsg').popup('open');
+
+    setTimeout(function() {
+        //Set for iOS, control text select
+        document.documentElement.style.webkitTouchCallout = "default";
+        document.documentElement.style.webkitUserSelect = "auto";
+    }, 1000);
 }
