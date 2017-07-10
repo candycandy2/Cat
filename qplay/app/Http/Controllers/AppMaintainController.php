@@ -629,7 +629,7 @@ class AppMaintainController extends Controller
            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
         }catch(\Exception $e){
             return response()->json(['result_code'=>ResultCode::_999999_unknownError,
-                'message'=>trans("messages.MSG_OPERATION_FAILED".$e->getMessage()),
+                'message'=>trans("messages.MSG_OPERATION_FAILED").$e->getMessage(),
                 'content'=>''
             ]);
            \DB::rollBack();
