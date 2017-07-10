@@ -31,7 +31,7 @@
 	border-style: none;
 	padding:0px;
 	margin-top: 2.1VH !important;
-	margin-left: 1.5VW;
+	margin-left: 1.2VW;
 }
 
 .page-main{
@@ -83,6 +83,7 @@ a{
 }
 /* header */
 .header-style .ui-title{
+	color: #FFFFFF;
 	overflow: initial !important;
 }
 
@@ -103,10 +104,12 @@ a{
 	border-top-right-radius: 5px;
 }
 /* hightcharts */
-
 .fontTooltip{
 	font-size: 14px;
 	font-family: "微软雅黑";
+}
+.fontTooltip tr:first-child td{
+	font-weight: bold;
 }
 
 /******************************************** viewHitRate *******************************************/
@@ -324,6 +327,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 
 #mypanel .panel-text{
 	margin-left: 3.7VW;
+	line-height:7.5VH;
 }
 
 #mypanel .panel-content{
@@ -341,10 +345,10 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     border-bottom-width: 0.1VH;
 }
 
-#mypanel #mypanelviewYTDHitRate{
+#mypanel #mypanelviewDetail{
 	border-bottom: solid;
     border-bottom-color: #666;
-    border-bottom-width: 0.1VH;
+    border-bottom-width: 1px;
 }
 
 #mypanel div.panel-content:hover {
@@ -392,7 +396,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 		display: none;
 	}
 	#viewMain{
-		padding-top: 1.5VH !important;
+		padding-top: 0 !important;
 	}
 	#overview-hc-bubble-landscape{
 		display: block;

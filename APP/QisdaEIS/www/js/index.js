@@ -6,16 +6,17 @@ var ytdStrExist = false;
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var htmlContent = "";
+
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
         +   '<div id="panel-header">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">AR Overdue Analysis</span>'
+        +       '<span class="panel-text">AR Overdue Analysis</span>'
         +   '</div>'
         +   '<div class="panel-content" id="mypanelviewMain">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;AR Overdue Overview</span>'
+        +       '<span class="panel-text">&nbsp;&nbsp;AR Overdue Overview</span>'
         +   '</div>'
         +   '<div class="panel-content" id="mypanelviewDetail">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">&nbsp;&nbsp;AR Overdue Detail</span>'
+        +       '<span class="panel-text">&nbsp;&nbsp;AR Overdue Detail</span>'
         +   '</div>'
         +'</div>';
 
@@ -70,7 +71,6 @@ function onBackKeyDown() {
     }
     
 }
-
 
 //根据横竖屏设置图表容器大小
 function zoomInChart() {
