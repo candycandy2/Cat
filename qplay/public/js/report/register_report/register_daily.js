@@ -83,10 +83,10 @@ var createDailyRegisterMultiLine = function (res){
         }
     }
     options.series = [{
-        name:"每日註冊設備數",
+        name:Messages.DAILY_REGISTERED_DEVICES,
         data:[]
     },{
-        name:"每日註冊用戶數",
+        name:Messages.DAILY_REGISTERED_USERS,
         data:[]
     }];
 
@@ -254,16 +254,16 @@ var setDailyRegisterDonutChartData = function(r,type,queryDate,chart){
     var title;
     switch (type) {
         case '1':
-            title='當日註冊設備比例(依系統)';
+            title = Messages.DAILY_REGISTERED_DEVICES + ' ( ' + Messages.BY_DEVICE + ' ) ';
             break;
         case '2':
-            title='當日註冊設備比例(依部門)';
+            title = Messages.DAILY_REGISTERED_DEVICES + ' ( '+ Messages.BY_DEPARTMENT +' ) ';
             break;
         case '3':
-            title='當日註冊用戶比例(依系統)';
+            title = Messages.DAILY_REGISTERED_USERS + ' ( ' + Messages.BY_DEVICE + ' ) ';
             break;
         case '4':
-            title='當日註冊用戶比例(依部門)';
+            title = Messages.DAILY_REGISTERED_USERS + ' ( ' + Messages.BY_DEPARTMENT + ' ) ';
             break;
     }
 
@@ -292,7 +292,7 @@ var createDailyRegisterTableChart = function(res,date){
 var createDailyRegisterTable = function(res, date){
     var $tableChartDiv = $('#table_register_daily_1');
     if(typeof res[date] == 'undefined'){
-        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">' + Messages.NO_DATA_TO_DISPLAY + '</td></tr>');
         return false;
     }
     

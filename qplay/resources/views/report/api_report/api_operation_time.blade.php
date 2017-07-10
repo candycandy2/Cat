@@ -3,7 +3,7 @@ $REPORT_TYPE = 'api_operation_time';
 ?>
 <div class="row">
     <div class="col-lg-12 col-xs-12" id="">
-        <h4><b>平均處理時間</b></h4>
+        <h4><b>{{trans('messages.TAB_OPERATION_TIME')}}</b></h4>
         <hr class="primary" style="border-top: 1px solid #bbb1b1;">
     </div>
 </div>
@@ -30,19 +30,19 @@ $REPORT_TYPE = 'api_operation_time';
                    <thead>
                       <tr>
                          <th rowspan="2" data-field="_id.action" class="table-title">
-                            <div class="th-inner ">API 名稱</div>
+                            <div class="th-inner ">API {{trans('messages.NAME')}}</div>
                          </th>
                          <th rowspan="2" data-field="1" class="table-title">
-                            <div class="th-inner ">API 呼叫次數</div>
+                            <div class="th-inner ">API {{trans('messages.API_CALL_TIMES')}}</div>
                          </th>
                          <th rowspan="2" data-field="2" class="table-title bg-color-blue">
-                            <div class="th-inner ">平均處理時間<br>(毫秒)</div>
+                            <div class="th-inner ">{{trans('messages.AVG_OPERATION_TIME')}}<br> ( {{trans('messages.MILLISECOND')}} ) </div>
                          </th>
                          <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                            <div class="th-inner ">最快處理時間<br>(毫秒)</div>
+                            <div class="th-inner ">{{trans('messages.MIN_OPERATION_TIME')}}<br> ( {{trans('messages.MILLISECOND')}} ) </div>
                          </th>
                          <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                            <div class="th-inner ">最慢處理時間<br>(毫秒)</div>
+                            <div class="th-inner ">{{trans('messages.MAX_OPERATION_TIME')}}<br> ( {{trans('messages.MILLISECOND')}} ) </div>
                          </th>
                       </tr>
                       <tr class="js-sub-title">
@@ -61,7 +61,7 @@ $REPORT_TYPE = 'api_operation_time';
      <div class="col-lg-1" id=""></div>
     <div class="col-lg-10 col-xs-12" id="">
         <div id="area_range_line_{{$REPORT_TYPE}}_1" class="col-lg-12 col-md-12 col-xs-12">
-            <div><label class="text-muted">詳細資料</label></div>
+            <div><label class="text-muted">{{trans('messages.DETAILS')}}</label></div>
             <div id="container_api_operation_time_area_range_line_1" style="height: 400px; min-width: 310px"></div>
         </div>
     </div>
