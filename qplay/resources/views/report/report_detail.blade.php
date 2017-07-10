@@ -6,13 +6,13 @@ $menu_name = "REPORT";
 
 @section('head')
     @parent
-    <script src="{{asset('/js/report/basic_chart_option.js')}}"></script>
-    <script src="{{asset('/js/report/report_detail.js')}}"></script>
-    <script src="{{asset('/js/report/summary/summary_report.js')}}"></script>
-    <script src="{{asset('/js/report/api_report/api_call_frequency.js')}}"></script>
-    <script src="{{asset('/js/report/api_report/api_operation_time.js')}}"></script>
-    <script src="{{asset('/js/report/register_report/register_cumulative.js')}}"></script>
-    <script src="{{asset('/js/report/register_report/register_daily.js')}}"></script>
+    <script src="{{asset('/js/report/basic_chart_option.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/report_detail.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/summary/summary_report.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/api_report/api_call_frequency.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/api_report/api_operation_time.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/register_report/register_cumulative.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/register_report/register_daily.js?v='.config('app.static_version'))}}"></script>
 @stop
 
 
