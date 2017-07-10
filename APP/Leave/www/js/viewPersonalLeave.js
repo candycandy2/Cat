@@ -1,19 +1,7 @@
 var searchBar = '<input type="text" id="searchBar">';
 var leaveTypeData = {
     id: "LeaveType-popup",
-    option: [{
-        value: "0",
-        text: "去年特休"
-    }, {
-        value: "1",
-        text: "去年彈休"
-    }, {
-        value: "2",
-        text: "本期特休"
-    }, {
-        value: "3",
-        text: "生理假"
-    }],
+    option: [],
     defaultValue: 0,
 };
 
@@ -63,18 +51,57 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                var leaveFlag = "3";
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["Result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var colorTagArry = $("color", htmlDoc);
+                    for(var day = 1; day <= colorTagArry.length; day++) {
+                        if(myCalendarData[$(colorTagArry[day-1]).html()] === undefined ) {
+                            myCalendarData[$(colorTagArry[day-1]).html()] = [];
+                        }
+                        myCalendarData[$(colorTagArry[day-1]).html()].push(day);
+                    }
+                    if(leaveFlag in myCalendarData) {
+                        for(var day in myCalendarData[leaveFlag]) {
+                            $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                        }
+                    }
+                }
                 loadingMask("hide");
-                var resultcode = data['ResultCode'];
             };
 
             this.failCallback = function(data) {
-
             };
 
             var __construct = function() {
                 CustomAPI("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "");
             }();
         };
+
+        window.GetDefaultSetting = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["quickleavelist"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var leaveTypeArry = $("name", htmlDoc);
+                    for(var i = 0; i < leaveTypeArry.length; i++) {
+                        leaveTypeData["option"][i] = {};
+                        leaveTypeData["option"][i]["value"] = i;
+                        leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+                    }
+                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, GetDefaultSettingQueryData, "");
+            }();
+        };        
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
@@ -83,25 +110,45 @@ $("#viewPersonalLeave").pagecontainer({
                 language: "default",
                 show_days: true,
                 weekstartson: 0,
+                markToday: true,
+                markWeekend: true,
+                prevEventListener: function(year, month) {
+                    queryCalendarData = "<LayoutHeader><Year>"
+                                      + year
+                                      + "</Year><Month>"
+                                      + month
+                                      + "</Month><EmpNo>"
+                                      + myEmpNo
+                                      + "</EmpNo></LayoutHeader>";
+                    QueryCalendarData();
+                },
+                nextEventListener: function(year, month) {
+                    queryCalendarData = "<LayoutHeader><Year>"
+                                      + year
+                                      + "</Year><Month>"
+                                      + month
+                                      + "</Month><EmpNo>"
+                                      + myEmpNo
+                                      + "</EmpNo></LayoutHeader>";
+                    QueryCalendarData();
+                },
                 nav_icon: {
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
-                },
-                markToday: true
+                }
             });
         });
 
         /********************************** page event *************************************/
-        $("#viewPersonalLeave").on("pagebeforeshow", function(event, ui) {
+        $("#viewPersonalLeave").one("pagebeforeshow", function(event, ui) {
             $("#tab-1").show();
             $("#tab-2").hide();
             if(lastPageID === "viewPersonalLeave") {
-                tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                // tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
-            
+            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');          
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {

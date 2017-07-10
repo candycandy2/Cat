@@ -116,10 +116,10 @@ var createCumulativeRegisterMultiLine = function (res){
         }
     }
     options.series = [{
-        name:"累計註冊設備數",
+        name:Messages.CUMULATIVE_REGISTERED_DEVICE,
         data:[]
     },{
-        name:"累計註冊用戶數",
+        name:Messages.CUMULATIVE_REGISTERED_USERS,
         data:[]
     }];
 
@@ -287,16 +287,16 @@ var setCumulativeRegisterDonutChartData = function(r,type,queryDate,chart){
     var title;
     switch (type) {
         case '1':
-            title='累計註冊設備比例(依系統)';
+            title = Messages.CUMULATIVE_REGISTERED_DEVICE_RATE + ' ( ' + Messages.BY_DEVICE + ' ) ';
             break;
         case '2':
-            title='累計註冊設備比例(依部門)';
+            title = Messages.CUMULATIVE_REGISTERED_DEVICE_RATE + ' ( ' + Messages.BY_DEPARTMENT + ' ) ';
             break;
         case '3':
-            title='累計註冊用戶比例(依系統)';
+            title = Messages.CUMULATIVE_REGISTERED_USERS_RATE + ' ( ' + Messages.BY_DEVICE + ' ) ';
             break;
         case '4':
-            title='累計註冊用戶比例(依部門)';
+            title = Messages.CUMULATIVE_REGISTERED_USERS_RATE + ' ( ' + Messages.BY_DEPARTMENT + ' ) ';
             break;
     }
 
@@ -328,7 +328,7 @@ var createCumulativeRegisterTable = function(res, date){
     var $tableChartDiv = $('#table_register_cumulative_1');
 
     if(typeof res[date] == 'undefined'){
-        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">' + Messages.NO_DATA_TO_DISPLAY + '</td></tr>');
         return false;
     }
     

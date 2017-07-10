@@ -74,7 +74,7 @@ var createApiOperationTimeMultiLine = function (res){
         }
     }
     options.series = [{
-        name:"平均處理時間",
+        name:Messages.AVG_OPERATION_TIME,
         data:[]
     }];
     options.plotOptions.series.point.events = {
@@ -124,7 +124,7 @@ var createOperationTimeTableChart = function(res,date){
 var createOperationTimeTable = function(res,date){
     $tableChartDiv = $('#table_api_operation_time_1');
     if(typeof res[date] == 'undefined'){
-        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">'+ Messages.NO_DATA_TO_DISPLAY +'</td></tr>');
         return false;
     }
     var res = res[date];
@@ -141,7 +141,7 @@ var createOperationTimeTable = function(res,date){
     });
     
     //add last total row
-    $tableChartDiv.find('.js-row').append('<tr class="js-total"><th scope="row"></th><td>' + sumCount + '</td><td>(平均)' +  Math.round((sumAvg/actionCount) * 100) / 100 + '</td><td></td><td></td></tr>');
+    $tableChartDiv.find('.js-row').append('<tr class="js-total"><th scope="row"></th><td>' + sumCount + '</td><td> ( ' + Messages.AVG + ' ) ' +  Math.round((sumAvg/actionCount) * 100) / 100 + '</td><td></td><td></td></tr>');
     
     $tableChartDiv.find('table u').click(function(){
        updateApiOperationTimeAreaRangeLineChart(date,$.trim($(this).text()));
