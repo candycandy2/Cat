@@ -83,10 +83,10 @@ var createCallApiMultiLine = function (res){
     }
 
     options.series = [{
-        name:"呼叫次數",
+        name:Messages.CALL_TIMES_RATE,
         data:[]
     },{
-        name:"呼叫人數",
+        name:Messages.CALL_USERS_RATE,
         data:[]
     }];
 
@@ -141,7 +141,7 @@ var createCallApiTable = function(res, date){
     var $tableChartDiv = $('#table_api_call_frequency_1');
     
     if(typeof res[date] == 'undefined'){
-        $tableChartDiv.find('tbody').html('<tr><td colspan="5">沒有匹配的紀錄</td></tr>');
+        $tableChartDiv.find('tbody').html('<tr><td colspan="5">' +Messages.NO_DATA_TO_DISPLAY + '</td></tr>');
         return false;
     }
 
@@ -336,9 +336,9 @@ var setDonutChartData = function(r,type,queryAction,chart){
         }
     }
 
-    title='API【'+ queryAction +'】呼叫次數比例(依部門)';
+    title='API【'+ queryAction +'】' + Messages.CALL_TIMES_RATE + ' ( ' + Messages.BY_DEPARTMENT + ' )';
     if(type == 'd'){
-        title='API【'+ queryAction +'】呼叫人數比例(依部門)';
+        title='API【'+ queryAction +'】' + Messages.CALL_USERS_RATE + ' ( ' + Messages.BY_DEPARTMENT + ' )';
     }
     chart.setTitle({ text: title });
     chart.series[0].setData(siteData);

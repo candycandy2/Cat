@@ -3,7 +3,7 @@ $REPORT_TYPE = 'api_call_frequency';
 ?>
 <div class="row">
     <div class="col-lg-12 col-xs-12" id="">
-        <h4><b>API呼叫次數與人數</b></h4>
+        <h4><b>{{trans('messages.TAB_API_CALL_FREQUENCY')}}</b></h4>
         <hr class="primary" style="border-top: 1px solid #bbb1b1;">
     </div>
 </div>
@@ -29,19 +29,19 @@ $REPORT_TYPE = 'api_call_frequency';
                    <thead>
                       <tr>
                          <th rowspan="2" data-field="_id.action" class="table-title">
-                            <div class="th-inner ">API 名稱</div>
+                            <div class="th-inner ">API {{trans('messages.NAME')}}</div>
                          </th>
                          <th rowspan="2" data-field="1" class="table-title bg-color-blue">
-                            <div class="th-inner ">API 呼叫次數</div>
+                            <div class="th-inner ">API {{trans('messages.API_CALL_TIMES')}}</div>
                          </th>
                          <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                            <div class="th-inner ">API 呼叫人數</div>
+                            <div class="th-inner ">API {{trans('messages.API_CALL_USERS')}}</div>
                          </th>
                          <th class="js-data-title table-title bg-color-blue">
-                            <div class="th-inner">API 呼叫次數_公司+地區</div>
+                            <div class="th-inner">API {{trans('messages.API_CALL_TIMES')}}_{{trans('messages.COMPANY')}}+{{trans('messages.SITE')}}</div>
                          </th>
                          <th class="js-data-title table-title bg-color-pink">
-                            <div class="th-inner">API 呼叫人數_公司+地區</div>
+                            <div class="th-inner">API {{trans('messages.API_CALL_USERS')}}_{{trans('messages.COMPANY')}}+{{trans('messages.SITE')}}</div>
                          </th>
                       </tr>
                       <tr class="js-sub-title">
@@ -60,7 +60,7 @@ $REPORT_TYPE = 'api_call_frequency';
      <div class="col-lg-1" id=""></div>
     <div class="col-lg-10 col-xs-12" id="">
         <div id="{{$REPORT_TYPE}}_donutchart">
-            <div><label class="text-muted">詳細資料</label></div>
+            <div><label class="text-muted">{{trans('messages.DETAILS')}}</label></div>
             <div class="col-lg-12 col-md-12 col-xs-12">
                 <div id="container_donut_chart_{{$REPORT_TYPE}}_t"  style="height: 500px;"></div>
             </div>
