@@ -56,6 +56,7 @@ return [
     'TITLE_SYS_PROJECT_MAINTAIN' => 'Project Maintain',
     'TITLE_SECRETARY_PUSH' => 'Secretary Push',
     'TITLE_REPORT' => 'Report',
+    'REGISTER_MAINTAIN_TOOL' => 'Register Maintain Tool',
 
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
