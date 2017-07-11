@@ -17,19 +17,19 @@ var csdBubbleSeries = [
 ];
 var buRectSeries = [
 	{ name: '公司名称', code: '66588', value: 10, colorValue: 10 }, 
-	{ name: '飞利浦股份有限公司', code: '60324', value: 10, colorValue: 30 }, 
+	{ name: '飞利浦股份有限公司', code: '60324', value: 9, colorValue: 30 }, 
 	{ name: 'AAAA股份有限公司', code: '67498', value: 8, colorValue: 40 }, 
-	{ name: 'BBBB股份有限公司', code: '62406', value: 6, colorValue: 50 }, 
+	{ name: 'BBBB股份有限公司', code: '62406', value: 7, colorValue: 50 }, 
 	{ name: 'CCCC股份有限公司', code: '63201', value: 4, colorValue: 60 }, 
 	{ name: 'DDDD股份有限公司', code: '64885', value: 4, colorValue: 70 }
 ];
 var csdRectSeries = [
-	{ name: 'EEEE股份有限公司', code: '60586', value: 7, colorValue: 0.1 }, 
-	{ name: 'FFFF股份有限公司', code: '61273', value: 10, colorValue: 0.45 }, 
-	{ name: 'GGGG股份有限公司', code: '65792', value: 2, colorValue: 0.6 }, 
-	{ name: 'HHHH股份有限公司', code: '63496', value: 4, colorValue: 0.75 }, 
-	{ name: 'IIII股份有限公司', code: '65068', value: 8, colorValue: 0.9 }, 
-	{ name: 'JJJJ股份有限公司', code: '69876', value: 8, colorValue: 1 }
+	{ name: 'EEEE股份有限公司', code: '60586', value: 7, colorValue: 10 }, 
+	{ name: 'FFFF股份有限公司', code: '61273', value: 10, colorValue: 20 }, 
+	{ name: 'GGGG股份有限公司', code: '65792', value: 2, colorValue: 45 }, 
+	{ name: 'HHHH股份有限公司', code: '63496', value: 4, colorValue: 55 }, 
+	{ name: 'IIII股份有限公司', code: '65068', value: 8, colorValue: 65 }, 
+	{ name: 'JJJJ股份有限公司', code: '69876', value: 8, colorValue: 75 }
 ];
 
 //bubble highcharts option
@@ -40,6 +40,9 @@ var bubbleOption = {
         plotBorderWidth: 0,
         zoomType: 'none'
     },
+    color: [
+    	'#99CC33', '#40C1C7', '#FFCC66', '#5AAEE1', '#948078', '#AC8BC0'
+    ],
     legend: {
         enabled: false
     },
@@ -66,7 +69,8 @@ var bubbleOption = {
             text: 'Overdue Amount of Each Facility(USD$)',
             style: {
             	"fontSize": "11px"
-            }
+            },
+            y: 15
         },
         labels: {
             format: '{value}K'
@@ -82,7 +86,7 @@ var bubbleOption = {
         backgroundColor: 'rgba(247,247,247,0.85)',
         headerFormat: '<table class="fontTooltip">',
         pointFormat: '<tr><td>{point.name}</td></tr>' +
-        '<tr><td>Totail Overdue AR Amt.:USD${point.y}K</td></tr>' +
+        '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
         followPointer: true
@@ -120,6 +124,9 @@ var bubbleOption = {
             }
         }
     },
+    exporting: {
+        enabled: false
+    },
     series: [{		    	
         data: buBubbleSeries
     }],
@@ -131,22 +138,30 @@ var bubbleOption = {
 //rect highcharts option
 var rectOption = {
 	chart: {
-		marginTop: 20,
-		marginBottom: 70,
-		marginRight: 5,
+		marginTop: 40,
+		marginBottom: 60,
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
 	colorAxis: {
-        minColor: '#81B4E1',
-        maxColor: '#EF3623',
         tickPositions: [0, 15, 45, 75],
         stops: [
             [0, '#81B4E1'],
             [0.2, '#81B4E1'],
             [0.2, '#F79620'],
             [1, '#EF3623']
-        ]
+        ],
+        labels: {
+        	align: 'right',
+        	enabled: true,
+        	format: '{value}'
+        	/*formatter: function(i) {
+        		if(i.value == 75) {
+        			return i.value+'(Days)';
+        		}
+        		
+        	}*/        	
+        }
    	},
    	tooltip: {
         useHTML: true,
@@ -171,12 +186,16 @@ var rectOption = {
         dataLabels: {
             enabled: true,
             align: 'center',
-            overflow: 'hidden',
+            overflow: 'none',
+            crop: false,
             padding:　2,
             format: '{point.code}' + ' ' + '{point.name}'
         }
         
     }],
+    exporting: {
+        enabled: false
+    },
     title: {
         text: null
     },
@@ -194,10 +213,8 @@ $('#viewMain').pagecontainer({
 		
 		function showBubble(){
 			chartbubble = new Highcharts.Chart('overview-hc-bubble', bubbleOption);
-			chartbubble.series[0].setData(buBubbleSeries);
 			
 			chartLandscapebubble = new Highcharts.Chart('overview-hc-bubble-landscape', bubbleOption);
-			chartLandscapebubble.series[0].setData(buBubbleSeries);
 			
 			chartLandscapebubble.legend.update({itemStyle: {fontSize: 14}, align: "center"});
 			
@@ -205,10 +222,8 @@ $('#viewMain').pagecontainer({
 		
 		function showRect(){	
 			chartRect = new Highcharts.Chart('overview-hc-rectangle', rectOption);
-			chartRect.series[0].setData(buRectSeries);
 			
 			chartLandscapeRect = new Highcharts.Chart('overview-hc-rectangle-landscape', rectOption);
-			chartLandscapeRect.series[0].setData(buRectSeries);
 			
 			chartLandscapeRect.legend.update({itemStyle: {fontSize: 14}, align: "center"});
 		}
@@ -234,13 +249,13 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			chartbubble.series[0].setData(buBubbleSeries);
-			chartRect.series[0].setData(buRectSeries);
+			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
+			chartRect.series[0].setData(buRectSeries, true, true, false);
             chartbubble.tooltip.hide();
             chartRect.tooltip.hide();
             
-            chartLandscapebubble.series[0].setData(buBubbleSeries);
-            chartLandscapeRect.series[0].setData(buRectSeries);
+            chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
+            chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
             chartLandscapebubble.tooltip.hide();
             chartLandscapeRect.tooltip.hide();
             $('#overview-hc-rectangle').hide();
@@ -248,13 +263,13 @@ $('#viewMain').pagecontainer({
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-			chartbubble.series[0].setData(csdBubbleSeries);
-			chartRect.series[0].setData(csdRectSeries);
+			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
+			chartRect.series[0].setData(csdRectSeries, true, true, false);
             chartbubble.tooltip.hide();
             chartRect.tooltip.hide();
             
-            chartLandscapebubble.series[0].setData(csdBubbleSeries);
-            chartLandscapeRect.series[0].setData(csdRectSeries);
+            chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
+            chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
             chartLandscapebubble.tooltip.hide();
             chartLandscapeRect.tooltip.hide();
             $('#overview-hc-rectangle').hide();
