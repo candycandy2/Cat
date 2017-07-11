@@ -56,8 +56,7 @@ function Calendar(options) {
     $calendarElement.data('showDays', opts.show_days);
     $calendarElement.data('showPrevious', opts.show_previous);
     $calendarElement.data('showNext', opts.show_next);
-    $calendarElement.data('prevEventListener', opts.prevEventListener);
-    $calendarElement.data('nextEventListener', opts.nextEventListener);
+    $calendarElement.data('changeDateEventListener', opts.changeDateEventListener);
     $calendarElement.data('cellBorder', opts.cell_border);
     $calendarElement.data('jsonData', opts.data);
     $calendarElement.data('ajaxSettings', opts.ajax);
@@ -65,8 +64,7 @@ function Calendar(options) {
     $calendarElement.data('actionFunction', opts.action);
     $calendarElement.data('actionNavFunction', opts.action_nav);
 
-    var prevEventListener = $calendarElement.data('prevEventListener');
-    var nextEventListener = $calendarElement.data('nextEventListener');
+    var changeDateEventListener = $calendarElement.data('changeDateEventListener');
 
     drawCalendar();
     
@@ -237,9 +235,9 @@ function Calendar(options) {
                             $(opts.showInfoListTo).hide();    
                         }
                     }
-                    if($calendarElement.data('prevEventListener') != undefined) {
+                    if($calendarElement.data('changeDateEventListener') != undefined) {
                         loadingMask("show");
-                        prevEventListener(_year, _month + 1);
+                        changeDateEventListener(_year, _month + 1);
                     }
                 }
             });
@@ -272,9 +270,9 @@ function Calendar(options) {
                             $(opts.showInfoListTo).hide();
                         } 
                     }
-                    if($calendarElement.data('nextEventListener') != undefined) {
+                    if($calendarElement.data('changeDateEventListener') != undefined) {
                         loadingMask("show");
-                        nextEventListener(_year, _month + 1);
+                        changeDateEventListener(_year, _month + 1);
                     }
                 }
             });
@@ -648,8 +646,7 @@ function calendar_defaults() {
         month: month,
         show_previous: true,
         show_next: true,
-        prevEventListener: undefined,
-        nextEventListener: undefined,
+        changeDateEventListener: undefined,
         cell_border: false,
         markToday: false,
         markWeekend: false,
