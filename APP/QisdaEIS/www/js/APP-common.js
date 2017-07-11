@@ -103,6 +103,7 @@ $(document).one("pagebeforecreate", function() {
     window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
         if (window.orientation === 180 || window.orientation === 0) {
             /*do somrthing when device is in portraint mode*/
+           
         }
     }, false);
     
