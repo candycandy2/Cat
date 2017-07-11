@@ -291,6 +291,11 @@ Route::any('toolSyncJpushTags', ['middleware' => 'auth', function() {
 }]);
 //Route::any('tool/syncJpushTags', 'toolController@syncJpushTags');
 Route::any('tool/syncJpushTags', ['middleware' => 'auth','uses'=>'toolController@syncJpushTags']);
+Route::any('tool/getRegisterList', ['middleware' => 'auth','uses'=>'toolController@getRegisterList']);
+Route::any('tool/removeDeviceRegistedData', ['middleware' => 'auth','uses'=>'toolController@removeDeviceRegistedData']);
+Route::any('registerMaintain', ['middleware' => 'auth', function() {
+    return view("tool/register_maintain_tool");
+}]);
 
 //AutoDeplay
 Route::post('auto/uploadAppVersion', 'AppVersionController@uploadAppVersion');
