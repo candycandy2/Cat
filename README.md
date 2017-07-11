@@ -72,6 +72,7 @@ Third-party Library:
  - highcharts.js https://www.highcharts.com
  - jtsage-datebox-4.1.1.jqm.js http://dev.jtsage.com/jQM-DateBox/
  - jmessage-sdk-web-2.1.0.min.js https://docs.jiguang.cn/jmessage/guideline/jmessage_guide/
+ - pullrefresh.js https://www.boxfactura.com/pulltorefresh.js/
 
 ![sa2 - system archiecture](https://cloud.githubusercontent.com/assets/1924451/24186815/026d322e-0f15-11e7-9407-ee799456cba9.png)
 
