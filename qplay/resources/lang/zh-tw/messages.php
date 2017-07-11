@@ -56,6 +56,7 @@ return [
     'TITLE_SYS_PROJECT_MAINTAIN' => '專案管理',
     'TITLE_SECRETARY_PUSH' => '秘書推播',
     'TITLE_REPORT' => '報表',
+    'TITLE_REGISTER_MAINTAIN_TOOL' => '註冊管理工具',
 
     //validate
     'VALIDATE_ACCEPT' => '僅接受',

@@ -56,7 +56,7 @@ return [
     'TITLE_SYS_PROJECT_MAINTAIN' => '项目管理',
 	'TITLE_SECRETARY_PUSH' => '秘书推播',
     'TITLE_REPORT' => '报表',
-
+    'TITLE_REGISTER_MAINTAIN_TOOL' => '注册管理工具',
     //validate
     'VALIDATE_ACCEPT' => '仅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '仅接受数字',

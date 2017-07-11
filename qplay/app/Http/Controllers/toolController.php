@@ -48,4 +48,55 @@ class toolController extends Controller
 
         return response()->json($result);
     }
+
+    public function getRegisterList(){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $result = \DB::table("qp_register")
+        -> join('qp_user','qp_user.row_id','=','qp_register.user_row_id')
+        -> select()
+        -> get();
+        return json_encode($result);
+    }
+
+    public function removeDeviceRegistedData(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        $now = date('Y-m-d H:i:s',time());
+
+        if (\Request::isJson($content)) {
+             \DB::beginTransaction();
+            try{
+                $jsonContent = json_decode($content, true);
+                $uuidList = $jsonContent['uuid_list'];
+                \DB::table("qp_register")
+                -> whereIn('uuid', $uuidList)
+                -> delete();
+                \DB::table("qp_push_token")
+                -> whereIn('push_token', $uuidList)
+                -> delete();
+                \DB::table("qp_session")
+                -> whereIn('uuid', $uuidList)
+                -> delete();
+                \DB::commit();
+                return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
+             }catch(\Exception $e){
+                return response()->json(['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>trans("messages.MSG_OPERATION_FAILED").$e->getMessage(),
+                    'content'=>''
+                ]);
+               \DB::rollBack();
+            }
+        }
+
+        return null;
+    }
 }
