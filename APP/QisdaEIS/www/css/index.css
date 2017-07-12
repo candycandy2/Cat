@@ -11,9 +11,12 @@
 	-webkit-border-radius: 8px;
 }
 
-.ui-radio {
+#viewMain .ui-radio {
 	/*width:30.86VW;*/
 	width: 46.29VW;
+}
+#viewDetail .ui-radio{
+	width:30.86VW;
 }
 
 .page-tabs > div > div > label {
@@ -31,12 +34,12 @@
 	border-style: none;
 	padding:0px;
 	margin-top: 2.1VH !important;
-	margin-left: 1.2VW;
+	/*margin-left: 1.2VW;*/
 }
 
 .page-main{
 	background-color: #fff;
-	margin-top: 0px !important;
+	/*margin-top: 0px !important;*/
 }
 
 .page-main .page-tabs{
@@ -124,110 +127,6 @@ a{
 	width: 5.957VW;
 }
 /******************************************** viewHitRate *******************************************/
-#viewHitRate #data-title-bar{
-	background-color: #f2f2f3;
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	height: 7VH;
-}
-
-#viewHitRate .data-title{
-	width: 26.6VW;
-	text-align: center;
-	border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: #000;
-    font-weight: 400;
-    font-size: 2VH;
-}
-
-#viewHitRate .data-title > p{
-	height: 2.4VH;
-	margin: 0;
-	font-family: Arial;
-}
-
-
-#viewHitRate ul {
-	list-style-type: none;
-}
-
-#viewHitRate ul > li {
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	height: 5.8VH;
-}
-
-#viewHitRate .dataContainer{
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	width: 79.7VW;
-	margin-left: 2.5VW;
-	padding-bottom: 1VH;
-	padding-top: 1VH;
-}
-
-#viewHitRate .row {	
-	border-width: 1px;
-	border-style: none;
-	border-bottom-style: solid;
-	border-bottom-color: #989898;
-}
-
-#viewHitRate .AS{
-	color: #0f0f0f;
-	margin-left: 2VW;
-	text-align: center;
-	width: 20VW;
-	font-weight: bold;
-	display: inline-block;
-}
-
-#viewHitRate .HR{
-	color: #fff;
-	margin-left: 8VW;
-	text-align: center;
-	width: 20VW;
-	border-radius: 3.5px;
-	display: inline-block;
-}
-
-#viewHitRate .YR{
-	color: #fff;
-	margin-left: 7VW;
-	text-align: center;
-	width: 20VW;
-	border-radius: 3.5px;
-	display: inline-block;
-}
-
-#viewHitRate .data{
-	font-size: 2.2VH;
-	padding-top: 0.7VH;
-	font-weight: 900;
-}
-
-#viewHitRate .total-data{
-	font-size: 2.2VH;
-	padding-top: 0.9VH;
-	font-weight: 900;
-}
-
-#viewHitRate .column{
-	font-size: 2.3VH;
-	padding-top: 1.6VH;
-	width: 10VW;
-}
-
-#viewHitRate #total {
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	background-color: #c6c6c6;
-	border-style: none;
-	border-top-style: solid;
-	border-top-color: #323232;
-	border-top-width: 1.2px;
-}
 
 /**************************************** viewMonthlyHitRate ****************************************/
 #viewMonthlyHitRate #title-container {
@@ -359,7 +258,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 #mypanel #mypanelviewDetail{
 	border-bottom: solid;
     border-bottom-color: #666;
-    border-bottom-width: 1px;
+    border-bottom-width: 0.1VH;
 }
 
 #mypanel div.panel-content:hover {
@@ -409,7 +308,9 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	}
 	#viewMain{
 		padding-top: 0 !important;
-		margin-top: 0 !important;
+	}
+	.viewIndex.ui-page {
+		background-color: #fff;
 	}
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
