@@ -43,8 +43,8 @@
 }
 
 .page-main .page-tabs{
-	margin-top: 1.8VH;
-	margin-bottom: 0VH;
+	margin-top: 3.99VH;
+	margin-bottom: 3.71VH;
 	margin-right: 3.7VW;
 	margin-left: 3.7VW;
 	text-align: center;
@@ -89,10 +89,10 @@ a{
 	color: #FFFFFF;
 	overflow: initial !important;
 }
-/* explainMsg */
-#explainMsg{
+/* excludeLabel */
+#excludeLabel span{
 	color: #666666;
-	text-indent: 15px;
+	margin-left: 3.71VW;
 }
 /* navbar */
 .navbar-position{
@@ -125,6 +125,68 @@ a{
 }
 .panelBtn-img{
 	width: 5.957VW;
+}
+/****************************************** viewDetail *********************************************/
+.include-label span{
+	display: inline-block;
+	color: #323232;
+	margin-top: 4.3VH;
+	margin-bottom: 4.3VH;
+	margin-left: 3.71VW;
+}
+.include-label div{
+	display: inline-block;
+	margin-left: 45VW;
+}
+.include-label div img{
+	vertical-align: bottom;
+	width: 10VW;
+}
+.bu-title{
+	background-color: #F9FBFC;
+}
+.bu-title span{
+	display: inline-block;
+	color: #0F0F0F;
+	margin-left: 3.71VW;
+	margin-top: 6.44VH;
+	margin-bottom: 2.14VH;
+}
+.bu-header{
+	width: 92.58VW;
+	height: 12.077VH;
+	margin-left: 3.71VW;
+	border-bottom: 1px solid #989898;
+	line-height: 12.077VH;
+	/*display: table-cell;
+	vertical-align: middle;*/
+}
+.bu-header div{
+	float: left;
+	color: #323232;
+	text-align: center;
+}
+.bu-header>div:nth-child(1){
+	width: 25.848VW;
+}
+.bu-header>div:nth-child(2){
+	width: 30.377VW;
+}
+.bu-header>div:nth-child(1) img, .bu-header>div:nth-child(2) img{
+	width: 1.5VW;
+	height: 1.5VH;
+	vertical-align: middle;
+}
+.bu-header>div:nth-child(3){
+	width: 24.988VW;
+}
+.bu-header>div:nth-child(4){
+	width: 11.367VW;
+}
+.bu-header>div:nth-child(4) img{
+	width: 5VW;
+	height: 3VH;
+	vertical-align: middle;
 }
 /******************************************** viewHitRate *******************************************/
 
@@ -300,7 +362,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewYTDHitRate-hc-landscape-canvas {display: inline;}*/
 	
 	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-tabs, #viewMain #explainMsg, #viewMain #backBtn{
+	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn{
 		display: none;
 	}
 	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape{
