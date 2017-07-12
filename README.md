@@ -37,15 +37,18 @@ cordova-plugin-whitelist 1.3.1 "Whitelist"
 ```
 
 目錄結構
-- /API                  …放置APP API, QPLay團隊自行開發的APP API
-- /APP                  …放置APP的地方,包括使用www+css+js的UI功能
-- /componentapp         …未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
-- /Dailybuild           …放置CI的地方,Dailybuild
-- /plugins              …放置plugins的地方,包括其他無法使用www+css+js的內建功能
-- /qmessage             …放置qmessage API
-- /qplay                …放置PHP Platform
-- /qplayApi             …放置PHP API
-- /WEB                  …放置WEB的地方,Login, Download...
+
+Folder | Description
+------------ | -------------
+API                   | 放置APP API, QPLay團隊自行開發的APP API
+APP                   | 放置APP的地方,包括使用www+css+js的UI功能
+componentapp          | 未來component Team主要開發測試用的APP,包括其他無法使用plugin的內建功能
+Dailybuild            | 放置CI的地方,Dailybuild
+plugins               | 放置plugins的地方,包括其他無法使用www+css+js的內建功能
+qmessage              | 放置qmessage API
+qplay                 | 放置PHP Platform
+qplayApi              | 放置PHP API
+WEB                   | 放置WEB Page的地方,Login, Download, Install...
 
 Requirements check results for android:
  - Requirements check results for android:
@@ -69,6 +72,7 @@ Third-party Library:
  - highcharts.js https://www.highcharts.com
  - jtsage-datebox-4.1.1.jqm.js http://dev.jtsage.com/jQM-DateBox/
  - jmessage-sdk-web-2.1.0.min.js https://docs.jiguang.cn/jmessage/guideline/jmessage_guide/
+ - pullrefresh.js https://www.boxfactura.com/pulltorefresh.js/
 
 ![sa2 - system archiecture](https://cloud.githubusercontent.com/assets/1924451/24186815/026d322e-0f15-11e7-9407-ee799456cba9.png)
 

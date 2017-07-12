@@ -63,7 +63,7 @@ function onBackKeyDown() {
     if(activePageID == "viewMain") {
         if($("body").hasClass("ui-landscape")) {
             /*** Zoom Out the chart ***/
-            zoomOutChart("overview-hc-bubble"); 
+            zoomOutChart("viewMain-hc-canvas"); 
         }else{
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {

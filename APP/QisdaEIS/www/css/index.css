@@ -86,7 +86,11 @@ a{
 	color: #FFFFFF;
 	overflow: initial !important;
 }
-
+/* explainMsg */
+#explainMsg{
+	color: #666666;
+	text-indent: 15px;
+}
 /* navbar */
 .navbar-position{
 	width: 92.58VW; 
@@ -111,7 +115,14 @@ a{
 .fontTooltip tr:first-child td{
 	font-weight: bold;
 }
-
+/* img */
+.backBubble-img{
+	width: 4VW;
+	height: 5VH;
+}
+.panelBtn-img{
+	width: 5.957VW;
+}
 /******************************************** viewHitRate *******************************************/
 #viewHitRate #data-title-bar{
 	background-color: #f2f2f3;

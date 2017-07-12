@@ -1,8 +1,13 @@
 var searchBar = '<input type="text" id="searchBar">';
 var leaveTypeData = {
-    id: "LeaveType-popup",
+    id: "leaveType-popup",
     option: [],
-    defaultValue: 0,
+    title: "",
+    defaultText: "請選擇",
+    changeDefaultText : true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
 };
 
 var agentData = {
@@ -86,12 +91,14 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var leaveTypeArry = $("name", htmlDoc);
+                    var leaveIDArry = $("leaveid", htmlDoc);
                     for(var i = 0; i < leaveTypeArry.length; i++) {
                         leaveTypeData["option"][i] = {};
-                        leaveTypeData["option"][i]["value"] = i;
+                        leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
                         leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
                     }
-                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                    leaveTypeData["defaultValue"] = leaveTypeData["option"][0]["value"];
+                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
                 }
             };
 
@@ -99,9 +106,69 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, GetDefaultSettingQueryData, "");
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
-        };        
+        };
+
+        window.QueryLeftDaysData = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
+            }();
+        };
+
+        window.QueryEmployeeData = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryEmployeeData, "");
+            }();
+        };
+
+        window.CountLeaveHours = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursQueryData, "");
+            }();
+        };
+
+        window.SendLeaveApplicationData = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendLeaveApplicationData, "");
+            }();
+        };
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
@@ -112,17 +179,7 @@ $("#viewPersonalLeave").pagecontainer({
                 weekstartson: 0,
                 markToday: true,
                 markWeekend: true,
-                prevEventListener: function(year, month) {
-                    queryCalendarData = "<LayoutHeader><Year>"
-                                      + year
-                                      + "</Year><Month>"
-                                      + month
-                                      + "</Month><EmpNo>"
-                                      + myEmpNo
-                                      + "</EmpNo></LayoutHeader>";
-                    QueryCalendarData();
-                },
-                nextEventListener: function(year, month) {
+                changeDateEventListener: function(year, month) {
                     queryCalendarData = "<LayoutHeader><Year>"
                                       + year
                                       + "</Year><Month>"
@@ -144,7 +201,6 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-1").show();
             $("#tab-2").hide();
             if(lastPageID === "viewPersonalLeave") {
-                // tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
@@ -152,14 +208,11 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
+            // leaveID = $("#LeaveType-popup").val();
             loadingMask("hide");
         });
 
         /********************************** dom event *************************************/
-        $("#viewPersonalLeave").keypress(function(event) {
-
-        });
-
         $(".page-tabs #viewPersonalLeave-tab-1").on("click", function() {
             $("#tab-1").show();
             $("#tab-2").hide();
@@ -202,6 +255,10 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#leaveConfirm").on("click", function() {
             $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+        });
+
+        $('#LeaveType-popup').change(function() {
+            
         });
     }
 });
