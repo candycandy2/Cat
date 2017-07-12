@@ -1,4 +1,3 @@
-var searchBar = '<input type="text" id="searchBar">';
 var leaveTypeData = {
     id: "leaveType-popup",
     option: [],
@@ -40,7 +39,7 @@ var agentData = {
         value: "8",
         text: "Alan Tu"
     }],
-    title: searchBar,
+    title: '<input type="text" id="searchBar">',
     defaultText: "請選擇",
     changeDefaultText : true,
     attr: {
@@ -48,6 +47,7 @@ var agentData = {
     }
 };
 
+var leftDaysData = {};
 
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
@@ -96,6 +96,12 @@ $("#viewPersonalLeave").pagecontainer({
                         leaveTypeData["option"][i] = {};
                         leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
                         leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+                        queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                              + myEmpNo
+                              + "</EmpNo><leaveid>"
+                              + $(leaveIDArry[i]).html()
+                              + "</leaveid></LayoutHeader>";
+                        QueryLeftDaysData($(leaveIDArry[i]).html());
                     }
                     leaveTypeData["defaultValue"] = leaveTypeData["option"][0]["value"];
                     tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
@@ -110,10 +116,15 @@ $("#viewPersonalLeave").pagecontainer({
             }();
         };
 
-        window.QueryLeftDaysData = function() {
+        window.QueryLeftDaysData = function(leaveid) {
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var leftDays = $("leftdays", htmlDoc);
+                    leftDaysData[leaveid] = $(leftDays).html();
+                    // $("#leaveType > span:nth-of-type(1)").text($(leftDays).html() + "天");
                 }
             };
 
@@ -208,7 +219,6 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
-            // leaveID = $("#LeaveType-popup").val();
             loadingMask("hide");
         });
 
@@ -257,8 +267,14 @@ $("#viewPersonalLeave").pagecontainer({
             $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
         });
 
-        $('#LeaveType-popup').change(function() {
-            
+        $(document).on("change", "#leaveType-popup", function() {
+            // queryLeftDaysData = "<LayoutHeader><EmpNo>"
+            //                   + myEmpNo
+            //                   + "</EmpNo><leaveid>"
+            //                   + $(this).val()
+            //                   + "</leaveid></LayoutHeader>";
+            // QueryLeftDaysData();
+            $("#leaveType > span:nth-of-type(1)").text(leftDaysData[$(this).val()] + "天");
         });
     }
 });
