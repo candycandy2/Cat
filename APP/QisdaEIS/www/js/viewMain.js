@@ -58,7 +58,7 @@ var bubbleOption = {
         tickWidth: 1,
         tickPositions: [70, 80, 90],
         min: 60,
-        max: 93
+        max: 95
     },
     yAxis: {
         lineWidth: 0,
@@ -137,7 +137,7 @@ var rectOption = {
 	chart: {
 		type: "treemap",
 		marginTop: 40,
-		marginBottom: 80,
+		marginBottom: 70,
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
