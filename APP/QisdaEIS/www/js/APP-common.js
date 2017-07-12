@@ -86,16 +86,23 @@ $(document).one("pagebeforecreate", function() {
 
     //For APP scrolling in [Android ver:5], set CSS
     $(document).on("pageshow", function() {
+        if (device.platform === "Android") {
+            $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            $(".ui-header-fixed").css("position", "fixed");
+
+            var version = device.version.substr(0, 1);
+            if (version === "6") {
+                $(".ui-footer-fixed").css("position", "fixed");
+            }
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
+        } else if (device.platform === "iOS") {
+            $('.page-header').addClass('ios-fix-overlap');
+            $('.ios-fix-overlap-div').css('display', 'block');
+            $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
+        }
         
-        // tab title, open version, uuid window
-        $(".ui-title").on("taphold", function() {
-            //Set for iOS, control text select
-            document.documentElement.style.webkitTouchCallout = "none";
-            document.documentElement.style.webkitUserSelect = "none";
-			
-            infoMessage();
-        });
-        
+        adjustPageMarginTop();
         
     });
 
@@ -103,7 +110,9 @@ $(document).one("pagebeforecreate", function() {
     window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
         if (window.orientation === 180 || window.orientation === 0) {
             /*do somrthing when device is in portraint mode*/
-           
+           	if (device.platform === "iOS") {
+                adjustPageMarginTop();
+            }
         }
     }, false);
     
@@ -113,18 +122,34 @@ $(document).one("pagebeforecreate", function() {
 
 
 /************************************ function *******************************************/
-//Taphold APP Header to show Version/AD/UUID
-function infoMessage() {
-    $("#infoLoginid").html("Allen.Z.Yuan");
-    $("#infoUUID").html("da1sd54asdas1d5a3s");
-    $("#infoVersionName").html("1.0.0.408[Development]");
-    $('#infoMsg').popup();
-    $('#infoMsg').show();
-    $('#infoMsg').popup('open');
+function adjustPageMarginTop() {
+    //For some APP Page, if page's header has second level [button / title],
+    //auto resize the margin-top of page-main.
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
 
-    setTimeout(function() {
-        //Set for iOS, control text select
-        document.documentElement.style.webkitTouchCallout = "default";
-        document.documentElement.style.webkitUserSelect = "auto";
-    }, 1000);
+    if (activePageID.length !== 0) {
+
+        var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+        var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+        var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+        if (mainMarginTop < 0) {
+            mainMarginTop = 0;
+        }
+
+        if (device.platform === "iOS") {
+            mainMarginTop = mainMarginTop + 20;
+        }
+
+        $(".page-main").css({
+            "margin-top": mainMarginTop + "px"
+        });
+    }
+}
+
+
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
 }
