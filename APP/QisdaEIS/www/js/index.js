@@ -48,9 +48,7 @@ $(document).one('pagebeforeshow', function(){
     $('#backBtn').on("click", function(){
     	$('#overview-hc-rectangle-landscape').hide();
     	$('#backBtn').hide();
-    	$('#overview-hc-bubble-landscape').show();
-    	
-    	
+    	$('#overview-hc-bubble-landscape').show();	
     });
 	
 });
@@ -94,7 +92,6 @@ function zoomInChart() {
 //根据panel更换page
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {
-        //loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;

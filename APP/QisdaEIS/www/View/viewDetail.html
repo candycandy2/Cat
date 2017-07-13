@@ -1,11 +1,11 @@
-<!---->
+<!-- viewDetail -->
 <div data-role="page" id="viewDetail" class="viewIndex">
 	<!--ios-->
 	<div class="ios-fix-overlap-div"></div>
 	<!--header-->
 	<div data-role="header" data-position="fixed" data-theme="a" class="header-style page-header" data-tap-toggle="false">
 		<a class="menu-btn" data-role="none">
-			<img src="img/humb.png" style="width:6VW;">
+			<img src="img/humb.png" class="panelBtn-img">
 		</a>
 		<div class="header-style">
 			<h1 class="ui-title">AR Overdue Detail</h1>
@@ -14,8 +14,42 @@
 		
 	</div>
 	<!--main-->
-	<div data-role="main">
-		<!--navbar-->
+	<div data-role="main" class="ui-content page-main">	
+		<form>
+			<fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs" id="viewDetailTab">
+				<input type="radio" name="radio-choice-h-2" id="viewDetail-tab-1" value="viewDetail-tab-1" checked="checked">
+			    <label for="viewDetail-tab-1" class="tabs-title">Overdue</label>
+
+			    <input type="radio" name="radio-choice-h-2" id="viewDetail-tab-2" value="viewDetail-tab-2">
+			    <label for="viewDetail-tab-2" class="tabs-title label-style">Overdue Soon</label>
+			    
+			    <input type="radio" name="radio-choice-h-2" id="viewDetail-tab-3" value="viewDetail-tab-3">
+			    <label for="viewDetail-tab-3" class="tabs-title">Expired Soon</label>
+			</fieldset>
+		</form>
 		
+		<div class="include-label">
+			<span class="font-style7">Credit Memo Included</span>
+			<div><img src="img/switch_g.png" /></div>	
+		</div>
+		<div class="bu-title">
+			<span class="font-style11">BU Overdue A/R</span>
+		</div>
+		<div class="bu-header">
+			<div class="font-style11">
+				<span>Customer</span>&nbsp;
+				<img src="img/priority_up.png" />
+			</div>
+			<div class="font-style11">
+				<span>Total Overdue</span>&nbsp;
+				<img src="img/priority_up.png" />
+			</div>
+			<div class="font-style11">
+				<span>WoW Trend</span>
+			</div>
+			<div>
+				<img src="img/all_list_down.png" />
+			</div>
+		</div>
 	</div>
 </div>

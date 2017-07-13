@@ -11,9 +11,12 @@
 	-webkit-border-radius: 8px;
 }
 
-.ui-radio {
+#viewMain .ui-radio {
 	/*width:30.86VW;*/
 	width: 46.29VW;
+}
+#viewDetail .ui-radio{
+	width:30.86VW;
 }
 
 .page-tabs > div > div > label {
@@ -31,17 +34,17 @@
 	border-style: none;
 	padding:0px;
 	margin-top: 2.1VH !important;
-	margin-left: 1.2VW;
+	/*margin-left: 1.2VW;*/
 }
 
 .page-main{
 	background-color: #fff;
-	margin-top: 0px !important;
+	/*margin-top: 0px !important;*/
 }
 
 .page-main .page-tabs{
-	margin-top: 1.8VH;
-	margin-bottom: 0VH;
+	margin-top: 3.99VH;
+	margin-bottom: 3.71VH;
 	margin-right: 3.7VW;
 	margin-left: 3.7VW;
 	text-align: center;
@@ -86,10 +89,10 @@ a{
 	color: #FFFFFF;
 	overflow: initial !important;
 }
-/* explainMsg */
-#explainMsg{
+/* excludeLabel */
+#excludeLabel span{
 	color: #666666;
-	text-indent: 15px;
+	margin-left: 3.71VW;
 }
 /* navbar */
 .navbar-position{
@@ -123,111 +126,69 @@ a{
 .panelBtn-img{
 	width: 5.957VW;
 }
-/******************************************** viewHitRate *******************************************/
-#viewHitRate #data-title-bar{
-	background-color: #f2f2f3;
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	height: 7VH;
-}
-
-#viewHitRate .data-title{
-	width: 26.6VW;
-	text-align: center;
-	border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: #000;
-    font-weight: 400;
-    font-size: 2VH;
-}
-
-#viewHitRate .data-title > p{
-	height: 2.4VH;
-	margin: 0;
-	font-family: Arial;
-}
-
-
-#viewHitRate ul {
-	list-style-type: none;
-}
-
-#viewHitRate ul > li {
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	height: 5.8VH;
-}
-
-#viewHitRate .dataContainer{
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	width: 79.7VW;
-	margin-left: 2.5VW;
-	padding-bottom: 1VH;
-	padding-top: 1VH;
-}
-
-#viewHitRate .row {	
-	border-width: 1px;
-	border-style: none;
-	border-bottom-style: solid;
-	border-bottom-color: #989898;
-}
-
-#viewHitRate .AS{
-	color: #0f0f0f;
-	margin-left: 2VW;
-	text-align: center;
-	width: 20VW;
-	font-weight: bold;
+/****************************************** viewDetail *********************************************/
+.include-label span{
 	display: inline-block;
+	color: #323232;
+	margin-top: 4.3VH;
+	margin-bottom: 4.3VH;
+	margin-left: 3.71VW;
 }
-
-#viewHitRate .HR{
-	color: #fff;
-	margin-left: 8VW;
-	text-align: center;
-	width: 20VW;
-	border-radius: 3.5px;
+.include-label div{
 	display: inline-block;
+	margin-left: 45VW;
 }
-
-#viewHitRate .YR{
-	color: #fff;
-	margin-left: 7VW;
-	text-align: center;
-	width: 20VW;
-	border-radius: 3.5px;
-	display: inline-block;
-}
-
-#viewHitRate .data{
-	font-size: 2.2VH;
-	padding-top: 0.7VH;
-	font-weight: 900;
-}
-
-#viewHitRate .total-data{
-	font-size: 2.2VH;
-	padding-top: 0.9VH;
-	font-weight: 900;
-}
-
-#viewHitRate .column{
-	font-size: 2.3VH;
-	padding-top: 1.6VH;
+.include-label div img{
+	vertical-align: bottom;
 	width: 10VW;
 }
-
-#viewHitRate #total {
-	display: -webkit-flex;
-	flex-flow: row wrap;
-	background-color: #c6c6c6;
-	border-style: none;
-	border-top-style: solid;
-	border-top-color: #323232;
-	border-top-width: 1.2px;
+.bu-title{
+	background-color: #F9FBFC;
 }
+.bu-title span{
+	display: inline-block;
+	color: #0F0F0F;
+	margin-left: 3.71VW;
+	margin-top: 6.44VH;
+	margin-bottom: 2.14VH;
+}
+.bu-header{
+	width: 92.58VW;
+	height: 12.077VH;
+	margin-left: 3.71VW;
+	border-bottom: 1px solid #989898;
+	line-height: 12.077VH;
+	/*display: table-cell;
+	vertical-align: middle;*/
+}
+.bu-header div{
+	float: left;
+	color: #323232;
+	text-align: center;
+}
+.bu-header>div:nth-child(1){
+	width: 25.848VW;
+}
+.bu-header>div:nth-child(2){
+	width: 30.377VW;
+}
+.bu-header>div:nth-child(1) img, .bu-header>div:nth-child(2) img{
+	width: 1.5VW;
+	height: 1.5VH;
+	vertical-align: middle;
+}
+.bu-header>div:nth-child(3){
+	width: 24.988VW;
+}
+.bu-header>div:nth-child(4){
+	width: 11.367VW;
+}
+.bu-header>div:nth-child(4) img{
+	width: 5VW;
+	height: 3VH;
+	vertical-align: middle;
+}
+/******************************************** viewHitRate *******************************************/
 
 /**************************************** viewMonthlyHitRate ****************************************/
 #viewMonthlyHitRate #title-container {
@@ -359,7 +320,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 #mypanel #mypanelviewDetail{
 	border-bottom: solid;
     border-bottom-color: #666;
-    border-bottom-width: 1px;
+    border-bottom-width: 0.1VH;
 }
 
 #mypanel div.panel-content:hover {
@@ -401,7 +362,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	#viewYTDHitRate-hc-landscape-canvas {display: inline;}*/
 	
 	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-tabs, #viewMain #explainMsg, #viewMain #backBtn{
+	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn{
 		display: none;
 	}
 	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape{
@@ -409,7 +370,9 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	}
 	#viewMain{
 		padding-top: 0 !important;
-		margin-top: 0 !important;
+	}
+	.viewIndex.ui-page {
+		background-color: #fff;
 	}
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
