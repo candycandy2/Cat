@@ -222,10 +222,17 @@ $('#viewMain').pagecontainer({
 			//chartLandscapeRect.legend.update({itemStyle: {fontSize: 14}, align: "center"});
 		}
 		
+		function hideTooltip(){
+			chartbubble.tooltip.hide();
+            chartRect.tooltip.hide();
+            chartLandscapebubble.tooltip.hide();
+            chartLandscapeRect.tooltip.hide();
+            
+		}
 		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
-			
+			/* global PullToRefresh */
 
 			
 		});
@@ -243,29 +250,27 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
+			hideTooltip();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
 			chartRect.series[0].setData(buRectSeries, true, true, false);
-            chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
+            
             
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
             chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
+            
             $('#overview-hc-rectangle').hide();
             
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
+        	hideTooltip();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
 			chartRect.series[0].setData(csdRectSeries, true, true, false);
-            chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
+            
             
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
             chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
+            
             $('#overview-hc-rectangle').hide();
             
         });

@@ -108,6 +108,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
+    	//viewMain
     	chartbubble.tooltip.hide();
        	chartRect.tooltip.hide();
        	chartLandscapebubble.tooltip.hide();
@@ -118,6 +119,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
+    	//viewMain
         zoomInChart();
         chartbubble.tooltip.hide();
        	chartRect.tooltip.hide();
