@@ -1,3 +1,5 @@
+var leaveid, leaveType;
+var leftDaysData = {};
 var leaveTypeData = {
     id: "leaveType-popup",
     option: [],
@@ -47,8 +49,6 @@ var agentData = {
     }
 };
 
-var leftDaysData = {};
-
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
         
@@ -97,13 +97,12 @@ $("#viewPersonalLeave").pagecontainer({
                         leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
                         leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
                         queryLeftDaysData = "<LayoutHeader><EmpNo>"
-                              + myEmpNo
-                              + "</EmpNo><leaveid>"
-                              + $(leaveIDArry[i]).html()
-                              + "</leaveid></LayoutHeader>";
+                                          + myEmpNo
+                                          + "</EmpNo><leaveid>"
+                                          + $(leaveIDArry[i]).html()
+                                          + "</leaveid></LayoutHeader>";
                         QueryLeftDaysData($(leaveIDArry[i]).html());
                     }
-                    leaveTypeData["defaultValue"] = leaveTypeData["option"][0]["value"];
                     tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
                 }
             };
@@ -124,7 +123,6 @@ $("#viewPersonalLeave").pagecontainer({
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var leftDays = $("leftdays", htmlDoc);
                     leftDaysData[leaveid] = $(leftDays).html();
-                    // $("#leaveType > span:nth-of-type(1)").text($(leftDays).html() + "天");
                 }
             };
 
@@ -140,6 +138,7 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
+                    
                 }
             };
 
@@ -268,13 +267,32 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).on("change", "#leaveType-popup", function() {
-            // queryLeftDaysData = "<LayoutHeader><EmpNo>"
-            //                   + myEmpNo
-            //                   + "</EmpNo><leaveid>"
-            //                   + $(this).val()
-            //                   + "</leaveid></LayoutHeader>";
-            // QueryLeftDaysData();
-            $("#leaveType > span:nth-of-type(1)").text(leftDaysData[$(this).val()] + "天");
+            leaveid = $(this).val();
+            leaveType = $(this).text();
+        });
+
+        $(document).on("popupafterclose", "#leaveType-popup-option", function() {
+            if(leftDaysData[leaveid] < 0.5) {
+                var headerContent = "天數不夠";
+                    msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
+                $('.leftDaysNotEnough').find('.header-icon img').attr("src", "img/urgent.png");
+                $('.leftDaysNotEnough').find('.header-text').html(headerContent);
+                $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
+                
+                popupMsgInit('.leftDaysNotEnough');
+
+                $("#leaveType > span:nth-of-type(1)").text("");
+                $("#leaveType-popup option").text("請選擇");
+                tplJS.reSizeDropdownList("leaveType-popup", "typeB");
+
+            }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
+                $("label[for=leaveTime-tab1]").addClass('btn-disable');
+                $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
+                $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
+                $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+            }else {
+                $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+            }
         });
     }
 });
