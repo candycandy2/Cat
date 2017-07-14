@@ -663,4 +663,20 @@ input[type=radio]:checked + label {
     margin: 0;
 }
 
-#appcontent{ padding-top: 5vw !important;}
+.notice-priority-high {
+    font-size: 30px;
+    color: #cc0000;
+}
+
+.notice-priority-normal {
+    font-size: 30px;
+    color: #333333;
+}
+
+.header-service-red {
+    background-image: url(../img/header_service_red.svg);
+}
+
+.header-event-red {
+    background-image: url(../img/header_event_red.svg);
+}
