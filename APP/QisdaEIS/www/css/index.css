@@ -94,22 +94,6 @@ a{
 	color: #666666;
 	margin-left: 3.71VW;
 }
-/* navbar */
-.navbar-position{
-	width: 92.58VW; 
-	margin-left: 3.71VW;
-	margin-right: 3.71VW;
-	margin-top: 2VH;
-	margin-bottom: 3VH;
-}
-.navbar-leftBtn{
-	border-bottom-left-radius: 5px; 
-	border-top-left-radius:5px;
-}
-.navbar-rightBtn{
-	border-bottom-right-radius: 5px;
-	border-top-right-radius: 5px;
-}
 /* hightcharts */
 .fontTooltip{
 	font-size: 14px;
@@ -224,7 +208,7 @@ a{
 .bu-main > ul > li:nth-child(odd){
 	height: 15.538VH;
 }
-.bu-main > ul > li:nth-child(odd) > ul > li{
+.bu-data-list > li{
 	float: left;
 	height: 15.538VH;
 	list-style-type: none;
@@ -234,45 +218,49 @@ a{
 	margin: 0;
 }
 
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(1){
+.bu-data-list > li:nth-child(1){
 	width: 25.848VW;
 	height: 15.538VH;
 	display: table;
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(1) > div{
+.bu-data-list > li:nth-child(1) > div{
 	width: 21.568VW;
-	height: 8VH;
+	height: 15.538VH;
 	margin-left: 2.14VW;
-	margin-right: 2.14VW;
 	display: table-cell; 
 	vertical-align:middle; 
 	text-align:center;
-	
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(1) > div > div{
+.bu-data-list > li:nth-child(1) > div > div{
 	overflow:hidden; 
 	text-overflow:ellipsis;
 	display:-webkit-box; 
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2; 
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(2){
+.bu-data-list > li:nth-child(2){
 	width: 30.377VW;
 	line-height: 15.538VH;
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(2) span{
+.bu-data-list > li:nth-child(2) span{
 	margin-left: 6VW;
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(3){
+.bu-data-list > li:nth-child(3){
 	width: 24.988VW;
 	line-height: 15.538VH;
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(4){
+.bu-data-list > li:nth-child(3) div{
+	width: 85%;
+	height: 40%;
+	margin-left: 5%;
+	margin-top: 30%; 
+}
+.bu-data-list > li:nth-child(4){
 	width: 11.367VW;
 	line-height: 15.538VH;
 	text-align: center;
 }
-.bu-main > ul > li:nth-child(odd) > ul > li:nth-child(4) img{
+.bu-data-list > li:nth-child(4) img{
 	width: 4VW;
 	height: 3VH;
 	vertical-align: middle;
@@ -280,6 +268,14 @@ a{
 /* even hc hide */
 .bu-main > ul > li:nth-child(even){
 	display: none;
+}
+.bu-single-list{
+	height: 77.69VH;
+	background-color: lightcyan;
+}
+.csd-single-list{
+	height: 77.69VH;
+	background-color: lightcyan;
 }
 /******************************************** viewHitRate *******************************************/
 

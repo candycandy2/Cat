@@ -30,12 +30,14 @@
 		
 		<div class="include-label">
 			<span class="font-style7">Credit Memo Included</span>
-			<div><img src="img/switch_g.png" /></div>	
+			<div><img src="img/switch_g.png" id="memoBtn" /></div>	
 		</div>
 		<!-- BU Overdue -->
+		<!-- BU title -->
 		<div class="bu-title">
 			<span class="font-style11">BU Overdue A/R</span>
 		</div>
+		<!-- BU header -->
 		<div class="bu-header">
 			<ul>
 				<li class="font-style11 detail-customer">
@@ -55,15 +57,16 @@
 					<span>WoW Trend</span>
 				</li>
 				<li class="detail-alllist">
-					<img src="img/all_list_down.png" class="alllist-img" />
+					<img src="img/all_list_down.png" class="alllist-img" id="buAllListBtn" />
 				</li>
 			</ul>
 		</div>
+		<!-- BU main -->
 		<div class="bu-main">
-			<ul class="bu-data-list">
+			<ul>
 				<!-- odd data -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
 								<div>
@@ -75,22 +78,22 @@
 							<span>11110041</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="buChartArea1"></div>
 						</li>
 						<li>
-							<img src="img/list_down.png" />
+							<img src="img/list_down.png" class="buSingleListBtn" />
 						</li>
 					</ul>
 				</li>
 				<!-- even hc hide -->
-				<li></li>
+				<li class="bu-single-list"></li>
 				<!-- odd data -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
 								<div>
-									<span>601774</span>&nbsp;&nbsp;<span>飞利浦股份有限公司</span>
+									<span>601774</span>&nbsp;&nbsp;<span>飞利浦股份有限公司飞利浦</span>
 								</div>	
 							</div>
 						</li>
@@ -98,22 +101,22 @@
 							<span>7852304</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="buChartArea2"></div>
 						</li>
 						<li>
-							<img src="img/list_down.png" />
+							<img src="img/list_down.png" class="buSingleListBtn" />
 						</li>
 					</ul>
 				</li>
 				<!-- even hc hide -->
-				<li></li>
+				<li class="bu-single-list"></li>
 				<!-- odd data -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
 								<div>
-									<span>658397</span>&nbsp;&nbsp;<span>AAAA股份有限公司</span>
+									<span>658397</span>&nbsp;&nbsp;<span>东森电视股份有限公司公司</span>
 								</div>	
 							</div>
 						</li>
@@ -121,20 +124,20 @@
 							<span>11110041</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="buChartArea3"></div>
 						</li>
 						<li>
-							<img src="img/list_down.png" />
+							<img src="img/list_down.png" class="buSingleListBtn" />
 						</li>
 					</ul>
 				</li>
 				<!-- even hc hide -->
-				<li></li>
+				<li class="bu-single-list"></li>
 				<!-- total -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
-							<div>
+							<div style="text-align: left;">
 								<div>
 									<span>Total</span>
 								</div>	
@@ -144,7 +147,7 @@
 							<span>11110041</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="buChartArea4"></div>
 						</li>
 						<li>
 						</li>
@@ -153,9 +156,11 @@
 			</ul>
 		</div>
 		<!-- CSD Overdue -->
+		<!-- CSD title -->
 		<div class="bu-title">
 			<span class="font-style11">CSD Overdue A/R</span>
 		</div>
+		<!-- CSD header-->
 		<div class="bu-header">
 			<ul>
 				<li class="font-style11 detail-customer">
@@ -175,15 +180,16 @@
 					<span>WoW Trend</span>
 				</li>
 				<li class="detail-alllist">
-					<img src="img/all_list_down.png" class="alllist-img" />
+					<img src="img/all_list_down.png" class="alllist-img" id="csdAllListBtn" />
 				</li>
 			</ul>
 		</div>
+		<!-- CSD main -->
 		<div class="bu-main">
-			<ul class="bu-data-list">
+			<ul>
 				<!-- odd data -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
 								<div>
@@ -195,18 +201,18 @@
 							<span>11110041</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="csdChartArea1"></div>
 						</li>
 						<li>
-							<img src="img/list_down.png" />
+							<img src="img/list_down.png" class="csdSingleListBtn" />
 						</li>
 					</ul>
 				</li>
 				<!-- even hc hide -->
-				<li></li>
+				<li class="csd-single-list"></li>
 				<!-- odd data -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
 								<div>
@@ -218,22 +224,22 @@
 							<span>7852304</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="csdChartArea2"></div>
 						</li>
 						<li>
-							<img src="img/list_down.png" />
+							<img src="img/list_down.png" class="csdSingleListBtn" />
 						</li>
 					</ul>
 				</li>
 				<!-- even hc hide -->
-				<li></li>
+				<li class="csd-single-list"></li>
 				<!-- odd data -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
 								<div>
-									<span>658397</span>&nbsp;&nbsp;<span>AAAA股份有限公司</span>
+									<span>658397</span>&nbsp;&nbsp;<span>AA电视股份AA有限公司公司</span>
 								</div>	
 							</div>
 						</li>
@@ -241,21 +247,21 @@
 							<span>11110041</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="csdChartArea3"></div>
 						</li>
 						<li>
-							<img src="img/list_down.png" />
+							<img src="img/list_down.png" class="csdSingleListBtn" />
 						</li>
 					</ul>
 				</li>
 				<!-- even hc hide -->
-				<li></li>
+				<li class="csd-single-list"></li>
 				<!-- total -->
 				<li>
-					<ul>
+					<ul class="bu-data-list">
 						<li>
 							<div>
-								<div>
+								<div style="text-align: left;">
 									<span>Total</span>
 								</div>	
 							</div>
@@ -264,7 +270,7 @@
 							<span>11110041</span>
 						</li>
 						<li>
-							<span style="margin-left: 10px;">134586</span>
+							<div id="csdChartArea4"></div>
 						</li>
 						<li>
 						</li>
@@ -272,5 +278,6 @@
 				</li>
 			</ul>
 		</div>
+		
 	</div>
 </div>
