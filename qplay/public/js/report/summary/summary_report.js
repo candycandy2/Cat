@@ -97,7 +97,7 @@ var iniSummaryReport = function(){
 
 var createSmmaryRegistedDeviceChart = function(res){
     var chart =  $('#container_semi_circle_chart_summary_report_1').highcharts(),
-        title = "累計註冊<br>設備比例<br>( 依系統 ) ",
+        title = Messages.CUMULATIVE_REGISTERED + "<br>" + Messages.DEVICE_PERCENT + "<br>( "+ Messages.BY_DEVICE +" ) ",
         seriesName = "Reigisted Device",
         $sumContainer = $('#registed_device_count');
     _createSummaryDeviceChart(res, chart, title, seriesName, $sumContainer);
@@ -105,7 +105,7 @@ var createSmmaryRegistedDeviceChart = function(res){
 
 var createSmmaryRegistedUserChart = function(res){
     var chart =  $('#container_semi_circle_chart_summary_report_2').highcharts(),
-        title = "累計註冊<br>用戶比例<br>( 依公司+地區 ) ",
+        title = Messages.CUMULATIVE_REGISTERED + "<br>" + Messages.USER_PERCENT + "<br>( " + Messages.BY_COMPANY_SITE + " ) ",
         seriesName = "Reigisted User",
         $sumContainer = $('#registed_user_count');
     _createSummaryUserChart(res, chart, title, seriesName, $sumContainer);
@@ -113,14 +113,14 @@ var createSmmaryRegistedUserChart = function(res){
 
 var createSmmaryActiveDeviceChart = function(res){
     var chart =  $('#container_semi_circle_chart_summary_report_3').highcharts(),
-        title = "Token有效<br>設備比例<br>( 依系統 ) ",
+        title = Messages.TOKEN_VALID + "<br>" + Messages.DEVICE_PERCENT + "<br>( " + Messages.BY_DEVICE +" ) ",
         seriesName = "Active Device",
         $sumContainer = $('#active_device_count');
     _createSummaryDeviceChart(res, chart, title, seriesName, $sumContainer);
 };
 var createSmmaryActiveUserChart = function(res){
     var chart =  $('#container_semi_circle_chart_summary_report_4').highcharts(),
-        title = "Token有效<br>用戶比例<br>( 依公司+地區 ) ",
+        title = Messages.TOKEN_VALID + "<br>" + Messages.USER_PERCENT + "<br>( " + Messages.BY_COMPANY_SITE + " ) ",
         seriesName = "Active User",
         $sumContainer = $('#active_user_count');
     _createSummaryUserChart(res, chart, title, seriesName, $sumContainer);

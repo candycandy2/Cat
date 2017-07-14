@@ -25,7 +25,20 @@ return [
     |
     */
    
-    'version' => '1.3.3',
+    'version' => '1.4.0',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Static Version
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "version" your .js,.css,imageUrl is currently
+    | running in. 
+    | Set this value to prevent static file cache on client.
+    |
+    */
+   
+    'static_version' => env('STATIC_VERSION'),
 
     /*
     |--------------------------------------------------------------------------
