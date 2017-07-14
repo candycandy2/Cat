@@ -1,7 +1,7 @@
 //get BU & CSD series
 var buBubbleSeries = [
 	{ x: 65, y: 62, name: 'TE', data: {}, color: '#99CC33' },
-    { x: 67, y: 60, name: 'TF', data: {}, color: '#40C1C7' },
+    { x: 66, y: 63, name: 'TF', data: {}, color: '#40C1C7' },
     { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
     { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
     { x: 82, y: 20, name: 'FS', data: {}, color: '#948078' },
@@ -57,7 +57,7 @@ var bubbleOption = {
         },
         tickWidth: 1,
         tickPositions: [70, 80, 90],
-        min: 60,
+        min: 55,
         max: 95
     },
     yAxis: {
@@ -94,6 +94,7 @@ var bubbleOption = {
         	minSize: 40,
             dataLabels: {
                 enabled: true,
+                allowOverlap: true,
                 format: '{point.name}',
                 style: { 
                 	"color": "#ffffff",
@@ -152,8 +153,16 @@ var rectOption = {
         labels: {
         	align: 'right',
         	enabled: true,
-        	format: '{value}'       	
-        }
+        	formatter: function(){
+        		if(this.value === 75){
+        			return this.value + '(Days)';
+        		}
+        		else{
+        			return this.value;
+        		}
+        	},
+        	overflow: 'justify'
+        }  
    	},
    	tooltip: {
         useHTML: true,
@@ -242,6 +251,7 @@ $('#viewMain').pagecontainer({
 			showRect();
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
+            $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
