@@ -1,4 +1,4 @@
-var currentYear, currentMonth, myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
+var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -26,13 +26,23 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
+var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
+var currentYear = time.getFullYear();
+var currentMonth = time.getMonth() + 1;
+var currentDate = (time.getDate() < 10) ? "0"+time.getDate() : time.getDate();
+var currentDay = time.getDay();
 var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
+var dayTable = {
+    "1" : "(一)",
+    "2" : "(二)",
+    "3" : "(三)",
+    "4" : "(四)",
+    "5" : "(五)"
+};
 
 window.initialSuccess = function() {
-    currentYear = time.getFullYear();
-    currentMonth = time.getMonth() + 1;
     myEmpNo = localStorage["emp_no"];
     queryCalendarData = "<LayoutHeader><Year>"
                       + currentYear
@@ -44,6 +54,7 @@ window.initialSuccess = function() {
     getDefaultSettingQueryData = "<EmpNo>"+ myEmpNo +"</EmpNo>";
     QueryCalendarData();
     GetDefaultSetting();
+    dateInit();
     $.mobile.changePage("#viewPersonalLeave");
     loadingMask("show");
 }
@@ -128,4 +139,47 @@ function changePageByPanel(pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
     }
     $("#mypanel").panel("close");
+}
+
+function dateInit() {
+    var month = currentMonth;
+    var date = currentDate;
+    var day = currentDay;
+    for(var i=1; i<=2; i++) {
+        if(day > 0 && day < 6) {
+            $("label[for=leaveDate-tab" + i + "]").text(month + "/" + date + " " + dayTable[day]);
+            $("#leaveDate-tab" + i).val(currentYear + "/" + month + "/" + date);
+            day++;
+            if(day == 6) {
+                day = 1;
+                if((Number(date) + 3) <= lastDateOfMonth) {
+                    date = ((Number(date) + 3) < 10) ? "0"+(Number(date) + 3) : (Number(date) + 3);    
+                }else if((Number(date) + 3) > lastDateOfMonth) {
+                    month = Number(month) + 1;
+                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);    
+                }
+            }else if((Number(date) + 1) <= lastDateOfMonth) {
+                date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
+            }else if((Number(date) + 1) > lastDateOfMonth) {
+                month = Number(month) + 1;
+                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
+            }
+        }else if(day == 6) {
+            day = 1;
+            if((Number(date) + 2) <= lastDateOfMonth) {
+                date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);    
+            }else if((Number(date) + 2) > lastDateOfMonth) {
+                month = Number(month) + 1;
+                date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);    
+            }
+        }else if(day == 0) {
+            day = 1;
+            if((Number(date) + 1) <= lastDateOfMonth) {
+                date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);    
+            }else if((Number(date) + 1) > lastDateOfMonth) {
+                month = Number(month) + 1;
+                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);    
+            }
+        }
+    }
 }
