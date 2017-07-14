@@ -317,6 +317,8 @@ $("#viewPersonalLeave").pagecontainer({
                     tplJS.reSizeDropdownList("leaveType-popup", "typeB");
                     leaveid = "";
                     leaveType = "";
+                    $("#leaveConfirm").addClass("btn-disable");
+                    $("#leaveConfirm").removeClass("btn-enable");
 
                 }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
                     $("label[for=leaveTime-tab1]").addClass('btn-disable');
@@ -331,7 +333,8 @@ $("#viewPersonalLeave").pagecontainer({
                 }
             }
             if(leaveid != "") {
-                $("#leaveConfirm").addClass();
+                $("#leaveConfirm").removeClass("btn-disable");
+                $("#leaveConfirm").addClass("btn-enable");
             }
             leaveTypeSelected = false;
         });

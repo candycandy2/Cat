@@ -166,6 +166,7 @@ function dateInit() {
             }
         }else if(day == 6) {
             day = 1;
+            i = 0;
             if((Number(date) + 2) <= lastDateOfMonth) {
                 date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);    
             }else if((Number(date) + 2) > lastDateOfMonth) {
@@ -174,6 +175,7 @@ function dateInit() {
             }
         }else if(day == 0) {
             day = 1;
+            i = 0;
             if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);    
             }else if((Number(date) + 1) > lastDateOfMonth) {
