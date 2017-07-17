@@ -1,4 +1,6 @@
-var leaveid, leaveType;
+var leaveid, leaveType, agent, beginDate, endDate, beginTime, endTime;
+var leaveTypeSelected = false;
+var fulldayHide = false;
 var leftDaysData = {};
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -13,34 +15,7 @@ var leaveTypeData = {
 
 var agentData = {
     id: "agent-popup",
-    option: [{
-        value: "0",
-        text: "Colin Chen"
-    }, {
-        value: "1",
-        text: "Jennifer Y Wang"
-    }, {
-        value: "2",
-        text: "Marvin Lin"
-    }, {
-        value: "3",
-        text: "Vinny YC Tang"
-    }, {
-        value: "4",
-        text: "Eee Tsai"
-    }, {
-        value: "5",
-        text: "Darren K Ti"
-    }, {
-        value: "6",
-        text: "Samuel Hsieh"
-    }, {
-        value: "7",
-        text: "Wendy Hsu"
-    }, {
-        value: "8",
-        text: "Alan Tu"
-    }],
+    option: [],
     title: '<input type="text" id="searchBar">',
     defaultText: "請選擇",
     changeDefaultText : true,
@@ -219,6 +194,12 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
             loadingMask("hide");
+            leaveid = "";
+            agent = "";
+            beginTime = "08:00";
+            endTime = "17:00";
+            beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
+            endDate = currentYear + "/" + currentMonth + "/" + currentDate;
         });
 
         /********************************** dom event *************************************/
@@ -261,38 +242,106 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
         });
+        
+        $("#leaveDate-tab1").on("click", function() {
+            beginDate = endDate = $(this).val();
+        });
+
+        $("#leaveDate-tab2").on("click", function() {
+            beginDate = endDate = $(this).val();
+        });        
+
+        $("#leaveTime-tab1").on("click", function() {
+            if(!fulldayHide) {
+                timeArry = splitTime($(this).val());
+                beginTime = timeArry[1];
+                endTime = timeArry[2];
+            }
+        });
+
+        $("#leaveTime-tab2").on("click", function() {
+            timeArry = splitTime($(this).val());
+            beginTime = timeArry[1];
+            endTime = timeArry[2];
+        });
+
+        $("#leaveTime-tab3").on("click", function() {
+            timeArry = splitTime($(this).val());
+            beginTime = timeArry[1];
+            endTime = timeArry[2];
+        });
 
         $("#leaveConfirm").on("click", function() {
+            // loadingMask("show");
+            countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
+                                     + myEmpNo
+                                     + "</EmpNo><leaveid>"
+                                     + leaveid
+                                     + "</leaveid><begindate>"
+                                     + beginDate
+                                     + "</begindate><begintime>"
+                                     + beginTime
+                                     + "</begintime><enddate>"
+                                     + endDate
+                                     + "</enddate><endtime>"
+                                     + endTime
+                                     + "</endtime><datumdate></datumdate></LayoutHeader>";
             $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+        });
+
+        $(document).keypress(function(e) {
+            if(e.which == 13) {
+                alert('You pressed enter!');
+            }
         });
 
         $(document).on("change", "#leaveType-popup", function() {
             leaveid = $(this).val();
             leaveType = $(this).text();
+            leaveTypeSelected = true;
         });
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
-            if(leftDaysData[leaveid] < 0.5) {
-                var headerContent = "天數不夠";
-                    msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
-                $('.leftDaysNotEnough').find('.header-icon img').attr("src", "img/urgent.png");
-                $('.leftDaysNotEnough').find('.header-text').html(headerContent);
-                $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
-                
-                popupMsgInit('.leftDaysNotEnough');
+            if(leaveTypeSelected) {
+                if(leftDaysData[leaveid] < 0.5) {
+                    var headerContent = "天數不夠";
+                        msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
+                    $('.leftDaysNotEnough').find('.header-icon img').attr("src", "img/urgent.png");
+                    $('.leftDaysNotEnough').find('.header-text').html(headerContent);
+                    $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
+                    
+                    popupMsgInit('.leftDaysNotEnough');
 
-                $("#leaveType > span:nth-of-type(1)").text("");
-                $("#leaveType-popup option").text("請選擇");
-                tplJS.reSizeDropdownList("leaveType-popup", "typeB");
+                    $("#leaveType > span:nth-of-type(1)").text("");
+                    $("#leaveType-popup option").text("請選擇");
+                    tplJS.reSizeDropdownList("leaveType-popup", "typeB");
+                    leaveid = "";
+                    leaveType = "";
+                    $("#leaveConfirm").addClass("btn-disable");
+                    $("#leaveConfirm").removeClass("btn-enable");
 
-            }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
-                $("label[for=leaveTime-tab1]").addClass('btn-disable');
-                $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-                $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
-                $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
-            }else {
-                $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+                }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
+                    $("label[for=leaveTime-tab1]").addClass('btn-disable');
+                    $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
+                    $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
+                    $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+                    fulldayHide = true;
+                }else {
+                    $("label[for=leaveTime-tab1]").removeClass('btn-disable');
+                    $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+                    fulldayHide = false;
+                }
             }
+            if(leaveid != "") {
+                $("#leaveConfirm").removeClass("btn-disable");
+                $("#leaveConfirm").addClass("btn-enable");
+            }
+            leaveTypeSelected = false;
         });
+
+        function splitTime(time) {
+            var regExp = /^(.*?)-(.*?)$/;
+            return time.match(regExp);
+        }
     }
 });
