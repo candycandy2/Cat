@@ -3,6 +3,17 @@ var companySeries1 = [20, 33, 53, 76];
 var companySeries2 = [31, 26, 58, 43];
 var companySeries3 = [46, 38, 21, 47];
 var companySeries4 = [58, 37, 76, 51];
+
+var categoriesMonth = ['6月', '7月', '8月', '9月'];
+var companyCode = ['66558', '67326', '69410'];
+var companyName = ['东森电视股份有限公司', '飞利浦股份有限公司', 'AAAA股份有限公司'];
+
+var columnData1 = [1204, 752, 343, 694, 1086, 285];
+var columnData2 = [798, 852, 1374, 290, 653, 772];
+var columnData3 = [567, 819, 754, 1267, 445, 636];
+var columnData4 = [658, 751, 289, 365, 793, 1486];
+
+
 //area highcharts option
 var areaOption = {
 	chart: {
@@ -55,7 +66,72 @@ var areaOption = {
     }]
 };
 
-
+//column highcharts option
+var columnOption = {
+	chart: {
+        type: 'column'
+    },
+    title: {
+        text: null
+    },
+    credits: {
+    	enabled: false
+    },
+    xAxis: {
+        categories: ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: null
+        },
+        labels: {
+            format: '{value}K'
+        }
+    },
+    legend: {		     
+        enabled: false
+    },
+    tooltip: {
+       	useHTML: true,
+	    shadow: false,
+	    borderWidth: 1,
+	    borderColor: 'gray',
+	    backgroundColor:　'#ffffff',
+	    headerFormat: '<table class="fontTooltip">' +
+	    '<tr><td><strong>{point.x}</strong></td></tr>' +
+	    '<tr><td><strong>' + companyCode[0] + ' ' + companyName[0] + '</strong></td></tr>',
+	    pointFormat: '<tr><td>{series.name}:USD${point.y}</td></tr>',
+	    footerFormat: '</table>',
+	    followPointer: false,
+        followTouchMove: false,
+	    valueSuffix: 'K',
+	    shared: true
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal'
+        }   
+    },
+    series: [{
+        name: '1-15 Days',
+        color: '#81B4E1',
+        data: columnData1
+    }, {
+        name: '16-45 Days',
+        color: '#F79620',
+        data: columnData2
+    }, {
+        name: '46-75 Days',
+        color: '#F36D21',
+        data: columnData3
+    }, {
+        name: 'Over 75 Days',
+        color: '#ED3824',
+        data: columnData4
+    }]
+	
+};
 
 
 
@@ -86,6 +162,42 @@ $('#viewDetail').pagecontainer({
 			
 			csdChartArea4 = new Highcharts.Chart('csdChartArea4', areaOption);
 			csdChartArea4.series[0].setData(companySeries4, true, true, false);
+			
+			buChartColumn1 = new Highcharts.Chart('buChartColumn1', columnOption);
+			buChartColumn1.series[0].setData(columnData1, true, true, false);
+			buChartColumn1.series[1].setData(columnData2, true, true, false);
+			buChartColumn1.series[2].setData(columnData3, true, true, false);
+			buChartColumn1.series[3].setData(columnData4, true, true, false);
+			
+			buChartColumn2 = new Highcharts.Chart('buChartColumn2', columnOption);
+			buChartColumn2.series[0].setData(columnData2, true, true, false);
+			buChartColumn2.series[1].setData(columnData1, true, true, false);
+			buChartColumn2.series[2].setData(columnData4, true, true, false);
+			buChartColumn2.series[3].setData(columnData3, true, true, false);
+			
+			buChartColumn3 = new Highcharts.Chart('buChartColumn3', columnOption);
+			buChartColumn3.series[0].setData(columnData3, true, true, false);
+			buChartColumn3.series[1].setData(columnData2, true, true, false);
+			buChartColumn3.series[2].setData(columnData4, true, true, false);
+			buChartColumn3.series[3].setData(columnData1, true, true, false);
+			
+			csdChartColumn1 = new Highcharts.Chart('csdChartColumn1', columnOption);
+			csdChartColumn1.series[0].setData(columnData4, true, true, false);
+			csdChartColumn1.series[1].setData(columnData3, true, true, false);
+			csdChartColumn1.series[2].setData(columnData1, true, true, false);
+			csdChartColumn1.series[3].setData(columnData2, true, true, false);
+			
+			csdChartColumn2 = new Highcharts.Chart('csdChartColumn2', columnOption);
+			csdChartColumn2.series[0].setData(columnData1, true, true, false);
+			csdChartColumn2.series[1].setData(columnData4, true, true, false);
+			csdChartColumn2.series[2].setData(columnData2, true, true, false);
+			csdChartColumn2.series[3].setData(columnData3, true, true, false);
+			
+			csdChartColumn3 = new Highcharts.Chart('csdChartColumn3', columnOption);
+			csdChartColumn3.series[0].setData(columnData2, true, true, false);
+			csdChartColumn3.series[1].setData(columnData1, true, true, false);
+			csdChartColumn3.series[2].setData(columnData3, true, true, false);
+			csdChartColumn3.series[3].setData(columnData4, true, true, false);
 			
 		}
 		

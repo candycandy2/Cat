@@ -1,7 +1,7 @@
 //get BU & CSD series
 var buBubbleSeries = [
-	{ x: 65, y: 62, name: 'TE', data: {}, color: '#99CC33' },
-    { x: 66, y: 63, name: 'TF', data: {}, color: '#40C1C7' },
+	{ x: 62, y: 62, name: 'TE', data: {}, color: '#99CC33' },
+    { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
     { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
     { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
     { x: 82, y: 20, name: 'FS', data: {}, color: '#948078' },
@@ -18,8 +18,8 @@ var csdBubbleSeries = [
 var buRectSeries = [
 	{ name: '东森股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
 	{ name: '飞利浦股份有限公司', code: '60324', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
-	{ name: 'AAAA股份有限公司', code: '67498', value: 8, colorValue: 40, day1: 1443, day16: 563, day46: 2254, day76: 896 }, 
-	{ name: 'BBBB股份有限公司', code: '62406', value: 7, colorValue: 50, day1: 207, day16: 1078, day46: 567, day76: 2963 }, 
+	{ name: 'AAAAAA股份有限公司', code: '67498', value: 8, colorValue: 40, day1: 1443, day16: 563, day46: 2254, day76: 896 }, 
+	{ name: 'BBBB股份有限公司', code: '62406', value: 6, colorValue: 50, day1: 207, day16: 1078, day46: 567, day76: 2963 }, 
 	{ name: 'CCCC股份有限公司', code: '63201', value: 4, colorValue: 60, day1: 985, day16: 2246, day46: 409, day76: 4587 }, 
 	{ name: 'DDDD股份有限公司', code: '64885', value: 4, colorValue: 70, day1: 441, day16: 798, day46: 1059, day76: 3062 }
 ];
@@ -82,11 +82,12 @@ var bubbleOption = {
         borderColor: '#FDC24F',
         backgroundColor: 'rgba(247,247,247,0.85)',
         headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td>{point.name}</td></tr>' +
+        pointFormat: '<tr><td><strong>{point.name}</strong></td></tr>' +
         '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
-        followPointer: true
+        followPointer: false,
+        followTouchMove: false
     },
     plotOptions: {
         series: {
@@ -97,9 +98,9 @@ var bubbleOption = {
                 allowOverlap: true,
                 format: '{point.name}',
                 style: { 
-                	"color": "#ffffff",
-                	"fontSize": "12px", 
-                	"textOutline": "-2px -2px contrast"
+                	color: "#ffffff",
+                	fontSize: "12px", 
+                	textOutline: "-2px -2px contrast"
                 }
             },
             point: {
@@ -142,6 +143,16 @@ var rectOption = {
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
+	labels: {
+   		items: [{
+   			html: '<div>(Days)</div>'
+   		}],
+   		style: {
+   			color: "#323232",
+   			left: "300VW",
+   			top: "193VW"
+   		}
+   	},
 	colorAxis: {
         tickPositions: [0, 15, 45, 75],
         stops: [
@@ -151,15 +162,18 @@ var rectOption = {
             [1, '#EF3623']
         ],
         labels: {
-        	align: 'right',
+        	align: 'center',
         	enabled: true,
-        	formatter: function(){
+        	/*formatter: function(){
         		if(this.value === 75){
         			return this.value + '(Days)';
         		}
         		else{
         			return this.value;
         		}
+        	},*/
+        	style: {
+        		color: '#323232'
         	},
         	overflow: 'justify'
         }  
@@ -171,25 +185,28 @@ var rectOption = {
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
         headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td>{point.code} {point.name}</td></tr>' +
+        pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
         '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
         '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
         '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
         '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
         footerFormat: '</table>',
-        followPointer: true
+        followPointer: false,
+        followTouchMove: false
     },
     plotOptions: {
     	series: {
-	        color: 'black',
 	        layoutAlgorithm: 'squarified',
 	        dataLabels: {
-	            enabled: true,
-	            align: 'center',
-	            overflow: 'none',
-	            crop: false,
-	            padding:　2,
-	            format: '{point.code}' + ' ' + '{point.name}'
+	            enabled: true,  
+	            useHTML: true,
+	            style: {
+	            	"color": "#ffffff",
+	            	"fontSize": "11px",
+	            	"fontWeight": "bold",
+	            	"textOutline": "2px 2px black"
+	            },
+	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
 	        }
     	}
     },
