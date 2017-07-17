@@ -114,12 +114,15 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
+                    var agentList = "";
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var DepArry = $("Department", htmlDoc);
                     var nameArry = $("name", htmlDoc);
-                    $agentData = $("<li>" + DepArry[0] + "</li>");
-                    $("#agent-popup-option-list").append($agentData);
+                    for(var i=0; i<DepArry.length; i++) {
+                        agentList += "<li>" + $(DepArry[i]).html() + "  " + $(nameArry[i]).html() + "</li>";
+                    }
+                    $("#agent-popup-option-list").append(agentList);
                 }
             };
 
