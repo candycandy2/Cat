@@ -2,41 +2,47 @@
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="364.27px" height="493.479px" viewBox="0 0 364.27 493.479" enable-background="new 0 0 364.27 493.479"
+	 width="347.984px" height="436.736px" viewBox="0 0 347.984 436.736" enable-background="new 0 0 347.984 436.736"
 	 xml:space="preserve">
 <g>
-	<polygon fill="#EB7424" points="334.142,328.23 334.142,95.666 283.399,95.666 283.399,328.23 254.935,328.23 254.935,158.273 
-		204.193,158.273 204.193,328.23 175.717,328.23 175.717,202.866 124.963,202.866 124.963,328.23 96.499,328.23 96.499,138.362 
-		45.758,138.362 45.758,328.23 15.177,328.23 15.177,132.736 15.177,0 0,0 0,16.783 0,343.407 282.177,343.407 364.27,343.407 
-		364.27,328.23 	"/>
+	<defs>
+		<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="362.736" width="346" height="74">
+			<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
+			<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
+		</filter>
+	</defs>
+	<mask maskUnits="userSpaceOnUse" x="0" y="362.736" width="346" height="74" id="SVGID_1_">
+		<g filter="url(#Adobe_OpacityMaskFilter)">
+			<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="172.001" y1="392.7363" x2="172.001" y2="205.6294">
+				<stop  offset="0" style="stop-color:#000000"/>
+				<stop  offset="0.1148" style="stop-color:#3A393B"/>
+				<stop  offset="0.3529" style="stop-color:#6C6E70"/>
+				<stop  offset="0.6901" style="stop-color:#ADAFB2"/>
+				<stop  offset="1" style="stop-color:#F2F3F3"/>
+			</linearGradient>
+			<rect x="-5.999" y="356.736" fill="url(#SVGID_2_)" width="356" height="434"/>
+		</g>
+	</mask>
+	<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="0" y1="399.7363" x2="346" y2="399.7363">
+		<stop  offset="0" style="stop-color:#805CA5"/>
+		<stop  offset="1" style="stop-color:#673992"/>
+	</linearGradient>
+	<rect y="362.736" mask="url(#SVGID_1_)" fill="url(#SVGID_3_)" width="346" height="74"/>
+	<polygon fill="none" points="179.598,89.511 239.183,149.35 264.009,124.632 203.813,65.255 	"/>
+	<polygon fill="#805CA5" points="135.261,44.984 4.99,175.083 15.59,185.696 135.231,66.213 154.416,85.497 165.014,74.882 	"/>
+	<polygon fill="#805CA5" points="347.984,62.187 337.4,51.557 278.638,110.048 289.317,120.582 	"/>
+	<polygon fill="#805CA5" points="239.183,149.35 183.598,93.511 173,104.125 239.138,170.563 270.688,139.166 260.009,128.632 	"/>
+	<polygon fill="#F7CE21" points="2.973,245.195 13.588,255.793 169,100.125 158.416,89.497 	"/>
+	<polygon fill="#F7CE21" points="274.688,135.166 331.801,191.503 342.334,180.824 285.317,124.582 	"/>
+	<polygon fill="#F7CE21" points="203.813,65.255 264.009,124.632 274.638,114.048 203.733,44.105 169.014,78.882 179.598,89.511 	
+		"/>
+	<polygon fill="#F7CE21" points="274.638,114.048 264.009,124.632 274.688,135.166 285.317,124.582 	"/>
+	<polygon fill="#F7CE21" points="169.014,78.882 158.416,89.497 169,100.125 179.598,89.511 	"/>
 	<g>
-		<polygon fill="#F7CF20" points="182.711,134.192 94.696,70.807 34.613,112.384 25.978,99.893 94.885,52.229 183.469,116.028 
-			326.226,30.373 334.035,43.391 		"/>
+		<polygon fill="#522D7F" points="346.698,346.211 0.486,346.211 0.486,0 15.486,0 15.486,331.211 346.698,331.211 		"/>
 	</g>
-</g>
-<defs>
-	<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="349.034" width="364.27" height="141.444">
-		<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
-		<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
-	</filter>
-</defs>
-<mask maskUnits="userSpaceOnUse" x="0" y="349.034" width="364.27" height="141.444" id="SVGID_1_">
-	<g filter="url(#Adobe_OpacityMaskFilter)">
-		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="193.3223" y1="298.8281" x2="193.3223" y2="484.8466">
-			<stop  offset="0" style="stop-color:#FFFFFF"/>
-			<stop  offset="1" style="stop-color:#000000"/>
-		</linearGradient>
-		<rect x="-72.204" y="100.808" fill="url(#SVGID_2_)" width="531.053" height="693.068"/>
-	</g>
-</mask>
-<g opacity="0.6" mask="url(#SVGID_1_)">
-	<polygon fill="#EB7424" points="334.142,354.134 334.142,432.276 283.399,432.276 283.399,354.134 254.935,354.134 254.935,411.24 
-		204.193,411.24 204.193,354.134 175.717,354.134 175.717,396.256 124.963,396.256 124.963,354.134 96.499,354.134 96.499,417.931 
-		45.758,417.931 45.758,354.134 15.177,354.134 15.177,419.82 15.177,464.42 0,464.42 0,458.781 0,349.034 282.177,349.034 
-		364.27,349.034 364.27,354.134 	"/>
-	<g>
-		<polygon fill="#F7CF20" points="182.711,425.071 94.696,465.005 34.613,438.812 25.978,446.682 94.885,476.709 183.469,436.514 
-			326.226,490.479 334.035,482.277 		"/>
-	</g>
+	
+		<image overflow="visible" width="2661" height="764" xlink:href="../../../benq_b.png"  transform="matrix(0.0797 0 0 0.0797 76.8589 232.6533)">
+	</image>
 </g>
 </svg>

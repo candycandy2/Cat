@@ -137,6 +137,11 @@
     font-size: 4.5vw;
 }
 
+.btn-enable {
+    background-color: #2a88bc !important;
+    color: white !important;
+}
+
 .btn-disable {
     background-color: #ddd !important;
     color: #666 !important;
