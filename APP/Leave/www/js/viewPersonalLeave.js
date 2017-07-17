@@ -252,13 +252,17 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
         
-        $("#leaveDate-tab1").on("click", function() {
+        // $("#leaveDate-tab1").on("click", function() {
+        //     beginDate = endDate = $(this).val();
+        // });
+
+        // $("#leaveDate-tab2").on("click", function() {
+        //     beginDate = endDate = $(this).val();
+        // });
+
+        $("#leaveDate").change(function() {
             beginDate = endDate = $(this).val();
         });
-
-        $("#leaveDate-tab2").on("click", function() {
-            beginDate = endDate = $(this).val();
-        });        
 
         $("#leaveTime-tab1").on("click", function() {
             if(!fulldayHide) {
