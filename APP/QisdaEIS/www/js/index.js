@@ -2,10 +2,11 @@
 var chartbubble,chartLandscapebubble,chartRect,chartLandscapeRect;
 var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
+var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
+var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var hcHidden = false;
 var overviewRectState = false;
 var ytdStrExist = false;
-var categoriesMonth = ['6月', '7月', '8月', '9月'];
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var htmlContent = "";
