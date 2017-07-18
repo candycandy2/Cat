@@ -1,6 +1,6 @@
 //get BU & CSD series
 var buBubbleSeries = [
-	{ x: 62, y: 62, name: 'TE', data: {}, color: '#99CC33' },
+	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
     { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
     { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
     { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
@@ -57,7 +57,7 @@ var bubbleOption = {
         },
         tickWidth: 1,
         tickPositions: [70, 80, 90],
-        min: 55,
+        min: 56,
         max: 95
     },
     yAxis: {
@@ -73,7 +73,7 @@ var bubbleOption = {
             format: '{value}K'
         },
         maxPadding: 0.2,
-        tickPositions: [0, 25, 50, 75, 100],
+       	tickInterval: 25,
         endOnTick: false
     },
     tooltip: {
@@ -91,16 +91,16 @@ var bubbleOption = {
     },
     plotOptions: {
         series: {
-        	maxSize: 40,
-        	minSize: 40,
+        	maxSize: 35,
+        	minSize: 35,
             dataLabels: {
                 enabled: true,
                 allowOverlap: true,
                 format: '{point.name}',
                 style: { 
-                	color: "#ffffff",
-                	fontSize: "12px", 
-                	textOutline: "-2px -2px contrast"
+                	"color": "#ffffff",
+                	"fontSize": "12px", 
+                	"textOutline": "-2px -2px contrast"
                 }
             },
             point: {
@@ -115,9 +115,8 @@ var bubbleOption = {
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
-            					
-            			}
-            			      			
+            				treemapState = true;   					
+            			}       			      			
             		}
             	}
             }
@@ -143,16 +142,16 @@ var rectOption = {
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
-	labels: {
+	/*labels: {
    		items: [{
    			html: '<div>(Days)</div>'
    		}],
    		style: {
-   			color: "#323232",
-   			left: "300VW",
-   			top: "193VW"
+   			"color": "#323232",
+   			"left": "272VW",
+   			"top": "158VW"
    		}
-   	},
+   	},*/
 	colorAxis: {
         tickPositions: [0, 15, 45, 75],
         stops: [
@@ -162,20 +161,20 @@ var rectOption = {
             [1, '#EF3623']
         ],
         labels: {
-        	align: 'center',
         	enabled: true,
-        	/*formatter: function(){
+        	align: 'left',
+        	overflow: 'justify',
+        	formatter: function(){
         		if(this.value === 75){
         			return this.value + '(Days)';
         		}
         		else{
         			return this.value;
         		}
-        	},*/
+        	},
         	style: {
         		color: '#323232'
-        	},
-        	overflow: 'justify'
+        	}
         }  
    	},
    	tooltip: {
@@ -222,9 +221,84 @@ var rectOption = {
     credits: {
     	enabled: false
     }
-
 };
 
+var treemapOption = {
+	chart: {
+		type: "treemap",
+		marginBottom: 70,
+		zoomType: 'none'
+	},
+	colorAxis: {
+        tickPositions: [0, 15, 45, 75],
+        stops: [
+            [0, '#81B4E1'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
+            [1, '#EF3623']
+        ],
+        labels: {
+        	enabled: true,
+        	align: 'left',
+        	overflow: 'justify',
+        	formatter: function(){
+        		if(this.value === 75){
+        			return this.value + '(Days)';
+        		}
+        		else{
+        			return this.value;
+        		}
+        	},
+        	style: {
+        		color: '#323232'
+        	}
+        }  
+   	},
+   	tooltip: {
+        useHTML: true,
+        shadow: false,
+        borderWidth: 1,
+        borderColor: 'gray',
+        backgroundColor:　'#ffffff',
+        headerFormat: '<table class="fontTooltip">',
+        pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
+        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
+        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
+        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
+        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
+        footerFormat: '</table>',
+        followPointer: false,
+        followTouchMove: false
+    },
+    plotOptions: {
+    	series: {
+	        layoutAlgorithm: 'squarified',
+	        dataLabels: {
+	            enabled: true,  
+	            useHTML: true,
+	            style: {
+	            	"color": "#ffffff",
+	            	"fontSize": "11px",
+	            	"fontWeight": "bold",
+	            	"textOutline": "2px 2px black"
+	            },
+	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
+	        }
+    	}
+    },
+    series: [{
+    	data: buRectSeries  
+    }],
+    exporting: {
+        enabled: false
+    },
+    title: {
+        text: null
+    },
+    credits: {
+    	enabled: false
+    }
+};
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
@@ -279,8 +353,7 @@ $('#viewMain').pagecontainer({
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
 			hideTooltip();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
-			chartRect.series[0].setData(buRectSeries, true, true, false);
-            
+			chartRect.series[0].setData(buRectSeries, true, true, false);           
             
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
             chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
@@ -292,8 +365,7 @@ $('#viewMain').pagecontainer({
         $(".page-tabs #viewMain-tab-2").on("click", function() {
         	hideTooltip();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
-			chartRect.series[0].setData(csdRectSeries, true, true, false);
-            
+			chartRect.series[0].setData(csdRectSeries, true, true, false);           
             
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
             chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
