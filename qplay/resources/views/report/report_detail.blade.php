@@ -6,13 +6,13 @@ $menu_name = "REPORT";
 
 @section('head')
     @parent
-    <script src="{{asset('/js/report/basic_chart_option.js')}}"></script>
-    <script src="{{asset('/js/report/report_detail.js')}}"></script>
-    <script src="{{asset('/js/report/summary/summary_report.js')}}"></script>
-    <script src="{{asset('/js/report/api_report/api_call_frequency.js')}}"></script>
-    <script src="{{asset('/js/report/api_report/api_operation_time.js')}}"></script>
-    <script src="{{asset('/js/report/register_report/register_cumulative.js')}}"></script>
-    <script src="{{asset('/js/report/register_report/register_daily.js')}}"></script>
+    <script src="{{asset('/js/report/basic_chart_option.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/report_detail.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/summary/summary_report.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/api_report/api_call_frequency.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/api_report/api_operation_time.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/register_report/register_cumulative.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/register_report/register_daily.js?v='.config('app.static_version'))}}"></script>
 @stop
 
 
@@ -33,20 +33,20 @@ $menu_name = "REPORT";
     </div>
     <ul class="nav nav-tabs" id="navReport">
         @if ($data['project_code'] == '000')
-        <li role="presentation" class="signle-page"><a href="#tab_content_summary_report" data-toggle="tab" data-tabid="summary_report">總覽</a></li>
-        <li class="dropdown" id="regist"><a class="dropdown-toggle" data-toggle="dropdown" href="#">註冊統計<span class="caret"></span></a>
+        <li role="presentation" class="signle-page"><a href="#tab_content_summary_report" data-toggle="tab" data-tabid="summary_report">{{trans('messages.TAB_SUMMARY')}}</a></li>
+        <li class="dropdown" id="regist"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{trans("messages.TAB_REGISTER_REPORT")}}<span class="caret"></span></a>
             <ul class="dropdown-menu" id="register_report">
-                <li><a data-tabid="register_daily">每日註冊設備/用戶數</a></li>
-                <li><a data-tabid="register_cumulative">累計註冊設備/用戶數</a></li>
+                <li><a data-tabid="register_daily">{{trans("messages.TAB_REGISTER_DAILY")}}</a></li>
+                <li><a data-tabid="register_cumulative">{{trans("messages.TAB_REGISTER_CUMULATIVE")}}</a></li>
             </ul>
         </li>
         @endif
         
         {{-- <li role="presentation"><a href="#tab_content_version" data-toggle="tab">用戶使用資料</a></li> --}}
-        <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">API統計<span class="caret"></span></a>
+        <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{trans("messages.TAB_API_REPORT")}}<span class="caret"></span></a>
             <ul class="dropdown-menu" id="api_report">
-                <li><a data-tabid="api_call_frequency">Api呼叫次數與人數</a></li>
-                <li><a data-tabid="api_operation_time">平均處理時間</a></li>
+                <li><a data-tabid="api_call_frequency">{{trans("messages.TAB_API_CALL_FREQUENCY")}}</a></li>
+                <li><a data-tabid="api_operation_time">{{trans("messages.TAB_OPERATION_TIME")}}</a></li>
             </ul>
         </li>
     </ul>

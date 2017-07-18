@@ -44,6 +44,12 @@ $(document).one('pagebeforeshow', function(){
             $("#mypanel").panel( "open");
         }
     });
+    
+    $('#backBtn').on("click", function(){
+    	$('#overview-hc-rectangle-landscape').hide();
+    	$('#backBtn').hide();
+    	$('#overview-hc-bubble-landscape').show();	
+    });
 	
 });
 
@@ -55,7 +61,7 @@ function onBackKeyDown() {
     if(activePageID == "viewMain") {
         if($("body").hasClass("ui-landscape")) {
             /*** Zoom Out the chart ***/
-            zoomOutChart("overview-hc-bubble"); 
+            zoomOutChart("viewMain-hc-canvas"); 
         }else{
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {
@@ -76,15 +82,16 @@ function onBackKeyDown() {
 function zoomInChart() {
     if(screen.width < screen.height) {
         chartLandscapebubble.setSize(screen.height, screen.width*0.9, false);
+        chartLandscapeRect.setSize(screen.height, screen.width*0.9, false);
     }else {
         chartLandscapebubble.setSize(screen.width, screen.height*0.9, false);
+        chartLandscapeRect.setSize(screen.width, screen.height*0.9, false);
     }
 }
 
 //根据panel更换page
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {
-        //loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
@@ -101,17 +108,26 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
-        /*if(ytdStrExist == true) {
-            $(".YTD-Str").css("display", "block");
-        }*/
-       	zoomInChart();
+    	//viewMain
+    	chartbubble.tooltip.hide();
+       	chartRect.tooltip.hide();
+       	chartLandscapebubble.tooltip.hide();
+        chartLandscapeRect.tooltip.hide();
+		$('#overview-hc-bubble-landscape').hide();
+		$('#overview-hc-rectangle-landscape').hide();
+		$('#backBtn').hide();
+        
     }
-    // landscape
     if(window.orientation === 90 || window.orientation === -90 ) {
-    	$('#overview-hc-rectangle').hide();
+    	//viewMain
         zoomInChart();
-        overviewRectState = false;
-        //$(".YTD-Str").css("display", "none");
+        chartbubble.tooltip.hide();
+       	chartRect.tooltip.hide();
+        chartLandscapebubble.tooltip.hide();
+        chartLandscapeRect.tooltip.hide();
+        $('#overview-hc-rectangle').hide();
+		$('#overview-hc-bubble-landscape').show();
+          
         
     }
 }, false);

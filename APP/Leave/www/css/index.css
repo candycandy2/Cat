@@ -163,9 +163,9 @@
 	background-image: none;
 }*/
 
-.typeB {
+/*.typeB {
 	height: 20VW !important;
-}
+}*/
 
 .tpl-option-msg-list {
 	border-top-style: solid;
@@ -192,6 +192,14 @@
 	text-align: center;
 	width: 28VW;
 	z-index: 2;
+}
+
+.leftDaysNotEnough > .ui-content {
+	padding: 0 !important;
+}
+
+.leftDaysNotEnough .ui-content > .header {
+	 margin-top: 10%;
 }
 /******************************************** viewHolidayCalendar ******************************************/
 

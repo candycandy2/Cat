@@ -1,8 +1,14 @@
-var searchBar = '<input type="text" id="searchBar">';
+var leaveid, leaveType;
+var leftDaysData = {};
 var leaveTypeData = {
-    id: "LeaveType-popup",
+    id: "leaveType-popup",
     option: [],
-    defaultValue: 0,
+    title: "",
+    defaultText: "請選擇",
+    changeDefaultText : true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
 };
 
 var agentData = {
@@ -35,14 +41,13 @@ var agentData = {
         value: "8",
         text: "Alan Tu"
     }],
-    title: searchBar,
+    title: '<input type="text" id="searchBar">',
     defaultText: "請選擇",
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
     }
 };
-
 
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
@@ -86,12 +91,19 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var leaveTypeArry = $("name", htmlDoc);
+                    var leaveIDArry = $("leaveid", htmlDoc);
                     for(var i = 0; i < leaveTypeArry.length; i++) {
                         leaveTypeData["option"][i] = {};
-                        leaveTypeData["option"][i]["value"] = i;
+                        leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
                         leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+                        queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                                          + myEmpNo
+                                          + "</EmpNo><leaveid>"
+                                          + $(leaveIDArry[i]).html()
+                                          + "</leaveid></LayoutHeader>";
+                        QueryLeftDaysData($(leaveIDArry[i]).html());
                     }
-                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
+                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
                 }
             };
 
@@ -99,9 +111,74 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, GetDefaultSettingQueryData, "");
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
-        };        
+        };
+
+        window.QueryLeftDaysData = function(leaveid) {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var leftDays = $("leftdays", htmlDoc);
+                    leftDaysData[leaveid] = $(leftDays).html();
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
+            }();
+        };
+
+        window.QueryEmployeeData = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                    
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryEmployeeData, "");
+            }();
+        };
+
+        window.CountLeaveHours = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursQueryData, "");
+            }();
+        };
+
+        window.SendLeaveApplicationData = function() {
+
+            this.successCallback = function(data) {
+                if(data['ResultCode'] === "1") {
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendLeaveApplicationData, "");
+            }();
+        };
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
@@ -112,17 +189,7 @@ $("#viewPersonalLeave").pagecontainer({
                 weekstartson: 0,
                 markToday: true,
                 markWeekend: true,
-                prevEventListener: function(year, month) {
-                    queryCalendarData = "<LayoutHeader><Year>"
-                                      + year
-                                      + "</Year><Month>"
-                                      + month
-                                      + "</Month><EmpNo>"
-                                      + myEmpNo
-                                      + "</EmpNo></LayoutHeader>";
-                    QueryCalendarData();
-                },
-                nextEventListener: function(year, month) {
+                changeDateEventListener: function(year, month) {
                     queryCalendarData = "<LayoutHeader><Year>"
                                       + year
                                       + "</Year><Month>"
@@ -144,7 +211,6 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-1").show();
             $("#tab-2").hide();
             if(lastPageID === "viewPersonalLeave") {
-                // tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeA", leaveTypeData);
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
             }
             $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
@@ -156,10 +222,6 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-        $("#viewPersonalLeave").keypress(function(event) {
-
-        });
-
         $(".page-tabs #viewPersonalLeave-tab-1").on("click", function() {
             $("#tab-1").show();
             $("#tab-2").hide();
@@ -202,6 +264,35 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#leaveConfirm").on("click", function() {
             $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+        });
+
+        $(document).on("change", "#leaveType-popup", function() {
+            leaveid = $(this).val();
+            leaveType = $(this).text();
+        });
+
+        $(document).on("popupafterclose", "#leaveType-popup-option", function() {
+            if(leftDaysData[leaveid] < 0.5) {
+                var headerContent = "天數不夠";
+                    msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
+                $('.leftDaysNotEnough').find('.header-icon img').attr("src", "img/urgent.png");
+                $('.leftDaysNotEnough').find('.header-text').html(headerContent);
+                $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
+                
+                popupMsgInit('.leftDaysNotEnough');
+
+                $("#leaveType > span:nth-of-type(1)").text("");
+                $("#leaveType-popup option").text("請選擇");
+                tplJS.reSizeDropdownList("leaveType-popup", "typeB");
+
+            }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
+                $("label[for=leaveTime-tab1]").addClass('btn-disable');
+                $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
+                $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
+                $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+            }else {
+                $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+            }
         });
     }
 });

@@ -3,7 +3,7 @@ $REPORT_TYPE = 'register_daily';
 ?>
 <div class="row">
     <div class="col-lg-12 col-xs-12" id="">
-        <h4><b>每日註冊設備/用戶數</b></h4>
+        <h4><b>{{trans('messages.TAB_REGISTER_DAILY')}}</b></h4>
         <hr class="primary" style="border-top: 1px solid #bbb1b1;">
     </div>
 </div>
@@ -45,25 +45,25 @@ $REPORT_TYPE = 'register_daily';
     <div class="col-lg-1" id=""></div>
     <div class="col-lg-10 col-xs-12" id="">
         <div id="table_register_daily_1">
-    <div><label class="text-muted">2017-03-03</label></div>
+    <div><label class="text-muted"></label></div>
     <div class="table-responsive">
             <table class="table table-bordered table-striped report-table">
                <thead>
                   <tr>
                      <th rowspan="2" data-field="_id.action" class="table-title">
-                        <div class="th-inner ">系統 名稱</div>
+                        <div class="th-inner ">{{trans('messages.OS_NAME')}}</div>
                      </th>
                      <th rowspan="2" data-field="1" class="table-title bg-color-blue">
-                        <div class="th-inner ">註冊設備數</div>
+                        <div class="th-inner ">{{trans('messages.REGISTERED_DEVICES')}}</div>
                      </th>
                      <th rowspan="2" data-field="2" class="table-title bg-color-pink">
-                        <div class="th-inner ">註冊用戶數</div>
+                        <div class="th-inner ">{{trans('messages.REGISTERED_USERS')}}</div>
                      </th>
                      <th class="js-data-title table-title bg-color-blue">
-                        <div class="th-inner">註冊設備數_公司+地區</div>
+                        <div class="th-inner">{{trans('messages.REGISTERED_DEVICES')}}_{{trans('messages.COMPANY')}}+{{trans('messages.SITE')}}</div>
                      </th>
                      <th class="js-data-title table-title bg-color-pink">
-                        <div class="th-inner">註冊用戶數_公司+地區</div>
+                        <div class="th-inner">{{trans('messages.REGISTERED_USERS')}}_{{trans('messages.COMPANY')}}+{{trans('messages.SITE')}}</div>
                      </th>
                   </tr>
                   <tr class="js-sub-title">

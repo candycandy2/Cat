@@ -1,5 +1,5 @@
-var currentYear, currentMonth, myEmpNo, QTYholidayData, BQCholidayData, QCSholidayData;
-var queryCalendarData, GetDefaultSettingQueryData;
+var currentYear, currentMonth, myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
+var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -41,11 +41,11 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    GetDefaultSettingQueryData = "<EmpNo>"+ myEmpNo +"</EmpNo>";
+    getDefaultSettingQueryData = "<EmpNo>"+ myEmpNo +"</EmpNo>";
     QueryCalendarData();
+    GetDefaultSetting();
     $.mobile.changePage("#viewPersonalLeave");
     loadingMask("show");
-    GetDefaultSetting();
 }
 
 $(document).one("pagebeforeshow", function() {
