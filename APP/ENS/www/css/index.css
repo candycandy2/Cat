@@ -707,10 +707,9 @@ input[type=radio]:checked + label {
 }
 
 .event-content-footer .center {
-    width: 80vw;
+    width: 66vw;
     height: 8.134;
     padding-top: 2.373vw;
-    padding-left: 3vw;
 }
 
 .event-content-footer .center .ui-input-text {
