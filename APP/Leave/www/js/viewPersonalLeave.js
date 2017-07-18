@@ -2,6 +2,7 @@ var leaveid, leaveType, agent, beginDate, endDate, beginTime, endTime;
 var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
+
 var leaveTypeData = {
     id: "leaveType-popup",
     option: [],
@@ -113,7 +114,15 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
-                    
+                    var agentList = "";
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var DepArry = $("Department", htmlDoc);
+                    var nameArry = $("name", htmlDoc);
+                    for(var i=0; i<DepArry.length; i++) {
+                        agentList += "<li>" + $(DepArry[i]).html() + "  " + $(nameArry[i]).html() + "</li>";
+                    }
+                    $("#agent-popup-option-list").append(agentList);
                 }
             };
 
@@ -243,13 +252,17 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
         
-        $("#leaveDate-tab1").on("click", function() {
+        // $("#leaveDate-tab1").on("click", function() {
+        //     beginDate = endDate = $(this).val();
+        // });
+
+        // $("#leaveDate-tab2").on("click", function() {
+        //     beginDate = endDate = $(this).val();
+        // });
+
+        $("#leaveDate").change(function() {
             beginDate = endDate = $(this).val();
         });
-
-        $("#leaveDate-tab2").on("click", function() {
-            beginDate = endDate = $(this).val();
-        });        
 
         $("#leaveTime-tab1").on("click", function() {
             if(!fulldayHide) {
@@ -271,6 +284,12 @@ $("#viewPersonalLeave").pagecontainer({
             endTime = timeArry[2];
         });
 
+        // $("#searchBar").on("click", function() {
+        //     console.log($(this).val());
+
+        // });
+
+
         $("#leaveConfirm").on("click", function() {
             // loadingMask("show");
             countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
@@ -290,9 +309,22 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).keypress(function(e) {
-            if(e.which == 13) {
-                alert('You pressed enter!');
+            var searchEmpNo = "";
+            var searchName = "";
+            var searchData = $("#searchBar").val().match(/^[A-Za-z]*/);
+            if(searchData[0] != "") {
+                 searchName = searchData[0];
+            }else {
+                searchEmpNo = $("#searchBar").val();
             }
+            queryEmployeeData = "<LayoutHeader><EmpNo>"
+                              + myEmpNo
+                              + "</EmpNo><qEmpno>"
+                              + searchEmpNo
+                              + "</qEmpno><qName>"
+                              + searchName
+                              + "</qName></LayoutHeader>";
+            QueryEmployeeData();
         });
 
         $(document).on("change", "#leaveType-popup", function() {
