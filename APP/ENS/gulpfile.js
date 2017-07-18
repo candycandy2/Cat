@@ -74,11 +74,12 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
+  'cordova plugin remove jmessage-phonegap-plugin',
   'cordova plugin remove cordova-plugin-device',
   //'cordova plugin remove cordova-plugin-console',
   //'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-app-update',
-  'cordova plugin readme cordova-plugin-android-permissions',
+  'cordova plugin remove cordova-plugin-android-permissions',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
@@ -100,7 +101,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions --save'
+  'cordova plugin add cordova-plugin-ios-camera-permissions --save',
+  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 

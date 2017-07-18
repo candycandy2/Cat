@@ -20,12 +20,13 @@ $("#viewEventContent").pagecontainer({
             //function: get fucntion list
             //authority: check the authority to read this Event
             action = action || null;
-            //Dor check Event Read Authority
+            //Do check Event Read Authority
             callBack = callBack || null;
 
             var self = this;
             this.readAuthority = true;
-            var queryData = "<LayoutHeader><event_row_id>" + eventID + "</event_row_id><emp_no>" + loginData["emp_no"] + "</emp_no></LayoutHeader>";
+            var queryData = "<LayoutHeader><event_row_id>" + eventID + "</event_row_id><emp_no>" + loginData["emp_no"] + "</emp_no>" +
+            "<app_key>" + appKey + "</app_key></LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -132,7 +133,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
-                        chatroomID = data['Content'].chatroom_id;
+                        chatRoom.setChatroomID(data['Content'].chatroom_id);
                         var msgCount;
 
                         for (j=0; j<messageCountData.length; j++) {
@@ -200,7 +201,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                         //ChatRoom Message List
-                        chatRoomListView();
+                        JM.Message.getGroupConversationHistoryMessage(chatRoom.messageHandler);
 
                         //Update User Read Status & Time
                         //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
@@ -245,19 +246,30 @@ $("#viewEventContent").pagecontainer({
 
         window.chatRoomListView = function(action) {
             action = action || null;
-            var messages = chatRoom.getMsg(chatroomID);
 
-            if (messages) {
+            var messages = chatRoom.Messages[chatRoom.nowChatRoomID];
+
+            if (messages.length > 0) {
+
                 $("#msgContentHR").show();
                 $(".message-content").show();
                 $("#messageContent .message-data-list").remove();
 
                 //Message List
                 var messageListHTML = $("template#tplMessageList").html();
+                var msgCount = 0;
                 var latestUser;
                 var latstMsg;
 
                 for (var i=0; i<messages.length; i++) {
+
+                    //Only display [text] or [image], do not display [event message]
+                    if (messages[i]["msg_type"] !== "text" && messages[i]["msg_type"] !== "image") {
+                        continue;
+                    }
+
+                    msgCount++;
+
                     var messageList = $(messageListHTML);
 
                     messageList.find(".user").html(messages[i]["from_id"]);
@@ -268,8 +280,14 @@ $("#viewEventContent").pagecontainer({
                         messageList.find(".text").html(messages[i]["msg_body"]["text"]);
                     } else if (messages[i]["msg_type"] === "image") {
                         messageList.find(".image").removeClass("hide");
-                        messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
-                        //messageList.find(".image img").prop("src", "https://dl.im.jiguang.cn/qiniu/image/j/54BAF99DD8326F50087B260036BFE6A9");
+
+                        if (messages[i]["msg_body"]["media_id"].indexOf("file:") != -1) {
+                            messageList.find(".image img").prop("src", messages[i]["msg_body"]["media_id"]);
+                        } else {
+                            messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
+                            //messageList.find(".image img").prop("src", "https://dl.im.jiguang.cn/qiniu/image/j/54BAF99DD8326F50087B260036BFE6A9");
+                        }
+
                         messageList.find(".image img").data("width", messages[i]["msg_body"]["width"]);
                         messageList.find(".image img").data("height", messages[i]["msg_body"]["height"]);
                     }
@@ -297,10 +315,21 @@ $("#viewEventContent").pagecontainer({
                     $(".message-preview").hide();
                 }
 
+                //The count of [text] or [image] messages = 0
+                if (msgCount === 0) {
+                    $("#msgContentHR").hide();
+                    $(".message-content").hide();
+                }
+
             } else {
-                //empty message
+                //The count of messages = 0
                 $("#msgContentHR").hide();
                 $(".message-content").hide();
+            }
+
+            if ($(".previewImageDiv").css("display") === "block") {
+                $(".previewImageDiv").hide();
+                $(".previewImageDiv-AddHeight").hide();
             }
 
             loadingMask("hide");
@@ -430,17 +459,25 @@ $("#viewEventContent").pagecontainer({
                 sourceType: srcType,
                 encodingType: Camera.EncodingType.JPEG,
                 mediaType: Camera.MediaType.PICTURE,
-                allowEdit: true,
+                targetHeight: document.documentElement.clientHeight,
+                targetWidth: document.documentElement.clientWidth,
+                allowEdit: false,
                 correctOrientation: true  //Corrects Android orientation quirks
             }
             return options;
         }
 
         //For Plugin Camera
-        function openFilePicker(selection) {
+        function openFilePicker(openType) {
             //var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
-            var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            //var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
             //var srcType = Camera.PictureSourceType.CAMERA;
+            if (openType === "PHOTOLIBRARY") {
+                var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+            } else {
+                var srcType = Camera.PictureSourceType.CAMERA;
+            }
+
             var options = setOptions(srcType);
             var func = createNewFileEntry;
 
@@ -454,6 +491,8 @@ $("#viewEventContent").pagecontainer({
 
             }, function cameraError(error) {
                 console.debug("Unable to obtain picture: " + error, "app");
+
+                loadingMask("hide");
 
             }, options);
         }
@@ -497,7 +536,7 @@ $("#viewEventContent").pagecontainer({
             var buttonHeight = parseFloat($(window).height() * 0.1306).toFixed(2);
 
             resizePhotoWidth = parseInt(imageWidth * resizeWidthPercent, 10);
-            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent - buttonHeight, 10);
+            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent, 10);
 
             var imageContent = '<img src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
 
@@ -516,16 +555,14 @@ $("#viewEventContent").pagecontainer({
             });
 
             $('body').on('touchmove', function(e) {
-                $(window).scrollTop(0);
                 e.preventDefault();
-                e.stopPropagation();
             });
 
             //Photo Confirm - Button Event
             $("#photoCancel").on("click", function() {
                 confirmPhotoClose();
-                //openFilePicker();
-                $("#msgPhoto").trigger("click");
+                $("#openCameraPhotoLibrary").popup("option", "dismissible", true);
+                $("#openCameraPhotoLibrary").popup("open");
             });
 
             $("#photoConfirm").on("click", function() {
@@ -537,6 +574,12 @@ $("#viewEventContent").pagecontainer({
 
         function confirmPhotoClose() {
             $(".event-content-photo-full-screen").remove();
+
+            $('body').css({
+                'overflow': 'auto',
+                'touch-action': 'auto'
+            });
+            $('body').off('touchmove');
         }
 
         function confirmPhotoOK() {
@@ -558,43 +601,20 @@ $("#viewEventContent").pagecontainer({
 
         function fullScreenPhoto(action) {
 
-            var imgSrc = "";
-            if (action === "download") {
-                imgSrc = photoUrl;
-            }
-
-            var imageContent = '<img id="fullScreenImg" src="' + imgSrc + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
+            var imageContent = '<img id="fullScreenImg" src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
             var buttonContent = '<div class="button-content top"><div class="back-button"><span class="back"></span></div></div>';
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             var buttonHeight = $(".event-content-photo-full-screen .button-content").height();
 
             if (device.platform === "iOS") {
-                $(".event-content-photo-full-screen .button-content").css("padding-top", "20px");
-                var paddingTop = buttonHeight + 20;
-            } else {
-                var paddingTop = buttonHeight;
+                $(".event-content-photo-full-screen").css("margin-top", "20px");
             }
 
-            $(".event-content-photo-full-screen #fullScreenImg").css("padding-top", paddingTop + "px");
+            $(".event-content-photo-full-screen #fullScreenImg").css("padding-top", buttonHeight + "px");
             $(".event-content-photo-full-screen").css("top", $(document).scrollTop());
 
-            if (action === "upload") {
-                var file = $("input[type=file]")[0].files[0];
-                var img = document.getElementById("fullScreenImg");
-                var reader;
-
-                reader = new FileReader();
-                reader.onload = (function (theImg) {
-                    return function (evt) {
-                        theImg.src = evt.target.result;
-                        loadingMask("hide");
-                    };
-                }(img));
-                reader.readAsDataURL(file);
-            } else {
-                loadingMask("hide");
-            }
+            loadingMask("hide");
 
             $('body').css({
                 'overflow': 'hidden',
@@ -602,9 +622,7 @@ $("#viewEventContent").pagecontainer({
             });
 
             $('body').on('touchmove', function(e) {
-                $(window).scrollTop(0);
                 e.preventDefault();
-                e.stopPropagation();
             });
 
             //Back Button
@@ -618,44 +636,6 @@ $("#viewEventContent").pagecontainer({
                 });
                 $('body').off('touchmove');
             });
-        }
-
-        function callFileReader(file) {
-            if (typeof FileReader !== "undefined") {
-                //var container = document.getElementById(containerid);
-                //var img = document.createElement("img");
-                //container.appendChild(img);
-                var imgSmall = document.getElementById("finalImage");
-                var imgOriginal = document.getElementById("myTempImage");
-                var reader;
-
-                //small preview image
-                reader = new FileReader();
-                reader.onload = (function (theImg) {
-                    return function (evt) {
-                        theImg.src = evt.target.result;
-                        $(".previewImageDiv").show();
-                        $(".previewImageDiv-AddHeight").show();
-                    };
-                }(imgSmall));
-                reader.readAsDataURL(file);
-
-                //original image
-                reader = new FileReader();
-                reader.onload = (function (theImg) {
-                    return function (evt) {
-                        theImg.src = evt.target.result;
-                        photoUrl = theImg.src;
-
-                        $("<img/>").attr("src", theImg.src).load(function() {
-                            confirmPhoto(this.width, this.height);
-                        });
-                    };
-                }(imgOriginal));
-                reader.readAsDataURL(file);
-            } else {
-                console.log("FileReader------------------no support");
-            }
         }
 
         /********************************** page event *************************************/
@@ -684,6 +664,14 @@ $("#viewEventContent").pagecontainer({
             };
 
             tplJS.Popup("viewEventContent", "contentEventContent", "append", eventFinishedConfirmData);
+
+            //UI Popup : Open Camera / Photo Library
+            var openCameraPhotoLibraryData = {
+                id: "openCameraPhotoLibrary",
+                content: $("template#tplOpenCameraPhotoLibrary").html()
+            };
+
+            tplJS.Popup("viewEventContent", "contentEventContent", "append", openCameraPhotoLibraryData);
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
@@ -701,58 +689,29 @@ $("#viewEventContent").pagecontainer({
             $('#msgText').prop('placeholder', "請輸入訊息");
             $("#msgText").val("");
 
-            /*
-            //Open Camera in Mobile Phone
-            navigator.camera.getPicture(onSuccess, onFail, {
-                quality: 50,
-                destinationType: Camera.DestinationType.FILE_URI
-            });
-
-            function onSuccess(imageURI) {
-                console.log(imageURI);
-                var image = document.getElementById('myImage');
-                image.src = imageURI;
-            }
-
-            function onFail(message) {
-                alert('Failed because: ' + message);
-            }
-            */
         });
         /********************************** dom event *************************************/
 
         //Open Photo Library
         $(document).on("click", "#viewEventContent #cameraButton", function() {
-            loadingMask("show");
-            //openFilePicker();
-            var msgPhoto = $("#msgPhoto").clone();
-            $("#viewEventContent .event-content-footer #msgPhoto").remove();
-            $(msgPhoto).appendTo("#viewEventContent .event-content-footer .center").trigger("click");
+            $("#openCameraPhotoLibrary").popup("option", "dismissible", true);
+            $("#openCameraPhotoLibrary").popup("open");
         });
 
-        $(document).on("change", "#msgPhoto", function() {
-            var file = $("input[type=file]")[0].files[0];
-            console.log(file.name + "\n" +
-                  file.type + "\n" +
-                  file.size + "\n" +
-                  file.lastModifiedDate);
+        $(document).on({
+            click: function(event) {
 
-            var test = new File(
-                [""],
-                "Screenshot_2017-02-17-10-19-35.png",
-                {
-                    type: "image/png",
-                    lastModified: 1487297975850,
-                    lastModifiedDate: new Date(),
-                    name: "Screenshot_2017-02-17-10-19-35.png",
-                    size: 137032,
-                    webkitRelativePath: ""
+                if ($(event.target).hasClass("cancel")) {
+                    var openType = "PHOTOLIBRARY";
+                } else if ($(event.target).hasClass("confirm")) {
+                    var openType = "CAMERA";
                 }
-            )
-            console.log(test);
 
-            callFileReader(file);
-        });
+                $("#openCameraPhotoLibrary").popup("close");
+                openFilePicker(openType);
+
+            }
+        }, "#openCameraPhotoLibrary");
 
         //Photo - Small Preview
         $(document).on("click", ".previewImageDiv .delete-button", function() {
@@ -787,32 +746,40 @@ $("#viewEventContent").pagecontainer({
             checkReportAuthority(this, "report");
         });
 
-        $(document).on("click", "#eventReportWorkDoneConfirm .cancel", function() {
-            $("#eventReportWorkDoneConfirm").popup("close");
-            footerFixed();
-        });
+        $(document).on({
+            click: function(event) {
 
-        $(document).on("click", "#eventReportWorkDoneConfirm .confirm", function() {
-            $("#eventReportWorkDoneConfirm").popup("close");
-            footerFixed();
-            updateTaskStatus(1);
-        });
+                if ($(event.target).hasClass("cancel")) {
+                    $("#eventReportWorkDoneConfirm").popup("close");
+                    footerFixed();
+                } else if ($(event.target).hasClass("confirm")) {
+                    $("#eventReportWorkDoneConfirm").popup("close");
+                    footerFixed();
+                    updateTaskStatus(1);
+                }
+
+            }
+        }, "#eventReportWorkDoneConfirm");
 
         //Cancel Event Work Done
         $(document).on("click", ".work-after", function() {
             checkReportAuthority(this, "cancel");
         });
 
-        $(document).on("click", "#eventCancelWorkDoneConfirm .cancel", function() {
-            $("#eventCancelWorkDoneConfirm").popup("close");
-            footerFixed();
-        });
+        $(document).on({
+            click: function(event) {
 
-        $(document).on("click", "#eventCancelWorkDoneConfirm .confirm", function() {
-            $("#eventCancelWorkDoneConfirm").popup("close");
-            footerFixed();
-            updateTaskStatus(0);
-        });
+                if ($(event.target).hasClass("cancel")) {
+                    $("#eventCancelWorkDoneConfirm").popup("close");
+                    footerFixed();
+                } else if ($(event.target).hasClass("confirm")) {
+                    $("#eventCancelWorkDoneConfirm").popup("close");
+                    footerFixed();
+                    updateTaskStatus(0);
+                }
+
+            }
+        }, "#eventCancelWorkDoneConfirm");
 
         //Event Finished
         $(document).on("click", "#eventFinishedConfirm .confirm", function() {
@@ -823,52 +790,21 @@ $("#viewEventContent").pagecontainer({
         //Chatroom Msg Button
         $(document).on("click", "#msgButton", function() {
 
-            var gid = chatroomID;
-            var gname = chatroomID + "-room";
-
             var uploadText = true;
             var msg = $("#msgText").val();
 
             var uploadImg = false;
-            var fid = "msgPhoto";
 
             if (msg.length === 0) {
                 uploadText = false;
             }
 
             if (uploadText) {
-                if (msgController.isInited) {
+                loadingMask("show");
 
-                    loadingMask("show");
-
-                    msgController.SendText(gid, gname, msg, function(successResult) {
-                        console.log("---------------successResult");
-                        console.log(successResult);
-
-                        if (successResult["result"]["code"] === 0) {
-                            var chatRoomID = successResult["result"]["target_gid"];
-                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
-                            var createTime = new Date(ctime * 1000);
-
-                            var objData = {
-                                msg_id: successResult["result"]["msg_id"],
-                                ctime: ctime,
-                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                                    padLeft(createTime.getMinutes(), 2),
-                                from_id: successResult["content"]["from_id"],
-                                msg_type: successResult["content"]["msg_type"],
-                                msg_body: successResult["content"]["msg_body"]
-                            };
-
-                            chatRoom.storeMsg(chatRoomID, objData, chatRoom.refreshMsg);
-                            $("#msgText").val("");
-                        }
-                    }, function(errorResult) {
-                        console.log("---------------errorResult");
-                        console.log(errorResult);
-                    });
-                }
+                JM.Message.sendGroupTextMessage(msg, chatRoom.messageHandler);
+                chatRoom.sendNewMsg = true;
+                $("#msgText").val("");
             }
 
             if ($(".previewImageDiv").css("display") === "block") {
@@ -876,47 +812,13 @@ $("#viewEventContent").pagecontainer({
             }
 
             if (uploadImg) {
-                if (msgController.isInited) {
+                loadingMask("show");
+                chatRoom.localPhotoUrl = photoUrl;
 
-                    loadingMask("show");
-
-                    msgController.SendImage(gid, gname, fid, function(successResult) {
-                        console.log("---------------successResult");
-                        console.log(successResult);
-
-                        if (successResult["result"]["code"] === 0) {
-                            var chatRoomID = successResult["result"]["target_gid"];
-                            var ctime = successResult["content"]["create_time"].toString().substr(0, 10);
-                            var createTime = new Date(ctime * 1000);
-
-                            var objData = {
-                                msg_id: successResult["result"]["msg_id"],
-                                ctime: ctime,
-                                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                                    padLeft(createTime.getMinutes(), 2),
-                                from_id: successResult["content"]["from_id"],
-                                msg_type: successResult["content"]["msg_type"],
-                                msg_body: successResult["content"]["msg_body"]
-                            };
-
-                            chatRoom.storeMsg(chatRoomID, objData, chatRoom.refreshMsg);
-
-                            $(".previewImageDiv").hide();
-                            $(".previewImageDiv-AddHeight").hide();
-                            loadingMask("hide");
-                        }
-
-                    }, function(errorResult) {
-                        console.log("---------------errorResult");
-                        console.log(errorResult);
-                    });
-                }
+                JM.Message.sendGroupImageMessage(photoUrl, chatRoom.messageHandler);
+                chatRoom.sendNewMsg = true;
             }
 
-            if (!msgController.isInited) {
-                initialMessage();
-            }
         });
 
         //Chatroom msg-image click full screen
@@ -926,10 +828,9 @@ $("#viewEventContent").pagecontainer({
             var clientHeight = document.documentElement.clientHeight;
             var clientWidth = document.documentElement.clientWidth;
             var resizeWidthPercent = parseFloat(clientWidth / imageWidth).toFixed(2);
-            var buttonHeight = parseFloat($(window).height() * 0.1306).toFixed(2);
 
             resizePhotoWidth = parseInt(imageWidth * resizeWidthPercent, 10);
-            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent - buttonHeight, 10);
+            resizePhotoHeight = parseInt(imageHeight * resizeWidthPercent, 10);
 
             photoUrl = $(this).prop("src");
 
@@ -938,10 +839,22 @@ $("#viewEventContent").pagecontainer({
 
         //Hide message-preview when scrolling page
         $(window).scroll(function() {
+            if ($("#fullScreenImg").length || $("#photoCancel").length) {
+                $(".event-content-photo-full-screen").remove();
+                $(".event-content-footer").removeClass("ui-fixed-hidden");
+
+                $('body').css({
+                    'overflow': 'auto',
+                    'touch-action': 'auto'
+                });
+                $('body').off('touchmove');
+            }
+
             if($(window).scrollTop() + $(window).height() + $("#viewEventContent .ui-footer").height() >= $(document).height()) {
                 $(".message-preview").html("");
                 $(".message-preview").hide();
             }
+
             footerFixed();
         });
 
@@ -957,5 +870,6 @@ $("#viewEventContent").pagecontainer({
         $(document).on("focusout", "#msgText", function() {
             $(".ui-footer").addClass("ui-footer-fixed");
         });
+
     }
 });

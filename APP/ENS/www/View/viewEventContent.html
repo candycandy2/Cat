@@ -111,7 +111,7 @@
         </div>
 
         <div id="tempImage">
-            <img id='myTempImage' style='display:none;'>
+
         </div>
 
         <div class="previewImageDiv-AddHeight hide">
@@ -165,16 +165,28 @@
             </div>
         </template>
 
+        <!--template @popup content > Open Camera / Photo Library-->
+        <template id="tplOpenCameraPhotoLibrary">
+            <div class="header font-style1">
+                請選擇上傳圖片的方式
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">相簿</div>
+                    <div class="confirm">相機</div>
+                </div>
+            </div>
+        </template>
+
     </div>
     <div data-role="footer" class="event-content-footer" data-position="fixed">
         <div class="message-preview font-style7 hide">
         </div>
-        <div class="left hide" id="cameraButton">
+        <div class="left" id="cameraButton">
             <span class="camera"></span>
         </div>
         <div class="center">
             <input name="msgText" id="msgText" type="text">
-            <input name="msgPhoto" id="msgPhoto" type="file" data-role="none" style="display:none;">
         </div>
         <div class="right" id="msgButton">
             留言
