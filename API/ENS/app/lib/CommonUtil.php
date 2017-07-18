@@ -126,9 +126,10 @@ class CommonUtil
      * @param  timestamp $signatureTime 時間戳記
      * @return String    加密後的字串
      */
-    public static function getSignature($signatureTime)
+    public static function getSignature($signatureTime, $appKey)
         {
-            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.secret_key'), true));
+            $appKey = self::getProjectName($appKey);
+            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.secret_key.'.$appKey), true));
             return $ServerSignature;
         }
 
@@ -189,6 +190,19 @@ class CommonUtil
                 break;
         }
         return $key;
+    }
+
+    /**
+     * 過濾掉環境便數，取得原始app專案名稱
+     * @param  String $appKey 加上環境變數後的appKey
+     * @return String                ex : appqplaydev，處理後會回傳qplqy
+     */
+    public static function getProjectName($appKey){
+        $projectName = preg_replace("/^app/", '',$appKey);
+        if(Config::get('app.env')!= 'production' ){
+            $projectName = preg_replace("/".Config::get('app.env')."$/", '',trim($projectName));
+        }
+        return trim($projectName);
     }
 
     /**

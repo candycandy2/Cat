@@ -124,9 +124,11 @@ class TaskRepository
      * @param  int $taskId    任務id,en_task.row_id
      * @return mixed
      */
-    public function getTaskById($taskId){
+    public function getTaskById($appKey, $taskId){
         return $this->task
-                ->where('row_id',$taskId)
+                ->join('en_event', 'en_task.event_row_id', '=', 'en_event.row_id')
+                ->where('en_task.row_id', '=', $taskId)
+                ->where('en_event.app_key', '=', $appKey)
                 ->first();
     }
 
