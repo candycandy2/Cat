@@ -92,9 +92,7 @@ class Message
          $signatureTime = time();
          $data = json_encode($data);
          $url = Config::get('app.qmessage_api_server').$apiFunction;
-         $headers = array('Content-Type: application/json',
-                        'Signature-Time: '.$signatureTime,
-                        'Signature: '.CommonUtil::getSignature($signatureTime));
+         $headers = array('Content-Type: application/json');
          return CommonUtil::callAPI('POST', $url, $headers, $data);
     }
 

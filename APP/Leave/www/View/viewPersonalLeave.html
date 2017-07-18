@@ -10,14 +10,14 @@
     </div>
     <div data-role="main" class="page-main">
         <form>
-            <fieldset data-role="controlgroup" data-type="horizontal" class="page-tabs" id="viewPersonalLeaveTab">
+            <div data-role="controlgroup" data-type="horizontal" class="page-tabs" id="viewPersonalLeaveTab">
                 <input type="radio" name="radio-choice-h-2" id="viewPersonalLeave-tab-1" value="viewPersonalLeave-tab-1" checked="checked">
                 <label for="viewPersonalLeave-tab-1" class="tabs-title">個人假勤</label>
 
                 <input type="radio" name="radio-choice-h-2" id="viewPersonalLeave-tab-2" value="viewPersonalLeave-tab-2">
                 <label for="viewPersonalLeave-tab-2" class="tabs-title">快速請假</label>
-            </fieldset>
-        </form>
+            </form>
+        </div>
         <div id="tab-1">
             <div id="myCalendar"></div>
             <div class="infoList">
@@ -164,28 +164,28 @@
             <div style="margin-top: 5VW;">
                 <span>請假日期</span>
             </div>
-            <form>
-                <fieldset data-role="controlgroup" data-type="horizontal" id="leaveDate">
-                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab1" value="leaveDate-tab1" checked="checked">
-                    <label for="leaveDate-tab1" class="leaveDateTitle">8/30&nbsp;(一)</label>
+            <div>
+                <div data-role="controlgroup" data-type="horizontal" id="leaveDate">
+                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab1" value="" checked="checked">
+                    <label for="leaveDate-tab1" class="leaveDateTitle"></label>
 
-                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab2" value="leaveDate-tab2">
-                    <label for="leaveDate-tab2" class="leaveDateTitle">8/31&nbsp;(二)</label>
-                </fieldset>
-            </form>
+                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab2" value="">
+                    <label for="leaveDate-tab2" class="leaveDateTitle"></label>
+                </div>
+            </div>
 
             <div style="margin-top: 5VW;">
                 <span>請假時段</span>
             </div>
             <form>
                 <fieldset data-role="controlgroup" data-type="horizontal" id="leaveTime">
-                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab1" value="leaveTime-tab1" checked="checked">
+                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab1" value="08:00-17:00" checked="checked">
                     <label for="leaveTime-tab1" class="leaveTimeTitle">全天</label>
 
-                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab2" value="leaveTime-tab2">
+                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab2" value="08:00-12:00">
                     <label for="leaveTime-tab2" class="leaveTimeTitle">上午</label>
 
-                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab3" value="leaveTime-tab3">
+                    <input type="radio" name="radio-choice-h-2" id="leaveTime-tab3" value="13:00-17:00">
                     <label for="leaveTime-tab3" class="leaveTimeTitle">下午</label>
                 </fieldset>
             </form>

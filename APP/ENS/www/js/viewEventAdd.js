@@ -26,7 +26,7 @@ $("#viewEventAdd").pagecontainer({
                 var newParameter = "";
             }
             var self = this;
-            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no>" + newParameter + "</LayoutHeader>";
+            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no>" + newParameter + "<app_key>" + appKey + "</app_key></LayoutHeader>";
 
             this.successCallback = function(data) {
 
