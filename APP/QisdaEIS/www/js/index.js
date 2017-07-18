@@ -1,5 +1,9 @@
 /*******************global variable function*****************/
 var chartbubble,chartLandscapebubble,chartRect,chartLandscapeRect;
+var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
+var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
+var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
+var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var hcHidden = false;
 var overviewRectState = false;
 var ytdStrExist = false;
@@ -45,13 +49,112 @@ $(document).one('pagebeforeshow', function(){
         }
     });
     
+    $("#viewDetail").on("swiperight", function(event) {
+        if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
+            $("#mypanel").panel( "open");
+        }
+    });
+    
+    //backkey from treemap to bubble
     $('#backBtn').on("click", function(){
     	$('#overview-hc-rectangle-landscape').hide();
     	$('#backBtn').hide();
-    	$('#overview-hc-bubble-landscape').show();
-    	
+    	$('#overview-hc-bubble-landscape').show();	
+    });
+    
+    //open and close credit memo
+    $('#memoBtn').on('click', function(){
+    	var flag = $('#memoBtn').attr('src');
+    	if(flag === 'img/switch_g.png'){
+    		$('#memoBtn').attr('src', 'img/switch_b.png');
+    		
+    		
+    	}else{
+    		$('#memoBtn').attr('src', 'img/switch_g.png');
+    		
+    		
+    	}
     	
     });
+    
+    //BU allList btn
+    $('#buAllListBtn').on('click', function(){
+    	var flag = $('#buAllListBtn').attr('src');
+    	if(flag === 'img/all_list_down.png'){
+    		$('#buAllListBtn').attr('src', 'img/all_list_up.png');
+    		$('.buSingleListBtn').attr('src', 'img/list_up.png');
+    		$('.bu-single-list').show();
+    		
+    	}else{
+    		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+    		$('.buSingleListBtn').attr('src', 'img/list_down.png');
+    		$('.bu-single-list').hide();
+    	}
+    	
+    });
+    
+    //CSD allList btn
+    $('#csdAllListBtn').on('click', function(){
+    	var flag = $('#csdAllListBtn').attr('src');
+    	if(flag === 'img/all_list_down.png'){
+    		$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
+    		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
+    		$('.csd-single-list').show();
+    		
+    	}else{
+    		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
+    		$('.csd-single-list').hide();
+    	}
+    	
+    });
+    
+	//buSingleListBtn
+	$('.buSingleListBtn').on('click', function(){
+		var self = $(this);
+		if(self.attr('src') === 'img/list_down.png'){
+			self.attr('src', 'img/list_up.png');
+			self.parent().parent().parent().next().show();
+			self.parent().parent().parent().next().attr('border-bottom', '1px solid #D6D6D6');
+			self.parent().parent().parent().attr('border-bottom', 'none');
+			
+		}else{
+			self.attr('src', 'img/list_down.png');
+			self.parent().parent().parent().next().hide();
+		}
+		
+		if($('.buSingleListBtn[src="img/list_down.png"]').length === 3){
+			$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+		}
+		
+		if($('.buSingleListBtn[src="img/list_up.png"]').length === 3){
+			$('#buAllListBtn').attr('src', 'img/all_list_up.png');
+		}
+		
+	});
+	
+	//csdSingleListBtn
+	$('.csdSingleListBtn').on('click', function(){
+		var self = $(this);
+		if(self.attr('src') === 'img/list_down.png'){
+			self.attr('src', 'img/list_up.png');
+			self.parent().parent().parent().next().show();
+			self.parent().parent().parent().next().attr('border-bottom', '1px solid #D6D6D6');
+			self.parent().parent().parent().attr('border-bottom', 'none');
+			
+		}else{
+			self.attr('src', 'img/list_down.png');
+			self.parent().parent().parent().next().hide();
+		}
+		
+		if($('.csdSingleListBtn[src="img/list_down.png"]').length === 3){
+			$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+		}
+		
+		if($('.csdSingleListBtn[src="img/list_up.png"]').length === 3){
+			$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
+		}
+	});
 	
 });
 
@@ -63,7 +166,7 @@ function onBackKeyDown() {
     if(activePageID == "viewMain") {
         if($("body").hasClass("ui-landscape")) {
             /*** Zoom Out the chart ***/
-            zoomOutChart("overview-hc-bubble"); 
+            zoomOutChart("viewMain-hc-canvas"); 
         }else{
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {
@@ -94,7 +197,6 @@ function zoomInChart() {
 //根据panel更换page
 function changePageByPanel(pageId) {
     if($.mobile.activePage[0].id !== pageId) {
-        //loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
@@ -111,6 +213,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
+    	//viewMain
     	chartbubble.tooltip.hide();
        	chartRect.tooltip.hide();
        	chartLandscapebubble.tooltip.hide();
@@ -121,6 +224,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
+    	//viewMain
         zoomInChart();
         chartbubble.tooltip.hide();
        	chartRect.tooltip.hide();

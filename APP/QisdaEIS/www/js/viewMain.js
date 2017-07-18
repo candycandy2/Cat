@@ -1,35 +1,35 @@
 //get BU & CSD series
 var buBubbleSeries = [
-	{ x: 65, y: 62, name: 'TE', product: '', color: '#99CC33' },
-    { x: 67, y: 60, name: 'TF', product: '', color: '#40C1C7' },
-    { x: 74, y: 49, name: 'TN', product: '', color: '#FFCC66' },			            
-    { x: 78, y: 92, name: 'FL', product: '', color: '#5AAEE1' },
-    { x: 82, y: 20, name: 'FS', product: '', color: '#948078' },
-    { x: 88, y: 52, name: 'TY', product: '', color: '#AC8BC0' }
+	{ x: 62, y: 62, name: 'TE', data: {}, color: '#99CC33' },
+    { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
+    { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
+    { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
+    { x: 82, y: 20, name: 'FS', data: {}, color: '#948078' },
+    { x: 88, y: 52, name: 'TY', data: {}, color: '#AC8BC0' }
 ];
 var csdBubbleSeries = [
-	{ x: 74, y: 36, name: 'TE', product: '', color: '#99CC33' },
-    { x: 82, y: 45, name: 'TF', product: '', color: '#40C1C7' },
-    { x: 66, y: 60, name: 'TN', product: '', color: '#FFCC66' },			            
-    { x: 88, y: 73, name: 'FL', product: '', color: '#5AAEE1' },
-    { x: 63, y: 28, name: 'FS', product: '', color: '#948078' },
-    { x: 91, y: 57, name: 'TY', product: '', color: '#AC8BC0' }
+	{ x: 74, y: 36, name: 'TE', data: {}, color: '#99CC33' },
+    { x: 82, y: 45, name: 'TF', data: {}, color: '#40C1C7' },
+    { x: 66, y: 60, name: 'TN', data: {}, color: '#FFCC66' },			            
+    { x: 88, y: 73, name: 'FL', data: {}, color: '#5AAEE1' },
+    { x: 63, y: 28, name: 'FS', data: {}, color: '#948078' },
+    { x: 91, y: 57, name: 'TY', data: {}, color: '#AC8BC0' }
 ];
 var buRectSeries = [
-	{ name: '公司名称', code: '66588', value: 10, colorValue: 10 }, 
-	{ name: '飞利浦股份有限公司', code: '60324', value: 10, colorValue: 30 }, 
-	{ name: 'AAAA股份有限公司', code: '67498', value: 8, colorValue: 40 }, 
-	{ name: 'BBBB股份有限公司', code: '62406', value: 6, colorValue: 50 }, 
-	{ name: 'CCCC股份有限公司', code: '63201', value: 4, colorValue: 60 }, 
-	{ name: 'DDDD股份有限公司', code: '64885', value: 4, colorValue: 70 }
+	{ name: '东森股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
+	{ name: '飞利浦股份有限公司', code: '60324', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
+	{ name: 'AAAAAA股份有限公司', code: '67498', value: 8, colorValue: 40, day1: 1443, day16: 563, day46: 2254, day76: 896 }, 
+	{ name: 'BBBB股份有限公司', code: '62406', value: 6, colorValue: 50, day1: 207, day16: 1078, day46: 567, day76: 2963 }, 
+	{ name: 'CCCC股份有限公司', code: '63201', value: 4, colorValue: 60, day1: 985, day16: 2246, day46: 409, day76: 4587 }, 
+	{ name: 'DDDD股份有限公司', code: '64885', value: 4, colorValue: 70, day1: 441, day16: 798, day46: 1059, day76: 3062 }
 ];
 var csdRectSeries = [
-	{ name: 'EEEE股份有限公司', code: '60586', value: 7, colorValue: 0.1 }, 
-	{ name: 'FFFF股份有限公司', code: '61273', value: 10, colorValue: 0.45 }, 
-	{ name: 'GGGG股份有限公司', code: '65792', value: 2, colorValue: 0.6 }, 
-	{ name: 'HHHH股份有限公司', code: '63496', value: 4, colorValue: 0.75 }, 
-	{ name: 'IIII股份有限公司', code: '65068', value: 8, colorValue: 0.9 }, 
-	{ name: 'JJJJ股份有限公司', code: '69876', value: 8, colorValue: 1 }
+	{ name: 'EEEE股份有限公司', code: '60586', value: 7, colorValue: 10, day1: 785, day16: 464, day46: 3560, day76: 2557 }, 
+	{ name: 'FFFF股份有限公司', code: '61273', value: 10, colorValue: 20, day1: 524, day16: 1674, day46: 897, day76: 1356 }, 
+	{ name: 'GGGG股份有限公司', code: '65792', value: 2, colorValue: 45, day1: 747, day16: 1654, day46: 5647, day76: 2441 }, 
+	{ name: 'HHHH股份有限公司', code: '63496', value: 4, colorValue: 55, day1: 1242, day16: 344, day46: 3684, day76: 687 }, 
+	{ name: 'IIII股份有限公司', code: '65068', value: 8, colorValue: 65, day1: 2364, day16: 841, day46: 653, day76: 457 }, 
+	{ name: 'JJJJ股份有限公司', code: '69876', value: 8, colorValue: 75, day1: 1254, day16: 2503, day46: 486, day76: 698 }
 ];
 
 //bubble highcharts option
@@ -39,7 +39,7 @@ var bubbleOption = {
         marginTop: 5,
         plotBorderWidth: 0,
         zoomType: 'none'
-    },
+   	},
     legend: {
         enabled: false
     },
@@ -57,8 +57,8 @@ var bubbleOption = {
         },
         tickWidth: 1,
         tickPositions: [70, 80, 90],
-        min: 60,
-        max: 93
+        min: 55,
+        max: 95
     },
     yAxis: {
         lineWidth: 0,
@@ -66,7 +66,8 @@ var bubbleOption = {
             text: 'Overdue Amount of Each Facility(USD$)',
             style: {
             	"fontSize": "11px"
-            }
+            },
+            y: 15
         },
         labels: {
             format: '{value}K'
@@ -81,11 +82,12 @@ var bubbleOption = {
         borderColor: '#FDC24F',
         backgroundColor: 'rgba(247,247,247,0.85)',
         headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td>{point.name}</td></tr>' +
-        '<tr><td>Totail Overdue AR Amt.:USD${point.y}K</td></tr>' +
+        pointFormat: '<tr><td><strong>{point.name}</strong></td></tr>' +
+        '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
-        followPointer: true
+        followPointer: false,
+        followTouchMove: false
     },
     plotOptions: {
         series: {
@@ -93,11 +95,12 @@ var bubbleOption = {
         	minSize: 40,
             dataLabels: {
                 enabled: true,
+                allowOverlap: true,
                 format: '{point.name}',
                 style: { 
-                	"color": "#ffffff",
-                	"fontSize": "12px", 
-                	"textOutline": "-2px -2px contrast"
+                	color: "#ffffff",
+                	fontSize: "12px", 
+                	textOutline: "-2px -2px contrast"
                 }
             },
             point: {
@@ -108,10 +111,10 @@ var bubbleOption = {
             				$('#overview-hc-rectangle').show();
             			}
             			if(window.orientation === 90 || window.orientation === -90){
+            				zoomInChart();
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
-            				zoomInChart();
             					
             			}
             			      			
@@ -123,6 +126,9 @@ var bubbleOption = {
     series: [{		    	
         data: buBubbleSeries
     }],
+    exporting: {
+        enabled: false
+    },
     credits: {
     	enabled: false
     }
@@ -131,22 +137,46 @@ var bubbleOption = {
 //rect highcharts option
 var rectOption = {
 	chart: {
-		marginTop: 20,
+		type: "treemap",
+		marginTop: 40,
 		marginBottom: 70,
-		marginRight: 5,
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
+	labels: {
+   		items: [{
+   			html: '<div>(Days)</div>'
+   		}],
+   		style: {
+   			color: "#323232",
+   			left: "300VW",
+   			top: "193VW"
+   		}
+   	},
 	colorAxis: {
-        minColor: '#81B4E1',
-        maxColor: '#EF3623',
         tickPositions: [0, 15, 45, 75],
         stops: [
             [0, '#81B4E1'],
             [0.2, '#81B4E1'],
             [0.2, '#F79620'],
             [1, '#EF3623']
-        ]
+        ],
+        labels: {
+        	align: 'center',
+        	enabled: true,
+        	/*formatter: function(){
+        		if(this.value === 75){
+        			return this.value + '(Days)';
+        		}
+        		else{
+        			return this.value;
+        		}
+        	},*/
+        	style: {
+        		color: '#323232'
+        	},
+        	overflow: 'justify'
+        }  
    	},
    	tooltip: {
         useHTML: true,
@@ -155,28 +185,37 @@ var rectOption = {
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
         headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td>{point.code} {point.name}</td></tr>' +
-        '<tr><td>1-15 Days:USD$10000</td></tr>' +
-        '<tr><td>16-45 Days:USD$10000</td></tr>' +
-        '<tr><td>46-75 Days:USD$10000</td></tr>' +
-        '<tr><td>Over 75 Days:USD$10000</td></tr>' ,
+        pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
+        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
+        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
+        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
+        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
         footerFormat: '</table>',
-        followPointer: true
+        followPointer: false,
+        followTouchMove: false
+    },
+    plotOptions: {
+    	series: {
+	        layoutAlgorithm: 'squarified',
+	        dataLabels: {
+	            enabled: true,  
+	            useHTML: true,
+	            style: {
+	            	"color": "#ffffff",
+	            	"fontSize": "11px",
+	            	"fontWeight": "bold",
+	            	"textOutline": "2px 2px black"
+	            },
+	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
+	        }
+    	}
     },
     series: [{
-    	data: buRectSeries,
-        type: "treemap",
-        color: 'black',
-        layoutAlgorithm: 'squarified',
-        dataLabels: {
-            enabled: true,
-            align: 'center',
-            overflow: 'hidden',
-            padding:　2,
-            format: '{point.code}' + ' ' + '{point.name}'
-        }
-        
+    	data: buRectSeries  
     }],
+    exporting: {
+        enabled: false
+    },
     title: {
         text: null
     },
@@ -194,29 +233,32 @@ $('#viewMain').pagecontainer({
 		
 		function showBubble(){
 			chartbubble = new Highcharts.Chart('overview-hc-bubble', bubbleOption);
-			chartbubble.series[0].setData(buBubbleSeries);
 			
 			chartLandscapebubble = new Highcharts.Chart('overview-hc-bubble-landscape', bubbleOption);
-			chartLandscapebubble.series[0].setData(buBubbleSeries);
 			
-			chartLandscapebubble.legend.update({itemStyle: {fontSize: 14}, align: "center"});
+			//chartLandscapebubble.legend.update({itemStyle: {fontSize: 14}, align: "center"});
 			
 		}
 		
 		function showRect(){	
 			chartRect = new Highcharts.Chart('overview-hc-rectangle', rectOption);
-			chartRect.series[0].setData(buRectSeries);
 			
 			chartLandscapeRect = new Highcharts.Chart('overview-hc-rectangle-landscape', rectOption);
-			chartLandscapeRect.series[0].setData(buRectSeries);
 			
-			chartLandscapeRect.legend.update({itemStyle: {fontSize: 14}, align: "center"});
+			//chartLandscapeRect.legend.update({itemStyle: {fontSize: 14}, align: "center"});
 		}
 		
+		function hideTooltip(){
+			chartbubble.tooltip.hide();
+            chartRect.tooltip.hide();
+            chartLandscapebubble.tooltip.hide();
+            chartLandscapeRect.tooltip.hide();
+            
+		}
 		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
-			
+			/* global PullToRefresh */
 
 			
 		});
@@ -227,6 +269,7 @@ $('#viewMain').pagecontainer({
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
             $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+            $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart();
@@ -234,29 +277,27 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			chartbubble.series[0].setData(buBubbleSeries);
-			chartRect.series[0].setData(buRectSeries);
-            chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
+			hideTooltip();
+			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
+			chartRect.series[0].setData(buRectSeries, true, true, false);
             
-            chartLandscapebubble.series[0].setData(buBubbleSeries);
-            chartLandscapeRect.series[0].setData(buRectSeries);
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
+            
+            chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
+            chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
+            
             $('#overview-hc-rectangle').hide();
             
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-			chartbubble.series[0].setData(csdBubbleSeries);
-			chartRect.series[0].setData(csdRectSeries);
-            chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
+        	hideTooltip();
+			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
+			chartRect.series[0].setData(csdRectSeries, true, true, false);
             
-            chartLandscapebubble.series[0].setData(csdBubbleSeries);
-            chartLandscapeRect.series[0].setData(csdRectSeries);
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
+            
+            chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
+            chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
+            
             $('#overview-hc-rectangle').hide();
             
         });
