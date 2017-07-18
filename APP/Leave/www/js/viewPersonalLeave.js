@@ -147,6 +147,7 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
+                    loadingMask("hide");
                 }
             };
 
@@ -286,20 +287,23 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#leaveConfirm").on("click", function() {
-            // loadingMask("show");
-            countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
-                                     + myEmpNo
-                                     + "</EmpNo><leaveid>"
-                                     + leaveid
-                                     + "</leaveid><begindate>"
-                                     + beginDate
-                                     + "</begindate><begintime>"
-                                     + beginTime
-                                     + "</begintime><enddate>"
-                                     + endDate
-                                     + "</enddate><endtime>"
-                                     + endTime
-                                     + "</endtime><datumdate></datumdate></LayoutHeader>";
+            loadingMask("show");
+            if($("#leaveConfirm").hasClass("btn-enable")) {
+                countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
+                                         + myEmpNo
+                                         + "</EmpNo><leaveid>"
+                                         + leaveid
+                                         + "</leaveid><begindate>"
+                                         + beginDate
+                                         + "</begindate><begintime>"
+                                         + beginTime
+                                         + "</begintime><enddate>"
+                                         + endDate
+                                         + "</enddate><endtime>"
+                                         + endTime
+                                         + "</endtime><datumdate></datumdate></LayoutHeader>";
+                CountLeaveHours();
+            }
             $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
         });
 
@@ -370,9 +374,8 @@ $("#viewPersonalLeave").pagecontainer({
             agentid = $(this).val();
         });
 
-        $(document).on("popupafterclose", "#agent-popup-option", function() {
-            console.log("b");
-        });
+        // $(document).on("popupafterclose", "#agent-popup-option", function() {
+        // });
 
         function splitTime(time) {
             var regExp = /^(.*?)-(.*?)$/;
