@@ -22,12 +22,13 @@ class UserService
 
     /**
      * 取得用戶所屬角色
-     * @param  String $empNo 工號
-     * @return array         角色列表，一個人可能所屬於多個角色 (admin:機房管理者|supervisor:主管|common:一般用戶)
+     * @param  String $appKey app_key
+     * @param  String $empNo  工號
+     * @return array          角色列表，一個人可能所屬於多個角色 (admin:機房管理者|supervisor:主管|common:一般用戶)
      */
-    public function getUserRoleList($empNo){
+    public function getUserRoleList($appKey, $empNo){
         $roleList = [];
-        $groups = $this->userRepository->getUserAuth($empNo);
+        $groups = $this->userRepository->getUserAuth($empNo, $appKey);
         if(count($groups) > 0){
             foreach ($groups as $group) {
                 $roleList [] = $group->usergroup;
@@ -39,11 +40,12 @@ class UserService
     }
 
     /**
+     * TODO app_key
      * 向Qmessage註冊管理者與主管
      * @return json 註冊結果
      */
-    public function registerSuperUserToMessage(){
-        $users = $this->userRepository->getSuperUserLoginId();
+    public function registerSuperUserToMessage($appKey){
+        $users = $this->userRepository->getSuperUserLoginId($appKey);
         if(count($users) == 0){
             return ['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Message'=>'尚無需註冊用戶','Content'=>''];
@@ -64,10 +66,11 @@ class UserService
 
     /**
      * 取得管理員及主管
+     * @param  String $appKey app_key
      * @return mixed
      */
-    public function getSuperUser(){
-        return $this->userRepository->getSuperUser();
+    public function getSuperUser($appKey){
+        return $this->userRepository->getSuperUser($appKey);
     }
 
      /**

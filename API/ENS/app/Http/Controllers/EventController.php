@@ -42,7 +42,6 @@ class EventController extends Controller
      * @return json
      */
     public function newEvent(){
-
          $allow_user = "admin";
 
          \DB::beginTransaction();
@@ -62,13 +61,6 @@ class EventController extends Controller
             $data = $this->getInsertEventData($xml);
             $updateData = [];
 
-            $userAuthList = $this->userService->getUserRoleList($empNo);
-            if(!in_array($allow_user, $userAuthList)){
-                  return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
-                    'Message'=>"權限不足",
-                    'Content'=>""]);
-            }
-
             if(!isset($data['lang'])        || $data['lang']=="" || 
                !isset($data['need_push'])   || $data['need_push']=="" || 
                !isset($data['app_key'])     || $data['app_key']=="" || 
@@ -78,6 +70,13 @@ class EventController extends Controller
                !isset($data['basicList'])   || $data['basicList']==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            $userAuthList = $this->userService->getUserRoleList($data['app_key'], $empNo);
+            if(!in_array($allow_user, $userAuthList)){
+                  return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
+                    'Message'=>"權限不足",
                     'Content'=>""]);
             }
 
@@ -103,7 +102,7 @@ class EventController extends Controller
             //has related
             if(isset($data['related_event_row_id']) && $data['related_event_row_id'] != ""){
 
-                $verifyResult = $Verify->checkRelatedEvent($data['related_event_row_id'], $this->eventService);
+                $verifyResult = $Verify->checkRelatedEvent($data['app_key'], $data['related_event_row_id'], $this->eventService);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
                         'Message'=>$verifyResult["message"],
@@ -112,7 +111,7 @@ class EventController extends Controller
                 }
 
             } 
-                  
+            
             //check task
             foreach ($data['basicList'] as $key => $basicInfo) {
                 if(trim($basicInfo['location']) == "" || trim($basicInfo['function']) == ""){
@@ -121,7 +120,7 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
 
-                if(!$this->basicInfoService->checkBasicInfo($basicInfo['location'],$basicInfo['function'])){
+                if(!$this->basicInfoService->checkBasicInfo($data['app_key'], $basicInfo['location'], $basicInfo['function'])){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014902_locationOrFunctionNotFound,
                     'Message'=>"Location或是Function錯誤",
                     'Content'=>""]);
@@ -129,8 +128,8 @@ class EventController extends Controller
             }
 
             //取得任務參與者
-            $eventUser = $this->getEventAndTaskUser($data['basicList'])['eventUser'];
-            $taskUserList =  $this->getEventAndTaskUser($data['basicList'])['taskUserList'];
+            $eventUser = $this->getEventAndTaskUser($data['app_key'], $data['basicList'])['eventUser'];
+            $taskUserList =  $this->getEventAndTaskUser($data['app_key'], $data['basicList'])['taskUserList'];
 
             //檢查設備管理員及主管資訊，有一個錯誤就失敗
             foreach ($eventUser as $preUserEmpNo) {
@@ -186,9 +185,9 @@ class EventController extends Controller
 
             //Step3. send push
             $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
-        
+            
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
-                'Content'=>$createChatRoomRes->Content]);
+                'Content'=>$createChatRoomRes->Content,'Message'=> $sendPushMessageRes]);
 
         } catch (\Exception $e){
             \DB::rollBack();
@@ -196,23 +195,24 @@ class EventController extends Controller
                 $this->eventService->deleteChatRoom($chatroomId);
             }
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>""]);
+            'Content'=>'']);
         }
     }
 
     /**
      * 取得事件及任務參與者
+     * @param  String $appKey app-key
      * @param  array $basicList location-function 列表
      * @return array array('eventUser'=>array(),'taskUserList'=>array());
      */
-    private function getEventAndTaskUser($basicList){
+    private function getEventAndTaskUser($appKey, $basicList){
         $result = array('eventUser'=>array(),'taskUserList'=>array());
 
          $UniqueTask = $this->eventService->getUniqueTask($basicList);
             foreach ($UniqueTask as $location => $functionList) {
                 foreach ($functionList as $index =>$function) {
                     $result['taskUserList'][$location][$function] = [];
-                    $taskUser = $this->basicInfoService->getUserByLocationFunction( $location ,$function);
+                    $taskUser = $this->basicInfoService->getUserByLocationFunction($appKey, $location ,$function);
                    
                     if(!is_null($taskUser)){
                         foreach ($taskUser as $user) {
@@ -223,7 +223,7 @@ class EventController extends Controller
                 }
             }
             //取得事件參與者
-            $superUser = $this->userService->getSuperUser();
+            $superUser = $this->userService->getSuperUser($appKey);
             foreach ($superUser as $user) {
                  $result['eventUser'][] = $user->emp_no;
             }
@@ -252,6 +252,13 @@ class EventController extends Controller
             $empNo = trim((string)$xml->emp_no[0]);
             $eventType = trim((string)$xml->event_type_parameter_value[0]);
             $eventStatus = trim((string)$xml->event_status[0]);
+            $appKey = trim((string)$xml->app_key[0]);
+
+            if($appKey ==""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
 
             if($eventType!=""){
                 $parameterMap = CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
@@ -270,7 +277,7 @@ class EventController extends Controller
                 }
             }
 
-            $eventList = $this->eventService->getEventList($empNo, $eventType, $eventStatus);
+            $eventList = $this->eventService->getEventList($appKey, $empNo, $eventType, $eventStatus);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -280,7 +287,7 @@ class EventController extends Controller
                 'Content'=>$eventList]);
         } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>$e->getMessage()]);
+            'Content'=>'']);
         }
 
     }
@@ -304,8 +311,9 @@ class EventController extends Controller
             
             $empNo      = trim((string)$xml->emp_no[0]);
             $eventId    = trim((string)$xml->event_row_id[0]);
+            $appKey    = trim((string)$xml->app_key[0]);
 
-            if($eventId==""){
+            if($eventId == "" || $appKey == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -317,7 +325,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
+            $eventList = $this->eventService->getEventDetail($appKey, $eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -369,7 +377,7 @@ class EventController extends Controller
                 'app_key'   => $appKey
                 );
 
-            $userAuthList = $this->userService->getUserRoleList($empNo);
+            $userAuthList = $this->userService->getUserRoleList($appKey, $empNo);
             if(!in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
@@ -388,7 +396,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventService->getEventDetail($eventId, $empNo);
+            $eventList = $this->eventService->getEventDetail($appKey, $eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -419,7 +427,7 @@ class EventController extends Controller
             }
             //更新關聯事件
             if($relatedId!=""){
-                $verifyResult = $Verify->checkRelatedEvent($relatedId, $this->eventService, $eventId);
+                $verifyResult = $Verify->checkRelatedEvent($appKey, $relatedId, $this->eventService, $eventId);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
                         'Message'=>$verifyResult["message"],
@@ -504,7 +512,8 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventRepository->getEventById($eventId);
+            $eventList = $this->eventRepository->getEventById($data['app_key'], $eventId);
+
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -529,7 +538,7 @@ class EventController extends Controller
                 }
                 $eventStatus = $data['event_status'];
                
-                $userAuthList = $this->userService->getUserRoleList($empNo);
+                $userAuthList = $this->userService->getUserRoleList($data['app_key'], $empNo);
                 if(!in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
@@ -574,7 +583,7 @@ class EventController extends Controller
         } catch (\Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>""]);
+            'Content'=>$e->getMessage()]);
            
         }
     }
@@ -602,8 +611,15 @@ class EventController extends Controller
             
             $empNo = trim((string)$xml->emp_no[0]);
             $eventId = trim((string)$xml->event_row_id[0]);
+            $appKey = trim((string)$xml->app_key[0]);
 
-            $userAuthList = $this->userService->getUserRoleList($empNo);
+            if($appKey ==""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+            
+            $userAuthList = $this->userService->getUserRoleList($appKey, $empNo);
             if(!in_array($allow_user, $userAuthList)){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
@@ -616,7 +632,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventService->getUnrelatedEventList($eventId);
+            $eventList = $this->eventService->getUnrelatedEventList($appKey, $eventId);
             //have no Unrelated Event
             if(count($eventList) == 0){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
