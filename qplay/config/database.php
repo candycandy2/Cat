@@ -108,6 +108,20 @@ return [
             'engine' => null,
         ],
 
+        'mysql_ens' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_ENS'),
+            'port' => env('DB_PORT_ENS'),
+            'database' => env('DB_DATABASE_ENS'),
+            'username' => env('DB_USERNAME_ENS'),
+            'password' => env('DB_PASSWORD_ENS'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'mongodb' => [
             'driver'   => 'mongodb',
             'host'     => env('MONGO_HOST'),
