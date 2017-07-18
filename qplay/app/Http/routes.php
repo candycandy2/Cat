@@ -97,71 +97,8 @@ Route::any('report/reportDetail/getRegisterDailyReport', ['middleware' => 'auth'
 Route::any('report/reportDetail/getRegisterCumulativeReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getRegisterCumulativeReport']);
 Route::any('report/reportDetail/getActiveRegisterReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getActiveRegisterReport']);
 
-/*
-Route::any('/platform/getUserList', 'platformController@getUserList');
-Route::any('/platform/getUserListWithoutGroup', 'platformController@getUserListWithoutGroup');
-Route::any('/platform/getRoleList', 'platformController@getRoleList');
-Route::any('/platform/removeUserRight', 'platformController@removeUserRight');
-Route::any('/platform/saveUser', 'platformController@saveUser');
-Route::any('/platform/deleteRole', 'platformController@deleteRole');
-Route::any('/platform/saveRole', 'platformController@saveRole');
-Route::any('/platform/getRoleUsers', 'platformController@getRoleUsers');
-Route::any('/platform/saveRoleUsers', 'platformController@saveRoleUsers');
-Route::any('/platform/getRootMenuList', 'platformController@getRootMenuList');
-Route::any('/platform/deleteMenu', 'platformController@deleteMenu');
-Route::any('/platform/newMenu', 'platformController@newMenu');
-Route::any('/platform/saveMenuSequence', 'platformController@saveMenuSequence');
-Route::any('/platform/getSubMenuList', 'platformController@getSubMenuList');
-Route::any('/platform/saveRootMenu', 'platformController@saveRootMenu');
-Route::any('/platform/getGroupList', 'platformController@getGroupList');
-Route::any('/platform/deleteGroup', 'platformController@deleteGroup');
-Route::any('/platform/saveGroup', 'platformController@saveGroup');
-Route::any('/platform/getGroupUsers', 'platformController@getGroupUsers');
-Route::any('/platform/saveGroupUsers', 'platformController@saveGroupUsers');
-Route::any('/platform/getParameterTypeList', 'platformController@getParameterTypeList');
-Route::any('/platform/deleteParameterType', 'platformController@deleteParameterType');
-Route::any('/platform/saveParameterType', 'platformController@saveParameterType');
-Route::any('/platform/getParameterList', 'platformController@getParameterList');
-Route::any('/platform/deleteParameter', 'platformController@deleteParameter');
-Route::any('/platform/saveParameter', 'platformController@saveParameter');
-
-//push
-Route::any('/push/getMessageList', 'pushController@getMessageList');
-Route::any('/push/saveNewMessage', 'pushController@saveNewMessage');
-Route::any('/push/getMessageSendList', 'pushController@getMessageSendList');
-Route::any('/push/saveMessageVisible', 'pushController@saveMessageVisible');
-Route::any('/push/pushMessageImmediatelyAgain', 'pushController@pushMessageImmediatelyAgain');
-Route::any('/push/saveUpdateMessage', 'pushController@saveUpdateMessage');
-Route::any('/push/saveUpdateAndPushMessage', 'pushController@saveUpdateAndPushMessage');
-Route::any('/push/getSingleEventMessageReceiver', 'pushController@getSingleEventMessageReceiver');
-Route::any('/push/getSecretaryMessageList', 'pushController@getSecretaryMessageList');
-Route::any('/push/pushSecretaryMessage', 'pushController@pushSecretaryMessage');
-
-Route::any('/platform/getProjectList', 'platformController@getProjectList');
-Route::any('/platform/deleteProject', 'platformController@deleteProject');
-Route::any('/platform/newProject', 'platformController@newProject');
-Route::any('/platform/updateProject', 'platformController@updateProject');
-Route::any('/platform/sendProjectInformation', 'platformController@sendProjectInformation');
-
-Route::any('/AppMaintain/getCategoryList', 'AppMaintainController@getCategoryList');
-Route::any('/AppMaintain/saveCategory', 'AppMaintainController@saveCategory');
-Route::any('/AppMaintain/deleteCategory', 'AppMaintainController@deleteCategory');
-Route::any('/AppMaintain/getCategoryAppsList', 'AppMaintainController@getCategoryAppsList');
-Route::any('/AppMaintain/getOtherAppList', 'AppMaintainController@getOtherAppList');
-Route::any('/AppMaintain/saveCategoryApps', 'AppMaintainController@saveCategoryApps');
-Route::any('/AppMaintain/getBlockList', 'AppMaintainController@getBlockList');
-Route::any('/AppMaintain/saveBlockList', 'AppMaintainController@saveBlockList');
-Route::any('/AppMaintain/deleteBlockList', 'AppMaintainController@deleteBlockList');
-Route::any('/AppMaintain/saveAppMainData', 'AppMaintainController@saveAppMainData');
-Route::any('/AppMaintain/getWhiteList', 'AppMaintainController@getWhiteList');
-Route::any('/AppMaintain/getCustomApi', 'AppMaintainController@getCustomApi');
-Route::any('/AppMaintain/getAppUser', 'AppMaintainController@getAppUser');
-Route::any('/AppMaintain/getAppVersionList', 'AppMaintainController@getAppVersionList');
-Route::any('/AppMaintain/saveAppDetail', 'AppMaintainController@saveAppDetail');
-Route::any('/AppMaintain/getMaintainAppList', 'AppMaintainController@getMaintainAppList');
-*/
-
-
+//ENS Maintain
+Route::any('ENSMaintain/getBasicInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@getBasicInfo']);
 
 Route::any('auth/login', function() {
     return view("auth/login");
@@ -174,13 +111,6 @@ Route::any('/', 'AuthController@checkLogin');
 Route::any('auth/checkLogin', 'AuthController@checkLogin');
 Route::any('auth/login_process', 'AuthController@authenticate');
 Route::any('auth/logout', 'AuthController@logout');
-
-/*
-Route::any('/', ['middleware' => 'auth','uses'=>'AuthController@checkLogin']);
-Route::any('auth/checkLogin', ['middleware' => 'auth','uses'=>'AuthController@checkLogin']);
-Route::any('auth/login_process', ['middleware' => 'auth','uses'=>'AuthController@authenticate']);
-Route::any('auth/logout', ['middleware' => 'auth','uses'=>'AuthController@logout']);
-*/
 
 Route::any('accountMaintain', ['middleware' => 'auth', function() {
     return view("user_maintain/account_maintain");
@@ -231,10 +161,6 @@ Route::any('iosAppMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/ios");
 }]);
 
-/*
-Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
-Route::any('appDetailMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
-*/
 Route::any('AppMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appList']);
 Route::any('appDetailMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainController@appDetail']);
 
@@ -273,6 +199,9 @@ Route::any('projectDetailMaintain', ['middleware' => 'auth', function() {
 }]);
 Route::any('report', ['middleware' => 'auth', function() {
     return view("report/report_app_list");
+}]);
+Route::any('basicInfo', ['middleware' => 'auth', function() {
+    return view("ens_maintain/basic_info");
 }]);
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){

@@ -56,6 +56,8 @@ return [
     'TITLE_SYS_PROJECT_MAINTAIN' => '專案管理',
     'TITLE_SECRETARY_PUSH' => '秘書推播',
     'TITLE_REPORT' => '報表',
+    'TITLE_ENS_MAINTAIN' => '事件通報系統服務',
+    'TITLE_BASIC_INFO_MAINTAIN' => '成員資訊維護',
     'TITLE_REGISTER_MAINTAIN_TOOL' => '註冊管理工具',
 
     //validate
