@@ -592,7 +592,11 @@ var tplJS = {
                     }else {
                         $("#" + dropdownListUlID + " li").each(function(index, value) {
                             if($(value).hasClass("tpl-dropdown-list-selected")){
-                                defaultText = $(value).text();
+                                if($(value).find('div:nth-child(2)').text() === "") {
+                                    defaultText = $(value).text();
+                                }else {
+                                    defaultText = $(value).find('div:nth-child(2)').text();
+                                }
                             }
                         });
                     }
