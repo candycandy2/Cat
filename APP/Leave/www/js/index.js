@@ -28,7 +28,7 @@ var panel = htmlContent
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
 var currentYear = time.getFullYear();
-var currentMonth = time.getMonth() + 1;
+var currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
 var currentDate = (time.getDate() < 10) ? "0"+time.getDate() : time.getDate();
 var currentDay = time.getDay();
 var prslvsCalendar = {};
@@ -155,13 +155,13 @@ function dateInit() {
                 if((Number(date) + 3) <= lastDateOfMonth) {
                     date = ((Number(date) + 3) < 10) ? "0"+(Number(date) + 3) : (Number(date) + 3);    
                 }else if((Number(date) + 3) > lastDateOfMonth) {
-                    month = Number(month) + 1;
+                    month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                     date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);    
                 }
             }else if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
             }else if((Number(date) + 1) > lastDateOfMonth) {
-                month = Number(month) + 1;
+                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
         }else if(day == 6) {
@@ -170,7 +170,7 @@ function dateInit() {
             if((Number(date) + 2) <= lastDateOfMonth) {
                 date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);    
             }else if((Number(date) + 2) > lastDateOfMonth) {
-                month = Number(month) + 1;
+                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                 date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);    
             }
         }else if(day == 0) {
@@ -179,7 +179,7 @@ function dateInit() {
             if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);    
             }else if((Number(date) + 1) > lastDateOfMonth) {
-                month = Number(month) + 1;
+                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);    
             }
         }
