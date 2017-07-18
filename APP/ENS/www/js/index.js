@@ -9,7 +9,6 @@ var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
 var prevPageID;
 var openEventFromQPlay = false;
 var getEventListFinish = false;
-var chatroomID;
 
 //Set the result code which means [Unknown Error]
 errorCodeArray = ["014999"];
@@ -23,130 +22,114 @@ window.initialSuccess = function() {
 
     $.mobile.changePage('#viewEventList');
 
-    //QMessage
-    var opts = {
-        'username': loginData["loginid"],
-        'eventHandler': chatRoom.eventHandler,
-        'messageHandler': chatRoom.messageHandler,
-        'message_key': QMessageKey,
-        'message_secret': QMessageSecretKey,
-        'message_api_url_prefix': serverURL.substr(8) + "/qmessage/public/"
-    };
-
-    message = function() {
-        var self = this;
-        this.checkTimeCount = 0;
-
-        this.checkTimer = setInterval(function() {
-            self.checkTimeCount++;
-            if (self.isInited) {
-                console.log("-------------isInited:true");
-                self.stopCheck();
-            } else {
-                console.log("-------------isInited:false");
-                if (self.checkTimeCount === 10) {
-                    self.checkTimeCount = 0;
-                    self.stopCheck();
-                    initialMessage();
-                }
-            }
-        }, 1000);
-
-        this.stopCheck = function() {
-            if (self.checkTimer != null) {
-                clearInterval(self.checkTimer);
-            }
-        };
-    };
-    message.prototype = new window.QMessage(opts);
-    message.prototype.constructor = message;
-
-    initialMessage = function () {
-        msgController = null;
-        msgController = new message();
-    };
-    initialMessage();
-
+    JM.initial();
 }
 
 var chatRoom = {
-    newMsgChatRoomID: "",
-    eventHandler: function(data) {
-        console.log("------------eventHandler");
-        console.log(data);
+    nowChatRoomID: "",
+    Messages: {},
+    sendNewMsg: false,
+    localPhotoUrl: "",
+    setChatroomID: function(ID) {
+        this.nowChatRoomID = ID;
+        JM.chatroomID = ID;
     },
-    messageHandler: function(data) {
+    messageHandler: function(type, data) {
         console.log("------------messageHandler");
         console.log(data);
-        //1. Every time when APP receive new message, stored it in local storage.
-        //2. The old message won't be sent again.
-        //3. Stored messages according to the chat room ID.
-        for (var i=0; i<data["messages"].length; i++) {
-            var createTime = new Date(data["messages"][i]["ctime"] * 1000);
-            var objData = {
-                msg_id: data["messages"][i]["msg_id"],
-                ctime: data["messages"][i]["ctime"],
-                ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                    padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                    padLeft(createTime.getMinutes(), 2),
-                from_id: data["messages"][i]["content"]["from_id"],
-                msg_type: data["messages"][i]["content"]["msg_type"],
-                msg_body: data["messages"][i]["content"]["msg_body"]
-            };
 
-            chatRoom.newMsgChatRoomID = data["messages"][i]["from_gid"];
-            chatRoom.storeMsg(data["messages"][i]["from_gid"], objData, chatRoom.refreshMsg);
-        }
-    },
-    storeMsg: function(chatRoomID, data, callback) {
-        callback = callback || null;
-
-        if (window.localStorage.getItem("Messages") !== null) {
-            var tempDate = window.localStorage.getItem("Messages");
-            var Messages = JSON.parse(tempDate);
-        } else {
-            var Messages = {};
-        }
-
-        if (Messages[chatRoomID] === undefined) {
-            Messages[chatRoomID] = [];
-        }
-
-        Messages[chatRoomID].push(data);
-        window.localStorage.setItem("Messages", JSON.stringify(Messages));
-
-        if (typeof callback === "function") {
-            if (chatroomID !== null) {
-                chatRoom.newMsgChatRoomID = chatroomID;
-                callback();
+        //For API getGroupConversationHistoryMessage
+        if (type === "group") {
+            if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
+                chatRoom.Messages[chatRoom.nowChatRoomID] = [];
             }
-        }
-    },
-    getMsg: function(chatRoomID) {
-        var chatRoomExist = false;
 
-        if (window.localStorage.getItem("Messages") !== null) {
-            var tempDate = window.localStorage.getItem("Messages");
-            var Messages = JSON.parse(tempDate);
+            if (data.messages.length == 0) {
+                loadingMask("hide");
+                chatRoomListView();
+                return;
+            }
 
-            if (Messages[chatRoomID] !== undefined) {
-                chatRoomExist = true;
+            for (var i=0; i<data.messages.length; i++) {
+                var createTime = new Date(data.messages[i].msg_ctime);
+                var objData = {
+                    msg_id: data.messages[i].msgid,
+                    ctime: data.messages[i].msg_ctime,
+                    ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                        padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                        padLeft(createTime.getMinutes(), 2),
+                    from_id: data.messages[i].from_id,
+                    msg_type: data.messages[i].msg_type,
+                    msg_body: data.messages[i].msg_body
+                };console.log(objData);
+
+                if (i == 0) {
+                    chatRoom.Messages[chatRoom.nowChatRoomID] = [];
+                }
+
+                chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
             }
         }
 
-        if (chatRoomExist) {
-            return Messages[chatRoomID];
-        } else {
-            return false;
+        //For sendGroupTextMessage / sendGroupImageMessage
+        if (type === "single") {
+            if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
+                chatRoom.Messages[chatRoom.nowChatRoomID] = [];
+            }
+
+            var parseData = JSON.parse(data);
+
+            if (device.platform === "iOS") {
+                var createTime = new Date(parseData.create_time);
+                var objData = {
+                    msg_id: "",
+                    ctime: parseData.create_time,
+                    ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                        padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                        padLeft(createTime.getMinutes(), 2),
+                    from_id: parseData.from_id,
+                    msg_type: parseData.msg_type,
+                    msg_body: parseData.msg_body
+                };
+
+                if (parseData.msg_type === "image") {
+                    objData["msg_body"]["media_id"] = chatRoom.localPhotoUrl;
+                }
+            }
+
+            if (device.platform === "Android") {
+                var createTime = new Date(parseData.createTimeInMillis);
+                var objData = {
+                    msg_id: "",
+                    ctime: parseData.createTimeInMillis,
+                    ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
+                        padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
+                        padLeft(createTime.getMinutes(), 2),
+                    from_id: parseData.fromID,
+                    msg_type: parseData.msgTypeString,
+                    msg_body: parseData.content
+                };
+
+                if (parseData.msgTypeString === "image") {
+                    objData["msg_body"]["media_id"] = chatRoom.localPhotoUrl;
+                }
+            }
+
+            chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
         }
+
+        chatRoom.refreshMsg();
     },
     refreshMsg: function() {
         var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
         var activePageID = activePage[0].id;
 
         if (activePageID === "viewEventContent") {
-            if (chatroomID === chatRoom.newMsgChatRoomID.toString()) {
+            if (chatRoom.sendNewMsg) {
                 chatRoomListView("showPreview");
+                chatRoom.sendNewMsg = false;
+            } else {
+                chatRoomListView();
             }
         }
     }

@@ -15,7 +15,7 @@ $("#viewEventList").pagecontainer({
             var self = this;
             //Data Life-Cycle: none
             var dataLifeCycle = 0;
-            var queryData = '<LayoutHeader><emp_no>' + loginData["emp_no"] + '</emp_no></LayoutHeader>';
+            var queryData = '<LayoutHeader><emp_no>' + loginData["emp_no"] + '</emp_no><app_key>' + appKey + '</app_key></LayoutHeader>';
 
             this.successCallback = function(data, dataExist) {
                 dataExist = dataExist || false;
@@ -83,7 +83,7 @@ $("#viewEventList").pagecontainer({
                 queryDataParameter = "<event_type_parameter_value>2</event_type_parameter_value>" + queryDataParameter;
             }
 
-            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+            var queryData = "<LayoutHeader>" + queryDataParameter + "<app_key>" + appKey + "</app_key></LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -128,7 +128,7 @@ $("#viewEventList").pagecontainer({
             var self = this;
 
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
-            var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+            var queryData = "<LayoutHeader>" + queryDataParameter + "<app_key>" + appKey + "</app_key></LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -620,6 +620,7 @@ $("#viewEventList").pagecontainer({
 
             if (openData) {
                 loadingMask("show");
+                $(".loader").css("top", "0px");
                 var eventDetail = new getEventDetail(eventID, action);
             }
         };
@@ -892,6 +893,7 @@ $("#viewEventList").pagecontainer({
         //Event Add
         $(document).on("click", "#addEvent", function() {
             loadingMask("show");
+            $(".loader").css("top", "0px");
             $.mobile.changePage('#viewEventAdd');
         });
 
