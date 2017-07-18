@@ -56,6 +56,8 @@ return [
     'TITLE_SYS_PROJECT_MAINTAIN' => '项目管理',
 	'TITLE_SECRETARY_PUSH' => '秘书推播',
     'TITLE_REPORT' => '报表',
+    'TITLE_ENS_MAINTAIN' => '事件通报系统服务',
+    'TITLE_BASIC_INFO_MAINTAIN' => '成员资讯维护',
     'TITLE_REGISTER_MAINTAIN_TOOL' => '注册管理工具',
     //validate
     'VALIDATE_ACCEPT' => '仅接受',

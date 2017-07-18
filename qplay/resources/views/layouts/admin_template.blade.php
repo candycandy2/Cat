@@ -71,6 +71,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-datetimepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bootstrap/css/bootstrap-table-click-edit-row.css') }}" rel="stylesheet">
     <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -242,6 +243,7 @@ if(array_key_exists('with_msg_id', $input)) {
 <script src="{{ asset('/bootstrap/js/bootstrap-table.js') }}"></script>
 <script src="{{ asset('/bootstrap/js/bootstrap-switch.js') }}"></script>
 <script src="{{ asset('/bootstrap/js/bootstrap-datetimepicker.js') }}"></script>
+<script src="{{ asset('/bootstrap/js/bootstrap-table-click-edit-row.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('/plugins/fastclick/fastclick.min.js') }}"></script>
 {{--<script src="../plugins/fastclick/fastclick.min.js"></script>--}}

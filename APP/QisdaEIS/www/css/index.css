@@ -100,12 +100,15 @@ a{
 	font-family: arial !important;
 }
 .fontHide{
-	width: 20VW;
+	width: 18VW;
 	text-overflow:ellipsis;
 	white-space:nowrap;
 	overflow:hidden;
 }
 /* img */
+#backBtn{
+	width: 11.729VW;
+}
 .backBubble-img{
 	width: 4VW;
 	height: 5VH;
@@ -136,6 +139,8 @@ a{
 .bu-title span{
 	display: inline-block;
 	color: #0F0F0F;
+	width: 100%;
+	height: 3.349VW;
 	margin-left: 3.71VW;
 	margin-top: 6.44VW;
 	margin-bottom: 2.14VW;
@@ -210,6 +215,15 @@ a{
 .bu-main > ul > li:nth-child(odd){
 	height: 15.538VW;
 }
+/* even hc hide */
+.bu-main > ul > li:nth-child(even){
+	display: none;
+}
+/* total no border-bottom */
+.bu-main > ul > li:last-child{
+	border-bottom: none !important;
+}
+/* data-list */
 .bu-data-list > li{
 	float: left;
 	height: 15.538VW;
@@ -219,7 +233,6 @@ a{
 	font-size: 3.55VW !important;
 	margin: 0;
 }
-
 .bu-data-list > li:nth-child(1){
 	width: 25.848VW;
 	height: 15.538VW;
@@ -249,13 +262,13 @@ a{
 }
 .bu-data-list > li:nth-child(3){
 	width: 24.988VW;
-	line-height: 15.538VW;
+	height: 15.538VW;
 }
 .bu-data-list > li:nth-child(3) div{
-	width: 20VW;
-	height: 8VW; 
+	width: 15VW;
+	height: 6VW; 
 	margin-top: 4.5VW;
-	margin-left: 1.3VW;
+	margin-left: 2.5VW;
 }
 .bu-data-list > li:nth-child(4){
 	width: 11.367VW;
@@ -267,14 +280,8 @@ a{
 	height: 3VW;
 	vertical-align: middle;
 }
-/* even hc hide */
-.bu-main > ul > li:nth-child(even){
-	display: none;
-	border-bottom: 1px solid #D6D6D6;
-}
-.bu-main > ul > li:last-child{
-	border-bottom: none;
-}
+
+/* single-list */
 .bu-single-list{
 	min-height: 77.54VW;
 }
@@ -305,6 +312,10 @@ a{
 	width: 92.58VW;
 	height: 16.98VW;
 }
+.bu-single-list > div:nth-child(4){
+	width: 92.58VW;
+	height: 50VW;
+}
 .overdue-tab1{
 	width: 92.58VW;
 	height: 7.42VW;
@@ -329,7 +340,7 @@ a{
 }
 .overdue-tab1 div,.overdue-tab2 div{
 	float: left;
-	width: 22.9VW;
+	width: 22.8VW;
 	height: 7.42VW;
 	border: 1px solid lightgray;
 	margin-left: -1px;
@@ -337,10 +348,7 @@ a{
 	text-align: center;
 	line-height: 7.42VW;
 }
-.bu-single-list > div:nth-child(4){
-	width: 92.58VW;
-	height: 50VW;
-}
+
 .csd-single-list{
 	min-height: 77.54VW;
 }
