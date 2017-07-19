@@ -109,10 +109,12 @@ var bubbleOption = {
             		click: function(event){
             			console.log(this.x+","+this.y);
             			if(window.orientation === 180 || window.orientation === 0){
+            				console.log(1);
             				$('#overview-hc-rectangle').show();
             			}
             			if(window.orientation === 90 || window.orientation === -90){
-            				zoomInChart();
+            				//zoomInChart();
+            				console.log(2);
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
@@ -260,7 +262,7 @@ var treemapOption = {
         shadow: false,
         borderWidth: 1,
         borderColor: 'gray',
-        backgroundColor:　'#ffffff',
+        backgroundColor:　'#FFFCF5',
         headerFormat: '<table class="fontTooltip">',
         pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
         '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
@@ -269,18 +271,21 @@ var treemapOption = {
         '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
         footerFormat: '</table>',
         followPointer: false,
-        followTouchMove: false
+        followTouchMove: false,
+        hideDelay: 0
     },
     plotOptions: {
     	series: {
 	        layoutAlgorithm: 'squarified',
 	        dataLabels: {
 	            enabled: true,  
-	            align: 'center',
+	            align: 'left',
+	            inside: true,
 	            useHTML: true,
+	            shadow: true,
 	            style: {
 	            	"color": "#ffffff",
-	            	"fontSize": "11px",
+	            	"fontSize": "10px",
 	            	"fontWeight": "bold",
 	            	"textOutline": "2px 2px black"
 	            },

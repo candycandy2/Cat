@@ -74,7 +74,7 @@
 	font-size: 3VW;
 	text-align: center;
 }
-/***************************** viewMain ****************************/
+/******************************************* viewMain ********************************************/
 /* html */
 ul{
 	list-style-type: none;
@@ -100,7 +100,7 @@ a{
 	font-family: arial !important;
 }
 .fontHide{
-	width: 18VW;
+	width: 17VW;
 	text-overflow:ellipsis;
 	white-space:nowrap;
 	overflow:hidden;
@@ -117,8 +117,12 @@ a{
 	width: 5.957VW;
 }
 /****************************************** viewDetail *********************************************/
+.include-label{
+	width: 100VW;
+}
 .include-label span{
 	display: inline-block;
+	width: 82VW;
 	color: #323232;
 	margin-top: 4.3VW;
 	margin-bottom: 4.3VW;
@@ -126,7 +130,7 @@ a{
 }
 .include-label div{
 	display: inline-block;
-	margin-left: 45VW;
+	width: 10VW;
 }
 .include-label div img{
 	vertical-align: bottom;
@@ -543,6 +547,11 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     background-color: #503f81;
     color: #fff;
 }
+/******* highcharts *******/
+#overview-hc-bubble, #overview-hc-rectangle{
+	width: 100VW;
+	height: 65VW;
+}
 
 /*************************************viewMain highcharts*******************************************/
 #viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
@@ -550,33 +559,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	display: none;
 }
 
-/***************************************************** highcharts ************************************************/
-/*#viewHitRate-hc-landscape-canvas, #viewMonthlyHitRate-hc-landscape-canvas, #viewYTDHitRate-hc-landscape-canvas {
-	display: none;
-}*/
 /********************************************** highcharts landscape *********************************************/
 @media all and (orientation: landscape) {
-	/*body div.ui-footer.ui-bar-inherit.ui-footer-fixed.slideup, .viewIndex.ui-page .ui-content.page-main>form, 
-	
-	#viewHitRate .page-date, #viewHitRate #data-title-bar, #viewHitRate div > ul, 
-	#viewHitRate #viewHitRate-hc-canvas,
-
-	#viewMonthlyHitRate .sliderMonthly, #viewMonthlyHitRate #title-container, 
-	#viewMonthlyHitRate div > .scrollmenu, #viewMonthlyHitRate #viewMonthlyHitRate-hc-canvas,
-
-	#viewYTDHitRate .sliderYTD, #viewYTDHitRate #title-container, 
-	#viewYTDHitRate div > .scrollmenu, #viewYTDHitRate #viewYTDHitRate-hc-canvas{
-		display: none;
-	}
-	#viewHitRate .page-header, #viewMonthlyHitRate .page-header, #viewYTDHitRate .page-header { display: none;}
-	#viewHitRate, #viewMonthlyHitRate, #viewYTDHitRate { padding-top: 1.5VH !important;}
-	.viewIndex.ui-page {
-		background-color: #fff;
-	}
-	#viewHitRate-hc-landscape-canvas {display: inline;}
-	#viewMonthlyHitRate-hc-landscape-canvas {display: inline;}
-	#viewYTDHitRate-hc-landscape-canvas {display: inline;}*/
-	
 	/*******************overview highcharts*********************/
 	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn{
 		display: none;
@@ -591,12 +575,12 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 		background-color: #fff;
 	}
 	#viewMain #overview-hc-bubble-landscape {
-		/*display: block;*/
-		display: inline;
+		display: block;
+		/*display: inline;*/
 	}
-	#viewMain #overview-hc-rectangle-landscape{
+	/*#viewMain #overview-hc-rectangle-landscape{
 		display: inline;
-	}
+	}*/
 
 }
 
