@@ -64,7 +64,6 @@ class BasicInfoRepository
     {   
 
         return  $this->basicInfo
-            
             ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_basic_info.emp_no')
             ->where('app_key','=',$appKey)
             ->orderBy('location','asc')
