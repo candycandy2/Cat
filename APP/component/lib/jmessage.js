@@ -348,7 +348,8 @@ var JM = {
             });
         },
         getGroupInfo: function(groupID, dataType) {
-            window.JMessage.getGroupInfo(groupID, function(data) {
+            //window.JMessage.getGroupInfo(groupID, function(data) {
+            window.JMessage.getGroupInfo(JM.chatroomID, function(data) {
                 console.log("---getGroupInfo success");
                 console.log(data);
                 
@@ -369,7 +370,7 @@ var JM = {
                     $("#chatroomDataPopup .owner").html(data.owner);
                 }
                 */
-                JM.Chatroom.memberArray(groupID);
+                JM.Chatroom.memberArray(JM.chatroomID);
             }, function(errorStr) {
                 console.log("----getGroupInfo Error");
                 console.log(errorStr);
@@ -415,29 +416,41 @@ var JM = {
         memberArray: function(chatroomIDNum) {
             console.log("&&&&&&&&&&&memberArray");
 
-            window.JMessage.memberArray(chatroomIDNum.toString(), function(data) {
-                console.log("---memberArray success");
-                console.log(data);
-                /*
-                $("#chatroomMemberPopup .list").html("");
+            if (device.platform === "iOS") {
+                window.JMessage.memberArray(chatroomIDNum.toString(), function(data) {
+                    console.log("---memberArray success");
+                    console.log(data);
+                    /*
+                    $("#chatroomMemberPopup .list").html("");
 
-                var content = "";
-                for (var i=0; i<data.length; i++) {
-                    var friend = "";
+                    var content = "";
+                    for (var i=0; i<data.length; i++) {
+                        var friend = "";
 
-                    if (data[i].isFriend === "1") {
-                        friend = "[朋友]";
+                        if (data[i].isFriend === "1") {
+                            friend = "[朋友]";
+                        }
+
+                        content += '<div>' + data[i].username + friend + '</div>';
                     }
 
-                    content += '<div>' + data[i].username + friend + '</div>';
-                }
+                    $("#chatroomMemberPopup .list").append(content);
+                    */
+                }, function(errorStr) {
+                    console.log("----memberArray Error");
+                    console.log(errorStr);
+                });
+            }
 
-                $("#chatroomMemberPopup .list").append(content);
-                */
-            }, function(errorStr) {
-                console.log("----memberArray Error");
-                console.log(errorStr);
-            });
+            if (device.platform === "Android") {
+                window.JMessage.getGroupMembers(chatroomIDNum, function(data) {
+                    console.log("---getGroupMembers success");
+                    console.log(data);
+                }, function(errorStr) {
+                    console.log("----getGroupMembers Error");
+                    console.log(errorStr);
+                });
+            }
         },
         addMembers: function() {
             var memberArr = [JM.friendID];

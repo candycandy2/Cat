@@ -124,13 +124,6 @@ gulp.task('jenkinsinstall', shell.task([
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
-gulp.task('QMessage', function() {
-    return gulp.src(['../../qmessage/public/js/qmessage.js',
-        '../../qmessage/public/js/lib/jmessage-sdk-web-2.1.0.min.js',
-        '../../qmessage/public/js/lib/md5.min.js'])
-        .pipe(gulp.dest('www/js/Library/'));
-});
-
 //ex: gulp default
 gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'QMessage', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
