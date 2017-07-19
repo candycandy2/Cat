@@ -17,7 +17,7 @@ var csdBubbleSeries = [
     { x: 91, y: 57, name: 'TY', data: {}, color: '#AC8BC0' }
 ];
 var buRectSeries = [
-	{ name: '东森股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
+	{ name: '东森电视股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
 	{ name: '飞利浦股份有限公司', code: '60324', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
 	{ name: 'AAAAAA股份有限公司', code: '67498', value: 8, colorValue: 40, day1: 1443, day16: 563, day46: 2254, day76: 896 }, 
 	{ name: 'BBBB股份有限公司', code: '62406', value: 6, colorValue: 50, day1: 207, day16: 1078, day46: 567, day76: 2963 }, 
@@ -183,6 +183,7 @@ var rectOption = {
    	tooltip: {
         useHTML: true,
         shadow: false,
+        animation: false,
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
@@ -271,8 +272,7 @@ var treemapOption = {
         '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
         footerFormat: '</table>',
         followPointer: false,
-        followTouchMove: false,
-        hideDelay: 0
+        followTouchMove: false
     },
     plotOptions: {
     	series: {
