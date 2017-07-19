@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Input;
 $menu_name = "SECRETARY_PUSH";
 $input = Input::get();
+$templateCount = 16;
 $push_send_row_id = -1;
 $tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
@@ -28,14 +29,9 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
                     <td>{{trans("messages.TEMPLATE_ID")}}:</td>
                     <td style="padding: 10px;">
                         <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled" >
-                            <option value="1" @if($messageInfo->template_id == 1) selected="selected" @endif>1</option>
-                            <option value="2" @if($messageInfo->template_id == 2) selected="selected" @endif>2</option>
-                            <option value="3" @if($messageInfo->template_id == 3) selected="selected" @endif>3</option>
-                            <option value="4" @if($messageInfo->template_id == 4) selected="selected" @endif>4</option>
-                            <option value="5" @if($messageInfo->template_id == 5) selected="selected" @endif>5</option>
-                            <option value="6" @if($messageInfo->template_id == 6) selected="selected" @endif>6</option>
-                            <option value="7" @if($messageInfo->template_id == 7) selected="selected" @endif>7</option>
-                            <option value="8" @if($messageInfo->template_id == 8) selected="selected" @endif>8</option>
+                            @for ($i = 1; $i <=$templateCount; $i++)
+                            <option value="{{$i}}" @if($messageInfo->template_id == $i) selected="selected" @endif>{{$i}}</option>
+                            @endfor
                         </select>
                     </td>
                     <td><span style="color: red;">*</span></td>
