@@ -65,7 +65,7 @@ class TaskController extends EventController
             }
 
             
-            $taskData = $this->eventService->getTaskById($taskId);
+            $taskData = $this->eventService->getTaskById($data['app_key'], $taskId);
             if(count($taskData) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014909_noTaskData,
                 'Message'=>"查無Task資料",
@@ -79,7 +79,7 @@ class TaskController extends EventController
             }
 
             $checkRes = $this->eventService->checkUpdateTaskAuth($taskId, $empNo);
-            $userAuthList = $this->userService->getUserRoleList($empNo);
+            $userAuthList = $this->userService->getUserRoleList($data['app_key'], $empNo);
             if(!$checkRes && !in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                 'Message'=>"權限不足",

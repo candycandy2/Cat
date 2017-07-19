@@ -9,20 +9,24 @@ use App\Components\Message;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use Request;
+use App\Services\EventService;
+use Illuminate\Support\Facades\Input;
 
 class testController extends Controller
 {
 
     protected $push;
+    protected $eventService;
 
     const EVENT_TYPE = 'event_type';
     const STATUS_FINISHED = '1';
     const STATUS_UNFINISHED = '0';
 
-    public function __construct(Push $push)
+    public function __construct(Push $push, eventService $eventService)
     {
 
         $this->push = $push;
+        $this->eventService = $eventService;
     }
 
     public function getAuthority(){
@@ -131,10 +135,10 @@ class testController extends Controller
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($text_str)));
         var_dump($this->jsUnescape(base64_decode($title)));
        //TODO append ENS event link
-       //$pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
+       $pushResult = $this->push->sendPushMessage($from, $to, $title, $text, $queryParam);
        
        //$result = json_encode($pushResult);
-       return $result;
+       return $pushResult;
    }
 
    public function createChatRoom(){
@@ -143,9 +147,10 @@ class testController extends Controller
         $owner = "Cleo.W.Chan";
         $members = array("Steven.Yan","Sammi.Yao");
         $desc = "cleo test create chatRoom";
+        $appKey = "appensdev";
         //var_dump($messageGroupInfo);exit();
         $qMessage = new Message();
-        $res = json_decode($qMessage->createChatRoom());
+        $res = json_decode($qMessage->createChatRoom($owner, $members, $desc));
         if($res->ResultCode != 1){
             if($res->ResultCode == '998002'){
 
@@ -183,7 +188,7 @@ class testController extends Controller
 
    /**
     * 取得事件聊天室清單
-    * @return [type] [description]
+    * @return
     */
    public function getChatRoomList(){
         $userName = 'Cleo.W.Chan';
@@ -192,12 +197,29 @@ class testController extends Controller
        var_dump($res);
    }
 
-
+   /**
+    * 刪除聊天室
+    * @return
+    */
    public function deleteChatRoom(){
        $gid = '22957935';
        $qMessage = new Message();
        $res = json_decode($qMessage->deleteChatRoom($gid));
        var_dump($res);
+   }
+
+   public function testEns(){
+     $input = Input::get();
+     $data = [];
+     $appKey = $input['app_key'];
+     // var_dump($appKey);exit();
+     $empNo = '1607279';
+     $eventType = '';
+     $eventStatus = '';
+     $eventList = $this->eventService->getEventList($appKey, $empNo, $eventType, $eventStatus);
+     $data['eventList'] = $eventList;
+     $data['appKey'] = $appKey;
+     return \View::make('test.event_list')->with("data", $data);
    }
 }
 

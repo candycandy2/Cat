@@ -42,8 +42,15 @@ class UserController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             $empNo = (string)$xml->emp_no[0];
-            
-            $roleList = $this->userService->getUserRoleList($empNo);
+            $appKey = (string)$xml->app_key[0];
+
+            if($appKey ==""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            $roleList = $this->userService->getUserRoleList($appKey, $empNo);
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                     'Content'=>array("RoleList"=>$roleList)]);
 

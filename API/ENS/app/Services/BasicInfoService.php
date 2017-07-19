@@ -28,11 +28,12 @@ class BasicInfoService
 
     /**
      * 取得location-function及所屬成員
+     * @param  String    appKey
      * @return Array    成員分類列表
      */
-    public function getBasicInfo(){
+    public function getBasicInfo($appKey){
 
-        $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData();
+        $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData($appKey);
 
         $functionList = [];
         if(isset($basicInfoData)){
@@ -65,12 +66,13 @@ class BasicInfoService
 
     /**
      * 取得成員資訊
+     * @param  Array    $appKey  app_key
      * @return Array    成員列表
      */
-    public function getBasicInfoMemberRawData(){
+    public function getBasicInfoMemberRawData($appKey){
         $members = [];
         $member=[];
-        $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData();
+        $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData($appKey);
          if(isset($basicInfoData)){
              foreach ($basicInfoData as $value) {
 
@@ -97,13 +99,14 @@ class BasicInfoService
 
     /**
      * 檢查是否存在此function-location
+     * @param  String $appKey   app-key
      * @param  String $location 地點
      * @param  String $function 分類
      * @return blool           
      */
-    public function checkBasicInfo($location, $function){
+    public function checkBasicInfo($appKey, $location, $function){
 
-        $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($location, $function);
+        $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($appKey, $location, $function);
         if(!is_null($res) && count($res) > 0){
             return true;
         }else{
@@ -115,8 +118,8 @@ class BasicInfoService
      * 用funciotn-location查詢有哪些成員
      * @return Collection     query result  
      */
-    public function getUserByLocationFunction($location, $function){
-        return $this->basicInfoRepository->getUserByLocationFunction($location, $function);
+    public function getUserByLocationFunction($appKey, $location, $function){
+        return $this->basicInfoRepository->getUserByLocationFunction($appKey, $location, $function);
     }
 
     /**
@@ -197,6 +200,7 @@ class BasicInfoService
     }
 
     /**
+     * TODO app-key
      * 匯入成員基本資料
      */
     public function importBasicInfo($file){
