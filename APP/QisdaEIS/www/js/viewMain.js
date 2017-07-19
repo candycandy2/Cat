@@ -1,4 +1,5 @@
 //get BU & CSD series
+var viewMainTab = "BU";
 var buBubbleSeries = [
 	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
     { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
@@ -275,6 +276,7 @@ var treemapOption = {
 	        layoutAlgorithm: 'squarified',
 	        dataLabels: {
 	            enabled: true,  
+	            align: 'center',
 	            useHTML: true,
 	            style: {
 	            	"color": "#ffffff",
@@ -302,24 +304,24 @@ var treemapOption = {
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
-	create: function (event, ui){
-		
+	create: function (event, ui){		
 		
 		function showBubble(){
-			chartbubble = new Highcharts.Chart('overview-hc-bubble', bubbleOption);
+			bubbleOption.chart.renderTo = 'overview-hc-bubble';
+			chartbubble = new Highcharts.Chart(bubbleOption);
 			
-			chartLandscapebubble = new Highcharts.Chart('overview-hc-bubble-landscape', bubbleOption);
-			
-			//chartLandscapebubble.legend.update({itemStyle: {fontSize: 14}, align: "center"});
-			
+			bubbleOption.chart.renderTo = 'overview-hc-bubble-landscape';
+			chartLandscapebubble = new Highcharts.Chart(bubbleOption);
+						
 		}
 		
-		function showRect(){	
-			chartRect = new Highcharts.Chart('overview-hc-rectangle', rectOption);
+		function showRect(){
+			rectOption.chart.renderTo = 'overview-hc-rectangle';
+			chartRect = new Highcharts.Chart(rectOption);
 			
-			chartLandscapeRect = new Highcharts.Chart('overview-hc-rectangle-landscape', rectOption);
+			rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
+			chartLandscapeRect = new Highcharts.Chart(rectOption);
 			
-			//chartLandscapeRect.legend.update({itemStyle: {fontSize: 14}, align: "center"});
 		}
 		
 		function hideTooltip(){
@@ -330,9 +332,20 @@ $('#viewMain').pagecontainer({
             
 		}
 		
+		function chooseViewMainTab(){
+			switch(viewMainTab) {
+                case "BU" :
+                    $("input[id=viewMain-tab-1]").trigger('click');   
+                    break;
+                case "CSD" :
+                    $("input[id=viewMain-tab-2]").trigger('click');   
+                    break;
+            }
+		}
+		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
-			/* global PullToRefresh */
+			// global PullToRefresh
 
 			
 		});
@@ -342,7 +355,6 @@ $('#viewMain').pagecontainer({
 			showRect();
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
@@ -359,7 +371,7 @@ $('#viewMain').pagecontainer({
             chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
-            
+            viewMainTab = 'BU';
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
@@ -371,7 +383,7 @@ $('#viewMain').pagecontainer({
             chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
-            
+            viewMainTab = 'CSD';
         });
 		
 	}

@@ -417,7 +417,7 @@ a{
 	color: black;
 }
 
-div.scrollmenu {
+/*div.scrollmenu {
 	background-color: #fbfdfd;
 	text-align: center;
 	border-style: solid;
@@ -425,9 +425,16 @@ div.scrollmenu {
 	border-color: #d6d6d6;
 	white-space: nowrap;
 	width: 100VW;
+}*/
+div.scrollmenu {
+	background-color: #FFFFFF;
+	text-align: center;
+	border:0.5px solid #0F0F0F;
+	white-space: nowrap;
+	width: 100VW;
 }
 
-div.scrollmenu a {
+/*div.scrollmenu a {
 	display: inline-block;
 	padding: 1.8VH 0 1.6VH;
 	background-color: #ffffff;
@@ -439,6 +446,20 @@ div.scrollmenu a {
 	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
 	width: 22VW;
+	text-decoration: none;
+}*/
+div.scrollmenu a {
+	display: inline-block;
+	padding: 1.8VH 0 1.6VH;
+	background-color: #ffffff;
+	color: #0f0f0f;
+	font-family: Arial;
+	font-size: 4.18VW;
+	font-weight: 400;
+	border-style: solid;
+	border-width: 0px 0px 0px 1px;
+	border-color: #0F0F0F !important;
+	width: 20VW;
 	text-decoration: none;
 }
 

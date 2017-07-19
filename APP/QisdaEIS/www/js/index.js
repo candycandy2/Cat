@@ -4,9 +4,7 @@ var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
 var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
-var hcHidden = false;
 var treemapState = false;
-var ytdStrExist = false;
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var htmlContent = "";
@@ -43,6 +41,7 @@ $(document).one('pagebeforeshow', function(){
         $("#mypanel").panel("open");
     });
 
+	
     /*$("#viewMain").on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
             $("#mypanel").panel( "open");
@@ -186,6 +185,28 @@ function onBackKeyDown() {
                 $("input[id=viewMain-tab-1]").trigger('click');
                 $("label[for=viewMain-tab-1]").addClass('ui-btn-active');
                 $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+            }
+        }
+    }else if(activePageID == "viewDetail") {
+        if($("body").hasClass("ui-landscape")) {
+            /*** Zoom Out the chart ***/
+            zoomOutChart("viewDetail-hc-canvas");
+        }else{
+            /*** change tab and close the panel ***/
+            if($(".ui-page-active").jqmData("panel") === "open") {
+                $("#mypanel").panel( "close");  
+            }else if($("#viewDetail :radio:checked").val() == "viewDetail-tab-1") {
+                changePageByPanel(lastPageID);
+            }else if($("#viewDetail :radio:checked").val() == "viewDetail-tab-2") {
+                $("input[id=viewDetail-tab-1]").trigger('click');
+                $("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+                $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active'); 
+            }else if($("#viewDetail :radio:checked").val() == "viewDetail-tab-3") {
+                $("input[id=viewDetail-tab-2]").trigger('click');
+                $("label[for=viewDetail-tab-2]").addClass('ui-btn-active');
+                $("label[for=viewDetail-tab-1]").removeClass('ui-btn-active');
+                $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
             }
         }
     }

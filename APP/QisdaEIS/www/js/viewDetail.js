@@ -144,8 +144,6 @@ var columnOption = {
 };
 
 
-
-
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
 		function getChartArea(){
@@ -225,6 +223,7 @@ $('#viewDetail').pagecontainer({
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
             $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+            $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart();
