@@ -137,7 +137,7 @@ class CommonUtil
         if(!is_null($domain)){
             $query -> where('qp_user.user_domain', '=', $domain);
         }
-         $userList= $query -> select('qp_user.row_id','emp_no','email')->get();
+         $userList= $query -> select('qp_user.row_id','emp_no','email','register_message')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -307,12 +307,15 @@ SQL;
         return $userList[0];
     }
 
-    public static function getUserStatusByUserID($loginId, $domain)
+    public static function getUserStatusByUserID($loginId, $domain="")
     {
-        $userList = \DB::table('qp_user')
-            -> where('qp_user.login_id', '=', $loginId)
-            -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+        $query = \DB::table('qp_user');
+        $query = $query-> where('qp_user.login_id', '=', $loginId);
+        if($domain != ""){
+            $query = $query-> where('qp_user.user_domain', '=', $domain);
+        }
+        $userList = $query-> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+
         if(count($userList) < 1) {
             return 0; //用户不存在
         }
