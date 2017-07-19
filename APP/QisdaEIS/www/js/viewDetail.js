@@ -1,3 +1,6 @@
+
+var ro = "ALL";
+
 //get BU & CSD series
 var companySeries1 = [20, 33, 53, 76];
 var companySeries2 = [31, 26, 58, 43];
@@ -229,6 +232,16 @@ $('#viewDetail').pagecontainer({
                 zoomInChart();
            	}
 		});
+		
+		// scroll menu on click
+        $(document).on('click', '#viewDetail .Ro > a', function(e) {
+            e.preventDefault();
+            ro = $(this).context.id;
+			
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
+			
+        });
 		
 	}
 });

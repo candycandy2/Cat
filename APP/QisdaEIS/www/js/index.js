@@ -243,26 +243,19 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
-    	//viewMain
-    	chartbubble.tooltip.hide();
-       	chartRect.tooltip.hide();
-       	chartLandscapebubble.tooltip.hide();
-        chartLandscapeRect.tooltip.hide();
+    	//hideTooltip();
+    	
 		$('#overview-hc-bubble-landscape').hide();
 		$('#overview-hc-rectangle-landscape').hide();
 		$('#backBtn').hide();
         
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
-    	//viewMain
-        zoomInChart();
-        chartbubble.tooltip.hide();
-       	chartRect.tooltip.hide();
-        chartLandscapebubble.tooltip.hide();
-        chartLandscapeRect.tooltip.hide();
-        $('#overview-hc-rectangle').hide();
-		$('#overview-hc-bubble-landscape').show();
-          
+        //hideTooltip();
+         $('#overview-hc-rectangle').hide();
+         $('#overview-hc-bubble-landscape').show();
+        
+        //zoomInChart();  
         
     }
 }, false);
