@@ -119,7 +119,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
   'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save'
+  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save',
+  'cordova plugin add jmessage-phonegap-plugin@2.4.9 --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
