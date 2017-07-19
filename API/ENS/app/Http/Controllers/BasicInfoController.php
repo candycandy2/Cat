@@ -45,7 +45,15 @@ class BasicInfoController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             $empNo = (string)$xml->emp_no[0];
-            $resultList = $this->basicInfoService->getBasicInfo($empNo);
+            $appKey = (string)$xml->app_key[0];
+
+            if($appKey ==""){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                    'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+            
+            $resultList = $this->basicInfoService->getBasicInfo($appKey);
 
             if(count($resultList) == 0){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014908_accountNotExist,

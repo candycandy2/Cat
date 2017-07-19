@@ -34,7 +34,7 @@ class BasicInfoService
     public function getBasicInfo($appKey){
 
         $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData($appKey);
-
+        $tmpList = [];
         $functionList = [];
         if(isset($basicInfoData)){
             foreach ($basicInfoData as $value) {
