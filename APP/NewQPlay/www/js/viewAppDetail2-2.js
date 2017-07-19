@@ -160,41 +160,51 @@ $("#viewAppDetail2-2").pagecontainer({
                 if (selectAppIndex != null) {
                     window.open(applist[selectAppIndex].url, '_system'); //download app
                 }
-            } else {
+            } else { //android
 
-                var permissions = cordova.plugins.permissions;
-                permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
-                    if (status.hasPermission) {
-                        console.log("Yes :D ");
+                var pathArray = applist[selectAppIndex].url.split('/');
+                var protocol = pathArray[0];
+                if (protocol == "market:") {
+                    window.open(applist[selectAppIndex].url, '_system'); //open url
+                    //cordova.InAppBrowser.open(applist[selectAppIndex].url, '_system', 'location=yes');
 
-                        var updateUrl = applist[selectAppIndex].url;
-                        window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+                } else {
 
-                        function onFail() {}
+                    var permissions = cordova.plugins.permissions;
+                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
+                        if (status.hasPermission) {
+                            console.log("Yes :D ");
 
-                        function onSuccess() {}
-                    } else {
-                        console.warn("No :( ");
-                        permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+                            var updateUrl = applist[selectAppIndex].url;
+                            window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                        function error() {
-                            console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
-                        }
+                            function onFail() {}
 
-                        function success(status) {
-                            if (status.hasPermission) {
-                                console.log("Yes :D ");
+                            function onSuccess() {}
+                        } else {
+                            console.warn("No :( ");
+                            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 
-                                var updateUrl = applist[selectAppIndex].url;
-                                window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+                            function error() {
+                                console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
+                            }
 
-                                function onFail() {}
+                            function success(status) {
+                                if (status.hasPermission) {
+                                    console.log("Yes :D ");
 
-                                function onSuccess() {}
+                                    var updateUrl = applist[selectAppIndex].url;
+                                    window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                    function onFail() {}
+
+                                    function onSuccess() {}
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
 

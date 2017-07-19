@@ -34,7 +34,7 @@ class MessageController extends Controller
             $data = [];
             if(!isset($xml->chatroom_list[0])){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失V",
+                    'Message'=>"必填欄位缺失",
                     'Content'=>""]);
             }
             $chatRoomList = (Array)$xml->chatroom_list[0]->chatroom_id;

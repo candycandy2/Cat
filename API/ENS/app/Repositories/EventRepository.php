@@ -50,6 +50,7 @@ class EventRepository
 
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
+        $this->event->app_key = $data['app_key'];
         $this->event->event_type_parameter_value = $data['event_type_parameter_value'];
         $this->event->event_title = $data['event_title'];
         $this->event->event_desc = $data['event_desc'];
@@ -62,7 +63,6 @@ class EventRepository
         $this->event->updated_at = $now;
         $this->event->chatroom_id = $data['chatroom_id'];
         $this->event->save();
-        $queries = DB::getQueryLog();
 
         return $this->event->row_id;
     }
@@ -139,12 +139,13 @@ class EventRepository
 
     /**
      * 取得事件列表
+     * @param  String $appKey      app_key
      * @param  String $empNo       員工編號
      * @param  int    $eventType   1:緊急通報 | 2:一般通報 (非必填，不需要篩選時傳入空字串)
      * @param  int    $eventStatus    事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
      * @return mixed
      */
-    public function getEventList($empNo, $eventType, $eventStatus){
+    public function getEventList($appKey, $empNo, $eventType, $eventStatus){
         
         $order = "en_event.updated_at desc, en_event.created_at desc";
 
@@ -159,17 +160,20 @@ class EventRepository
         }
         
         return $result->orderByRaw(DB::raw($order))
+             ->where('app_key', '=', $appKey)
              ->select($this->eventField)
              ->get();
     }
 
     /**
      * 取回不包含自己且尚未被關聯的事件
+     * @param  string $appKey app_key
      * @param  int $currentEventId 目前事件
      * @return mixed
      */
-    public function getUnrelatedEventList($currentEventId){
+    public function getUnrelatedEventList($appKey, $currentEventId){
         return $this->event
+            ->where('app_key', '=', $appKey)
             ->where('row_id', '<>', $currentEventId)
             ->where('related_event_row_id', '=', 0)
             ->select($this->eventField)
@@ -178,15 +182,17 @@ class EventRepository
 
     /**
      * 取得事件內容
-     * @param  int $eventId en_event.row_id
-     * @param  String $empNo 員工編號
+     * @param  String   $appKey    app_key
+     * @param  int      $eventId    en_event.row_id
+     * @param  String   $empNo      員工編號
      * @return mixed
      */
-    public function getEventDetail($eventId, $empNo){
+    public function getEventDetail($appKey, $eventId, $empNo){
         return $this->event
             ->join('en_user_event','en_user_event.event_row_id','=','en_event.row_id')
             ->join($this->userDataBaseName.'.'.$this->userTableName,$this->userTableName.'.emp_no','=','en_event.created_user')
             ->where('en_event.row_id', '=', $eventId)
+            ->where('en_event.app_key', '=', $appKey)
             ->where('en_user_event.emp_no' ,'=', $empNo)
             ->select($this->eventField)
             ->first();
@@ -315,12 +321,14 @@ class EventRepository
 
     /**
      * 依據事件Id取得事件資料
+     * @param  String appKey app_key
      * @param  int $eventId 事件id en_event.row_id
      * @return mixed
      */
-    public function getEventById($eventId){
+    public function getEventById($appKey, $eventId){
         return $this->event
             ->where('row_id', '=', $eventId)
+            ->where('app_key', '=', $appKey)
             ->select('row_id','event_status')
             ->first();
     }
