@@ -109,12 +109,12 @@ var bubbleOption = {
             		click: function(event){
             			console.log(this.x+","+this.y);
             			if(window.orientation === 180 || window.orientation === 0){
-            				console.log(1);
+            				showTreemap();
             				$('#overview-hc-rectangle').show();
+            				
             			}
             			if(window.orientation === 90 || window.orientation === -90){
-            				//zoomInChart();
-            				console.log(2);
+            				showTreemapLandscape();
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
@@ -307,6 +307,26 @@ var treemapOption = {
     }
 };
 
+function showTreemap(){
+	console.log(1);
+	rectOption.chart.renderTo = 'overview-hc-rectangle';
+	chartRect = new Highcharts.Chart(rectOption);
+}
+
+function showTreemapLandscape(){
+	console.log(2);
+	rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
+	chartLandscapeRect = new Highcharts.Chart(rectOption);
+}
+
+function hideTooltip(){
+	chartbubble.tooltip.hide();
+    chartRect.tooltip.hide();
+    chartLandscapebubble.tooltip.hide();
+    chartLandscapeRect.tooltip.hide();   
+}
+
+
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){		
@@ -320,22 +340,6 @@ $('#viewMain').pagecontainer({
 						
 		}
 		
-		function showRect(){
-			rectOption.chart.renderTo = 'overview-hc-rectangle';
-			chartRect = new Highcharts.Chart(rectOption);
-			
-			rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
-			chartLandscapeRect = new Highcharts.Chart(rectOption);
-			
-		}
-		
-		function hideTooltip(){
-			chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
-            
-		}
 		
 		function chooseViewMainTab(){
 			switch(viewMainTab) {
@@ -357,7 +361,6 @@ $('#viewMain').pagecontainer({
 		
 		$('#viewMain').on('pageshow', function(event, ui){
 			showBubble();
-			showRect();
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
             $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
@@ -368,7 +371,7 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			hideTooltip();
+			//hideTooltip();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
 			chartRect.series[0].setData(buRectSeries, true, true, false);           
             
@@ -380,7 +383,7 @@ $('#viewMain').pagecontainer({
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-        	hideTooltip();
+        	//hideTooltip();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
 			chartRect.series[0].setData(csdRectSeries, true, true, false);           
             

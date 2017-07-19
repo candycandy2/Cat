@@ -552,19 +552,19 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	width: 100VW;
 	height: 65VW;
 }
-
 /*************************************viewMain highcharts*******************************************/
 #viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
+	display: none;
+}
+#viewDetail #viewDetail-hc-column-landscape{
 	display: none;
 }
 
 /********************************************** highcharts landscape *********************************************/
 @media all and (orientation: landscape) {
 	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn{
-		display: none;
-	}
+	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
 	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape{
 		display: none;
 	}
@@ -581,7 +581,13 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	/*#viewMain #overview-hc-rectangle-landscape{
 		display: inline;
 	}*/
-
+	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
+	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu{
+		display: none;
+	}
+	#viewDetail #viewDetail-hc-column-landscape {
+		display: block;
+	}
 }
 
 @media all and (orientation: portrait) {
