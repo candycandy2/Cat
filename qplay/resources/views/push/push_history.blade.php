@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Input;
 $menu_name = "PUSH_SERVER";
 $input = Input::get();
+$templateCount = 16;
 $messageInfo = null;
 $messageId = $input["message_id"];
 $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
@@ -76,14 +77,9 @@ label {
                 <label for="ddlPushTo" class="col-xs-2">{{trans("messages.TEMPLATE_ID")}}:</label>
                 <div class="col-xs-10">
                     <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled">
-                        <option value="1" @if($messageInfo->template_id == 1) selected="selected" @endif>1</option>
-                        <option value="2" @if($messageInfo->template_id == 2) selected="selected" @endif>2</option>
-                        <option value="3" @if($messageInfo->template_id == 3) selected="selected" @endif>3</option>
-                        <option value="4" @if($messageInfo->template_id == 4) selected="selected" @endif>4</option>
-                        <option value="5" @if($messageInfo->template_id == 5) selected="selected" @endif>5</option>
-                        <option value="6" @if($messageInfo->template_id == 6) selected="selected" @endif>6</option>
-                        <option value="7" @if($messageInfo->template_id == 7) selected="selected" @endif>7</option>
-                        <option value="8" @if($messageInfo->template_id == 8) selected="selected" @endif>8</option>
+                        @for ($i = 1; $i <=$templateCount; $i++)
+                            <option value="{{$i}}" @if($messageInfo->template_id == $i) selected="selected" @endif>{{$i}}</option>
+                        @endfor
                     </select>
                 </div>
             </div>
