@@ -147,7 +147,32 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
-                    loadingMask("hide");
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var applyDays = $("ApplyDays", htmlDoc);
+                    var applyHours = $("ApplyHours", htmlDoc);
+                    sendLeaveApplicationData = "<LayoutHeader><empno>"
+                                             + myEmpNo
+                                             + "</empno><delegate>"
+                                             + agentid
+                                             + "</delegate><leaveid>"
+                                             + leaveid
+                                             + "</leaveid><begindate>"
+                                             + beginDate
+                                             + "</begindate><begintime>"
+                                             + beginTime
+                                             + "</begintime><enddate>"
+                                             + endDate
+                                             + "</enddate><endtime>"
+                                             + endTime
+                                             + "</endtime><datumdate></datumdate><applydays>"
+                                             + $(applyDays).html()
+                                             + "</applydays><applyhours>"
+                                             + $(applyHours).html()
+                                             + "</applyhours><reason>"
+                                             + leaveType
+                                             + "</reason></LayoutHeader>";
+                    SendLeaveApplicationData();
                 }
             };
 
@@ -163,6 +188,13 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDoc);
+                    if($(success).html() != undefined) {
+                        $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+                    }
+                    loadingMask("hide");
                 }
             };
 
@@ -262,7 +294,15 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $("#leaveDate").change(function() {
+        // $("#leaveDate").change(function() {
+        //     beginDate = endDate = $(this).val();
+        // });
+
+        $("#leaveDate-tab1").on("click", function() {
+            beginDate = endDate = $(this).val();
+        });
+
+        $("#leaveDate-tab2").on("click", function() {
             beginDate = endDate = $(this).val();
         });
 
@@ -304,7 +344,6 @@ $("#viewPersonalLeave").pagecontainer({
                                          + "</endtime><datumdate></datumdate></LayoutHeader>";
                 CountLeaveHours();
             }
-            $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
         });
 
         $(document).keypress(function(e) {
