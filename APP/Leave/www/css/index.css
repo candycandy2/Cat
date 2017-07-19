@@ -160,10 +160,21 @@
 	background-position-x: 2.71VW;
 	background-position-y: 2VW;  
 	height: 8VW;
-	margin: 5.07VW 0VW 5VW 0VW;
+	margin-top: 5.07VW;
 	text-indent: 8VW;
 }
 
+#agent-popup-option-popup .header.typeB {
+	height: 18.8VW;
+}
+
+#agent-popup-option-popup .header .title {
+	width: 75VW;
+}
+
+#agent-popup-option-popup ul {
+	margin-top: 0VW;
+}
 /*#searchBar:focus {
 	background-image: none;
 }*/
@@ -176,6 +187,7 @@
 	border-top-style: solid;
 	border-top-color: #efefef;
 	border-width: 0.1px;
+	display: -webkit-flex;
 }
 
 .ui-hr {

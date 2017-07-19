@@ -4,9 +4,7 @@ var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
 var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
-var hcHidden = false;
-var overviewRectState = false;
-var ytdStrExist = false;
+var treemapState = false;
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var htmlContent = "";
@@ -43,7 +41,8 @@ $(document).one('pagebeforeshow', function(){
         $("#mypanel").panel("open");
     });
 
-    $("#viewMain").on("swiperight", function(event) {
+	
+    /*$("#viewMain").on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
             $("#mypanel").panel( "open");
         }
@@ -53,7 +52,7 @@ $(document).one('pagebeforeshow', function(){
         if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
             $("#mypanel").panel( "open");
         }
-    });
+    });*/
     
     //backkey from treemap to bubble
     $('#backBtn').on("click", function(){
@@ -84,11 +83,13 @@ $(document).one('pagebeforeshow', function(){
     		$('#buAllListBtn').attr('src', 'img/all_list_up.png');
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
+    		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
     		
     	}else{
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('.buSingleListBtn').attr('src', 'img/list_down.png');
     		$('.bu-single-list').hide();
+    		$('.bu-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
     	}
     	
     });
@@ -100,11 +101,13 @@ $(document).one('pagebeforeshow', function(){
     		$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
     		$('.csd-single-list').show();
+    		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
     		
     	}else{
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
     		$('.csd-single-list').hide();
+    		$('.csd-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
     	}
     	
     });
@@ -115,12 +118,12 @@ $(document).one('pagebeforeshow', function(){
 		if(self.attr('src') === 'img/list_down.png'){
 			self.attr('src', 'img/list_up.png');
 			self.parent().parent().parent().next().show();
-			self.parent().parent().parent().next().attr('border-bottom', '1px solid #D6D6D6');
-			self.parent().parent().parent().attr('border-bottom', 'none');
+			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			
 		}else{
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
+			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 		}
 		
 		if($('.buSingleListBtn[src="img/list_down.png"]').length === 3){
@@ -139,12 +142,12 @@ $(document).one('pagebeforeshow', function(){
 		if(self.attr('src') === 'img/list_down.png'){
 			self.attr('src', 'img/list_up.png');
 			self.parent().parent().parent().next().show();
-			self.parent().parent().parent().next().attr('border-bottom', '1px solid #D6D6D6');
-			self.parent().parent().parent().attr('border-bottom', 'none');
+			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			
 		}else{
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
+			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 		}
 		
 		if($('.csdSingleListBtn[src="img/list_down.png"]').length === 3){
@@ -171,12 +174,39 @@ function onBackKeyDown() {
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {
                 $("#mypanel").panel( "close");
+            }else if(treemapState === true){
+            	$('#overview-hc-rectangle-landscape').hide();
+            	$('#backBtn').hide();
+            	$('#overview-hc-bubble-landscape').show();
+            	treemapState = false;
             }else if($("#viewMain :radio:checked").val() == "viewMain-tab-1") {
                 navigator.app.exitApp();
             }else if($("#viewMain :radio:checked").val() == "viewMain-tab-2") {
                 $("input[id=viewMain-tab-1]").trigger('click');
                 $("label[for=viewMain-tab-1]").addClass('ui-btn-active');
                 $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+            }
+        }
+    }else if(activePageID == "viewDetail") {
+        if($("body").hasClass("ui-landscape")) {
+            /*** Zoom Out the chart ***/
+            zoomOutChart("viewDetail-hc-canvas");
+        }else{
+            /*** change tab and close the panel ***/
+            if($(".ui-page-active").jqmData("panel") === "open") {
+                $("#mypanel").panel( "close");  
+            }else if($("#viewDetail :radio:checked").val() == "viewDetail-tab-1") {
+                changePageByPanel(lastPageID);
+            }else if($("#viewDetail :radio:checked").val() == "viewDetail-tab-2") {
+                $("input[id=viewDetail-tab-1]").trigger('click');
+                $("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+                $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active'); 
+            }else if($("#viewDetail :radio:checked").val() == "viewDetail-tab-3") {
+                $("input[id=viewDetail-tab-2]").trigger('click');
+                $("label[for=viewDetail-tab-2]").addClass('ui-btn-active');
+                $("label[for=viewDetail-tab-1]").removeClass('ui-btn-active');
+                $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
             }
         }
     }
@@ -213,26 +243,19 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
-    	//viewMain
-    	chartbubble.tooltip.hide();
-       	chartRect.tooltip.hide();
-       	chartLandscapebubble.tooltip.hide();
-        chartLandscapeRect.tooltip.hide();
+    	//hideTooltip();
+    	
 		$('#overview-hc-bubble-landscape').hide();
 		$('#overview-hc-rectangle-landscape').hide();
 		$('#backBtn').hide();
         
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
-    	//viewMain
-        zoomInChart();
-        chartbubble.tooltip.hide();
-       	chartRect.tooltip.hide();
-        chartLandscapebubble.tooltip.hide();
-        chartLandscapeRect.tooltip.hide();
-        $('#overview-hc-rectangle').hide();
-		$('#overview-hc-bubble-landscape').show();
-          
+        //hideTooltip();
+         $('#overview-hc-rectangle').hide();
+         $('#overview-hc-bubble-landscape').show();
+        
+        //zoomInChart();  
         
     }
 }, false);

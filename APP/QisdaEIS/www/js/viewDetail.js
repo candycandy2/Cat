@@ -1,3 +1,6 @@
+
+var ro = "ALL";
+
 //get BU & CSD series
 var companySeries1 = [20, 33, 53, 76];
 var companySeries2 = [31, 26, 58, 43];
@@ -8,16 +11,17 @@ var categoriesMonth = ['6月', '7月', '8月', '9月'];
 var companyCode = ['66558', '67326', '69410'];
 var companyName = ['东森电视股份有限公司', '飞利浦股份有限公司', 'AAAA股份有限公司'];
 
-var columnData1 = [1204, 752, 343, 694, 1086, 285];
-var columnData2 = [798, 852, 1374, 290, 653, 772];
-var columnData3 = [567, 819, 754, 1267, 445, 636];
-var columnData4 = [658, 751, 289, 365, 793, 1486];
+var columnData1 = [56, 72, 34, 94, 86, 85];
+var columnData2 = [79, 52, 74, 90, 53, 72];
+var columnData3 = [67, 89, 54, 16, 45, 66];
+var columnData4 = [58, 71, 89, 36, 93, 46];
 
 
 //area highcharts option
 var areaOption = {
 	chart: {
-        type: 'area'
+        type: 'area',
+        margin: [0, 0, 0, 0]
     },
     title: {
         text: null
@@ -69,7 +73,8 @@ var areaOption = {
 //column highcharts option
 var columnOption = {
 	chart: {
-        type: 'column'
+        type: 'column',
+        margin: [5, 5, 28, 40]
     },
     title: {
         text: null
@@ -78,7 +83,12 @@ var columnOption = {
     	enabled: false
     },
     xAxis: {
-        categories: ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']
+        categories: ['W21', 'W22', 'W23', 'W24', 'W25', 'W26'],
+        labels: {
+        	style: {
+        		fontSize: '9px'
+        	}
+        }
     },
     yAxis: {
         min: 0,
@@ -86,7 +96,10 @@ var columnOption = {
             text: null
         },
         labels: {
-            format: '{value}K'
+            format: '{value}K',
+            style: {
+            	fontSize: '9px'
+            }
         }
     },
     legend: {		     
@@ -132,8 +145,6 @@ var columnOption = {
     }]
 	
 };
-
-
 
 
 $('#viewDetail').pagecontainer({
@@ -215,11 +226,22 @@ $('#viewDetail').pagecontainer({
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
             $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+            $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart();
            	}
 		});
+		
+		// scroll menu on click
+        $(document).on('click', '#viewDetail .Ro > a', function(e) {
+            e.preventDefault();
+            ro = $(this).context.id;
+			
+            $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
+            $(this).addClass('hover');
+			
+        });
 		
 	}
 });

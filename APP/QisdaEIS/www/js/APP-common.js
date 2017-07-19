@@ -1,5 +1,5 @@
 /*********************************** global variable *****************************************/
-var closeInfoMsgInit = false;
+var closeInfoMsgInit = false; // let closeInfoMsg click event init once
 
 
 /********************************** Corodva APP initial *************************************/
@@ -104,6 +104,27 @@ $(document).one("pagebeforecreate", function() {
         
         adjustPageMarginTop();
         
+        // tab title, open version, uuid window
+        $("#viewMain .ui-title").on("taphold", function() {
+            //Set for iOS, control text select
+            document.documentElement.style.webkitTouchCallout = "none";
+            document.documentElement.style.webkitUserSelect = "none";
+
+            //infoMessage();
+            popupMsgInit('.viewMainPopup');
+            
+        });
+
+        // tab title, open version, uuid window
+        $("#viewDetail .ui-title").on("taphold", function() {
+            //Set for iOS, control text select
+            document.documentElement.style.webkitTouchCallout = "none";
+            document.documentElement.style.webkitUserSelect = "none";
+
+            //infoMessage();
+            popupMsgInit('.viewDetailPopup');
+            
+        });
     });
 
 
@@ -115,6 +136,23 @@ $(document).one("pagebeforecreate", function() {
             }
         }
     }, false);
+    
+    //Prevent JQM sometimes will auto add CSS-class [ui-fixed-hidden] in "ui-header" & "ui-footer",
+    //bind event to remove this CSS-class, to ensure the position of "ui-header" & "ui-footer" were "fixed".
+    $(document).on({
+        popupafterclose: function() {
+            footerFixed();
+        },
+        click: function() {
+            footerFixed();
+        },
+        tabsactivate: function() {
+            footerFixed();
+        },
+        touchmove: function() {
+            footerFixed();
+        }
+    });
     
     
 });
@@ -148,3 +186,20 @@ function adjustPageMarginTop() {
     }
 }
 
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
+}
+
+function popupMsgInit(popupClass){
+    $(popupClass).popup(); //initialize the popup
+    $(popupClass).show();
+    $(popupClass).popup('open');
+    popupMsgCloseInit(popupClass);
+}
+
+function popupMsgCloseInit(popupClass){
+    $('body').one('click', popupClass  + ' .btn-cancel', function() {
+        $(popupClass).popup('close');
+    });
+}

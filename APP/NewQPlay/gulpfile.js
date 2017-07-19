@@ -150,7 +150,7 @@ gulp.task('install', shell.task([
     'cordova plugin remove cordova-plugin-app-update',
     'cordova plugin remove cordova-plugin-android-permissions',
     'cordova plugin remove cordova-plugin-whitelist',
-    //'cordova plugin remove cordova-plugin-inappbrowser',
+    'cordova plugin remove cordova-plugin-inappbrowser',
     'cordova plugin remove cordova-plugin-appavailability',
     //'cordova plugin remove cordova-plugin-file',
     'cordova platform rm ios',
@@ -167,7 +167,7 @@ gulp.task('install', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-app-update',
     'cordova plugin add cordova-plugin-android-permissions',
     'cordova plugin add cordova-plugin-whitelist',
-    //'cordova plugin add cordova-plugin-inappbrowser',
+    'cordova plugin add cordova-plugin-inappbrowser',
     'cordova plugin add cordova-plugin-appavailability'//,
     //'cordova plugin add cordova-plugin-file'
 ]));
@@ -185,8 +185,10 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-app-update',
     'cordova plugin add cordova-plugin-android-permissions',
     'cordova plugin add cordova-plugin-whitelist@1.3.1',
+    'cordova plugin add cordova-plugin-inappbrowser',
     'cordova plugin add cordova-plugin-appavailability@0.4.2'//,
     //'cordova plugin add cordova-plugin-file@4.3.1'
+    //'cordova plugin add ../../plugins/cordova-plugin-proguard'
 ]));
 
 gulp.task('patch', function() {

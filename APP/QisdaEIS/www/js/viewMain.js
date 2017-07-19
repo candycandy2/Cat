@@ -1,6 +1,7 @@
 //get BU & CSD series
+var viewMainTab = "BU";
 var buBubbleSeries = [
-	{ x: 62, y: 62, name: 'TE', data: {}, color: '#99CC33' },
+	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
     { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
     { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
     { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
@@ -57,7 +58,7 @@ var bubbleOption = {
         },
         tickWidth: 1,
         tickPositions: [70, 80, 90],
-        min: 55,
+        min: 56,
         max: 95
     },
     yAxis: {
@@ -73,7 +74,7 @@ var bubbleOption = {
             format: '{value}K'
         },
         maxPadding: 0.2,
-        tickPositions: [0, 25, 50, 75, 100],
+       	tickInterval: 25,
         endOnTick: false
     },
     tooltip: {
@@ -91,16 +92,16 @@ var bubbleOption = {
     },
     plotOptions: {
         series: {
-        	maxSize: 40,
-        	minSize: 40,
+        	maxSize: 35,
+        	minSize: 35,
             dataLabels: {
                 enabled: true,
                 allowOverlap: true,
                 format: '{point.name}',
                 style: { 
-                	color: "#ffffff",
-                	fontSize: "12px", 
-                	textOutline: "-2px -2px contrast"
+                	"color": "#ffffff",
+                	"fontSize": "12px", 
+                	"textOutline": "-2px -2px contrast"
                 }
             },
             point: {
@@ -108,16 +109,17 @@ var bubbleOption = {
             		click: function(event){
             			console.log(this.x+","+this.y);
             			if(window.orientation === 180 || window.orientation === 0){
+            				showTreemap();
             				$('#overview-hc-rectangle').show();
+            				
             			}
             			if(window.orientation === 90 || window.orientation === -90){
-            				zoomInChart();
+            				showTreemapLandscape();
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
-            					
-            			}
-            			      			
+            				treemapState = true;   					
+            			}       			      			
             		}
             	}
             }
@@ -143,16 +145,16 @@ var rectOption = {
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
-	labels: {
+	/*labels: {
    		items: [{
    			html: '<div>(Days)</div>'
    		}],
    		style: {
-   			color: "#323232",
-   			left: "300VW",
-   			top: "193VW"
+   			"color": "#323232",
+   			"left": "272VW",
+   			"top": "158VW"
    		}
-   	},
+   	},*/
 	colorAxis: {
         tickPositions: [0, 15, 45, 75],
         stops: [
@@ -162,20 +164,20 @@ var rectOption = {
             [1, '#EF3623']
         ],
         labels: {
-        	align: 'center',
         	enabled: true,
-        	/*formatter: function(){
+        	align: 'left',
+        	overflow: 'justify',
+        	formatter: function(){
         		if(this.value === 75){
         			return this.value + '(Days)';
         		}
         		else{
         			return this.value;
         		}
-        	},*/
+        	},
         	style: {
         		color: '#323232'
-        	},
-        	overflow: 'justify'
+        	}
         }  
    	},
    	tooltip: {
@@ -222,53 +224,145 @@ var rectOption = {
     credits: {
     	enabled: false
     }
-
 };
+
+var treemapOption = {
+	chart: {
+		type: "treemap",
+		marginBottom: 70,
+		zoomType: 'none'
+	},
+	colorAxis: {
+        tickPositions: [0, 15, 45, 75],
+        stops: [
+            [0, '#81B4E1'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
+            [1, '#EF3623']
+        ],
+        labels: {
+        	enabled: true,
+        	align: 'left',
+        	overflow: 'justify',
+        	formatter: function(){
+        		if(this.value === 75){
+        			return this.value + '(Days)';
+        		}
+        		else{
+        			return this.value;
+        		}
+        	},
+        	style: {
+        		color: '#323232'
+        	}
+        }  
+   	},
+   	tooltip: {
+        useHTML: true,
+        shadow: false,
+        borderWidth: 1,
+        borderColor: 'gray',
+        backgroundColor:　'#FFFCF5',
+        headerFormat: '<table class="fontTooltip">',
+        pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
+        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
+        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
+        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
+        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
+        footerFormat: '</table>',
+        followPointer: false,
+        followTouchMove: false,
+        hideDelay: 0
+    },
+    plotOptions: {
+    	series: {
+	        layoutAlgorithm: 'squarified',
+	        dataLabels: {
+	            enabled: true,  
+	            align: 'left',
+	            inside: true,
+	            useHTML: true,
+	            shadow: true,
+	            style: {
+	            	"color": "#ffffff",
+	            	"fontSize": "10px",
+	            	"fontWeight": "bold",
+	            	"textOutline": "2px 2px black"
+	            },
+	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
+	        }
+    	}
+    },
+    series: [{
+    	data: buRectSeries  
+    }],
+    exporting: {
+        enabled: false
+    },
+    title: {
+        text: null
+    },
+    credits: {
+    	enabled: false
+    }
+};
+
+function showTreemap(){
+	console.log(1);
+	rectOption.chart.renderTo = 'overview-hc-rectangle';
+	chartRect = new Highcharts.Chart(rectOption);
+}
+
+function showTreemapLandscape(){
+	console.log(2);
+	rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
+	chartLandscapeRect = new Highcharts.Chart(rectOption);
+}
+
+function hideTooltip(){
+	chartbubble.tooltip.hide();
+    chartRect.tooltip.hide();
+    chartLandscapebubble.tooltip.hide();
+    chartLandscapeRect.tooltip.hide();   
+}
 
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
-	create: function (event, ui){
-		
+	create: function (event, ui){		
 		
 		function showBubble(){
-			chartbubble = new Highcharts.Chart('overview-hc-bubble', bubbleOption);
+			bubbleOption.chart.renderTo = 'overview-hc-bubble';
+			chartbubble = new Highcharts.Chart(bubbleOption);
 			
-			chartLandscapebubble = new Highcharts.Chart('overview-hc-bubble-landscape', bubbleOption);
-			
-			//chartLandscapebubble.legend.update({itemStyle: {fontSize: 14}, align: "center"});
-			
+			bubbleOption.chart.renderTo = 'overview-hc-bubble-landscape';
+			chartLandscapebubble = new Highcharts.Chart(bubbleOption);
+						
 		}
 		
-		function showRect(){	
-			chartRect = new Highcharts.Chart('overview-hc-rectangle', rectOption);
-			
-			chartLandscapeRect = new Highcharts.Chart('overview-hc-rectangle-landscape', rectOption);
-			
-			//chartLandscapeRect.legend.update({itemStyle: {fontSize: 14}, align: "center"});
-		}
 		
-		function hideTooltip(){
-			chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
-            
+		function chooseViewMainTab(){
+			switch(viewMainTab) {
+                case "BU" :
+                    $("input[id=viewMain-tab-1]").trigger('click');   
+                    break;
+                case "CSD" :
+                    $("input[id=viewMain-tab-2]").trigger('click');   
+                    break;
+            }
 		}
 		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
-			/* global PullToRefresh */
+			// global PullToRefresh
 
 			
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
 			showBubble();
-			showRect();
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
@@ -277,29 +371,27 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			hideTooltip();
+			//hideTooltip();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
-			chartRect.series[0].setData(buRectSeries, true, true, false);
-            
+			chartRect.series[0].setData(buRectSeries, true, true, false);           
             
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
             chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
-            
+            viewMainTab = 'BU';
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-        	hideTooltip();
+        	//hideTooltip();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
-			chartRect.series[0].setData(csdRectSeries, true, true, false);
-            
+			chartRect.series[0].setData(csdRectSeries, true, true, false);           
             
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
             chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
-            
+            viewMainTab = 'CSD';
         });
 		
 	}

@@ -74,11 +74,12 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
+  'cordova plugin remove jmessage-phonegap-plugin',
   'cordova plugin remove cordova-plugin-device',
   //'cordova plugin remove cordova-plugin-console',
   //'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-app-update',
-  'cordova plugin readme cordova-plugin-android-permissions',
+  'cordova plugin remove cordova-plugin-android-permissions',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
@@ -100,7 +101,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions --save'
+  'cordova plugin add cordova-plugin-ios-camera-permissions --save',
+  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -117,16 +119,10 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
   'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save'
+  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save',
+  'cordova plugin add jmessage-phonegap-plugin@2.4.9 --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
-
-gulp.task('QMessage', function() {
-    return gulp.src(['../../qmessage/public/js/qmessage.js',
-        '../../qmessage/public/js/lib/jmessage-sdk-web-2.1.0.min.js',
-        '../../qmessage/public/js/lib/md5.min.js'])
-        .pipe(gulp.dest('www/js/Library/'));
-});
 
 //ex: gulp default
 gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'QMessage', 'componentJS', 'componentHTML', 'componentIMG'], function(){

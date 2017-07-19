@@ -11,7 +11,20 @@
 			<h1 class="ui-title">AR Overdue Detail</h1>
 		</div>
 		<!--popup-->
-		
+		<div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup viewDetailPopup">
+			<div data-role="main" class="ui-content">
+				<div class="main">
+					<p class="main-paragraph font-style3">
+						Alan Chen<br>1.0.0.352.6666666
+					</p>
+				</div>
+				<div class="footer">
+					<div class="btn-one font-style1 btnArea">
+						<div class="btn-cancel">确定</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!--main-->
 	<div data-role="main" class="ui-content page-main">	
@@ -404,6 +417,17 @@
 				</li>
 			</ul>
 		</div>
-		
+		<!-- column highcharts -->
+		<div id="viewDetail-hc-column-landscape" style="background-color: #7CB5EC;"></div>
+	</div>
+	<!-- scrollmenu -->
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
+		<div class="scrollmenu Ro" style="overflow: auto;">
+            <a id="ALL" class="hover">ALL</a>
+            <a id="LCD">LCD</a>
+            <a id="PRJ">PRJ</a>
+            <a id="PDP">PDP</a>
+            <a id="LTV">LTV</a>
+        </div>
 	</div>
 </div>
