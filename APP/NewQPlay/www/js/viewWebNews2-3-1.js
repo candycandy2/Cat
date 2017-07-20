@@ -59,6 +59,8 @@
                             
                             $(".news-header").removeClass("header-event");
                             $(".news-header").removeClass("header-event-red");
+                            $(".news-header").removeClass("header-service");
+                            $(".news-header").removeClass("header-service-red");
                             NoticeTypeShow(content.template_id);                       
                             if (content.template_id <= 10) {
 
@@ -77,6 +79,8 @@
                             
                             $(".news-header").removeClass("header-service");
                             $(".news-header").removeClass("header-service-red");
+                            $(".news-header").removeClass("header-event");
+                            $(".news-header").removeClass("header-event-red");
                             NoticeTypeShow(content.template_id); 
                             if (content.template_id <= 10) {
 

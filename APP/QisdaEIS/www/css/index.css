@@ -101,9 +101,14 @@ a{
 }
 .fontHide{
 	width: 17VW;
+	/*overflow:hidden; 
 	text-overflow:ellipsis;
-	white-space:nowrap;
-	overflow:hidden;
+	display:-webkit-box; 
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2;*/ 
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 /* img */
 #backBtn{
@@ -309,8 +314,12 @@ a{
 .bu-single-list > div:nth-child(2){
 	width: 92.58VW;
 	height: 5.28VW;
-	text-align: right;
 	color: #666666;
+	clear: both;
+}
+.bu-single-list > div:nth-child(2) > span{
+	display: inline-block;
+	float: right;
 }
 .bu-single-list > div:nth-child(3){
 	width: 92.58VW;
