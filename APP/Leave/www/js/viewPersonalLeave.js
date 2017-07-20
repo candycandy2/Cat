@@ -17,7 +17,7 @@ var leaveTypeData = {
 var agentData = {
     id: "agent-popup",
     option: [],
-    title: '<input type="text" id="searchBar">',
+    title: '<input type="search" id="searchBar">',
     defaultText: "請選擇",
     changeDefaultText : true,
     attr: {
