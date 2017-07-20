@@ -187,7 +187,7 @@ class EventController extends Controller
             $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
             
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
-                'Content'=>$createChatRoomRes->Content,'Message'=> $sendPushMessageRes]);
+                'Content'=>$createChatRoomRes->Content]);
 
         } catch (\Exception $e){
             \DB::rollBack();
