@@ -1,4 +1,4 @@
-
+/********************/
 var ro = "ALL";
 
 //get BU & CSD series
@@ -8,6 +8,7 @@ var companySeries3 = [46, 38, 21, 47];
 var companySeries4 = [58, 37, 76, 51];
 
 var categoriesMonth = ['6月', '7月', '8月', '9月'];
+var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26'];
 var companyCode = ['66558', '67326', '69410'];
 var companyName = ['东森电视股份有限公司', '飞利浦股份有限公司', 'AAAA股份有限公司'];
 
@@ -74,7 +75,7 @@ var areaOption = {
 var columnOption = {
 	chart: {
         type: 'column',
-        margin: [5, 5, 28, 40]
+        margin: [10, 5, 28, 40]
     },
     title: {
         text: null
@@ -83,7 +84,7 @@ var columnOption = {
     	enabled: false
     },
     xAxis: {
-        categories: ['W21', 'W22', 'W23', 'W24', 'W25', 'W26'],
+        categories: categoriesWeek,
         labels: {
         	style: {
         		fontSize: '9px'
@@ -91,7 +92,6 @@ var columnOption = {
         }
     },
     yAxis: {
-        min: 0,
         title: {
             text: null
         },
@@ -149,7 +149,7 @@ var columnOption = {
 
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
-		function getChartArea(){
+		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
 			buChartArea1.series[0].setData(companySeries1, true, true, false);
 			
@@ -212,16 +212,22 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
+		function getLandscapeColumn(){
+			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+			/*chartColumnLandscape.title.update({ text: 'Total AR and Overdue Amount' });
+			chartColumnLandscape.subtitle.update({ text: companyCode[0] + companyName[0] });*/
+		}
+		
 		
 		/********************************** page event *************************************/
 		$("#viewDetail").on("pagebeforeshow", function(event, ui){
-			/* global PullToRefresh */
+			// global PullToRefresh 
 
 			
 		});
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
-			getChartArea();
+			getChartAreaAndColumn();
 			
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
