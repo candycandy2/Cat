@@ -35,28 +35,6 @@ class BasicInfoRepository
     }
 
     /**
-     * destroied
-     * 取得所有function-locatio基本資料
-     * @param  String $appKey app_key
-     * @return mixed
-     
-    public function getAllBasicInfo($appKey)
-    {   
-
-        return  $this->basicInfo
-            ->select(
-                'location',
-                'function',
-                DB::raw('GROUP_CONCAT(emp_no SEPARATOR ",") as users')
-                )
-            ->where('app_key','=',$appKey)
-            ->groupBy('location', 'function')
-            ->orderBy('location','asc')
-            ->orderBy('function','asc')
-            ->get();
-    }*/
-
-    /**
      * 取得basic Info基本資料
      * @return mixed
      */
@@ -116,21 +94,6 @@ class BasicInfoRepository
             ->orderBy('function','asc')
             ->get();
     }
-
-    /**
-     * destroied
-     * 取得location下所有function
-     * @param  String $appKey   app-key
-     * @param  string $location 機房地點
-     * @return mixed
-     
-    public function getAllFunctionByLocation($appKey, $location){
-        return  $this->basicInfo
-            ->where('app_key','=',$appKey)
-            ->where('location', '=', $location)
-            ->select('function')
-            ->get();
-    }*/
 
     /**
      * TODO  by app-key

@@ -29,12 +29,12 @@ class BasicInfoRepository
 
     /**
      * 取得basic Info基本資料
+     * @param String $appKey app-key
      * @return mixed
      */
     public function getAllBasicInfoRawData($appKey)
     {   
-
-        return  $this->basicInfo
+        $basicInfo =   $this->basicInfo
             ->join( 'qplay.qp_user', 'qp_user.emp_no', '=', 'en_basic_info.emp_no')
             ->where('app_key','=',$appKey)
             ->orderBy('location','asc')
@@ -51,5 +51,25 @@ class BasicInfoRepository
                 'qplay.qp_user.resign as resign'
                 )
             ->get();
+        return $basicInfo;
+    }
+
+    /**
+     * 批量寫入basic_info
+     * @param  Array $data 寫入的資料，接受多筆
+     */
+    public function insertBasicInfo(Array $data){
+        $basicIfno = $this->basicInfo->insert($data);
+    }
+
+    /**
+     * 移除舊basic_info資料
+     * @param String $appKey app-key
+     * @return 
+     */
+    public function deleteBasicInfo($appKey){
+        $this->basicInfo
+        ->where('app_key', '=', $appKey)
+        ->delete();
     }
 }

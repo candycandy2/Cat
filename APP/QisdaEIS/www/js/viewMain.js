@@ -17,7 +17,7 @@ var csdBubbleSeries = [
     { x: 91, y: 57, name: 'TY', data: {}, color: '#AC8BC0' }
 ];
 var buRectSeries = [
-	{ name: '东森股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
+	{ name: '东森电视股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
 	{ name: '飞利浦股份有限公司', code: '60324', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
 	{ name: 'AAAAAA股份有限公司', code: '67498', value: 8, colorValue: 40, day1: 1443, day16: 563, day46: 2254, day76: 896 }, 
 	{ name: 'BBBB股份有限公司', code: '62406', value: 6, colorValue: 50, day1: 207, day16: 1078, day46: 567, day76: 2963 }, 
@@ -109,10 +109,12 @@ var bubbleOption = {
             		click: function(event){
             			console.log(this.x+","+this.y);
             			if(window.orientation === 180 || window.orientation === 0){
+            				showTreemap();
             				$('#overview-hc-rectangle').show();
+            				
             			}
             			if(window.orientation === 90 || window.orientation === -90){
-            				zoomInChart();
+            				showTreemapLandscape();
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
@@ -181,6 +183,7 @@ var rectOption = {
    	tooltip: {
         useHTML: true,
         shadow: false,
+        animation: false,
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
@@ -260,7 +263,7 @@ var treemapOption = {
         shadow: false,
         borderWidth: 1,
         borderColor: 'gray',
-        backgroundColor:　'#ffffff',
+        backgroundColor:　'#FFFCF5',
         headerFormat: '<table class="fontTooltip">',
         pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
         '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
@@ -276,11 +279,13 @@ var treemapOption = {
 	        layoutAlgorithm: 'squarified',
 	        dataLabels: {
 	            enabled: true,  
-	            align: 'center',
+	            align: 'left',
+	            inside: true,
 	            useHTML: true,
+	            shadow: true,
 	            style: {
 	            	"color": "#ffffff",
-	            	"fontSize": "11px",
+	            	"fontSize": "10px",
 	            	"fontWeight": "bold",
 	            	"textOutline": "2px 2px black"
 	            },
@@ -302,6 +307,26 @@ var treemapOption = {
     }
 };
 
+function showTreemap(){
+	console.log(1);
+	rectOption.chart.renderTo = 'overview-hc-rectangle';
+	chartRect = new Highcharts.Chart(rectOption);
+}
+
+function showTreemapLandscape(){
+	console.log(2);
+	rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
+	chartLandscapeRect = new Highcharts.Chart(rectOption);
+}
+
+function hideTooltip(){
+	chartbubble.tooltip.hide();
+    chartRect.tooltip.hide();
+    chartLandscapebubble.tooltip.hide();
+    chartLandscapeRect.tooltip.hide();   
+}
+
+
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){		
@@ -315,22 +340,6 @@ $('#viewMain').pagecontainer({
 						
 		}
 		
-		function showRect(){
-			rectOption.chart.renderTo = 'overview-hc-rectangle';
-			chartRect = new Highcharts.Chart(rectOption);
-			
-			rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
-			chartLandscapeRect = new Highcharts.Chart(rectOption);
-			
-		}
-		
-		function hideTooltip(){
-			chartbubble.tooltip.hide();
-            chartRect.tooltip.hide();
-            chartLandscapebubble.tooltip.hide();
-            chartLandscapeRect.tooltip.hide();
-            
-		}
 		
 		function chooseViewMainTab(){
 			switch(viewMainTab) {
@@ -352,7 +361,6 @@ $('#viewMain').pagecontainer({
 		
 		$('#viewMain').on('pageshow', function(event, ui){
 			showBubble();
-			showRect();
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
             $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
@@ -363,7 +371,7 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			hideTooltip();
+			//hideTooltip();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
 			chartRect.series[0].setData(buRectSeries, true, true, false);           
             
@@ -375,7 +383,7 @@ $('#viewMain').pagecontainer({
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-        	hideTooltip();
+        	//hideTooltip();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
 			chartRect.series[0].setData(csdRectSeries, true, true, false);           
             

@@ -33,6 +33,8 @@ var chatRoom = {
     setChatroomID: function(ID) {
         this.nowChatRoomID = ID;
         JM.chatroomID = ID;
+
+        JM.Chatroom.getGroupInfo();
     },
     messageHandler: function(type, data) {
         console.log("------------messageHandler");
