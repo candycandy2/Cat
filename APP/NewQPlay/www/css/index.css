@@ -664,12 +664,10 @@ input[type=radio]:checked + label {
 }
 
 .notice-priority-high {
-    font-size: 30px;
     color: #cc0000;
 }
 
 .notice-priority-normal {
-    font-size: 30px;
     color: #333333;
 }
 

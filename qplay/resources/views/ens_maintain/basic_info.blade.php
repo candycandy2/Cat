@@ -1,6 +1,7 @@
 <?php
 use App\lib\ResultCode;
 $menu_name = "BASIC_INFO_MAINTAIN";
+$ensProjects = \Config('app.ens_project');
 ?>
 @include("layouts.lang")
 @extends('layouts.admin_template')
@@ -13,8 +14,9 @@ $menu_name = "BASIC_INFO_MAINTAIN";
             <div class="form-group">
                 <div class="input-group">
                     <select class="form-control" style="width: 200px" id="selectProject">
-                      <option value="ens" selected="selected">ens</option>
-                      <option value="rmcirs">rmcirs</option>
+                    @foreach ($ensProjects  as $index => $project)
+                         <option value="{{$project}}" @if($index == 0) selected="selected" @endif>{{$project}}</option>
+                    @endforeach
                     </select>
                 </div>
             </div>
@@ -113,14 +115,15 @@ $menu_name = "BASIC_INFO_MAINTAIN";
 
         $('input[id=uploadBasicInfo]').change(function() { 
             $('#pathCover').val($('#uploadBasicInfo')[0].files[0].name); 
-        }); 
-
+        });
+        
+        if($.trim("{{app('request')->input('app_key')}}")!=""){
+            $("#selectProject option[value={{app('request')->input('app_key')}}]").attr('selected', true);
+        }
         var project = $('#selectProject option:selected').val();
         $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?app_key=' + project});
         $('#selectProject').on('change', function() {
-            $('#basicInfoTable').bootstrapTable('refresh', {
-                url: 'ENSMaintain/getBasicInfo?app_key=' + this.value
-            });
+            window.location="{{asset('basicInfo')}}?app_key=" + this.value;
         })
 
          $('#save').click(function(){
@@ -173,7 +176,6 @@ $menu_name = "BASIC_INFO_MAINTAIN";
                     $('#registerSuperUser').button('reset');
                 },
                 error: function (e) {
-                    console.log(e.responseText);
                     alert(e.responseText);
                     $('#registerSuperUser').button('reset');
                 }
