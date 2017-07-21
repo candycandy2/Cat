@@ -98,22 +98,30 @@ $(document).one("pagebeforeshow", function() {
 
 //[Android]Handle the back button
 function onBackKeyDown() {
-    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-    var activePageID = activePage[0].id;
-/*    if (activePageID === "viewExample") {
-        if (checkPopupShown()) {
-            $.mobile.changePage('#viewExample');
-        } else {
+    var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
+    if (activePageID === "viewPersonalLeave") {
+        if (checkPopupShown()){
+            var popupID = $(".ui-popup-active")[0].children[0].id;
+            $('#' + popupID).popup('close');
+        } else if ($(".ui-page-active").jqmData("panel") === "open"){
+            $("#mypanel").panel( "close");
+        } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-2") {
+            $("input[id=viewPersonalLeave-tab-1]").trigger('click');
+            $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
+            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
+        } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
             navigator.app.exitApp();
         }
-    } else if (activePageID === "viewDetailInfo") {
-
+    } else if (activePageID === "viewHolidayCalendar") {
         if (checkPopupShown()) {
+            var popupID = $(".ui-popup-active")[0].children[0].id;
             $('#' + popupID).popup('close');
+        } else if ($(".ui-page-active").jqmData("panel") === "open"){
+            $("#mypanel").panel( "close");
         } else {
-            $.mobile.changePage('#' + prevPageID);
+            changePageByPanel(lastPageID);
         }
-    }*/
+    }
 }
 
 $(document).ready(function() {
