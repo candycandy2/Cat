@@ -1,0 +1,25 @@
+{
+  "_from": "cordova-plugin-proguard@~1.0.0",
+  "_id": "cordova-plugin-proguard@~1.0.0",
+  "_inBundle": false,
+  "_location": "/cordova-plugin-proguard",
+  "_phantomChildren": {},
+  "name": "cordova-plugin-proguard",
+  "version": "1.0.0",
+  "description": "proguard Plugin",
+  "cordova": {
+    "id": "cordova-plugin-proguard",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "qlogin",
+    "policy",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "QPlay",
+  "license": "Apache 2.0"
+}
