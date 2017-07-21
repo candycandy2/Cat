@@ -291,6 +291,14 @@ $(document).one("pagebeforecreate", function() {
             $.get("View/" + pageID + ".html", function(data) {
                 $.mobile.pageContainer.append(data);
                 $("#" + pageID).page().enhanceWithin();
+
+                //Show Water Mark
+                //According to the data [waterMarkPageList] which set in index.js
+                if (!(typeof waterMarkPageList === undefined)) {
+                    if (waterMarkPageList.indexOf(pageID) !== -1) {
+                        $("#" + pageID).css("background-color", "transparent");
+                    }
+                }
             }, "html");
         }(value));
     });
