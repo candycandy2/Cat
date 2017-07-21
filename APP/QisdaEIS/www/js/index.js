@@ -214,8 +214,16 @@ function zoomInChart() {
 function zoomInChartByTreemap(){
 	if(screen.width < screen.height) {
         chartLandscapeRect.setSize(screen.height, screen.width*0.84, false);
-   }else {
+   	}else {
         chartLandscapeRect.setSize(screen.width, screen.height*0.84, false);
+    }
+}
+
+function zoomInChartByColumn(){
+	if(screen.width < screen.height) {
+        chartColumnLandscape.setSize(screen.height, screen.width*0.92, false);
+   	}else {
+        chartColumnLandscape.setSize(screen.width, screen.height*0.92, false);
     }
 }
 
@@ -238,19 +246,26 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
-    	//hideTooltip();
-    	
-		$('#overview-hc-bubble-landscape').hide();
-		$('#overview-hc-rectangle-landscape').hide();
-		$('#backBtn').hide();
+    	if($.mobile.activePage[0].id === 'viewMain'){
+    		$('#overview-hc-bubble-landscape').hide();
+			$('#overview-hc-rectangle-landscape').hide();
+			$('#backBtn').hide();
+    	}else{
+    		$('#viewDetail-hc-column-landscape').hide();
+    	}
+		
         
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
-        //hideTooltip();
-        zoomInChart();
+        if($.mobile.activePage[0].id === 'viewMain'){
+        	zoomInChart();
+        	$('#overview-hc-rectangle').hide();
+        	$('#overview-hc-bubble-landscape').show();
+        }else{
+        	zoomInChartByColumn();
+        	$('#viewDetail-hc-column-landscape').show();
+        }
         
-        $('#overview-hc-rectangle').hide();
-        $('#overview-hc-bubble-landscape').show();
          
     }
 }, false);
