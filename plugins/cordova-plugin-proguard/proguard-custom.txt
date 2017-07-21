@@ -55,7 +55,7 @@
 
 # Enable proguard with Cordova
 # obfuscate plugin of qlogin/qpush/qsecurity
-#-keep class org.apache.cordova.** { *; }
+-keep class org.apache.cordova.** { *; }
 -keep public class * extends org.apache.cordova.CordovaPlugin
 
 -keep class com.google.android.gms.dynamite.DynamiteModule$DynamiteLoaderClassLoader { java.lang.ClassLoader sClassLoader; }
