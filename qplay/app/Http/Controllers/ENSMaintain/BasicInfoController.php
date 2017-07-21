@@ -46,6 +46,13 @@ class BasicInfoController extends Controller
      * @return json
      */
     public function uploadBasicInfo(Request $request){
+
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $this->setLanguage();
         
         \DB::beginTransaction();
         try{
@@ -53,8 +60,8 @@ class BasicInfoController extends Controller
            $validator = Validator::make($request->all(), [
                     'basicInfoFile' => 'required|mimes:xls,xlsx'
                 ],[
-                    'required'=>'請上傳檔案',
-                    'mimes'=>'請上傳檔案格式 :values'
+                    'required'=>trans('messages.ERR_FILE_REQUIRED'),
+                    'mimes'=>trans('messages.ERR_FILE_TYPE').' :values'
                 ]);
             if ($validator->fails()) {
                 return $result = response()->json(['ResultCode'=>ResultCode::_000919_validateError,
@@ -88,6 +95,12 @@ class BasicInfoController extends Controller
 
     public function registerSuperUser(Request $request){
 
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        
+        $this->setLanguage();   
         $input = $request->all();
         
         $appKey = CommonUtil::getContextAppKey(\Config('app.env'), $input['project']);
@@ -99,11 +112,11 @@ class BasicInfoController extends Controller
      * @return json
      */
     private function registerSuperUserToMessage($appKey){
-  
+        
         $users = $this->enUserGroupRepository->getSuperUserLoginIdNotRegister($appKey);
         if(count($users) == 0){
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                'Message'=>'尚無需註冊用戶','Content'=>'']);
+                'Message'=>trans('messages.ERR_NO_USER_TO_REGISTER'),'Content'=>'']);
         }
         $registeredUser = [];
         foreach ($users as $user) {
@@ -116,6 +129,16 @@ class BasicInfoController extends Controller
                 return response()->json($res);
             }
         }
-        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>'用戶註冊成功','Content'=>implode(',',$registeredUser)]);
+        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>trans('messages.USER_REGISTER_SUCCESS'),'Content'=>implode(',',$registeredUser)]);
+    }
+
+    /**
+     * 設定目前語系
+     */
+    private function setLanguage() {
+        \App::setLocale("en-us");
+        if(\Session::has('lang') && \Session::get("lang") != "") {
+            \App::setLocale(\Session::get("lang"));
+        }
     }
 }
