@@ -235,9 +235,9 @@ function checkPopupShown() {
 
 //Hide APP initial page
 function hideInitialPage() {
-//alert("hideInitialPage");
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
     initialSuccess();
+    waterMark();
 }
 
 //Use Scheme to Open APP
@@ -370,4 +370,21 @@ function adjustPageMarginTop() {
 function footerFixed() {
     $(".ui-footer").removeClass("ui-fixed-hidden");
     $(".ui-header").removeClass("ui-fixed-hidden");
+}
+
+function waterMark() {
+    $.mobile.pageContainer.prepend('<span class="watermark"></span>');
+
+    var IDLength = loginData["loginid"].length;
+    //font-size: 2.93vw
+    var stringSingleWidth = parseInt(document.documentElement.clientWidth * 2.93 / 100, 10);
+    var stringHeight = parseInt(stringSingleWidth * 1.4, 10);
+    var stringAllWidth = parseInt(stringSingleWidth, 10) * IDLength;
+    //width = stringAllWidth * 0.6
+    var width = parseInt(stringAllWidth * 0.6, 10);
+
+    var SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='" + stringHeight + "px' width='" + width + "px'>" +
+    "<text x='0' y='" + stringSingleWidth + "' fill='black' font-size='" + stringSingleWidth + "'>" + loginData["loginid"] + "</text></svg>";
+
+    $(".watermark").css('background-image', 'url("' + SVG + '")');
 }

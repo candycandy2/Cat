@@ -27,8 +27,8 @@ var treemapSeries1 = [
 var treemapSeries2 = [
 	{ name: 'EEEE股份有限公司', code: '60586', value: 7, colorValue: 10, day1: 785, day16: 464, day46: 3560, day76: 2557 }, 
 	{ name: 'FFFF股份有限公司', code: '61273', value: 10, colorValue: 20, day1: 524, day16: 1674, day46: 897, day76: 1356 }, 
-	{ name: 'GGGG股份有限公司', code: '65792', value: 2, colorValue: 45, day1: 747, day16: 1654, day46: 5647, day76: 2441 }, 
-	{ name: 'HHHH股份有限公司', code: '63496', value: 4, colorValue: 55, day1: 1242, day16: 344, day46: 3684, day76: 687 }, 
+	{ name: 'GGGG股份有限公司', code: '65792', value: 5, colorValue: 45, day1: 747, day16: 1654, day46: 5647, day76: 2441 }, 
+	{ name: 'HHHH股份有限公司', code: '63496', value: 5, colorValue: 55, day1: 1242, day16: 344, day46: 3684, day76: 687 }, 
 	{ name: 'IIII股份有限公司', code: '65068', value: 8, colorValue: 65, day1: 2364, day16: 841, day46: 653, day76: 457 }, 
 	{ name: 'JJJJ股份有限公司', code: '69876', value: 8, colorValue: 75, day1: 1254, day16: 2503, day46: 486, day76: 698 }
 ];
@@ -217,13 +217,16 @@ var rectOption = {
 	        dataLabels: {
 	            enabled: true,  
 	            useHTML: true,
+	            crop: false,
+	            overflow: 'none',
+	            inside: true,
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
 	            	"fontWeight": "bold",
 	            	"textOutline": "2px 2px black"
 	            },
-	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
+	            format: '<div class="font-companyCode">{point.code}</div>' + '<div class="font-companyName">{point.name}</div>'
 	        }
     	}
     },

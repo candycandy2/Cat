@@ -125,7 +125,7 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 //ex: gulp default
-gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'QMessage', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 

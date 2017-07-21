@@ -96,5 +96,4 @@ storage
 .idea
 
 package-lock.json
-package.json
 /qplay/.env

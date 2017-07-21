@@ -4,6 +4,7 @@ var initialAppName = "ENS";
 var appKeyOriginal = "appens";
 var appKey = "appens";
 var pageList = ["viewEventList", "viewEventAdd", "viewEventContent"];
+var waterMarkPageList = ["viewEventList", "viewEventAdd", "viewEventContent"];
 var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
 
 var prevPageID;
