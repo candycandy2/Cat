@@ -16,7 +16,7 @@ var csdBubbleSeries = [
     { x: 63, y: 28, name: 'FS', data: {}, color: '#948078' },
     { x: 91, y: 57, name: 'TY', data: {}, color: '#AC8BC0' }
 ];
-var buRectSeries = [
+var treemapSeries1 = [
 	{ name: '东森电视股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
 	{ name: '飞利浦股份有限公司', code: '60324', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
 	{ name: 'AAAAAA股份有限公司', code: '67498', value: 8, colorValue: 40, day1: 1443, day16: 563, day46: 2254, day76: 896 }, 
@@ -24,7 +24,7 @@ var buRectSeries = [
 	{ name: 'CCCC股份有限公司', code: '63201', value: 4, colorValue: 60, day1: 985, day16: 2246, day46: 409, day76: 4587 }, 
 	{ name: 'DDDD股份有限公司', code: '64885', value: 4, colorValue: 70, day1: 441, day16: 798, day46: 1059, day76: 3062 }
 ];
-var csdRectSeries = [
+var treemapSeries2 = [
 	{ name: 'EEEE股份有限公司', code: '60586', value: 7, colorValue: 10, day1: 785, day16: 464, day46: 3560, day76: 2557 }, 
 	{ name: 'FFFF股份有限公司', code: '61273', value: 10, colorValue: 20, day1: 524, day16: 1674, day46: 897, day76: 1356 }, 
 	{ name: 'GGGG股份有限公司', code: '65792', value: 2, colorValue: 45, day1: 747, day16: 1654, day46: 5647, day76: 2441 }, 
@@ -107,14 +107,38 @@ var bubbleOption = {
             point: {
             	events: {
             		click: function(event){
-            			console.log(this.x+","+this.y);
-            			if(window.orientation === 180 || window.orientation === 0){
+            			console.log(this.x + "," + this.y + this.name);
+            			
+            			//simulate click diff bubble show diff treemap
+            			if(this.name === 'TE' || this.name === 'TN' || this.name === 'FS'){
             				showTreemap();
+            				chartRect.series[0].setData(treemapSeries1, true, true, false);
+            				
+            				showTreemapLandscape();
+            				chartLandscapeRect.series[0].setData(treemapSeries1, true, true, false);
+            				
+            			}else{
+            				showTreemap();
+            				chartRect.series[0].setData(treemapSeries2, true, true, false);
+            				
+            				showTreemapLandscape();
+            				chartLandscapeRect.series[0].setData(treemapSeries2, true, true, false);
+            						
+            			}
+            			
+            			//show diff chart by orientation
+            			if(window.orientation === 180 || window.orientation === 0){
             				$('#overview-hc-rectangle').show();
             				
             			}
             			if(window.orientation === 90 || window.orientation === -90){
-            				showTreemapLandscape();
+            				zoomInChartByTreemap();
+            				chartLandscapeRect.update({
+            					chart: {
+            						backgroundColor: '#FFFFFF',
+            						marginTop: 0
+            					}
+            				});
             				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
             				$('#overview-hc-rectangle-landscape').show();
@@ -140,21 +164,12 @@ var bubbleOption = {
 var rectOption = {
 	chart: {
 		type: "treemap",
+		animation: false,
 		marginTop: 40,
 		marginBottom: 70,
 		backgroundColor: '#F8FCFB',
 		zoomType: 'none'
 	},
-	/*labels: {
-   		items: [{
-   			html: '<div>(Days)</div>'
-   		}],
-   		style: {
-   			"color": "#323232",
-   			"left": "272VW",
-   			"top": "158VW"
-   		}
-   	},*/
 	colorAxis: {
         tickPositions: [0, 15, 45, 75],
         stops: [
@@ -183,7 +198,6 @@ var rectOption = {
    	tooltip: {
         useHTML: true,
         shadow: false,
-        animation: false,
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
@@ -214,7 +228,7 @@ var rectOption = {
     	}
     },
     series: [{
-    	data: buRectSeries  
+    	data: buBubbleSeries  
     }],
     exporting: {
         enabled: false
@@ -294,7 +308,7 @@ var treemapOption = {
     	}
     },
     series: [{
-    	data: buRectSeries  
+    	data: treemapSeries1  
     }],
     exporting: {
         enabled: false
@@ -308,13 +322,11 @@ var treemapOption = {
 };
 
 function showTreemap(){
-	console.log(1);
 	rectOption.chart.renderTo = 'overview-hc-rectangle';
 	chartRect = new Highcharts.Chart(rectOption);
 }
 
 function showTreemapLandscape(){
-	console.log(2);
 	rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
 	chartLandscapeRect = new Highcharts.Chart(rectOption);
 }
@@ -372,11 +384,9 @@ $('#viewMain').pagecontainer({
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
 			//hideTooltip();
-			chartbubble.series[0].setData(buBubbleSeries, true, true, false);
-			chartRect.series[0].setData(buRectSeries, true, true, false);           
+			chartbubble.series[0].setData(buBubbleSeries, true, true, false);         
             
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
-            chartLandscapeRect.series[0].setData(buRectSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
             viewMainTab = 'BU';
@@ -384,11 +394,9 @@ $('#viewMain').pagecontainer({
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
         	//hideTooltip();
-			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);
-			chartRect.series[0].setData(csdRectSeries, true, true, false);           
+			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);          
             
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
-            chartLandscapeRect.series[0].setData(csdRectSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
             viewMainTab = 'CSD';
