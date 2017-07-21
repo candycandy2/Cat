@@ -56,6 +56,7 @@
 # Enable proguard with Cordova
 # obfuscate plugin of qlogin/qpush/qsecurity
 -keep class org.apache.cordova.engine.** { *; }
+-keep class org.apache.cordova.qpush.** { *; }
 #-keep class org.apache.cordova.device.** { *; }
 #-keep class org.apache.cordova.whitelist.** { *; }
 #-keep class org.apache.cordova.** { *; }
