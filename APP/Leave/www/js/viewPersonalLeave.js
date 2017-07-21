@@ -276,15 +276,15 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $("#infoTitle-2").on("click", function() {
-            if($("#infoContent-2").css("display") === "none") {
-                $("#infoContent-2").slideDown(500);
-                $("#infoTitle-2").find(".listDown").attr("src", "img/list_up.png")
-            }else if($("#infoContent-2").css("display") === "block") {
-                $("#infoContent-2").slideUp(500);
-                $("#infoTitle-2").find(".listDown").attr("src", "img/list_down.png")
-            }
-        });
+        // $("#infoTitle-2").on("click", function() {
+        //     if($("#infoContent-2").css("display") === "none") {
+        //         $("#infoContent-2").slideDown(500);
+        //         $("#infoTitle-2").find(".listDown").attr("src", "img/list_up.png")
+        //     }else if($("#infoContent-2").css("display") === "block") {
+        //         $("#infoContent-2").slideUp(500);
+        //         $("#infoTitle-2").find(".listDown").attr("src", "img/list_down.png")
+        //     }
+        // });
 
         $("#infoTitle-3").on("click", function() {
             if($("#infoContent-3").css("display") === "none") {

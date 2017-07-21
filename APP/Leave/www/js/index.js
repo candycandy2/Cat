@@ -53,7 +53,9 @@ window.initialSuccess = function() {
                       + "</EmpNo></LayoutHeader>";
     getDefaultSettingQueryData = "<EmpNo>"+ myEmpNo +"</EmpNo>";
     QueryCalendarData();
-    GetDefaultSetting();
+    if (leaveTypeData["option"].length == 0) {
+        GetDefaultSetting();
+    }
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
     loadingMask("show");
