@@ -113,10 +113,13 @@ a{
 /* img */
 #backBtn{
 	width: 11.729VW;
+	height: 5VW;
 }
 .backBubble-img{
 	width: 4VW;
-	height: 5VH;
+	height: 3VW;
+	margin-top: 1VW;
+	margin-left: 2VW;
 }
 .panelBtn-img{
 	width: 5.957VW;
@@ -587,9 +590,6 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 		display: block;
 		/*display: inline;*/
 	}
-	/*#viewMain #overview-hc-rectangle-landscape{
-		display: inline;
-	}*/
 	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
 	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu{
 		display: none;
