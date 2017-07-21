@@ -144,7 +144,7 @@ return [
     
     'secret_key' => [
         'ens' => 'dd88f6e1eea34e77a9ab75439d327363',
-        'rmcirs'  => 'cbdcbad0aca8448e8e1fe01b41f5003c'
+        'rm'  => '91db12b3e232474361d82eac6dd09b55'
     ],
     
     /*

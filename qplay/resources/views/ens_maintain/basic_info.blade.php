@@ -1,6 +1,7 @@
 <?php
 use App\lib\ResultCode;
 $menu_name = "BASIC_INFO_MAINTAIN";
+$ensProjects = \Config('app.ens_project');
 ?>
 @include("layouts.lang")
 @extends('layouts.admin_template')
@@ -13,15 +14,16 @@ $menu_name = "BASIC_INFO_MAINTAIN";
             <div class="form-group">
                 <div class="input-group">
                     <select class="form-control" style="width: 200px" id="selectProject">
-                      <option value="ens" selected="selected">ens</option>
-                      <option value="rmcirs">rmcirs</option>
+                    @foreach ($ensProjects  as $index => $project)
+                         <option value="{{$project}}" @if($index == 0) selected="selected" @endif>{{$project}}</option>
+                    @endforeach
                     </select>
                 </div>
             </div>
       
             <div class="form-group">
-                 <button type="button" id="importBasicIfo" class="btn btn-primary openDialog" data-loading-text="Processing...">匯入成員資訊</button>
-                 <button type="button" id="registerSuperUser" class="btn btn-warning" data-loading-text="Processing...">新管理者註冊QMessage</button>
+                 <button type="button" id="importBasicIfo" class="btn btn-primary openDialog" data-loading-text="Processing...">{{trans('messages.IMPORT_BASIC_INFO')}}</button>
+                 <button type="button" id="registerSuperUser" class="btn btn-warning" data-loading-text="Processing...">{{trans('messages.NEW_ADMIN_REGISTER_TO_MESSAGE')}}</button>
             </div>
          </form>
     </div>
@@ -38,8 +40,8 @@ $menu_name = "BASIC_INFO_MAINTAIN";
             <th data-field="login_id" data-editable="input">PIC</th>
             <th data-field="emp_no"   data-editable="input">EmpNo</th>
             <th data-field="master"   data-editable="input">Master</th>
-            <th data-field="status" data-formatter="statusFormatter">權限</th>
-            <th data-field="resign" data-formatter="resignFormatter">在職</th>
+            <th data-field="status" data-formatter="statusFormatter">{{trans('messages.AUTH')}}</th>
+            <th data-field="resign" data-formatter="resignFormatter">{{trans('messages.RESIGN')}}</th>
         </tr>
         </thead>
     </table>
@@ -51,7 +53,7 @@ $menu_name = "BASIC_INFO_MAINTAIN";
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">匯入資料</h4>
+        <h4 class="modal-title">{{trans('messages.IMPORT_DATA')}}</h4>
       </div>
       <div class="modal-body">
             {{-- <div class="col-md-6">.col-md-6</div> --}}
@@ -66,8 +68,8 @@ $menu_name = "BASIC_INFO_MAINTAIN";
             <small id="uploadBasicInfo-error" class="errors"></small>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" id="save" >匯入</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{trans('messages.CANCEL')}}</button>
+        <button type="button" class="btn btn-primary" id="save" >{{trans('messages.IMPORT')}}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -113,14 +115,15 @@ $menu_name = "BASIC_INFO_MAINTAIN";
 
         $('input[id=uploadBasicInfo]').change(function() { 
             $('#pathCover').val($('#uploadBasicInfo')[0].files[0].name); 
-        }); 
+        });
 
+        if($.trim("{{app('request')->input('app_key')}}")!=""){
+            $("#selectProject option[value={{app('request')->input('app_key')}}]").attr('selected', true);
+        }
         var project = $('#selectProject option:selected').val();
         $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?app_key=' + project});
         $('#selectProject').on('change', function() {
-            $('#basicInfoTable').bootstrapTable('refresh', {
-                url: 'ENSMaintain/getBasicInfo?app_key=' + this.value
-            });
+            window.location="{{asset('basicInfo')}}?app_key=" + this.value;
         })
 
          $('#save').click(function(){
@@ -137,14 +140,14 @@ $menu_name = "BASIC_INFO_MAINTAIN";
                 processData: false,
                 success: function (d, status, xhr) {
                     if(d.ResultCode == 1) {
-                       showMessageDialog('操作成功','資料匯入成功','',true);
+                       showMessageDialog("{{trans('messages.MSG_OPERATION_SUCCESS')}}","{{trans('messages.IMPORT_DATA_SUCCESS')}}","",true);
                        $('#basicInfoTable').bootstrapTable('refresh');
                     }else if(d.ResultCode == {{ResultCode::_000919_validateError}}){
-                        showMessageDialog('錯誤','上傳檔案錯誤',d.Content);
+                        showMessageDialog("{{trans('messages.ERROR')}}","{{trans('messages.ERR_FILE_UPLOAD')}}",d.Content);
                     }else if(d.ResultCode == {{ResultCode::_000901_userNotExistError}}){
-                        showMessageDialog('錯誤','匯入失敗, 請修正以下所有錯誤後重新上傳',d.Content);
+                        showMessageDialog("{{trans('messages.ERROR')}}","{{trans('messages.IMPORT_DATA_FAILED')}}" + "," +  "{{trans('messages.ERR_PLEASE_FIX_ALL_TO_UPLOAD')}}",d.Content);
                     }else{
-                        showMessageDialog('錯誤','匯入失敗, 請聯絡系統管理員');
+                        showMessageDialog("{{trans('messages.ERROR')}}","{{trans('messages.IMPORT_DATA_FAILED')}}" + "," +  "{{trans('messages.ERR_PLEASE_CONACT_ADMIN')}}");
                     }
                     $('#importBasicIfo').button('reset');
                 },
@@ -166,14 +169,13 @@ $menu_name = "BASIC_INFO_MAINTAIN";
                 contentType: "application/json",
                 success: function (d, status, xhr) {
                     if(d.ResultCode == 1) {
-                       showMessageDialog('操作成功',d.Message,d.Content.replace(/,/g,"</br>"),true);
+                       showMessageDialog("{{trans('messages.MSG_OPERATION_SUCCESS')}}",d.Message,d.Content.replace(/,/g,"</br>"),true);
                     }else{
-                        showMessageDialog('錯誤','註冊失敗, 請聯絡系統管理員');
+                        showMessageDialog("{{trans('messages.ERROR')}}" + "," + "{{trans('message.ERR_REGISTER_FAILED')}}" + "," + "{{trans('messages.ERR_PLEASE_CONACT_ADMIN')}}");
                     }
                     $('#registerSuperUser').button('reset');
                 },
                 error: function (e) {
-                    console.log(e.responseText);
                     alert(e.responseText);
                     $('#registerSuperUser').button('reset');
                 }

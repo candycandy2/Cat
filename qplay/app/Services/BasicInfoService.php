@@ -56,7 +56,7 @@ class BasicInfoService
         }
         //檢查excel column
         if(count($lostField) > 0){
-            $errorMsg = '缺少欄位: ' . implode(',',$lostField);
+            $errorMsg = trans('messages.ERR_MISSING_FIELD').' : ' . implode(',',$lostField);
             return ['ResultCode'=>ResultCode::_000919_validateError,
                         'Message'=>"validate error",
                         'Content'=> $errorMsg ];
@@ -65,28 +65,28 @@ class BasicInfoService
         $errorRow = [];
 
         foreach ($excel as $index => $row) {
-           $requireStr = '不可空白';
+           $requireStr = trans('messages.ERR_NOT_BLANK');
            $num = $index + 2;
            foreach ($row as $key => $value) {
                if($value == ''){
-                    $errorRow[$num][] = $key.'-'.$requireStr ;
+                    $errorRow[$num][] = $key.' - '.$requireStr ;
                }
                if(strtolower($key) == 'pic'){
                     //0:用戶不存在|1:已離職|2:已停權
                     $userStatus = CommonUtil::getUserStatusByUserID($value);
                     if($userStatus == 0){
-                        $errorRow[$num][] = $value.'-用戶不存在' ;
+                        $errorRow[$num][] = $value.' - '.trans('messages.ERR_USER_NOT_EXIST') ;
                     }else if($userStatus == 1){
-                        $errorRow[$num][] = $value.'-已離職' ;
+                        $errorRow[$num][] = $value.' - '.trans('messages.ERR_USER_RESIGNED') ;
                     }else if($userStatus == 2){
-                        $errorRow[$num][] = $value.'-已停權';
+                        $errorRow[$num][] = $value.' - '.trans('messages.ERR_USER_SUSPENDED');
                     }
                }
            }
         }
         $errors = [];
         foreach ($errorRow as $index => $errorArr) {
-            $tmpMsg = '第'.$index.'列發現資料錯誤:';
+            $tmpMsg = str_replace('%s', $index, trans('messages.ERR_ROW_DATA_ERROR')).' : ';
             foreach ($errorArr as $key => $errorStr) {
                 if($key!=0){
                      $tmpMsg.='、'.$errorStr;

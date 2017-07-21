@@ -23,9 +23,7 @@ Route::any('/v101/ens/updateTaskStatus', 'TaskController@updateTaskStatus');
 Route::any('/v101/ens/getMessageCount', 'MessageController@getMessageCount');
 
 Route::any('v101/ens/uploaBasicInfo','BasicInfoController@uploaBasicInfo');
-Route::any('v101/ens/basicInfoMaintain','BasicInfoController@basicInfoMaintain');
-Route::any('v101/ens/registerSuperUserToMessage','BasicInfoController@registerSuperUserToMessage');
 
 //for developer test
-Route::any('v101/ens/testEns','testController@testEns');
-Route::any('v101/ens/sendPushMessageToUser','testController@sendPushMessageToUser');
+//Route::any('v101/ens/testEns','testController@testEns');
+//Route::any('v101/ens/sendPushMessageToUser','testController@sendPushMessageToUser');

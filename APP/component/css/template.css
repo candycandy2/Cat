@@ -211,8 +211,10 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 .font-style6{ font-weight: bold; font-size: 3.55vw !important;}
 .font-style7{ font-weight: normal; font-size: 3.55vw !important;}
 .font-style8{ font-weight: normal; font-size: 5.02vw !important;}
-.font-style11{ font-weight: normal; font-size: 3.14vw !important;}
-.font-style12{ font-weight: normal; font-size: 3.349vw !important;}
+.font-style10{ font-weight: normal; font-size: 3.768vw !important;}
+.font-style11{ font-weight: normal; font-size: 3.349vw !important;}
+.font-style12{ font-weight: normal; font-size: 3.14vw !important;}
+.font-style13{ font-weight: normal; font-size: 2.93vw !important;}
 
 /* ---header--- */
 .app-popup .header-title-main, .app-popup .header-title-subsub{ color: #0f0f0f;}

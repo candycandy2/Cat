@@ -94,22 +94,4 @@ class BasicInfoRepository
             ->orderBy('function','asc')
             ->get();
     }
-
-    /**
-     * TODO  by app-key
-     * 批量寫入basic_info
-     * @param  Array $data 寫入的資料，接受多筆
-     */
-    public function insertBasicInfo(Array $data){
-        $basicIfno = $this->basicInfo->insert($data);
-    }
-
-    /**
-     * TODO by app-key
-     * 移除舊basic_info資料
-     * @return 
-     */
-    public function deleteBasicInfo(){
-        $this->basicInfo::truncate();    
-    }
 }
