@@ -124,7 +124,7 @@ class AppRepository
                       'qp_app_head.app_category_row_id','qp_app_head.default_lang_row_id',
                       'qp_app_head.updated_at','qp_app_head.created_at','qp_app_head.sequence',
                       'p.created_user as p_created_user','p.project_pm as pm','p.project_code');
-             $query ->orderBy('p.project_code','asc');
+             $query ->orderBy('qp_app_head.created_at','desc');
              $appsList = $query -> get();
          
         return $appsList;
