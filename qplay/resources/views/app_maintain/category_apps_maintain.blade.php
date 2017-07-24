@@ -49,7 +49,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 <thead>
                 <tr>
                     <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
-                    <th data-field="sequence" data-sortable="true" data-visible="true" data-width="10px" data-formatter="seqFormatter">排序</th>
+                    <th data-field="sequence" data-sortable="false" data-visible="true" data-width="10px" data-formatter="seqFormatter">排序</th>
                     <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
                     <th data-field="app_name" data-sortable="true" data-formatter="appNameFormatter">{{trans("messages.APP_NAME")}}</th>
                     <th data-field="updated_at" data-formatter="updateDateFormatter" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
