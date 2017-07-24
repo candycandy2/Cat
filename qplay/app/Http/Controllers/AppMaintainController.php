@@ -145,10 +145,11 @@ class AppMaintainController extends Controller
         {
             return null;
         }
-        $data = array();
-
-        $appList = $this->getAppList();
-        return $appList;
+        $auth = true;
+        $whereCondi = [];
+        $orderCondi = array(array('field'=>'created_at','seq'=>'desc'));
+        $appList = $this->appService->getAppList($whereCondi, $orderCondi, $auth);
+       return json_encode( $appList );
     }
 
     /**
@@ -698,22 +699,6 @@ class AppMaintainController extends Controller
 
         return $contents ;
            
-    }
-
-    /**
-     * 取得App列表
-     * (預設檢查權限，當沒有App管理權限者，僅能維護自己申請或為PM的App)
-     * @param  Array $whereCondi  查詢條件清單array(array('field'=>'欄位',
-     *                                                    'op'=>'比對方式(=|<>)',
-     *                                                    'value'=>'比對值'
-     *                                                    ))
-     * @param  String $auth       是否檢查權限
-     * @return json
-     */
-    private function getAppList($whereCondi=[],$auth=true){
-
-        $appList = $this->appService->getAppList($whereCondi, $auth);
-        return json_encode( $appList );
     }
 
     /**
