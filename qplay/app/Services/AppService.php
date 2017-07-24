@@ -64,6 +64,16 @@ class AppService
     }
 
     /**
+     * 依據qp_app_head.row_id更新事件資料
+     * @param  Array    $appIdList      qp_app_head.row_id 列表
+     * @param  Array  $updateData 欲更新的資料
+     * @return mixed
+     */
+    public function updateAppInfoByIdList($appIdList, Array $updateData){
+        return $this->appRepository->updateAppInfoByIdList($appIdList, $updateData);
+    }
+
+    /**
      * 取得App列表
      * @param  array   $whereCondi 查詢條件
      * @param  boolean $auth       是否過濾權限
@@ -125,4 +135,9 @@ class AppService
     public function getAppBasicIfnoByAppId($appId){
         return $this->appRepository->getAppBasicIfnoByAppId($appId);
     }
+
+    public function getNewAppSequence($categoryId){
+        return $this->appRepository->getMaxAppSequenceByCategory($categoryId) + 1;
+    }
+
 }

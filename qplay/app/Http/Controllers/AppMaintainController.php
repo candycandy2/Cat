@@ -37,163 +37,6 @@ class AppMaintainController extends Controller
         $this->appVersionService = $appVersionService;
     }
 
-    public function getCategoryList(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $appCategoryList = \DB::table("qp_app_category")
-            -> select('row_id', 'app_category')
-            -> orderBy('app_category')
-            -> get();
-        foreach ($appCategoryList as $category) {
-            $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$category->row_id));
-            $appList = $this->getAppList($whereCondi);
-            $category->app_count = count(json_decode($appList));
-        }
-         return response()->json($appCategoryList);
-    }
-
-    public function saveCategory(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $categoryName = $jsonContent['categoryName'];
-            $isNew = $jsonContent['isNew'];
-            if($isNew == 'Y') {
-                //check category name already exist or not
-                $sql = "select row_id from qp_app_category where app_category = "."'".$categoryName."'";
-                $res = DB::select($sql, []);
-                if(count($res) > 0) {
-                    return response()->json(['result_code'=>ResultCode::_000918_AppCategoryNameExist,]);
-                }
-                \DB::table("qp_app_category")
-                    -> insert(
-                        ['app_category'=>$categoryName,
-                            'created_at'=>$now,
-                            'created_user'=>\Auth::user()->row_id]);
-            } else {
-                $categoryId = $jsonContent['categoryId'];
-                \DB::table("qp_app_category")
-                    -> where('row_id', '=', $categoryId)
-                    -> update(
-                        ['app_category'=>$categoryName,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-            }
-
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
-     public function deleteCategory() {
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $categoryIdList = $jsonContent['category_id_list'];
-            foreach ($categoryIdList as $cId) {
-                \DB::table("qp_app_category")
-                    -> where('row_id', '=', $cId)
-                    -> delete();
-            }
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
-    public function getCategoryAppsList(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $input = Input::get();
-        if( !isset($input["category_id"]) || !is_numeric($input["category_id"])){
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
-        }
-
-        $categoryId = $input["category_id"];
-        $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$categoryId));
-        $categoryAppsList = $this->getAppList($whereCondi);
-        return $categoryAppsList;
-    }
-
-
-    public function getOtherAppList(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        
-        $input = Input::get();
-        if( !isset($input["category_id"]) || !is_numeric($input["category_id"])){
-            return response()->json(['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,]); 
-        }
-        $categoryId = $input["category_id"];
-        $whereCondi = array(array('field'=>'app_category_row_id','op'=>'<>','value'=>$categoryId));
-        $otherAppsList = $this->getAppList($whereCondi);
-        return $otherAppsList;
-    }
-
-
-    function saveCategoryApps(){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        $now = date('Y-m-d H:i:s',time());
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $categoryId = $jsonContent['category_id'];
-            $appIdList = $jsonContent['app_id_list'];
-            \DB::beginTransaction();
-            \DB::table("qp_app_head")
-                    -> where('app_category_row_id', "=", $categoryId)
-                    -> update(
-                        ['app_category_row_id'=>0,
-                            'updated_at'=>$now,
-                            'updated_user'=>\Auth::user()->row_id]);
-            \DB::table("qp_app_head")
-                -> whereIn('row_id', $appIdList)
-                -> update(
-                    ['app_category_row_id'=>$categoryId,
-                        'updated_at'=>$now,
-                        'updated_user'=>\Auth::user()->row_id]);
-            \DB::commit();
-            return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
-        }
-
-        return null;
-    }
-
     public function getBlockList(){
 
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -571,9 +414,11 @@ class AppMaintainController extends Controller
                             ->first(['security_level']);
 
             $chkCompany = (isset($input['chkCompany']))?implode(";",$input['chkCompany']):null;
+            $sequence = $this->appService->getNewAppSequence($input['categoryId']);
             $dataArr = array(
                 'default_lang_row_id'=>$input['defaultLang'],
                 'app_category_row_id'=>$input['categoryId'],
+                'sequence'=>$sequence,
                 'security_level'=>$input['securityLevel'],
                 'company_label'=> $chkCompany,
                 'updated_user'=>\Auth::user()->row_id,
