@@ -218,6 +218,10 @@
 .leftDaysNotEnough .ui-content > .header {
 	 margin-top: 10%;
 }
+
+input[type="text"], input[type="search"] {
+	-webkit-appearance: none;
+}
 /******************************************** viewHolidayCalendar ******************************************/
 
 #viewHolidayCalendar .infoList ul > li {
