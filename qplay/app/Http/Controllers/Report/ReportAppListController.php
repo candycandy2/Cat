@@ -28,7 +28,9 @@ class ReportAppListController extends Controller
      * @return json
      */
     public function getReportAppList(){
-        $reportAppList = $this->appService->getAppList();
+        $whereCondi = [];
+        $orderCondi = array(array('field'=>'project_code','seq'=>'asc'));
+        $reportAppList = $this->appService->getAppList($whereCondi, $orderCondi);
         foreach ($reportAppList as $index=>&$app) {
             $app['register_rate'] = $this->reportService->getRegisterRate();
         }

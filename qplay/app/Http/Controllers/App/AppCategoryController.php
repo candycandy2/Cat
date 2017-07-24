@@ -13,6 +13,7 @@ class AppCategoryController extends Controller
 {
 
     protected $appService;
+    protected $orderCondi =  array(array('field'=>'created_at','seq'=>'desc'));
 
      /**
      * 建構子，初始化引入相關服務
@@ -25,6 +26,37 @@ class AppCategoryController extends Controller
         $this->appCategoryService = $appCategoryService;
     }
 
+    /**
+     * Appz分類管理詳細頁
+      * @return view
+     */
+    public function categoryAppsMaintain(){
+         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        
+        if( !isset($input["category_id"]) || !is_numeric($input["category_id"])){
+            \App::abort(404); 
+        }
+
+        $categoryId = $input["category_id"];
+        $categoryInfo = CommonUtil::getCategoryInfoByRowId($categoryId);
+
+        if(is_null($categoryInfo)){
+            \App::abort(404); 
+        }
+        
+        $data = [
+            'categoryId' =>$categoryId,
+            'categoryInfo' =>$categoryInfo
+        ];
+
+        return view('app_maintain/category_apps_maintain')->with('data',  $data );;
+
+    }
     /**
      * 取得分類下所有app列表
      * @return json
@@ -39,7 +71,7 @@ class AppCategoryController extends Controller
         $appCategoryList =  $this->appCategoryService->getCategoryList();
         foreach ($appCategoryList as $category) {
             $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$category->row_id));
-            $appList = $this->appService->getAppList($whereCondi);
+            $appList = $this->appService->getAppList($whereCondi,$this->orderCondi);
             $category->app_count = count($appList);
         }
          return response()->json($appCategoryList);
@@ -123,7 +155,7 @@ class AppCategoryController extends Controller
 
         $categoryId = $input["category_id"];
         $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$categoryId));
-        $categoryAppsList = $this->appService->getAppList($whereCondi);
+        $categoryAppsList = $this->appService->getAppList($whereCondi, $this->orderCondi);
         return $categoryAppsList;
     }
 
@@ -144,7 +176,7 @@ class AppCategoryController extends Controller
         }
         $categoryId = $input["category_id"];
         $whereCondi = array(array('field'=>'app_category_row_id','op'=>'<>','value'=>$categoryId));
-        $otherAppsList =  $this->appService->getAppList($whereCondi);
+        $otherAppsList =  $this->appService->getAppList($whereCondi, $this->orderCondi);
         return $otherAppsList;
     }
 
