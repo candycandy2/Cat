@@ -13,6 +13,7 @@ class AppCategoryController extends Controller
 {
 
     protected $appService;
+    protected $orderCondi =  array(array('field'=>'created_at','seq'=>'desc'));
 
      /**
      * 建構子，初始化引入相關服務
@@ -39,7 +40,7 @@ class AppCategoryController extends Controller
         $appCategoryList =  $this->appCategoryService->getCategoryList();
         foreach ($appCategoryList as $category) {
             $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$category->row_id));
-            $appList = $this->appService->getAppList($whereCondi);
+            $appList = $this->appService->getAppList($whereCondi,$this->orderCondi);
             $category->app_count = count($appList);
         }
          return response()->json($appCategoryList);
@@ -123,7 +124,7 @@ class AppCategoryController extends Controller
 
         $categoryId = $input["category_id"];
         $whereCondi = array(array('field'=>'app_category_row_id','op'=>'=','value'=>$categoryId));
-        $categoryAppsList = $this->appService->getAppList($whereCondi);
+        $categoryAppsList = $this->appService->getAppList($whereCondi, $this->orderCondi);
         return $categoryAppsList;
     }
 
@@ -144,7 +145,7 @@ class AppCategoryController extends Controller
         }
         $categoryId = $input["category_id"];
         $whereCondi = array(array('field'=>'app_category_row_id','op'=>'<>','value'=>$categoryId));
-        $otherAppsList =  $this->appService->getAppList($whereCondi);
+        $otherAppsList =  $this->appService->getAppList($whereCondi, $this->orderCondi);
         return $otherAppsList;
     }
 
