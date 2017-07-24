@@ -100,10 +100,21 @@ class AppRepository
     }
 
     /**
+     * 更新多筆App資料
+     * @param  Array    $appIdList      qp_app_head.row_id 列表
+     * @param  Array  $updateData 欲更新的資料
+     * @return mixed
+     */
+    public function updateAppInfoByIdList($appIdList, Array $updateData){
+        $appInfo =  $this->appHead::whereIn('row_id',$appIdList)->update($updateData);
+        return $appInfo;
+    }
+
+    /**
      * 取得基本App列表,App名稱為預設語言所對應到的名稱
      * @return mixed
      */
-    public function getAppList($whereCondi=[]){
+    public function getAppList($whereCondi=[], $orderCondi= []){
         $query = $this->appHead
             -> join('qp_project as p','qp_app_head.project_row_id', '=', 'p.row_id');
             foreach ($whereCondi as $condi) {
@@ -111,9 +122,11 @@ class AppRepository
             }
              $query -> select('qp_app_head.row_id','qp_app_head.package_name','qp_app_head.icon_url',
                       'qp_app_head.app_category_row_id','qp_app_head.default_lang_row_id',
-                      'qp_app_head.updated_at','qp_app_head.created_at',
-                      'p.created_user as p_created_user','p.project_pm as pm','p.project_code');
-             $query ->orderBy('p.project_code','asc');
+                      'qp_app_head.updated_at','qp_app_head.created_at as created_at','qp_app_head.sequence',
+                      'p.created_user as p_created_user','p.project_pm as pm','p.project_code as project_code');
+             foreach ($orderCondi as $condi) {
+              $query ->orderBy($condi['field'], $condi['seq']);
+            }
              $appsList = $query -> get();
          
         return $appsList;
@@ -141,5 +154,14 @@ class AppRepository
         $appInfo->app_name  = $appLine->app_name;
 
         return $appInfo;
+    }
+
+    /**
+     * 取得該分類目前最大排序
+     * @param  int $categoryId App分類id
+     * @return int
+     */
+    public function getMaxAppSequenceByCategory($categoryId){
+        return $this->appHead->where('app_category_row_id', '=', $categoryId)->max('sequence');
     }
 } 
