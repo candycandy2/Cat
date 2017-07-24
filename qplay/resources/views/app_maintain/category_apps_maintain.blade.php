@@ -2,9 +2,10 @@
 <?php
 use Illuminate\Support\Facades\Input;
 $menu_name = "APP_CATEGORY_MAINTAIN";
-$input = Input::get();
-$categoryId = $input["category_id"];
-$categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
+// var_dump($data);exit();
+// $input = Input::get();
+// $categoryId = $input["category_id"];
+// $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -13,7 +14,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             <table>
                 <tr>
                     <td>{{trans("messages.CATEGORY_NAME")}}:</td>
-                    <td  id="tdCategoryName" class="text-bold" style="padding: 10px;">{{$categoryInfo->app_category}}</td>
+                    <td  id="tdCategoryName" class="text-bold" style="padding: 10px;">{{$data['categoryInfo']->app_category}}</td>
                 </tr>
             </table>
         </div>
@@ -41,7 +42,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
 
             <table id="gridAppList" class="bootstrapTable" data-toggle="table" 
                    data-sort-name="sequence" data-sort-order="desc" data-toolbar="#toolbar"
-                   data-url="app/category/getCategoryAppsList?category_id={{$categoryId}}" data-height="600" data-pagination="true"
+                   data-url="app/category/getCategoryAppsList?category_id={{$data['categoryId']}}" data-height="600" data-pagination="true"
                    data-show-refresh="true" data-row-style="rowStyle" data-search="false" 
                    data-show-toggle="true"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -176,7 +177,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                     appIdList[app.row_id] = app.sequence;
                 });
                 var mydata = { app_id_list:appIdList,
-                               category_id:{{$categoryId}}
+                               category_id:{{$data['categoryId']}}
                              };
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
@@ -215,7 +216,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 </div>
                 <div class="modal-body">
                     <table id="gridAllAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
-                           data-url="app/category/getOtherAppList?category_id={{$categoryId}}" data-height="298" data-pagination="true"
+                           data-url="app/category/getOtherAppList?category_id={{$data['categoryId']}}" data-height="298" data-pagination="true"
                            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                            data-show-toggle="true"  data-sortable="true"
                            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"

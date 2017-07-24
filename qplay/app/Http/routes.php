@@ -66,12 +66,6 @@ Route::any('/platform/updateProject', ['middleware' => 'auth','uses'=>'platformC
 Route::any('/platform/sendProjectInformation', ['middleware' => 'auth','uses'=>'platformController@sendProjectInformation']);
 
 //appMaintain
-//Route::any('/AppMaintain/getCategoryList', ['middleware' => 'auth','uses'=>'AppMaintainController@getCategoryList']);
-//Route::any('/AppMaintain/saveCategory', ['middleware' => 'auth','uses'=>'AppMaintainController@saveCategory']);
-//Route::any('/AppMaintain/deleteCategory', ['middleware' => 'auth','uses'=>'AppMaintainController@deleteCategory']);
-//Route::any('/AppMaintain/getCategoryAppsList', ['middleware' => 'auth','uses'=>'App\AppCategoryController@getCategoryAppsList']);
-//Route::any('/AppMaintain/getOtherAppList', ['middleware' => 'auth','uses'=>'AppMaintainController@getOtherAppList']);
-//Route::any('/AppMaintain/saveCategoryApps', ['middleware' => 'auth','uses'=>'AppMaintainController@saveCategoryApps']);
 Route::any('/AppMaintain/getBlockList', ['middleware' => 'auth','uses'=>'AppMaintainController@getBlockList']);
 Route::any('/AppMaintain/saveBlockList', ['middleware' => 'auth','uses'=>'AppMaintainController@saveBlockList']);
 Route::any('/AppMaintain/deleteBlockList', ['middleware' => 'auth','uses'=>'AppMaintainController@deleteBlockList']);
@@ -88,6 +82,7 @@ Route::any('/AppVersion/getAppHistoryVersion', ['middleware' => 'auth','uses'=>'
 Route::any('/AppVersion/ajxValidVersion', ['middleware' => 'auth','uses'=>'AppVersionController@ajxValidVersion']);
 
 //App Category
+Route::any('categoryAppsMaintain', ['middleware' => 'auth','uses'=>'App\AppCategoryController@categoryAppsMaintain']);
 Route::any('app/category/getCategoryList', ['middleware' => 'auth','uses'=>'App\AppCategoryController@getCategoryList']);
 Route::any('app/category/saveCategory', ['middleware' => 'auth','uses'=>'App\AppCategoryController@saveCategory']);
 Route::any('app/category/deleteCategory', ['middleware' => 'auth','uses'=>'App\AppCategoryController@deleteCategory']);
@@ -178,9 +173,6 @@ Route::any('appDetailMaintain', ['middleware' => 'auth', 'uses' => 'AppMaintainC
 
 Route::any('categoryMaintain', ['middleware' => 'auth', function() {
     return view("app_maintain/category_maintain");
-}]);
-Route::any('categoryAppsMaintain', ['middleware' => 'auth', function() {
-    return view("app_maintain/category_apps_maintain");
 }]);
 Route::any('securitySetting', ['middleware' => 'auth', function() {
     return view("app_maintain/security_setting");

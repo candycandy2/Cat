@@ -27,6 +27,37 @@ class AppCategoryController extends Controller
     }
 
     /**
+     * Appz分類管理詳細頁
+      * @return view
+     */
+    public function categoryAppsMaintain(){
+         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+
+        $input = Input::get();
+        
+        if( !isset($input["category_id"]) || !is_numeric($input["category_id"])){
+            \App::abort(404); 
+        }
+
+        $categoryId = $input["category_id"];
+        $categoryInfo = CommonUtil::getCategoryInfoByRowId($categoryId);
+
+        if(is_null($categoryInfo)){
+            \App::abort(404); 
+        }
+        
+        $data = [
+            'categoryId' =>$categoryId,
+            'categoryInfo' =>$categoryInfo
+        ];
+
+        return view('app_maintain/category_apps_maintain')->with('data',  $data );;
+
+    }
+    /**
      * 取得分類下所有app列表
      * @return json
      */
