@@ -190,6 +190,7 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add cordova-plugin-android-permissions',
     'cordova plugin add cordova-plugin-whitelist@1.3.1',
     'cordova plugin add cordova-plugin-inappbrowser',
+    'cordova plugin add ../../plugins/cordova-plugin-proguard',
     'cordova plugin add cordova-plugin-appavailability@0.4.2'//,
     //'cordova plugin add cordova-plugin-file@4.3.1'
     //'cordova plugin add ../../plugins/cordova-plugin-proguard'

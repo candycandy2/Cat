@@ -4,6 +4,7 @@ var initialAppName = "Accounting Rate";
 var appKeyOriginal = "appaccountingrate";
 var appKey = "appaccountingrate";
 var pageList = ["viewAccount"];
+var waterMarkPageList = ["viewAccount"];
 var appSecretKey = "35ee8716067626e225d38b9a97ee49f8";
 
 var prevPageID;

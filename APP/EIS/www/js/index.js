@@ -14,6 +14,7 @@ var initialAppName = "EIS";
 var appKeyOriginal = "appeis";
 var appKey = "appeis";
 var pageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
+var waterMarkPageList = ["viewHitRate", "viewMonthlyHitRate", "viewYTDHitRate"];
 var appSecretKey = "af8973de05c940f98a2c5e20b2ba649b";
 var htmlContent = "";
 var panel = htmlContent
@@ -132,7 +133,7 @@ function onBackKeyDown() {
     if(activePageID == "viewHitRate") {
         if($("body").hasClass("ui-landscape")) {
             /*** Zoom Out the chart ***/
-            zoomOutChart("viewHitRate-hc-canvas"); 
+            zoomOutChart("viewHitRate-hc-canvas");
         }else{
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {
@@ -143,7 +144,7 @@ function onBackKeyDown() {
                 $("input[id=viewHitRate-tab-1]").trigger('click');
                 $("label[for=viewHitRate-tab-1]").addClass('ui-btn-active');
                 $("label[for=viewHitRate-tab-2]").removeClass('ui-btn-active');
-                $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active'); 
+                $("label[for=viewHitRate-tab-3]").removeClass('ui-btn-active');
             }else if($("#viewHitRate :radio:checked").val() == "viewHitRate-tab-3") {
                 $("input[id=viewHitRate-tab-2]").trigger('click');
                 $("label[for=viewHitRate-tab-2]").addClass('ui-btn-active');
@@ -158,14 +159,14 @@ function onBackKeyDown() {
         }else{
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {
-                $("#mypanel").panel( "close");  
+                $("#mypanel").panel( "close");
             }else if($("#viewMonthlyHitRate :radio:checked").val() == "viewMonthlyHitRate-tab-1") {
                 changePageByPanel(lastPageID);
             }else if($("#viewMonthlyHitRate :radio:checked").val() == "viewMonthlyHitRate-tab-2") {
                 $("input[id=viewMonthlyHitRate-tab-1]").trigger('click');
                 $("label[for=viewMonthlyHitRate-tab-1]").addClass('ui-btn-active');
                 $("label[for=viewMonthlyHitRate-tab-2]").removeClass('ui-btn-active');
-                $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active'); 
+                $("label[for=viewMonthlyHitRate-tab-3]").removeClass('ui-btn-active');
             }else if($("#viewMonthlyHitRate :radio:checked").val() == "viewMonthlyHitRate-tab-3") {
                 $("input[id=viewMonthlyHitRate-tab-2]").trigger('click');
                 $("label[for=viewMonthlyHitRate-tab-2]").addClass('ui-btn-active');
@@ -176,7 +177,7 @@ function onBackKeyDown() {
     }else if(activePageID == "viewYTDHitRate") {
         if($("body").hasClass("ui-landscape")) {
             /*** Zoom Out the chart ***/
-            zoomOutChart("viewYTDHitRate-hc-canvas");  
+            zoomOutChart("viewYTDHitRate-hc-canvas");
         }else{
             /*** change tab and close the panel ***/
             if($(".ui-page-active").jqmData("panel") === "open") {
@@ -187,7 +188,7 @@ function onBackKeyDown() {
                 $("input[id=viewYTDHitRate-tab-1]").trigger('click');
                 $("label[for=viewYTDHitRate-tab-1]").addClass('ui-btn-active');
                 $("label[for=viewYTDHitRate-tab-2]").removeClass('ui-btn-active');
-                $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active'); 
+                $("label[for=viewYTDHitRate-tab-3]").removeClass('ui-btn-active');
             }else if($("#viewYTDHitRate :radio:checked").val() == "viewYTDHitRate-tab-3") {
                 $("input[id=viewYTDHitRate-tab-2]").trigger('click');
                 $("label[for=viewYTDHitRate-tab-2]").addClass('ui-btn-active');
@@ -261,7 +262,7 @@ function callProductDetailAPIReduce() {
 
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
     if($(".ui-page-active").jqmData("panel") === "open") {
-        $("#mypanel").panel( "close");     
+        $("#mypanel").panel( "close");
     }
     if(window.orientation === 180 || window.orientation === 0) {
         if(ytdStrExist == true) {

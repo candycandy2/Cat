@@ -4,6 +4,7 @@ var initialAppName = "Yellow Page";
 var appKeyOriginal = "appyellowpage";
 var appKey = "appyellowpage";
 var pageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo"];
+var waterMarkPageList = ["viewDataInput", "viewQueryResult", "viewDetailInfo"];
 var appSecretKey = "c103dd9568f8493187e02d4680e1bf2f";
 
 var employeeData = {};
@@ -97,7 +98,7 @@ $(document).on('click', '.chooseNumPop', function(){
 });
 
 function appendNum(num){
-    $('#numSelectPopupWindow').find('ul').append('<li><img src="img/phone.png" style="width:4vw; height:auto;"><span>' + 
+    $('#numSelectPopupWindow').find('ul').append('<li><img src="img/phone.png" style="width:4vw; height:auto;"><span>' +
             "<a href='tel:" + num + "' style='text-decoration: none; font-weight: normal;'>" + num + "</a>"
          + '</span></li>');
 }

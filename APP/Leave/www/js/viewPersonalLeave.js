@@ -17,7 +17,7 @@ var leaveTypeData = {
 var agentData = {
     id: "agent-popup",
     option: [],
-    title: '<input type="search" id="searchBar">',
+    title: '<input type="search" id="searchBar" />',
     defaultText: "請選擇",
     changeDefaultText : true,
     attr: {
@@ -193,6 +193,8 @@ $("#viewPersonalLeave").pagecontainer({
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
                         $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+                    }else{
+                        
                     }
                     loadingMask("hide");
                 }
@@ -246,7 +248,7 @@ $("#viewPersonalLeave").pagecontainer({
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
             loadingMask("hide");
             leaveid = "";
-            agent = "";
+            agentid= "";
             beginTime = "08:00";
             endTime = "17:00";
             beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
@@ -274,15 +276,15 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $("#infoTitle-2").on("click", function() {
-            if($("#infoContent-2").css("display") === "none") {
-                $("#infoContent-2").slideDown(500);
-                $("#infoTitle-2").find(".listDown").attr("src", "img/list_up.png")
-            }else if($("#infoContent-2").css("display") === "block") {
-                $("#infoContent-2").slideUp(500);
-                $("#infoTitle-2").find(".listDown").attr("src", "img/list_down.png")
-            }
-        });
+        // $("#infoTitle-2").on("click", function() {
+        //     if($("#infoContent-2").css("display") === "none") {
+        //         $("#infoContent-2").slideDown(500);
+        //         $("#infoTitle-2").find(".listDown").attr("src", "img/list_up.png")
+        //     }else if($("#infoContent-2").css("display") === "block") {
+        //         $("#infoContent-2").slideUp(500);
+        //         $("#infoTitle-2").find(".listDown").attr("src", "img/list_down.png")
+        //     }
+        // });
 
         $("#infoTitle-3").on("click", function() {
             if($("#infoContent-3").css("display") === "none") {
@@ -294,10 +296,6 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        // $("#leaveDate").change(function() {
-        //     beginDate = endDate = $(this).val();
-        // });
-
         $("#leaveDate-tab1").on("click", function() {
             beginDate = endDate = $(this).val();
         });
@@ -307,7 +305,9 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#leaveTime-tab1").on("click", function() {
+            $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
             if(!fulldayHide) {
+                $("label[for=leaveTime-tab1]").addClass('ui-btn-active');
                 timeArry = splitTime($(this).val());
                 beginTime = timeArry[1];
                 endTime = timeArry[2];
@@ -327,7 +327,6 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#leaveConfirm").on("click", function() {
-            loadingMask("show");
             if($("#leaveConfirm").hasClass("btn-enable")) {
                 countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
                                          + myEmpNo
@@ -343,6 +342,7 @@ $("#viewPersonalLeave").pagecontainer({
                                          + endTime
                                          + "</endtime><datumdate></datumdate></LayoutHeader>";
                 CountLeaveHours();
+                loadingMask("show");
             }
         });
 
@@ -374,12 +374,8 @@ $("#viewPersonalLeave").pagecontainer({
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
             if(leaveTypeSelected) {
                 if(leftDaysData[leaveid] < 0.5) {
-                    var headerContent = "天數不夠";
-                        msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
-                    $('.leftDaysNotEnough').find('.header-icon img').attr("src", "img/urgent.png");
-                    $('.leftDaysNotEnough').find('.header-text').html(headerContent);
+                    var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
                     $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
-                    
                     popupMsgInit('.leftDaysNotEnough');
 
                     $("#leaveType > span:nth-of-type(1)").text("");
@@ -394,15 +390,16 @@ $("#viewPersonalLeave").pagecontainer({
                     $("label[for=leaveTime-tab1]").addClass('btn-disable');
                     $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
                     $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
-                    $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+                    $("input[id=leaveTime-tab2]").trigger('click');
+                    $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
                     fulldayHide = true;
                 }else {
                     $("label[for=leaveTime-tab1]").removeClass('btn-disable');
-                    $("#leaveType > span:nth-of-type(1)").text(leftDaysData[leaveid] + "天");
+                    $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
                     fulldayHide = false;
                 }
             }
-            if(leaveid != "") {
+            if(leaveid != "" && agentid != "") {
                 $("#leaveConfirm").removeClass("btn-disable");
                 $("#leaveConfirm").addClass("btn-enable");
             }
@@ -413,8 +410,12 @@ $("#viewPersonalLeave").pagecontainer({
             agentid = $(this).val();
         });
 
-        // $(document).on("popupafterclose", "#agent-popup-option", function() {
-        // });
+        $(document).on("popupafterclose", "#agent-popup-option", function() {
+            if(leaveid != "" && agentid != "") {
+                $("#leaveConfirm").removeClass("btn-disable");
+                $("#leaveConfirm").addClass("btn-enable");
+            }
+        });
 
         function splitTime(time) {
             var regExp = /^(.*?)-(.*?)$/;

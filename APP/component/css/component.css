@@ -510,3 +510,15 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 .q-btn-header {
     width: 5.957vw;
 }
+
+/* Water Mark */
+.watermark {
+    position: fixed;
+    top: -10%;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    opacity: 0.05;
+    transform: rotate(330deg);
+    -webkit-transform: rotate(330deg);
+}

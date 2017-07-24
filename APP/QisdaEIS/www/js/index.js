@@ -4,6 +4,7 @@ var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
 var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
+var chartColumnLandscape;
 var treemapState = false;
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
@@ -41,18 +42,6 @@ $(document).one('pagebeforeshow', function(){
         $("#mypanel").panel("open");
     });
 
-	
-    /*$("#viewMain").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
-            $("#mypanel").panel( "open");
-        }
-    });
-    
-    $("#viewDetail").on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open" && (window.orientation === 180 || window.orientation === 0)) {
-            $("#mypanel").panel( "open");
-        }
-    });*/
     
     //backkey from treemap to bubble
     $('#backBtn').on("click", function(){
@@ -61,7 +50,7 @@ $(document).one('pagebeforeshow', function(){
     	$('#overview-hc-bubble-landscape').show();	
     });
     
-    //open and close credit memo
+    //open or close credit memo
     $('#memoBtn').on('click', function(){
     	var flag = $('#memoBtn').attr('src');
     	if(flag === 'img/switch_g.png'){
@@ -217,10 +206,24 @@ function onBackKeyDown() {
 function zoomInChart() {
     if(screen.width < screen.height) {
         chartLandscapebubble.setSize(screen.height, screen.width*0.9, false);
-        chartLandscapeRect.setSize(screen.height, screen.width*0.9, false);
     }else {
         chartLandscapebubble.setSize(screen.width, screen.height*0.9, false);
-        chartLandscapeRect.setSize(screen.width, screen.height*0.9, false);
+    }
+}
+
+function zoomInChartByTreemap(){
+	if(screen.width < screen.height) {
+        chartLandscapeRect.setSize(screen.height, screen.width*0.84, false);
+   	}else {
+        chartLandscapeRect.setSize(screen.width, screen.height*0.84, false);
+    }
+}
+
+function zoomInChartByColumn(){
+	if(screen.width < screen.height) {
+        chartColumnLandscape.setSize(screen.height, screen.width*0.92, false);
+   	}else {
+        chartColumnLandscape.setSize(screen.width, screen.height*0.92, false);
     }
 }
 
@@ -243,20 +246,27 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         $("#mypanel").panel( "close");     
     }
     if(window.orientation === 180 || window.orientation === 0) {
-    	//hideTooltip();
-    	
-		$('#overview-hc-bubble-landscape').hide();
-		$('#overview-hc-rectangle-landscape').hide();
-		$('#backBtn').hide();
+    	if($.mobile.activePage[0].id === 'viewMain'){
+    		$('#overview-hc-bubble-landscape').hide();
+			$('#overview-hc-rectangle-landscape').hide();
+			$('#backBtn').hide();
+    	}else{
+    		$('#viewDetail-hc-column-landscape').hide();
+    	}
+		
         
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
-        //hideTooltip();
-         $('#overview-hc-rectangle').hide();
-         $('#overview-hc-bubble-landscape').show();
+        if($.mobile.activePage[0].id === 'viewMain'){
+        	zoomInChart();
+        	$('#overview-hc-rectangle').hide();
+        	$('#overview-hc-bubble-landscape').show();
+        }else{
+        	zoomInChartByColumn();
+        	$('#viewDetail-hc-column-landscape').show();
+        }
         
-        //zoomInChart();  
-        
+         
     }
 }, false);
 

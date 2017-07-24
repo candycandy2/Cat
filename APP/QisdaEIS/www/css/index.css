@@ -99,24 +99,29 @@ a{
 	font-size: 14px !important;
 	font-family: arial !important;
 }
-.fontHide{
+.font-companyCode{
+	line-height: 3VW;
+}
+.font-companyName{
 	width: 17VW;
-	/*overflow:hidden; 
+	line-height: 4.1VW;
+	overflow:hidden; 
 	text-overflow:ellipsis;
 	display:-webkit-box; 
 	-webkit-box-orient:vertical;
-	-webkit-line-clamp:2;*/ 
-	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
+	-webkit-line-clamp:2; 
+	white-space: normal;
 }
 /* img */
 #backBtn{
 	width: 11.729VW;
+	height: 5VW;
 }
 .backBubble-img{
 	width: 4VW;
-	height: 5VH;
+	height: 3VW;
+	margin-top: 1VW;
+	margin-left: 2VW;
 }
 .panelBtn-img{
 	width: 5.957VW;
@@ -587,15 +592,15 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 		display: block;
 		/*display: inline;*/
 	}
-	/*#viewMain #overview-hc-rectangle-landscape{
-		display: inline;
-	}*/
 	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
 	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu{
 		display: none;
 	}
 	#viewDetail #viewDetail-hc-column-landscape {
 		display: block;
+	}
+	#viewDetail{
+		padding-top: 0 !important;
 	}
 }
 
