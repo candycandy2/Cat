@@ -39,17 +39,19 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 </button>
             </div>
 
-            <table id="gridAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-                   data-url="AppMaintain/getCategoryAppsList?category_id={{$categoryId}}" data-height="600" data-pagination="true"
-                   data-show-refresh="true" data-row-style="rowStyle" data-search="false"
+            <table id="gridAppList" class="bootstrapTable" data-toggle="table" 
+                   data-sort-name="sequence" data-sort-order="desc" data-toolbar="#toolbar"
+                   data-url="app/category/getCategoryAppsList?category_id={{$categoryId}}" data-height="600" data-pagination="true"
+                   data-show-refresh="true" data-row-style="rowStyle" data-search="false" 
                    data-show-toggle="true"  data-sortable="true"
                    data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
                    data-click-to-select="false" data-single-select="false">
                 <thead>
                 <tr>
                     <th data-field="row_id" data-sortable="false" data-visible="false">ID</th>
+                    <th data-field="sequence" data-sortable="true" data-visible="true" data-width="10px" data-formatter="seqFormatter">排序</th>
                     <th data-field="icon_url" data-sortable="false" data-formatter="iconFormatter">{{trans("messages.ICON")}}</th>
-                    <th data-field="app_name" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
+                    <th data-field="app_name" data-sortable="true" data-formatter="appNameFormatter">{{trans("messages.APP_NAME")}}</th>
                     <th data-field="updated_at" data-formatter="updateDateFormatter" data-sortable="true">{{trans("messages.LAST_UPDATED_DATE")}}</th>
                     <th data-field="released" data-sortable="false" data-formatter="releasedFormatter">{{trans("messages.RELEASED")}}</th>
                 </tr>
@@ -57,8 +59,20 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             </table>
         </div>
     </div>
-
+    <style type="text/css">
+        .myDragClass {
+            background-color: #7fb4e2;
+            color: white;
+        }
+    </style>
+    <script src="{{ asset('/js/jquery.tablednd.js') }}"></script>
     <script>
+        var i=1;
+        function seqFormatter(value, row){
+            return i++;
+            var currentData =  $('#gridAppList').bootstrapTable('getData');
+            return currentData.length - i;
+        }
 
         function iconFormatter(value, row) {
             if(row.icon_url == ""){
@@ -72,35 +86,50 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         }
 
         function releasedFormatter(value, row){
-        return 'Android - ' + row.android_release + '<br>' + 'IOS - ' + row.ios_release;
-         }
+            return 'Android - ' + row.android_release + '<br>' + 'IOS - ' + row.ios_release;
+        }
+
+        function appNameFormatter(value, row){
+            return '<span data-id='+row.row_id+' data-sequence='+row.sequence+'>'+value+'</span>';
+        }
 
         $(function () {
-            
             $delBtn = $("#btnDelete");
             $addBtn = $("#btnAdd");
             $gridList = $('#gridAppList');
             $gridDialogList = $("#gridAllAppList");
             $selectAppDialog = $("#selectAppDialog");
-
             $delBtn.hide();
-            $gridList.on('check.bs.table', selectedChanged);
-            $gridList.on('uncheck.bs.table', selectedChanged);
-            $gridList.on('check-all.bs.table', selectedChanged);
-            $gridList.on('uncheck-all.bs.table', selectedChanged);
-            $gridList.on('load-success.bs.table', selectedChanged);
+            $gridList.on('reset-view.bs.table', selectedChanged);
+            
         });
         
         var selectedChanged = function (row, $element) {
-            var selectedUsers =  $gridList.bootstrapTable('getSelections');
-            if(selectedUsers.length > 0) {
-                $delBtn.show();
-                $addBtn.hide();
-            } else {
-                $delBtn.hide();
-                $addBtn.show();
-            }
+            i=1;
+            $('#gridAppList').tableDnD({
+                onDragStop: function (table, row) {
+                    SortSequence(row);
+                },
+                onDragClass: "myDragClass",
+            });
         };
+
+        var SortSequence  = function(row){
+             var sequenceIndex = 2;
+             var currentData = $('#gridAppList').bootstrapTable('getData');
+             var mapping = {};
+
+            $("#gridAppList tbody").find("tr").each(function(i,row){
+                var rowId = Number($($(row).find("td")[sequenceIndex]).find("span").data('id'));
+                console.log(rowId);
+                // var rowId = Number($($(row).find("td")[0]).text());
+                mapping[rowId] = $("#gridAppList tbody").find("tr").length - i;
+            });
+             $.each(currentData, function(i, app) {
+                app.sequence = mapping[app.row_id];
+             });
+             $gridList.bootstrapTable('load', currentData);
+        }
 
         var AddApp = function(){
             $selectAppDialog.modal('show');
@@ -109,7 +138,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
         }
 
         var SelectApp = function() {
-            var currentData =  $gridList.bootstrapTable('getData');
+            var currentData =  $('#gridAppList').bootstrapTable('getData');
             var selectedApps = $gridDialogList.bootstrapTable('getSelections');
             var addAppsList = new Array();
             $.each(selectedApps, function(i, app) {
@@ -121,6 +150,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 hideConfirmDialog();
                 $.each(selectedApps, function(i, newApp) {
                     newApp.state = false;
+                    newApp.sequence = currentData.length + 1;
                     var exist = false;
                     $.each(currentData, function(j, cApp) {
                         if(cApp.row_id == newApp.row_id) {
@@ -141,14 +171,16 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
                 hideConfirmDialog();
                 var selectedApps = $gridList.bootstrapTable('getData');
-                var appIdList = new Array();
+                var appIdList = {};
                 $.each(selectedApps, function(i, app) {
-                    appIdList.push(app.row_id);
+                    appIdList[app.row_id] = app.sequence;
                 });
-                var mydata = {app_id_list:appIdList, category_id:{{$categoryId}}};
+                var mydata = { app_id_list:appIdList,
+                               category_id:{{$categoryId}}
+                             };
                 var mydataStr = $.toJSON(mydata);
                 $.ajax({
-                    url: "AppMaintain/saveCategoryApps",
+                    url: "app/category/saveCategoryApps",
                     dataType: "json",
                     type: "POST",
                     contentType: "application/json",
@@ -158,6 +190,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                             showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}");
                         }  else {
                             showMessageDialog("{{trans("messages.MESSAGE")}}","{{trans("messages.MSG_OPERATION_SUCCESS")}}");
+                            $gridList.bootstrapTable('refresh');
                         }
                     },
                     error: function (e) {
@@ -182,7 +215,7 @@ $categoryInfo = \App\lib\CommonUtil::getCategoryInfoByRowId($categoryId);
                 </div>
                 <div class="modal-body">
                     <table id="gridAllAppList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id"
-                           data-url="AppMaintain/getOtherAppList?category_id={{$categoryId}}" data-height="298" data-pagination="true"
+                           data-url="app/category/getOtherAppList?category_id={{$categoryId}}" data-height="298" data-pagination="true"
                            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
                            data-show-toggle="true"  data-sortable="true"
                            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
