@@ -83,10 +83,10 @@ var createCallApiMultiLine = function (res){
     }
 
     options.series = [{
-        name:Messages.CALL_TIMES_RATE,
+        name:Messages.CALL_USERS_RATE,
         data:[]
     },{
-        name:Messages.CALL_USERS_RATE,
+        name:Messages.CALL_TIMES_RATE,
         data:[]
     }];
 

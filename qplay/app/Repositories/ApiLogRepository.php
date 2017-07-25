@@ -48,6 +48,7 @@ class ApiLogRepository
                  'company'=>1,
                  'site_code'=>1,
                  'department'=>1,
+                 'user_row_id'=>1,
                  'created_at'=>['$add'=>['$created_at',$timeOffset]
                  ]
                 ]
@@ -145,5 +146,5 @@ class ApiLogRepository
                 ]
             ]
         ]);
-    }
+    }   
 }
