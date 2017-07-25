@@ -2,7 +2,7 @@
 var viewMainTab = "BU";
 var buBubbleSeries = [
 	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
-    { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
+    { x: 61, y: 63, name: 'TF', data: {}, color: '#40C1C7' },
     { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
     { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
     { x: 82, y: 20, name: 'FS', data: {}, color: '#948078' },
@@ -79,7 +79,9 @@ var bubbleOption = {
     },
     tooltip: {
         useHTML: true,
-        shadow: false,
+        animation: false,
+        hideDelay: 0,
+        shadow: false,       
         borderColor: '#FDC24F',
         backgroundColor: 'rgba(247,247,247,0.85)',
         headerFormat: '<table class="fontTooltip">',
@@ -197,6 +199,8 @@ var rectOption = {
    	},
    	tooltip: {
         useHTML: true,
+        animation: false,
+        hideDelay: 0,
         shadow: false,
         borderWidth: 1,
         borderColor: 'gray',
@@ -336,9 +340,7 @@ function showTreemapLandscape(){
 
 function hideTooltip(){
 	chartbubble.tooltip.hide();
-    chartRect.tooltip.hide();
-    chartLandscapebubble.tooltip.hide();
-    chartLandscapeRect.tooltip.hide();   
+    chartRect.tooltip.hide();  
 }
 
 
@@ -355,17 +357,6 @@ $('#viewMain').pagecontainer({
 						
 		}
 		
-		
-		function chooseViewMainTab(){
-			switch(viewMainTab) {
-                case "BU" :
-                    $("input[id=viewMain-tab-1]").trigger('click');   
-                    break;
-                case "CSD" :
-                    $("input[id=viewMain-tab-2]").trigger('click');   
-                    break;
-            }
-		}
 		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
@@ -385,8 +376,9 @@ $('#viewMain').pagecontainer({
            	}
 		});
 		
+		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			//hideTooltip();
+			chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);         
             
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
@@ -396,7 +388,7 @@ $('#viewMain').pagecontainer({
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-        	//hideTooltip();
+        	chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);          
             
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
