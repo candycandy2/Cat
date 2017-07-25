@@ -115,6 +115,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appaccountingrate' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
