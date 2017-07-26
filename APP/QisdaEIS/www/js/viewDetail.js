@@ -322,7 +322,7 @@ $('#viewDetail').pagecontainer({
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
-			numberToLocaleString();
+			//numberToLocaleString();
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
             $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
