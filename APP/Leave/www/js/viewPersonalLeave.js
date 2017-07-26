@@ -32,6 +32,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                myCalendarData = {};
                 var leaveFlag = "3";
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["Result"];
