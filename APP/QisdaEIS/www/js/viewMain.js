@@ -89,8 +89,7 @@ var bubbleOption = {
         '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
-        followPointer: false,
-        followTouchMove: false
+        followTouchMove: true
     },
     plotOptions: {
         series: {

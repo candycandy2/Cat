@@ -167,6 +167,7 @@ a{
 	border-bottom: 1px solid #989898;
 }
 .bu-header ul li{
+	height: 12.077VW;
 	list-style-type: none;
 	float: left;
 	color: #323232;
@@ -238,58 +239,55 @@ a{
 	border-bottom: none !important;
 }
 /* data-list */
-.bu-data-list > li{
+.bu-data-list > ul > li{
 	float: left;
 	height: 15.538VW;
 	list-style-type: none;
 	color: #323232;
-	font-weight: normal; 
-	font-size: 3.55VW !important;
 	margin: 0;
 }
-.bu-data-list > li:nth-child(1){
+.bu-data-list > ul > li:nth-child(1){
 	width: 25.848VW;
 	height: 15.538VW;
 	display: table;
 }
-.bu-data-list > li:nth-child(1) > div{
-	width: 21.568VW;
-	height: 15.538VW;
-	margin-left: 2.14VW;
+.bu-data-list > ul > li:nth-child(1) > div{
 	display: table-cell; 
 	vertical-align:middle; 
 	text-align:center;
 }
-.bu-data-list > li:nth-child(1) > div > div{
+.bu-data-list > ul > li:nth-child(1) > div > div{
+	width: 21.568VW;
+	margin-left: 2.14VW;
 	overflow:hidden; 
 	text-overflow:ellipsis;
 	display:-webkit-box; 
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2; 
 }
-.bu-data-list > li:nth-child(2){
+.bu-data-list > ul > li:nth-child(2){
 	width: 30.377VW;
 	line-height: 15.538VW;
 }
-.bu-data-list > li:nth-child(2) span{
+.bu-data-list > ul > li:nth-child(2) span{
 	margin-left: 6VW;
 }
-.bu-data-list > li:nth-child(3){
+.bu-data-list > ul > li:nth-child(3){
 	width: 24.988VW;
 	height: 15.538VW;
 }
-.bu-data-list > li:nth-child(3) div{
+.bu-data-list > ul > li:nth-child(3) div{
 	width: 15VW;
 	height: 6VW; 
 	margin-top: 4.5VW;
 	margin-left: 2.5VW;
 }
-.bu-data-list > li:nth-child(4){
+.bu-data-list > ul > li:nth-child(4){
 	width: 11.367VW;
 	line-height: 15.538VW;
 	text-align: center;
 }
-.bu-data-list > li:nth-child(4) img{
+.bu-data-list > ul > li:nth-child(4) img{
 	width: 4VW;
 	height: 3VW;
 	vertical-align: middle;
@@ -400,6 +398,33 @@ a{
 .csd-single-list > div:nth-child(4){
 	width: 92.58VW;
 	height: 50VW;
+}
+/*overdue soon*/
+.overduesoon-bu-title > span:nth-child(1){
+	color: #0F0F0F;
+	margin-left: 3.71VW;
+}
+.overduesoon-bu-title > span:nth-child(2){
+	color: #666666;
+}
+.overduesoon-bu-header{
+	width: 92.58VW;
+	height: 12.077VW;
+	margin-left: 3.71VW;
+	margin-top: 2.14VW;
+	border-bottom: 1px solid #989898;
+}
+.overduesoon-bu-header > div{
+	width: 46.29VW;
+	float: left;
+}
+.overduesoon-bu-header > div:nth-child(1){
+	line-height: 12.077VW;
+	text-align: center;
+}
+.overduesoon-bu-header > div:nth-child(2){
+	line-height: 12.077VW;
+	text-align: center;
 }
 /******************************************** viewHitRate *******************************************/
 
@@ -571,7 +596,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
-#viewDetail #viewDetail-hc-column-landscape{
+#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape{
 	display: none;
 }
 
