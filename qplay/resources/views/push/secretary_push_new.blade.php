@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Input;
 $menu_name = "SECRETARY_PUSH";
 $input = Input::get();
-$templateCount = 16;
+$templateCount = 17;
 $push_send_row_id = -1;
 $tempFlag = 0;
 $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
@@ -29,7 +29,7 @@ $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
                     <td>{{trans("messages.TEMPLATE_ID")}}:</td>
                     <td style="padding: 10px;">
                         <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled" >
-                            @for ($i = 1; $i <=$templateCount; $i++)
+                            @for ($i = 0; $i <=$templateCount; $i++)
                             <option value="{{$i}}" @if($messageInfo->template_id == $i) selected="selected" @endif>{{$i}}</option>
                             @endfor
                         </select>

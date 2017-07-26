@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Input;
 $menu_name = "PUSH_SERVER";
 $input = Input::get();
-$templateCount = 16;
+$templateCount = 17;
 $isCopy = false;
 $copyFromMessageInfo = null;
 $fromHistory = false;
@@ -35,7 +35,7 @@ $allCompanyRoleList = \App\lib\CommonUtil::getAllCompanyRoleList();
                     <td>{{trans("messages.TEMPLATE_ID")}}:</td>
                     <td style="padding: 10px;">
                         <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" @if($fromHistory) disabled="disabled" @endif>
-                            @for ($i = 1; $i <= $templateCount; $i++)
+                            @for ($i = 0; $i <= $templateCount; $i++)
                                 <option value="{{$i}}" @if($isCopy && $copyFromMessageInfo->template_id == $i) selected="selected" @endif>{{$i}}</option>
                             @endfor
                     </td>
