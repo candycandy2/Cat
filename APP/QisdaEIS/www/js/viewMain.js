@@ -89,7 +89,7 @@ var bubbleOption = {
         '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
-        followTouchMove: true
+        followTouchMove: false
     },
     plotOptions: {
         series: {
@@ -235,86 +235,6 @@ var rectOption = {
     },
     series: [{
     	data: buBubbleSeries  
-    }],
-    exporting: {
-        enabled: false
-    },
-    title: {
-        text: null
-    },
-    credits: {
-    	enabled: false
-    }
-};
-
-var treemapOption = {
-	chart: {
-		type: "treemap",
-		marginBottom: 70,
-		zoomType: 'none'
-	},
-	colorAxis: {
-        tickPositions: [0, 15, 45, 75],
-        stops: [
-            [0, '#81B4E1'],
-            [0.2, '#81B4E1'],
-            [0.2, '#F79620'],
-            [1, '#EF3623']
-        ],
-        labels: {
-        	enabled: true,
-        	align: 'left',
-        	overflow: 'justify',
-        	formatter: function(){
-        		if(this.value === 75){
-        			return this.value + '(Days)';
-        		}
-        		else{
-        			return this.value;
-        		}
-        	},
-        	style: {
-        		color: '#323232'
-        	}
-        }  
-   	},
-   	tooltip: {
-        useHTML: true,
-        shadow: false,
-        borderWidth: 1,
-        borderColor: 'gray',
-        backgroundColor:　'#FFFCF5',
-        headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
-        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
-        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
-        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
-        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
-        footerFormat: '</table>',
-        followPointer: false,
-        followTouchMove: false
-    },
-    plotOptions: {
-    	series: {
-	        layoutAlgorithm: 'squarified',
-	        dataLabels: {
-	            enabled: true,  
-	            align: 'left',
-	            inside: true,
-	            useHTML: true,
-	            shadow: true,
-	            style: {
-	            	"color": "#ffffff",
-	            	"fontSize": "10px",
-	            	"fontWeight": "bold",
-	            	"textOutline": "2px 2px black"
-	            },
-	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
-	        }
-    	}
-    },
-    series: [{
-    	data: treemapSeries1  
     }],
     exporting: {
         enabled: false
