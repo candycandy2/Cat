@@ -400,11 +400,11 @@ $("#viewPersonalLeave").pagecontainer({
                     $("#leaveConfirm").removeClass("btn-enable");
 
                 }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
+                    $("input[id=leaveTime-tab2]").trigger('click');
                     $("label[for=leaveTime-tab1]").addClass('btn-disable');
                     $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-                    $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
                     $("label[for=leaveTime-tab3]").removeClass('ui-btn-active');
-                    $("input[id=leaveTime-tab2]").trigger('click');
+                    $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
                     fulldayHide = true;
                 }else {
                     $("label[for=leaveTime-tab1]").removeClass('btn-disable');
