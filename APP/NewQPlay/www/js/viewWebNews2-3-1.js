@@ -41,7 +41,7 @@
                     var content = data['content'];
 
                     function NoticeTypeShow(template_id) {
-                        for(var i=1; i<=16; i++) {
+                        for(var i=0; i<=17; i++) {
                             $("#notice" + i).hide();
                         }
                         if (template_id <= 10){
