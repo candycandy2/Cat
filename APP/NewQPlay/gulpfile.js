@@ -64,7 +64,8 @@ var schemeSetting =   "<string>appqplay"    + process.env.appNameDecorate + "</s
                     + "<string>appscheme17" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme18" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme19" + process.env.appNameDecorate + "</string>"
-                    + "<string>appscheme20" + process.env.appNameDecorate + "</string>";
+                    + "<string>appscheme20" + process.env.appNameDecorate + "</string>"
+                    + "<string>qisdasesm</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     '<widget id="com.qplay.appqplay' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
@@ -123,6 +124,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appscheme18' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme19' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme20' + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="qisdasesm:*" />' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
