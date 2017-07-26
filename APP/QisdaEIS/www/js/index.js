@@ -39,6 +39,9 @@ $(document).one('pagebeforeshow', function(){
 
     $("#mypanel #mypanelviewDetail").on("click", function() {
         changePageByPanel("viewDetail");
+        $('#overdueSoon').hide();
+		$('#expiredSoon').hide();
+		//$('#overdue').show();
     });
 
     $(".menu-btn").on("click", function() {
@@ -56,10 +59,9 @@ $(document).one('pagebeforeshow', function(){
     //open or close credit memo
     $('#memoBtn').on('click', function(){
     	var flag = $('#memoBtn').attr('src');
-    	var moneyOverdue = Number($('#moneyOverdue').text());
-    	var moneyOveroneday = Number($('#moneyOveroneday').text());
-    	var moneyOverendday = Number($('#moneyOverendday').text());
-    	
+    	var moneyOverdue = parseInt($('#moneyOverdue').text());
+    	var moneyOveroneday = parseInt($('#moneyOveroneday').text());
+    	var moneyOverendday = parseInt($('#moneyOverendday').text());
     	if(flag === 'img/switch_g.png'){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
     		moneyOverdue -= 20000;	
@@ -287,7 +289,7 @@ function changeFontColor(num){
 	
 }
 
-//根据panel更换page
+
 function changePageByPanel(pageId) {
 	window.firstClick = true;
 	
@@ -311,6 +313,9 @@ function changePageByPanel(pageId) {
     }
     $("#mypanel").panel("close");
 }
+
+
+
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {

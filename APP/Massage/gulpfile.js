@@ -30,7 +30,7 @@ var gulpTask = requireDir('../component/gulpTask/');
 var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appmassage" + process.env.appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appmassage' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                    '<widget id="com.qplay.appmassage' + process.env.productionextra + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
                         'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         '<name>' + process.env.APP_NAME + '</name>' +
                         '<description>' +
@@ -74,25 +74,27 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  /*
+
   //These following steps only cancel in first time you run this task.
   //After first time finished this task, you should run these steps in this task all the time.
-  //
+
   'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-console',
-  'cordova plugin remove cordova-plugin-appversion',
+  //'cordova plugin remove cordova-plugin-console',
+  //'cordova plugin remove cordova-plugin-appversion',
+  'cordova plugin remove cordova-plugin-app-update',
+  'cordova plugin readme cordova-plugin-android-permissions',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
   'cordova plugin remove cordova-plugin-inappbrowser',
-  'cordova plugin remove cordova-plugin-file',
+  // 'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android',
+
   'cordova platform add ios',
   'cordova platform add android',
-  */
-  'cordova platform add ios',
-  'cordova platform add android',
+
+  'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
   //'cordova plugin add cordova-plugin-appversion',

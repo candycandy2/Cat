@@ -16,6 +16,11 @@ var columnMinusData2 = [35, 28, -30, 24, 25, 14];
 var columnMinusData3 = [37, -26, -22, -23, -19, 0];
 var columnMinusData4 = [0, 0, 0, 0, 0, 0];
 
+var company = [
+	{code: '641287', name: '东森股份有限公司', category: 'BU', productLine: 'LCD', total: 200000,
+	advance: 300000, over1: 1684, over16: 6452, over46: 16884, over76: 268455}
+];
+
 var categoriesMonth = ['60天', '70天', '80天', '90天'];
 var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26'];
 var companyCode = ['66558', '67326', '69410'];
@@ -298,12 +303,26 @@ $('#viewDetail').pagecontainer({
 			}else if(ro === 'ALL'){
 				//恢复到ALL所有类别
 			}
+		}		
+		
+		//将数字每三位加逗号
+		function numberToLocaleString(){
+			$('.font-localString').each(function() {
+				$(this).text(parseInt($(this).text()).toLocaleString());
+			});
+			
+			
+			$('.overdue-tab2 span').each(function() {
+				$(this).text(parseInt($(this).text()).toLocaleString());
+			})	
+			
 		}
 		
 		/********************************** page event *************************************/		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
+			numberToLocaleString();
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
             $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
@@ -312,6 +331,24 @@ $('#viewDetail').pagecontainer({
             $(".Ro #ALL").addClass('hover');
             
 			
+		});
+		
+		$(".page-tabs #viewDetail-tab-1").on("click", function(){
+			$('#overdueSoon').hide();
+			$('#expiredSoon').hide();
+			$('#overdue').show();
+		});
+		
+		$(".page-tabs #viewDetail-tab-2").on("click", function(){
+			$('#overdue').hide();
+			$('#expiredSoon').hide();
+			$('#overdueSoon').show()
+		});
+		
+		$(".page-tabs #viewDetail-tab-3").on("click", function(){
+			$('#overdue').hide();
+			$('#overdueSoon').hide();
+			$('#expiredSoon').show();
 		});
 		
 		// scroll menu on click

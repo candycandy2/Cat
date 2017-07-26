@@ -1,0 +1,315 @@
+<span id="tmp_option_width" class="hidden" style="font-size:2.8vh"></span>
+<div data-role="page" id="viewReserve">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div id="container" class="header-style">
+            <div id="center" class="ui-title">按摩服務預約</div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main" style="line-height: initial !important;">
+        <div class="ui-margin-public" style="text-align: center;">
+            <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
+                <input type="radio" name="tab" id="tab1" value="tab1" checked="checked">
+                <label for="tab1">一般預約</label>
+                <input type="radio" name="tab" id="tab2" value="tab2">
+                <label for="tab2">我的預約</label>
+                <input type="radio" name="tab" id="tab3" value="tab3">
+                <label for="tab3">注意事項</label>
+            </div>
+        </div>
+        <div class="ui-margin-public" id="pageOne">
+            <select name="reserveSite" id="reserveSite" data-role="none" class="dropdown-icon" style="margin-bottom: 1vh;">
+                <option value="QTT">BQT/QTT</option>
+                <option value="QTY">QTY</option>
+            </select>
+            <div id="scrollDate" class="scrollmenu">
+            </div>
+            <div style="margin: 6.4vw 0 2.14vw 0; font-size: 3.55vw;text-align: left;">
+                <div class="inline">開始使用時間:</div>
+                <div id="reserveColorDiagram" style="display: inline-block;position: absolute;right: 4vw;">
+                    <div class="inline square ui-color-reserve"></div>
+                    <div class="inline" style="margin-right: 2vw;">不可預約</div>
+                    <div class="inline square ui-color-myreserve"></div>
+                    <div class="inline">我的預約</div>
+                </div>
+            </div>
+            <div id="reserveDateSelect">
+                <div class="ui-grid-c">
+                    <!-- <div id="time08-30" class="ui-block-b ui-color-myreserve" ename="Ariel.H.Yih" msg="20170322,T01,08:30-09:00,Ariel.H.Yih" ext="88005538" email="Ariel.H.Yih@Qisda.com" traceid="3966744">
+                        <div class="ui-bar">
+                            <div class="time">08:30</div>
+                            <div class="">Ariel.H.Yih</div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div> -->
+                    <div id="time08-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div class="time">08:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time08-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div class="time">08:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time09-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div class="time">09:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time09-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>09:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time10-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>10:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time10-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>10:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time11-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>11:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time11-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>11:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time12-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>12:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time12-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>12:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time13-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>13:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time13-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>13:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time14-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>14:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time14-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>14:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time15-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>15:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time15-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>15:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time16-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>16:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time16-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>16:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time17-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>17:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="time17-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" reserveid="">
+                        <div class="ui-bar">
+                            <div>17:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 2.7vh auto; margin-bottom: 0;">預約</div>
+        </div>
+
+        <div class="ui-margin-public" id="pageTwo">
+            <div id="today-reserve-area">
+                <!-- <div class="reserve-area-time font-style7">本日</div> -->
+            </div>
+            <div id="later-reserve-area">
+                <!-- <div class="reserve-area-time font-style7">未來</div> -->
+            </div>
+        </div>
+        <div class="ui-margin-public" id="pageThree">
+            <iframe src="http://www.myqisda.com/relieve/relieveInfo.html" style="width:93VW; height:75VH; border-style: none;"></iframe>
+        </div>
+    </div>
+
+    <!-- other reserve popup msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo otherReservePopup" for="otherReservePopup">
+        <div data-role="main" class="ui-content">
+            <div class="header header-closeX">
+                <div class="font-style3 header-title-main">
+                    <span class="header-text"></span>
+                </div>
+                <div class="btn-closeX btn-cancel"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <a class="btn-mail">傳送郵件</a>
+                    <a class="btn-tel">撥打電話</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- has reserve popup msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo hasReservePopup" for="hasReservePopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/select.png" alt=""></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">關閉</div>
+                    <div class="btn-confirm">取消預約</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- reserve success msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo reserveResultPopup" for="reserveResultPopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/select.png" alt=""></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">確定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- my reserve page cancel success popup msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo myReserveCancelResult" for="myReserveCancelResult">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">確定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo queryMyReserveResult" for="queryMyReserveResult">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">確定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo noSelectTimeMsg" for="noSelectTimeMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"><span>您尚未選擇時間</span></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">確定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
