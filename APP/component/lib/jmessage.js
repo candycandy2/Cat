@@ -8,6 +8,27 @@ var JM = {
     chatroomID: "",
     bindEvent: function() {
 
+        /*--------------------------------------------------------------------------*/
+        /*--------------------------------- JPush ----------------------------------*/
+        /*--------------------------------------------------------------------------*/
+        document.addEventListener("jpush.openNotification", function (event) {
+            console.log("----openNotification");
+            console.log(event);
+        }, false);
+
+        document.addEventListener("jpush.receiveNotification", function (event) {
+            console.log("----receiveNotification");
+            console.log(event);
+        }, false);
+
+        document.addEventListener("jpush.receiveMessage", function (event) {
+            console.log("----receiveMessage");
+            console.log(event);
+        }, false);
+
+        /*--------------------------------------------------------------------------*/
+        /*-------------------------------- JMessage --------------------------------*/
+        /*--------------------------------------------------------------------------*/
         document.addEventListener('jmessage.onSyncOfflineMessage', function (data) {
             console.log("----onSyncOfflineMessage");
             console.log(data);
@@ -94,8 +115,13 @@ var JM = {
     initial: function() {
         //define the JMessage APP Key: QPlay or QChat
         if (typeof QChatJPushAppKey === "undefined") {
-            JM.key = QMessageKey;
-            JM.secret = QMessageSecretKey;
+            if (typeof window.ENSJPushAppKey === "undefined") {
+                JM.key = QMessageKey;
+                JM.secret = QMessageSecretKey;
+            } else {
+                JM.key = window.ENSJPushAppKey;
+                JM.secret = window.ENSJPushSecretKey;
+            }
         } else {
             JM.key = QChatJPushAppKey;
             JM.secret = QChatJPushSecretKey;
@@ -130,13 +156,7 @@ var JM = {
     },
     register: function() {
 
-        if (loginData["loginid"] === "Darren.K.Ti") {
-            var pwd = "d6cc33086d04edf30692a24d2836aead";
-        } else if (loginData["loginid"] === "Samuel.Hsieh") {
-            var pwd = "410f12ae7efe725f36569a157411d59c";
-        }
-
-        window.JMessage.register(loginData["loginid"], pwd, function(data) {
+        window.JMessage.register(loginData["loginid"], JM.userPWD, function(data) {
             console.log("----register success");
             console.log(data);
         }, function(errorStr) {
@@ -145,7 +165,7 @@ var JM = {
             console.log(errorStr.errorDscription);
         });
     },
-    login: function() {
+    login: function() {console.log("=========login==========");
         window.JMessage.login(loginData["loginid"], JM.userPWD, function(data) {
             console.log("----login success");
             console.log(data);
@@ -164,6 +184,8 @@ var JM = {
         }, function(errorStr) {
             console.log("----login Error");
             console.log(errorStr);
+
+            JM.register();
         });
     },
     logout: function() {
