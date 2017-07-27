@@ -59,19 +59,9 @@ $(document).one('pagebeforeshow', function(){
     //open or close credit memo
     $('#memoBtn').on('click', function(){
     	var flag = $('#memoBtn').attr('src');
-    	var moneyOverdue = parseInt($('#moneyOverdue').text());
-    	var moneyOveroneday = parseInt($('#moneyOveroneday').text());
-    	var moneyOverendday = parseInt($('#moneyOverendday').text());
+    	
     	if(flag === 'img/switch_g.png'){
-    		$('#memoBtn').attr('src', 'img/switch_b.png');
-    		moneyOverdue -= 20000;	
-    		changeFontColor(moneyOverdue);
-    		$('#moneyOverdue').text(moneyOverdue);   		
-    		
-    		moneyOveroneday -= 1684;
-    		moneyOverendday -= 268455;
-    		$('#moneyOveroneday').text(moneyOveroneday);
-    		$('#moneyOverendday').text(moneyOverendday);
+    		$('#memoBtn').attr('src', 'img/switch_b.png');   		
     		
     		buChartColumn2.series[0].setData(columnMinusData1, true, true, false);
 			buChartColumn2.series[1].setData(columnMinusData2, true, true, false);
@@ -90,14 +80,6 @@ $(document).one('pagebeforeshow', function(){
     		
     	}else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
-    		moneyOverdue += 20000;
-    		changeFontColor(moneyOverdue);
-    		$('#moneyOverdue').text(moneyOverdue);   		
-    		
-    		moneyOveroneday += 1684;
-    		moneyOverendday += 268455;
-    		$('#moneyOveroneday').text(moneyOveroneday);
-    		$('#moneyOverendday').text(moneyOverendday);
     		
     		buChartColumn2.series[0].setData(columnData2, true, true, false);
 			buChartColumn2.series[1].setData(columnData1, true, true, false);

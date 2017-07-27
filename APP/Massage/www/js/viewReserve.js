@@ -261,7 +261,7 @@ $("#viewReserve").pagecontainer({
                 mainElement: '#pageOne',
                 onRefresh: function() {
                     time = new Date(Date.now());
-                    QueryReserveDetail();
+                    // QueryReserveDetail();
                 }
             });
         });
@@ -281,13 +281,13 @@ $("#viewReserve").pagecontainer({
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
-                QueryReserveDetail();
+                // QueryReserveDetail();
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         time = new Date(Date.now());
-                        QueryReserveDetail();
+                        // QueryReserveDetail();
                     }
                 });
             } else if (tabValue == 'tab2') {
@@ -300,13 +300,13 @@ $("#viewReserve").pagecontainer({
                                           + currentYear + currentMonth + currentDate
                                           + "</NowDate></LayoutHeader>"
                 // if(myReserver_dirtyFlag === true)
-                QueryMyReserve();
-                loadingMask("show");
+                // QueryMyReserve();
+                // loadingMask("show");
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
                     onRefresh: function() {
-                        QueryMyReserve();
+                        // QueryMyReserve();
                     }
                 });
             } else {
@@ -328,8 +328,8 @@ $("#viewReserve").pagecontainer({
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
-            QueryReserveDetail();
-            loadingMask("show");
+            // QueryReserveDetail();
+            // loadingMask("show");
         });
 
         $("#reserveSite").change(function() {
@@ -339,8 +339,8 @@ $("#viewReserve").pagecontainer({
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
-            QueryReserveDetail();
-            loadingMask("show");
+            // QueryReserveDetail();
+            // loadingMask("show");
         });
 
         // time pick
@@ -421,8 +421,8 @@ $("#viewReserve").pagecontainer({
                                           + "</ReserveUser><BTime>"
                                           + queryTime
                                           + "</BTime></LayoutHeader>";
-                ReserveRelieve();
-                loadingMask("show");
+                // ReserveRelieve();
+                // loadingMask("show");
             }
         });
 
@@ -447,7 +447,7 @@ $("#viewReserve").pagecontainer({
                                          + "</ReserveUser><ReserveID>"
                                          + tempReserveID
                                          + "</ReserveID></LayoutHeader>"
-                ReserveCancel();
+                // ReserveCancel();
                 bReserveCancelConfirm = false;
                 tplJS.recoveryPageScroll();
             }
