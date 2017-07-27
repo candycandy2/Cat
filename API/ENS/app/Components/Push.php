@@ -31,7 +31,7 @@ class Push
                         'Signature-Time: '.$signatureTime,
                         'Signature: '.CommonUtil::getSignature($signatureTime, $queryParam['app_key']));
             $data = array(
-                        'template_id' =>'10',
+                        'template_id' =>'0',
                         'message_title' => $title,
                         'message_type' => 'event',
                         'message_text' => $text,
