@@ -1,4 +1,5 @@
-var leaveid, leaveType, agentid, leaveTimetab, beginDate, endDate, beginTime, endTime;
+var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
+var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
@@ -306,18 +307,12 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#leaveTime-tab1").on("click", function() {
-            $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-            $("label[for=" + leaveTimetab + "]").addClass('ui-btn-active');
-            if(!fulldayHide) {
-                $("label[for=leaveTime-tab1]").addClass('ui-btn-active');
-                $("label[for=" + leaveTimetab + "]").removeClass('ui-btn-active');
-                timeArry = splitTime($(this).val());
-                beginTime = timeArry[1];
-                endTime = timeArry[2];
-                $("label[for=leaveTime-tab2]").text("上午");
-                $("label[for=leaveTime-tab3]").text("下午");
-                leaveTimetab = "leaveTime-tab1";
-            }
+            timeArry = splitTime($(this).val());
+            beginTime = timeArry[1];
+            endTime = timeArry[2];
+            $("label[for=leaveTime-tab2]").text("上午");
+            $("label[for=leaveTime-tab3]").text("下午");
+            leaveTimetab = "leaveTime-tab1";
         });
 
         $("#leaveTime-tab2").on("click", function() {
@@ -385,7 +380,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
             if(leaveTypeSelected) {
+
                 $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
+                $("input[id=leaveTime-tab1]").prop("disabled", false);
+                $("input[id=leaveTime-tab1]").parent().removeClass("ui-state-disabled");
+
                 if(leftDaysData[leaveid] < 0.5) {
                     var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
                     $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
@@ -400,15 +399,14 @@ $("#viewPersonalLeave").pagecontainer({
                     $("#leaveConfirm").removeClass("btn-enable");
 
                 }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
-                    $("input[id=leaveTime-tab2]").trigger('click');
-                    $("label[for=leaveTime-tab1]").addClass('btn-disable');
-                    $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-                    $("label[for=leaveTime-tab3]").removeClass('ui-btn-active');
-                    $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
-                    fulldayHide = true;
-                }else {
-                    $("label[for=leaveTime-tab1]").removeClass('btn-disable');
-                    fulldayHide = false;
+                    $("input[id=leaveTime-tab1]").prop("disabled", true);
+                    $("input[id=leaveTime-tab1]").parent().addClass("ui-state-disabled");
+                    if(leaveTimetab == "leaveTime-tab1") {
+                        $("input[id=leaveTime-tab2]").trigger('click');
+                        $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
+                        $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
+                        $("label[for=leaveTime-tab3]").removeClass('ui-btn-active');  
+                    }
                 }
             }
             if(leaveid != "" && agentid != "") {
