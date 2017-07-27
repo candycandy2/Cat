@@ -94,4 +94,10 @@ class ReportService
     public function getActiveRegisterReport(){
         return $this->sessionRepository->getSessionDetail();
     }
+
+    public function getPushServiceRankReport($from, $to, $timeOffset){
+        $cursor = $this->apiLogRepository->getPushServiceRankDetail($from, $to, $timeOffset);
+        $res = $cursor->toArray();
+        return $res;
+    }
 }

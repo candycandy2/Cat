@@ -295,4 +295,69 @@ var getSemiDonutChartOpt = function(){
             noData: Messages.NO_DATA_TO_DISPLAY
         }
     };
-}
+};
+
+var getColumnChartOpt = function(){
+    return {
+            chart: {
+                type: 'column',
+                panning: false
+            },
+            navigator: {
+                enabled: false
+            },
+            tooltip: {
+                followPointer: false,  // this is already the default, it's just to stress what's said in commit comments and make code "speak"
+                followTouchMove: false,  // this is already the default, it's just to stress what's said in commit comments and make code "speak"
+            },
+            legend: {
+                enabled: true
+            },
+            mapNavigation: {
+                enableTouchZoom: true,
+            },
+            xAxis: {
+               range: 23,
+               labels: {
+                    formatter: function () {
+                        return this.value;
+                    }
+                },
+                events: {
+                        setExtremes: function(e) {
+                            console.log(this);
+                            if(typeof(e.rangeSelectorButton)!== 'undefined')
+                            {
+                              alert('count: '+e.rangeSelectorButton.count + 'text: ' +e.rangeSelectorButton.text + ' type:' + e.rangeSelectorButton.type);
+                              return false;
+                            }
+                        }
+                    }
+                },
+                rangeSelector: {
+                    selected: 1
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+             yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total fruit consumption'
+                }
+            },
+                series:  [],
+                lang: {
+                    noData: Messages.NO_DATA_TO_DISPLAY
+                }
+            }
+};

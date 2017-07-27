@@ -13,6 +13,7 @@ $menu_name = "REPORT";
     <script src="{{asset('/js/report/api_report/api_operation_time.js?v='.config('app.static_version'))}}"></script>
     <script src="{{asset('/js/report/register_report/register_cumulative.js?v='.config('app.static_version'))}}"></script>
     <script src="{{asset('/js/report/register_report/register_daily.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/usage_report/push_service_hours.js?v='.config('app.static_version'))}}"></script>
 @stop
 
 
@@ -40,9 +41,12 @@ $menu_name = "REPORT";
                 <li><a data-tabid="register_cumulative">{{trans("messages.TAB_REGISTER_CUMULATIVE")}}</a></li>
             </ul>
         </li>
-        @endif
-        
-        {{-- <li role="presentation"><a href="#tab_content_version" data-toggle="tab">用戶使用資料</a></li> --}}
+        <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">用戶使用資料<span class="caret"></span></a>
+            <ul class="dropdown-menu" id="usage_report">
+                <li><a data-tabid="push_service_hours">推播服務時段</a></li>
+            </ul>
+        </li>
+         @endif
         <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{trans("messages.TAB_API_REPORT")}}<span class="caret"></span></a>
             <ul class="dropdown-menu" id="api_report">
                 <li><a data-tabid="api_call_frequency">{{trans("messages.TAB_API_CALL_FREQUENCY")}}</a></li>
@@ -67,6 +71,10 @@ $menu_name = "REPORT";
         </div>
         <div class="tab-pane fade" id="register_cumulative">
             @include('report.register_report.register_cumulative')
+        </div>
+        {{-- 用戶使用資料 --}}
+         <div class="tab-pane fade" id="push_service_hours">
+            @include('report.usage_report.push_service_hours')
         </div>
         {{-- API統計 --}}
         <div class="tab-pane fade" id="api_call_frequency">

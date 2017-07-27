@@ -146,5 +146,33 @@ class ApiLogRepository
                 ]
             ]
         ]);
-    }   
+    }
+
+    public function getPushServiceRankDetail($from, $to, $timeOffset){
+        $actionName = 'sendPushMessage';
+        return $this->apiLog::raw()->aggregate([
+            ['$project'=>
+                ['action'=>1,
+                 'app_key'=>1,
+                 'created_at'=>['$add'=>['$created_at',$timeOffset]]
+                ]
+            ],
+            ['$match'=>
+                ['action'=>$actionName,
+                 'created_at'=>['$gte'=> new \MongoDB\BSON\UTCDateTime(new DateTime($from . " 00:00:00")),
+                                '$lt'=> new \MongoDB\BSON\UTCDateTime(new DateTime($to . " 23:59:59"))
+                                ]
+                ]
+            ],
+            ['$group' =>
+                ['_id' => ['interval'=>['$dateToString'=>['format'=>'%H:00','date'=>'$created_at']],
+                           'app_key'=>'$app_key'
+                           ],
+                 'count' => ['$sum' => 1],
+                ]
+            ],
+            ['$sort'=>['count' => -1]],
+        ]);
+
+    }
 }
