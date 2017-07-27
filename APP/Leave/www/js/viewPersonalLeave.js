@@ -133,6 +133,7 @@ $("#viewPersonalLeave").pagecontainer({
                                    + '</li>';
                     }
                     $("#agent-popup-option-list").empty().append(agentList);
+                    resizePopup("agent-popup-option");
                     $("#searchBar").blur();
                 }
             };
@@ -430,6 +431,40 @@ $("#viewPersonalLeave").pagecontainer({
         function splitTime(time) {
             var regExp = /^(.*?)-(.*?)$/;
             return time.match(regExp);
+        }
+
+        function resizePopup(popupID) {
+            var popup = $("#" + popupID);
+            var popupHeight = popup.height();
+            var popupHeaderHeight = $("#" + popupID + " .header").height();
+            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+            //ui-content paddint-top/padding-bottom:3.07vw
+            // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
+
+            //Ul margin-top:2.17vw
+            // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
+            // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+            var popupMainHeight = "200";
+            popup.find("div[data-role='main'] .main").height(popupMainHeight);
+
+            $('#' + popupID + '-screen.in').animate({
+                'overflow-y': 'hidden',
+                'touch-action': 'none',
+                'height': $(window).height()
+            }, 0, function() {
+                var top = $('#' + popupID + '-screen.in').offset().top;
+                if (top < 0) {
+                    $('.ui-popup-screen.in').css({
+                        'top': Math.abs(top) + "px"
+                    });
+                }
+            });
+
+            var viewHeight = $(window).height();
+            var popupHeight = popup.outerHeight();
+            var top = (viewHeight - popupHeight) / 2;
+            popup.parent().css("top", top + "px");
         }
     }
 });
