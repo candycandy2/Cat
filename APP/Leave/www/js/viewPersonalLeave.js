@@ -3,6 +3,7 @@ var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
+var timoutQueryEmployeeData = null;
 
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -117,24 +118,31 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var agentList = "";
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var DepArry = $("Department", htmlDoc);
-                    var nameArry = $("name", htmlDoc);
-                    var agentIDArry = $("Empno", htmlDoc)
-                    for(var i=0; i<DepArry.length; i++) {
-                        agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
-                                   +    '<div style="width: 25VW;"><span>'
-                                   +        $(DepArry[i]).html()
-                                   +    '</div></span>'
-                                   +    '<div><span>'
-                                   +        $(nameArry[i]).html()
-                                   +    '</div></span>'
-                                   + '</li>';
+                    if(data['Content'][0] == undefined) {
+                        $("#agent-popup-option-list").empty().append(agentList);
+                        //resizePopup("agent-popup-option");
+                        //$("#searchBar").blur();
                     }
-                    $("#agent-popup-option-list").empty().append(agentList);
-                    resizePopup("agent-popup-option");
-                    $("#searchBar").blur();
+                    else {
+                        var callbackData = data['Content'][0]["result"];
+                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                        var DepArry = $("Department", htmlDoc);
+                        var nameArry = $("name", htmlDoc);
+                        var agentIDArry = $("Empno", htmlDoc)
+                        for(var i=0; i<DepArry.length; i++) {
+                            agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
+                                       +    '<div style="width: 25VW;"><span>'
+                                       +        $(DepArry[i]).html()
+                                       +    '</div></span>'
+                                       +    '<div><span>'
+                                       +        $(nameArry[i]).html()
+                                       +    '</div></span>'
+                                       + '</li>';
+                        }
+                        $("#agent-popup-option-list").empty().append(agentList);
+                        resizePopup("agent-popup-option");
+                        //$("#searchBar").blur();
+                    }
                 }
             };
 
@@ -370,7 +378,13 @@ $("#viewPersonalLeave").pagecontainer({
                               + "</qEmpno><qName>"
                               + searchName
                               + "</qName></LayoutHeader>";
-            QueryEmployeeData();
+            if(timoutQueryEmployeeData != null) {
+                clearTimeout(timoutQueryEmployeeData);
+                timoutQueryEmployeeData = null;
+            }
+            timoutQueryEmployeeData = setTimeout(function(){
+                QueryEmployeeData();
+            }, 2000);
         });
 
         $(document).on("change", "#leaveType-popup", function() {
