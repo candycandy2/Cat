@@ -121,6 +121,7 @@
 #leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
 	background-color: #0fb6b7;
 	border-color: #0fb6b7;
+	font-size: 95%;
 }
 
 .radius-btn {
