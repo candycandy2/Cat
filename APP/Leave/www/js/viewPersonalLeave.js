@@ -204,6 +204,7 @@ $("#viewPersonalLeave").pagecontainer({
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
                         $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+
                     }else{
                         popupMsgInit('.applyLeaveFail');
                     }
@@ -277,15 +278,15 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
         });
 
-        $("#infoTitle-1").on("click", function() {
-            if($("#infoContent-1").css("display") === "none") {
-                $("#infoContent-1").slideDown(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
-            }else if($("#infoContent-1").css("display") === "block") {
-                $("#infoContent-1").slideUp(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
-            }
-        });
+        // $("#infoTitle-1").on("click", function() {
+        //     if($("#infoContent-1").css("display") === "none") {
+        //         $("#infoContent-1").slideDown(500);
+        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
+        //     }else if($("#infoContent-1").css("display") === "block") {
+        //         $("#infoContent-1").slideUp(500);
+        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
+        //     }
+        // });
 
         // $("#infoTitle-2").on("click", function() {
         //     if($("#infoContent-2").css("display") === "none") {
@@ -440,6 +441,11 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#leaveConfirm").removeClass("btn-disable");
                 $("#leaveConfirm").addClass("btn-enable");
             }
+        });
+
+        $(document).on("popupafteropen", "#agent-popup-option", function() {
+            $("#searchBar").val("");
+            $("#agent-popup-option-list").empty();
         });
 
         function splitTime(time) {
