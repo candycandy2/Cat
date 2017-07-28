@@ -26,6 +26,13 @@ env.set({APP_NAME: "ENS"});
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
 
+env.set({QPushAPPKey: "c96ae87b304de281b976d0ea"});
+if (process.env.env === "test") {
+    env.set({QPushAPPKey: "1c0c758b8329f982ce27c975"});
+} else if (process.env.env === "dev") {
+    env.set({QPushAPPKey: "6e51cf3c174910d247ac76f3"});
+}
+
 /*-----------------------------------------edit config.xml------------------------------------------*/
 var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appens" + process.env.appNameDecorate + "</string>";
 
@@ -74,6 +81,7 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
+  'cordova plugin remove jpush-phonegap-plugin',
   'cordova plugin remove jmessage-phonegap-plugin',
   'cordova plugin remove cordova-plugin-device',
   //'cordova plugin remove cordova-plugin-console',
@@ -102,7 +110,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
-  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -120,7 +129,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save',
-  'cordova plugin add jmessage-phonegap-plugin@2.4.9 --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add jmessage-phonegap-plugin@2.4.9 --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add jpush-phonegap-plugin@3.2.3 --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 

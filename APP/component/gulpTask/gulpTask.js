@@ -16,48 +16,29 @@ function getArg(key) {
 }
 
 //command line parameter
-//var env = getArg("--env");      // pro=>Product, test=>QA, dev=>Develop
-env.set({env: getArg("--env")});
-//var vname = getArg("--vname");
+env.set({env: getArg("--env")});// pro=>Product, test=>QA, dev=>Develop
 env.set({vname: getArg("--vname")});
-//var vcode = getArg("--vcode");
 env.set({vcode: getArg("--vcode")});
 
 //Parameter for APP-Config & Install Cordova-plugin
-//var appNameDecorate = "";
 env.set({appNameDecorate: ""});
-//var appVersionDecorate = "Production";
 env.set({appVersionDecorate: "Production"});
-//var apiServerURL = "https://qplay.benq.com/";
 env.set({apiServerURL: "https://qplay.benq.com/"});
-//var QPushAPPKey = "1dd3ebb8bb12f1895b4a5e25";
 env.set({QPushAPPKey: "1dd3ebb8bb12f1895b4a5e25"});
-//var patchFolder = "patch";
 env.set({patchFolder: "patch"});
-//var productionextra = ""; // production app id is com.qplay.apprelieve1
 env.set({productionextra: ""});
 
 if (process.env.env === "test") {
-    //appNameDecorate = "test";
     env.set({appNameDecorate: "test"});
-    //appVersionDecorate = "NewStaging";
     env.set({appVersionDecorate: "NewStaging"});
-    //apiServerURL = "https://qplaytest.benq.com/";
     env.set({apiServerURL: "https://qplaytest.benq.com/"});
-    //QPushAPPKey = "33938c8b001b601c1e647cbd";
     env.set({QPushAPPKey: "33938c8b001b601c1e647cbd"});
-    //patchFolder = "patchTest";
     env.set({patchFolder: "patchTest"});
 } else if (process.env.env === "dev") {
-    //appNameDecorate = "dev";
     env.set({appNameDecorate: "dev"});
-    //appVersionDecorate = "Development";
     env.set({appVersionDecorate: "Development"});
-    //apiServerURL = "https://qplaydev.benq.com/";
     env.set({apiServerURL: "https://qplaydev.benq.com/"});
-    //QPushAPPKey = "e343504d536ebce16b70167e";
     env.set({QPushAPPKey: "e343504d536ebce16b70167e"});
-    //patchFolder = "patchDev";
     env.set({patchFolder: "patchDev"});
 } else { 
     // production case
