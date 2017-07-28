@@ -3,6 +3,7 @@ var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
+var timoutQueryEmployeeData = null;
 
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -117,24 +118,31 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var agentList = "";
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var DepArry = $("Department", htmlDoc);
-                    var nameArry = $("name", htmlDoc);
-                    var agentIDArry = $("Empno", htmlDoc)
-                    for(var i=0; i<DepArry.length; i++) {
-                        agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
-                                   +    '<div style="width: 25VW;"><span>'
-                                   +        $(DepArry[i]).html()
-                                   +    '</div></span>'
-                                   +    '<div><span>'
-                                   +        $(nameArry[i]).html()
-                                   +    '</div></span>'
-                                   + '</li>';
+                    if(data['Content'][0] == undefined) {
+                        $("#agent-popup-option-list").empty().append(agentList);
+                        //resizePopup("agent-popup-option");
+                        //$("#searchBar").blur();
                     }
-                    $("#agent-popup-option-list").empty().append(agentList);
-                    resizePopup("agent-popup-option");
-                    $("#searchBar").blur();
+                    else {
+                        var callbackData = data['Content'][0]["result"];
+                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                        var DepArry = $("Department", htmlDoc);
+                        var nameArry = $("name", htmlDoc);
+                        var agentIDArry = $("Empno", htmlDoc)
+                        for(var i=0; i<DepArry.length; i++) {
+                            agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
+                                       +    '<div style="width: 25VW;"><span>'
+                                       +        $(DepArry[i]).html()
+                                       +    '</div></span>'
+                                       +    '<div><span>'
+                                       +        $(nameArry[i]).html()
+                                       +    '</div></span>'
+                                       + '</li>';
+                        }
+                        $("#agent-popup-option-list").empty().append(agentList);
+                        resizePopup("agent-popup-option");
+                        //$("#searchBar").blur();
+                    }
                 }
             };
 
@@ -196,6 +204,7 @@ $("#viewPersonalLeave").pagecontainer({
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
                         $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+
                     }else{
                         popupMsgInit('.applyLeaveFail');
                     }
@@ -269,15 +278,15 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
         });
 
-        $("#infoTitle-1").on("click", function() {
-            if($("#infoContent-1").css("display") === "none") {
-                $("#infoContent-1").slideDown(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
-            }else if($("#infoContent-1").css("display") === "block") {
-                $("#infoContent-1").slideUp(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
-            }
-        });
+        // $("#infoTitle-1").on("click", function() {
+        //     if($("#infoContent-1").css("display") === "none") {
+        //         $("#infoContent-1").slideDown(500);
+        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
+        //     }else if($("#infoContent-1").css("display") === "block") {
+        //         $("#infoContent-1").slideUp(500);
+        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
+        //     }
+        // });
 
         // $("#infoTitle-2").on("click", function() {
         //     if($("#infoContent-2").css("display") === "none") {
@@ -370,7 +379,13 @@ $("#viewPersonalLeave").pagecontainer({
                               + "</qEmpno><qName>"
                               + searchName
                               + "</qName></LayoutHeader>";
-            QueryEmployeeData();
+            if(timoutQueryEmployeeData != null) {
+                clearTimeout(timoutQueryEmployeeData);
+                timoutQueryEmployeeData = null;
+            }
+            timoutQueryEmployeeData = setTimeout(function(){
+                QueryEmployeeData();
+            }, 2000);
         });
 
         $(document).on("change", "#leaveType-popup", function() {
@@ -426,6 +441,11 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#leaveConfirm").removeClass("btn-disable");
                 $("#leaveConfirm").addClass("btn-enable");
             }
+        });
+
+        $(document).on("popupafteropen", "#agent-popup-option", function() {
+            $("#searchBar").val("");
+            $("#agent-popup-option-list").empty();
         });
 
         function splitTime(time) {
