@@ -294,7 +294,7 @@ $(document).one("pagebeforecreate", function() {
 
                 //Show Water Mark
                 //According to the data [waterMarkPageList] which set in index.js
-                if (!(typeof waterMarkPageList === undefined)) {
+                if (!(typeof waterMarkPageList === "undefined")) {
                     if (waterMarkPageList.indexOf(pageID) !== -1) {
                         $("#" + pageID).css("background-color", "transparent");
                     }

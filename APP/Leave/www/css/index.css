@@ -211,11 +211,11 @@
 	z-index: 2;
 }
 
-.leftDaysNotEnough > .ui-content {
+.leftDaysNotEnough > .ui-content, .applyLeaveFail > .ui-content {
 	padding: 0 !important;
 }
 
-.leftDaysNotEnough .ui-content > .header {
+.leftDaysNotEnough .ui-content > .header, .applyLeaveFail .ui-content > .header{
 	 margin-top: 10%;
 }
 

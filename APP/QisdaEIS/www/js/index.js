@@ -32,10 +32,16 @@ $(document).one('pagebeforeshow', function(){
 
     $("#mypanel #mypanelviewMain").on("click", function() {
         changePageByPanel("viewMain");
+        $('#overview-hc-rectangle').hide();
+        chartbubble.series[0].setData(buBubbleSeries, true, true, false);         
+		chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
     });
 
     $("#mypanel #mypanelviewDetail").on("click", function() {
         changePageByPanel("viewDetail");
+        $('#overdueSoon').hide();
+		$('#expiredSoon').hide();
+		//$('#overdue').show();
     });
 
     $(".menu-btn").on("click", function() {
@@ -53,14 +59,42 @@ $(document).one('pagebeforeshow', function(){
     //open or close credit memo
     $('#memoBtn').on('click', function(){
     	var flag = $('#memoBtn').attr('src');
+    	
     	if(flag === 'img/switch_g.png'){
-    		$('#memoBtn').attr('src', 'img/switch_b.png');
+    		$('#memoBtn').attr('src', 'img/switch_b.png');   		
     		
+    		buChartColumn2.series[0].setData(columnMinusData1, true, true, false);
+			buChartColumn2.series[1].setData(columnMinusData2, true, true, false);
+			buChartColumn2.series[2].setData(columnMinusData3, true, true, false);
+			buChartColumn2.series[3].setData(columnMinusData4, true, true, false);
+			
+			chartColumnLandscape.series[0].setData(columnMinusData1, true, true, false);
+			chartColumnLandscape.series[1].setData(columnMinusData2, true, true, false);
+			chartColumnLandscape.series[2].setData(columnMinusData3, true, true, false);
+			chartColumnLandscape.series[3].setData(columnMinusData4, true, true, false);
+			chartColumnLandscape.update({
+				title: {
+					text: 'Overdue Trend in Last 6 weeks'
+				}
+			});
     		
     	}else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
     		
-    		
+    		buChartColumn2.series[0].setData(columnData2, true, true, false);
+			buChartColumn2.series[1].setData(columnData1, true, true, false);
+			buChartColumn2.series[2].setData(columnData4, true, true, false);
+			buChartColumn2.series[3].setData(columnData3, true, true, false);
+			
+			chartColumnLandscape.series[0].setData(columnData2, true, true, false);
+			chartColumnLandscape.series[1].setData(columnData1, true, true, false);
+			chartColumnLandscape.series[2].setData(columnData4, true, true, false);
+			chartColumnLandscape.series[3].setData(columnData3, true, true, false);
+			chartColumnLandscape.update({
+				title: {
+					text: 'Total AR and Overdue Amount'
+				}
+			});
     	}
     	
     });
@@ -151,6 +185,7 @@ $(document).one('pagebeforeshow', function(){
 });
 
 
+
 //[Android]Handle the back button
 function onBackKeyDown() {
 	var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -227,18 +262,42 @@ function zoomInChartByColumn(){
     }
 }
 
-//根据panel更换page
+function changeFontColor(num){
+	if(num <= 0){
+		$('#moneyOverdue').css('color', '#ec3a24');
+	}else{
+		$('#moneyOverdue').css('color', '#323232');
+	}
+	
+}
+
+
 function changePageByPanel(pageId) {
+	window.firstClick = true;
+	
+	if(device.platform === "Android"){
+		$.mobile.defaultPageTransition = 'fade';
+	}
+	
     if($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
         $.mobile.changePage("#" + pageId);
+        
+        if(firstClick){
+        	firstClick = false;
+        	$.mobile.defaultPageTransition = 'fade';
+        }
+        
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
     }
     $("#mypanel").panel("close");
 }
+
+
+
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {

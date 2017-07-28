@@ -1,4 +1,5 @@
 var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
+var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
@@ -32,6 +33,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                myCalendarData = {};
                 var leaveFlag = "3";
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["Result"];
@@ -131,6 +133,7 @@ $("#viewPersonalLeave").pagecontainer({
                                    + '</li>';
                     }
                     $("#agent-popup-option-list").empty().append(agentList);
+                    resizePopup("agent-popup-option");
                     $("#searchBar").blur();
                 }
             };
@@ -194,7 +197,7 @@ $("#viewPersonalLeave").pagecontainer({
                     if($(success).html() != undefined) {
                         $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
                     }else{
-                        
+                        popupMsgInit('.applyLeaveFail');
                     }
                     loadingMask("hide");
                 }
@@ -305,25 +308,30 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#leaveTime-tab1").on("click", function() {
-            $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-            if(!fulldayHide) {
-                $("label[for=leaveTime-tab1]").addClass('ui-btn-active');
-                timeArry = splitTime($(this).val());
-                beginTime = timeArry[1];
-                endTime = timeArry[2];
-            }
+            timeArry = splitTime($(this).val());
+            beginTime = timeArry[1];
+            endTime = timeArry[2];
+            $("label[for=leaveTime-tab2]").text("上午");
+            $("label[for=leaveTime-tab3]").text("下午");
+            leaveTimetab = "leaveTime-tab1";
         });
 
         $("#leaveTime-tab2").on("click", function() {
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
+            $("label[for=leaveTime-tab2]").text("0800-1200");
+            $("label[for=leaveTime-tab3]").text("下午");
+            leaveTimetab = "leaveTime-tab2";
         });
 
         $("#leaveTime-tab3").on("click", function() {
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
+            $("label[for=leaveTime-tab2]").text("上午");
+            $("label[for=leaveTime-tab3]").text("1300-1700");
+            leaveTimetab = "leaveTime-tab3";
         });
 
         $("#leaveConfirm").on("click", function() {
@@ -373,6 +381,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
             if(leaveTypeSelected) {
+
+                $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
+                $("input[id=leaveTime-tab1]").prop("disabled", false);
+                $("input[id=leaveTime-tab1]").parent().removeClass("ui-state-disabled");
+
                 if(leftDaysData[leaveid] < 0.5) {
                     var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
                     $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
@@ -387,16 +400,14 @@ $("#viewPersonalLeave").pagecontainer({
                     $("#leaveConfirm").removeClass("btn-enable");
 
                 }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
-                    $("label[for=leaveTime-tab1]").addClass('btn-disable');
-                    $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-                    $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
-                    $("input[id=leaveTime-tab2]").trigger('click');
-                    $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
-                    fulldayHide = true;
-                }else {
-                    $("label[for=leaveTime-tab1]").removeClass('btn-disable');
-                    $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
-                    fulldayHide = false;
+                    $("input[id=leaveTime-tab1]").prop("disabled", true);
+                    $("input[id=leaveTime-tab1]").parent().addClass("ui-state-disabled");
+                    if(leaveTimetab == "leaveTime-tab1") {
+                        $("input[id=leaveTime-tab2]").trigger('click');
+                        $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
+                        $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
+                        $("label[for=leaveTime-tab3]").removeClass('ui-btn-active');  
+                    }
                 }
             }
             if(leaveid != "" && agentid != "") {
@@ -420,6 +431,40 @@ $("#viewPersonalLeave").pagecontainer({
         function splitTime(time) {
             var regExp = /^(.*?)-(.*?)$/;
             return time.match(regExp);
+        }
+
+        function resizePopup(popupID) {
+            var popup = $("#" + popupID);
+            var popupHeight = popup.height();
+            var popupHeaderHeight = $("#" + popupID + " .header").height();
+            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+            //ui-content paddint-top/padding-bottom:3.07vw
+            // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
+
+            //Ul margin-top:2.17vw
+            // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
+            // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+            var popupMainHeight = "200";
+            popup.find("div[data-role='main'] .main").height(popupMainHeight);
+
+            $('#' + popupID + '-screen.in').animate({
+                'overflow-y': 'hidden',
+                'touch-action': 'none',
+                'height': $(window).height()
+            }, 0, function() {
+                var top = $('#' + popupID + '-screen.in').offset().top;
+                if (top < 0) {
+                    $('.ui-popup-screen.in').css({
+                        'top': Math.abs(top) + "px"
+                    });
+                }
+            });
+
+            var viewHeight = $(window).height();
+            var popupHeight = popup.outerHeight();
+            var top = (viewHeight - popupHeight) / 2;
+            popup.parent().css("top", top + "px");
         }
     }
 });

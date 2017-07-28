@@ -35,6 +35,9 @@ var setActiveTab = function(openId, appKey){
         case 'summary_report':
             iniSummaryReport(appKey);
             break;
+        case 'push_service_hours':
+            pushServiceHours.iniReport(appKey);
+            break;
     }
 
     $('.tab-content > div.active').removeClass('active').removeClass('in');

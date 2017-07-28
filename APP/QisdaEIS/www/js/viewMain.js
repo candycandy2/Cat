@@ -2,7 +2,7 @@
 var viewMainTab = "BU";
 var buBubbleSeries = [
 	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
-    { x: 66, y: 73, name: 'TF', data: {}, color: '#40C1C7' },
+    { x: 61, y: 63, name: 'TF', data: {}, color: '#40C1C7' },
     { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
     { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
     { x: 82, y: 20, name: 'FS', data: {}, color: '#948078' },
@@ -79,7 +79,9 @@ var bubbleOption = {
     },
     tooltip: {
         useHTML: true,
-        shadow: false,
+        animation: false,
+        hideDelay: 0,
+        shadow: false,       
         borderColor: '#FDC24F',
         backgroundColor: 'rgba(247,247,247,0.85)',
         headerFormat: '<table class="fontTooltip">',
@@ -87,7 +89,6 @@ var bubbleOption = {
         '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
-        followPointer: false,
         followTouchMove: false
     },
     plotOptions: {
@@ -197,6 +198,8 @@ var rectOption = {
    	},
    	tooltip: {
         useHTML: true,
+        animation: false,
+        hideDelay: 0,
         shadow: false,
         borderWidth: 1,
         borderColor: 'gray',
@@ -244,86 +247,6 @@ var rectOption = {
     }
 };
 
-var treemapOption = {
-	chart: {
-		type: "treemap",
-		marginBottom: 70,
-		zoomType: 'none'
-	},
-	colorAxis: {
-        tickPositions: [0, 15, 45, 75],
-        stops: [
-            [0, '#81B4E1'],
-            [0.2, '#81B4E1'],
-            [0.2, '#F79620'],
-            [1, '#EF3623']
-        ],
-        labels: {
-        	enabled: true,
-        	align: 'left',
-        	overflow: 'justify',
-        	formatter: function(){
-        		if(this.value === 75){
-        			return this.value + '(Days)';
-        		}
-        		else{
-        			return this.value;
-        		}
-        	},
-        	style: {
-        		color: '#323232'
-        	}
-        }  
-   	},
-   	tooltip: {
-        useHTML: true,
-        shadow: false,
-        borderWidth: 1,
-        borderColor: 'gray',
-        backgroundColor:　'#FFFCF5',
-        headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td><strong>{point.code} {point.name}</strong></td></tr>' +
-        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
-        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
-        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
-        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
-        footerFormat: '</table>',
-        followPointer: false,
-        followTouchMove: false
-    },
-    plotOptions: {
-    	series: {
-	        layoutAlgorithm: 'squarified',
-	        dataLabels: {
-	            enabled: true,  
-	            align: 'left',
-	            inside: true,
-	            useHTML: true,
-	            shadow: true,
-	            style: {
-	            	"color": "#ffffff",
-	            	"fontSize": "10px",
-	            	"fontWeight": "bold",
-	            	"textOutline": "2px 2px black"
-	            },
-	            format: '<div>{point.code}</div>' + '<div class="fontHide">{point.name}</div>'
-	        }
-    	}
-    },
-    series: [{
-    	data: treemapSeries1  
-    }],
-    exporting: {
-        enabled: false
-    },
-    title: {
-        text: null
-    },
-    credits: {
-    	enabled: false
-    }
-};
-
 function showTreemap(){
 	rectOption.chart.renderTo = 'overview-hc-rectangle';
 	chartRect = new Highcharts.Chart(rectOption);
@@ -336,9 +259,7 @@ function showTreemapLandscape(){
 
 function hideTooltip(){
 	chartbubble.tooltip.hide();
-    chartRect.tooltip.hide();
-    chartLandscapebubble.tooltip.hide();
-    chartLandscapeRect.tooltip.hide();   
+    chartRect.tooltip.hide();  
 }
 
 
@@ -355,17 +276,6 @@ $('#viewMain').pagecontainer({
 						
 		}
 		
-		
-		function chooseViewMainTab(){
-			switch(viewMainTab) {
-                case "BU" :
-                    $("input[id=viewMain-tab-1]").trigger('click');   
-                    break;
-                case "CSD" :
-                    $("input[id=viewMain-tab-2]").trigger('click');   
-                    break;
-            }
-		}
 		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
@@ -385,8 +295,9 @@ $('#viewMain').pagecontainer({
            	}
 		});
 		
+		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			//hideTooltip();
+			chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(buBubbleSeries, true, true, false);         
             
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
@@ -396,7 +307,7 @@ $('#viewMain').pagecontainer({
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
-        	//hideTooltip();
+        	chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(csdBubbleSeries, true, true, false);          
             
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Input;
 $menu_name = "PUSH_SERVER";
 $input = Input::get();
-$templateCount = 16;
+$templateCount = 17;
 $messageInfo = null;
 $messageId = $input["message_id"];
 $messageInfo = \App\lib\CommonUtil::getMessageInfo($messageId);
@@ -77,7 +77,7 @@ label {
                 <label for="ddlPushTo" class="col-xs-2">{{trans("messages.TEMPLATE_ID")}}:</label>
                 <div class="col-xs-10">
                     <select class="select2-close-mask form-control" name="ddlTemplateID" id="ddlTemplateID" disabled="disabled">
-                        @for ($i = 1; $i <=$templateCount; $i++)
+                        @for ($i = 0; $i <=$templateCount; $i++)
                             <option value="{{$i}}" @if($messageInfo->template_id == $i) selected="selected" @endif>{{$i}}</option>
                         @endfor
                     </select>
