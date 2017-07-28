@@ -16,6 +16,16 @@ errorCodeArray = ["014999"];
 
 window.initialSuccess = function() {
 
+    window.ENSJPushAppKey = "c96ae87b304de281b976d0ea";
+    window.ENSJPushSecretKey = "5292cabae5da19de1b8c5b9c";
+    if (loginData["versionName"].indexOf("Staging") !== -1) {
+        window.ENSJPushAppKey = "1c0c758b8329f982ce27c975";
+        window.ENSJPushSecretKey = "ab1a8d5a25de73f260dad51f";
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        window.ENSJPushAppKey = "6e51cf3c174910d247ac76f3";
+        window.ENSJPushSecretKey = "335a12f8b4b9d71c9d813e7d";
+    }
+
     loadingMask("show");
 
     processLocalData.initialData();
@@ -24,6 +34,29 @@ window.initialSuccess = function() {
     $.mobile.changePage('#viewEventList');
 
     JM.initial();
+
+    window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
+        if(result == 0) {
+            // 系统设置中已关闭应用推送。
+            console.log("====@@--1");
+        } else if(result > 0) {
+            // 系统设置中打开了应用推送。
+            console.log("====@@--2");
+        }
+    });
+
+    window.plugins.jPushPlugin.isPushStopped(function (result) {
+        if (result == 0) {
+            // 开启
+            console.log("====##--1");
+        } else {
+            // 关闭
+            console.log("====##--2");
+        }
+    });
+
+    window.plugins.jPushPlugin.getUserNotificationSettings();
+    window.plugins.jPushPlugin.isPushStopped();
 }
 
 var chatRoom = {

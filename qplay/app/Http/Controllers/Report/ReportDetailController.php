@@ -61,7 +61,7 @@ class ReportDetailController extends Controller
         }
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
+        if (\Request::isJson($content)) {  
             $jsonContent = json_decode($content, true);
             $appKey = $jsonContent['app_key'];
             $timeOffset = $jsonContent['timeOffset'];
@@ -162,6 +162,23 @@ class ReportDetailController extends Controller
         if (\Request::isJson($content)) {
             $jsonContent = json_decode($content, true);
             return json_encode($this->reportService->getActiveRegisterReport());
+        }
+    }
+
+    public function getPushServiceRank(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $appKey = $jsonContent['app_key'];
+            $from = $jsonContent['from'];
+            $to = $jsonContent['to'];
+            $timeOffset = $jsonContent['timeOffset'];
+            return json_encode($this->reportService->getPushServiceRankReport($from, $to, $timeOffset));
         }
     }
 }

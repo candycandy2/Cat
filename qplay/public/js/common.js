@@ -192,3 +192,11 @@ function sortObjectByKey(o) {
     }
     return sorted;
 }
+function getMaxIndexFromObjByAttr(obj, attr){
+
+return Object.keys(obj).reduce(
+            function(a, b){
+                return obj[a][attr] > obj[b][attr] ? a : b 
+            });
+
+}
