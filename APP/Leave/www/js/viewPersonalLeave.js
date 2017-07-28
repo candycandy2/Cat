@@ -200,7 +200,7 @@ $("#viewPersonalLeave").pagecontainer({
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
                         $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
-                        localStorage.setItem("agent", [$("#agent-popup option").text(), agentid]);
+                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
                     }else {
                         var error = $("error", htmlDoc);
                         var msgContent = $(error).html();
