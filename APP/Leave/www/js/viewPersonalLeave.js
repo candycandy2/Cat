@@ -264,6 +264,9 @@ $("#viewPersonalLeave").pagecontainer({
             endTime = "17:00";
             beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
             endDate = currentYear + "/" + currentMonth + "/" + currentDate;
+            if(localStorage.getItem("agent") !== null) {
+                agentid = JSON.parse(localStorage.getItem("agent"))[1];
+            }
         });
 
         /********************************** dom event *************************************/

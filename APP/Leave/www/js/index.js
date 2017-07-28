@@ -61,7 +61,6 @@ window.initialSuccess = function() {
     if(localStorage.getItem("agent") !== null) {
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("agent-popup", "typeB");
-        agentid = JSON.parse(localStorage.getItem("agent"))[1];
     }
     loadingMask("show");
 }
