@@ -59,9 +59,9 @@ window.initialSuccess = function() {
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
     if(localStorage.getItem("agent") !== null) {
-        $("#agent-popup option").text(localStorage.getItem("agent")[0]);
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("agent-popup", "typeB");
-        agentid = localStorage.getItem("agent")[1];
+        agentid = JSON.parse(localStorage.getItem("agent"))[1];
     }
     loadingMask("show");
 }
