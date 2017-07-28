@@ -379,7 +379,7 @@ $("#viewReserve").pagecontainer({
                 var arrMsgValue = $(this).attr('msg').split(','),
                     headerContent = arrMsgValue[2] + "已預約",
                     msgContent = arrMsgValue[0] + '&nbsp;&nbsp' + arrMsgValue[1];
-                    tempMailContent = $(this).attr('email') + '?subject=健康職能時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
+                    tempMailContent = $(this).attr('email') + '?subject=按摩服務時段協調_' + arrMsgValue[0] + ' ' + arrMsgValue[1],
                 popupMsgInit('.otherReservePopup');
                 tplJS.preventPageScroll();
                 $('.otherReservePopup').find('.header-text').html(headerContent);
