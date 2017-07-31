@@ -1,16 +1,13 @@
 
 /*global variable, function*/
 var pageList = ["viewMain","viewTalk"];
+var initialAppName = "CMAPP";
 var appKeyOriginal = "appcm";
 var appKey = "appcm";
 var appSecretKey = "afa13d886116cc148780397ea9767dbe";
 
 window.initialSuccess = function() {
-
-    //loadingMask("show");
-
     $.mobile.changePage('#viewMain');
-    var APIRequest = new APIRequest();
 }
 
 //[Android]Handle the back button
