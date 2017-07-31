@@ -120,10 +120,7 @@ $("#viewPersonalLeave").pagecontainer({
                     var agentList = "";
                     if(data['Content'][0] == undefined) {
                         $("#agent-popup-option-list").empty().append(agentList);
-                        //resizePopup("agent-popup-option");
-                        //$("#searchBar").blur();
-                    }
-                    else {
+                    }else {
                         var callbackData = data['Content'][0]["result"];
                         var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                         var DepArry = $("Department", htmlDoc);
@@ -141,7 +138,6 @@ $("#viewPersonalLeave").pagecontainer({
                         }
                         $("#agent-popup-option-list").empty().append(agentList);
                         resizePopup("agent-popup-option");
-                        //$("#searchBar").blur();
                     }
                 }
             };
@@ -204,8 +200,11 @@ $("#viewPersonalLeave").pagecontainer({
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
                         $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
-
-                    }else{
+                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                    }else {
+                        var error = $("error", htmlDoc);
+                        var msgContent = $(error).html();
+                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
                     }
                     loadingMask("hide");
@@ -265,6 +264,9 @@ $("#viewPersonalLeave").pagecontainer({
             endTime = "17:00";
             beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
             endDate = currentYear + "/" + currentMonth + "/" + currentDate;
+            if(localStorage.getItem("agent") !== null) {
+                agentid = JSON.parse(localStorage.getItem("agent"))[1];
+            }
         });
 
         /********************************** dom event *************************************/
@@ -383,9 +385,12 @@ $("#viewPersonalLeave").pagecontainer({
                 clearTimeout(timoutQueryEmployeeData);
                 timoutQueryEmployeeData = null;
             }
-            timoutQueryEmployeeData = setTimeout(function(){
+            timoutQueryEmployeeData = setTimeout(function() {
                 QueryEmployeeData();
             }, 2000);
+            if(e.which == 13) {
+                $("#searchBar").blur();
+            }
         });
 
         $(document).on("change", "#leaveType-popup", function() {
