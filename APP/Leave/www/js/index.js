@@ -51,7 +51,7 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<EmpNo>"+ myEmpNo +"</EmpNo>";
+    getDefaultSettingQueryData = "<EmpNo>" + myEmpNo + "</EmpNo>";
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
         GetDefaultSetting();
