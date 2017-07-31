@@ -522,18 +522,24 @@ function Calendar(options) {
         var dateArray = _infoData[month]["holiday"]["date"].split(",");
         var strArray = _infoData[month]["holiday"]["str"];
         $(opts.showInfoListTo).empty();
-        for(var i=0; i<dateArray.length; i++) {
-            $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+        if(dateArray.length > 0) {
+            for(var i=0; i<dateArray.length; i++) {
+                $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+            }
         }
-        for(var i=0; i<strArray.length; i++) {
-            holidayList +=  '<li>'
-                         +    '<span>'
-                         +    strArray[i]
-                         +    '</span>'
-                         +  '</li>';
+        if(strArray.length > 0) {
+            for(var i=0; i<strArray.length; i++) {
+                holidayList +=  '<li>'
+                             +    '<span>'
+                             +    strArray[i]
+                             +    '</span>'
+                             +  '</li>';
+            }
+            $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
+            $(opts.showInfoListTo).show();
+        }else {
+            $(opts.showInfoListTo).hide();
         }
-        $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
-        $(opts.showInfoListTo).show();
     }
 
     function dateAsString(year, month, day) {
