@@ -28,6 +28,10 @@ var panel = htmlContent
         +'</div>';
 
 
+window.initialSuccess = function() {
+    $.mobile.changePage('#viewMain');
+}
+
 $(document).one('pagebeforeshow', function(){
 	$.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
