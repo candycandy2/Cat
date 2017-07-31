@@ -108,45 +108,50 @@
 	margin: 0VW 3.2VW 0.35VH 3.2VW;
 }
 
+#leaveType span {
+	color: #666666;
+	font-size: 3.14VW;
+}
+
 #leaveDate, #leaveTime {
+	border-radius: 0px !important;
 	margin-top: 2.14VW;
 	margin-bottom: 0VW !important;
 }
 
 #leaveDate .leaveDateTitle, #leaveTime .leaveTimeTitle {
+	background-color: #ffffff;
+	border-color: #d6d6d6;
 	text-align: center;
 	font-weight: 300;
 	font-size: 4.2VW;
 }
 
 #leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
-	background-color: #0fb6b7;
-	border-color: #0fb6b7;
-	/*font-size: 95%;*/
+	background-color: #0db6b7;
+	border-color: #d6d6d6;
 }
 
 .radius-btn {
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
+    border-radius: 20px;
     border: 0px;
-    background-color: #2a88bc;
-    color: white;
-    width: 64vw;
-    height: 5vh;
+    width: 64VW;
+    height: 5VH;
     text-align: center;
     padding-top: 1.5vh;
     font-size: 4.5vw;
+    text-shadow: none;
+    box-shadow: none;
 }
 
 .btn-enable {
-    background-color: #2a88bc !important;
-    color: white !important;
+    background-color: #2c89bc !important;
+    color: #fff !important;
 }
 
 .btn-disable {
-    background-color: #ddd !important;
-    color: #666 !important;
+    background-color: #d6d6d6 !important;
+    color: #999999 !important;
 }
 
 #searchBar {
@@ -177,13 +182,6 @@
 #agent-popup-option-popup ul {
 	margin-top: 0VW;
 }
-/*#searchBar:focus {
-	background-image: none;
-}*/
-
-/*.typeB {
-	height: 20VW !important;
-}*/
 
 .tpl-option-msg-list {
 	border-top-style: solid;
@@ -221,9 +219,6 @@
 	 margin-top: 10%;
 }
 
-input[type="text"], input[type="search"] {
-	-webkit-appearance: none;
-}
 /******************************************** viewHolidayCalendar ******************************************/
 
 #viewHolidayCalendar .infoList ul > li {
