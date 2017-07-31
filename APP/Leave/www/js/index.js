@@ -58,6 +58,10 @@ window.initialSuccess = function() {
     }
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
+    if(localStorage.getItem("agent") !== null) {
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+    }
     loadingMask("show");
 }
 
