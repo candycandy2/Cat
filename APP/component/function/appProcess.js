@@ -1,19 +1,18 @@
-
 /************************************************************************************************/
 /********************************** APP Process JS function *************************************/
 /************************************************************************************************/
-var closeDisconnectNetworkInit = false,     // let closeDisconnectNetwork click event init once
-    isDisConnect = false;                   // check if disconnect
+var closeDisconnectNetworkInit = false, // let closeDisconnectNetwork click event init once
+    isDisConnect = false; // check if disconnect
 
 
 function getLanguageString() {
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
-        for (var i=0; i<data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
             langStr[data[i].term] = data[i].definition.trim();
         }
 
         $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
-            for (var i=0; i<data.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }
 
@@ -32,7 +31,7 @@ function addComponentView() {
         $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
 
         //set initial page's layout when landscape
-        $('#initialOther').css('top', (screen.height-$('#initialOther').height())/2);
+        $('#initialOther').css('top', (screen.height - $('#initialOther').height()) / 2);
 
         //If is other APP, set APP name in initial page
         if (appKey !== qplayAppKey) {
@@ -62,10 +61,10 @@ function addComponentView() {
         tplJS.Popup(null, null, "append", disconnectNetworkData);
 
         //After all template load finished, processing language string
-        $(".langStr").each(function(index, element){
+        $(".langStr").each(function(index, element) {
             var id = $(element).data("id");
 
-            $(".langStr[data-id='" + id + "']").each(function(index, element){
+            $(".langStr[data-id='" + id + "']").each(function(index, element) {
                 if (langStr[id] !== undefined) {
                     $(this).html(langStr[id]);
                 }
@@ -79,7 +78,7 @@ function addComponentView() {
 //Check Mobile Device Network Status
 function checkNetwork(data) {
 
-    data =  data || null;
+    data = data || null;
     //A. If the device's Network is disconnected, show dialog only once, before the network is connect again.
     //B. If the device's Network is disconnected again, do step 1. again.
 
@@ -109,13 +108,14 @@ function checkNetwork(data) {
 
         logMsg = "Network disconnected";
     } else {
-        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
+            activePageID = activePage[0].id,
+            activatePageIndex = activePage.index('.ui-page');
         //----Network connected
         // on initial page, should reload app
-        if (activePageID === 'viewInitial' || activatePageIndex === -1){
+        if (activePageID === 'viewInitial' || activatePageIndex === -1) {
             reStartAPP = true;
-        }
-        else{
+        } else {
             // do nothing
         }
     }
@@ -134,38 +134,40 @@ function checkNetwork(data) {
     }
 }
 
-function openNetworkDisconnectWindow(status){
+function openNetworkDisconnectWindow(status) {
     // closeDisconnectNetwork click event should init only once
-    if (!closeDisconnectNetworkInit){
-        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function(){
+    if (!closeDisconnectNetworkInit) {
+        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function() {
             $('#disconnectNetwork').popup('close');
 
             // network disconnect
-            if (status === 'noNetwork'){
-                setTimeout(function(){
+            if (status === 'noNetwork') {
+                setTimeout(function() {
                     checkNetwork();
                 }, 500);
             }
             // API return fail: timeout or error
-            else if (status === 'timeout' || status === 'error'){
-                var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"), activePageID = activePage[0].id, activatePageIndex = activePage.index('.ui-page');
+            else if (status === 'timeout' || status === 'error') {
+                var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
+                    activePageID = activePage[0].id,
+                    activatePageIndex = activePage.index('.ui-page');
 
                 // on initial page, should reload app
-                if (activePageID === 'viewInitial' || activatePageIndex === -1){
+                if (activePageID === 'viewInitial' || activatePageIndex === -1) {
                     reStartAPP = true;
                 }
                 // on page 1
-                else if(activatePageIndex === 0){
+                else if (activatePageIndex === 0) {
                     // no page can return, do nothing
                 }
                 // on other page, back to last page
-                else{
+                else {
                     onBackKeyDown();
                 }
                 loadingMask("hide");
             }
             // API retun fail that we never seen before
-            else{
+            else {
                 alert('網路連線失敗，' + status);
                 reStartAPP = true;
             }
@@ -178,13 +180,13 @@ function openNetworkDisconnectWindow(status){
         });
         closeDisconnectNetworkInit = true;
     }
-    
+
     $('#disconnectNetwork').popup();
     $('#disconnectNetwork').show();
     $('#disconnectNetwork').popup('open');
 }
 
-function errorHandler(data){
+function errorHandler(data) {
     console.log('readyState: ' + data.readyState + ' status: ' + data.status + ' statusText: ' + data.statusText);
     //1. status = timeout (Network status display ["canceled"])
     if (data.statusText === "timeout") {
@@ -193,13 +195,13 @@ function errorHandler(data){
         openNetworkDisconnectWindow('timeout');
     }
     //2. status = error (Network status display ["failed"]) as we know, the error will appear when network is disconnect
-    else if (data.statusText === 'error'){
+    else if (data.statusText === 'error') {
         showNetworkDisconnected = true;
         logMsg = "Network status=failed, error";
         openNetworkDisconnectWindow('error');
     }
     // 3. status that we never seen before
-    else{
+    else {
         showNetworkDisconnected = true;
         logMsg = data.statusText;
         openNetworkDisconnectWindow(data.statusText);
@@ -261,7 +263,7 @@ function openAPIError(type) {
     $('#APIError').show();
     $('#APIError').popup('open');
 
-    $("#closeAPIError").on("click", function(){
+    $("#closeAPIError").on("click", function() {
         $('#APIError').popup('close');
         $('#APIError').hide();
     });
@@ -269,12 +271,12 @@ function openAPIError(type) {
 
 //Create Signature according to appSecretKey
 function getSignature(action, signatureTime) {
-  if (action === "getTime") {
-    return Math.round(new Date().getTime()/1000);
-  } else {
-    var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
-    return CryptoJS.enc.Base64.stringify(hash);
-  }
+    if (action === "getTime") {
+        return Math.round(new Date().getTime() / 1000);
+    } else {
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
+        return CryptoJS.enc.Base64.stringify(hash);
+    }
 }
 
 //Loading Mask
@@ -312,7 +314,7 @@ function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
     $('#viewPopupMsg #cancel').text(btn1);
     $('#viewPopupMsg #confirm').text(btn2);
 
-    if(titleImg != ''){
+    if (titleImg != '') {
         $('#viewPopupMsg #titleImg').attr('src', 'img/' + titleImg);
         $('#viewPopupMsg #titleImg').removeClass('hide');
     }
@@ -384,7 +386,7 @@ function waterMark() {
     var width = parseInt(stringAllWidth * 0.6, 10);
 
     var SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='" + stringHeight + "px' width='" + width + "px'>" +
-    "<text x='0' y='" + stringSingleWidth + "' fill='black' font-size='" + stringSingleWidth + "'>" + loginData["loginid"] + "</text></svg>";
+        "<text x='0' y='" + stringSingleWidth + "' fill='black' font-size='" + stringSingleWidth + "'>" + loginData["loginid"] + "</text></svg>";
 
     $(".watermark").css('background-image', 'url("' + SVG + '")');
 }
