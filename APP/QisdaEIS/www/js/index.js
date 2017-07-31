@@ -5,7 +5,11 @@ var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
 var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var chartColumnLandscape;
+var currentYear, currentMonth, currentDate;
+var length,thisYear,thisMonth;
+var ROSummaryQueryData,roSummaryCallBackData,productDetailQueryData,userAuthorityCallBackData;
 var treemapState = false;
+var UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -13,9 +17,8 @@ var appKeyOriginal = "appqisdaeis";
 var appKey = "appqisdaeis";
 var appSecretKey = "b383e7bdeea5e91eb4223602a9df2f05";
 var htmlContent = "";
-
 var panel = htmlContent
-        +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
+        +'<div data-role="panel" id="mypanel" data-display="overlay" data-position-fixed="true" style="background-color:#cecece; box-shadow:0 0 0;">'
         +   '<div id="panel-header">'
         +       '<span class="panel-text">AR Overdue Analysis</span>'
         +   '</div>'
@@ -26,7 +29,35 @@ var panel = htmlContent
         +       '<span class="panel-text">&nbsp;&nbsp;AR Overdue Detail</span>'
         +   '</div>'
         +'</div>';
+var time = new Date(Date.now());
 
+window.initialSuccess = function() {
+    currentYear = time.getFullYear();
+    currentDate = time.getDate();
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    if(currentDate == 1) {
+        currentMonth = currentMonth - 1;
+    }
+    /*if(localStorage.getItem("eisdata") === null) {
+        callProductDetailAPIReduce();
+        callProductDetailAPI();
+    }else {
+        eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
+        var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
+        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
+            callProductDetailAPIReduce();
+        }
+    }*/
+
+    loadingMask("show");
+    ROSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
+    //ROSummary();
+    $.mobile.changePage("#viewMain");
+}
 
 $(document).one('pagebeforeshow', function(){
 	$.mobile.pageContainer.prepend(panel);
@@ -189,7 +220,6 @@ $(document).one('pagebeforeshow', function(){
 });
 
 
-
 //[Android]Handle the back button
 function onBackKeyDown() {
 	var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -275,18 +305,61 @@ function changeFontColor(num){
 
 }
 
+function callProductDetailAPI() {
+    var maxMonth, k = 0;
+    for(var i=0; i<=3; i++) {
+        if (i == 0 && currentMonth > 2) {
+            maxMonth = Number(currentMonth-2);
+        }else{
+            maxMonth = 12;
+            k++;
+        };
+        for(var j=maxMonth; j>0; j--) {
+            j = (j < 10) ? "0"+j : j;
+            productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - k) + "/" + j
+                        + "</StartYearMonth><EndYearMonth>"
+                        + (currentYear - k) + "/" + j
+                        + "</EndYearMonth></LayoutHeader>";
+            ProductDetail();
+        }
+    }
+}
+
+function callProductDetailAPIReduce() {
+    for(var j=0; j<4; j++) {
+        var i = ((Number(currentMonth)-j) < 10) ? "0"+(Number(currentMonth)-j) : Number(currentMonth)-j;
+        productDetailQueryData = "<LayoutHeader><StartYearMonth>"
+                    + currentYear + "/" + i
+                    + "</StartYearMonth><EndYearMonth>"
+                    + currentYear + "/" + i
+                    + "</EndYearMonth></LayoutHeader>";
+        ProductDetail();
+    }
+}
+
+//参数n必须为number类型
+function formatNumber(n) {
+    n += "";
+    var arr = n.split(".");
+    var regex = /(\d{1,3})(?=(\d{3})+$)/g;
+    return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
+}
 
 function changePageByPanel(pageId) {
 	window.firstClick = true;
 
 	if(device.platform === "Android"){
 		$.mobile.defaultPageTransition = 'fade';
+	}else if(device.platform === "iOS"){
+		$.mobile.defaultPageTransition = 'none';
 	}
 
     if($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
+        
         $.mobile.changePage("#" + pageId);
 
         if(firstClick){
@@ -305,6 +378,7 @@ function changePageByPanel(pageId) {
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+	
     if($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel( "close");
     }
@@ -317,7 +391,6 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     		$('#viewDetail-hc-column-landscape').hide();
     	}
 
-
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
         if($.mobile.activePage[0].id === 'viewMain'){
@@ -328,7 +401,6 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	zoomInChartByColumn();
         	$('#viewDetail-hc-column-landscape').show();
         }
-
 
     }
 }, false);
