@@ -127,14 +127,16 @@ $("#viewPersonalLeave").pagecontainer({
                         var nameArry = $("name", htmlDoc);
                         var agentIDArry = $("Empno", htmlDoc)
                         for(var i=0; i<DepArry.length; i++) {
-                            agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
-                                       +    '<div style="width: 25VW;"><span>'
-                                       +        $(DepArry[i]).html()
-                                       +    '</div></span>'
-                                       +    '<div><span>'
-                                       +        $(nameArry[i]).html()
-                                       +    '</div></span>'
-                                       + '</li>';
+                            if($(nameArry[i]).html() !== localStorage["loginid"]) {
+                                agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
+                                           +    '<div style="width: 25VW;"><span>'
+                                           +        $(DepArry[i]).html()
+                                           +    '</div></span>'
+                                           +    '<div><span>'
+                                           +        $(nameArry[i]).html()
+                                           +    '</div></span>'
+                                           + '</li>';
+                            }
                         }
                         $("#agent-popup-option-list").empty().append(agentList);
                         resizePopup("agent-popup-option");
@@ -199,7 +201,7 @@ $("#viewPersonalLeave").pagecontainer({
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
-                        $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
+                        $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
                         localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
                     }else {
                         var error = $("error", htmlDoc);
