@@ -32,29 +32,9 @@ var panel = htmlContent
 var time = new Date(Date.now());
 
 window.initialSuccess = function() {
-    currentYear = time.getFullYear();
-    currentDate = time.getDate();
-    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
-    if(currentDate == 1) {
-        currentMonth = currentMonth - 1;
-    }
-    /*if(localStorage.getItem("eisdata") === null) {
-        callProductDetailAPIReduce();
-        callProductDetailAPI();
-    }else {
-        eisdata = JSON.parse(localStorage.getItem("eisdata"))[0];
-        var lastTime = JSON.parse(localStorage.getItem("eisdata"))[1];
-        if (checkDataExpired(lastTime, allExpiredTime, 'hh')) {
-            callProductDetailAPIReduce();
-        }
-    }*/
 
-    loadingMask("show");
-    ROSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
-                        + (currentYear - 3) + "/01"
-                        + "</StartYearMonth><EndYearMonth>"
-                        + currentYear + "/" + currentMonth
-                        + "</EndYearMonth></LayoutHeader>";
+    //loadingMask("show");
+    
     //ROSummary();
     $.mobile.changePage("#viewMain");
 }
@@ -306,40 +286,6 @@ function changeFontColor(num){
 	}else{
 		$('#moneyOverdue').css('color', '#323232');
 	}
-
-}
-
-function callProductDetailAPI() {
-    var maxMonth, k = 0;
-    for(var i=0; i<=3; i++) {
-        if (i == 0 && currentMonth > 2) {
-            maxMonth = Number(currentMonth-2);
-        }else{
-            maxMonth = 12;
-            k++;
-        };
-        for(var j=maxMonth; j>0; j--) {
-            j = (j < 10) ? "0"+j : j;
-            productDetailQueryData = "<LayoutHeader><StartYearMonth>"
-                        + (currentYear - k) + "/" + j
-                        + "</StartYearMonth><EndYearMonth>"
-                        + (currentYear - k) + "/" + j
-                        + "</EndYearMonth></LayoutHeader>";
-            ProductDetail();
-        }
-    }
-}
-
-function callProductDetailAPIReduce() {
-    for(var j=0; j<4; j++) {
-        var i = ((Number(currentMonth)-j) < 10) ? "0"+(Number(currentMonth)-j) : Number(currentMonth)-j;
-        productDetailQueryData = "<LayoutHeader><StartYearMonth>"
-                    + currentYear + "/" + i
-                    + "</StartYearMonth><EndYearMonth>"
-                    + currentYear + "/" + i
-                    + "</EndYearMonth></LayoutHeader>";
-        ProductDetail();
-    }
 }
 
 //参数n必须为number类型

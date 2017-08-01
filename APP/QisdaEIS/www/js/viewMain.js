@@ -273,64 +273,6 @@ function hideTooltip(){
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){		
-
-		window.ROSummary = function() {
-
-            if(localStorage.getItem("hitRateEisData") === null) {
-    	    	this.successCallback = function(data) {
-                    roSummaryCallBackData = data["Content"]["DataList"];
-    	    		length = roSummaryCallBackData.length;
-    	    		thisYear = roSummaryCallBackData[length-1]["YEAR"];
-    	    		thisMonth = roSummaryCallBackData[length-1]["MONTH"];
-                    UserAuthority();
-    	    		convertData();
-                    //review by alan
-                    getAllData();
-                    showHighchart();
-                    switch(viewMainTab) {
-                        case "BU" :
-                            $("input[id=viewMain-tab-1]").trigger('click');   
-                            break;
-                        case "CSD" :
-                            $("input[id=viewMain-tab-2]").trigger('click');   
-                            break;
-                    }
-                    loadingMask("hide");
-                    if (window.orientation === 90 || window.orientation === -90 ) {
-                        zoomInChart();
-                    }
-                    /*localStorage.setItem("hitRateEisData", JSON.stringify([hitRateEisData, nowTime]));
-                    localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
-                    localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime])); */ 
-                };
-
-    	    	this.failCallback = function(data) {
-    	    		console.log("api misconnected");
-    	    	};
-
-    			var _construct = function() {
-    				CustomAPI("POST", true, "ROSummary", self.successCallback, self.failCallback, ROSummaryQueryData, "");
-    			}();
-            }else {
-                hitRateEisData = JSON.parse(localStorage.getItem("hitRateEisData"))[0];
-                thisYear = JSON.parse(localStorage.getItem("thisYear"))[0];
-                thisMonth = JSON.parse(localStorage.getItem("thisMonth"))[0];
-                /*UserAuthority();
-                getAllData();
-                $("#viewHitRate .page-date").text(monTable[thisMonth]+thisYear);
-                showData("thisMonth", thisMonthActualAMT, thisMonthBudgetAMT, thisMonthData);
-                showHighchart();*/
-                loadingMask("hide");
-                if (window.orientation === 90 || window.orientation === -90 ) {
-                    zoomInChart();
-                }
-                /*var lastTime = JSON.parse(localStorage.getItem("hitRateEisData"))[1];
-                if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
-                    localStorage.removeItem("hitRateEisData");
-                    ROSummary();
-                }*/
-            }
-        };
 		
 		
 		function showBubble(){
@@ -346,20 +288,7 @@ $('#viewMain').pagecontainer({
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
-			PullToRefresh.init({
-                mainElement: '.page-date',
-                onRefresh: function() {
-                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
-                        localStorage.removeItem("hitRateEisData");
-                        ROSummaryQueryData = "<LayoutHeader><StartYearMonth>"
-                            + (currentYear - 3) + "/01"
-                            + "</StartYearMonth><EndYearMonth>"
-                            + currentYear + "/" + currentMonth
-                            + "</EndYearMonth></LayoutHeader>";
-                        ROSummary();
-                    }
-                }
-            });
+			
 			
 		});
 		
