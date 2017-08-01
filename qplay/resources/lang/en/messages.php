@@ -327,6 +327,8 @@ return [
     'TAB_REGISTER_CUMULATIVE' => 'Cumulative  Registered Devices / Users',
     'TAB_API_CALL_FREQUENCY' => 'API Call Frequency',
     'TAB_OPERATION_TIME' => 'API Operation Time',
+    'TAB_USAGE_REPORT' => 'Usage Report',
+    'TAB_PUSH_SERVICE_HOURS' => 'Push Service Hours',
     'NUMBER_OF_REGISTERED_DEVICES' => 'Registered Devices',
     'NUMBER_OF_REGISTERED_USERS' => 'Registered Users',
     'NUMBER_OF_ACTIVE_DEVICES' => 'Active Devices',
@@ -344,6 +346,12 @@ return [
     'OS_NAME' => 'os name',
     'REGISTERED_DEVICES' => 'Registered Decivices',
     'REGISTERED_USERS' => 'Registered Users',
+    'N_DAY' => '%s Day',
+    'N_MONTH' =>'%s Month',
+    'TOTAL_RANKING' => 'Total Ranking',
+    'POPULAR_TIMES' => 'Popular Times',
+    'USAGE_COUNT' => 'Usage Count',
+
 
     //ENS Maintain
     'IMPORT_BASIC_INFO' => 'Import Member Information',

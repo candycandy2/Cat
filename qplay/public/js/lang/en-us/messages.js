@@ -24,7 +24,7 @@ var Messages = {
     BY_COMPANY_SITE : 'by company_site',
     CALL_USERS_RATE : 'Calls By Users',
     CALL_TIMES_RATE : 'Calls By Times',
-    DAY : '1 Day',
+    N_DAY : '%d Day',
     N_MONTH : '%d Month',
     BY_DEPARTMENT : 'by department',
     AVG_OPERATION_TIME : 'AVG Operation Time',
@@ -39,6 +39,10 @@ var Messages = {
     CUMULATIVE_REGISTERED_DEVICE : 'Cumulative Registered Devices',
     CUMULATIVE_REGISTERED_USERS : 'Cumulative Registered Users',
     CUMULATIVE_REGISTERED_DEVICE_RATE : 'Cumulative Registered Devices Rate',
-    CUMULATIVE_REGISTERED_USERS_RATE : 'Cumulative Registered Users Rate'
+    CUMULATIVE_REGISTERED_USERS_RATE : 'Cumulative Registered Users Rate',
+    POPULAR_TIMES : 'Popular Times',
+    PUSH_SERVICE_HOURS : 'Push Service Hours',
+    RANKING : 'Ranking',
+    PUSH_TIMES :'Push Times'
 
 }

@@ -96,8 +96,19 @@ class ReportService
     }
 
     public function getPushServiceRankReport($from, $to, $timeOffset){
+        $res = [];
         $cursor = $this->apiLogRepository->getPushServiceRankDetail($from, $to, $timeOffset);
         $res = $cursor->toArray();
+       
+        return $res;
+    }
+
+
+    public function getPushServicReportEndDate($timeOffset){
+        $res = [];
+        $cursor = $this->apiLogRepository->getPushServicReportEndDate($timeOffset)->toArray();
+        $res['reportEndDate'] = (count($cursor) >0)?$cursor[0]->max:"";
+        $res['reportStartDate'] = (count($cursor) >0)?$cursor[0]->min:"";
         return $res;
     }
 }
