@@ -118,9 +118,9 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var agentList = "";
+                    var agentNotExist = false;
                     if(data['Content'][0] == undefined) {
-                        $("#agent-popup-option").popup("close");
-                        popupMsgInit('.agentNotExist');
+                        agentNotExist = true;
                     }else {
                         var callbackData = data['Content'][0]["result"];
                         var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -128,7 +128,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var nameArry = $("name", htmlDoc);
                         var agentIDArry = $("Empno", htmlDoc)
                         for(var i=0; i<DepArry.length; i++) {
-                            if($(nameArry[i]).html() !== localStorage["loginid"]) {
+                            if($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
                                 agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() + "" +'">'
                                            +    '<div style="width: 25VW;"><span>'
                                            +        $(DepArry[i]).html()
@@ -139,8 +139,16 @@ $("#viewPersonalLeave").pagecontainer({
                                            + '</li>';
                             }
                         }
-                        $("#agent-popup-option-list").empty().append(agentList);
-                        resizePopup("agent-popup-option");
+                        if(agentList == "") {
+                            agentNotExist = true;
+                        }else {
+                            $("#agent-popup-option-list").empty().append(agentList);
+                            resizePopup("agent-popup-option");
+                        }
+                    }
+                    if(agentNotExist) {
+                        $("#agent-popup-option").popup("close");
+                        popupMsgInit('.agentNotExist');
                     }
                 }
             };
