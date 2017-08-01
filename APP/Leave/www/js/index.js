@@ -51,13 +51,17 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<EmpNo>"+ myEmpNo +"</EmpNo>";
+    getDefaultSettingQueryData = "<EmpNo>" + myEmpNo + "</EmpNo>";
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
         GetDefaultSetting();
     }
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
+    if(localStorage.getItem("agent") !== null) {
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+    }
     loadingMask("show");
 }
 

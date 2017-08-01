@@ -11,10 +11,10 @@ var prevPageID;
 window.initialSuccess = function() {
 
     //loadingMask("show");
+    //$.mobile.changePage('#viewExample');
+    //var APIRequest = new APIRequest();
 
-    $.mobile.changePage('#viewExample');
-    var APIRequest = new APIRequest();
-
+    $.mobile.changePage('#viewMain');
 }
 
 //[Android]Handle the back button

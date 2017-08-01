@@ -35,28 +35,12 @@ window.initialSuccess = function() {
 
     JM.initial();
 
-    window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
-        if(result == 0) {
-            // 系统设置中已关闭应用推送。
-            console.log("====@@--1");
-        } else if(result > 0) {
-            // 系统设置中打开了应用推送。
-            console.log("====@@--2");
-        }
+    //For iOS
+    window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
+        console.log(data)
     });
 
-    window.plugins.jPushPlugin.isPushStopped(function (result) {
-        if (result == 0) {
-            // 开启
-            console.log("====##--1");
-        } else {
-            // 关闭
-            console.log("====##--2");
-        }
-    });
-
-    window.plugins.jPushPlugin.getUserNotificationSettings();
-    window.plugins.jPushPlugin.isPushStopped();
+    window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
 }
 
 var chatRoom = {
@@ -168,8 +152,35 @@ var chatRoom = {
                 chatRoomListView();
             }
         }
+    },
+    loadImg: function() {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+        var activePageID = activePage[0].id;
+
+        if (activePageID === "viewEventContent") {
+            $("#messageContent .message-data-list .chat-img").each(function(index, el) {
+                if ($(el).prop("src").length !== 0) {
+
+                    var rect = el.getBoundingClientRect();
+                    if (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+                    ) {
+                        var ID = $(el).prop("id");
+                        $("#" + ID).prop("src", photoData[ID]);
+                    }
+
+                }
+            });
+        }
     }
 };
+
+window.addEventListener("scroll", function() {
+    chatRoom.loadImg();
+});
 
 //1. Each data has its own life-cycle.
 //2. Every time before call API, check the life-cycle timestamp first.

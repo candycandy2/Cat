@@ -3,6 +3,7 @@ var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
+var timoutQueryEmployeeData = null;
 
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -117,23 +118,38 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var agentList = "";
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var DepArry = $("Department", htmlDoc);
-                    var nameArry = $("name", htmlDoc);
-                    var agentIDArry = $("Empno", htmlDoc)
-                    for(var i=0; i<DepArry.length; i++) {
-                        agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
-                                   +    '<div style="width: 25VW;"><span>'
-                                   +        $(DepArry[i]).html()
-                                   +    '</div></span>'
-                                   +    '<div><span>'
-                                   +        $(nameArry[i]).html()
-                                   +    '</div></span>'
-                                   + '</li>';
+                    var agentNotExist = false;
+                    if(data['Content'][0] == undefined) {
+                        agentNotExist = true;
+                    }else {
+                        var callbackData = data['Content'][0]["result"];
+                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                        var DepArry = $("Department", htmlDoc);
+                        var nameArry = $("name", htmlDoc);
+                        var agentIDArry = $("Empno", htmlDoc)
+                        for(var i=0; i<DepArry.length; i++) {
+                            if($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
+                                agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() + "" +'">'
+                                           +    '<div style="width: 25VW;"><span>'
+                                           +        $(DepArry[i]).html()
+                                           +    '</div></span>'
+                                           +    '<div><span>'
+                                           +        $(nameArry[i]).html()
+                                           +    '</div></span>'
+                                           + '</li>';
+                            }
+                        }
+                        if(agentList == "") {
+                            agentNotExist = true;
+                        }else {
+                            $("#agent-popup-option-list").empty().append(agentList);
+                            resizePopup("agent-popup-option");
+                        }
                     }
-                    $("#agent-popup-option-list").empty().append(agentList);
-                    $("#searchBar").blur();
+                    if(agentNotExist) {
+                        $("#agent-popup-option").popup("close");
+                        popupMsgInit('.agentNotExist');
+                    }
                 }
             };
 
@@ -151,30 +167,39 @@ $("#viewPersonalLeave").pagecontainer({
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDoc);
                     var applyDays = $("ApplyDays", htmlDoc);
                     var applyHours = $("ApplyHours", htmlDoc);
-                    sendLeaveApplicationData = "<LayoutHeader><empno>"
-                                             + myEmpNo
-                                             + "</empno><delegate>"
-                                             + agentid
-                                             + "</delegate><leaveid>"
-                                             + leaveid
-                                             + "</leaveid><begindate>"
-                                             + beginDate
-                                             + "</begindate><begintime>"
-                                             + beginTime
-                                             + "</begintime><enddate>"
-                                             + endDate
-                                             + "</enddate><endtime>"
-                                             + endTime
-                                             + "</endtime><datumdate></datumdate><applydays>"
-                                             + $(applyDays).html()
-                                             + "</applydays><applyhours>"
-                                             + $(applyHours).html()
-                                             + "</applyhours><reason>"
-                                             + leaveType
-                                             + "</reason></LayoutHeader>";
-                    SendLeaveApplicationData();
+                    if($(success).html() != undefined) {
+                        sendLeaveApplicationData = "<LayoutHeader><empno>"
+                                                 + myEmpNo
+                                                 + "</empno><delegate>"
+                                                 + agentid
+                                                 + "</delegate><leaveid>"
+                                                 + leaveid
+                                                 + "</leaveid><begindate>"
+                                                 + beginDate
+                                                 + "</begindate><begintime>"
+                                                 + beginTime
+                                                 + "</begintime><enddate>"
+                                                 + endDate
+                                                 + "</enddate><endtime>"
+                                                 + endTime
+                                                 + "</endtime><datumdate></datumdate><applydays>"
+                                                 + $(applyDays).html()
+                                                 + "</applydays><applyhours>"
+                                                 + $(applyHours).html()
+                                                 + "</applyhours><reason>"
+                                                 + leaveType
+                                                 + "</reason></LayoutHeader>";
+                        SendLeaveApplicationData();
+                    }else {
+                        var error = $("error", htmlDoc);
+                        var msgContent = $(error).html();
+                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+                        popupMsgInit('.applyLeaveFail');
+                        loadingMask("hide");
+                    }             
                 }
             };
 
@@ -194,8 +219,12 @@ $("#viewPersonalLeave").pagecontainer({
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var success = $("success", htmlDoc);
                     if($(success).html() != undefined) {
-                        $(".toast-style").fadeIn(100).delay(1000).fadeOut(100);
-                    }else{
+                        $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
+                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                    }else {
+                        var error = $("error", htmlDoc);
+                        var msgContent = $(error).html();
+                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
                     }
                     loadingMask("hide");
@@ -255,6 +284,9 @@ $("#viewPersonalLeave").pagecontainer({
             endTime = "17:00";
             beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
             endDate = currentYear + "/" + currentMonth + "/" + currentDate;
+            if(localStorage.getItem("agent") !== null) {
+                agentid = JSON.parse(localStorage.getItem("agent"))[1];
+            }
         });
 
         /********************************** dom event *************************************/
@@ -268,15 +300,15 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
         });
 
-        $("#infoTitle-1").on("click", function() {
-            if($("#infoContent-1").css("display") === "none") {
-                $("#infoContent-1").slideDown(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
-            }else if($("#infoContent-1").css("display") === "block") {
-                $("#infoContent-1").slideUp(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
-            }
-        });
+        // $("#infoTitle-1").on("click", function() {
+        //     if($("#infoContent-1").css("display") === "none") {
+        //         $("#infoContent-1").slideDown(500);
+        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
+        //     }else if($("#infoContent-1").css("display") === "block") {
+        //         $("#infoContent-1").slideUp(500);
+        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
+        //     }
+        // });
 
         // $("#infoTitle-2").on("click", function() {
         //     if($("#infoContent-2").css("display") === "none") {
@@ -319,7 +351,7 @@ $("#viewPersonalLeave").pagecontainer({
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
-            $("label[for=leaveTime-tab2]").text("0800-1200");
+            $("label[for=leaveTime-tab2]").text("08:00-12:00");
             $("label[for=leaveTime-tab3]").text("下午");
             leaveTimetab = "leaveTime-tab2";
         });
@@ -329,7 +361,7 @@ $("#viewPersonalLeave").pagecontainer({
             beginTime = timeArry[1];
             endTime = timeArry[2];
             $("label[for=leaveTime-tab2]").text("上午");
-            $("label[for=leaveTime-tab3]").text("1300-1700");
+            $("label[for=leaveTime-tab3]").text("13:00-17:00");
             leaveTimetab = "leaveTime-tab3";
         });
 
@@ -353,10 +385,10 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $(document).keypress(function(e) {
+        $(document).keyup(function(e) {
             var searchEmpNo = "";
             var searchName = "";
-            var searchData = $("#searchBar").val().match(/^[A-Za-z]*/);
+            var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
             if(searchData[0] != "") {
                  searchName = searchData[0];
             }else {
@@ -369,7 +401,16 @@ $("#viewPersonalLeave").pagecontainer({
                               + "</qEmpno><qName>"
                               + searchName
                               + "</qName></LayoutHeader>";
-            QueryEmployeeData();
+            if(timoutQueryEmployeeData != null) {
+                clearTimeout(timoutQueryEmployeeData);
+                timoutQueryEmployeeData = null;
+            }
+            timoutQueryEmployeeData = setTimeout(function() {
+                QueryEmployeeData();
+            }, 2000);
+            if(e.which == 13) {
+                $("#searchBar").blur();
+            }
         });
 
         $(document).on("change", "#leaveType-popup", function() {
@@ -417,7 +458,7 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).on("click", "#agent-popup-option ul li", function(e) {
-            agentid = $(this).val();
+            agentid = $(this).attr("value");
         });
 
         $(document).on("popupafterclose", "#agent-popup-option", function() {
@@ -427,9 +468,48 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
+        $(document).on("popupafteropen", "#agent-popup-option", function() {
+            $("#searchBar").val("");
+            $("#agent-popup-option-list").empty();
+        });
+
         function splitTime(time) {
             var regExp = /^(.*?)-(.*?)$/;
             return time.match(regExp);
+        }
+
+        function resizePopup(popupID) {
+            var popup = $("#" + popupID);
+            var popupHeight = popup.height();
+            var popupHeaderHeight = $("#" + popupID + " .header").height();
+            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+            //ui-content paddint-top/padding-bottom:3.07vw
+            // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
+
+            //Ul margin-top:2.17vw
+            // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
+            // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+            var popupMainHeight = "200";
+            popup.find("div[data-role='main'] .main").height(popupMainHeight);
+
+            $('#' + popupID + '-screen.in').animate({
+                'overflow-y': 'hidden',
+                'touch-action': 'none',
+                'height': $(window).height()
+            }, 0, function() {
+                var top = $('#' + popupID + '-screen.in').offset().top;
+                if (top < 0) {
+                    $('.ui-popup-screen.in').css({
+                        'top': Math.abs(top) + "px"
+                    });
+                }
+            });
+
+            var viewHeight = $(window).height();
+            var popupHeight = popup.outerHeight();
+            var top = (viewHeight - popupHeight) / 2;
+            popup.parent().css("top", top + "px");
         }
     }
 });
