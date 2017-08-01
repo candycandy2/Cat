@@ -209,35 +209,7 @@ var columnOption = {
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
 		
-		window.UserAuthority = function() { 
-            this.successCallback = function(data) {
-                userAuthorityCallBackData = data["Content"]["DataList"];
-                length = userAuthorityCallBackData.length;
-                productList = '<a id="ALL">ALL</a>';
-                var firstProductFlag = true;
-                for(var i=0; i<length; i++) {
-                    if(userAuthorityCallBackData[i]["PNAME"] == "PRODUCT") {
-                        productList += '<a id="' + userAuthorityCallBackData[i]["PVALUE"] + '">' + userAuthorityCallBackData[i]["PVALUE"] + '</a>';
-                        if(firstProductFlag) {
-                            firstProduct = userAuthorityCallBackData[i]["PVALUE"];
-                            firstProductFlag = false;
-                        }
-                    }
-                }
-                /*$(".Product").html("");
-                $(".Product").append(productList).enhanceWithin();
-                $(".Ro #ALL").addClass('hover');
-                $(".Product #ALL").addClass('hover');*/
-                loadingMask("hide");
-            };
-            this.failCallback = function(data) {
-                console.log("api misconnected");
-            };
-            
-            var _construct = function() {
-                CustomAPI("POST", true, "UserAuthority", self.successCallback, self.failCallback, UserAuthorityQueryData, "");
-            }();
-        };
+		
 		
 		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
@@ -349,7 +321,13 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		/********************************** page event *************************************/		
+		/********************************** page event *************************************/	
+		$("#viewDetail").on("pagebeforeshow", function(event, ui){
+			/* global PullToRefresh */
+			
+			
+		});
+		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
