@@ -274,9 +274,9 @@ function zoomInChartByTreemap(){
 
 function zoomInChartByColumn(){
 	if(screen.width < screen.height) {
-        chartColumnLandscape.setSize(screen.height, screen.width*0.92, false);
+        chartColumnLandscape.setSize(screen.height, screen.width*0.93, false);
    	}else {
-        chartColumnLandscape.setSize(screen.width, screen.height*0.92, false);
+        chartColumnLandscape.setSize(screen.width, screen.height*0.93, false);
     }
 }
 
@@ -339,6 +339,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#backBtn').hide();
     	}else{
     		$('#viewDetail-hc-column-landscape').hide();
+    		
     	}
 
     }
@@ -348,8 +349,10 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	zoomInChartByColumn();
+        	getLandscapeColumn();
+			zoomInChartByColumn();
         	$('#viewDetail-hc-column-landscape').show();
+        	
         }
 
     }

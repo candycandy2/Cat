@@ -138,6 +138,11 @@ a{
 	width: 5.957VW;
 }
 
+/* highcharts */
+#overview-hc-bubble, #overview-hc-rectangle{
+	width: 100VW;
+	height: 65VW;
+}
 /****************************************** viewDetail *********************************************/
 .include-label{
 	width: 100VW;
@@ -260,15 +265,6 @@ a{
 .bu-main > ul > li:last-child{
 	border-bottom: none !important;
 }
-
-/* odd data */
-/*.bu-main > ul > li:nth-child(odd){
-	height: 15.538VW;
-}*/
-/* even hc hide */
-/*.bu-main > ul > li:nth-child(even){
-	display: none;
-}*/
 
 /* data-list */
 .bu-data-list{
@@ -427,6 +423,7 @@ a{
 
 .csd-single-list{
 	min-height: 77.54VW;
+	display: none;
 }
 
 .csd-single-list > div:nth-child(1){
@@ -723,30 +720,8 @@ a{
 .data-list-none-fourColumn > div:nth-child(4){
 	width: 11.367VW;
 }
-/******************************************** viewHitRate *******************************************/
+/********************************************  *******************************************/
 
-/**************************************** viewMonthlyHitRate ****************************************/
-#viewMonthlyHitRate #title-container {
-	border-style: none;
-	border-bottom-style: solid;
-	border-bottom-color: #989898;
-	border-bottom-width: 0.1VH;
-	margin: 3.2VW 3.7VW 3.2VW 3.7VW;
-	padding-bottom: 1.8VH;
-}
-
-#viewMonthlyHitRate #title-container > div {
-	display: -webkit-flex;
-	flex-flow: row wrap;
-}
-
-#viewMonthlyHitRate #title-container > div > div {
-	text-align: center;
-}
-
-#viewMonthlyHitRate #title-container > div > div > p {
-	margin: 0;
-}
 
 .slider {
     width: 100VW;
@@ -761,7 +736,7 @@ div.scrollmenu {
 	text-align: center;
 	border-style: solid;
 	border-width: 0.5px;
-	border-color: #d6d6d6;
+	border-color: #D6D6D6;
 	white-space: nowrap;
 	width: 100VW;
 }
@@ -778,7 +753,7 @@ div.scrollmenu a {
 	border-width: 0px 0px 0px 1px;
 	border-color: #e4e4e4 !important;
 	/*width: 22VW;*/
-	width: 22VW;
+	width: 20VW;
 	text-decoration: none;
 }
 
@@ -838,11 +813,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
     background-color: #503f81;
     color: #fff;
 }
-/******* highcharts *******/
-#overview-hc-bubble, #overview-hc-rectangle{
-	width: 100VW;
-	height: 65VW;
-}
+
 /*************************************viewMain highcharts*******************************************/
 #viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
