@@ -146,6 +146,11 @@ class AppRepository
             -> select('qp_app_head.row_id','qp_project.app_key','icon_url','qp_app_head.default_lang_row_id',
                         'qp_project.project_code')
             -> first();
+
+        if(is_null($appInfo)){
+            return null;
+        }
+        
         $appLine = $this->appLine
             ->where('app_row_id', '=', $appId)
             ->where('lang_row_id', '=', $appInfo->default_lang_row_id)

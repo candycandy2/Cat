@@ -325,6 +325,8 @@ return [
     'TAB_REGISTER_CUMULATIVE' => '累计注册设备/用户数',
     'TAB_API_CALL_FREQUENCY' => 'API呼叫次数与人数',
     'TAB_OPERATION_TIME' => '平均处理时间',
+    'TAB_USAGE_REPORT' => '用户使用资料',
+    'TAB_PUSH_SERVICE_HOURS' => '推播服务时段',
     'NUMBER_OF_REGISTERED_DEVICES' => '注册总设备数',
     'NUMBER_OF_REGISTERED_USERS' => '注册总用户数',
     'NUMBER_OF_ACTIVE_DEVICES' => '活跃设备数',
@@ -342,6 +344,11 @@ return [
     'OS_NAME' => '系统名称',
     'REGISTERED_DEVICES' => '注册设备数',
     'REGISTERED_USERS' => '注册用户数',
+    'N_DAY' => '%s 天',
+    'N_MONTH' =>'%s 个月',
+    'TOTAL_RANKING' => '总排名',
+    'POPULAR_TIMES' => '热门时段',
+    'USAGE_COUNT' => '使用次数',
 
     //ENS Maintain
     'IMPORT_BASIC_INFO' => '汇入成员资讯',

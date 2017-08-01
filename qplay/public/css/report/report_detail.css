@@ -1,0 +1,55 @@
+.report-table .table-title{
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+.report-table td{
+    text-align: center;
+}
+.report-table .js-total{
+    font-weight:bold;
+}
+button.report-button{
+    display: block;
+    width: 64px;
+    height: 22px;
+    margin: 5px;
+    border-radius: 0.1;
+    padding: 0;
+    font-size: 12px;
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    background-color:#f7f7f7;
+    font-weight:normal;
+    color:#333333;
+    fill:#333333;
+}
+button.report-button.active{
+     background: #e6ebf5 ;    
+     font-weight: bold;
+     color: #000000;    
+     fill: #000000;
+     box-shadow:none !important;
+}
+button.report-button:focus{
+     box-shadow:none !important;
+     outline:none !important;
+}
+button.report-button:hover{ 
+    background-color: #e6e6e6;
+    box-shadow:none !important;
+}
+.report-input{
+    font-size:12px;
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    color:#666666;
+    fill:#666666;
+}
+.report-input > span{
+    margin: 5px;
+}
+.report-input > input{
+     text-align: center;
+     width:100px;
+}
+#push_service_range_btn{
+    padding-left: 20px; 
+}

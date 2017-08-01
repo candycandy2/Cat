@@ -24,7 +24,7 @@ var Messages = {
     BY_COMPANY_SITE : '依公司 + 地區',
     CALL_USERS_RATE : '呼叫次數比例',
     CALL_TIMES_RATE : '呼叫人數比例',
-    DAY : '天',
+    N_DAY : '%d 天',
     N_MONTH : '%d 個月',
     BY_DEPARTMENT : '依部門',
     AVG_OPERATION_TIME : '平均處理時間',
@@ -39,5 +39,9 @@ var Messages = {
     CUMULATIVE_REGISTERED_DEVICE : '累計註冊設備數',
     CUMULATIVE_REGISTERED_USERS : '累計註冊用戶數',
     CUMULATIVE_REGISTERED_DEVICE_RATE : '累計註冊設備比例',
-    CUMULATIVE_REGISTERED_USERS_RATE : '累計註冊用戶比例'
+    CUMULATIVE_REGISTERED_USERS_RATE : '累計註冊用戶比例',
+    POPULAR_TIMES : '熱門時段',
+    PUSH_SERVICE_HOURS : '推播服務時段分布',
+    RANKING : '排名',
+    PUSH_TIMES :'推播次數'
 }

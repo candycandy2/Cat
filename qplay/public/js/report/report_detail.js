@@ -1,7 +1,12 @@
 $(function () {
     $('#goBack').click(function(){
         window.location='../report';
-    });  
+    });
+    Highcharts.setOptions({
+     lang: {
+       rangeSelectorZoom: '' //have no word 'zoom' before range selector
+     }
+    }); 
     $('.dropdown-menu > li > a ,.signle-page > a').click(function(){
         $('.nav-tabs > li.active').removeClass('active');
         $('.dropdown-menu > li.active').removeClass('active');
