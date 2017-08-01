@@ -90,25 +90,25 @@ $("#viewReserve").pagecontainer({
             }();
         };
 
-        window.ReserveRelieve = function() {
+        window.ReserveMassage = function() {
             
             var self = this;
 
             this.successCallback = function(data) {
                 
-                ReserveRelieveCallBackData = data;
-                var resultcode = data['ResultCode'];
-                if(resultcode === "023902") {
+                ReserveMassageCallBackData = data;
+                var resultcode = data['Result_Code'];
+                if(resultcode === "039902") {
                     var headerContent = "預約成功";
                         msgContent = currentYear + "/" + month + "/" + date;
                     myReserver_dirtyFlag = true;
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/select.png");
                     localStorage.setItem("Site", reserveSite);
-                }else if(resultcode === "023903") {
+                }else if(resultcode === "039903") {
                     var headerContent = "預約失敗";
                         msgContent = "已超出可預約的時數限制";
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
-                }else if(resultcode === "023904") {
+                }else if(resultcode === "039904") {
                     var headerContent = "預約失敗";
                         msgContent = "已被預約";
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
@@ -127,7 +127,7 @@ $("#viewReserve").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
+                CustomAPI("POST", true, "ReserveMassage", self.successCallback, self.failCallback, ReserveMassageQuerydata, "");
             }();
         };
 
@@ -261,7 +261,7 @@ $("#viewReserve").pagecontainer({
                 mainElement: '#pageOne',
                 onRefresh: function() {
                     time = new Date(Date.now());
-                    // QueryReserveDetail();
+                    QueryReserveDetail();
                 }
             });
         });
@@ -271,7 +271,7 @@ $("#viewReserve").pagecontainer({
                 $("#reserveSite").val(localStorage.getItem("Site"));
                 reserveSite = localStorage.getItem("Site");
             }
-            // $("#scrollDate #" + currentMonth + currentDate).trigger('click');
+            $("#scrollDate #" + currentMonth + currentDate).trigger('click');
         });
 
         /********************************** dom event *************************************/
@@ -281,13 +281,13 @@ $("#viewReserve").pagecontainer({
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
-                // QueryReserveDetail();
+                QueryReserveDetail();
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         time = new Date(Date.now());
-                        // QueryReserveDetail();
+                        QueryReserveDetail();
                     }
                 });
             } else if (tabValue == 'tab2') {
@@ -328,8 +328,8 @@ $("#viewReserve").pagecontainer({
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
-            // QueryReserveDetail();
-            // loadingMask("show");
+            QueryReserveDetail();
+            loadingMask("show");
         });
 
         $("#reserveSite").change(function() {
@@ -339,8 +339,8 @@ $("#viewReserve").pagecontainer({
                                           + "</Site><ReserveDate>"
                                           + queryDate
                                           + "</ReserveDate></LayoutHeader>";
-            // QueryReserveDetail();
-            // loadingMask("show");
+            QueryReserveDetail();
+            loadingMask("show");
         });
 
         // time pick
@@ -412,7 +412,7 @@ $("#viewReserve").pagecontainer({
                         queryTime += time + ",";
                     }
                 }
-                ReserveRelieveQuerydata =   "<LayoutHeader><Site>"
+                ReserveMassageQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite
                                           + "</Site><ReserveDate>"
                                           + queryDate
@@ -421,8 +421,8 @@ $("#viewReserve").pagecontainer({
                                           + "</ReserveUser><BTime>"
                                           + queryTime
                                           + "</BTime></LayoutHeader>";
-                // ReserveRelieve();
-                // loadingMask("show");
+                ReserveMassage();
+                loadingMask("show");
             }
         });
 

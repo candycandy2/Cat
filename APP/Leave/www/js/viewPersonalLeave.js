@@ -158,30 +158,39 @@ $("#viewPersonalLeave").pagecontainer({
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDoc);
                     var applyDays = $("ApplyDays", htmlDoc);
                     var applyHours = $("ApplyHours", htmlDoc);
-                    sendLeaveApplicationData = "<LayoutHeader><empno>"
-                                             + myEmpNo
-                                             + "</empno><delegate>"
-                                             + agentid
-                                             + "</delegate><leaveid>"
-                                             + leaveid
-                                             + "</leaveid><begindate>"
-                                             + beginDate
-                                             + "</begindate><begintime>"
-                                             + beginTime
-                                             + "</begintime><enddate>"
-                                             + endDate
-                                             + "</enddate><endtime>"
-                                             + endTime
-                                             + "</endtime><datumdate></datumdate><applydays>"
-                                             + $(applyDays).html()
-                                             + "</applydays><applyhours>"
-                                             + $(applyHours).html()
-                                             + "</applyhours><reason>"
-                                             + leaveType
-                                             + "</reason></LayoutHeader>";
-                    SendLeaveApplicationData();
+                    if($(success).html() != undefined) {
+                        sendLeaveApplicationData = "<LayoutHeader><empno>"
+                                                 + myEmpNo
+                                                 + "</empno><delegate>"
+                                                 + agentid
+                                                 + "</delegate><leaveid>"
+                                                 + leaveid
+                                                 + "</leaveid><begindate>"
+                                                 + beginDate
+                                                 + "</begindate><begintime>"
+                                                 + beginTime
+                                                 + "</begintime><enddate>"
+                                                 + endDate
+                                                 + "</enddate><endtime>"
+                                                 + endTime
+                                                 + "</endtime><datumdate></datumdate><applydays>"
+                                                 + $(applyDays).html()
+                                                 + "</applydays><applyhours>"
+                                                 + $(applyHours).html()
+                                                 + "</applyhours><reason>"
+                                                 + leaveType
+                                                 + "</reason></LayoutHeader>";
+                        SendLeaveApplicationData();
+                    }else {
+                        var error = $("error", htmlDoc);
+                        var msgContent = $(error).html();
+                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+                        popupMsgInit('.applyLeaveFail');
+                        loadingMask("hide");
+                    }             
                 }
             };
 
@@ -333,7 +342,7 @@ $("#viewPersonalLeave").pagecontainer({
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
-            $("label[for=leaveTime-tab2]").text("0800-1200");
+            $("label[for=leaveTime-tab2]").text("08:00-12:00");
             $("label[for=leaveTime-tab3]").text("下午");
             leaveTimetab = "leaveTime-tab2";
         });
@@ -343,7 +352,7 @@ $("#viewPersonalLeave").pagecontainer({
             beginTime = timeArry[1];
             endTime = timeArry[2];
             $("label[for=leaveTime-tab2]").text("上午");
-            $("label[for=leaveTime-tab3]").text("1300-1700");
+            $("label[for=leaveTime-tab3]").text("13:00-17:00");
             leaveTimetab = "leaveTime-tab3";
         });
 
