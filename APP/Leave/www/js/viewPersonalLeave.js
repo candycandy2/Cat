@@ -119,7 +119,8 @@ $("#viewPersonalLeave").pagecontainer({
                 if(data['ResultCode'] === "1") {
                     var agentList = "";
                     if(data['Content'][0] == undefined) {
-                        $("#agent-popup-option-list").empty().append(agentList);
+                        $("#agent-popup-option").popup("close");
+                        popupMsgInit('.agentNotExist');
                     }else {
                         var callbackData = data['Content'][0]["result"];
                         var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -128,7 +129,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var agentIDArry = $("Empno", htmlDoc)
                         for(var i=0; i<DepArry.length; i++) {
                             if($(nameArry[i]).html() !== localStorage["loginid"]) {
-                                agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() +'">'
+                                agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() + "" +'">'
                                            +    '<div style="width: 25VW;"><span>'
                                            +        $(DepArry[i]).html()
                                            +    '</div></span>'
@@ -376,10 +377,10 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $(document).keypress(function(e) {
+        $(document).keyup(function(e) {
             var searchEmpNo = "";
             var searchName = "";
-            var searchData = $("#searchBar").val().match(/^[A-Za-z]*/);
+            var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
             if(searchData[0] != "") {
                  searchName = searchData[0];
             }else {
@@ -449,7 +450,7 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).on("click", "#agent-popup-option ul li", function(e) {
-            agentid = $(this).val();
+            agentid = $(this).attr("value");
         });
 
         $(document).on("popupafterclose", "#agent-popup-option", function() {
