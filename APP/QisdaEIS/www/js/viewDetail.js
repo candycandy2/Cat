@@ -205,10 +205,32 @@ var columnOption = {
 };
 
 
+function getLandscapeColumn(){
+	chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+	chartColumnLandscape.series[0].setData(columnData1, true, true, false);
+	chartColumnLandscape.series[1].setData(columnData2, true, true, false);
+	chartColumnLandscape.series[2].setData(columnData3, true, true, false);
+	chartColumnLandscape.series[3].setData(columnData4, true, true, false);
+	
+	chartColumnLandscape.update({ 
+		chart: {
+			marginTop: 90
+		},
+		title: {
+			text: 'Total AR and Overdue Amount',
+			style: {
+				fontWidth: 'bold'
+			}
+		},
+		subtitle: {
+			text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+		}
+	});
+}
+
 
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
-		
 		
 		
 		function getChartAreaAndColumn(){
@@ -274,28 +296,7 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		function getLandscapeColumn(){
-			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
-			chartColumnLandscape.series[0].setData(columnData1, true, true, false);
-			chartColumnLandscape.series[1].setData(columnData2, true, true, false);
-			chartColumnLandscape.series[2].setData(columnData3, true, true, false);
-			chartColumnLandscape.series[3].setData(columnData4, true, true, false);
-			
-			chartColumnLandscape.update({ 
-				chart: {
-					marginTop: 90
-				},
-				title: {
-					text: 'Total AR and Overdue Amount',
-					style: {
-						fontWidth: 'bold'
-					}
-				},
-				subtitle: {
-					text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
-				}
-			});
-		}
+		
 		
 		function changeScrollmenu(ro){
 			if(ro === 'LCD'){
@@ -331,7 +332,7 @@ $('#viewDetail').pagecontainer({
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
-			//numberToLocaleString();
+			zoomInChartByColumn();			
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
             $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
