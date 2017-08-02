@@ -6,6 +6,7 @@ $menu_name = "REPORT";
 
 @section('head')
     @parent
+    <link href="{{ asset('/css/report/report_detail.css?v='.config('app.static_version')) }}" rel="stylesheet">
     <script src="{{asset('/js/report/basic_chart_option.js?v='.config('app.static_version'))}}"></script>
     <script src="{{asset('/js/report/report_detail.js?v='.config('app.static_version'))}}"></script>
     <script src="{{asset('/js/report/summary/summary_report.js?v='.config('app.static_version'))}}"></script>
@@ -41,9 +42,9 @@ $menu_name = "REPORT";
                 <li><a data-tabid="register_cumulative">{{trans("messages.TAB_REGISTER_CUMULATIVE")}}</a></li>
             </ul>
         </li>
-        <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">用戶使用資料<span class="caret"></span></a>
+        <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{trans('messages.TAB_USAGE_REPORT')}}<span class="caret"></span></a>
             <ul class="dropdown-menu" id="usage_report">
-                <li><a data-tabid="push_service_hours">推播服務時段</a></li>
+                <li><a data-tabid="push_service_hours">{{trans('messages.TAB_PUSH_SERVICE_HOURS')}}</a></li>
             </ul>
         </li>
          @endif

@@ -4,7 +4,7 @@ var getMultiLineChartOpt = function(){
             buttons: [{
                 type: 'week',
                 count: 1,
-                text: Messages.DAY.replace('%d','7'),
+                text: Messages.N_DAY.replace('%d','7'),
                 dataGrouping: {
                     forced: true,
                     units: [['day', [1]]]
@@ -299,65 +299,62 @@ var getSemiDonutChartOpt = function(){
 
 var getColumnChartOpt = function(){
     return {
-            chart: {
-                type: 'column',
-                panning: false
-            },
-            navigator: {
-                enabled: false
-            },
-            tooltip: {
-                followPointer: false,  // this is already the default, it's just to stress what's said in commit comments and make code "speak"
-                followTouchMove: false,  // this is already the default, it's just to stress what's said in commit comments and make code "speak"
-            },
-            legend: {
-                enabled: true
-            },
-            mapNavigation: {
-                enableTouchZoom: true,
-            },
-            xAxis: {
-               range: 23,
-               labels: {
-                    formatter: function () {
-                        return this.value;
-                    }
+                chart: {
+                    type: 'column'
                 },
-                events: {
-                        setExtremes: function(e) {
-                            console.log(this);
-                            if(typeof(e.rangeSelectorButton)!== 'undefined')
-                            {
-                              alert('count: '+e.rangeSelectorButton.count + 'text: ' +e.rangeSelectorButton.text + ' type:' + e.rangeSelectorButton.type);
-                              return false;
-                            }
+                loading: {
+                    hideDuration: 1000,
+                    showDuration: 1000
+                },
+                title: {
+                    text: 'Stacked column chart'
+                },
+                xAxis: {
+                    categories: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                                 '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                                 '21', '22', '23'
+                                ]
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                         }
                     }
                 },
-                rangeSelector: {
-                    selected: 1
+                legend: {
+                    align: 'right',
+                    x: -30,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
                 },
-                scrollbar: {
-                    enabled: false
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
                 },
                 plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    dataLabels: {
-                        enabled: true,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
                     }
-                }
-            },
-             yAxis: {
-                min: 0,
-                title: {
-                    text: 'Total fruit consumption'
-                }
-            },
-                series:  [],
+                },
+                series: [],
                 lang: {
-                    noData: Messages.NO_DATA_TO_DISPLAY
+                    noData: Messages.NO_DATA_TO_DISPLAY,
                 }
             }
 };

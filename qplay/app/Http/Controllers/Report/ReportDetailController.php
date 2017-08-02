@@ -28,7 +28,7 @@ class ReportDetailController extends Controller
     }
 
     /**
-     * Api報表詳細頁入口
+     * 報表詳細頁入口
      */
     public function getApiReport(){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
@@ -40,6 +40,9 @@ class ReportDetailController extends Controller
         $input = Input::get();
         $appId = $input['app_row_id'];
         $appInfo = $this->appService->getAppBasicIfnoByAppId($appId);
+        if(is_null($appInfo)){
+            abort('404');
+        }
         $data = [];
         $data['app_row_id'] =   $appId;
         $data['app_name'] =  $appInfo->app_name;
@@ -165,6 +168,10 @@ class ReportDetailController extends Controller
         }
     }
 
+    /**
+     * 取得推播服務時段資料
+     * @return json
+     */
     public function getPushServiceRank(){
         if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
         {
@@ -179,6 +186,20 @@ class ReportDetailController extends Controller
             $to = $jsonContent['to'];
             $timeOffset = $jsonContent['timeOffset'];
             return json_encode($this->reportService->getPushServiceRankReport($from, $to, $timeOffset));
+        }
+    }
+
+    public function getPushServicReportEndDate(){
+        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
+        {
+            return null;
+        }
+        $content = file_get_contents('php://input');
+        $content = CommonUtil::prepareJSON($content);
+        if (\Request::isJson($content)) {
+            $jsonContent = json_decode($content, true);
+            $timeOffset = $jsonContent['timeOffset'];
+            return json_encode($this->reportService->getPushServicReportEndDate($timeOffset));
         }
     }
 }

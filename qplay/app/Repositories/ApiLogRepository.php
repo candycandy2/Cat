@@ -108,7 +108,7 @@ class ApiLogRepository
      * 取得該日期每小時API執行時間(最大、最小、平均)
      * @param  String $appKey     app_key
      * @param  String $date       查詢的日期
-     * @param   @param  int    $timeOffset 時差
+     * @param   @param  int       $timeOffset 時差
      * @param  String $actionName 查詢的API名稱
      * @return cursor
      */
@@ -148,9 +148,16 @@ class ApiLogRepository
         ]);
     }
 
+    /**
+     * 取得推播服務時段排名資料
+     * @param  string $from       查詢起始時間 YYYY-mm-dd
+     * @param  string $to         查詢結束時間 YYYY-mm-dd
+     * @param  int    $timeOffset 時差
+     * @return cursor
+     */
     public function getPushServiceRankDetail($from, $to, $timeOffset){
         $actionName = 'sendPushMessage';
-        return $this->apiLog::raw()->aggregate([
+        $query = [
             ['$project'=>
                 ['action'=>1,
                  'app_key'=>1,
@@ -158,21 +165,52 @@ class ApiLogRepository
                 ]
             ],
             ['$match'=>
-                ['action'=>$actionName,
-                 'created_at'=>['$gte'=> new \MongoDB\BSON\UTCDateTime(new DateTime($from . " 00:00:00")),
-                                '$lt'=> new \MongoDB\BSON\UTCDateTime(new DateTime($to . " 23:59:59"))
-                                ]
-                ]
+                ['action'=>$actionName]
             ],
             ['$group' =>
-                ['_id' => ['interval'=>['$dateToString'=>['format'=>'%H:00','date'=>'$created_at']],
+                ['_id' => ['interval'=>['$dateToString'=>['format'=>'%H:00:00','date'=>'$created_at']],
                            'app_key'=>'$app_key'
                            ],
                  'count' => ['$sum' => 1],
                 ]
             ],
             ['$sort'=>['count' => -1]],
-        ]);
+        ];
+        if($from!="" && $to!=""){
+            $query[1]['$match'] = ['action'=>$actionName ,
+                                   'created_at' => ['$gte'=> new \MongoDB\BSON\UTCDateTime(new DateTime($from . " 00:00:00")),
+                                                    '$lt'=> new \MongoDB\BSON\UTCDateTime(new DateTime($to . " 23:59:59"))
+                                                    ]
+                                 ];
+        }
+        return $this->apiLog::raw()->aggregate($query);
+    }
 
+    /**
+     * 取得推播服務時段最新log日
+     * @param  int    $timeOffset 時差
+     * @return cursor
+     */
+    public function getPushServicReportEndDate($timeOffset){
+        $actionName = 'sendPushMessage';
+        $query = [
+            ['$project'=>
+                ['action'=>1,
+                 'created_at'=>['$add'=>['$created_at',$timeOffset]],
+                 'date'=>['$dateToString'=>['format'=>'%Y-%m-%d', 'date'=>'$created_at']]
+                ]
+            ],
+            ['$match'=>
+                ['action'=>$actionName]
+            ],
+            ['$group' =>
+                ['_id' => null,
+                 'max' => ['$max' => '$date'],
+                 'min' => ['$min' => '$date'],
+                ]
+            ],
+        ];
+
+        return $this->apiLog::raw()->aggregate($query);
     }
 }

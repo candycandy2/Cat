@@ -93,11 +93,27 @@ $(document).one("pagebeforeshow", function() {
 
     $(".menu-btn").on("click", function() {
         $("#mypanel").panel("open");
+        $(".page-mask").show();
     });
 
     $(document).on("swiperight", function(event) {
         if($(".ui-page-active").jqmData("panel") !== "open") {
-            $("#mypanel").panel( "open");
+            $("#mypanel").panel("open");
+            $(".page-mask").show();
+        }
+    });
+
+    $(document).on("swipeleft", function(event) {
+        if($(".ui-page-active").jqmData("panel") === "open") {
+            $("#mypanel").panel("close");
+            $(".page-mask").hide();
+        }
+    });
+
+    $(document).on("click", function(event) {
+        if($(".ui-page-active").jqmData("panel") === "open") {
+            $("#mypanel").panel("close");
+            $(".page-mask").hide();
         }
     });
 });
