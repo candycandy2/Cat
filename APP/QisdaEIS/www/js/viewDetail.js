@@ -168,6 +168,10 @@ var columnOption = {
 	    borderWidth: 1,
 	    borderColor: 'gray',
 	    backgroundColor:　'#ffffff',
+//	    headerFormat: '<table class="fontTooltip">' + '<tr><td>' + this.x + '</td></tr>' +
+//	     '<tr><td>' + companyCode[0] + '</td></tr>',
+//      pointFormat: '<tr><td>' + this.series.name + ':USD$' + this.y + '</td></tr>',
+//      footerFormat: '</table>',
 	   	formatter: function () {
 	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
 	        $.each(this.points, function () {
@@ -327,19 +331,13 @@ $('#viewDetail').pagecontainer({
 			/* global PullToRefresh */
 			
 			
+			changePageInitViewDetail();
 		});
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
 			zoomInChartByColumn();			
-			
-			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
-            $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").addClass('hover');
-            
 			
 		});
 		
