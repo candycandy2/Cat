@@ -296,7 +296,11 @@ $('#viewMain').pagecontainer({
 			showBubble();
 			
 			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+		    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+		    
+		    $('#overview-hc-rectangle').hide();
+		    chartbubble.series[0].setData(buBubbleSeries, true, true, false);
+			chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart();

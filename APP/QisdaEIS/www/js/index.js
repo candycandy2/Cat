@@ -47,16 +47,10 @@ $(document).one('pagebeforeshow', function(){
 
     $("#mypanel #mypanelviewMain").on("click", function() {
         changePageByPanel("viewMain");
-        $('#overview-hc-rectangle').hide();
-        chartbubble.series[0].setData(buBubbleSeries, true, true, false);
-		chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
     });
 
     $("#mypanel #mypanelviewDetail").on("click", function() {
         changePageByPanel("viewDetail");
-        $('#overdueSoon').hide();
-		$('#expiredSoon').hide();
-		//$('#overdue').show();
     });
 
     $(".menu-btn").on("click", function() {
@@ -319,8 +313,30 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
+function changePageInitViewDetail(){
+	$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
+    $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+    $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
+    
+	$('#memoBtn').attr('src', 'img/switch_g.png');
+	$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+    $('.buSingleListBtn').attr('src', 'img/list_down.png');
+    $('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    $('.csdSingleListBtn').attr('src', 'img/list_down.png');
+    $('.bu-single-list').hide();
+    $('.csd-single-list').hide();
+    
+    $('#overdueSoon').hide();
+	$('#expiredSoon').hide();
+	$('#overdue').show();
+	
+    $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+    $(".Ro #ALL").addClass('hover');
+}
 
-
+function changePageInitViewMain(){
+	
+}
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
