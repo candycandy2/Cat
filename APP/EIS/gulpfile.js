@@ -21,7 +21,7 @@ var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
 
-env.set({APP_NAME: "EIS"});
+env.set({APP_NAME: "BenQEIS"});
 
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
