@@ -36,16 +36,7 @@ td.grid_warp_column {
     vertical-align: middle;
     border: 1px solid transparent;
 }
-.report-table .table-title{
-    text-align: center !important;
-    vertical-align: middle !important;
-}
-.report-table td{
-    text-align: center;
-}
-.report-table .js-total{
-    font-weight:bold;
-}
+
 .bg-color-pink{
     background-color: #f9edf7;
 }

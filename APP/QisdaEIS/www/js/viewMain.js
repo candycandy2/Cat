@@ -89,6 +89,13 @@ var bubbleOption = {
         '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
+       	/*formatter: function () {
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
+	        $.each(this.points, function () {
+	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
+	        });
+	        return s;
+	    },*/
         followTouchMove: false
     },
     plotOptions: {
@@ -267,6 +274,7 @@ function hideTooltip(){
 $('#viewMain').pagecontainer({
 	create: function (event, ui){		
 		
+		
 		function showBubble(){
 			bubbleOption.chart.renderTo = 'overview-hc-bubble';
 			chartbubble = new Highcharts.Chart(bubbleOption);
@@ -279,8 +287,8 @@ $('#viewMain').pagecontainer({
 		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
-			// global PullToRefresh
-
+			/* global PullToRefresh */
+			
 			
 		});
 		

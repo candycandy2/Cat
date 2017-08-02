@@ -5,7 +5,11 @@ var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
 var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var chartColumnLandscape;
+var currentYear, currentMonth, currentDate;
+var length,thisYear,thisMonth;
+var ROSummaryQueryData,roSummaryCallBackData,productDetailQueryData,userAuthorityCallBackData;
 var treemapState = false;
+var UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -13,9 +17,8 @@ var appKeyOriginal = "appqisdaeis";
 var appKey = "appqisdaeis";
 var appSecretKey = "b383e7bdeea5e91eb4223602a9df2f05";
 var htmlContent = "";
-
 var panel = htmlContent
-        +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
+        +'<div data-role="panel" id="mypanel" data-display="overlay" data-position-fixed="true" style="background-color:#cecece; box-shadow:0 0 0;">'
         +   '<div id="panel-header">'
         +       '<span class="panel-text">AR Overdue Analysis</span>'
         +   '</div>'
@@ -26,7 +29,15 @@ var panel = htmlContent
         +       '<span class="panel-text">&nbsp;&nbsp;AR Overdue Detail</span>'
         +   '</div>'
         +'</div>';
+var time = new Date(Date.now());
 
+window.initialSuccess = function() {
+
+    //loadingMask("show");
+    
+    //ROSummary();
+    $.mobile.changePage("#viewMain");
+}
 
 window.initialSuccess = function() {
     $.mobile.changePage('#viewMain');
@@ -193,7 +204,6 @@ $(document).one('pagebeforeshow', function(){
 });
 
 
-
 //[Android]Handle the back button
 function onBackKeyDown() {
 	var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -264,9 +274,9 @@ function zoomInChartByTreemap(){
 
 function zoomInChartByColumn(){
 	if(screen.width < screen.height) {
-        chartColumnLandscape.setSize(screen.height, screen.width*0.92, false);
+        chartColumnLandscape.setSize(screen.height, screen.width*0.93, false);
    	}else {
-        chartColumnLandscape.setSize(screen.width, screen.height*0.92, false);
+        chartColumnLandscape.setSize(screen.width, screen.height*0.93, false);
     }
 }
 
@@ -276,21 +286,30 @@ function changeFontColor(num){
 	}else{
 		$('#moneyOverdue').css('color', '#323232');
 	}
-
 }
 
+//参数n必须为number类型
+function formatNumber(n) {
+    n += "";
+    var arr = n.split(".");
+    var regex = /(\d{1,3})(?=(\d{3})+$)/g;
+    return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
+}
 
 function changePageByPanel(pageId) {
 	window.firstClick = true;
 
 	if(device.platform === "Android"){
 		$.mobile.defaultPageTransition = 'fade';
+	}else if(device.platform === "iOS"){
+		$.mobile.defaultPageTransition = 'none';
 	}
 
     if($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
+        
         $.mobile.changePage("#" + pageId);
 
         if(firstClick){
@@ -309,6 +328,7 @@ function changePageByPanel(pageId) {
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+	
     if($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel( "close");
     }
@@ -319,8 +339,8 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#backBtn').hide();
     	}else{
     		$('#viewDetail-hc-column-landscape').hide();
+    		
     	}
-
 
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
@@ -329,10 +349,11 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	zoomInChartByColumn();
+        	getLandscapeColumn();
+			zoomInChartByColumn();
         	$('#viewDetail-hc-column-landscape').show();
+        	
         }
-
 
     }
 }, false);

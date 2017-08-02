@@ -7,10 +7,10 @@ var companySeries2 = [31, 26, 58, 43];
 var companySeries3 = [46, 38, 21, 47];
 var companySeries4 = [58, 37, 76, 51];
 
-var columnData1 = [56, 72, 34, 94, 86, 85];
-var columnData2 = [79, 52, 74, 90, 53, 72];
-var columnData3 = [67, 89, 54, 16, 45, 66];
-var columnData4 = [58, 71, 89, 36, 93, 46];
+var columnData1 = [44656, 36472, 25634, 87794, 65686, 44485];
+var columnData2 = [55879, 54752, 65074, 48490, 65953, 46072];
+var columnData3 = [84567, 43989, 63854, 35016, 54245, 57166];
+var columnData4 = [55058, 76371, 57389, 43136, 36593, 78846];
 var columnMinusData1 = [0, 0, 0, 0, 0, 0];
 var columnMinusData2 = [35, 28, -30, 24, 25, 14];
 var columnMinusData3 = [37, -26, -22, -23, -19, 0];
@@ -154,7 +154,6 @@ var columnOption = {
             text: null
         },
         labels: {
-            format: '{value}K',
             style: {
             	fontSize: '9px'
             }
@@ -169,14 +168,15 @@ var columnOption = {
 	    borderWidth: 1,
 	    borderColor: 'gray',
 	    backgroundColor:　'#ffffff',
-	    headerFormat: '<table class="fontTooltip">' +
-	    '<tr><td><strong>{point.x}</strong></td></tr>' +
-	    '<tr><td><strong>' + companyCode[0] + ' ' + companyName[0] + '</strong></td></tr>',
-	    pointFormat: '<tr><td>{series.name}:USD${point.y}</td></tr>',
-	    footerFormat: '</table>',
+	   	formatter: function () {
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
+	        $.each(this.points, function () {
+	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
+	        });
+	        return s;
+	    },
 	    followPointer: false,
         followTouchMove: false,
-	    valueSuffix: 'K',
 	    shared: true
     },
     plotOptions: {
@@ -205,9 +205,34 @@ var columnOption = {
 };
 
 
+function getLandscapeColumn(){
+	chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+	chartColumnLandscape.series[0].setData(columnData1, true, true, false);
+	chartColumnLandscape.series[1].setData(columnData2, true, true, false);
+	chartColumnLandscape.series[2].setData(columnData3, true, true, false);
+	chartColumnLandscape.series[3].setData(columnData4, true, true, false);
+	
+	chartColumnLandscape.update({ 
+		chart: {
+			marginTop: 90
+		},
+		title: {
+			text: 'Total AR and Overdue Amount',
+			style: {
+				fontWidth: 'bold'
+			}
+		},
+		subtitle: {
+			text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+		}
+	});
+}
+
 
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
+		
+		
 		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
 			buChartArea1.series[0].setData(companySeries1, true, true, false);
@@ -271,28 +296,7 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		function getLandscapeColumn(){
-			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
-			chartColumnLandscape.series[0].setData(columnData1, true, true, false);
-			chartColumnLandscape.series[1].setData(columnData2, true, true, false);
-			chartColumnLandscape.series[2].setData(columnData3, true, true, false);
-			chartColumnLandscape.series[3].setData(columnData4, true, true, false);
-			
-			chartColumnLandscape.update({ 
-				chart: {
-					marginTop: 90
-				},
-				title: {
-					text: 'Total AR and Overdue Amount',
-					style: {
-						fontWidth: 'bold'
-					}
-				},
-				subtitle: {
-					text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
-				}
-			});
-		}
+		
 		
 		function changeScrollmenu(ro){
 			if(ro === 'LCD'){
@@ -318,11 +322,17 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		/********************************** page event *************************************/		
+		/********************************** page event *************************************/	
+		$("#viewDetail").on("pagebeforeshow", function(event, ui){
+			/* global PullToRefresh */
+			
+			
+		});
+		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
-			//numberToLocaleString();
+			zoomInChartByColumn();			
 			
 			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
             $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');

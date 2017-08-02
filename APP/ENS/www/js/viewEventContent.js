@@ -11,6 +11,7 @@ $("#viewEventContent").pagecontainer({
         var resizePhotoWidth;
         var resizePhotoHeight;
         var uploadPhoto = false;
+        window.photoData = {};
         /********************************** function *************************************/
 
         window.getEventDetail = function(eventID, action, callBack) {
@@ -260,6 +261,7 @@ $("#viewEventContent").pagecontainer({
                 var msgCount = 0;
                 var latestUser;
                 var latstMsg;
+                photoData = {};
 
                 for (var i=0; i<messages.length; i++) {
 
@@ -284,7 +286,12 @@ $("#viewEventContent").pagecontainer({
                         if (messages[i]["msg_body"]["media_id"].indexOf("file:") != -1) {
                             messageList.find(".image img").prop("src", messages[i]["msg_body"]["media_id"]);
                         } else {
-                            messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
+                            //messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
+                            var dataArray = messages[i]["msg_body"]["media_id"].split("/");
+                            photoData[dataArray[3]] = "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"];
+
+                            messageList.find(".image img").prop("src", "img/component/ajax-loader.gif");
+                            messageList.find(".image img").prop("id", dataArray[3]);
                             //messageList.find(".image img").prop("src", "https://dl.im.jiguang.cn/qiniu/image/j/54BAF99DD8326F50087B260036BFE6A9");
                         }
 
