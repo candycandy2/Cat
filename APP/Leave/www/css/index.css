@@ -24,8 +24,8 @@
 }
 
 /********************************************common use**********************************************/
-.page-main > form {
-	margin-top: 3.99VW;
+.page-main {
+    padding-top: 3.99vw;
 }
 
 .page-mask {
