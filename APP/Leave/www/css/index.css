@@ -134,7 +134,7 @@
 	border-color: #d6d6d6;
 	text-align: center;
 	font-weight: 300;
-	font-size: 3.86VW;
+	font-size: 3.74VW;
 }
 
 #leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
@@ -175,10 +175,13 @@
 	background-repeat: no-repeat;
 	background-size: 3.945VW;
 	background-position-x: 2.71VW;
-	background-position-y: 2VW;  
+    background-position-y: 1.6275VW;
 	height: 8VW;
 	margin-top: 5.07VW;
 	text-indent: 8VW;
+    font-size: 4vw;
+    padding: 0;
+    padding-top: 0.8vw;
 }
 
 #agent-popup-option-popup .header.typeB {
@@ -191,6 +194,29 @@
 
 #agent-popup-option-popup ul {
 	margin-top: 0VW;
+}
+
+#agent-popup-option-popup ul::-webkit-scrollbar {
+    width: 3px;
+    margin: 0px;
+}
+
+#agent-popup-option-popup ul::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;*/
+}
+
+#agent-popup-option-popup ul::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 15px;
+    background: rgba(0,0,0,0.8);
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
+}
+
+#agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0,0,0,0.4);
 }
 
 .tpl-option-msg-list {

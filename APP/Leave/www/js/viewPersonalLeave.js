@@ -144,6 +144,9 @@ $("#viewPersonalLeave").pagecontainer({
                         }else {
                             $("#agent-popup-option-list").empty().append(agentList);
                             resizePopup("agent-popup-option");
+
+                            $("#agent-popup-option-list").show();
+                            $("#queryLoader").hide();
                         }
                     }
                     if(agentNotExist) {
@@ -386,6 +389,11 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).keyup(function(e) {
+            if ($("#searchBar").val().length == 0) {
+                $("#queryLoader").hide();
+                $("#agent-popup-option-list").hide();
+                return;
+            }
             var searchEmpNo = "";
             var searchName = "";
             var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
@@ -407,6 +415,9 @@ $("#viewPersonalLeave").pagecontainer({
             }
             timoutQueryEmployeeData = setTimeout(function() {
                 QueryEmployeeData();
+
+                $("#queryLoader").show();
+                $("#agent-popup-option-list").hide();
             }, 2000);
             if(e.which == 13) {
                 $("#searchBar").blur();
@@ -471,6 +482,12 @@ $("#viewPersonalLeave").pagecontainer({
         $(document).on("popupafteropen", "#agent-popup-option", function() {
             $("#searchBar").val("");
             $("#agent-popup-option-list").empty();
+
+            if ($("#queryLoader").length <= 0) {
+                $("#agent-popup-option-popup .ui-content").append('<img id="queryLoader" src="img/query-loader.gif" width="15" height="15" style="margin-left:45%; display:none;">');
+            } else {
+                $("#queryLoader").hide();
+            }
         });
 
         function splitTime(time) {
