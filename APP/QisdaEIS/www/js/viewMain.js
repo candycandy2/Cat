@@ -1,5 +1,6 @@
 //get BU & CSD series
 var viewMainTab = "BU";
+var mainQisdaEisData = {};
 var buBubbleSeries = [
 	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
     { x: 61, y: 63, name: 'TF', data: {}, color: '#40C1C7' },
@@ -272,8 +273,47 @@ function hideTooltip(){
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
-	create: function (event, ui){		
+	create: function (event, ui){	
 		
+		window.AraUserAuthority = function() {
+			this.successCallback = function(data) {
+				
+			};
+			
+			this.failCallback = function(data) {
+	    		console.log("api misconnected");
+	    	};
+	    	
+	    	var _construct = function() {
+				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+			}();
+			
+			
+		};
+		
+		window.ARSummary = function() {
+			this.successCallback = function(data) {
+				arSummaryCallBackData = data["Content"]["DataList"];
+	    		length = arSummaryCallBackData.length;
+	    		thisYear = arSummaryCallBackData[length-1]["YEAR"];
+	    		thisMonth = arSummaryCallBackData[length-1]["MONTH"];
+	    		
+	    		localStorage.setItem("mainQisdaEisData", JSON.stringify([mainQisdaEisData, nowTime]));
+                localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
+                localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime])); 
+                
+                var aaa = localStorage.getItem("mainQisdaEisData");
+                console.log(aaa);
+			};
+			
+			this.failCallback = function(data) {
+	    		console.log("api misconnected");
+	    	};
+	    	
+	    	var _construct = function() {
+				CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
+			}();
+		};
 		
 		function showBubble(){
 			bubbleOption.chart.renderTo = 'overview-hc-bubble';
