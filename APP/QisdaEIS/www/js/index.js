@@ -7,9 +7,10 @@ var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var chartColumnLandscape;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
-var ROSummaryQueryData,roSummaryCallBackData,productDetailQueryData,userAuthorityCallBackData;
+var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
+var arSummaryCallBackData;
 var treemapState = false;
-var UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -30,17 +31,28 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
+var nowTime = new Date();
 
 window.initialSuccess = function() {
-
-    //loadingMask("show");
+	currentYear = time.getFullYear();
+    currentDate = time.getDate();
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    if(currentDate == 1) {
+        currentMonth = currentMonth - 1;
+    }
+    console.log(currentYear+' , '+currentMonth+' , '+currentDate);
+    //localStorage
     
-    //ROSummary();
+    //loadingMask("show");
+    ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
+                        
+    console.log(ARSummaryQueryData);
+    //ARSummary();
     $.mobile.changePage("#viewMain");
-}
-
-window.initialSuccess = function() {
-    $.mobile.changePage('#viewMain');
 }
 
 $(document).one('pagebeforeshow', function(){

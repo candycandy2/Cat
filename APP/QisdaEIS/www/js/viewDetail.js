@@ -232,10 +232,51 @@ function getLandscapeColumn(){
 	});
 }
 
-
+/*****************************************************************/
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
 		
+		window.OverdueDetail = function() {
+			this.successCallback = function(data) {
+				
+			};
+			
+			this.failCallback = function(data) {
+				console.log("api misconnected");
+			};
+			
+			var _construct = function(){
+				CustomAPI("POST", true, "OverdueDetail", self.successCallback, self.failCallback, OverdueDetailQueryData, "");
+			}();
+		};
+		
+		window.OutstandDetail = function() {
+			this.successCallback = function(data) {
+				
+			};
+			
+			this.failCallback = function(data) {
+				console.log("api misconnected");
+			};
+			
+			var _construct = function(){
+				CustomAPI("POST", true, "OutstandDetail", self.successCallback, self.failCallback, OutstandDetailQueryData, "");
+			}();
+		};
+		
+		window.CreditExpiredSoon = function() {
+			this.successCallback = function(data) {
+				
+			};
+			
+			this.failCallback = function(data) {
+				console.log("api misconnected");
+			};
+			
+			var _construct = function(){
+				CustomAPI("POST", true, "CreditExpiredSoon", self.successCallback, self.failCallback, CreditExpiredSoonQueryData, "");
+			}();
+		};
 		
 		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
