@@ -116,7 +116,7 @@ var bubbleOption = {
             point: {
             	events: {
             		click: function(event){
-            			console.log(this.x + "," + this.y + this.name);
+            			//console.log(this.x + "," + this.y + this.name);
             			
             			//simulate click diff bubble show diff treemap
             			if(this.name === 'TE' || this.name === 'TN' || this.name === 'FS'){
@@ -269,11 +269,96 @@ function hideTooltip(){
 	chartbubble.tooltip.hide();
     chartRect.tooltip.hide();  
 }
-
-
+var buArr = [];
+var csdArr = [];
+ 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){	
+		
+		window.ARSummary = function() {
+			this.successCallback = function(data) {
+				arSummaryCallBackData = data["Content"];
+	    		/*length = arSummaryCallBackData.length;
+	    		thisYear = arSummaryCallBackData[length-1]["YEAR"];
+	    		thisMonth = arSummaryCallBackData[length-1]["MONTH"];*/
+	    		
+	    		/*console.log(JSON.stringify(arSummaryCallBackData));
+	    		console.log(arSummaryCallBackData[0]);
+	    		console.log(arSummaryCallBackData[0]['CUSTOMER']);*/
+	    		
+	    		//先按BU和CSD分组
+	    		for(var i in arSummaryCallBackData){
+	    			console.log(arSummaryCallBackData[i]);
+	    			if(arSummaryCallBackData[i]["TYPE"]=="BU"){
+	    				buArr.push(arSummaryCallBackData[i]);
+	    			}
+	    			else{
+	    				csdArr.push(arSummaryCallBackData[i]);
+	    			}
+	    		}
+	    		
+	    		//再按FACILITY分组
+	    		var buByFacility = [];
+	    		$.each(buArr, function(i, item) {
+	    			if(!buByFacility[item.FACILITY]) {
+	    				buByFacility[item.FACILITY] = [item];
+	    			}
+	    			else{
+	    				buByFacility[item.FACILITY].push(item);
+	    			}
+	    		});
+	    		
+	    		/*$.each(buByFacility, function(i, facility) {
+	    			var total = {"x":0,"y":0};
+	    			$.each(facility, function(j, item) {
+	    				total.x += item.OVER_1_15_INV;
+	    				total.y += item.MAX_DUE_DAYS_INV;
+	    			});
+	    			facility.total = total;
+	    		});
+	    		console.log(buByFacility);*/
+	    		
+	    		//相同FACILITY合并
+	    		/*var mergeFacility = [];
+	    		$.each(buByFacility, function(i, item) {
+	    			if(!mergeFacility[item.FACILITY]) {
+	    				mergeFacility[item.FACILITY] = [item];
+	    			}
+	    			else{
+	    				
+	    			}
+	    		});*/
+	    		
+	    		var obj = {
+	    			x: "",
+	    			y: "",
+	    			facility: ""
+	    		};
+	    		
+	    		//console.log(buByFacility['TX']);
+	    		
+	    		var arrFacility = [];
+	    		$.each(buByFacility, function(i, item) {
+	    			if(arrFacility[item.FACILITY]) {
+	    				obj.x += item.OVER_1_15_INV + item.OVER_16_45_INV + item.OVER_46_75_INV + item.OVER_76_INV;
+	    				obj.y += item.MAX_DUE_DAYS_INV;
+	    				obj.facility += item.FACILITY;
+	    				arrFacility[item.FACILITY].push(obj);
+	    			}
+	    		});
+	    		
+	    		console.log(obj);
+			};
+			
+			this.failCallback = function(data) {
+	    		console.log("api misconnected");
+	    	};
+	    	
+	    	var _construct = function() {
+				CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
+			}();
+		};
 		
 		window.AraUserAuthority = function() {
 			this.successCallback = function(data) {
@@ -289,30 +374,6 @@ $('#viewMain').pagecontainer({
 			}();
 			
 			
-		};
-		
-		window.ARSummary = function() {
-			this.successCallback = function(data) {
-				arSummaryCallBackData = data["Content"]["DataList"];
-	    		length = arSummaryCallBackData.length;
-	    		thisYear = arSummaryCallBackData[length-1]["YEAR"];
-	    		thisMonth = arSummaryCallBackData[length-1]["MONTH"];
-	    		
-	    		localStorage.setItem("mainQisdaEisData", JSON.stringify([mainQisdaEisData, nowTime]));
-                localStorage.setItem("thisYear", JSON.stringify([thisYear, nowTime]));
-                localStorage.setItem("thisMonth", JSON.stringify([thisMonth, nowTime])); 
-                
-                var aaa = localStorage.getItem("mainQisdaEisData");
-                console.log(aaa);
-			};
-			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
-			}();
 		};
 		
 		function showBubble(){
