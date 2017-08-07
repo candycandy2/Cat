@@ -252,6 +252,7 @@ $("#viewReserve").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewReserve").on("pagebeforeshow", function(event, ui) {
+            timeQueue = {};
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
@@ -276,6 +277,7 @@ $("#viewReserve").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#reserveTab').change(function() {
+            timeQueue = {};
             var tabValue = $("#reserveTab :radio:checked").val();
             if (tabValue == 'tab1') {
                 $('#pageOne').show();
@@ -318,6 +320,7 @@ $("#viewReserve").pagecontainer({
 
         // date pick
         $('body').on('click', '#scrollDate .ui-link', function() {
+            timeQueue = {};
             $('#scrollDate').find('.hover').removeClass('hover');
             $(this).addClass('hover');
             month = cutStringToArray($(this).context.id, ["2", "2"])[1];
