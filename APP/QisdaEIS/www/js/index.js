@@ -51,7 +51,7 @@ window.initialSuccess = function() {
                         + "</EndYearMonth></LayoutHeader>";
                         
     console.log(ARSummaryQueryData);
-    //ARSummary();
+    ARSummary();
     $.mobile.changePage("#viewMain");
 }
 
