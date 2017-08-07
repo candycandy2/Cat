@@ -1,21 +1,21 @@
 //get BU & CSD series
-var viewMainTab = "BU";
+var viewMainTab = "bu";
 var mainQisdaEisData = {};
 var buBubbleSeries = [
-	{ x: 60, y: 62, name: 'TE', data: {}, color: '#99CC33' },
-    { x: 61, y: 63, name: 'TF', data: {}, color: '#40C1C7' },
-    { x: 74, y: 49, name: 'TN', data: {}, color: '#FFCC66' },			            
-    { x: 78, y: 92, name: 'FL', data: {}, color: '#5AAEE1' },
-    { x: 82, y: 20, name: 'FS', data: {}, color: '#948078' },
-    { x: 88, y: 52, name: 'TY', data: {}, color: '#AC8BC0' }
+	/*{ x: 60, y: 201346476, facility: 'TE' },*/
+    { x: 61, y: 6135463, facility: 'TF' },
+    { x: 74, y: 4351101, facility: 'TN' },			            
+    { x: 78, y: 1364644, facility: 'FL' },
+    { x: 82, y: 1361325, facility: 'FS' },
+    { x: 88, y: 7345442, facility: 'TY' }
 ];
 var csdBubbleSeries = [
-	{ x: 74, y: 36, name: 'TE', data: {}, color: '#99CC33' },
-    { x: 82, y: 45, name: 'TF', data: {}, color: '#40C1C7' },
-    { x: 66, y: 60, name: 'TN', data: {}, color: '#FFCC66' },			            
-    { x: 88, y: 73, name: 'FL', data: {}, color: '#5AAEE1' },
-    { x: 63, y: 28, name: 'FS', data: {}, color: '#948078' },
-    { x: 91, y: 57, name: 'TY', data: {}, color: '#AC8BC0' }
+	{ x: 74, y: 36, name: 'TE',  color: '#99CC33' },
+    { x: 82, y: 45, name: 'TF',  color: '#40C1C7' },
+    { x: 66, y: 60, name: 'TN',  color: '#FFCC66' },			            
+    { x: 88, y: 73, name: 'FL',  color: '#5AAEE1' },
+    { x: 63, y: 28, name: 'FS',  color: '#948078' },
+    { x: 91, y: 57, name: 'TY',  color: '#AC8BC0' }
 ];
 var treemapSeries1 = [
 	{ name: '东森电视股份有限公司', code: '66588', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
@@ -53,14 +53,7 @@ var bubbleOption = {
         title: {
             text: 'Max Overdue Days of Each Facility(Days)',
             x: -20
-        },
-        labels: {
-            format: '{value}'
-        },
-        tickWidth: 1,
-        tickPositions: [70, 80, 90],
-        min: 56,
-        max: 95
+        }
     },
     yAxis: {
         lineWidth: 0,
@@ -71,11 +64,6 @@ var bubbleOption = {
             },
             y: 15
         },
-        labels: {
-            format: '{value}K'
-        },
-        maxPadding: 0.2,
-       	tickInterval: 25,
         endOnTick: false
     },
     tooltip: {
@@ -86,12 +74,12 @@ var bubbleOption = {
         borderColor: '#FDC24F',
         backgroundColor: 'rgba(247,247,247,0.85)',
         headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td><strong>{point.name}</strong></td></tr>' +
-        '<tr><td>Total Overdue AR Amt.:USD${point.y}K</td></tr>' +
+        pointFormat: '<tr><td><strong>{point.facility}</strong></td></tr>' +
+        '<tr><td>Total Overdue AR Amt.:USD${point.y}</td></tr>' +
         '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
         footerFormat: '</table>',
        	/*formatter: function () {
-	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
+	        var s = '<b>' + {this.facility} + '</b><br/><font>Total Overdue AR Amt.:USD$' + this.y + '</font><br/><font>Max Overdue Days:' + this.x +'days</font>';
 	        $.each(this.points, function () {
 	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
 	        });
@@ -106,7 +94,7 @@ var bubbleOption = {
             dataLabels: {
                 enabled: true,
                 allowOverlap: true,
-                format: '{point.name}',
+                format: '{point.facility}',
                 style: { 
                 	"color": "#ffffff",
                 	"fontSize": "12px", 
@@ -116,10 +104,11 @@ var bubbleOption = {
             point: {
             	events: {
             		click: function(event){
-            			//console.log(this.x + "," + this.y + this.name);
+            			var facility = this.facility;
+            			getTreemapSeriesByFacility(facility);
             			
             			//simulate click diff bubble show diff treemap
-            			if(this.name === 'TE' || this.name === 'TN' || this.name === 'FS'){
+            			if(this.facility === 'TE' || this.facility === 'TN' || this.facility === 'FS'){
             				showTreemap();
             				chartRect.series[0].setData(treemapSeries1, true, true, false);
             				
@@ -159,7 +148,8 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        data: buBubbleSeries
+        //data: buBubbleSeries
+        data: buBubbleArr
     }],
     exporting: {
         enabled: false
@@ -269,9 +259,13 @@ function hideTooltip(){
 	chartbubble.tooltip.hide();
     chartRect.tooltip.hide();  
 }
-var buArr = [];
-var csdArr = [];
- 
+
+
+var buByType = [];
+var csdByType = [];
+var buSimplify = [];
+var buBubbleArr = [];
+var buBubbleData = {};
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){	
@@ -283,72 +277,62 @@ $('#viewMain').pagecontainer({
 	    		thisYear = arSummaryCallBackData[length-1]["YEAR"];
 	    		thisMonth = arSummaryCallBackData[length-1]["MONTH"];*/
 	    		
-	    		/*console.log(JSON.stringify(arSummaryCallBackData));
-	    		console.log(arSummaryCallBackData[0]);
-	    		console.log(arSummaryCallBackData[0]['CUSTOMER']);*/
 	    		
-	    		//先按BU和CSD分组
+	    		//先按TYPE分组,分成BU和CSD
 	    		for(var i in arSummaryCallBackData){
-	    			console.log(arSummaryCallBackData[i]);
-	    			if(arSummaryCallBackData[i]["TYPE"]=="BU"){
-	    				buArr.push(arSummaryCallBackData[i]);
+	    			if(arSummaryCallBackData[i]["TYPE"] == "BU"){
+	    				buByType.push(arSummaryCallBackData[i]);
 	    			}
 	    			else{
-	    				csdArr.push(arSummaryCallBackData[i]);
+	    				csdByType.push(arSummaryCallBackData[i]);
 	    			}
 	    		}
+	    		//console.log(buByType);
 	    		
-	    		//再按FACILITY分组
-	    		var buByFacility = [];
-	    		$.each(buArr, function(i, item) {
-	    			if(!buByFacility[item.FACILITY]) {
-	    				buByFacility[item.FACILITY] = [item];
-	    			}
-	    			else{
-	    				buByFacility[item.FACILITY].push(item);
-	    			}
-	    		});
 	    		
-	    		/*$.each(buByFacility, function(i, facility) {
-	    			var total = {"x":0,"y":0};
-	    			$.each(facility, function(j, item) {
-	    				total.x += item.OVER_1_15_INV;
-	    				total.y += item.MAX_DUE_DAYS_INV;
+	    		//简化成所需BU和CSD
+	    		
+	    		$.each(buByType, function(i, item) {
+	    			buSimplify.push({
+	    				"day": parseInt(item.MAX_DUE_DAYS_INV),
+	    				"total": parseFloat(item.OVER_1_15_INV) + parseFloat(item.OVER_16_45_INV) + 
+	    						 parseFloat(item.OVER_46_75_INV) + parseFloat(item.OVER_76_INV),
+	    				"customer": item.CUSTOMER,
+	    				"facility": item.FACILITY,
+	    				"type": item.TYPE
 	    			});
-	    			facility.total = total;
-	    		});
-	    		console.log(buByFacility);*/
-	    		
-	    		//相同FACILITY合并
-	    		/*var mergeFacility = [];
-	    		$.each(buByFacility, function(i, item) {
-	    			if(!mergeFacility[item.FACILITY]) {
-	    				mergeFacility[item.FACILITY] = [item];
-	    			}
-	    			else{
-	    				
-	    			}
-	    		});*/
-	    		
-	    		var obj = {
-	    			x: "",
-	    			y: "",
-	    			facility: ""
-	    		};
-	    		
-	    		//console.log(buByFacility['TX']);
-	    		
-	    		var arrFacility = [];
-	    		$.each(buByFacility, function(i, item) {
-	    			if(arrFacility[item.FACILITY]) {
-	    				obj.x += item.OVER_1_15_INV + item.OVER_16_45_INV + item.OVER_46_75_INV + item.OVER_76_INV;
-	    				obj.y += item.MAX_DUE_DAYS_INV;
-	    				obj.facility += item.FACILITY;
-	    				arrFacility[item.FACILITY].push(obj);
-	    			}
 	    		});
 	    		
-	    		console.log(obj);
+	    		console.log(buSimplify);
+	    		
+	    		
+	    		//相同facility合并
+	    		
+	    		
+	    		$.each(buSimplify, function(i, item) {
+	    			var fac = item.facility;
+	    			var total = item.total;
+	    			var day = item.day;
+	    			if(buBubbleData[fac]) {
+	    				buBubbleData[fac].y += total;
+	    				if(day > buBubbleData[fac].x) {
+	    					buBubbleData[fac].x = day;
+	    				}
+	    			} else {
+	    				buBubbleData[fac] = {
+	    					x : day,
+	    					y : total,
+	    					"facility": fac
+	    				};
+	    				buBubbleArr.push(buBubbleData[fac]);
+	    			}
+	    			
+	    			
+	    		});
+	    		
+	    		console.log(buBubbleArr);
+	    			    		
+	    			
 			};
 			
 			this.failCallback = function(data) {
@@ -376,6 +360,12 @@ $('#viewMain').pagecontainer({
 			
 		};
 		
+		window.getTreemapSeriesByFacility = function(facility){
+			
+			
+			
+		}
+		
 		function showBubble(){
 			bubbleOption.chart.renderTo = 'overview-hc-bubble';
 			chartbubble = new Highcharts.Chart(bubbleOption);
@@ -400,7 +390,8 @@ $('#viewMain').pagecontainer({
 		    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 		    
 		    $('#overview-hc-rectangle').hide();
-		    chartbubble.series[0].setData(buBubbleSeries, true, true, false);
+		    //chartbubble.series[0].setData(buBubbleSeries, true, true, false);
+		    chartbubble.series[0].setData(buBubbleArr, true, true, false);
 			chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
             
 			if (window.orientation === 90 || window.orientation === -90 ) {
@@ -416,7 +407,7 @@ $('#viewMain').pagecontainer({
             chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
-            viewMainTab = 'BU';
+            viewMainTab = 'bu';
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
@@ -426,7 +417,7 @@ $('#viewMain').pagecontainer({
             chartLandscapebubble.series[0].setData(csdBubbleSeries, true, true, false);
             
             $('#overview-hc-rectangle').hide();
-            viewMainTab = 'CSD';
+            viewMainTab = 'csd';
         });
 		
 	}
