@@ -316,3 +316,19 @@
     background-position-x: 2.67VW;
     background-position-y: 1.53VW;
 }
+
+.tooltip {
+    position: absolute;
+    border: 1px solid #CCA052;
+    background-color: rgba(255,255,255,0.95);
+    color: #323232;
+    font-size: 3.14vw;
+    padding: 2vw;
+    border-radius: 5px;
+    line-height: 1;
+}
+
+.tooltip table {
+    margin: 0;
+    padding: 0;
+}

@@ -73,12 +73,12 @@ table {
 }
 
 .today {
-    color: white;
     background-image: url("../img/today_date.png");
     background-repeat: no-repeat;
     background-size: 7.165VW;
     background-position-x: 2.67VW;
     background-position-y: 1.53VW;
+    background-color: #E6E6E6;
 }
 
 .td-bottom-border {
