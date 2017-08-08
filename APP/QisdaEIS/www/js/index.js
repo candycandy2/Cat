@@ -8,7 +8,7 @@ var chartColumnLandscape;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
 var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
-var arSummaryCallBackData;
+var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData;
 var treemapState = false;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
