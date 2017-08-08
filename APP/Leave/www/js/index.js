@@ -8,24 +8,25 @@ var pageList = ["viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewB
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var htmlContent = "";
 var panel = htmlContent
-        +'<div data-role="panel" id="mypanel" data-display="overlay" style="background-color:#cecece; box-shadow:0 0 0;">'
+        +'<div data-role="panel" id="mypanel" data-display="overlay">'
         +   '<div class="ios-fix-overlap-div"></div>'
         +   '<div class="panel-content" id="mypanelviewPersonalLeave">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">個人假勤</span>'
+        +       '<span class="panel-text">個人假勤</span>'
         +   '</div>'
         // +   '<div class="panel-content" id="mypanelviewLeaveSubmit">'
-        // +       '<span class="panel-text" style="line-height:7.5VH;">請假申請</span>'
+        // +       '<span class="panel-text">請假申請</span>'
         // +   '</div>'
         // +   '<div class="panel-content" id="mypanelviewLeaveQuery">'
-        // +       '<span class="panel-text" style="line-height:7.5VH;">請假單查詢 / 銷假</span>'
+        // +       '<span class="panel-text">請假單查詢 / 銷假</span>'
         // +   '</div>'
         // +   '<div class="panel-content" id="mypanelviewBackLeaveQuery">'
-        // +       '<span class="panel-text" style="line-height:7.5VH;">銷假單查詢</span>'
+        // +       '<span class="panel-text">銷假單查詢</span>'
         // +   '</div>'
         +   '<div class="panel-content" id="mypanelviewHolidayCalendar">'
-        +       '<span class="panel-text" style="line-height:7.5VH;">2017 行事曆</span>'
+        +       '<span class="panel-text">2017 行事曆</span>'
         +   '</div>'
-        +'</div>';
+        +'</div>'
+        +'<div class="page-mask" style="display: none;"></div>';
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
 var currentYear = time.getFullYear();
@@ -75,6 +76,7 @@ $(document).one("pagebeforeshow", function() {
 
     if (device.platform === "iOS") {
         $("#mypanelviewPersonalLeave").css("margin-top", "20px");
+        $(".page-mask").css("top", "20px");
     }
 
     $("#mypanel #mypanelviewPersonalLeave").on("click", function() {
