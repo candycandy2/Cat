@@ -28,13 +28,19 @@
     padding-top: 3.99vw;
 }
 
+#mypanel {
+    background-color: #CECECE;
+    box-shadow: 0 0 0;
+    z-index: 1002;
+}
+
 .page-mask {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	z-index: 2;
+	z-index: 1001;
 	background: rgba(0, 0, 0, 0.5);
 }
 
@@ -279,16 +285,12 @@
     margin-right: 1.5VW;
 }
 /********************************************** mypanel *********************************************/
-#mypanel .panel-text{
-	margin: 4.3VW 0VW 3.71VW 3.71VW;
-}
-
 #mypanel .panel-content{
 	background-color: #f6f6f6;
 	color: #0f0f0f;
-	font-size: 3.8VW;
+	font-size: 3.97VW;
 	font-family: Arial;
-	height: 8VH;
+    padding: 4.3vw 0 3.71vw 3.71vw;
 }
 
 #mypanel .panel-content{
