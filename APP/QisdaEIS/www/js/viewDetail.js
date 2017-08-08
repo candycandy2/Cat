@@ -28,7 +28,10 @@ var companyName = ['东森电视股份有限公司', '飞利浦股份有限公�
 var userName = "Alan Chen";
 var startDate = "5/4";
 var endDate = "6/15";
-
+var buOverdue = [];
+var csdOverdue = [];
+var buOutstand = [];
+var csdOutstand = [];
 var dataContent = "";
 var dataTotal = dataContent
 			+ '<li class="bu-data-list" style="background-color:#ffffff">'
@@ -238,7 +241,19 @@ $('#viewDetail').pagecontainer({
 		
 		window.OverdueDetail = function() {
 			this.successCallback = function(data) {
-				console.log(data);
+				overdueDetailCallBackData = data["Content"];
+				for(var i in overdueDetailCallBackData){
+					if(overdueDetailCallBackData[i]["Header"]["TYPE"] == "BU"){
+						buOverdue.push(overdueDetailCallBackData[i]);
+					}
+					else{
+						csdOverdue.push(overdueDetailCallBackData[i]);
+					}
+				}
+				//console.log(buOverdue);
+				
+			
+				
 			};
 			
 			this.failCallback = function(data) {
@@ -252,7 +267,8 @@ $('#viewDetail').pagecontainer({
 		
 		window.OutstandDetail = function() {
 			this.successCallback = function(data) {
-				console.log(data);
+				outstandDetailCallBackData = data["Content"];
+				getOverdueSoonData();
 			};
 			
 			this.failCallback = function(data) {
@@ -341,7 +357,72 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		
+		function getOverdueSoonData(){
+			for(var i in outstandDetailCallBackData){
+				if(outstandDetailCallBackData[i]["TYPE"] == "BU"){
+					buOutstand.push(outstandDetailCallBackData[i]);
+				}
+				else{
+					csdOutstand.push(outstandDetailCallBackData[i]);
+				}
+			}
+			console.log(buOutstand);
+			
+			for(var i in buOutstand){
+				var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
+												'<div>' +
+													'<div class="font-style7">' +
+														'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
+													'</div>' +
+												'</div>' +
+												'<div class="font-style7">' +
+													'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
+												'</div>' +
+											'</li>';
+				$('.overduesoon-bu').append(buOutstandDetailContent);
+				
+				var buOutstandDetailTotal += parseFloat(buOutstand[i]["DUE_SOON_INV"]);
+				
+			}
+			
+			var buOutstandDetailContentTotal = '<li class="overduesoon-total">' +
+													'<div class="font-style7">' +
+														'<span>Total</span>' +
+													'</div>' +
+													'<div class="font-style7">' +
+														'<span>' + buOutstandDetailTotal + '</span>' +
+													'</div>' +
+												'</li>';
+			
+			$('.overduesoon-bu').append(buOutstandDetailContentTotal);		
+			
+			for(var i in csdOutstand){
+				var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
+												'<div>' +
+													'<div class="font-style7">' +
+														'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
+													'</div>' +
+												'</div>' +
+												'<div class="font-style7">' +
+													'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
+												'</div>' +
+											'</li>';
+				$('.overduesoon-csd').append(csdOutstandDetailContent);
+				
+				var csdOutstandDetailTotal += parseFloat(buOutstand[i]["DUE_SOON_INV"]);
+			}
+			
+			var csdOutstandDetailContentTotal = '<li class="overduesoon-total">' +
+													'<div class="font-style7">' +
+														'<span>Total</span>' +
+													'</div>' +
+													'<div class="font-style7">' +
+														'<span>' + csdOutstandDetailTotal + '</span>' +
+													'</div>' +
+												'</li>';
+			
+			$('.overduesoon-csd').append(csdOutstandDetailContentTotal);
+		}
 		
 		function changeScrollmenu(ro){
 			if(ro === 'LCD'){
