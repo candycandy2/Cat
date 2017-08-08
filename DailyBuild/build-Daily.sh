@@ -140,6 +140,17 @@ gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="db758d9b-a0a0-4db5-9102-edfd9999fa31" --packageType="enterprise"
 
+pwd
+cd ../QPlayDailyBuild-QChat-QisdaEIS-Massage/APP/Massage
+pwd
+# ------ build Massage ------
+gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env dev
+gulp jenkinsdefault --env dev
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="515e7317-5d3b-476c-8475-a8af67ee294c" --packageType="enterprise"
+
+
 ############# Multijob #############
 ####################################
 
@@ -175,6 +186,9 @@ cp $appfolder/QChat/platforms/android/build/outputs/apk/android-release.apk $bin
 cp $appfolder/QChat/platforms/iOS/build/device/QChat.ipa $binfolder/QChat.ipa
 cp $appfolder/QisdaEIS/platforms/android/build/outputs/apk/android-release.apk $binfolder/appqisdaeis.apk
 cp $appfolder/QisdaEIS/platforms/iOS/build/device/QisdaEIS.ipa $binfolder/QisdaEIS.ipa
+cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $binfolder/appmassage.apk
+cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
+
 
 # ------ copy source code ------
 rm -Rf ~/Documents/QPlayDailyBuild-Multijob/QPlayDailyBuild/
@@ -197,6 +211,7 @@ git add test/config.xml
 git add Badminton/config.xml
 git add QChat/config.xml
 git add QisdaEIS/config.xml
+git add Massage/config.xml
 git commit -m "v1.0.0.$dailyver[Develop]"
 git push
 
@@ -346,6 +361,17 @@ if [ $result != 1 ]; then
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appqisdaeisdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appqisdaeis.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
+# --- Massage android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "7f341dd51f8492ca49278142343558d0" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appmassagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appmassage.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Massage(android) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appmassagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appmassage.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
 # --- qplay ios ---
 timestamp=$(date +%s)
 mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "swexuc453refebraXecujeruBraqAc4e" | openssl base64)
@@ -487,4 +513,15 @@ result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy YellowPage(iOS) fail!!! try again!!!"
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appqisdaeisdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./QisdaEIS.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
+# --- Massage ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "7f341dd51f8492ca49278142343558d0" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appmassagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Massage.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Massage(iOS) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appmassagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Massage.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
