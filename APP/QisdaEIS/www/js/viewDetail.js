@@ -238,7 +238,7 @@ $('#viewDetail').pagecontainer({
 		
 		window.OverdueDetail = function() {
 			this.successCallback = function(data) {
-				
+				console.log(data);
 			};
 			
 			this.failCallback = function(data) {
@@ -252,7 +252,7 @@ $('#viewDetail').pagecontainer({
 		
 		window.OutstandDetail = function() {
 			this.successCallback = function(data) {
-				
+				console.log(data);
 			};
 			
 			this.failCallback = function(data) {
@@ -266,7 +266,7 @@ $('#viewDetail').pagecontainer({
 		
 		window.CreditExpiredSoon = function() {
 			this.successCallback = function(data) {
-				
+				console.log(data);
 			};
 			
 			this.failCallback = function(data) {
