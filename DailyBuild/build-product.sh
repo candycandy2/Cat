@@ -85,6 +85,26 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7c0aeb3e-9fb3-4475-a664-1e522c3ddd28" --packageType="enterprise"
 
 pwd
+cd ../QPlayProduct-Leave-Massage/APP/Leave
+pwd
+# ------ build Leave Staging ------
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env test
+gulp jenkinsdefault --env test
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="83909121-a65b-41aa-ace0-fd7d8c118428" --packageType="enterprise"
+
+pwd
+cd ../QPlayProduct-Leave-Massage/APP/Massage
+pwd
+# ------ build Massage Staging ------
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env test
+gulp jenkinsdefault --env test
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="9ce8a6ef-6886-4b98-b231-dbe8bdaed850" --packageType="enterprise"
+
+pwd
 cd ../QPlayProduct-Multijob/Production/NewQPlay
 pwd
 # ------ build QPlay Production ------
@@ -153,6 +173,26 @@ gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="dfd41448-4fda-482c-ba00-b8df8584e734" --packageType="enterprise"
 
+pwd
+cd ../QPlayProduct-Leave-Massage/Production/Leave
+pwd
+# ------ build Leave Production ------
+gulp config --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall
+gulp jenkinsdefault
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="b0b850d4-b642-460f-a749-fdcbb0839fea" --packageType="enterprise"
+
+pwd
+cd ../QPlayProduct-Leave-Massage/Production/Massage
+pwd
+# ------ build Massage Production ------
+gulp config --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall
+gulp jenkinsdefault
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7c735ea8-86d9-4285-a8e8-08c520a3433c" --packageType="enterprise"
+
 
 ############# Multijob #############
 ####################################
@@ -178,6 +218,10 @@ cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $b
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
 cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
 cp $appfolder/AccountingRate/platforms/iOS/build/device/Acct.Rate.ipa $binfolder/AccountingRate.ipa
+cp $appfolder/Leave/platforms/android/build/outputs/apk/android-release.apk $binfolder/appleave.apk
+cp $appfolder/Leave/platforms/iOS/build/device/Leave.ipa $binfolder/Leave.ipa
+cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $binfolder/appmassage.apk
+cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
 
 # ------ make directory of Production for apk and ipa ------
 binfolder=~/Documents/QPlayProduct/1.0.0.$dailyver
@@ -198,6 +242,10 @@ cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $b
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
 cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
 cp $appfolder/AccountingRate/platforms/iOS/build/device/Acct.Rate.ipa $binfolder/AccountingRate.ipa
+cp $appfolder/Leave/platforms/android/build/outputs/apk/android-release.apk $binfolder/appleave.apk
+cp $appfolder/Leave/platforms/iOS/build/device/Leave.ipa $binfolder/Leave.ipa
+cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $binfolder/appmassage.apk
+cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
 
 # ------ copy source code of Staging------
 rm -Rf ~/Documents/QPlayStaging/QPlayStaging/
