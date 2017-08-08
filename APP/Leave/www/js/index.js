@@ -35,6 +35,7 @@ var currentDay = time.getDay();
 var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
+var myHolidayData = [];
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",
