@@ -28,6 +28,7 @@ window.initialSuccess = function() {
 
     loadingMask("show");
 
+    chatRoom.initialData();
     processLocalData.initialData();
     checkEventTemplateData("check");
 
@@ -53,6 +54,15 @@ var chatRoom = {
         JM.chatroomID = ID;
 
         JM.Chatroom.getGroupInfo();
+    },
+    initialData: function() {
+        if (window.localStorage.getItem("Messages") !== null) {
+            var tempDate = window.localStorage.getItem("Messages");
+            chatRoom.Messages = JSON.parse(tempDate);
+        }
+    },
+    updateLocalStorage: function() {
+        window.localStorage.setItem("Messages", JSON.stringify(chatRoom.Messages));
     },
     messageHandler: function(type, data) {
         console.log("------------messageHandler");
@@ -81,14 +91,21 @@ var chatRoom = {
                     from_id: data.messages[i].from_id,
                     msg_type: data.messages[i].msg_type,
                     msg_body: data.messages[i].msg_body
-                };console.log(objData);
+                };
 
-                if (i == 0) {
-                    chatRoom.Messages[chatRoom.nowChatRoomID] = [];
+                if (chatRoom.Messages[chatRoom.nowChatRoomID].length == 0) {
+                    chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
+                } else {
+                    var localDataLength = chatRoom.Messages[chatRoom.nowChatRoomID].length
+                    var localDataLatestCTime = chatRoom.Messages[chatRoom.nowChatRoomID][localDataLength - 1]["ctime"];
+
+                    if (data.messages[i].msg_ctime > localDataLatestCTime) {
+                        chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
+                    }
                 }
-
-                chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
             }
+
+            chatRoom.updateLocalStorage();
         }
 
         //For sendGroupTextMessage / sendGroupImageMessage
