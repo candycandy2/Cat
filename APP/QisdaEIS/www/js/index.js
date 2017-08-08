@@ -52,6 +52,10 @@ window.initialSuccess = function() {
                         
     console.log(ARSummaryQueryData);
     ARSummary();
+    //AraUserAuthority();
+    //OverdueDetail();
+    //OutstandDetail();
+    //CreditExpiredSoon();
     $.mobile.changePage("#viewMain");
 }
 
