@@ -8,7 +8,7 @@ var chartColumnLandscape;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
 var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
-var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData;
+var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,creditExpiredSoonCallBackData;
 var treemapState = false;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
@@ -53,9 +53,9 @@ window.initialSuccess = function() {
     console.log(ARSummaryQueryData);
     ARSummary();
     //AraUserAuthority();
-    //OverdueDetail();
-    //OutstandDetail();
-    //CreditExpiredSoon();
+    OverdueDetail();
+    OutstandDetail();
+    CreditExpiredSoon();
     $.mobile.changePage("#viewMain");
 }
 
@@ -164,52 +164,7 @@ $(document).one('pagebeforeshow', function(){
 
     });
 
-	//buSingleListBtn
-	$('.buSingleListBtn').on('click', function(){
-		var self = $(this);
-		if(self.attr('src') === 'img/list_down.png'){
-			self.attr('src', 'img/list_up.png');
-			self.parent().parent().parent().next().show();
-			self.parent().parent().parent().css('border-bottom', '1px solid white');
-
-		}else{
-			self.attr('src', 'img/list_down.png');
-			self.parent().parent().parent().next().hide();
-			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
-		}
-
-		if($('.buSingleListBtn[src="img/list_down.png"]').length === 3){
-			$('#buAllListBtn').attr('src', 'img/all_list_down.png');
-		}
-
-		if($('.buSingleListBtn[src="img/list_up.png"]').length === 3){
-			$('#buAllListBtn').attr('src', 'img/all_list_up.png');
-		}
-
-	});
-
-	//csdSingleListBtn
-	$('.csdSingleListBtn').on('click', function(){
-		var self = $(this);
-		if(self.attr('src') === 'img/list_down.png'){
-			self.attr('src', 'img/list_up.png');
-			self.parent().parent().parent().next().show();
-			self.parent().parent().parent().css('border-bottom', '1px solid white');
-
-		}else{
-			self.attr('src', 'img/list_down.png');
-			self.parent().parent().parent().next().hide();
-			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
-		}
-
-		if($('.csdSingleListBtn[src="img/list_down.png"]').length === 3){
-			$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
-		}
-
-		if($('.csdSingleListBtn[src="img/list_up.png"]').length === 3){
-			$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
-		}
-	});
+	
 
 });
 

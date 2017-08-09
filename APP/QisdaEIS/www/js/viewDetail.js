@@ -22,14 +22,17 @@ var company = [
 ];
 
 var categoriesMonth = ['60天', '70天', '80天', '90天'];
-var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26'];
+//var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']; 动态获取，由timeAxis代替
 var companyCode = ['66558', '67326', '69410'];
 var companyName = ['东森电视股份有限公司', '飞利浦股份有限公司', 'AAAA股份有限公司'];
 var userName = "Alan Chen";
 var startDate = "5/4";
 var endDate = "6/15";
-var buOverdue = [];
-var csdOverdue = [];
+var timeAxis = [];
+var buOverdueDetail = [];
+var csdOverdueDetail = [];
+var buOverdueSoon = [];
+var csdOverdueSoon = [];
 var buOutstand = [];
 var csdOutstand = [];
 var dataContent = "";
@@ -75,6 +78,33 @@ var dataSingle = dataContent
 			+		'</li>'
 			+	'</ul>'
 			+ '</li>';
+			
+var noneDataTwoColumn = '<li class="data-list-none-twoColumn">' +
+							'<div>-</div>' +
+							'<div>-</div>' +
+						'</li>';
+						
+var noneDataThreeColumn = '<li class="data-list-none-threeColumn">' +
+							'<div>-</div>' +
+							'<div>-</div>' +
+							'<div>-</div>' +
+						'</li>';
+						
+var noneDataFourColumn = '<li class="data-list-none-fourColumn">' +
+							'<div>-</div>' +
+							'<div>-</div>' +
+							'<div>-</div>' +
+							'<div>-</div>' +
+						'</li>';
+						
+var noneDataTwoTotal = '<li class="overduesoon-total">' +
+							'<div class="font-style7">' +
+								'<span>Total</span>' +
+							'</div>' +
+							'<div class="font-style7">' +
+								'<span>0</span>' +
+							'</div>' +
+						'</li>';
 
 //area highcharts option
 var areaOption = {
@@ -145,7 +175,7 @@ var columnOption = {
     	enabled: false
     },
     xAxis: {
-        categories: categoriesWeek,
+        categories: timeAxis,
         labels: {
         	style: {
         		fontSize: '9px'
@@ -235,6 +265,56 @@ function getLandscapeColumn(){
 	});
 }
 
+function clickSingleListBtn(){
+	//buSingleListBtn
+	$('.buSingleListBtn').on('click', function(){
+		var self = $(this);
+		if(self.attr('src') === 'img/list_down.png'){
+			self.attr('src', 'img/list_up.png');
+			self.parent().parent().parent().next().show();
+			self.parent().parent().parent().css('border-bottom', '1px solid white');
+
+		}else{
+			self.attr('src', 'img/list_down.png');
+			self.parent().parent().parent().next().hide();
+			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
+		}
+
+		if($('.buSingleListBtn[src="img/list_down.png"]').length === 3){
+			$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+		}
+
+		if($('.buSingleListBtn[src="img/list_up.png"]').length === 3){
+			$('#buAllListBtn').attr('src', 'img/all_list_up.png');
+		}
+
+	});
+
+	//csdSingleListBtn
+	$('.csdSingleListBtn').on('click', function(){
+		var self = $(this);
+		if(self.attr('src') === 'img/list_down.png'){
+			self.attr('src', 'img/list_up.png');
+			self.parent().parent().parent().next().show();
+			self.parent().parent().parent().css('border-bottom', '1px solid white');
+
+		}else{
+			self.attr('src', 'img/list_down.png');
+			self.parent().parent().parent().next().hide();
+			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
+		}
+
+		if($('.csdSingleListBtn[src="img/list_down.png"]').length === 3){
+			$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+		}
+
+		if($('.csdSingleListBtn[src="img/list_up.png"]').length === 3){
+			$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
+		}
+	});
+	
+}
+
 /*****************************************************************/
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
@@ -242,15 +322,188 @@ $('#viewDetail').pagecontainer({
 		window.OverdueDetail = function() {
 			this.successCallback = function(data) {
 				overdueDetailCallBackData = data["Content"];
+				
+				//get time axis on area and column
+				for(var i in overdueDetailCallBackData[0]["Detail"]){
+					timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
+				}
+				
 				for(var i in overdueDetailCallBackData){
 					if(overdueDetailCallBackData[i]["Header"]["TYPE"] == "BU"){
-						buOverdue.push(overdueDetailCallBackData[i]);
+						buOverdueSoon.push(overdueDetailCallBackData[i]);
 					}
 					else{
-						csdOverdue.push(overdueDetailCallBackData[i]);
+						csdOverdueSoon.push(overdueDetailCallBackData[i]);
 					}
 				}
-				//console.log(buOverdue);
+				//console.log(overdueDetailCallBackData);
+					
+				$.each(overdueDetailCallBackData, function(i, item) {
+					if(item["Header"]["TYPE"] == "BU"){
+						buOverdueDetail.push(item);
+					}
+					else{
+						csdOverdueDetail.push(item);
+					}
+				});
+				console.log(buOverdueDetail);
+				
+				$.each(buOverdueDetail, function(i, item) {
+					var overdueDetailTotal = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
+											parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					
+					var overdueDetailContent = '<li class="bu-data-list">' +
+											'<ul>' +
+												'<li>' +
+													'<div>' +
+														'<div class="font-style7">' +
+															'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+														'</div>' +	
+													'</div>' +
+												'</li>' +
+												'<li>' +
+													'<span class="font-style7 font-localString">' + overdueDetailTotal + '</span>' +
+												'</li>' +
+												'<li>' +
+													'<div id="buArea' + i + '"></div>' +
+												'</li>' +
+												'<li>' +
+													'<img src="img/list_down.png" class="buSingleListBtn" />' +
+												'</li>' +
+											'</ul>' +
+										'</li>' +
+										'<li class="bu-single-list">' +
+											'<div>' +
+												'<div class="font-style12">Total AR and Overdue Amount</div>' +
+												'<div class="font-style13">' +
+													'<span>Date:</span>' +
+													'<span>5/14</span>' +
+													'<span>-</span>' +
+													'<span>6/15</span>' +
+												'</div>' +
+											'</div>' +
+											'<div class="font-style13">' +
+												'<span>' + item["Header"]["OWNER"] + '</span>' +
+												'<span>Owner:</span>' +	
+											'</div>' +
+											'<div>' +
+												'<div class="overdue-tab1 font-style13">' +
+													'<div><span>1-15 Days</span></div>' +
+													'<div><span>16-45 Days</span></div>' +
+													'<div><span>46-75 Days</span></div>' +
+													'<div><span>Over 75 Days</span></div>' +
+												'</div>' +
+												'<div class="overdue-tab2 font-style13">' +
+													'<div><span>' + item["Detail"][5]["OVER_1_15_INV"] + '</span></div>' +
+													'<div><span>' + item["Detail"][5]["OVER_16_45_INV"] + '</span></div>' +
+													'<div><span>' + item["Detail"][5]["OVER_46_75_INV"] + '</span></div>' +
+													'<div><span>' + item["Detail"][5]["OVER_76_INV"] + '</span></div>' +
+												'</div>' +
+											'</div>' +
+											'<div id="buColumn' + i + '"></div>' +
+										'</li>';
+					
+					$('.overdueDetail-bu').append(overdueDetailContent);
+					
+					/******** area图表 ********/
+					var areaSeries = [];
+					
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+							    parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+					areaSeries.push(areaWeek0);
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
+					areaSeries.push(areaWeek1);
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
+					areaSeries.push(areaWeek2);
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							    parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
+					areaSeries.push(areaWeek3);
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
+					areaSeries.push(areaWeek4);
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					areaSeries.push(areaWeek5);
+					
+					//console.log(areaSeries);
+					
+					var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+					buArea.series[0].setData(areaSeries, true, true, false);
+					
+					
+					/*********** column图表 **********/
+					var columnSeries1 = [];
+					var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
+					columnSeries1.push(column0);
+					var column1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]);
+					columnSeries1.push(column1);
+					var column2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]);
+					columnSeries1.push(column2);
+					var column3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]);
+					columnSeries1.push(column3);
+					var column4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]);
+					columnSeries1.push(column4);
+					var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+					columnSeries1.push(column5);
+					
+					var columnSeries2 = [];
+					var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
+					columnSeries2.push(column6);
+					var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
+					columnSeries2.push(column7);
+					var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
+					columnSeries2.push(column8);
+					var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
+					columnSeries2.push(column9);
+					var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
+					columnSeries2.push(column10);
+					var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+					columnSeries2.push(column11);
+					
+					var columnSeries3 = [];
+					var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
+					columnSeries3.push(column12);
+					var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
+					columnSeries3.push(column13);
+					var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
+					columnSeries3.push(column14);
+					var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
+					columnSeries3.push(column15);
+					var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
+					columnSeries3.push(column16);
+					var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+					columnSeries3.push(column17);
+					
+					var columnSeries4 = [];
+					var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
+					columnSeries4.push(column18);
+					var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
+					columnSeries4.push(column19);
+					var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
+					columnSeries4.push(column20);
+					var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
+					columnSeries4.push(column21);
+					var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
+					columnSeries4.push(column22);
+					var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					columnSeries4.push(column23);
+					
+					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+					buColumn.series[0].setData(columnSeries1, true, true, false);
+					buColumn.series[1].setData(columnSeries2, true, true, false);
+					buColumn.series[2].setData(columnSeries3, true, true, false);
+					buColumn.series[3].setData(columnSeries4, true, true, false);
+					
+				});
+				
+				clickSingleListBtn();
+				
+				
+				
+				
+				
 				
 			
 				
@@ -282,7 +535,8 @@ $('#viewDetail').pagecontainer({
 		
 		window.CreditExpiredSoon = function() {
 			this.successCallback = function(data) {
-				console.log(data);
+				creditExpiredSoonCallBackData = data["Content"];
+				getExpiredSoonData();
 			};
 			
 			this.failCallback = function(data) {
@@ -358,6 +612,8 @@ $('#viewDetail').pagecontainer({
 		}
 		
 		function getOverdueSoonData(){
+			var buOutstandDetailTotal = 0;
+			var csdOutstandDetailTotal = 0;
 			for(var i in outstandDetailCallBackData){
 				if(outstandDetailCallBackData[i]["TYPE"] == "BU"){
 					buOutstand.push(outstandDetailCallBackData[i]);
@@ -366,62 +622,102 @@ $('#viewDetail').pagecontainer({
 					csdOutstand.push(outstandDetailCallBackData[i]);
 				}
 			}
-			console.log(buOutstand);
+			//console.log(buOutstand);
 			
-			for(var i in buOutstand){
-				var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
+			if(buOutstand.length > 0){
+				for(var i in buOutstand){
+					var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
+													'<div>' +
+														'<div class="font-style7">' +
+															'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
+														'</div>' +
+													'</div>' +
+													'<div class="font-style7">' +
+														'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
+													'</div>' +
+												'</li>';
+					$('.overduesoon-bu').append(buOutstandDetailContent);
+
+					buOutstandDetailTotal +=  parseFloat(buOutstand[i]["DUE_SOON_INV"]);
+					
+				}
+				
+				var buOutstandDetailContentTotal = '<li class="overduesoon-total">' +
+														'<div class="font-style7">' +
+															'<span>Total</span>' +
+														'</div>' +
+														'<div class="font-style7">' +
+															'<span>' + buOutstandDetailTotal.toFixed(2) + '</span>' +
+														'</div>' +
+													'</li>';
+				
+				$('.overduesoon-bu').append(buOutstandDetailContentTotal);
+			}
+			else{
+				$('.overduesoon-bu').append(noneDataTwoColumn);
+				$('.overduesoon-bu').append(noneDataTwoTotal);
+			}
+					
+			if(csdOutstand.length > 0){
+				for(var i in csdOutstand){
+					var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
+													'<div>' +
+														'<div class="font-style7">' +
+															'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
+														'</div>' +
+													'</div>' +
+													'<div class="font-style7">' +
+														'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
+													'</div>' +
+												'</li>';
+					$('.overduesoon-csd').append(csdOutstandDetailContent);
+					
+					csdOutstandDetailTotal += parseFloat(buOutstand[i]["DUE_SOON_INV"]);
+				}
+				
+				var csdOutstandDetailContentTotal = '<li class="overduesoon-total">' +
+														'<div class="font-style7">' +
+															'<span>Total</span>' +
+														'</div>' +
+														'<div class="font-style7">' +
+															'<span>' + csdOutstandDetailTotal.toFixed(2) + '</span>' +
+														'</div>' +
+													'</li>';
+				
+				$('.overduesoon-csd').append(csdOutstandDetailContentTotal);
+			}
+			else{
+				$('.overduesoon-csd').append(noneDataTwoColumn);
+				$('.overduesoon-csd').append(noneDataTwoTotal);
+			}
+			
+		}
+		
+		function getExpiredSoonData() {
+			if(creditExpiredSoonCallBackData.length > 0){
+				for(var i in creditExpiredSoonCallBackData) {
+					var expiredSoonContent = '<li class="data-list-expiredsoon">' +
 												'<div>' +
 													'<div class="font-style7">' +
-														'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
+														'<span>' + creditExpiredSoonCallBackData[i]["CUSTOMER"] + '</span>' +
 													'</div>' +
 												'</div>' +
 												'<div class="font-style7">' +
-													'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
-												'</div>' +
-											'</li>';
-				$('.overduesoon-bu').append(buOutstandDetailContent);
-				
-				var buOutstandDetailTotal += parseFloat(buOutstand[i]["DUE_SOON_INV"]);
-				
-			}
-			
-			var buOutstandDetailContentTotal = '<li class="overduesoon-total">' +
-													'<div class="font-style7">' +
-														'<span>Total</span>' +
-													'</div>' +
-													'<div class="font-style7">' +
-														'<span>' + buOutstandDetailTotal + '</span>' +
-													'</div>' +
-												'</li>';
-			
-			$('.overduesoon-bu').append(buOutstandDetailContentTotal);		
-			
-			for(var i in csdOutstand){
-				var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
-												'<div>' +
-													'<div class="font-style7">' +
-														'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
-													'</div>' +
+													'<span>' + creditExpiredSoonCallBackData[i]["EXPIRED_DATE"] + '</span>' +
 												'</div>' +
 												'<div class="font-style7">' +
-													'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
+													'<span>' + creditExpiredSoonCallBackData[i]["CREDIT_LIIMIT"] + '</span>' +
 												'</div>' +
 											'</li>';
-				$('.overduesoon-csd').append(csdOutstandDetailContent);
+					
+					$('.expiredsoon').append(expiredSoonContent);	
+				}
+			}
+			else{
+				$('.expiredsoon').append(noneDataThreeColumn);
 				
-				var csdOutstandDetailTotal += parseFloat(buOutstand[i]["DUE_SOON_INV"]);
 			}
 			
-			var csdOutstandDetailContentTotal = '<li class="overduesoon-total">' +
-													'<div class="font-style7">' +
-														'<span>Total</span>' +
-													'</div>' +
-													'<div class="font-style7">' +
-														'<span>' + csdOutstandDetailTotal + '</span>' +
-													'</div>' +
-												'</li>';
-			
-			$('.overduesoon-csd').append(csdOutstandDetailContentTotal);
 		}
 		
 		function changeScrollmenu(ro){
