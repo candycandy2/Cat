@@ -81,10 +81,22 @@ var chatRoom = {
             }
 
             for (var i=0; i<data.messages.length; i++) {
-                var createTime = new Date(data.messages[i].msg_ctime);
+
+                if (device.platform === "iOS") {
+                    var messageTimestamp = data.messages[i].create_time;
+                } else if (device.platform === "Android") {
+                    var messageTimestamp = data.messages[i].msg_ctime;
+                }
+
+                if (messageTimestamp.toString().length == 10) {
+                    messageTimestamp = messageTimestamp.toString() + "000";
+                }
+                messageTimestamp = parseInt(messageTimestamp, 10);
+
+                var createTime = new Date(messageTimestamp);
                 var objData = {
                     msg_id: data.messages[i].msgid,
-                    ctime: data.messages[i].msg_ctime,
+                    ctime: messageTimestamp,
                     ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
                         padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
                         padLeft(createTime.getMinutes(), 2),
@@ -99,7 +111,7 @@ var chatRoom = {
                     var localDataLength = chatRoom.Messages[chatRoom.nowChatRoomID].length
                     var localDataLatestCTime = chatRoom.Messages[chatRoom.nowChatRoomID][localDataLength - 1]["ctime"];
 
-                    if (data.messages[i].msg_ctime > localDataLatestCTime) {
+                    if (messageTimestamp > localDataLatestCTime) {
                         chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
                     }
                 }
