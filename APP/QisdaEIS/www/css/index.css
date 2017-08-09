@@ -106,13 +106,8 @@ a{
 	font-family: arial !important;
 }
 
-.font-companyCode{
-	line-height: 3VW;
-}
-
 .font-companyName{
 	width: 17VW;
-	line-height: 4.1VW;
 	overflow:hidden; 
 	text-overflow:ellipsis;
 	display:-webkit-box; 
