@@ -219,6 +219,7 @@ pre {
 .notice-title{ float: left;}
 .notice-diagram-area{ float: right; margin-top: -1vw;}
 .notice-teacher-list{ margin-bottom: 4.3vw;}
+.reduce-top{margin-top: -1.7vw;}
 .notice-diagram{ display: inline-block;}
 .notice-diagram{ margin-right: 2vw;}
 .diagram-square, .diagram-triangle, .diagram-circle{ display: inline-block;}
