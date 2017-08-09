@@ -768,6 +768,14 @@ div.scrollmenu a {
 .app-popup .ui-content > .header {
     margin-top: 10%;
 }
+
+.DetailInfo > .ui-content{
+    padding: 0 !important;
+}
+
+.DetailInfo .ui-content > .header {
+    margin-top: 10%;
+}
 /********************************** timepicker *************************************/
 
 .timepicker-icon {
