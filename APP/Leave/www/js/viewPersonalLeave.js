@@ -642,5 +642,11 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
+        $(document).on("change", "input[name=radio-choice-h-2]", function() {
+            if ($(".tooltip").length > 0) {
+                $(".tooltip").remove();
+            }
+        });
+
     }
 });
