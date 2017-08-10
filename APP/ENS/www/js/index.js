@@ -28,6 +28,7 @@ window.initialSuccess = function() {
 
     loadingMask("show");
 
+    chatRoom.initialData();
     processLocalData.initialData();
     checkEventTemplateData("check");
 
@@ -54,6 +55,15 @@ var chatRoom = {
 
         JM.Chatroom.getGroupInfo();
     },
+    initialData: function() {
+        if (window.localStorage.getItem("Messages") !== null) {
+            var tempDate = window.localStorage.getItem("Messages");
+            chatRoom.Messages = JSON.parse(tempDate);
+        }
+    },
+    updateLocalStorage: function() {
+        window.localStorage.setItem("Messages", JSON.stringify(chatRoom.Messages));
+    },
     messageHandler: function(type, data) {
         console.log("------------messageHandler");
         console.log(data);
@@ -71,24 +81,43 @@ var chatRoom = {
             }
 
             for (var i=0; i<data.messages.length; i++) {
-                var createTime = new Date(data.messages[i].msg_ctime);
+
+                if (device.platform === "iOS") {
+                    var messageTimestamp = data.messages[i].create_time;
+                } else if (device.platform === "Android") {
+                    var messageTimestamp = data.messages[i].msg_ctime;
+                }
+
+                if (messageTimestamp.toString().length == 10) {
+                    messageTimestamp = messageTimestamp.toString() + "000";
+                }
+                messageTimestamp = parseInt(messageTimestamp, 10);
+
+                var createTime = new Date(messageTimestamp);
                 var objData = {
                     msg_id: data.messages[i].msgid,
-                    ctime: data.messages[i].msg_ctime,
+                    ctime: messageTimestamp,
                     ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
                         padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
                         padLeft(createTime.getMinutes(), 2),
                     from_id: data.messages[i].from_id,
                     msg_type: data.messages[i].msg_type,
                     msg_body: data.messages[i].msg_body
-                };console.log(objData);
+                };
 
-                if (i == 0) {
-                    chatRoom.Messages[chatRoom.nowChatRoomID] = [];
+                if (chatRoom.Messages[chatRoom.nowChatRoomID].length == 0) {
+                    chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
+                } else {
+                    var localDataLength = chatRoom.Messages[chatRoom.nowChatRoomID].length
+                    var localDataLatestCTime = chatRoom.Messages[chatRoom.nowChatRoomID][localDataLength - 1]["ctime"];
+
+                    if (messageTimestamp > localDataLatestCTime) {
+                        chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
+                    }
                 }
-
-                chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
             }
+
+            chatRoom.updateLocalStorage();
         }
 
         //For sendGroupTextMessage / sendGroupImageMessage

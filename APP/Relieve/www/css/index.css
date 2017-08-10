@@ -761,11 +761,11 @@ div.scrollmenu a {
     border-radius: 0 0 10px 0;
 }
 
-.app-popup > .ui-content {
+.DetailInfo > .ui-content{
     padding: 0 !important;
 }
 
-.app-popup .ui-content > .header {
+.DetailInfo .ui-content > .header {
     margin-top: 10%;
 }
 /********************************** timepicker *************************************/

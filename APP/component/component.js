@@ -54,6 +54,7 @@ var reStartAPP = false;
 var appInitialFinish = false;
 var messageRowId;
 var closeInfoMsgInit = false; // let closeInfoMsg click event init once
+var isOfflineEventTimeout = null;
 
 /********************************** Corodva APP initial *************************************/
 var app = {
@@ -84,17 +85,32 @@ var app = {
         //Add Event to Check Network Status
         if (device.platform === "iOS") {
             window.addEventListener("offline", function(e) {
-                checkNetwork();
+                //review by alan
+                //checkNetwork();
+                //delay 10 seconds and then call checkNetwork()
+                if (isOfflineEventTimeout != null) {
+                    clearTimeout(isOfflineEventTimeout);
+                    isOfflineEventTimeout = null;
+                }
+                isOfflineEventTimeout = setTimeout(function() {
+                    if (isOfflineEventTimeout != null) {
+                        isOfflineEventTimeout = null;
+                    }
+                    checkNetwork();
+                }, 10000);
             });
 
             window.addEventListener("online", function(e) {
+                if (isOfflineEventTimeout != null) {
+                    clearTimeout(isOfflineEventTimeout);
+                    isOfflineEventTimeout = null;
+                }
                 checkNetwork();
             });
         } else {
             var connection = navigator.connection;
             connection.addEventListener('typechange', checkNetwork);
         }
-
         //When open APP, need to check Network at first step
         checkNetwork();
 

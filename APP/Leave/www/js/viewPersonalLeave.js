@@ -224,16 +224,22 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var success = $("success", htmlDoc);
-                    if($(success).html() != undefined) {
-                        $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
-                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
-                    }else {
-                        var error = $("error", htmlDoc);
-                        var msgContent = $(error).html();
-                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+
+                    if (callbackData.indexOf("error") != -1) {
+                        $('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
                         popupMsgInit('.applyLeaveFail');
+                    } else {
+                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                        var success = $("success", htmlDoc);
+                        if ($(success).html() != undefined) {
+                            $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
+                            localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                        } else {
+                            var error = $("error", htmlDoc);
+                            var msgContent = $(error).html();
+                            $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+                            popupMsgInit('.applyLeaveFail');
+                        }
                     }
                     loadingMask("hide");
                 }
@@ -633,6 +639,12 @@ $("#viewPersonalLeave").pagecontainer({
                         $(".tooltip").remove();
                     }
                 }
+            }
+        });
+
+        $(document).on("change", "input[name=radio-choice-h-2]", function() {
+            if ($(".tooltip").length > 0) {
+                $(".tooltip").remove();
             }
         });
 
