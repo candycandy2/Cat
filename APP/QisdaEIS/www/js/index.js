@@ -8,9 +8,10 @@ var chartColumnLandscape;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
 var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
-var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,creditExpiredSoonCallBackData;
+var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,creditExpiredSoonCallBackData,araUserAuthorityCallBackData;
 var treemapState = false;
-var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+var thisMonthExpiredTime = 1;
+var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -40,22 +41,17 @@ window.initialSuccess = function() {
     if(currentDate == 1) {
         currentMonth = currentMonth - 1;
     }
-    console.log(currentYear+' , '+currentMonth+' , '+currentDate);
-    //localStorage
     
-    //loadingMask("show");
+    loadingMask("show");
     ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
                         + (currentYear - 3) + "/01"
                         + "</StartYearMonth><EndYearMonth>"
                         + currentYear + "/" + currentMonth
-                        + "</EndYearMonth></LayoutHeader>";
-                        
+                        + "</EndYearMonth></LayoutHeader>";                   
     console.log(ARSummaryQueryData);
+    
     ARSummary();
-    //AraUserAuthority();
-    OverdueDetail();
-    OutstandDetail();
-    CreditExpiredSoon();
+    AraUserAuthority();
     $.mobile.changePage("#viewMain");
 }
 
@@ -77,7 +73,6 @@ $(document).one('pagebeforeshow', function(){
         $("#mypanel").panel("open");
     });
 
-
     //backkey from treemap to bubble
     $('#backBtn').on("click", function(){
     	$('#overview-hc-rectangle-landscape').hide();
@@ -92,7 +87,7 @@ $(document).one('pagebeforeshow', function(){
     	if(flag === 'img/switch_g.png'){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
 
-    		buChartColumn2.series[0].setData(columnMinusData1, true, true, false);
+    		/*buChartColumn2.series[0].setData(columnMinusData1, true, true, false);
 			buChartColumn2.series[1].setData(columnMinusData2, true, true, false);
 			buChartColumn2.series[2].setData(columnMinusData3, true, true, false);
 			buChartColumn2.series[3].setData(columnMinusData4, true, true, false);
@@ -100,7 +95,7 @@ $(document).one('pagebeforeshow', function(){
 			chartColumnLandscape.series[0].setData(columnMinusData1, true, true, false);
 			chartColumnLandscape.series[1].setData(columnMinusData2, true, true, false);
 			chartColumnLandscape.series[2].setData(columnMinusData3, true, true, false);
-			chartColumnLandscape.series[3].setData(columnMinusData4, true, true, false);
+			chartColumnLandscape.series[3].setData(columnMinusData4, true, true, false);*/
 			chartColumnLandscape.update({
 				title: {
 					text: 'Overdue Trend in Last 6 weeks'
@@ -110,7 +105,7 @@ $(document).one('pagebeforeshow', function(){
     	}else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
 
-    		buChartColumn2.series[0].setData(columnData2, true, true, false);
+    		/*buChartColumn2.series[0].setData(columnData2, true, true, false);
 			buChartColumn2.series[1].setData(columnData1, true, true, false);
 			buChartColumn2.series[2].setData(columnData4, true, true, false);
 			buChartColumn2.series[3].setData(columnData3, true, true, false);
@@ -118,7 +113,7 @@ $(document).one('pagebeforeshow', function(){
 			chartColumnLandscape.series[0].setData(columnData2, true, true, false);
 			chartColumnLandscape.series[1].setData(columnData1, true, true, false);
 			chartColumnLandscape.series[2].setData(columnData4, true, true, false);
-			chartColumnLandscape.series[3].setData(columnData3, true, true, false);
+			chartColumnLandscape.series[3].setData(columnData3, true, true, false);*/
 			chartColumnLandscape.update({
 				title: {
 					text: 'Total AR and Overdue Amount'
@@ -271,6 +266,7 @@ function changePageByPanel(pageId) {
 	}
 
     if($.mobile.activePage[0].id !== pageId) {
+    	loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
