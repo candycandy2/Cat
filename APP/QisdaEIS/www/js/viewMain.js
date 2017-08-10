@@ -367,7 +367,7 @@ function mergeDataByFacility(){
 			else if(item.group == "CIG"){
 				csdBubbleObj[fac].color = "#40C1C7";
 			}
-			else if(item.group == "IIG"){
+			else if(item.group == "ITG"){
 				csdBubbleObj[fac].color = "#FFCC66";
 			}
 			else if(item.group == "MDG"){
@@ -414,7 +414,8 @@ function getTreemapSeriesByFacility(fac) {
 		}
 	});
 }
-
+var userAuthority = [];
+var arSummaryData = {};
 var buByType = [];
 var csdByType = [];
 var buSimplify = [];
@@ -431,32 +432,49 @@ $('#viewMain').pagecontainer({
 	create: function (event, ui){	
 		
 		window.ARSummary = function() {
-			this.successCallback = function(data) {
-				arSummaryCallBackData = data["Content"];
-	    		
-	    		//先按TYPE分组,分成BU和CSD
-	    		sortDataByType();	
-	    		
-	    		//简化数据
-	    		simplifyData();
-	    		
-	    		//相同facility合并
-	    		mergeDataByFacility();
-
-	    			
-			};
+			if(localStorage.getItem("arSummaryData") === null){
+				this.successCallback = function(data) {
+					arSummaryCallBackData = data["Content"];
+		    		
+		    		//先按TYPE分组,分成BU和CSD
+		    		sortDataByType();	
+		    		//简化数据
+		    		simplifyData();
+		    		//相同facility合并
+		    		mergeDataByFacility();
+					loadingMask("hide");
+		    		
+		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
+				};
+				
+				this.failCallback = function(data) {
+		    		console.log("api misconnected");
+		    	};
+		    	
+		    	var _construct = function() {
+					CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
+				}();
+			}
+			else{
+				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
+				arSummaryCallBackData = arSummaryData["Content"];
+				sortDataByType();
+				simplifyData();
+				mergeDataByFacility();
+				loadingMask("hide");
+				
+				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
+				if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
+                    localStorage.removeItem("arSummaryData");
+                    ARSummary();
+                }
+			}
 			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
-			}();
 		};
 		
 		window.AraUserAuthority = function() {
 			this.successCallback = function(data) {
+				araUserAuthorityCallBackData = data["Content"];
 				
 			};
 			
@@ -504,6 +522,11 @@ $('#viewMain').pagecontainer({
 			if (window.orientation === 90 || window.orientation === -90 ) {
                 zoomInChart();
            	}
+			
+			//调用第二页API
+			OverdueDetail();
+			
+			loadingMask("hide");
 		});
 		
 		
