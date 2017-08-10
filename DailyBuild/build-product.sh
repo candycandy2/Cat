@@ -105,6 +105,16 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="9ce8a6ef-6886-4b98-b231-dbe8bdaed850" --packageType="enterprise"
 
 pwd
+cd ../QPlayProduct-QisdaEIS/APP/QisdaEIS
+pwd
+# ------ build QisdaEIS Staging ------
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env test
+gulp jenkinsdefault --env test
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="a2dd89a3-82a2-4b92-b4f9-4bc931470f80" --packageType="enterprise"
+
+pwd
 cd ../QPlayProduct-Multijob/Production/NewQPlay
 pwd
 # ------ build QPlay Production ------
@@ -193,6 +203,16 @@ gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7c735ea8-86d9-4285-a8e8-08c520a3433c" --packageType="enterprise"
 
+pwd
+cd ../QPlayProduct-QisdaEIS/Production/QisdaEIS
+pwd
+# ------ build QisdaEIS Production ------
+gulp config --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall
+gulp jenkinsdefault
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="4d10caa8-3dda-4ccf-a342-808df0fc56c4" --packageType="enterprise"
+
 
 ############# Multijob #############
 ####################################
@@ -222,6 +242,8 @@ cp $appfolder/Leave/platforms/android/build/outputs/apk/android-release.apk $bin
 cp $appfolder/Leave/platforms/iOS/build/device/Leave.ipa $binfolder/Leave.ipa
 cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $binfolder/appmassage.apk
 cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
+cp $appfolder/QisdaEIS/platforms/android/build/outputs/apk/android-release.apk $binfolder/appqisdaeis.apk
+cp $appfolder/QisdaEIS/platforms/iOS/build/device/QisdaEIS.ipa $binfolder/QisdaEIS.ipa
 
 # ------ make directory of Production for apk and ipa ------
 binfolder=~/Documents/QPlayProduct/1.0.0.$dailyver
@@ -246,6 +268,8 @@ cp $appfolder/Leave/platforms/android/build/outputs/apk/android-release.apk $bin
 cp $appfolder/Leave/platforms/iOS/build/device/Leave.ipa $binfolder/Leave.ipa
 cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $binfolder/appmassage.apk
 cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
+cp $appfolder/QisdaEIS/platforms/android/build/outputs/apk/android-release.apk $binfolder/appqisdaeis.apk
+cp $appfolder/QisdaEIS/platforms/iOS/build/device/QisdaEIS.ipa $binfolder/QisdaEIS.ipa
 
 # ------ copy source code of Staging------
 rm -Rf ~/Documents/QPlayStaging/QPlayStaging/
