@@ -118,7 +118,8 @@ $("#viewPersonalLeave").pagecontainer({
             }();
         };
 
-        window.QueryEmployeeData = function() {
+        window.QueryEmployeeData = function(callback) {
+            callback = callback || null;
 
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
@@ -152,6 +153,10 @@ $("#viewPersonalLeave").pagecontainer({
 
                             $("#agent-popup-option-list").show();
                             $("#queryLoader").hide();
+
+                            if (callback === "CountLeaveHours") {
+                                CountLeaveHours();
+                            }
                         }
                     }
                     if(agentNotExist) {
@@ -321,6 +326,17 @@ $("#viewPersonalLeave").pagecontainer({
         $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
             $("#tab-1").hide();
             $("#tab-2").show();
+
+            if(localStorage.getItem("agent") !== null) {
+                queryEmployeeData = "<LayoutHeader><EmpNo>"
+                                  + myEmpNo
+                                  + "</EmpNo><qEmpno>"
+                                  + JSON.parse(localStorage.getItem("agent"))[1]
+                                  + "</qEmpno><qName>"
+                                  + JSON.parse(localStorage.getItem("agent"))[0]
+                                  + "</qName></LayoutHeader>";
+                QueryEmployeeData();
+            }
         });
 
         // $("#infoTitle-1").on("click", function() {
@@ -403,7 +419,20 @@ $("#viewPersonalLeave").pagecontainer({
                                          + "</enddate><endtime>"
                                          + endTime
                                          + "</endtime><datumdate></datumdate></LayoutHeader>";
-                CountLeaveHours();
+
+                if(localStorage.getItem("agent") !== null) {
+                    queryEmployeeData = "<LayoutHeader><EmpNo>"
+                                  + myEmpNo
+                                  + "</EmpNo><qEmpno>"
+                                  + JSON.parse(localStorage.getItem("agent"))[1]
+                                  + "</qEmpno><qName>"
+                                  + JSON.parse(localStorage.getItem("agent"))[0]
+                                  + "</qName></LayoutHeader>";
+                    QueryEmployeeData("CountLeaveHours");
+                } else {
+                    CountLeaveHours();
+                }
+
                 loadingMask("show");
             }
         });
