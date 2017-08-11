@@ -238,27 +238,36 @@ var columnOption = {
 };
 
 
-function getLandscapeColumn(){
-	chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
-	chartColumnLandscape.series[0].setData(columnData1, false, false, false);
-	chartColumnLandscape.series[1].setData(columnData2, false, false, false);
-	chartColumnLandscape.series[2].setData(columnData3, false, false, false);
-	chartColumnLandscape.series[3].setData(columnData4, false, false, false);
+function getLandscapeColumn( isInit ){
+	if(isInit) {
+		chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+	}
+	else {
 	
-	chartColumnLandscape.update({ 
-		chart: {
-			marginTop: 90
-		},
-		title: {
-			text: 'Total AR and Overdue Amount',
-			style: {
-				fontWidth: 'bold'
+		// review by alan
+		// update it on first time rotation...
+		// 3 seconds
+
+		chartColumnLandscape.series[0].setData(columnData1, false, false, false);
+		chartColumnLandscape.series[1].setData(columnData2, false, false, false);
+		chartColumnLandscape.series[2].setData(columnData3, false, false, false);
+		
+
+		chartColumnLandscape.update({ 
+			chart: {
+				marginTop: 90
+			},
+			title: {
+				text: 'Total AR and Overdue Amount',
+				style: {
+					fontWidth: 'bold'
+				}
+			},
+			subtitle: {
+				text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
 			}
-		},
-		subtitle: {
-			text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
-		}
-	});
+		});
+	}
 }
 
 function clickSingleListBtn(){
@@ -323,8 +332,6 @@ $('#viewDetail').pagecontainer({
 					overdueDetailCallBackData = data["Content"];
 					
 					getOverdueDetailByType();
-					//getOverdueDetailData();
-					//clickSingleListBtn();
 					OutstandDetail();
 					CreditExpiredSoon();
 					loadingMask("hide");
@@ -347,8 +354,6 @@ $('#viewDetail').pagecontainer({
 				overdueDetailCallBackData = overdueDetailData["Content"];
 				
 				getOverdueDetailByType();
-				//getOverdueDetailData();
-				//clickSingleListBtn();
 				OutstandDetail();
 				CreditExpiredSoon();
 				loadingMask("hide");
@@ -984,7 +989,7 @@ $('#viewDetail').pagecontainer({
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
-			getLandscapeColumn();
+			getLandscapeColumn(true);
 			zoomInChartByColumn();			
 			getOverdueDetailData();
 			clickSingleListBtn();

@@ -50,7 +50,7 @@ window.initialSuccess = function() {
                         + "</EndYearMonth></LayoutHeader>";                   
     console.log(ARSummaryQueryData);
     
-    ARSummary();
+    ARSummary();//support lifecycle
     AraUserAuthority();
     $.mobile.changePage("#viewMain");
 }
@@ -332,7 +332,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	getLandscapeColumn();
+        	getLandscapeColumn(false);
 			zoomInChartByColumn();
         	$('#viewDetail-hc-column-landscape').show();
         	
