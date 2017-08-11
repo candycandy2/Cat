@@ -240,10 +240,10 @@ var columnOption = {
 
 function getLandscapeColumn(){
 	chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
-	chartColumnLandscape.series[0].setData(columnData1, true, true, false);
-	chartColumnLandscape.series[1].setData(columnData2, true, true, false);
-	chartColumnLandscape.series[2].setData(columnData3, true, true, false);
-	chartColumnLandscape.series[3].setData(columnData4, true, true, false);
+	chartColumnLandscape.series[0].setData(columnData1, false, false, false);
+	chartColumnLandscape.series[1].setData(columnData2, false, false, false);
+	chartColumnLandscape.series[2].setData(columnData3, false, false, false);
+	chartColumnLandscape.series[3].setData(columnData4, false, false, false);
 	
 	chartColumnLandscape.update({ 
 		chart: {
@@ -409,64 +409,65 @@ $('#viewDetail').pagecontainer({
 		
 		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
-			buChartArea1.series[0].setData(companySeries1, true, true, false);
+			buChartArea1.series[0].setData(companySeries1, false, false, false);
 			
 			buChartArea2 = new Highcharts.Chart('buChartArea2', areaOption);
-			buChartArea2.series[0].setData(companySeries2, true, true, false);
+			buChartArea2.series[0].setData(companySeries2, false, false, false);
 			
 			buChartArea3 = new Highcharts.Chart('buChartArea3', areaOption);
-			buChartArea3.series[0].setData(companySeries3, true, true, false);
+			buChartArea3.series[0].setData(companySeries3, false, false, false);
 			
 			buChartArea4 = new Highcharts.Chart('buChartArea4', areaOption);
-			buChartArea4.series[0].setData(companySeries4, true, true, false);
+			buChartArea4.series[0].setData(companySeries4, false, false, false);
 			
 			csdChartArea1 = new Highcharts.Chart('csdChartArea1', areaOption);
-			csdChartArea1.series[0].setData(companySeries1, true, true, false);
+			csdChartArea1.series[0].setData(companySeries1, false, false, false);
 			
 			csdChartArea2 = new Highcharts.Chart('csdChartArea2', areaOption);
-			csdChartArea2.series[0].setData(companySeries2, true, true, false);
+			csdChartArea2.series[0].setData(companySeries2, false, false, false);
 			
 			csdChartArea3 = new Highcharts.Chart('csdChartArea3', areaOption);
-			csdChartArea3.series[0].setData(companySeries3, true, true, false);
+			csdChartArea3.series[0].setData(companySeries3, false, false, false);
 			
 			csdChartArea4 = new Highcharts.Chart('csdChartArea4', areaOption);
-			csdChartArea4.series[0].setData(companySeries4, true, true, false);
+			csdChartArea4.series[0].setData(companySeries4, false, false, false);
 			
+			//setData (Array data, [Boolean redraw], [Mixed animation], [Boolean updatePoints])
 			buChartColumn1 = new Highcharts.Chart('buChartColumn1', columnOption);
-			buChartColumn1.series[0].setData(columnData1, true, true, false);
-			buChartColumn1.series[1].setData(columnData2, true, true, false);
-			buChartColumn1.series[2].setData(columnData3, true, true, false);
-			buChartColumn1.series[3].setData(columnData4, true, true, false);
+			buChartColumn1.series[0].setData(columnData1, false, false, false);
+			buChartColumn1.series[1].setData(columnData2, false, false, false);
+			buChartColumn1.series[2].setData(columnData3, false, false, false);
+			buChartColumn1.series[3].setData(columnData4, false, false, false);
 			
 			buChartColumn2 = new Highcharts.Chart('buChartColumn2', columnOption);
-			buChartColumn2.series[0].setData(columnData2, true, true, false);
-			buChartColumn2.series[1].setData(columnData1, true, true, false);
-			buChartColumn2.series[2].setData(columnData4, true, true, false);
+			buChartColumn2.series[0].setData(columnData2, false, false, false);
+			buChartColumn2.series[1].setData(columnData1, false, false, false);
+			buChartColumn2.series[2].setData(columnData4, false, false, false);
 			buChartColumn2.series[3].setData(columnData3, true, true, false);
 			
 			buChartColumn3 = new Highcharts.Chart('buChartColumn3', columnOption);
-			buChartColumn3.series[0].setData(columnData3, true, true, false);
-			buChartColumn3.series[1].setData(columnData2, true, true, false);
-			buChartColumn3.series[2].setData(columnData4, true, true, false);
-			buChartColumn3.series[3].setData(columnData1, true, true, false);
+			buChartColumn3.series[0].setData(columnData3, false, false, false);
+			buChartColumn3.series[1].setData(columnData2, false, false, false);
+			buChartColumn3.series[2].setData(columnData4, false, false, false);
+			buChartColumn3.series[3].setData(columnData1, false, false, false);
 			
 			csdChartColumn1 = new Highcharts.Chart('csdChartColumn1', columnOption);
-			csdChartColumn1.series[0].setData(columnData4, true, true, false);
-			csdChartColumn1.series[1].setData(columnData3, true, true, false);
-			csdChartColumn1.series[2].setData(columnData1, true, true, false);
-			csdChartColumn1.series[3].setData(columnData2, true, true, false);
+			csdChartColumn1.series[0].setData(columnData4, false, false, false);
+			csdChartColumn1.series[1].setData(columnData3, false, false, false);
+			csdChartColumn1.series[2].setData(columnData1, false, false, false);
+			csdChartColumn1.series[3].setData(columnData2, false, false, false);
 			
 			csdChartColumn2 = new Highcharts.Chart('csdChartColumn2', columnOption);
-			csdChartColumn2.series[0].setData(columnData1, true, true, false);
-			csdChartColumn2.series[1].setData(columnData4, true, true, false);
-			csdChartColumn2.series[2].setData(columnData2, true, true, false);
-			csdChartColumn2.series[3].setData(columnData3, true, true, false);
+			csdChartColumn2.series[0].setData(columnData1, false, false, false);
+			csdChartColumn2.series[1].setData(columnData4, false, false, false);
+			csdChartColumn2.series[2].setData(columnData2, false, false, false);
+			csdChartColumn2.series[3].setData(columnData3, false, false, false);
 			
 			csdChartColumn3 = new Highcharts.Chart('csdChartColumn3', columnOption);
-			csdChartColumn3.series[0].setData(columnData2, true, true, false);
-			csdChartColumn3.series[1].setData(columnData1, true, true, false);
-			csdChartColumn3.series[2].setData(columnData3, true, true, false);
-			csdChartColumn3.series[3].setData(columnData4, true, true, false);
+			csdChartColumn3.series[0].setData(columnData2, false, false, false);
+			csdChartColumn3.series[1].setData(columnData1, false, false, false);
+			csdChartColumn3.series[2].setData(columnData3, false, false, false);
+			csdChartColumn3.series[3].setData(columnData4, false, false, false);
 			
 		}
 		
@@ -576,7 +577,7 @@ $('#viewDetail').pagecontainer({
 				areaSeries.push(areaWeek5);
 				
 				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-				buArea.series[0].setData(areaSeries, true, true, false);
+				buArea.series[0].setData(areaSeries, false, false, false);
 				
 				
 				/*********** column图表 **********/
@@ -637,10 +638,10 @@ $('#viewDetail').pagecontainer({
 				columnSeries4.push(column23);
 				
 				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-				buColumn.series[0].setData(columnSeries1, true, true, false);
-				buColumn.series[1].setData(columnSeries2, true, true, false);
-				buColumn.series[2].setData(columnSeries3, true, true, false);
-				buColumn.series[3].setData(columnSeries4, true, true, false);
+				buColumn.series[0].setData(columnSeries1, false, false, false);
+				buColumn.series[1].setData(columnSeries2, false, false, false);
+				buColumn.series[2].setData(columnSeries3, false, false, false);
+				buColumn.series[3].setData(columnSeries4, false, false, false);
 					
 			});
 			
