@@ -1,5 +1,6 @@
 /********************/
 var ro = "ALL";
+var viewDetailInit = false;
 
 //get BU & CSD series
 var companySeries1 = [20, 33, 53, 76, 43, 62];
@@ -240,7 +241,9 @@ var columnOption = {
 
 function getLandscapeColumn( isInit ){
 	if(isInit) {
-		chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+		if(chartColumnLandscape == null) {
+			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+		}
 	}
 	else {
 	
@@ -988,11 +991,14 @@ $('#viewDetail').pagecontainer({
 		});
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
-			getChartAreaAndColumn();
-			getLandscapeColumn(true);
-			zoomInChartByColumn();			
-			getOverdueDetailData();
-			clickSingleListBtn();
+			if(viewDetailInit == false) {
+				getChartAreaAndColumn();
+				getLandscapeColumn(true);
+				zoomInChartByColumn();			
+				getOverdueDetailData();
+				clickSingleListBtn();
+				viewDetailInit = true;
+			}
 			loadingMask("hide");
 		});
 		
