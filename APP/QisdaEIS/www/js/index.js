@@ -4,7 +4,7 @@ var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
 var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
-var chartColumnLandscape;
+var chartColumnLandscape = null;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
 var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
