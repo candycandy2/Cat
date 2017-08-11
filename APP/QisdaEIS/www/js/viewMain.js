@@ -1,5 +1,7 @@
 //get BU & CSD series
 var viewMainTab = "bu";
+
+var viewMainInit = false;
 var mainQisdaEisData = {};
 var buBubbleSeries = [
 	/*{ x: 60, y: 201346476, facility: 'TE' },*/
@@ -509,22 +511,25 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
-			showBubble();
-			
-			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
-		    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
-		    
-		    $('#overview-hc-rectangle').hide();
-		    
-		    chartbubble.series[0].setData(buBubbleData, true, true, false);
-			chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);            
-            
-			if (window.orientation === 90 || window.orientation === -90 ) {
-                zoomInChart();
-           	}
-			
-			//调用第二页API
-			OverdueDetail();
+			if(viewMainInit == false) {
+				viewMainInit = true;
+				showBubble();
+				
+				$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
+			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+			    
+			    $('#overview-hc-rectangle').hide();
+			    
+			    chartbubble.series[0].setData(buBubbleData, false, false, false);
+				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);            
+	            
+				if (window.orientation === 90 || window.orientation === -90 ) {
+	                zoomInChart();
+	           	}
+				
+				//调用第二页API
+				OverdueDetail();
+			}
 			
 			loadingMask("hide");
 		});
