@@ -318,11 +318,12 @@ a{
 	height: 15.538VW;
 }
 
+/* area highcharts */
 .bu-data-list > ul > li:nth-child(3) div,
 .csd-data-list > ul > li:nth-child(3) div{
 	width: 15VW;
 	height: 6VW; 
-	margin-top: 4.5VW;
+	margin-top: 3.5VW;
 	margin-left: 2.5VW;
 }
 

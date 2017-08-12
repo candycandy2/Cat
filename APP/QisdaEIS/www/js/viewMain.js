@@ -113,7 +113,6 @@ var bubbleOption = {
             			getTreemapSeriesByFacility(facility);
             			
             			showTreemap();
-            			showTreemapLandscape();
             			
             			if(viewMainTab == "bu"){
             				chartRect.series[0].setData(buTreemap, true, true, false);
@@ -249,12 +248,11 @@ var rectOption = {
 function showTreemap(){
 	rectOption.chart.renderTo = 'overview-hc-rectangle';
 	chartRect = new Highcharts.Chart(rectOption);
-}
-
-function showTreemapLandscape(){
+	
 	rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
 	chartLandscapeRect = new Highcharts.Chart(rectOption);
 }
+
 
 function hideTooltip(){
 	chartbubble.tooltip.hide();

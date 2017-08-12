@@ -3,7 +3,7 @@ var ro = "ALL";
 var viewDetailInit = false;
 
 //get BU & CSD series
-var companySeries1 = [20, 33, 53, 76, 43, 62];
+var companySeries1 = [10, 20, 30, 40, 50, 60];
 var companySeries2 = [31, 26, 58, 43, 59, 64];
 var companySeries3 = [46, 38, 21, 47, 21, 33];
 var companySeries4 = [58, 37, 76, 51, 42, 27];
@@ -25,6 +25,10 @@ var userName = "Alan Chen";
 var startDate = "5/4";
 var endDate = "6/15";
 var timeAxis = [];
+var buAreaSeries = [];
+var buColumnSeries = [];
+var csdAreaSeries = [];
+var csdColumnSeries = [];
 var overdueDetailData = {};
 var outstandDetailData = {};
 var creditExpiredSoonData = {};
@@ -139,6 +143,7 @@ var areaOption = {
     },
     plotOptions: {
     	area: {
+    		animation: false,
     		lineWidth: 1,
     		fillColor: '#DFEDFA',
     		marker: {
@@ -215,6 +220,7 @@ var columnOption = {
     },
     plotOptions: {
         column: {
+        	animation: false,
             stacking: 'normal'
         }   
     },
@@ -254,7 +260,7 @@ function getLandscapeColumn( isInit ){
 		chartColumnLandscape.series[0].setData(columnData1, false, false, false);
 		chartColumnLandscape.series[1].setData(columnData2, false, false, false);
 		chartColumnLandscape.series[2].setData(columnData3, false, false, false);
-		
+		chartColumnLandscape.series[3].setData(columnData4, false, false, false);
 
 		chartColumnLandscape.update({ 
 			chart: {
@@ -335,8 +341,9 @@ $('#viewDetail').pagecontainer({
 					overdueDetailCallBackData = data["Content"];
 					
 					getOverdueDetailByType();
-					OutstandDetail();
-					CreditExpiredSoon();
+					getOverdueDetailData();
+					//OutstandDetail();
+					//CreditExpiredSoon();
 					loadingMask("hide");
 					
 					localStorage.setItem("overdueDetailData", JSON.stringify([data, nowTime]));				
@@ -357,8 +364,9 @@ $('#viewDetail').pagecontainer({
 				overdueDetailCallBackData = overdueDetailData["Content"];
 				
 				getOverdueDetailByType();
-				OutstandDetail();
-				CreditExpiredSoon();
+				getOverdueDetailData();
+				//OutstandDetail();
+				//CreditExpiredSoon();
 				loadingMask("hide");
 				
 			}
@@ -451,7 +459,7 @@ $('#viewDetail').pagecontainer({
 			buChartColumn2.series[0].setData(columnData2, false, false, false);
 			buChartColumn2.series[1].setData(columnData1, false, false, false);
 			buChartColumn2.series[2].setData(columnData4, false, false, false);
-			buChartColumn2.series[3].setData(columnData3, true, true, false);
+			buChartColumn2.series[3].setData(columnData3, false, false, false);
 			
 			buChartColumn3 = new Highcharts.Chart('buChartColumn3', columnOption);
 			buChartColumn3.series[0].setData(columnData3, false, false, false);
@@ -501,7 +509,7 @@ $('#viewDetail').pagecontainer({
 		function getOverdueDetailData(){
 			var buOverdueDetailTotal = 0;
 			var csdOverdueDetailTotal = 0;
-			//var totalHtml = "";
+			
 			$.each(buOverdueDetail, function(i, item) {
 				var overdueDetailTotal = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
 										parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
@@ -522,7 +530,7 @@ $('#viewDetail').pagecontainer({
 												'<div id="buArea' + i + '"></div>' +
 											'</li>' +
 											'<li>' +
-												'<img src="img/list_down.png" class="buSingleListBtn" />' +
+												'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" />' +
 											'</li>' +
 										'</ul>' +
 									'</li>' +
@@ -556,7 +564,7 @@ $('#viewDetail').pagecontainer({
 										'</div>' +
 										'<div id="buColumn' + i + '"></div>' +
 									'</li>';
-				//totalHtml += overdueDetailContent;
+				
 				//求和
 				buOverdueDetailTotal += parseFloat(overdueDetailTotal);
 				
@@ -584,11 +592,15 @@ $('#viewDetail').pagecontainer({
 						    parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				areaSeries.push(areaWeek5);
 				
-				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-				buArea.series[0].setData(areaSeries, false, false, false);
+				buAreaSeries.push(areaSeries);
+				
+				/*var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(areaSeries, false, false, false);*/
 				
 				
 				/*********** column图表 **********/
+				var columnSeries = [];
+				
 				var columnSeries1 = [];
 				var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
 				columnSeries1.push(column0);
@@ -602,6 +614,7 @@ $('#viewDetail').pagecontainer({
 				columnSeries1.push(column4);
 				var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
 				columnSeries1.push(column5);
+				columnSeries.push(columnSeries1);
 				
 				var columnSeries2 = [];
 				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
@@ -616,6 +629,7 @@ $('#viewDetail').pagecontainer({
 				columnSeries2.push(column10);
 				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
 				columnSeries2.push(column11);
+				columnSeries.push(columnSeries2);
 				
 				var columnSeries3 = [];
 				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
@@ -630,6 +644,7 @@ $('#viewDetail').pagecontainer({
 				columnSeries3.push(column16);
 				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
 				columnSeries3.push(column17);
+				columnSeries.push(columnSeries3);
 				
 				var columnSeries4 = [];
 				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
@@ -644,12 +659,15 @@ $('#viewDetail').pagecontainer({
 				columnSeries4.push(column22);
 				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				columnSeries4.push(column23);
+				columnSeries.push(columnSeries4);
 				
-				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumnSeries.push(columnSeries);
+				
+				/*var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
 				buColumn.series[0].setData(columnSeries1, false, false, false);
 				buColumn.series[1].setData(columnSeries2, false, false, false);
 				buColumn.series[2].setData(columnSeries3, false, false, false);
-				buColumn.series[3].setData(columnSeries4, false, false, false);
+				buColumn.series[3].setData(columnSeries4, false, false, false);*/
 					
 			});
 			
@@ -695,7 +713,7 @@ $('#viewDetail').pagecontainer({
 												'<div id="csdArea' + i + '"></div>' +
 											'</li>' +
 											'<li>' +
-												'<img src="img/list_down.png" class="csdSingleListBtn" />' +
+												'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" />' +
 											'</li>' +
 										'</ul>' +
 									'</li>' +
@@ -729,9 +747,10 @@ $('#viewDetail').pagecontainer({
 										'</div>' +
 										'<div id="csdColumn' + i + '"></div>' +
 									'</li>';
-				//totalHtml += overdueDetailContent;
+				
 				//求和
 				csdOverdueDetailTotal += parseFloat(overdueDetailTotal);
+				
 				$('.overdueDetail-csd').append(overdueDetailContent);
 				
 				/******** area图表 ********/
@@ -756,11 +775,15 @@ $('#viewDetail').pagecontainer({
 						    parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				areaSeries.push(areaWeek5);
 				
+				csdAreaSeries.push(areaSeries);
+				
 				/*var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
 				csdArea.series[0].setData(areaSeries, true, true, false);*/
 				
 				
 				/*********** column图表 **********/
+				var columnSeries = [];
+				
 				var columnSeries1 = [];
 				var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
 				columnSeries1.push(column0);
@@ -774,6 +797,7 @@ $('#viewDetail').pagecontainer({
 				columnSeries1.push(column4);
 				var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
 				columnSeries1.push(column5);
+				columnSeries.push(columnSeries1);
 				
 				var columnSeries2 = [];
 				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
@@ -788,6 +812,7 @@ $('#viewDetail').pagecontainer({
 				columnSeries2.push(column10);
 				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
 				columnSeries2.push(column11);
+				columnSeries.push(columnSeries2);
 				
 				var columnSeries3 = [];
 				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
@@ -802,6 +827,7 @@ $('#viewDetail').pagecontainer({
 				columnSeries3.push(column16);
 				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
 				columnSeries3.push(column17);
+				columnSeries.push(columnSeries3);
 				
 				var columnSeries4 = [];
 				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
@@ -816,6 +842,9 @@ $('#viewDetail').pagecontainer({
 				columnSeries4.push(column22);
 				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				columnSeries4.push(column23);
+				columnSeries.push(columnSeries4);
+				
+				csdColumnSeries.push(columnSeries);
 				
 				//var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
 				//csdColumn.series[0].setData(columnSeries1, true, true, false);
@@ -846,6 +875,12 @@ $('#viewDetail').pagecontainer({
 												'</li>';
 												
 			$('.overdueDetail-csd').append(csdOverdueDetailContentTotal);
+			
+			
+			console.log(buAreaSeries);
+			//console.log(buColumnSeries);
+			//console.log(csdAreaSeries);
+			//console.log(csdColumnSeries);
 		}
 		
 		
@@ -928,7 +963,6 @@ $('#viewDetail').pagecontainer({
 				$('.overduesoon-csd').append(noneDataTwoColumn);
 				$('.overduesoon-csd').append(noneDataTwoTotal);
 			}
-			
 		}
 		
 		function getExpiredSoonData() {
@@ -955,7 +989,37 @@ $('#viewDetail').pagecontainer({
 				$('.expiredsoon').append(noneDataThreeColumn);
 				
 			}
+		}
+		
+		function setDataToArea(){
+			for(var i = 0; i < buAreaSeries.length; i ++){
+				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(buAreaSeries[i], false, false, false);
+			}
 			
+		}
+		
+		function setDataToColumn(){
+			for(var i = 0; i < csdAreaSeries.length; i ++){
+				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
+				csdArea.series[0].setData(csdAreaSeries[i], false, false, false);
+			}
+			
+			/*for(var i = 0; i < buColumnSeries.length; i ++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+			}*/
+			
+			/*for(var i = 0; i < csdColumnSeries.length; i ++){
+				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
+				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
+				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
+				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
+				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+			}*/
 		}
 		
 		function changeScrollmenu(ro){
@@ -992,14 +1056,18 @@ $('#viewDetail').pagecontainer({
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			if(viewDetailInit == false) {
-				getChartAreaAndColumn();
+				//getChartAreaAndColumn();
+				setDataToArea();
 				getLandscapeColumn(true);
-				zoomInChartByColumn();			
-				getOverdueDetailData();
+				zoomInChartByColumn();
 				clickSingleListBtn();
+				OutstandDetail();
+				CreditExpiredSoon();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
+			
+			setDataToColumn();	
 		});
 		
 		$(".page-tabs #viewDetail-tab-1").on("click", function(){
