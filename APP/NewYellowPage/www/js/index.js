@@ -86,7 +86,15 @@ $(document).on('click', '.chooseNumPop', function(){
             // has only one ext number
             if (!$(this).hasClass('extNumMore'))
                 appendNum(tempExt);
-            appendNum(tempMvpn);
+            if ($(this).hasClass('mvpnNumMore'))
+            {
+                mvpnTotalNum = tempMvpn.match(/;/igm).length + 1;
+                for (var i = 0; i < mvpnTotalNum; i++){
+                    appendNum($(this).data('mvpnnum' + (i+1)));
+                }
+            }else{
+                appendNum(tempMvpn);
+            }
         }
         tmpPopupData = tempExt;
         tmpPageID = $(this).closest('.ui-page').attr('id');
