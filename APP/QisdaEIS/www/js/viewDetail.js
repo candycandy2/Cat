@@ -1,6 +1,8 @@
 /********************/
 var ro = "ALL";
 var viewDetailInit = false;
+var tabOutstandDetailInit = false;
+var tabCreditExpiredSoonInit = false;
 
 //get BU & CSD series
 var companySeries1 = [10, 20, 30, 40, 50, 60];
@@ -1061,8 +1063,8 @@ $('#viewDetail').pagecontainer({
 				getLandscapeColumn(true);
 				zoomInChartByColumn();
 				clickSingleListBtn();
-				OutstandDetail();
-				CreditExpiredSoon();
+				//OutstandDetail();
+				//CreditExpiredSoon();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
@@ -1079,13 +1081,21 @@ $('#viewDetail').pagecontainer({
 		$(".page-tabs #viewDetail-tab-2").on("click", function(){
 			$('#overdue').hide();
 			$('#expiredSoon').hide();
-			$('#overdueSoon').show()
+			$('#overdueSoon').show();
+			if(tabOutstandDetailInit == false) {
+				OutstandDetail();
+				tabOutstandDetailInit = true;
+			}
 		});
 		
 		$(".page-tabs #viewDetail-tab-3").on("click", function(){
 			$('#overdue').hide();
 			$('#overdueSoon').hide();
 			$('#expiredSoon').show();
+			if(tabCreditExpiredSoonInit == false) {
+				CreditExpiredSoon();
+				tabCreditExpiredSoonInit = true;
+			}
 		});
 		
 		// scroll menu on click
