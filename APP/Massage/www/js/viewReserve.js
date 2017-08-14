@@ -97,7 +97,7 @@ $("#viewReserve").pagecontainer({
             this.successCallback = function(data) {
                 
                 ReserveMassageCallBackData = data;
-                var resultcode = data['Result_Code'];
+                var resultcode = data['ResultCode'];
                 if(resultcode === "039902") {
                     var headerContent = "預約成功";
                         msgContent = currentYear + "/" + month + "/" + date;
@@ -137,7 +137,7 @@ $("#viewReserve").pagecontainer({
 
             this.successCallback = function(data) {
                 $('.hasReservePopup').popup('close');
-                if(data['ResultCode'] === "023905") {
+                if(data['ResultCode'] === "039905") {
                     if ($('#pageOne').css('display') === 'block') {
                         QueryReserveDetail();
                     }else {
@@ -147,8 +147,8 @@ $("#viewReserve").pagecontainer({
                         popupMsgInit('.myReserveCancelResult');
                         tplJS.preventPageScroll();
                     }
-                }else if(data['ResultCode'] === "023906") {
-                    $('.myReserveCancelResult').find('.main-paragraph').html("兩日內預約無法取消");
+                }else if(data['ResultCode'] === "039906") {
+                    $('.myReserveCancelResult').find('.main-paragraph').html("當日預約無法取消");
                     popupMsgInit('.myReserveCancelResult');
                     tplJS.preventPageScroll();
                 }
@@ -228,7 +228,7 @@ $("#viewReserve").pagecontainer({
                     $("#today-reserve-area").append($(nowDateHTML)).enhanceWithin();
                     laterDateHTML += laterContent;
                     $("#later-reserve-area").append($(laterDateHTML)).enhanceWithin();
-                }else if(data["ResultCode"] === "023901") {
+                }else if(data["ResultCode"] === "039901") {
                     $('.queryMyReserveResult').find('.main-paragraph').html("沒有您的預約資料");
                     popupMsgInit('.queryMyReserveResult');
                     tplJS.preventPageScroll();
@@ -252,6 +252,7 @@ $("#viewReserve").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewReserve").on("pagebeforeshow", function(event, ui) {
+            timeQueue = {};
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
@@ -276,6 +277,7 @@ $("#viewReserve").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#reserveTab').change(function() {
+            timeQueue = {};
             var tabValue = $("#reserveTab :radio:checked").val();
             if (tabValue == 'tab1') {
                 $('#pageOne').show();
@@ -300,13 +302,13 @@ $("#viewReserve").pagecontainer({
                                           + currentYear + currentMonth + currentDate
                                           + "</NowDate></LayoutHeader>"
                 // if(myReserver_dirtyFlag === true)
-                // QueryMyReserve();
-                // loadingMask("show");
+                QueryMyReserve();
+                loadingMask("show");
                 /* global PullToRefresh */
                 PullToRefresh.init({
                     mainElement: '#pageTwo',
                     onRefresh: function() {
-                        // QueryMyReserve();
+                        QueryMyReserve();
                     }
                 });
             } else {
@@ -318,6 +320,7 @@ $("#viewReserve").pagecontainer({
 
         // date pick
         $('body').on('click', '#scrollDate .ui-link', function() {
+            timeQueue = {};
             $('#scrollDate').find('.hover').removeClass('hover');
             $(this).addClass('hover');
             month = cutStringToArray($(this).context.id, ["2", "2"])[1];
@@ -407,7 +410,7 @@ $("#viewReserve").pagecontainer({
                 for(var time in timeQueue) {
                     index++;
                     if(index == Object.keys(timeQueue).length) {
-                        queryTime += time;
+                        queryTime += time;   
                     }else {
                         queryTime += time + ",";
                     }
@@ -447,7 +450,7 @@ $("#viewReserve").pagecontainer({
                                          + "</ReserveUser><ReserveID>"
                                          + tempReserveID
                                          + "</ReserveID></LayoutHeader>"
-                // ReserveCancel();
+                ReserveCancel();
                 bReserveCancelConfirm = false;
                 tplJS.recoveryPageScroll();
             }

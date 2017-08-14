@@ -7,9 +7,10 @@ var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var chartColumnLandscape;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
-var ROSummaryQueryData,roSummaryCallBackData,productDetailQueryData,userAuthorityCallBackData;
+var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
+var arSummaryCallBackData;
 var treemapState = false;
-var UserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -30,17 +31,32 @@ var panel = htmlContent
         +   '</div>'
         +'</div>';
 var time = new Date(Date.now());
+var nowTime = new Date();
 
 window.initialSuccess = function() {
-
-    //loadingMask("show");
+	currentYear = time.getFullYear();
+    currentDate = time.getDate();
+    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
+    if(currentDate == 1) {
+        currentMonth = currentMonth - 1;
+    }
+    console.log(currentYear+' , '+currentMonth+' , '+currentDate);
+    //localStorage
     
-    //ROSummary();
+    //loadingMask("show");
+    ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";
+                        
+    console.log(ARSummaryQueryData);
+    ARSummary();
+    //AraUserAuthority();
+    //OverdueDetail();
+    //OutstandDetail();
+    //CreditExpiredSoon();
     $.mobile.changePage("#viewMain");
-}
-
-window.initialSuccess = function() {
-    $.mobile.changePage('#viewMain');
 }
 
 $(document).one('pagebeforeshow', function(){
@@ -51,16 +67,10 @@ $(document).one('pagebeforeshow', function(){
 
     $("#mypanel #mypanelviewMain").on("click", function() {
         changePageByPanel("viewMain");
-        $('#overview-hc-rectangle').hide();
-        chartbubble.series[0].setData(buBubbleSeries, true, true, false);
-		chartLandscapebubble.series[0].setData(buBubbleSeries, true, true, false);
     });
 
     $("#mypanel #mypanelviewDetail").on("click", function() {
         changePageByPanel("viewDetail");
-        $('#overdueSoon').hide();
-		$('#expiredSoon').hide();
-		//$('#overdue').show();
     });
 
     $(".menu-btn").on("click", function() {
@@ -274,9 +284,9 @@ function zoomInChartByTreemap(){
 
 function zoomInChartByColumn(){
 	if(screen.width < screen.height) {
-        chartColumnLandscape.setSize(screen.height, screen.width*0.92, false);
+        chartColumnLandscape.setSize(screen.height, screen.width*0.93, false);
    	}else {
-        chartColumnLandscape.setSize(screen.width, screen.height*0.92, false);
+        chartColumnLandscape.setSize(screen.width, screen.height*0.93, false);
     }
 }
 
@@ -323,8 +333,30 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
+function changePageInitViewDetail(){
+	$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
+    $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+    $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
+    
+	$('#memoBtn').attr('src', 'img/switch_g.png');
+	$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+    $('.buSingleListBtn').attr('src', 'img/list_down.png');
+    $('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    $('.csdSingleListBtn').attr('src', 'img/list_down.png');
+    $('.bu-single-list').hide();
+    $('.csd-single-list').hide();
+    
+    $('#overdueSoon').hide();
+	$('#expiredSoon').hide();
+	$('#overdue').show();
+	
+    $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
+    $(".Ro #ALL").addClass('hover');
+}
 
-
+function changePageInitViewMain(){
+	
+}
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
@@ -339,6 +371,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#backBtn').hide();
     	}else{
     		$('#viewDetail-hc-column-landscape').hide();
+    		
     	}
 
     }
@@ -348,8 +381,10 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	zoomInChartByColumn();
+        	getLandscapeColumn();
+			zoomInChartByColumn();
         	$('#viewDetail-hc-column-landscape').show();
+        	
         }
 
     }

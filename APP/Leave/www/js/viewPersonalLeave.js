@@ -35,22 +35,27 @@ $("#viewPersonalLeave").pagecontainer({
 
             this.successCallback = function(data) {
                 myCalendarData = {};
+                myHolidayData = [];
                 var leaveFlag = "3";
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["Result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var colorTagArry = $("color", htmlDoc);
+                    var informationTagArry = $("information", htmlDoc);
+
                     for(var day = 1; day <= colorTagArry.length; day++) {
                         if(myCalendarData[$(colorTagArry[day-1]).html()] === undefined ) {
                             myCalendarData[$(colorTagArry[day-1]).html()] = [];
                         }
                         myCalendarData[$(colorTagArry[day-1]).html()].push(day);
+                        myHolidayData[day] = parseCDATA($(informationTagArry[day-1]).html());
                     }
                     if(leaveFlag in myCalendarData) {
                         for(var day in myCalendarData[leaveFlag]) {
                             $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
                         }
                     }
+
                 }
                 loadingMask("hide");
             };
@@ -144,6 +149,9 @@ $("#viewPersonalLeave").pagecontainer({
                         }else {
                             $("#agent-popup-option-list").empty().append(agentList);
                             resizePopup("agent-popup-option");
+
+                            $("#agent-popup-option-list").show();
+                            $("#queryLoader").hide();
                         }
                     }
                     if(agentNotExist) {
@@ -216,16 +224,22 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var success = $("success", htmlDoc);
-                    if($(success).html() != undefined) {
-                        $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
-                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
-                    }else {
-                        var error = $("error", htmlDoc);
-                        var msgContent = $(error).html();
-                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+
+                    if (callbackData.indexOf("error") != -1) {
+                        $('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
                         popupMsgInit('.applyLeaveFail');
+                    } else {
+                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                        var success = $("success", htmlDoc);
+                        if ($(success).html() != undefined) {
+                            $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
+                            localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                        } else {
+                            var error = $("error", htmlDoc);
+                            var msgContent = $(error).html();
+                            $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+                            popupMsgInit('.applyLeaveFail');
+                        }
                     }
                     loadingMask("hide");
                 }
@@ -238,6 +252,15 @@ $("#viewPersonalLeave").pagecontainer({
                 CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendLeaveApplicationData, "");
             }();
         };
+
+        function parseCDATA(data) {
+            data = data.toString();
+            var dataTempA = data.split("CDATA");
+            var dataTempB = dataTempA[1].split("[");
+            var dataTempC = dataTempB[1].split("]]");
+
+            return dataTempC[0];
+        }
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
@@ -386,6 +409,11 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).keyup(function(e) {
+            if ($("#searchBar").val().length == 0) {
+                $("#queryLoader").hide();
+                $("#agent-popup-option-list").hide();
+                return;
+            }
             var searchEmpNo = "";
             var searchName = "";
             var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
@@ -407,6 +435,9 @@ $("#viewPersonalLeave").pagecontainer({
             }
             timoutQueryEmployeeData = setTimeout(function() {
                 QueryEmployeeData();
+
+                $("#queryLoader").show();
+                $("#agent-popup-option-list").hide();
             }, 2000);
             if(e.which == 13) {
                 $("#searchBar").blur();
@@ -471,6 +502,12 @@ $("#viewPersonalLeave").pagecontainer({
         $(document).on("popupafteropen", "#agent-popup-option", function() {
             $("#searchBar").val("");
             $("#agent-popup-option-list").empty();
+
+            if ($("#queryLoader").length <= 0) {
+                $("#agent-popup-option-popup .ui-content").append('<img id="queryLoader" src="img/query-loader.gif" width="15" height="15" style="margin-left:45%; display:none;">');
+            } else {
+                $("#queryLoader").hide();
+            }
         });
 
         function splitTime(time) {
@@ -511,5 +548,99 @@ $("#viewPersonalLeave").pagecontainer({
             var top = (viewHeight - popupHeight) / 2;
             popup.parent().css("top", top + "px");
         }
+
+        //Calendar Event
+        $(document).on({
+            click: function(event) {
+                var isLeave = false;
+                var isWeekend = false;
+                var isNormal = false;
+                var dayNumber = $(event.target).prop("id");
+                var divWidth;
+                var divWidthPX;
+                var firstTdWidth;
+                var calendarFirstTr = $(".QPlayCalendar").find("tr:eq(1)")[0];
+                var calendarFirstTrTop = $(calendarFirstTr).position().top;
+                var tooltipMarginTop = parseInt(document.documentElement.clientWidth * 1.724 / 100, 10);
+                calendarFirstTrTop = parseInt(calendarFirstTrTop + tooltipMarginTop, 10);
+                var clickTdTop = $(event.target).parent().position().top;
+                var tooltipTop;
+
+                //Leave
+                if ($(event.target).parent().hasClass("leave")) {
+                    isLeave = true;
+                }
+
+                //Weekend
+                if ($(event.target).parent().hasClass("weekend")) {
+                    isWeekend = true;
+                }
+
+                //Normal
+                if (!isLeave && !isWeekend) {
+                    isNormal = true;
+                }
+
+                if (isLeave) {
+                    divWidth = "48vw";
+                    firstTdWidth = "24vw";
+                    divWidthPX = parseInt(document.documentElement.clientWidth * 48 / 100, 10);
+                    tooltipTop = calendarFirstTrTop;
+                } else if (isWeekend) {
+                    divWidth = "32vw";
+                    divWidthPX = parseInt(document.documentElement.clientWidth * 32 / 100, 10);
+                    tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
+                } else if (isNormal) {
+                    divWidth = "25vw";
+                    divWidthPX = parseInt(document.documentElement.clientWidth * 25 / 100, 10);
+                    tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
+                }
+
+                //Tooltip position: left / right
+                var dayIndexInWeek = $(event.target).parent().index(); //0,1,2,3,4,5,6
+                var tooltipPosition = "right";
+                var tooltipHorizontalPosition;
+                var tdLeft = $(event.target).position().left;
+                var tdWidth = $(event.target).width();
+                var tdPaddingY = parseInt(document.documentElement.clientWidth * 1.53 / 100, 10);
+                var tooltipMarginY = parseInt(document.documentElement.clientWidth * 2.81 / 100, 10);
+
+                if (dayIndexInWeek >= 3) {
+                    tooltipPosition = "left";
+                }
+
+                if (tooltipPosition === "left") {
+                    tooltipHorizontalPosition = "left:" + parseInt(tdLeft - divWidthPX - tdPaddingY - tooltipMarginY, 10) + "px;";
+                } else {
+                    tooltipHorizontalPosition = "left:" + parseInt(tdLeft + tdWidth - tdPaddingY*2 + tooltipMarginY, 10) + "px;";
+                }
+
+                $(".tooltip").remove();
+                $("#viewPersonalLeave").append('<div class="tooltip" style="width:' + divWidth + '; top:' + tooltipTop + 'px; ' + tooltipHorizontalPosition + '">' + myHolidayData[dayNumber] + '</div>');
+
+                if (isLeave) {
+                    $(".tooltip").find("table").css({
+                        "width": divWidth,
+                        "line-height": "1.2"
+                    });
+
+                    $(".tooltip").find("table").each(function(index, dom) {
+                        $(dom).find("td:eq(0)").css("width", firstTdWidth);
+                    });
+                }
+
+            }
+        }, ".QPlayCalendar");
+
+        $(document).on("click", function(event) {
+            if (!$(event.target).parent().parent().parent().parent().parent().hasClass("QPlayCalendar")) {
+                if (!$(event.target).parent().parent().parent().parent().parent().hasClass("tooltip")) {
+                    if ($(".tooltip").length > 0) {
+                        $(".tooltip").remove();
+                    }
+                }
+            }
+        });
+
     }
 });

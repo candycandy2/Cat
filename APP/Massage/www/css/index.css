@@ -205,6 +205,40 @@ pre {
   /*padding: 10px 0;*/
 }
 
+/* notice area */
+#reserveNotice{ text-align: left !important;}
+.noticeArea{ padding-bottom: 4.3vw; position: relative; border-bottom: 1px solid #d6d6d6; margin-bottom: 4.3vw;}
+/*.noticeArea:nth-of-type(1){ margin-bottom: 4.3vw; position: relative; border-bottom: 1px solid #d6d6d6;} */
+.notice-company, .notice-teacher{ color: #0f0f0f;}
+.notice-company, .notice-title-area, .notice-teacher{ margin-bottom: 2.14vw;}
+.notice-info{ color: #666;}
+.notice-info ul{ padding-left: 0; margin: 0; list-style: none; color: #323232;}
+.notice-info li{ line-height: 1.7; position: relative; padding-left: 3vw;}
+.notice-info li:before{ content: '*'; position: absolute; top: 0; left: 0;}
+.notice-title-area{ overflow: hidden; color; #0f0f0f;}
+.notice-title{ float: left;}
+.notice-diagram-area{ float: right; margin-top: -1vw;}
+.notice-teacher-list{ margin-bottom: 4.3vw;}
+.notice-diagram{ display: inline-block;}
+.notice-diagram{ margin-right: 2vw;}
+.diagram-square, .diagram-triangle, .diagram-circle{ display: inline-block;}
+.diagram-square{ width: 0; height: 0; border: 1.415vw solid; margin-right: 1.3vw;}
+.diagram-triangle{ height: 0; width: 0; border: solid; border-width: 2vw 2vw 3vw; border-top-color: transparent !important; border-right-color: transparent !important;
+    border-left-color: transparent !important; margin-right: 0.8vw;}
+.diagram-circle{ width: 0; height: 0; border: 1.415vw solid; border-radius: 50%; margin-right: 1.3vw;}
+
+.color-grassgreen{ border-color: #99CA3C;}
+.color-greenblue{ border-color: #41C1C6;}
+.color-seablue{ border-color: #5AADDF;}
+.color-purple{ border-color: #AB8ABF;}
+.color-blue{ border-color: #3560AD;}
+.color-pink{ border-color: #F05F8B;}
+.color-brown{ border-color: #948078;}
+.color-yellow{ border-color: #FFCC66;}
+
+.notice-timeTable{ margin-bottom: 2.14vw;}
+.timeTable-td{ width: 16.7%;}
+
 /* reserve info */
 .reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
 .reserveInfo:after{ content: ''; display: block; width: 92.58%; height: 1px; background-color: #d6d6d6; position: absolute; bottom: 0; left: 3.71%;}

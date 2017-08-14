@@ -30,7 +30,7 @@ var gulpTask = requireDir('../component/gulpTask/');
 var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appmassage" + process.env.appNameDecorate + "</string>";
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
-                    '<widget id="com.qplay.appmassage' + process.env.productionextra + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                    '<widget id="com.qplay.appmassage' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
                         'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         '<name>' + process.env.APP_NAME + '</name>' +
                         '<description>' +

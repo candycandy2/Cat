@@ -168,6 +168,10 @@ var columnOption = {
 	    borderWidth: 1,
 	    borderColor: 'gray',
 	    backgroundColor:　'#ffffff',
+//	    headerFormat: '<table class="fontTooltip">' + '<tr><td>' + this.x + '</td></tr>' +
+//	     '<tr><td>' + companyCode[0] + '</td></tr>',
+//      pointFormat: '<tr><td>' + this.series.name + ':USD$' + this.y + '</td></tr>',
+//      footerFormat: '</table>',
 	   	formatter: function () {
 	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
 	        $.each(this.points, function () {
@@ -205,11 +209,74 @@ var columnOption = {
 };
 
 
+function getLandscapeColumn(){
+	chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
+	chartColumnLandscape.series[0].setData(columnData1, true, true, false);
+	chartColumnLandscape.series[1].setData(columnData2, true, true, false);
+	chartColumnLandscape.series[2].setData(columnData3, true, true, false);
+	chartColumnLandscape.series[3].setData(columnData4, true, true, false);
+	
+	chartColumnLandscape.update({ 
+		chart: {
+			marginTop: 90
+		},
+		title: {
+			text: 'Total AR and Overdue Amount',
+			style: {
+				fontWidth: 'bold'
+			}
+		},
+		subtitle: {
+			text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+		}
+	});
+}
 
+/*****************************************************************/
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
 		
+		window.OverdueDetail = function() {
+			this.successCallback = function(data) {
+				console.log(data);
+			};
+			
+			this.failCallback = function(data) {
+				console.log("api misconnected");
+			};
+			
+			var _construct = function(){
+				CustomAPI("POST", true, "OverdueDetail", self.successCallback, self.failCallback, OverdueDetailQueryData, "");
+			}();
+		};
 		
+		window.OutstandDetail = function() {
+			this.successCallback = function(data) {
+				console.log(data);
+			};
+			
+			this.failCallback = function(data) {
+				console.log("api misconnected");
+			};
+			
+			var _construct = function(){
+				CustomAPI("POST", true, "OutstandDetail", self.successCallback, self.failCallback, OutstandDetailQueryData, "");
+			}();
+		};
+		
+		window.CreditExpiredSoon = function() {
+			this.successCallback = function(data) {
+				console.log(data);
+			};
+			
+			this.failCallback = function(data) {
+				console.log("api misconnected");
+			};
+			
+			var _construct = function(){
+				CustomAPI("POST", true, "CreditExpiredSoon", self.successCallback, self.failCallback, CreditExpiredSoonQueryData, "");
+			}();
+		};
 		
 		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
@@ -274,28 +341,7 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		function getLandscapeColumn(){
-			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
-			chartColumnLandscape.series[0].setData(columnData1, true, true, false);
-			chartColumnLandscape.series[1].setData(columnData2, true, true, false);
-			chartColumnLandscape.series[2].setData(columnData3, true, true, false);
-			chartColumnLandscape.series[3].setData(columnData4, true, true, false);
-			
-			chartColumnLandscape.update({ 
-				chart: {
-					marginTop: 90
-				},
-				title: {
-					text: 'Total AR and Overdue Amount',
-					style: {
-						fontWidth: 'bold'
-					}
-				},
-				subtitle: {
-					text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
-				}
-			});
-		}
+		
 		
 		function changeScrollmenu(ro){
 			if(ro === 'LCD'){
@@ -326,19 +372,13 @@ $('#viewDetail').pagecontainer({
 			/* global PullToRefresh */
 			
 			
+			changePageInitViewDetail();
 		});
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			getChartAreaAndColumn();
 			getLandscapeColumn();
-			//numberToLocaleString();
-			
-			$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
-            $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
-            $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-            $(".Ro #ALL").addClass('hover');
-            
+			zoomInChartByColumn();			
 			
 		});
 		
