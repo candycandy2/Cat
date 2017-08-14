@@ -159,9 +159,16 @@ $("#viewPersonalLeave").pagecontainer({
                             }
                         }
                     }
+
                     if(agentNotExist) {
                         $("#agent-popup-option").popup("close");
                         popupMsgInit('.agentNotExist');
+
+                        //Clear Data
+                        var newOption = '<option hidden>請選擇</option>';
+                        $("#agent-popup").find("option").remove().end().append(newOption);
+                        agentid = "";
+                        window.localStorage.removeItem('agent');
                     }
                 }
             };
