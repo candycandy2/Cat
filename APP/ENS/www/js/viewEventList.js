@@ -821,13 +821,7 @@ $("#viewEventList").pagecontainer({
             var paddingBottom = parseInt(document.documentElement.clientWidth * 18 / 100, 10);
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
 
-            //For iOS, clear Badge
-            window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
-                console.log(data)
-            });
-
-            window.plugins.jPushPlugin.resetBadge();
-            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+            chatRoom.resetBadge();
         });
 
         /********************************** dom event *************************************/

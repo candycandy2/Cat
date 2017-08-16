@@ -35,14 +35,7 @@ window.initialSuccess = function() {
     $.mobile.changePage('#viewEventList');
 
     JM.initial();
-
-    //For iOS
-    window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
-        console.log(data)
-    });
-
-    window.plugins.jPushPlugin.resetBadge();
-    window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+    chatRoom.resetBadge();
 }
 
 var chatRoom = {
@@ -205,6 +198,15 @@ var chatRoom = {
                 }
             });
         }
+    },
+    resetBadge: function() {
+        //For iOS
+        window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
+            console.log(data)
+        });
+
+        window.plugins.jPushPlugin.resetBadge();
+        window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
     }
 };
 
