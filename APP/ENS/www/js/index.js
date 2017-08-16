@@ -41,6 +41,7 @@ window.initialSuccess = function() {
         console.log(data)
     });
 
+    window.plugins.jPushPlugin.resetBadge();
     window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
 }
 
