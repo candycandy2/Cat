@@ -1,27 +1,28 @@
 /********************/
-var ro = "ALL";
+var facility = "ALL";
+var hcFacility = "ALL";
+var viewDetailInit = false;
 
 //get BU & CSD series
-var companySeries1 = [20, 33, 53, 76];
-var companySeries2 = [31, 26, 58, 43];
-var companySeries3 = [46, 38, 21, 47];
-var companySeries4 = [58, 37, 76, 51];
+var companySeries1 = [10, 20, 30, 40, 50, 60];
+var companySeries2 = [31, 26, 58, 43, 59, 64];
+var companySeries3 = [46, 38, 21, 47, 21, 33];
+var companySeries4 = [58, 37, 76, 51, 42, 27];
 
-var columnData1 = [44656, 36472, 25634, 87794, 65686, 44485];
-var columnData2 = [55879, 54752, 65074, 48490, 65953, 46072];
-var columnData3 = [84567, 43989, 63854, 35016, 54245, 57166];
-var columnData4 = [55058, 76371, 57389, 43136, 36593, 78846];
+var columnData1 = [44, 36, 24, 87, 66, 45];
+var columnData2 = [55, 54, 64, 48, 63, 42];
+var columnData3 = [84, 43, 54, 36, 54, 66];
+var columnData4 = [55, 76, 59, 46, 36, 46];
+var columnData5 = [-44, -36, -24, -87, -86, -45];
+var columnData6 = [-55, -52, -64, -48, -63, -42];
+var columnData7 = [-87, -49, -63, -36, -54, -66];
+var columnData8 = [-58, -71, -89, -36, -36, -46];
 var columnMinusData1 = [0, 0, 0, 0, 0, 0];
 var columnMinusData2 = [35, 28, -30, 24, 25, 14];
 var columnMinusData3 = [37, -26, -22, -23, -19, 0];
 var columnMinusData4 = [0, 0, 0, 0, 0, 0];
 
-var company = [
-	{code: '641287', name: '东森股份有限公司', category: 'BU', productLine: 'LCD', total: 200000,
-	advance: 300000, over1: 1684, over16: 6452, over46: 16884, over76: 268455}
-];
-
-var categoriesMonth = ['60天', '70天', '80天', '90天'];
+//var categoriesMonth = ['60天', '70天', '80天', '90天'];
 //var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']; 动态获取，由timeAxis代替
 var companyCode = ['66558', '67326', '69410'];
 var companyName = ['东森电视股份有限公司', '飞利浦股份有限公司', 'AAAA股份有限公司'];
@@ -29,10 +30,15 @@ var userName = "Alan Chen";
 var startDate = "5/4";
 var endDate = "6/15";
 var timeAxis = [];
+var buAreaSeries = [];
+var buColumnSeries = [];
+var csdAreaSeries = [];
+var csdColumnSeries = [];
+var overdueDetailData = {};
+var outstandDetailData = {};
+var creditExpiredSoonData = {};
 var buOverdueDetail = [];
 var csdOverdueDetail = [];
-var buOverdueSoon = [];
-var csdOverdueSoon = [];
 var buOutstand = [];
 var csdOutstand = [];
 var dataContent = "";
@@ -128,7 +134,7 @@ var areaOption = {
         labels: {
         	enabled: false,
         	formatter: function(){
-        		return categoriesMonth[this.value];
+        		return timeAxis[this.value];
         	}
         },
         tickInterval: 1
@@ -142,6 +148,7 @@ var areaOption = {
     },
     plotOptions: {
     	area: {
+    		animation: false,
     		lineWidth: 1,
     		fillColor: '#DFEDFA',
     		marker: {
@@ -218,6 +225,7 @@ var columnOption = {
     },
     plotOptions: {
         column: {
+        	animation: false,
             stacking: 'normal'
         }   
     },
@@ -241,28 +249,136 @@ var columnOption = {
 	
 };
 
-
-function getLandscapeColumn(){
-	chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
-	chartColumnLandscape.series[0].setData(columnData1, true, true, false);
-	chartColumnLandscape.series[1].setData(columnData2, true, true, false);
-	chartColumnLandscape.series[2].setData(columnData3, true, true, false);
-	chartColumnLandscape.series[3].setData(columnData4, true, true, false);
+var columnOptionBySwitch = {
+	chart: {
+        type: 'column',
+        margin: [10, 5, 28, 40]
+    },
+    title: {
+        text: ''
+    },
+    subtitle:{
+    	text: ''
+    },
+    credits: {
+    	enabled: false
+    },
+    xAxis: {
+        categories: timeAxis,
+        labels: {
+        	style: {
+        		fontSize: '9px'
+        	}
+        }
+    },
+    yAxis: {
+        title: {
+            text: null
+        },
+        labels: {
+            style: {
+            	fontSize: '9px'
+            }
+        }
+    },
+    legend: {		     
+        enabled: false
+    },
+    tooltip: {
+       	useHTML: true,
+	    shadow: false,
+	    borderWidth: 1,
+	    borderColor: 'gray',
+	    backgroundColor:　'#ffffff',
+//	    headerFormat: '<table class="fontTooltip">' + '<tr><td>' + this.x + '</td></tr>' +
+//	     '<tr><td>' + companyCode[0] + '</td></tr>',
+//      pointFormat: '<tr><td>' + this.series.name + ':USD$' + this.y + '</td></tr>',
+//      footerFormat: '</table>',
+	   	formatter: function () {
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
+	        $.each(this.points, function () {
+	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
+	        });
+	        return s;
+	    },
+	    followPointer: false,
+        followTouchMove: false,
+	    shared: true
+    },
+    plotOptions: {
+        column: {
+        	animation: false,
+            stacking: 'normal'
+        }   
+    },
+    series: [{
+        name: '1-15 Days',
+        color: '#81B4E1',
+        data: columnData1
+    }, {
+        name: '16-45 Days',
+        color: '#F79620',
+        data: columnData2
+    }, {
+        name: '46-75 Days',
+        color: '#F36D21',
+        data: columnData3
+    }, {
+        name: 'Over 75 Days',
+        color: '#ED3824',
+        data: columnData4
+    }, {
+        name: '1-15 Days',
+        color: '#81B4E1',
+        data: columnData5
+    }, {
+        name: '16-45 Days',
+        color: '#F79620',
+        data: columnData6
+    }, {
+        name: '46-75 Days',
+        color: '#F36D21',
+        data: columnData7
+    }, {
+        name: 'Over 75 Days',
+        color: '#ED3824',
+        data: columnData8
+    }]
 	
-	chartColumnLandscape.update({ 
-		chart: {
-			marginTop: 90
-		},
-		title: {
-			text: 'Total AR and Overdue Amount',
-			style: {
-				fontWidth: 'bold'
-			}
-		},
-		subtitle: {
-			text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+};
+
+function getLandscapeColumn( isInit ){
+	if(isInit) {
+		if(chartColumnLandscape == null) {
+			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
 		}
-	});
+	}
+	else {
+	
+		// review by alan
+		// update it on first time rotation...
+		// 3 seconds
+
+		chartColumnLandscape.series[0].setData(columnData1, false, false, false);
+		chartColumnLandscape.series[1].setData(columnData2, false, false, false);
+		chartColumnLandscape.series[2].setData(columnData3, false, false, false);
+		chartColumnLandscape.series[3].setData(columnData4, false, false, false);
+
+		chartColumnLandscape.update({ 
+			chart: {
+				marginTop: 90
+			},
+			title: {
+				text: 'Total AR and Overdue Amount',
+				style: {
+					fontWidth: 'bold'
+				}
+			},
+			subtitle: {
+				text: companyCode[0] + ' ' + companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+			}
+		});
+	}
 }
 
 function clickSingleListBtn(){
@@ -315,301 +431,798 @@ function clickSingleListBtn(){
 	
 }
 
+
+
 /*****************************************************************/
 $('#viewDetail').pagecontainer({
 	create: function (event, ui) {
 		
 		window.OverdueDetail = function() {
-			this.successCallback = function(data) {
-				overdueDetailCallBackData = data["Content"];
-				
-				//get time axis on area and column
-				for(var i in overdueDetailCallBackData[0]["Detail"]){
-					timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
-				}
-				
-				for(var i in overdueDetailCallBackData){
-					if(overdueDetailCallBackData[i]["Header"]["TYPE"] == "BU"){
-						buOverdueSoon.push(overdueDetailCallBackData[i]);
-					}
-					else{
-						csdOverdueSoon.push(overdueDetailCallBackData[i]);
-					}
-				}
-				//console.log(overdueDetailCallBackData);
+			if(localStorage.getItem("overdueDetailData") === null){
+				this.successCallback = function(data) {
+					overdueDetailCallBackData = data["Content"];
 					
-				$.each(overdueDetailCallBackData, function(i, item) {
-					if(item["Header"]["TYPE"] == "BU"){
-						buOverdueDetail.push(item);
-					}
-					else{
-						csdOverdueDetail.push(item);
-					}
-				});
-				console.log(buOverdueDetail);
-				
-				$.each(buOverdueDetail, function(i, item) {
-					var overdueDetailTotal = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
-											parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					getOverdueDetailByType();
+					getOverdueDetailData(switchState);
+					//OutstandDetail();
+					//CreditExpiredSoon();
+					loadingMask("hide");
 					
-					var overdueDetailContent = '<li class="bu-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div>' +
-														'<div class="font-style7">' +
-															'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + overdueDetailTotal + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="buArea' + i + '"></div>' +
-												'</li>' +
-												'<li>' +
-													'<img src="img/list_down.png" class="buSingleListBtn" />' +
-												'</li>' +
-											'</ul>' +
-										'</li>' +
-										'<li class="bu-single-list">' +
-											'<div>' +
-												'<div class="font-style12">Total AR and Overdue Amount</div>' +
-												'<div class="font-style13">' +
-													'<span>Date:</span>' +
-													'<span>5/14</span>' +
-													'<span>-</span>' +
-													'<span>6/15</span>' +
-												'</div>' +
-											'</div>' +
-											'<div class="font-style13">' +
-												'<span>' + item["Header"]["OWNER"] + '</span>' +
-												'<span>Owner:</span>' +	
-											'</div>' +
-											'<div>' +
-												'<div class="overdue-tab1 font-style13">' +
-													'<div><span>1-15 Days</span></div>' +
-													'<div><span>16-45 Days</span></div>' +
-													'<div><span>46-75 Days</span></div>' +
-													'<div><span>Over 75 Days</span></div>' +
-												'</div>' +
-												'<div class="overdue-tab2 font-style13">' +
-													'<div><span>' + item["Detail"][5]["OVER_1_15_INV"] + '</span></div>' +
-													'<div><span>' + item["Detail"][5]["OVER_16_45_INV"] + '</span></div>' +
-													'<div><span>' + item["Detail"][5]["OVER_46_75_INV"] + '</span></div>' +
-													'<div><span>' + item["Detail"][5]["OVER_76_INV"] + '</span></div>' +
-												'</div>' +
-											'</div>' +
-											'<div id="buColumn' + i + '"></div>' +
-										'</li>';
-					
-					$('.overdueDetail-bu').append(overdueDetailContent);
-					
-					/******** area图表 ********/
-					var areaSeries = [];
-					
-					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
-							    parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
-					areaSeries.push(areaWeek0);
-					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
-							    parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
-					areaSeries.push(areaWeek1);
-					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
-							    parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
-					areaSeries.push(areaWeek2);
-					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
-							    parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
-					areaSeries.push(areaWeek3);
-					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
-							    parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
-					areaSeries.push(areaWeek4);
-					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
-							    parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
-					areaSeries.push(areaWeek5);
-					
-					//console.log(areaSeries);
-					
-					var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-					buArea.series[0].setData(areaSeries, true, true, false);
-					
-					
-					/*********** column图表 **********/
-					var columnSeries1 = [];
-					var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
-					columnSeries1.push(column0);
-					var column1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]);
-					columnSeries1.push(column1);
-					var column2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]);
-					columnSeries1.push(column2);
-					var column3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]);
-					columnSeries1.push(column3);
-					var column4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]);
-					columnSeries1.push(column4);
-					var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-					columnSeries1.push(column5);
-					
-					var columnSeries2 = [];
-					var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
-					columnSeries2.push(column6);
-					var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
-					columnSeries2.push(column7);
-					var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
-					columnSeries2.push(column8);
-					var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
-					columnSeries2.push(column9);
-					var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
-					columnSeries2.push(column10);
-					var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-					columnSeries2.push(column11);
-					
-					var columnSeries3 = [];
-					var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
-					columnSeries3.push(column12);
-					var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
-					columnSeries3.push(column13);
-					var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
-					columnSeries3.push(column14);
-					var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
-					columnSeries3.push(column15);
-					var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
-					columnSeries3.push(column16);
-					var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-					columnSeries3.push(column17);
-					
-					var columnSeries4 = [];
-					var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
-					columnSeries4.push(column18);
-					var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
-					columnSeries4.push(column19);
-					var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
-					columnSeries4.push(column20);
-					var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
-					columnSeries4.push(column21);
-					var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
-					columnSeries4.push(column22);
-					var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
-					columnSeries4.push(column23);
-					
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(columnSeries1, true, true, false);
-					buColumn.series[1].setData(columnSeries2, true, true, false);
-					buColumn.series[2].setData(columnSeries3, true, true, false);
-					buColumn.series[3].setData(columnSeries4, true, true, false);
-					
-				});
-				
-				clickSingleListBtn();
+					localStorage.setItem("overdueDetailData", JSON.stringify([data, nowTime]));				
+				};
 				
 				
+				this.failCallback = function(data) {
+					console.log("api misconnected");
+				};
 				
+				var _construct = function(){
+					CustomAPI("POST", true, "OverdueDetail", self.successCallback, self.failCallback, OverdueDetailQueryData, "");
+				}();
 				
+			}
+			else{
+				overdueDetailData = JSON.parse(localStorage.getItem("overdueDetailData"))[0];
+				overdueDetailCallBackData = overdueDetailData["Content"];
 				
+				getOverdueDetailByType();
+				getOverdueDetailData(switchState);
+				//OutstandDetail();
+				//CreditExpiredSoon();
+				loadingMask("hide");
 				
+			}
 			
-				
-			};
-			
-			this.failCallback = function(data) {
-				console.log("api misconnected");
-			};
-			
-			var _construct = function(){
-				CustomAPI("POST", true, "OverdueDetail", self.successCallback, self.failCallback, OverdueDetailQueryData, "");
-			}();
 		};
 		
 		window.OutstandDetail = function() {
-			this.successCallback = function(data) {
-				outstandDetailCallBackData = data["Content"];
+			if(localStorage.getItem("outstandDetailData") === null){
+				this.successCallback = function(data) {
+					outstandDetailCallBackData = data["Content"];
+					getOverdueSoonData();
+					
+					localStorage.setItem("outstandDetailData", JSON.stringify([data, nowTime]));
+				};
+				
+				this.failCallback = function(data) {
+					console.log("api misconnected");
+				};
+				
+				var _construct = function(){
+					CustomAPI("POST", true, "OutstandDetail", self.successCallback, self.failCallback, OutstandDetailQueryData, "");
+				}();
+			}
+			else{
+				outstandDetailData = JSON.parse(localStorage.getItem("outstandDetailData"))[0];
+				outstandDetailCallBackData = outstandDetailData["Content"];
 				getOverdueSoonData();
-			};
+			}
 			
-			this.failCallback = function(data) {
-				console.log("api misconnected");
-			};
-			
-			var _construct = function(){
-				CustomAPI("POST", true, "OutstandDetail", self.successCallback, self.failCallback, OutstandDetailQueryData, "");
-			}();
 		};
 		
 		window.CreditExpiredSoon = function() {
-			this.successCallback = function(data) {
-				creditExpiredSoonCallBackData = data["Content"];
+			if(localStorage.getItem("creditExpiredSoonData") === null){
+				this.successCallback = function(data) {
+					creditExpiredSoonCallBackData = data["Content"];
+					getExpiredSoonData();
+					
+					localStorage.setItem("creditExpiredSoonData", JSON.stringify([data, nowTime]));
+				};
+				
+				this.failCallback = function(data) {
+					console.log("api misconnected");
+				};
+				
+				var _construct = function(){
+					CustomAPI("POST", true, "CreditExpiredSoon", self.successCallback, self.failCallback, CreditExpiredSoonQueryData, "");
+				}();
+			}
+			else{
+				creditExpiredSoonData = JSON.parse(localStorage.getItem("creditExpiredSoonData"))[0];
+				creditExpiredSoonCallBackData = creditExpiredSoonData["Content"];
 				getExpiredSoonData();
-			};
+			}
 			
-			this.failCallback = function(data) {
-				console.log("api misconnected");
-			};
-			
-			var _construct = function(){
-				CustomAPI("POST", true, "CreditExpiredSoon", self.successCallback, self.failCallback, CreditExpiredSoonQueryData, "");
-			}();
 		};
 		
 		function getChartAreaAndColumn(){
 			buChartArea1 = new Highcharts.Chart('buChartArea1', areaOption);
-			buChartArea1.series[0].setData(companySeries1, true, true, false);
+			buChartArea1.series[0].setData(companySeries1, false, false, false);
 			
 			buChartArea2 = new Highcharts.Chart('buChartArea2', areaOption);
-			buChartArea2.series[0].setData(companySeries2, true, true, false);
+			buChartArea2.series[0].setData(companySeries2, false, false, false);
 			
 			buChartArea3 = new Highcharts.Chart('buChartArea3', areaOption);
-			buChartArea3.series[0].setData(companySeries3, true, true, false);
+			buChartArea3.series[0].setData(companySeries3, false, false, false);
 			
 			buChartArea4 = new Highcharts.Chart('buChartArea4', areaOption);
-			buChartArea4.series[0].setData(companySeries4, true, true, false);
+			buChartArea4.series[0].setData(companySeries4, false, false, false);
 			
 			csdChartArea1 = new Highcharts.Chart('csdChartArea1', areaOption);
-			csdChartArea1.series[0].setData(companySeries1, true, true, false);
+			csdChartArea1.series[0].setData(companySeries1, false, false, false);
 			
 			csdChartArea2 = new Highcharts.Chart('csdChartArea2', areaOption);
-			csdChartArea2.series[0].setData(companySeries2, true, true, false);
+			csdChartArea2.series[0].setData(companySeries2, false, false, false);
 			
 			csdChartArea3 = new Highcharts.Chart('csdChartArea3', areaOption);
-			csdChartArea3.series[0].setData(companySeries3, true, true, false);
+			csdChartArea3.series[0].setData(companySeries3, false, false, false);
 			
 			csdChartArea4 = new Highcharts.Chart('csdChartArea4', areaOption);
-			csdChartArea4.series[0].setData(companySeries4, true, true, false);
+			csdChartArea4.series[0].setData(companySeries4, false, false, false);
 			
+			//setData (Array data, [Boolean redraw], [Mixed animation], [Boolean updatePoints])
 			buChartColumn1 = new Highcharts.Chart('buChartColumn1', columnOption);
-			buChartColumn1.series[0].setData(columnData1, true, true, false);
-			buChartColumn1.series[1].setData(columnData2, true, true, false);
-			buChartColumn1.series[2].setData(columnData3, true, true, false);
-			buChartColumn1.series[3].setData(columnData4, true, true, false);
+			buChartColumn1.series[0].setData(columnData1, false, false, false);
+			buChartColumn1.series[1].setData(columnData2, false, false, false);
+			buChartColumn1.series[2].setData(columnData3, false, false, false);
+			buChartColumn1.series[3].setData(columnData4, false, false, false);
 			
 			buChartColumn2 = new Highcharts.Chart('buChartColumn2', columnOption);
-			buChartColumn2.series[0].setData(columnData2, true, true, false);
-			buChartColumn2.series[1].setData(columnData1, true, true, false);
-			buChartColumn2.series[2].setData(columnData4, true, true, false);
-			buChartColumn2.series[3].setData(columnData3, true, true, false);
+			buChartColumn2.series[0].setData(columnData2, false, false, false);
+			buChartColumn2.series[1].setData(columnData1, false, false, false);
+			buChartColumn2.series[2].setData(columnData4, false, false, false);
+			buChartColumn2.series[3].setData(columnData3, false, false, false);
 			
 			buChartColumn3 = new Highcharts.Chart('buChartColumn3', columnOption);
-			buChartColumn3.series[0].setData(columnData3, true, true, false);
-			buChartColumn3.series[1].setData(columnData2, true, true, false);
-			buChartColumn3.series[2].setData(columnData4, true, true, false);
-			buChartColumn3.series[3].setData(columnData1, true, true, false);
+			buChartColumn3.series[0].setData(columnData3, false, false, false);
+			buChartColumn3.series[1].setData(columnData2, false, false, false);
+			buChartColumn3.series[2].setData(columnData4, false, false, false);
+			buChartColumn3.series[3].setData(columnData1, false, false, false);
 			
 			csdChartColumn1 = new Highcharts.Chart('csdChartColumn1', columnOption);
-			csdChartColumn1.series[0].setData(columnData4, true, true, false);
-			csdChartColumn1.series[1].setData(columnData3, true, true, false);
-			csdChartColumn1.series[2].setData(columnData1, true, true, false);
-			csdChartColumn1.series[3].setData(columnData2, true, true, false);
+			csdChartColumn1.series[0].setData(columnData4, false, false, false);
+			csdChartColumn1.series[1].setData(columnData3, false, false, false);
+			csdChartColumn1.series[2].setData(columnData1, false, false, false);
+			csdChartColumn1.series[3].setData(columnData2, false, false, false);
 			
 			csdChartColumn2 = new Highcharts.Chart('csdChartColumn2', columnOption);
-			csdChartColumn2.series[0].setData(columnData1, true, true, false);
-			csdChartColumn2.series[1].setData(columnData4, true, true, false);
-			csdChartColumn2.series[2].setData(columnData2, true, true, false);
-			csdChartColumn2.series[3].setData(columnData3, true, true, false);
+			csdChartColumn2.series[0].setData(columnData1, false, false, false);
+			csdChartColumn2.series[1].setData(columnData4, false, false, false);
+			csdChartColumn2.series[2].setData(columnData2, false, false, false);
+			csdChartColumn2.series[3].setData(columnData3, false, false, false);
 			
 			csdChartColumn3 = new Highcharts.Chart('csdChartColumn3', columnOption);
-			csdChartColumn3.series[0].setData(columnData2, true, true, false);
-			csdChartColumn3.series[1].setData(columnData1, true, true, false);
-			csdChartColumn3.series[2].setData(columnData3, true, true, false);
-			csdChartColumn3.series[3].setData(columnData4, true, true, false);
+			csdChartColumn3.series[0].setData(columnData2, false, false, false);
+			csdChartColumn3.series[1].setData(columnData1, false, false, false);
+			csdChartColumn3.series[2].setData(columnData3, false, false, false);
+			csdChartColumn3.series[3].setData(columnData4, false, false, false);
 			
 		}
+		
+		function getOverdueDetailByType(){
+			
+			//get time axis on area and column
+			for(var i in overdueDetailCallBackData[0]["Detail"]){
+				timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
+			}
+				
+			$.each(overdueDetailCallBackData, function(i, item) {
+				if(item["Header"]["TYPE"] == "BU"){
+					buOverdueDetail.push(item);
+				}
+				else{
+					csdOverdueDetail.push(item);
+				}
+			});
+			//console.log(buOverdueDetail);
+			
+		}
+		
+		window.getOverdueDetailData = function(switchState){
+			var buOverdueDetailTotal = 0;
+			var csdOverdueDetailTotal = 0;
+			
+			$.each(buOverdueDetail, function(i, item) {
+				if(switchState == false){
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
+				else{
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
+				
+				var overdueDetailContent = '<li class="bu-data-list">' +
+										'<ul>' +
+											'<li>' +
+												'<div>' +
+													'<div class="font-style7">' +
+														'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+													'</div>' +	
+												'</div>' +
+											'</li>' +
+											'<li>' +
+												'<span class="font-style7 font-localString">' + overdueDetailTotal + '</span>' +
+											'</li>' +
+											'<li>' +
+												'<div id="buArea' + i + '"></div>' +
+											'</li>' +
+											'<li>' +
+												'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" />' +
+											'</li>' +
+										'</ul>' +
+									'</li>' +
+									'<li class="bu-single-list">' +
+										'<div>' +
+											'<div class="font-style12">Total AR and Overdue Amount</div>' +
+											'<div class="font-style13">' +
+												'<span>Date:</span>' +
+												'<span>5/14</span>' +
+												'<span>-</span>' +
+												'<span>6/15</span>' +
+											'</div>' +
+										'</div>' +
+										'<div class="font-style13">' +
+											'<span>' + item["Header"]["OWNER"] + '</span>' +
+											'<span>Owner:</span>' +	
+										'</div>' +
+										'<div>' +
+											'<div class="overdue-tab1 font-style13">' +
+												'<div><span>1-15 Days</span></div>' +
+												'<div><span>16-45 Days</span></div>' +
+												'<div><span>46-75 Days</span></div>' +
+												'<div><span>Over 75 Days</span></div>' +
+											'</div>' +
+											'<div class="overdue-tab2 font-style13">' +
+												'<div><span>' + overdue1 + '</span></div>' +
+												'<div><span>' + overdue16 + '</span></div>' +
+												'<div><span>' + overdue46 + '</span></div>' +
+												'<div><span>' + overdue76 + '</span></div>' +
+											'</div>' +
+										'</div>' +
+										'<div id="buColumn' + i + '"></div>' +
+									'</li>';
+				
+				//求和
+				buOverdueDetailTotal += parseFloat(overdueDetailTotal);
+				
+				$('.overdueDetail-bu').append(overdueDetailContent);
+				
+				/******** area图表 ********/
+				var areaSeries = [];
+				
+				if(switchState == false){
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   	 	parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				}
+				else{
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_1_15_CM"]) + parseFloat(item["Detail"][0]["OVER_16_45_CM"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_CM"]) + parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_1_15_CM"]) + parseFloat(item["Detail"][1]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_CM"]) + parseFloat(item["Detail"][1]["OVER_76_CM"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_1_15_CM"]) + parseFloat(item["Detail"][2]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_CM"]) + parseFloat(item["Detail"][2]["OVER_76_CM"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_1_15_CM"]) + parseFloat(item["Detail"][3]["OVER_16_45_CM"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_CM"]) + parseFloat(item["Detail"][3]["OVER_76_CM"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_1_15_CM"]) + parseFloat(item["Detail"][4]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_CM"]) + parseFloat(item["Detail"][4]["OVER_76_CM"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_1_15_CM"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_CM"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				}
+				
+				areaSeries.push(areaWeek0);
+				areaSeries.push(areaWeek1);
+				areaSeries.push(areaWeek2);
+				areaSeries.push(areaWeek3);
+				areaSeries.push(areaWeek4);
+				areaSeries.push(areaWeek5);
+				
+				buAreaSeries.push(areaSeries);
+								
+				
+				/*********** column图表 **********/
+				var columnSeries = [];
+				
+				var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
+				var column1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]);
+				var column2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]);
+				var column3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]);
+				var column4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]);
+				var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+				
+				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
+				var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
+				var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
+				var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
+				var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
+				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+				
+				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
+				var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
+				var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
+				var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
+				var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
+				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+				
+				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
+				var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
+				var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
+				var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
+				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				
+				var columnSeries1 = [];
+				columnSeries1.push(column0);
+				columnSeries1.push(column1);
+				columnSeries1.push(column2);
+				columnSeries1.push(column3);
+				columnSeries1.push(column4);
+				columnSeries1.push(column5);
+				
+				var columnSeries2 = [];
+				columnSeries2.push(column6);
+				columnSeries2.push(column7);
+				columnSeries2.push(column8);				
+				columnSeries2.push(column9);				
+				columnSeries2.push(column10);				
+				columnSeries2.push(column11);
+				
+				var columnSeries3 = [];				
+				columnSeries3.push(column12);				
+				columnSeries3.push(column13);				
+				columnSeries3.push(column14);				
+				columnSeries3.push(column15);				
+				columnSeries3.push(column16);				
+				columnSeries3.push(column17);
+				
+				var columnSeries4 = [];				
+				columnSeries4.push(column18);				
+				columnSeries4.push(column19);				
+				columnSeries4.push(column20);				
+				columnSeries4.push(column21);				
+				columnSeries4.push(column22);				
+				columnSeries4.push(column23);
+				
+				var columnCM0 = parseFloat(item["Detail"][0]["OVER_1_15_CM"]);
+				var columnCM1 = parseFloat(item["Detail"][1]["OVER_1_15_CM"]);
+				var columnCM2 = parseFloat(item["Detail"][2]["OVER_1_15_CM"]);
+				var columnCM3 = parseFloat(item["Detail"][3]["OVER_1_15_CM"]);
+				var columnCM4 = parseFloat(item["Detail"][4]["OVER_1_15_CM"]);
+				var columnCM5 = parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+				
+				var columnCM6 = parseFloat(item["Detail"][0]["OVER_16_45_CM"]);
+				var columnCM7 = parseFloat(item["Detail"][1]["OVER_16_45_CM"]);
+				var columnCM8 = parseFloat(item["Detail"][2]["OVER_16_45_CM"]);
+				var columnCM9 = parseFloat(item["Detail"][3]["OVER_16_45_CM"]);
+				var columnCM10 = parseFloat(item["Detail"][4]["OVER_16_45_CM"]);
+				var columnCM11 = parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+				
+				var columnCM12 = parseFloat(item["Detail"][0]["OVER_46_75_CM"]);
+				var columnCM13 = parseFloat(item["Detail"][1]["OVER_46_75_CM"]);
+				var columnCM14 = parseFloat(item["Detail"][2]["OVER_46_75_CM"]);
+				var columnCM15 = parseFloat(item["Detail"][3]["OVER_46_75_CM"]);
+				var columnCM16 = parseFloat(item["Detail"][4]["OVER_46_75_CM"]);
+				var columnCM17 = parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+				
+				var columnCM18 = parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				var columnCM19 = parseFloat(item["Detail"][1]["OVER_76_CM"]);
+				var columnCM20 = parseFloat(item["Detail"][2]["OVER_76_CM"]);
+				var columnCM21 = parseFloat(item["Detail"][3]["OVER_76_CM"]);
+				var columnCM22 = parseFloat(item["Detail"][4]["OVER_76_CM"]);
+				var columnCM23 = parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				
+				var columnSeries5 = [];
+				columnSeries5.push(columnCM0);
+				columnSeries5.push(columnCM1);
+				columnSeries5.push(columnCM2);
+				columnSeries5.push(columnCM3);
+				columnSeries5.push(columnCM4);
+				columnSeries5.push(columnCM5);
+				
+				var columnSeries6 = [];
+				columnSeries6.push(columnCM6);
+				columnSeries6.push(columnCM7);
+				columnSeries6.push(columnCM8);				
+				columnSeries6.push(columnCM9);				
+				columnSeries6.push(columnCM10);				
+				columnSeries6.push(columnCM11);
+				
+				var columnSeries7 = [];				
+				columnSeries7.push(columnCM12);				
+				columnSeries7.push(columnCM13);				
+				columnSeries7.push(columnCM14);				
+				columnSeries7.push(columnCM15);				
+				columnSeries7.push(columnCM16);				
+				columnSeries7.push(columnCM17);
+				
+				var columnSeries8 = [];				
+				columnSeries8.push(columnCM18);				
+				columnSeries8.push(columnCM19);				
+				columnSeries8.push(columnCM20);				
+				columnSeries8.push(columnCM21);				
+				columnSeries8.push(columnCM22);				
+				columnSeries8.push(columnCM23);
+				
+				if(switchState == false){
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+				}
+				else{
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+					columnSeries.push(columnSeries5);
+					columnSeries.push(columnSeries6);					
+					columnSeries.push(columnSeries7);										
+					columnSeries.push(columnSeries8);	
+				}
+				
+				buColumnSeries.push(columnSeries);
+						
+			});
+			
+			var buOverdueDetailContentTotal = '<li class="bu-data-list">' +
+													'<ul>' +
+														'<li>' +
+															'<div style="text-align: left;text-indent: 1.5VW;">' +
+																'<div class="font-style7">' +
+																	'<span>Total</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + buOverdueDetailTotal.toFixed(2) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="buArea"></div>' +
+														'</li>' +
+														'<li>' +
+														'</li>' +
+													'</ul>' +
+												'</li>';
+												
+			$('.overdueDetail-bu').append(buOverdueDetailContentTotal);
+			
+			$.each(csdOverdueDetail, function(i, item) {
+				if(switchState == false){
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
+				else{
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
+				
+				var overdueDetailContent = '<li class="csd-data-list">' +
+										'<ul>' +
+											'<li>' +
+												'<div>' +
+													'<div class="font-style7">' +
+														'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+													'</div>' +	
+												'</div>' +
+											'</li>' +
+											'<li>' +
+												'<span class="font-style7 font-localString">' + overdueDetailTotal + '</span>' +
+											'</li>' +
+											'<li>' +
+												'<div id="csdArea' + i + '"></div>' +
+											'</li>' +
+											'<li>' +
+												'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" />' +
+											'</li>' +
+										'</ul>' +
+									'</li>' +
+									'<li class="csd-single-list">' +
+										'<div>' +
+											'<div class="font-style12">Total AR and Overdue Amount</div>' +
+											'<div class="font-style13">' +
+												'<span>Date:</span>' +
+												'<span>5/14</span>' +
+												'<span>-</span>' +
+												'<span>6/15</span>' +
+											'</div>' +
+										'</div>' +
+										'<div class="font-style13">' +
+											'<span>' + item["Header"]["OWNER"] + '</span>' +
+											'<span>Owner:</span>' +	
+										'</div>' +
+										'<div>' +
+											'<div class="overdue-tab1 font-style13">' +
+												'<div><span>1-15 Days</span></div>' +
+												'<div><span>16-45 Days</span></div>' +
+												'<div><span>46-75 Days</span></div>' +
+												'<div><span>Over 75 Days</span></div>' +
+											'</div>' +
+											'<div class="overdue-tab2 font-style13">' +
+												'<div><span>' + overdue1 + '</span></div>' +
+												'<div><span>' + overdue16 + '</span></div>' +
+												'<div><span>' + overdue46 + '</span></div>' +
+												'<div><span>' + overdue76 + '</span></div>' +
+											'</div>' +
+										'</div>' +
+										'<div id="csdColumn' + i + '"></div>' +
+									'</li>';
+				
+				//求和
+				csdOverdueDetailTotal += parseFloat(overdueDetailTotal);
+				
+				$('.overdueDetail-csd').append(overdueDetailContent);
+				
+				/******** area图表 ********/
+				var areaSeries = [];
+				
+				if(switchState == false){
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   	 	parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				}
+				else{
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_1_15_CM"]) + parseFloat(item["Detail"][0]["OVER_16_45_CM"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_CM"]) + parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_1_15_CM"]) + parseFloat(item["Detail"][1]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_CM"]) + parseFloat(item["Detail"][1]["OVER_76_CM"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_1_15_CM"]) + parseFloat(item["Detail"][2]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_CM"]) + parseFloat(item["Detail"][2]["OVER_76_CM"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_1_15_CM"]) + parseFloat(item["Detail"][3]["OVER_16_45_CM"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_CM"]) + parseFloat(item["Detail"][3]["OVER_76_CM"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_1_15_CM"]) + parseFloat(item["Detail"][4]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_CM"]) + parseFloat(item["Detail"][4]["OVER_76_CM"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_1_15_CM"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_CM"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				}
+				
+				areaSeries.push(areaWeek0);
+				areaSeries.push(areaWeek1);
+				areaSeries.push(areaWeek2);
+				areaSeries.push(areaWeek3);
+				areaSeries.push(areaWeek4);
+				areaSeries.push(areaWeek5);
+				
+				csdAreaSeries.push(areaSeries);				
+								
+				
+				/*********** column图表 **********/
+				var columnSeries = [];
+				
+				var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
+				var column1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]);
+				var column2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]);
+				var column3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]);
+				var column4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]);
+				var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+				
+				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
+				var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
+				var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
+				var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
+				var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
+				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+				
+				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
+				var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
+				var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
+				var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
+				var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
+				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+				
+				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
+				var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
+				var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
+				var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
+				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				
+				var columnSeries1 = [];
+				columnSeries1.push(column0);
+				columnSeries1.push(column1);
+				columnSeries1.push(column2);
+				columnSeries1.push(column3);
+				columnSeries1.push(column4);
+				columnSeries1.push(column5);
+				
+				var columnSeries2 = [];
+				columnSeries2.push(column6);
+				columnSeries2.push(column7);
+				columnSeries2.push(column8);				
+				columnSeries2.push(column9);				
+				columnSeries2.push(column10);				
+				columnSeries2.push(column11);
+				
+				var columnSeries3 = [];				
+				columnSeries3.push(column12);				
+				columnSeries3.push(column13);				
+				columnSeries3.push(column14);				
+				columnSeries3.push(column15);				
+				columnSeries3.push(column16);				
+				columnSeries3.push(column17);
+				
+				var columnSeries4 = [];				
+				columnSeries4.push(column18);				
+				columnSeries4.push(column19);				
+				columnSeries4.push(column20);				
+				columnSeries4.push(column21);				
+				columnSeries4.push(column22);				
+				columnSeries4.push(column23);
+				
+				var columnCM0 = parseFloat(item["Detail"][0]["OVER_1_15_CM"]);
+				var columnCM1 = parseFloat(item["Detail"][1]["OVER_1_15_CM"]);
+				var columnCM2 = parseFloat(item["Detail"][2]["OVER_1_15_CM"]);
+				var columnCM3 = parseFloat(item["Detail"][3]["OVER_1_15_CM"]);
+				var columnCM4 = parseFloat(item["Detail"][4]["OVER_1_15_CM"]);
+				var columnCM5 = parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+				
+				var columnCM6 = parseFloat(item["Detail"][0]["OVER_16_45_CM"]);
+				var columnCM7 = parseFloat(item["Detail"][1]["OVER_16_45_CM"]);
+				var columnCM8 = parseFloat(item["Detail"][2]["OVER_16_45_CM"]);
+				var columnCM9 = parseFloat(item["Detail"][3]["OVER_16_45_CM"]);
+				var columnCM10 = parseFloat(item["Detail"][4]["OVER_16_45_CM"]);
+				var columnCM11 = parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+				
+				var columnCM12 = parseFloat(item["Detail"][0]["OVER_46_75_CM"]);
+				var columnCM13 = parseFloat(item["Detail"][1]["OVER_46_75_CM"]);
+				var columnCM14 = parseFloat(item["Detail"][2]["OVER_46_75_CM"]);
+				var columnCM15 = parseFloat(item["Detail"][3]["OVER_46_75_CM"]);
+				var columnCM16 = parseFloat(item["Detail"][4]["OVER_46_75_CM"]);
+				var columnCM17 = parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+				
+				var columnCM18 = parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				var columnCM19 = parseFloat(item["Detail"][1]["OVER_76_CM"]);
+				var columnCM20 = parseFloat(item["Detail"][2]["OVER_76_CM"]);
+				var columnCM21 = parseFloat(item["Detail"][3]["OVER_76_CM"]);
+				var columnCM22 = parseFloat(item["Detail"][4]["OVER_76_CM"]);
+				var columnCM23 = parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				
+				var columnSeries5 = [];
+				columnSeries5.push(columnCM0);
+				columnSeries5.push(columnCM1);
+				columnSeries5.push(columnCM2);
+				columnSeries5.push(columnCM3);
+				columnSeries5.push(columnCM4);
+				columnSeries5.push(columnCM5);
+				
+				var columnSeries6 = [];
+				columnSeries6.push(columnCM6);
+				columnSeries6.push(columnCM7);
+				columnSeries6.push(columnCM8);				
+				columnSeries6.push(columnCM9);				
+				columnSeries6.push(columnCM10);				
+				columnSeries6.push(columnCM11);
+				
+				var columnSeries7 = [];				
+				columnSeries7.push(columnCM12);				
+				columnSeries7.push(columnCM13);				
+				columnSeries7.push(columnCM14);				
+				columnSeries7.push(columnCM15);				
+				columnSeries7.push(columnCM16);				
+				columnSeries7.push(columnCM17);
+				
+				var columnSeries8 = [];				
+				columnSeries8.push(columnCM18);				
+				columnSeries8.push(columnCM19);				
+				columnSeries8.push(columnCM20);				
+				columnSeries8.push(columnCM21);				
+				columnSeries8.push(columnCM22);				
+				columnSeries8.push(columnCM23);
+				
+				if(switchState == false){
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+				}
+				else{
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+					columnSeries.push(columnSeries5);
+					columnSeries.push(columnSeries6);					
+					columnSeries.push(columnSeries7);										
+					columnSeries.push(columnSeries8);	
+				}
+				
+				csdColumnSeries.push(columnSeries);
+					
+			});
+			
+			var csdOverdueDetailContentTotal = '<li class="csd-data-list">' +
+													'<ul>' +
+														'<li>' +
+															'<div style="text-align: left;text-indent: 1.5VW;">' +
+																'<div class="font-style7">' +
+																	'<span>Total</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + csdOverdueDetailTotal.toFixed(2) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="csdArea"></div>' +
+														'</li>' +
+														'<li>' +
+														'</li>' +
+													'</ul>' +
+												'</li>';
+												
+			$('.overdueDetail-csd').append(csdOverdueDetailContentTotal);
+			
+			
+			console.log(buAreaSeries);
+			console.log(buColumnSeries);
+			//console.log(csdAreaSeries);
+			//console.log(csdColumnSeries);
+		}
+		
 		
 		function getOverdueSoonData(){
 			var buOutstandDetailTotal = 0;
@@ -690,7 +1303,6 @@ $('#viewDetail').pagecontainer({
 				$('.overduesoon-csd').append(noneDataTwoColumn);
 				$('.overduesoon-csd').append(noneDataTwoTotal);
 			}
-			
 		}
 		
 		function getExpiredSoonData() {
@@ -717,7 +1329,69 @@ $('#viewDetail').pagecontainer({
 				$('.expiredsoon').append(noneDataThreeColumn);
 				
 			}
-			
+		}
+		
+		window.setDataByBU = function(){
+			for(var i = 0; i < buAreaSeries.length; i ++){
+				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(buAreaSeries[i], false, false, false);
+				buArea.redraw(false);
+			}
+			/*for(var j = 0; j < buColumnSeries.length; j ++){
+				var buColumn = new Highcharts.Chart('buColumn' + j, columnOption);
+				buColumn.series[0].setData(buColumnSeries[j][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[j][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[j][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[j][3], false, false, false);
+				buColumn.redraw(false);
+			}*/
+		}
+		
+		window.setSwitch = function() {
+			for(var j = 0; j < buColumnSeries.length; j ++){
+				//buColumn = new Highcharts.Chart('buColumn' + j, columnOption);
+				buColumn.series[0].setData(buColumnSeries[j][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[j][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[j][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[j][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[j][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[j][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[j][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[j][7]
+				}, false, false, false);
+				buColumn.redraw(false);
+			}
+		}
+		
+		
+		function setDataByCSD(){
+			for(var i = 0; i < csdAreaSeries.length; i ++){
+				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
+				csdArea.series[0].setData(csdAreaSeries[i], false, false, false);
+				csdArea.redraw(false);
+			}
+			/*for(var i = 0; i < csdColumnSeries.length; i ++){
+				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
+				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
+				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
+				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
+				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+			}*/
 		}
 		
 		function changeScrollmenu(ro){
@@ -749,14 +1423,24 @@ $('#viewDetail').pagecontainer({
 			/* global PullToRefresh */
 			
 			
-			changePageInitViewDetail();
+			
 		});
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
-			getChartAreaAndColumn();
-			getLandscapeColumn();
-			zoomInChartByColumn();			
+			if(viewDetailInit == false) {
+				//getChartAreaAndColumn();
+				setDataByBU();
+				getLandscapeColumn(true);
+				zoomInChartByColumn();
+				clickSingleListBtn();
+				OutstandDetail();
+				CreditExpiredSoon();
+				changePageInitViewDetail();
+				viewDetailInit = true;
+			}
+			loadingMask("hide");
 			
+			//setDataByCSD();	
 		});
 		
 		$(".page-tabs #viewDetail-tab-1").on("click", function(){
@@ -778,10 +1462,15 @@ $('#viewDetail').pagecontainer({
 		});
 		
 		// scroll menu on click
-        $(document).on('click', '#viewDetail .Ro > a', function(e) {
+        $(document).on('click', '#viewDetail .Facility > a', function(e) {
             e.preventDefault();
-            ro = $(this).context.id;
-			
+            facility = $(this).context.id;
+            console.log(facility);
+            if($(this).context.id == "ALL") {
+                hcFacility = "All facility";
+            }else{
+                hcFacility = $(this).context.id;
+            }
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			

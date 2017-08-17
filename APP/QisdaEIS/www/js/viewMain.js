@@ -1,5 +1,7 @@
 //get BU & CSD series
 var viewMainTab = "bu";
+var facilityList,firstFacility;
+var viewMainInit = false;
 var mainQisdaEisData = {};
 var buBubbleSeries = [
 	/*{ x: 60, y: 201346476, facility: 'TE' },*/
@@ -111,7 +113,6 @@ var bubbleOption = {
             			getTreemapSeriesByFacility(facility);
             			
             			showTreemap();
-            			showTreemapLandscape();
             			
             			if(viewMainTab == "bu"){
             				chartRect.series[0].setData(buTreemap, true, true, false);
@@ -247,12 +248,11 @@ var rectOption = {
 function showTreemap(){
 	rectOption.chart.renderTo = 'overview-hc-rectangle';
 	chartRect = new Highcharts.Chart(rectOption);
-}
-
-function showTreemapLandscape(){
+	
 	rectOption.chart.renderTo = 'overview-hc-rectangle-landscape';
 	chartLandscapeRect = new Highcharts.Chart(rectOption);
 }
+
 
 function hideTooltip(){
 	chartbubble.tooltip.hide();
@@ -367,7 +367,7 @@ function mergeDataByFacility(){
 			else if(item.group == "CIG"){
 				csdBubbleObj[fac].color = "#40C1C7";
 			}
-			else if(item.group == "IIG"){
+			else if(item.group == "ITG"){
 				csdBubbleObj[fac].color = "#FFCC66";
 			}
 			else if(item.group == "MDG"){
@@ -414,7 +414,8 @@ function getTreemapSeriesByFacility(fac) {
 		}
 	});
 }
-
+var userAuthority = [];
+var arSummaryData = {};
 var buByType = [];
 var csdByType = [];
 var buSimplify = [];
@@ -431,33 +432,62 @@ $('#viewMain').pagecontainer({
 	create: function (event, ui){	
 		
 		window.ARSummary = function() {
-			this.successCallback = function(data) {
-				arSummaryCallBackData = data["Content"];
-	    		
-	    		//先按TYPE分组,分成BU和CSD
-	    		sortDataByType();	
-	    		
-	    		//简化数据
-	    		simplifyData();
-	    		
-	    		//相同facility合并
-	    		mergeDataByFacility();
-
-	    			
-			};
+			if(localStorage.getItem("arSummaryData") === null){
+				this.successCallback = function(data) {
+					arSummaryCallBackData = data["Content"];
+		    		
+		    		//先按TYPE分组,分成BU和CSD
+		    		sortDataByType();	
+		    		//简化数据
+		    		simplifyData();
+		    		//相同facility合并
+		    		mergeDataByFacility();
+					loadingMask("hide");
+		    		
+		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
+				};
+				
+				this.failCallback = function(data) {
+		    		console.log("api misconnected");
+		    	};
+		    	
+		    	var _construct = function() {
+					CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
+				}();
+			}
+			else{
+				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
+				arSummaryCallBackData = arSummaryData["Content"];
+				sortDataByType();
+				simplifyData();
+				mergeDataByFacility();
+				loadingMask("hide");
+				
+				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
+				if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
+                    localStorage.removeItem("arSummaryData");
+                    ARSummary();
+                }
+			}
 			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "ARSummary", self.successCallback, self.failCallback, ARSummaryQueryData, "");
-			}();
 		};
 		
 		window.AraUserAuthority = function() {
 			this.successCallback = function(data) {
-				
+				araUserAuthorityCallBackData = data["Content"];
+				facilityList = '<a id="ALL">ALL</a>';
+				var firstFacilityFlag = true;
+				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
+					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
+					if(firstFacilityFlag){
+						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						firstFacilityFlag = false;
+					}
+				}
+				$(".Facility").html("");
+                $(".Facility").append(facilityList).enhanceWithin();
+                $(".Facility #ALL").addClass('hover');
+                loadingMask("hide");
 			};
 			
 			this.failCallback = function(data) {
@@ -491,19 +521,29 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
-			showBubble();
+			if(viewMainInit == false) {
+				viewMainInit = true;
+				showBubble();
+				
+				$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
+			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
+			    
+			    $('#overview-hc-rectangle').hide();
+			    
+			    chartbubble.series[0].setData(buBubbleData, false, false, false);
+			    chartbubble.redraw(false);
+				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
+				chartLandscapebubble.redraw(false);
+	            
+				if (window.orientation === 90 || window.orientation === -90 ) {
+	                zoomInChart();
+	           	}
+				
+				//调用第二页API
+				OverdueDetail();
+			}
 			
-			$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
-		    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
-		    
-		    $('#overview-hc-rectangle').hide();
-		    
-		    chartbubble.series[0].setData(buBubbleData, true, true, false);
-			chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);            
-            
-			if (window.orientation === 90 || window.orientation === -90 ) {
-                zoomInChart();
-           	}
+			loadingMask("hide");
 		});
 		
 		

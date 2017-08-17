@@ -92,12 +92,22 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                             telString = "class='chooseNumPop extNumMore'";
                         }
                         else{
-                            telString = "class='chooseNumPop extNumMore mvpnNum'" + " data-mvpnnum='" + tempData["mvpn"] + "'";
+                            if (tempData["mvpn"].indexOf(';')>0){
+                                telString = "class='chooseNumPop extNumMore mvpnNumMore mvpnNum'";
+                                for (var j = 0; j < tempData["mvpn"].match(/;/igm).length+1; j++){
+                                    telString += " data-mvpnnum" + (j+1) + "='" + tempData["mvpn"].split(';')[j].replace(' ', '') + "' " ;
+                                }
+                            }
+                            else{
+                                telString = "class='chooseNumPop extNumMore mvpnNum'" + " data-mvpnnum='" + tempData["mvpn"] + "'";
+                            }
                         }
+
                         for (var j = 0; j < tempData["extnum"].match(/;/igm).length+1; j++){
                             telString += " data-extnum" + (j+1) + "='" + tempData["extnum"].split(';')[j].replace(' ', '') + "' " ;
                         }
                         telString += 'data-extnum="' + tempData["extnum"] + '" ';
+                        telString += 'data-mvpnnum="' + tempData["mvpn"] + '" ';
                         extTmpNum = tempData["extnum"].split(';')[0].replace(' ', '');
                     }
                     else{
@@ -106,7 +116,16 @@ var queryHasDataAry = [], expiredQueryTime = 1;    // expired time = 1 minutes
                             telString = "href='tel:" + tempData["extnum"] + "'";
                         }
                         else{
-                            telString = "class='chooseNumPop mvpnNum'" + " data-mvpnnum='" + tempData["mvpn"] + "' data-extnum='" + tempData["extnum"] + "' ";
+                            if (tempData["mvpn"].indexOf(';')>0){
+                                telString = "class='chooseNumPop mvpnNumMore mvpnNum'";
+                                for (var j = 0; j < tempData["mvpn"].match(/;/igm).length+1; j++){
+                                    telString += " data-mvpnnum" + (j+1) + "='" + tempData["mvpn"].split(';')[j].replace(' ', '') + "' " + "' data-extnum='" + tempData["extnum"] + "' ";
+                                }
+                                telString += 'data-mvpnnum="' + tempData["mvpn"] + '" ';
+                            }
+                            else{
+                                telString = "class='chooseNumPop mvpnNum'" + " data-mvpnnum='" + tempData["mvpn"] + "' data-extnum='" + tempData["extnum"] + "' ";
+                            }                        
                         }
                         extTmpNum = tempData["extnum"];
                     }

@@ -820,6 +820,8 @@ $("#viewEventList").pagecontainer({
             //set padding bottom
             var paddingBottom = parseInt(document.documentElement.clientWidth * 18 / 100, 10);
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
+
+            chatRoom.resetBadge();
         });
 
         /********************************** dom event *************************************/
