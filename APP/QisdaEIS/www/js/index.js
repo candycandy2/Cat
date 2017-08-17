@@ -10,8 +10,10 @@ var length,thisYear,thisMonth;
 var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
 var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,creditExpiredSoonCallBackData,araUserAuthorityCallBackData;
 var treemapState = false;
+var switchState = false;
 var thisMonthExpiredTime = 1;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
+//var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -82,43 +84,29 @@ $(document).one('pagebeforeshow', function(){
 
     //open or close credit memo
     $('#memoBtn').on('click', function(){
-    	var flag = $('#memoBtn').attr('src');
-
-    	if(flag === 'img/switch_g.png'){
+    	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
-
-    		/*buChartColumn2.series[0].setData(columnMinusData1, true, true, false);
-			buChartColumn2.series[1].setData(columnMinusData2, true, true, false);
-			buChartColumn2.series[2].setData(columnMinusData3, true, true, false);
-			buChartColumn2.series[3].setData(columnMinusData4, true, true, false);
-
-			chartColumnLandscape.series[0].setData(columnMinusData1, true, true, false);
-			chartColumnLandscape.series[1].setData(columnMinusData2, true, true, false);
-			chartColumnLandscape.series[2].setData(columnMinusData3, true, true, false);
-			chartColumnLandscape.series[3].setData(columnMinusData4, true, true, false);*/
+			
 			chartColumnLandscape.update({
 				title: {
 					text: 'Overdue Trend in Last 6 weeks'
 				}
 			});
-
-    	}else{
+			getOverdueDetailData(switchState);
+			
+			switchState = true;
+    	}
+    	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
-
-    		/*buChartColumn2.series[0].setData(columnData2, true, true, false);
-			buChartColumn2.series[1].setData(columnData1, true, true, false);
-			buChartColumn2.series[2].setData(columnData4, true, true, false);
-			buChartColumn2.series[3].setData(columnData3, true, true, false);
-
-			chartColumnLandscape.series[0].setData(columnData2, true, true, false);
-			chartColumnLandscape.series[1].setData(columnData1, true, true, false);
-			chartColumnLandscape.series[2].setData(columnData4, true, true, false);
-			chartColumnLandscape.series[3].setData(columnData3, true, true, false);*/
+			 
 			chartColumnLandscape.update({
 				title: {
 					text: 'Total AR and Overdue Amount'
 				}
 			});
+			getOverdueDetailData(switchState);
+			
+			switchState = false;
     	}
 
     });
@@ -301,8 +289,9 @@ function changePageInitViewDetail(){
 	$('#expiredSoon').hide();
 	$('#overdue').show();
 	
-    $(".Ro #" + ro).parent('.scrollmenu').find('.hover').removeClass('hover');
-    $(".Ro #ALL").addClass('hover');
+    $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
+    $(".Facility #ALL").removeClass('disableHover');
+    $(".Facility #ALL").addClass('hover');
 }
 
 function changePageInitViewMain(){
