@@ -1,6 +1,6 @@
 //get BU & CSD series
 var viewMainTab = "bu";
-
+var facilityList,firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
 var buBubbleSeries = [
@@ -475,7 +475,19 @@ $('#viewMain').pagecontainer({
 		window.AraUserAuthority = function() {
 			this.successCallback = function(data) {
 				araUserAuthorityCallBackData = data["Content"];
-				
+				facilityList = '<a id="ALL">ALL</a>';
+				var firstFacilityFlag = true;
+				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
+					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
+					if(firstFacilityFlag){
+						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						firstFacilityFlag = false;
+					}
+				}
+				$(".Facility").html("");
+                $(".Facility").append(facilityList).enhanceWithin();
+                $(".Facility #ALL").addClass('hover');
+                loadingMask("hide");
 			};
 			
 			this.failCallback = function(data) {
@@ -519,7 +531,9 @@ $('#viewMain').pagecontainer({
 			    $('#overview-hc-rectangle').hide();
 			    
 			    chartbubble.series[0].setData(buBubbleData, false, false, false);
-				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);            
+			    chartbubble.redraw(false);
+				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
+				chartLandscapebubble.redraw(false);
 	            
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();

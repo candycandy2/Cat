@@ -1,8 +1,7 @@
 /********************/
-var ro = "ALL";
+var facility = "ALL";
+var hcFacility = "ALL";
 var viewDetailInit = false;
-var tabOutstandDetailInit = false;
-var tabCreditExpiredSoonInit = false;
 
 //get BU & CSD series
 var companySeries1 = [10, 20, 30, 40, 50, 60];
@@ -10,10 +9,14 @@ var companySeries2 = [31, 26, 58, 43, 59, 64];
 var companySeries3 = [46, 38, 21, 47, 21, 33];
 var companySeries4 = [58, 37, 76, 51, 42, 27];
 
-var columnData1 = [44656, 36472, 25634, 87794, 65686, 44485];
-var columnData2 = [55879, 54752, 65074, 48490, 65953, 46072];
-var columnData3 = [84567, 43989, 63854, 35016, 54245, 57166];
-var columnData4 = [55058, 76371, 57389, 43136, 36593, 78846];
+var columnData1 = [44, 36, 24, 87, 66, 45];
+var columnData2 = [55, 54, 64, 48, 63, 42];
+var columnData3 = [84, 43, 54, 36, 54, 66];
+var columnData4 = [55, 76, 59, 46, 36, 46];
+var columnData5 = [-44, -36, -24, -87, -86, -45];
+var columnData6 = [-55, -52, -64, -48, -63, -42];
+var columnData7 = [-87, -49, -63, -36, -54, -66];
+var columnData8 = [-58, -71, -89, -36, -36, -46];
 var columnMinusData1 = [0, 0, 0, 0, 0, 0];
 var columnMinusData2 = [35, 28, -30, 24, 25, 14];
 var columnMinusData3 = [37, -26, -22, -23, -19, 0];
@@ -246,6 +249,103 @@ var columnOption = {
 	
 };
 
+var columnOptionBySwitch = {
+	chart: {
+        type: 'column',
+        margin: [10, 5, 28, 40]
+    },
+    title: {
+        text: ''
+    },
+    subtitle:{
+    	text: ''
+    },
+    credits: {
+    	enabled: false
+    },
+    xAxis: {
+        categories: timeAxis,
+        labels: {
+        	style: {
+        		fontSize: '9px'
+        	}
+        }
+    },
+    yAxis: {
+        title: {
+            text: null
+        },
+        labels: {
+            style: {
+            	fontSize: '9px'
+            }
+        }
+    },
+    legend: {		     
+        enabled: false
+    },
+    tooltip: {
+       	useHTML: true,
+	    shadow: false,
+	    borderWidth: 1,
+	    borderColor: 'gray',
+	    backgroundColor:　'#ffffff',
+//	    headerFormat: '<table class="fontTooltip">' + '<tr><td>' + this.x + '</td></tr>' +
+//	     '<tr><td>' + companyCode[0] + '</td></tr>',
+//      pointFormat: '<tr><td>' + this.series.name + ':USD$' + this.y + '</td></tr>',
+//      footerFormat: '</table>',
+	   	formatter: function () {
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyCode[0] + ' ' + companyName[0] + '</b>';
+	        $.each(this.points, function () {
+	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
+	        });
+	        return s;
+	    },
+	    followPointer: false,
+        followTouchMove: false,
+	    shared: true
+    },
+    plotOptions: {
+        column: {
+        	animation: false,
+            stacking: 'normal'
+        }   
+    },
+    series: [{
+        name: '1-15 Days',
+        color: '#81B4E1',
+        data: columnData1
+    }, {
+        name: '16-45 Days',
+        color: '#F79620',
+        data: columnData2
+    }, {
+        name: '46-75 Days',
+        color: '#F36D21',
+        data: columnData3
+    }, {
+        name: 'Over 75 Days',
+        color: '#ED3824',
+        data: columnData4
+    }, {
+        name: '1-15 Days',
+        color: '#81B4E1',
+        data: columnData5
+    }, {
+        name: '16-45 Days',
+        color: '#F79620',
+        data: columnData6
+    }, {
+        name: '46-75 Days',
+        color: '#F36D21',
+        data: columnData7
+    }, {
+        name: 'Over 75 Days',
+        color: '#ED3824',
+        data: columnData8
+    }]
+	
+};
 
 function getLandscapeColumn( isInit ){
 	if(isInit) {
@@ -343,7 +443,7 @@ $('#viewDetail').pagecontainer({
 					overdueDetailCallBackData = data["Content"];
 					
 					getOverdueDetailByType();
-					getOverdueDetailData();
+					getOverdueDetailData(switchState);
 					//OutstandDetail();
 					//CreditExpiredSoon();
 					loadingMask("hide");
@@ -366,7 +466,7 @@ $('#viewDetail').pagecontainer({
 				overdueDetailCallBackData = overdueDetailData["Content"];
 				
 				getOverdueDetailByType();
-				getOverdueDetailData();
+				getOverdueDetailData(switchState);
 				//OutstandDetail();
 				//CreditExpiredSoon();
 				loadingMask("hide");
@@ -508,13 +608,25 @@ $('#viewDetail').pagecontainer({
 			
 		}
 		
-		function getOverdueDetailData(){
+		window.getOverdueDetailData = function(switchState){
 			var buOverdueDetailTotal = 0;
 			var csdOverdueDetailTotal = 0;
 			
 			$.each(buOverdueDetail, function(i, item) {
-				var overdueDetailTotal = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
-										parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				if(switchState == false){
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
+				else{
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
 				
 				var overdueDetailContent = '<li class="bu-data-list">' +
 										'<ul>' +
@@ -558,10 +670,10 @@ $('#viewDetail').pagecontainer({
 												'<div><span>Over 75 Days</span></div>' +
 											'</div>' +
 											'<div class="overdue-tab2 font-style13">' +
-												'<div><span>' + item["Detail"][5]["OVER_1_15_INV"] + '</span></div>' +
-												'<div><span>' + item["Detail"][5]["OVER_16_45_INV"] + '</span></div>' +
-												'<div><span>' + item["Detail"][5]["OVER_46_75_INV"] + '</span></div>' +
-												'<div><span>' + item["Detail"][5]["OVER_76_INV"] + '</span></div>' +
+												'<div><span>' + overdue1 + '</span></div>' +
+												'<div><span>' + overdue16 + '</span></div>' +
+												'<div><span>' + overdue46 + '</span></div>' +
+												'<div><span>' + overdue76 + '</span></div>' +
 											'</div>' +
 										'</div>' +
 										'<div id="buColumn' + i + '"></div>' +
@@ -575,102 +687,209 @@ $('#viewDetail').pagecontainer({
 				/******** area图表 ********/
 				var areaSeries = [];
 				
-				var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				if(switchState == false){
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   	 	parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				}
+				else{
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_1_15_CM"]) + parseFloat(item["Detail"][0]["OVER_16_45_CM"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_CM"]) + parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_1_15_CM"]) + parseFloat(item["Detail"][1]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_CM"]) + parseFloat(item["Detail"][1]["OVER_76_CM"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_1_15_CM"]) + parseFloat(item["Detail"][2]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_CM"]) + parseFloat(item["Detail"][2]["OVER_76_CM"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_1_15_CM"]) + parseFloat(item["Detail"][3]["OVER_16_45_CM"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_CM"]) + parseFloat(item["Detail"][3]["OVER_76_CM"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_1_15_CM"]) + parseFloat(item["Detail"][4]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_CM"]) + parseFloat(item["Detail"][4]["OVER_76_CM"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_1_15_CM"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_CM"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				}
+				
 				areaSeries.push(areaWeek0);
-				var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
 				areaSeries.push(areaWeek1);
-				var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
 				areaSeries.push(areaWeek2);
-				var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
 				areaSeries.push(areaWeek3);
-				var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
 				areaSeries.push(areaWeek4);
-				var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				areaSeries.push(areaWeek5);
 				
 				buAreaSeries.push(areaSeries);
-				
-				/*var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-				buArea.series[0].setData(areaSeries, false, false, false);*/
-				
+								
 				
 				/*********** column图表 **********/
 				var columnSeries = [];
 				
-				var columnSeries1 = [];
 				var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
-				columnSeries1.push(column0);
 				var column1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]);
-				columnSeries1.push(column1);
 				var column2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]);
-				columnSeries1.push(column2);
 				var column3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]);
-				columnSeries1.push(column3);
 				var column4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]);
-				columnSeries1.push(column4);
 				var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+				
+				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
+				var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
+				var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
+				var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
+				var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
+				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+				
+				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
+				var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
+				var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
+				var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
+				var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
+				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+				
+				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
+				var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
+				var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
+				var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
+				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				
+				var columnSeries1 = [];
+				columnSeries1.push(column0);
+				columnSeries1.push(column1);
+				columnSeries1.push(column2);
+				columnSeries1.push(column3);
+				columnSeries1.push(column4);
 				columnSeries1.push(column5);
-				columnSeries.push(columnSeries1);
 				
 				var columnSeries2 = [];
-				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
 				columnSeries2.push(column6);
-				var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
 				columnSeries2.push(column7);
-				var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
-				columnSeries2.push(column8);
-				var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
-				columnSeries2.push(column9);
-				var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
-				columnSeries2.push(column10);
-				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+				columnSeries2.push(column8);				
+				columnSeries2.push(column9);				
+				columnSeries2.push(column10);				
 				columnSeries2.push(column11);
-				columnSeries.push(columnSeries2);
 				
-				var columnSeries3 = [];
-				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
-				columnSeries3.push(column12);
-				var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
-				columnSeries3.push(column13);
-				var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
-				columnSeries3.push(column14);
-				var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
-				columnSeries3.push(column15);
-				var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
-				columnSeries3.push(column16);
-				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+				var columnSeries3 = [];				
+				columnSeries3.push(column12);				
+				columnSeries3.push(column13);				
+				columnSeries3.push(column14);				
+				columnSeries3.push(column15);				
+				columnSeries3.push(column16);				
 				columnSeries3.push(column17);
-				columnSeries.push(columnSeries3);
 				
-				var columnSeries4 = [];
-				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
-				columnSeries4.push(column18);
-				var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
-				columnSeries4.push(column19);
-				var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
-				columnSeries4.push(column20);
-				var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
-				columnSeries4.push(column21);
-				var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
-				columnSeries4.push(column22);
-				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				var columnSeries4 = [];				
+				columnSeries4.push(column18);				
+				columnSeries4.push(column19);				
+				columnSeries4.push(column20);				
+				columnSeries4.push(column21);				
+				columnSeries4.push(column22);				
 				columnSeries4.push(column23);
-				columnSeries.push(columnSeries4);
+				
+				var columnCM0 = parseFloat(item["Detail"][0]["OVER_1_15_CM"]);
+				var columnCM1 = parseFloat(item["Detail"][1]["OVER_1_15_CM"]);
+				var columnCM2 = parseFloat(item["Detail"][2]["OVER_1_15_CM"]);
+				var columnCM3 = parseFloat(item["Detail"][3]["OVER_1_15_CM"]);
+				var columnCM4 = parseFloat(item["Detail"][4]["OVER_1_15_CM"]);
+				var columnCM5 = parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+				
+				var columnCM6 = parseFloat(item["Detail"][0]["OVER_16_45_CM"]);
+				var columnCM7 = parseFloat(item["Detail"][1]["OVER_16_45_CM"]);
+				var columnCM8 = parseFloat(item["Detail"][2]["OVER_16_45_CM"]);
+				var columnCM9 = parseFloat(item["Detail"][3]["OVER_16_45_CM"]);
+				var columnCM10 = parseFloat(item["Detail"][4]["OVER_16_45_CM"]);
+				var columnCM11 = parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+				
+				var columnCM12 = parseFloat(item["Detail"][0]["OVER_46_75_CM"]);
+				var columnCM13 = parseFloat(item["Detail"][1]["OVER_46_75_CM"]);
+				var columnCM14 = parseFloat(item["Detail"][2]["OVER_46_75_CM"]);
+				var columnCM15 = parseFloat(item["Detail"][3]["OVER_46_75_CM"]);
+				var columnCM16 = parseFloat(item["Detail"][4]["OVER_46_75_CM"]);
+				var columnCM17 = parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+				
+				var columnCM18 = parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				var columnCM19 = parseFloat(item["Detail"][1]["OVER_76_CM"]);
+				var columnCM20 = parseFloat(item["Detail"][2]["OVER_76_CM"]);
+				var columnCM21 = parseFloat(item["Detail"][3]["OVER_76_CM"]);
+				var columnCM22 = parseFloat(item["Detail"][4]["OVER_76_CM"]);
+				var columnCM23 = parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				
+				var columnSeries5 = [];
+				columnSeries5.push(columnCM0);
+				columnSeries5.push(columnCM1);
+				columnSeries5.push(columnCM2);
+				columnSeries5.push(columnCM3);
+				columnSeries5.push(columnCM4);
+				columnSeries5.push(columnCM5);
+				
+				var columnSeries6 = [];
+				columnSeries6.push(columnCM6);
+				columnSeries6.push(columnCM7);
+				columnSeries6.push(columnCM8);				
+				columnSeries6.push(columnCM9);				
+				columnSeries6.push(columnCM10);				
+				columnSeries6.push(columnCM11);
+				
+				var columnSeries7 = [];				
+				columnSeries7.push(columnCM12);				
+				columnSeries7.push(columnCM13);				
+				columnSeries7.push(columnCM14);				
+				columnSeries7.push(columnCM15);				
+				columnSeries7.push(columnCM16);				
+				columnSeries7.push(columnCM17);
+				
+				var columnSeries8 = [];				
+				columnSeries8.push(columnCM18);				
+				columnSeries8.push(columnCM19);				
+				columnSeries8.push(columnCM20);				
+				columnSeries8.push(columnCM21);				
+				columnSeries8.push(columnCM22);				
+				columnSeries8.push(columnCM23);
+				
+				if(switchState == false){
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+				}
+				else{
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+					columnSeries.push(columnSeries5);
+					columnSeries.push(columnSeries6);					
+					columnSeries.push(columnSeries7);										
+					columnSeries.push(columnSeries8);	
+				}
 				
 				buColumnSeries.push(columnSeries);
-				
-				/*var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-				buColumn.series[0].setData(columnSeries1, false, false, false);
-				buColumn.series[1].setData(columnSeries2, false, false, false);
-				buColumn.series[2].setData(columnSeries3, false, false, false);
-				buColumn.series[3].setData(columnSeries4, false, false, false);*/
-					
+						
 			});
 			
 			var buOverdueDetailContentTotal = '<li class="bu-data-list">' +
@@ -696,8 +915,20 @@ $('#viewDetail').pagecontainer({
 			$('.overdueDetail-bu').append(buOverdueDetailContentTotal);
 			
 			$.each(csdOverdueDetail, function(i, item) {
-				var overdueDetailTotal = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
-										parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				if(switchState == false){
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
+				else{
+					var overdue1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+					var overdue16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+					var overdue46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+					var overdue76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+					var overdueDetailTotal = overdue1 + overdue16 + overdue46 + overdue76;
+				}
 				
 				var overdueDetailContent = '<li class="csd-data-list">' +
 										'<ul>' +
@@ -741,10 +972,10 @@ $('#viewDetail').pagecontainer({
 												'<div><span>Over 75 Days</span></div>' +
 											'</div>' +
 											'<div class="overdue-tab2 font-style13">' +
-												'<div><span>' + item["Detail"][5]["OVER_1_15_INV"] + '</span></div>' +
-												'<div><span>' + item["Detail"][5]["OVER_16_45_INV"] + '</span></div>' +
-												'<div><span>' + item["Detail"][5]["OVER_46_75_INV"] + '</span></div>' +
-												'<div><span>' + item["Detail"][5]["OVER_76_INV"] + '</span></div>' +
+												'<div><span>' + overdue1 + '</span></div>' +
+												'<div><span>' + overdue16 + '</span></div>' +
+												'<div><span>' + overdue46 + '</span></div>' +
+												'<div><span>' + overdue76 + '</span></div>' +
 											'</div>' +
 										'</div>' +
 										'<div id="csdColumn' + i + '"></div>' +
@@ -758,101 +989,208 @@ $('#viewDetail').pagecontainer({
 				/******** area图表 ********/
 				var areaSeries = [];
 				
-				var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				if(switchState == false){
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   	 	parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				}
+				else{
+					var areaWeek0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]) + parseFloat(item["Detail"][0]["OVER_16_45_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_INV"]) + parseFloat(item["Detail"][0]["OVER_76_INV"]) +
+						    		parseFloat(item["Detail"][0]["OVER_1_15_CM"]) + parseFloat(item["Detail"][0]["OVER_16_45_CM"]) +
+						    		parseFloat(item["Detail"][0]["OVER_46_75_CM"]) + parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				
+					var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][1]["OVER_1_15_CM"]) + parseFloat(item["Detail"][1]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][1]["OVER_46_75_CM"]) + parseFloat(item["Detail"][1]["OVER_76_CM"]);
+					
+					var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][2]["OVER_1_15_CM"]) + parseFloat(item["Detail"][2]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][2]["OVER_46_75_CM"]) + parseFloat(item["Detail"][2]["OVER_76_CM"]);
+					
+					var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]) +
+							   		parseFloat(item["Detail"][3]["OVER_1_15_CM"]) + parseFloat(item["Detail"][3]["OVER_16_45_CM"]) +
+							   		parseFloat(item["Detail"][3]["OVER_46_75_CM"]) + parseFloat(item["Detail"][3]["OVER_76_CM"]);
+					
+					var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][4]["OVER_1_15_CM"]) + parseFloat(item["Detail"][4]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][4]["OVER_46_75_CM"]) + parseFloat(item["Detail"][4]["OVER_76_CM"]);
+					
+					var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]) +
+							    	parseFloat(item["Detail"][5]["OVER_1_15_CM"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]) +
+							    	parseFloat(item["Detail"][5]["OVER_46_75_CM"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				}
+				
 				areaSeries.push(areaWeek0);
-				var areaWeek1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][1]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][1]["OVER_76_INV"]);
 				areaSeries.push(areaWeek1);
-				var areaWeek2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]) + parseFloat(item["Detail"][2]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][2]["OVER_46_75_INV"]) + parseFloat(item["Detail"][2]["OVER_76_INV"]);
 				areaSeries.push(areaWeek2);
-				var areaWeek3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]) + parseFloat(item["Detail"][3]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][3]["OVER_46_75_INV"]) + parseFloat(item["Detail"][3]["OVER_76_INV"]);
 				areaSeries.push(areaWeek3);
-				var areaWeek4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]) + parseFloat(item["Detail"][4]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][4]["OVER_46_75_INV"]) + parseFloat(item["Detail"][4]["OVER_76_INV"]);
 				areaSeries.push(areaWeek4);
-				var areaWeek5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
-						    parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				areaSeries.push(areaWeek5);
 				
-				csdAreaSeries.push(areaSeries);
-				
-				/*var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
-				csdArea.series[0].setData(areaSeries, true, true, false);*/
-				
+				csdAreaSeries.push(areaSeries);				
+								
 				
 				/*********** column图表 **********/
 				var columnSeries = [];
 				
-				var columnSeries1 = [];
 				var column0 = parseFloat(item["Detail"][0]["OVER_1_15_INV"]);
-				columnSeries1.push(column0);
 				var column1 = parseFloat(item["Detail"][1]["OVER_1_15_INV"]);
-				columnSeries1.push(column1);
 				var column2 = parseFloat(item["Detail"][2]["OVER_1_15_INV"]);
-				columnSeries1.push(column2);
 				var column3 = parseFloat(item["Detail"][3]["OVER_1_15_INV"]);
-				columnSeries1.push(column3);
 				var column4 = parseFloat(item["Detail"][4]["OVER_1_15_INV"]);
-				columnSeries1.push(column4);
 				var column5 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
+				
+				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
+				var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
+				var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
+				var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
+				var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
+				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+				
+				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
+				var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
+				var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
+				var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
+				var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
+				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+				
+				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
+				var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
+				var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
+				var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
+				var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
+				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				
+				var columnSeries1 = [];
+				columnSeries1.push(column0);
+				columnSeries1.push(column1);
+				columnSeries1.push(column2);
+				columnSeries1.push(column3);
+				columnSeries1.push(column4);
 				columnSeries1.push(column5);
-				columnSeries.push(columnSeries1);
 				
 				var columnSeries2 = [];
-				var column6 = parseFloat(item["Detail"][0]["OVER_16_45_INV"]);
 				columnSeries2.push(column6);
-				var column7 = parseFloat(item["Detail"][1]["OVER_16_45_INV"]);
 				columnSeries2.push(column7);
-				var column8 = parseFloat(item["Detail"][2]["OVER_16_45_INV"]);
-				columnSeries2.push(column8);
-				var column9 = parseFloat(item["Detail"][3]["OVER_16_45_INV"]);
-				columnSeries2.push(column9);
-				var column10 = parseFloat(item["Detail"][4]["OVER_16_45_INV"]);
-				columnSeries2.push(column10);
-				var column11 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
+				columnSeries2.push(column8);				
+				columnSeries2.push(column9);				
+				columnSeries2.push(column10);				
 				columnSeries2.push(column11);
-				columnSeries.push(columnSeries2);
 				
-				var columnSeries3 = [];
-				var column12 = parseFloat(item["Detail"][0]["OVER_46_75_INV"]);
-				columnSeries3.push(column12);
-				var column13 = parseFloat(item["Detail"][1]["OVER_46_75_INV"]);
-				columnSeries3.push(column13);
-				var column14 = parseFloat(item["Detail"][2]["OVER_46_75_INV"]);
-				columnSeries3.push(column14);
-				var column15 = parseFloat(item["Detail"][3]["OVER_46_75_INV"]);
-				columnSeries3.push(column15);
-				var column16 = parseFloat(item["Detail"][4]["OVER_46_75_INV"]);
-				columnSeries3.push(column16);
-				var column17 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
+				var columnSeries3 = [];				
+				columnSeries3.push(column12);				
+				columnSeries3.push(column13);				
+				columnSeries3.push(column14);				
+				columnSeries3.push(column15);				
+				columnSeries3.push(column16);				
 				columnSeries3.push(column17);
-				columnSeries.push(columnSeries3);
 				
-				var columnSeries4 = [];
-				var column18 = parseFloat(item["Detail"][0]["OVER_76_INV"]);
-				columnSeries4.push(column18);
-				var column19 = parseFloat(item["Detail"][1]["OVER_76_INV"]);
-				columnSeries4.push(column19);
-				var column20 = parseFloat(item["Detail"][2]["OVER_76_INV"]);
-				columnSeries4.push(column20);
-				var column21 = parseFloat(item["Detail"][3]["OVER_76_INV"]);
-				columnSeries4.push(column21);
-				var column22 = parseFloat(item["Detail"][4]["OVER_76_INV"]);
-				columnSeries4.push(column22);
-				var column23 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				var columnSeries4 = [];				
+				columnSeries4.push(column18);				
+				columnSeries4.push(column19);				
+				columnSeries4.push(column20);				
+				columnSeries4.push(column21);				
+				columnSeries4.push(column22);				
 				columnSeries4.push(column23);
-				columnSeries.push(columnSeries4);
+				
+				var columnCM0 = parseFloat(item["Detail"][0]["OVER_1_15_CM"]);
+				var columnCM1 = parseFloat(item["Detail"][1]["OVER_1_15_CM"]);
+				var columnCM2 = parseFloat(item["Detail"][2]["OVER_1_15_CM"]);
+				var columnCM3 = parseFloat(item["Detail"][3]["OVER_1_15_CM"]);
+				var columnCM4 = parseFloat(item["Detail"][4]["OVER_1_15_CM"]);
+				var columnCM5 = parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
+				
+				var columnCM6 = parseFloat(item["Detail"][0]["OVER_16_45_CM"]);
+				var columnCM7 = parseFloat(item["Detail"][1]["OVER_16_45_CM"]);
+				var columnCM8 = parseFloat(item["Detail"][2]["OVER_16_45_CM"]);
+				var columnCM9 = parseFloat(item["Detail"][3]["OVER_16_45_CM"]);
+				var columnCM10 = parseFloat(item["Detail"][4]["OVER_16_45_CM"]);
+				var columnCM11 = parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
+				
+				var columnCM12 = parseFloat(item["Detail"][0]["OVER_46_75_CM"]);
+				var columnCM13 = parseFloat(item["Detail"][1]["OVER_46_75_CM"]);
+				var columnCM14 = parseFloat(item["Detail"][2]["OVER_46_75_CM"]);
+				var columnCM15 = parseFloat(item["Detail"][3]["OVER_46_75_CM"]);
+				var columnCM16 = parseFloat(item["Detail"][4]["OVER_46_75_CM"]);
+				var columnCM17 = parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
+				
+				var columnCM18 = parseFloat(item["Detail"][0]["OVER_76_CM"]);
+				var columnCM19 = parseFloat(item["Detail"][1]["OVER_76_CM"]);
+				var columnCM20 = parseFloat(item["Detail"][2]["OVER_76_CM"]);
+				var columnCM21 = parseFloat(item["Detail"][3]["OVER_76_CM"]);
+				var columnCM22 = parseFloat(item["Detail"][4]["OVER_76_CM"]);
+				var columnCM23 = parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				
+				var columnSeries5 = [];
+				columnSeries5.push(columnCM0);
+				columnSeries5.push(columnCM1);
+				columnSeries5.push(columnCM2);
+				columnSeries5.push(columnCM3);
+				columnSeries5.push(columnCM4);
+				columnSeries5.push(columnCM5);
+				
+				var columnSeries6 = [];
+				columnSeries6.push(columnCM6);
+				columnSeries6.push(columnCM7);
+				columnSeries6.push(columnCM8);				
+				columnSeries6.push(columnCM9);				
+				columnSeries6.push(columnCM10);				
+				columnSeries6.push(columnCM11);
+				
+				var columnSeries7 = [];				
+				columnSeries7.push(columnCM12);				
+				columnSeries7.push(columnCM13);				
+				columnSeries7.push(columnCM14);				
+				columnSeries7.push(columnCM15);				
+				columnSeries7.push(columnCM16);				
+				columnSeries7.push(columnCM17);
+				
+				var columnSeries8 = [];				
+				columnSeries8.push(columnCM18);				
+				columnSeries8.push(columnCM19);				
+				columnSeries8.push(columnCM20);				
+				columnSeries8.push(columnCM21);				
+				columnSeries8.push(columnCM22);				
+				columnSeries8.push(columnCM23);
+				
+				if(switchState == false){
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+				}
+				else{
+					columnSeries.push(columnSeries1);
+					columnSeries.push(columnSeries2);					
+					columnSeries.push(columnSeries3);										
+					columnSeries.push(columnSeries4);
+					columnSeries.push(columnSeries5);
+					columnSeries.push(columnSeries6);					
+					columnSeries.push(columnSeries7);										
+					columnSeries.push(columnSeries8);	
+				}
 				
 				csdColumnSeries.push(columnSeries);
-				
-				//var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
-				//csdColumn.series[0].setData(columnSeries1, true, true, false);
-				//csdColumn.series[1].setData(columnSeries2, true, true, false);
-				//csdColumn.series[2].setData(columnSeries3, true, true, false);
-				//csdColumn.series[3].setData(columnSeries4, true, true, false);
 					
 			});
 			
@@ -880,7 +1218,7 @@ $('#viewDetail').pagecontainer({
 			
 			
 			console.log(buAreaSeries);
-			//console.log(buColumnSeries);
+			console.log(buColumnSeries);
 			//console.log(csdAreaSeries);
 			//console.log(csdColumnSeries);
 		}
@@ -993,28 +1331,60 @@ $('#viewDetail').pagecontainer({
 			}
 		}
 		
-		function setDataToArea(){
+		window.setDataByBU = function(){
 			for(var i = 0; i < buAreaSeries.length; i ++){
 				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
 				buArea.series[0].setData(buAreaSeries[i], false, false, false);
+				buArea.redraw(false);
 			}
-			
+			/*for(var j = 0; j < buColumnSeries.length; j ++){
+				var buColumn = new Highcharts.Chart('buColumn' + j, columnOption);
+				buColumn.series[0].setData(buColumnSeries[j][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[j][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[j][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[j][3], false, false, false);
+				buColumn.redraw(false);
+			}*/
 		}
 		
-		function setDataToColumn(){
+		window.setSwitch = function() {
+			for(var j = 0; j < buColumnSeries.length; j ++){
+				//buColumn = new Highcharts.Chart('buColumn' + j, columnOption);
+				buColumn.series[0].setData(buColumnSeries[j][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[j][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[j][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[j][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[j][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[j][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[j][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[j][7]
+				}, false, false, false);
+				buColumn.redraw(false);
+			}
+		}
+		
+		
+		function setDataByCSD(){
 			for(var i = 0; i < csdAreaSeries.length; i ++){
 				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
 				csdArea.series[0].setData(csdAreaSeries[i], false, false, false);
+				csdArea.redraw(false);
 			}
-			
-			/*for(var i = 0; i < buColumnSeries.length; i ++){
-				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-			}*/
-			
 			/*for(var i = 0; i < csdColumnSeries.length; i ++){
 				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
 				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
@@ -1053,23 +1423,24 @@ $('#viewDetail').pagecontainer({
 			/* global PullToRefresh */
 			
 			
-			changePageInitViewDetail();
+			
 		});
 		
 		$('#viewDetail').on('pageshow', function(event, ui){
 			if(viewDetailInit == false) {
 				//getChartAreaAndColumn();
-				setDataToArea();
+				setDataByBU();
 				getLandscapeColumn(true);
 				zoomInChartByColumn();
 				clickSingleListBtn();
-				//OutstandDetail();
-				//CreditExpiredSoon();
+				OutstandDetail();
+				CreditExpiredSoon();
+				changePageInitViewDetail();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
 			
-			setDataToColumn();	
+			//setDataByCSD();	
 		});
 		
 		$(".page-tabs #viewDetail-tab-1").on("click", function(){
@@ -1081,28 +1452,25 @@ $('#viewDetail').pagecontainer({
 		$(".page-tabs #viewDetail-tab-2").on("click", function(){
 			$('#overdue').hide();
 			$('#expiredSoon').hide();
-			$('#overdueSoon').show();
-			if(tabOutstandDetailInit == false) {
-				OutstandDetail();
-				tabOutstandDetailInit = true;
-			}
+			$('#overdueSoon').show()
 		});
 		
 		$(".page-tabs #viewDetail-tab-3").on("click", function(){
 			$('#overdue').hide();
 			$('#overdueSoon').hide();
 			$('#expiredSoon').show();
-			if(tabCreditExpiredSoonInit == false) {
-				CreditExpiredSoon();
-				tabCreditExpiredSoonInit = true;
-			}
 		});
 		
 		// scroll menu on click
-        $(document).on('click', '#viewDetail .Ro > a', function(e) {
+        $(document).on('click', '#viewDetail .Facility > a', function(e) {
             e.preventDefault();
-            ro = $(this).context.id;
-			
+            facility = $(this).context.id;
+            console.log(facility);
+            if($(this).context.id == "ALL") {
+                hcFacility = "All facility";
+            }else{
+                hcFacility = $(this).context.id;
+            }
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			
