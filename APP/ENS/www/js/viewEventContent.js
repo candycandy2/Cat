@@ -696,6 +696,7 @@ $("#viewEventContent").pagecontainer({
             $('#msgText').prop('placeholder', "請輸入訊息");
             $("#msgText").val("");
 
+            chatRoom.resetBadge();
         });
         /********************************** dom event *************************************/
 
