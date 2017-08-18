@@ -11,11 +11,11 @@
     <div data-role="main" class="page-main">
         <form>
             <div data-role="controlgroup" data-type="horizontal" class="page-tabs" id="viewPersonalLeaveTab">
-                <input type="radio" name="radio-choice-h-2" id="viewPersonalLeave-tab-1" value="viewPersonalLeave-tab-1" checked="checked">
-                <label for="viewPersonalLeave-tab-1" class="tabs-title">個人假勤</label>
-
-                <input type="radio" name="radio-choice-h-2" id="viewPersonalLeave-tab-2" value="viewPersonalLeave-tab-2">
+                <input type="radio" name="radio-choice-h-2" id="viewPersonalLeave-tab-2" value="viewPersonalLeave-tab-2" checked="checked">
                 <label for="viewPersonalLeave-tab-2" class="tabs-title">快速請假</label>
+
+                <input type="radio" name="radio-choice-h-2" id="viewPersonalLeave-tab-1" value="viewPersonalLeave-tab-1">
+                <label for="viewPersonalLeave-tab-1" class="tabs-title">個人假勤</label>
             </form>
         </div>
         <div id="tab-1">
@@ -154,15 +154,10 @@
             <div style="margin-top: 5VW;">
                 <span>請假日期</span>
             </div>
-            <form>
-                <fieldset data-role="controlgroup" data-type="horizontal" id="leaveDate">
-                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab1" value="" checked="checked">
-                    <label for="leaveDate-tab1" class="leaveDateTitle"></label>
 
-                    <input type="radio" name="radio-choice-h-2" id="leaveDate-tab2" value="">
-                    <label for="leaveDate-tab2" class="leaveDateTitle"></label>
-                </fieldset>
-            </form>
+            <div id="leaveDate" class="scrollmenu">
+                <!--<a href="#" class="ui-link"></a>-->
+            </div>
 
             <div style="margin-top: 5VW;">
                 <span>請假時段</span>
