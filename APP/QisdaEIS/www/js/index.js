@@ -84,29 +84,38 @@ $(document).one('pagebeforeshow', function(){
 
     //open or close credit memo
     $('#memoBtn').on('click', function(){
+    	loadingMask("show");
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
-			
-			chartColumnLandscape.update({
+    		
+    		chartColumnLandscape.update({
 				title: {
 					text: 'Overdue Trend in Last 6 weeks'
 				}
 			});
-			getOverdueDetailData(switchState);
 			
-			switchState = true;
+    		switchState = true;
+    		$('.overdueDetail-bu').empty();
+    		$('.overdueDetail-csd').empty();
+			getOverdueDetailData(switchState);
+			clickSingleListBtn();
+			setDataByBU();
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
-			 
+    		
 			chartColumnLandscape.update({
 				title: {
 					text: 'Total AR and Overdue Amount'
 				}
 			});
-			getOverdueDetailData(switchState);
 			
 			switchState = false;
+			$('.overdueDetail-bu').empty();
+    		$('.overdueDetail-csd').empty();
+			getOverdueDetailData(switchState);
+			clickSingleListBtn();
+			setDataByBU();
     	}
 
     });
@@ -244,6 +253,7 @@ function formatNumber(n) {
     return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }
 
+
 function changePageByPanel(pageId) {
 	window.firstClick = true;
 
@@ -294,9 +304,6 @@ function changePageInitViewDetail(){
     $(".Facility #ALL").addClass('hover');
 }
 
-function changePageInitViewMain(){
-	
-}
 
 //横竖屏切换
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
