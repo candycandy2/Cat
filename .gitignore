@@ -97,3 +97,4 @@ storage
 
 package-lock.json
 /qplay/.env
+/API/QChat/public/upload

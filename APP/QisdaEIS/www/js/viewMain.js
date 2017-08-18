@@ -531,9 +531,9 @@ $('#viewMain').pagecontainer({
 			    $('#overview-hc-rectangle').hide();
 			    
 			    chartbubble.series[0].setData(buBubbleData, false, false, false);
-			    chartbubble.redraw(false);
+			    chartbubble.redraw(true);
 				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
-				chartLandscapebubble.redraw(false);
+				chartLandscapebubble.redraw(true);
 	            
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
