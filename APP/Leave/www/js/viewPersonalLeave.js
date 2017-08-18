@@ -332,13 +332,13 @@ $("#viewPersonalLeave").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewPersonalLeave").one("pagebeforeshow", function(event, ui) {
-            $("#tab-1").show();
-            $("#tab-2").hide();
+            $("#tab-1").hide();
+            $("#tab-2").show();
             if(lastPageID === "viewPersonalLeave") {
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
             }
-            $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
-            $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');          
+            $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
+            $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
@@ -404,14 +404,6 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#infoContent-3").slideUp(800);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
             }
-        });
-
-        $("#leaveDate-tab1").on("click", function() {
-            beginDate = endDate = $(this).val();
-        });
-
-        $("#leaveDate-tab2").on("click", function() {
-            beginDate = endDate = $(this).val();
         });
 
         $("#leaveTime-tab1").on("click", function() {
@@ -689,6 +681,14 @@ $("#viewPersonalLeave").pagecontainer({
             if ($(".tooltip").length > 0) {
                 $(".tooltip").remove();
             }
+        });
+
+        //Leave Date scroll click
+        $(document).on("click", "#leaveDate a", function() {
+            $("#leaveDate a").removeClass("hover");
+            $(this).addClass("hover");
+
+            beginDate = endDate = $(this).data("value");
         });
 
     }
