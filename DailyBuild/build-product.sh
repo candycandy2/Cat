@@ -62,7 +62,7 @@ gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
 gulp jenkinsdefault --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="ad4712a0-4c61-4763-9a73-376c09e5fa53" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="2c40c205-767a-4412-be4d-c1cb522e681f" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-Multijob/APP/Relieve
@@ -161,7 +161,7 @@ gulp config --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall
 gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="b137e8ef-e6ba-4470-a2ad-c6982816a200" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="c2cd923c-844d-433b-8596-6c522b5adaab" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-Multijob/Production/Relieve
