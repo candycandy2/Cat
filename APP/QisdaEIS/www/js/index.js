@@ -94,9 +94,7 @@ $(document).one('pagebeforeshow', function(){
 			});
 			
     		switchState = true;
-    		$('.overdueDetail-bu').empty();
-    		$('.overdueDetail-csd').empty();
-			getOverdueDetailData();
+			getOverdueDetailData(facility);
 			clickSingleListBtn();
 			setAllAreaData();
     	}
@@ -110,9 +108,7 @@ $(document).one('pagebeforeshow', function(){
 			});
 			
 			switchState = false;
-			$('.overdueDetail-bu').empty();
-    		$('.overdueDetail-csd').empty();
-			getOverdueDetailData();
+			getOverdueDetailData(facility);
 			clickSingleListBtn();
 			setAllAreaData();
     	}
@@ -169,8 +165,134 @@ $(document).one('pagebeforeshow', function(){
 
     });
 
+	//sort
+	$('#buOverdueSortByCustomer').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+			
+			
+			
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+			
+			
+			
+			
+		}
+	});
 	
-
+	$('#buOverdueSortByTotal').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+			
+			
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+			
+				
+		}
+	});
+	
+	$('#csdOverdueSortByCustomer').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#csdOverdueSortByTotal').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#buOverdueSoonSortByCustomer').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#buOverdueSoonSortByTotal').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#csdOverdueSoonSortByCustomer').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#csdOverdueSoonSortByTotal').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#expiredSoonSortByCustomer').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#expiredSoonSortByDay').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
+	
+	$('#expiredSoonSortByLimit').on('click', function(){
+		if($(this).attr('src') == 'img/priority_up.png'){
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		else if($(this).attr('src') == 'img/priority_down.png'){
+			$(this).attr('src', 'img/priority_up.png');
+				
+		}
+	});
 });
 
 
