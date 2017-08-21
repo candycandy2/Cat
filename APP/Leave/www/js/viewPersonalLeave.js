@@ -199,6 +199,9 @@ $("#viewPersonalLeave").pagecontainer({
                         $("#agent-popup").find("option").remove().end().append(newOption);
                         agentid = "";
                         window.localStorage.removeItem('agent');
+                        setTimeout(function(){
+                            tplJS.reSizeDropdownList("agent-popup", "typeB");
+                        }, 1000);
                     }
                 }
             };
