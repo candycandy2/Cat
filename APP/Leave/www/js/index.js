@@ -104,13 +104,6 @@ $(document).one("pagebeforeshow", function() {
         $(".page-mask").show();
     });
 
-    $(document).on("swiperight", function(event) {
-        if($(".ui-page-active").jqmData("panel") !== "open") {
-            $("#mypanel").panel("open");
-            $(".page-mask").show();
-        }
-    });
-
     $(document).on("swipeleft", function(event) {
         if($(".ui-page-active").jqmData("panel") === "open") {
             $("#mypanel").panel("close");
@@ -180,10 +173,12 @@ function dateInit() {
     var month = currentMonth;
     var date = currentDate;
     var day = currentDay;
-    for(var i=1; i<=2; i++) {
+    for(var i=1; i<=14; i++) {
         if(day > 0 && day < 6) {
-            $("label[for=leaveDate-tab" + i + "]").text(month + "/" + date + " " + dayTable[day]);
-            $("#leaveDate-tab" + i).val(currentYear + "/" + month + "/" + date);
+
+            $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
+            $("#leaveDate a:last-child").data("value", currentYear + "/" + month + "/" + date);
+
             day++;
             if(day == 6) {
                 day = 1;
@@ -219,4 +214,6 @@ function dateInit() {
             }
         }
     }
+
+    $("#leaveDate a:eq(0)").addClass("hover");
 }

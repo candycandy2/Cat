@@ -33,6 +33,9 @@ function addComponentView() {
         //set initial page's layout when landscape
         $('#initialOther').css('top', (screen.height - $('#initialOther').height()) / 2);
 
+        $("#APPLoginLink").on("click", function() {
+            getServerData();
+        });
         //If is other APP, set APP name in initial page
         if (appKey !== qplayAppKey) {
             $("#initialAppName").html(initialAppName);
@@ -40,6 +43,10 @@ function addComponentView() {
             //set Other APP initial page dispaly
             $("#initialOther").removeClass("hide");
             $("#initialQPlay").remove();
+            //when initialOther Page stay over 10 secs, show QPlay Login Link
+            setTimeout(function(){
+                $("#initialAppLoginTimeout").removeClass("hide");
+            }, 10000);
         } else {
             //set QPlay initial page dispaly
             $("#initialQPlay").removeClass("hide");

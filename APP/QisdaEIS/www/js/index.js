@@ -84,7 +84,6 @@ $(document).one('pagebeforeshow', function(){
 
     //open or close credit memo
     $('#memoBtn').on('click', function(){
-    	loadingMask("show");
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
     		
@@ -97,9 +96,9 @@ $(document).one('pagebeforeshow', function(){
     		switchState = true;
     		$('.overdueDetail-bu').empty();
     		$('.overdueDetail-csd').empty();
-			getOverdueDetailData(switchState);
+			getOverdueDetailData();
 			clickSingleListBtn();
-			setDataByBU();
+			setAllAreaData();
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
@@ -113,9 +112,9 @@ $(document).one('pagebeforeshow', function(){
 			switchState = false;
 			$('.overdueDetail-bu').empty();
     		$('.overdueDetail-csd').empty();
-			getOverdueDetailData(switchState);
+			getOverdueDetailData();
 			clickSingleListBtn();
-			setDataByBU();
+			setAllAreaData();
     	}
 
     });
@@ -128,6 +127,13 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
+    		
+    		if(buColumnCheckAll == false){
+    			loadingMask("show");
+    			setAllColumnData('bu');
+    			loadingMask("hide");
+    		}
+    		
 
     	}else{
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
@@ -146,6 +152,13 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
+    		
+    		if(csdColumnCheckAll == false){
+    			loadingMask("show");
+    			setAllColumnData('csd');
+    			loadingMask("hide");
+    		}
+    		
 
     	}else{
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
