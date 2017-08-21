@@ -48,6 +48,6 @@ class HistoryRepository
      */
     public function insertHistoryFile($historyFileData){
         $this->historyFile->insert($historyFileData);
-        //$this->mngHistoryFile->insert($historyData);
+        $this->mngHistoryFile->insert($historyFileData);
     }
 }

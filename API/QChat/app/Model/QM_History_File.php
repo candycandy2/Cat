@@ -8,5 +8,12 @@ class QM_History_File extends Model
 {   
     protected $connection = 'mysql_qmessage';
     protected $table = 'qm_history_file';
-    protected $primaryKey = 'row_id';
+    protected $primaryKey = 'msg_id';
+
+    /**
+     * 不可被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $guarded = [];
 }
