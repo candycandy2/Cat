@@ -163,11 +163,13 @@ a{
 }
 
 /* BU Overdue */
-.bu-title{
+.bu-title,
+.csd-title{
 	background-color: #F9FBFC;
 }
 
-.bu-title span{
+.bu-title span,
+.csd-title span{
 	display: inline-block;
 	color: #0F0F0F;
 	width: 100%;
@@ -177,14 +179,16 @@ a{
 	margin-bottom: 2.14VW;
 }
 
-.bu-header{
+.bu-header,
+.csd-header{
 	width: 92.58VW;
 	height: 12.077VW;
 	margin-left: 3.71VW;
 	border-bottom: 1px solid #989898;
 }
 
-.bu-header ul li{
+.bu-header ul li,
+.csd-header ul li{
 	height: 12.077VW;
 	list-style-type: none;
 	float: left;
@@ -247,17 +251,20 @@ a{
 	vertical-align: middle;
 }
 
-.bu-main{
+.bu-main,
+.csd-main{
 	width: 92.58VW;
 	margin-left: 3.71VW;
 }
 
-.bu-main > ul > li{
+.bu-main > ul > li,
+.csd-main > ul > li{
 	border-bottom: 1px solid #D6D6D6;
 }
 
 /* total no border-bottom */
-.bu-main > ul > li:last-child{
+.bu-main > ul > li:last-child,
+.csd-main > ul > li:last-child{
 	border-bottom: none !important;
 }
 
@@ -453,51 +460,60 @@ a{
 	color: #666666;
 }
 
-.overduesoon-bu-header{
+.overduesoon-bu-header,
+.overduesoon-csd-header{
 	width: 92.58VW;
 	height: 12.077VW;
 	margin-left: 3.71VW;
 	border-bottom: 1px solid #989898;
 }
 
-.overduesoon-bu-header > div{
+.overduesoon-bu-header > div,
+.overduesoon-csd-header > div{
 	width: 46.29VW;
 	height: 12.077VW;
 	float: left;
 }
 
-.overduesoon-bu-header > div:nth-child(1){
+.overduesoon-bu-header > div:nth-child(1),
+.overduesoon-csd-header > div:nth-child(1){
 	line-height: 12.077VW;
 	text-align: center;
 }
 
-.overduesoon-bu-header > div:nth-child(2){
+.overduesoon-bu-header > div:nth-child(2),
+.overduesoon-csd-header > div:nth-child(2){
 	text-align: center;
 }
 
-.overduesoon-bu-header > div:nth-child(2) > div:nth-child(1){
+.overduesoon-bu-header > div:nth-child(2) > div:nth-child(1),
+.overduesoon-csd-header > div:nth-child(2) > div:nth-child(1){
 	float: left;
 	margin-left: 11VW;
 }
 
-.overduesoon-bu-header > div:nth-child(2) > div:nth-child(1) span:nth-child(1){
+.overduesoon-bu-header > div:nth-child(2) > div:nth-child(1) span:nth-child(1),
+.overduesoon-csd-header > div:nth-child(2) > div:nth-child(1) span:nth-child(1){
 	display: block;
 	height: 6VW;
 	line-height: 10VW;
 }
 
-.overduesoon-bu-header > div:nth-child(2) > div:nth-child(1) span:nth-child(2){
+.overduesoon-bu-header > div:nth-child(2) > div:nth-child(1) span:nth-child(2),
+.overduesoon-csd-header > div:nth-child(2) > div:nth-child(1) span:nth-child(2){
 	display: block;
 	height: 6VW;
 }
 
-.overduesoon-bu-header > div:nth-child(2) > div:nth-child(2){
+.overduesoon-bu-header > div:nth-child(2) > div:nth-child(2),
+.overduesoon-csd-header > div:nth-child(2) > div:nth-child(2){
 	float: left;
 	margin-left: 3.2VW;
 	line-height: 12.077VW;
 }
 
-.overduesoon-bu-main{
+.overduesoon-bu-main,
+.overduesoon-csd-main{
 	width: 92.58VW;
 	margin-left: 3.71VW;
 }
