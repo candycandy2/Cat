@@ -57,7 +57,7 @@
 				<ul>
 					<li class="font-style11 detail-customer">
 						<span>Customer</span>&nbsp;&nbsp;
-						<img src="img/priority_up.png" class="priority-img" />
+						<img src="img/priority_up.png" class="priority-img" id="buOverdueSortByCustomer" />
 					</li>
 					<li class="font-style11 detail-total">
 						<div>
@@ -65,7 +65,7 @@
 							<span>(USD)</span>
 						</div>
 						<div>
-							<img src="img/priority_up.png" class="priority-img" />
+							<img src="img/priority_up.png" class="priority-img" id="buOverdueSortByTotal" />
 						</div>
 					</li>
 					<li class="font-style11 detail-trend">
@@ -79,188 +79,20 @@
 			<!-- BU main -->
 			<div class="bu-main" id="BU">
 				<ul class="overdueDetail-bu">
-					<!--<li class="bu-data-list">
-						<ul>
-							<li>
-								<div>
-									<div class="font-style7">
-										<span>665588 东森电视股份有限公司</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">13546845</span>
-							</li>
-							<li>
-								<div id="buChartArea1"></div>
-							</li>
-							<li>
-								<img src="img/list_down.png" class="buSingleListBtn" />
-							</li>
-						</ul>
-					</li>
-					<li class="bu-single-list">
-						<div>
-							<div class="font-style12">Total AR and Overdue Amount</div>
-							<div class="font-style13">
-								<span>Date:</span>
-								<span>5/14</span>
-								<span>-</span>
-								<span>6/15</span>
-							</div>
-						</div>
-						<div class="font-style13">
-							<span>Alan Chen</span>
-							<span>Owner:</span>						
-						</div>
-						<div>
-							<div class="overdue-tab1 font-style13">
-								<div><span>1-15 Days</span></div>
-								<div><span>16-45 Days</span></div>
-								<div><span>46-75 Days</span></div>
-								<div><span>Over 75 Days</span></div>
-							</div>
-							<div class="overdue-tab2 font-style13">
-								<div><span>1684</span></div>
-								<div><span>6452</span></div>
-								<div><span>16848</span></div>
-								<div><span>268455</span></div>
-							</div>
-						</div>
-						<div id="buChartColumn1"></div>
-					</li>
-					<li class="bu-data-list">
-						<ul>
-							<li>
-								<div>
-									<div class="font-style7">
-										<span>665588 东森电视股份有限公司</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">10000</span>
-							</li>
-							<li>
-								<div id="buChartArea2"></div>
-							</li>
-							<li>
-								<img src="img/list_down.png" class="buSingleListBtn" />
-							</li>
-						</ul>
-					</li>
-					<li class="bu-single-list">
-						<div>
-							<div class="font-style12">Total AR and Overdue Amount</div>
-							<div class="font-style13">
-								<span>Date:</span>
-								<span>5/14</span>
-								<span>-</span>
-								<span>6/15</span>
-							</div>
-						</div>
-						<div class="font-style13">
-							<span>Alan Chen</span>
-							<span>Owner:</span>						
-						</div>
-						<div>
-							<div class="overdue-tab1 font-style13">
-								<div><span>1-15 Days</span></div>
-								<div><span>16-45 Days</span></div>
-								<div><span>46-75 Days</span></div>
-								<div><span>Over 75 Days</span></div>
-							</div>
-							<div class="overdue-tab2 font-style13">
-								<div><span>1684</span></div>
-								<div><span>6452</span></div>
-								<div><span>16848</span></div>
-								<div><span>268455</span></div>
-							</div>
-						</div>
-						<div id="buChartColumn2"></div>
-					</li>
-					<li class="bu-data-list">
-						<ul>
-							<li>
-								<div>
-									<div class="font-style7">
-										<span>665588 东森电视股份有限公司</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">1465651</span>
-							</li>
-							<li>
-								<div id="buChartArea3"></div>
-							</li>
-							<li>
-								<img src="img/list_down.png" class="buSingleListBtn" />
-							</li>
-						</ul>
-					</li>
-					<li class="bu-single-list">
-						<div>
-							<div class="font-style12">Total AR and Overdue Amount</div>
-							<div class="font-style13">
-								<span>Date:</span>
-								<span>5/14</span>
-								<span>-</span>
-								<span>6/15</span>
-							</div>
-						</div>
-						<div class="font-style13">
-							<span>Alan Chen</span>
-							<span>Owner:</span>						
-						</div>
-						<div>
-							<div class="overdue-tab1 font-style13">
-								<div><span>1-15 Days</span></div>
-								<div><span>16-45 Days</span></div>
-								<div><span>46-75 Days</span></div>
-								<div><span>Over 75 Days</span></div>
-							</div>
-							<div class="overdue-tab2 font-style13">
-								<div><span>1684</span></div>
-								<div><span>6452</span></div>
-								<div><span>16848</span></div>
-								<div><span>268455</span></div>
-							</div>
-						</div>
-						<div id="buChartColumn3"></div>
-					</li>
-					<li class="bu-data-list">
-						<ul>
-							<li>
-								<div style="text-align: left;text-indent: 1.5VW;">
-									<div class="font-style7">
-										<span>Total</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">13546984</span>
-							</li>
-							<li>
-								<div id="buChartArea4"></div>
-							</li>
-							<li>
-							</li>
-						</ul>
-					</li>-->
+					
 				</ul>
 			</div>
 			<!-- CSD Overdue -->
 			<!-- CSD title -->
-			<div class="bu-title">
+			<div class="csd-title">
 				<span class="font-style11">CSD Overdue A/R</span>
 			</div>
 			<!-- CSD header-->
-			<div class="bu-header">
+			<div class="csd-header">
 				<ul>
 					<li class="font-style11 detail-customer">
 						<span>Customer</span>&nbsp;&nbsp;
-						<img src="img/priority_up.png" class="priority-img" />
+						<img src="img/priority_up.png" class="priority-img" id="csdOverdueSortByCustomer" />
 					</li>
 					<li class="font-style11 detail-total">
 						<div>
@@ -268,7 +100,7 @@
 							<span>(USD)</span>
 						</div>
 						<div>
-							<img src="img/priority_up.png" class="priority-img" />
+							<img src="img/priority_up.png" class="priority-img" id="csdOverdueSortByTotal" />
 						</div>
 					</li>
 					<li class="font-style11 detail-trend">
@@ -280,177 +112,9 @@
 				</ul>
 			</div>
 			<!-- CSD main -->
-			<div class="bu-main" id="CSD">
+			<div class="csd-main" id="CSD">
 				<ul class="overdueDetail-csd">
-					<!--<li class="bu-data-list">
-						<ul>
-							<li>
-								<div>
-									<div class="font-style7">
-										<span>665588 东森电视股份有限公司</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">13546813</span>
-							</li>
-							<li>
-								<div id="csdChartArea1"></div>
-							</li>
-							<li>
-								<img src="img/list_down.png" class="csdSingleListBtn" />
-							</li>
-						</ul>
-					</li>
-					<li class="csd-single-list">
-						<div>
-							<div class="font-style12">Total AR and Overdue Amount</div>
-							<div class="font-style13">
-								<span>Date:</span>
-								<span>5/14</span>
-								<span>-</span>
-								<span>6/15</span>
-							</div>
-						</div>
-						<div class="font-style13">
-							<span>Alan Chen</span>
-							<span>Owner:</span>						
-						</div>
-						<div>
-							<div class="overdue-tab1 font-style13">
-								<div><span>1-15 Days</span></div>
-								<div><span>16-45 Days</span></div>
-								<div><span>46-75 Days</span></div>
-								<div><span>Over 75 Days</span></div>
-							</div>
-							<div class="overdue-tab2 font-style13">
-								<div><span>1684</span></div>
-								<div><span>6452</span></div>
-								<div><span>16848</span></div>
-								<div><span>268455</span></div>
-							</div>
-						</div>
-						<div id="csdChartColumn1"></div>
-					</li>
-					<li class="bu-data-list">
-						<ul>
-							<li>
-								<div>
-									<div class="font-style7">
-										<span>665588 东森电视股份有限公司</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">74654131</span>
-							</li>
-							<li>
-								<div id="csdChartArea2"></div>
-							</li>
-							<li>
-								<img src="img/list_down.png" class="csdSingleListBtn" />
-							</li>
-						</ul>
-					</li>
-					<li class="csd-single-list">
-						<div>
-							<div class="font-style12">Total AR and Overdue Amount</div>
-							<div class="font-style13">
-								<span>Date:</span>
-								<span>5/14</span>
-								<span>-</span>
-								<span>6/15</span>
-							</div>
-						</div>
-						<div class="font-style13">
-							<span>Alan Chen</span>
-							<span>Owner:</span>						
-						</div>
-						<div>
-							<div class="overdue-tab1 font-style13">
-								<div><span>1-15 Days</span></div>
-								<div><span>16-45 Days</span></div>
-								<div><span>46-75 Days</span></div>
-								<div><span>Over 75 Days</span></div>
-							</div>
-							<div class="overdue-tab2 font-style13">
-								<div><span>1684</span></div>
-								<div><span>6452</span></div>
-								<div><span>16848</span></div>
-								<div><span>268455</span></div>
-							</div>
-						</div>
-						<div id="csdChartColumn2"></div>
-					</li>
-					<li class="bu-data-list">
-						<ul>
-							<li>
-								<div>
-									<div class="font-style7">
-										<span>665588 东森电视股份有限公司</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">1648454</span>
-							</li>
-							<li>
-								<div id="csdChartArea3"></div>
-							</li>
-							<li>
-								<img src="img/list_down.png" class="csdSingleListBtn" />
-							</li>
-						</ul>
-					</li>
-					<li class="csd-single-list">
-						<div>
-							<div class="font-style12">Total AR and Overdue Amount</div>
-							<div class="font-style13">
-								<span>Date:</span>
-								<span>5/14</span>
-								<span>-</span>
-								<span>6/15</span>
-							</div>
-						</div>
-						<div class="font-style13">
-							<span>Alan Chen</span>
-							<span>Owner:</span>						
-						</div>
-						<div>
-							<div class="overdue-tab1 font-style13">
-								<div><span>1-15 Days</span></div>
-								<div><span>16-45 Days</span></div>
-								<div><span>46-75 Days</span></div>
-								<div><span>Over 75 Days</span></div>
-							</div>
-							<div class="overdue-tab2 font-style13">
-								<div><span>1684</span></div>
-								<div><span>6452</span></div>
-								<div><span>16848</span></div>
-								<div><span>268455</span></div>
-							</div>
-						</div>
-						<div id="csdChartColumn3"></div>
-					</li>
-					<li class="bu-data-list">
-						<ul>
-							<li>
-								<div style="text-align: left;text-indent: 1.5VW;">
-									<div class="font-style7">
-										<span>Total</span>
-									</div>	
-								</div>
-							</li>
-							<li>
-								<span class="font-style7 font-localString">26541313</span>
-							</li>
-							<li>
-								<div id="csdChartArea4"></div>
-							</li>
-							<li>
-							</li>
-						</ul>
-					</li>-->
+					
 				</ul>
 			</div>
 		</div>
@@ -464,7 +128,7 @@
 			<div class="overduesoon-bu-header">
 				<div class="font-style7">
 					<span>Customer</span>
-					<img src="img/priority_up.png" class="priority-img" style="margin-left: 3.2VW;" />
+					<img src="img/priority_up.png" class="priority-img" id="buOverdueSoonSortByCustomer" style="margin-left: 3.2VW;" />
 				</div>
 				<div>
 					<div class="font-style7">
@@ -472,34 +136,13 @@
 						<span>(USD)</span>
 					</div>
 					<div>
-						<img src="img/priority_up.png" class="priority-img" />
+						<img src="img/priority_up.png" class="priority-img" id="buOverdueSoonSortByTotal" />
 					</div>
 				</div>
 			</div>
 			<div class="overduesoon-bu-main">
 				<ul class="overduesoon-bu">
-					<!--<li class="data-list-overduesoon">
-						<div>
-							<div class="font-style7">
-								<span>665588 东森电视股份有限公司</span>
-							</div>
-						</div>
-						<div class="font-style7">
-							<span>447044</span>
-						</div>
-					</li>
-					<li class="data-list-none-twoColumn">
-						<div>-</div>
-						<div>-</div>
-					</li>
-					<li class="overduesoon-total">
-						<div class="font-style7">
-							<span>Total</span>
-						</div>
-						<div class="font-style7">
-							<span>447044</span>
-						</div>
-					</li>-->
+					
 				</ul>
 			</div>
 			<!-- csd -->
@@ -507,10 +150,10 @@
 				<span class="font-style11">CSD Overdue A/R</span>
 				<span class="font-style12">(Will be due 4 days)</span>
 			</div>
-			<div class="overduesoon-bu-header">
+			<div class="overduesoon-csd-header">
 				<div class="font-style7">
 					<span>Customer</span>
-					<img src="img/priority_up.png" class="priority-img" style="margin-left: 3.2VW;" />
+					<img src="img/priority_up.png" class="priority-img" id="csdOverdueSoonSortByCustomer" style="margin-left: 3.2VW;" />
 				</div>
 				<div>
 					<div class="font-style7">
@@ -518,40 +161,13 @@
 						<span>(USD)</span>
 					</div>
 					<div>
-						<img src="img/priority_up.png" class="priority-img" />
+						<img src="img/priority_up.png" class="priority-img" id="csdOverdueSoonSortByTotal" />
 					</div>
 				</div>
 			</div>
-			<div class="overduesoon-bu-main">
+			<div class="overduesoon-csd-main">
 				<ul class="overduesoon-csd">
-					<!--<li class="data-list-overduesoon">
-						<div>
-							<div class="font-style7">
-								<span>665588 东森电视股份有限公司</span>
-							</div>
-						</div>
-						<div class="font-style7">
-							<span>601774</span>
-						</div>
-					</li>
-					<li class="data-list-overduesoon">
-						<div>
-							<div class="font-style7">
-								<span>665588 东森电视股份有限公司</span>
-							</div>
-						</div>
-						<div class="font-style7">
-							<span>250000</span>
-						</div>
-					</li>
-					<li class="overduesoon-total">
-						<div class="font-style7">
-							<span>Total</span>
-						</div>
-						<div class="font-style7">
-							<span>447044</span>
-						</div>
-					</li>-->
+					
 				</ul>
 			</div>	
 		</div>
@@ -564,11 +180,11 @@
 			<div class="expiredsoon-bu-header">
 				<div class="font-style7">
 					<span>Customer</span>
-					<img src="img/priority_up.png" class="priority-img" style="margin-left: 3.2VW;" />
+					<img src="img/priority_up.png" class="priority-img" id="expiredSoonSortByCustomer" style="margin-left: 3.2VW;" />
 				</div>
 				<div class="font-style7">
 					<span>Expired Day</span>
-					<img src="img/priority_up.png" class="priority-img" style="margin-left: 3.2VW;" />
+					<img src="img/priority_up.png" class="priority-img" id="expiredSoonSortByDay" style="margin-left: 3.2VW;" />
 				</div>
 				<div>
 					<div class="font-style7">
@@ -576,43 +192,13 @@
 						<span>Limit</span>
 					</div>
 					<div>
-						<img src="img/priority_up.png" class="priority-img" />
+						<img src="img/priority_up.png" class="priority-img" id="expiredSoonSortByLimit" />
 					</div>
 				</div>
 			</div>
 			<div class="expiredsoon-bu-main">
 				<ul class="expiredsoon">
-					<!--<li class="data-list-expiredsoon">
-						<div>
-							<div class="font-style7">
-								<span>0001 东森电视股份有限公司</span>
-							</div>
-						</div>
-						<div class="font-style7">
-							<span>2017/6/30</span>
-						</div>
-						<div class="font-style7">
-							<span>227040</span>
-						</div>
-					</li>
-					<li class="data-list-expiredsoon">
-						<div>
-							<div class="font-style7">
-								<span>0002 飞利浦股份有限公司</span>
-							</div>
-						</div>
-						<div class="font-style7">
-							<span>2017/8/20</span>
-						</div>
-						<div class="font-style7">
-							<span>7040</span>
-						</div>
-					</li>
-					<li class="data-list-none-threeColumn">
-						<div>-</div>
-						<div>-</div>
-						<div>-</div>
-					</li>-->
+					
 				</ul>
 			</div>
 		</div>

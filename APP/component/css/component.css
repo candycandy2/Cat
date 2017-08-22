@@ -522,3 +522,8 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     transform: rotate(330deg);
     -webkit-transform: rotate(330deg);
 }
+
+#APPLoginLink {
+    color: #38c !important;
+    text-decoration: underline !important;
+}

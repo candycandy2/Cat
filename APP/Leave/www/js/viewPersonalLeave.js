@@ -108,7 +108,9 @@ $("#viewPersonalLeave").pagecontainer({
                     $("input[id=leaveTime-tab1]").prop("disabled", false);
                     $("input[id=leaveTime-tab1]").parent().removeClass("ui-state-disabled");
 
-                    if(leftDaysData[leaveid] < 0.5) {
+                    if (leftDaysData[leaveid] < 0) {
+                        $("#leaveType > span:nth-of-type(1)").text("");
+                    } else if (leftDaysData[leaveid] >= 0 && leftDaysData[leaveid] < 0.5) {
                         var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
                         $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.leftDaysNotEnough');
@@ -121,7 +123,7 @@ $("#viewPersonalLeave").pagecontainer({
                         $("#leaveConfirm").addClass("btn-disable");
                         $("#leaveConfirm").removeClass("btn-enable");
 
-                    }else if(leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
+                    } else if (leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
                         $("input[id=leaveTime-tab1]").prop("disabled", true);
                         $("input[id=leaveTime-tab1]").parent().addClass("ui-state-disabled");
                         if(leaveTimetab == "leaveTime-tab1") {
