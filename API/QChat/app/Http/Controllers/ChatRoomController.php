@@ -34,7 +34,6 @@ class ChatRoomController extends Controller
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
-        
         $ACTION = 'getQGroupHistoryMessageJob';
 
         Log::info($ACTION . ' 開始執行...');
@@ -120,14 +119,6 @@ class ChatRoomController extends Controller
             $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
              Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
              Log::info('Sync Fail!' . json_encode($result));
-
-            Mail::raw($result, function ($message) {
-                $message->from('QPlay@BenQ.com', 'qplay');
-                $message->to('Cleo.W.Chan@benq.com');
-                $message->subject("[QChat] ".$ACTION." API fatal Error!");
-                $message->getSwiftMessage();
-            });
-
             return response()->json($result);
 
          }
