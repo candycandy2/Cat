@@ -6,6 +6,7 @@ namespace  App\lib;
 
 use App\lib\CommonUtil;
 use Config;
+use Illuminate\Support\Facades\Log;
 
 class JMessage {
 
@@ -15,9 +16,6 @@ class JMessage {
 
     const API_V1_URL = 'https://api.im.jpush.cn/v1/';
     const API_V2_URL = 'https://report.im.jpush.cn/v2/';
-
-    public  $historyData=[]; 
-    public  $historyFileData=[];
 
 
     /**
@@ -59,19 +57,20 @@ class JMessage {
      *                                 'historyFileData'=>$this->historyFileData);
      *                           失敗 : return JMessageAPI error
      */
-    public function getMessage($beginTime, $endTime, $count){
+    public function getMessageAndFile($beginTime, $endTime, $count){
+        $dataContainer = array('historyData'=>[], 'historyFileData'=>[]);
         $result =  $this->getMessageWithDateTime($beginTime, $endTime, $count);
         if(isset($result->error)){
             return $result;
         }
-        $this->arrangeMessageData($result);
+        $this->arrangeMessageData($result, $dataContainer);
         if(isset($result->cursor)){
-            $cursorRes = $this->getMessageWithCursor($result, $count);
+            $cursorRes = $this->getMessageWithCursor($result, $count, $dataContainer);
             if(isset($cursorRes->error)){
                 return $cursorRes;
             }
         }
-        return array('historyData'=>$this->historyData, 'historyFileData'=>$this->historyFileData);
+        return $dataContainer;
     }
 
     /**
@@ -89,10 +88,11 @@ class JMessage {
     /**
      * 依cursor取得訊息
      * @param  json  $result  Jmessage回傳的訊息資料
-     * @param  int    $count     每次抓取的訊息筆數
+     * @param  int   $count     每次抓取的訊息筆數
+     * @param  array &$dataContainer 本次執行準備要寫入的資料陣列
      * @return json
      */
-    private function getMessageWithCursor($result, $count){
+    private function getMessageWithCursor($result, $count, &$dataContainer ){
         if(!isset($result->cursor)){
             return  $result;
         }
@@ -100,8 +100,8 @@ class JMessage {
         
         $res = $this->callJmessageAPI('GET', $url);
         
-        $this->arrangeMessageData($res);
-        $this->getMessageWithCursor($res, $count);
+        $this->arrangeMessageData($res, $dataContainer);
+        $this->getMessageWithCursor($res, $count, $dataContainer);
     }
 
     /**
@@ -116,6 +116,7 @@ class JMessage {
                          'Content-Type: application/json',
                          'Authorization: Basic '.$secretKey
                         );
+        Log::info('JMessage API Url: '.$url);
         $result = CommonUtil::callAPI($method, $url,  $header);
         $rs = json_decode($result);
         $rs->requestUrl=$url;
@@ -125,8 +126,9 @@ class JMessage {
     /**
      * 整理history,historyFile的寫入資訊
      * @param  object 從JMessage取得回來的訊息資料
+     * @param  array &$dataContainer 本次執行準備要寫入的資料陣列
      */
-    private function arrangeMessageData($result){
+    private function arrangeMessageData($result, &$dataContainer ){
         if(isset($result->error)){
             return $result;
         }
@@ -141,7 +143,7 @@ class JMessage {
             $history['target_type'] = $message->target_type;
             $history['ctime']= $message->msg_ctime;
             $history['content']= json_encode($message->msg_body);
-            $this->historyData[]=$history;
+            $dataContainer['historyData'][]=$history;
             //檔案類型寫入 qm_message_file
             if($message->msg_type == 'image'){
                 $media = $this->getMedia($message->msg_body->media_id);
@@ -154,7 +156,7 @@ class JMessage {
                 $historyFile['npath'] = $message->msg_body->media_id;
                 $historyFile['lpath'] = $file['lpath'];
                 $historyFile['spath'] = $file['spath'];
-                $this->historyFileData[]=$historyFile;
+                $dataContainer['historyFileData'][]=$historyFile;
             }
 
         }
@@ -216,6 +218,7 @@ class JMessage {
         }
         curl_close($ch);
         fclose($headerBuff);
+        Log::info('檔案下載完成: '.$result['fname'].'.'.$result['format']);
         return $result;
     }
 }

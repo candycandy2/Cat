@@ -2,12 +2,14 @@
 namespace App\Http\Controllers;
 use DateTime;
 use Config;
+use Mail;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 use App\lib\Logger;
 use App\lib\JMessage;
 use App\Repositories\ParameterRepository;
 use App\Repositories\HistoryRepository;
+use Illuminate\Support\Facades\Log;
 
 class ChatRoomController extends Controller
 {
@@ -32,7 +34,11 @@ class ChatRoomController extends Controller
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
+        
         $ACTION = 'getQGroupHistoryMessageJob';
+
+        Log::info($ACTION . ' 開始執行...');
+
         //取得上次同步的最後時間
         $lastQueryTime = $this->parameterRepository->getLastQueryTime();
         $lastEndTime = $lastQueryTime->parameter_value;
@@ -40,7 +46,7 @@ class ChatRoomController extends Controller
         if($dt === false || array_sum($dt->getLastErrors()) >0 ){
             $result = ['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
                                      'Message'=>'the parameter end_time error or blank!'];
-            Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
+            Logger::logApi('', $ACTION,response()->json(apache_response_headers()), json_encode($result));
             return response()->json($result);
         }
         //init beginTime and End Time
@@ -48,7 +54,7 @@ class ChatRoomController extends Controller
         $endTime = $lastEndTime;
         $interval = 7; //批次執行區間
         $count = 100;
-
+        date_default_timezone_set('Asia/Taipei');
         $now = date("Y-m-d H:i:s");
         if($endTime == $now){
             $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,
@@ -66,7 +72,7 @@ class ChatRoomController extends Controller
 
         try {
             do{
-                $beginTime = date('Y-m-d H:i:s', strtotime($endTime . ' +'.'1'.' second'));
+                $beginTime = date('Y-m-d H:i:s', strtotime($endTime));
                 $tmpEndTime = date('Y-m-d H:i:s', strtotime($beginTime . ' +'.$interval.' day'));
                 $diffNow = CommonUtil::dateDiff($now,$tmpEndTime);
                 //加7天後區間大於執行當下時間，以當下時間當作endTime
@@ -76,8 +82,7 @@ class ChatRoomController extends Controller
                     $endTime =  $tmpEndTime;
                 }
                 $i++;
-                echo $beginTime .'~'. $endTime;
-                $resData = $jmessage->getMessage($beginTime, $endTime, $count);
+                $resData = $jmessage->getMessageAndFile($beginTime, $endTime, $count);
                 if(isset($resData->error)){
                     $result = ['ResultCode'=> ResultCode::_025925_callAPIFailedOrErrorOccurs,
                                  'Message'=> $resData->error->code.':'.$resData->error->message,
@@ -88,31 +93,44 @@ class ChatRoomController extends Controller
                 $historyData = $resData['historyData'];
                 $historyFileData = $resData['historyFileData']; 
                 if(count($historyData) > 0 ){
+                    Log::info('開始寫入History');
                     $this->historyRepository->insertHistory($historyData);
+                    Log::info('History寫入完成');
                 }
                 if(count($historyFileData) > 0){
+                    Log::info('開始寫入HistoryFile');
                     $this->historyRepository->insertHistoryFile($historyFileData);
+                    Log::info('HistoryFile寫入完成');
                 }
-                $this->parameterRepository->updateLastQueryTime($endTime);
+                 $this->parameterRepository->updateLastQueryTime($endTime);
             } while ($endTime != $now);
 
-            \DB::connection('mysql_qmessage')->commit();
-            \DB::connection('mysql_ens')->commit();
+             \DB::connection('mysql_qmessage')->commit();
+             \DB::connection('mysql_ens')->commit();
 
             $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,'Message'=>'Sync Success!'];
             Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
             return response()->json($result);
-            
-          }catch (\Exception $e) {
+            Log::info('Sync Success!');
+           }catch (\Exception $e) {
 
              \DB::connection('mysql_qmessage')->rollBack();
              \DB::connection('mysql_ens')->rollBack();
 
             $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
-            Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
+             Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
+             Log::info('Sync Fail!' . json_encode($result));
+
+            Mail::raw($result, function ($message) {
+                $message->from('QPlay@BenQ.com', 'qplay');
+                $message->to('Cleo.W.Chan@benq.com');
+                $message->subject("[QChat] ".$ACTION." API fatal Error!");
+                $message->getSwiftMessage();
+            });
+
             return response()->json($result);
 
-         }   
+         }
     }
 
 }

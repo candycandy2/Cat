@@ -57,6 +57,11 @@
 	text-align: center;
 	padding: 0px;
 }
+
+.tpl-dropdown-list {
+    padding: 5px 0 5px;
+}
+
 /******************************************* personal leave *****************************************/
 .infoList {
 	margin-top: 5VW;
