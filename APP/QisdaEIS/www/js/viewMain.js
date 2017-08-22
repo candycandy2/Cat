@@ -4,11 +4,11 @@ var facilityList,firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
 var buBubbleSeries = [
-	/*{ x: 60, y: 201346476, facility: 'TE' },*/
+	{ x: 60, y: 2586476, facility: 'TE' },
     { x: 61, y: 6135463, facility: 'TF' },
     { x: 74, y: 4351101, facility: 'TN' },			            
     { x: 78, y: 1364644, facility: 'FL' },
-    { x: 82, y: 1361325, facility: 'FS' },
+    { x: 82, y: 5037846, facility: 'FS' },
     { x: 88, y: 7345442, facility: 'TY' }
 ];
 var csdBubbleSeries = [
@@ -147,8 +147,8 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        //data: buBubbleSeries
-        data: buBubbleData
+        data: buBubbleSeries
+        //data: buBubbleData
     }],
     exporting: {
         enabled: false
