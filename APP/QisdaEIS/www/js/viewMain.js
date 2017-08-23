@@ -464,7 +464,7 @@ $('#viewMain').pagecontainer({
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
-				if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
+				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
                     localStorage.removeItem("arSummaryData");
                     ARSummary();
                 }
@@ -516,7 +516,20 @@ $('#viewMain').pagecontainer({
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
-			
+			PullToRefresh.init({
+                mainElement: '.page-date',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
+                        localStorage.removeItem("arSummaryData");
+                        ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+					                        + (currentYear - 3) + "/01"
+					                        + "</StartYearMonth><EndYearMonth>"
+					                        + currentYear + "/" + currentMonth
+					                        + "</EndYearMonth></LayoutHeader>"; 
+                        ARSummary();
+                    }
+                }
+            });
 			
 		});
 		

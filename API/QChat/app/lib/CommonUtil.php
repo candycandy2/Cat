@@ -147,8 +147,8 @@ class CommonUtil{
   */
   public static function compressImage($imgsrc, $imgdst, $quality){
     list($width,$height,$type)=getimagesize($imgsrc);
-    $new_width = ($width>600?600:$width)*0.3;
-    $new_height =($height>600?600:$height)*0.3;
+    $new_width = $width;
+    $new_height = $height;
     switch($type){
       case 1:
         $giftype=self::checkGifCartoon($imgsrc);

@@ -101,6 +101,7 @@ class JMessage {
         $res = $this->callJmessageAPI('GET', $url);
         
         $this->arrangeMessageData($res, $dataContainer);
+        sleep(0.25);
         $this->getMessageWithCursor($res, $count, $dataContainer);
     }
 
@@ -108,18 +109,21 @@ class JMessage {
      * 呼叫JMessageAPI
      * @param  String $method Http method GET/PUT/POST/DELETE/HEAD/PATCH
      * @param  String $url    API 呼叫網址
+     * @param  Array|array $header request header
+     * @param  boolean     $data   傳遞的參數
      * @return object
      */
-    private function callJmessageAPI($method, $url){
+    public function callJmessageAPI($method, $url, $data = false){
         $secretKey = base64_encode($this->getAuth());
         $header = array(
                          'Content-Type: application/json',
                          'Authorization: Basic '.$secretKey
                         );
         Log::info('JMessage API Url: '.$url);
-        $result = CommonUtil::callAPI($method, $url,  $header);
+        $result = CommonUtil::callAPI($method, $url,  $header, $data);
         $rs = json_decode($result);
         $rs->requestUrl=$url;
+        Log::info('Result get!');
         return $rs;
     }
 
@@ -211,7 +215,7 @@ class JMessage {
                 $result['fname'] = $matches[1];
                 $result['format'] = $fileType;
                 rename($filename,$result['lpath']);
-                CommonUtil::compressImage($result['lpath'],$result['spath'],72);
+                CommonUtil::compressImage($result['lpath'],$result['spath'],10);
 
             }
           }

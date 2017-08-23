@@ -53,6 +53,10 @@
 # to avoid "Warning: com.google.gson.jpush.internal.XX: can't find referenced class"
 -dontwarn com.google.**
 
+# to avoid "Warning: cn.jpush.android.c.a: can't find superclass or interface com.huawei.hms.api.HuaweiApi"
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+
 # Enable proguard with Cordova
 # obfuscate plugin of qlogin/qpush/qsecurity
 -keep class org.apache.cordova.engine.** { *; }
