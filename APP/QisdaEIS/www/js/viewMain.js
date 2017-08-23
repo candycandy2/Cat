@@ -3,6 +3,19 @@ var viewMainTab = "bu";
 var facilityList,firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
+var userAuthority = [];
+var arSummaryData = {};
+var buByType = [];
+var csdByType = [];
+var buSimplify = [];
+var csdSimplify = [];
+var buBubbleData = [];
+var buBubbleObj = {};
+var csdBubbleData = [];
+var csdBubbleObj = {};
+var buTreemap = [];
+var csdTreemap = [];
+
 var buBubbleSeries = [
 	{ x: 60, y: 2586476, facility: 'TE' },
     { x: 61, y: 6135463, facility: 'TF' },
@@ -414,18 +427,7 @@ function getTreemapSeriesByFacility(fac) {
 		}
 	});
 }
-var userAuthority = [];
-var arSummaryData = {};
-var buByType = [];
-var csdByType = [];
-var buSimplify = [];
-var csdSimplify = [];
-var buBubbleData = [];
-var buBubbleObj = {};
-var csdBubbleData = [];
-var csdBubbleObj = {};
-var buTreemap = [];
-var csdTreemap = [];
+
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
@@ -516,20 +518,7 @@ $('#viewMain').pagecontainer({
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
-			PullToRefresh.init({
-                mainElement: '.page-date',
-                onRefresh: function() {
-                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
-                        localStorage.removeItem("arSummaryData");
-                        ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
-					                        + (currentYear - 3) + "/01"
-					                        + "</StartYearMonth><EndYearMonth>"
-					                        + currentYear + "/" + currentMonth
-					                        + "</EndYearMonth></LayoutHeader>"; 
-                        ARSummary();
-                    }
-                }
-            });
+			
 			
 		});
 		
