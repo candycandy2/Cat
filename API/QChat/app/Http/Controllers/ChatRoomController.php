@@ -34,10 +34,14 @@ class ChatRoomController extends Controller
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
+    
+        ignore_user_abort(true);//瀏覽器關掉後也持續執行
+        set_time_limit(0);//不限制time out 時間
+
         $ACTION = 'getQGroupHistoryMessageJob';
 
         Log::info($ACTION . ' 開始執行...');
-
+        
         //取得上次同步的最後時間
         $lastQueryTime = $this->parameterRepository->getLastQueryTime();
         $lastEndTime = $lastQueryTime->parameter_value;
