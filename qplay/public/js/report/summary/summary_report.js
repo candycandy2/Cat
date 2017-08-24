@@ -29,7 +29,7 @@ var iniSummaryReport = function(){
      $('.responsive_container').hide();
 
      $.ajax({
-      url:"reportDetail/getRegisterDailyReport",
+      url:"reportDetail/getRegisterCumulativeReport",
       type:"POST",
       dataType:"json",
       data:mydataStr,
@@ -37,7 +37,10 @@ var iniSummaryReport = function(){
         success: function(r){
             $.each(r,function(i,d){
                 if(!registedDeviceRes.hasOwnProperty(d.device_type)){
-                    registedDeviceRes[d.device_type] = 0;
+                    registedDeviceRes[d.device_type] = [];
+                }
+                if($.inArray(d.uuid,  registedDeviceRes[d.device_type]) == -1){
+                     registedDeviceRes[d.device_type].push(d.uuid);
                 }
                 var companySite = d.company +'_'+ d.site_code;
                 if(!registedUserRes.hasOwnProperty(companySite)){
@@ -46,7 +49,7 @@ var iniSummaryReport = function(){
                 if($.inArray(d.user_row_id, registedUserRes[companySite]) == -1){
                     registedUserRes[companySite].push(d.user_row_id);
                 }
-                registedDeviceRes[d.device_type] = registedDeviceRes[d.device_type]  + d.count;
+               
             });
            
             createSmmaryRegistedDeviceChart(sortObjectByKey(registedDeviceRes));
@@ -100,7 +103,7 @@ var createSmmaryRegistedDeviceChart = function(res){
         title = Messages.CUMULATIVE_REGISTERED + "<br>" + Messages.DEVICE_PERCENT + "<br>( "+ Messages.BY_DEVICE +" ) ",
         seriesName = "Reigisted Device",
         $sumContainer = $('#registed_device_count');
-    _createSummaryDeviceChart(res, chart, title, seriesName, $sumContainer);
+    _createSummaryByLength(res, chart, title, seriesName, $sumContainer);
 };
 
 var createSmmaryRegistedUserChart = function(res){
@@ -108,7 +111,7 @@ var createSmmaryRegistedUserChart = function(res){
         title = Messages.CUMULATIVE_REGISTERED + "<br>" + Messages.USER_PERCENT + "<br>( " + Messages.BY_COMPANY_SITE + " ) ",
         seriesName = "Reigisted User",
         $sumContainer = $('#registed_user_count');
-    _createSummaryUserChart(res, chart, title, seriesName, $sumContainer);
+    _createSummaryByLength(res, chart, title, seriesName, $sumContainer);
 };
 
 var createSmmaryActiveDeviceChart = function(res){
@@ -116,17 +119,17 @@ var createSmmaryActiveDeviceChart = function(res){
         title = Messages.TOKEN_VALID + "<br>" + Messages.DEVICE_PERCENT + "<br>( " + Messages.BY_DEVICE +" ) ",
         seriesName = "Active Device",
         $sumContainer = $('#active_device_count');
-    _createSummaryDeviceChart(res, chart, title, seriesName, $sumContainer);
+    _createSummaryByCount(res, chart, title, seriesName, $sumContainer);
 };
 var createSmmaryActiveUserChart = function(res){
     var chart =  $('#container_semi_circle_chart_summary_report_4').highcharts(),
         title = Messages.TOKEN_VALID + "<br>" + Messages.USER_PERCENT + "<br>( " + Messages.BY_COMPANY_SITE + " ) ",
         seriesName = "Active User",
         $sumContainer = $('#active_user_count');
-    _createSummaryUserChart(res, chart, title, seriesName, $sumContainer);
+    _createSummaryByLength(res, chart, title, seriesName, $sumContainer);
 };
 
-var _createSummaryDeviceChart = function(res, chart, title, seriesName, $sumContainer){
+var _createSummaryByCount = function(res, chart, title, seriesName, $sumContainer){
     var data = [];
     var sum = 0;
     $.each(res, function(i,d){
@@ -139,7 +142,7 @@ var _createSummaryDeviceChart = function(res, chart, title, seriesName, $sumCont
     $sumContainer.text(sum);
 };
 
-var _createSummaryUserChart = function(res, chart, title, seriesName, $sumContainer){
+var _createSummaryByLength = function(res, chart, title, seriesName, $sumContainer){
     var data = [];
     var sum = 0;
     $.each(res, function(i,d){
