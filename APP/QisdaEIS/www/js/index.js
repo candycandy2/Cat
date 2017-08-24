@@ -137,11 +137,15 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
+    		for(var i in buOverdueDetail){
+    			buOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    		}
     		
     		if(buColumnCheckAll == false){
     			loadingMask("show");
     			setAllColumnData('bu');
     			loadingMask("hide");
+    			buColumnCheckAll = true;
     		}
     		
 
@@ -150,6 +154,9 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_down.png');
     		$('.bu-single-list').hide();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
+    		for(var i in buOverdueDetail){
+    			buOverdueDetail[i]["Header"]["SPREAD"] = 0;
+    		}
     	}
 
     });
@@ -162,11 +169,15 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
+    		for(var i in csdOverdueDetail){
+    			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    		}
     		
     		if(csdColumnCheckAll == false){
     			loadingMask("show");
     			setAllColumnData('csd');
     			loadingMask("hide");
+    			csdColumnCheckAll = true;
     		}
     		
 
@@ -175,6 +186,9 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
     		$('.csd-single-list').hide();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
+    		for(var i in csdOverdueDetail){
+    			csdOverdueDetail[i]["Header"]["SPREAD"] = 0;
+    		}
     	}
 
     });
@@ -382,6 +396,35 @@ $(document).one('pagebeforeshow', function(){
 				
 		}
 	});
+	
+	//监听屏幕滚动事件
+	$(window).on('scroll', function(){
+	   	var visibleTop = document.body.scrollTop;
+	   	var visibleBottom = document.body.clientHeight + visibleTop;  	
+	   	console.log("top:"+visibleTop+" ,bottom:"+visibleBottom);
+		
+	   	for(var i in buOverdueDetail){
+	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   			var top1 = $('#buShowList'+i).offset().top;
+		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
+		   		
+	   			if(top1 > visibleTop && bottom1 < visibleBottom){
+	   				console.log(i);
+	   				
+	   				
+	   				
+	   			}
+	   			
+	   			
+	   		}
+	   		
+	   	}
+	   	
+	   	
+	   	
+	   	
+	});
+	
 });
 
 
@@ -601,8 +644,20 @@ function changePageInitViewDetail(){
     $(".Facility #ALL").addClass('hover');
 }
 
+function isVisible($node){
+    var winH = $(window).height();
+    var scrollTop = $(window).scrollTop();
+    var offSetTop = $node.offSet().top;
+    
+    if (offSetTop < winH + scrollTop) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-//横竖屏切换
+
+//监听横竖屏切换事件
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
 	
     if($(".ui-page-active").jqmData("panel") === "open") {
@@ -625,9 +680,11 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	getLandscapeColumn(false);
+        	/*getLandscapeColumn(false);
 			zoomInChartByColumn();
-        	$('#viewDetail-hc-column-landscape').show();
+        	$('#viewDetail-hc-column-landscape').show();*/
+        	
+        	//判断可视区域内是否有treemap
         	
         }
 
