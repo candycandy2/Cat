@@ -101,7 +101,6 @@ class JMessage {
         $res = $this->callJmessageAPI('GET', $url);
         
         $this->arrangeMessageData($res, $dataContainer);
-        sleep(0.25);
         $this->getMessageWithCursor($res, $count, $dataContainer);
     }
 

@@ -11,7 +11,7 @@ var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpi
 var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,creditExpiredSoonCallBackData,araUserAuthorityCallBackData;
 var treemapState = false;
 var switchState = false;
-var thisMonthExpiredTime = 1;
+var expiredTime = 1;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
 //var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
@@ -82,7 +82,7 @@ $(document).one('pagebeforeshow', function(){
     	$('#overview-hc-bubble-landscape').show();
     });
 
-    //open or close credit memo
+    //credit memo included
     $('#memoBtn').on('click', function(){
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
@@ -94,9 +94,16 @@ $(document).one('pagebeforeshow', function(){
 			});
 			
     		switchState = true;
-			getOverdueDetailData(facility);
-			clickSingleListBtn();
-			setAllAreaData();
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
+			setTimeout(function(){
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
+			}, 300);
+			
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
@@ -108,9 +115,16 @@ $(document).one('pagebeforeshow', function(){
 			});
 			
 			switchState = false;
-			getOverdueDetailData(facility);
-			clickSingleListBtn();
-			setAllAreaData();
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
+			setTimeout(function(){
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
+			}, 300);
+			
     	}
 
     });
@@ -168,27 +182,48 @@ $(document).one('pagebeforeshow', function(){
 	//sort
 	$('#buOverdueSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
-			
-			
 			
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			buOverdueDetail.sort(compareLargeOverdue("Header" ,"CUSTOMER"));
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
-			
-			
-			
 			
 		}
 	});
 	
 	$('#buOverdueSortByTotal').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			if(switchState == false){
+				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_INV"));
+			}
+			else{
+				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
+			}
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
 			
 			
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			if(switchState == false){
+				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+			}
+			else{
+				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
+			}
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
 			
 				
@@ -197,10 +232,18 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#csdOverdueSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			setCsdOverdueDetailData(facility);	
+			setCsdAreaData();
+			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			csdOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
+			setCsdOverdueDetailData(facility);	
+			setCsdAreaData();
+			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -208,10 +251,28 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#csdOverdueSortByTotal').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			if(switchState == false){
+				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_INV"));
+			}
+			else{
+				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
+			}
+			setCsdOverdueDetailData(facility);	
+			setCsdAreaData();
+			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			if(switchState == false){
+				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+			}
+			else{
+				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
+			}
+			setCsdOverdueDetailData(facility);	
+			setCsdAreaData();
+			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -219,10 +280,14 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#buOverdueSoonSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			buOutstand.sort(compareSmallOverdueSoon("CUSTOMER"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			buOutstand.sort(compareLargeOverdueSoon("CUSTOMER"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -230,10 +295,14 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#buOverdueSoonSortByTotal').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			buOutstand.sort(compareSmallOverdueSoon("DUE_SOON_INV"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -241,10 +310,14 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#csdOverdueSoonSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			csdOutstand.sort(compareSmallOverdueSoon("CUSTOMER"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			csdOutstand.sort(compareLargeOverdueSoon("CUSTOMER"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -252,10 +325,14 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#csdOverdueSoonSortByTotal').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			csdOutstand.sort(compareSmallOverdueSoon("DUE_SOON_INV"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -263,10 +340,14 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#expiredSoonSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			expiredSoon.sort(compareSmallOverdueSoon("CUSTOMER"));
+			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			expiredSoon.sort(compareLargeOverdueSoon("CUSTOMER"));
+			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -274,10 +355,14 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#expiredSoonSortByDay').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
+			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			expiredSoon.sort(compareLargeOverdueSoon("EXPIRED_DATE"));
+			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
@@ -285,15 +370,92 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#expiredSoonSortByLimit').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
+			expiredSoon.sort(compareSmallOverdueSoon("CREDIT_LIIMIT"));
+			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
+			expiredSoon.sort(compareLargeOverdueSoon("CREDIT_LIIMIT"));
+			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
 	});
 });
+
+
+var compareSmallOverdue = function (prop1, prop2) {
+    return function (obj1, obj2) {
+        var val1 = obj1[prop1][prop2];
+        var val2 = obj2[prop1][prop2];
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return 0;
+        }            
+    } 
+}
+
+var compareLargeOverdue = function (prop1, prop2) {
+    return function (obj1, obj2) {
+        var val1 = obj1[prop1][prop2];
+        var val2 = obj2[prop1][prop2];
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+        if (val1 < val2) {
+            return 1;
+        } else if (val1 > val2) {
+            return -1;
+        } else {
+            return 0;
+        }            
+    } 
+}
+
+var compareSmallOverdueSoon = function (prop) {
+    return function (obj1, obj2) {
+        var val1 = obj1[prop];
+        var val2 = obj2[prop];
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return 0;
+        }            
+    } 
+}
+
+var compareLargeOverdueSoon = function (prop) {
+    return function (obj1, obj2) {
+        var val1 = obj1[prop];
+        var val2 = obj2[prop];
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+        if (val1 < val2) {
+            return 1;
+        } else if (val1 > val2) {
+            return -1;
+        } else {
+            return 0;
+        }            
+    } 
+}
 
 
 //[Android]Handle the back button

@@ -5,11 +5,11 @@ var iniRegisterCumulativeReport = function(appKey){
     var mydata = {timeOffset:timeOffset},
         mydataStr = $.toJSON(mydata),
         res={};
-    if(storage("RegisterCumulative")){
-        $('.loader').hide();
-        res =JSON.parse(storage("RegisterCumulative"));
-        createChartCumulatvieRegister(res);
-    }else{
+    // if(storage("RegisterCumulative")){
+    //     $('.loader').hide();
+    //     res =JSON.parse(storage("RegisterCumulative"));
+    //     createChartCumulatvieRegister(res);
+    // }else{
         $.ajax({
               url:"reportDetail/getRegisterCumulativeReport",
               type:"POST",
@@ -79,7 +79,7 @@ var iniRegisterCumulativeReport = function(appKey){
                         }
                         tmpDate = i;
                     });
-                    storage("RegisterCumulative",JSON.stringify(res));
+                    //storage("RegisterCumulative",JSON.stringify(res));
                     createChartCumulatvieRegister(res);
                 },
                 error: function (e) {
@@ -88,7 +88,7 @@ var iniRegisterCumulativeReport = function(appKey){
             }).done(function() {
                 $('.loader').hide();
             });
-    }
+    //}
 
 };
 

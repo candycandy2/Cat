@@ -3,6 +3,19 @@ var viewMainTab = "bu";
 var facilityList,firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
+var userAuthority = [];
+var arSummaryData = {};
+var buByType = [];
+var csdByType = [];
+var buSimplify = [];
+var csdSimplify = [];
+var buBubbleData = [];
+var buBubbleObj = {};
+var csdBubbleData = [];
+var csdBubbleObj = {};
+var buTreemap = [];
+var csdTreemap = [];
+
 var buBubbleSeries = [
 	{ x: 60, y: 2586476, facility: 'TE' },
     { x: 61, y: 6135463, facility: 'TF' },
@@ -414,18 +427,7 @@ function getTreemapSeriesByFacility(fac) {
 		}
 	});
 }
-var userAuthority = [];
-var arSummaryData = {};
-var buByType = [];
-var csdByType = [];
-var buSimplify = [];
-var csdSimplify = [];
-var buBubbleData = [];
-var buBubbleObj = {};
-var csdBubbleData = [];
-var csdBubbleObj = {};
-var buTreemap = [];
-var csdTreemap = [];
+
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
@@ -464,7 +466,7 @@ $('#viewMain').pagecontainer({
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
-				if (checkDataExpired(lastTime, thisMonthExpiredTime, 'hh')) {
+				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
                     localStorage.removeItem("arSummaryData");
                     ARSummary();
                 }

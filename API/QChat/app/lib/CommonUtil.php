@@ -1,5 +1,6 @@
 <?php
 namespace App\lib;
+use Illuminate\Support\Facades\Log;
 
 class CommonUtil{
     
@@ -28,7 +29,7 @@ class CommonUtil{
     {
         $curl = curl_init();
         $url =  preg_replace('/\s+/', '%20', $url);
-
+        $api_max_exe_time = 5000; 
         switch ($method)
         {
             case "POST":
@@ -50,19 +51,25 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
         //add for Develop
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
         curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
         curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
 
+        $retry = 1;
+        $result = curl_exec($curl);
+        while(curl_errno($curl) == 28 && $retry <= 3){
+            Log::info('retry times : ' . $retry);
+            $result = curl_exec($curl);
+            $retry++;
+        }
         if( ! $result = curl_exec($curl)) 
         { 
             trigger_error(curl_error($curl)); 
         }
-        curl_close($curl);
 
         return $result;
     }
