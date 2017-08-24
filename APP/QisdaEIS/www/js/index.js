@@ -94,13 +94,16 @@ $(document).one('pagebeforeshow', function(){
 			});
 			
     		switchState = true;
-			//getOverdueDetailData(facility);
-			setBuOverdueDetailData();
+			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
-			setCsdOverdueDetailData();	
-			setCsdAreaData();
-			csdSingleListBtn();
+			setTimeout(function(){
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
+			}, 300);
+			
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
@@ -112,13 +115,16 @@ $(document).one('pagebeforeshow', function(){
 			});
 			
 			switchState = false;
-			//getOverdueDetailData(facility);
-			setBuOverdueDetailData();
+			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
-			setCsdOverdueDetailData();	
-			setCsdAreaData();
-			csdSingleListBtn();
+			setTimeout(function(){
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
+			}, 300);
+			
     	}
 
     });
@@ -177,7 +183,7 @@ $(document).one('pagebeforeshow', function(){
 	$('#buOverdueSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
 			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-			setBuOverdueDetailData();
+			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
@@ -185,7 +191,7 @@ $(document).one('pagebeforeshow', function(){
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
 			buOverdueDetail.sort(compareLargeOverdue("Header" ,"CUSTOMER"));
-			setBuOverdueDetailData();
+			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
@@ -201,7 +207,7 @@ $(document).one('pagebeforeshow', function(){
 			else{
 				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
 			}
-			setBuOverdueDetailData();
+			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
@@ -215,7 +221,7 @@ $(document).one('pagebeforeshow', function(){
 			else{
 				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
 			}
-			setBuOverdueDetailData();
+			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
@@ -227,7 +233,7 @@ $(document).one('pagebeforeshow', function(){
 	$('#csdOverdueSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
 			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-			setCsdOverdueDetailData();	
+			setCsdOverdueDetailData(facility);	
 			setCsdAreaData();
 			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
@@ -235,7 +241,7 @@ $(document).one('pagebeforeshow', function(){
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
 			csdOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
-			setCsdOverdueDetailData();	
+			setCsdOverdueDetailData(facility);	
 			setCsdAreaData();
 			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
@@ -251,7 +257,7 @@ $(document).one('pagebeforeshow', function(){
 			else{
 				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
 			}
-			setCsdOverdueDetailData();	
+			setCsdOverdueDetailData(facility);	
 			setCsdAreaData();
 			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_down.png');
@@ -264,7 +270,7 @@ $(document).one('pagebeforeshow', function(){
 			else{
 				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
 			}
-			setCsdOverdueDetailData();	
+			setCsdOverdueDetailData(facility);	
 			setCsdAreaData();
 			csdSingleListBtn();
 			$(this).attr('src', 'img/priority_up.png');
