@@ -275,6 +275,7 @@ function buSingleListBtn(){
 			self.attr('src', 'img/list_up.png');
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
+			buOverdueDetail[index]["Header"]["SPREAD"] = 1;
 			
 			if(buColumnCheckAll == false){
 				setSingleColumnData(index, 'bu');
@@ -284,6 +285,7 @@ function buSingleListBtn(){
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
+			buOverdueDetail[index]["Header"]["SPREAD"] = 0;
 		}
 		
 		if($('.buSingleListBtn[src="img/list_down.png"]').length === buAreaSeriesINV.length){
@@ -306,6 +308,7 @@ function csdSingleListBtn(){
 			self.attr('src', 'img/list_up.png');
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
+			csdOverdueDetail[index]["Header"]["SPREAD"] = 1;
 			
 			if(csdColumnCheckAll == false){
 				setSingleColumnData(index, 'csd');
@@ -315,6 +318,7 @@ function csdSingleListBtn(){
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
+			csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
 		}
 
 		if($('.csdSingleListBtn[src="img/list_down.png"]').length === csdAreaSeriesINV.length){
@@ -338,6 +342,8 @@ function getOverdueDetailData(){
 	}
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
+		//添加属性spread,及展开详情,默认为0,展开为1
+		item["Header"]["SPREAD"] = 0;
 		if(item["Header"]["TYPE"] == "BU"){
 			buOverdueDetail.push(item);
 			buCustomerArr.push(item["Header"]["CUSTOMER"]);
@@ -407,7 +413,7 @@ function setBuOverdueDetailData(fac){
 			
 			/**************** append html ****************/
 			if(switchState == false){
-				var overdueDetailContent = '<li class="bu-data-list">' +
+				var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
 												'<ul>' +
 													'<li>' +
 														'<div>' +
@@ -427,7 +433,7 @@ function setBuOverdueDetailData(fac){
 													'</li>' +
 												'</ul>' +
 											'</li>' +
-											'<li class="bu-single-list">' +
+											'<li class="bu-single-list" id="buHideList' + i + '">' +
 												'<div>' +
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
@@ -874,7 +880,7 @@ function setCsdOverdueDetailData(fac){
 		
 		if(otherCsdOverdueDetail.length > 0){
 			$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
-			$.each(csdOverdueDetail, function(i, item) {
+			$.each(otherCsdOverdueDetail, function(i, item) {
 				/********** switchOff data **********/
 				//table
 				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -1412,7 +1418,6 @@ function setAllColumnData(type){
 				buColumn.redraw(false);
 			}
 		}
-		buColumnCheckAll = true;
 	}
 	else{
 		$('.csdColumnHc').html("");
@@ -1456,7 +1461,6 @@ function setAllColumnData(type){
 				csdColumn.redraw(false);
 			}
 		}
-		csdColumnCheckAll = true;
 	}
 }
 
