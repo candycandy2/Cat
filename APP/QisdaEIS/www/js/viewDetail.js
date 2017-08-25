@@ -243,11 +243,19 @@ function getLandscapeColumn(isInit) {
 		}
 	}
 	else {
+		if(buArrIndex !== undefined) {
+			chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+			chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+			chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+			chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+		}
+		/*else if(csdArrIndex != undefined){
+			chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+			chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+			chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+			chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+		}*/
 		
-		chartColumnLandscape.series[0].setData(buColumnSeries[0][0], false, false, false);
-		chartColumnLandscape.series[1].setData(buColumnSeries[0][1], false, false, false);
-		chartColumnLandscape.series[2].setData(buColumnSeries[0][2], false, false, false);
-		chartColumnLandscape.series[3].setData(buColumnSeries[0][3], false, false, false);
 		
 		chartColumnLandscape.update({ 
 			chart: {
@@ -286,6 +294,11 @@ function buSingleListBtn(){
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 			buOverdueDetail[index]["Header"]["SPREAD"] = 0;
+			
+			if(index == buArrIndex){
+				buArrIndex = undefined;
+			}
+			
 		}
 		
 		if($('.buSingleListBtn[src="img/list_down.png"]').length === buAreaSeriesINV.length){
@@ -319,6 +332,11 @@ function csdSingleListBtn(){
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
+			
+			if(index == csdArrIndex){
+				csdArrIndex = undefined;
+			}
+			
 		}
 
 		if($('.csdSingleListBtn[src="img/list_down.png"]').length === csdAreaSeriesINV.length){
@@ -466,7 +484,7 @@ function setBuOverdueDetailData(fac){
 				
 			}
 			else{
-				var overdueDetailContent = '<li class="bu-data-list">' +
+				var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
 												'<ul>' +
 													'<li>' +
 														'<div>' +
@@ -486,7 +504,7 @@ function setBuOverdueDetailData(fac){
 													'</li>' +
 												'</ul>' +
 											'</li>' +
-											'<li class="bu-single-list">' +
+											'<li class="bu-single-list" id="buHideList' + i + '">' +
 												'<div>' +
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
@@ -581,7 +599,7 @@ function setBuOverdueDetailData(fac){
 				
 				/**************** append html ****************/
 				if(switchState == false){
-					var overdueDetailContent = '<li class="bu-data-list">' +
+					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
 													'<ul>' +
 														'<li>' +
 															'<div>' +
@@ -601,7 +619,7 @@ function setBuOverdueDetailData(fac){
 														'</li>' +
 													'</ul>' +
 												'</li>' +
-												'<li class="bu-single-list">' +
+												'<li class="bu-single-list" id="buHideList' + i + '">' +
 													'<div>' +
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
@@ -634,7 +652,7 @@ function setBuOverdueDetailData(fac){
 					
 				}
 				else{
-					var overdueDetailContent = '<li class="bu-data-list">' +
+					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
 													'<ul>' +
 														'<li>' +
 															'<div>' +
@@ -654,7 +672,7 @@ function setBuOverdueDetailData(fac){
 														'</li>' +
 													'</ul>' +
 												'</li>' +
-												'<li class="bu-single-list">' +
+												'<li class="bu-single-list" id="buHideList' + i + '">' +
 													'<div>' +
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
@@ -757,7 +775,7 @@ function setCsdOverdueDetailData(fac){
 			
 			/**************** append html ****************/
 			if(switchState == false){
-				var overdueDetailContent = '<li class="csd-data-list">' +
+				var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
 												'<ul>' +
 													'<li>' +
 														'<div>' +
@@ -777,7 +795,7 @@ function setCsdOverdueDetailData(fac){
 													'</li>' +
 												'</ul>' +
 											'</li>' +
-											'<li class="csd-single-list">' +
+											'<li class="csd-single-list" id="csdHideList' + i + '">' +
 												'<div>' +
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
@@ -810,7 +828,7 @@ function setCsdOverdueDetailData(fac){
 				
 			}
 			else{
-				var overdueDetailContent = '<li class="csd-data-list">' +
+				var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
 												'<ul>' +
 													'<li>' +
 														'<div>' +
@@ -830,7 +848,7 @@ function setCsdOverdueDetailData(fac){
 													'</li>' +
 												'</ul>' +
 											'</li>' +
-											'<li class="csd-single-list">' +
+											'<li class="csd-single-list" id="csdHideList' + i + '">' +
 												'<div>' +
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
@@ -925,7 +943,7 @@ function setCsdOverdueDetailData(fac){
 				
 				/**************** append html ****************/
 				if(switchState == false){
-					var overdueDetailContent = '<li class="csd-data-list">' +
+					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
 													'<ul>' +
 														'<li>' +
 															'<div>' +
@@ -945,7 +963,7 @@ function setCsdOverdueDetailData(fac){
 														'</li>' +
 													'</ul>' +
 												'</li>' +
-												'<li class="csd-single-list">' +
+												'<li class="csd-single-list" id="csdHideList' + i + '">' +
 													'<div>' +
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
@@ -978,7 +996,7 @@ function setCsdOverdueDetailData(fac){
 					
 				}
 				else{
-					var overdueDetailContent = '<li class="csd-data-list">' +
+					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
 													'<ul>' +
 														'<li>' +
 															'<div>' +
@@ -998,7 +1016,7 @@ function setCsdOverdueDetailData(fac){
 														'</li>' +
 													'</ul>' +
 												'</li>' +
-												'<li class="csd-single-list">' +
+												'<li class="csd-single-list" id="csdHideList' + i + '">' +
 													'<div>' +
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
@@ -1850,7 +1868,7 @@ $('#viewDetail').pagecontainer({
 				OutstandDetail();
 				CreditExpiredSoon();
 				//页面初始化
-				changePageInitViewDetail();
+				//changePageInitViewDetail();
 				//横屏图表
 				getLandscapeColumn(true);
 				//横屏大小
@@ -1925,7 +1943,6 @@ $('#viewDetail').pagecontainer({
 			setExpiredSoonData();
 			expiredSoonInit = false;
 			
-			//getLandscapeColumn(true);
 			
         });
 		

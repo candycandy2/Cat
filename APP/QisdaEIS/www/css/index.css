@@ -821,16 +821,15 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	}
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
-		/*display: inline;*/
 	}
-	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
+	/*#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
 	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu,
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
-		display: none !important;
+		display: none;
 	}
 	#viewDetail #viewDetail-hc-column-landscape {
 		display: block;
-	}
+	}*/
 	#viewDetail{
 		padding-top: 0 !important;
 	}
