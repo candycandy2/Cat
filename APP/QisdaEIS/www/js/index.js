@@ -12,6 +12,7 @@ var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,c
 var treemapState = false;
 var switchState = false;
 var expiredTime = 1;
+var buArrIndex,csdArrIndex;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
 //var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
@@ -137,8 +138,10 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
+    		
     		for(var i in buOverdueDetail){
     			buOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    			
     		}
     		
     		if(buColumnCheckAll == false){
@@ -157,6 +160,7 @@ $(document).one('pagebeforeshow', function(){
     		for(var i in buOverdueDetail){
     			buOverdueDetail[i]["Header"]["SPREAD"] = 0;
     		}
+    		
     	}
 
     });
@@ -169,8 +173,10 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
+    		
     		for(var i in csdOverdueDetail){
     			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    			
     		}
     		
     		if(csdColumnCheckAll == false){
@@ -189,6 +195,7 @@ $(document).one('pagebeforeshow', function(){
     		for(var i in csdOverdueDetail){
     			csdOverdueDetail[i]["Header"]["SPREAD"] = 0;
     		}
+    		
     	}
 
     });
@@ -400,25 +407,64 @@ $(document).one('pagebeforeshow', function(){
 	//监听屏幕滚动事件
 	$(window).on('scroll', function(){
 	   	var visibleTop = document.body.scrollTop;
+	   	var visibleHeight = document.body.clientHeight;
 	   	var visibleBottom = document.body.clientHeight + visibleTop;  	
-	   	console.log("top:"+visibleTop+" ,bottom:"+visibleBottom);
+	   	//console.log("top:"+visibleTop+" ,bottom:"+visibleBottom);
 		
+		//竖转横之前，获取横屏显示数据的index
 	   	for(var i in buOverdueDetail){
 	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
 	   			var top1 = $('#buShowList'+i).offset().top;
 		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
 		   		
-	   			if(top1 > visibleTop && bottom1 < visibleBottom){
-	   				console.log(i);
-	   				
-	   				
-	   				
+		   		//完全在可视区域内
+	   			if(top1 >= visibleTop && bottom1 <= visibleBottom){
+	   				buArrIndex = i;
+	   				return false;		
 	   			}
-	   			
-	   			
+	   			//上部在可视区域内
+	   			else if(top1 < visibleTop && bottom1 > visibleTop){
+	   				buArrIndex = i;
+	   				return false;	
+	   			}
+	   			//下部在可视区域
+	   			else if(top1 < visibleBottom && bottom1 > visibleBottom){
+	   				buArrIndex = i;
+	   				return false;
+	   			}
+	   			else{
+	   				buArrIndex = undefined;
+	   				return false;
+	   			}
 	   		}
-	   		
 	   	}
+	   	
+	   	for(var i in csdOverdueDetail){
+	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   			var top1 = $('#csdShowList'+i).offset().top;
+		   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
+		   		
+		   		//完全在可视区域内
+	   			if(top1 >= visibleTop && bottom1 <= visibleBottom){
+	   				csdArrIndex = i;
+	   				return false;		
+	   			}
+	   			//上部在可视区域内
+	   			else if(top1 < visibleTop && bottom1 > visibleTop){
+	   				csdArrIndex = i;
+	   				return false;	
+	   			}
+	   			//下部在可视区域
+	   			else if(top1 < visibleBottom && bottom1 > visibleBottom){
+	   				csdArrIndex = i;
+	   				return false;
+	   			}	
+	   		}
+	   	}
+
+	   
+
+	   	
 	   	
 	   	
 	   	
@@ -680,13 +726,15 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	/*getLandscapeColumn(false);
-			zoomInChartByColumn();
-        	$('#viewDetail-hc-column-landscape').show();*/
-        	
-        	//判断可视区域内是否有treemap
+        	console.log(buArrIndex);
+    		if(buArrIndex !== undefined){       			
+        		getLandscapeColumn(false);	
+        	}
+    		zoomInChartByColumn();
+    		$('#viewDetail-hc-column-landscape').show();
+	        	
+        
         	
         }
-
     }
 }, false);
