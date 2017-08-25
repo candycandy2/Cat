@@ -118,19 +118,19 @@ gulp.task('install', shell.task([
 gulp.task('jenkinsinstall', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
-  'cordova plugin add cordova-plugin-device@1.1.4',
+  'cordova plugin add ../../plugins/cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
   //'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
-  'cordova plugin add cordova-plugin-android-permissions',
-  'cordova plugin add cordova-plugin-customurlscheme@4.2.0 --variable URL_SCHEME=appens' + process.env.appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
+  'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appens' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist@1.3.1',
+  'cordova plugin add ../../plugins/cordova-plugin-whitelist',
   'cordova plugin add ../../plugins/cordova-plugin-proguard',
-  'cordova plugin add cordova-plugin-inappbrowser',
+  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions@1.1.1 --save',
-  'cordova plugin add jmessage-phonegap-plugin@2.4.9 --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
+  'cordova plugin add ../../plugins/jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
   'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
