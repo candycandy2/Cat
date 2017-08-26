@@ -12,7 +12,8 @@ var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,c
 var treemapState = false;
 var switchState = false;
 var expiredTime = 1;
-var buArrIndex,csdArrIndex;
+var buArrIndex = null;
+var csdArrIndex = null;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
 //var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
@@ -127,6 +128,11 @@ $(document).one('pagebeforeshow', function(){
 			}, 300);
 			
     	}
+    	
+    	changeColorByNum();
+    	
+    	buColumnCheckAll = false;
+    	csdColumnCheckAll = false;
 
     });
 
@@ -406,6 +412,7 @@ $(document).one('pagebeforeshow', function(){
 	
 	//监听屏幕滚动事件
 	$(window).on('scroll', function(){
+		//页面可视区域的范围
 	   	var visibleTop = document.body.scrollTop;
 	   	var visibleHeight = document.body.clientHeight;
 	   	var visibleBottom = document.body.clientHeight + visibleTop;  	
@@ -413,7 +420,7 @@ $(document).one('pagebeforeshow', function(){
 		
 		//竖转横之前，获取横屏显示数据的index
 	   	for(var i in buOverdueDetail){
-	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1 && buOverdueDetail.length > 0){	   	
 	   			var top1 = $('#buShowList'+i).offset().top;
 		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
 		   		
@@ -432,15 +439,15 @@ $(document).one('pagebeforeshow', function(){
 	   				buArrIndex = i;
 	   				return false;
 	   			}
-	   			else{
-	   				buArrIndex = undefined;
-	   				return false;
+	   			else if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				buArrIndex = null;
 	   			}
 	   		}
 	   	}
 	   	
+	   	
 	   	for(var i in csdOverdueDetail){
-	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1 && csdOverdueDetail.length > 0){	   	
 	   			var top1 = $('#csdShowList'+i).offset().top;
 		   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
 		   		
@@ -458,14 +465,35 @@ $(document).one('pagebeforeshow', function(){
 	   			else if(top1 < visibleBottom && bottom1 > visibleBottom){
 	   				csdArrIndex = i;
 	   				return false;
-	   			}	
+	   			}
+	   			else if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				csdArrIndex = null;
+	   			}
 	   		}
 	   	}
-
-	   
-
+		
+		
+	   	var count = 0;
+	   	var pageStart = 0;
+	   	var pageEnd = 0;
+	   	var showNum = 12;
+		
+	   	/*var top12 = $('#buShowList0').offset().top;
+	   	var height12 = $('#buShowList0').height();
+		var bottom12 = $('#buShowList0').offset().top + $('#buShowList0').height();
+		
+		var top13 = $('#buShowList1').offset().top;
+		var height13 = $('#buShowList1').height();
+		var bottom13 = $('#buShowList1').offset().top + $('#buShowList1').height();
 	   	
+	   	console.log(top12+", "+bottom12+", "+height12);
+	   	console.log(top13+", "+bottom13+", "+height13);*/
 	   	
+	   	for(var i in buOverdueDetail){
+	   		//var top0 = $('#buShowList'+showNum).offset().top;
+	   		
+	   		
+	   	}
 	   	
 	   	
 	   	
@@ -639,6 +667,21 @@ function formatNumber(n) {
     return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }
 
+function changeColorByNum(){
+	var fontArr = document.getElementsByClassName("font-localString");
+	for(var i in fontArr){
+		var num = parseFloat(fontArr[i].innerText);
+		if(num < 0){
+			$(fontArr[i]).addClass("font-color-red");
+		}
+		else{
+			$(fontArr[i]).addClass("font-color-black");
+		}
+		
+	}
+	
+}
+
 
 function changePageByPanel(pageId) {
 	window.firstClick = true;
@@ -668,27 +711,7 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
-function changePageInitViewDetail(){
-	$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
-    $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
-    $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
-    
-	$('#memoBtn').attr('src', 'img/switch_g.png');
-	$('#buAllListBtn').attr('src', 'img/all_list_down.png');
-    $('.buSingleListBtn').attr('src', 'img/list_down.png');
-    $('#csdAllListBtn').attr('src', 'img/all_list_down.png');
-    $('.csdSingleListBtn').attr('src', 'img/list_down.png');
-    $('.bu-single-list').hide();
-    $('.csd-single-list').hide();
-    
-    $('#overdueSoon').hide();
-	$('#expiredSoon').hide();
-	$('#overdue').show();
-	
-    $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
-    $(".Facility #ALL").removeClass('disableHover');
-    $(".Facility #ALL").addClass('hover');
-}
+
 
 function isVisible($node){
     var winH = $(window).height();
@@ -726,8 +749,8 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	console.log(buArrIndex);
-    		if(buArrIndex !== undefined){       			
+        	console.log(csdArrIndex);
+    		if(buArrIndex !== null){       			
         		getLandscapeColumn(false);	
         	}
     		zoomInChartByColumn();

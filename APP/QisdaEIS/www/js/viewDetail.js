@@ -195,17 +195,17 @@ var columnOption = {
 	    borderWidth: 1,
 	    borderColor: 'gray',
 	    backgroundColor:　'#ffffff',
-	    headerFormat: '<table class="fontTooltip"><tr><td>{point.x}</td></tr>' +
+	    /*headerFormat: '<table class="fontTooltip"><tr><td>{point.x}</td></tr>' +
 	     '<tr><td class="customerName">' + companyName[0] + '</td></tr>',
         pointFormat: '<tr><td>{series.name}:USD${point.y}</td></tr>',
-        footerFormat: '</table>',
-	   	/*formatter: function () {
+        footerFormat: '</table>',*/
+	   	formatter: function () {
 	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
 	        $.each(this.points, function () {
-	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
+	           s += '<br/> ' + this.series.name + ':USD$' + formatNumber(this.y.toFixed(2));
 	        });
 	        return s;
-	    },*/
+	    },
 	    followPointer: false,
         followTouchMove: false,
 	    shared: true
@@ -243,7 +243,7 @@ function getLandscapeColumn(isInit) {
 		}
 	}
 	else {
-		if(buArrIndex !== undefined) {
+		if(buArrIndex !== null) {
 			chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
 			chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
 			chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
@@ -296,7 +296,7 @@ function buSingleListBtn(){
 			buOverdueDetail[index]["Header"]["SPREAD"] = 0;
 			
 			if(index == buArrIndex){
-				buArrIndex = undefined;
+				buArrIndex = null;
 			}
 			
 		}
@@ -334,7 +334,7 @@ function csdSingleListBtn(){
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
 			
 			if(index == csdArrIndex){
-				csdArrIndex = undefined;
+				csdArrIndex = null;
 			}
 			
 		}
@@ -1292,6 +1292,39 @@ function setBuAreaData() {
 			buArea.redraw(false);
 		}
 	}
+	
+	/*if(switchState == false){
+		if(buAreaSeriesINV.length <= 12){
+			for(var i = 0; i < buAreaSeriesINV.length; i ++){
+				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(buAreaSeriesINV[i], false, false, false);
+				buArea.redraw(false);
+			}
+		}
+		else{
+			for(var i = 0; i < 12; i ++){
+				
+			}
+		}
+		
+	}
+	else{
+		if(buAreaSeriesCM.length <= 12){
+			for(var i = 0; i < buAreaSeriesCM.length; i ++){
+				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(buAreaSeriesCM[i], false, false, false);
+				buArea.redraw(false);
+			}
+		}
+		else{
+			for(var i = 0; i < 12; i ++){
+				
+			}
+			
+		}
+		
+		
+	}*/
 }
 
 function setCsdAreaData(){
@@ -1620,7 +1653,7 @@ function setOverdueSoonData(){
 												'</div>' +
 											'</div>' +
 											'<div class="font-style7">' +
-												'<span>' + buOutstand[i]["DUE_SOON_INV"] + '</span>' +
+												'<span>' + parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2) + '</span>' +
 											'</div>' +
 										'</li>';
 			$('.overduesoon-bu').append(buOutstandDetailContent);
@@ -1645,7 +1678,7 @@ function setOverdueSoonData(){
 		$('.overduesoon-bu').append(noneDataTwoColumn);
 		$('.overduesoon-bu').append(noneDataTwoTotal);
 	}
-			
+	
 	if(csdOutstand.length > 0){
 		$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_up.png');
 		for(var i in csdOutstand){
@@ -1656,7 +1689,7 @@ function setOverdueSoonData(){
 												'</div>' +
 											'</div>' +
 											'<div class="font-style7">' +
-												'<span>' + csdOutstand[i]["DUE_SOON_INV"] + '</span>' +
+												'<span>' + parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2) + '</span>' +
 											'</div>' +
 										'</li>';
 			$('.overduesoon-csd').append(csdOutstandDetailContent);
@@ -1718,7 +1751,7 @@ function setExpiredSoonData(){
 											'<span>' + expiredSoon[i]["EXPIRED_DATE"] + '</span>' +
 										'</div>' +
 										'<div class="font-style7">' +
-											'<span>' + expiredSoon[i]["CREDIT_LIIMIT"] + '</span>' +
+											'<span>' + parseFloat(expiredSoon[i]["CREDIT_LIIMIT"]).toFixed(2) + '</span>' +
 										'</div>' +
 									'</li>';
 			
@@ -1729,6 +1762,28 @@ function setExpiredSoonData(){
 		$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 		$('.expiredsoon').append(noneDataThreeColumn);
 	}
+}
+
+function changePageInitViewDetail(){
+	$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
+    $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
+    $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
+    
+	$('#memoBtn').attr('src', 'img/switch_g.png');
+	$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+    $('.buSingleListBtn').attr('src', 'img/list_down.png');
+    $('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    $('.csdSingleListBtn').attr('src', 'img/list_down.png');
+    $('.bu-single-list').hide();
+    $('.csd-single-list').hide();
+    
+    $('#overdueSoon').hide();
+	$('#expiredSoon').hide();
+	$('#overdue').show();
+	
+    $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
+    $(".Facility #ALL").removeClass('disableHover');
+    $(".Facility #ALL").addClass('hover');
 }
 
 
@@ -1836,20 +1891,6 @@ $('#viewDetail').pagecontainer({
 		
 		
 		
-		
-		//将数字每三位加逗号
-		function numberToLocaleString(){
-			$('.font-localString').each(function() {
-				$(this).text(parseInt($(this).text()).toLocaleString());
-			});
-			
-			
-			$('.overdue-tab2 span').each(function() {
-				$(this).text(parseInt($(this).text()).toLocaleString());
-			})	
-			
-		}
-		
 		/********************************** page event *************************************/	
 		$("#viewDetail").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
@@ -1868,7 +1909,7 @@ $('#viewDetail').pagecontainer({
 				OutstandDetail();
 				CreditExpiredSoon();
 				//页面初始化
-				//changePageInitViewDetail();
+				changePageInitViewDetail();
 				//横屏图表
 				getLandscapeColumn(true);
 				//横屏大小
@@ -1921,6 +1962,7 @@ $('#viewDetail').pagecontainer({
             facility = $(this).context.id;
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
+			console.log(facility);
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
@@ -1943,7 +1985,13 @@ $('#viewDetail').pagecontainer({
 			setExpiredSoonData();
 			expiredSoonInit = false;
 			
-			
+			buColumnCheckAll = false;
+    		csdColumnCheckAll = false;
+    		
+    		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+    		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    		
+    		
         });
 		
 	}
