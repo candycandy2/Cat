@@ -218,9 +218,9 @@ var rectOption = {
         footerFormat: '</table>',*/
         formatter: function () {
 	        var s = '<b>' + this.point.customer + '</b><br/>' + 
-	        		'<span>1-15 Days:USD$' + this.point.day1 + '</span><br/>' +
-	        		'<span>16-45 Days:USD$' + this.point.day16 + '</span><br/>' +
-	        		'<span>46-75 Days:USD$' + this.point.day46 + '</span><br/>' +
+	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
+	        		'<span>16-45 Days:USD$' + formatNumber(this.point.day16.toFixed(2)) + '</span><br/>' +
+	        		'<span>46-75 Days:USD$' + formatNumber(this.point.day46.toFixed(2)) + '</span><br/>' +
 	        		'<span>Over 75 Days:USD$' + formatNumber(this.point.day76.toFixed(2)) + '</span><br/>';
 	        return s;
 	    },
