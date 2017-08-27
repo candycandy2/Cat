@@ -2,9 +2,11 @@
 var viewDetailTab = "overdue";
 var facility = "ALL";
 var viewDetailInit = false;
+var csdDataInit = false;
 var overdueInit = false;
 var overdueSoonInit = false;
 var expiredSoonInit = false;
+var facilityInit = false;
 //get BU & CSD series
 var companySeries1 = [10, 20, 30, 40, 50, 60];
 var companySeries2 = [31, 26, 58, 43, 59, 64];
@@ -1277,69 +1279,72 @@ function getAreaDataSwitchOn(arr){
 }
 
 
-function setBuAreaData() {
+function setBuAreaData() {	
 	if(switchState == false){
-		for(var i = 0; i < buAreaSeriesINV.length; i ++){
-			var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-			buArea.series[0].setData(buAreaSeriesINV[i], false, false, false);
-			buArea.redraw(false);
-		}
-	}
-	else{
-		for(var i = 0; i < buAreaSeriesCM.length; i ++){
-			var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-			buArea.series[0].setData(buAreaSeriesCM[i], false, false, false);
-			buArea.redraw(false);
-		}
-	}
-	
-	/*if(switchState == false){
-		if(buAreaSeriesINV.length <= 12){
-			for(var i = 0; i < buAreaSeriesINV.length; i ++){
+		if(buAreaSeriesINV.length > buShowNum){
+			for(var i = buPageStart; i < buPageEnd; i ++){
 				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
 				buArea.series[0].setData(buAreaSeriesINV[i], false, false, false);
 				buArea.redraw(false);
 			}
 		}
-		else{
-			for(var i = 0; i < 12; i ++){
-				
-			}
-		}
-		
-	}
-	else{
-		if(buAreaSeriesCM.length <= 12){
-			for(var i = 0; i < buAreaSeriesCM.length; i ++){
+		else if(buAreaSeriesINV.length > 0 && buAreaSeriesINV.length <= buShowNum){
+			for(var i = buPageStart; i < buAreaSeriesINV.length; i ++){
 				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
-				buArea.series[0].setData(buAreaSeriesCM[i], false, false, false);
+				buArea.series[0].setData(buAreaSeriesINV[i], false, false, false);
 				buArea.redraw(false);
 			}
-		}
-		else{
-			for(var i = 0; i < 12; i ++){
-				
+		}	
+	}
+	else{
+		if(buAreaSeriesCM.length > buShowNum){
+			for(var i = buPageStart; i < buPageEnd; i ++){
+				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(buAreaSeriesCM[i], false, false, false);
+				buArea.redraw(false);	
 			}
-			
 		}
-		
-		
-	}*/
+		else if(buAreaSeriesCM.length >0 && buAreaSeriesCM.length <= buShowNum){
+			for(var i = buPageStart; i < buAreaSeriesCM.length; i ++){
+				var buArea = new Highcharts.Chart('buArea' + i, areaOption);
+				buArea.series[0].setData(buAreaSeriesCM[i], false, false, false);
+				buArea.redraw(false);	
+			}
+		}
+	}
 }
 
 function setCsdAreaData(){
 	if(switchState == false){
-		for(var i = 0; i < csdAreaSeriesINV.length; i ++){
-			var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
-			csdArea.series[0].setData(csdAreaSeriesINV[i], false, false, false);
-			csdArea.redraw(false);
+		if(csdAreaSeriesINV.length > csdShowNum){
+			for(var i = csdPageStart; i < csdPageEnd; i ++){
+				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
+				csdArea.series[0].setData(csdAreaSeriesINV[i], false, false, false);
+				csdArea.redraw(false);
+			}
 		}
+		else if(csdAreaSeriesINV.length > 0 && csdAreaSeriesINV.length <= csdShowNum){
+			for(var i = csdPageStart; i < csdAreaSeriesINV.length; i ++){
+				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
+				csdArea.series[0].setData(csdAreaSeriesINV[i], false, false, false);
+				csdArea.redraw(false);
+			}
+		}	
 	}
 	else{
-		for(var i = 0; i < csdAreaSeriesCM.length; i ++){
-			var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
-			csdArea.series[0].setData(csdAreaSeriesCM[i], false, false, false);
-			csdArea.redraw(false);
+		if(csdAreaSeriesCM.length > csdShowNum){
+			for(var i = csdPageStart; i < csdPageEnd; i ++){
+				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
+				csdArea.series[0].setData(csdAreaSeriesCM[i], false, false, false);
+				csdArea.redraw(false);
+			}
+		}
+		else if(csdAreaSeriesCM.length > 0 && csdAreaSeriesCM.length <= csdShowNum){
+			for(var i = csdPageStart; i < csdAreaSeriesCM.length; i ++){
+				var csdArea = new Highcharts.Chart('csdArea' + i, areaOption);
+				csdArea.series[0].setData(csdAreaSeriesCM[i], false, false, false);
+				csdArea.redraw(false);
+			}
 		}
 	}
 }
@@ -1514,6 +1519,181 @@ function setAllColumnData(type){
 		}
 	}
 }
+
+function setBuPartOfColumnData(){
+	if(switchState == false){
+		if(buColumnSeries.length > buColumnShow){
+			for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.redraw(false);
+			}
+		}
+		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnPageEnd){
+			for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.redraw(false);
+			}
+		}
+	}
+	else{
+		if(buColumnSeries.length > buColumnShow){
+			for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.redraw(false);
+			}
+		}
+		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnPageEnd){
+			for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.redraw(false);
+			}
+		}
+	}
+}
+
+function setCsdPartOfColumnData(){
+	if(switchState == false){
+		if(csdColumnSeries.length > csdColumnShow){
+			for(var i = csdColumnPageStart; i < csdColumnPageEnd; i++){
+				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
+				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
+				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
+				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
+				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.redraw(false);
+			}
+		}
+		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnPageEnd){
+			for(var i = csdColumnPageStart; i < csdColumnSeries.length; i++){
+				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
+				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
+				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
+				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
+				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.redraw(false);
+			}
+		}
+	}
+	else{
+		if(csdColumnSeries.length > csdColumnShow){
+			for(var i = csdColumnPageStart; i < csdColumnPageEnd; i++){
+				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
+				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
+				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
+				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
+				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: csdColumnSeries[i][4]
+				}, false, false, false);
+				csdColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: csdColumnSeries[i][5]
+				}, false, false, false);
+				csdColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: csdColumnSeries[i][6]
+				}, false, false, false);
+				csdColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: csdColumnSeries[i][7]
+				}, false, false, false);
+				csdColumn.redraw(false);
+			}
+		}
+		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnPageEnd){
+			for(var i = csdColumnPageStart; i < csdColumnSeries.length; i++){
+				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
+				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
+				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
+				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
+				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: csdColumnSeries[i][4]
+				}, false, false, false);
+				csdColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: csdColumnSeries[i][5]
+				}, false, false, false);
+				csdColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: csdColumnSeries[i][6]
+				}, false, false, false);
+				csdColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: csdColumnSeries[i][7]
+				}, false, false, false);
+				csdColumn.redraw(false);
+			}
+		}
+	}
+}
+
 
 function setTotalHtml(type, inv, cm){
 	if(type == "bu"){
@@ -1781,6 +1961,7 @@ function changePageInitViewDetail(){
 	$('#expiredSoon').hide();
 	$('#overdue').show();
 	
+	facility = "ALL";
     $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
     $(".Facility #ALL").removeClass('disableHover');
     $(".Facility #ALL").addClass('hover');
@@ -1905,11 +2086,11 @@ $('#viewDetail').pagecontainer({
 				setBuOverdueDetailData(facility);
 				setBuAreaData();
 				buSingleListBtn();
+				//页面初始化
+				changePageInitViewDetail();
 				//API
 				OutstandDetail();
 				CreditExpiredSoon();
-				//页面初始化
-				changePageInitViewDetail();
 				//横屏图表
 				getLandscapeColumn(true);
 				//横屏大小
@@ -1918,12 +2099,15 @@ $('#viewDetail').pagecontainer({
 			}
 			loadingMask("hide");
 			
-			setTimeout(function(){
-				//设置CSD数据
-				setCsdOverdueDetailData(facility);
-				setCsdAreaData();
-				csdSingleListBtn();
-			}, 300);
+			if(csdDataInit == false){
+				setTimeout(function(){
+					//设置CSD数据
+					setCsdOverdueDetailData(facility);
+					csdSingleListBtn();
+				}, 300);
+				csdDataInit = true;
+			}
+			
 			
 		});
 		
@@ -1962,18 +2146,23 @@ $('#viewDetail').pagecontainer({
             facility = $(this).context.id;
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
-			console.log(facility);
+			facilityInit = true;
+			
+			buCountNum = 1;
+			buPageEnd = buShowNum * buCountNum;
+			buPageStart = buPageEnd - buShowNum;
+			csdCountNum = 1;
+			csdPageEnd = csdShowNum * csdCountNum;
+			csdPageStart = csdPageEnd - csdShowNum;
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
-			
-			setTimeout(function(){
-				//设置CSD数据
-				setCsdOverdueDetailData(facility);
+			setCsdOverdueDetailData(facility);
+			if(buAreaSeriesINV.length > 0 && buAreaSeriesINV.length <= buShowNum){
 				setCsdAreaData();
-				csdSingleListBtn();
-			}, 300);
+			}
+			csdSingleListBtn();
 			
 			overdueInit = false;
 			
@@ -1987,7 +2176,6 @@ $('#viewDetail').pagecontainer({
 			
 			buColumnCheckAll = false;
     		csdColumnCheckAll = false;
-    		
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		
