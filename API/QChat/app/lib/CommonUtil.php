@@ -29,7 +29,9 @@ class CommonUtil{
     {
         $curl = curl_init();
         $url =  preg_replace('/\s+/', '%20', $url);
-        $api_max_exe_time = 5000; 
+        $api_max_exe_time = 5000;
+        $result = null;
+
         switch ($method)
         {
             case "POST":
@@ -59,21 +61,16 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
         curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
 
-        $retry = 1;
         $result = curl_exec($curl);
-        while(curl_errno($curl) == 28 && $retry <= 3){
-            Log::info('retry times : ' . $retry);
-            $result = curl_exec($curl);
-            $retry++;
-        }
+
         if( ! $result = curl_exec($curl)) 
         { 
-            trigger_error(curl_error($curl)); 
+            $errno = curl_errno($curl);
+            $result = json_encode(['error'=>$errno,'message'=>curl_strerror($errno)]);
+            return  $result;
         }
-
         return $result;
     }
-
     /**
      * 取得副檔名對應的mine type
      * @return array
