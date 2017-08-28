@@ -88,18 +88,12 @@ var bubbleOption = {
         shadow: false,       
         borderColor: '#FDC24F',
         backgroundColor: 'rgba(247,247,247,0.85)',
-        headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td><strong>{point.facility}</strong></td></tr>' +
-        '<tr><td>Total Overdue AR Amt.:USD${point.y}</td></tr>' +
-        '<tr><td>Max Overdue Days:{point.x}days</td></tr>',
-        footerFormat: '</table>',
-       	/*formatter: function () {
-	        var s = '<b>' + {this.facility} + '</b><br/><font>Total Overdue AR Amt.:USD$' + this.y + '</font><br/><font>Max Overdue Days:' + this.x +'days</font>';
-	        $.each(this.points, function () {
-	           s += '<br/> ' + this.series.name + ':USD$' + this.y;
-	        });
+       	formatter: function () {
+	        var s = '<b>' + this.point.facility + '</b><br/>' + 
+	        		'<font>Total Overdue AR Amt.:USD$' + formatNumber(this.y.toFixed(2)) + '</font><br/>' +
+	        		'<font>Max Overdue Days:' + this.x +'days</font>';
 	        return s;
-	    },*/
+	    },
         followTouchMove: false
     },
     plotOptions: {
@@ -216,12 +210,20 @@ var rectOption = {
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
         headerFormat: '<table class="fontTooltip">',
-        pointFormat: '<tr><td><strong>{point.customer}</strong></td></tr>' +
+        /*pointFormat: '<tr><td><strong>{point.customer}</strong></td></tr>' +
         '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
         '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
         '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
         '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
-        footerFormat: '</table>',
+        footerFormat: '</table>',*/
+        formatter: function () {
+	        var s = '<b>' + this.point.customer + '</b><br/>' + 
+	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
+	        		'<span>16-45 Days:USD$' + formatNumber(this.point.day16.toFixed(2)) + '</span><br/>' +
+	        		'<span>46-75 Days:USD$' + formatNumber(this.point.day46.toFixed(2)) + '</span><br/>' +
+	        		'<span>Over 75 Days:USD$' + formatNumber(this.point.day76.toFixed(2)) + '</span><br/>';
+	        return s;
+	    },
         followPointer: false,
         followTouchMove: false
     },
@@ -281,6 +283,7 @@ function sortDataByType(){
 			csdByType.push(arSummaryCallBackData[i]);
 		}
 	}
+	//console.log(buByType);
 }
 
 function simplifyData(){
@@ -289,10 +292,10 @@ function simplifyData(){
 			"day": parseInt(item.MAX_DUE_DAYS_INV),
 			"total": parseFloat(item.OVER_1_15_INV) + parseFloat(item.OVER_16_45_INV) + 
 					 parseFloat(item.OVER_46_75_INV) + parseFloat(item.OVER_76_INV),
-			"day1": item.OVER_1_15_INV,
-			"day16": item.OVER_16_45_INV,
-			"day46": item.OVER_46_75_INV,
-			"day76": item.OVER_76_INV,
+			"day1": parseFloat(item.OVER_1_15_INV),
+			"day16": parseFloat(item.OVER_16_45_INV),
+			"day46": parseFloat(item.OVER_46_75_INV),
+			"day76": parseFloat(item.OVER_76_INV),
 			"customer": item.CUSTOMER,
 			"facility": item.FACILITY,
 			"type": item.TYPE,
@@ -305,10 +308,10 @@ function simplifyData(){
 			"day": parseInt(item.MAX_DUE_DAYS_INV),
 			"total": parseFloat(item.OVER_1_15_INV) + parseFloat(item.OVER_16_45_INV) + 
 					 parseFloat(item.OVER_46_75_INV) + parseFloat(item.OVER_76_INV),
-			"day1": item.OVER_1_15_INV,
-			"day16": item.OVER_16_45_INV,
-			"day46": item.OVER_46_75_INV,
-			"day76": item.OVER_76_INV,
+			"day1": parseFloat(item.OVER_1_15_INV),
+			"day16": parseFloat(item.OVER_16_45_INV),
+			"day46": parseFloat(item.OVER_46_75_INV),
+			"day76": parseFloat(item.OVER_76_INV),
 			"customer": item.CUSTOMER,
 			"facility": item.FACILITY,
 			"type": item.TYPE,
@@ -437,6 +440,7 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") === null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
+		    		//console.log(arSummaryCallBackData);
 		    		
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
@@ -460,6 +464,7 @@ $('#viewMain').pagecontainer({
 			else{
 				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
 				arSummaryCallBackData = arSummaryData["Content"];
+				//console.log(arSummaryCallBackData);
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
@@ -482,7 +487,7 @@ $('#viewMain').pagecontainer({
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 					if(firstFacilityFlag){
-						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						//firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
 						firstFacilityFlag = false;
 					}
 				}
