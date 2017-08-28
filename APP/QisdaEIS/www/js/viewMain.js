@@ -176,11 +176,11 @@ var rectOption = {
 		zoomType: 'none'
 	},
 	colorAxis: {
-        tickPositions: [0, 50, 100, 200],
+        tickPositions: [0, 15, 45, 75],
         stops: [
             [0, '#81B4E1'],
-            [0.25, '#81B4E1'],
-            [0.25, '#F79620'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
             [1, '#EF3623']
         ],
         labels: {
