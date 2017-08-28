@@ -123,6 +123,12 @@ var app = {
         //[Android] Handle the back button, set in index.js
         document.addEventListener("backbutton", onBackKeyDown, false);
 
+        //Handle APP background event, set in index.js
+        //document.addEventListener("pause", onPause, false);
+
+        //Handle APP foreground event, set in index.js
+        //document.addEventListener("resume", onResume, false);
+
         //[device] data ready to get on this step.
         setTimeout(function() {
             readConfig();
