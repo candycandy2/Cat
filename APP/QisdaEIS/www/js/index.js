@@ -70,7 +70,7 @@ window.initialSuccess = function() {
                         + "</EndYearMonth></LayoutHeader>";                   
     console.log(ARSummaryQueryData);
     
-    ARSummary();//support lifecycle
+    ARSummary();
     AraUserAuthority();
     $.mobile.changePage("#viewMain");
 }
@@ -104,12 +104,6 @@ $(document).one('pagebeforeshow', function(){
     $('#memoBtn').on('click', function(){
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
-    		
-    		chartColumnLandscape.update({
-				title: {
-					text: 'Overdue Trend in Last 6 weeks'
-				}
-			});
 			
     		switchState = true;
 			buCountNum = 1;
@@ -132,12 +126,6 @@ $(document).one('pagebeforeshow', function(){
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
     		
-			chartColumnLandscape.update({
-				title: {
-					text: 'Total AR and Overdue Amount'
-				}
-			});
-			
 			switchState = false;
 			buCountNum = 1;
 			buPageEnd = buShowNum * buCountNum;
@@ -157,7 +145,7 @@ $(document).one('pagebeforeshow', function(){
 			
     	}
     	
-    	//changeColorByNum();
+    	changeColorByNum();
     	
     	buColumnCheckAll = false;
     	csdColumnCheckAll = false;
@@ -466,28 +454,35 @@ $(document).one('pagebeforeshow', function(){
 	   			var top1 = $('#buShowList'+i).offset().top;
 		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
 		   		
-		   		//完全在可视区域内
+		   		/*//完全在可视区域内
 	   			if(top1 >= visibleTop && bottom1 <= visibleBottom){
 	   				buArrIndex = i;
+	   				//console.log(buArrIndex);
 	   				return false;		
 	   			}
 	   			//上部在可视区域内
 	   			else if(top1 < visibleTop && bottom1 > visibleTop){
 	   				buArrIndex = i;
+	   				//console.log(buArrIndex);
 	   				return false;	
 	   			}
 	   			//下部在可视区域
 	   			else if(top1 < visibleBottom && bottom1 > visibleBottom){
 	   				buArrIndex = i;
+	   				//console.log(buArrIndex);
 	   				return false;
-	   			}
+	   			}*/
+	   			
 	   			//不在可视区域内
-	   			else if(top1 > visibleBottom || bottom1 < visibleTop){
+	   			if(top1 > visibleBottom || bottom1 < visibleTop){
 	   				buArrIndex = null;
+	   			}
+	   			else{
+	   				buArrIndex = i;
+	   				return false;
 	   			}
 	   		}
 	   	}
-	   	
 	   	
 	   	for(var i in csdOverdueDetail){
 	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1 && csdOverdueDetail.length > 0){	   	
@@ -561,6 +556,7 @@ $(document).one('pagebeforeshow', function(){
 				
 			}
 	   	}
+	   	
 	   	
 	});
 	
@@ -787,9 +783,9 @@ function formatNumber(n) {
 //改变负值的字体颜色
 function changeColorByNum(){
 	var fontArr = document.getElementsByClassName("font-localString");
+	console.log(fontArr[14]);
 	for(var i in fontArr){
-		var num = parseFloat(fontArr[i].innerText);
-		if(num < 0){
+		if(parseFloat(fontArr[i].innerText) < 0){
 			$(fontArr[i]).addClass("font-color-red");
 		}
 		else{
@@ -857,6 +853,18 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#backBtn').hide();
     	}else{
     		$('#viewDetail-hc-column-landscape').hide();
+    		$('#viewDetail .page-header').show();
+    		$('#viewDetail .page-tabs').show();
+    		if(viewDetailTab == "overdue"){
+    			$('#viewDetail #overdue').show();
+    		}
+    		else if(viewDetailTab == "overdueSoon"){
+    			$('#viewDetail #overdueSoon').show();
+    		}
+    		else if(viewDetailTab == "expiredSoon"){
+    			$('#viewDetail #expiredSoon').show();
+    		}
+    		$('#viewDetail .scrollmenu').show();
     		
     	}
 
@@ -867,12 +875,32 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	console.log(csdArrIndex);
-    		if(buArrIndex !== null){       			
-        		getLandscapeColumn(false);	
+        	console.log(buArrIndex);
+    		if(viewDetailTab == "overdue" && buArrIndex !== null){
+        		getLandscapeColumn(true, "");
+        		getLandscapeColumn(false, "BU");
+        		zoomInChartByColumn();
+        		$('#viewDetail .page-header').hide();
+        		$('#viewDetail .page-tabs').hide();
+        		$('#viewDetail #overdue').hide();
+        		$('#viewDetail #overdueSoon').hide();
+        		$('#viewDetail #expiredSoon').hide();
+        		$('#viewDetail .scrollmenu').hide();
+        		$('#viewDetail-hc-column-landscape').show();
         	}
-    		zoomInChartByColumn();
-    		$('#viewDetail-hc-column-landscape').show();
+    		else if(viewDetailTab == "overdue" && csdArrIndex !== null && buArrIndex == null){
+    			getLandscapeColumn(true, "");
+        		getLandscapeColumn(false, "CSD");
+        		zoomInChartByColumn();
+        		$('#viewDetail .page-header').hide();
+        		$('#viewDetail .page-tabs').hide();
+        		$('#viewDetail #overdue').hide();
+        		$('#viewDetail #overdueSoon').hide();
+        		$('#viewDetail #expiredSoon').hide();
+        		$('#viewDetail .scrollmenu').hide();
+        		$('#viewDetail-hc-column-landscape').show();
+    		}
+    		
 	        	
         
         	

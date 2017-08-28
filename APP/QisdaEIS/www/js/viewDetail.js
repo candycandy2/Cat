@@ -27,8 +27,7 @@ var columnData8 = [0, 0, 0, 0, 0, 0];
 //var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']; 动态获取，由timeAxis代替
 var companyName = ['66558 东森电视股份有限公司', '67326 飞利浦股份有限公司', '69410 AAAA股份有限公司'];
 var userName = "Alan Chen";
-var startDate = "5/4";
-var endDate = "6/15";
+var startDate, endDate;
 var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
@@ -201,6 +200,13 @@ var columnOption = {
 	     '<tr><td class="customerName">' + companyName[0] + '</td></tr>',
         pointFormat: '<tr><td>{series.name}:USD${point.y}</td></tr>',
         footerFormat: '</table>',*/
+	   	/*formatter: function () {
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
+	        $.each(this.points, function () {
+	           s += '<br/> ' + this.series.name + ':USD$' + formatNumber(this.y.toFixed(2));
+	        });
+	        return s;
+	    },*/
 	   	formatter: function () {
 	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
 	        $.each(this.points, function () {
@@ -238,41 +244,109 @@ var columnOption = {
 };
 
 
-function getLandscapeColumn(isInit) {
+function getLandscapeColumn(isInit, type) {
 	if(isInit) {
 		if(chartColumnLandscape == null) {
 			chartColumnLandscape = new Highcharts.Chart('viewDetail-hc-column-landscape', columnOption);
 		}
 	}
 	else {
-		if(buArrIndex !== null) {
-			chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
-			chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
-			chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
-			chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-		}
-		/*else if(csdArrIndex != undefined){
-			chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
-			chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
-			chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
-			chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-		}*/
-		
-		
-		chartColumnLandscape.update({ 
-			chart: {
-				marginTop: 90
-			},
-			title: {
-				text: 'Total AR and Overdue Amount',
-				style: {
-					fontWidth: 'bold'
-				}
-			},
-			subtitle: {
-				text: companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+		if(type == "BU") {
+			if(switchState == false){
+				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+				chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+				chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+				chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
 			}
-		});
+			else{
+				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+				chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+				chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+				chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+				chartColumnLandscape.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[buArrIndex][4]
+				}, false, false, false);
+				chartColumnLandscape.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[buArrIndex][5]
+				}, false, false, false);
+				chartColumnLandscape.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[buArrIndex][6]
+				}, false, false, false);
+				chartColumnLandscape.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[buArrIndex][7]
+				}, false, false, false);
+				chartColumnLandscape.redraw(false);
+			}
+			
+		}
+		else if(type == "CSD"){
+			if(switchState == false){
+				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+				chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+				chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+				chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+			}
+			else{
+				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+				chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+				chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+				chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+				chartColumnLandscape.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: csdColumnSeries[csdArrIndex][4]
+				}, false, false, false);
+				chartColumnLandscape.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: csdColumnSeries[csdArrIndex][5]
+				}, false, false, false);
+				chartColumnLandscape.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: csdColumnSeries[csdArrIndex][6]
+				}, false, false, false);
+				chartColumnLandscape.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: csdColumnSeries[csdArrIndex][7]
+				}, false, false, false);
+				chartColumnLandscape.redraw(false);
+			}
+		}		
+		
+		if(switchState == false){
+			chartColumnLandscape.update({ 
+				chart: {
+					marginTop: 90
+				},
+				title: {
+					text: 'Total AR and Overdue Amount',
+					style: {
+						fontWidth: 'bold'
+					}
+				},
+				subtitle: {
+					text: companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
+				}
+			});
+		}
+		else{
+			chartColumnLandscape.update({
+				title: {
+					text: 'Overdue Trend in Last 6 weeks'
+				}
+			});
+		}
+		
 	}
 }
 
@@ -360,6 +434,12 @@ function getOverdueDetailData(){
 	for(var i in overdueDetailCallBackData[0]["Detail"]){
 		timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
 	}
+	
+	//get start day and end day
+	var startDay = overdueDetailCallBackData[0]["Detail"][0]["AGED_DATE"];
+	var endDay = overdueDetailCallBackData[0]["Detail"][5]["AGED_DATE"];
+	startDate = startDay.substring(5, 10);
+	endDate = endDay.substring(5, 10);
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
 		//添加属性spread,及展开详情,默认为0,展开为1
@@ -458,9 +538,9 @@ function setBuOverdueDetailData(fac){
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
 														'<span>Date:</span>' +
-														'<span>5/14</span>' +
+														'<span>' + startDate + '</span>' +
 														'<span>-</span>' +
-														'<span>6/15</span>' +
+														'<span>' + endDate + '</span>' +
 													'</div>' +
 												'</div>' +
 												'<div class="font-style13">' +
@@ -511,9 +591,9 @@ function setBuOverdueDetailData(fac){
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
 														'<span>Date:</span>' +
-														'<span>5/14</span>' +
+														'<span>' + startDate + '</span>' +
 														'<span>-</span>' +
-														'<span>6/15</span>' +
+														'<span>' + endDate + '</span>' +
 													'</div>' +
 												'</div>' +
 												'<div class="font-style13">' +
@@ -540,7 +620,7 @@ function setBuOverdueDetailData(fac){
 			}
 				
 			$('.overdueDetail-bu').append(overdueDetailContent);
-			
+		
 		});
 		
 		//BU total HTML
@@ -626,9 +706,9 @@ function setBuOverdueDetailData(fac){
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
 															'<span>Date:</span>' +
-															'<span>5/14</span>' +
+															'<span>' + startDate + '</span>' +
 															'<span>-</span>' +
-															'<span>6/15</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
 													'</div>' +
 													'<div class="font-style13">' +
@@ -679,9 +759,9 @@ function setBuOverdueDetailData(fac){
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
 															'<span>Date:</span>' +
-															'<span>5/14</span>' +
+															'<span>' + startDate + '</span>' +
 															'<span>-</span>' +
-															'<span>6/15</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
 													'</div>' +
 													'<div class="font-style13">' +
@@ -802,9 +882,9 @@ function setCsdOverdueDetailData(fac){
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
 														'<span>Date:</span>' +
-														'<span>5/14</span>' +
+														'<span>' + startDate + '</span>' +
 														'<span>-</span>' +
-														'<span>6/15</span>' +
+														'<span>' + endDate + '</span>' +
 													'</div>' +
 												'</div>' +
 												'<div class="font-style13">' +
@@ -855,9 +935,9 @@ function setCsdOverdueDetailData(fac){
 													'<div class="font-style12">Total AR and Overdue Amount</div>' +
 													'<div class="font-style13">' +
 														'<span>Date:</span>' +
-														'<span>5/14</span>' +
+														'<span>' + startDate + '</span>' +
 														'<span>-</span>' +
-														'<span>6/15</span>' +
+														'<span>' + endDate + '</span>' +
 													'</div>' +
 												'</div>' +
 												'<div class="font-style13">' +
@@ -884,7 +964,7 @@ function setCsdOverdueDetailData(fac){
 			}
 			
 			$('.overdueDetail-csd').append(overdueDetailContent);
-				
+			
 		});
 		
 		//CSD total HTML
@@ -970,9 +1050,9 @@ function setCsdOverdueDetailData(fac){
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
 															'<span>Date:</span>' +
-															'<span>5/14</span>' +
+															'<span>' + startDate + '</span>' +
 															'<span>-</span>' +
-															'<span>6/15</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
 													'</div>' +
 													'<div class="font-style13">' +
@@ -1023,9 +1103,9 @@ function setCsdOverdueDetailData(fac){
 														'<div class="font-style12">Total AR and Overdue Amount</div>' +
 														'<div class="font-style13">' +
 															'<span>Date:</span>' +
-															'<span>5/14</span>' +
+															'<span>' + startDate + '</span>' +
 															'<span>-</span>' +
-															'<span>6/15</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
 													'</div>' +
 													'<div class="font-style13">' +
@@ -1052,7 +1132,7 @@ function setCsdOverdueDetailData(fac){
 				}
 				
 				$('.overdueDetail-csd').append(overdueDetailContent);
-					
+			
 			});
 			
 			//CSD total HTML
@@ -2092,9 +2172,8 @@ $('#viewDetail').pagecontainer({
 				OutstandDetail();
 				CreditExpiredSoon();
 				//横屏图表
-				getLandscapeColumn(true);
-				//横屏大小
-				zoomInChartByColumn();
+				//getLandscapeColumn(true);
+				//zoomInChartByColumn();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
