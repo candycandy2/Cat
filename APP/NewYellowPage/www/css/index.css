@@ -122,7 +122,7 @@
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .head-btn{
