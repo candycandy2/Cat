@@ -117,9 +117,7 @@ $(document).one('pagebeforeshow', function(){
 			setBuAreaData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
-			if(buAreaSeriesINV.length > 0 && buAreaSeriesINV.length <= buShowNum){
-				setCsdAreaData();
-			}
+			setCsdAreaData();
 			csdSingleListBtn();
 			
     	}
@@ -138,9 +136,7 @@ $(document).one('pagebeforeshow', function(){
 			setBuAreaData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
-			if(buAreaSeriesINV.length > 0 && buAreaSeriesINV.length <= buShowNum){
-				setCsdAreaData();
-			}
+			setCsdAreaData();
 			csdSingleListBtn();
 			
     	}
@@ -157,7 +153,7 @@ $(document).one('pagebeforeshow', function(){
     //BU allList btn
     $('#buAllListBtn').on('click', function(){
     	var flag = $('#buAllListBtn').attr('src');
-    	if(flag === 'img/all_list_down.png'){
+    	if(flag == 'img/all_list_down.png'){
     		$('#buAllListBtn').attr('src', 'img/all_list_up.png');
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
@@ -169,14 +165,9 @@ $(document).one('pagebeforeshow', function(){
     		}
     		
     		if(buColumnCheckAll == false){
-    			/*buCountNum = 1;
-				buPageEnd = buShowNum * buCountNum;
-				buPageStart = buPageEnd - buShowNum;
-				
-				setBuOverdueDetailData(facility);
-				setBuAreaData();
-				buSingleListBtn();*/
-				setBuPartOfColumnData();
+				buColumnCount = 1;
+				buColumnPageEnd = buColumnShow * buColumnCount;
+				buColumnPageStart = buColumnPageEnd - buColumnShow;
     			buColumnCheckAll = true;
     		}
     		
@@ -210,14 +201,9 @@ $(document).one('pagebeforeshow', function(){
     		}
     		
     		if(csdColumnCheckAll == false){
-				/*csdCountNum = 1;
-				csdPageEnd = csdShowNum * csdCountNum;
-				csdPageStart = csdPageEnd - csdShowNum;
-				
-				setCsdOverdueDetailData(facility);
-				setCsdAreaData();
-				csdSingleListBtn();*/
-    			setCsdPartOfColumnData();
+    			csdColumnCount = 1;
+				csdColumnPageEnd = csdColumnShow * csdColumnCount;
+				csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
     			csdColumnCheckAll = true;
     		}
     		
@@ -453,26 +439,7 @@ $(document).one('pagebeforeshow', function(){
 	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1 && buOverdueDetail.length > 0){	   	
 	   			var top1 = $('#buShowList'+i).offset().top;
 		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
-		   		
-		   		/*//完全在可视区域内
-	   			if(top1 >= visibleTop && bottom1 <= visibleBottom){
-	   				buArrIndex = i;
-	   				//console.log(buArrIndex);
-	   				return false;		
-	   			}
-	   			//上部在可视区域内
-	   			else if(top1 < visibleTop && bottom1 > visibleTop){
-	   				buArrIndex = i;
-	   				//console.log(buArrIndex);
-	   				return false;	
-	   			}
-	   			//下部在可视区域
-	   			else if(top1 < visibleBottom && bottom1 > visibleBottom){
-	   				buArrIndex = i;
-	   				//console.log(buArrIndex);
-	   				return false;
-	   			}*/
-	   			
+		  		
 	   			//不在可视区域内
 	   			if(top1 > visibleBottom || bottom1 < visibleTop){
 	   				buArrIndex = null;
@@ -489,24 +456,13 @@ $(document).one('pagebeforeshow', function(){
 	   			var top1 = $('#csdShowList'+i).offset().top;
 		   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
 		   		
-		   		//完全在可视区域内
-	   			if(top1 >= visibleTop && bottom1 <= visibleBottom){
-	   				csdArrIndex = i;
-	   				return false;		
+	   			//不在可视区域内
+	   			if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				csdArrIndex = null;
 	   			}
-	   			//上部在可视区域内
-	   			else if(top1 < visibleTop && bottom1 > visibleTop){
-	   				csdArrIndex = i;
-	   				return false;	
-	   			}
-	   			//下部在可视区域
-	   			else if(top1 < visibleBottom && bottom1 > visibleBottom){
+	   			else{
 	   				csdArrIndex = i;
 	   				return false;
-	   			}
-	   			//不在可视区域内
-	   			else if(top1 > visibleBottom || bottom1 < visibleTop){
-	   				csdArrIndex = null;
 	   			}
 	   		}
 	   	}
@@ -783,17 +739,34 @@ function formatNumber(n) {
 //改变负值的字体颜色
 function changeColorByNum(){
 	var fontArr = document.getElementsByClassName("font-localString");
-	console.log(fontArr[14]);
 	for(var i in fontArr){
-		if(parseFloat(fontArr[i].innerText) < 0){
-			$(fontArr[i]).addClass("font-color-red");
+		try{
+			if(parseFloat(fontArr[i].innerText) < 0){
+				$(fontArr[i]).addClass("font-color-red");
+			}
+			else{
+				$(fontArr[i]).addClass("font-color-black");
+			}
+		}catch(e){
+			//TODO handle the exception
+			console.log(i);
 		}
-		else{
-			$(fontArr[i]).addClass("font-color-black");
-		}
-		
 	}
 	
+	var fontDayArr = document.getElementsByClassName("font-day-color");
+	for(var i in fontDayArr){
+		try{
+			if(parseFloat(fontDayArr[i].innerText) > 0){
+				$(fontDayArr[i]).addClass("font-color-red");
+			}
+			else{
+				$(fontDayArr[i]).addClass("font-color-black");
+			}
+		}catch(e){
+			//TODO handle the exception
+			console.log(i)
+		}
+	}
 }
 
 
