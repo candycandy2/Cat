@@ -7,12 +7,20 @@ namespace  App\lib;
 use App\lib\CommonUtil;
 use Config;
 use Illuminate\Support\Facades\Log;
+use App\lib\ResultCode;
 
 class JMessage {
 
-    private $appKey;
-    private $masterSecret;
-    private $options;
+    protected $appKey;
+    protected $masterSecret;
+    protected $options;
+
+    public $dateTimeUrl;
+    public $cursorUrl;
+    public $historyData=[];
+    public $historyFileData=[];
+
+    public $retry=0;
 
     const API_V1_URL = 'https://api.im.jpush.cn/v1/';
     const API_V2_URL = 'https://report.im.jpush.cn/v2/';
@@ -39,6 +47,22 @@ class JMessage {
     }
 
     /**
+     * 取得欲寫入DB的歷史資訊
+     * @return Array
+     */
+    public function getData(){
+       return array('historyData'=> $this->historyData, 'historyFileData'=> $this->historyFileData);
+    }
+
+    /**
+     * 清空訊息資料
+     */
+    public function clearData(){
+        $this->historyData = [];
+        $this->historyFileData =[];
+    }
+
+    /**
      * 透過MediaId取得檔案真實路徑
      * @param  String $mediaId JMessage回傳的json格式中包含的media_id
      * @return String 檔案的真實路徑 
@@ -58,19 +82,36 @@ class JMessage {
      *                           失敗 : return JMessageAPI error
      */
     public function getMessageAndFile($beginTime, $endTime, $count){
-        $dataContainer = array('historyData'=>[], 'historyFileData'=>[]);
+        $this->clearData();
         $result =  $this->getMessageWithDateTime($beginTime, $endTime, $count);
+        //首次取得資料時發生time out,重新使用datetime呼叫API，重試三次後斷開
+        if(isset($result->error) && $result->error == 28 && $this->retry <3 ){
+            $this->retry ++;
+            Log::info('retry cursor: '.$this->retry);
+            $this->getMessageAndFile($beginTime, $endTime, $count);
+        }
         if(isset($result->error)){
             return $result;
         }
-        $this->arrangeMessageData($result, $dataContainer);
-        if(isset($result->cursor)){
-            $cursorRes = $this->getMessageWithCursor($result, $count, $dataContainer);
-            if(isset($cursorRes->error)){
-                return $cursorRes;
+
+        //整理使用dateime呼叫的資料
+        $this->arrangeMessageData($result);
+        //如果有回傳cursor，持續使用cursor取資料
+        while(isset($result->cursor)){
+            $result = $this->getMessageWithCursor($result, $count);
+            //取得cursor 時發生time out,重新使用datetime呼叫API，重試三次後斷開
+            if($result['Content']){
+                $this->retry =0;
+            }else{
+                if(isset($result->error) && $result->error == 28 && $this->retry <3 ){
+                    $this->retry ++;
+                    Log::info('retry cursor: '.$this->retry);
+                    $this->getMessageAndFile($beginTime, $endTime, $count);
+                }
             }
         }
-        return $dataContainer;
+        $rs = $this->getData();
+        return $rs;
     }
 
     /**
@@ -80,28 +121,21 @@ class JMessage {
      * @param  int    $count     每次抓取的訊息筆數
      * @return json
      */
-    private function getMessageWithDateTime($beginTime, $endTime, $count){ 
-        $url = self::API_V2_URL.'messages?count='.$count.'&begin_time='.$beginTime.'&end_time='.$endTime;
-        return $this->callJmessageAPI('GET', $url);
+    public function getMessageWithDateTime($beginTime, $endTime, $count){ 
+        $this->dateTimeUrl = self::API_V2_URL.'messages?count='.$count.'&begin_time='.$beginTime.'&end_time='.$endTime;
+        return $this->callJmessageAPI('GET', $this->dateTimeUrl);
     }
 
     /**
      * 依cursor取得訊息
      * @param  json  $result  Jmessage回傳的訊息資料
      * @param  int   $count     每次抓取的訊息筆數
-     * @param  array &$dataContainer 本次執行準備要寫入的資料陣列
      * @return json
      */
-    private function getMessageWithCursor($result, $count, &$dataContainer ){
-        if(!isset($result->cursor)){
-            return  $result;
-        }
-        $url = self::API_V2_URL.'messages?count='.$count.'&cursor='.$result->cursor;
-        
-        $res = $this->callJmessageAPI('GET', $url);
-        
-        $this->arrangeMessageData($res, $dataContainer);
-        $this->getMessageWithCursor($res, $count, $dataContainer);
+    public function getMessageWithCursor($result, $count){
+        $this->cursorUrl = self::API_V2_URL.'messages?count='.$count.'&cursor='.$result->cursor;
+        $res = $this->callJmessageAPI('GET', $this->cursorUrl );
+        $this->arrangeMessageData($res);
     }
 
     /**
@@ -118,20 +152,28 @@ class JMessage {
                          'Content-Type: application/json',
                          'Authorization: Basic '.$secretKey
                         );
+        
         Log::info('JMessage API Url: '.$url);
+
         $result = CommonUtil::callAPI($method, $url,  $header, $data);
-        $rs = json_decode($result);
-        $rs->requestUrl=$url;
+        if(isset($result->error)){
+            if($result->error == 28){ //timeout
+                return $result;
+            }
+            throw new Exception("Error Call JMessage API", $result->error);
+        }
+        $result = json_decode($result);
+        $result->requestUrl=$url;
         Log::info('Result get!');
-        return $rs;
+        return $result;
     }
 
     /**
      * 整理history,historyFile的寫入資訊
      * @param  object 從JMessage取得回來的訊息資料
-     * @param  array &$dataContainer 本次執行準備要寫入的資料陣列
      */
-    private function arrangeMessageData($result, &$dataContainer ){
+    public function arrangeMessageData($result){
+        
         if(isset($result->error)){
             return $result;
         }
@@ -146,12 +188,12 @@ class JMessage {
             $history['target_type'] = $message->target_type;
             $history['ctime']= $message->msg_ctime;
             $history['content']= json_encode($message->msg_body);
-            $dataContainer['historyData'][]=$history;
+            $this->historyData[] = $history;
             //檔案類型寫入 qm_message_file
             if($message->msg_type == 'image'){
+                $historyFile = [];
                 $media = $this->getMedia($message->msg_body->media_id);
                 $file = $this->downloadFile($media->url);
-                $historyFile = [];
                 $historyFile['msg_id'] = $message->msgid;
                 $historyFile['fname'] =  $file['fname'];
                 $historyFile['fsize'] =  $message->msg_body->fsize;
@@ -159,9 +201,8 @@ class JMessage {
                 $historyFile['npath'] = $message->msg_body->media_id;
                 $historyFile['lpath'] = $file['lpath'];
                 $historyFile['spath'] = $file['spath'];
-                $dataContainer['historyFileData'][]=$historyFile;
+                 $this->historyFileData[] = $historyFile;
             }
-
         }
     }
 
@@ -169,11 +210,12 @@ class JMessage {
      * 透過網址下載圖片到本地端
      * @param  String $url 下載網址
      */
-    private function downloadFile($url){
+    public function downloadFile($url){
         $targetPath = './'.Config::get('app.filePath');
         $imagePath = $targetPath .'/image/';
         $sImagePath = $targetPath .'/simage/';
         $filename = $imagePath. 'tmpfile';
+        $api_max_exe_time = 5000; 
         
         if (!file_exists($targetPath)) {
             mkdir($targetPath, 0755, true);
@@ -191,18 +233,27 @@ class JMessage {
                         'spath'=>'',
                         'fname'=>'',
                         'format'=>'');
-        $ch = curl_init($url);
+        $curl = curl_init($url);
 
          //add for Develop
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($ch, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-        curl_setopt($ch, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
-        curl_setopt($ch, CURLOPT_WRITEHEADER, $headerBuff);
-        curl_setopt($ch, CURLOPT_FILE, $fileTarget);
-        curl_exec($ch);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
+        curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
+        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
 
-        if(!curl_errno($ch)) {
+        curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
+        curl_setopt($curl, CURLOPT_WRITEHEADER, $headerBuff);
+        curl_setopt($curl, CURLOPT_FILE, $fileTarget);
+        curl_exec($curl);
+
+        $retry = 1;
+        $rs = curl_exec($curl);
+        while(curl_errno($curl) == 28 && $retry <= 3){
+            Log::info('download image retry times : ' . $retry);
+            $rs = curl_exec($curl);
+            $retry++;
+        }
+        if(!curl_errno($curl)) {
           rewind($headerBuff);
           $headers = stream_get_contents($headerBuff);
           if(preg_match('/Content-Type:.\\s*([^ ]+)\n/', $headers, $matches)) {
@@ -219,7 +270,7 @@ class JMessage {
             }
           }
         }
-        curl_close($ch);
+        curl_close($curl);
         fclose($headerBuff);
         Log::info('檔案下載完成: '.$result['fname'].'.'.$result['format']);
         return $result;

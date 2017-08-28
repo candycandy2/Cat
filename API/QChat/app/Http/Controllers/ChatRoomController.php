@@ -8,24 +8,24 @@ use App\lib\CommonUtil;
 use App\lib\Logger;
 use App\lib\JMessage;
 use App\Repositories\ParameterRepository;
-use App\Repositories\HistoryRepository;
+use App\Services\HistoryService;
 use Illuminate\Support\Facades\Log;
 
 class ChatRoomController extends Controller
 {
 
     protected $parameterRepository;
-    protected $historyRepository;
+    protected $historyServices;
 
     /**
      * ChatRoomController constructor.
      * @param ParameterRepository $parameterRepository
-     * @param HistoryRepository $historyRepository
+     * @param HistoryServices $historyServices
      */
-    public function __construct(ParameterRepository $parameterRepository, HistoryRepository $historyRepository)
+    public function __construct(ParameterRepository $parameterRepository, HistoryService $historyServices)
     {
         $this->parameterRepository = $parameterRepository;
-        $this->historyRepository = $historyRepository;
+        $this->historyServices = $historyServices;
     }
 
 
@@ -34,7 +34,6 @@ class ChatRoomController extends Controller
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
-    
         ignore_user_abort(true);//瀏覽器關掉後也持續執行
         set_time_limit(0);//不限制time out 時間
 
@@ -45,6 +44,7 @@ class ChatRoomController extends Controller
         //取得上次同步的最後時間
         $lastQueryTime = $this->parameterRepository->getLastQueryTime();
         $lastEndTime = $lastQueryTime->parameter_value;
+
         $dt = DateTime::createFromFormat("Y-m-d H:i:s", $lastEndTime);
         if($dt === false || array_sum($dt->getLastErrors()) >0 ){
             $result = ['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
@@ -52,6 +52,7 @@ class ChatRoomController extends Controller
             Logger::logApi('', $ACTION,response()->json(apache_response_headers()), json_encode($result));
             return response()->json($result);
         }
+        
         //init beginTime and End Time
         $beginTime = $lastEndTime;
         $endTime = $lastEndTime;
@@ -73,7 +74,7 @@ class ChatRoomController extends Controller
         \DB::connection('mysql_qmessage')->beginTransaction();
         \DB::connection('mysql_ens')->beginTransaction();
 
-        try {
+       try {
             do{
                 $beginTime = date('Y-m-d H:i:s', strtotime($endTime));
                 $tmpEndTime = date('Y-m-d H:i:s', strtotime($beginTime . ' +'.$interval.' day'));
@@ -97,25 +98,25 @@ class ChatRoomController extends Controller
                 $historyFileData = $resData['historyFileData']; 
                 if(count($historyData) > 0 ){
                     Log::info('開始寫入History');
-                    $this->historyRepository->insertHistory($historyData);
+                    $this->historyServices->upsertHistory($historyData);
                     Log::info('History寫入完成');
                 }
                 if(count($historyFileData) > 0){
                     Log::info('開始寫入HistoryFile');
-                    $this->historyRepository->insertHistoryFile($historyFileData);
+                    $this->historyServices->upsertHistoryFile($historyFileData);
                     Log::info('HistoryFile寫入完成');
                 }
                  $this->parameterRepository->updateLastQueryTime($endTime);
-            } while ($endTime != $now);
+           } while ($endTime != $now);
 
-             \DB::connection('mysql_qmessage')->commit();
-             \DB::connection('mysql_ens')->commit();
+            \DB::connection('mysql_qmessage')->commit();
+            \DB::connection('mysql_ens')->commit();
 
             $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,'Message'=>'Sync Success!'];
             Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
             return response()->json($result);
             Log::info('Sync Success!');
-           }catch (\Exception $e) {
+          }catch (\Exception $e) {
 
              \DB::connection('mysql_qmessage')->rollBack();
              \DB::connection('mysql_ens')->rollBack();
@@ -126,6 +127,6 @@ class ChatRoomController extends Controller
             return response()->json($result);
 
          }
-    }
+     }
 
 }
