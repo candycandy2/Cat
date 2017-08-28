@@ -1,0 +1,530 @@
+<QPlay Image>
+
+. {
+    background-image: url(spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.-001_nav_back_black {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -10px;
+}
+
+.-002_nav_back_white {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -104px;
+}
+
+.-003_nav_delete {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -198px;
+}
+
+.-004_nav_home {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -292px;
+}
+
+.-005_nav_humb {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -386px;
+}
+
+.-006_nav_logout {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -480px;
+}
+
+.-007_nav_news_n {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -574px;
+}
+
+.-008_nav_news_new {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -668px;
+}
+
+.-009_nav_save_d {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -762px;
+}
+
+.-010_nav_save_n {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -856px;
+}
+
+.-011_topnav_album {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -950px;
+}
+
+.-012_topnav_delete {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1044px;
+}
+
+.-013_topnav_download {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1138px;
+}
+
+.-014_topnav_info {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1232px;
+}
+
+.-015_topnav_more {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1326px;
+}
+
+.-016_topnav_photo {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1420px;
+}
+
+.-017_topnav_rename {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1514px;
+}
+
+.-018_topnav_save {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -1608px;
+}
+
+.-019_bottomnav_event_n {
+    width: 72px;
+    height: 72px;
+    background-position: -10px -1702px;
+}
+
+.-020_bottomnav_event_s {
+    width: 72px;
+    height: 72px;
+    background-position: -10px -1794px;
+}
+
+.-021_bottomnav_news_n {
+    width: 72px;
+    height: 72px;
+    background-position: -10px -1886px;
+}
+
+.-022_bottomnav_news_s {
+    width: 72px;
+    height: 72px;
+    background-position: -10px -1978px;
+}
+
+.-023_btn_add {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -2070px;
+}
+
+.-024_btn_addfriend {
+    width: 80px;
+    height: 80px;
+    background-position: -10px -2150px;
+}
+
+.-025_btn_addpreference {
+    width: 38px;
+    height: 38px;
+    background-position: -10px -2250px;
+}
+
+.-026_btn_all_list_down {
+    width: 65px;
+    height: 65px;
+    background-position: -10px -2308px;
+}
+
+.-027_btn_all_list_up {
+    width: 65px;
+    height: 65px;
+    background-position: -10px -2393px;
+}
+
+.-028_btn_change_black {
+    width: 80px;
+    height: 84px;
+    background-position: -10px -2478px;
+}
+
+.-029_btn_change_blue {
+    width: 80px;
+    height: 85px;
+    background-position: -10px -2582px;
+}
+
+.-030_btn_delete {
+    width: 52px;
+    height: 52px;
+    background-position: -10px -2687px;
+}
+
+.-031_btn_delete_upphoto {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -2759px;
+}
+
+.-032_btn_dropdown_n {
+    width: 44px;
+    height: 26px;
+    background-position: -10px -2839px;
+}
+
+.-033_btn_edit {
+    width: 40px;
+    height: 40px;
+    background-position: -10px -2885px;
+}
+
+.-034_btn_field_clear {
+    width: 50px;
+    height: 50px;
+    background-position: -10px -2945px;
+}
+
+.-035_btn_info {
+    width: 77px;
+    height: 76px;
+    background-position: -10px -3015px;
+}
+
+.-036_btn_list_delete {
+    width: 92px;
+    height: 92px;
+    background-position: -10px -3111px;
+}
+
+.-037_btn_list_down {
+    width: 44px;
+    height: 44px;
+    background-position: -10px -3223px;
+}
+
+.-038_btn_list_up {
+    width: 44px;
+    height: 44px;
+    background-position: -10px -3287px;
+}
+
+.-039_btn_next {
+    width: 68px;
+    height: 68px;
+    background-position: -10px -3351px;
+}
+
+.-040_btn_pre {
+    width: 68px;
+    height: 68px;
+    background-position: -10px -3439px;
+}
+
+.-041_btn_qplay_download {
+    width: 80px;
+    height: 80px;
+    background-position: -10px -3527px;
+}
+
+.-042_btn_upload {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -3627px;
+}
+
+.-043_btn_windowclose {
+    width: 120px;
+    height: 120px;
+    background-position: -10px -3707px;
+}
+
+.-044_btn_priority_d {
+    width: 25px;
+    height: 30px;
+    background-position: -10px -3847px;
+}
+
+.-045_btn_priority_down {
+    width: 25px;
+    height: 30px;
+    background-position: -10px -3897px;
+}
+
+.-046_btn_priority_up {
+    width: 25px;
+    height: 30px;
+    background-position: -10px -3947px;
+}
+
+.-047_btn_photo_add {
+    width: 78px;
+    height: 78px;
+    background-position: -10px -3997px;
+}
+
+.-048_btn_photo_camera {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -4095px;
+}
+
+.-049_btn_photo_img {
+    width: 74px;
+    height: 74px;
+    background-position: -10px -4189px;
+}
+
+.-050_btn_yellowpage_favorite_d {
+    width: 90px;
+    height: 85px;
+    background-position: -10px -4283px;
+}
+
+.-051_btn_yellowpage_favorite_s {
+    width: 90px;
+    height: 85px;
+    background-position: -10px -4388px;
+}
+
+.-052_btn_floating_add {
+    width: 172px;
+    height: 172px;
+    background-position: -10px -4493px;
+}
+
+.-053_btn_floating_addalbum {
+    width: 172px;
+    height: 172px;
+    background-position: -10px -4685px;
+}
+
+.-054_btn_floating_addphoto {
+    width: 172px;
+    height: 172px;
+    background-position: -10px -4877px;
+}
+
+.-055_btn_floating_chatroom {
+    width: 172px;
+    height: 172px;
+    background-position: -10px -5069px;
+}
+
+.-056_icon_booked_success {
+    width: 52px;
+    height: 52px;
+    background-position: -10px -5261px;
+}
+
+.-057_icon_chatroom_fail {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -5333px;
+}
+
+.-058_icon_favorite {
+    width: 44px;
+    height: 42px;
+    background-position: -10px -5413px;
+}
+
+.-059_icon_link {
+    width: 75px;
+    height: 60px;
+    background-position: -10px -5475px;
+}
+
+.-060_icon_member {
+    width: 70px;
+    height: 70px;
+    background-position: -10px -5555px;
+}
+
+.-061_icon_memberdone {
+    width: 70px;
+    height: 70px;
+    background-position: -10px -5645px;
+}
+
+.-062_icon_phone {
+    width: 45px;
+    height: 45px;
+    background-position: -10px -5735px;
+}
+
+.-063_icon_reject {
+    width: 52px;
+    height: 52px;
+    background-position: -10px -5800px;
+}
+
+.-064_icon_saerch {
+    width: 49px;
+    height: 62px;
+    background-position: -10px -5872px;
+}
+
+.-065_icon_urgent {
+    width: 52px;
+    height: 52px;
+    background-position: -10px -5954px;
+}
+
+.-066_icon_view_blue {
+    width: 70px;
+    height: 70px;
+    background-position: -10px -6026px;
+}
+
+.-067_icon_view_gray {
+    width: 70px;
+    height: 70px;
+    background-position: -10px -6116px;
+}
+
+.-068_icon_warm {
+    width: 52px;
+    height: 52px;
+    background-position: -10px -6206px;
+}
+
+.-069_icon_withdraw {
+    width: 52px;
+    height: 52px;
+    background-position: -10px -6278px;
+}
+
+.-070_icon_reddot {
+    width: 25px;
+    height: 25px;
+    background-position: -10px -6350px;
+}
+
+.-071_checkbox_photo_circle_n {
+    width: 90px;
+    height: 90px;
+    background-position: -10px -6395px;
+}
+
+.-072_checkbox_photo_cercle_s {
+    width: 90px;
+    height: 90px;
+    background-position: -10px -6505px;
+}
+
+.-073_checkbox_qplay_n {
+    width: 76px;
+    height: 76px;
+    background-position: -10px -6615px;
+}
+
+.-074_checkbox_qplay_s {
+    width: 73px;
+    height: 73px;
+    background-position: -10px -6711px;
+}
+
+.-075_checkbox_table_circlebox {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -6804px;
+}
+
+.-076_checkbox_table_circlebox_select {
+    width: 58px;
+    height: 59px;
+    background-position: -10px -6884px;
+}
+
+.-077_radio_blue_n {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -6963px;
+}
+
+.-078_radio_blue_s {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -7043px;
+}
+
+.-079_radio_purple_n {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -7123px;
+}
+
+.-080_radio_purple_s {
+    width: 60px;
+    height: 60px;
+    background-position: -10px -7203px;
+}
+
+.-081_switch_c {
+    width: 115px;
+    height: 65px;
+    background-position: -10px -7283px;
+}
+
+.-082_switch_o {
+    width: 115px;
+    height: 65px;
+    background-position: -10px -7368px;
+}
+
+.-083_bg_event_date {
+    width: 89px;
+    height: 89px;
+    background-position: -10px -7453px;
+}
+
+.-084_img_default_group {
+    width: 100px;
+    height: 100px;
+    background-position: -10px -7562px;
+}
+
+.-085_img_default_group_big {
+    width: 330px;
+    height: 330px;
+    background-position: -10px -7682px;
+}
+
+.-086_img_default_photo {
+    width: 100px;
+    height: 100px;
+    background-position: -10px -8032px;
+}
+
+.-087_img_default_photo_big {
+    width: 330px;
+    height: 330px;
+    background-position: -10px -8152px;
+}
+
