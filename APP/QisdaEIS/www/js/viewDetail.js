@@ -323,29 +323,57 @@ function getLandscapeColumn(isInit, type) {
 			}
 		}		
 		
-		if(switchState == false){
-			chartColumnLandscape.update({ 
-				chart: {
-					marginTop: 90
-				},
-				title: {
-					text: 'Total AR and Overdue Amount',
-					style: {
-						fontWidth: 'bold'
+		if(type == "BU"){
+			if(switchState == false){
+				chartColumnLandscape.update({ 
+					chart: {
+						marginTop: 90
+					},
+					title: {
+						text: 'Total AR and Overdue Amount',
+						style: {
+							fontWidth: 'bold'
+						}
+					},
+					subtitle: {
+						text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 					}
-				},
-				subtitle: {
-					text: companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
-				}
-			});
+				});
+			}
+			else{
+				chartColumnLandscape.update({
+					title: {
+						text: 'Overdue Trend in Last 6 weeks'
+					}
+				});
+			}
 		}
-		else{
-			chartColumnLandscape.update({
-				title: {
-					text: 'Overdue Trend in Last 6 weeks'
-				}
-			});
+		else if(type == "CSD"){
+			if(switchState == false){
+				chartColumnLandscape.update({ 
+					chart: {
+						marginTop: 90
+					},
+					title: {
+						text: 'Total AR and Overdue Amount',
+						style: {
+							fontWidth: 'bold'
+						}
+					},
+					subtitle: {
+						text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+					}
+				});
+			}
+			else{
+				chartColumnLandscape.update({
+					title: {
+						text: 'Overdue Trend in Last 6 weeks'
+					}
+				});
+			}
 		}
+		
 		
 	}
 }
@@ -360,6 +388,7 @@ function buSingleListBtn(){
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			buOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			buArrIndex = index;
 			
 			if(buColumnCheckAll == false){
 				setSingleColumnData(index, 'bu');
@@ -370,6 +399,7 @@ function buSingleListBtn(){
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 			buOverdueDetail[index]["Header"]["SPREAD"] = 0;
+			buArrIndex = null;
 			
 			if(index == buArrIndex){
 				buArrIndex = null;
@@ -398,6 +428,7 @@ function csdSingleListBtn(){
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			csdArrIndex = index;
 			
 			if(csdColumnCheckAll == false){
 				setSingleColumnData(index, 'csd');
@@ -408,6 +439,7 @@ function csdSingleListBtn(){
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
+			csdArrIndex = null;
 			
 			if(index == csdArrIndex){
 				csdArrIndex = null;
@@ -523,7 +555,7 @@ function setBuOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="buArea' + i + '"></div>' +
@@ -555,10 +587,10 @@ function setBuOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -576,7 +608,7 @@ function setBuOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="buArea' + i + '"></div>' +
@@ -608,10 +640,10 @@ function setBuOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -691,7 +723,7 @@ function setBuOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="buArea' + i + '"></div>' +
@@ -723,10 +755,10 @@ function setBuOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -744,7 +776,7 @@ function setBuOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="buArea' + i + '"></div>' +
@@ -776,10 +808,10 @@ function setBuOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -867,7 +899,7 @@ function setCsdOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="csdArea' + i + '"></div>' +
@@ -899,10 +931,10 @@ function setCsdOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -920,7 +952,7 @@ function setCsdOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="csdArea' + i + '"></div>' +
@@ -952,10 +984,10 @@ function setCsdOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -1035,7 +1067,7 @@ function setCsdOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="csdArea' + i + '"></div>' +
@@ -1067,10 +1099,10 @@ function setCsdOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-class">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-class">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-class">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-class">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -1088,7 +1120,7 @@ function setCsdOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="csdArea' + i + '"></div>' +
@@ -1120,10 +1152,10 @@ function setCsdOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -1788,7 +1820,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + inv.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="buArea"></div>' +
@@ -1809,7 +1841,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + cm.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="buArea"></div>' +
@@ -1833,7 +1865,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + inv.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="csdArea"></div>' +
@@ -1854,7 +1886,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + cm.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="csdArea"></div>' +
@@ -1913,7 +1945,7 @@ function setOverdueSoonData(){
 												'</div>' +
 											'</div>' +
 											'<div class="font-style7">' +
-												'<span>' + parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2) + '</span>' +
+												'<span>' + formatNumber(parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
 			$('.overduesoon-bu').append(buOutstandDetailContent);
@@ -1927,7 +1959,7 @@ function setOverdueSoonData(){
 													'<span>Total</span>' +
 												'</div>' +
 												'<div class="font-style7">' +
-													'<span>' + buOutstandDetailTotal.toFixed(2) + '</span>' +
+													'<span>' + formatNumber(buOutstandDetailTotal.toFixed(2)) + '</span>' +
 												'</div>' +
 											'</li>';
 		
@@ -1949,7 +1981,7 @@ function setOverdueSoonData(){
 												'</div>' +
 											'</div>' +
 											'<div class="font-style7">' +
-												'<span>' + parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2) + '</span>' +
+												'<span>' + formatNumber(parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
 			$('.overduesoon-csd').append(csdOutstandDetailContent);
@@ -1962,7 +1994,7 @@ function setOverdueSoonData(){
 													'<span>Total</span>' +
 												'</div>' +
 												'<div class="font-style7">' +
-													'<span>' + csdOutstandDetailTotal.toFixed(2) + '</span>' +
+													'<span>' + formatNumber(csdOutstandDetailTotal.toFixed(2)) + '</span>' +
 												'</div>' +
 											'</li>';
 		
@@ -2011,7 +2043,7 @@ function setExpiredSoonData(){
 											'<span>' + expiredSoon[i]["EXPIRED_DATE"] + '</span>' +
 										'</div>' +
 										'<div class="font-style7">' +
-											'<span>' + parseFloat(expiredSoon[i]["CREDIT_LIIMIT"]).toFixed(2) + '</span>' +
+											'<span>' + formatNumber(parseFloat(expiredSoon[i]["CREDIT_LIIMIT"]).toFixed(2)) + '</span>' +
 										'</div>' +
 									'</li>';
 			
@@ -2171,9 +2203,8 @@ $('#viewDetail').pagecontainer({
 				//API
 				OutstandDetail();
 				CreditExpiredSoon();
-				//横屏图表
-				//getLandscapeColumn(true);
-				//zoomInChartByColumn();
+				//改变颜色
+				changeColorByNum();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
@@ -2233,14 +2264,20 @@ $('#viewDetail').pagecontainer({
 			csdCountNum = 1;
 			csdPageEnd = csdShowNum * csdCountNum;
 			csdPageStart = csdPageEnd - csdShowNum;
+			buColumnCount = 1;
+			buColumnPageEnd = buColumnShow * buColumnCount;
+			buColumnPageStart = buColumnPageEnd - buColumnShow;
+			csdColumnCount = 1;
+			csdColumnPageEnd = csdColumnShow * csdColumnCount;
+			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
+			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
-			if(buAreaSeriesINV.length > 0 && buAreaSeriesINV.length <= buShowNum){
-				setCsdAreaData();
-			}
+			setCsdAreaData();
+			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
 			overdueInit = false;
@@ -2258,7 +2295,7 @@ $('#viewDetail').pagecontainer({
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		
-    		
+    		changeColorByNum();
         });
 		
 	}
