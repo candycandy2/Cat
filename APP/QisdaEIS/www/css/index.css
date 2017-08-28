@@ -105,10 +105,10 @@ a{
 	font-size: 14px !important;
 	font-family: arial !important;
 }
-.font-color-black{
+.font-color-black {
 	color: black;
 }
-.font-color-red{
+.font-color-red {
 	color: red;
 }
 .font-companyName{
@@ -832,13 +832,14 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 		display: block;
 	}
 	/*#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
-	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu,
+	#viewDetail .bu-title, #viewDetail .bu-title, #viewDetail .bu-main, #viewDetail .scrollmenu,
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
 		display: none;
-	}
-	#viewDetail #viewDetail-hc-column-landscape {
-		display: block;
 	}*/
+	#viewDetail #viewDetail-hc-column-landscape {
+		/*display: block;*/
+		display: none;
+	}
 	#viewDetail{
 		padding-top: 0 !important;
 	}
