@@ -12,6 +12,24 @@ var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,c
 var treemapState = false;
 var switchState = false;
 var expiredTime = 1;
+var buArrIndex = null;
+var csdArrIndex = null;
+var buCountNum = 1;
+var buShowNum = 12;
+var buPageEnd = buShowNum * buCountNum;
+var buPageStart = buPageEnd - buShowNum;
+var csdCountNum = 1;
+var csdShowNum = 12;
+var csdPageEnd = csdShowNum * csdCountNum;
+var csdPageStart = csdPageEnd - csdShowNum;
+var buColumnCount = 1;
+var buColumnShow = 4;
+var buColumnPageEnd = buColumnShow * buColumnCount;
+var buColumnPageStart = buColumnPageEnd - buColumnShow;
+var csdColumnCount = 1;
+var csdColumnShow = 4;
+var csdColumnPageEnd = csdColumnShow * csdColumnCount;
+var csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
 //var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
 var lastPageID = "viewMain";
@@ -52,7 +70,7 @@ window.initialSuccess = function() {
                         + "</EndYearMonth></LayoutHeader>";                   
     console.log(ARSummaryQueryData);
     
-    ARSummary();//support lifecycle
+    ARSummary();
     AraUserAuthority();
     $.mobile.changePage("#viewMain");
 }
@@ -86,65 +104,70 @@ $(document).one('pagebeforeshow', function(){
     $('#memoBtn').on('click', function(){
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
-    		
-    		chartColumnLandscape.update({
-				title: {
-					text: 'Overdue Trend in Last 6 weeks'
-				}
-			});
 			
     		switchState = true;
+			buCountNum = 1;
+			buPageEnd = buShowNum * buCountNum;
+			buPageStart = buPageEnd - buShowNum;
+			csdCountNum = 1;
+			csdPageEnd = csdShowNum * csdCountNum;
+			csdPageStart = csdPageEnd - csdShowNum;
+			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
-			setTimeout(function(){
-				//设置CSD数据
-				setCsdOverdueDetailData(facility);
-				setCsdAreaData();
-				csdSingleListBtn();
-			}, 300);
+			setCsdOverdueDetailData(facility);
+			setCsdAreaData();
+			csdSingleListBtn();
 			
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
     		
-			chartColumnLandscape.update({
-				title: {
-					text: 'Total AR and Overdue Amount'
-				}
-			});
-			
 			switchState = false;
+			buCountNum = 1;
+			buPageEnd = buShowNum * buCountNum;
+			buPageStart = buPageEnd - buShowNum;
+			csdCountNum = 1;
+			csdPageEnd = csdShowNum * csdCountNum;
+			csdPageStart = csdPageEnd - csdShowNum;
+			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			buSingleListBtn();
-			setTimeout(function(){
-				//设置CSD数据
-				setCsdOverdueDetailData(facility);
-				setCsdAreaData();
-				csdSingleListBtn();
-			}, 300);
+			setCsdOverdueDetailData(facility);
+			setCsdAreaData();
+			csdSingleListBtn();
 			
     	}
-
+    	
+    	changeColorByNum();
+    	
+    	buColumnCheckAll = false;
+    	csdColumnCheckAll = false;
+		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+    	$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    	
     });
 
     //BU allList btn
     $('#buAllListBtn').on('click', function(){
     	var flag = $('#buAllListBtn').attr('src');
-    	if(flag === 'img/all_list_down.png'){
+    	if(flag == 'img/all_list_down.png'){
     		$('#buAllListBtn').attr('src', 'img/all_list_up.png');
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
+    		
     		for(var i in buOverdueDetail){
     			buOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    			
     		}
     		
     		if(buColumnCheckAll == false){
-    			loadingMask("show");
-    			setAllColumnData('bu');
-    			loadingMask("hide");
+				buColumnCount = 1;
+				buColumnPageEnd = buColumnShow * buColumnCount;
+				buColumnPageStart = buColumnPageEnd - buColumnShow;
     			buColumnCheckAll = true;
     		}
     		
@@ -154,9 +177,11 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_down.png');
     		$('.bu-single-list').hide();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
+    		
     		for(var i in buOverdueDetail){
     			buOverdueDetail[i]["Header"]["SPREAD"] = 0;
     		}
+    		
     	}
 
     });
@@ -169,14 +194,16 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
+    		
     		for(var i in csdOverdueDetail){
     			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    			
     		}
     		
     		if(csdColumnCheckAll == false){
-    			loadingMask("show");
-    			setAllColumnData('csd');
-    			loadingMask("hide");
+    			csdColumnCount = 1;
+				csdColumnPageEnd = csdColumnShow * csdColumnCount;
+				csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
     			csdColumnCheckAll = true;
     		}
     		
@@ -186,9 +213,11 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
     		$('.csd-single-list').hide();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
+    		
     		for(var i in csdOverdueDetail){
     			csdOverdueDetail[i]["Header"]["SPREAD"] = 0;
     		}
+    		
     	}
 
     });
@@ -399,30 +428,144 @@ $(document).one('pagebeforeshow', function(){
 	
 	//监听屏幕滚动事件
 	$(window).on('scroll', function(){
+		//页面可视区域的范围
 	   	var visibleTop = document.body.scrollTop;
+	   	var visibleHeight = document.body.clientHeight;
 	   	var visibleBottom = document.body.clientHeight + visibleTop;  	
-	   	console.log("top:"+visibleTop+" ,bottom:"+visibleBottom);
+	   	//console.log("top:"+visibleTop+" ,bottom:"+visibleBottom);
 		
+		//判断竖屏时，treemap是否在可视区域内
 	   	for(var i in buOverdueDetail){
-	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1 && buOverdueDetail.length > 0){	   	
 	   			var top1 = $('#buShowList'+i).offset().top;
 		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
-		   		
-	   			if(top1 > visibleTop && bottom1 < visibleBottom){
-	   				console.log(i);
-	   				
-	   				
-	   				
+		  		
+	   			//不在可视区域内
+	   			if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				buArrIndex = null;
 	   			}
-	   			
-	   			
+	   			else{
+	   				buArrIndex = i;
+	   				return false;
+	   			}
 	   		}
+	   	}
+	   	
+	   	for(var i in csdOverdueDetail){
+	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1 && csdOverdueDetail.length > 0){	   	
+	   			var top1 = $('#csdShowList'+i).offset().top;
+		   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
+		   		
+	   			//不在可视区域内
+	   			if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				csdArrIndex = null;
+	   			}
+	   			else{
+	   				csdArrIndex = i;
+	   				return false;
+	   			}
+	   		}
+	   	}
+		
+		
+	   	var buArrLength = buAreaSeriesINV.length;
+	   	var csdArrLength = csdAreaSeriesINV.length;
+	   	
+	   	buPageEnd = buShowNum * buCountNum;
+        buPageStart = buPageEnd - buShowNum;
+	   	//console.log(buPageEnd+" ,"+buPageStart);
+	   	
+	   	//先从BU-Area开始
+	   	if(buArrLength > buPageEnd){
+			var top12 = $('#buShowList' + (buPageEnd - 1)).offset().top;
+
+			if((top12 - visibleBottom) < 250){
+				buCountNum++;
+				return false;		
+			}
+			
+			setBuAreaData();
+		   		  		
+		}
+	   	else{
+	   		buPageEnd = buArrLength;
+	   		setBuAreaData();
 	   		
+	   		//buArea加载完成之后再加载CSD-Area
+	   		csdPageEnd = csdShowNum * csdCountNum;
+			csdPageStart = csdPageEnd - csdShowNum;
+			
+			if(csdArrLength > csdPageEnd){
+				var csdTop12 = $('#csdShowList' + (csdPageEnd - 1)).offset().top;
+				
+				if((csdTop12 - visibleBottom) < 250){
+					csdCountNum++;
+					return false;
+				}
+				
+				setCsdAreaData();
+				
+			}
+			else{
+				csdPageEnd = csdArrLength;
+				setCsdAreaData();
+				
+			}
 	   	}
 	   	
 	   	
+	});
+	
+	$(window).on('scroll', function(){
+		//页面可视区域的范围
+	   	var visibleTop = document.body.scrollTop;
+	   	var visibleHeight = document.body.clientHeight;
+	   	var visibleBottom = document.body.clientHeight + visibleTop;
+		
+		//点击展开全部BU-column
+	   	var buColumnArrLength = buColumnSeries.length;
+	   	buColumnPageEnd = buColumnShow * buColumnCount;
+		buColumnPageStart = buColumnPageEnd - buColumnShow;
+	   	
+	   	if(buColumnCheckAll == true){
+	   		if(buColumnArrLength > buColumnPageEnd){
+	   			var top4 = $('#buShowList' + (buColumnPageEnd - 1)).offset().top;
+	   			
+	   			if((top4 - visibleBottom) < 300){
+	   				buColumnCount++;
+	   				return false;
+	   			}
+	   			
+	   			setBuPartOfColumnData();
+	   		}
+	   		else{
+	   			buColumnPageEnd = buColumnArrLength;
+	   			setBuPartOfColumnData();
+	   		}
+	   	}
 	   	
 	   	
+	   	//点击展开全部CSD-column
+	   	var csdColumnArrLength = csdColumnSeries.length;
+	   	csdColumnPageEnd = csdColumnShow * csdColumnCount;
+		csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+	   	
+	   	if(csdColumnCheckAll == true){
+	   		if(csdColumnArrLength > csdColumnPageEnd){
+	   			var top4 = $('#csdShowList' + (csdColumnPageEnd - 1)).offset().top;
+	   			
+	   			if((top4 - visibleBottom) < 300){
+	   				csdColumnCount++;
+	   				return false;
+	   			}
+	   			
+	   			setCsdPartOfColumnData();
+	   		}
+	   		else{
+	   			csdColumnPageEnd = csdColumnArrLength;
+	   			setCsdPartOfColumnData();
+	   		}
+	   	}
 	});
 	
 });
@@ -593,6 +736,39 @@ function formatNumber(n) {
     return arr[0].replace(regex, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
 }
 
+//改变负值的字体颜色
+function changeColorByNum(){
+	var fontArr = document.getElementsByClassName("font-localString");
+	for(var i in fontArr){
+		try{
+			if(parseFloat(fontArr[i].innerText) < 0){
+				$(fontArr[i]).addClass("font-color-red");
+			}
+			else{
+				$(fontArr[i]).addClass("font-color-black");
+			}
+		}catch(e){
+			//TODO handle the exception
+			console.log(i);
+		}
+	}
+	
+	var fontDayArr = document.getElementsByClassName("font-day-color");
+	for(var i in fontDayArr){
+		try{
+			if(parseFloat(fontDayArr[i].innerText) > 0){
+				$(fontDayArr[i]).addClass("font-color-red");
+			}
+			else{
+				$(fontDayArr[i]).addClass("font-color-black");
+			}
+		}catch(e){
+			//TODO handle the exception
+			console.log(i)
+		}
+	}
+}
+
 
 function changePageByPanel(pageId) {
 	window.firstClick = true;
@@ -622,27 +798,7 @@ function changePageByPanel(pageId) {
     $("#mypanel").panel("close");
 }
 
-function changePageInitViewDetail(){
-	$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
-    $("label[for=viewDetail-tab-2]").removeClass('ui-btn-active');
-    $("label[for=viewDetail-tab-3]").removeClass('ui-btn-active');
-    
-	$('#memoBtn').attr('src', 'img/switch_g.png');
-	$('#buAllListBtn').attr('src', 'img/all_list_down.png');
-    $('.buSingleListBtn').attr('src', 'img/list_down.png');
-    $('#csdAllListBtn').attr('src', 'img/all_list_down.png');
-    $('.csdSingleListBtn').attr('src', 'img/list_down.png');
-    $('.bu-single-list').hide();
-    $('.csd-single-list').hide();
-    
-    $('#overdueSoon').hide();
-	$('#expiredSoon').hide();
-	$('#overdue').show();
-	
-    $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
-    $(".Facility #ALL").removeClass('disableHover');
-    $(".Facility #ALL").addClass('hover');
-}
+
 
 function isVisible($node){
     var winH = $(window).height();
@@ -670,6 +826,18 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#backBtn').hide();
     	}else{
     		$('#viewDetail-hc-column-landscape').hide();
+    		$('#viewDetail .page-header').show();
+    		$('#viewDetail .page-tabs').show();
+    		if(viewDetailTab == "overdue"){
+    			$('#viewDetail #overdue').show();
+    		}
+    		else if(viewDetailTab == "overdueSoon"){
+    			$('#viewDetail #overdueSoon').show();
+    		}
+    		else if(viewDetailTab == "expiredSoon"){
+    			$('#viewDetail #expiredSoon').show();
+    		}
+    		$('#viewDetail .scrollmenu').show();
     		
     	}
 
@@ -680,13 +848,35 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	/*getLandscapeColumn(false);
-			zoomInChartByColumn();
-        	$('#viewDetail-hc-column-landscape').show();*/
-        	
-        	//判断可视区域内是否有treemap
+        	console.log(buArrIndex);
+    		if(viewDetailTab == "overdue" && buArrIndex !== null){
+        		getLandscapeColumn(true, "");
+        		getLandscapeColumn(false, "BU");
+        		zoomInChartByColumn();
+        		$('#viewDetail .page-header').hide();
+        		$('#viewDetail .page-tabs').hide();
+        		$('#viewDetail #overdue').hide();
+        		$('#viewDetail #overdueSoon').hide();
+        		$('#viewDetail #expiredSoon').hide();
+        		$('#viewDetail .scrollmenu').hide();
+        		$('#viewDetail-hc-column-landscape').show();
+        	}
+    		else if(viewDetailTab == "overdue" && csdArrIndex !== null && buArrIndex == null){
+    			getLandscapeColumn(true, "");
+        		getLandscapeColumn(false, "CSD");
+        		zoomInChartByColumn();
+        		$('#viewDetail .page-header').hide();
+        		$('#viewDetail .page-tabs').hide();
+        		$('#viewDetail #overdue').hide();
+        		$('#viewDetail #overdueSoon').hide();
+        		$('#viewDetail #expiredSoon').hide();
+        		$('#viewDetail .scrollmenu').hide();
+        		$('#viewDetail-hc-column-landscape').show();
+    		}
+    		
+	        	
+        
         	
         }
-
     }
 }, false);

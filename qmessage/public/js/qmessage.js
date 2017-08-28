@@ -139,7 +139,7 @@
 
         /* Text history to server */
         StoreTextHistory = function (content, msg) {
-            var url = $.trim(options["message_api_url_prefix"]);
+            /*var url = $.trim(options["message_api_url_prefix"]);
             url = (url == "") ? URL_MAP["storeTextHistory"] : (HTTP_PREFIX + url + URL_MAP["storeTextHistory"]);
             var json = {
                 "msg_id": msg["msg_id"],
@@ -152,12 +152,12 @@
                 "ctime": content["create_time"],
                 "content": JSON.stringify(content["msg_body"])
             };
-            $.post(url, JSON.stringify(json));
+            $.post(url, JSON.stringify(json));*/
         };
 
         /* Picture history to server */
         StorePicHistory = function (content, msg) {
-            var url = $.trim(options["message_api_url_prefix"]);
+            /*var url = $.trim(options["message_api_url_prefix"]);
             url = (url == "") ? URL_MAP["storePicHistory"] : (HTTP_PREFIX + url + URL_MAP["storePicHistory"]);
             var json = {
                 "msg_id": msg["msg_id"],
@@ -172,12 +172,12 @@
                 "fname": content["fname"],
                 "extras": content["msg_body"]
             };
-            $.post(url, JSON.stringify(json));
+            $.post(url, JSON.stringify(json));*/
         };
 
         /* File history to server */
         StoreFileHistory = function (content, msg) {
-            var url = $.trim(options["message_api_url_prefix"]);
+            /*var url = $.trim(options["message_api_url_prefix"]);
             url = (url == "") ? URL_MAP["storeFileHistory"] : (HTTP_PREFIX + url + URL_MAP["storeFileHistory"]);
             var json = {
                 "msg_id": msg["msg_id"],
@@ -192,7 +192,7 @@
                 "fname": content["fname"],
                 "extras": content["msg_body"]
             };
-            $.post(url, JSON.stringify(json));
+            $.post(url, JSON.stringify(json));*/
         };
 
         /* QMessage API */

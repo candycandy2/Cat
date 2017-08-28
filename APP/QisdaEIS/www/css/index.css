@@ -105,7 +105,12 @@ a{
 	font-size: 14px !important;
 	font-family: arial !important;
 }
-
+.font-color-black {
+	color: black;
+}
+.font-color-red {
+	color: red;
+}
 .font-companyName{
 	width: 17VW;
 	overflow:hidden; 
@@ -740,7 +745,9 @@ div.scrollmenu a {
 	text-decoration: none;
 }
 
-div.scrollmenu a:nth-of-type(1){ border-left-width: 0;}
+div.scrollmenu a:nth-of-type(1){ 
+	border-left-width: 0;
+}
 
 div.scrollmenu a.hover {
     background-color: #0fb6b7;
@@ -752,11 +759,13 @@ div.scrollmenu a.disableHover {
 	color: #999999 !important;
 }
 
-div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
-.scrollmenu.Ro a:not(:nth-of-type(1)){margin-left: -4px;}
+div.scrollmenu a:active, div.scrollmenu a:hover{ 
+	color: #0f0f0f;
+}
 /* let scroll more smooth in iOS */
-.scrollmenu.Facility{ -webkit-overflow-scrolling: touch}
-.scrollmenu.Ro{ -webkit-overflow-scrolling: touch}
+.scrollmenu .Facility{ 
+	-webkit-overflow-scrolling: touch;
+}
 
 /********************************************** mypanel *********************************************/
 #mypanel #panel-header{
@@ -821,15 +830,15 @@ div.scrollmenu a:active, div.scrollmenu a:hover{ color: #0f0f0f;}
 	}
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
-		/*display: inline;*/
 	}
-	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
-	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu,
+	/*#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
+	#viewDetail .bu-title, #viewDetail .bu-title, #viewDetail .bu-main, #viewDetail .scrollmenu,
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
-		display: none !important;
-	}
+		display: none;
+	}*/
 	#viewDetail #viewDetail-hc-column-landscape {
-		display: block;
+		/*display: block;*/
+		display: none;
 	}
 	#viewDetail{
 		padding-top: 0 !important;
