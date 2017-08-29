@@ -72,7 +72,7 @@ window.initialSuccess = function() {
                         + "</StartYearMonth><EndYearMonth>"
                         + currentYear + "/" + currentMonth
                         + "</EndYearMonth></LayoutHeader>";                   
-    console.log(ARSummaryQueryData);
+    //console.log(ARSummaryQueryData);
     
     ARSummary();
     AraUserAuthority();
@@ -729,13 +729,6 @@ function zoomInChartByColumn(){
     }
 }
 
-function changeFontColor(num){
-	if(num <= 0){
-		$('#moneyOverdue').css('color', '#ec3a24');
-	}else{
-		$('#moneyOverdue').css('color', '#323232');
-	}
-}
 
 //参数n必须为number类型
 function formatNumber(n) {
@@ -750,7 +743,7 @@ function changeColorByNum(){
 	var fontArr = document.getElementsByClassName("font-localString");
 	for(var i in fontArr){
 		try{
-			if(parseFloat(fontArr[i].innerText) < 0){
+			if(parseFloat(fontArr[i].innerText) > 0){
 				$(fontArr[i]).addClass("font-color-red");
 			}
 			else{
