@@ -61,8 +61,6 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
         curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
 
-        $result = curl_exec($curl);
-
         if( ! $result = curl_exec($curl)) 
         { 
             $errno = curl_errno($curl);
