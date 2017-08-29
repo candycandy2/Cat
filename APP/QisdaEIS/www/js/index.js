@@ -30,8 +30,8 @@ var csdColumnCount = 1;
 var csdColumnShow = 4;
 var csdColumnPageEnd = csdColumnShow * csdColumnCount;
 var csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
-var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
-//var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alan.Chen</Account></LayoutHeader>";
+//var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
+var AraUserAuthorityQueryData;
 var lastPageID = "viewMain";
 var pageList = ["viewMain", "viewDetail"];
 var initialAppName = "QisdaEIS";
@@ -61,6 +61,10 @@ window.initialSuccess = function() {
     if(currentDate == 1) {
         currentMonth = currentMonth - 1;
     }
+    
+    var loginName = loginData["loginid"];
+    AraUserAuthorityQueryData = "<LayoutHeader><Account>" + loginName + "</Account></LayoutHeader>";
+    console.log(AraUserAuthorityQueryData);
     
     loadingMask("show");
     ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
@@ -833,10 +837,10 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     		if(buArrIndex !== null || csdArrIndex !== null){
     			buArrIndex = null;
 	    		csdArrIndex = null;
-	    		$('.bu-single-list').hide();
+	    		/*$('.bu-single-list').hide();
 	    		$('.csd-single-list').hide();
 	    		$('.buSingleListBtn').attr('src', 'img/list_down.png');
-	    		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
+	    		$('.csdSingleListBtn').attr('src', 'img/list_down.png');*/
     		}
     		$('#viewDetail-hc-column-landscape').hide();
     		$('#viewDetail .page-header').show();
