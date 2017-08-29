@@ -141,12 +141,14 @@ $(document).one('pagebeforeshow', function(){
 			
     	}
     	
-    	changeColorByNum();
-    	
     	buColumnCheckAll = false;
     	csdColumnCheckAll = false;
+    	buArrIndex = null;
+    	csdArrIndex = null;
 		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     	$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    	
+    	changeColorByNum();
     	
     });
 
@@ -183,7 +185,8 @@ $(document).one('pagebeforeshow', function(){
     		}
     		
     	}
-
+		
+		//changeColorByNum();
     });
 
     //CSD allList btn
@@ -219,6 +222,8 @@ $(document).one('pagebeforeshow', function(){
     		}
     		
     	}
+    	
+    	//changeColorByNum();
 
     });
 
@@ -461,7 +466,7 @@ $(document).one('pagebeforeshow', function(){
 	   				csdArrIndex = null;
 	   			}
 	   			else{
-	   				csdArrIndex = i;
+	   				buArrIndex = i;
 	   				return false;
 	   			}
 	   		}
@@ -825,6 +830,14 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#overview-hc-rectangle-landscape').hide();
 			$('#backBtn').hide();
     	}else{
+    		if(buArrIndex !== null || csdArrIndex !== null){
+    			buArrIndex = null;
+	    		csdArrIndex = null;
+	    		$('.bu-single-list').hide();
+	    		$('.csd-single-list').hide();
+	    		$('.buSingleListBtn').attr('src', 'img/list_down.png');
+	    		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
+    		}
     		$('#viewDetail-hc-column-landscape').hide();
     		$('#viewDetail .page-header').show();
     		$('#viewDetail .page-tabs').show();
@@ -848,7 +861,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	console.log(buArrIndex);
+        	console.log(buArrIndex+" ,"+csdArrIndex);
     		if(viewDetailTab == "overdue" && buArrIndex !== null){
         		getLandscapeColumn(true, "");
         		getLandscapeColumn(false, "BU");
@@ -861,7 +874,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         		$('#viewDetail .scrollmenu').hide();
         		$('#viewDetail-hc-column-landscape').show();
         	}
-    		else if(viewDetailTab == "overdue" && csdArrIndex !== null && buArrIndex == null){
+    		else if(viewDetailTab == "overdue" && csdArrIndex !== null){
     			getLandscapeColumn(true, "");
         		getLandscapeColumn(false, "CSD");
         		zoomInChartByColumn();
