@@ -254,25 +254,49 @@ function getLandscapeColumn(isInit, type) {
 	else {
 		if(type == "BU") {
 			if(switchState == false){
-				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
-				chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
-				chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
-				chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-				chartColumnLandscape.update({ 
-					chart: {
-						marginTop: 90
-					},
-					title: {
-						text: 'Total AR and Overdue Amount',
-						style: {
-							fontWidth: 'bold'
+				if(facility == "ALL"){
+					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						}
-					},
-					subtitle: {
-						text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
-					}
-				});
-				chartColumnLandscape.redraw(false);
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				else{
+					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: otherBuOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherBuOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				
 			}
 			else{
 				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
@@ -316,25 +340,48 @@ function getLandscapeColumn(isInit, type) {
 		}
 		else if(type == "CSD"){
 			if(switchState == false){
-				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
-				chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
-				chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
-				chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-				chartColumnLandscape.update({ 
-					chart: {
-						marginTop: 90
-					},
-					title: {
-						text: 'Total AR and Overdue Amount',
-						style: {
-							fontWidth: 'bold'
+				if(facility == "ALL"){
+					chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						}
-					},
-					subtitle: {
-						text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
-					}
-				});
-				chartColumnLandscape.redraw(false);
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				else{
+					chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: otherCsdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherCsdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}	
 			}
 			else{
 				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
@@ -417,8 +464,10 @@ function buSingleListBtn(){
 		if($('.buSingleListBtn[src="img/list_up.png"]').length === buAreaSeriesINV.length){
 			$('#buAllListBtn').attr('src', 'img/all_list_up.png');
 		}
-
+		
+		console.log(buArrIndex);
 	});
+	
 }
 
 //csdSingleListBtn
@@ -479,14 +528,17 @@ function getOverdueDetailData(){
 		item["Header"]["SPREAD"] = 0;
 		if(item["Header"]["TYPE"] == "BU"){
 			buOverdueDetail.push(item);
+			//默认按total降序排序
+			//buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+			//console.log(buOverdueDetail);
 		}
 		else{
 			csdOverdueDetail.push(item);
+			//csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+			//console.log(csdOverdueDetail);
 		}
 	});
 	
-	//console.log(buOverdueDetail);
-	//console.log(csdOverdueDetail);	
 }
 
 function setBuOverdueDetailData(fac){
@@ -499,7 +551,8 @@ function setBuOverdueDetailData(fac){
 	var buOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
-		$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+		$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+		$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 		$.each(buOverdueDetail, function(i, item) {
 			buCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 			/********** switchOff data **********/
@@ -668,7 +721,8 @@ function setBuOverdueDetailData(fac){
 		}
 		
 		if(otherBuOverdueDetail.length > 0){
-			$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+			$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+			$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 			$.each(otherBuOverdueDetail, function(i, item) {
 				buCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 				/********** switchOff data **********/
@@ -849,7 +903,8 @@ function setCsdOverdueDetailData(fac){
 	var csdOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
-		$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+		$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+		$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 		$.each(csdOverdueDetail, function(i, item) {
 			csdCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 			/********** switchOff data **********/
@@ -1018,7 +1073,8 @@ function setCsdOverdueDetailData(fac){
 		}
 		
 		if(otherCsdOverdueDetail.length > 0){
-			$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+			$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+			$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 			$.each(otherCsdOverdueDetail, function(i, item) {
 				csdCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 				/********** switchOff data **********/
@@ -2361,8 +2417,8 @@ $('#viewDetail').pagecontainer({
 				//改变颜色
 				changeColorByNum();
 				viewDetailInit = true;
-				//测试,之后删除
-    			console.log(buCustomerArr);
+				//测试,后删除
+				console.log(loginData.loginid);
 			}
 			loadingMask("hide");
 			
@@ -2414,6 +2470,8 @@ $('#viewDetail').pagecontainer({
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			facilityInit = true;
+			//切换facility时回到顶部,防止数据过多,返回到中间,数据不显示
+			$('body,html').animate({scrollTop:0},300);
 			
 			buCountNum = 1;
 			buPageEnd = buShowNum * buCountNum;
