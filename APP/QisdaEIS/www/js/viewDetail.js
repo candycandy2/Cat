@@ -465,7 +465,6 @@ function buSingleListBtn(){
 			$('#buAllListBtn').attr('src', 'img/all_list_up.png');
 		}
 		
-		console.log(buArrIndex);
 	});
 	
 }
@@ -528,16 +527,18 @@ function getOverdueDetailData(){
 		item["Header"]["SPREAD"] = 0;
 		if(item["Header"]["TYPE"] == "BU"){
 			buOverdueDetail.push(item);
-			//默认按total降序排序
-			//buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-			//console.log(buOverdueDetail);
 		}
 		else{
 			csdOverdueDetail.push(item);
-			//csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-			//console.log(csdOverdueDetail);
 		}
 	});
+	
+	//默认按total降序排序
+	/*buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+	csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+	
+	console.log(buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV")));
+	console.log(buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV")));*/
 	
 }
 
@@ -2417,8 +2418,6 @@ $('#viewDetail').pagecontainer({
 				//改变颜色
 				changeColorByNum();
 				viewDetailInit = true;
-				//测试,后删除
-				console.log(loginData.loginid);
 			}
 			loadingMask("hide");
 			
