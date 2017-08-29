@@ -27,14 +27,13 @@ class ChatRoomController extends Controller
         $this->parameterRepository = $parameterRepository;
         $this->historyServices = $historyServices;
     }
-
-
+    
     /**
      * getQGroupHistoryMessageJob (後台JOB專用)
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
-        ignore_user_abort(true);//瀏覽器關掉後也持續執行
+        //ignore_user_abort(true);//瀏覽器關掉後也持續執行
         set_time_limit(0);//不限制time out 時間
 
         $ACTION = 'getQGroupHistoryMessageJob';
@@ -99,12 +98,12 @@ class ChatRoomController extends Controller
                 if(count($historyData) > 0 ){
                     Log::info('開始寫入History');
                     $this->historyServices->upsertHistory($historyData);
-                    Log::info('History寫入完成');
+                    Log::info('History寫入完成，共'.count($historyData).'筆');
                 }
                 if(count($historyFileData) > 0){
                     Log::info('開始寫入HistoryFile');
                     $this->historyServices->upsertHistoryFile($historyFileData);
-                    Log::info('HistoryFile寫入完成');
+                    Log::info('HistoryFile，寫入完成，共'.count($historyFileData)."筆");
                 }
                  $this->parameterRepository->updateLastQueryTime($endTime);
            } while ($endTime != $now);
