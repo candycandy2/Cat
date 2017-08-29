@@ -208,10 +208,11 @@ var columnOption = {
 	        return s;
 	    },*/
 	   	formatter: function () {
-	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
-	        $.each(this.points, function () {
-	           s += '<br/> ' + this.series.name + ':USD$' + formatNumber(this.y.toFixed(2));
-	        });
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] +
+	        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+	        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+	        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+	        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
 	        return s;
 	    },
 	    followPointer: false,
@@ -257,6 +258,21 @@ function getLandscapeColumn(isInit, type) {
 				chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
 				chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
 				chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+				chartColumnLandscape.update({ 
+					chart: {
+						marginTop: 90
+					},
+					title: {
+						text: 'Total AR and Overdue Amount',
+						style: {
+							fontWidth: 'bold'
+						}
+					},
+					subtitle: {
+						text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+					}
+				});
+				chartColumnLandscape.redraw(false);
 			}
 			else{
 				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
@@ -283,6 +299,17 @@ function getLandscapeColumn(isInit, type) {
 			        color: '#ED3824',
 			        data: buColumnSeries[buArrIndex][7]
 				}, false, false, false);
+				chartColumnLandscape.update({
+					chart: {
+						marginTop: 70
+					},
+					title: {
+						text: 'Overdue Trend in Last 6 weeks'
+					},
+					subtitle: {
+						text: ''
+					}
+				});
 				chartColumnLandscape.redraw(false);
 			}
 			
@@ -293,6 +320,21 @@ function getLandscapeColumn(isInit, type) {
 				chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
 				chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
 				chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+				chartColumnLandscape.update({ 
+					chart: {
+						marginTop: 90
+					},
+					title: {
+						text: 'Total AR and Overdue Amount',
+						style: {
+							fontWidth: 'bold'
+						}
+					},
+					subtitle: {
+						text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+					}
+				});
+				chartColumnLandscape.redraw(false);
 			}
 			else{
 				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
@@ -319,62 +361,22 @@ function getLandscapeColumn(isInit, type) {
 			        color: '#ED3824',
 			        data: csdColumnSeries[csdArrIndex][7]
 				}, false, false, false);
+				chartColumnLandscape.update({
+					chart: {
+						marginTop: 70
+					},
+					title: {
+						text: 'Overdue Trend in Last 6 weeks'
+					},
+					subtitle: {
+						text: ''
+					}
+				});
 				chartColumnLandscape.redraw(false);
 			}
 		}		
 		
-		if(type == "BU"){
-			if(switchState == false){
-				chartColumnLandscape.update({ 
-					chart: {
-						marginTop: 90
-					},
-					title: {
-						text: 'Total AR and Overdue Amount',
-						style: {
-							fontWidth: 'bold'
-						}
-					},
-					subtitle: {
-						text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
-					}
-				});
-			}
-			else{
-				chartColumnLandscape.update({
-					title: {
-						text: 'Overdue Trend in Last 6 weeks'
-					}
-				});
-			}
-		}
-		else if(type == "CSD"){
-			if(switchState == false){
-				chartColumnLandscape.update({ 
-					chart: {
-						marginTop: 90
-					},
-					title: {
-						text: 'Total AR and Overdue Amount',
-						style: {
-							fontWidth: 'bold'
-						}
-					},
-					subtitle: {
-						text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
-					}
-				});
-			}
-			else{
-				chartColumnLandscape.update({
-					title: {
-						text: 'Overdue Trend in Last 6 weeks'
-					}
-				});
-			}
-		}
-		
-		
+
 	}
 }
 
@@ -389,6 +391,7 @@ function buSingleListBtn(){
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			buOverdueDetail[index]["Header"]["SPREAD"] = 1;
 			buArrIndex = index;
+			csdArrIndex = null;
 			
 			if(buColumnCheckAll == false){
 				setSingleColumnData(index, 'bu');
@@ -429,6 +432,7 @@ function csdSingleListBtn(){
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 1;
 			csdArrIndex = index;
+			buArrIndex = null;
 			
 			if(csdColumnCheckAll == false){
 				setSingleColumnData(index, 'csd');
@@ -459,9 +463,6 @@ function csdSingleListBtn(){
 
 
 function getOverdueDetailData(){
-	buCustomerArr = [];
-	csdCustomerArr = [];
-	
 	//get time axis on area and column
 	for(var i in overdueDetailCallBackData[0]["Detail"]){
 		timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
@@ -478,11 +479,9 @@ function getOverdueDetailData(){
 		item["Header"]["SPREAD"] = 0;
 		if(item["Header"]["TYPE"] == "BU"){
 			buOverdueDetail.push(item);
-			buCustomerArr.push(item["Header"]["CUSTOMER"]);
 		}
 		else{
 			csdOverdueDetail.push(item);
-			csdCustomerArr.push(item["Header"]["CUSTOMER"]);
 		}
 	});
 	
@@ -495,12 +494,14 @@ function setBuOverdueDetailData(fac){
 	buAreaSeriesINV = [];
 	buAreaSeriesCM = [];
 	buColumnSeries = [];
+	buCustomerArr = [];
 	var buOverdueDetailTotalINV = 0;
 	var buOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
 		$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
 		$.each(buOverdueDetail, function(i, item) {
+			buCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 			/********** switchOff data **********/
 			//table
 			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -669,6 +670,7 @@ function setBuOverdueDetailData(fac){
 		if(otherBuOverdueDetail.length > 0){
 			$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
 			$.each(otherBuOverdueDetail, function(i, item) {
+				buCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 				/********** switchOff data **********/
 				//table
 				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -832,6 +834,9 @@ function setBuOverdueDetailData(fac){
 			$('.overdueDetail-bu').append(noneDataFourTotal);
 		}	
 	}
+	
+	changeColorByNum();
+	
 }
 
 function setCsdOverdueDetailData(fac){
@@ -839,12 +844,14 @@ function setCsdOverdueDetailData(fac){
 	csdAreaSeriesINV = [];
 	csdAreaSeriesCM = [];
 	csdColumnSeries = [];
+	csdCustomerArr = [];
 	var csdOverdueDetailTotalINV = 0;
 	var csdOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
 		$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
 		$.each(csdOverdueDetail, function(i, item) {
+			csdCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 			/********** switchOff data **********/
 			//table
 			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -1013,6 +1020,7 @@ function setCsdOverdueDetailData(fac){
 		if(otherCsdOverdueDetail.length > 0){
 			$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
 			$.each(otherCsdOverdueDetail, function(i, item) {
+				csdCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
 				/********** switchOff data **********/
 				//table
 				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -1099,10 +1107,10 @@ function setCsdOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span class="font-day-class">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-class">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-class">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-class">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -1176,7 +1184,10 @@ function setCsdOverdueDetailData(fac){
 			$('.overdueDetail-csd').append(noneDataFourColumn);
 			$('.overdueDetail-csd').append(noneDataFourTotal);
 		}
-	}	
+	}
+	
+	changeColorByNum();
+	
 }
 
 
@@ -1469,6 +1480,18 @@ function setSingleColumnData(i, type) {
 			buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 			buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
 			buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+			buColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			buColumn.redraw(false);
 		}
 		else{
@@ -1497,6 +1520,18 @@ function setSingleColumnData(i, type) {
 		        color: '#ED3824',
 		        data: buColumnSeries[i][7]
 			}, false, false, false);
+			buColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			buColumn.redraw(false);
 		}
 		
@@ -1508,6 +1543,18 @@ function setSingleColumnData(i, type) {
 			csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
 			csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
 			csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+			csdColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			csdColumn.redraw(false);
 		}
 		else{
@@ -1536,6 +1583,18 @@ function setSingleColumnData(i, type) {
 		        color: '#ED3824',
 		        data: csdColumnSeries[i][7]
 			}, false, false, false);
+			csdColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			csdColumn.redraw(false);
 			
 		}
@@ -1641,6 +1700,18 @@ function setBuPartOfColumnData(){
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
 				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1651,6 +1722,18 @@ function setBuPartOfColumnData(){
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
 				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1683,6 +1766,18 @@ function setBuPartOfColumnData(){
 			        color: '#ED3824',
 			        data: buColumnSeries[i][7]
 				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1713,6 +1808,18 @@ function setBuPartOfColumnData(){
 			        color: '#ED3824',
 			        data: buColumnSeries[i][7]
 				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1728,6 +1835,18 @@ function setCsdPartOfColumnData(){
 				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
 				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
 				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1738,6 +1857,18 @@ function setCsdPartOfColumnData(){
 				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
 				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
 				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1770,6 +1901,18 @@ function setCsdPartOfColumnData(){
 			        color: '#ED3824',
 			        data: csdColumnSeries[i][7]
 				}, false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1800,6 +1943,18 @@ function setCsdPartOfColumnData(){
 			        color: '#ED3824',
 			        data: csdColumnSeries[i][7]
 				}, false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -2206,6 +2361,8 @@ $('#viewDetail').pagecontainer({
 				//改变颜色
 				changeColorByNum();
 				viewDetailInit = true;
+				//测试,之后删除
+    			console.log(buCustomerArr);
 			}
 			loadingMask("hide");
 			
@@ -2290,12 +2447,16 @@ $('#viewDetail').pagecontainer({
 			setExpiredSoonData();
 			expiredSoonInit = false;
 			
+			buArrIndex = null;
+    		csdArrIndex = null;
 			buColumnCheckAll = false;
     		csdColumnCheckAll = false;
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		
     		changeColorByNum();
+    		
+    		
         });
 		
 	}
