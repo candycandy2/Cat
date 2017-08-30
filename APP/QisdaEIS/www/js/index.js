@@ -55,24 +55,24 @@ var time = new Date(Date.now());
 var nowTime = new Date();
 
 window.initialSuccess = function() {
-	currentYear = time.getFullYear();
+	/*currentYear = time.getFullYear();
     currentDate = time.getDate();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
     if(currentDate == 1) {
         currentMonth = currentMonth - 1;
     }
+    ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
+                        + (currentYear - 3) + "/01"
+                        + "</StartYearMonth><EndYearMonth>"
+                        + currentYear + "/" + currentMonth
+                        + "</EndYearMonth></LayoutHeader>";                   
+    console.log(ARSummaryQueryData);*/
     
     var loginName = loginData["loginid"];
     AraUserAuthorityQueryData = "<LayoutHeader><Account>" + loginName + "</Account></LayoutHeader>";
     console.log(AraUserAuthorityQueryData);
     
     loadingMask("show");
-    ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
-                        + (currentYear - 3) + "/01"
-                        + "</StartYearMonth><EndYearMonth>"
-                        + currentYear + "/" + currentMonth
-                        + "</EndYearMonth></LayoutHeader>";                   
-    //console.log(ARSummaryQueryData);
     
     ARSummary();
     AraUserAuthority();
@@ -165,15 +165,17 @@ $(document).one('pagebeforeshow', function(){
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
     		
+    		/*buColumnCount = 1;
+			buColumnPageEnd = buColumnShow * buColumnCount;
+			buColumnPageStart = buColumnPageEnd - buColumnShow;*/
+    		
     		for(var i in buOverdueDetail){
     			buOverdueDetail[i]["Header"]["SPREAD"] = 1;
     			
     		}
     		
     		if(buColumnCheckAll == false){
-				buColumnCount = 1;
-				buColumnPageEnd = buColumnShow * buColumnCount;
-				buColumnPageStart = buColumnPageEnd - buColumnShow;
+				
     			buColumnCheckAll = true;
     		}
     		
@@ -190,7 +192,7 @@ $(document).one('pagebeforeshow', function(){
     		
     	}
 		
-		//changeColorByNum();
+		console.log(buCustomerArr);
     });
 
     //CSD allList btn
@@ -233,112 +235,135 @@ $(document).one('pagebeforeshow', function(){
 
 	//sort
 	$('#buOverdueSortByCustomer').on('click', function(){
+		buCountNum = 1;
+		buPageEnd = buShowNum * buCountNum;
+		buPageStart = buPageEnd - buShowNum;
+		
 		if($(this).attr('src') == 'img/priority_up.png'){
-			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-			setBuOverdueDetailData(facility);
-			setBuAreaData();
-			buSingleListBtn();
+			buOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
+			buCustomerArr.sort(compareLargeOverdueSoon("CUSTOMER"));
 			$(this).attr('src', 'img/priority_down.png');
 			
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			buOverdueDetail.sort(compareLargeOverdue("Header" ,"CUSTOMER"));
-			setBuOverdueDetailData(facility);
-			setBuAreaData();
-			buSingleListBtn();
+			buOverdueDetail.sort(compareSmallOverdue("Header" ,"CUSTOMER"));
+			buCustomerArr.sort(compareSmallOverdueSoon("CUSTOMER"));
 			$(this).attr('src', 'img/priority_up.png');
 			
 		}
+		
+		setBuOverdueDetailData(facility);
+		setBuAreaData();
+		buSingleListBtn();
 	});
 	
 	$('#buOverdueSortByTotal').on('click', function(){
-		if($(this).attr('src') == 'img/priority_up.png'){
+		buCountNum = 1;
+		buPageEnd = buShowNum * buCountNum;
+		buPageStart = buPageEnd - buShowNum;
+		
+		if($(this).attr('src') == 'img/priority_down.png'){
 			if(switchState == false){
 				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_INV"));
+				buCustomerArr.sort(compareSmallOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
+				buCustomerArr.sort(compareSmallOverdueSoon("TOTAL_CM"));
 			}
-			setBuOverdueDetailData(facility);
-			setBuAreaData();
-			buSingleListBtn();
-			$(this).attr('src', 'img/priority_down.png');
 			
+			$(this).attr('src', 'img/priority_up.png');
 			
 		}
-		else if($(this).attr('src') == 'img/priority_down.png'){
+		else if($(this).attr('src') == 'img/priority_up.png'){
 			if(switchState == false){
 				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+				buCustomerArr.sort(compareLargeOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
+				buCustomerArr.sort(compareLargeOverdueSoon("TOTAL_CM"));
 			}
-			setBuOverdueDetailData(facility);
-			setBuAreaData();
-			buSingleListBtn();
-			$(this).attr('src', 'img/priority_up.png');
-			
-				
+
+			$(this).attr('src', 'img/priority_down.png');
+					
 		}
+		
+		setBuOverdueDetailData(facility);
+		setBuAreaData();
+		buSingleListBtn();
+		
 	});
 	
 	$('#csdOverdueSortByCustomer').on('click', function(){
+		csdCountNum = 1;
+		csdPageEnd = csdShowNum * csdCountNum;
+		csdPageStart = csdPageEnd - csdShowNum;
+		
 		if($(this).attr('src') == 'img/priority_up.png'){
-			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-			setCsdOverdueDetailData(facility);	
-			setCsdAreaData();
-			csdSingleListBtn();
+			csdOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
+			csdCustomerArr.sort(compareLargeOverdueSoon("CUSTOMER"));
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			csdOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
-			setCsdOverdueDetailData(facility);	
-			setCsdAreaData();
-			csdSingleListBtn();
+			csdOverdueDetail.sort(compareSmallOverdue("Header" ,"CUSTOMER"));
+			csdCustomerArr.sort(compareSmallOverdueSoon("CUSTOMER"));
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
+		
+		setCsdOverdueDetailData(facility);
+		setCsdAreaData();
+		setCsdPartOfColumnData();
 	});
 	
 	$('#csdOverdueSortByTotal').on('click', function(){
-		if($(this).attr('src') == 'img/priority_up.png'){
+		csdCountNum = 1;
+		csdPageEnd = csdShowNum * csdCountNum;
+		csdPageStart = csdPageEnd - csdShowNum;
+		
+		if($(this).attr('src') == 'img/priority_down.png'){
 			if(switchState == false){
 				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_INV"));
+				csdCustomerArr.sort(compareSmallOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
+				csdCustomerArr.sort(compareSmallOverdueSoon("TOTAL_CM"));
 			}
-			setCsdOverdueDetailData(facility);	
-			setCsdAreaData();
-			csdSingleListBtn();
-			$(this).attr('src', 'img/priority_down.png');
-				
-		}
-		else if($(this).attr('src') == 'img/priority_down.png'){
-			if(switchState == false){
-				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-			}
-			else{
-				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
-			}
-			setCsdOverdueDetailData(facility);	
-			setCsdAreaData();
-			csdSingleListBtn();
+			
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
+		else if($(this).attr('src') == 'img/priority_up.png'){
+			if(switchState == false){
+				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
+				csdCustomerArr.sort(compareLargeOverdueSoon("TOTAL_INV"));
+			}
+			else{
+				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
+				csdCustomerArr.sort(compareLargeOverdueSoon("TOTAL_CM"));
+			}
+			
+			$(this).attr('src', 'img/priority_down.png');
+				
+		}
+		
+		setCsdOverdueDetailData(facility);
+		setCsdAreaData();
+		setCsdPartOfColumnData();
 	});
 	
 	$('#buOverdueSoonSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
-			buOutstand.sort(compareSmallOverdueSoon("CUSTOMER"));
+			buOutstand.sort(compareLargeOverdueSoon("CUSTOMER"));
 			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			buOutstand.sort(compareLargeOverdueSoon("CUSTOMER"));
+			buOutstand.sort(compareSmallOverdueSoon("CUSTOMER"));
 			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -346,29 +371,29 @@ $(document).one('pagebeforeshow', function(){
 	});
 	
 	$('#buOverdueSoonSortByTotal').on('click', function(){
-		if($(this).attr('src') == 'img/priority_up.png'){
+		if($(this).attr('src') == 'img/priority_down.png'){
 			buOutstand.sort(compareSmallOverdueSoon("DUE_SOON_INV"));
 			setOverdueSoonData();
-			$(this).attr('src', 'img/priority_down.png');
+			$(this).attr('src', 'img/priority_up.png');
 				
 		}
-		else if($(this).attr('src') == 'img/priority_down.png'){
+		else if($(this).attr('src') == 'img/priority_up.png'){
 			buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
 			setOverdueSoonData();
-			$(this).attr('src', 'img/priority_up.png');
+			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 	});
 	
 	$('#csdOverdueSoonSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
-			csdOutstand.sort(compareSmallOverdueSoon("CUSTOMER"));
+			csdOutstand.sort(compareLargeOverdueSoon("CUSTOMER"));
 			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			csdOutstand.sort(compareLargeOverdueSoon("CUSTOMER"));
+			csdOutstand.sort(compareSmallOverdueSoon("CUSTOMER"));
 			setOverdueSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -376,16 +401,16 @@ $(document).one('pagebeforeshow', function(){
 	});
 	
 	$('#csdOverdueSoonSortByTotal').on('click', function(){
-		if($(this).attr('src') == 'img/priority_up.png'){
+		if($(this).attr('src') == 'img/priority_down.png'){
 			csdOutstand.sort(compareSmallOverdueSoon("DUE_SOON_INV"));
 			setOverdueSoonData();
-			$(this).attr('src', 'img/priority_down.png');
+			$(this).attr('src', 'img/priority_up.png');
 				
 		}
-		else if($(this).attr('src') == 'img/priority_down.png'){
+		else if($(this).attr('src') == 'img/priority_up.png'){
 			csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
 			setOverdueSoonData();
-			$(this).attr('src', 'img/priority_up.png');
+			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 	});

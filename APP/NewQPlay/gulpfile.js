@@ -46,6 +46,7 @@ var schemeSetting =   "<string>appqplay"    + process.env.appNameDecorate + "</s
                     + "<string>appqchat"    + process.env.appNameDecorate + "</string>"
                     + "<string>apprm"       + process.env.appNameDecorate + "</string>"
                     + "<string>appmassage"  + process.env.appNameDecorate + "</string>"
+                    + "<string>appparking"  + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme01" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme02" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme03" + process.env.appNameDecorate + "</string>"
@@ -106,6 +107,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appqchat'    + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="apprm'       + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appmassage'  + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appparking'  + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + process.env.appNameDecorate + ':*" />' +
