@@ -150,6 +150,15 @@ gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="515e7317-5d3b-476c-8475-a8af67ee294c" --packageType="enterprise"
 
+pwd
+cd ../QPlayDailyBuild-Relieve-Leave-Parking/APP/Parking
+pwd
+# ------ build Parking ------
+gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env dev
+gulp jenkinsdefault --env dev
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="4489068a-0bae-4593-b999-f340c2659339" --packageType="enterprise"
 
 ############# Multijob #############
 ####################################
@@ -188,6 +197,8 @@ cp $appfolder/QisdaEIS/platforms/android/build/outputs/apk/android-release.apk $
 cp $appfolder/QisdaEIS/platforms/iOS/build/device/QisdaEIS.ipa $binfolder/QisdaEIS.ipa
 cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $binfolder/appmassage.apk
 cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
+cp $appfolder/Parking/platforms/android/build/outputs/apk/android-release.apk $binfolder/appparking.apk
+cp $appfolder/Parking/platforms/iOS/build/device/Parking.ipa $binfolder/Parking.ipa
 
 
 # ------ copy source code ------
@@ -212,6 +223,7 @@ git add Badminton/config.xml
 git add QChat/config.xml
 git add QisdaEIS/config.xml
 git add Massage/config.xml
+git add Parking/config.xml
 git commit -m "v1.0.0.$dailyver[Develop]"
 git push
 
@@ -372,6 +384,17 @@ if [ $result != 1 ]; then
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appmassagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appmassage.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
+# --- Parking android ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "eaf786afb27f567a9b04803e4127cef3" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appparkingdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appparking.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Parking(android) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appparkingdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appparking.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
 # --- qplay ios ---
 timestamp=$(date +%s)
 mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "swexuc453refebraXecujeruBraqAc4e" | openssl base64)
@@ -524,4 +547,15 @@ result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
     echo "deploy Massage(iOS) fail!!! try again!!!"
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appmassagedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Massage.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+fi
+
+# --- Parking ios ---
+timestamp=$(date +%s)
+mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "eaf786afb27f567a9b04803e4127cef3" | openssl base64)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appparkingdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Parking.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+result=$(echo $response | jq '.ResultCode')
+if [ $result != 1 ]; then
+    echo "deploy Parking(iOS) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appparkingdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./Parking.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
