@@ -21,7 +21,7 @@ var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
 
-env.set({APP_NAME: "Example"});
+env.set({APP_NAME: "Parking"});
 
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
@@ -32,7 +32,7 @@ var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string
 
 var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                     //set app id = com.qplay.appXXXX, XXXX should in lowercase.
-                    '<widget id="com.qplay.appexample' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
+                    '<widget id="com.qplay.appparking' + process.env.appNameDecorate + '" android-versionCode="' + process.env.vcode + '" ios-CFBundleVersion="' + process.env.vcode + '" ' +
                         'version="' + process.env.vname + '[' + process.env.appVersionDecorate + ']" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">' +
                         //set APP Name
                         '<name>' + process.env.APP_NAME + '</name>' +
@@ -100,7 +100,7 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add cordova-plugin-android-permissions',
   //set scheme name appXXXX, XXXX should in lowercase.
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appexample' + process.env.appNameDecorate,
+  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appparking' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-inappbrowser'//,
@@ -116,7 +116,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
   //set scheme name appXXXX, XXXX should in lowercase.
-  'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appexample' + process.env.appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appparking' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'//,

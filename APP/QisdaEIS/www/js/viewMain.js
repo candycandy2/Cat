@@ -482,7 +482,6 @@ $('#viewMain').pagecontainer({
 		window.AraUserAuthority = function() {
 			this.successCallback = function(data) {
 				araUserAuthorityCallBackData = data["Content"];
-				console.log(araUserAuthorityCallBackData);
 				
 				facilityList = '<a id="ALL">ALL</a>';
 				var firstFacilityFlag = true;

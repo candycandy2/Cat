@@ -28,6 +28,8 @@ var columnData8 = [0, 0, 0, 0, 0, 0];
 var companyName = ['66558 东森电视股份有限公司', '67326 飞利浦股份有限公司', '69410 AAAA股份有限公司'];
 var userName = "Alan Chen";
 var startDate, endDate;
+/*var startDate = "07/05";
+var endDate = "08/25";*/
 var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
@@ -523,8 +525,23 @@ function getOverdueDetailData(){
 	endDate = endDay.substring(5, 10);
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
-		//添加属性spread,及展开详情,默认为0,展开为1
+		//添加属性spread,即展开详情,默认为0,展开为1
 		item["Header"]["SPREAD"] = 0;
+		//添加属性total,用来排序
+		item["Header"]["TOTAL_INV"] = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) +
+									  parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
+									  parseFloat(item["Detail"][5]["OVER_46_75_INV"]) +
+									  parseFloat(item["Detail"][5]["OVER_76_INV"]);
+									  
+		item["Header"]["TOTAL_CM"] = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + 
+									 parseFloat(item["Detail"][5]["OVER_1_15_CM"]) +
+									 parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
+									 parseFloat(item["Detail"][5]["OVER_16_45_CM"]) +
+									 parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + 
+									 parseFloat(item["Detail"][5]["OVER_46_75_CM"]) +
+									 parseFloat(item["Detail"][5]["OVER_76_INV"]) + 
+									 parseFloat(item["Detail"][5]["OVER_76_CM"]);
+										 
 		if(item["Header"]["TYPE"] == "BU"){
 			buOverdueDetail.push(item);
 		}
@@ -534,11 +551,8 @@ function getOverdueDetailData(){
 	});
 	
 	//默认按total降序排序
-	/*buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-	csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-	
-	console.log(buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV")));
-	console.log(buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV")));*/
+	buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+	csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
 	
 }
 
@@ -552,10 +566,13 @@ function setBuOverdueDetailData(fac){
 	var buOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
-		$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
-		$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 		$.each(buOverdueDetail, function(i, item) {
-			buCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
+			buCustomerArr.push({
+				"CUSTOMER": item["Header"]["CUSTOMER"], 
+				"OWNER": item["Header"]["OWNER"],
+				"TOTAL_INV": item["Header"]["TOTAL_INV"],
+				"TOTAL_CM": item["Header"]["TOTAL_CM"]
+			});
 			/********** switchOff data **********/
 			//table
 			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -563,7 +580,6 @@ function setBuOverdueDetailData(fac){
 			var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
 			var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-			item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 			
 			//total number
 			buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -581,7 +597,6 @@ function setBuOverdueDetailData(fac){
 			var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
 			var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-			item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 			
 			//total
 			buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -722,10 +737,13 @@ function setBuOverdueDetailData(fac){
 		}
 		
 		if(otherBuOverdueDetail.length > 0){
-			$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
-			$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 			$.each(otherBuOverdueDetail, function(i, item) {
-				buCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
+				buCustomerArr.push({
+					"CUSTOMER": item["Header"]["CUSTOMER"], 
+					"OWNER": item["Header"]["OWNER"],
+					"TOTAL_INV": item["Header"]["TOTAL_INV"],
+					"TOTAL_CM": item["Header"]["TOTAL_CM"]
+				});
 				/********** switchOff data **********/
 				//table
 				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -733,7 +751,6 @@ function setBuOverdueDetailData(fac){
 				var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
 				var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-				item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 				
 				//total number
 				buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -751,7 +768,6 @@ function setBuOverdueDetailData(fac){
 				var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
 				var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-				item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 				
 				//total
 				buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -891,7 +907,6 @@ function setBuOverdueDetailData(fac){
 	}
 	
 	changeColorByNum();
-	
 }
 
 function setCsdOverdueDetailData(fac){
@@ -904,10 +919,13 @@ function setCsdOverdueDetailData(fac){
 	var csdOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
-		$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
-		$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 		$.each(csdOverdueDetail, function(i, item) {
-			csdCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
+			csdCustomerArr.push({
+				"CUSTOMER": item["Header"]["CUSTOMER"], 
+				"OWNER": item["Header"]["OWNER"],
+				"TOTAL_INV": item["Header"]["TOTAL_INV"],
+				"TOTAL_CM": item["Header"]["TOTAL_CM"]
+			});
 			/********** switchOff data **********/
 			//table
 			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -915,7 +933,6 @@ function setCsdOverdueDetailData(fac){
 			var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
 			var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-			item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 			
 			//total number
 			csdOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -933,7 +950,6 @@ function setCsdOverdueDetailData(fac){
 			var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
 			var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-			item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 			
 			//total
 			csdOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -1074,10 +1090,13 @@ function setCsdOverdueDetailData(fac){
 		}
 		
 		if(otherCsdOverdueDetail.length > 0){
-			$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
-			$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
 			$.each(otherCsdOverdueDetail, function(i, item) {
-				csdCustomerArr.push({"CUSTOMER": item["Header"]["CUSTOMER"], "OWNER": item["Header"]["OWNER"]});
+				csdCustomerArr.push({
+					"CUSTOMER": item["Header"]["CUSTOMER"], 
+					"OWNER": item["Header"]["OWNER"],
+					"TOTAL_INV": item["Header"]["TOTAL_INV"],
+					"TOTAL_CM": item["Header"]["TOTAL_CM"]
+				});
 				/********** switchOff data **********/
 				//table
 				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
@@ -1085,7 +1104,6 @@ function setCsdOverdueDetailData(fac){
 				var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
 				var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-				item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 				
 				//total number
 				csdOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -1103,7 +1121,6 @@ function setCsdOverdueDetailData(fac){
 				var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
 				var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-				item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 				
 				//total
 				csdOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -2138,7 +2155,12 @@ function getOverdueSoonData(fac){
 		}
 	}
 	
-	//console.log(buOutstand);
+	//默认按Total降序排序
+	buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+	csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+	
+	console.log(buOutstand);
+	console.log(csdOutstand);
 }
 
 function setOverdueSoonData(){
@@ -2148,7 +2170,8 @@ function setOverdueSoonData(){
 	$('.overduesoon-csd').html("");
 	
 	if(buOutstand.length > 0){
-		$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-bu-header .bu-customer .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-bu-header .bu-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
 		for(var i in buOutstand){
 			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2184,7 +2207,8 @@ function setOverdueSoonData(){
 	}
 	
 	if(csdOutstand.length > 0){
-		$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-csd-header .csd-customer .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-csd-header .csd-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
 		for(var i in csdOutstand){
 			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
