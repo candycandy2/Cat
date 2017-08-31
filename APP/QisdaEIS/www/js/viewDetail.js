@@ -1289,13 +1289,15 @@ function setCsdOverdueDetailData(fac){
 function getColumnData(arr){
 	var columnSeries = [];
 	
-	var columnSeries1 = [];
-	var found1 = false;
+	var columnSeries1 = [];	
 	for(var i = 0; i < timeAxis.length; i++){
+		var found1 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries1.push(parseFloat(arr["Detail"][j]["OVER_1_15_INV"]));
-			found1 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries1.push(parseFloat(arr["Detail"][j]["OVER_1_15_INV"]));			
+				found1 = true;
+				break;
+			}	
 		}
 		if(found1 == false){
 			columnSeries1.push(0);
@@ -1303,25 +1305,29 @@ function getColumnData(arr){
 	}
 	
 	var columnSeries2 = [];
-	var found2 = false;
 	for(var i = 0; i < timeAxis.length; i++){
+		var found2 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries2.push(parseFloat(arr["Detail"][j]["OVER_16_45_INV"]));
-			found2 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries2.push(parseFloat(arr["Detail"][j]["OVER_16_45_INV"]));
+				found2 = true;
+				break;
+			}		
 		}
 		if(found2 == false){
 			columnSeries2.push(0);
 		}
 	}
 	
-	var columnSeries3 = [];
-	var found3 = false;
+	var columnSeries3 = [];	
 	for(var i = 0; i < timeAxis.length; i++){
+		var found3 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries3.push(parseFloat(arr["Detail"][j]["OVER_46_75_INV"]));
-			found3 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries3.push(parseFloat(arr["Detail"][j]["OVER_46_75_INV"]));
+				found3 = true;
+				break;
+			}
 		}
 		if(found3 == false){
 			columnSeries3.push(0);
@@ -1329,25 +1335,29 @@ function getColumnData(arr){
 	}
 	
 	var columnSeries4 = [];
-	var found4 = false;
 	for(var i = 0; i < timeAxis.length; i++){
+		var found4 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries4.push(parseFloat(arr["Detail"][j]["OVER_76_INV"]));
-			found4 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries4.push(parseFloat(arr["Detail"][j]["OVER_76_INV"]));
+				found4 = true;
+				break;
+			}
 		}
 		if(found4 == false){
 			columnSeries4.push(0);
 		}
 	}
 	
-	var columnSeries5 = [];
-	var found5 = false;
+	var columnSeries5 = [];	
 	for(var i = 0; i < timeAxis.length; i++){
+		var found5 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries5.push(parseFloat(arr["Detail"][j]["OVER_1_15_CM"]));
-			found5 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries5.push(parseFloat(arr["Detail"][j]["OVER_1_15_CM"]));
+				found5 = true;
+				break;
+			}	
 		}
 		if(found5 == false){
 			columnSeries5.push(0);
@@ -1355,12 +1365,14 @@ function getColumnData(arr){
 	}
 	
 	var columnSeries6 = [];
-	var found6 = false;
 	for(var i = 0; i < timeAxis.length; i++){
+		var found6 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries6.push(parseFloat(arr["Detail"][j]["OVER_16_45_CM"]));
-			found6 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries6.push(parseFloat(arr["Detail"][j]["OVER_16_45_CM"]));
+				found6 = true;
+				break;
+			}
 		}
 		if(found6 == false){
 			columnSeries6.push(0);
@@ -1368,30 +1380,35 @@ function getColumnData(arr){
 	}
 	
 	var columnSeries7 = [];
-	var found7 = false;
 	for(var i = 0; i < timeAxis.length; i++){
+		var found7 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries7.push(parseFloat(arr["Detail"][j]["OVER_46_75_CM"]));
-			found7 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries7.push(parseFloat(arr["Detail"][j]["OVER_46_75_CM"]));
+				found7 = true;
+				break;
+			}
 		}
 		if(found7 == false){
 			columnSeries7.push(0);
 		}
 	}
 	
-	var columnSeries8 = [];
-	var found8 = false;
+	var columnSeries8 = [];	
 	for(var i = 0; i < timeAxis.length; i++){
+		var found8 = false;
 		for(var j = 0; j < arr["Detail"].length; j++){
-			columnSeries8.push(parseFloat(arr["Detail"][j]["OVER_76_CM"]));		
-			found8 = true;
-			break;
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries8.push(parseFloat(arr["Detail"][j]["OVER_76_CM"]));		
+				found8 = true;
+				break;
+			}
 		}
 		if(found8 == false){
 			columnSeries8.push(0);
 		}
 	}
+	
 	/*var column0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]);
 	var column1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]);
 	var column2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]);
@@ -2541,7 +2558,7 @@ $('#viewDetail').pagecontainer({
 				//test
 				console.log(overdueDetailCallBackData);
 				console.log(buColumnSeries);
-				console.log(timeAxis);
+				//console.log(timeAxis);
 			}
 			loadingMask("hide");
 			
