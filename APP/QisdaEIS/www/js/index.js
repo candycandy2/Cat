@@ -117,12 +117,20 @@ $(document).one('pagebeforeshow', function(){
 			csdCountNum = 1;
 			csdPageEnd = csdShowNum * csdCountNum;
 			csdPageStart = csdPageEnd - csdShowNum;
+			buColumnCount = 1;
+			buColumnPageEnd = buColumnShow * buColumnCount;
+			buColumnPageStart = buColumnPageEnd - buColumnShow;
+			csdColumnCount = 1;
+			csdColumnPageEnd = csdColumnShow * csdColumnCount;
+			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
+			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
+			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
     	}
@@ -136,12 +144,20 @@ $(document).one('pagebeforeshow', function(){
 			csdCountNum = 1;
 			csdPageEnd = csdShowNum * csdCountNum;
 			csdPageStart = csdPageEnd - csdShowNum;
+			buColumnCount = 1;
+			buColumnPageEnd = buColumnShow * buColumnCount;
+			buColumnPageStart = buColumnPageEnd - buColumnShow;
+			csdColumnCount = 1;
+			csdColumnPageEnd = csdColumnShow * csdColumnCount;
+			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
+			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
+			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
     	}
@@ -153,7 +169,6 @@ $(document).one('pagebeforeshow', function(){
 		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     	$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     	
-    	changeColorByNum();
     	
     });
 
@@ -166,17 +181,23 @@ $(document).one('pagebeforeshow', function(){
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
     		
-    		/*buColumnCount = 1;
+    		buColumnCount = 1;
 			buColumnPageEnd = buColumnShow * buColumnCount;
-			buColumnPageStart = buColumnPageEnd - buColumnShow;*/
+			buColumnPageStart = buColumnPageEnd - buColumnShow;
     		
-    		for(var i in buOverdueDetail){
-    			buOverdueDetail[i]["Header"]["SPREAD"] = 1;
-    			
+    		if(facility == "ALL"){
+    			for(var i in buOverdueDetail){
+	    			buOverdueDetail[i]["Header"]["SPREAD"] = 1;	
+	    		}
+    		}
+    		else{
+    			for(var i in otherBuOverdueDetail){
+    				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    			}
     		}
     		
-    		if(buColumnCheckAll == false){
-				
+    		
+    		if(buColumnCheckAll == false){				
     			buColumnCheckAll = true;
     		}
     		
@@ -187,13 +208,19 @@ $(document).one('pagebeforeshow', function(){
     		$('.bu-single-list').hide();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
     		
-    		for(var i in buOverdueDetail){
-    			buOverdueDetail[i]["Header"]["SPREAD"] = 0;
+    		if(facility == "ALL"){
+    			for(var i in buOverdueDetail){
+	    			buOverdueDetail[i]["Header"]["SPREAD"] = 0;	
+	    		}
+    		}
+    		else{
+    			for(var i in otherBuOverdueDetail){
+    				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 0;
+    			}
     		}
     		
     	}
 		
-		console.log(buCustomerArr);
     });
 
     //CSD allList btn
@@ -205,15 +232,22 @@ $(document).one('pagebeforeshow', function(){
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
     		
-    		for(var i in csdOverdueDetail){
-    			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;
-    			
+    		csdColumnCount = 1;
+			csdColumnPageEnd = csdColumnShow * csdColumnCount;
+			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+    		
+    		if(facility == "ALL"){
+    			for(var i in csdOverdueDetail){
+	    			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;	
+	    		}
+    		}
+    		else{
+    			for(var i in otherCsdOverdueDetail){
+    				otherCsdOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    			}
     		}
     		
     		if(csdColumnCheckAll == false){
-    			csdColumnCount = 1;
-				csdColumnPageEnd = csdColumnShow * csdColumnCount;
-				csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
     			csdColumnCheckAll = true;
     		}
     		
@@ -224,13 +258,18 @@ $(document).one('pagebeforeshow', function(){
     		$('.csd-single-list').hide();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
     		
-    		for(var i in csdOverdueDetail){
-    			csdOverdueDetail[i]["Header"]["SPREAD"] = 0;
+    		if(facility == "ALL"){
+    			for(var i in csdOverdueDetail){
+	    			csdOverdueDetail[i]["Header"]["SPREAD"] = 0;	
+	    		}
+    		}
+    		else{
+    			for(var i in otherCsdOverdueDetail){
+    				otherCsdOverdueDetail[i]["Header"]["SPREAD"] = 0;
+    			}
     		}
     		
     	}
-    	
-    	//changeColorByNum();
 
     });
 
@@ -239,29 +278,43 @@ $(document).one('pagebeforeshow', function(){
 		buCountNum = 1;
 		buPageEnd = buShowNum * buCountNum;
 		buPageStart = buPageEnd - buShowNum;
+		buColumnCount = 1;
+		buColumnPageEnd = buColumnShow * buColumnCount;
+		buColumnPageStart = buColumnPageEnd - buColumnShow;
 		
 		if($(this).attr('src') == 'img/priority_up.png'){
 			buOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
 			buCustomerArr.sort(compareLargeOverdueSoon("CUSTOMER"));
+			
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
+			
 			$(this).attr('src', 'img/priority_down.png');
 			
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
 			buOverdueDetail.sort(compareSmallOverdue("Header" ,"CUSTOMER"));
 			buCustomerArr.sort(compareSmallOverdueSoon("CUSTOMER"));
+			
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
+			
 			$(this).attr('src', 'img/priority_up.png');
 			
 		}
 		
-		setBuOverdueDetailData(facility);
-		setBuAreaData();
-		buSingleListBtn();
+		
 	});
 	
 	$('#buOverdueSortByTotal').on('click', function(){
 		buCountNum = 1;
 		buPageEnd = buShowNum * buCountNum;
 		buPageStart = buPageEnd - buShowNum;
+		buColumnCount = 1;
+		buColumnPageEnd = buColumnShow * buColumnCount;
+		buColumnPageStart = buColumnPageEnd - buColumnShow;
 		
 		if($(this).attr('src') == 'img/priority_down.png'){
 			if(switchState == false){
@@ -272,6 +325,10 @@ $(document).one('pagebeforeshow', function(){
 				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
 				buCustomerArr.sort(compareSmallOverdueSoon("TOTAL_CM"));
 			}
+			
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
 			
 			$(this).attr('src', 'img/priority_up.png');
 			
@@ -285,14 +342,16 @@ $(document).one('pagebeforeshow', function(){
 				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
 				buCustomerArr.sort(compareLargeOverdueSoon("TOTAL_CM"));
 			}
-
+			
+			setBuOverdueDetailData(facility);
+			setBuAreaData();
+			buSingleListBtn();
+			
 			$(this).attr('src', 'img/priority_down.png');
 					
 		}
 		
-		setBuOverdueDetailData(facility);
-		setBuAreaData();
-		buSingleListBtn();
+		
 		
 	});
 	
@@ -300,29 +359,43 @@ $(document).one('pagebeforeshow', function(){
 		csdCountNum = 1;
 		csdPageEnd = csdShowNum * csdCountNum;
 		csdPageStart = csdPageEnd - csdShowNum;
+		csdColumnCount = 1;
+		csdColumnPageEnd = csdColumnShow * csdColumnCount;
+		csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 		
 		if($(this).attr('src') == 'img/priority_up.png'){
 			csdOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
 			csdCustomerArr.sort(compareLargeOverdueSoon("CUSTOMER"));
+			
+			setCsdOverdueDetailData(facility);
+			setCsdAreaData();
+			setCsdPartOfColumnData();
+			
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
 			csdOverdueDetail.sort(compareSmallOverdue("Header" ,"CUSTOMER"));
 			csdCustomerArr.sort(compareSmallOverdueSoon("CUSTOMER"));
+			
+			setCsdOverdueDetailData(facility);
+			setCsdAreaData();
+			setCsdPartOfColumnData();
+			
 			$(this).attr('src', 'img/priority_up.png');
 				
 		}
 		
-		setCsdOverdueDetailData(facility);
-		setCsdAreaData();
-		setCsdPartOfColumnData();
+		
 	});
 	
 	$('#csdOverdueSortByTotal').on('click', function(){
 		csdCountNum = 1;
 		csdPageEnd = csdShowNum * csdCountNum;
 		csdPageStart = csdPageEnd - csdShowNum;
+		csdColumnCount = 1;
+		csdColumnPageEnd = csdColumnShow * csdColumnCount;
+		csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 		
 		if($(this).attr('src') == 'img/priority_down.png'){
 			if(switchState == false){
@@ -333,6 +406,10 @@ $(document).one('pagebeforeshow', function(){
 				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
 				csdCustomerArr.sort(compareSmallOverdueSoon("TOTAL_CM"));
 			}
+			
+			setCsdOverdueDetailData(facility);
+			setCsdAreaData();
+			setCsdPartOfColumnData();
 			
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -347,13 +424,15 @@ $(document).one('pagebeforeshow', function(){
 				csdCustomerArr.sort(compareLargeOverdueSoon("TOTAL_CM"));
 			}
 			
+			setCsdOverdueDetailData(facility);
+			setCsdAreaData();
+			setCsdPartOfColumnData();
+			
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		
-		setCsdOverdueDetailData(facility);
-		setCsdAreaData();
-		setCsdPartOfColumnData();
+		
 	});
 	
 	$('#buOverdueSoonSortByCustomer').on('click', function(){
@@ -418,13 +497,13 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#expiredSoonSortByCustomer').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
-			expiredSoon.sort(compareSmallOverdueSoon("CUSTOMER"));
+			expiredSoon.sort(compareLargeOverdueSoon("CUSTOMER"));
 			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			expiredSoon.sort(compareLargeOverdueSoon("CUSTOMER"));
+			expiredSoon.sort(compareSmallOverdueSoon("CUSTOMER"));
 			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -433,13 +512,13 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#expiredSoonSortByDay').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
-			expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
+			expiredSoon.sort(compareLargeOverdueSoon("EXPIRED_DATE"));
 			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			expiredSoon.sort(compareLargeOverdueSoon("EXPIRED_DATE"));
+			expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
 			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -448,13 +527,13 @@ $(document).one('pagebeforeshow', function(){
 	
 	$('#expiredSoonSortByLimit').on('click', function(){
 		if($(this).attr('src') == 'img/priority_up.png'){
-			expiredSoon.sort(compareSmallOverdueSoon("CREDIT_LIIMIT"));
+			expiredSoon.sort(compareLargeOverdueSoon("CREDIT_LIIMIT"));
 			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
-			expiredSoon.sort(compareLargeOverdueSoon("CREDIT_LIIMIT"));
+			expiredSoon.sort(compareSmallOverdueSoon("CREDIT_LIIMIT"));
 			setExpiredSoonData();
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -937,6 +1016,7 @@ function changeColorByNum(){
 			//console.log(i)
 		}
 	}
+	
 }
 
 
