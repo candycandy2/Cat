@@ -30,6 +30,7 @@ var csdColumnCount = 1;
 var csdColumnShow = 4;
 var csdColumnPageEnd = csdColumnShow * csdColumnCount;
 var csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+var buIndexMarginTop,csdIndexMarginTop;
 //var AraUserAuthorityQueryData = "<LayoutHeader><Account>Alex.Chang</Account></LayoutHeader>";
 var AraUserAuthorityQueryData;
 var lastPageID = "viewMain";
@@ -74,8 +75,8 @@ window.initialSuccess = function() {
     
     loadingMask("show");
     
-    ARSummary();
     AraUserAuthority();
+    //ARSummary();  
     $.mobile.changePage("#viewMain");
 }
 
@@ -469,7 +470,7 @@ $(document).one('pagebeforeshow', function(){
 	   	var visibleHeight = document.body.clientHeight;
 	   	var visibleBottom = document.body.clientHeight + visibleTop;  	
 	   	
-	   	if(timoutScrollEvent !== null){
+	   	/*if(timoutScrollEvent !== null){
 	   		clearTimeout(timoutScrollEvent);
 	   		timoutScrollEvent = null;
 	   	}
@@ -477,8 +478,112 @@ $(document).one('pagebeforeshow', function(){
 	   		//do some thing
 	   		
 	   		checkVisible();
-	   	}, 500);
+	   	}, 500);*/
 	   	
+	   	//获取BU区域和CSD区域
+	   	var buOverdueAreaTop = $('.overdueDetail-bu').offset().top;
+	   	var buOverdueAreaHeight = $('.overdueDetail-bu').height();
+	   	var buOverdueAreaBottom = buOverdueAreaTop + buOverdueAreaHeight;
+	   	var csdOverdueAreaTop = $('.overdueDetail-csd').offset().top;
+	   	var csdOverdueAreaHeight = $('.overdueDetail-csd').height();
+	   	var csdOverdueAreaBottom = csdOverdueAreaTop + csdOverdueAreaHeight;
+		
+		if(facility == "ALL"){
+			//当BU在可视区域内，才判断column-hc是否在可视区域内
+			if(buOverdueAreaBottom > visibleTop){
+				for(var i in buOverdueDetail){
+			   		if(buOverdueDetail[i]["Header"]["SPREAD"] === 1){	   	
+			   			var top1 = $('#buShowList'+i).offset().top;
+				   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
+				  		
+			   			//不在可视区域内
+			   			if(top1 > visibleBottom || bottom1 < visibleTop){
+			   				buArrIndex = null;
+			   			}
+			   			else{
+			   				buArrIndex = i;
+			   				buIndexMarginTop = $('#buShowList'+i).offset().top;
+			   				break;
+			   			}
+			   		}
+			   		else{
+			   			buArrIndex = null;
+			   		}
+			    }
+			}
+			//当CSD在可视区域内，才判断column-hc是否在可视区域内
+			else if(visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop){
+				for(var i in csdOverdueDetail){
+			   		if(csdOverdueDetail[i]["Header"]["SPREAD"] === 1){	   	
+			   			var top1 = $('#csdShowList'+i).offset().top;
+				   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
+				   		
+			   			//不在可视区域内
+			   			if(top1 > visibleBottom || bottom1 < visibleTop){
+			   				csdArrIndex = null;
+			   			}
+			   			else{
+			   				csdArrIndex = i;
+			   				csdIndexMarginTop = $('#csdShowList'+i).offset().top;
+			   				break;
+			   			}
+			   		}
+			   		else{
+			   			csdArrIndex = null;
+			   		}
+			   	}
+			}
+		}
+		else{
+			//当BU在可视区域内，才判断column-hc是否在可视区域内
+			if(buOverdueAreaBottom > visibleTop){
+				for(var i in otherBuOverdueDetail){
+			   		if(otherBuOverdueDetail[i]["Header"]["SPREAD"] === 1){	   	
+			   			var top1 = $('#buShowList'+i).offset().top;
+				   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
+				  		
+			   			//不在可视区域内
+			   			if(top1 > visibleBottom || bottom1 < visibleTop){
+			   				buArrIndex = null;
+			   			}
+			   			else{
+			   				buArrIndex = i;
+			   				buIndexMarginTop = $('#buShowList'+i).offset().top;
+			   				break;
+			   			}
+			   		}
+			   		else{
+			   			buArrIndex = null;
+			   		}
+			    }
+			}
+			//当CSD在可视区域内，才判断column-hc是否在可视区域内
+			else if(visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop){
+				for(var i in otherCsdOverdueDetaill){
+			   		if(otherCsdOverdueDetaill[i]["Header"]["SPREAD"] === 1){	   	
+			   			var top1 = $('#csdShowList'+i).offset().top;
+				   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
+				   		
+			   			//不在可视区域内
+			   			if(top1 > visibleBottom || bottom1 < visibleTop){
+			   				csdArrIndex = null;
+			   			}
+			   			else{
+			   				csdArrIndex = i;
+			   				csdIndexMarginTop = $('#csdShowList'+i).offset().top;
+			   				break;
+			   			}
+			   		}
+			   		else{
+			   			csdArrIndex = null;
+			   		}
+			   	}
+			}
+		}
+		
+		
+		
+	   	console.log(buArrIndex+" ,"+csdArrIndex);
 		
 		
 	   	var buArrLength = buAreaSeriesINV.length;
@@ -612,6 +717,9 @@ function checkVisible(){
 	   				break;
 	   			}
 	   		}
+	   		else{
+	   			buArrIndex = null;
+	   		}
 	    }
 	}
 	//当CSD在可视区域内，才判断column-hc是否在可视区域内
@@ -629,6 +737,9 @@ function checkVisible(){
 	   				csdArrIndex = i;
 	   				break;
 	   			}
+	   		}
+	   		else{
+	   			csdArrIndex = null;
 	   		}
 	   	}
 	}
@@ -884,19 +995,20 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#overview-hc-rectangle-landscape').hide();
 			$('#backBtn').hide();
     	}else{
-    		if(buArrIndex !== null || csdArrIndex !== null){
-    			/*buArrIndex = null;
-	    		csdArrIndex = null;*/
-	    		/*$('.bu-single-list').hide();
-	    		$('.csd-single-list').hide();
-	    		$('.buSingleListBtn').attr('src', 'img/list_down.png');
-	    		$('.csdSingleListBtn').attr('src', 'img/list_down.png');*/
-    		}
     		$('#viewDetail-hc-column-landscape').hide();
     		$('#viewDetail .page-header').show();
     		$('#viewDetail .page-tabs').show();
+    		$('#viewDetail .scrollmenu').show();
+    		
     		if(viewDetailTab == "overdue"){
     			$('#viewDetail #overdue').show();
+    			//页面返回指定位置
+    			if(buArrIndex !== null){
+	    			window.scrollTo(0, buIndexMarginTop-100);
+	    		}
+	    		else if(csdArrIndex !== null){
+	    			window.scrollTo(0, csdIndexMarginTop-100);
+	    		}
     		}
     		else if(viewDetailTab == "overdueSoon"){
     			$('#viewDetail #overdueSoon').show();
@@ -904,7 +1016,8 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     		else if(viewDetailTab == "expiredSoon"){
     			$('#viewDetail #expiredSoon').show();
     		}
-    		$('#viewDetail .scrollmenu').show();
+    		
+    		
     		
     	}
 
@@ -915,7 +1028,6 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	console.log(buArrIndex+" ,"+csdArrIndex);
     		if(viewDetailTab == "overdue" && buArrIndex !== null){
         		getLandscapeColumn(true, "");
         		getLandscapeColumn(false, "BU");
