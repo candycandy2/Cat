@@ -99,7 +99,7 @@ class JMessage {
              //整理使用dateime呼叫的資料
             $this->arrangeMessageData($result);
             if(isset($result->cursor)){
-                $result = $this->getMessageWithCursor($result, $count);
+                $result = $this->getMessageWithCursor($result, $count, $beginTime, $endTime);
             }
          }
         $rs = $this->getData();
@@ -120,11 +120,13 @@ class JMessage {
 
     /**
      * 依cursor取得訊息
-     * @param  json  $result  Jmessage回傳的訊息資料
+     * @param  json  $result    Jmessage回傳的訊息資料
      * @param  int   $count     每次抓取的訊息筆數
+     * @param  string $beginTime 本次的開始時間 (重跑用)
+     * @param  string $endTime   本次的結束時間 (重跑用)
      * @return json
      */
-    public function getMessageWithCursor($result, $count){
+    public function getMessageWithCursor($result, $count, $beginTime, $endTime){
         if(!isset($result->cursor)){
             Log::info('cursor end 1:'.json_encode($result));
             return;
@@ -139,7 +141,7 @@ class JMessage {
              //整理使用dateime呼叫的資料
             $this->arrangeMessageData($res);
             if(isset($res->cursor)){
-                $this->getMessageWithCursor($res, $count);
+                $this->getMessageWithCursor($res, $count, $beginTime, $endTime);
             }else{
                  Log::info('cursor end 2:'.json_encode($res));
                 return;
@@ -173,7 +175,7 @@ class JMessage {
         }
         $result = json_decode($result);
         $result->requestUrl=$url;
-        Log::info('Result get!');
+        //Log::info('Result get!');
         return $result;
     }
 
@@ -186,6 +188,7 @@ class JMessage {
         if(isset($result->error)){
             return $result;
         }
+        $retry = 0;
         foreach ($result->messages as $message) {
             $history = [];
             $history['msg_id'] = $message->msgid;
@@ -201,7 +204,14 @@ class JMessage {
             //檔案類型寫入 qm_message_file
             if($message->msg_type == 'image'){
                 $historyFile = [];
+                $media = [];
                 $media = $this->getMedia($message->msg_body->media_id);
+                if(!isset($media->url) && $retry < 3){
+                    $retry ++;
+                    Log::info('get image error,retry: '.$retry);
+                    Log::info('get image error,content: '.json_encode($media));
+                    $media = $this->getMedia($message->msg_body->media_id);
+                }
                 $file = $this->downloadFile($media->url);
                 $historyFile['msg_id'] = $message->msgid;
                 $historyFile['fname'] =  $file['fname'];
@@ -210,7 +220,7 @@ class JMessage {
                 $historyFile['npath'] = $message->msg_body->media_id;
                 $historyFile['lpath'] = $file['lpath'];
                 $historyFile['spath'] = $file['spath'];
-                 $this->historyFileData[] = $historyFile;
+                $this->historyFileData[] = $historyFile;
             }
         }
     }
@@ -281,7 +291,7 @@ class JMessage {
         }
         curl_close($curl);
         fclose($headerBuff);
-        Log::info('檔案下載完成: '.$result['fname'].'.'.$result['format']);
+        //Log::info('檔案下載完成: '.$result['fname'].'.'.$result['format']);
         return $result;
     }
 }
