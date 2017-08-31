@@ -61,6 +61,22 @@ class HistoryRepository
     }
 
     /**
+     * 寫入歷史訊息
+     * @param  Array $historyData  歷史訊息資料 
+     */
+    public function insertHistory($historyData){
+         $this->history->insert($historyData);
+    }
+
+    /**
+     * 寫入歷史訊息檔案資訊
+     * @param  Array $historyFileData 歷史訊息檔案資料
+     */
+    public function insertHistoryFile($historyFileData){
+         $this->historyFile->insert($historyFileData);
+    }
+
+    /**
      * 新增或更新資料
      * @param  string $db      DB connection
      * @param  string $table   table name
