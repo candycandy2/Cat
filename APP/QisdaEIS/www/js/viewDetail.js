@@ -21,7 +21,7 @@ var columnData5 = [-44, -36, -24, -87, -86, -45];
 var columnData6 = [-55, -52, -64, -48, -63, -42];
 var columnData7 = [-87, -49, -63, -36, -54, -66];
 var columnData8 = [-58, -71, -89, -36, -36, -46];
-var columnData8 = [0, 0, 0, 0, 0, 0];
+var columnData9 = [0, 0, 0, 0, 0, 0];
 
 //var categoriesMonth = ['60天', '70天', '80天', '90天'];
 //var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']; 动态获取，由timeAxis代替
@@ -34,6 +34,7 @@ var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
 var csdOutstandDetailTotal = 0;
+var week0 = [];
 var timeAxis = [];
 var otherBuOverdueDetail = [];
 var otherCsdOverdueDetail = [];
@@ -439,8 +440,8 @@ function buSingleListBtn(){
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			buOverdueDetail[index]["Header"]["SPREAD"] = 1;
-			buArrIndex = index;
-			csdArrIndex = null;
+			/*buArrIndex = index;
+			csdArrIndex = null;*/
 			
 			if(buColumnCheckAll == false){
 				setSingleColumnData(index, 'bu');
@@ -451,11 +452,11 @@ function buSingleListBtn(){
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 			buOverdueDetail[index]["Header"]["SPREAD"] = 0;
-			buArrIndex = null;
+			//buArrIndex = null;
 			
-			if(index == buArrIndex){
+			/*if(index == buArrIndex){
 				buArrIndex = null;
-			}
+			}*/
 			
 		}
 		
@@ -481,8 +482,8 @@ function csdSingleListBtn(){
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 1;
-			csdArrIndex = index;
-			buArrIndex = null;
+			/*csdArrIndex = index;
+			buArrIndex = null;*/
 			
 			if(csdColumnCheckAll == false){
 				setSingleColumnData(index, 'csd');
@@ -493,11 +494,11 @@ function csdSingleListBtn(){
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
 			csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
-			csdArrIndex = null;
+			//csdArrIndex = null;
 			
-			if(index == csdArrIndex){
+			/*if(index == csdArrIndex){
 				csdArrIndex = null;
-			}
+			}*/
 			
 		}
 
@@ -512,15 +513,23 @@ function csdSingleListBtn(){
 }
 
 
-function getOverdueDetailData(){
-	//get time axis on area and column
-	for(var i in overdueDetailCallBackData[0]["Detail"]){
-		timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
+function getOverdueDetailData(){	
+	//get week timeAxis
+	for(var i in overdueDetailCallBackData){
+		if(overdueDetailCallBackData[i]["Detail"].length === 6){
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][3]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][4]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][5]["WEEK"]);
+			
+			var startDay = overdueDetailCallBackData[i]["Detail"][0]["AGED_DATE"];
+			var endDay = overdueDetailCallBackData[i]["Detail"][5]["AGED_DATE"];
+			break;
+		}
 	}
-	
-	//get start day and end day
-	var startDay = overdueDetailCallBackData[0]["Detail"][0]["AGED_DATE"];
-	var endDay = overdueDetailCallBackData[0]["Detail"][5]["AGED_DATE"];
+	//get startDate and endDate
 	startDate = startDay.substring(5, 10);
 	endDate = endDay.substring(5, 10);
 	
@@ -528,19 +537,20 @@ function getOverdueDetailData(){
 		//添加属性spread,即展开详情,默认为0,展开为1
 		item["Header"]["SPREAD"] = 0;
 		//添加属性total,用来排序
-		item["Header"]["TOTAL_INV"] = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) +
-									  parseFloat(item["Detail"][5]["OVER_16_45_INV"]) +
-									  parseFloat(item["Detail"][5]["OVER_46_75_INV"]) +
-									  parseFloat(item["Detail"][5]["OVER_76_INV"]);
+		var totalLength = item["Detail"].length;
+		item["Header"]["TOTAL_INV"] = parseFloat(item["Detail"][totalLength-1]["OVER_1_15_INV"]) +
+									  parseFloat(item["Detail"][totalLength-1]["OVER_16_45_INV"]) +
+									  parseFloat(item["Detail"][totalLength-1]["OVER_46_75_INV"]) +
+									  parseFloat(item["Detail"][totalLength-1]["OVER_76_INV"]);
 									  
-		item["Header"]["TOTAL_CM"] = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + 
-									 parseFloat(item["Detail"][5]["OVER_1_15_CM"]) +
-									 parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + 
-									 parseFloat(item["Detail"][5]["OVER_16_45_CM"]) +
-									 parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + 
-									 parseFloat(item["Detail"][5]["OVER_46_75_CM"]) +
-									 parseFloat(item["Detail"][5]["OVER_76_INV"]) + 
-									 parseFloat(item["Detail"][5]["OVER_76_CM"]);
+		item["Header"]["TOTAL_CM"] = parseFloat(item["Detail"][totalLength-1]["OVER_1_15_INV"]) + 
+									 parseFloat(item["Detail"][totalLength-1]["OVER_1_15_CM"]) +
+									 parseFloat(item["Detail"][totalLength-1]["OVER_16_45_INV"]) + 
+									 parseFloat(item["Detail"][totalLength-1]["OVER_16_45_CM"]) +
+									 parseFloat(item["Detail"][totalLength-1]["OVER_46_75_INV"]) + 
+									 parseFloat(item["Detail"][totalLength-1]["OVER_46_75_CM"]) +
+									 parseFloat(item["Detail"][totalLength-1]["OVER_76_INV"]) + 
+									 parseFloat(item["Detail"][totalLength-1]["OVER_76_CM"]);
 										 
 		if(item["Header"]["TYPE"] == "BU"){
 			buOverdueDetail.push(item);
@@ -548,6 +558,7 @@ function getOverdueDetailData(){
 		else{
 			csdOverdueDetail.push(item);
 		}
+		
 	});
 	
 	//默认按total降序排序
@@ -567,6 +578,9 @@ function setBuOverdueDetailData(fac){
 	
 	if(fac == "ALL"){
 		$.each(buOverdueDetail, function(i, item) {
+			//获取detail有几周数据
+			var detailLength = item["Detail"].length;
+			//获取图表相关信息
 			buCustomerArr.push({
 				"CUSTOMER": item["Header"]["CUSTOMER"], 
 				"OWNER": item["Header"]["OWNER"],
@@ -575,13 +589,13 @@ function setBuOverdueDetailData(fac){
 			});
 			/********** switchOff data **********/
 			//table
-			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-			var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-			var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-			var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+			var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+			var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+			var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+			var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 			
-			//total number
+			//bu总数total
 			buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
 			
 			//area highchart
@@ -592,13 +606,13 @@ function setBuOverdueDetailData(fac){
 			
 			/********** switchOn data **********/
 			//table
-			var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-			var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-			var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-			var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+			var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+			var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+			var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+			var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 			
-			//total
+			//bu总数total
 			buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
 			
 			//area highchart
@@ -611,7 +625,7 @@ function setBuOverdueDetailData(fac){
 			var columnArr = getColumnData(item);
 			
 			buColumnSeries.push(columnArr);
-				
+			
 			
 			/**************** append html ****************/
 			if(switchState == false){
@@ -738,6 +752,8 @@ function setBuOverdueDetailData(fac){
 		
 		if(otherBuOverdueDetail.length > 0){
 			$.each(otherBuOverdueDetail, function(i, item) {
+				//获取detail有几周数据
+				var detailLength = item["Detail"].length;
 				buCustomerArr.push({
 					"CUSTOMER": item["Header"]["CUSTOMER"], 
 					"OWNER": item["Header"]["OWNER"],
@@ -746,10 +762,10 @@ function setBuOverdueDetailData(fac){
 				});
 				/********** switchOff data **********/
 				//table
-				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-				var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-				var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-				var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+				var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+				var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+				var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 				
 				//total number
@@ -763,10 +779,10 @@ function setBuOverdueDetailData(fac){
 				
 				/********** switchOn data **********/
 				//table
-				var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-				var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-				var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-				var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+				var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+				var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+				var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 				
 				//total
@@ -920,6 +936,8 @@ function setCsdOverdueDetailData(fac){
 	
 	if(fac == "ALL"){
 		$.each(csdOverdueDetail, function(i, item) {
+			//获取detail有几周数据
+			var detailLength = item["Detail"].length;
 			csdCustomerArr.push({
 				"CUSTOMER": item["Header"]["CUSTOMER"], 
 				"OWNER": item["Header"]["OWNER"],
@@ -928,10 +946,10 @@ function setCsdOverdueDetailData(fac){
 			});
 			/********** switchOff data **********/
 			//table
-			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-			var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-			var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-			var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+			var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+			var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+			var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+			var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 			
 			//total number
@@ -945,10 +963,10 @@ function setCsdOverdueDetailData(fac){
 			
 			/********** switchOn data **********/
 			//table
-			var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-			var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-			var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-			var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+			var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+			var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+			var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+			var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 			
 			//total
@@ -1091,6 +1109,8 @@ function setCsdOverdueDetailData(fac){
 		
 		if(otherCsdOverdueDetail.length > 0){
 			$.each(otherCsdOverdueDetail, function(i, item) {
+				//获取detail有几周数据
+				var detailLength = item["Detail"].length;
 				csdCustomerArr.push({
 					"CUSTOMER": item["Header"]["CUSTOMER"], 
 					"OWNER": item["Header"]["OWNER"],
@@ -1099,10 +1119,10 @@ function setCsdOverdueDetailData(fac){
 				});
 				/********** switchOff data **********/
 				//table
-				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-				var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-				var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-				var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+				var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+				var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+				var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 				
 				//total number
@@ -1116,10 +1136,10 @@ function setCsdOverdueDetailData(fac){
 				
 				/********** switchOn data **********/
 				//table
-				var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-				var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-				var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-				var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+				var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+				var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+				var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 				
 				//total
@@ -1269,7 +1289,127 @@ function setCsdOverdueDetailData(fac){
 function getColumnData(arr){
 	var columnSeries = [];
 	
-	var column0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]);
+	var columnSeries1 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found1 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries1.push(parseFloat(arr["Detail"][j]["OVER_1_15_INV"]));			
+				found1 = true;
+				break;
+			}	
+		}
+		if(found1 == false){
+			columnSeries1.push(0);
+		}
+	}
+	
+	var columnSeries2 = [];
+	for(var i = 0; i < timeAxis.length; i++){
+		var found2 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries2.push(parseFloat(arr["Detail"][j]["OVER_16_45_INV"]));
+				found2 = true;
+				break;
+			}		
+		}
+		if(found2 == false){
+			columnSeries2.push(0);
+		}
+	}
+	
+	var columnSeries3 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found3 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries3.push(parseFloat(arr["Detail"][j]["OVER_46_75_INV"]));
+				found3 = true;
+				break;
+			}
+		}
+		if(found3 == false){
+			columnSeries3.push(0);
+		}
+	}
+	
+	var columnSeries4 = [];
+	for(var i = 0; i < timeAxis.length; i++){
+		var found4 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries4.push(parseFloat(arr["Detail"][j]["OVER_76_INV"]));
+				found4 = true;
+				break;
+			}
+		}
+		if(found4 == false){
+			columnSeries4.push(0);
+		}
+	}
+	
+	var columnSeries5 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found5 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries5.push(parseFloat(arr["Detail"][j]["OVER_1_15_CM"]));
+				found5 = true;
+				break;
+			}	
+		}
+		if(found5 == false){
+			columnSeries5.push(0);
+		}
+	}
+	
+	var columnSeries6 = [];
+	for(var i = 0; i < timeAxis.length; i++){
+		var found6 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries6.push(parseFloat(arr["Detail"][j]["OVER_16_45_CM"]));
+				found6 = true;
+				break;
+			}
+		}
+		if(found6 == false){
+			columnSeries6.push(0);
+		}
+	}
+	
+	var columnSeries7 = [];
+	for(var i = 0; i < timeAxis.length; i++){
+		var found7 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries7.push(parseFloat(arr["Detail"][j]["OVER_46_75_CM"]));
+				found7 = true;
+				break;
+			}
+		}
+		if(found7 == false){
+			columnSeries7.push(0);
+		}
+	}
+	
+	var columnSeries8 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found8 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries8.push(parseFloat(arr["Detail"][j]["OVER_76_CM"]));		
+				found8 = true;
+				break;
+			}
+		}
+		if(found8 == false){
+			columnSeries8.push(0);
+		}
+	}
+	
+	/*var column0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]);
 	var column1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]);
 	var column2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]);
 	var column3 = parseFloat(arr["Detail"][3]["OVER_1_15_INV"]);
@@ -1387,7 +1527,7 @@ function getColumnData(arr){
 	columnSeries8.push(columnCM20);				
 	columnSeries8.push(columnCM21);				
 	columnSeries8.push(columnCM22);				
-	columnSeries8.push(columnCM23);
+	columnSeries8.push(columnCM23);*/
 	
 	columnSeries.push(columnSeries1);
 	columnSeries.push(columnSeries2);					
@@ -1399,78 +1539,53 @@ function getColumnData(arr){
 	columnSeries.push(columnSeries8);
 	
 	return columnSeries;
+	
 }
 
 function getAreaDataSwitchOff(arr){
 	var areaSeriesINV = [];
-		
-	var areaWeekINV0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][0]["OVER_16_45_INV"]) +
-		    		   parseFloat(arr["Detail"][0]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][0]["OVER_76_INV"]);
-
-	var areaWeekINV1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][1]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][1]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][1]["OVER_76_INV"]);
 	
-	var areaWeekINV2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][2]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][2]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][2]["OVER_76_INV"]);
+	for(var i = 0; i < timeAxis.length; i++){
+		var found = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				areaSeriesINV.push(
+					parseFloat(arr["Detail"][j]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][j]["OVER_16_45_INV"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][j]["OVER_76_INV"])
+				);
+				found = true;
+				break;
+			}
+		}
+		if(found == false){
+			areaSeriesINV.push(0);
+		}	
+	}
 	
-	var areaWeekINV3 = parseFloat(arr["Detail"][3]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][3]["OVER_16_45_INV"]) +
-			   	 	   parseFloat(arr["Detail"][3]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][3]["OVER_76_INV"]);
-	
-	var areaWeekINV4 = parseFloat(arr["Detail"][4]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][4]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][4]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][4]["OVER_76_INV"]);
-	
-	var areaWeekINV5 = parseFloat(arr["Detail"][5]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][5]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][5]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][5]["OVER_76_INV"]);
-	
-	areaSeriesINV.push(areaWeekINV0);
-	areaSeriesINV.push(areaWeekINV1);
-	areaSeriesINV.push(areaWeekINV2);
-	areaSeriesINV.push(areaWeekINV3);
-	areaSeriesINV.push(areaWeekINV4);
-	areaSeriesINV.push(areaWeekINV5);
-		
 	return areaSeriesINV;
 }
 
 function getAreaDataSwitchOn(arr){
 	var areaSeriesCM = [];
-		
-	var areaWeekCM0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][0]["OVER_16_45_INV"]) +
-		    		parseFloat(arr["Detail"][0]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][0]["OVER_76_INV"]) +
-		    		parseFloat(arr["Detail"][0]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][0]["OVER_16_45_CM"]) +
-		    		parseFloat(arr["Detail"][0]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][0]["OVER_76_CM"]);
 	
-	var areaWeekCM1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][1]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][1]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][1]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][1]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][1]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][1]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][1]["OVER_76_CM"]);
-	
-	var areaWeekCM2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][2]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][2]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][2]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][2]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][2]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][2]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][2]["OVER_76_CM"]);
-	
-	var areaWeekCM3 = parseFloat(arr["Detail"][3]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][3]["OVER_16_45_INV"]) +
-			   		parseFloat(arr["Detail"][3]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][3]["OVER_76_INV"]) +
-			   		parseFloat(arr["Detail"][3]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][3]["OVER_16_45_CM"]) +
-			   		parseFloat(arr["Detail"][3]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][3]["OVER_76_CM"]);
-	
-	var areaWeekCM4 = parseFloat(arr["Detail"][4]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][4]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][4]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][4]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][4]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][4]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][4]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][4]["OVER_76_CM"]);
-	
-	var areaWeekCM5 = parseFloat(arr["Detail"][5]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][5]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][5]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][5]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][5]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][5]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][5]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][5]["OVER_76_CM"]);
-	
-	areaSeriesCM.push(areaWeekCM0);
-	areaSeriesCM.push(areaWeekCM1);
-	areaSeriesCM.push(areaWeekCM2);
-	areaSeriesCM.push(areaWeekCM3);
-	areaSeriesCM.push(areaWeekCM4);
-	areaSeriesCM.push(areaWeekCM5);
+	for(var i = 0; i < 6; i++){
+		var found = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				areaSeriesCM.push(
+					parseFloat(arr["Detail"][j]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][j]["OVER_16_45_INV"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][j]["OVER_76_INV"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][j]["OVER_16_45_CM"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][j]["OVER_76_CM"])
+				);
+				found = true;
+				break;
+			}			
+		}
+		if(found == false){
+			areaSeriesCM.push(0);
+		}
+	}
 	
 	return areaSeriesCM;
 }
@@ -2159,8 +2274,6 @@ function getOverdueSoonData(fac){
 	buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
 	csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
 	
-	console.log(buOutstand);
-	console.log(csdOutstand);
 }
 
 function setOverdueSoonData(){
@@ -2442,6 +2555,10 @@ $('#viewDetail').pagecontainer({
 				//改变颜色
 				changeColorByNum();
 				viewDetailInit = true;
+				//test
+				console.log(overdueDetailCallBackData);
+				console.log(buColumnSeries);
+				//console.log(timeAxis);
 			}
 			loadingMask("hide");
 			
@@ -2493,8 +2610,8 @@ $('#viewDetail').pagecontainer({
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			facilityInit = true;
-			//切换facility时回到顶部,防止数据过多,返回到中间,数据不显示
-			$('body,html').animate({scrollTop:0},300);
+			/*//切换facility时回到顶部,防止数据过多,返回到中间,数据不显示
+			$('body,html').animate({scrollTop:0},300);*/
 			
 			buCountNum = 1;
 			buPageEnd = buShowNum * buCountNum;

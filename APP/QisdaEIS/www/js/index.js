@@ -460,46 +460,25 @@ $(document).one('pagebeforeshow', function(){
 		}
 	});
 	
+	var timoutScrollEvent = null;
+	
 	//监听屏幕滚动事件
 	$(window).on('scroll', function(){
-		//页面可视区域的范围
+		//获取页面可视区域的范围
 	   	var visibleTop = document.body.scrollTop;
 	   	var visibleHeight = document.body.clientHeight;
 	   	var visibleBottom = document.body.clientHeight + visibleTop;  	
-	   	//console.log("top:"+visibleTop+" ,bottom:"+visibleBottom);
-		
-		//判断竖屏时，treemap是否在可视区域内
-	   	for(var i in buOverdueDetail){
-	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1 && buOverdueDetail.length > 0){	   	
-	   			var top1 = $('#buShowList'+i).offset().top;
-		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
-		  		
-	   			//不在可视区域内
-	   			if(top1 > visibleBottom || bottom1 < visibleTop){
-	   				buArrIndex = null;
-	   			}
-	   			else{
-	   				buArrIndex = i;
-	   				return false;
-	   			}
-	   		}
-	   	}
 	   	
-	   	for(var i in csdOverdueDetail){
-	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1 && csdOverdueDetail.length > 0){	   	
-	   			var top1 = $('#csdShowList'+i).offset().top;
-		   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
-		   		
-	   			//不在可视区域内
-	   			if(top1 > visibleBottom || bottom1 < visibleTop){
-	   				csdArrIndex = null;
-	   			}
-	   			else{
-	   				buArrIndex = i;
-	   				return false;
-	   			}
-	   		}
+	   	if(timoutScrollEvent !== null){
+	   		clearTimeout(timoutScrollEvent);
+	   		timoutScrollEvent = null;
 	   	}
+	   	timoutScrollEvent = setTimeout(function(){
+	   		//do some thing
+	   		
+	   		checkVisible();
+	   	}, 500);
+	   	
 		
 		
 	   	var buArrLength = buAreaSeriesINV.length;
@@ -507,13 +486,12 @@ $(document).one('pagebeforeshow', function(){
 	   	
 	   	buPageEnd = buShowNum * buCountNum;
         buPageStart = buPageEnd - buShowNum;
-	   	//console.log(buPageEnd+" ,"+buPageStart);
 	   	
 	   	//先从BU-Area开始
 	   	if(buArrLength > buPageEnd){
 			var top12 = $('#buShowList' + (buPageEnd - 1)).offset().top;
 
-			if((top12 - visibleBottom) < 250){
+			if((top12 - visibleBottom) < 200){
 				buCountNum++;
 				return false;		
 			}
@@ -532,7 +510,7 @@ $(document).one('pagebeforeshow', function(){
 			if(csdArrLength > csdPageEnd){
 				var csdTop12 = $('#csdShowList' + (csdPageEnd - 1)).offset().top;
 				
-				if((csdTop12 - visibleBottom) < 250){
+				if((csdTop12 - visibleBottom) < 200){
 					csdCountNum++;
 					return false;
 				}
@@ -604,6 +582,59 @@ $(document).one('pagebeforeshow', function(){
 	
 });
 
+function checkVisible(){
+	//获取页面可视区域的范围
+   	var visibleTop = document.body.scrollTop;
+   	var visibleHeight = document.body.clientHeight;
+   	var visibleBottom = document.body.clientHeight + visibleTop;  	
+   	
+   	//获取BU区域和CSD区域
+   	var buOverdueAreaTop = $('.overdueDetail-bu').offset().top;
+   	var buOverdueAreaHeight = $('.overdueDetail-bu').height();
+   	var buOverdueAreaBottom = buOverdueAreaTop + buOverdueAreaHeight;
+   	var csdOverdueAreaTop = $('.overdueDetail-csd').offset().top;
+   	var csdOverdueAreaHeight = $('.overdueDetail-csd').height();
+   	var csdOverdueAreaBottom = csdOverdueAreaTop + csdOverdueAreaHeight;
+	
+	//当BU在可视区域内，才判断column-hc是否在可视区域内
+	if(buOverdueAreaBottom > visibleTop){
+		for(var i in buOverdueDetail){
+	   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   			var top1 = $('#buShowList'+i).offset().top;
+		   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
+		  		
+	   			//不在可视区域内
+	   			if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				buArrIndex = null;
+	   			}
+	   			else{
+	   				buArrIndex = i;
+	   				break;
+	   			}
+	   		}
+	    }
+	}
+	//当CSD在可视区域内，才判断column-hc是否在可视区域内
+	else if(visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop){
+		for(var i in csdOverdueDetail){
+	   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
+	   			var top1 = $('#csdShowList'+i).offset().top;
+		   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
+		   		
+	   			//不在可视区域内
+	   			if(top1 > visibleBottom || bottom1 < visibleTop){
+	   				csdArrIndex = null;
+	   			}
+	   			else{
+	   				csdArrIndex = i;
+	   				break;
+	   			}
+	   		}
+	   	}
+	}
+	
+   	console.log(buArrIndex+" ,"+csdArrIndex);
+}
 
 var compareSmallOverdue = function (prop1, prop2) {
     return function (obj1, obj2) {
@@ -676,6 +707,7 @@ var compareLargeOverdueSoon = function (prop) {
         }            
     } 
 }
+
 
 
 //[Android]Handle the back button
@@ -775,8 +807,8 @@ function changeColorByNum(){
 				$(fontArr[i]).addClass("font-color-black");
 			}
 		}catch(e){
-			//TODO handle the exception
-			console.log(i);
+			// handle the exception
+			//console.log(i);
 		}
 	}
 	
@@ -790,8 +822,8 @@ function changeColorByNum(){
 				$(fontDayArr[i]).addClass("font-color-black");
 			}
 		}catch(e){
-			//TODO handle the exception
-			console.log(i)
+			// handle the exception
+			//console.log(i)
 		}
 	}
 }
@@ -853,8 +885,8 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 			$('#backBtn').hide();
     	}else{
     		if(buArrIndex !== null || csdArrIndex !== null){
-    			buArrIndex = null;
-	    		csdArrIndex = null;
+    			/*buArrIndex = null;
+	    		csdArrIndex = null;*/
 	    		/*$('.bu-single-list').hide();
 	    		$('.csd-single-list').hide();
 	    		$('.buSingleListBtn').attr('src', 'img/list_down.png');
