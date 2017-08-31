@@ -102,15 +102,12 @@ class ChatRoomController extends Controller
                     return response()->json($result);
                 }
                 $historyData = $resData['historyData'];
-                $historyFileData = $resData['historyFileData']; 
-                if(count($historyData) > 0 ){
-                   $this->historyRepository->insertHistory($historyData);
-                    Log::info('History預計寫入，共'.count($historyData).'筆');
-                }
-                if(count($historyFileData) > 0){
-                   $this->historyRepository->insertHistoryFile($historyFileData);
-                    Log::info('HistoryFile，預計寫入，共'.count($historyFileData)."筆");
-                }
+                $historyFileData = $resData['historyFileData'];
+                
+                $this->historyRepository->insertHistory($historyData);
+                Log::info('History預計寫入，共'.count($historyData).'筆');
+                $this->historyRepository->insertHistoryFile($historyFileData);
+                Log::info('HistoryFile，預計寫入，共'.count($historyFileData)."筆");
                 //更新結束時間
                 $this->parameterRepository->updateLastQueryTime($endTime);
 
